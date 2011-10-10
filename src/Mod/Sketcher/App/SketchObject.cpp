@@ -679,12 +679,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle*>(geo);
-
         Base::Vector3d center = aoc->getCenter();
-
-        double startangle, endangle;
-        aoc->getRange(startangle, endangle);
-
         double theta0 = atan2(point.y - center.y,point.x - center.x);
 
         if (GeoId1 >= 0 && GeoId2 >= 0) {
@@ -782,14 +777,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             if (theta1 < 0)
                 theta1 += 2*M_PI;
-
-            double u,v;
-            aoc->getRange(u,v);
-            u = fmod(u, 2*M_PI);
-            v = fmod(v, 2*M_PI);
-
-            startangle = fmod(startangle, 2*M_PI);
-            endangle   = fmod(endangle, 2*M_PI);
 
             if (theta1 > theta0) { // trim en
                 delConstraintOnPoint(GeoId, start, false);
