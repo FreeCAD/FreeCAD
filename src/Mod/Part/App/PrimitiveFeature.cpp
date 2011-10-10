@@ -27,6 +27,7 @@
 # include <BRepLib.hxx>
 # include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeCylinder.hxx>
+# include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepPrimAPI_MakeSphere.hxx>
 # include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepPrim_Wedge.hxx>
@@ -34,6 +35,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
+# include <gp_Circ.hxx>
 # include <gp_GTrsf.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <Geom_Plane.hxx>
@@ -421,13 +423,30 @@ App::DocumentObjectExecReturn *Torus::execute(void)
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
     try {
+#if 1
         // Build a torus
+        gp_Circ circle;
+        circle.SetRadius(Radius2.getValue());
+        gp_Pnt pos(Radius1.getValue(),0,0);
+        gp_Dir dir(0,1,0);
+        circle.SetAxis(gp_Ax1(pos, dir));
+
+        BRepBuilderAPI_MakeEdge mkEdge(circle, Base::toRadians<double>(Angle1.getValue()+180.0f),
+                                               Base::toRadians<double>(Angle2.getValue()+180.0f));
+        BRepBuilderAPI_MakeWire mkWire;
+        mkWire.Add(mkEdge.Edge());
+        BRepBuilderAPI_MakeFace mkFace(mkWire.Wire());
+        BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)),
+            Base::toRadians<double>(Angle3.getValue()), Standard_True);
+        TopoDS_Shape ResultShape = mkRevol.Shape();
+#else
         BRepPrimAPI_MakeTorus mkTorus(Radius1.getValue(),
                                       Radius2.getValue(),
                                       Angle1.getValue()/180.0f*Standard_PI,
                                       Angle2.getValue()/180.0f*Standard_PI,
                                       Angle3.getValue()/180.0f*Standard_PI);
         const TopoDS_Solid& ResultShape = mkTorus.Solid();
+#endif
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure) {
