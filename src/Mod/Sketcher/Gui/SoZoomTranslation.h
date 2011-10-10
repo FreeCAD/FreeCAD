@@ -30,7 +30,7 @@
 namespace SketcherGui {
 
 class SketcherGuiExport SoZoomTranslation : public SoTranslation {
-    typedef SoNode inherited;
+    typedef SoTranslation inherited;
 
     SO_NODE_HEADER(SoZoomTranslation);
 

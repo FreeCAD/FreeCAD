@@ -1027,7 +1027,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge from the sketch."));
+            QObject::tr("Select two or more lines from the sketch."));
         return;
     }
 
@@ -1037,17 +1037,17 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
     const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
 
-   
+
     // go through the selected subelements
 
     if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select atleast two lines from the sketch."));
+            QObject::tr("Select at least two lines from the sketch."));
         return;
     }
 
     std::vector<int> ids;
-    for(std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
+    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
         int index;
         std::string subName = *it;
         if (subName.size() > 4 && subName.substr(0,4) == "Edge")
@@ -1071,7 +1071,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // undo command open
     openCommand("add parallel constraint");
     int i = 0;
-    for(std::vector<int>::iterator it = ids.begin(); it!=ids.end();++it, i++) {
+    for (std::vector<int>::iterator it = ids.begin(); it!=ids.end();++it, i++) {
         if(i == ids.size() - 1)
             break;
 
@@ -1134,7 +1134,6 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         return;
     }
 
-    
     int GeoId1,GeoId2;
     if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
         GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
@@ -1154,15 +1153,15 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
     Part::Geometry *geo1 = geomlist[GeoId1];
     Part::Geometry *geo2 = geomlist[GeoId2];
-    
+
     if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
         geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-        
+
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QObject::tr("Select exactly two lines from the sketch."));
         return;
     }
-            
+
     // undo command open
     openCommand("add perpendicular constraint");
     Gui::Command::doCommand(
@@ -1545,7 +1544,6 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
     const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
 
-
     // go through the selected subelements
 
     if (SubNames.size() < 2) {
@@ -1556,8 +1554,8 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     std::vector<int> ids;
     bool lineSel = false, arcSel = false, circSel = false;
-    
-    for(std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
+
+    for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         int index;
         std::string subName = *it;
         if (subName.size() > 4 && subName.substr(0,4) == "Edge")
@@ -1584,15 +1582,16 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         ids.push_back(index);
     }
 
-    if(lineSel && (arcSel || circSel)) {
+    if (lineSel && (arcSel || circSel)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QObject::tr("Select geometry of similar type"));
         return;
     }
+
     // undo command open
     openCommand("add equality constraint");
     int i = 0;
-    for(std::vector<int>::iterator it = ids.begin(); it!=ids.end();it++, i++) {
+    for (std::vector<int>::iterator it = ids.begin(); it!=ids.end();it++, i++) {
         if( i == ids.size() - 1)
             break;
         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",

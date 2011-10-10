@@ -1690,7 +1690,7 @@ Restart:
 
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
-                    //Reference Position that is scaled according to zoom                    
+                    //Reference Position that is scaled according to zoom
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos.x, relPos.y, 0);
 
                 }
@@ -1961,7 +1961,7 @@ Restart:
 
                             // Get Current Scale Factor
                             float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-                            
+
                             Base::Vector3d constrPos1 = midpos1 + (norm1 * scale * 2.5);
                             constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
 
@@ -2371,9 +2371,9 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case Horizontal:
             case Vertical:
                 {
-                    sep->addChild(new SoZoomTranslation()); // 1.          
+                    sep->addChild(new SoZoomTranslation()); // 1.
                     sep->addChild(new SoImage());       // 2. constraint icon
-          
+
                     // remember the type of this constraint node
                     edit->vConstrType.push_back((*it)->Type);
                 }
@@ -2387,29 +2387,20 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 {
                     // Add new nodes to Constraint Seperator
                     sep->addChild(new SoZoomTranslation()); // 1.
-                    sep->addChild(new SoImage());       // 2. first constraint icon
+                    sep->addChild(new SoImage());           // 2. first constraint icon
                     sep->addChild(new SoZoomTranslation()); // 3.
-                    sep->addChild(new SoImage());       // 4. second constraint icon
-                
+                    sep->addChild(new SoImage());           // 4. second constraint icon
+
                     // remember the type of this constraint node
                     edit->vConstrType.push_back((*it)->Type);
                 }
                 break;
             case PointOnObject:
             case Tangent:
-            case Symmetric:
                 {
-                    if ((*it)->Type == Symmetric) {
-                        SoSeparator *sepArrows = new SoSeparator();
-                        sepArrows->addChild(new SoCoordinate3());
-                        SoLineSet *lineSet = new SoLineSet;
-                        sepArrows->addChild(lineSet);
-                        sep->addChild(sepArrows);
-                    }
-
                     // Add new nodes to Constraint Seperator
-                    sep->addChild(new SoZoomTranslation());
-                    sep->addChild(new SoImage()); // constraint icon
+                    sep->addChild(new SoZoomTranslation()); // 1.
+                    sep->addChild(new SoImage());           // 2. constraint icon
 
                     if ((*it)->Type == Tangent) {
                         Part::Geometry *geo1 = getSketchObject()->Geometry.getValues()[(*it)->First];
@@ -2417,9 +2408,24 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                         if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                             geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             sep->addChild(new SoZoomTranslation());
-                            sep->addChild(new SoImage()); // second constraint icon
+                            sep->addChild(new SoImage());   // 3. second constraint icon
                         }
                     }
+
+                    edit->vConstrType.push_back((*it)->Type);
+                }
+                break;
+            case Symmetric:
+                {
+                    SoSeparator *sepArrows = new SoSeparator();
+                    sepArrows->addChild(new SoCoordinate3());
+                    SoLineSet *lineSet = new SoLineSet;
+                    sepArrows->addChild(lineSet);
+                    sep->addChild(sepArrows);           // 1.
+
+                    // Add new nodes to Constraint Seperator
+                    sep->addChild(new SoTranslation()); // 2.
+                    sep->addChild(new SoImage());       // 3. constraint icon
 
                     edit->vConstrType.push_back((*it)->Type);
                 }
@@ -2977,7 +2983,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         edit->PreselectConstraint = -1;
         this->drawConstraintIcons();
         this->updateColor();
-        // if in edit not delet the object
+        // if in edit not delete the object
         return false;
     }
     // if not in edit delete the whole object

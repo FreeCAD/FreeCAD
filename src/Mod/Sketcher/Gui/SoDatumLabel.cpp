@@ -271,8 +271,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     float height = scale / (float) srch;
     float width  = aspectRatio * (float) height;
 
-    
-
     this->bbx = width;
     this->bby = height;
     

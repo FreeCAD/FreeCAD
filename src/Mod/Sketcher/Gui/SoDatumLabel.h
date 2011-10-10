@@ -38,9 +38,8 @@
 
 namespace SketcherGui {
  
-class SketcherGuiExport SoDatumLabel  : public SoShape {
-    typedef SoNode inherited;
-
+class SketcherGuiExport SoDatumLabel : public SoShape {
+    typedef SoShape inherited;
 
     SO_NODE_HEADER(SoDatumLabel);
 
