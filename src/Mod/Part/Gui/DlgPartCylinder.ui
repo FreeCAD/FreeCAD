@@ -1,0 +1,242 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>PartGui::DlgPartCylinder</class>
+ <widget class="QDialog" name="PartGui::DlgPartCylinder" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>296</width>
+    <height>323</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Cylinder definition</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="1" column="0" >
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>Parameter</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>Height:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="TextLabel1_2" >
+        <property name="text" >
+         <string>Radius:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QDoubleSpinBox" name="length" >
+        <property name="maximum" >
+         <double>2.14748e+09</double>
+        </property>
+        <property name="value" >
+         <double>100</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QDoubleSpinBox" name="radius" >
+        <property name="maximum" >
+         <double>2.14748e+09</double>
+        </property>
+        <property name="value" >
+         <double>10</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QGroupBox" name="GroupBox5" >
+     <property name="title" >
+      <string>Position:</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="3" column="1" >
+       <widget class="QComboBox" name="direction" >
+        <property name="currentIndex" >
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLabel" name="TextLabel1_3" >
+        <property name="text" >
+         <string>Direction:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="TextLabel1" >
+        <property name="text" >
+         <string>X:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QLabel" name="TextLabel3" >
+        <property name="text" >
+         <string>Z:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="TextLabel2" >
+        <property name="text" >
+         <string>Y:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QDoubleSpinBox" name="zPos" >
+        <property name="maximum" >
+         <double>2.14748e+09</double>
+        </property>
+        <property name="minimum" >
+         <double>-2.14748e+09</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QDoubleSpinBox" name="yPos" >
+        <property name="maximum" >
+         <double>2.14748e+09</double>
+        </property>
+        <property name="minimum" >
+         <double>-2.14748e+09</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QDoubleSpinBox" name="xPos" >
+        <property name="maximum" >
+         <double>2.14748e+09</double>
+        </property>
+        <property name="minimum" >
+         <double>-2.14748e+09</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>88</width>
+         <height>27</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="OKButton" >
+       <property name="text" >
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="CancelButton" >
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>xPos</tabstop>
+  <tabstop>yPos</tabstop>
+  <tabstop>zPos</tabstop>
+  <tabstop>direction</tabstop>
+  <tabstop>radius</tabstop>
+  <tabstop>length</tabstop>
+  <tabstop>OKButton</tabstop>
+  <tabstop>CancelButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>OKButton</sender>
+   <signal>clicked()</signal>
+   <receiver>PartGui::DlgPartCylinder</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>60</x>
+     <y>249</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>7</x>
+     <y>7</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>PartGui::DlgPartCylinder</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>242</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>291</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

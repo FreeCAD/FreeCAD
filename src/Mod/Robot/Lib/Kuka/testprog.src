@@ -1,0 +1,23 @@
+&ACCESS RVP
+&REL 27
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\ExpertVorgabe
+&PARAM EDITMASK = *
+DEF TestProg( )
+
+;--------- Declarations ------------------------------------
+EXT BAS (BAS_COMMAND :IN,REAL :IN )
+
+;---------- Init -------------------------------------------
+BAS (#INITMOV,0 ) ;Initialicing the defaults for Vel and so on 
+
+; SAK 
+PTP {AXIS: A1 -21,A2 -52,A3 119,A4 -289,A5 -77,A6 -34} 
+
+; Velocity for LIN points
+$VEL.CP = 2 ; m/s
+LIN {X 1400,Y 540,Z 680,A -90,B 70,C 164}
+
+
+PTP {AXIS: A1 -21,A2 -52,A3 119,A4 -289,A5 -77,A6 -34} 
+
+END

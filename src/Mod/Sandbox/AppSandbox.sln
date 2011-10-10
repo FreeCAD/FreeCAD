@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AppSandbox", "App\AppSandbox.vcproj", "{567E0DD4-DC09-4736-8332-BF1901AB5F5A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AppSandboxGui", "Gui\AppSandboxGui.vcproj", "{3BC653E4-F874-4605-8ACF-4F5996FD08C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{567E0DD4-DC09-4736-8332-BF1901AB5F5A} = {567E0DD4-DC09-4736-8332-BF1901AB5F5A}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{567E0DD4-DC09-4736-8332-BF1901AB5F5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{567E0DD4-DC09-4736-8332-BF1901AB5F5A}.Debug|Win32.Build.0 = Debug|Win32
+		{567E0DD4-DC09-4736-8332-BF1901AB5F5A}.Release|Win32.ActiveCfg = Release|Win32
+		{567E0DD4-DC09-4736-8332-BF1901AB5F5A}.Release|Win32.Build.0 = Release|Win32
+		{3BC653E4-F874-4605-8ACF-4F5996FD08C9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3BC653E4-F874-4605-8ACF-4F5996FD08C9}.Debug|Win32.Build.0 = Debug|Win32
+		{3BC653E4-F874-4605-8ACF-4F5996FD08C9}.Release|Win32.ActiveCfg = Release|Win32
+		{3BC653E4-F874-4605-8ACF-4F5996FD08C9}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

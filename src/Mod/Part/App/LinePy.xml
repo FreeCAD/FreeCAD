@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeometryCurvePy" 
+      Name="LinePy" 
+      Twin="GeomLineSegment" 
+      TwinPointer="GeomLineSegment" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Describes an infinite line
+To create a line there are several ways:
+Part.Line()
+    Creates a default line
+
+Part.Line(Line)
+    Creates a copy of the given line
+
+Part.Line(Point1,Point2)
+    Creates a line that goes through two given points</UserDocu>
+    </Documentation>
+    <Methode Name="setParameterRange">
+      <Documentation>
+        <UserDocu>Set the parameter range of the underlying line geometry</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="StartPoint" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns the start point of this line.</UserDocu>
+      </Documentation>
+      <Parameter Name="StartPoint" Type="Object"/>
+    </Attribute>
+    <Attribute Name="EndPoint" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns the end point point of this line.</UserDocu>
+      </Documentation>
+      <Parameter Name="EndPoint" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Infinite" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Defines the line as infinite. The StartPoint and EndPoint will be ignored as boundaries.</UserDocu>
+      </Documentation>
+      <Parameter Name="Infinite" Type="Boolean"/>
+    </Attribute>
+    <ClassDeclarations>
+      public:
+      bool Infinite;
+    </ClassDeclarations>
+
+  </PythonExport>
+</GenerateModel>

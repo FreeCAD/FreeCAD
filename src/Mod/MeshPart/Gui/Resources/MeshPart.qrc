@@ -1,0 +1,19 @@
+<RCC>
+    <qresource> 
+        <file>icons/actions/MeshFace.svg</file>
+        <file>translations/MeshPart_af.qm</file>
+        <file>translations/MeshPart_de.qm</file>
+        <file>translations/MeshPart_es.qm</file>
+        <file>translations/MeshPart_fi.qm</file>
+        <file>translations/MeshPart_fr.qm</file>
+        <file>translations/MeshPart_hr.qm</file>
+        <file>translations/MeshPart_it.qm</file>
+        <file>translations/MeshPart_nl.qm</file>
+        <file>translations/MeshPart_no.qm</file>
+        <file>translations/MeshPart_pt.qm</file>
+        <file>translations/MeshPart_ru.qm</file>
+        <file>translations/MeshPart_se.qm</file>
+        <file>translations/MeshPart_uk.qm</file>
+        <file>translations/MeshPart_zh.qm</file>
+    </qresource>
+</RCC> 

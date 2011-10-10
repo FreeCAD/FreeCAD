@@ -1,0 +1,21 @@
+<RCC>
+    <qresource> 
+        <file>icons/PartDesign_Pad.svg</file>
+        <file>icons/PartDesign_Pocket.svg</file>
+        <file>icons/PartDesign_Revolution.svg</file>
+        <file>translations/PartDesign_af.qm</file>
+        <file>translations/PartDesign_de.qm</file>
+        <file>translations/PartDesign_es.qm</file>
+        <file>translations/PartDesign_fi.qm</file>
+        <file>translations/PartDesign_fr.qm</file>
+        <file>translations/PartDesign_hr.qm</file>
+        <file>translations/PartDesign_it.qm</file>
+        <file>translations/PartDesign_nl.qm</file>
+        <file>translations/PartDesign_no.qm</file>
+        <file>translations/PartDesign_pt.qm</file>
+        <file>translations/PartDesign_ru.qm</file>
+        <file>translations/PartDesign_se.qm</file>
+        <file>translations/PartDesign_uk.qm</file>
+        <file>translations/PartDesign_zh.qm</file>
+    </qresource>
+</RCC> 

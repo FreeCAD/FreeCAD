@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?><!--
+   (c) Juergen Riegel (juergen.riegel@web.de) 2009                       
+                                                                        
+   This file is part of the FreeCAD CAx development system.             
+                                                                        
+   This program is free software; you can redistribute it and/or modify 
+   it under the terms of the GNU Library General Public License (LGPL)  
+   as published by the Free Software Foundation; either version 2 of    
+   the License, or (at your option) any later version.                  
+   for detail see the LICENCE text file.                                
+                                                                        
+   FreeCAD is distributed in the hope that it will be useful,           
+   but WITHOUT ANY WARRANTY; without even the implied warranty of       
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        
+   GNU Library General Public License for more details.                 
+                                                                        
+   You should have received a copy of the GNU Library General Public    
+   License along with FreeCAD; if not, write to the Free Software       
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 
+   USA                                                                  
+                                                                        
+   Juergen Riegel 2008                                                  
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Directory Id="ModRobot" Name="Robot" FileSource="../../Mod/Robot">
+        <Component Id="CompModRobot" Guid="5375c2e0-de75-11de-8a39-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
+            <File Id="RobotInitPy" Name="Init.py" DiskId="1" />
+            <File Id="RobotInitGuiPy" Name="InitGui.py" DiskId="1" />
+            <File Id="MovieToolPy" Name="MovieTool.py" DiskId="1" />
+            <File Id="KukaExporterPy" Name="KukaExporter.py" DiskId="1" />
+            <File Id="RobotExamplePy" Name="RobotExample.py" DiskId="1" />
+            <File Id="Robotpyd" Name="Robot.pyd" DiskId="1" />
+            <File Id="RobotGuipyd" Name="RobotGui.pyd" DiskId="1" />
+        </Component>
+		<Directory Id="ModRobotLib" Name="Lib" FileSource="../../Mod/Robot/Lib" >
+			<Directory Id="ModRobotLibKuka" Name="Kuka" FileSource="../../Mod/Robot/Lib/Kuka" >
+				<Component Id="CompModRobotLibKuka"  Guid="753d2cc0-02af-11df-8a39-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="Kuka1" Name="kr16.wrl"   />
+					<File Id="Kuka2" Name="kr210.WRL"   />
+					<File Id="Kuka3" Name="kr500_1.csv"   />
+					<File Id="Kuka4" Name="kr500_1.wrl"   />
+					<File Id="Kuka5" Name="kr_16.csv"   />
+					<File Id="Kuka6" Name="kr_210_2.csv"   />
+					<File Id="Kuka7" Name="kr_125.csv"   />
+					<File Id="Kuka8" Name="kr125_3.wrl"   />
+				</Component>			
+			</Directory>
+		</Directory>
+    </Directory>
+</Include>

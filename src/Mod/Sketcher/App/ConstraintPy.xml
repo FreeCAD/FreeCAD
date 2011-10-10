@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PersistencePy"  
+    Name="ConstraintPy" 
+    Twin="Constraint" 
+    TwinPointer="Constraint" 
+    Include="Mod/Sketcher/App/Constraint.h" 
+    Namespace="Sketcher" 
+    FatherInclude="Base/PersistencePy.h" 
+    FatherNamespace="Base"
+    Constructor="true">
+
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>With this objects you can handle sketches</UserDocu>
+    </Documentation>
+    <Attribute Name="First" ReadOnly="false">
+      <Documentation>
+        <UserDocu>First geometry index the Constraint referse to</UserDocu>
+      </Documentation>
+      <Parameter Name="First" Type="Int"/>
+    </Attribute>
+    <Attribute Name="Second" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Second geometry index the Constraint referse to</UserDocu>
+      </Documentation>
+      <Parameter Name="Second" Type="Int"/>
+    </Attribute>
+
+  </PythonExport>
+</GenerateModel>

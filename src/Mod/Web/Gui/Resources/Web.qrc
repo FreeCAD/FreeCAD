@@ -1,0 +1,12 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource> 
+		<file>icons/actions/web-browser.svg</file>
+		<file>icons/actions/web-home.svg</file>
+		<file>icons/actions/web-next.svg</file>
+		<file>icons/actions/web-previous.svg</file>
+		<file>icons/actions/web-refresh.svg</file>
+		<file>icons/actions/web-stop.svg</file>
+		<file>icons/actions/web-zoom-in.svg</file>
+		<file>icons/actions/web-zoom-out.svg</file>
+    </qresource>
+</RCC> 

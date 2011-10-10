@@ -1,0 +1,21 @@
+<RCC>
+    <qresource> 
+        <file>icons/mesh_boundary.svg</file>
+        <file>icons/mesh_cut.svg</file>
+        <file>icons/Tree_Mesh.svg</file>
+        <file>translations/Mesh_af.qm</file>
+        <file>translations/Mesh_de.qm</file>
+        <file>translations/Mesh_es.qm</file>
+        <file>translations/Mesh_fi.qm</file>
+        <file>translations/Mesh_fr.qm</file>
+        <file>translations/Mesh_hr.qm</file>
+        <file>translations/Mesh_it.qm</file>
+        <file>translations/Mesh_nl.qm</file>
+        <file>translations/Mesh_no.qm</file>
+        <file>translations/Mesh_pt.qm</file>
+        <file>translations/Mesh_ru.qm</file>
+        <file>translations/Mesh_se.qm</file>
+        <file>translations/Mesh_uk.qm</file>
+        <file>translations/Mesh_zh.qm</file>
+    </qresource>
+</RCC> 

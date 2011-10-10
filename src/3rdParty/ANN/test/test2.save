@@ -1,0 +1,156 @@
+------------------------------------------------------------
+ann_test: Version 1.0 
+    Copyright: David M. Mount and Sunil Arya.
+    Latest Revision: Mar 1, 2005.
+------------------------------------------------------------
+
+validate = on   (Warning: this may slow execution time.)
+stats = query_stats
+[Read Data Points:
+  data_size  = 5000
+  file_name  = test2-data.pts
+  dim        = 8
+]
+[Read Query Points:
+  query_size = 100
+  file_name  = test2-query.pts
+  dim        = 8
+]
+[Build ann-structure:
+  split_rule    = suggest
+  shrink_rule   = none
+  data_size     = 5000
+  dim           = 8
+  bucket_size   = 1
+  process_time  = 0.18 sec
+  (Structure Statistics:
+    n_nodes          = 9999 (opt = 10000, best if < 100000)
+        n_leaves     = 5000 (0 contain no points)
+        n_splits     = 4999
+        n_shrinks    = 0
+    empty_leaves     = 0 percent (best if < 50 percent)
+    depth            = 17 (opt = 12, best if < 196)
+    avg_aspect_ratio = 2.03396 (best if < 20)
+  )
+]
+(Computing true nearest neighbors for validation.  This may take time.)
+[Run Queries:
+  query_size    = 100
+  dim           = 8
+  search_method = standard
+  epsilon       = 0
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0.0008 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [     269.6 :     154.1 ]<       68 ,      1046 >
+    splitting_nodes  = [     448.2 :     259.2 ]<      100 ,      1858 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [     717.8 :     412.6 ]<      168 ,      2904 >
+    points_visited   = [     269.6 :     154.1 ]<       68 ,      1046 >
+    coord_hits/pt    = [    0.1975 :    0.1075 ]<   0.0446 ,    0.6974 >
+    floating_ops_(K) = [     8.492 :     4.716 ]<    1.939 ,     32.61 >
+    average_error    = [         0 :         0 ]<        0 ,         0 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]
+[Run Queries:
+  query_size    = 100
+  dim           = 8
+  search_method = priority
+  epsilon       = 0
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0.0011 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [     237.7 :     131.6 ]<       68 ,       801 >
+    splitting_nodes  = [     408.1 :     227.7 ]<      100 ,      1398 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [     645.8 :     358.5 ]<      168 ,      2149 >
+    points_visited   = [     237.7 :     131.6 ]<       68 ,       801 >
+    coord_hits/pt    = [    0.1679 :   0.08993 ]<   0.0472 ,    0.5492 >
+    floating_ops_(K) = [     10.83 :     6.344 ]<    2.638 ,      38.3 >
+    average_error    = [         0 :         0 ]<        0 ,         0 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]
+[Run Queries:
+  query_size    = 100
+  dim           = 8
+  search_method = standard
+  epsilon       = 0.1
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0.0006 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [     200.9 :     115.8 ]<       51 ,       762 >
+    splitting_nodes  = [     344.9 :     202.4 ]<       77 ,      1407 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [     545.9 :     317.4 ]<      128 ,      2169 >
+    points_visited   = [     200.9 :     115.8 ]<       51 ,       762 >
+    coord_hits/pt    = [    0.1548 :   0.08517 ]<   0.0348 ,    0.5494 >
+    floating_ops_(K) = [     6.606 :     3.703 ]<    1.513 ,     25.14 >
+    average_error    = [         0 :         0 ]<        0 ,         0 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]
+[Run Queries:
+  query_size    = 100
+  dim           = 8
+  search_method = priority
+  epsilon       = 0.1
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0.0007 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [     176.1 :     101.1 ]<       49 ,       629 >
+    splitting_nodes  = [     314.3 :     186.9 ]<       77 ,      1285 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [     490.4 :     286.6 ]<      128 ,      1914 >
+    points_visited   = [     176.1 :     101.1 ]<       49 ,       629 >
+    coord_hits/pt    = [    0.1309 :   0.07112 ]<   0.0374 ,    0.4332 >
+    floating_ops_(K) = [     8.205 :     4.999 ]<    2.032 ,     33.27 >
+    average_error    = [         0 :         0 ]<        0 ,         0 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]
+[Run Queries:
+  query_size    = 100
+  dim           = 8
+  search_method = standard
+  epsilon       = 0.5
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0.0002 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [     83.07 :     46.06 ]<       23 ,       264 >
+    splitting_nodes  = [     163.4 :     94.86 ]<       42 ,       512 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [     246.5 :     140.2 ]<       67 ,       776 >
+    points_visited   = [     83.07 :     46.06 ]<       23 ,       264 >
+    coord_hits/pt    = [    0.0765 :   0.03992 ]<   0.0182 ,    0.2192 >
+    floating_ops_(K) = [     3.224 :     1.734 ]<    0.891 ,     9.572 >
+    average_error    = [ 0.0009039 :  0.009619 ]<        0 ,    0.1516 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]
+[Run Queries:
+  query_size    = 100
+  dim           = 8
+  search_method = priority
+  epsilon       = 0.5
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0.0004 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [     69.72 :     38.29 ]<       21 ,       246 >
+    splitting_nodes  = [     146.8 :     81.69 ]<       40 ,       475 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [     216.5 :     118.8 ]<       65 ,       721 >
+    points_visited   = [     69.72 :     38.29 ]<       21 ,       246 >
+    coord_hits/pt    = [   0.06206 :   0.03155 ]<   0.0182 ,     0.194 >
+    floating_ops_(K) = [     3.608 :     1.989 ]<    1.126 ,     12.28 >
+    average_error    = [  0.001425 :     0.011 ]<        0 ,    0.1516 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]

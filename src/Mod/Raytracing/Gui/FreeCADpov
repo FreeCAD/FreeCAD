@@ -1,0 +1,106 @@
+// FreeCAD Povray standard file
+/***************************************************************************
+ *   Copyright (c) 2005 Juergen Riegel         <juergen.riegel@web.de>     *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+// -w320 -h240
+// -w8000 -h6000 +a0.3
+// Use povray -iLehreW221animation.pov LehreW221animation.ini to trace.
+// Use povray -w1280 -h720 +a0.3 -iLehreW221animation.pov LehreW221animation.ini to trace.
+
+// Include Standard-Colors provided by povray
+#include "colors.inc"
+// Include Standard-Textures and Finishes provided by povray
+#include "textures.inc"
+#include "woods.inc"
+ 
+// default texture
+//default {
+//  texture { pigment {rgb 1} finish {ambient 0.2 reflection 0.2 specular 0.7} }
+//}
+       
+
+sky_sphere {
+    pigment { rgb <0.8,0.8,0.8> }
+    pigment {
+    gradient x
+      color_map {
+        [0.00 color rgbt <1,1,1,0>]
+        [0.08 color rgbt <1,1,1,0>]
+        [0.09 color rgbt <0.1,0.1,0.1,1>]
+        [1.00 color rgbt <0.1,0.1,0.1,1>]
+      }
+      scale 0.05
+    }
+    pigment {
+    gradient y
+      color_map {
+        [0.00 color rgbt <1,1,1,0>]
+        [0.08 color rgbt <1,1,1,0>]
+        [0.09 color rgbt <0.1,0.1,0.1,1>]
+        [1.00 color rgbt <0.1,0.1,0.1,1>]
+      }
+      scale 0.05
+    }
+}
+ 
+
+// Fussboden 
+plane {               // checkered floor
+  y, -1
+  texture
+  {
+    pigment {
+      checker
+      color rgb 1
+      color rgb 0.5
+      scale 0.5
+    }
+    finish{
+      diffuse 0.2
+      ambient 0.4
+    }
+  }
+  scale 1000
+} 
+
+
+// includes the Part mesh writen from FreeCAD          
+#include "TempPart.inc"
+object {Part
+   texture { pigment {rgb <0.3,0.8,0.3>} finish {ambient 0.2 reflection 0.2 specular 0.7} }
+ }
+          
+// includes the camera from FreeCAD
+#include "TempCamera.inc"
+camera {
+  location  CamPos
+  look_at   LookAt
+  sky       Up 
+  angle     50
+}
+
+
+ 
+// Lightsource
+light_source {
+<-1573.9813500000005,1310.07165000000003,-2000.1032>, color White
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeometryCurvePy" 
+      Name="ArcOfCirclePy" 
+      Twin="GeomArcOfCircle" 
+      TwinPointer="GeomArcOfCircle" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+      <UserDocu>Describes a portion of a circle</UserDocu>
+    </Documentation>
+    <Attribute Name="Radius" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The radius of the circle.</UserDocu>
+      </Documentation>
+      <Parameter Name="Radius" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Center" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Center of the circle.</UserDocu>
+      </Documentation>
+      <Parameter Name="Center" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Axis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The axis direction of the circle</UserDocu>
+      </Documentation>
+      <Parameter Name="Axis" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Circle" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The internal circle representation</UserDocu>
+      </Documentation>
+      <Parameter Name="Circle" Type="Object"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

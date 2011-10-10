@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="TopoShapePy" 
+      Name="TopoShapeSolidPy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/TopoShapePy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+	  <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>Create a solid out of the shells of a shape</UserDocu>
+    </Documentation>
+    <Attribute Name="CenterOfMass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the center of mass of the current system.
+If the gravitational field is uniform, it is the center of gravity.
+The coordinates returned for the center of mass are expressed in the
+absolute Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="CenterOfMass" Type="Object"/>
+    </Attribute>
+    <Attribute Name="OuterShell" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+Returns the outer most shell of this solid or an null
+shape if the solid has no shells</UserDocu>
+      </Documentation>
+      <Parameter Name="OuterShell" Type="Object"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

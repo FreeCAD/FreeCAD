@@ -1,0 +1,50 @@
+/***************************************************************************
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+/**
+  \mainpage FreeCAD source documentation
+
+  \image html freecadsplash.png
+
+  <b>Welcome to FreeCAD source documentation!</b>
+
+  We hope you'll find it a convenient tool to explore, understand and
+  experiment with the internals of the program.
+
+  Being generated from the actual state of the code, this documentation
+  is by no means a well structured corpus or a textbook, but more an
+  utility to browse through the sources.
+
+  If you seek informations on FreeCAD at large, please consult our
+  <a href="http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Main_Page">Wiki</a>
+
+  FreeCAD being a fast moving target, don't hesitate to rebuild an up to
+  date doc from svn source as often as needed. CPU cycles are cheap
+  nowadays! 
+
+  The homepage of FreeCAD on SourceForge is <a href="http://sourceforge.net/projects/free-cad/">here</a>.
+ */
+
+/** \namespace std
+    \brief The Standard namespace for the C++ library
+*/
+

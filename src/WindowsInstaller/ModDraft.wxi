@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+   (c) Juergen Riegel (juergen.riegel@web.de) 2009                       
+                                                                        
+   This file is part of the FreeCAD CAx development system.             
+                                                                        
+   This program is free software; you can redistribute it and/or modify 
+   it under the terms of the GNU Library General Public License (LGPL)  
+   as published by the Free Software Foundation; either version 2 of    
+   the License, or (at your option) any later version.                  
+   for detail see the LICENCE text file.                                
+                                                                        
+   FreeCAD is distributed in the hope that it will be useful,           
+   but WITHOUT ANY WARRANTY; without even the implied warranty of       
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        
+   GNU Library General Public License for more details.                 
+                                                                        
+   You should have received a copy of the GNU Library General Public    
+   License along with FreeCAD; if not, write to the Free Software       
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 
+   USA                                                                  
+                                                                        
+   Juergen Riegel 2009                                                  
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Directory Id="ModDraft" Name="Draft" FileSource="../../Mod/Draft">
+        <Component Id="CompModDraft" Guid="a5baca60-076f-11de-8c30-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
+            <File Id="DraftInitPy" Name="Init.py" DiskId="1" />
+            <File Id="DraftInitGuiPy" Name="InitGui.py" DiskId="1" />
+            <File Id="DraftPy" Name="Draft.py" DiskId="1" />
+            <File Id="draftToolsPy" Name="draftTools.py" DiskId="1" />
+            <File Id="draftGuiPy" Name="draftGui.py" DiskId="1" />
+            <File Id="importDXFPy" Name="importDXF.py" DiskId="1" />
+            <File Id="importOCAPy" Name="importOCA.py" DiskId="1" />
+            <File Id="importSVGPy" Name="importSVG.py" DiskId="1" />
+            <File Id="importAirfoilDATPy" Name="importAirfoilDAT.py" DiskId="1" />
+            <File Id="WorkingPlanePy" Name="WorkingPlane.py" DiskId="1" />
+            <File Id="macrosPy" Name="macros.py" DiskId="1" />
+            <File Id="DraftRcPy" Name="Draft_rc.py" DiskId="1" />
+        </Component>
+		<Directory Id="ModDraftLib" Name="draftlibs" FileSource="../../Mod/Draft/draftlibs">
+	        <Component Id="CompModDraftLib" Guid="d19c08b0-0747-11de-8c30-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
+	            <File Id="DraftLibInitPy" Name="__init__.py" DiskId="1" />
+	            <File Id="DraftLibColorMapPy" Name="dxfColorMap.py" DiskId="1" />
+	            <File Id="DraftLibdxfImportObjectsPy" Name="dxfImportObjects.py" DiskId="1" />
+	            <File Id="DraftLibdxfLibraryPy" Name="dxfLibrary.py" DiskId="1" />
+	            <File Id="DraftLibdxfReaderPy" Name="dxfReader.py" DiskId="1" />
+	            <File Id="DraftLibfcgeoPy" Name="fcgeo.py" DiskId="1" />
+	            <File Id="DraftLibfcvecPy" Name="fcvec.py" DiskId="1" />
+	        </Component>
+		</Directory>
+    </Directory>
+</Include>

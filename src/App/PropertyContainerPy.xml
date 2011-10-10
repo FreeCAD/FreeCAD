@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PersistencePy" 
+    Name="PropertyContainerPy" 
+    TwinPointer="PropertyContainer" 
+    Twin="PropertyContainer" 
+    Include="App/PropertyContainer.h" 
+    Namespace="App" 
+    FatherInclude="Base/PersistencePy.h" 
+    FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>This is a Persistence class</UserDocu>
+    </Documentation>
+    <Methode Name="getPropertyByName">
+      <Documentation>
+        <UserDocu>Return the value of a named property.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getTypeOfProperty">
+		  <Documentation>
+			  <UserDocu>Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="getGroupOfProperty">
+		  <Documentation>
+			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in differnt named groups for convenience.</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="getDocumentationOfProperty">
+		  <Documentation>
+			  <UserDocu>Return the documentation string of the property of this class.</UserDocu>
+		  </Documentation>
+	  </Methode>
+    <Attribute Name="PropertiesList" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all property names</UserDocu>
+      </Documentation>
+      <Parameter Name="PropertiesList" Type="List"/>
+    </Attribute>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

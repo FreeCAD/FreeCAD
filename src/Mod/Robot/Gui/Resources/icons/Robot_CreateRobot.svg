@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16px"
+   height="16px"
+   id="svg2289"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   sodipodi:docbase="D:\Projekte\free-cad_09\src\Mod\Robot\Gui\Resources\icons"
+   sodipodi:docname="Robot_CreateRobot.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs2291" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="55.25"
+     inkscape:cx="8"
+     inkscape:cy="8"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1153"
+     inkscape:window-x="0"
+     inkscape:window-y="20" />
+  <metadata
+     id="metadata2294">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       id="g2302"
+       transform="matrix(8.2919272e-2,0,0,8.2887949e-2,7.0623964,7.0546671)">
+      <path
+         id="path30"
+         class="ps03"
+         d="M 22.630381,13.75824 C 26.774391,10.65351 31.912331,8.7709905 37.497961,8.7709905 C 43.282361,8.7709905 48.586961,10.77399 52.799361,14.07861 C 51.014361,2.1208005 46.577061,-10.33826 36.560261,-24.6199 C 22.477781,-44.69004 -0.15997916,-55.22587 -4.8241392,-57.34934 C -4.8241392,-57.34934 -10.596469,-60.11345 -13.453569,-57.74992 C -16.641899,-55.12564 -12.706599,-51.80077 -12.706599,-51.80077 C -12.706599,-51.80077 8.4895908,-36.77794 16.422291,-19.87259 C 23.393301,-5.0301895 22.720661,11.99575 22.630381,13.75824"
+         style="fill:#000000;fill-rule:nonzero;stroke:none" />
+      <path
+         id="path50"
+         class="ps03"
+         d="M 58.493261,33.46797 C 58.493261,45.04545 49.096961,54.41959 37.497961,54.41959 C 25.899031,54.41959 16.492541,45.04545 16.492541,33.46797 C 16.492541,21.91074 25.899031,12.51635 37.497961,12.51635 C 49.096961,12.51635 58.493261,21.91074 58.493261,33.46797"
+         style="fill:#000080;fill-rule:nonzero;stroke:none" />
+      <path
+         id="path52"
+         class="ps03"
+         d="M -39.494479,-53.1628 C -39.494479,-53.1628 -14.156299,-64.64016 20.341521,-67.70473 C 54.178561,-70.72914 83.666961,-68.38597 83.666961,-68.38597 L 83.666961,-78.14044 C 83.666961,-78.14044 47.358261,-85.11089 11.631651,-85.11089 C -24.116889,-85.11089 -61.052109,-80.34378 -61.052109,-80.34378 C -61.052109,-80.34378 -43.803199,-73.43318 -39.494479,-53.1628"
+         style="fill:#000000;fill-rule:nonzero;stroke:none" />
+      <path
+         id="path54"
+         class="ps03"
+         d="M -57.923959,107.92079 L 38.260961,107.92079 L 33.227411,82.2015 L -52.282059,82.2015 L -57.923959,107.92079"
+         style="fill:#000000;fill-rule:nonzero;stroke:none" />
+      <path
+         id="path56"
+         class="ps03"
+         d="M 12.735981,33.46797 C 12.735981,32.36624 12.834401,31.28488 12.976941,30.22342 C 10.065661,31.1248 -4.7698392,35.71147 -15.282579,38.47558 C -26.413779,41.40033 -61.052109,43.38307 -61.052109,43.38307 C -61.052109,43.38307 -56.147099,50.7541 -52.454799,59.36724 C -48.760469,67.96002 -51.360539,78.41598 -51.360539,78.41598 L 32.442321,78.41598 C 32.442321,78.41598 31.828051,72.88777 32.442321,68.5812 C 33.062811,64.27474 37.497961,58.1654 37.497961,58.1654 C 23.822951,58.1654 12.735981,47.10852 12.735981,33.46797"
+         style="fill:#000000;fill-rule:nonzero;stroke:none" />
+    </g>
+  </g>
+</svg>

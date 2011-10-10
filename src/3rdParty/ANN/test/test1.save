@@ -1,0 +1,76 @@
+------------------------------------------------------------
+ann_test: Version 1.0 
+    Copyright: David M. Mount and Sunil Arya.
+    Latest Revision: Mar 1, 2005.
+------------------------------------------------------------
+
+validate = on   (Warning: this may slow execution time.)
+stats = query_stats
+[Read Data Points:
+  data_size  = 20
+  file_name  = test1-data.pts
+  dim        = 2
+]
+[Read Query Points:
+  query_size = 10
+  file_name  = test1-query.pts
+  dim        = 2
+]
+[Build ann-structure:
+  split_rule    = suggest
+  shrink_rule   = none
+  data_size     = 20
+  dim           = 2
+  bucket_size   = 1
+  process_time  = 0 sec
+  (Structure Statistics:
+    n_nodes          = 39 (opt = 40, best if < 400)
+        n_leaves     = 20 (0 contain no points)
+        n_splits     = 19
+        n_shrinks    = 0
+    empty_leaves     = 0 percent (best if < 50 percent)
+    depth            = 6 (opt = 4, best if < 17)
+    avg_aspect_ratio = 1.48847 (best if < 20)
+  )
+]
+(Computing true nearest neighbors for validation.  This may take time.)
+[Run Queries:
+  query_size    = 10
+  dim           = 2
+  search_method = standard
+  epsilon       = 0
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [       6.3 :     2.751 ]<        4 ,        11 >
+    splitting_nodes  = [       8.8 :     3.676 ]<        5 ,        15 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [      15.1 :      6.35 ]<        9 ,        26 >
+    points_visited   = [       6.3 :     2.751 ]<        4 ,        11 >
+    coord_hits/pt    = [      0.57 :    0.2201 ]<     0.35 ,      0.95 >
+    floating_ops_(K) = [     0.156 :    0.0563 ]<    0.101 ,     0.254 >
+    average_error    = [         0 :         0 ]<        0 ,         0 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]
+[Run Queries:
+  query_size    = 10
+  dim           = 2
+  search_method = priority
+  epsilon       = 0
+  near_neigh    = 3
+  true_nn       = 13
+  query_time    = 0 sec/query (biased by perf measurements)
+  (Performance stats:  [      mean :    stddev ]<      min ,       max >
+    leaf_nodes       = [       5.9 :     2.025 ]<        4 ,         9 >
+    splitting_nodes  = [       8.7 :     3.498 ]<        5 ,        15 >
+    shrinking_nodes  = [         0 :         0 ]<        0 ,         0 >
+    total_nodes      = [      14.6 :      5.42 ]<        9 ,        24 >
+    points_visited   = [       5.9 :     2.025 ]<        4 ,         9 >
+    coord_hits/pt    = [     0.535 :    0.1667 ]<     0.35 ,       0.8 >
+    floating_ops_(K) = [    0.1719 :   0.05861 ]<    0.114 ,     0.267 >
+    average_error    = [         0 :         0 ]<        0 ,         0 >
+    rank_error       = [         0 :         0 ]<        0 ,         0 >
+  )
+]

@@ -1,0 +1,208 @@
+# SGEOM cmake build file
+#PROJECT(SMESH Fortran CXX)
+
+SET(SMESH_VERSION_MAJOR 5)
+SET(SMESH_VERSION_MINOR 1)
+SET(SMESH_VERSION_PATCH 2)
+SET(SMESH_VERSION_TWEAK 2)
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+
+SET(CMAKE_BUILD_TYPE "Release") # By default, build in release mode
+SET(BUILD_SHARED_LIBS ON)
+#SET(LIBRARY_OUTPUT_PATH cmake-build)
+SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(inc)
+
+#############
+# FindBoost #
+#############
+FIND_PACKAGE(Boost REQUIRED)
+MESSAGE("-- Boost found: ${Boost_FOUND}")
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+#MESSAGE("Popo: ${Boost_INCLUDE_DIR}")
+
+################
+# Check Fortran#
+################
+INCLUDE(CMakeDetermineFortranCompiler)
+
+########################################
+# OpenCASCADE include and lib location #
+########################################
+# Find OpenCASCADE library, set include and lib path
+SET(OCC_INCLUDE_PATH ${OCC_INCLUDE_DIR})
+SET(OCC_LIB_PATH ${OCC_LIBRARY_DIR})
+
+# Tells CMake where are the required headers
+INCLUDE_DIRECTORIES(${OCC_INCLUDE_PATH})
+LINK_DIRECTORIES(${OCC_LIB_PATH})
+
+
+############################
+# Check 32/64 bit platform #
+############################
+IF (${CMAKE_SIZEOF_VOID_P} MATCHES "8") # It is 64bit, 32 bit systems returns 4
+    ADD_DEFINITIONS(-D_OCC64)
+    MESSAGE("-- Build 64bit")
+ELSE (${CMAKE_SIZEOF_VOID_P} MATCHES "8")
+    MESSAGE("-- Build 32bit")
+ENDIF(${CMAKE_SIZEOF_VOID_P} MATCHES "8")
+
+######################################################
+# Configure Build settings according to the platform #
+######################################################
+IF(UNIX)
+    # Same settings are used for both MacOSX and Unix/Linux
+    ADD_DEFINITIONS(-DHAVE_CONFIG_H -DHAVE_LIMITS_H -DCSFDB -DLIN -DOCC_CONVERT_SIGNALS)
+ELSE(UNIX)
+  IF(WIN32)
+    ######### Windows ###########
+    MESSAGE("-- Windows system detected")
+    IF(MSVC)
+        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275)
+    ELSE(MSVC)
+        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB)
+    ENDIF(MSVC)
+  ELSE(WIN32)
+    MESSAGE("Unknown platform")
+  ENDIF(WIN32)
+ENDIF(UNIX)
+
+#########
+# SMDS #
+#########
+FILE(GLOB SMDS_source_files src/SMDS/*.cpp)
+INCLUDE_DIRECTORIES(src/SMDS)
+ADD_LIBRARY(SMDS SHARED ${SMDS_source_files})
+TARGET_LINK_LIBRARIES(SMDS TKernel)
+IF(WIN32)
+  SET_TARGET_PROPERTIES(SMDS PROPERTIES COMPILE_FLAGS "-DSMDS_EXPORTS")
+ENDIF(WIN32)
+IF(MINGW)
+  SET_TARGET_PROPERTIES(SMDS PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+##########
+# Driver #
+##########
+FILE(GLOB Driver_source_files src/Driver/*.cpp)
+INCLUDE_DIRECTORIES(src/Driver)
+ADD_LIBRARY(Driver SHARED ${Driver_source_files})
+IF(WIN32)
+  SET_TARGET_PROPERTIES(Driver PROPERTIES COMPILE_FLAGS "-DMESHDRIVER_EXPORTS")
+ENDIF(WIN32)
+IF(MINGW)
+  SET_TARGET_PROPERTIES(Driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+#############
+# DriverSTL #
+#############
+FILE(GLOB DriverSTL_source_files src/DriverSTL/*.cpp)
+INCLUDE_DIRECTORIES(src/DriverSTL)
+ADD_LIBRARY(DriverSTL SHARED ${DriverSTL_source_files})
+TARGET_LINK_LIBRARIES(DriverSTL TKernel TKMath Driver SMDS)
+IF(WIN32)
+  SET_TARGET_PROPERTIES(DriverSTL PROPERTIES COMPILE_FLAGS "-DMESHDRIVERSTL_EXPORTS")
+ENDIF(WIN32)
+IF(MINGW)
+  SET_TARGET_PROPERTIES(DriverSTL PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+#############
+# DriverDAT #
+#############
+FILE(GLOB DriverDAT_source_files src/DriverDAT/*.cpp)
+INCLUDE_DIRECTORIES(src/DriverDAT)
+ADD_LIBRARY(DriverDAT SHARED ${DriverDAT_source_files})
+TARGET_LINK_LIBRARIES(DriverDAT SMDS Driver)
+IF(WIN32)
+  SET_TARGET_PROPERTIES(DriverDAT PROPERTIES COMPILE_FLAGS "-DMESHDRIVERDAT_EXPORTS")
+ENDIF(WIN32)
+IF(MINGW)
+  SET_TARGET_PROPERTIES(DriverDAT PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+#############
+# DriverUNV #
+#############
+FILE(GLOB DriverUNV_source_files src/DriverUNV/*.cpp)
+INCLUDE_DIRECTORIES(src/DriverUNV)
+ADD_LIBRARY(DriverUNV SHARED ${DriverUNV_source_files})
+TARGET_LINK_LIBRARIES(DriverUNV SMDS Driver)
+IF(WIN32)
+  SET_TARGET_PROPERTIES(DriverUNV PROPERTIES COMPILE_FLAGS "-DMESHDRIVERUNV_EXPORTS")
+ENDIF(WIN32)
+IF(MINGW)
+  SET_TARGET_PROPERTIES(DriverUNV PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+###########
+# SMESHDS #
+###########
+FILE(GLOB SMESHDS_source_files src/SMESHDS/*.cpp)
+INCLUDE_DIRECTORIES(src/SMESHDS)
+ADD_LIBRARY(SMESHDS SHARED ${SMESHDS_source_files})
+TARGET_LINK_LIBRARIES(SMESHDS SMDS TKernel TKMath TKBRep)
+IF(MINGW)
+  SET_TARGET_PROPERTIES(SMESHDS PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+#########
+# SMESH #
+#########
+FILE(GLOB SMESH_source_files src/SMESH/*.cpp src/Controls/*.cpp)
+INCLUDE_DIRECTORIES(src/SMESH)
+ADD_LIBRARY(SMESH SHARED ${SMESH_source_files})
+TARGET_LINK_LIBRARIES(SMESH SMDS SMESHDS TKernel TKMath TKG2d TKG3d TKMeshVS
+                      TKPrim TKGeomBase TKGeomAlgo TKBRep TKTopAlgo TKShHealing
+                      Driver DriverSTL DriverDAT DriverUNV)
+IF(WIN32)
+  SET_TARGET_PROPERTIES(SMESH PROPERTIES COMPILE_FLAGS "-DSMESHimpl_EXPORTS -DSMESHCONTROLS_EXPORTS")
+ENDIF(WIN32)
+IF(MINGW)
+  SET_TARGET_PROPERTIES(SMESH PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+##############
+# StdMeshers #
+##############
+FILE(GLOB StdMeshers_source_files src/StdMeshers/*.cpp src/MEFISTO2/*.cpp src/MEFISTO2/trte.f)
+INCLUDE_DIRECTORIES(src/StdMeshers)
+
+ADD_LIBRARY(StdMeshers SHARED ${StdMeshers_source_files})
+TARGET_LINK_LIBRARIES(StdMeshers SMESH TKernel TKMath TKAdvTools f2c gfortran)
+SET(StdMeshers_CFLAGS "")
+IF(WIN32)
+  SET(StdMeshers_CFLAGS "-DSTDMESHERS_EXPORTS -DMEFISTO2D_EXPORTS")
+ENDIF(WIN32)
+# special compiler flag for g++ 64-bit
+IF (${CMAKE_SIZEOF_VOID_P} MATCHES "8")
+  IF(CMAKE_COMPILER_IS_GNUCXX)
+    SET(StdMeshers_CFLAGS "${StdMeshers_CFLAGS} -DPCLINUX64")
+  ENDIF(CMAKE_COMPILER_IS_GNUCXX)
+ENDIF(${CMAKE_SIZEOF_VOID_P} MATCHES "8")
+SET_TARGET_PROPERTIES(StdMeshers PROPERTIES COMPILE_FLAGS "${StdMeshers_CFLAGS}")
+IF(MINGW)
+  SET_TARGET_PROPERTIES(StdMeshers PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF(MINGW)
+
+###########
+# INSTALL #
+###########
+
+# Path name install: for instance, SMESH-5.1.2.7
+SET(INSTALL_PATH_NAME SMESH-${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK})
+
+IF(UNIX)
+    # Libraries are installed by default in /usr/local/lib/SMESH-5.1.2.7
+    INSTALL(TARGETS SMDS Driver DriverSTL DriverDAT DriverUNV
+            SMESHDS SMESH StdMeshers
+            DESTINATION lib)
+    # Headers are installed by default in /usr/local/include/SMESH-5.1.2.7
+    INSTALL(DIRECTORY inc/
+            DESTINATION include
+            FILES_MATCHING PATTERN "*.h*")
+ENDIF(UNIX)

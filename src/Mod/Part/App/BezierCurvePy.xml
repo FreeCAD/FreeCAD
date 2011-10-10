@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometryCurvePy"
+		Name="BezierCurvePy"
+		Twin="GeomBezierCurve"
+		TwinPointer="GeomBezierCurve"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>
+				Describes a rational or non-rational Bezier curve:
+				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
+				-- a rational Bezier curve is defined by a table of poles with varying weights
+			</UserDocu>
+		</Documentation>
+		<Attribute Name="Degree" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the polynomial degree of this Bezier curve,
+which is equal to the number of poles minus 1.</UserDocu>
+			</Documentation>
+			<Parameter Name="Degree" Type="Int"/>
+		</Attribute>
+		<Attribute Name="MaxDegree" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the value of the maximum polynomial degree of any
+Bezier curve curve. This value is 25.</UserDocu>
+			</Documentation>
+			<Parameter Name="MaxDegree" Type="Int"/>
+		</Attribute>
+		<Attribute Name="NbPoles" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the number of poles of this Bezier curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="NbPoles" Type="Int"/>
+		</Attribute>
+		<Attribute Name="StartPoint" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the start point of this Bezier curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="StartPoint" Type="Object"/>
+		</Attribute>
+		<Attribute Name="EndPoint" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the end point of this Bezier curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="EndPoint" Type="Object"/>
+		</Attribute>
+		<Methode Name="isRational">
+			<Documentation>
+				<UserDocu>Returns false if the weights of all the poles of this Bezier curve are equal.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isPeriodic">
+			<Documentation>
+				<UserDocu>Returns false.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isClosed">
+			<Documentation>
+				<UserDocu>Returns true if the distance between the start point and end point of
+					this Bezier curve is less than or equal to gp::Resolution().
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="increase">
+			<Documentation>
+				<UserDocu>increase(Int=Degree)
+Increases the degree of this Bezier curve to Degree.
+As a result, the poles and weights tables are modified.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="insertPoleAfter">
+			<Documentation>
+				<UserDocu>Inserts after the pole of index.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="insertPoleBefore">
+			<Documentation>
+				<UserDocu>Inserts before the pole of index.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removePole">
+			<Documentation>
+				<UserDocu>Removes the pole of index Index from the table of poles of this Bezier curve.
+If this Bezier curve is rational, it can become non-rational.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="segment">
+			<Documentation>
+				<UserDocu>Modifies this Bezier curve by segmenting it.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setPole">
+			<Documentation>
+				<UserDocu>Set a pole of the Bezier curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPole">
+			<Documentation>
+				<UserDocu>Get a pole of the Bezier curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPoles">
+			<Documentation>
+				<UserDocu>Get all poles of the Bezier curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setPoles">
+			<Documentation>
+				<UserDocu>Set the poles of the Bezier curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setWeight">
+			<Documentation>
+				<UserDocu>Set a weight of the Bezier curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getWeight">
+			<Documentation>
+				<UserDocu>Get a weight of the Bezier curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getWeights">
+			<Documentation>
+				<UserDocu>Get all weights of the Bezier curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getResolution" Const="true">
+			<Documentation>
+				<UserDocu>Computes for this Bezier curve the parametric tolerance (UTolerance)
+for a given 3D tolerance (Tolerance3D).
+If f(t) is the equation of this Bezier curve, the parametric tolerance
+ensures that:
+|t1-t0| &lt; UTolerance =""==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

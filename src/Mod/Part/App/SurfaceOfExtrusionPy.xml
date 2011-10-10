@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometrySurfacePy"
+		Name="SurfaceOfExtrusionPy"
+		Twin="GeomSurfaceOfExtrusion"
+		TwinPointer="GeomSurfaceOfExtrusion"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes a surface of linear extrusion</UserDocu>
+		</Documentation>
+		<Attribute Name="Direction">
+			<Documentation>
+				<UserDocu>
+					Sets or gets the direction of revolution.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="Direction" Type="Object"/>
+		</Attribute>
+		<Attribute Name="BasisCurve">
+			<Documentation>
+				<UserDocu>
+					Sets or gets the basic curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="BasisCurve" Type="Object"/>
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="Part2DObjectPy"  
+    Name="SketchObjectPy" 
+    Twin="SketchObject" 
+    TwinPointer="SketchObject" 
+    Include="Mod/Sketcher/App/SketchObject.h" 
+    Namespace="Sketcher" 
+    FatherInclude="Mod/Part/App/Part2DObjectPy.h" 
+    FatherNamespace="Part">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>With this objects you can handle sketches</UserDocu>
+    </Documentation>
+    <Methode Name="solve">
+      <Documentation>
+        <UserDocu>solve the actual set of geometry and constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addGeometry">
+      <Documentation>
+        <UserDocu>add a geometric object to the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delGeometry">
+      <Documentation>
+        <UserDocu>delete a geometric object from the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="toggleConstruction">
+      <Documentation>
+        <UserDocu>switch a geometry to a construcion line</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addConstraint">
+      <Documentation>
+        <UserDocu>add a constraint to the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delConstraint">
+      <Documentation>
+        <UserDocu>delete a constraint from the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addExternal">
+      <Documentation>
+        <UserDocu>add a link to a external geometry to use them in a constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delExternal">
+      <Documentation>
+        <UserDocu>delete a external geometry link from the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delConstraintOnPoint">
+      <Documentation>
+        <UserDocu>delete coincident constraints associated with a sketch point</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setDatum">
+      <Documentation>
+        <UserDocu>set the Datum of a Distance or Angle constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="movePoint">
+      <Documentation>
+        <UserDocu>
+          movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+          to another location.
+          It moves the specified point (or curve) to the given location by adding some
+          temporary weak constraints and solve the sketch.
+          This method is mostly used to allow the user to drag some portions of the sketch
+          in real time by e.g. the mouse and it works only for underconstrained portions of
+          the sketch.
+          The argument 'relative', if present, states if the new location is given
+          relatively to the current one.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fillet">
+      <Documentation>
+        <UserDocu>create fillet between two edges or at a point</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="trim">
+      <Documentation>
+        <UserDocu>trim a curve with a given id at a given reference point</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="ConstraintCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of Constraints in this sketch</UserDocu>
+      </Documentation>
+      <Parameter Name="ConstraintCount" Type="Int"/>
+    </Attribute>
+    <Attribute Name="GeometryCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of geometric objects in this sketch</UserDocu>
+      </Documentation>
+      <Parameter Name="GeometryCount" Type="Int"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

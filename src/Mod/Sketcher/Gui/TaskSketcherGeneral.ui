@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SketcherGui::TaskSketcherGeneral</class>
+ <widget class="QWidget" name="SketcherGui::TaskSketcherGeneral">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>257</width>
+    <height>79</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="checkBoxGridSnap">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Grid size</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxGridSize">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="currentIndex">
+        <number>6</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>0.1 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0.2 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0.5 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>5 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>50 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>100 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>200 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>500 mm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1 m</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2 m</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>5 m</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10 m</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20 m</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxAutoconstraints">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Auto constraints</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

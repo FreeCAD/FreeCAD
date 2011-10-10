@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="DocumentObjectPy"  
+    Name="RobotObjectPy" 
+    Twin="RobotObject" 
+    TwinPointer="RobotObject" 
+    Include="Mod/Robot/App/RobotObject.h" 
+    Namespace="Robot" 
+    FatherInclude="App/DocumentObjectPy.h" 
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>Robot document object</UserDocu>
+    </Documentation>
+	<Methode Name="getRobot">
+		<Documentation>
+			<UserDocu>
+					Returns a copy of the robot. Be aware, the robot behaves the same
+					like the robot of the object but is a copy!
+			</UserDocu>
+		</Documentation>
+	</Methode>
+
+  </PythonExport>
+</GenerateModel>

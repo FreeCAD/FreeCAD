@@ -1,0 +1,4 @@
+
+
+copy FreeCAD.msi FreeCAD_0.12.$WCREV$_x86_unstable_setup.msi
+copy FreeCAD.7z  FreeCAD_0.12.$WCREV$_x86_unstable_bin.7z

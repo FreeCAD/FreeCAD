@@ -1,0 +1,268 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>Gui::Dialog::DlgCustomActions</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgCustomActions" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>523</width>
+    <height>383</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Macros</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QGroupBox" name="GroupBox7" >
+     <property name="title" >
+      <string>Setup Custom Macros</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item rowspan="9" row="0" column="0" >
+       <widget class="QTreeWidget" name="actionListWidget" >
+        <property name="maximumSize" >
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="rootIsDecorated" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLabel" name="TextLabel1_3" >
+        <property name="text" >
+         <string>Macro:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="4" colspan="2" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="6" column="2" >
+       <widget class="QToolButton" name="buttonChoosePixmap" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>40</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>40</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text" >
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" >
+       <widget class="QLabel" name="TextLabel5_2" >
+        <property name="text" >
+         <string>Pixmap</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2" colspan="4" >
+       <widget class="Gui::AccelLineEdit" name="actionAccel" />
+      </item>
+      <item row="5" column="1" >
+       <widget class="QLabel" name="TextLabel1" >
+        <property name="text" >
+         <string>Accelerator:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2" colspan="4" >
+       <widget class="QLineEdit" name="actionWhatsThis" />
+      </item>
+      <item row="4" column="1" >
+       <widget class="QLabel" name="TextLabel2" >
+        <property name="text" >
+         <string>What's this:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2" colspan="4" >
+       <widget class="QLineEdit" name="actionStatus" />
+      </item>
+      <item row="3" column="1" >
+       <widget class="QLabel" name="TextLabel3_2" >
+        <property name="text" >
+         <string>Status text:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2" colspan="4" >
+       <widget class="QLineEdit" name="actionToolTip" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>7</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QLabel" name="TextLabel2_2" >
+        <property name="text" >
+         <string>Tool tip:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" colspan="4" >
+       <widget class="QLineEdit" name="actionMenu" />
+      </item>
+      <item row="1" column="1" >
+       <widget class="QLabel" name="TextLabel3" >
+        <property name="text" >
+         <string>Menu text:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" colspan="4" >
+       <widget class="QComboBox" name="actionMacros" />
+      </item>
+      <item row="6" column="3" >
+       <widget class="QLabel" name="pixmapLabel" >
+        <property name="minimumSize" >
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="scaledContents" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="8" column="5" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>41</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="8" column="1" >
+       <widget class="QPushButton" name="buttonAddAction" >
+        <property name="text" >
+         <string>Add</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2" colspan="2" >
+       <widget class="QPushButton" name="buttonRemoveAction" >
+        <property name="text" >
+         <string>Remove</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="4" >
+       <widget class="QPushButton" name="buttonReplaceAction" >
+        <property name="text" >
+         <string>Replace</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <customwidgets>
+  <customwidget>
+   <class>Gui::AccelLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/Widgets.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>actionMacros</tabstop>
+  <tabstop>actionMenu</tabstop>
+  <tabstop>actionToolTip</tabstop>
+  <tabstop>actionStatus</tabstop>
+  <tabstop>actionWhatsThis</tabstop>
+  <tabstop>actionAccel</tabstop>
+  <tabstop>buttonAddAction</tabstop>
+  <tabstop>buttonRemoveAction</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

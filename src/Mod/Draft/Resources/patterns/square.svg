@@ -1,0 +1,22 @@
+<svg>
+  <defs>    
+    <pattern
+       id="square"
+       patternUnits="userSpaceOnUse"
+       x="0"
+       y="0"
+       width=".1"
+       height=".1">
+      <g
+         style="fill:none; stroke:#000000; stroke-width:.005"
+         id="g3394">
+        <path
+           d="M0,0.05 l.12,0"
+           id="path3396" />
+        <path
+           d="M0.05,0 l0,.12"
+           id="path3398" />
+      </g>
+    </pattern>
+  </defs>
+</svg>

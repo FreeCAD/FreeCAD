@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PartFeaturePy"  
+    Name="Part2DObjectPy" 
+    Twin="Part2DObject" 
+    TwinPointer="Part2DObject" 
+    Include="Mod/Part/App/Part2DObject.h" 
+    Namespace="Part" 
+    FatherInclude="Mod/Part/App/PartFeaturePy.h" 
+    FatherNamespace="Part">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>This object represents a 2D Shape in a 3D World</UserDocu>
+    </Documentation>
+  </PythonExport>
+</GenerateModel>

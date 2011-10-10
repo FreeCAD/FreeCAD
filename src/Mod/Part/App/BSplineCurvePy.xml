@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometryCurvePy"
+		Name="BSplineCurvePy"
+		Twin="GeomBSplineCurve"
+		TwinPointer="GeomBSplineCurve"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>Describes a B-Spline curve in 3D space</UserDocu>
+		</Documentation>
+		<Attribute Name="Degree" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the polynomial degree of this B-Spline curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="Degree" Type="Int"/>
+		</Attribute>
+		<Attribute Name="MaxDegree" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the value of the maximum polynomial degree of any
+B-Spline curve curve. This value is 25.</UserDocu>
+			</Documentation>
+			<Parameter Name="MaxDegree" Type="Int"/>
+		</Attribute>
+		<Attribute Name="NbPoles" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the number of poles of this B-Spline curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="NbPoles" Type="Int"/>
+		</Attribute>
+		<Attribute Name="NbKnots" ReadOnly="true">
+			<Documentation>
+				<UserDocu>
+					Returns the number of knots of this B-Spline curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="NbPoles" Type="Int"/>
+		</Attribute>
+		<Attribute Name="StartPoint" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the start point of this B-Spline curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="StartPoint" Type="Object"/>
+		</Attribute>
+		<Attribute Name="EndPoint" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the end point of this B-Spline curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="EndPoint" Type="Object"/>
+		</Attribute>
+		<Attribute Name="FirstUKnotIndex" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the index in the knot array of the knot
+corresponding to the first or last parameter
+of this B-Spline curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="FirstUKnotIndex" Type="Object"/>
+		</Attribute>
+		<Attribute Name="LastUKnotIndex" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the index in the knot array of the knot
+corresponding to the first or last parameter
+of this B-Spline curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="LastUKnotIndex" Type="Object"/>
+		</Attribute>
+		<Attribute Name="KnotSequence" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the knots sequence of this B-Spline curve.</UserDocu>
+			</Documentation>
+			<Parameter Name="KnotSequence" Type="List"/>
+		</Attribute>
+		<Methode Name="isRational">
+			<Documentation>
+				<UserDocu>
+					Returns true if this B-Spline curve is rational.
+					A B-Spline curve is rational if, at the time of construction,
+					the weight table has been initialized.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isPeriodic">
+			<Documentation>
+				<UserDocu>Returns true if this BSpline curve is periodic.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isClosed">
+			<Documentation>
+				<UserDocu>
+					Returns true if the distance between the start point and end point of
+					this B-Spline curve is less than or equal to gp::Resolution().
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="increaseDegree">
+			<Documentation>
+				<UserDocu>increase(Int=Degree)
+Increases the degree of this B-Spline curve to Degree.
+As a result, the poles, weights and multiplicities tables
+are modified; the knots table is not changed. Nothing is
+done if Degree is less than or equal to the current degree.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="increaseMultiplicity">
+			<Documentation>
+				<UserDocu>Increases the multiplicity</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="incrementMultiplicity">
+			<Documentation>
+				<UserDocu>Increases the multiplicity</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="insertKnot">
+			<Documentation>
+				<UserDocu>Inserts knot.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="insertKnots">
+			<Documentation>
+				<UserDocu>Inserts knots.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeKnot">
+			<Documentation>
+				<UserDocu>
+					Reduces the multiplicity of the knot of index Index to M.
+					If M is equal to 0, the knot is removed.
+					With a modification of this type, the array of poles is also modified.
+					Two different algorithms are systematically used to compute the new
+					poles of the curve. If, for each pole, the distance between the pole
+					calculated using the first algorithm and the same pole calculated using
+					the second algorithm, is less than Tolerance, this ensures that the curve
+					is not modified by more than Tolerance. Under these conditions, true is
+					returned; otherwise, false is returned.
+
+					A low tolerance is used to prevent modification of the curve.
+					A high tolerance is used to 'smooth' the curve.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="segment">
+			<Documentation>
+				<UserDocu>Modifies this B-Spline curve by segmenting it.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setKnot">
+			<Documentation>
+				<UserDocu>Set a knot of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getKnot">
+			<Documentation>
+				<UserDocu>Get a knot of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setKnots">
+			<Documentation>
+				<UserDocu>Set knots of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getKnots">
+			<Documentation>
+				<UserDocu>Get all knots of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setPole">
+			<Documentation>
+				<UserDocu>Modifies this B-Spline curve by assigning P
+to the pole of index Index in the poles table.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPole">
+			<Documentation>
+				<UserDocu>Get a pole of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPoles">
+			<Documentation>
+				<UserDocu>Get all poles of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setWeight">
+			<Documentation>
+				<UserDocu>Set a weight of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getWeight">
+			<Documentation>
+				<UserDocu>Get a weight of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getWeights">
+			<Documentation>
+				<UserDocu>Get all weights of the B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getResolution" Const="true">
+			<Documentation>
+				<UserDocu>Computes for this B-Spline curve the parametric tolerance (UTolerance)
+for a given 3D tolerance (Tolerance3D).
+If f(t) is the equation of this B-Spline curve, the parametric tolerance
+ensures that:
+|t1-t0| &lt; UTolerance =""==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="movePoint">
+			<Documentation>
+				<UserDocu>Moves the point of parameter U of this B-Spline curve to P.
+Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
+of the first and last poles designated to be moved.
+FirstModifiedPole and LastModifiedPole are the indexes of the first and last
+poles which are effectively modified.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setNotPeriodic">
+			<Documentation>
+				<UserDocu>Changes this B-Spline curve into a non-periodic curve.
+If this curve is already non-periodic, it is not modified.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setPeriodic">
+			<Documentation>
+				<UserDocu>Changes this B-Spline curve into a periodic curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setOrigin">
+			<Documentation>
+				<UserDocu>Assigns the knot of index Index in the knots table
+as the origin of this periodic B-Spline curve. As a consequence,
+the knots and poles tables are modified.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getMultiplicity">
+			<Documentation>
+				<UserDocu>Returns the multiplicity of the knot of index 
+from the knots table of this B-Spline curve.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getMultiplicities">
+			<Documentation>
+				<UserDocu>
+					Returns the multiplicities table M of the knots of this B-Spline curve.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="approximate">
+			<Documentation>
+				<UserDocu>
+					Replaces this B-Spline curve by approximating a set of points.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="interpolate">
+			<Documentation>
+				<UserDocu>
+					Replaces this B-Spline curve by interpolating a set of points.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="buildFromPoles">
+			<Documentation>
+				<UserDocu>
+					Builds a B-Spline by a list of poles.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="toBezier">
+			<Documentation>
+				<UserDocu>
+					Build a list of Bezier splines.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="join">
+			<Documentation>
+				<UserDocu>
+					Build a new spline by joining this and a second spline.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="makeC1Continuous">
+			<Documentation>
+				<UserDocu>
+					Tries to make the spline C1-continuous where possible.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

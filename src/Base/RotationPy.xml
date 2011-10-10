@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		  Father="PyObjectBase"
+		  Name="RotationPy"
+		  Twin="Rotation"
+		  TwinPointer="Rotation"
+		  Include="Base/Rotation.h"
+		  FatherInclude="Base/PyObjectBase.h"
+		  Namespace="Base"
+		  Constructor="true"
+		  Delete="true"
+		  FatherNamespace="Base">
+		<Documentation>
+			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+			<DeveloperDocu>This is the Rotation export class</DeveloperDocu>
+			<UserDocu>A Rotation</UserDocu>
+		</Documentation>
+		<Methode Name="invert">
+			<Documentation>
+				<UserDocu>
+					move(Vector)
+					Move the matrix along the vector
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="multiply">
+			<Documentation>
+				<UserDocu>
+					multiply(Rotation)
+					Multiply this quaternion with another quaternion
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="multVec">
+			<Documentation>
+				<UserDocu>
+					multVec(Vector) -> Vector
+					Compute the transformed vector using the rotation
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="toEuler">
+			<Documentation>
+				<UserDocu>
+					toEuler(Vector) -> list
+					Get the Euler angles of this rotation
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Q" ReadOnly="false">
+			<Documentation>
+				<UserDocu>The rotation elements (as quaternion)</UserDocu>
+			</Documentation>
+			<Parameter Name="Q" Type="Tuple" />
+		</Attribute>
+		<Attribute Name="Axis" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The rotation axis of the quaternion</UserDocu>
+			</Documentation>
+			<Parameter Name="Axis" Type="Object" />
+		</Attribute>
+		<Attribute Name="Angle" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The rotation angle of the quaternion</UserDocu>
+			</Documentation>
+			<Parameter Name="Angle" Type="Float" />
+		</Attribute>
+		<ClassDeclarations>
+			public:
+			RotationPy(const Rotation &amp; mat, PyTypeObject *T = &amp;Type)
+			:PyObjectBase(new Rotation(mat),T){}
+			Rotation value() const
+			{ return *(getRotationPtr()); }
+		</ClassDeclarations>
+	</PythonExport>
+</GenerateModel>

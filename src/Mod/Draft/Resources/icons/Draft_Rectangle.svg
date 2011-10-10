@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg2825"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="rectangle.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs2827">
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3144"
+       id="radialGradient2229"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       cx="225.26402"
+       cy="672.79736"
+       fx="225.26402"
+       fy="672.79736"
+       r="34.345188" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3144">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3146" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop3148" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3144"
+       id="radialGradient2215"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       cx="225.26402"
+       cy="672.79736"
+       fx="225.26402"
+       fy="672.79736"
+       r="34.345188" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 32 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="64 : 32 : 1"
+       inkscape:persp3d-origin="32 : 21.333333 : 1"
+       id="perspective2833" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.75"
+     inkscape:cx="35.277161"
+     inkscape:cy="23.395671"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="641"
+     inkscape:window-height="722"
+     inkscape:window-x="0"
+     inkscape:window-y="25" />
+  <metadata
+     id="metadata2830">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       inkscape:export-ydpi="6.5895667"
+       inkscape:export-xdpi="6.5895667"
+       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/rectangle.png"
+       id="g3527"
+       transform="matrix(0.1367702,0,0,0.1367702,-125.84674,-47.962092)">
+      <path
+         style="opacity:0.56084744;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 1325.7276,414.66071 C 1303.3778,414.66071 1284.5351,429.78547 1278.8839,450.34821 L 993.13393,450.34821 L 993.13393,685.56696 C 974.47613,692.34696 961.13393,710.23195 961.13393,731.22321 C 961.13393,758.03464 982.91623,779.78571 1009.7276,779.78571 C 1031.3589,779.78571 1049.6658,765.62019 1055.9464,746.06696 L 1340.2902,746.06696 L 1340.2902,509.56696 C 1359.9944,503.37596 1374.2902,484.96212 1374.2902,463.22321 C 1374.2902,436.41179 1352.5391,414.66071 1325.7276,414.66071 z M 1025.3214,482.87946 L 1281.2902,482.87946 C 1286.2964,494.17047 1295.4855,503.20013 1306.8839,508.00446 L 1306.8839,713.62946 L 1054.9776,713.62946 C 1049.7913,700.30906 1038.9165,689.8362 1025.3214,685.22321 L 1025.3214,482.87946 z"
+         id="path2734" />
+      <path
+         id="rect2233"
+         d="M 968.5625,425.21875 L 968.5625,720.9375 L 1315.7188,720.9375 L 1315.7188,425.21875 L 968.5625,425.21875 z M 1000.75,457.75 L 1282.3125,457.75 L 1282.3125,688.5 L 1000.75,688.5 L 1000.75,457.75 z"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         inkscape:export-ydpi="6.5019679"
+         inkscape:export-xdpi="6.5019679"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/rectangle.png"
+         transform="matrix(-1,0,0,-1,1182.2857,1361.2958)"
+         id="g2209">
+        <path
+           sodipodi:type="arc"
+           style="opacity:1;fill:#ffa900;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.79999971;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           id="path2211"
+           sodipodi:cx="197.14285"
+           sodipodi:cy="655.2193"
+           sodipodi:rx="48.57143"
+           sodipodi:ry="48.57143"
+           d="M 245.71428,655.2193 A 48.57143,48.57143 0 1 1 148.57142,655.2193 A 48.57143,48.57143 0 1 1 245.71428,655.2193 z" />
+        <path
+           sodipodi:type="arc"
+           style="fill:url(#radialGradient2215);fill-opacity:1;stroke:none;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path2213"
+           sodipodi:cx="225.26402"
+           sodipodi:cy="672.79736"
+           sodipodi:rx="34.345188"
+           sodipodi:ry="23.991123"
+           d="M 259.60921,672.79736 A 34.345188,23.991123 0 1 1 190.91883,672.79736 A 34.345188,23.991123 0 1 1 259.60921,672.79736 z"
+           transform="matrix(0.8513023,-0.5246754,0.5246754,0.8513023,-338.69692,214.19328)" />
+      </g>
+      <g
+         inkscape:export-ydpi="6.5019679"
+         inkscape:export-xdpi="6.5019679"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/rectangle.png"
+         transform="matrix(-1,0,0,-1,1498.2857,1093.2958)"
+         id="g2217">
+        <path
+           sodipodi:type="arc"
+           style="opacity:1;fill:#ffa900;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.79999971;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           id="path2219"
+           sodipodi:cx="197.14285"
+           sodipodi:cy="655.2193"
+           sodipodi:rx="48.57143"
+           sodipodi:ry="48.57143"
+           d="M 245.71428,655.2193 A 48.57143,48.57143 0 1 1 148.57142,655.2193 A 48.57143,48.57143 0 1 1 245.71428,655.2193 z" />
+        <path
+           sodipodi:type="arc"
+           style="fill:url(#radialGradient2229);fill-opacity:1;stroke:none;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path2221"
+           sodipodi:cx="225.26402"
+           sodipodi:cy="672.79736"
+           sodipodi:rx="34.345188"
+           sodipodi:ry="23.991123"
+           d="M 259.60921,672.79736 A 34.345188,23.991123 0 1 1 190.91883,672.79736 A 34.345188,23.991123 0 1 1 259.60921,672.79736 z"
+           transform="matrix(0.8513023,-0.5246754,0.5246754,0.8513023,-338.69692,214.19328)" />
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+<svg>
+  <defs>
+    <pattern
+       id="line"
+       patternUnits="userSpaceOnUse"
+       x="0"
+       y="0"
+       width=".1"
+       height=".1">
+      <g
+         style="fill:none; stroke:#000000; stroke-width:.005"
+         id="g3389">
+        <path
+           d="M0,0.05 l.12,0"
+           id="path3391" />
+      </g>
+    </pattern>
+  </defs>
+</svg>

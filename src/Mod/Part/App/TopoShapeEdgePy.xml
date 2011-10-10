@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="TopoShapePy" 
+      Name="TopoShapeEdgePy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/TopoShapePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>TopoShapeEdge is the OpenCasCade topological edge wrapper</UserDocu>
+    </Documentation>
+	  <Methode Name="tangentAt">
+		  <Documentation>
+			  <UserDocu>Vector = tangentAt(pos) - Get the tangent at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="valueAt">
+		  <Documentation>
+			  <UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="normalAt">
+		  <Documentation>
+			  <UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="derivative1At">
+		  <Documentation>
+			  <UserDocu>Vector = d1At(pos) - Get the first derivative at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="derivative2At">
+		  <Documentation>
+			  <UserDocu>Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="derivative3At">
+		  <Documentation>
+			  <UserDocu>Vector = d3At(pos) - Get the third derivative at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="curvatureAt">
+		  <Documentation>
+			  <UserDocu>Float = curvatureAt(pos) - Get the curvature at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="centerOfCurvatureAt">
+		  <Documentation>
+			  <UserDocu>Vector = centerOfCurvatureAt(float pos) - Get the center of curvature at the given parameter [0|Length] if defined</UserDocu>
+		  </Documentation>
+	  </Methode>
+		<Methode Name="setTolerance">
+			<Documentation>
+				<UserDocu>Set the tolerance for the edge.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Length" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns the length of the edge</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Length" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="ParameterRange" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns a 4 tuple with the parameter range</UserDocu>
+		  </Documentation>
+		  <Parameter Name="ParameterRange" Type="Tuple"/>
+	  </Attribute>
+	  <Attribute Name="Curve" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns the 3D curve of the edge</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Curve" Type="Object"/>
+	  </Attribute>
+	  <Attribute Name="CenterOfMass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the center of mass of the current system.
+If the gravitational field is uniform, it is the center of gravity.
+The coordinates returned for the center of mass are expressed in the
+absolute Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="CenterOfMass" Type="Object"/>
+    </Attribute>
+	<Attribute Name="Closed" ReadOnly="true">
+		<Documentation>
+			<UserDocu>Returns true of the edge is closed</UserDocu>
+		</Documentation>
+		<Parameter Name="Closed" Type="Boolean"/>
+	</Attribute>
+	  <Attribute Name="Degenerated" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Returns true of the edge is degenerated</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Degenerated" Type="Boolean"/>
+	  </Attribute>
+  </PythonExport>
+</GenerateModel>

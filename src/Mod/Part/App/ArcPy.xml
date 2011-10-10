@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeometryCurvePy" 
+      Name="ArcPy" 
+      Twin="GeomTrimmedCurve" 
+      TwinPointer="GeomTrimmedCurve" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Describes a portion of a curve</UserDocu>
+    </Documentation>
+	<!--
+	<ClassDeclarations>public:
+      ArcPy(const Geom_Circle &amp; circ, PyTypeObject *T = &amp;Type)
+      :PyObjectBase(new Geom_Circle(circ),T){}
+    const Geom_Circle &amp; value(void) const {return *getGeom_CirclePtr();}
+	</ClassDeclarations>
+	-->
+  </PythonExport>
+</GenerateModel>

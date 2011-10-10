@@ -1,0 +1,49 @@
+# Contributor: Joaquim Coimbra <joaca_rj@yahoo.com.br> 
+# Thanks to Werner Mayer for his support 
+ 
+pkgname=freecad-svn 
+pkgver=2152 
+pkgrel=2 
+pkgdesc="A general purpose 3D CAD modeler, aimed directly at mechanical engineering and product design but also architecture or other engineering specialties" 
+arch=('x86_64') 
+url="https://sourceforge.net/apps/mediawiki/free-cad/" 
+license=('GPL') 
+groups=() 
+depends=('xerces-c' 'gts' 'opencascade' 'coin' 'soqt' 'soqt-doc' 'zlib' 'ode' 'qt' 'opencv' 'boost' 'python') 
+makedepends=('subversion') 
+provides=('freecad') 
+conflicts=('freecad') 
+replaces=() 
+backup=() 
+options=('!makeflags') 
+install= 
+source=() 
+noextract=() 
+md5sums=() 
+ 
+_svntrunk=https://free-cad.svn.sourceforge.net/svnroot/free-cad/trunk 
+_svnmod=freecad 
+ 
+build() { 
+cd "$srcdir" 
+ 
+if [ -d $_svnmod/.svn ]; then 
+	(cd $_svnmod && svn up -r $pkgver) 
+else 
+	svn co $_svntrunk --config-dir ./ -r $pkgver $_svnmod 
+fi 
+ 
+msg "SVN checkout done or server timeout" 
+msg "Starting make..." 
+ 
+cd $_svnmod 
+ 
+# 
+# BUILD 
+# 
+./autogen.sh || return 1 
+./configure CXXFLAGS="-D_OCC64" --prefix=/usr/ --with-qt4-dir=/usr/lib/qt/ --with-qt4-bin=/usr/bin/ --with-qt4-include=/usr/include/ --with-qt4-lib=/usr/lib/qt/ --with-xercesc-include=/usr/include/xercesc/ --with-xercesc-lib=/usr/lib/ 
+ 
+make || return 1 
+make DESTDIR="$pkgdir/" install || return 1 
+} 

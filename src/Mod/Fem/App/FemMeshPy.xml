@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="ComplexGeoDataPy" 
+      Name="FemMeshPy" 
+      Twin="FemMesh" 
+      TwinPointer="FemMesh" 
+      Include="Mod/Fem/App/FemMesh.h" 
+      Namespace="Fem" 
+      FatherInclude="App/ComplexGeoDataPy.h" 
+      FatherNamespace="Data"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>FemMesh class</UserDocu>
+    </Documentation>
+	  <Methode Name="setShape">
+		  <Documentation>
+			  <UserDocu>set the Part shape to mesh</UserDocu>
+		  </Documentation>
+	  </Methode>
+		<Methode Name="compute">
+			<Documentation>
+				<UserDocu>Update the internal mesh structure</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addHypothesis">
+			<Documentation>
+				<UserDocu>Add hypothesis</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setStanardHypotheses">
+			<Documentation>
+				<UserDocu>Set some standard hypotheses for the whole shape</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addNode">
+			<Documentation>
+				<UserDocu>Add a node by setting (x,y,z).</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addEdge">
+			<Documentation>
+				<UserDocu>Add an edge by setting two node indices.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addFace">
+			<Documentation>
+				<UserDocu>Add a face by setting three node indices.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addQuad">
+			<Documentation>
+				<UserDocu>Add a quad by setting four node indices.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addVolume">
+			<Documentation>
+				<UserDocu>Add a volume by setting an arbitrary number of node indices.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="read">
+		  <Documentation>
+			  <UserDocu>Read in an DAT, UNV, MED or STL file.</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="write" Const="true">
+		  <Documentation>
+			  <UserDocu>write out an DAT, UNV, MED or STL file.</UserDocu>
+		  </Documentation>
+	  </Methode>
+		<Methode Name="writeABAQUS" Const="true">
+			<Documentation>
+				<UserDocu>write out as ABAQUS.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setTransform">
+      <Documentation>
+        <UserDocu>Use a Placement object to perform a translation or rotation</UserDocu>
+      </Documentation>
+    </Methode>
+		<Methode Name="copy">
+			<Documentation>
+				<UserDocu>Make a copy of this FEM mesh.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="NodeCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of nodes in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="NodeCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="EdgeCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of edges in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="EdgeCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="FacesCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Faces in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="FaceCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="TriangleCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Triangles in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="TriangleCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="QuadrangleCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Quadrangles in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="QuadrangleCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="PolygonCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Quadrangles in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="PolygonCount" Type="Int"/>
+	  </Attribute>
+
+ 	  <Attribute Name="VolumeCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Volumes in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="VolumeCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="TetraCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Tetras in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="TetraCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="HexaCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Hexas in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="HexaCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="PyramidCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Pyramids in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="PyramidCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="PrismCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Prisms in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="PrismCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="PolyhedronCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Polyhedrons in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="PolyhedronCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="SubMeshCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of SubMeshs in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="SubMeshCount" Type="Int"/>
+	  </Attribute>
+	  <Attribute Name="GroupCount" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Number of Groups in the Mesh.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="GroupCount" Type="Int"/>
+	  </Attribute>
+  </PythonExport>
+</GenerateModel>

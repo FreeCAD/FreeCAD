@@ -1,0 +1,35 @@
+
+if(FREECAD_BUILD_CAM)
+    add_subdirectory(ANN)
+endif(FREECAD_BUILD_CAM)
+
+if(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKFILE6X)
+    add_subdirectory(Pivy)
+elseif(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKFILE7X)
+    add_subdirectory(Pivy-0.5)
+#elseif(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKCUSTOM)
+#   find_path(COIN_VERSION3 Inventor/scxml/ScXML.h ${COIN3D_INCLUDE_DIR})
+#   if (COIN_VERSION3)
+#   add_subdirectory(Pivy-0.5)
+#   else (COIN_VERSION3)
+#   add_subdirectory(Pivy)
+#   endif(COIN_VERSION3)
+#endif(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKFILE6X)
+#if (MINGW)
+#   add_subdirectory(Pivy)
+#endif(MINGW)
+# applies for Unix, MinGW and Windows with custom LibPack
+elseif(FREECAD_BUILD_GUI)
+    find_path(COIN_VERSION3 Inventor/scxml/ScXML.h ${COIN3D_INCLUDE_DIR})
+    if (COIN_VERSION3)
+    add_subdirectory(Pivy-0.5)
+    else (COIN_VERSION3)
+    add_subdirectory(Pivy)
+    endif(COIN_VERSION3)
+endif(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKFILE6X)
+
+# For Windows we have all stuff in the LibPack
+if(CMAKE_COMPILER_IS_GNUCXX)
+    add_subdirectory(salomesmesh)
+endif(CMAKE_COMPILER_IS_GNUCXX)
+

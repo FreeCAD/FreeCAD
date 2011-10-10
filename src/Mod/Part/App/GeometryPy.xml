@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PyObjectBase" 
+      Name="GeometryPy" 
+      Twin="Geometry" 
+      TwinPointer="Geometry" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Base/PyObjectBase.h" 
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>The abstract class Geometry for 3D space is the root class of all geometric objects.
+It describes the common behavior of these objects when:
+- applying geometric transformations to objects, and
+- constructing objects by geometric transformation (including copying).</UserDocu>
+    </Documentation>
+    <Methode Name="mirror">
+      <Documentation>
+        <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="rotate">
+      <Documentation>
+        <UserDocu>Rotates this geometric object at angle Ang (in radians) about axis</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="scale">
+      <Documentation>
+        <UserDocu>Applies a scaling transformation on this geometric object with a center and scaling factor</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transform">
+      <Documentation>
+        <UserDocu>Applies a transformation to this geometric object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="translate">
+      <Documentation>
+        <UserDocu>Translates this geometric object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Construction" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Defines this geometry as a construction one which
+means that it is not part of a later built shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Construction" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

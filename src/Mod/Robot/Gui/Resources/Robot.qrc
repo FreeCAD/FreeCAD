@@ -1,0 +1,31 @@
+<RCC>
+    <qresource> 
+        <file>icons/Robot_CreateRobot.svg</file>
+        <file>icons/Robot_CreateTrajectory.svg</file>
+        <file>icons/Robot_Edge2Trac.svg</file>
+        <file>icons/Robot_Export.svg</file>
+        <file>icons/Robot_InsertWaypoint.svg</file>
+        <file>icons/Robot_InsertWaypointPre.svg</file>
+        <file>icons/Robot_RestoreHomePos.svg</file>
+        <file>icons/Robot_SetDefaultOrientation.svg</file>
+        <file>icons/Robot_SetDefaultValues.svg</file>
+        <file>icons/Robot_SetHomePos.svg</file>
+        <file>icons/Robot_Simulate.svg</file>
+        <file>icons/Robot_TrajectoryCompound.svg</file>
+        <file>icons/Robot_TrajectoryDressUp.svg</file>
+        <file>translations/Robot_af.qm</file>
+        <file>translations/Robot_de.qm</file>
+        <file>translations/Robot_es.qm</file>
+        <file>translations/Robot_fi.qm</file>
+        <file>translations/Robot_fr.qm</file>
+        <file>translations/Robot_hr.qm</file>
+        <file>translations/Robot_it.qm</file>
+        <file>translations/Robot_nl.qm</file>
+        <file>translations/Robot_no.qm</file>
+        <file>translations/Robot_pt.qm</file>
+        <file>translations/Robot_ru.qm</file>
+        <file>translations/Robot_se.qm</file>
+        <file>translations/Robot_uk.qm</file>
+        <file>translations/Robot_zh.qm</file>
+    </qresource>
+</RCC> 

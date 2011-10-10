@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsDraft</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsDraft">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>575</width>
+    <height>629</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Import/Export</string>
+  </property>
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="margin">
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="GroupBox12">
+     <property name="title">
+      <string>DXF format options</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel1_3">
+          <property name="text">
+           <string>Import style</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox">
+          <property name="toolTip">
+           <string>This is the method choosed for importing or translating DXF object color into FreeCAD. 
+If color mapping is choosed, you must choose a color mapping file containing a translation table that will convert colors into linewidths.
+</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfstyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>None (fastest)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Use default color and linewidth</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Original color and linewidth</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Color mapped to linewidth</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Create parametric objects</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Max Spline Segment</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_2">
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</string>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>maxsplinesegment</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Color mapping file</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>The color mapping file for translating dxf colors into linewidths</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfmappingfile</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+          <property name="toolTip">
+           <string>if this is unchecked, texts/mtexts won't be imported</string>
+          </property>
+          <property name="text">
+           <string>Import texts and dimensions</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxftext</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
+          <property name="toolTip">
+           <string>if this is checked, paper space objects will be imported too</string>
+          </property>
+          <property name="text">
+           <string>Import layouts</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxflayout</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+          <property name="toolTip">
+           <string>Check this if you want the non-named blocks (beginning with a *) to be imported too</string>
+          </property>
+          <property name="text">
+           <string>Import *blocks</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfstarblocks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+          <property name="toolTip">
+           <string>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</string>
+          </property>
+          <property name="text">
+           <string>Group layers into blocks</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>groupLayers</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
+          <property name="toolTip">
+           <string>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</string>
+          </property>
+          <property name="text">
+           <string>Join geometry</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>joingeometry</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+          <property name="toolTip">
+           <string>If this is checked, all objects containing faces will be exported as 3d polyfaces</string>
+          </property>
+          <property name="text">
+           <string>Export 3D objects as polyface meshes</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfmesh</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="GroupBox12_2">
+     <property name="title">
+      <string>SVG format options</string>
+     </property>
+     <layout class="QVBoxLayout" name="_3">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="_4">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel1_5">
+          <property name="text">
+           <string>Import style</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
+          <property name="toolTip">
+           <string>This is the method choosed for importing SVG object color into FreeCAD.</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svgstyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>None (fastest)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Use default color and linewidth</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Original color and linewidth</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="GroupBox12_3">
+     <property name="title">
+      <string>OCA format options</string>
+     </property>
+     <layout class="QVBoxLayout" name="_6">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="_7">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_4">
+          <property name="toolTip">
+           <string>Check this if you want the areas (3D faces) to be imported too.</string>
+          </property>
+          <property name="text">
+           <string>Import OCA areas</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ocaareas</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

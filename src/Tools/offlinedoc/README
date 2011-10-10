@@ -1,0 +1,19 @@
+this suite of tools can be used to retrieve a local copy
+from the FreeCAD wiki and then use it to generate qhelp
+and pdf files. The downloading of the entire wiki is now
+a huge operation, prone to network errors, so it has been
+cut into 2 parts, one to retrieve a list of files to
+download and another to actually download the files.
+
+1) run "buildwikiindex.py" to build an index file containing
+   a list of all the files to download
+
+2) run "downloadwiki.py". If connection drops, run it again, 
+   the already downloaded files will be skipped.
+
+3) run "buildqhelp.py" to generate freecad.qhc and freecad.qch
+   files
+
+4) run "buildpdf.py" to generate freecad.pdf (wkhtmltopdf must be installed)
+
+5) the qhelp files can be tested with "assistant -collectionFile freecad.qhc"

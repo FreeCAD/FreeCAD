@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="BaseClassPy" 
+    Name="WorkbenchPy" 
+    Twin="Workbench" 
+    TwinPointer="Workbench" 
+    Include="Gui/Workbench.h" 
+    Namespace="Gui" 
+    FatherInclude="Base/BaseClassPy.h" 
+    FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This is the base class for workbenches</UserDocu>
+    </Documentation>
+    <Methode Name="name">
+      <Documentation>
+        <UserDocu>Return the workbench name</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="activate">
+      <Documentation>
+        <UserDocu>Activate this workbench</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

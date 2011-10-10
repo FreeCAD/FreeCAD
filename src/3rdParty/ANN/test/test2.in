@@ -1,0 +1,21 @@
+  validate on
+  stats query_stats
+  dim 8
+  data_size 5000
+read_data_pts test2-data.pts
+  query_size 100
+read_query_pts test2-query.pts
+  bucket_size 1
+  near_neigh 3
+  split_rule suggest
+  shrink_rule none
+build_ann
+  epsilon 0.0
+run_queries standard
+run_queries priority
+  epsilon 0.10
+run_queries standard
+run_queries priority
+  epsilon 0.50
+run_queries standard
+run_queries priority

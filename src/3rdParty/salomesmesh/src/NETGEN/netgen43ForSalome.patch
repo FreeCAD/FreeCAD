@@ -1,0 +1,221 @@
+diff -N -r -u netgen43/libsrc/include/spline2d.hpp /tmp/netgen43/libsrc/include/spline2d.hpp
+--- netgen43/libsrc/include/spline2d.hpp	1970-01-01 01:00:00.000000000 +0100
++++ /tmp/netgen43/libsrc/include/spline2d.hpp	2003-12-10 16:28:12.000000000 +0100
+@@ -0,0 +1 @@
++#include "../geom2d/spline2d.hpp"
+diff -N -r -u netgen43/libsrc/include/splinegeometry2.hpp /tmp/netgen43/libsrc/include/splinegeometry2.hpp
+--- netgen43/libsrc/include/splinegeometry2.hpp	1970-01-01 01:00:00.000000000 +0100
++++ /tmp/netgen43/libsrc/include/splinegeometry2.hpp	2003-12-10 16:28:23.000000000 +0100
+@@ -0,0 +1 @@
++#include "../geom2d/splinegeometry2.hpp"
+diff -N -r -u netgen43/libsrc/interface/Makefile /tmp/netgen43/libsrc/interface/Makefile
+--- netgen43/libsrc/interface/Makefile	2003-05-07 16:01:43.000000000 +0200
++++ /tmp/netgen43/libsrc/interface/Makefile	2003-12-10 15:59:47.000000000 +0100
+@@ -1,4 +1,4 @@
+-src = nginterface.cpp writeuser.cpp writediffpack.cpp writeabaqus.cpp writefluent.cpp writepermas.cpp writetochnog.cpp writetecplot.cpp wuchemnitz.cpp writetochnog.cpp writefeap.cpp readuser.cpp importsolution.cpp
++src = writeuser.cpp writediffpack.cpp writeabaqus.cpp writefluent.cpp writepermas.cpp writetochnog.cpp writetecplot.cpp wuchemnitz.cpp writetochnog.cpp writefeap.cpp readuser.cpp importsolution.cpp nglib.cpp ngnewdelete.cpp
+ #
+ lib = nginterface
+ libpath = libsrc/interface
+diff -N -r -u netgen43/libsrc/interface/nglib.cpp /tmp/netgen43/libsrc/interface/nglib.cpp
+--- netgen43/libsrc/interface/nglib.cpp	2003-05-07 16:01:43.000000000 +0200
++++ /tmp/netgen43/libsrc/interface/nglib.cpp	2003-12-10 16:32:54.000000000 +0100
+@@ -23,6 +23,20 @@
+ 
+ #include "nglib.h"
+ 
++namespace netgen
++{
++  char geomfilename [100];
++
++  //Destination for messages, errors, ...
++  void Ng_PrintDest(const char * s)
++  {
++    (*mycout) << s << flush;
++  }
++
++#include <spline2d.hpp>
++#include <splinegeometry2.hpp>
++}
++
+ using namespace netgen;
+ 
+ // constants and types:
+@@ -171,8 +185,6 @@
+ // CSG Geometry
+ 
+ // FlexLexer * lexer;
+-char geomfilename [100];
+-
+ 
+ // 2D Meshing Functions:
+ 
+@@ -362,7 +374,18 @@
+ 	  cout << "e(" << readedges.Get(i) << "," << readedges.Get(i+1) << ")" << endl;
+ 	}
+       */
+-      geo->AddEdges(readedges);
++
++      ARRAY< Point<3> > readedges1;
++
++      for (i = 1; i <= readedges.Size(); i++)
++	{
++	  Point3d readedgesData = readedges.Get(i);
++	  Point <3> readedges1Data = Point<3>(readedgesData.X(),readedgesData.Y(),readedgesData.Z());
++
++	  readedges1.Append(readedges1Data);
++	}
++
++      geo->AddEdges(readedges1);
+     }
+ 
+   if (geo->GetStatus() == STLTopology::STL_GOOD || geo->GetStatus() == STLTopology::STL_WARNING) return NG_OK;
+@@ -472,7 +495,14 @@
+     n = Vec3d(nv[0],nv[1],nv[2]);
+   }
+ 
+-  readtrias.Append(STLReadTriangle(apts,n));
++  Point<3> apts1[3];
++  apts1[0] = Point<3>(p1[0],p1[1],p1[2]);
++  apts1[1] = Point<3>(p2[0],p2[1],p2[2]);
++  apts1[2] = Point<3>(p3[0],p3[1],p3[2]);
++
++  Vec<3> n1 = Vec<3>(n.X(),n.Y(),n.Z());
++
++  readtrias.Append(STLReadTriangle(apts1,n1));
+ }
+ 
+   // add (optional) edges:
+@@ -487,30 +517,29 @@
+ 
+ // compatibility functions:
+ 
+-void MyError (const char * ch)
++void netgen::MyError (const char * ch)
+ {
+   cerr << ch;
+ }
+ 
+-//Destination for messages, errors, ...
+-void Ng_PrintDest(const char * s)
+-{
+-  (*mycout) << s << flush;
+-}
+-
+-
+-double GetTime ()
++double netgen::GetTime ()
+ {
+   return 0;
+ }
+ 
+-void ResetTime ()
++void netgen::ResetTime ()
+ {
+   ;
+ }
+ 
+-void MyBeep (int i)
++void netgen::MyBeep (int i)
+ {
+   ;
+ }
+ 
++void MeshFromSpline2D (SplineGeometry2d & geometry,
++		       Mesh *& mesh, 
++		       MeshingParameters & mp)
++{
++  MeshFromSpline2D (geometry, mesh,  mp);
++}
+diff -N -r -u netgen43/libsrc/makefile.mach.LINUX /tmp/netgen43/libsrc/makefile.mach.LINUX
+--- netgen43/libsrc/makefile.mach.LINUX	2003-05-07 16:01:43.000000000 +0200
++++ /tmp/netgen43/libsrc/makefile.mach.LINUX	2003-12-10 15:12:18.000000000 +0100
+@@ -14,7 +14,8 @@
+ #
+ CFLAGS2 =
+ # pg stands for profiling - also in linkflags2
+-CPLUSPLUSFLAGS2 =  -O2 -I/usr/X11R6/include -DLINUX -DOPENGL
++#CPLUSPLUSFLAGS2 =  -O2 -I/usr/X11R6/include -DLINUX -DOPENGL
++CPLUSPLUSFLAGS2 =  -O2 -I/usr/X11R6/include -DLINUX
+ # -fomit-frame-pointer
+ # -ffast-math
+ #
+diff -N -r -u netgen43/libsrc/meshing/improve2.cpp /tmp/netgen43/libsrc/meshing/improve2.cpp
+--- netgen43/libsrc/meshing/improve2.cpp	2003-05-07 16:01:43.000000000 +0200
++++ /tmp/netgen43/libsrc/meshing/improve2.cpp	2003-12-10 15:42:00.000000000 +0100
+@@ -3,7 +3,7 @@
+ #include "meshing.hpp"
+ #include <opti.hpp>
+ 
+-#include <visual.hpp>
++/*#include <visual.hpp>*/
+ 
+ 
+ namespace netgen
+diff -N -r -u netgen43/libsrc/meshing/meshing2.cpp /tmp/netgen43/libsrc/meshing/meshing2.cpp
+--- netgen43/libsrc/meshing/meshing2.cpp	2003-05-07 16:01:43.000000000 +0200
++++ /tmp/netgen43/libsrc/meshing/meshing2.cpp	2003-12-10 15:34:35.000000000 +0100
+@@ -1785,7 +1785,7 @@
+ 
+ 
+ #else
+-void glrender (int wait)
++void netgen::glrender (int wait)
+ {
+   ;
+ } 
+diff -N -r -u netgen43/libsrc/visualization/stlmeshing.cpp /tmp/netgen43/libsrc/visualization/stlmeshing.cpp
+--- netgen43/libsrc/visualization/stlmeshing.cpp	2003-05-07 16:01:43.000000000 +0200
++++ /tmp/netgen43/libsrc/visualization/stlmeshing.cpp	2003-12-10 15:52:53.000000000 +0100
+@@ -5,7 +5,7 @@
+ #include <stlgeom.hpp>
+ 
+ #include <meshing.hpp>
+-#include <visual.hpp>
++/*#include <visual.hpp>*/
+ 
+ namespace netgen
+ {
+diff -N -r -u netgen43/Makefile /tmp/netgen43/Makefile
+--- netgen43/Makefile	2003-05-07 16:01:43.000000000 +0200
++++ /tmp/netgen43/Makefile	2003-12-10 15:11:41.000000000 +0100
+@@ -35,7 +35,8 @@
+ .SUFFIXES: .cpp .o
+ #
+ #
+-CPLUSPLUSFLAGS1 = -c -I$(LIBSRC_DIR)/include  -DOPENGL
++#CPLUSPLUSFLAGS1 = -c -I$(LIBSRC_DIR)/include  -DOPENGL
++CPLUSPLUSFLAGS1 = -c -I$(LIBSRC_DIR)/include
+ LINKFLAGS1 =   -lGL -lGLU -lX11 -lXext -lXmu
+ #
+ CPLUSPLUSFLAGS = $(CPLUSPLUSFLAGS1) $(CPLUSPLUSFLAGS2) $(CPLUSPLUSFLAGS3)
+diff -N -r -u netgen43/makeForSalome.sh /tmp/netgen43/makeForSalome.sh
+--- netgen43/makeForSalome.sh	1970-01-01 01:00:00.000000000 +0100
++++ /tmp/netgen43/makeForSalome.sh	2004-01-05 12:33:59.000000000 +0100
+@@ -0,0 +1,26 @@
++#! /bin/sh
++cp ngtcltk/ngnewdelete.* libsrc/interface/
++
++MACHINE=LINUX
++export MACHINE
++make -C libsrc/csg
++make -C libsrc/general
++make -C libsrc/geom2d
++make -C libsrc/gprim
++make -C libsrc/interface
++make -C libsrc/linalg
++make -C libsrc/meshing
++make -C libsrc/opti
++make -C libsrc/stlgeom
++
++if [ ! -d install ] ; then
++	mkdir install
++fi
++
++cp -r lib install/
++
++if [ ! -d install/include ] ; then
++	mkdir install/include
++fi
++
++cp libsrc/interface/nglib.h install/include

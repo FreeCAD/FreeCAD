@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg3188"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="apply.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs3190">
+    <linearGradient
+       id="linearGradient3354">
+      <stop
+         style="stop-color:#2157c7;stop-opacity:1;"
+         offset="0"
+         id="stop3356" />
+      <stop
+         style="stop-color:#6daaff;stop-opacity:1;"
+         offset="1"
+         id="stop3358" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3354"
+       id="linearGradient3599"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0083598,0,0,0.712664,-29.601181,398.25477)"
+       x1="2392.2313"
+       y1="1162.2943"
+       x2="2638.95"
+       y2="1162.2943" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 32 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="64 : 32 : 1"
+       inkscape:persp3d-origin="32 : 21.333333 : 1"
+       id="perspective3196" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.75"
+     inkscape:cx="25.004198"
+     inkscape:cy="2.8330839"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="641"
+     inkscape:window-height="722"
+     inkscape:window-x="0"
+     inkscape:window-y="25" />
+  <metadata
+     id="metadata3193">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       id="g3611"
+       transform="matrix(0.1587551,0,0,0.1587551,-360.60166,-154.13114)">
+      <path
+         id="rect2392"
+         d="M 2317.9152,1021.3304 L 2317.9152,1353.6741 L 2443.1339,1353.6741 L 2443.1339,1282.9867 L 2524.2902,1282.9867 L 2524.2902,1335.0491 L 2599.7589,1252.4241 L 2524.2902,1169.8304 L 2524.2902,1222.4554 L 2443.1339,1222.4554 L 2443.1339,1021.3304 L 2317.9152,1021.3304 z"
+         style="fill:#000000;fill-opacity:0.56310676;fill-rule:evenodd;stroke:none;stroke-width:13.11065483;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         inkscape:export-ydpi="4.1683898"
+         inkscape:export-xdpi="4.1683898"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+         y="995.47461"
+         x="2343.1125"
+         height="332.34647"
+         width="125.20362"
+         id="rect2364"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:13.11065483;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         inkscape:export-ydpi="4.1683898"
+         inkscape:export-xdpi="4.1683898"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+         y="1010.9336"
+         x="2357.1428"
+         height="68.571426"
+         width="95.714279"
+         id="rect3335"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:12.60000038;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         inkscape:export-ydpi="4.1683898"
+         inkscape:export-xdpi="4.1683898"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+         y="1086.9336"
+         x="2357.1428"
+         height="68.571426"
+         width="95.714279"
+         id="rect3337"
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:12.60000038;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         inkscape:export-ydpi="4.1683898"
+         inkscape:export-xdpi="4.1683898"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+         y="1164.9336"
+         x="2357.1428"
+         height="68.571426"
+         width="95.714279"
+         id="rect3339"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:12.60000038;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         inkscape:export-ydpi="4.1683898"
+         inkscape:export-xdpi="4.1683898"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+         y="1242.9336"
+         x="2357.1428"
+         height="68.571426"
+         width="95.714279"
+         id="rect3341"
+         style="fill:#00ff00;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:12.60000038;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <path
+         inkscape:export-ydpi="4.1683898"
+         inkscape:export-xdpi="4.1683898"
+         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
+         sodipodi:nodetypes="cccccccc"
+         id="path3343"
+         d="M 2549.4844,1143.9677 L 2549.4844,1196.597 L 2389.1018,1196.597 L 2389.1018,1257.1308 L 2549.4844,1257.1308 L 2549.4844,1309.1924 L 2624.9367,1226.58 L 2549.4844,1143.9677 z"
+         style="fill:url(#linearGradient3599);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:10.88381958;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

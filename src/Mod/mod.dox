@@ -1,0 +1,10 @@
+/** \addtogroup WORKBENCHES
+    Added functionality in the form of "pluggins".
+
+    Those pluggins, also called \b modules or \b worbenches, provide
+    functionality for specialized facets of FreeCAD.
+
+    \b Warning: Some are really work-in-progress and are not yet included in
+    the official builds
+ */
+

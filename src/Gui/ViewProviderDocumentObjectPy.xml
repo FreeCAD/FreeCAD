@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="ViewProviderPy" 
+		Name="ViewProviderDocumentObjectPy" 
+		Twin="ViewProviderDocumentObject" 
+		TwinPointer="ViewProviderDocumentObject" 
+		Include="Gui/ViewProviderDocumentObject.h" 
+		Namespace="Gui" 
+		FatherInclude="Gui/ViewProviderPy.h"
+		FatherNamespace="Gui">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>This is the ViewProvider base class</UserDocu>
+		</Documentation>
+		<Methode Name="update">
+			<Documentation>
+				<UserDocu>Update the view representation of the object</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Object" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the associated data object</UserDocu>
+			</Documentation>
+			<Parameter Name="Object" Type="Object" />
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

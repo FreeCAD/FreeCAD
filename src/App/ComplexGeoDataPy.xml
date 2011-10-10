@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PersistencePy" 
+      Name="ComplexGeoDataPy" 
+      Twin="ComplexGeoData" 
+      Include="App/ComplexGeoData.h" 
+  	  TwinPointer="ComplexGeoData" 
+      Namespace="Data" 
+      FatherInclude="Base/PersistencePy.h" 
+      FatherNamespace="Base"
+      Reference="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>Father of all complex geometric data types</UserDocu>
+    </Documentation>
+	  <Attribute Name="BoundBox" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Get the BoundBox of the object</UserDocu>
+		  </Documentation>
+		  <Parameter Name="BoundBox" Type="Object" />
+	  </Attribute>
+	  <Attribute Name="Placement" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Get the current transformation of the object as placement</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Placement" Type="Object" />
+	  </Attribute>
+	  <Attribute Name="Matrix" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Get the current transformation of the object as matrix</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Matrix" Type="Object" />
+	  </Attribute>
+  </PythonExport>
+</GenerateModel>

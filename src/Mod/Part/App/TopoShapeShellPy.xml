@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="TopoShapePy" 
+      Name="TopoShapeShellPy" 
+      Twin="TopoShape" 
+      TwinPointer="TopoShape" 
+      Include="Mod/Part/App/TopoShape.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/TopoShapePy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+      <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>Create a shell out of a list of faces</UserDocu>
+      </Documentation>
+    <Methode Name="add">
+      <Documentation>
+        <UserDocu>Add a face to the shell.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getFreeEdges">
+      <Documentation>
+        <UserDocu>Get free edges as compound.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getBadEdges">
+      <Documentation>
+        <UserDocu>Get bad edges as compound.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeHalfSpace">
+      <Documentation>
+        <UserDocu>Make a half-space solid by this shell and a reference point.</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

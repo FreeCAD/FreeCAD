@@ -1,0 +1,108 @@
+if(MSVC)
+    add_definitions(-DFCAppPartDesign -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
+else(MSVC)
+    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
+endif(MSVC)
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIRS}
+    ${OCC_INCLUDE_DIR}
+    ${ZLIB_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_PATH}
+    ${XERCESC_INCLUDE_DIR}
+)
+link_directories(${OCC_LIBRARY_DIR})
+
+set(PartDesign_LIBS
+    Part
+    FreeCADApp
+)
+
+SET(Features_SRCS
+    Feature.cpp
+    Feature.h
+    FeaturePatternRectangular.h
+    FeaturePatternRectangular.cpp
+    FeatureMainPart.cpp
+    FeatureMainPart.h
+)
+SOURCE_GROUP("Features" FILES ${Features_SRCS})
+
+SET(FeaturesDressUp_SRCS
+    FeatureDressUp.cpp
+    FeatureDressUp.h
+    FeatureFillet.cpp
+    FeatureFillet.h
+    FeatureChamfer.cpp
+    FeatureChamfer.h
+)
+SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
+
+SET(FeaturesSketchBased_SRCS
+    FeatureSketchBased.cpp
+    FeatureSketchBased.h
+    FeatureFace.cpp
+    FeatureFace.h
+    FeaturePad.cpp
+    FeaturePad.h
+    FeaturePocket.cpp
+    FeaturePocket.h
+    FeatureRevolution.cpp
+    FeatureRevolution.h
+    FeatureAdditive.cpp
+    FeatureAdditive.h
+    FeatureSubtractive.h
+    FeatureSubtractive.cpp
+    FeatureHole.h
+    FeatureHole.cpp
+)
+
+SOURCE_GROUP("SketchBasedFeatures" FILES ${FeaturesSketchBased_SRCS})
+
+SET(Module_SRCS
+    AppPartDesign.cpp
+    AppPartDesignPy.cpp
+    PreCompiled.cpp
+    PreCompiled.h
+)
+SOURCE_GROUP("Module" FILES ${Module_SRCS})
+
+SET(PartDesign_SRCS
+    ${Features_SRCS}
+    ${FeaturesSketchBased_SRCS}
+    ${FeaturesDressUp_SRCS}
+    ${Module_SRCS}
+)
+
+SET(PartDesign_Scripts
+    __init__.py
+	Init.py
+	TestPartDesignApp.py
+    Scripts/__init__.py
+    Scripts/Gear.py
+    Scripts/DistanceBolt.py
+    Scripts/RadialCopy.py
+    Scripts/Parallelepiped.py
+)
+
+add_library(PartDesign SHARED ${PartDesign_SRCS})
+target_link_libraries(PartDesign ${PartDesign_LIBS})
+fc_copy_script("Mod/PartDesign" "PartDesign" ${PartDesign_Scripts})
+
+if(MSVC)
+    set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")
+    set_target_properties(PartDesign PROPERTIES DEBUG_OUTPUT_NAME "PartDesign_d")
+    set_target_properties(PartDesign PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
+    set_target_properties(PartDesign PROPERTIES PREFIX "../")
+elseif(MINGW)
+    set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")
+    set_target_properties(PartDesign PROPERTIES DEBUG_OUTPUT_NAME "PartDesign_d")
+    set_target_properties(PartDesign PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
+    set_target_properties(PartDesign PROPERTIES PREFIX "")
+else(MSVC)
+    set_target_properties(PartDesign PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
+    set_target_properties(PartDesign PROPERTIES PREFIX "")
+endif(MSVC)
+
+install(TARGETS PartDesign DESTINATION lib)
