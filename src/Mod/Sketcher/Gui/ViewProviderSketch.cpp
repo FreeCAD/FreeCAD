@@ -1483,6 +1483,7 @@ float ViewProviderSketch::getScaleFactor()
         return 1.f;
     }
 }
+
 void ViewProviderSketch::draw(bool temp)
 {
     assert(edit);
@@ -1669,7 +1670,7 @@ Restart:
                     // get the geometry
                     const Part::Geometry *geo = (*geomlist)[Constr->First];
                     // Vertical can only be a GeomLineSegment
-                    assert(geo->getTypeId()== Part::GeomLineSegment::getClassTypeId());
+                    assert(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId());
                     const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
 
                     // calculate the half distance between the start and endpoint
@@ -2937,7 +2938,6 @@ Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const
 {
     return dynamic_cast<Sketcher::SketchObject *>(pcObject);
 }
-
 
 bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 {

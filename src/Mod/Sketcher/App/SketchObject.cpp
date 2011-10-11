@@ -247,16 +247,22 @@ int SketchObject::delGeometry(int GeoNbr)
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
         if ((*it)->First != GeoNbr && (*it)->Second != GeoNbr) {
-            if ((*it)->First > GeoNbr)
-                (*it)->First -= 1;
-            if ((*it)->Second > GeoNbr)
-                (*it)->Second -= 1;
-            newConstraints.push_back(*it);
+            Constraint *copiedConstr = (*it)->clone();
+            if (copiedConstr->First > GeoNbr)
+                copiedConstr->First -= 1;
+            if (copiedConstr->Second > GeoNbr)
+                copiedConstr->Second -= 1;
+            newConstraints.push_back(copiedConstr);
         }
     }
 
-    this->Constraints.setValues(newConstraints);
+    // temporarily empty constraints list in order to avoid invalid constraints
+    // during manipulation of the geometry list
+    std::vector< Constraint * > emptyConstraints(0);
+    this->Constraints.setValues(emptyConstraints);
+
     this->Geometry.setValues(newVals);
+    this->Constraints.setValues(newConstraints);
     rebuildVertexIndex();
     return 0;
 }
