@@ -133,7 +133,7 @@ public:
    * the base \a rcVct and the direction \a rcVctDir. \a rcVct must lie inside the
    * bounding box.
    */
-  Vector3<_Precision> IntersectionPoint (const Vector3<_Precision> &rcVct, const Vector3<_Precision> &rcVctDir) const;
+  bool IntersectionPoint (const Vector3<_Precision> &rcVct, const Vector3<_Precision> &rcVctDir, Vector3<_Precision>& cVctRes, _Precision epsilon) const;
   /** Checks for intersection with line incl. search tolerance. */      
   bool IsCutLine ( const Vector3<_Precision>& rcBase, const Vector3<_Precision>& rcDir, _Precision fTolerance = 0.0f) const;
   /** Checks if this plane specified by (point,normal) cuts this box. */
@@ -503,44 +503,32 @@ inline bool BoundBox3<_Precision>::CalcDistance (unsigned short usEdge, Vector3<
 }
 
 template <class _Precision>
-inline Vector3<_Precision> BoundBox3<_Precision>::IntersectionPoint (const Vector3<_Precision> &rcVct, const Vector3<_Precision> &rcVctDir) const
+inline bool BoundBox3<_Precision>::IntersectionPoint (const Vector3<_Precision> &rcVct, const Vector3<_Precision> &rcVctDir, Vector3<_Precision>& cVctRes, _Precision epsilon) const
 {
-  BoundBox3<_Precision> cCmpBound(*this);
-  bool rc;
-  unsigned short i;
-  Vector3<_Precision>   cVctRes;
+    bool rc=false;
+    BoundBox3<_Precision> cCmpBound(*this);
+    unsigned short i;
 
-  // Vergleichs-BB um REEN_EPS vergroessern
-  cCmpBound.MaxX += traits_type::epsilon();
-  cCmpBound.MaxY += traits_type::epsilon();
-  cCmpBound.MaxZ += traits_type::epsilon();
-  cCmpBound.MinX -= traits_type::epsilon();
-  cCmpBound.MinY -= traits_type::epsilon();
-  cCmpBound.MinZ -= traits_type::epsilon();
+    // enlarge bounding box by epsilon
+    cCmpBound.Enlarge(epsilon);
 
-  // Liegt Punkt innerhalb ?
-  if (cCmpBound.IsInBox (rcVct))
-  {
-    // Seitenebenen testen
-    for (i = 0, rc = false; (i < 6) && (!rc); i++)
-    {
-      rc = IntersectPlaneWithLine( i, rcVct, rcVctDir, cVctRes );
-      if(!cCmpBound.IsInBox(cVctRes)) 
-        rc = false;
-      if (rc == true )
-      {
-        // Liegt Schnittpunkt in gesuchter Richtung
-        // oder wurde gegenueberliegende Seite gefunden ?
-        // -> Skalarprodukt beider Richtungsvektoren > 0 (Winkel < 90)
-        rc = ((cVctRes - rcVct) * rcVctDir) > 0.0F;
-      }
+    // Is point inside?
+    if (cCmpBound.IsInBox (rcVct)) {
+        // test sides
+        for (i = 0; (i < 6) && (!rc); i++) {
+            rc = IntersectPlaneWithLine(i, rcVct, rcVctDir, cVctRes);
+            if (!cCmpBound.IsInBox(cVctRes)) 
+                rc = false;
+            if (rc == true) {
+                // does intersection point lie in desired direction
+                // or was found the opposing side?
+                // -> scalar product of both direction vectors > 0 (angle < 90)
+                rc = ((cVctRes - rcVct) * rcVctDir) >= (_Precision)0.0;
+            }
+        }
     }
-  }
-  else
-    rc = false;
 
-  // Schnittpunkt zurueckgeben
-  return cVctRes;
+    return rc;
 }
 
 template <class _Precision>

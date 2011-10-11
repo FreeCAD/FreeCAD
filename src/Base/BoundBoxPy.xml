@@ -53,8 +53,10 @@ A negative value shrinks the box.</UserDocu>
 
 	  <Methode Name="getIntersectionPoint">
 		  <Documentation>
-			  <UserDocu>method Vector getIntersectionPoint(Vector Base, Vector Dir)
+			  <UserDocu>method Vector getIntersectionPoint(Vector Base, Vector Dir, [float epsilon=0.0001])
 Calculate the intersection point of a line with the BoundBox
+The Base point must lie inside the bounding box, if not an
+exception is thrown.
 			  </UserDocu>
 		  </Documentation>
 	  </Methode>
@@ -71,7 +73,15 @@ Move the BoundBox by the given vector
 Check if the plane specified by Base and Normal intersects (cuts) the BoundBox</UserDocu>
       </Documentation>
     </Methode>
-	  <Attribute Name="Center" ReadOnly="true">
+		<Methode Name="isInside">
+			<Documentation>
+				<UserDocu>
+					method bool isInside(Vector Base|BoundBox box)
+Check if the point or bounding box is inside this bounding box
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Center" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Center point of the bounding box</UserDocu>
 		  </Documentation>

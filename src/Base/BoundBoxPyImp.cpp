@@ -183,16 +183,17 @@ PyObject*  BoundBoxPy::enlarge(PyObject *args)
 PyObject*  BoundBoxPy::getIntersectionPoint(PyObject *args)
 {
     PyObject *object,*object2;
-    if (PyArg_ParseTuple(args,"O!O!:Need base and direction vector",
-        &(Base::VectorPy::Type), &object,&(Base::VectorPy::Type), &object2)) {
-        Base::Vector3d point = getBoundBoxPtr()->IntersectionPoint(
+    double epsilon=0.0001;
+    if (PyArg_ParseTuple(args,"O!O!|d:Need base and direction vector",
+        &(Base::VectorPy::Type), &object,&(Base::VectorPy::Type), &object2, &epsilon)) {
+        Base::Vector3d point;
+        bool ok = getBoundBoxPtr()->IntersectionPoint(
             *(static_cast<Base::VectorPy*>(object)->getVectorPtr()),
-            *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()));
+            *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()),
+            point, epsilon);
         // IsInBox() doesn't handle border points correctly
         BoundBoxPy::PointerType bb = getBoundBoxPtr();
-        if ((bb->MinX <= point.x && bb->MaxX >= point.x) &&
-            (bb->MinY <= point.y && bb->MaxY >= point.y) &&
-            (bb->MinZ <= point.z && bb->MaxZ >= point.z)) {
+        if (ok) {
             return new VectorPy(point);
         }
         else {
@@ -245,6 +246,29 @@ PyObject*  BoundBoxPy::isCutPlane(PyObject *args)
             *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()));
     else
         return 0;
+
+    return Py::new_reference_to(retVal);
+}
+
+PyObject*  BoundBoxPy::isInside(PyObject *args)
+{
+    PyObject *object;
+    Py::Boolean retVal;
+
+    if (!PyArg_ParseTuple(args,"O", &object))
+        return 0;
+    if (PyObject_TypeCheck(object, &(Base::VectorPy::Type))) {
+        Base::VectorPy *vec = static_cast<Base::VectorPy*>(object);
+        retVal = getBoundBoxPtr()->IsInBox(*vec->getVectorPtr());
+    }
+    else if (PyObject_TypeCheck(object, &(Base::BoundBoxPy::Type))) {
+        Base::BoundBoxPy *box = static_cast<Base::BoundBoxPy*>(object);
+        retVal = getBoundBoxPtr()->IsInBox(*box->getBoundBoxPtr());
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "Either a Vector or BoundBox object expected");
+        return 0;
+    }
 
     return Py::new_reference_to(retVal);
 }
