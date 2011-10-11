@@ -965,6 +965,31 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
     }
 }
 
+PyObject* TopoShapePy::makeOffsetShape(PyObject *args)
+{
+    double offset, tolerance;
+    PyObject* inter = Py_False;
+    PyObject* self_inter = Py_False;
+    short offsetMode = 0, join = 0;
+    if (!PyArg_ParseTuple(args, "dd|O!O!hh",
+        &offset, &tolerance,
+        &(PyBool_Type), &inter,
+        &(PyBool_Type), &self_inter,
+        &offsetMode, &join))
+        return 0;
+
+    try {
+        TopoDS_Shape shape = this->getTopoShapePtr()->makeOffset(offset, tolerance,
+            (inter == Py_True), (self_inter == Py_True), offsetMode, join);
+        return new TopoShapePy(new TopoShape(shape));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return NULL;
+    }
+}
+
 PyObject*  TopoShapePy::reverse(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

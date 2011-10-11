@@ -56,6 +56,7 @@
 # include <BRepMesh_Triangle.hxx>
 # include <BRepMesh_Edge.hxx>
 # include <BRepOffsetAPI_MakeThickSolid.hxx>
+# include <BRepOffsetAPI_MakeOffsetShape.hxx>
 # include <BRepOffsetAPI_MakePipe.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepOffsetAPI_Sewing.hxx>
@@ -1489,6 +1490,16 @@ TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
 {
     BRepOffsetAPI_MakeThickSolid mkThick(this->_Shape, remFace, offset, tolerance);
     return mkThick.Shape();
+}
+
+TopoDS_Shape TopoShape::makeOffset(double offset, double tol, bool intersection,
+                                   bool selfInter, short offsetMode, short join)
+{
+    BRepOffsetAPI_MakeOffsetShape mkOffset(this->_Shape, offset, tol, BRepOffset_Mode(offsetMode),
+        intersection ? Standard_True : Standard_False,
+        selfInter ? Standard_True : Standard_False,
+        GeomAbs_JoinType(join));
+    return mkOffset.Shape();
 }
 
 void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)

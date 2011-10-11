@@ -199,6 +199,9 @@ public:
     TopoDS_Shape makeTube(double radius, double tol) const;
     TopoDS_Shape makeTube() const;
     TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles, Standard_Boolean isSolid, Standard_Boolean isRuled) const;
+    TopoDS_Shape makeOffset(double offset, double tol,
+        bool intersection = false, bool selfInter = false,
+        short offsetMode = 0, short join = 0);
     //@}
 
     /** @name Manipulation*/
