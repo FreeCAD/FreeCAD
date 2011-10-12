@@ -50,7 +50,7 @@
  Topo_Shape
 */
 
-class AppCamExport best_fit
+class CamExport best_fit
 {
 public:
     best_fit();

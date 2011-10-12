@@ -57,7 +57,7 @@ using namespace boost::numeric;
 
  In this program, it will be directly converted into a topo surface from the given information
  */
-class AppCamExport Approximate : protected Routines
+class CamExport Approximate : protected Routines
 {
 public:
     Approximate(const MeshCore::MeshKernel &m, std::vector<double> &_Cntrl, std::vector<double> &_KnotU, std::vector<double> &_KnotV,

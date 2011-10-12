@@ -131,7 +131,7 @@ struct MeshPntLess
     }
 };
 
-class AppCamExport SpringbackCorrection : public MeshCore::MeshFacetVisitor
+class CamExport SpringbackCorrection : public MeshCore::MeshFacetVisitor
 {
 public:
     /** @brief Constructor */

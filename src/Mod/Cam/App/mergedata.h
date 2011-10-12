@@ -29,7 +29,7 @@
 #include <QStringList>
 #include <vector>
 
-class AppCamExport MergeData
+class CamExport MergeData
 {
 public:
 	MergeData();

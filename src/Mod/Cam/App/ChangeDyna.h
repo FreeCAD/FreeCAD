@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 
-class AppCamExport ChangeDyna
+class CamExport ChangeDyna
 {
 public:
     ChangeDyna();

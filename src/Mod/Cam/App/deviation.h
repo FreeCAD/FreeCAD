@@ -31,7 +31,7 @@
 #include <string.h>
 #include <QString>
 
-class AppCamExport Deviation : public SpringbackCorrection
+class CamExport Deviation : public SpringbackCorrection
 {
 public:
 	Deviation();

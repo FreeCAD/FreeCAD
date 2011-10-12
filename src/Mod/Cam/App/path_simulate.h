@@ -45,7 +45,7 @@
     describes the tool-movement.
 */
 
-class AppCamExport path_simulate
+class CamExport path_simulate
 {
 public:
 

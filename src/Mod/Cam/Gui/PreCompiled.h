@@ -31,17 +31,17 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-# define MeshExport       __declspec(dllimport)
-# define AppPartExport    __declspec(dllimport)
-# define AppPartGuiExport __declspec(dllimport)
-# define AppCamExport     __declspec(dllimport)
-# define AppCamGuiExport  __declspec(dllexport)
+# define MeshExport    __declspec(dllimport)
+# define PartExport    __declspec(dllimport)
+# define PartGuiExport __declspec(dllimport)
+# define CamExport     __declspec(dllimport)
+# define CamGuiExport  __declspec(dllexport)
 #else // for Linux
 # define MeshExport
-# define AppPartExport
-# define AppPartGuiExport
-# define AppCamExport
-# define AppCamGuiExport
+# define PartExport
+# define PartGuiExport
+# define CamExport
+# define CamGuiExport
 #endif
 
 #ifdef _MSC_VER

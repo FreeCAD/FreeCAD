@@ -67,7 +67,7 @@ typedef struct
  and some NURBS routines from the Nurbs Book or translated from the NURBS
  Toolbox for MATLAB
 */
-class AppCamExport Routines
+class CamExport Routines
 {
 public:
     // mehrdimensionales Newton-Verfahren mit festem Startwert 0

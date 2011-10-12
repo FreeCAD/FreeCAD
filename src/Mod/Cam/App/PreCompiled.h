@@ -30,18 +30,14 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-    # define AppCamExport   __declspec(dllexport)
+    # define CamExport   __declspec(dllexport)
     # define CamExport      __declspec(dllexport)
-    # define AppPartExport  __declspec(dllimport)
     # define PartExport     __declspec(dllimport)
-    # define AppMeshExport  __declspec(dllimport)
     # define MeshExport     __declspec(dllimport)
 #else // for Linux
-    # define AppCamExport
     # define CamExport
-    # define AppPartExport
+    # define CamExport
     # define PartExport
-    # define AppMeshExport
     # define MeshExport
 #endif
 

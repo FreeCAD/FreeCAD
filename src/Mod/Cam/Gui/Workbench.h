@@ -32,7 +32,7 @@ namespace CamGui
 /**
  * @author Werner Mayer
  */
-class AppCamGuiExport Workbench : public Gui::StdWorkbench
+class CamGuiExport Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 

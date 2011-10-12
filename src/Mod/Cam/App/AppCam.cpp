@@ -37,7 +37,7 @@ PyDoc_STRVAR(module_part_doc,
 
 extern "C"
 {
-    void AppCamExport initCam()
+    void CamExport initCam()
     {
         // load dependend module
         try {

@@ -33,7 +33,7 @@
 using namespace boost::numeric;
 
 
-class AppCamExport UniGridApprox: public Routines
+class CamExport UniGridApprox: public Routines
 {
 public:
     UniGridApprox(const MeshCore::MeshKernel &InputMesh, double Tol);

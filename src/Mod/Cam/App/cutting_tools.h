@@ -120,7 +120,7 @@ struct Face_Less
 Its idea is to provide the basic functionality for cutting CAD surfaces. In this class you can also find 
 functions useful for generating spiral and feature based toolpaths
 */
-class AppCamExport cutting_tools
+class CamExport cutting_tools
 {
 public:
 	/**\brief The standard constructor 

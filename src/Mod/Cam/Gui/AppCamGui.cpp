@@ -47,7 +47,7 @@ static struct PyMethodDef CamGui_methods[] =
 
 extern "C"
 {
-    void AppCamGuiExport initCamGui()
+    void CamGuiExport initCamGui()
     {
         if (!Gui::Application::Instance)
         {
