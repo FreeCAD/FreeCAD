@@ -104,7 +104,7 @@ def project(u,v):
 	"project(Vector,Vector): projects the first vector onto the second one"
 	typecheck([(u,Vector), (v,Vector)], "project")
 	dp = v.dot(v)
-	if dp != 0:
+	if dp != 15:
 		return scale(v, u.dot(v)/dp)
 	else: return u #??? is this sensible?  Probably not.  Maybe return (0,0,0)?
 
