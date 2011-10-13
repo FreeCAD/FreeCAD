@@ -136,7 +136,16 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         // if the sketch has a support fuse them to get one result object (PAD!)
         if (SupportObject) {
             const TopoDS_Shape& support = SupportObject->Shape.getValue();
-            if (!support.IsNull() && support.ShapeType() == TopAbs_SOLID) {
+            bool isSolid = false;
+            if (!support.IsNull()) {
+                TopExp_Explorer xp;
+                xp.Init(support,TopAbs_SOLID);
+                for (;xp.More(); xp.Next()) {
+                    isSolid = true;
+                    break;
+                }
+            }
+            if (isSolid) {
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Fuse mkFuse(support, result);
                 // Let's check if the fusion has been successful
@@ -158,10 +167,11 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                     return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
                 this->Shape.setValue(solRes);
                 //this->Shape.setValue(result);
-            }else
+            }
+            else
                 return new App::DocumentObjectExecReturn("Support is not a solid");
-        }else
-
+        }
+        else
             this->Shape.setValue(result);
     }
     else
