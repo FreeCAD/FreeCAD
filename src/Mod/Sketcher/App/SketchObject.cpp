@@ -536,17 +536,28 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 if (x1 < x0 && x2 > x0) {
                     int newGeoId = addGeometry(geo);
                     // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
-                    const std::vector<Constraint *> &constraints = this->Constraints.getValues();
+                    const std::vector<Constraint *> &constraints = Constraints.getValues();
+
                     std::vector<Constraint *> newVals(constraints);
                     for (int i=0; i < int(newVals.size()); i++) {
                         if (constraints[i]->First == GeoId &&
-                            constraints[i]->FirstPos == end)
-                            constraints[i]->First = newGeoId;
-                        else if (constraints[i]->Second == GeoId &&
-                                 constraints[i]->SecondPos == end)
-                            constraints[i]->Second = newGeoId;
+                            constraints[i]->FirstPos == end) {
+
+                            Constraint *constNew = newVals[i]->clone();
+                            constNew->First = newGeoId;
+                            newVals[i] = constNew;
+
+                        } else if (constraints[i]->Second == GeoId &&
+                                 constraints[i]->SecondPos == end) {
+
+                                Constraint *constNew = newVals[i]->clone();
+                                constNew->Second = newGeoId;
+                                newVals[i] = constNew;
+                        }
                     }
 
+                    this->Constraints.setValues(newVals);
+                    
                     movePoint(GeoId, end, point1);
                     movePoint(newGeoId, start, point2);
 
@@ -640,17 +651,21 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             // Trim Point between intersection points
             if (theta1 < theta0 && theta2 > theta0) {
-                Part::GeomArcOfCircle *geo = new Part::GeomArcOfCircle();
-                geo->setCenter(center);
-                geo->setRadius(circle->getRadius());
-                geo->setRange(theta2, theta1);
 
-                delGeometry(GeoId);
-                int newGeoId = addGeometry(dynamic_cast<Part::Geometry *>(geo));
-                delete(geo);
+                // Create a new arc to substitute Circle in geometry list and set parameters
+                Part::GeomArcOfCircle *geoNew = new Part::GeomArcOfCircle();
+                geoNew->setCenter(center);
+                geoNew->setRadius(circle->getRadius());
+                geoNew->setRange(theta2, theta1);
 
+                std::vector< Part::Geometry * > newVals(geomlist);
+                newVals[GeoId] = geoNew;
+                Geometry.setValues(newVals);
+
+                delete geoNew;
+                
                 // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
-                const std::vector<Constraint *> &constraints = this->Constraints.getValues();
+                /*const std::vector<Constraint *> &constraints = this->Constraints.getValues();
                 std::vector<Constraint *> newVals(constraints);
                 for (int i=0; i < int(newVals.size()); i++) {
                     if (constraints[i]->First == GeoId &&
@@ -660,16 +675,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                                 constraints[i]->SecondPos == end)
                         constraints[i]->Second = newGeoId;
                 }
+                */
+                
                 // constrain the trimming points on the corresponding geometries
-
                 Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                 newConstr->Type = Sketcher::PointOnObject;
-                newConstr->First = newGeoId;
+                newConstr->First = GeoId;
                 newConstr->FirstPos = end;
                 newConstr->Second = GeoId1;
                 addConstraint(newConstr);
 
-                newConstr->First = newGeoId;
+                newConstr->First = GeoId;
                 newConstr->FirstPos = start;
                 newConstr->Second = GeoId2;
                 addConstraint(newConstr);
@@ -730,19 +746,29 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     Part::GeomArcOfCircle *aoc  = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[GeoId]);
                     Part::GeomArcOfCircle *aoc2 = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[newGeoId]);
                     // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
-                    const std::vector<Constraint *> &constraints = this->Constraints.getValues();
+                    const std::vector<Constraint *> &constraints = Constraints.getValues();
+
                     std::vector<Constraint *> newVals(constraints);
                     for (int i=0; i < int(newVals.size()); i++) {
                         if (constraints[i]->First == GeoId &&
-                            constraints[i]->FirstPos == end)
-                            constraints[i]->First = newGeoId;
-                        else if (constraints[i]->Second == GeoId &&
-                                    constraints[i]->SecondPos == end)
-                            constraints[i]->Second = newGeoId;
+                            constraints[i]->FirstPos == end) {
+
+                            Constraint *constNew = newVals[i]->clone();
+                            constNew->First = newGeoId;
+                            newVals[i] = constNew;
+                        
+                        } else if (constraints[i]->Second == GeoId &&
+                                 constraints[i]->SecondPos == end) {
+
+                                Constraint *constNew = newVals[i]->clone();
+                                constNew->Second = newGeoId;
+                                newVals[i] = constNew;
+                        }
                     }
 
-                    // Setting the range manually to improve stability before adding constraints
+                    this->Constraints.setValues(newVals);
 
+                    // Setting the range manually to improve stability before adding constraints
                     aoc->getRange(u,v);
                     u = fmod(u, 2.f*M_PI);
                     v = fmod(v, 2.f*M_PI);
@@ -751,6 +777,12 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     // constrain the trimming points on the corresponding geometries
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+
+                    newConstr->Type = Sketcher::Equal;
+                    newConstr->First = GeoId;
+                    newConstr->Second = newGeoId;
+                    addConstraint(newConstr);
+
                     newConstr->Type = Sketcher::PointOnObject;
                     newConstr->First = GeoId;
                     newConstr->FirstPos = end;
@@ -760,6 +792,13 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     newConstr->First = newGeoId;
                     newConstr->FirstPos = start;
                     newConstr->Second = GeoId2;
+                    addConstraint(newConstr);
+
+                    newConstr->Type = Sketcher::Coincident;
+                    newConstr->First = GeoId;
+                    newConstr->FirstPos = Sketcher::mid;
+                    newConstr->Second = newGeoId;
+                    newConstr->SecondPos = Sketcher::mid;
                     addConstraint(newConstr);
 
                     delete newConstr;
