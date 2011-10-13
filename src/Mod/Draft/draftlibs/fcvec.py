@@ -104,9 +104,9 @@ def project(u,v):
 	"project(Vector,Vector): projects the first vector onto the second one"
 	typecheck([(u,Vector), (v,Vector)], "project")
 	dp = v.dot(v)
-	if dp != 15:
-		return scale(v, u.dot(v)/dp)
-	else: return u #??? is this sensible?  Probably not.  Maybe return (0,0,0)?
+        if dp == 0: return Vector(0,0,0) # to avoid division by zero
+	if dp != 15: return scale(v, u.dot(v)/dp)
+	return Vector(0,0,0)
 
 def rotate2D(u,angle):
 	"rotate2D(Vector,angle): rotates the given vector around the Z axis"
@@ -182,59 +182,6 @@ def getPlaneRotation(u,v,w=None):
                 u.z,v.z,w.z,0,
                 0.0,0.0,0.0,1.0)
         return m
-
-def reorient(u,ref):
-        '''Checks the orientation of u and reorients on
-        what we consider positive axis direction'''
-        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").\
-            GetInt("dimorientation")
-        if ref == "x":
-                if u.x < 0:
-                        return neg(u)
-                elif u.x == 0:
-                        if not s:
-                                if u.y < 0:
-                                        return neg(u)
-                        elif u.y > 0:
-                                return neg(u)
-                        elif u.y == 0:
-                                if not s:
-                                        if u.z < 0:
-                                                return neg(u)
-                                elif u.z > 0:
-                                        return neg(u)
-                                
-        elif ref == "y":
-                if u.y < 0:
-                        return neg(u)
-                elif u.y == 0:
-                        if not s:
-                                if u.x > 0:
-                                        return neg(u)
-                        elif u.x < 0:
-                                return neg(u)
-                        elif u.x == 0:
-                                if not s:
-                                        if u.z > 0:
-                                                return neg(u)
-                                elif u.z < 0:
-                                        return neg(u)
-        elif ref == "z":
-                if u.z < 0:
-                        return neg(u)
-                elif u.z == 0:
-                        if not s:
-                                if u.y > 0:
-                                        return neg(u)
-                        elif u.y > 0:
-                                return neg(u)
-                        elif u.y == 0:
-                                if not s:
-                                        if u.x > 0:
-                                                return neg(u)
-                                elif u.x < 0:
-                                        return neg(u)
-        return u
 
 def removeDoubles(vlist):
         "removes consecutive doubles from a list of vectors"

@@ -73,7 +73,7 @@ How it works / how to extend:
 
 # import FreeCAD modules
 
-import FreeCAD, FreeCADGui, Part, math, sys, os, Image, Drawing
+import FreeCAD, FreeCADGui, Part, math, sys, os, Image, Drawing, WorkingPlane
 from FreeCAD import Vector
 from draftlibs import fcvec, fcgeo
 from pivy import coin
@@ -910,12 +910,12 @@ def getrgb(color):
         b = str(hex(int(color[2]*255)))[2:].zfill(2)
         return "#"+r+g+b
 
-def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="shape color",plane=None):
-        '''getSVG(object,[modifier],[textmodifier],[linestyle],[fillstyle],[(u,v)]):
+def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="shape color",direction=None):
+        '''getSVG(object,[modifier],[textmodifier],[linestyle],[fillstyle],[direction]):
         returns a string containing a SVG representation of the given object. the modifier attribute
         specifies a scale factor for linewidths in %, and textmodifier specifies
         a scale factor for texts, in % (both default = 100). You can also supply
-        an arbitrary (u,v) projection plane as a tuple or list of 2 Vectors.'''
+        an arbitrary projection vector.'''
         svg = ""
         tmod = ((textmodifier-100)/2)+100
         if tmod == 0: tmod = 0.01
@@ -923,15 +923,20 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         if modifier == 0: modifier = 0.01
         pmod = (200-textmodifier)/20
         if pmod == 0: pmod = 0.01
+        plane = None
+        if direction:
+                if direction != Vector(0,0,0):
+                        plane = WorkingPlane.plane()
+                        plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
 
         def getProj(vec):
                 if not plane: return vec
-                nx = fcvec.project(vec,plane[0])
+                nx = fcvec.project(vec,plane.u)
                 lx = nx.Length
-                if abs(nx.getAngle(plane[0])) > 0.1: lx = -lx
-                ny = fcvec.project(vec,plane[1])
+                if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
+                ny = fcvec.project(vec,plane.v)
                 ly = ny.Length
-                if abs(ny.getAngle(plane[1])) > 0.1: ly = -ly
+                if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
                 return Vector(lx,ly,0)
 
         def getPath(edges):
@@ -960,7 +965,7 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                 return svg
 
         if getType(obj) == "Dimension":
-		p1,p2,p3,p4,tbase,angle,norm = obj.ViewObject.Proxy.calcGeom(obj)
+		p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
                 dimText = getParam("dimPrecision")
                 dimText = "%."+str(dimText)+"f"
                 p1 = getProj(p1)
@@ -969,10 +974,31 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                 p4 = getProj(p4)
                 tbase = getProj(tbase)
 		svg = '<g id="'+obj.Name+'"><path '
-		svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-		svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-		svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-		svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                if obj.ViewObject.DisplayMode == "2D":
+                        m = FreeCAD.Placement()
+                        m.Rotation.Q = rot
+                        m = m.toMatrix()
+                        if plane:
+                                vtext = m.multiply(plane.u)
+                        else:
+                                vtext = m.multiply(Vector(1,0,0))
+                        angle = -fcvec.angle(vtext)
+                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                else:
+                        ts = (len(dimText)*obj.ViewObject.FontSize)/4
+                        rm = ((p3.sub(p2)).Length/2)-ts
+                        p2a = getProj(p2.add(fcvec.scaleTo(p3.sub(p2),rm)))
+                        p2b = getProj(p3.add(fcvec.scaleTo(p2.sub(p3),rm)))
+                        angle = 0
+                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                        svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
+                        svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
+                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '                        
 		svg += 'fill="none" stroke="'
 		svg += getrgb(obj.ViewObject.LineColor) + '" '
 		svg += 'stroke-width="' + str(obj.ViewObject.LineWidth/modifier) + ' px" '
@@ -1169,13 +1195,13 @@ class Dimension:
 		obj.Proxy = self
                 self.Type = "Dimension"
 		
-	def onChanged(self, fp, prop):
+	def onChanged(self, obj, prop):
 		pass
 
-	def execute(self, fp):
-                if fp.ViewObject:
-                        fp.ViewObject.update()
-
+	def execute(self, obj):
+                if obj.ViewObject:
+                        obj.ViewObject.update()
+        
 class ViewProviderDimension:
 	"A View Provider for the Dimension object"
 	def __init__(self, obj):
@@ -1211,26 +1237,34 @@ class ViewProviderDimension:
 		if not proj:
 			ed = fcgeo.vec(base)
 			proj = ed.cross(Vector(0,0,1))
-		angle = -fcvec.angle(p3.sub(p2))
-		if (angle >= math.pi/2) or (angle < -math.pi/2): angle = math.pi+angle
-                s = getParam("dimorientation")
-                if s == 0:
-                        if (round(angle,precision()) == round(-math.pi/2,precision())) \
-                        or (round(angle,precision()) == round(1.5*math.pi,precision())):
-                                angle = math.pi/2
-		offset = fcvec.rotate(FreeCAD.Vector(obj.ViewObject.FontSize*.2,0,0),
-                                      angle+math.pi/2)
+		if not proj: norm = Vector(0,0,1)
+                else: norm = fcvec.neg(p3.sub(p2).cross(proj))
+                norm.normalize()
+                va = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+                if va.getAngle(norm) < math.pi/2:
+                        norm = fcvec.neg(norm)
+                u = p3.sub(p2)
+                u.normalize()
+                c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                r = c.orientation.getValue()
+                ru = Vector(r.multVec(coin.SbVec3f(1,0,0)).getValue())
+                if ru.getAngle(u) > math.pi/2: u = fcvec.neg(u)
+                v = norm.cross(u)
+                offset = fcvec.scaleTo(v,obj.ViewObject.FontSize*.2)
+                if obj.ViewObject:
+                        if hasattr(obj.ViewObject,"DisplayMode"):
+                                if obj.ViewObject.DisplayMode == "3D":
+                                        offset = fcvec.neg(offset)
                 if obj.ViewObject.Position == Vector(0,0,0):
                         tbase = midpoint.add(offset)
                 else:
                         tbase = obj.ViewObject.Position
-		if not proj: norm = Vector(0,0,1)
-                else: norm = fcvec.neg(p3.sub(p2).cross(proj))
-		return p1,p2,p3,p4,tbase,angle,norm
+                rot = FreeCAD.Placement(fcvec.getPlaneRotation(u,v,norm)).Rotation.Q
+		return p1,p2,p3,p4,tbase,norm,rot
 
 	def attach(self, obj):
                 self.Object = obj.Object
-		p1,p2,p3,p4,tbase,angle,norm = self.calcGeom(obj.Object)
+		p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj.Object)
 		self.color = coin.SoBaseColor()
 		self.color.rgb.setValue(obj.LineColor[0],
                                         obj.LineColor[1],
@@ -1268,14 +1302,13 @@ class ViewProviderDimension:
 		marks.addChild(dimSymbol())       
 		self.drawstyle = coin.SoDrawStyle()
 		self.drawstyle.lineWidth = 1       
-		line = coin.SoLineSet()
-		line.numVertices.setValue(4)
+		self.line = coin.SoLineSet()
 		self.coords = coin.SoCoordinate3()
 		selnode=coin.SoType.fromName("SoFCSelection").createInstance()
 		selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
 		selnode.objectName.setValue(obj.Object.Name)
 		selnode.subElementName.setValue("Line")
-		selnode.addChild(line)
+		selnode.addChild(self.line)
 		self.node = coin.SoGroup()
 		self.node.addChild(self.color)
 		self.node.addChild(self.drawstyle)
@@ -1315,7 +1348,7 @@ class ViewProviderDimension:
                                         v2 = obj.Base.Shape.Vertexes[obj.LinkedVertices[1]].Point
                                 if v1 != obj.Start: obj.Start = v1
                                 if v2 != obj.End: obj.End = v2
-		p1,p2,p3,p4,tbase,angle,norm = self.calcGeom(obj)
+		p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj)
                 if 'Override' in obj.ViewObject.PropertiesList:
                         text = str(obj.ViewObject.Override)
                 dtext = getParam("dimPrecision")
@@ -1326,21 +1359,27 @@ class ViewProviderDimension:
                 else:
                         text = dtext
 		self.text.string = self.text3d.string = text
-                u = p3.sub(p2)
-                v = p2.sub(p1)
-                if not fcvec.isNull(u): u.normalize()
-                if not fcvec.isNull(v): v.normalize()
-                u = fcvec.reorient(u,"x")
-                v = fcvec.reorient(v,"y")
-                w = fcvec.reorient(u.cross(v),"z")
-                tm = FreeCAD.Placement(fcvec.getPlaneRotation(u,v,w)).Rotation.Q
-                self.textpos.rotation = coin.SbRotation(tm[0],tm[1],tm[2],tm[3])
-		self.coords.point.setValues(0,4,[[p1.x,p1.y,p1.z],
-                                                 [p2.x,p2.y,p2.z],
-                                                 [p3.x,p3.y,p3.z],
-                                                 [p4.x,p4.y,p4.z]])
+                self.textpos.rotation = coin.SbRotation(rot[0],rot[1],rot[2],rot[3])
 		self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-		self.coord1.point.setValue((p2.x,p2.y,p2.z))
+                if obj.ViewObject.DisplayMode == "2D":
+                        self.coords.point.setValues([[p1.x,p1.y,p1.z],
+                                                     [p2.x,p2.y,p2.z],
+                                                     [p3.x,p3.y,p3.z],
+                                                     [p4.x,p4.y,p4.z]])
+                        self.line.numVertices.setValues([4])
+                else:
+                        ts = (len(text)*obj.ViewObject.FontSize)/4
+                        rm = ((p3.sub(p2)).Length/2)-ts
+                        p2a = p2.add(fcvec.scaleTo(p3.sub(p2),rm))
+                        p2b = p3.add(fcvec.scaleTo(p2.sub(p3),rm))
+                        self.coords.point.setValues([[p1.x,p1.y,p1.z],
+                                                     [p2.x,p2.y,p2.z],
+                                                     [p2a.x,p2a.y,p2a.z],
+                                                     [p2b.x,p2b.y,p2b.z],
+                                                     [p3.x,p3.y,p3.z],
+                                                     [p4.x,p4.y,p4.z]])
+                        self.line.numVertices.setValues([3,3])
+                self.coord1.point.setValue((p2.x,p2.y,p2.z))
 		self.coord2.point.setValue((p3.x,p3.y,p3.z))
 
 	def onChanged(self, vp, prop):
@@ -1354,8 +1393,6 @@ class ViewProviderDimension:
 			self.color.rgb.setValue(c[0],c[1],c[2])
 		elif prop == "LineWidth":
 			self.drawstyle.lineWidth = vp.LineWidth
-                elif prop == "DisplayMode":
-                        pass
 		else:
 			self.updateData(vp.Object, None)
 
@@ -1881,12 +1918,12 @@ class DrawingView:
                         obj.ViewResult = self.updateSVG(obj)
 
         def onChanged(self, obj, prop):
-                if prop in ["X","Y","Scale","LinewidthModifier","TextModifier","LineStyle","FillStyle"]:
+                if prop in ["X","Y","Scale","LinewidthModifier","TextModifier","LineStyle","FillStyle","Direction"]:
                         obj.ViewResult = self.updateSVG(obj)
 
         def updateSVG(self, obj):
                 "encapsulates a svg fragment into a transformation node"
-                svg = getSVG(obj.Source,obj.LinewidthModifier,obj.TextModifier,obj.LineStyle,obj.FillStyle)
+                svg = getSVG(obj.Source,obj.LinewidthModifier,obj.TextModifier,obj.LineStyle,obj.FillStyle,obj.Direction)
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'

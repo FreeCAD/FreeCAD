@@ -180,9 +180,10 @@ def snapPoint(target,point,cursor,ctrl=False):
 		return point
 	else:
                 obj = target.doc.getObject(snapped['Object'])
-                if not obj.ViewObject.Selectable:
-                        target.snap.switch.whichChild = -1
-                        return point
+                if hasattr(obj.ViewObject,"Selectable"):
+                        if not obj.ViewObject.Selectable:
+                                target.snap.switch.whichChild = -1
+                                return point
                 if not ctrl:
                         # are we in passive snap?
                         snapArray = [getPassivePoint(snapped)]
