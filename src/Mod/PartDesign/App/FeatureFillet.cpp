@@ -65,10 +65,12 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
     const Part::TopoShape& TopShape = base->Shape.getShape();
+    if (TopShape._Shape.IsNull())
+        return new App::DocumentObjectExecReturn("Cannot fillet invalid shape");
 
     const std::vector<std::string>& SubVals = Base.getSubValuesStartsWith("Edge");
     if (SubVals.size() == 0)
-        return new App::DocumentObjectExecReturn("No Edges specified");
+        return new App::DocumentObjectExecReturn("No edges specified");
 
     float radius = Radius.getValue();
 
