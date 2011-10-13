@@ -1969,23 +1969,23 @@ Restart:
                             Base::Vector3d constrPos2 = midpos2 + (norm2 * scale * 2.5);
                             constrPos2 = seekConstraintPosition(constrPos2, dir2, scale * 2.5, edit->constrGroup->getChild(i));
 
-                    // Translate the Icon based on calculated position
-                    Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1
-                    Base::Vector3d relPos2 = constrPos2 - midpos2 ; // Relative Position of Icons to Midpoint2
+                            // Translate the Icon based on calculated position
+                            Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1
+                            Base::Vector3d relPos2 = constrPos2 - midpos2 ; // Relative Position of Icons to Midpoint2
 
-                    relPos1 = relPos1 / scale;
-                    relPos2 = relPos2 / scale;
+                            relPos1 = relPos1 / scale;
+                            relPos2 = relPos2 / scale;
 
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
-                    //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+                            //Reference Position that is scaled according to zoom
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
 
-                    Base::Vector3d secondPos = midpos2 - midpos1;
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
+                            Base::Vector3d secondPos = midpos2 - midpos1;
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
-                    //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                            //Reference Position that is scaled according to zoom
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
 
                             break;
                         }

@@ -557,7 +557,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     }
 
                     this->Constraints.setValues(newVals);
-                    
+
                     movePoint(GeoId, end, point1);
                     movePoint(newGeoId, start, point2);
 
@@ -661,9 +661,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 std::vector< Part::Geometry * > newVals(geomlist);
                 newVals[GeoId] = geoNew;
                 Geometry.setValues(newVals);
-
                 delete geoNew;
-                
+                rebuildVertexIndex();
+
                 // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
                 /*const std::vector<Constraint *> &constraints = this->Constraints.getValues();
                 std::vector<Constraint *> newVals(constraints);
@@ -676,7 +676,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                         constraints[i]->Second = newGeoId;
                 }
                 */
-                
+
                 // constrain the trimming points on the corresponding geometries
                 Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                 newConstr->Type = Sketcher::PointOnObject;
@@ -756,7 +756,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                             Constraint *constNew = newVals[i]->clone();
                             constNew->First = newGeoId;
                             newVals[i] = constNew;
-                        
+
                         } else if (constraints[i]->Second == GeoId &&
                                  constraints[i]->SecondPos == end) {
 
