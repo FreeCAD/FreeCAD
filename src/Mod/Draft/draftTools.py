@@ -154,6 +154,13 @@ def snapPoint(target,point,cursor,ctrl=False):
                         return target.grid.getClosestNode(point)
                 return None
 
+        def getPerpendicular(edge,last):
+                "returns a point on an edge, perpendicular to the given point"
+                dv = last.sub(edge.Vertexes[0].Point)
+                nv = fcvec.project(dv,fcgeo.vec(edge))
+                np = (edge.Vertexes[0].Point).add(nv)
+                return np
+
 	# checking if alwaySnap setting is on
         extractrl = False
 	if Draft.getParam("alwaysSnap"):
@@ -163,10 +170,41 @@ def snapPoint(target,point,cursor,ctrl=False):
         # setting Radius
         radius =  getScreenDist(Draft.getParam("snapRange"),cursor)
 	
-	snapped=target.view.getObjectInfo((cursor[0],cursor[1]))
+        # checking if parallel to one of the edges of the last objects
+        target.snap.off()
+        target.extsnap.off()
+        if (len(target.node) > 0):
+                for o in [lastObj[1],lastObj[0]]:
+                        if o:
+                                edges = target.doc.getObject(o).Shape.Edges
+                                if len(edges)<10:
+                                        for e in edges:
+                                                if isinstance(e.Curve,Part.Line):
+                                                        last = target.node[len(target.node)-1]
+                                                        de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()
+                                                        np = getPerpendicular(e,point)
+                                                        if (np.sub(point)).Length < radius:
+                                                                target.snap.coords.point.setValue((np.x,np.y,np.z))
+                                                                target.snap.setMarker("circle")
+                                                                target.snap.on()
+                                                                target.extsnap.p1(e.Vertexes[0].Point)
+                                                                target.extsnap.p2(np)
+                                                                target.extsnap.on()
+                                                                point = np
+                                                        else:
+                                                                last = target.node[len(target.node)-1]
+                                                                de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
+                                                                np = getPerpendicular(de,point)
+                                                                if (np.sub(point)).Length < radius:
+                                                                        target.snap.coords.point.setValue((np.x,np.y,np.z))
+                                                                        target.snap.setMarker("circle")
+                                                                        target.snap.on()
+                                                                        point = np
 
         # check if we snapped to something
-	if (snapped == None):
+	snapped=target.view.getObjectInfo((cursor[0],cursor[1]))
+
+        if (snapped == None):
                 gpt = getGridSnap(target,point)
                 if gpt:
                         if radius != 0:
@@ -174,15 +212,13 @@ def snapPoint(target,point,cursor,ctrl=False):
                                 if dv.Length <= radius:
                                         target.snap.coords.point.setValue((gpt.x,gpt.y,gpt.z))
                                         target.snap.setMarker("point")
-                                        target.snap.switch.whichChild = 0  
+                                        target.snap.on()  
                                         return gpt
-		target.snap.switch.whichChild = -1
 		return point
 	else:
                 obj = target.doc.getObject(snapped['Object'])
                 if hasattr(obj.ViewObject,"Selectable"):
                         if not obj.ViewObject.Selectable:
-                                target.snap.switch.whichChild = -1
                                 return point
                 if not ctrl:
                         # are we in passive snap?
@@ -209,6 +245,8 @@ def snapPoint(target,point,cursor,ctrl=False):
                                                 if (len(target.node) > 0):
                                                         last = target.node[len(target.node)-1]
                                                         snapArray.extend(getConstrainedPoint(edge,last,target.constrain))
+                                                        np = getPerpendicular(edge,last)
+                                                        snapArray.append([np,1,np])
 
                                         elif isinstance (edge.Curve,Part.Circle):
                                                 rad = edge.Curve.Radius
@@ -272,7 +310,7 @@ def snapPoint(target,point,cursor,ctrl=False):
 			target.snap.setMarker("square")
 		else:
 			target.snap.setMarker("circle")
-		target.snap.switch.whichChild = 0                                
+		target.snap.on()                                
 		return newpoint[2]
 
 def constrainPoint (target,pt,mobile=False,sym=False):
@@ -1164,6 +1202,7 @@ class Creator:
 			self.constrain = None
 			self.obj = None
                         self.snap = snapTracker()
+                        self.extsnap = lineTracker(dotted=True)
                         self.planetrack = PlaneTracker()
                         if Draft.getParam("grid"):
                                 self.grid = gridTracker()
@@ -2379,6 +2418,7 @@ class Modifier:
                         self.ui.setTitle(name)
 			self.featureName = name
                         self.snap = snapTracker()
+                        self.extsnap = lineTracker(dotted=True)
                         self.planetrack = PlaneTracker()
                         if Draft.getParam("grid"):
                                 self.grid = gridTracker()
