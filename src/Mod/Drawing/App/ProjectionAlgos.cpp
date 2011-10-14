@@ -70,7 +70,8 @@
 #include <Handle_Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-
+#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+#include <Geom2d_BSplineCurve.hxx>
 
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -81,7 +82,7 @@
 
 using namespace Drawing;
 using namespace std;
-
+static const double Pi = 3.14159265358979323846264338327950288419716939937511;
 
 //===========================================================================
 // ProjectionAlgos
@@ -230,7 +231,10 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
                 << Edges2SVG(H1)
                 << "</g>" << endl;
     }
-
+        /*result << "0"          << endl
+        << "SECTION"  << endl
+        << "2"          << endl
+        << "ENTITIES" << endl;*/
     return result.str();
 }
 
@@ -414,6 +418,553 @@ void ProjectionAlgos::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostr
         out << str.str();
     }
     catch (Standard_Failure) {
-        printGeneric(c, id, out);
+        printDxfGeneric(c, id, out);
     }
 }
+
+/* dxf output section - Dan Falck 2011/09/25  */
+
+std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale)
+{
+    std::stringstream result;
+    
+        result << "0"          << endl
+        << "SECTION"  << endl
+
+        << "2"          << endl
+        << "ENTITIES" << endl;
+
+    if (!H.IsNull() && (type & WithHidden)) {
+        float width = 0.15f/scale;
+        BRepMesh::Mesh(H,0.1);
+        result  //<< "<g" 
+                //<< " id=\"" << ViewName << "\"" << endl
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke-width=\"" << width << "\"" << endl
+                << "   stroke-linecap=\"butt\"" << endl
+                << "   stroke-linejoin=\"miter\"" << endl
+                << "   stroke-dasharray=\"5 3\"" << endl
+                << "   fill=\"none\"" << endl
+                << "  >" << endl*/
+                << Edges2DXF(H);
+                //<< "</g>" << endl;
+    }
+    if (!HO.IsNull() && (type & WithHidden)) {
+        float width = 0.15f/scale;
+        BRepMesh::Mesh(HO,0.1);
+        result  //<< "<g" 
+                //<< " id=\"" << ViewName << "\"" << endl
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke-width=\"" << width << "\"" << endl
+                << "   stroke-linecap=\"butt\"" << endl
+                << "   stroke-linejoin=\"miter\"" << endl
+                << "   stroke-dasharray=\"5 3\"" << endl
+                << "   fill=\"none\"" << endl
+                << "  >" << endl*/
+                << Edges2DXF(HO);
+                //<< "</g>" << endl;
+    }
+    if (!VO.IsNull()) {
+        float width = 0.35f/scale;
+        BRepMesh::Mesh(VO,0.1);
+        result  //<< "<g" 
+                //<< " id=\"" << ViewName << "\"" << endl
+
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke-width=\"" << width << "\"" << endl
+                << "   stroke-linecap=\"butt\"" << endl
+                << "   stroke-linejoin=\"miter\"" << endl
+                << "   fill=\"none\"" << endl
+                << "  >" << endl*/
+
+                << Edges2DXF(VO);
+                //<< "</g>" << endl;
+    }
+    if (!V.IsNull()) {
+        float width = 0.35f/scale;
+
+        BRepMesh::Mesh(V,0.1);
+        result  //<< "<g" 
+                //<< " id=\"" << ViewName << "\"" << endl
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke-width=\"" << width << "\"" << endl
+                << "   stroke-linecap=\"butt\"" << endl
+
+                << "   stroke-linejoin=\"miter\"" << endl
+                << "   fill=\"none\"" << endl
+                << "  >" << endl*/
+                << Edges2DXF(V);
+                //<< "</g>" << endl;
+
+    }
+    if (!V1.IsNull() && (type & WithSmooth)) {
+        float width = 0.35f/scale;
+        BRepMesh::Mesh(V1,0.1);
+        result  //<< "<g" 
+
+                //<< " id=\"" << ViewName << "\"" << endl
+               /* << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke-width=\"" << width << "\"" << endl
+                << "   stroke-linecap=\"butt\"" << endl
+                << "   stroke-linejoin=\"miter\"" << endl
+                << "   fill=\"none\"" << endl
+
+                << "  >" << endl*/
+                << Edges2DXF(V1);
+                //<< "</g>" << endl;
+    }
+    if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
+
+        float width = 0.15f/scale;
+        BRepMesh::Mesh(H1,0.1);
+        result  //<< "<g" 
+                //<< " id=\"" << ViewName << "\"" << endl
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke-width=\"" << width << "\"" << endl
+
+                << "   stroke-linecap=\"butt\"" << endl
+                << "   stroke-linejoin=\"miter\"" << endl
+                << "   stroke-dasharray=\"5 3\"" << endl
+                << "   fill=\"none\"" << endl
+                << "  >" << endl*/
+
+                << Edges2DXF(H1);
+                //<< "</g>" << endl;
+    }
+
+
+        result 	 << 0          << endl
+                << "ENDSEC"   << endl
+                << 0          << endl
+                << "EOF";
+
+    return result.str();
+}
+
+
+
+std::string ProjectionAlgos::Edges2DXF(const TopoDS_Shape &Input)
+{
+    std::stringstream result;
+
+    TopExp_Explorer edges( Input, TopAbs_EDGE );
+    for (int i = 1 ; edges.More(); edges.Next(),i++ ) {
+        const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+        BRepAdaptor_Curve adapt(edge);
+        if (adapt.GetType() == GeomAbs_Circle) {
+            printDxfCircle(adapt, result);
+        }
+        else if (adapt.GetType() == GeomAbs_Ellipse) {
+            printDxfEllipse(adapt, i, result);
+        }
+        else if (adapt.GetType() == GeomAbs_BSplineCurve) {
+            printDxfBSpline(adapt, i, result);
+        }
+        // fallback
+        else {
+            printDxfGeneric(adapt, i, result);
+        }
+    }
+
+    return result.str();
+}
+
+void ProjectionAlgos::printDxfHeader( std::ostream& out)
+{
+        out	 << 0          << endl;
+        out << "SECTION"  << endl;
+        out << 2          << endl;
+        out << "ENTITIES" << endl;
+}
+
+void ProjectionAlgos::printDxfGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+{
+
+    double uStart = c.FirstParameter();
+    gp_Pnt PS;
+    gp_Vec VS;
+    c.D1(uStart, PS, VS);
+
+    double uEnd = c.LastParameter();
+    gp_Pnt PE;
+    gp_Vec VE;
+    c.D1(uEnd, PE, VE);
+
+        out << "0"			<< endl;
+        out << "LINE"		<< endl;
+        out << "8"			<< endl;	// Group code for layer name
+        out << "sheet_layer" << endl; // Layer name 
+        out << "10"			<< endl;	// Start point of line
+        out << PS.X()		<< endl;	// X in WCS coordinates
+        out << "20"			<< endl;
+        out << PS.Y()		<< endl;	// Y in WCS coordinates
+        out << "30"			<< endl;
+        out << "0"		<< endl;	// Z in WCS coordinates
+        out << "11"			<< endl;	// End point of line
+        out << PE.X()		<< endl;	// X in WCS coordinates
+        out << "21"			<< endl;
+        out << PE.Y()		<< endl;	// Y in WCS coordinates
+        out << "31"			<< endl;
+        out << "0"		<< endl;	// Z in WCS coordinates
+
+    
+}
+
+void ProjectionAlgos::printDxfCircle(const BRepAdaptor_Curve& c, std::ostream& out)
+{
+    gp_Circ circ = c.Circle();
+	//const gp_Ax1& axis = c->Axis();
+    const gp_Pnt& p= circ.Location();
+    double r = circ.Radius();
+    double f = c.FirstParameter();
+    double l = c.LastParameter();
+    gp_Pnt s = c.Value(f);
+    gp_Pnt m = c.Value((l+f)/2.0);
+    gp_Pnt e = c.Value(l);
+
+    gp_Vec v1(m,s);
+    gp_Vec v2(m,e);
+    gp_Vec v3(0,0,1);
+    double a = v3.DotCross(v1,v2);
+
+    // a full circle
+    if (s.SquareDistance(e) < 0.001) {
+        //out << "<circle cx =\"" << p.X() << "\" cy =\"" 
+            //<< p.Y() << "\" r =\"" << r << "\" />";
+	    out << 0			<< endl;
+	    out << "CIRCLE"		<< endl;
+	    out << 8			<< endl;	// Group code for layer name
+	    out << "sheet_layer"	<< endl;	// Layer number
+	    out << 10			<< endl;	// Centre X
+	    out << p.X()		<< endl;	// X in WCS coordinates
+	    out << 20			<< endl;
+	    out << p.Y()		<< endl;	// Y in WCS coordinates
+	    out << 30			<< endl;
+	    out << 0		<< endl;	// Z in WCS coordinates-leaving flat
+	    out << 40			<< endl;	//
+	    out << r		<< endl;	// Radius
+                                }
+
+
+
+    // arc of circle
+    else {
+        // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
+        /*char xar = '0'; // x-axis-rotation
+        char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
+        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        out << "<path d=\"M" << s.X() <<  " " << s.Y()
+            << " A" << r << " " << r << " "
+            << xar << " " << las << " " << swp << " "
+            << e.X() << " " << e.Y() << "\" />";*/
+	double ax = s.X() - p.X();
+	double ay = s.Y() - p.Y();
+	double bx = e.X() - p.X();
+	double by = e.Y() - p.Y();
+
+	double start_angle = atan2(ay, ax) * 180/Pi;
+	double end_angle = atan2(by, bx) * 180/Pi;
+
+
+	if(a > 0){
+		double temp = start_angle;
+		start_angle = end_angle;
+		end_angle = temp;}
+	out << 0			<< endl;
+	out << "ARC"		<< endl;
+	out << 8			<< endl;	// Group code for layer name
+	out << "sheet_layer"	<< endl;	// Layer number
+	out << 10			<< endl;	// Centre X
+	out << p.X()		<< endl;	// X in WCS coordinates
+	out << 20			<< endl;
+	out << p.Y()		<< endl;	// Y in WCS coordinates
+	out << 30			<< endl;
+	out << 0		<< endl;	// Z in WCS coordinates
+	out << 40			<< endl;	//
+	out << r		<< endl;	// Radius
+	out << 50			<< endl;
+	out << start_angle	<< endl;	// Start angle
+	out << 51			<< endl;
+	out << end_angle	<< endl;	// End angle
+
+
+
+    }
+}
+
+void ProjectionAlgos::printDxfEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+{
+    gp_Elips ellp = c.Ellipse();
+    const gp_Pnt& p= ellp.Location();
+    double r1 = ellp.MajorRadius();
+    double r2 = ellp.MinorRadius();
+    double f = c.FirstParameter();
+    double l = c.LastParameter();
+    gp_Pnt s = c.Value(f);
+    gp_Pnt m = c.Value((l+f)/2.0);
+    gp_Pnt e = c.Value(l);
+
+    gp_Vec v1(m,s);
+    gp_Vec v2(m,e);
+    gp_Vec v3(0,0,1);
+    double a = v3.DotCross(v1,v2);
+
+    // a full ellipse
+   /* if (s.SquareDistance(e) < 0.001) {
+        out << "<ellipse cx =\"" << p.X() << "\" cy =\"" 
+            << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>";
+    }
+    // arc of ellipse
+    else {
+        // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
+        gp_Dir xaxis = ellp.XAxis().Direction();
+        Standard_Real angle = xaxis.Angle(gp_Dir(1,0,0));
+        angle = Base::toDegrees<double>(angle);
+        char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
+        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+        out << "<path d=\"M" << s.X() <<  " " << s.Y()
+            << " A" << r1 << " " << r2 << " "
+            << angle << " " << las << " " << swp << " "
+            << e.X() << " " << e.Y() << "\" />";
+    }*/
+        gp_Dir xaxis = ellp.XAxis().Direction();
+        double angle = xaxis.Angle(gp_Dir(1,0,0));
+        //double rotation = Base::toDegrees<double>(angle);
+
+
+	double ax = s.X() - p.X();
+	double ay = s.Y() - p.Y();
+	double bx = e.X() - p.X();
+	double by = e.Y() - p.Y();
+
+	double start_angle = atan2(ay, ax) * 180/Pi;
+	double end_angle = atan2(by, bx) * 180/Pi;
+
+	double major_x;double major_y;
+	
+	major_x = r1 * sin(angle*90);
+	major_y = r1 * cos(angle*90);
+
+	double ratio = r2/r1;
+
+	if(a > 0){
+		double temp = start_angle;
+		start_angle = end_angle;
+		end_angle = temp;
+	}
+	out << 0			<< endl;
+	out << "ELLIPSE"		<< endl;
+	out << 8			<< endl;	// Group code for layer name
+	out << "sheet_layer"	<< endl;	// Layer number
+	out << 10			<< endl;	// Centre X
+	out << p.X()		<< endl;	// X in WCS coordinates
+	out << 20			<< endl;
+	out << p.Y()		<< endl;	// Y in WCS coordinates
+	out << 30			<< endl;
+	out << 0		<< endl;	// Z in WCS coordinates
+	out << 11			<< endl;	//
+	out << major_x		<< endl;	// Major X
+	out << 21			<< endl;
+	out << major_y		<< endl;	// Major Y
+	out << 31			<< endl;
+	out << 0		<< endl;	// Major Z
+	out << 40			<< endl;	//
+	out << ratio		<< endl;	// Ratio
+	out << 41		<< endl;
+	out << start_angle	<< endl;	// Start angle
+	out << 42		<< endl;
+	out << end_angle	<< endl;	// End angle
+
+
+
+}
+
+void ProjectionAlgos::printDxfBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& out) //Not even close yet- DF 
+{
+    try {
+        std::stringstream str;
+        Handle_Geom_BSplineCurve spline = c.BSpline();
+        if (spline->Degree() > 3) {
+            Standard_Real tol3D = 0.001;
+            Standard_Integer maxDegree = 3, maxSegment = 10;
+            Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+            // approximate the curve using a tolerance
+            Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C2,maxSegment,maxDegree);
+            if (approx.IsDone() && approx.HasResult()) {
+                // have the result
+                spline = approx.Curve();
+            }
+        }
+		
+        GeomConvert_BSplineCurveToBezierCurve crt(spline);
+		//GeomConvert_BSplineCurveKnotSplitting crt(spline,0);
+        Standard_Integer arcs = crt.NbArcs();
+		//Standard_Integer arcs = crt.NbSplits()-1;
+        	str << 0 << endl
+				<< "SECTION" << endl
+				<< 2 << endl
+				<< "ENTITIES" << endl
+				<< 0 << endl
+				<< "SPLINE" << endl;
+				//<< 8 << endl
+				//<< 0 << endl
+				//<< 66 << endl
+				//<< 1 << endl
+				//<< 0 << endl;
+
+        for (Standard_Integer i=1; i<=arcs; i++) {
+            Handle_Geom_BezierCurve bezier = crt.Arc(i);
+            Standard_Integer poles = bezier->NbPoles();
+			//Standard_Integer poles = bspline->NbPoles();
+			//gp_Pnt p1 = bspline->Pole(1);
+
+            if (bezier->Degree() == 3) {
+                if (poles != 4)
+                    Standard_Failure::Raise("do it the generic way");
+                gp_Pnt p1 = bezier->Pole(1);
+                gp_Pnt p2 = bezier->Pole(2);
+                gp_Pnt p3 = bezier->Pole(3);
+                gp_Pnt p4 = bezier->Pole(4);
+                if (i == 1) {
+                    str 
+						<< 10 << endl
+						<< p1.X() << endl
+						<< 20 << endl
+						<< p1.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+						
+						<< 10 << endl
+                        << p2.X() << endl
+						<< 20 << endl
+						<< p2.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+						
+						<< 10 << endl
+                        << p3.X() << endl
+						<< 20 << endl
+						<< p3.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+						
+						<< 10 << endl
+                        << p4.X() << endl
+						<< 20 << endl
+						<< p4.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+
+						<< 12 << endl
+						<< p1.X() << endl
+						<< 22 << endl
+						<< p1.Y() << endl
+						<< 32 << endl
+						<< 0 << endl
+
+						<< 13 << endl
+						<< p4.X() << endl
+						<< 23 << endl
+						<< p4.Y() << endl
+						<< 33 << endl
+						<< 0 << endl;
+                }
+                else {
+                    str 
+						<< 10 << endl
+                        << p3.X() << endl
+						<< 20 << endl
+						<< p3.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+						
+						<< 10 << endl
+                        << p4.X() << endl
+						<< 20 << endl
+						<< p4.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+
+						<< 12 << endl
+						<< p3.X() << endl
+						<< 22 << endl
+						<< p3.Y() << endl
+						<< 32 << endl
+						<< 0 << endl
+
+						<< 13 << endl
+						<< p4.X() << endl
+						<< 23 << endl
+						<< p4.Y() << endl
+						<< 33 << endl
+						<< 0 << endl;
+
+                }
+            }
+            else if (bezier->Degree() == 2) {
+                if (poles != 3)
+                    Standard_Failure::Raise("do it the generic way");
+                gp_Pnt p1 = bezier->Pole(1);
+                gp_Pnt p2 = bezier->Pole(2);
+                gp_Pnt p3 = bezier->Pole(3);
+                if (i == 1) {
+                    str 
+						<< 10 << endl
+						<< p1.X() << endl
+						<< 20 << endl
+						<< p1.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+						
+						<< 10 << endl
+                        << p2.X() << endl
+						<< 20 << endl
+						<< p2.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+						
+						<< 10 << endl
+                        << p3.X() << endl
+						<< 20 << endl
+						<< p3.Y() << endl
+						<< 30 << endl
+						<< 0 << endl
+
+						<< 12 << endl
+						<< p1.X() << endl
+						<< 22 << endl
+						<< p1.Y() << endl
+						<< 32 << endl
+						<< 0 << endl
+
+						<< 13 << endl
+						<< p3.X() << endl
+						<< 23 << endl
+						<< p3.Y() << endl
+						<< 33 << endl
+						<< 0 << endl;
+                }
+                else {
+                    str 
+						<< 10 << endl
+                        << p3.X() << endl
+						<< 20 << endl
+						<< p3.Y() << endl
+						<< 30 << endl
+						<< 0 << endl;
+                }
+            }
+            else {
+                Standard_Failure::Raise("do it the generic way");
+            }
+        }
+
+        //str << "\" />";
+        out << str.str();
+    }
+    catch (Standard_Failure) {
+        printDxfGeneric(c, id, out);
+    }
+}
+
+

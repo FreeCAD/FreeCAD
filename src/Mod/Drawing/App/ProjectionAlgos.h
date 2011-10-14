@@ -46,6 +46,7 @@ public:
     static TopoDS_Shape invertY(const TopoDS_Shape&);
 
     std::string Edges2SVG(const TopoDS_Shape &);
+    std::string Edges2DXF(const TopoDS_Shape &);//add by Dan Falck 2011/09/25 
 
     enum SvgExtractionType { 
         Plain = 0,
@@ -54,6 +55,8 @@ public:
     };
 
     std::string getSVG(SvgExtractionType type, float scale);
+    std::string getDXF(SvgExtractionType type, float scale);//add by Dan Falck 2011/09/25 
+
 
     const TopoDS_Shape &Input;
     const Base::Vector3f &Direction;
@@ -74,6 +77,13 @@ private:
     void printEllipse(const BRepAdaptor_Curve&, int id, std::ostream&);
     void printBSpline(const BRepAdaptor_Curve&, int id, std::ostream&);
     void printGeneric(const BRepAdaptor_Curve&, int id, std::ostream&);
+    // dxf output section - Dan Falck 2011/09/25  
+    void printDxfHeader(std::ostream&);
+    void printDxfCircle(const BRepAdaptor_Curve&, std::ostream&);
+    void printDxfEllipse(const BRepAdaptor_Curve&, int id, std::ostream&);
+    void printDxfBSpline(const BRepAdaptor_Curve&, int id, std::ostream&);
+    void printDxfGeneric(const BRepAdaptor_Curve&, int id, std::ostream&);
+
 };
 
 } //namespace Drawing
