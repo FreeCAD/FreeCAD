@@ -2229,7 +2229,15 @@ class Dimension(Creator):
 			'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment")}
 
 	def Activated(self):
-                if self.cont: self.finish()
+                if self.cont:
+                        self.finish()
+                elif self.hasMeasures:
+                        Creator.Activated(self,"Dimension")
+                        self.dimtrack = dimTracker()
+                        self.arctrack = arcTracker()
+                        self.constraintrack = lineTracker(dotted=True)
+                        self.createOnMeasures()
+                        self.finish()
                 else:
                         Creator.Activated(self,"Dimension")
                         if self.ui:
@@ -2251,6 +2259,16 @@ class Dimension(Creator):
                                 msg(translate("draft", "Pick first point:\n"))
                                 FreeCADGui.draftToolBar.show()
 
+        def hasMeasures(self):
+                "checks if only measurements objects are selected"
+                sel = FreeCADGui.Selection.getSelection()
+                if not sel:
+                        return False
+                for o in sel:
+                        if not o.isDerivedFrom("App::MeasureDistance"):
+                                return False
+                return True
+
 	def finish(self,closed=False):
 		"terminates the operation"
                 self.cont = None
@@ -2260,6 +2278,15 @@ class Dimension(Creator):
 			self.dimtrack.finalize()
                         self.arctrack.finalize()
 			self.constraintrack.finalize()
+
+        def createOnMeasures(self):
+                for o in FreeCADGui.Selection.getSelection():
+                        p1 = o.P1
+                        p2 = o.P2
+                        pt = o.ViewObject.RootNode.getChildren()[1].getChildren()[0].getChildren()[0].getChildren()[3]
+                        p3 = Vector(pt.point.getValues()[2].getValue())
+                        self.commit(translate("draft","Create Dimension"),partial(Draft.makeDimension,p1,p2,p3))
+                        self.commit(translate("draft","Delete Measurement"),partial(FreeCAD.ActiveDocument.removeObject,o.Name))
 
 	def createObject(self):
 		"creates an object in the current doc"
