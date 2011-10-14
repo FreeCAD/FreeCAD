@@ -56,6 +56,7 @@ class ArchWorkbench(Workbench):
                 FreeCADGui.addLanguagePath(":/translations")
                 FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
                 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
+                FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
                 try:
                         import collada
                 except:

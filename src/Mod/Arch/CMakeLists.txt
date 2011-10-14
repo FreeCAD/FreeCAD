@@ -17,6 +17,7 @@ SET(Arch_SRCS
     Commands.py
     SectionPlane.py
     importDAE.py
+    importOBJ.py
     Window.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})

@@ -18,6 +18,7 @@ data_DATA = \
 		ifcReader.py \
 		importDAE.py \
 		importIFC.py \
+		importOBJ.py \
 		Init.py \
 		InitGui.py \
 		Site.py \

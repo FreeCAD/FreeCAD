@@ -407,7 +407,25 @@ def sortEdges(lEdges, aVertex=None):
 					linstances += [i,j-1,instance]
 		return [count]+linstances
 	
-	if (len(lEdges) < 2): return lEdges
+	if (len(lEdges) < 2):
+                if aVertex == None:
+                        return lEdges
+                else:
+                        result = lookfor(aVertex,lEdges)
+                        if result[0] != 0:
+                                if isSameVertex(aVertex,result[3].Vertexes[0]):
+                                        print "1keeping"
+                                        return lEdges
+                                else:
+                                        print "1flipping"
+                                        if isinstance(result[3].Curve,Part.Line):
+                                                return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
+                                        elif isinstance(result[3].Curve,Part.Circle):
+                                                mp = findMidpoint(result[3])
+                                                return [Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()]
+                                        else:
+                                                return lEdges
+                                        
 	olEdges = [] # ol stands for ordered list 
 	if aVertex == None:
 		for i in range(len(lEdges)*2) :
@@ -424,8 +442,10 @@ def sortEdges(lEdges, aVertex=None):
 			del lEdges[result[1]]
 			next = sortEdges(lEdges, result[3].Vertexes[-((-result[2])^1)])
                         if isSameVertex(aVertex,result[3].Vertexes[0]):
+                                print "keeping"
                                 olEdges += [result[3]] + next
                         else:
+                                print "flipping"
                                 if isinstance(result[3].Curve,Part.Line):
                                         newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
                                         olEdges += [newedge] + next

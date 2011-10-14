@@ -36,6 +36,7 @@
             <File Id="ArchIfcReaderPy" Name="ifcReader.py" DiskId="1" />
             <File Id="importDAEPy" Name="importDAE.py" DiskId="1" />
             <File Id="importIFCPy" Name="importIFC.py" DiskId="1" />
+            <File Id="importOBJPy" Name="importOBJ.py" DiskId="1" />
             <File Id="ArchSitePy" Name="Site.py" DiskId="1" />
             <File Id="ArchStructurePy" Name="Structure.py" DiskId="1" />
             <File Id="ArchWallPy" Name="Wall.py" DiskId="1" />
