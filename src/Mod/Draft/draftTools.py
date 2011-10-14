@@ -890,27 +890,32 @@ class editTracker(Tracker):
 class PlaneTracker(Tracker):
         "A working plane tracker"
         def __init__(self):
+                # getting screen distance
+                p1 = FreeCADGui.ActiveDocument.ActiveView.getPoint((100,100))
+                p2 = FreeCADGui.ActiveDocument.ActiveView.getPoint((110,100))
+                bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange")/2)
                 self.trans = coin.SoTransform()
 		self.trans.translation.setValue([0,0,0])
                 m1 = coin.SoMaterial()
-                # m1.transparency.setValue(0.8)
+                m1.transparency.setValue(0.8)
                 m1.diffuseColor.setValue([0.4,0.4,0.6])
                 c1 = coin.SoCoordinate3()
-                c1.point.setValues([[-1,-1,0],[1,-1,0],[1,1,0],[-1,1,0]])
-                # f = coin.SoIndexedFaceSet()
-                # f.coordIndex.setValues([0,1,2,3])
+                c1.point.setValues([[-bl,-bl,0],[bl,-bl,0],[bl,bl,0],[-bl,bl,0]])
+                f = coin.SoIndexedFaceSet()
+                f.coordIndex.setValues([0,1,2,3])
                 m2 = coin.SoMaterial()
-                # m2.transparency.setValue(0.7)
+                m2.transparency.setValue(0.7)
                 m2.diffuseColor.setValue([0.2,0.2,0.3])
                 c2 = coin.SoCoordinate3()
-                c2.point.setValues([[0,1,0],[0,0,0],[1,0,0],[-.05,.95,0],[0,1,0],[.05,.95,0],[.95,.05,0],[1,0,0],[.95,-.05,0]])
+                c2.point.setValues([[0,bl,0],[0,0,0],[bl,0,0],[-.05*bl,.95*bl,0],[0,bl,0],
+                                    [.05*bl,.95*bl,0],[.95*bl,.05*bl,0],[bl,0,0],[.95*bl,-.05*bl,0]])
                 l = coin.SoLineSet()
                 l.numVertices.setValues([3,3,3])
                 s = coin.SoSeparator()
                 s.addChild(self.trans)
-                # s.addChild(m1)
-                # s.addChild(c1)
-                # s.addChild(f)
+                s.addChild(m1)
+                s.addChild(c1)
+                s.addChild(f)
                 s.addChild(m2)
                 s.addChild(c2)
                 s.addChild(l)
@@ -1219,6 +1224,7 @@ class Creator:
 
 	def finish(self):
                 self.snap.finalize()
+                self.extsnap.finalize()
 		self.node=[]
                 self.planetrack.finalize()
                 if self.grid: self.grid.finalize()
@@ -1344,6 +1350,7 @@ class Line(Creator):
 			last = self.node[len(self.node)-2]
 			newseg = Part.Line(last,point).toShape()
 			self.obj.Shape = newseg
+                        self.obj.ViewObject.Visibility = True
 			if self.isWire:
 				msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
 		else:
@@ -1354,6 +1361,19 @@ class Line(Creator):
 			self.obj.Shape = newshape
 			msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
 
+        def wipe(self):
+                "removes all previous segments and starts from last point"
+                if len(self.node) > 1:
+                        print "nullifying"
+                        #self.obj.Shape.nullify()
+                        self.obj.ViewObject.Visibility = False
+                        self.node = [self.node[-1]]
+                        print "setting trackers"
+                        self.linetrack.p1(self.node[0])
+                        self.planetrack.set(self.node[0])
+			msg(translate("draft", "Pick next point:\n"))
+                        print "done"
+                        
 	def numericInput(self,numx,numy,numz):
 		"this function gets called by the toolbar when valid x, y, and z have been entered there"
 		point = Vector(numx,numy,numz)
@@ -2435,6 +2455,7 @@ class Modifier:
 	def finish(self):
 		self.node = []
                 self.snap.finalize()
+                self.extsnap.finalize()
 		FreeCAD.activeDraftCommand = None
 		if self.ui:
 			self.ui.offUi()

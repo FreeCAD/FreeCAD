@@ -292,6 +292,7 @@ class DraftToolBar:
                 self.undoButton = self._pushbutton("undoButton", self.layout, icon='Draft_Rotate')
                 self.finishButton = self._pushbutton("finishButton", self.layout, icon='Draft_Finish')
                 self.closeButton = self._pushbutton("closeButton", self.layout, icon='Draft_Lock')
+                self.wipeButton = self._pushbutton("wipeButton", self.layout, icon='Draft_Wipe')
                 self.xyButton = self._pushbutton("xyButton", self.layout)
                 self.xzButton = self._pushbutton("xzButton", self.layout)
                 self.yzButton = self._pushbutton("yzButton", self.layout)
@@ -325,6 +326,7 @@ class DraftToolBar:
                 QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
                 QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
                 QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
+                QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
                 QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
                 QtCore.QObject.connect(self.xyButton,QtCore.SIGNAL("clicked()"),self.selectXY)
                 QtCore.QObject.connect(self.xzButton,QtCore.SIGNAL("clicked()"),self.selectXZ)
@@ -403,9 +405,9 @@ class DraftToolBar:
                 self.radiusValue.setToolTip(translate("draft", "Radius of Circle"))
                 self.isRelative.setText(translate("draft", "&Relative"))
                 self.isRelative.setToolTip(translate("draft", "Coordinates relative to last point or absolute (SPACE)"))
-                self.hasFill.setText(translate("draft", "&Filled"))
-                self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe (F)"))
-                self.finishButton.setText(translate("draft", "F&inish"))
+                self.hasFill.setText(translate("draft", "F&illed"))
+                self.hasFill.setToolTip(translate("draft", "Check this if the object should appear as filled, otherwise it will appear as wireframe (i)"))
+                self.finishButton.setText(translate("draft", "&Finish"))
                 self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation (F)"))
                 self.continueCmd.setToolTip(translate("draft", "If checked, command will not finish until you press the command button again"))
                 self.continueCmd.setText(translate("draft", "&Continue"))
@@ -417,6 +419,8 @@ class DraftToolBar:
                 self.undoButton.setToolTip(translate("draft", "Undo the last segment (CTRL+Z)"))
                 self.closeButton.setText(translate("draft", "&Close"))
                 self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line (C)"))
+                self.wipeButton.setText(translate("draft", "&Wipe"))
+                self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
                 self.numFaces.setToolTip(translate("draft", "Number of sides"))
                 self.offsetLabel.setText(translate("draft", "Offset"))
                 self.xyButton.setText(translate("draft", "XY"))
@@ -474,6 +478,7 @@ class DraftToolBar:
                 self.hasFill.show()
                 self.finishButton.show()
                 self.closeButton.show()
+                self.wipeButton.show()
                 self.undoButton.show()
                 self.continueCmd.show()
 
@@ -533,6 +538,7 @@ class DraftToolBar:
                         self.delButton.hide()
                         self.undoButton.hide()
                         self.closeButton.hide()
+                        self.wipeButton.hide()
                         self.xyButton.hide()
                         self.xzButton.hide()
                         self.yzButton.hide()
@@ -763,6 +769,10 @@ class DraftToolBar:
                 "close button action"
                 self.sourceCmd.finish(True)
 
+        def wipeLine(self):
+                "wipes existing segments of a line"
+                self.sourceCmd.wipe()
+
         def selectXY(self):
                 self.sourceCmd.selectHandler("XY")
 
@@ -799,6 +809,8 @@ class DraftToolBar:
                         if self.finishButton.isVisible():
                                 self.finish()
                         spec = True
+                elif txt.endsWith("w"):
+                        self.wipeLine()
                 elif txt.endsWith("c"):
                         if self.closeButton.isVisible():
                                 self.closeLine()

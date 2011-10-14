@@ -217,12 +217,15 @@ class plane:
                 ax = point.getAngle(self.u)
                 ay = point.getAngle(self.v)
                 az = point.getAngle(self.axis)
+                bx = point.getAngle(fcvec.neg(self.u))
+                by = point.getAngle(fcvec.neg(self.v))
+                bz = point.getAngle(fcvec.neg(self.axis))
                 b = min(ax,ay,az)
-                if b == ax:
+                if b in [ax,bx]:
                         return "x"
-                elif b == ay:
+                elif b in [ay,by]:
                         return "y"
-                elif b == az:
+                elif b in [az,bz]:
                         return "z"
                 else:
                         return None

@@ -414,10 +414,8 @@ def sortEdges(lEdges, aVertex=None):
                         result = lookfor(aVertex,lEdges)
                         if result[0] != 0:
                                 if isSameVertex(aVertex,result[3].Vertexes[0]):
-                                        print "1keeping"
                                         return lEdges
                                 else:
-                                        print "1flipping"
                                         if isinstance(result[3].Curve,Part.Line):
                                                 return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
                                         elif isinstance(result[3].Curve,Part.Circle):
@@ -442,10 +440,8 @@ def sortEdges(lEdges, aVertex=None):
 			del lEdges[result[1]]
 			next = sortEdges(lEdges, result[3].Vertexes[-((-result[2])^1)])
                         if isSameVertex(aVertex,result[3].Vertexes[0]):
-                                print "keeping"
                                 olEdges += [result[3]] + next
                         else:
-                                print "flipping"
                                 if isinstance(result[3].Curve,Part.Line):
                                         newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
                                         olEdges += [newedge] + next

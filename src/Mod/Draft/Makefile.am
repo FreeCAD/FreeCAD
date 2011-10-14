@@ -94,6 +94,7 @@ EXTRA_DIST = \
         Resources/icons/Draft_Trimex.svg \
         Resources/icons/Draft_Upgrade.svg \
         Resources/icons/Draft_Wire.svg \
+		Resources/icons/Draft_Wipe.svg \
         Resources/icons/Draft_WireToBSpline.svg \
         Resources/icons/Draft_Construction.svg \
 		Resources/icons/Draft_Draft.svg \
