@@ -176,30 +176,32 @@ def snapPoint(target,point,cursor,ctrl=False):
         if (len(target.node) > 0):
                 for o in [lastObj[1],lastObj[0]]:
                         if o:
-                                edges = target.doc.getObject(o).Shape.Edges
-                                if len(edges)<10:
-                                        for e in edges:
-                                                if isinstance(e.Curve,Part.Line):
-                                                        last = target.node[len(target.node)-1]
-                                                        de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()
-                                                        np = getPerpendicular(e,point)
-                                                        if (np.sub(point)).Length < radius:
-                                                                target.snap.coords.point.setValue((np.x,np.y,np.z))
-                                                                target.snap.setMarker("circle")
-                                                                target.snap.on()
-                                                                target.extsnap.p1(e.Vertexes[0].Point)
-                                                                target.extsnap.p2(np)
-                                                                target.extsnap.on()
-                                                                point = np
-                                                        else:
+                                ob = target.doc.getObject(o)
+                                if ob:
+                                        edges = ob.Shape.Edges
+                                        if len(edges)<10:
+                                                for e in edges:
+                                                        if isinstance(e.Curve,Part.Line):
                                                                 last = target.node[len(target.node)-1]
-                                                                de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
-                                                                np = getPerpendicular(de,point)
+                                                                de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()
+                                                                np = getPerpendicular(e,point)
                                                                 if (np.sub(point)).Length < radius:
                                                                         target.snap.coords.point.setValue((np.x,np.y,np.z))
                                                                         target.snap.setMarker("circle")
                                                                         target.snap.on()
+                                                                        target.extsnap.p1(e.Vertexes[0].Point)
+                                                                        target.extsnap.p2(np)
+                                                                        target.extsnap.on()
                                                                         point = np
+                                                                else:
+                                                                        last = target.node[len(target.node)-1]
+                                                                        de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
+                                                                        np = getPerpendicular(de,point)
+                                                                        if (np.sub(point)).Length < radius:
+                                                                                target.snap.coords.point.setValue((np.x,np.y,np.z))
+                                                                                target.snap.setMarker("circle")
+                                                                                target.snap.on()
+                                                                                point = np
 
         # check if we snapped to something
 	snapped=target.view.getObjectInfo((cursor[0],cursor[1]))
@@ -1268,11 +1270,24 @@ class Line(Creator):
                         self.obj=self.doc.addObject("Part::Feature",self.featureName)
                         # self.obj.ViewObject.Selectable = False
                         Draft.formatObject(self.obj)
+                        if not Draft.getParam("UiMode"): self.makeDumbTask()
 			self.call = self.view.addEventCallback("SoEvent",self.action)
 			msg(translate("draft", "Pick first point:\n"))
 
+        def makeDumbTask(self):
+                "create a dumb taskdialog to prevent deleting the temp object"
+                class TaskPanel:
+                        def __init__(self):
+                                pass
+                        def getStandardButtons(self):
+                                return 0
+                panel = TaskPanel()
+                FreeCADGui.Control.showDialog(panel)
+
 	def finish(self,closed=False,cont=False):
 		"terminates the operation and closes the poly if asked"
+                if not Draft.getParam("UiMode"):
+                        FreeCADGui.Control.closeDialog()
                 if self.obj:
                         old = self.obj.Name
                         todo.delay(self.doc.removeObject,old)
@@ -1289,6 +1304,8 @@ class Line(Creator):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
 			point,ctrlPoint = getPoint(self,arg)
                         self.ui.cross(True)
@@ -1420,6 +1437,8 @@ class BSpline(Line):
 
         def action(self,arg):
                 "scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
                 if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
                         point,ctrlPoint = getPoint(self,arg)
                         self.ui.cross(True)
@@ -1475,6 +1494,8 @@ class BSpline(Line):
 	
 	def finish(self,closed=False,cont=False):
 		"terminates the operation and closes the poly if asked"
+                if not Draft.getParam("UiMode"):
+                        FreeCADGui.Control.closeDialog()
 		if (len(self.node) > 1):
                         old = self.obj.Name
                         self.doc.removeObject(old)
@@ -1583,6 +1604,8 @@ class Rectangle(Creator):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
 			point,ctrlPoint = getPoint(self,arg,mobile=True)
 			self.rect.update(point)
@@ -1681,6 +1704,8 @@ class Arc(Creator):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"):
 			point,ctrlPoint = getPoint(self,arg)
 			# this is to make sure radius is what you see on screen
@@ -1960,6 +1985,8 @@ class Polygon(Creator):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"):
 			point,ctrlPoint = getPoint(self,arg)
 			# this is to make sure radius is what you see on screen
@@ -2141,6 +2168,8 @@ class Text(Creator):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
 			point,ctrlPoint = getPoint(self,arg)
 
@@ -2231,6 +2260,8 @@ class Dimension(Creator):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
                         shift = arg["ShiftDown"]
                         if self.arcmode or self.point2:
@@ -2534,6 +2565,8 @@ class Move(Modifier):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
 			point,ctrlPoint = getPoint(self,arg)
 			self.linetrack.p2(point)
@@ -2688,6 +2721,8 @@ class Rotate(Modifier):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"):
 			point,ctrlPoint = getPoint(self,arg)
                         self.ui.cross(True)
@@ -2875,6 +2910,8 @@ class Offset(Modifier):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"):
                         self.ui.cross(True)
                         point,ctrlPoint = getPoint(self,arg)
@@ -3342,6 +3379,8 @@ class Trimex(Modifier):
 				
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
                         self.ui.cross(True)
 			self.shift = arg["ShiftDown"]
@@ -3606,6 +3645,8 @@ class Scale(Modifier):
 
 	def action(self,arg):
 		"scene event handler"
+		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
 			point,ctrlPoint = getPoint(self,arg,sym=True)
 			self.linetrack.p2(point)
