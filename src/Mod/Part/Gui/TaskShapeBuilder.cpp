@@ -64,8 +64,10 @@ namespace PartGui {
         {
             this->mode = mode;
         }
-        bool allow(App::Document*, App::DocumentObject*, const char*sSubName)
+        bool allow(App::Document*, App::DocumentObject* obj, const char*sSubName)
         {
+            if (!obj || !obj->isDerivedFrom(Part::Feature::getClassTypeId()))
+                return false;
             if (!sSubName || sSubName[0] == '\0')
                 return (mode == ALL);
             std::string element(sSubName);
@@ -346,7 +348,7 @@ void ShapeBuilderWidget::switchMode(int mode)
     }
     else {
         d->gate->setMode(ShapeSelection::ALL);
-        d->ui.label->setText(tr("You can select all shapes"));
+        d->ui.label->setText(tr("All shape types can be selected"));
         d->ui.checkPlanar->setEnabled(false);
         d->ui.checkFaces->setEnabled(false);
     }
