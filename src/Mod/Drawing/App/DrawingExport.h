@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,56 +21,45 @@
  ***************************************************************************/
 
 
-#ifndef _ProjectionAlgos_h_
-#define _ProjectionAlgos_h_
+#ifndef DRAWING_EXPORT_H
+#define DRAWING_EXPORT_H
 
-#include <TopoDS_Shape.hxx>
-#include <Base/Vector3D.h>
 #include <string>
 
+class TopoDS_Shape;
 class BRepAdaptor_Curve;
 
 namespace Drawing
 {
 
-/** Algo class for projecting shapes and creating SVG output of it
- */
-class DrawingExport ProjectionAlgos
+class DrawingExport SVGOutput
 {
 public:
-    /// Constructor
-    ProjectionAlgos(const TopoDS_Shape &Input,const Base::Vector3f &Dir);
-    virtual ~ProjectionAlgos();
+    SVGOutput();
+    std::string exportEdges(const TopoDS_Shape&);
 
-    void execute(void);
-    static TopoDS_Shape invertY(const TopoDS_Shape&);
+private:
+    void printCircle(const BRepAdaptor_Curve&, std::ostream&);
+    void printEllipse(const BRepAdaptor_Curve&, int id, std::ostream&);
+    void printBSpline(const BRepAdaptor_Curve&, int id, std::ostream&);
+    void printGeneric(const BRepAdaptor_Curve&, int id, std::ostream&);
+};
 
-    enum SvgExtractionType { 
-        Plain = 0,
-        WithHidden = 1,
-        WithSmooth = 2
-    };
+/* dxf output section - Dan Falck 2011/09/25  */
+class DrawingExport DXFOutput
+{
+public:
+    DXFOutput();
+    std::string exportEdges(const TopoDS_Shape&);
 
-    std::string getSVG(SvgExtractionType type, float scale);
-    std::string getDXF(SvgExtractionType type, float scale);//add by Dan Falck 2011/09/25 
-
-
-    const TopoDS_Shape &Input;
-    const Base::Vector3f &Direction;
-
-    TopoDS_Shape V ;// hard edge visibly
-    TopoDS_Shape V1;// Smoth edges visibly
-    TopoDS_Shape VN;// contour edges visibly
-    TopoDS_Shape VO;// contours apparents visibly
-    TopoDS_Shape VI;// isoparamtriques   visibly
-    TopoDS_Shape H ;// hard edge       invisibly
-    TopoDS_Shape H1;// Smoth edges  invisibly
-    TopoDS_Shape HN;// contour edges invisibly
-    TopoDS_Shape HO;// contours apparents invisibly
-    TopoDS_Shape HI;// isoparamtriques   invisibly
+private:
+    void printHeader(std::ostream& out);
+    void printCircle(const BRepAdaptor_Curve&, std::ostream&);
+    void printEllipse(const BRepAdaptor_Curve&, int id, std::ostream&);
+    void printBSpline(const BRepAdaptor_Curve&, int id, std::ostream&);
+    void printGeneric(const BRepAdaptor_Curve&, int id, std::ostream&);
 };
 
 } //namespace Drawing
 
-
-#endif
+#endif // DRAWING_EXPORT_H

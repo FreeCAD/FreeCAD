@@ -3,6 +3,8 @@ lib_LTLIBRARIES=libDrawing.la Drawing.la
 
 libDrawing_la_SOURCES=\
 		AppDrawingPy.cpp \
+		DrawingExport.cpp \
+		DrawingExport.h \
 		FeaturePage.cpp \
 		FeaturePage.h \
 		FeatureProjection.cpp \

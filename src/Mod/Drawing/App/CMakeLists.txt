@@ -39,6 +39,8 @@ SET(Drawing_SRCS
 )
 
 SET(DrawingAlgos_SRCS
+    DrawingExport.cpp
+    DrawingExport.h
     ProjectionAlgos.cpp
     ProjectionAlgos.h
 )
