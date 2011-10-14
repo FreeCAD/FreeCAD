@@ -78,6 +78,12 @@ elif defaultWP == 3: plane.alignToPointAndAxis(Vector(0,0,0), Vector(1,0,0), 0)
 # last snapped objects, for quick intersection calculation
 lastObj = [0,0]
 
+# set modifier keys
+MODS = ["shift","ctrl","alt"]
+MODCONSTRAIN = MODS[Draft.getParam("modconstrain")]
+MODSNAP = MODS[Draft.getParam("modsnap")]
+MODALT = MODS[Draft.getParam("modalt")]
+
 #---------------------------------------------------------------------------
 # Global state
 #---------------------------------------------------------------------------
@@ -426,7 +432,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
 	ui = FreeCADGui.draftToolBar
 	view = FreeCADGui.ActiveDocument.ActiveView
 	point = view.getPoint(args["Position"][0],args["Position"][1])
-	point = snapPoint(target,point,args["Position"],args["CtrlDown"])
+	point = snapPoint(target,point,args["Position"],hasMod(args,MODSNAP))
 
 	if (not plane.weak) and workingplane:
 		# working plane was explicitely selected - project onto it
@@ -444,7 +450,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
                 else:
                         point = plane.projectPoint(point, viewDirection)
 	ctrlPoint = Vector(point.x,point.y,point.z)
-	if (args["ShiftDown"]): # constraining
+	if (hasMod(args,MODCONSTRAIN)): # constraining
 		if mobile and (target.constrain == None):
 			target.node.append(point)
 		point = constrainPoint(target,point,mobile=mobile,sym=sym)
@@ -477,6 +483,25 @@ def getSupport(args):
         except:
                 pass
         return obj
+
+def hasMod(args,mod):
+        "checks if args has a specific modifier"
+        if mod == "shift":
+                return args["ShiftDown"]
+        elif mod == "ctrl":
+                return args["CtrlDown"]
+        elif mod == "alt":
+                return args["AltDown"]
+
+def setMod(args,mod,state):
+        "sets a specific modifier state in args"
+        if mod == "shift":
+                args["ShiftDown"] = state
+        elif mod == "ctrl":
+                args["CtrlDown"] = state
+        elif mod == "alt":
+                args["AltDown"] = state
+
         
 #---------------------------------------------------------------------------
 # Trackers
@@ -1311,7 +1336,7 @@ class Line(Creator):
                         self.ui.cross(True)
 			self.linetrack.p2(point)
 			# Draw constraint tracker line.
-			if (arg["ShiftDown"]):
+			if hasMod(arg,MODCONSTRAIN):
 				self.constraintrack.p1(point)
 				self.constraintrack.p2(ctrlPoint)
 				self.constraintrack.on()
@@ -1444,7 +1469,7 @@ class BSpline(Line):
                         self.ui.cross(True)
                         self.bsplinetrack.update(self.node + [point])
                         # Draw constraint tracker line.
-                        if (arg["ShiftDown"]):
+                        if hasMod(arg,MODCONSTRAIN):
                                 self.constraintrack.p1(point)
                                 self.constraintrack.p2(ctrlPoint)
                                 self.constraintrack.on()
@@ -1715,7 +1740,7 @@ class Arc(Creator):
 				if not fcvec.isNull(viewdelta):
 					point = point.add(fcvec.neg(viewdelta))
 			if (self.step == 0): # choose center
-				if arg["AltDown"]:
+				if hasMod(arg,MODALT):
 					if not self.altdown:
 						self.ui.cross(False)
 						self.altdown = True
@@ -1734,7 +1759,7 @@ class Arc(Creator):
 					cir = fcgeo.circleFrom1tan2pt(self.tangents[0], self.tanpoints[0], point)
 					self.center = fcgeo.findClosestCircle(point,cir).Center
 					self.arctrack.setCenter(self.center)
-				if arg["AltDown"]:
+				if hasMod(arg,MODALT):
 					if not self.altdown:
 						self.ui.cross(False)
 						self.altdown = True
@@ -1761,7 +1786,7 @@ class Arc(Creator):
 				self.ui.setRadiusValue(self.rad)
 				self.arctrack.setRadius(self.rad)
 				# Draw constraint tracker line.
-				if (arg["ShiftDown"]):
+				if hasMod(arg,MODCONSTRAIN):
 					self.constraintrack.p1(point)
 					self.constraintrack.p2(ctrlPoint)
 					self.constraintrack.on()
@@ -1776,7 +1801,7 @@ class Arc(Creator):
 				else: angle = 0
 				self.linetrack.p2(fcvec.scaleTo(point.sub(self.center),self.rad).add(self.center))
 				# Draw constraint tracker line.
-				if (arg["ShiftDown"]):
+				if hasMod(arg,MODCONSTRAIN):
 					self.constraintrack.p1(point)
 					self.constraintrack.p2(ctrlPoint)
 					self.constraintrack.on()
@@ -1790,7 +1815,7 @@ class Arc(Creator):
 				else: angle = 0
 				self.linetrack.p2(fcvec.scaleTo(point.sub(self.center),self.rad).add(self.center))
 				# Draw constraint tracker line.
-				if (arg["ShiftDown"]):
+				if hasMod(arg,MODCONSTRAIN):
 					self.constraintrack.p1(point)
 					self.constraintrack.p2(ctrlPoint)
 					self.constraintrack.on()
@@ -1809,7 +1834,7 @@ class Arc(Creator):
 						point = point.add(fcvec.neg(viewdelta))
 				if (self.step == 0): # choose center
                                         self.support = getSupport(arg)
-					if arg["AltDown"]:
+					if hasMod(arg,MODALT):
 						snapped=self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
 						if snapped:
 							ob = self.doc.getObject(snapped['Object'])
@@ -1996,7 +2021,7 @@ class Polygon(Creator):
 				if not fcvec.isNull(viewdelta):
 					point = point.add(fcvec.neg(viewdelta))
 			if (self.step == 0): # choose center
-				if arg["AltDown"]:
+				if hasMod(arg,MODALT):
 					if not self.altdown:
 						self.ui.cross(False)
 						self.altdown = True
@@ -2015,7 +2040,7 @@ class Polygon(Creator):
 					cir = fcgeo.circleFrom1tan2pt(self.tangents[0], self.tanpoints[0], point)
 					self.center = fcgeo.findClosestCircle(point,cir).Center
 					self.arctrack.setCenter(self.center)
-				if arg["AltDown"]:
+				if hasMod(arg,MODALT):
 					if not self.altdown:
 						self.ui.cross(False)
 						self.altdown = True
@@ -2042,7 +2067,7 @@ class Polygon(Creator):
 				self.ui.setRadiusValue(self.rad)
 				self.arctrack.setRadius(self.rad)
 				# Draw constraint tracker line.
-				if (arg["ShiftDown"]):
+				if hasMod(arg,MODCONSTRAIN):
 					self.constraintrack.p1(point)
 					self.constraintrack.p2(ctrlPoint)
 					self.constraintrack.on()
@@ -2061,7 +2086,7 @@ class Polygon(Creator):
 						point = point.add(fcvec.neg(viewdelta))
 				if (self.step == 0): # choose center
                                         if not self.node: self.support = getSupport(arg)
-					if arg["AltDown"]:
+					if hasMod(arg,MODALT):
 						snapped=self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
 						if snapped:
 							ob = self.doc.getObject(snapped['Object'])
@@ -2263,12 +2288,12 @@ class Dimension(Creator):
 		if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
 			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
-                        shift = arg["ShiftDown"]
+                        shift = hasMod(arg,MODCONSTRAIN)
                         if self.arcmode or self.point2:
-                                arg["ShiftDown"] = False
+                                setMod(arg,MODCONSTRAIN,False)
 			point,ctrlPoint = getPoint(self,arg)
                         self.ui.cross(True)
-			if arg["AltDown"] and (len(self.node)<3):
+			if hasMod(arg,MODALT) and (len(self.node)<3):
                                 self.ui.cross(False)
                                 self.dimtrack.off()
 				if not self.altdown:
@@ -2346,7 +2371,7 @@ class Dimension(Creator):
 			if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
 				point,ctrlPoint = getPoint(self,arg)
                                 if not self.node: self.support = getSupport(arg)
-				if arg["AltDown"] and (len(self.node)<3):
+				if hasMod(arg,MODALT) and (len(self.node)<3):
 					snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
 					if snapped:
 						ob = self.doc.getObject(snapped['Object'])
@@ -2572,7 +2597,7 @@ class Move(Modifier):
 			self.linetrack.p2(point)
                         self.ui.cross(True)
 			# Draw constraint tracker line.
-			if (arg["ShiftDown"]):
+			if hasMod(arg,MODCONSTRAIN):
 				self.constraintrack.p1(point)
 				self.constraintrack.p2(ctrlPoint)
 				self.constraintrack.on()
@@ -2582,7 +2607,7 @@ class Move(Modifier):
 				delta = point.sub(last)
 				self.ghost.trans.translation.setValue([delta.x,delta.y,delta.z])
 			if self.extendedCopy:
-				if not arg["AltDown"]: self.finish()
+				if not hasMod(arg,MODALT): self.finish()
 		if (arg["Type"] == "SoMouseButtonEvent"):
 			if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
 				point,ctrlPoint = getPoint(self,arg)
@@ -2596,11 +2621,11 @@ class Move(Modifier):
                                         self.planetrack.set(point)
 				else:
 					last = self.node[0]
-					if self.ui.isCopy.isChecked() or arg["AltDown"]:
+					if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
 						self.move(point.sub(last),True)
 					else:
 						self.move(point.sub(last))
-					if arg["AltDown"]:
+					if hasMod(arg,MODALT):
 						self.extendedCopy = True
 					else:
 						self.finish(cont=True)
@@ -2732,7 +2757,7 @@ class Rotate(Modifier):
 				if not fcvec.isNull(viewdelta):
 					point = point.add(fcvec.neg(viewdelta))
 			if self.extendedCopy:
-				if not arg["AltDown"]:
+				if not hasMod(arg,MODALT):
                                         self.step = 3
                                         self.finish()
 			if (self.step == 0):
@@ -2744,7 +2769,7 @@ class Rotate(Modifier):
 				else: angle = 0
 				self.linetrack.p2(point)
 				# Draw constraint tracker line.
-				if (arg["ShiftDown"]):
+				if hasMod(arg,MODCONSTRAIN):
 					self.constraintrack.p1(point)
 					self.constraintrack.p2(ctrlPoint)
 					self.constraintrack.on()
@@ -2766,7 +2791,7 @@ class Rotate(Modifier):
 				self.ghost.trans.rotation.setValue(coin.SbVec3f(fcvec.tup(plane.axis)),sweep)
 				self.linetrack.p2(point)
 				# Draw constraint tracker line.
-				if (arg["ShiftDown"]):
+				if hasMod(arg,MODCONSTRAIN):
 					self.constraintrack.p1(point)
 					self.constraintrack.p2(ctrlPoint)
 					self.constraintrack.on()
@@ -2811,11 +2836,11 @@ class Rotate(Modifier):
 						sweep = (2*math.pi-self.firstangle)+angle
 					else:
 						sweep = angle - self.firstangle
-					if self.ui.isCopy.isChecked() or arg["AltDown"]:
+					if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
 						self.rot(sweep,True)
 					else:
 						self.rot(sweep)
-					if arg["AltDown"]:
+					if hasMod(arg,MODALT):
 						self.extendedCopy = True
 					else:
 						self.finish(cont=True)
@@ -2915,7 +2940,7 @@ class Offset(Modifier):
 		if (arg["Type"] == "SoLocation2Event"):
                         self.ui.cross(True)
                         point,ctrlPoint = getPoint(self,arg)
-			if (arg["ShiftDown"]) and self.constrainSeg:
+			if hasMod(arg,MODCONSTRAIN) and self.constrainSeg:
 				dist = fcgeo.findPerpendicular(point,self.shape,self.constrainSeg[1])
                                 e = self.shape.Edges[self.constrainSeg[1]]
 				self.constraintrack.p1(e.Vertexes[0].Point)
@@ -2950,15 +2975,15 @@ class Offset(Modifier):
 			self.ui.radiusValue.setFocus()
 			self.ui.radiusValue.selectAll()
 			if self.extendedCopy:
-				if not arg["AltDown"]: self.finish()
+				if not hasMod(arg,MODALT): self.finish()
                 if (arg["Type"] == "SoMouseButtonEvent"):
 			if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                                 copymode = False
                                 occmode = self.ui.occOffset.isChecked()
-                                if arg["AltDown"] or self.ui.isCopy.isChecked(): copymode = True
+                                if hasMod(arg,MODALT) or self.ui.isCopy.isChecked(): copymode = True
                                 if self.dvec:
                                         self.commit(translate("draft","Offset"),partial(Draft.offset,self.sel,self.dvec,copymode,occ=occmode))
-				if arg["AltDown"]:
+				if hasMod(arg,MODALT):
 					self.extendedCopy = True
 				else:
 					self.finish()
@@ -3383,11 +3408,11 @@ class Trimex(Modifier):
 			self.finish()
 		if (arg["Type"] == "SoLocation2Event"): #mouse movement detection
                         self.ui.cross(True)
-			self.shift = arg["ShiftDown"]
-			self.alt = arg["AltDown"]
+			self.shift = hasMod(arg,MODCONSTRAIN)
+			self.alt = hasMod(arg,MODALT)
                         wp = not(self.extrudeMode and self.shift)
                         self.point = getPoint(self,arg,workingplane=wp)[0]
-			if arg["CtrlDown"]: self.snapped = None
+			if hasMod(arg,MODSNAP): self.snapped = None
 			else: self.snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
 			if self.extrudeMode:
 				dist = self.extrude(self.shift)
@@ -3403,9 +3428,9 @@ class Trimex(Modifier):
 		if (arg["Type"] == "SoMouseButtonEvent"):
 			if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
 				cursor = arg["Position"]
-				self.shift = arg["ShiftDown"]
-				self.alt = arg["AltDown"]
-				if arg["CtrlDown"]: self.snapped = None
+				self.shift = hasMod(arg,MODCONSTRAIN)
+				self.alt = hasMod(arg,MODALT)
+				if hasMod(arg,MODSNAP): self.snapped = None
 				else: self.snapped = self.view.getObjectInfo((cursor[0],cursor[1]))
 				self.trimObject()
 				self.finish()
@@ -3652,7 +3677,7 @@ class Scale(Modifier):
 			self.linetrack.p2(point)
                         self.ui.cross(True)
 			# Draw constraint tracker line.
-			if (arg["ShiftDown"]):
+			if hasMod(arg,MODCONSTRAIN):
 				self.constraintrack.p1(point)
 				self.constraintrack.p2(ctrlPoint)
 				self.constraintrack.on()
@@ -3666,7 +3691,7 @@ class Scale(Modifier):
 				corr = fcvec.neg(corr.sub(self.node[0]))
 				self.ghost.trans.translation.setValue([corr.x,corr.y,corr.z])
 			if self.extendedCopy:
-				if not arg["AltDown"]: self.finish()
+				if not hasMod(arg,MODALT): self.finish()
 		if (arg["Type"] == "SoMouseButtonEvent"):
 			if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
 				point,ctrlPoint = getPoint(self,arg,sym=True)
@@ -3680,11 +3705,11 @@ class Scale(Modifier):
 					msg(translate("draft", "Pick scale factor:\n"))
 				else:
 					last = self.node[0]
-					if self.ui.isCopy.isChecked() or arg["AltDown"]:
+					if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
 						self.scale(point.sub(last),True)
 					else:
 						self.scale(point.sub(last))
-					if arg["AltDown"]:
+					if hasMod(arg,MODALT):
 						self.extendedCopy = True
 					else:
 						self.finish(cont=True)
@@ -3938,7 +3963,7 @@ class Edit(Modifier):
                         if self.editing != None:
                                 point,ctrlPoint = getPoint(self,arg)
                                 # Draw constraint tracker line.
-                                if (arg["ShiftDown"]):
+                                if hasMod(arg,MODCONSTRAIN):
                                         self.constraintrack.p1(point)
                                         self.constraintrack.p2(ctrlPoint)
                                         self.constraintrack.on()

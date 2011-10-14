@@ -143,29 +143,12 @@
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Default linewidth</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_9">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox">
@@ -186,6 +169,121 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>Constrain mod</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_5">
+          <property name="toolTip">
+           <string>The Constraining modifier key</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>modconstrain</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>shift</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ctrl</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>alt</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>Snap mod</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_6">
+          <property name="toolTip">
+           <string>The snap modifier key</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>modsnap</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>shift</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ctrl</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>alt</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_22">
+          <property name="text">
+           <string>Alt mod</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_7">
+          <property name="toolTip">
+           <string>The alt modifier key</string>
+          </property>
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>modalt</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>shift</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ctrl</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>alt</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
          <widget class="QLabel" name="label_10">
@@ -193,19 +291,6 @@
            <string>Construction group name</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="Gui::PrefLineEdit" name="gui::preflineedit_2">
@@ -296,7 +381,7 @@
            <string>If this is checked, you will always snap to existing objects while drawing. If not, you will be snapping only when pressing CTRL.</string>
           </property>
           <property name="text">
-           <string>Always snap to objects (disable CTRL-snapping)</string>
+           <string>Always snap to objects (disable snap mod key)</string>
           </property>
           <property name="checked">
            <bool>true</bool>
