@@ -558,7 +558,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     }
 
                     this->Constraints.setValues(newVals);
-                    
+
                     movePoint(GeoId, end, point1);
                     movePoint(newGeoId, start, point2);
 
@@ -662,7 +662,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 std::vector< Part::Geometry * > newVals(geomlist);
                 newVals[GeoId] = geoNew;
                 Geometry.setValues(newVals);
-
                 delete geoNew;
                 rebuildVertexIndex();
 
@@ -716,7 +715,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             // Getting Arc Trim Parameters - Note: for some reason aoc->getRange is not reliable
             Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(aoc->handle());
             double u = (double) curve->FirstParameter(),v = (double) curve->LastParameter();
-           // aoc->getRange(u,v);
+            // aoc->getRange(u,v);
             u = fmod(u, 2.f*M_PI);
             v = fmod(v, 2.f*M_PI);
 
@@ -748,11 +747,11 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                             constNew->First = newGeoId;
                             newVals[i] = constNew;
                         } else if (constraints[i]->Second == GeoId &&
-                                 constraints[i]->SecondPos == end) {
+                                   constraints[i]->SecondPos == end) {
 
-                                Constraint *constNew = newVals[i]->clone();
-                                constNew->Second = newGeoId;
-                                newVals[i] = constNew;
+                            Constraint *constNew = newVals[i]->clone();
+                            constNew->Second = newGeoId;
+                            newVals[i] = constNew;
                         }
                     }
 
@@ -823,7 +822,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         if (GeoId1 >= 0) {
             Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(aoc->handle());
             double u = (double) curve->FirstParameter(),v = (double) curve->LastParameter();
-           // aoc->getRange(u,v);
+            // aoc->getRange(u,v);
             u = fmod(u, 2.f*M_PI);
             v = fmod(v, 2.f*M_PI);
 
@@ -834,7 +833,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             if (theta1 < 0)
                 theta1 += 2*M_PI;
-            
+
             if ((theta1 > theta0) ||
                 (swap && theta1 < theta0 && theta1 < v)) { // trim en
                 delConstraintOnPoint(GeoId, start, false);
