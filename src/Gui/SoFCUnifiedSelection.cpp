@@ -433,14 +433,14 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         type = SoSelectionElementAction::Remove;
                     }
                     else {
-                        Gui::Selection().addSelection(documentName.c_str()
+                        bool ok = Gui::Selection().addSelection(documentName.c_str()
                                           ,objectName.c_str()
                                           ,subElementName.c_str()
                                           ,pp->getPoint()[0]
                                           ,pp->getPoint()[1]
                                           ,pp->getPoint()[2]);
-
-                        type = SoSelectionElementAction::Append;
+                        if (ok)
+                            type = SoSelectionElementAction::Append;
                         if (mymode == OFF) {
                             snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
                                                        ,objectName.c_str()
@@ -458,23 +458,25 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                                          ,objectName.c_str()
                                          ,subElementName.c_str())) {
                         Gui::Selection().clearSelection(documentName.c_str());
-                        Gui::Selection().addSelection(documentName.c_str()
+                        bool ok = Gui::Selection().addSelection(documentName.c_str()
                                               ,objectName.c_str()
                                               ,subElementName.c_str()
                                               ,pp->getPoint()[0]
                                               ,pp->getPoint()[1]
                                               ,pp->getPoint()[2]);
-                        type = SoSelectionElementAction::Append;
+                        if (ok)
+                            type = SoSelectionElementAction::Append;
                     }
                     else {
                         Gui::Selection().clearSelection(documentName.c_str());
-                        Gui::Selection().addSelection(documentName.c_str()
+                        bool ok = Gui::Selection().addSelection(documentName.c_str()
                                               ,objectName.c_str()
                                               ,0
                                               ,pp->getPoint()[0]
                                               ,pp->getPoint()[1]
                                               ,pp->getPoint()[2]);
-                        type = SoSelectionElementAction::All;
+                        if (ok)
+                            type = SoSelectionElementAction::All;
                     }
 
                     if (mymode == OFF) {

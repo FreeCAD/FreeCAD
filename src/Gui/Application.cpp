@@ -1251,7 +1251,7 @@ void Application::runCommand(bool bForce, const char* sCmd,...)
     free (format);
 }
 
-bool Application::runPythonCode(const char* cmd, bool gui)
+bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
 {
     if (gui)
         d->macroMngr->addLine(MacroManager::Gui,cmd);
@@ -1263,8 +1263,13 @@ bool Application::runPythonCode(const char* cmd, bool gui)
         return true;
     }
     catch (Base::PyException &e) {
-        e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
+        if (pyexc) {
+            e.ReportException();
+            Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
+        }
+        else {
+            throw; // re-throw to handle in calling instance
+        }
     }
     catch (Base::AbortException&) {
     }

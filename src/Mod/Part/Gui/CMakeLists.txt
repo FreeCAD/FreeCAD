@@ -39,6 +39,7 @@ set(PartGui_MOC_HDRS
     DlgSettings3DViewPartImp.h
     DlgSettingsGeneral.h
     TaskFaceColors.h
+    TaskShapeBuilder.h
 )
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
@@ -60,6 +61,7 @@ set(PartGui_UIC_SRCS
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
     TaskFaceColors.ui
+    TaskShapeBuilder.ui
 )
 qt4_wrap_ui(PartGui_UIC_HDRS ${PartGui_UIC_SRCS})
 
@@ -143,11 +145,14 @@ SET(PartGui_SRCS
     TaskFaceColors.cpp
     TaskFaceColors.h
     TaskFaceColors.ui
+    TaskShapeBuilder.cpp
+    TaskShapeBuilder.h
+    TaskShapeBuilder.ui
 )
 
 SET(PartGui_Scripts
     InitGui.py
-	TestPartGui.py
+    TestPartGui.py
 )
 
 

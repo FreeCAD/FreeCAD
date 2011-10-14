@@ -16,6 +16,7 @@ BUILT_SOURCES=\
 		ui_DlgSettingsGeneral.h \
 		ui_Mirroring.h \
 		ui_TaskFaceColors.h \
+		ui_TaskShapeBuilder.h \
 		moc_CrossSections.cpp \
 		moc_DlgBooleanOperation.cpp \
 		moc_DlgExtrusion.cpp \
@@ -30,6 +31,7 @@ BUILT_SOURCES=\
 		moc_DlgSettingsGeneral.cpp \
 		moc_Mirroring.cpp \
 		moc_TaskFaceColors.cpp \
+		moc_TaskShapeBuilder.cpp \
 		qrc_Part.cpp 
 
 libPartGui_la_SOURCES=\
@@ -64,6 +66,8 @@ libPartGui_la_SOURCES=\
 		Mirroring.h \
 		TaskFaceColors.cpp \
 		TaskFaceColors.h \
+		TaskShapeBuilder.cpp \
+		TaskShapeBuilder.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		SoBrepShape.cpp \
@@ -210,6 +214,7 @@ EXTRA_DIST = \
 		DlgSettingsGeneral.ui \
 		Mirroring.ui \
 		TaskFaceColors.ui \
+		TaskShapeBuilder.ui \
 		Resources/Part.qrc \
 		Resources/translations/Part_af.qm \
 		Resources/translations/Part_af.ts \

@@ -57,6 +57,7 @@
 #include "CrossSections.h"
 #include "Mirroring.h"
 #include "ViewProvider.h"
+#include "TaskShapeBuilder.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -877,6 +878,31 @@ bool CmdPartCrossSections::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdPartBuilder);
+
+CmdPartBuilder::CmdPartBuilder()
+  :Command("Part_Builder")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Shape builder...");
+    sToolTipText  = QT_TR_NOOP("Advanced utility to create shapes");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartBuilder::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskShapeBuilder());
+}
+
+bool CmdPartBuilder::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdShapeInfo);
 
 CmdShapeInfo::CmdShapeInfo()
@@ -1106,5 +1132,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartPickCurveNet());
     rcCmdMgr.addCommand(new CmdShapeInfo());
     rcCmdMgr.addCommand(new CmdPartRuledSurface());
+    rcCmdMgr.addCommand(new CmdPartBuilder());
 } 
 
