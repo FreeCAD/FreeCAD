@@ -167,6 +167,7 @@ void PartExport initPart()
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();
     Part::RuledSurface          ::init();
+    Part::Loft                  ::init();
 
     // Geometry types
     Part::Geometry                ::init();

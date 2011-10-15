@@ -101,3 +101,67 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 }
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Loft, Part::Feature)
+
+Loft::Loft()
+{
+    ADD_PROPERTY_TYPE(Sections,(0),"Loft",App::Prop_None,"List of sections");
+    Sections.setSize(0);
+    ADD_PROPERTY_TYPE(Solid,(false),"Loft",App::Prop_None,"Create solid");
+    ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Ruled surface");
+}
+
+short Loft::mustExecute() const
+{
+    if (Sections.isTouched())
+        return 1;
+    if (Solid.isTouched())
+        return 1;
+    if (Ruled.isTouched())
+        return 1;
+    return 0;
+}
+
+void Loft::onChanged(const App::Property* prop)
+{
+    Part::Feature::onChanged(prop);
+}
+
+App::DocumentObjectExecReturn *Loft::execute(void)
+{
+    if (Sections.getSize() == 0)
+        return new App::DocumentObjectExecReturn("No sections linked.");
+
+    try {
+        TopTools_ListOfShape profiles;
+        const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
+        std::vector<App::DocumentObject*>::const_iterator it;
+        for (it = shapes.begin(); it != shapes.end(); ++it) {
+            if (!(*it)->isDerivedFrom(Part::Feature::getClassTypeId()))
+                return new App::DocumentObjectExecReturn("Linked object is not a shape.");
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Linked shape is invalid.");
+            if (shape.ShapeType() == TopAbs_WIRE)
+                profiles.Append(shape);
+            else if (shape.ShapeType() == TopAbs_EDGE)
+                profiles.Append(shape);
+            else
+                return new App::DocumentObjectExecReturn("Linked shape is neither a vertex nor a wire.");
+        }
+
+        Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean isRuled = Ruled.getValue() ? Standard_True : Standard_False;
+
+        TopoShape myShape;
+        this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled));
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+}

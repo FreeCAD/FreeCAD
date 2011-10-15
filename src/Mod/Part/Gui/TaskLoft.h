@@ -21,48 +21,50 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKSHAPEBUILDER_H
-#define PARTGUI_TASKSHAPEBUILDER_H
+#ifndef PARTGUI_TASKLOFT_H
+#define PARTGUI_TASKLOFT_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+class QTreeWidgetItem;
+
 namespace PartGui { 
 
-class ShapeBuilderWidget : public QWidget
+class LoftWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    ShapeBuilderWidget(QWidget* parent = 0);
-    ~ShapeBuilderWidget();
+    LoftWidget(QWidget* parent = 0);
+    ~LoftWidget();
 
     bool accept();
     bool reject();
 
 private Q_SLOTS:
-    void on_createButton_clicked();
-    void switchMode(int);
+    void on_addButton_clicked();
+    void on_removeButton_clicked();
+    void on_upButton_clicked();
+    void on_downButton_clicked();
+    void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:
-    void createEdge();
-    void createFace();
-    void createShell();
-    void createSolid();
     void changeEvent(QEvent *e);
+    void findShapes();
 
 private:
     class Private;
     Private* d;
 };
 
-class TaskShapeBuilder : public Gui::TaskView::TaskDialog
+class TaskLoft : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskShapeBuilder();
-    ~TaskShapeBuilder();
+    TaskLoft();
+    ~TaskLoft();
 
 public:
     void open();
@@ -71,13 +73,13 @@ public:
     void clicked(int);
 
     QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Close; }
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:
-    ShapeBuilderWidget* widget;
+    LoftWidget* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace PartGui
 
-#endif // PARTGUI_TASKSHAPEBUILDER_H
+#endif // PARTGUI_TASKLOFT_H

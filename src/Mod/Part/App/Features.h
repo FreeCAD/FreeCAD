@@ -51,6 +51,28 @@ protected:
     void onChanged (const App::Property* prop);
 };
 
+class Loft : public Part::Feature
+{
+    PROPERTY_HEADER(Part::Loft);
+
+public:
+    Loft();
+
+    App::PropertyLinkList Sections;
+    App::PropertyBool Solid;
+    App::PropertyBool Ruled;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    //@}
+
+protected:
+    void onChanged (const App::Property* prop);
+};
+
 } //namespace Part
 
 

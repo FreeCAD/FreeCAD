@@ -40,6 +40,7 @@ set(PartGui_MOC_HDRS
     DlgSettingsGeneral.h
     TaskFaceColors.h
     TaskShapeBuilder.h
+    TaskLoft.h
 )
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
@@ -62,6 +63,7 @@ set(PartGui_UIC_SRCS
     DlgSettingsGeneral.ui
     TaskFaceColors.ui
     TaskShapeBuilder.ui
+    TaskLoft.ui
 )
 qt4_wrap_ui(PartGui_UIC_HDRS ${PartGui_UIC_SRCS})
 
@@ -148,6 +150,9 @@ SET(PartGui_SRCS
     TaskShapeBuilder.cpp
     TaskShapeBuilder.h
     TaskShapeBuilder.ui
+    TaskLoft.cpp
+    TaskLoft.h
+    TaskLoft.ui
 )
 
 SET(PartGui_Scripts

@@ -99,7 +99,7 @@ public:
     }
 };
 
-/* TRANSLATOR PartGui::TaskShapeBuilder */
+/* TRANSLATOR PartGui::ShapeBuilderWidget */
 
 ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
   : d(new Private())

@@ -58,6 +58,7 @@
 #include "Mirroring.h"
 #include "ViewProvider.h"
 #include "TaskShapeBuilder.h"
+#include "TaskLoft.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -903,6 +904,31 @@ bool CmdPartBuilder::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdPartLoft);
+
+CmdPartLoft::CmdPartLoft()
+  : Command("Part_Loft")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Loft...");
+    sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartLoft::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskLoft());
+}
+
+bool CmdPartLoft::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdShapeInfo);
 
 CmdShapeInfo::CmdShapeInfo()
@@ -1133,5 +1159,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdShapeInfo());
     rcCmdMgr.addCommand(new CmdPartRuledSurface());
     rcCmdMgr.addCommand(new CmdPartBuilder());
+    rcCmdMgr.addCommand(new CmdPartLoft());
 } 
 
