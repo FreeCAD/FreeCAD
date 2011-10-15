@@ -2231,7 +2231,7 @@ class Dimension(Creator):
 	def Activated(self):
                 if self.cont:
                         self.finish()
-                elif self.hasMeasures:
+                elif self.hasMeasures():
                         Creator.Activated(self,"Dimension")
                         self.dimtrack = dimTracker()
                         self.arctrack = arcTracker()
