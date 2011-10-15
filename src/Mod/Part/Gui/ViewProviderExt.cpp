@@ -116,7 +116,8 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 //**************************************************************************
 // Construction/Destruction
 
-App::PropertyFloatConstraint::Constraints ViewProviderPartExt::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.0001f,100.0f,0.01f};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
 
 ViewProviderPartExt::ViewProviderPartExt() 
@@ -136,9 +137,11 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
     ADD_PROPERTY(DiffuseColor,(ShapeColor.getValue()));
     ADD_PROPERTY(LineWidth,(2.0f));
-    LineWidth.setConstraints(&floatRange);
-    PointSize.setConstraints(&floatRange);
+    LineWidth.setConstraints(&sizeRange);
+    PointSize.setConstraints(&sizeRange);
     ADD_PROPERTY(PointSize,(2.0f));
+    ADD_PROPERTY(Deviation,(0.5f));
+    Deviation.setConstraints(&tessRange);
     ADD_PROPERTY(ControlPoints,(false));
     ADD_PROPERTY(Lighting,(1));
     Lighting.setEnums(LightingEnums);
@@ -204,6 +207,9 @@ ViewProviderPartExt::~ViewProviderPartExt()
 
 void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
+    if (prop == &Deviation) {
+        VisualTouched = true;
+    }
     if (prop == &LineWidth) {
         pcLineStyle->lineWidth = LineWidth.getValue();
     }
@@ -452,8 +458,8 @@ bool ViewProviderPartExt::loadParameter()
     bool novertexnormals = hGrp->GetBool("NoPerVertexNormals",false);
     bool qualitynormals = hGrp->GetBool("QualityNormals",false);
 
-    if (this->meshDeviation != deviation) {
-        this->meshDeviation = deviation;
+    if (Deviation.getValue() != deviation) {
+        Deviation.setValue(deviation);
         changed = true;
     }
     if (this->noPerVertexNormals != novertexnormals) {
@@ -561,7 +567,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 *
-            this->meshDeviation;
+            Deviation.getValue();
 
         // create or use the mesh on the data structure
         BRepMesh_IncrementalMesh myMesh(cShape,deflection);

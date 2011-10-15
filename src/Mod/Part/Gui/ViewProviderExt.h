@@ -70,6 +70,7 @@ public:
     // Display properties
     App::PropertyFloatConstraint LineWidth;
     App::PropertyFloatConstraint PointSize;
+    App::PropertyFloatConstraint Deviation;
     App::PropertyColor LineColor;
     App::PropertyColor PointColor;
     App::PropertyMaterial LineMaterial;
@@ -139,10 +140,10 @@ protected:
 
 private:
     // settings stuff
-    float meshDeviation;
     bool noPerVertexNormals;
     bool qualityNormals;
-    static App::PropertyFloatConstraint::Constraints floatRange;
+    static App::PropertyFloatConstraint::Constraints sizeRange;
+    static App::PropertyFloatConstraint::Constraints tessRange;
     static const char* LightingEnums[];
     std::map<SoVertexShape*, TopoDS_Shape> vertexShapeMap;
 };
