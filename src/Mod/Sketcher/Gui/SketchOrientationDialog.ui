@@ -49,9 +49,6 @@
    </item>
    <item>
     <widget class="QCheckBox" name="Reverse_checkBox">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="text">
       <string>Reverse direction</string>
      </property>
