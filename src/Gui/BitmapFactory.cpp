@@ -34,6 +34,7 @@
 # include <QPalette>
 # include <QSvgRenderer>
 # include <QStyleOption>
+# include <sstream>
 #endif
 
 #include <string>
@@ -88,11 +89,32 @@ void BitmapFactoryInst::destruct (void)
 BitmapFactoryInst::BitmapFactoryInst()
 {
     d = new BitmapFactoryInstP;
+    restoreCustomPaths();
 }
 
 BitmapFactoryInst::~BitmapFactoryInst()
 {
     delete d;
+}
+
+void BitmapFactoryInst::addCustomPath(const QString& path)
+{
+    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Bitmaps");
+    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
+    std::stringstream str;
+    str << "CustomPath" << paths.size();
+    group->SetASCII(str.str().c_str(), (const char*)path.toUtf8());
+}
+
+void BitmapFactoryInst::restoreCustomPaths()
+{
+    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Bitmaps");
+    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
+    for (std::vector<std::string>::iterator it = paths.begin(); it != paths.end(); ++it) {
+        addPath(QString::fromUtf8(it->c_str()));
+    }
 }
 
 void BitmapFactoryInst::addPath(const QString& path)

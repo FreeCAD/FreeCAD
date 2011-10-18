@@ -54,6 +54,8 @@ public:
     static BitmapFactoryInst& instance(void);
     static void destruct (void);
 
+    void addCustomPath(const QString&);
+
     /// Adds a path where pixmaps can be found
     void addPath(const QString& path);
     /// Removes a path from the list of pixmap paths
@@ -122,6 +124,8 @@ public:
     void convert(const SoSFImage& img, QImage& out) const;
 
 private:
+    void restoreCustomPaths();
+
     static BitmapFactoryInst* _pcSingleton;
     BitmapFactoryInst();
     ~BitmapFactoryInst();

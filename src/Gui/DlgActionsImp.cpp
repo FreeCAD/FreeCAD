@@ -427,6 +427,7 @@ void IconDialog::onAddIconPath()
         }
 
         BitmapFactory().addPath(dir);
+        BitmapFactory().addCustomPath(dir);
     }
 }
 
