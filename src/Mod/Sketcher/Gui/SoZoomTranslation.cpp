@@ -82,11 +82,8 @@ SoZoomTranslation::SoZoomTranslation()
 }
 
 void SoZoomTranslation::GLRender(SoGLRenderAction * action)
-{
-    SoState *state =  action->getState();
-    const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    
-    this->doAction((SoAction *)action);
+{   
+    SoZoomTranslation::doAction((SoAction *)action);
 }
 
 // Doc in superclass.
@@ -133,6 +130,16 @@ void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
     m.setTranslate(-v);
     action->getInverse().multRight(m);
   
+}
+
+void SoZoomTranslation::callback(SoCallbackAction * action)
+{
+  SoZoomTranslation::doAction((SoAction *)action);
+}
+
+void SoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+  SoZoomTranslation::doAction((SoAction *)action);
 }
 
 void SoZoomTranslation::pick(SoPickAction * action)

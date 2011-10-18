@@ -991,7 +991,7 @@ bool ViewProviderSketch::isConstraintAtPosition(const Base::Vector3d &constrPos,
 }
 
 Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &suggestedPos,
-                                                          const Base::Vector3d &dir, int step,
+                                                          const Base::Vector3d &dir, float step,
                                                           const SoNode *constraint)
 {
     int multiplier = 0;

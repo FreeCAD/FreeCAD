@@ -141,7 +141,7 @@ public:
     bool isConstraintAtPosition(const Base::Vector3d &constrPos, const SoNode *constraint);
     /// finds a free position for placing a constraint icon
     Base::Vector3d seekConstraintPosition(const Base::Vector3d &suggestedPos,
-                                          const Base::Vector3d &dir, int step,
+                                          const Base::Vector3d &dir, float step,
                                           const SoNode *constraint);
     
     float getScaleFactor();
