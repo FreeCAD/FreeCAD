@@ -60,7 +60,7 @@ int SketchOrientationDialog::exec()
         bool reverse = ui_SketchOrientationDialog.Reverse_checkBox->isChecked();
         if (ui_SketchOrientationDialog.XY_radioButton->isChecked()) {
             if (reverse) {
-                Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation(1.0,0.0,0.0,0.0));
+                Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation(-1.0,0.0,0.0,0.0));
                 DirType = 1;
             }
             else {
@@ -70,7 +70,7 @@ int SketchOrientationDialog::exec()
         }
         else if (ui_SketchOrientationDialog.XZ_radioButton->isChecked()) {
             if (reverse) {
-                Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(-1,0,0),0.5*M_PI));
+                Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(0,sqrt(2.0)/2.0,sqrt(2.0)/2.0),M_PI));
                 DirType = 3;
             }
             else {
