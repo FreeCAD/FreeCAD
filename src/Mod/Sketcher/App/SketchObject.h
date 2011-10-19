@@ -44,9 +44,9 @@ public:
     SketchObject();
 
     /// Property
-    Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalConstraints;
+    Part    ::PropertyGeometryList   Geometry;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature

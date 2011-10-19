@@ -909,7 +909,7 @@ void StdCmdDelete::activated(int iMsg)
     // go through all documents
     const SelectionSingleton& rSel = Selection();
     const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for ( std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
+    for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
         Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(*it);
         std::vector<Gui::SelectionObject> sel = rSel.getSelectionEx((*it)->getName());
         if (!sel.empty()) {
@@ -918,7 +918,7 @@ void StdCmdDelete::activated(int iMsg)
                 Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
                 if (vp) {
                     // ask the ViewProvider if its want to do some clean up
-                    if(vp->onDelete(ft->getSubNames()) )
+                    if (vp->onDelete(ft->getSubNames()))
                         doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
                                  ,(*it)->getName(), ft->getFeatName());
                 }
@@ -930,7 +930,7 @@ void StdCmdDelete::activated(int iMsg)
 
 bool StdCmdDelete::isActive(void)
 {
-  return Selection().getCompleteSelection().size() > 0;
+    return Selection().getCompleteSelection().size() > 0;
 }
 
 //===========================================================================

@@ -322,7 +322,7 @@ void Document::abortTransaction()
 {
     if (d->activeUndoTransaction) {
         d->rollback = true;
-        // applieing the so far made changes
+        // applying the so far made changes
         d->activeUndoTransaction->apply(*this,false);
         d->rollback = false;
 
