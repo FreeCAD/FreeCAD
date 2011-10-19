@@ -2256,8 +2256,10 @@ Restart:
                     SoGetBoundingBoxAction bbAction(viewer->getViewportRegion());
                     bbAction.apply(sep->getChild(3));
 
-                    float bx,by,bz;
-                    bbAction.getBoundingBox().getSize(bx,by,bz);
+                    float bx=0,by=0,bz=0;
+                    SbBox3f bbox = bbAction.getBoundingBox();
+                    if (!bbox.isEmpty())
+                        bbox.getSize(bx,by,bz);
                     SbVec3f textBB(bx,by,bz);
 
                     SbVec3f textBBCenter = bbAction.getBoundingBox().getCenter();
