@@ -1849,9 +1849,9 @@ Restart:
                     if (Constr->Type == Distance)
                         dir = (p2-p1);
                     else if (Constr->Type == DistanceX)
-                        dir = SbVec3f( (pnt2.x > pnt1.x) ? 1 : -1, 0, 0);
+                        dir = SbVec3f( (pnt2.x - pnt1.x >= FLT_EPSILON) ? 1 : -1, 0, 0);
                     else if (Constr->Type == DistanceY)
-                        dir = SbVec3f(0, (pnt2.y > pnt1.y) ? 1 : -1, 0);
+                        dir = SbVec3f(0, (pnt2.y - pnt1.y >= FLT_EPSILON) ? 1 : -1, 0);
                     dir.normalize();
                     norm = SbVec3f (-dir[1],dir[0],0);
 
