@@ -200,12 +200,12 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 
     // Workaround for #0000433
-#if !defined(FC_OS_WIN32)
+//#if !defined(FC_OS_WIN32)
     if (this->highlightIndex.getValue() >= 0)
         renderHighlight(action);
     if (this->selectionIndex.getNum() > 0)
         renderSelection(action);
-#endif
+//#endif
 }
 
 void SoBrepFaceSet::GLRenderBelowPath(SoGLRenderAction * action)
@@ -626,12 +626,12 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     inherited::GLRender(action);
 
     // Workaround for #0000433
-#if !defined(FC_OS_WIN32)
+//#if !defined(FC_OS_WIN32)
     if (this->highlightIndex.getValue() >= 0)
         renderHighlight(action);
     if (this->selectionIndex.getNum() > 0)
         renderSelection(action);
-#endif
+//#endif
 }
 
 void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction * action)
@@ -894,12 +894,12 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     inherited::GLRender(action);
 
     // Workaround for #0000433
-#if !defined(FC_OS_WIN32)
+//#if !defined(FC_OS_WIN32)
     if (this->highlightIndex.getValue() >= 0)
         renderHighlight(action);
     if (this->selectionIndex.getNum() > 0)
         renderSelection(action);
-#endif
+//#endif
 }
 
 void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction * action)
