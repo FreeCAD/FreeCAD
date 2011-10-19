@@ -59,25 +59,34 @@ int SketchOrientationDialog::exec()
         double offset = ui_SketchOrientationDialog.Offset_doubleSpinBox->value();
         bool reverse = ui_SketchOrientationDialog.Reverse_checkBox->isChecked();
         if (ui_SketchOrientationDialog.XY_radioButton->isChecked()) {
-            if (reverse)
+            if (reverse) {
                 Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation(1.0,0.0,0.0,0.0));
-            else
+                DirType = 1;
+            }
+            else {
                 Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation());
-            DirType = 0;
+                DirType = 0;
+            }
         }
         else if (ui_SketchOrientationDialog.XZ_radioButton->isChecked()) {
-            if (reverse)
+            if (reverse) {
                 Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(-1,0,0),0.5*M_PI));
-            else
+                DirType = 3;
+            }
+            else {
                 Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(-1,0,0),1.5*M_PI));
-            DirType = 1;
+                DirType = 2;
+            }
         }
         else if (ui_SketchOrientationDialog.YZ_radioButton->isChecked()) {
-            if (reverse)
+            if (reverse) {
                 Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(-0.5,0.5,0.5,-0.5));
-            else
+                DirType = 5;
+            }
+            else {
                 Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(0.5,0.5,0.5,0.5));
-            DirType = 2;
+                DirType = 4;
+            }
         }
     }
 
