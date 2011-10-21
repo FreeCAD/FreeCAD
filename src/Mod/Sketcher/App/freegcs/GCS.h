@@ -115,10 +115,10 @@ namespace GCS
 
         void initSolution(VEC_pD &params);
 
-        int solve(int isFine=1);
-        int solve(VEC_pD &params, int isFine=1);
-        int solve(SubSystem *subsys, int isFine=1);
-        int solve(SubSystem *subsysA, SubSystem *subsysB, int isFine=1);
+        int solve(bool isFine=true);
+        int solve(VEC_pD &params, bool isFine=true);
+        int solve(SubSystem *subsys, bool isFine=true);
+        int solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine=true);
 
         void getSubSystems(std::vector<SubSystem *> &subsysvec);
         void applySolution();

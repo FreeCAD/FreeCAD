@@ -120,6 +120,13 @@ inline T toDegrees(T r)
     return static_cast<T>((r/M_PI)*180.0);
 }
 
+template<class T>
+inline T fmod(T numerator, T denominator)
+{
+    T modulo = std::fmod(numerator, denominator);
+    return (modulo >= T(0)) ? modulo : modulo + denominator;
+}
+
 // ----------------------------------------------------------------------------
 
 class BaseExport StopWatch

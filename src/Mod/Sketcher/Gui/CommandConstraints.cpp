@@ -218,13 +218,13 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
             ids.push_back(index);
         }
     }
-        // undo command open
+    // undo command open
     openCommand("add horizontal constraint");
 
-    for(std::vector<int>::iterator it = ids.begin(); it!=ids.end();it++) {
+    for (std::vector<int>::iterator it=ids.begin(); it != ids.end(); it++) {
         // issue the actual commands to create the constraint
         doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d)) "
-                        ,selection[0].getFeatName(),*it);
+                 ,selection[0].getFeatName(),*it);
     }
     // finish the transaction and update
     commitCommand();
@@ -309,10 +309,10 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
 
     // undo command open
     openCommand("add vertical constraint");
-    for(std::vector<int>::iterator it = ids.begin(); it!=ids.end();it++) {
-     // issue the actual command to create the constraint
+    for (std::vector<int>::iterator it=ids.begin(); it != ids.end(); it++) {
+        // issue the actual command to create the constraint
         doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d))"
-                        ,selection[0].getFeatName(),*it);
+                 ,selection[0].getFeatName(),*it);
     }
     // finish the transaction and update
     commitCommand();
@@ -627,8 +627,6 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
     }
 
-
-        
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
     return;
@@ -798,7 +796,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
         commitCommand();
-        
+
         // Get the latest created constraint
         const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
         Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
@@ -850,7 +848,6 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
 
         updateDatumDistance(getActiveGuiDocument(), constr);
-
 
         //updateActive();
         getSelection().clearSelection();
@@ -1079,7 +1076,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
             selection[0].getFeatName(),ids[i],ids[i+1]);
     }
-    
+
     // finish the transaction and update
     commitCommand();
     updateActive();
@@ -1492,7 +1489,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 constr->LabelDistance = 2. * sf;
                 vp->draw(); // Redraw
             }
-            
+
             //updateActive();
             getSelection().clearSelection();
             return;
@@ -1688,11 +1685,11 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3);
-    
+
             // finish the transaction and update
             commitCommand();
             updateActive();
-    
+
             // clear the selection (convenience)
             getSelection().clearSelection();
             return;

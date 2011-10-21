@@ -143,7 +143,7 @@ public:
     Base::Vector3d seekConstraintPosition(const Base::Vector3d &suggestedPos,
                                           const Base::Vector3d &dir, float step,
                                           const SoNode *constraint);
-    
+
     float getScaleFactor();
     int getPreselectPoint(void) const;
     int getPreselectCurve(void) const;

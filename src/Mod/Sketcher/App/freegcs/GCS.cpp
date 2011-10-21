@@ -402,7 +402,7 @@ int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId)
 void System::initSolution(VEC_pD &params)
 {
     // - Stores the current parameters in the vector "reference"
-    // - Identifies the equality constraints with tagged with ids >= 0
+    // - Identifies the equality constraints tagged with ids >= 0
     //   and prepares a corresponding system reduction
     // - Organizes the rest of constraints into two subsystems for
     //   tag ids >=0 and < 0 respectively and applies the
@@ -477,13 +477,13 @@ void System::resetToReference()
         *(it->first) = it->second;
 }
 
-int System::solve(VEC_pD &params, int isFine)
+int System::solve(VEC_pD &params, bool isFine)
 {
     initSolution(params);
     return solve(isFine);
 }
 
-int System::solve(int isFine)
+int System::solve(bool isFine)
 {
     if (subsystems.size() == 0)
         return 0;
@@ -498,7 +498,7 @@ int System::solve(int isFine)
     }
 }
 
-int System::solve(SubSystem *subsys, int isFine)
+int System::solve(SubSystem *subsys, bool isFine)
 {
     int xsize = subsys->pSize();
     if (xsize == 0)
@@ -527,7 +527,7 @@ int System::solve(SubSystem *subsys, int isFine)
     subsys->getParams(x);
     h = x - h; // = x - xold
 
-    double convergence = (isFine > 0) ? XconvergenceFine : XconvergenceRough;
+    double convergence = isFine ? XconvergenceFine : XconvergenceRough;
     int maxIterNumber = MaxIterations * xsize;
 
     for (int iter=1; iter < maxIterNumber; iter++) {
@@ -572,7 +572,7 @@ int System::solve(SubSystem *subsys, int isFine)
 
 // The following solver variant solves a system compound of two subsystems
 // treating the first of them as of higher priority than the second
-int System::solve(SubSystem *subsysA, SubSystem *subsysB, int isFine)
+int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 {
     int xsizeA = subsysA->pSize();
     int xsizeB = subsysB->pSize();
@@ -618,7 +618,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, int isFine)
     subsysA->calcJacobi(plist,JA);
     subsysA->calcResidual(resA);
 
-    double convergence = (isFine > 0) ? XconvergenceFine : XconvergenceRough;
+    double convergence = isFine ? XconvergenceFine : XconvergenceRough;
     int maxIterNumber = MaxIterations * xsize;
 
     double mu = 0;
@@ -829,6 +829,8 @@ double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
 {
     double f1,f2,f3,alpha1,alpha2,alpha3,alphaStar;
 
+    double alphaMax = subsys->maxStep(xdir);
+
     Eigen::VectorXd x0, x;
 
     //Save initial values
@@ -864,6 +866,8 @@ double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
             f2 = subsys->error();
         }
         else if (f2 > f3) {
+            if (alpha3 >= alphaMax)
+                break;
             //If f2 is greater than f3 then we increase alpha2 and alpha3 away from f1
             //Effectively both are lengthened by a factor of two.
             alpha2 = alpha3;
@@ -880,6 +884,9 @@ double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
     //Guarantee that the new alphaStar is within the bracket
     if (alphaStar >= alpha3 || alphaStar <= alpha1)
         alphaStar = alpha2;
+
+    if (alphaStar > alphaMax)
+        alphaStar = alphaMax;
 
     if (alphaStar != alphaStar)
         alphaStar = 0.;
@@ -932,6 +939,9 @@ void free(std::vector<Constraint *> &constrvec)
                     break;
                 case L2LAngle:
                     delete static_cast<ConstraintL2LAngle *>(*constr);
+                    break;
+                case MidpointOnLine:
+                    delete static_cast<ConstraintMidpointOnLine *>(*constr);
                     break;
                 case None:
                 default:

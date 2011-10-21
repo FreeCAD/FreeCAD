@@ -32,8 +32,6 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
 
 #include "PropertyConstraintList.h"
 #include "ConstraintPy.h"

@@ -27,11 +27,11 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <Geom_TrimmedCurve.hxx>
 #endif
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 
 #include <Mod/Part/App/Geometry.h>
 
@@ -40,7 +40,6 @@
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
 #include "Sketch.h"
-#include <cmath>
 
 using namespace Sketcher;
 using namespace Base;
@@ -390,6 +389,27 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     return -1; // no such constraint
 }
 
+int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+    std::vector<Constraint *> newVals(vals);
+    for (int i=0; i < int(newVals.size()); i++) {
+        if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId) {
+            Constraint *constNew = newVals[i]->clone();
+            constNew->First = toGeoId;
+            constNew->FirstPos = toPosId;
+            newVals[i] = constNew;
+        } else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId) {
+            Constraint *constNew = newVals[i]->clone();
+            constNew->Second = toGeoId;
+            constNew->SecondPos = toPosId;
+            newVals[i] = constNew;
+        }
+    }
+    this->Constraints.setValues(newVals);
+    return 0;
+}
+
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim)
 {
     const std::vector<Part::Geometry *> &geomlist = this->Geometry.getValues();
@@ -537,27 +557,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 if (x1 < x0 && x2 > x0) {
                     int newGeoId = addGeometry(geo);
                     // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
-                    const std::vector<Constraint *> &constraints = Constraints.getValues();
-
-                    std::vector<Constraint *> newVals(constraints);
-                    for (int i=0; i < int(newVals.size()); i++) {
-                        if (constraints[i]->First == GeoId &&
-                            constraints[i]->FirstPos == end) {
-
-                            Constraint *constNew = newVals[i]->clone();
-                            constNew->First = newGeoId;
-                            newVals[i] = constNew;
-
-                        } else if (constraints[i]->Second == GeoId &&
-                                 constraints[i]->SecondPos == end) {
-
-                                Constraint *constNew = newVals[i]->clone();
-                                constNew->Second = newGeoId;
-                                newVals[i] = constNew;
-                        }
-                    }
-
-                    this->Constraints.setValues(newVals);
+                    transferConstraints(GeoId, end, newGeoId, end);
 
                     movePoint(GeoId, end, point1);
                     movePoint(newGeoId, start, point2);
@@ -627,142 +627,79 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
         const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle*>(geo);
         Base::Vector3d center = circle->getCenter();
-        double theta0 = atan2(point.y - center.y,point.x - center.x);
+        double theta0 = Base::fmod(atan2(point.y - center.y,point.x - center.x), 2.f*M_PI);
         if (GeoId1 >= 0 && GeoId2 >= 0) {
-            double theta1 = atan2(point1.y - center.y, point1.x - center.x);
-            double theta2 = atan2(point2.y - center.y, point2.x - center.x);
-
-            if (theta0 < theta1 && theta0 < theta2) {
-                if (theta1 > theta2)
-                    theta1 -= 2*M_PI;
-                else
-                    theta2 -= 2*M_PI;
-            } else if (theta0 > theta1 && theta0 > theta2) {
-                if (theta1 > theta2)
-                    theta2 += 2*M_PI;
-                else
-                    theta1 += 2*M_PI;
-            }
-
-            if (theta1 > theta2) {
+            double theta1 = Base::fmod(atan2(point1.y - center.y, point1.x - center.x), 2.f*M_PI);
+            double theta2 = Base::fmod(atan2(point2.y - center.y, point2.x - center.x), 2.f*M_PI);
+            if (Base::fmod(theta1 - theta0, 2.f*M_PI) > Base::fmod(theta2 - theta0, 2.f*M_PI)) {
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
                 std::swap(theta1,theta2);
             }
+            if (theta1 == theta0 || theta1 == theta2)
+                return -1;
+            else if (theta1 > theta2)
+                theta2 += 2.f*M_PI;
 
             // Trim Point between intersection points
-            if (theta1 < theta0 && theta2 > theta0) {
 
-                // Create a new arc to substitute Circle in geometry list and set parameters
-                Part::GeomArcOfCircle *geoNew = new Part::GeomArcOfCircle();
-                geoNew->setCenter(center);
-                geoNew->setRadius(circle->getRadius());
-                geoNew->setRange(theta2, theta1);
+            // Create a new arc to substitute Circle in geometry list and set parameters
+            Part::GeomArcOfCircle *geoNew = new Part::GeomArcOfCircle();
+            geoNew->setCenter(center);
+            geoNew->setRadius(circle->getRadius());
+            geoNew->setRange(theta1, theta2);
 
-                std::vector< Part::Geometry * > newVals(geomlist);
-                newVals[GeoId] = geoNew;
-                Geometry.setValues(newVals);
-                delete geoNew;
-                rebuildVertexIndex();
+            std::vector< Part::Geometry * > newVals(geomlist);
+            newVals[GeoId] = geoNew;
+            Geometry.setValues(newVals);
+            delete geoNew;
+            rebuildVertexIndex();
 
-                // constrain the trimming points on the corresponding geometries
-                Sketcher::Constraint *newConstr = new Sketcher::Constraint();
-                newConstr->Type = Sketcher::PointOnObject;
-                newConstr->First = GeoId;
-                newConstr->FirstPos = end;
-                newConstr->Second = GeoId1;
-                addConstraint(newConstr);
+            // constrain the trimming points on the corresponding geometries
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::PointOnObject;
+            newConstr->First = GeoId;
+            newConstr->FirstPos = start;
+            newConstr->Second = GeoId1;
+            addConstraint(newConstr);
 
-                newConstr->First = GeoId;
-                newConstr->FirstPos = start;
-                newConstr->Second = GeoId2;
-                addConstraint(newConstr);
+            newConstr->First = GeoId;
+            newConstr->FirstPos = end;
+            newConstr->Second = GeoId2;
+            addConstraint(newConstr);
 
-                delete newConstr;
+            delete newConstr;
 
-                return 0;
-            } else
-                return -1;
+            return 0;
         }
 
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle*>(geo);
         Base::Vector3d center = aoc->getCenter();
-        double theta0 = atan2(point.y - center.y,point.x - center.x);
-
-        // Boolean if arc first parameter is greater than last parameter
-        bool swap;
-
+        double startAngle, endAngle;
+        aoc->getRange(startAngle, endAngle);
+        double dir = (startAngle < endAngle) ? 1 : -1; // this is always == 1
+        double arcLength = (endAngle - startAngle)*dir;
+        double theta0 = Base::fmod(atan2(point.y - center.y, point.x - center.x) - startAngle, 2.f*M_PI); // x0
         if (GeoId1 >= 0 && GeoId2 >= 0) {
-            double theta1 = atan2(point1.y - center.y, point1.x - center.x);
-            double theta2 = atan2(point2.y - center.y, point2.x - center.x);
-
-            double u1 = (theta1 >= 0) ? theta1 : theta1 + 2*M_PI;
-            double v1 = (theta2 >= 0) ? theta2 : theta2 + 2*M_PI;
-
-            if (theta0 < theta1 && theta0 < theta2) {
-                if (theta1 > theta2)
-                    theta1 -= 2*M_PI;
-                else
-                    theta2 -= 2*M_PI;
-            } else if (theta0 > theta1 && theta0 > theta2) {
-                if (theta1 > theta2)
-                    theta2 += 2*M_PI;
-                else
-                    theta1 += 2*M_PI;
-            }
-
-            // Getting Arc Trim Parameters - Note: for some reason aoc->getRange is not reliable
-            Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(aoc->handle());
-            double u = (double) curve->FirstParameter(),v = (double) curve->LastParameter();
-            // aoc->getRange(u,v);
-            u = fmod(u, 2.f*M_PI);
-            v = fmod(v, 2.f*M_PI);
-
-            swap = (u > v);
+            double theta1 = Base::fmod(atan2(point1.y - center.y, point1.x - center.x) - startAngle, 2.f*M_PI) * dir; // x1
+            double theta2 = Base::fmod(atan2(point2.y - center.y, point2.x - center.x) - startAngle, 2.f*M_PI) * dir; // x2
             if (theta1 > theta2) {
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
                 std::swap(theta1,theta2);
             }
-
-            if ((swap && (!(u1 <= (1.001*u) && u1 >= 0.999 * v) && !(v1 <= (1.001*u) && v1 >= 0.999*v)) ) ||
-                (!swap && (u1 >= (1.001*u ) && u1 <= 0.999*v) && (v1 >= (1.001*u ) && v1 <= 0.999*v) ) ) {
+            if (theta1 >= 0.001*arcLength && theta2 <= 0.999*arcLength) {
                 // Trim Point between intersection points
                 if (theta1 < theta0 && theta2 > theta0) {
-                    // Setting the range manually to improve stability before adding constraints
-
                     int newGeoId = addGeometry(geo);
-                    Part::GeomArcOfCircle *aoc  = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[GeoId]);
-                    Part::GeomArcOfCircle *aoc2 = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[newGeoId]);
                     // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
-                    const std::vector<Constraint *> &constraints = Constraints.getValues();
+                    transferConstraints(GeoId, end, newGeoId, end);
 
-                    std::vector<Constraint *> newVals(constraints);
-                    for (int i=0; i < int(newVals.size()); i++) {
-                        if (constraints[i]->First == GeoId &&
-                            constraints[i]->FirstPos == end) {
-
-                            Constraint *constNew = newVals[i]->clone();
-                            constNew->First = newGeoId;
-                            newVals[i] = constNew;
-                        } else if (constraints[i]->Second == GeoId &&
-                                   constraints[i]->SecondPos == end) {
-
-                            Constraint *constNew = newVals[i]->clone();
-                            constNew->Second = newGeoId;
-                            newVals[i] = constNew;
-                        }
-                    }
-
-                    this->Constraints.setValues(newVals);
-
-                    // Setting the range manually to improve stability before adding constraints
-                    u = fmod((double) curve->FirstParameter(), 2.f*M_PI);
-                    v = fmod((double) curve->LastParameter(), 2.f*M_PI);
-
-                    aoc->setRange(u, theta1);
-                    aoc2->setRange(theta2, v);
+                    Part::GeomArcOfCircle *aoc1 = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[GeoId]);
+                    Part::GeomArcOfCircle *aoc2 = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[newGeoId]);
+                    aoc1->setRange(startAngle, startAngle + theta1);
+                    aoc2->setRange(startAngle + theta2, endAngle);
 
                     // constrain the trimming points on the corresponding geometries
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
@@ -796,71 +733,45 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     return 0;
                 } else
                     return -1;
-            }
-
-            bool u1Valid = true, v1Valid = true;
-
-            // Check if start and end of arcs have point on object constraints
-            if ((swap && v1 < 1.001*u && v1 > 0.999*v) ||
-                 (!swap && !(v1 > 1.001*u && v1 < 0.999*v)) ) { // drop the second intersection point
-                v1Valid = false;
-            }
-
-            if ((swap && u1 < 1.001*u && u1 > 0.999*v) ||
-                (!swap && !(u1 > 1.001* u && u1 < 0.999*v)) ) { // drop the first intersection point
+            } else if (theta1 < 0.001*arcLength) { // drop the second intersection point
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
-
-                u1Valid = false;
+            } else if (theta2 > 0.999*arcLength) {
             }
-
-            // If Both Parameters have invalid ranges. Leave trim operation
-            if(!v1Valid && !u1Valid)
+            else
                 return -1;
         }
 
         if (GeoId1 >= 0) {
-            Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(aoc->handle());
-            double u = (double) curve->FirstParameter(),v = (double) curve->LastParameter();
-            // aoc->getRange(u,v);
-            u = fmod(u, 2.f*M_PI);
-            v = fmod(v, 2.f*M_PI);
-
-            double theta1 = atan2(point1.y - center.y, point1.x - center.x);
-
-            if (theta0 < 0)
-                theta0 += 2*M_PI;
-
-            if (theta1 < 0)
-                theta1 += 2*M_PI;
-
-            if ((theta1 > theta0) ||
-                (swap && theta1 < theta0 && theta1 < v)) { // trim en
-                delConstraintOnPoint(GeoId, start, false);
-
-                movePoint(GeoId, start, point1);
-                // constrain the trimming point on the corresponding geometry
-                Sketcher::Constraint *newConstr = new Sketcher::Constraint();
-                newConstr->Type = Sketcher::PointOnObject;
-                newConstr->First = GeoId;
-                newConstr->FirstPos = start;
-                newConstr->Second = GeoId1;
-                addConstraint(newConstr);
-                delete newConstr;
-                return 0;
-            }
-            else if ((theta1 < theta0) ||
-                     (swap && theta1 > theta0 && theta1 > v)) { // trim line end
-                delConstraintOnPoint(GeoId, end, false);
-                movePoint(GeoId, end, point1);
-                Sketcher::Constraint *newConstr = new Sketcher::Constraint();
-                newConstr->Type = Sketcher::PointOnObject;
-                newConstr->First = GeoId;
-                newConstr->FirstPos = end;
-                newConstr->Second = GeoId1;
-                addConstraint(newConstr);
-                delete newConstr;
-                return 0;
+            double theta1 = Base::fmod(atan2(point1.y - center.y, point1.x - center.x) - startAngle, 2.f*M_PI) * dir; // x1
+            if (theta1 >= 0.001*arcLength && theta1 <= 0.999*arcLength) {
+                if (theta1 > theta0) { // trim arc start
+                    delConstraintOnPoint(GeoId, start, false);
+                    Part::GeomArcOfCircle *aoc1 = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[GeoId]);
+                    aoc1->setRange(startAngle + theta1, endAngle);
+                    // constrain the trimming point on the corresponding geometry
+                    Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+                    newConstr->Type = Sketcher::PointOnObject;
+                    newConstr->First = GeoId;
+                    newConstr->FirstPos = start;
+                    newConstr->Second = GeoId1;
+                    addConstraint(newConstr);
+                    delete newConstr;
+                    return 0;
+                }
+                else { // trim arc end
+                    delConstraintOnPoint(GeoId, end, false);
+                    Part::GeomArcOfCircle *aoc1 = dynamic_cast<Part::GeomArcOfCircle*>(geomlist[GeoId]);
+                    aoc1->setRange(startAngle, startAngle + theta1);
+                    Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+                    newConstr->Type = Sketcher::PointOnObject;
+                    newConstr->First = GeoId;
+                    newConstr->FirstPos = end;
+                    newConstr->Second = GeoId1;
+                    addConstraint(newConstr);
+                    delete newConstr;
+                    return 0;
+                }
             }
         }
     }
