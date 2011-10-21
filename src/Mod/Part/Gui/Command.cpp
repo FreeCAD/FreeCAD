@@ -203,7 +203,7 @@ CmdPartPrimitives::CmdPartPrimitives()
     sToolTipText  = QT_TR_NOOP("Creation of parametrized geometric primitives");
     sWhatsThis    = "Part_Primitives";
     sStatusTip    = sToolTipText;
-    //sPixmap       = "Part_Box";
+    sPixmap       = "Part_CreatePrimitives";
 }
 
 void CmdPartPrimitives::activated(int iMsg)
@@ -940,6 +940,7 @@ CmdShapeInfo::CmdShapeInfo()
     sToolTipText  = "Info about shape";
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_ShapeInfo";
 }
 
 void CmdShapeInfo::activated(int iMsg)
@@ -1032,6 +1033,7 @@ CmdPartRuledSurface::CmdPartRuledSurface()
     sToolTipText    = QT_TR_NOOP("Create a ruled surface from two curves");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
+    sPixmap         = "Part_RuledSurface";
 }
 
 void CmdPartRuledSurface::activated(int iMsg)
