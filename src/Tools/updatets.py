@@ -28,7 +28,8 @@ DirFilter = ["^Attic$",
              "src/Mod/Sandbox",
              "src/Mod/TemplatePyMod",
              "src/Mod/Draft",
-             "src/Mod/Arch"]
+             "src/Mod/Arch",
+             "src/Mod/Start"]
              
 QMAKE = ""
 LUPDATE = ""
