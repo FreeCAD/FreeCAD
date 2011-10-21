@@ -89,15 +89,15 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solids = new Gui::ToolBarItem(root);
     solids->setCommand("Solids");
-    *solids << "Part_Box" << "Part_Cylinder" << "Part_Sphere" << "Part_Cone" << "Part_Torus";
+    *solids << "Part_Box" << "Part_Cylinder" << "Part_Sphere" << "Part_Cone" << "Part_Torus" << "Part_Primitives";
 
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
     tool->setCommand("Part tools");
-    *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet";
+    *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_RuledSurface";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
-    *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common" << "Part_Section";
+    *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common" << "Part_Section"/* << "Part_ShapeInfo"*/;
 
     return root;
 }

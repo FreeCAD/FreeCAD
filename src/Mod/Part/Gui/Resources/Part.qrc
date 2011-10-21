@@ -9,6 +9,7 @@
         <file>icons/Part_Common.svg</file>
         <file>icons/Part_Cone.svg</file>
         <file>icons/Part_Cut.svg</file>
+        <file>icons/Part_CreatePrimitives.svg</file>        
         <file>icons/Part_Cylinder.svg</file>
         <file>icons/Part_Extrude.svg</file>
         <file>icons/Part_Fillet.svg</file>
@@ -17,7 +18,9 @@
         <file>icons/Part_Mirror.svg</file>
         <file>icons/Part_MirrorPNG.png</file>
         <file>icons/Part_Revolve.svg</file>
+        <file>icons/Part_RuledSurface.svg</file>
         <file>icons/Part_Section.svg</file>
+        <file>icons/Part_ShapeInfo.svg</file>
         <file>icons/Part_Sphere.svg</file>
         <file>icons/Part_Torus.svg</file>
         <file>icons/preferences-part_design.svg</file>
