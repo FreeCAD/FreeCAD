@@ -442,7 +442,7 @@ void System::initSolution(VEC_pD &params)
             if (params[i] != reduced_params[i])
                 reductionmap[params[i]] = reduced_params[i];
     }
- 
+
     int i=0;
     std::vector<Constraint *> clist0, clist1;
     for (std::vector<Constraint *>::const_iterator constr=clist.begin();
@@ -529,10 +529,13 @@ int System::solve(SubSystem *subsys, bool isFine)
 
     double convergence = isFine ? XconvergenceFine : XconvergenceRough;
     int maxIterNumber = MaxIterations * xsize;
+    double diverging_lim = 1e6*err + 1e12;
 
     for (int iter=1; iter < maxIterNumber; iter++) {
 
         if (h.norm() <= convergence || err <= smallF)
+            break;
+        if (err > diverging_lim || err != err) // check for diverging and NaN
             break;
 
         y = grad;
@@ -620,6 +623,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 
     double convergence = isFine ? XconvergenceFine : XconvergenceRough;
     int maxIterNumber = MaxIterations * xsize;
+    double diverging_lim = 1e6*subsysA->error() + 1e12;
 
     double mu = 0;
     lambda.setZero();
@@ -685,7 +689,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
                 f = subsysB->error() + mu * resA.lpNorm<1>();
             }
             lambda = lambda0 + alpha * lambdadir;
- 
+
         }
         h = x - x0;
 
@@ -707,7 +711,10 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
             }
         }
 
-        if (h.norm() <= convergence && subsysA->error() <= smallF)
+        double err = subsysA->error();
+        if (h.norm() <= convergence && err <= smallF)
+            break;
+        if (err > diverging_lim || err != err) // check for diverging and NaN
             break;
     }
 
