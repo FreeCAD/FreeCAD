@@ -297,6 +297,40 @@ bool CmdSketcherLeaveSketch::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdSketcherViewSketch);
+
+CmdSketcherViewSketch::CmdSketcherViewSketch()
+  : Command("Sketcher_ViewSketch")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("View sketch");
+    sToolTipText    = QT_TR_NOOP("View sketch perpendicular to sketch plane");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    eType           = 0;
+}
+
+void CmdSketcherViewSketch::activated(int iMsg)
+{
+    Gui::Document *doc = getActiveGuiDocument();
+    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.Placement.Rotation.Q)"
+                 ,vp->getObject()->getNameInDocument());
+}
+
+bool CmdSketcherViewSketch::isActive(void)
+{
+    Gui::Document *doc = getActiveGuiDocument();
+    if (doc) {
+        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp && vp->getSketchMode() == ViewProviderSketch::STATUS_NONE)
+            return true;
+    }
+    return false;
+}
+
 
 
 
@@ -308,5 +342,5 @@ void CreateSketcherCommands(void)
     rcCmdMgr.addCommand(new CmdSketcherNewSketch());
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());
     rcCmdMgr.addCommand(new CmdSketcherLeaveSketch());
-
- }
+    rcCmdMgr.addCommand(new CmdSketcherViewSketch());
+}

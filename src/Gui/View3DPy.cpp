@@ -92,6 +92,7 @@ void View3DInventorPy::init_type()
     add_varargs_method("getCameraNode",&View3DInventorPy::getCameraNode,"getCameraNode()");
     add_varargs_method("getViewDirection",&View3DInventorPy::getViewDirection,"getViewDirection()");
     add_varargs_method("setCamera",&View3DInventorPy::setCamera,"setCamera()");
+    add_varargs_method("setCameraOrientation",&View3DInventorPy::setCameraOrientation,"setCameraOrientation()");
     add_varargs_method("getCameraType",&View3DInventorPy::getCameraType,"getCameraType()");
     add_varargs_method("setCameraType",&View3DInventorPy::setCameraType,"setCameraType()");
     add_varargs_method("listCameraTypes",&View3DInventorPy::listCameraTypes,"listCameraTypes()");
@@ -385,6 +386,33 @@ Py::Object View3DInventorPy::viewAxometric(const Py::Tuple& args)
     try {
         _view->getViewer()->setCameraOrientation(SbRotation
             (-0.353553f, -0.146447f, -0.353553f, -0.853553f));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyTuple_Type, &o))
+        throw Py::Exception();
+
+    try {
+        Py::Tuple tuple(o);
+        float q0 = (float)Py::Float(tuple[0]);
+        float q1 = (float)Py::Float(tuple[1]);
+        float q2 = (float)Py::Float(tuple[2]);
+        float q3 = (float)Py::Float(tuple[3]);
+        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3));
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());

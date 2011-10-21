@@ -160,6 +160,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     part->setCommand("&Part Design");
     *part << "Sketcher_NewSketch" 
           << "Sketcher_LeaveSketch"
+          << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
           << geom
           << cons

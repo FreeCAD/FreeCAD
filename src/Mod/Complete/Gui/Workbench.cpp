@@ -250,6 +250,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     *PartDesign   << "Sketcher_NewSketch"
                   << "Sketcher_LeaveSketch"
+                  << "Sketcher_ViewSketch"
                   << "Sketcher_MapSketch"
                   << "Separator" 
                   << "Sketcher_CreateArc"
