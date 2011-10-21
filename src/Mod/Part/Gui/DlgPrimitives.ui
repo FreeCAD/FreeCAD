@@ -107,7 +107,7 @@
            <property name="currentIndex">
             <number>0</number>
            </property>
-           <widget class="QWidget" name="page">
+           <widget class="QWidget" name="page0_plane">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -177,7 +177,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="WStackPage1">
+           <widget class="QWidget" name="Page1_box">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -267,7 +267,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="WStackPage2">
+           <widget class="QWidget" name="Page2_cylinder">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -374,7 +374,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="WStackPage3">
+           <widget class="QWidget" name="Page3_cone">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -498,7 +498,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="WStackPage4">
+           <widget class="QWidget" name="Page4_sphere">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -637,7 +637,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="WStackPage5">
+           <widget class="QWidget" name="Page5_ellipsoid">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -790,7 +790,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="WStackPage6">
+           <widget class="QWidget" name="Page6_torus">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -946,7 +946,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="page_3">
+           <widget class="QWidget" name="page7_wedge">
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
               <widget class="QLabel" name="label_10">
@@ -1078,7 +1078,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="page_2">
+           <widget class="QWidget" name="page8_helix">
             <layout class="QGridLayout">
              <property name="margin">
               <number>9</number>
@@ -1185,7 +1185,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="page_4circle">
+           <widget class="QWidget" name="page9_circle">
             <layout class="QGridLayout" name="gridLayout_3">
              <item row="0" column="0">
               <layout class="QGridLayout" name="circleParameters">
@@ -1269,6 +1269,59 @@
              </item>
             </layout>
            </widget>
+           <widget class="QWidget" name="page10_vertex">
+            <widget class="QWidget" name="gridLayoutWidget">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>10</y>
+               <width>201</width>
+               <height>76</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_4">
+              <item row="0" column="1">
+               <widget class="QDoubleSpinBox" name="VertexXAxisValue"/>
+              </item>
+              <item row="1" column="1">
+               <widget class="QDoubleSpinBox" name="VertexYAxisValue"/>
+              </item>
+              <item row="2" column="1">
+               <widget class="QDoubleSpinBox" name="VertexZAxisValue"/>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_X_Axis">
+                <property name="text">
+                 <string>X Axis Value:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_Y_Axis">
+                <property name="text">
+                 <string>Y Axis Value:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_Z_Axis">
+                <property name="text">
+                 <string>Z Axis Value:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
           </widget>
          </item>
         </layout>
@@ -1339,6 +1392,11 @@
           <string>Circle</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Vertex</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="1" column="0">
@@ -1366,21 +1424,21 @@
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="TextLabel3">
+            <widget class="QLabel" name="TextLabel_Z">
              <property name="text">
               <string>Z:</string>
              </property>
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="TextLabel1">
+            <widget class="QLabel" name="TextLabel_X">
              <property name="text">
               <string>X:</string>
              </property>
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QLabel" name="TextLabel1_3">
+            <widget class="QLabel" name="TextLabel_Direction">
              <property name="text">
               <string>Direction:</string>
              </property>
@@ -1397,7 +1455,7 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="TextLabel2">
+            <widget class="QLabel" name="TextLabel_Y">
              <property name="text">
               <string>Y:</string>
              </property>

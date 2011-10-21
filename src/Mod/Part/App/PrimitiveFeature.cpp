@@ -33,6 +33,7 @@
 # include <BRepPrim_Wedge.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <gp_Circ.hxx>
@@ -49,7 +50,9 @@
 # include <Handle_Geom2d_TrimmedCurve.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>
+# include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
 
 
@@ -95,6 +98,58 @@ void Primitive::onChanged(const App::Property* prop)
         // takes too long and thus is not feasible
         std::string grp = (prop->getGroup() ? prop->getGroup() : "");
         if (grp == "Plane" || grp == "Cylinder" || grp == "Cone"){
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
+}
+
+PROPERTY_SOURCE(Part::Vertex, Part::Primitive)
+
+Vertex::Vertex()
+{
+    ADD_PROPERTY(X,(0.0f));
+    ADD_PROPERTY(Y,(0.0f));
+    ADD_PROPERTY(Z,(0.0f));
+}
+
+Vertex::~Vertex()
+{
+}
+
+short Vertex::mustExecute() const
+{
+    if (X.isTouched() ||
+        Y.isTouched() ||
+        Z.isTouched())
+        return 1;
+    return Part::Feature::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Vertex::execute(void)
+{
+    gp_Pnt point;
+    point.SetX(this->X.getValue());
+    point.SetY(this->Y.getValue());
+    point.SetZ(this->Z.getValue());
+    
+    BRepBuilderAPI_MakeVertex MakeVertex(point);
+    const TopoDS_Vertex& vertex = MakeVertex.Vertex();
+    this->Shape.setValue(vertex);
+
+    return App::DocumentObject::StdReturn;
+}
+
+
+void Vertex::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &X || prop == &Y || prop == &Z){
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;

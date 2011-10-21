@@ -104,6 +104,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Qt::WFlags fl)
     ui.helixRadius->setMaximum(INT_MAX);
     // circle
     ui.circleRadius->setMaximum(INT_MAX);
+    // vertex
+    ui.VertexXAxisValue->setMaximum(INT_MAX);
+    ui.VertexYAxisValue->setMaximum(INT_MAX);
+    ui.VertexZAxisValue->setMaximum(INT_MAX);
+    ui.VertexXAxisValue->setMinimum(-INT_MAX);
+    ui.VertexYAxisValue->setMinimum(-INT_MAX);
+    ui.VertexZAxisValue->setMinimum(-INT_MAX);
 }
 
 /*  
@@ -365,8 +372,21 @@ void DlgPrimitives::accept()
                 .arg(ui.circleAngle1->value(),0,'f',2)
                 .arg(this->toPlacement());
         }
+        else if (ui.comboBox1->currentIndex() == 10) {  // vertex
+            name = QString::fromAscii(doc->getUniqueObjectName("Vertex").c_str());
+            cmd = QString::fromAscii(
+                "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
+                "App.ActiveDocument.%1.X=%2\n"
+                "App.ActiveDocument.%1.Y=%3\n"
+                "App.ActiveDocument.%1.Z=%4\n"
+                "App.ActiveDocument.%1.Placement=%5\n")
+                .arg(name)
+                .arg(ui.VertexXAxisValue->value(),0,'f',2)
+                .arg(ui.VertexYAxisValue->value(),0,'f',2)
+                .arg(ui.VertexZAxisValue->value(),0,'f',2)
+                .arg(this->toPlacement());
+        }
 
-        
         // Execute the Python block
         QString prim = tr("Create %1").arg(ui.comboBox1->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());

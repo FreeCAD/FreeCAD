@@ -156,6 +156,7 @@ void PartExport initPart()
     Part::CurveNet              ::init();
     Part::Polygon               ::init();
     Part::Circle                ::init();
+    Part::Vertex                ::init();
     Part::Ellipsoid             ::init();
     Part::Plane                 ::init();
     Part::Sphere                ::init();

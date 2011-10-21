@@ -49,6 +49,27 @@ protected:
     void onChanged (const App::Property* prop);
 };
 
+class PartExport Vertex : public Part::Primitive
+{
+    PROPERTY_HEADER(Part::Vertex);
+
+public:
+    Vertex();
+    virtual ~Vertex();
+
+    App::PropertyFloat X;
+    App::PropertyFloat Y;
+    App::PropertyFloat Z;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    void onChanged(const App::Property*);
+    //@}
+};
+
 class PartExport Plane : public Primitive
 {
     PROPERTY_HEADER(Part::Plane);
