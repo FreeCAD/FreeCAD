@@ -57,6 +57,9 @@ public:
     bool   getMirroredExtent(void) const;
 
 private Q_SLOTS:
+    void onLengthChanged(double);
+    void onMirrored(bool);
+    void onReversed(bool);
 
 protected:
     void changeEvent(QEvent *e);

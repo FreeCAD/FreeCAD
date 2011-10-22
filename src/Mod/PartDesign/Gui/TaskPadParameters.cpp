@@ -29,6 +29,7 @@
 #include "ui_TaskPadParameters.h"
 #include "TaskPadParameters.h"
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -55,6 +56,13 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
+            this, SLOT(onLengthChanged(double)));
+    connect(ui->checkBoxMirrored, SIGNAL(toggled(bool)),
+            this, SLOT(onMirrored(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversed(bool)));
+
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
@@ -68,20 +76,39 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
 
     // check if the sketch has support
     Sketcher::SketchObject *pcSketch;
-    if(pcPad->Sketch.getValue() ){
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
-        if(pcSketch->Support.getValue() )
+    if (pcPad->Sketch.getValue()) {
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
+        if (pcSketch->Support.getValue())
             // in case of sketch with support, reverse makes no sense (goes into the part)
             ui->checkBoxReversed->setEnabled(0);
         else
             ui->checkBoxReversed->setChecked(reversed);
-
     }
-
 
     ui->checkBoxReversed->setChecked(reversed);
 
     setFocus ();
+}
+
+void TaskPadParameters::onLengthChanged(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    pcPad->Length.setValue((float)len);
+    pcPad->getDocument()->recomputeFeature(pcPad);
+}
+
+void TaskPadParameters::onMirrored(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    pcPad->MirroredExtent.setValue(on);
+    pcPad->getDocument()->recomputeFeature(pcPad);
+}
+
+void TaskPadParameters::onReversed(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    pcPad->Reversed.setValue(on);
+    pcPad->getDocument()->recomputeFeature(pcPad);
 }
 
 double TaskPadParameters::getLength(void) const
@@ -165,7 +192,7 @@ bool TaskDlgPadParameters::reject()
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject()); 
     Sketcher::SketchObject *pcSketch;
     App::DocumentObject    *pcSupport;
-    if(pcPad->Sketch.getValue() ){
+    if (pcPad->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
         pcSupport = pcSketch->Support.getValue();
     }
@@ -175,12 +202,11 @@ bool TaskDlgPadParameters::reject()
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     
     // if abort command deleted the object the support is visible again
-    if( ! Gui::Application::Instance->getViewProvider(pcPad) ){
-        if(pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
+    if (!Gui::Application::Instance->getViewProvider(pcPad)) {
+        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
-        if(pcPad && Gui::Application::Instance->getViewProvider(pcSupport))
+        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
             Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
     }
 
     //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
