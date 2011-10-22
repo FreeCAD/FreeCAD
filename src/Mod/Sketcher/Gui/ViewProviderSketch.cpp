@@ -732,6 +732,7 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
             if (preselectChanged) {
                 this->drawConstraintIcons();
                 this->updateColor();
+		return true;
             }
             return false;
         case STATUS_SELECT_Point:
@@ -1323,12 +1324,33 @@ void ViewProviderSketch::updateColor(void)
     for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
         SoSeparator *s = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
         SoMaterial *m = dynamic_cast<SoMaterial *>(s->getChild(0));
-        if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end())
-            m->diffuseColor = SelectColor;
-        else if (edit->PreselectConstraint == i)
-            m->diffuseColor = PreselectColor;
-        else
-            m->diffuseColor = ConstraintColor;
+      
+        // Check Constraint Type
+        ConstraintType type = this->getSketchObject()->Constraints.getValues()[i]->Type;
+        bool hasDatumLabel  = (type == Sketcher::Angle ||
+                              type == Sketcher::Radius ||
+                              type == Sketcher::Distance || type == Sketcher::DistanceX || type == Sketcher::DistanceY);
+                              
+        if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
+          m->diffuseColor = SelectColor;
+          if(hasDatumLabel) {
+            SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(4));
+            l->textColor = SelectColor;
+          }
+        } else if (edit->PreselectConstraint == i) {
+          m->diffuseColor = PreselectColor;
+          if(hasDatumLabel) {
+            SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(4));
+            l->textColor = PreselectColor;
+          }
+        }
+        else {
+          m->diffuseColor = ConstraintColor;
+          if(hasDatumLabel) {
+            SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(4));
+            l->textColor = ConstraintColor;
+          }
+      }
     }
 
     // end editing
@@ -2365,6 +2387,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                     SoDatumLabel *text = new SoDatumLabel();
                     //text->justification =  SoDatumLabel::CENTER;
                     text->string = "";
+                    text->textColor = ConstraintColor;
                     sep->addChild(text);
 
                     edit->vConstrType.push_back((*it)->Type);

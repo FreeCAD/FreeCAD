@@ -227,7 +227,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     SoState *state = action->getState();
     if (!shouldGLRender(action))
         return;
-
+    if(action->handleTransparency(true))
+      return;
     drawImage();
 
     SbVec2s size;
@@ -239,22 +240,22 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     int srch = size[1];
 
     state->push();
-    
+
     glPixelStorei(GL_UNPACK_ROW_LENGTH, srcw);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-
-    glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_DEPTH_TEST);
+    
+    glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
+    glDisable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D); // Enable Textures
     glEnable(GL_BLEND); 
-    
     // Copy the text bitmap into memory and bind
     GLuint myTexture;
     // generate a texture
     glGenTextures(1, &myTexture);
 
     glBindTexture(GL_TEXTURE_2D, myTexture);
-
+    
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
@@ -262,27 +263,29 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // Create the quad to hold texture
-    glBegin(GL_QUADS);
-
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.5f);
+    float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.4f);
                     
     float aspectRatio =  (float) srcw / (float) srch;
     float height = scale / (float) srch;
     float width  = aspectRatio * (float) height;
 
     this->bbx = width;
-    this->bby = height;
-    
+    this->bby = height;    
+    glBegin(GL_QUADS);
+    glColor3f(1.f, 1.f, 1.f);
     glTexCoord2f(0.f, 1.f); glVertex2f(-width/ 2, height / 2);
     glTexCoord2f(0.f, 0.f); glVertex2f(-width / 2,-height / 2);
     glTexCoord2f(1.f, 0.f); glVertex2f( width/ 2,-height / 2);
     glTexCoord2f(1.f, 1.f); glVertex2f( width / 2, height / 2);
-
+    
     glEnd();
+
+
 
     // Reset the Mode
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     glPopAttrib();
     state->pop();
+    
 }
