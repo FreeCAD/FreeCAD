@@ -14,7 +14,7 @@ from FreeCAD import Base
 def makeCopy(shape, radius, angle):
     mat = Base.Matrix()
     mat.rotateZ(math.radians(angle))
-    step = 360.0 / angle
+    step = int(360.0 / angle)
     shape = shape.copy()
     shape.translate((radius, 0, 0))
     comp = shape.copy()
