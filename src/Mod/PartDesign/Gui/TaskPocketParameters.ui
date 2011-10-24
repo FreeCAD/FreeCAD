@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>137</width>
-    <height>116</height>
+    <height>68</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,16 +30,6 @@
          <string>Dimension</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Up to last</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Up to first</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
@@ -49,7 +39,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Size:</string>
+        <string>Length</string>
        </property>
       </widget>
      </item>

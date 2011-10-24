@@ -37,6 +37,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
+# include <TopoDS_Solid.hxx>
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 #endif
@@ -138,7 +139,18 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone()) 
                 return new App::DocumentObjectExecReturn("Cut with support failed");
-            this->Shape.setValue(mkCut.Shape());
+
+            // we have to get the solids (fuse create seldomly compounds)
+            TopExp_Explorer anExplorer;
+            anExplorer.Init(mkCut.Shape(),TopAbs_SOLID);
+
+            TopoDS_Solid solRes = TopoDS::Solid(anExplorer.Current());
+
+            if (solRes.IsNull())
+                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+            this->Shape.setValue(solRes);
+
+            //this->Shape.setValue(mkCut.Shape());
         }
         else{
             return new App::DocumentObjectExecReturn("Cannot create a tool out of sketch with no support");

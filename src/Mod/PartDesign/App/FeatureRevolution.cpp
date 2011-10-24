@@ -93,11 +93,27 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
     if (wires.empty()) // there can be several wires
         return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
-
-    Base::Vector3f b = Base.getValue();
+#if 0
+    App::DocumentObject* support = sketch->Support.getValue();
+    Base::Placement placement = sketch->Placement.getValue();
+    Base::Vector3d axis(0,1,0);
+    placement.getRotation().multVec(axis, axis);
+    Base::BoundBox3d bbox = sketch->Shape.getBoundingBox();
+    bbox.Enlarge(0.1);
+    Base::Vector3d base(bbox.MaxX, bbox.MaxY, bbox.MaxZ);
+#endif
+    // get the Sketch plane
+    Base::Placement SketchPos = static_cast<Part::Part2DObject*>(link)->Placement.getValue();
+    Base::Rotation SketchOrientation = SketchPos.getRotation();
+    // get rvolve axis
     Base::Vector3f v = Axis.getValue();
+    Base::Vector3d SketchOrientationVector(v.x,v.y,v.z);
+    SketchOrientation.multVec(SketchOrientationVector,SketchOrientationVector);
+
+
+    Base::Vector3f b(0,0,0);
     gp_Pnt pnt(b.x,b.y,b.z);
-    gp_Dir dir(v.x,v.y,v.z);
+    gp_Dir dir(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
 
     // get the support of the Sketch if any
     App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(link)->Support.getValue();

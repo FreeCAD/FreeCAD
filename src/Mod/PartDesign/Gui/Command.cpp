@@ -227,7 +227,7 @@ void CmdPartDesignPocket::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    commitCommand();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s',2)",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
     copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
@@ -289,18 +289,11 @@ void CmdPartDesignRevolution::activated(int iMsg)
     }
 
     App::DocumentObject* support = sketch->Support.getValue();
-    Base::Placement placement = sketch->Placement.getValue();
-    Base::Vector3d axis(0,1,0);
-    placement.getRotation().multVec(axis, axis);
-    Base::BoundBox3d bbox = sketch->Shape.getBoundingBox();
-    bbox.Enlarge(0.1);
-    Base::Vector3d base(bbox.MaxX, bbox.MaxY, bbox.MaxZ);
 
     openCommand("Make Revolution");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Revolution\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.Base = App.Vector(%f,%f,%f)",FeatName.c_str(), base.x, base.y, base.z);
-    doCommand(Doc,"App.activeDocument().%s.Axis = App.Vector(%f,%f,%f)",FeatName.c_str(), axis.x, axis.y, axis.z);
+    doCommand(Doc,"App.activeDocument().%s.Axis = App.Vector(0,1,0)",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
     updateActive();
     if (isActiveObjectValid()) {
@@ -308,8 +301,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
         if (support)
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    commitCommand();
-    adjustCameraPosition();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s',2)",FeatName.c_str());
 
     if (support) {
         copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());

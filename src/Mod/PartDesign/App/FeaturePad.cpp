@@ -115,14 +115,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         SupportObject = static_cast<Part::Feature*>(SupportLink);
 
 
-#if 0
-    //TopoDS_Wire theWire = TopoDS::Wire(shape);
-    //TopoDS_Face aFace = BRepBuilderAPI_MakeFace(theWire);
-#else
     TopoDS_Shape aFace = makeFace(wires);
     if (aFace.IsNull())
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
-#endif
+
     // lengthen the vector
     SketchOrientationVector *= Length.getValue();
 
@@ -159,14 +155,11 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 // get the first
                 TopoDS_Solid solRes = TopoDS::Solid(anExplorer.Current());
 
-                //TopoDS_Solid solRes = TopoDS::Solid(result);
                 // lets check if the result is a solid
-                //if (result.ShapeType() != TopAbs_SOLID)
-                //    return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
                 if (solRes.IsNull())
                     return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
                 this->Shape.setValue(solRes);
-                //this->Shape.setValue(result);
+                
             }
             else
                 return new App::DocumentObjectExecReturn("Support is not a solid");

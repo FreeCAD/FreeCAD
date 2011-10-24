@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
+ 
 
 #ifndef GUI_TASKVIEW_TaskPocketParameters_H
 #define GUI_TASKVIEW_TaskPocketParameters_H
@@ -44,18 +44,18 @@ namespace PartDesignGui {
 
 
 
-class TaskPocketParameters : public Gui::TaskView::TaskBox, public Gui::SelectionSingleton::ObserverType
+class TaskPocketParameters : public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    TaskPocketParameters(QWidget *parent = 0);
+    TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent = 0);
     ~TaskPocketParameters();
-    /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+
+    double getLength(void) const;
 
 private Q_SLOTS:
+    void onLengthChanged(double);
 
 protected:
     void changeEvent(QEvent *e);
@@ -65,6 +65,7 @@ private:
 private:
     QWidget* proxy;
     Ui_TaskPocketParameters* ui;
+    ViewProviderPocket *PocketView;
 };
 
 /// simulation dialog for the TaskView
@@ -79,6 +80,7 @@ public:
     ViewProviderPocket* getPocketView() const
     { return PocketView; }
 
+
 public:
     /// is called the TaskView when the dialog is opened
     virtual void open();
@@ -89,13 +91,12 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
     /// is called by the framework if the user presses the help button 
-    virtual void helpRequested();
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 
     /// returns for Close and Help button 
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Close|QDialogButtonBox::Help; }
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
     ViewProviderPocket   *PocketView;
