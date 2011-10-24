@@ -3451,10 +3451,7 @@ class Trimex(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.obj = Draft.getSelection()[0]
-        self.ui.radiusUi()
-        self.ui.labelRadius.setText("Distance")
-        self.ui.radiusValue.setFocus()
-        self.ui.radiusValue.selectAll()
+        self.ui.trimUi()
         self.linetrack = lineTracker()
         self.constraintrack = lineTracker(dotted=True)
         if not "Shape" in self.obj.PropertiesList: return
@@ -3706,7 +3703,6 @@ class Trimex(Modifier):
         Modifier.finish(self)
         self.force = None
         if self.ui:
-            self.ui.labelRadius.setText("Distance")
             self.linetrack.finalize()
             self.constraintrack.finalize()
             if self.ghost:
@@ -4000,13 +3996,9 @@ class Edit(Modifier):
                     self.selectstate = self.obj.ViewObject.Selectable
                     self.obj.ViewObject.Selectable = False
                     if not Draft.getType(self.obj) in ["Wire","BSpline"]:
-                        self.ui.addButton.setEnabled(False)
-                        self.ui.delButton.setEnabled(False)
+                        self.ui.setEditButtons(False)
                     else:
-                        self.ui.addButton.setEnabled(True)
-                        self.ui.delButton.setEnabled(True)
-                    # self.ui.addButton.setChecked(False)
-                    # self.ui.delButton.setChecked(False)
+                        self.ui.setEditButtons(True)
                     self.editing = None
                     self.editpoints = []
                     self.pl = None
@@ -4324,8 +4316,7 @@ class AddPoint(Modifier):
             return False
 
     def Activated(self):
-        FreeCADGui.draftToolBar.addButton.setChecked(True)
-        FreeCADGui.draftToolBar.delButton.setChecked(False)
+        FreeCADGui.draftToolBar.vertUi(True)
         FreeCADGui.runCommand("Draft_Edit")
 
         
@@ -4348,8 +4339,7 @@ class DelPoint(Modifier):
             return False
 
     def Activated(self):
-        FreeCADGui.draftToolBar.addButton.setChecked(False)
-        FreeCADGui.draftToolBar.delButton.setChecked(True)
+        FreeCADGui.draftToolBar.vertUi(False)
         FreeCADGui.runCommand("Draft_Edit")
 
         

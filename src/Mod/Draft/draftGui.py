@@ -301,9 +301,12 @@ class DraftToolBar:
         self.isCopy = self._checkbox("isCopy",self.layout,checked=False)
 
         # spacer
-
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
-                                       QtGui.QSizePolicy.Minimum)
+        if not self.taskmode:
+            spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
+                                           QtGui.QSizePolicy.Minimum)
+        else:
+            spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum,
+                                           QtGui.QSizePolicy.Expanding)
         self.layout.addItem(spacerItem)
         
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
@@ -553,6 +556,13 @@ class DraftToolBar:
             self.continueCmd.hide()
             self.occOffset.hide()
 
+    def trimUi(self,title=translate("draft","Trim")):
+        self.taskUi(title)
+        self.radiusUi()
+        self.labelRadius.setText(translate("draft","Distance"))
+        self.radiusValue.setFocus()
+        self.radiusValue.selectAll()
+
     def radiusUi(self):
         self.labelx.hide()
         self.labely.hide()
@@ -628,7 +638,7 @@ class DraftToolBar:
         self.delButton.show()
         self.finishButton.show()
         self.closeButton.show()
-
+        
     def extUi(self):
         self.hasFill.show()
         self.continueCmd.show()
@@ -636,6 +646,14 @@ class DraftToolBar:
     def modUi(self):
         self.isCopy.show()
         self.continueCmd.show()
+
+    def vertUi(self,addmode=True):
+        self.addButton.setChecked(addmode)
+        self.delButton.setChecked(not(addmode))
+
+    def setEditButtons(self,mode):
+        self.addButton.setEnabled(mode)
+        self.delButton.setEnabled(mode)
 
     def relocate(self):
         "relocates the right-aligned buttons depending on the toolbar size"
