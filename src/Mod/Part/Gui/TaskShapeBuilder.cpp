@@ -36,6 +36,7 @@
 #include "ViewProviderExt.h"
 
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -379,7 +380,8 @@ TaskShapeBuilder::TaskShapeBuilder()
 {
     widget = new ShapeBuilderWidget();
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        Gui::BitmapFactory().pixmap("Part_Shapebuilder"),
+        widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

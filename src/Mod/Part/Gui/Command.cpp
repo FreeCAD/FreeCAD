@@ -203,7 +203,7 @@ CmdPartPrimitives::CmdPartPrimitives()
     sToolTipText  = QT_TR_NOOP("Creation of parametrized geometric primitives");
     sWhatsThis    = "Part_Primitives";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_CreatePrimitives";
+    sPixmap       = "Part_CreatePrimitives.png";
 }
 
 void CmdPartPrimitives::activated(int iMsg)
@@ -890,6 +890,7 @@ CmdPartBuilder::CmdPartBuilder()
     sToolTipText  = QT_TR_NOOP("Advanced utility to create shapes");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Shapebuilder";
 }
 
 void CmdPartBuilder::activated(int iMsg)
