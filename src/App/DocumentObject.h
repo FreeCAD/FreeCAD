@@ -88,11 +88,11 @@ public:
     //@{
     /// set this feature touched (cause recomputation on depndend features)
     void touch(void);
-    /// test if this feature is touched 
+    /// test if this feature is touched
     bool isTouched(void) const {return StatusBits.test(0);}
-    /// reset this feature touched 
+    /// reset this feature touched
     void purgeTouched(void){StatusBits.reset(0);setPropertyStatus(0,false);}
-    /// set this feature to error 
+    /// set this feature to error
     bool isError(void) const {return  StatusBits.test(1);}
     bool isValid(void) const {return !StatusBits.test(1);}
     /// remove the error from the object
@@ -121,16 +121,16 @@ public:
      *  0: no recompution is needed
      *  1: recompution needed
      * -1: the document examine all links of this object and if one is touched -> recompute
-     */ 
+     */
     virtual short mustExecute(void) const;
 
     /// get the status Message
     const char *getStatusString(void) const;
 
     /** Called in case of loosing a link
-     * Get called by the document when a object got deleted a link property of this 
-     * object ist pointing to. The standard behaivour of the DocumentObject implementation 
-     * is to reset the links to nothing. You may overide this method to implement 
+     * Get called by the document when a object got deleted a link property of this
+     * object ist pointing to. The standard behaivour of the DocumentObject implementation
+     * is to reset the links to nothing. You may overide this method to implement
      *additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);
@@ -148,10 +148,10 @@ public:
 
 protected:
     /** get called by the document to recompute this feature
-      * Normaly this method get called in the processing of 
-      * Document::recompute(). 
+      * Normaly this method get called in the processing of
+      * Document::recompute().
       * In execute() the outpupt properties get recomputed
-      * with the data from linked objects and objects own 
+      * with the data from linked objects and objects own
       * properties.
       */
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -174,8 +174,8 @@ protected:
     void setError(void){StatusBits.set(1);}
     void resetError(void){StatusBits.reset(1);}
     void setDocument(App::Document* doc);
-    
-    /// get called befor the value is changed
+
+    /// get called before the value is changed
     virtual void onBeforeChange(const Property* prop);
     /// get called by the container when a property was changed
     virtual void onChanged(const Property* prop);

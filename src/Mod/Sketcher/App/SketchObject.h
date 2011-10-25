@@ -81,10 +81,10 @@ public:
     /// delete external
     int delExternal(int ConstrId);
 
-    /// returns non zero if the sketch contains conflicting constraints 
+    /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
 
-    /// set the datum of a Distance or Angle constraint and solve 
+    /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// move this point to a new location and solve
     int movePoint(int geoIndex1, PointPos Pos1, const Base::Vector3d& toPoint, bool relative=false);

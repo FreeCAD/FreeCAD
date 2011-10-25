@@ -528,7 +528,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 {
     const std::vector<Part::Geometry *> &geomlist = this->Geometry.getValues();
     const std::vector<Constraint *> &constraints = this->Constraints.getValues();
-     
+
     assert(GeoId < int(geomlist.size()));
 
     int GeoId1=-1, GeoId2=-1;
@@ -566,50 +566,50 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
                     ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
-                    for (std::vector<Constraint *>::const_iterator it=constraints.begin(); it != constraints.end(); ++it)
-                    {
-                      Constraint *constr = *(it);
-                      if(secondPos1 == Sketcher::none && (constr->First == GeoId1  && constr->Second == GeoId)) {
-                          constrType1= Sketcher::Coincident;
-                          secondPos1 = constr->FirstPos;
-                      } else if(secondPos2 == Sketcher::none && (constr->First == GeoId2  && constr->Second == GeoId)) {
-                          constrType2 = Sketcher::Coincident;
-                          secondPos2 = constr->FirstPos;
-                      }
+                    for (std::vector<Constraint *>::const_iterator it=constraints.begin();
+                         it != constraints.end(); ++it) {
+                        Constraint *constr = *(it);
+                        if (secondPos1 == Sketcher::none && (constr->First == GeoId1  && constr->Second == GeoId)) {
+                            constrType1= Sketcher::Coincident;
+                            secondPos1 = constr->FirstPos;
+                        } else if (secondPos2 == Sketcher::none && (constr->First == GeoId2  && constr->Second == GeoId)) {
+                            constrType2 = Sketcher::Coincident;
+                            secondPos2 = constr->FirstPos;
+                        }
                     }
-                    
+
                     // constrain the trimming points on the corresponding geometries
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType1;
                     newConstr->First = GeoId;
                     newConstr->FirstPos = end;
                     newConstr->Second = GeoId1;
-                    
-                    if(constrType1 == Sketcher::Coincident) {
-                      newConstr->SecondPos = secondPos1;
-                      delConstraintOnPoint(GeoId1, secondPos1, false);
+
+                    if (constrType1 == Sketcher::Coincident) {
+                        newConstr->SecondPos = secondPos1;
+                        delConstraintOnPoint(GeoId1, secondPos1, false);
                     }
-                    
+
                     addConstraint(newConstr);
 
                     // Reset the second pos
                     newConstr->SecondPos = Sketcher::none;
-                    
+
                     newConstr->Type = constrType2;
                     newConstr->First = newGeoId;
                     newConstr->FirstPos = start;
                     newConstr->Second = GeoId2;
-                    
-                    if(constrType2 == Sketcher::Coincident) {
+
+                    if (constrType2 == Sketcher::Coincident) {
                       newConstr->SecondPos = secondPos2;
                       delConstraintOnPoint(GeoId2, secondPos2, false);
                     }
-                    
+
                     addConstraint(newConstr);
 
                     // Reset the second pos
                     newConstr->SecondPos = Sketcher::none;
-                    
+
                     // new line segments colinear
                     newConstr->Type = Sketcher::Tangent;
                     newConstr->First = GeoId;
@@ -633,35 +633,33 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             double x1 = (point1 - startPnt)*dir;
             if (x1 >= 0.001*length && x1 <= 0.999*length) {
 
-                  ConstraintType constrType = Sketcher::PointOnObject;
-                  PointPos secondPos = Sketcher::none;
-                  for (std::vector<Constraint *>::const_iterator it=constraints.begin(); it != constraints.end(); ++it)
-                  {
+                ConstraintType constrType = Sketcher::PointOnObject;
+                PointPos secondPos = Sketcher::none;
+                for (std::vector<Constraint *>::const_iterator it=constraints.begin();
+                     it != constraints.end(); ++it) {
                     Constraint *constr = *(it);
-                    if((constr->First == GeoId1  && constr->Second == GeoId)) {
+                    if ((constr->First == GeoId1  && constr->Second == GeoId)) {
                         constrType = Sketcher::Coincident;
                         secondPos = constr->FirstPos;
                         delConstraintOnPoint(GeoId1, constr->FirstPos, false);
                         break;
-                      }
-                  }                    
-                    
+                    }
+                }
+
                 if (x1 > x0) { // trim line start
                     delConstraintOnPoint(GeoId, start, false);
                     movePoint(GeoId, start, point1);
-                    
+
                     // constrain the trimming point on the corresponding geometry
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
                     newConstr->First = GeoId;
                     newConstr->FirstPos = start;
                     newConstr->Second = GeoId1;
-                    
-                    if(constrType == Sketcher::Coincident)
-                    {
-                      newConstr->SecondPos = secondPos;
-                    }
-                    
+
+                    if (constrType == Sketcher::Coincident)
+                        newConstr->SecondPos = secondPos;
+
                     addConstraint(newConstr);
                     delete newConstr;
                     return 0;
@@ -674,12 +672,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     newConstr->First = GeoId;
                     newConstr->FirstPos = end;
                     newConstr->Second = GeoId1;
-                    
-                    if(constrType == Sketcher::Coincident)
-                    {
-                      newConstr->SecondPos = secondPos;
-                    }
-                    
+
+                    if (constrType == Sketcher::Coincident)
+                        newConstr->SecondPos = secondPos;
+
                     addConstraint(newConstr);
                     delete newConstr;
                     return 0;
@@ -719,46 +715,45 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
             ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
-            for (std::vector<Constraint *>::const_iterator it=constraints.begin(); it != constraints.end(); ++it)
-            {
-              Constraint *constr = *(it);
-              if(secondPos1 == Sketcher::none && (constr->First == GeoId1  && constr->Second == GeoId)) {
-                  constrType1= Sketcher::Coincident;
-                  secondPos1 = constr->FirstPos;
-              } else if(secondPos2 == Sketcher::none && (constr->First == GeoId2  && constr->Second == GeoId)) {
-                  constrType2 = Sketcher::Coincident;
-                  secondPos2 = constr->FirstPos;
-              }
+            for (std::vector<Constraint *>::const_iterator it=constraints.begin();
+                 it != constraints.end(); ++it) {
+                Constraint *constr = *(it);
+                if (secondPos1 == Sketcher::none && (constr->First == GeoId1  && constr->Second == GeoId)) {
+                    constrType1= Sketcher::Coincident;
+                    secondPos1 = constr->FirstPos;
+                } else if(secondPos2 == Sketcher::none && (constr->First == GeoId2  && constr->Second == GeoId)) {
+                    constrType2 = Sketcher::Coincident;
+                    secondPos2 = constr->FirstPos;
+                }
             }
-            
-            
+
             // constrain the trimming points on the corresponding geometries
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = constrType1;
             newConstr->First = GeoId;
             newConstr->FirstPos = start;
             newConstr->Second = GeoId1;
-            
-            if(constrType1 == Sketcher::Coincident) {
-              newConstr->SecondPos = secondPos1;
-              delConstraintOnPoint(GeoId1, secondPos1, false);
+
+            if (constrType1 == Sketcher::Coincident) {
+                newConstr->SecondPos = secondPos1;
+                delConstraintOnPoint(GeoId1, secondPos1, false);
             }
-                      
+
             addConstraint(newConstr);
 
-            // Reset secondpos in case it was set previously                    
+            // Reset secondpos in case it was set previously
             newConstr->SecondPos = Sketcher::none;
-              
+
             // Add Second Constraint
             newConstr->First = GeoId;
             newConstr->FirstPos = end;
             newConstr->Second = GeoId2;
-            
-            if(constrType2 == Sketcher::Coincident) {
-              newConstr->SecondPos = secondPos2;
-              delConstraintOnPoint(GeoId2, secondPos2, false);
+
+            if (constrType2 == Sketcher::Coincident) {
+                newConstr->SecondPos = secondPos2;
+                delConstraintOnPoint(GeoId2, secondPos2, false);
             }
-            
+
             addConstraint(newConstr);
 
             delete newConstr;
@@ -805,46 +800,46 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
                     ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
-                    
-                    for (std::vector<Constraint *>::const_iterator it=constraints.begin(); it != constraints.end(); ++it)
-                    {
-                      Constraint *constr = *(it);
-                      if(secondPos1 == Sketcher::none && 
-                         (constr->First == GeoId1  && constr->Second == GeoId)) {
-                          constrType1= Sketcher::Coincident;
-                          secondPos1 = constr->FirstPos;
-                      } else if(secondPos2 == Sketcher::none && 
-                               (constr->First == GeoId2  && constr->Second == GeoId)) {
-                          constrType2 = Sketcher::Coincident;
-                          secondPos2 = constr->FirstPos;
-                      }
+
+                    for (std::vector<Constraint *>::const_iterator it=constraints.begin();
+                         it != constraints.end(); ++it) {
+                        Constraint *constr = *(it);
+                        if (secondPos1 == Sketcher::none &&
+                            (constr->First == GeoId1  && constr->Second == GeoId)) {
+                            constrType1= Sketcher::Coincident;
+                            secondPos1 = constr->FirstPos;
+                        } else if (secondPos2 == Sketcher::none &&
+                                   (constr->First == GeoId2  && constr->Second == GeoId)) {
+                            constrType2 = Sketcher::Coincident;
+                            secondPos2 = constr->FirstPos;
+                        }
                     }
-                    
+
                     newConstr->Type = constrType1;
                     newConstr->First = GeoId;
                     newConstr->FirstPos = end;
                     newConstr->Second = GeoId1;
-                    
-                    if(constrType1 == Sketcher::Coincident) {
+
+                    if (constrType1 == Sketcher::Coincident) {
                       newConstr->SecondPos = secondPos1;
                       delConstraintOnPoint(GeoId1, secondPos1, false);
                     }
-                              
+
                     addConstraint(newConstr);
 
-                    // Reset secondpos in case it was set previously                    
+                    // Reset secondpos in case it was set previously
                     newConstr->SecondPos = Sketcher::none;
-                    
+
                     newConstr->Type = constrType2;
                     newConstr->First = newGeoId;
                     newConstr->FirstPos = start;
                     newConstr->Second = GeoId2;
-                    
-                    if(constrType2 == Sketcher::Coincident) {
+
+                    if (constrType2 == Sketcher::Coincident) {
                       newConstr->SecondPos = secondPos2;
                       delConstraintOnPoint(GeoId2, secondPos2, false);
                     }
-                    
+
                     addConstraint(newConstr);
 
                     newConstr->Type = Sketcher::Coincident;
@@ -869,20 +864,20 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         }
 
         if (GeoId1 >= 0) {
-          
+
             ConstraintType constrType = Sketcher::PointOnObject;
             PointPos secondPos = Sketcher::none;
-            for (std::vector<Constraint *>::const_iterator it=constraints.begin(); it != constraints.end(); ++it)
-            {
-              Constraint *constr = *(it);
-              if((constr->First == GeoId1  && constr->Second == GeoId)) {
-                  constrType = Sketcher::Coincident;
-                  secondPos = constr->FirstPos;
-                  delConstraintOnPoint(GeoId1, constr->FirstPos, false);
-                  break;
+            for (std::vector<Constraint *>::const_iterator it=constraints.begin();
+                 it != constraints.end(); ++it) {
+                Constraint *constr = *(it);
+                if ((constr->First == GeoId1  && constr->Second == GeoId)) {
+                    constrType = Sketcher::Coincident;
+                    secondPos = constr->FirstPos;
+                    delConstraintOnPoint(GeoId1, constr->FirstPos, false);
+                    break;
                 }
-            }     
-                  
+            }
+
             double theta1 = Base::fmod(atan2(point1.y - center.y, point1.x - center.x) - startAngle, 2.f*M_PI) * dir; // x1
             if (theta1 >= 0.001*arcLength && theta1 <= 0.999*arcLength) {
                 if (theta1 > theta0) { // trim arc start
@@ -895,12 +890,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     newConstr->First = GeoId;
                     newConstr->FirstPos = start;
                     newConstr->Second = GeoId1;
-                    
-                    if(constrType == Sketcher::Coincident)
-                    {
-                      newConstr->SecondPos = secondPos;
-                    }
-                    
+
+                    if (constrType == Sketcher::Coincident)
+                        newConstr->SecondPos = secondPos;
+
                     addConstraint(newConstr);
                     delete newConstr;
                     return 0;
@@ -914,12 +907,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     newConstr->First = GeoId;
                     newConstr->FirstPos = end;
                     newConstr->Second = GeoId1;
-                    
-                    if(constrType == Sketcher::Coincident)
-                    {
-                      newConstr->SecondPos = secondPos;
-                    }
-                    
+
+                    if (constrType == Sketcher::Coincident)
+                        newConstr->SecondPos = secondPos;
+
                     addConstraint(newConstr);
                     delete newConstr;
                     return 0;
@@ -1044,7 +1035,7 @@ void SketchObject::appendConflictMsg(const std::vector<int> &conflicting, std::s
         ss << msg;
     if (conflicting.size() > 0) {
         ss << "Please remove at least one of the constraints (" << conflicting[0];
-        for (int i=1; i < conflicting.size(); i++)
+        for (unsigned int i=1; i < conflicting.size(); i++)
             ss << ", " << conflicting[i];
         ss << ")\n";
     }

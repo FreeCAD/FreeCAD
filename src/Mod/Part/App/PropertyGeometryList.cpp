@@ -32,7 +32,6 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
 
 #include "Geometry.h"
 #include "GeometryPy.h"
