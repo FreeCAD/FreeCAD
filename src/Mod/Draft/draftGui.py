@@ -131,6 +131,8 @@ class DraftLineEdit(QtGui.QLineEdit):
 class DraftTaskPanel:
     def __init__(self,widget):
         self.form = widget
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Cancel)
     def accept(self):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
@@ -620,8 +622,9 @@ class DraftToolBar:
             self.cmdlabel.setText(title)
 
     def selectUi(self):
-        self.labelx.setText(translate("draft", "Pick Object"))
-        self.labelx.show()
+        if not self.taskmode:
+            self.labelx.setText(translate("draft", "Pick Object"))
+            self.labelx.show()
 
     def editUi(self):
         self.taskUi(translate("draft", "Edit"))
