@@ -23,7 +23,6 @@ EXTRA_DIST = \
 		CMakeLists.txt \
 		autogen.sh \
 		BuildAll.bat \
-		BuildAllNice.bat \
 		build.sh \
 		ChangeLog.txt \
 		copying.lib \

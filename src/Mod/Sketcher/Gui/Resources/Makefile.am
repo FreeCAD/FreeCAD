@@ -13,11 +13,10 @@ icons/Constraint_PointOnObject.svg \
 		icons/small/Constraint_Concentric_sm.xpm \
 		icons/small/Constraint_TangentToEnd_sm.xpm \
 		icons/small/Constraint_PointOnMidPoint_sm.xpm \
-		icons/small/Sketcher_ConstrainDistance_sm.xpm \
-		icons/small/Sketcher_ConstrainParallel_sm.xpm \
 		icons/small/Constraint_PointOnStart_sm.xpm \
 		icons/small/Constraint_Vertical_sm.xpm \
 		icons/small/Constraint_PointOnEnd_sm.xpm \
+		icons/small/Constraint_PointOnObject_sm.xpm \
 		icons/small/Constraint_PointToObject_sm.xpm \
 		icons/small/Constraint_InternalAngle_sm.xpm \
 		icons/small/Constraint_Radius_sm.xpm \
