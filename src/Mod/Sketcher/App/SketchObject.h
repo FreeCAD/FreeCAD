@@ -44,9 +44,9 @@ public:
     SketchObject();
 
     /// Property
+    Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalConstraints;
-    Part    ::PropertyGeometryList   Geometry;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
@@ -122,6 +122,10 @@ public:
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
+
+protected:
+    /// get called by the container when a property has changed
+    virtual void onChanged(const App::Property* /*prop*/);
 
 private:
     std::vector<int> VertexId2GeoId;

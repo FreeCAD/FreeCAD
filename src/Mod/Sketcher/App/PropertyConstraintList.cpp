@@ -52,7 +52,7 @@ TYPESYSTEM_SOURCE(Sketcher::PropertyConstraintList, App::PropertyLists);
 // Construction/Destruction
 
 
-PropertyConstraintList::PropertyConstraintList()
+PropertyConstraintList::PropertyConstraintList() : validGeometryKeys(0), invalidGeometry(true)
 {
 
 }
@@ -174,6 +174,9 @@ void PropertyConstraintList::Restore(Base::XMLReader &reader)
 Property *PropertyConstraintList::Copy(void) const
 {
     PropertyConstraintList *p = new PropertyConstraintList();
+    p->setValidGeometryKeys(validGeometryKeys);
+    if (invalidGeometry)
+        p->invalidateGeometry();
     p->setValues(_lValueList);
     return p;
 }
@@ -181,6 +184,9 @@ Property *PropertyConstraintList::Copy(void) const
 void PropertyConstraintList::Paste(const Property &from)
 {
     const PropertyConstraintList& FromList = dynamic_cast<const PropertyConstraintList&>(from);
+    setValidGeometryKeys(FromList.validGeometryKeys);
+    if (FromList.invalidGeometry)
+        invalidateGeometry();
     setValues(FromList._lValueList);
 }
 
@@ -191,3 +197,51 @@ unsigned int PropertyConstraintList::getMemSize(void) const
         size += _lValueList[i]->getMemSize();
     return size;
 }
+
+void PropertyConstraintList::acceptGeometry(const std::vector<Part::Geometry *> &GeoList)
+{
+    aboutToSetValue();
+    validGeometryKeys.clear();
+    validGeometryKeys.reserve(GeoList.size());
+    for (std::vector< Part::Geometry * >::const_iterator it=GeoList.begin();
+         it != GeoList.end(); ++it)
+        validGeometryKeys.push_back((*it)->getTypeId().getKey());
+    invalidGeometry = false;
+    hasSetValue();
+}
+
+void PropertyConstraintList::setValidGeometryKeys(const std::vector<unsigned int> &keys)
+{
+    validGeometryKeys = keys;
+    invalidGeometry = false;
+}
+
+void PropertyConstraintList::invalidateGeometry()
+{
+    invalidGeometry = true;
+}
+
+void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &GeoList)
+{
+    if (validGeometryKeys.size() != GeoList.size()) {
+        invalidGeometry = true;
+        return;
+    }
+
+    unsigned int i=0;
+    for (std::vector< Part::Geometry * >::const_iterator it=GeoList.begin();
+         it != GeoList.end(); ++it, i++) {
+        if (validGeometryKeys[i] != (*it)->getTypeId().getKey()) {
+            invalidGeometry = true;
+            return;
+        }
+    }
+
+    if (invalidGeometry) {
+        aboutToSetValue();
+        invalidGeometry = false;
+        hasSetValue();
+    }
+}
+
+std::vector<Constraint *> PropertyConstraintList::_emptyValueList(0);

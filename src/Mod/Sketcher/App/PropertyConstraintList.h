@@ -30,6 +30,7 @@
 #include <vector>
 #include <string>
 #include <App/Property.h>
+#include <Mod/Part/App/Geometry.h>
 #include "Constraint.h"
 
 namespace Base {
@@ -67,11 +68,11 @@ public:
 
     /// index operator
     const Constraint *operator[] (const int idx) const {
-        return _lValueList[idx];
+        return invalidGeometry ? 0 : _lValueList[idx];
     }
 
     const std::vector<Constraint*> &getValues(void) const {
-        return _lValueList;
+        return invalidGeometry ? _emptyValueList : _lValueList;
     }
 
     virtual PyObject *getPyObject(void);
@@ -85,8 +86,19 @@ public:
 
     virtual unsigned int getMemSize(void) const;
 
+    void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
+    void invalidateGeometry();
+    void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
+
 private:
-    std::vector<Constraint*> _lValueList;
+    std::vector<Constraint *> _lValueList;
+
+    std::vector<unsigned int> validGeometryKeys;
+    bool invalidGeometry;
+
+    void setValidGeometryKeys(const std::vector<unsigned int> &keys);
+
+    static std::vector<Constraint *> _emptyValueList;
 };
 
 } // namespace Sketcher

@@ -228,6 +228,7 @@ int SketchObject::addGeometry(const Part::Geometry *geo)
     Part::Geometry *geoNew = geo->clone();
     newVals.push_back(geoNew);
     Geometry.setValues(newVals);
+    Constraints.acceptGeometry(Geometry.getValues());
     delete geoNew;
     rebuildVertexIndex();
     return Geometry.getSize()-1;
@@ -256,13 +257,9 @@ int SketchObject::delGeometry(int GeoNbr)
         }
     }
 
-    // temporarily empty constraints list in order to avoid invalid constraints
-    // during manipulation of the geometry list
-    std::vector< Constraint * > emptyConstraints(0);
-    this->Constraints.setValues(emptyConstraints);
-
     this->Geometry.setValues(newVals);
     this->Constraints.setValues(newConstraints);
+    this->Constraints.acceptGeometry(this->Geometry.getValues());
     rebuildVertexIndex();
     return 0;
 }
@@ -280,6 +277,7 @@ int SketchObject::toggleConstruction(int GeoNbr)
     newVals[GeoNbr]=geoNew;
 
     this->Geometry.setValues(newVals);
+    this->Constraints.acceptGeometry(this->Geometry.getValues());
     return 0;
 }
 
@@ -758,6 +756,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             delete newConstr;
 
+            Constraints.acceptGeometry(Geometry.getValues());
+
             return 0;
         }
 
@@ -1066,7 +1066,15 @@ void SketchObject::Restore(XMLReader &reader)
 {
     // read the father classes
     Part::Part2DObject::Restore(reader);
+    Constraints.acceptGeometry(Geometry.getValues());
     rebuildVertexIndex();
+}
+
+void SketchObject::onChanged(const App::Property* prop)
+{
+    if (prop == &Geometry || prop == &Constraints)
+        Constraints.checkGeometry(Geometry.getValues());
+    DocumentObject::onChanged(prop);
 }
 
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId)
