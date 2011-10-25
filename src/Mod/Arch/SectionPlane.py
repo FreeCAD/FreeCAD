@@ -57,7 +57,7 @@ class SectionPlane:
         pass
 
     def getNormal(self):
-        return fcvec.neg(self.Object.Shape.Faces[0].normalAt(0,0))
+        return self.Object.Shape.Faces[0].normalAt(0,0)
 
 class ViewProviderSectionPlane(Component.ViewProviderComponent):
     "A View Provider for Section Planes"
@@ -110,17 +110,12 @@ class ViewProviderSectionPlane(Component.ViewProviderComponent):
         ds.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
         ls = coin.SoLineSet()
-        ls.numVertices.setValues([2,2,2,2])
-        self.mcoords = coin.SoCoordinate3()
-        mk = coin.SoMarkerSet()
-        mk.markerIndex = coin.SoMarkerSet.TRIANGLE_FILLED_5_5
+        ls.numVertices.setValues([2,4,4,2,4,4,2,4,4,2,4,4])
         pt = coin.SoAnnotation()
         pt.addChild(self.col)
         pt.addChild(ds)
         pt.addChild(self.lcoords)
         pt.addChild(ls)
-        pt.addChild(self.mcoords)
-        pt.addChild(mk)
         rn.addChild(pt)
         self.setVerts()
 
@@ -131,14 +126,19 @@ class ViewProviderSectionPlane(Component.ViewProviderComponent):
                               self.Object.ViewObject.LineColor[2])
 
     def setVerts(self):
+        def extendVerts(x,y):
+            l1 = hd/3
+            l2 = l1/3
+            verts.extend([[x,y,0],[x,y,-l1]])
+            verts.extend([[x,y,-l1],[x-l2,y,-l1+l2],[x+l2,y,-l1+l2],[x,y,-l1]])
+            verts.extend([[x,y,-l1],[x,y-l2,-l1+l2],[x,y+l2,-l1+l2],[x,y,-l1]])
         hd = self.Object.ViewObject.DisplaySize/2
         verts = []
-        verts.extend([[-hd,-hd,0],[-hd,-hd,-hd/3]])
-        verts.extend([[hd,-hd,0],[hd,-hd,-hd/3]])
-        verts.extend([[hd,hd,0],[hd,hd,-hd/3]])
-        verts.extend([[-hd,hd,0],[-hd,hd,-hd/3]])
-        self.lcoords.point.setValues(0,8,verts)
-        self.mcoords.point.setValues(0,4,[verts[1],verts[3],verts[5],verts[7]])
+        extendVerts(-hd,-hd)
+        extendVerts(hd,-hd)
+        extendVerts(hd,hd)
+        extendVerts(-hd,hd)
+        self.lcoords.point.setValues(verts)
 
     def updateData(self,obj,prop):
         if prop in ["Shape","Placement"]:
@@ -263,7 +263,7 @@ class ArchDrawingView:
             svg += 'stroke="#000000" '
             svg += 'stroke-width="0.01 px" '
             svg += 'style="stroke-width:0.01;'
-            svg += 'stroke-miterlimit:4;'
+            svg += 'stroke-miterlimit:1;'
             svg += 'stroke-dasharray:none;'
             svg += 'fill:#aaaaaa"'
             svg += '/>\n'

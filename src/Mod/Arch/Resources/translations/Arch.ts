@@ -120,12 +120,12 @@
 <context>
     <name>Arch_SectionPlane</name>
     <message>
-        <location filename="SectionPlane.py" line="10"/>
+        <location filename="SectionPlane.py" line="12"/>
         <source>Section Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="SectionPlane.py" line="11"/>
+        <location filename="SectionPlane.py" line="13"/>
         <source>Adds a section plane object to the document</source>
         <translation type="unfinished"></translation>
     </message>
