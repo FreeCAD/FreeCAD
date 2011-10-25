@@ -172,6 +172,7 @@ void PartExport initPart()
 
     // Geometry types
     Part::Geometry                ::init();
+    Part::GeomPoint               ::init();
     Part::GeomCurve               ::init();
     Part::GeomBezierCurve         ::init();
     Part::GeomBSplineCurve        ::init();
