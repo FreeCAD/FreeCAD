@@ -1074,7 +1074,7 @@ void SketchObject::onChanged(const App::Property* prop)
 {
     if (prop == &Geometry || prop == &Constraints)
         Constraints.checkGeometry(Geometry.getValues());
-    DocumentObject::onChanged(prop);
+    Part::Part2DObject::onChanged(prop);
 }
 
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId)
