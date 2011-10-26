@@ -36,6 +36,7 @@
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/Part2DObject.h>
 
 #include "FeatureRevolution.h"
@@ -111,14 +112,14 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     SketchOrientation.multVec(SketchOrientationVector,SketchOrientationVector);
 
 
-    Base::Vector3f b(0,0,0);
+    Base::Vector3f b = Base.getValue();
     gp_Pnt pnt(b.x,b.y,b.z);
     gp_Dir dir(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
 
     // get the support of the Sketch if any
     App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(link)->Support.getValue();
     Part::Feature *SupportObject = 0;
-    if(SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         SupportObject = static_cast<Part::Feature*>(SupportLink);
 
     TopoDS_Shape aFace = makeFace(wires);
@@ -126,7 +127,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
     // revolve the face to a solid
-    BRepPrimAPI_MakeRevol RevolMaker(aFace,gp_Ax1(pnt, dir),Angle.getValue()/180.0f*Standard_PI);
+    BRepPrimAPI_MakeRevol RevolMaker(aFace,gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()));
 
     if (RevolMaker.IsDone()) {
         TopoDS_Shape result = RevolMaker.Shape();
@@ -146,7 +147,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         this->Shape.setValue(result);
     }
     else
-        return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
+        return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
 
     return App::DocumentObject::StdReturn;
 }
