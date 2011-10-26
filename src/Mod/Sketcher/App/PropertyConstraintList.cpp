@@ -91,6 +91,12 @@ void PropertyConstraintList::setValue(const Constraint* lValue)
 void PropertyConstraintList::setValues(const std::vector<Constraint*>& lValue)
 {
     aboutToSetValue();
+    applyValues(lValue);
+    hasSetValue();
+}
+
+void PropertyConstraintList::applyValues(const std::vector<Constraint*>& lValue)
+{
     std::vector<Constraint*> oldVals(_lValueList);
     _lValueList.resize(lValue.size());
     // copy all objects
@@ -98,7 +104,6 @@ void PropertyConstraintList::setValues(const std::vector<Constraint*>& lValue)
         _lValueList[i] = lValue[i]->clone();
     for (unsigned int i = 0; i < oldVals.size(); i++)
         delete oldVals[i];
-    hasSetValue();
 }
 
 PyObject *PropertyConstraintList::getPyObject(void)
@@ -184,10 +189,12 @@ Property *PropertyConstraintList::Copy(void) const
 void PropertyConstraintList::Paste(const Property &from)
 {
     const PropertyConstraintList& FromList = dynamic_cast<const PropertyConstraintList&>(from);
+    aboutToSetValue();
+    applyValues(FromList._lValueList);
     setValidGeometryKeys(FromList.validGeometryKeys);
     if (FromList.invalidGeometry)
         invalidateGeometry();
-    setValues(FromList._lValueList);
+    hasSetValue();
 }
 
 unsigned int PropertyConstraintList::getMemSize(void) const

@@ -96,6 +96,7 @@ private:
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;
 
+    void applyValues(const std::vector<Constraint*>&);
     void setValidGeometryKeys(const std::vector<unsigned int> &keys);
 
     static std::vector<Constraint *> _emptyValueList;
