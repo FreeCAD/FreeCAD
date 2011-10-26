@@ -179,10 +179,8 @@ void PropertyConstraintList::Restore(Base::XMLReader &reader)
 Property *PropertyConstraintList::Copy(void) const
 {
     PropertyConstraintList *p = new PropertyConstraintList();
-    p->setValidGeometryKeys(validGeometryKeys);
-    if (invalidGeometry)
-        p->invalidateGeometry();
-    p->setValues(_lValueList);
+    p->applyValidGeometryKeys(validGeometryKeys);
+    p->applyValues(_lValueList);
     return p;
 }
 
@@ -191,9 +189,7 @@ void PropertyConstraintList::Paste(const Property &from)
     const PropertyConstraintList& FromList = dynamic_cast<const PropertyConstraintList&>(from);
     aboutToSetValue();
     applyValues(FromList._lValueList);
-    setValidGeometryKeys(FromList.validGeometryKeys);
-    if (FromList.invalidGeometry)
-        invalidateGeometry();
+    applyValidGeometryKeys(FromList.validGeometryKeys);
     hasSetValue();
 }
 
@@ -217,15 +213,9 @@ void PropertyConstraintList::acceptGeometry(const std::vector<Part::Geometry *> 
     hasSetValue();
 }
 
-void PropertyConstraintList::setValidGeometryKeys(const std::vector<unsigned int> &keys)
+void PropertyConstraintList::applyValidGeometryKeys(const std::vector<unsigned int> &keys)
 {
     validGeometryKeys = keys;
-    invalidGeometry = false;
-}
-
-void PropertyConstraintList::invalidateGeometry()
-{
-    invalidGeometry = true;
 }
 
 void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &GeoList)

@@ -87,7 +87,6 @@ public:
     virtual unsigned int getMemSize(void) const;
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
-    void invalidateGeometry();
     void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
 
 private:
@@ -97,7 +96,7 @@ private:
     bool invalidGeometry;
 
     void applyValues(const std::vector<Constraint*>&);
-    void setValidGeometryKeys(const std::vector<unsigned int> &keys);
+    void applyValidGeometryKeys(const std::vector<unsigned int> &keys);
 
     static std::vector<Constraint *> _emptyValueList;
 };
