@@ -708,6 +708,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             std::vector< Part::Geometry * > newVals(geomlist);
             newVals[GeoId] = geoNew;
             Geometry.setValues(newVals);
+            Constraints.acceptGeometry(Geometry.getValues());
             delete geoNew;
             rebuildVertexIndex();
 
@@ -755,8 +756,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             addConstraint(newConstr);
 
             delete newConstr;
-
-            Constraints.acceptGeometry(Geometry.getValues());
 
             return 0;
         }

@@ -235,9 +235,8 @@ void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &
     }
 
     if (invalidGeometry) {
-        aboutToSetValue();
         invalidGeometry = false;
-        hasSetValue();
+        touch();
     }
 }
 
