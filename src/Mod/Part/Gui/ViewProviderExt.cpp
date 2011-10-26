@@ -94,7 +94,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 
-#include <Gui/SoFCSelection.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
@@ -543,6 +543,12 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
 
 void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
 {
+    // Clear selection
+    Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::None);
+    action.apply(this->faceset);
+    action.apply(this->lineset);
+    action.apply(this->nodeset);
+
     TopoDS_Shape cShape(inputShape);
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);
