@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
         wires.push_back(TopoDS::Wire(ex.Current()));
     }
-    if (/*shape.ShapeType() != TopAbs_WIRE*/wires.empty()) // there can be several wires
+    if (wires.empty()) // there can be several wires
         return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
 
     // get the Sketch plane
@@ -116,8 +116,16 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     if (aFace.IsNull())
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
+    // This is a trick to avoid problems with the cut operation. Sometimes a cut doesn't
+    // work as expected if faces or coincident. Thus, we move the face in normal direction
+    // but make it longer by one unit in the opposite direction.
+    gp_Trsf mov;
+    mov.SetTranslation(gp_Vec(SketchVector.x,SketchVector.y,SketchVector.z));
+    TopLoc_Location loc(mov);
+    aFace.Move(loc);
+
     // lengthen the vector
-    SketchVector *= Length.getValue();
+    SketchVector *= (Length.getValue()+1);
 
     // turn around for pockets
     SketchVector *= -1;
