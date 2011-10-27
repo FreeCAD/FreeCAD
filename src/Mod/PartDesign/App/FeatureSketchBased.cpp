@@ -29,16 +29,21 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepCheck_Analyzer.hxx>
+# include <BRep_Tool.hxx>
+# include <Geom_Plane.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
+# include <TopoDS_Vertex.hxx>
 # include <TopExp_Explorer.hxx>
 # include <gp_Pln.hxx>
 # include <ShapeFix_Face.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <IntTools_FClass2d.hxx>
+# include <ShapeAnalysis_Surface.hxx>
 #endif
 
 
@@ -69,6 +74,45 @@ PROPERTY_SOURCE(PartDesign::SketchBased, PartDesign::Feature)
 SketchBased::SketchBased()
 {
     ADD_PROPERTY(Sketch,(0));
+}
+
+bool SketchBased::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) const
+{
+    Bnd_Box box1;
+    BRepBndLib::Add(wire1, box1);
+    box1.SetGap(0.0);
+
+    Bnd_Box box2;
+    BRepBndLib::Add(wire2, box2);
+    box2.SetGap(0.0);
+
+    if (box1.IsOut(box2))
+        return false;
+
+    double prec = Precision::Confusion();
+
+    BRepBuilderAPI_MakeFace mkFace(wire1);
+    TopoDS_Face face = validateFace(mkFace.Face());
+    BRepAdaptor_Surface adapt(face);
+    IntTools_FClass2d class2d(face, prec);
+    Handle_Geom_Surface surf = new Geom_Plane(adapt.Plane());
+    ShapeAnalysis_Surface as(surf);
+
+    TopExp_Explorer xp(wire2,TopAbs_VERTEX);
+    while (xp.More())  {
+        TopoDS_Vertex v = TopoDS::Vertex(xp.Current());
+        gp_Pnt p = BRep_Tool::Pnt(v);
+        gp_Pnt2d uv = as.ValueOfUV(p, prec);
+        if (class2d.Perform(uv) == TopAbs_IN)
+            return true;
+        // TODO: We can make a check to see if all points are inside or all outside
+        // because otherwise we have some intersections which is not allowed
+        else
+            return false;
+        xp.Next();
+    }
+
+    return false;
 }
 
 TopoDS_Face SketchBased::validateFace(const TopoDS_Face& face) const
@@ -150,16 +194,9 @@ TopoDS_Shape SketchBased::makeFace(const std::vector<TopoDS_Wire>& w) const
         wire_list.pop_front();
         sep_list.push_back(wire);
 
-        Bnd_Box box;
-        BRepBndLib::Add(wire, box);
-        box.SetGap(0.0);
-
         std::list<TopoDS_Wire>::iterator it = wire_list.begin();
         while (it != wire_list.end()) {
-            Bnd_Box box2;
-            BRepBndLib::Add(*it, box2);
-            box2.SetGap(0.0);
-            if (!box.IsOut(box2)) {
+            if (isInside(wire, *it)) {
                 sep_list.push_back(*it);
                 it = wire_list.erase(it);
             }
