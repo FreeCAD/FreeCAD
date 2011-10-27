@@ -162,7 +162,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                     return new App::DocumentObjectExecReturn("Support is not a solid");
             }
             else {
-                TopoDS_Shape result = TopoDS::Solid(PrismMaker.Shape());
+                TopoDS_Shape result = this->getSolid(PrismMaker.Shape());
                 // set the additive shape property for later usage in e.g. pattern
                 this->AddShape.setValue(result);
                 this->Shape.setValue(result);
