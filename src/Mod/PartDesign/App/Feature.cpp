@@ -23,6 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Standard_Failure.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopExp_Explorer.hxx>
 #endif
 
 
@@ -37,6 +40,19 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 
 Feature::Feature()
 {
+}
+
+TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape) const
+{
+    if (shape.IsNull())
+        Standard_Failure::Raise("Shape is null");
+    TopExp_Explorer xp;
+    xp.Init(shape,TopAbs_SOLID);
+    for (;xp.More(); xp.Next()) {
+        return xp.Current();
+    }
+
+    return TopoDS_Shape();
 }
 
 }

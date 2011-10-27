@@ -122,54 +122,60 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     // lengthen the vector
     SketchOrientationVector *= Length.getValue();
 
-    // extrude the face to a solid
-    gp_Vec vec(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
-    BRepPrimAPI_MakePrism PrismMaker(aFace,vec,0,1);
-    if (PrismMaker.IsDone()) {
-        TopoDS_Shape result = TopoDS::Solid(PrismMaker.Shape());
-        // set the additive shape property for later usage in e.g. pattern
-        this->AddShape.setValue(result);
-        // if the sketch has a support fuse them to get one result object (PAD!)
-        if (SupportObject) {
-            const TopoDS_Shape& support = SupportObject->Shape.getValue();
-            bool isSolid = false;
-            if (!support.IsNull()) {
-                TopExp_Explorer xp;
-                xp.Init(support,TopAbs_SOLID);
-                for (;xp.More(); xp.Next()) {
-                    isSolid = true;
-                    break;
-                }
-            }
-            if (isSolid) {
-                // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support, result);
-                // Let's check if the fusion has been successful
-                if (!mkFuse.IsDone()) 
-                    return new App::DocumentObjectExecReturn("Fusion with support failed");
-                result = mkFuse.Shape();
-                // we have to get the solids (fuse create seldomly compounds)
-                TopExp_Explorer anExplorer;
-                anExplorer.Init(result,TopAbs_SOLID);
-                //if(
-                // get the first
-                TopoDS_Solid solRes = TopoDS::Solid(anExplorer.Current());
+    try {
+        // extrude the face to a solid
+        gp_Vec vec(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
+        BRepPrimAPI_MakePrism PrismMaker(aFace,vec,0,1);
+        if (PrismMaker.IsDone()) {
+            // if the sketch has a support fuse them to get one result object (PAD!)
+            if (SupportObject) {
+                // At this point the prism can be a compound
+                TopoDS_Shape result = PrismMaker.Shape();
+                // set the additive shape property for later usage in e.g. pattern
+                this->AddShape.setValue(result);
 
-                // lets check if the result is a solid
-                if (solRes.IsNull())
-                    return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-                this->Shape.setValue(solRes);
-                
+                const TopoDS_Shape& support = SupportObject->Shape.getValue();
+                bool isSolid = false;
+                if (!support.IsNull()) {
+                    TopExp_Explorer xp;
+                    xp.Init(support,TopAbs_SOLID);
+                    for (;xp.More(); xp.Next()) {
+                        isSolid = true;
+                        break;
+                    }
+                }
+                if (isSolid) {
+                    // Let's call algorithm computing a fuse operation:
+                    BRepAlgoAPI_Fuse mkFuse(support, result);
+                    // Let's check if the fusion has been successful
+                    if (!mkFuse.IsDone()) 
+                        return new App::DocumentObjectExecReturn("Fusion with support failed");
+                    result = mkFuse.Shape();
+                    // we have to get the solids (fuse create seldomly compounds)
+                    TopoDS_Shape solRes = this->getSolid(result);
+                    // lets check if the result is a solid
+                    if (solRes.IsNull())
+                        return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                    this->Shape.setValue(solRes);
+                }
+                else
+                    return new App::DocumentObjectExecReturn("Support is not a solid");
             }
-            else
-                return new App::DocumentObjectExecReturn("Support is not a solid");
+            else {
+                TopoDS_Shape result = TopoDS::Solid(PrismMaker.Shape());
+                // set the additive shape property for later usage in e.g. pattern
+                this->AddShape.setValue(result);
+                this->Shape.setValue(result);
+            }
         }
         else
-            this->Shape.setValue(result);
-    }
-    else
-        return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
+            return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
 
-    return App::DocumentObject::StdReturn;
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
 }
 

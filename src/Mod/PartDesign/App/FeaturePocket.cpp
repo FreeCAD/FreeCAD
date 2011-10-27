@@ -141,18 +141,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 return new App::DocumentObjectExecReturn("Cut with support failed");
 
             // we have to get the solids (fuse create seldomly compounds)
-            TopExp_Explorer anExplorer;
-            anExplorer.Init(mkCut.Shape(),TopAbs_SOLID);
-
-            TopoDS_Solid solRes = TopoDS::Solid(anExplorer.Current());
-
+            TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             this->Shape.setValue(solRes);
-
-            //this->Shape.setValue(mkCut.Shape());
         }
-        else{
+        else {
             return new App::DocumentObjectExecReturn("Cannot create a tool out of sketch with no support");
         }
     }

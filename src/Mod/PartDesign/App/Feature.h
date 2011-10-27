@@ -44,6 +44,10 @@ public:
     Feature();
 
 protected:
+    /**
+     * Get a solid of the given shape. If no solid is found an exception is raised.
+     */
+    TopoDS_Shape getSolid(const TopoDS_Shape&) const;
 };
 
 } //namespace PartDesign
