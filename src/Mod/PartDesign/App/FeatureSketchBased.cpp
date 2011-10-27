@@ -160,6 +160,8 @@ TopoDS_Shape SketchBased::makeFace(std::list<TopoDS_Wire>& wires) const
     for (std::list<TopoDS_Wire>::iterator it = wires.begin(); it != wires.end(); ++it) {
         BRepBuilderAPI_MakeFace mkInnerFace(*it);
         const TopoDS_Face& inner_face = mkInnerFace.Face();
+        if (inner_face.IsNull())
+            return inner_face; // failure
         gp_Dir inner_axis(0,0,1);
         BRepAdaptor_Surface adapt(inner_face);
         if (adapt.GetType() == GeomAbs_Plane) {

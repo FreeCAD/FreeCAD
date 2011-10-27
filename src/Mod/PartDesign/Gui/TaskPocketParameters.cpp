@@ -64,6 +64,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
     double l = pcPocket->Length.getValue();
 
+    ui->doubleSpinBox->setMaximum(INT_MAX);
     ui->doubleSpinBox->setValue(l);
     ui->doubleSpinBox->selectAll();
  
