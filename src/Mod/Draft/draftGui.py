@@ -159,6 +159,7 @@ class DraftToolBar:
         self.state = None
         self.textbuffer = []
         self.crossedViews = []
+        self.isTaskOn = False
         
         if self.taskmode:
             # only a dummy widget, since widgets are created on demand
@@ -319,6 +320,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
+        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged(QString)"),self.storeCurrentText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("returnPressed()"),self.sendText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.finish)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("down()"),self.sendText)
@@ -454,6 +456,7 @@ class DraftToolBar:
 
     def taskUi(self,title):
         if self.taskmode:
+            self.isTaskOn = True
             FreeCADGui.Control.closeDialog()
             self.baseWidget = QtGui.QWidget()
             self.setTitle(title)
@@ -523,6 +526,7 @@ class DraftToolBar:
 
     def offUi(self):
         if self.taskmode:
+            self.isTaskOn = False
             FreeCADGui.Control.closeDialog()
             self.baseWidget = QtGui.QWidget()
             # print "UI turned off"
@@ -843,6 +847,13 @@ class DraftToolBar:
         if spec and (not self.taskmode):
             for i in [self.xValue,self.yValue,self.zValue]:
                 if (i.text() == txt): i.setText("")
+
+    def storeCurrentText(self,qstr):
+        self.currEditText = self.textValue.text()
+
+    def setCurrentText(self,tstr):
+        if (not self.taskmode) or (self.taskmode and self.isTaskOn):
+            self.textValue.setText(tstr)
                                                 
     def sendText(self):
         '''
@@ -851,19 +862,19 @@ class DraftToolBar:
         '''
         if self.textline == len(self.textbuffer):
             if self.textline:
-                if not self.textValue.text():
+                if not self.currEditText:
                     self.sourceCmd.text=self.textbuffer
                     self.sourceCmd.createObject()
-            self.textbuffer.append(self.textValue.text())
+            self.textbuffer.append(self.currEditText)
             self.textline += 1
-            self.textValue.setText('')
+            self.setCurrentText('')
         elif self.textline < len(self.textbuffer):
-            self.textbuffer[self.textline] = self.textValue.text()
+            self.textbuffer[self.textline] = self.currEditText
             self.textline += 1
             if self.textline < len(self.textbuffer):
-                self.textValue.setText(self.textbuffer[self.textline])
+                self.setCurrentText(self.textbuffer[self.textline])
             else:
-                self.textValue.setText('')
+                self.setCurrentText('')
 
     def lineUp(self):
         "displays previous line in text editor"
