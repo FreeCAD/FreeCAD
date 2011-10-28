@@ -368,6 +368,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
             << "Draft_Scale"
             << "Draft_Edit"
             << "Draft_Drawing"
+            << "Draft_Shape2DView"
             << DraftWireTools
             << DraftContext
         ;
@@ -558,6 +559,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Draft_WireToBSpline"
             << "Draft_AddPoint"
             << "Draft_DelPoint"
+            << "Draft_Shape2DView"
         ;
     }
 #   endif
