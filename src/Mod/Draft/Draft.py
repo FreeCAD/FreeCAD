@@ -1004,15 +1004,23 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         svg += getrgb(obj.ViewObject.LineColor) + '" '
         svg += 'stroke-width="' + str(obj.ViewObject.LineWidth/modifier) + ' px" '
         svg += 'style="stroke-width:'+ str(obj.ViewObject.LineWidth/modifier)
-        svg += ';stroke-miterlimit:4;stroke-dasharray:none"/>\n'
+        svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+        svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
+        svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
+        svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
+        svg += '/>\n'
         svg += '<circle cx="'+str(p2.x)+'" cy="'+str(p2.y)
         svg += '" r="'+str(obj.ViewObject.FontSize/(pmod))+'" '
         svg += 'fill="'+ getrgb(obj.ViewObject.LineColor) +'" stroke="none" '
-        svg += 'style="stroke-miterlimit:4;stroke-dasharray:none"/>\n'
+        svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+        svg += 'freecad:skip="1"'
+        svg += '/>\n'
         svg += '<circle cx="'+str(p3.x)+'" cy="'+str(p3.y)
         svg += '" r="'+str(obj.ViewObject.FontSize/(pmod))+'" '
         svg += 'fill="#000000" stroke="none" '
-        svg += 'style="stroke-miterlimit:4;stroke-dasharray:none"/>\n'
+        svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+        svg += 'freecad:skip="1"'
+        svg += '/>\n'
         svg += '<text id="' + obj.Name + '" fill="'
         svg += getrgb(obj.ViewObject.LineColor) +'" font-size="'
         svg += str(obj.ViewObject.FontSize*(tmod/5))+'" '
@@ -1021,7 +1029,9 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         svg += 'transform="rotate('+str(math.degrees(angle))
         svg += ','+ str(tbase.x) + ',' + str(tbase.y) + ') '
         svg += 'translate(' + str(tbase.x) + ',' + str(tbase.y) + ') '
-        svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+')">'
+        svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+')" '
+        svg += 'freecad:skip="1"'
+        svg += '>\n'
         svg += dimText % p3.sub(p2).Length
         svg += '</text>\n</g>\n'
 

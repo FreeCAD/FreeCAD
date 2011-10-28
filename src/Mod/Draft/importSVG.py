@@ -240,6 +240,7 @@ class svgHandler(xml.sax.ContentHandler):
                 self.count = 0
                 self.transform = None
                 self.grouptransform = []
+                self.lastdim = None
 	
 		if gui and draftui:
 			r = float(draftui.color.red()/255.0)
@@ -390,6 +391,19 @@ class svgHandler(xml.sax.ContentHandler):
 							pathdata.append(d[1:])
 
                         # print "debug: pathdata:",pathdata
+
+                        if "freecad:basepoint1" in data:
+                                p1 = data["freecad:basepoint1"]
+                                p1 = Vector(float(p1[0]),-float(p1[1]),0)
+                                p2 = data["freecad:basepoint2"]
+                                p2 = Vector(float(p2[0]),-float(p2[1]),0)
+                                p3 = data["freecad:dimpoint"]
+                                p3 = Vector(float(p3[0]),-float(p3[1]),0)
+                                obj = Draft.makeDimension(p1,p2,p3)
+                                self.applyTrans(obj)
+                                self.format(obj)
+                                pathdata = []
+                                self.lastdim = obj
 
 			for d in pathdata:
 				if (d == "M"):
@@ -608,7 +622,7 @@ class svgHandler(xml.sax.ContentHandler):
 
                 # processing circles
 
-                if name == "circle":
+                if (name == "circle") and (not ("freecad:skip" in data)) :
                         if not pathname: pathname = 'Circle'
                         c = Vector(float(data['cx'][0]),-float(data['cy'][0]),0)
                         r = float(data['r'][0])
@@ -624,21 +638,25 @@ class svgHandler(xml.sax.ContentHandler):
 
                 # processing texts
 
-		if (name in ["text","tspan"]):
-                        print "processing a text"
-			if 'x' in data:
-                                self.x = data['x']
+		if name in ["text","tspan"]:
+                        if not("freecad:skip" in data):
+                                print "processing a text"
+                                if 'x' in data:
+                                        self.x = data['x']
+                                else:
+                                        self.x = 0
+                                if 'y' in data:
+                                        self.y = data['y']
+                                else:
+                                        self.y = 0
+                                if 'font-size' in data:
+                                        if data['font-size'] != 'none':
+                                                self.text = getsize(data['font-size'])
+                                else:
+                                        self.text = 1
                         else:
-                                self.x = 0
-                        if 'y' in data:
-                                self.y = data['y']
-                        else:
-                                self.y = 0
-			if 'font-size' in data:
-				if data['font-size'] != 'none':
-					self.text = getsize(data['font-size'])
-                        else:
-                                self.text = 1
+                                if self.lastdim:
+                                        self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
 
                 print "done processing element ",self.count
                 
@@ -670,24 +688,28 @@ class svgHandler(xml.sax.ContentHandler):
                         self.grouptransform.pop()
 
         def applyTrans(self,sh):
-                if self.transform:
-                        print "applying object transform: ",self.transform
-                        sh = sh.transformGeometry(self.transform)
-                for i in range(len(self.grouptransform)):
-                        print "applying group transform: ",self.grouptransform[-i-1]
-                        sh = sh.transformGeometry(self.grouptransform[-i-1])
-                '''
-                if 'scale' in self.transform:
-                        print "applying scale factor: ",self.transform['scale']
-                        m = FreeCAD.Matrix()
-                        m.scale(self.transform['scale'])
-                        sh = sh.transformGeometry(m)
-                if 'translate' in self.transform:
-                        print "applying translation: ",self.transform['translate']
-                        sh.translate(self.transform['translate'])
-                self.transform = {}
-                '''
-                return sh
+                if isinstance(sh,Part.Shape):
+                        if self.transform:
+                                print "applying object transform: ",self.transform
+                                sh = sh.transformGeometry(self.transform)
+                        for i in range(len(self.grouptransform)):
+                                print "applying group transform: ",self.grouptransform[-i-1]
+                                sh = sh.transformGeometry(self.grouptransform[-i-1])
+                        return sh
+                elif Draft.getType(sh) == "Dimension":
+                        pts = []
+                        for p in [sh.Start,sh.End,sh.Dimline]:
+                                cp = Vector(p)
+                                if self.transform:
+                                        print "applying object transform: ",self.transform
+                                        cp = self.transform.multiply(cp)
+                                for i in range(len(self.grouptransform)):
+                                        print "applying group transform: ",self.grouptransform[-i-1]
+                                        cp = self.grouptransform[-i-1].multiply(cp)
+                                pts.append(cp)
+                        sh.Start = pts[0]
+                        sh.End = pts[1]
+                        sh.Dimline = pts[2]
 
         def translateVec(self,vec,mat):
                 v = Vector(mat.A14,mat.A24,mat.A34)
