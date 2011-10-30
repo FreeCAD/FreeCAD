@@ -316,11 +316,16 @@ def drawPolyline(polyline,shapemode=False):
         if polyline.closed:
             p1 = polyline.points[len(polyline.points)-1]
             p2 = polyline.points[0]
-            v1 = FreeCAD.Vector(round(p1[0],prec),round(p1[1],prec),round(p2[2],prec))
+            v1 = FreeCAD.Vector(round(p1[0],prec),round(p1[1],prec),round(p1[2],prec))
             v2 = FreeCAD.Vector(round(p2[0],prec),round(p2[1],prec),round(p2[2],prec))
+            cv = calcBulge(v1,polyline.points[-1].bulge,v2)
             if not fcvec.equals(v1,v2):
-                try: edges.append(Part.Line(v1,v2).toShape())
-                except: warn(polyline)
+                if fcvec.isColinear([v1,cv,v2]):
+                    try: edges.append(Part.Line(v1,v2).toShape())
+                    except: warn(polyline)
+                else:
+                    try: edges.append(Part.Arc(v1,cv,v2).toShape())
+                    except: warn(polyline)
         if edges:
             try:
                 if (fmt.paramstyle == 4) and (not curves) and (not fmt.makeBlocks) and (not shapemode):
@@ -919,13 +924,24 @@ def getWire(wire,nospline=False):
     points = []
     for edge in edges:
         v1 = edge.Vertexes[0].Point
+        end_pt = savePoint(edge.Vertexes[-1].Point)
         if (isinstance(edge.Curve,Part.Circle)):
+            mp = fcgeo.findMidpoint(edge)
             v2 = edge.Vertexes[-1].Point
             c = edge.Curve.Center
             angle = abs(fcvec.angle(v1.sub(c),v2.sub(c)))
-            if (fcvec.angle(v2.sub(c)) < fcvec.angle(v1.sub(c))):
-                angle = -angle
+            # if (fcvec.angle(v2.sub(c)) < fcvec.angle(v1.sub(c))):
+            #    angle = -angle
+            # polyline bulge -> negative makes the arc go clockwise
             bul = math.tan(angle/4)
+            # the next bit of code is for finding the direction of the arc
+            # a negative cross product means the arc is clockwise
+            tang1 = edge.Curve.tangent(edge.ParameterRange[0])
+            tang2 = edge.Curve.tangent(edge.ParameterRange[1])
+            cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
+            if cross1[2] < 0:
+                # polyline bulge -> negative makes the arc go clockwise 
+                bul = -bul
             points.append((v1.x,v1.y,v1.z,None,None,bul))
         elif (isinstance(edge.Curve,Part.BSplineCurve)) and (not nospline):
             bul = 0.0
