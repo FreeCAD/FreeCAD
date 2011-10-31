@@ -1558,7 +1558,7 @@ void Application::runApplication(void)
     // set toolbar icon size
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     int size = hGrp->GetInt("ToolbarIconSize", 0);
-    if (size > 16) // must not be lower than this
+    if (size >= 16) // must not be lower than this
         mw.setIconSize(QSize(size,size));
 
     // init the Inventor subsystem
