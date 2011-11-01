@@ -166,7 +166,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* view = new Gui::MenuItem( menuBar );
     view->setCommand("&View");
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Separator" 
-          << stdviews << "Std_FreezeViews" << "Separator" << view3d << zoom
+          << stdviews << "Std_FreezeViews" << "Separator" << view3d << "Std_DrawStyle" << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"

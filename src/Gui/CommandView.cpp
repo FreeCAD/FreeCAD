@@ -502,6 +502,73 @@ bool StdCmdToggleClipPlane::isActive(void)
     }
 }
 
+DEF_STD_CMD_ACL(StdCmdDrawStyle);
+
+StdCmdDrawStyle::StdCmdDrawStyle()
+  : Command("Std_DrawStyle")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Draw style");
+    sToolTipText  = QT_TR_NOOP("Draw style");
+    sStatusTip    = QT_TR_NOOP("Draw style");
+    eType         = Alter3DView;
+}
+
+Gui::Action * StdCmdDrawStyle::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(pcAction);
+
+    QAction* a0 = pcAction->addAction(QString());
+    QAction* a1 = pcAction->addAction(QString());
+    _pcAction = pcAction;
+    languageChange();
+    return pcAction;
+}
+
+void StdCmdDrawStyle::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    a[0]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "As is", 0,
+        QCoreApplication::CodecForTr));
+    a[0]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Normal mode", 0,
+        QCoreApplication::CodecForTr));
+
+    a[1]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Wireframe", 0,
+        QCoreApplication::CodecForTr));
+    a[1]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Wireframe mode", 0,
+        QCoreApplication::CodecForTr));
+}
+
+void StdCmdDrawStyle::activated(int iMsg)
+{
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    if (view) {
+        SoQtViewer::DrawStyle style = SoQtViewer::VIEW_AS_IS;
+        if (iMsg == 0)
+            style = SoQtViewer::VIEW_AS_IS;
+        else if (iMsg == 1)
+            style = SoQtViewer::VIEW_LINE;
+        view->getViewer()->setDrawStyle(SoQtViewer::STILL, style);
+    }
+}
+
+bool StdCmdDrawStyle::isActive(void)
+{
+    return Gui::Application::Instance->activeDocument();
+}
+
 //===========================================================================
 // Std_ToggleVisibility
 //===========================================================================
@@ -1991,6 +2058,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdOrthographicCamera());
     rcCmdMgr.addCommand(new StdPerspectiveCamera());
     rcCmdMgr.addCommand(new StdCmdToggleClipPlane());
+    rcCmdMgr.addCommand(new StdCmdDrawStyle());
     rcCmdMgr.addCommand(new StdCmdFreezeViews());
     rcCmdMgr.addCommand(new StdViewZoomIn());
     rcCmdMgr.addCommand(new StdViewZoomOut());

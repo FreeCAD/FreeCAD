@@ -177,6 +177,8 @@ ZipWriter::ZipWriter(const char* FileName)
     //FIXME: Check whether this is correct
     ZipStream.imbue(std::locale::classic());
 #endif
+    ZipStream.precision(12);
+    ZipStream.setf(ios::fixed,ios::floatfield);
 }
 
 ZipWriter::ZipWriter(std::ostream& os) 
@@ -188,6 +190,8 @@ ZipWriter::ZipWriter(std::ostream& os)
     //FIXME: Check whether this is correct
     ZipStream.imbue(std::locale::classic());
 #endif
+    ZipStream.precision(12);
+    ZipStream.setf(ios::fixed,ios::floatfield);
 }
 
 void ZipWriter::writeFiles(void)

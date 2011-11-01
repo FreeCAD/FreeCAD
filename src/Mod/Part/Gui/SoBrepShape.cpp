@@ -424,13 +424,15 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             materials->send(*matindices++, TRUE);
         }
 
-        if (nbind == PER_VERTEX || nbind == PER_FACE) {
-            currnormal = normals++;
-            glNormal3fv((const GLfloat*)currnormal);
-        }
-        else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
-            currnormal = &normals[*normalindices++];
-            glNormal3fv((const GLfloat*)currnormal);
+        if (normals) {
+            if (nbind == PER_VERTEX || nbind == PER_FACE) {
+                currnormal = normals++;
+                glNormal3fv((const GLfloat*)currnormal);
+            }
+            else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
+                currnormal = &normals[*normalindices++];
+                glNormal3fv((const GLfloat*)currnormal);
+            }
         }
 
         if (texture) {
@@ -447,13 +449,15 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
         else if (mbind == PER_VERTEX_INDEXED)
             materials->send(*matindices++, TRUE);
 
-        if (nbind == PER_VERTEX) {
-            currnormal = normals++;
-            glNormal3fv((const GLfloat*)currnormal);
-        }
-        else if (nbind == PER_VERTEX_INDEXED) {
-            currnormal = &normals[*normalindices++];
-            glNormal3fv((const GLfloat*)currnormal);
+        if (normals) {
+            if (nbind == PER_VERTEX) {
+                currnormal = normals++;
+                glNormal3fv((const GLfloat*)currnormal);
+            }
+            else if (nbind == PER_VERTEX_INDEXED) {
+                currnormal = &normals[*normalindices++];
+                glNormal3fv((const GLfloat*)currnormal);
+            }
         }
 
         if (texture) {
@@ -470,13 +474,15 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
         else if (mbind == PER_VERTEX_INDEXED)
             materials->send(*matindices++, TRUE);
 
-        if (nbind == PER_VERTEX) {
-            currnormal = normals++;
-            glNormal3fv((const GLfloat*)currnormal);
-        }
-        else if (nbind == PER_VERTEX_INDEXED) {
-            currnormal = &normals[*normalindices++];
-            glNormal3fv((const GLfloat*)currnormal);
+        if (normals) {
+            if (nbind == PER_VERTEX) {
+                currnormal = normals++;
+                glNormal3fv((const GLfloat*)currnormal);
+            }
+            else if (nbind == PER_VERTEX_INDEXED) {
+                currnormal = &normals[*normalindices++];
+                glNormal3fv((const GLfloat*)currnormal);
+            }
         }
 
         if (texture) {
