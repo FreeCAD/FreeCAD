@@ -25,22 +25,46 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCADGui
+import FreeCAD,FreeCADGui
 from PyQt4 import QtGui,QtCore
 
 def addToComponent(compobject,addobject):
     '''addToComponent(compobject,addobject): adds addobject
     to the given component'''
-    if "Additions" in compobject.PropertiesList:
+    if hasattr(compobject,"Additions"):
         if not addobject in compobject.Additions:
-            compobject.Additions.append(addobject)
+            l = compobject.Additions
+            l.append(addobject)
+            compobject.Additions = l
+    elif hasattr(compobject,"Objects"):
+        if not addobject in compobject.Objects:
+            l = compobject.Objects
+            l.append(addobject)
+            compobject.Objects = l
 
 def removeFromComponent(compobject,subobject):
     '''removeFromComponent(compobject,subobject): subtracts subobject
     from the given component'''
-    if "Subtractions" in compobject.PropertiesList:
-        if not subobject in compobject.Subtractions:
-            compobject.Subtractions.append(subobject)
+    if hasattr(compobject,"Subtractions") and hasattr(compobject,"Additions"):
+        if subobject in compobject.Subtractions:
+            l = compobject.Subtractions
+            l.remove(subobject)
+            compobject.Subtractions = l
+            subobject.ViewObject.show()
+        elif subobject in compobject.Additions:
+            l = compobject.Additions
+            l.remove(subobject)
+            compobject.Additions = l
+            subobject.ViewObject.show()
+        else:
+            l = compobject.Subtractions
+            l.append(subobject)
+            compobject.Subtractions = l
+    elif hasattr(compobject,"Objects"):
+        if subobject in compobject.Objects:
+            l = compobject.Objects
+            l.remove(subobject)
+            compobject.Objects = l
 
 class ComponentTaskPanel:
     def __init__(self):
@@ -55,16 +79,24 @@ class ComponentTaskPanel:
         self.listWidget = QtGui.QListWidget(self.form)
         self.listWidget.setObjectName("listWidget")
         self.gridLayout.addWidget(self.listWidget, 1, 0, 1, 2)
-        self.addButton = QtGui.QPushButton(self.form)
-        self.addButton.setObjectName("addButton")
-        self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.gridLayout.addWidget(self.addButton, 2, 0, 1, 1)
+        # add button currently disabled because no way to select other objects
+        #self.addButton = QtGui.QPushButton(self.form)
+        #self.addButton.setObjectName("addButton")
+        #self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
+        #self.gridLayout.addWidget(self.addButton, 2, 0, 1, 1)
         self.delButton = QtGui.QPushButton(self.form)
         self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.gridLayout.addWidget(self.delButton, 3, 0, 1, 1)
-        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
+        #QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
+        QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         self.retranslateUi(self.form)
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
@@ -74,28 +106,50 @@ class ComponentTaskPanel:
         if sel:
             for o in sel:
                 addToComponent(self.obj,o)
+        self.fillList()
+
+    def removeElement(self):
+        it = self.listWidget.currentItem()
+        if it:
+            ob2 = FreeCAD.ActiveDocument.getObject(str(it.text()))
+            removeFromComponent(self.obj,ob2)
+        else:
+            sel = FreeCADGui.Selection.getSelection()
+            if sel:
+                for o in sel:
+                    if o.Name != self.obj.Name:
+                        removeFromComponent(self.obj,o)
+        self.fillList()
                     
     def fillList(self):
         self.listWidget.clear()
-        if self.obj.Base:
-            i = QtGui.QListWidgetItem(self.listWidget)
-            i.setText(self.obj.Base.Name)
-            i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
-            self.listWidget.addItem(i)
-        for o in self.obj.Additions:
-            i = QtGui.QListWidgetItem(self.listWidget)
-            i.setText(o.Name)
-            i.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-            self.listWidget.addItem(i)
-        for o in self.obj.Subtractions:
-            i = QtGui.QListWidgetItem(self.listWidget)
-            i.setText(o.Name)
-            i.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
-            self.listWidget.addItem(i)
+        if hasattr(self.obj,"Base"):
+            if self.obj.Base:
+                i = QtGui.QListWidgetItem(self.listWidget)
+                i.setText(self.obj.Base.Name)
+                i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
+                self.listWidget.addItem(i)
+        if hasattr(self.obj,"Additions"):
+            for o in self.obj.Additions:
+                i = QtGui.QListWidgetItem(self.listWidget)
+                i.setText(o.Name)
+                i.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
+                self.listWidget.addItem(i)
+        if hasattr(self.obj,"Subtractions"):
+            for o in self.obj.Subtractions:
+                i = QtGui.QListWidgetItem(self.listWidget)
+                i.setText(o.Name)
+                i.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
+                self.listWidget.addItem(i)
+        if hasattr(self.obj,"Objects"):
+            for o in self.obj.Objects:
+                i = QtGui.QListWidgetItem(self.listWidget)
+                i.setText(o.Name)
+                i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
-        self.addButton.setText(QtGui.QApplication.translate("Arch", "Append selected objects", None, QtGui.QApplication.UnicodeUTF8))
+        #self.addButton.setText(QtGui.QApplication.translate("Arch", "Append selected objects", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove child", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None, QtGui.QApplication.UnicodeUTF8))
         

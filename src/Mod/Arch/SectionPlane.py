@@ -42,7 +42,7 @@ class SectionPlane:
         obj.Proxy = self
         obj.addProperty("App::PropertyLinkList","Objects","Base",
                         "The objects that must be considered by this section plane. Empty means all document")
-        self.Type = "Section"
+        self.Type = "SectionPlane"
         self.Object = obj
         
     def execute(self,obj):
@@ -305,7 +305,7 @@ class ArchDrawingView:
             tempFaces = [face]
 
             # comparing with other faces crossed by the same ray
-            for of in unsortedFaces:
+            for of in sortedFaces:
                 obb = of.BoundBox
                 op = intersection(base,ray,of.CenterOfMass,of.normalAt(0,0))
                 if obb.isInside(op):

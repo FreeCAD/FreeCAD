@@ -52,6 +52,13 @@ def addComponents(objectsList,host):
                 if hasattr(o,"Shape"):
                     a.append(o)
         host.Additions = a
+    elif tp in ["SectionPlane"]:
+        a = host.Objects
+        for o in objectsList:
+            if not o in a:
+                if hasattr(o,"Shape"):
+                    a.append(o)
+        host.Objects = a
 
 def removeComponents(objectsList,host=None):
     '''removeComponents(objectsList,[hostObject]): removes the given component or
@@ -89,6 +96,11 @@ def removeComponents(objectsList,host=None):
                        s.remove(o)
                        h.Subtractions = s
                        o.ViewObject.show()
+               elif tp in ["SectionPlane"]:
+                   a = h.Objects
+                   if o in a:
+                       a.remove(o)
+                       h.Objects = a
 
 def splitMesh(obj,mark=True):
     '''splitMesh(object,[mark]): splits the given mesh object into separated components.
