@@ -44,6 +44,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <IntTools_FClass2d.hxx>
 # include <ShapeAnalysis_Surface.hxx>
+# include <ShapeFix_Shape.hxx>
 #endif
 
 
@@ -138,6 +139,17 @@ TopoDS_Face SketchBased::validateFace(const TopoDS_Face& face) const
             xp.Next();
         }
 
+        aChecker.Init(mkFace.Face());
+        if (!aChecker.IsValid()) {
+            ShapeFix_Shape fix(mkFace.Face());
+            fix.SetPrecision(Precision::Confusion());
+            fix.SetMaxTolerance(Precision::Confusion());
+            fix.SetMaxTolerance(Precision::Confusion());
+            fix.Perform();
+            fix.FixWireTool()->Perform();
+            fix.FixFaceTool()->Perform();
+            return TopoDS::Face(fix.Shape());
+        }
         return mkFace.Face();
     }
 
