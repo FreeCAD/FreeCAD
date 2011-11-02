@@ -7,7 +7,7 @@ targetdir = $(prefix)
 EXTRA_DIST = CMakeLists.txt LICENCE.lgpl.txt
 
 # set compiler flags and include directories, -fpermissive and -ffriend-injection not needed for occ6.3
-AM_CPPFLAGS = -I$(OCC_INC) -I$(srcdir)/$(smeshdir)inc/
+AM_CPPFLAGS = -I$(OCC_INC) -I$(srcdir)/$(smeshdir)inc/ $(all_includes)
 AM_CXXFLAGS = -Wno-sign-compare -Wno-switch -Wno-reorder -Wno-unused -Wno-parentheses -Wno-comment
 
 # set library names
