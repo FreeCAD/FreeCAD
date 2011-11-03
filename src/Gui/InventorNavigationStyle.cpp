@@ -182,10 +182,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a left click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->seekToPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
+                    panToCenter(panningplane, posn);
                     processed = TRUE;
                 }
             }
@@ -193,19 +190,22 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 newmode = NavigationStyle::SEEK_MODE;
                 this->seekToPoint(pos); // implicitly calls interactiveCountInc()
                 processed = TRUE;
+                this->lockrecenter = TRUE;
             }
             else if (press && (this->currentmode == NavigationStyle::IDLE)) {
                 this->setViewing(true);
                 processed = TRUE;
+                this->lockrecenter = TRUE;
             }
             else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
                 this->setViewing(false);
                 processed = TRUE;
+                this->lockrecenter = TRUE;
             }
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = TRUE;
+                this->lockrecenter = TRUE;
             }
-            this->lockrecenter = TRUE;
             break;
         case SoMouseButtonEvent::BUTTON2:
             // If we are in edit mode then simply ignore the RMB events
@@ -237,10 +237,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a middle click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->seekToPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
+                    panToCenter(panningplane, posn);
                     processed = TRUE;
                 }
             }
