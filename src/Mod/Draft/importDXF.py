@@ -918,6 +918,13 @@ def getSplineSegs(edge):
         points.append(edge.valueAt(edge.Length))
     return points
 
+class savePoint:
+    def __init__(self,end_pt):
+        self.old_pt = end_pt
+    def old(self):
+        return self.old_pt
+
+
 def getWire(wire,nospline=False):
     "returns an array of dxf-ready points and bulges from a wire"
     edges = fcgeo.sortEdges(wire.Edges)
