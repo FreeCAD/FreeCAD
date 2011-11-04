@@ -100,7 +100,8 @@ using namespace Sketcher;
 SbColor ViewProviderSketch::VertexColor           (0.5f,0.5f,0.5f);
 SbColor ViewProviderSketch::CurveColor            (1.0f,1.0f,1.0f);
 SbColor ViewProviderSketch::CurveDraftColor       (0.4f,0.4f,0.8f);
-SbColor ViewProviderSketch::CrossColor            (0.4f,0.4f,0.8f);
+SbColor ViewProviderSketch::CrossColorV           (0.8f,0.4f,0.4f);
+SbColor ViewProviderSketch::CrossColorH           (0.4f,0.8f,0.4f);
 SbColor ViewProviderSketch::FullyConstrainedColor (0.6f,0.6f,0.9f);
 SbColor ViewProviderSketch::ConstraintColor       (0.0f,0.8f,0.0f);
 SbColor ViewProviderSketch::ConstrIcoColor        (1.0f,0.125f,0.f);
@@ -170,15 +171,18 @@ struct EditData {
     SoSeparator   *EditRoot;
     SoMaterial    *PointsMaterials;
     SoMaterial    *CurvesMaterials;
-    SoMaterial    *RootCrossMaterials;
+    SoMaterial    *RootCrossMaterialsV;
+    SoMaterial    *RootCrossMaterialsH;
     SoMaterial    *EditCurvesMaterials;
     SoCoordinate3 *PointsCoordinate;
     SoCoordinate3 *CurvesCoordinate;
-    SoCoordinate3 *RootCrossCoordinate;
+    SoCoordinate3 *RootCrossCoordinateV;
+    SoCoordinate3 *RootCrossCoordinateH;
     SoCoordinate3 *EditCurvesCoordinate;
     SoLineSet     *CurveSet;
     SoLineSet     *EditCurveSet;
-    SoLineSet     *RootCrossSet;
+    SoLineSet     *RootCrossSetV;
+    SoLineSet     *RootCrossSetH;
     SoMarkerSet   *PointSet;
 
     SoText2       *textX;
@@ -1140,12 +1144,18 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     CurvIndex = static_cast<const SoLineDetail *>(curve_detail)->getLineIndex();
                 }
             // checking for a hit in the Cross
-            } else if (tail == edit->RootCrossSet) {
-                const SoDetail *cross_detail = Point->getDetail(edit->RootCrossSet);
-                if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+            } else if (tail == edit->RootCrossSetV) {
+                //const SoDetail *cross_detail = Point->getDetail(edit->RootCrossSet);
+                //if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
                     // get the index
-                    CrossIndex = static_cast<const SoLineDetail *>(cross_detail)->getLineIndex() + 1;
-                }
+                    CrossIndex = 1;
+                //}
+           } else if (tail == edit->RootCrossSetH) {
+                //const SoDetail *cross_detail = Point->getDetail(edit->RootCrossSet);
+                //if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+                    // get the index
+                    CrossIndex = 2;
+                //}
             } else {
                 // checking if a constraint is hit
                 if (tailFather2 == edit->constrGroup)
@@ -1282,7 +1292,8 @@ void ViewProviderSketch::updateColor(void)
     SbColor *pcolor = edit->PointsMaterials->diffuseColor.startEditing();
     int CurvNum = edit->CurvesMaterials->diffuseColor.getNum();
     SbColor *color = edit->CurvesMaterials->diffuseColor.startEditing();
-    SbColor *ccolor = edit->RootCrossMaterials->diffuseColor.startEditing();
+    SbColor *ccolorV = edit->RootCrossMaterialsV->diffuseColor.startEditing();
+    SbColor *ccolorH = edit->RootCrossMaterialsH->diffuseColor.startEditing();
 
     // colors of the point set
     for (int  i=0; i < PtNum; i++) {
@@ -1311,14 +1322,20 @@ void ViewProviderSketch::updateColor(void)
     }
 
     // colors of the cross
-    for (int  i=0; i < 2; i++) {
-        if (edit->SelCrossSet.find(i+1) != edit->SelCrossSet.end())
-            ccolor[i] = SelectColor;
-        else if (edit->PreselectCross == i+1)
-            ccolor[i] = PreselectColor;
-        else
-            ccolor[i] = CrossColor;
-    }
+    if (edit->SelCrossSet.find(1) != edit->SelCrossSet.end())
+        ccolorV[0] = SelectColor;
+    else if (edit->PreselectCross == 1)
+        ccolorV[0] = PreselectColor;
+    else
+        ccolorV[0] = CrossColorV;
+    
+    if (edit->SelCrossSet.find(2) != edit->SelCrossSet.end())
+        ccolorH[0] = SelectColor;
+    else if (edit->PreselectCross == 2)
+        ccolorH[0] = PreselectColor;
+    else
+        ccolorH[0] = CrossColorH;
+    
 
     // colors of the constraints
     for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
@@ -1356,7 +1373,8 @@ void ViewProviderSketch::updateColor(void)
     // end editing
     edit->CurvesMaterials->diffuseColor.finishEditing();
     edit->PointsMaterials->diffuseColor.finishEditing();
-    edit->RootCrossMaterials->diffuseColor.finishEditing();
+    edit->RootCrossMaterialsV->diffuseColor.finishEditing();
+    edit->RootCrossMaterialsH->diffuseColor.finishEditing();
 }
 
 bool ViewProviderSketch::isPointOnSketch(const SoPickedPoint *pp) const
@@ -1632,10 +1650,18 @@ void ViewProviderSketch::draw(bool temp)
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
 
     // set cross coordinates
-    edit->RootCrossCoordinate->point.set1Value(0,SbVec3f((float)MinX - (MaxX-MinX)*0.5,0.0,zCross));
-    edit->RootCrossCoordinate->point.set1Value(1,SbVec3f((float)MaxX + (MaxX-MinX)*0.5,0.0,zCross));
-    edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f,(float)MinY - (MaxY-MinY)*0.5f,zCross));
-    edit->RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f,(float)MaxY + (MaxY-MinY)*0.5f,zCross));
+    if(MinY > 0 || MaxY < 0)
+        edit->RootCrossSetV->numVertices.set1Value(0,0);
+    else
+        edit->RootCrossSetV->numVertices.set1Value(0,2);
+    if(MinX > 0 || MaxX < 0)
+        edit->RootCrossSetH->numVertices.set1Value(0,0);
+    else
+        edit->RootCrossSetH->numVertices.set1Value(0,2);
+    edit->RootCrossCoordinateV->point.set1Value(0,SbVec3f((float)MinX - (MaxX-MinX)*0.5,0.0,zCross));
+    edit->RootCrossCoordinateV->point.set1Value(1,SbVec3f((float)MaxX + (MaxX-MinX)*0.5,0.0,zCross));
+    edit->RootCrossCoordinateH->point.set1Value(0,SbVec3f(0.0f,(float)MinY - (MaxY-MinY)*0.5f,zCross));
+    edit->RootCrossCoordinateH->point.set1Value(1,SbVec3f(0.0f,(float)MaxY + (MaxY-MinY)*0.5f,zCross));
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
@@ -2597,7 +2623,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = hGrp->GetUnsigned("ConstructionColor", color);
     CurveDraftColor.setPackedValue((uint32_t)color, transparency);
     // set the cross lines color
-    CrossColor.setPackedValue((uint32_t)color, transparency);
+    //CrossColorV.setPackedValue((uint32_t)color, transparency);
+    //CrossColorH.setPackedValue((uint32_t)color, transparency);
     // set the fully constrained color
     color = (unsigned long)(FullyConstrainedColor.getPackedValue());
     color = hGrp->GetUnsigned("FullyConstrainedColor", color);
@@ -2709,26 +2736,36 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(edit->CurveSet);
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
-    edit->RootCrossMaterials = new SoMaterial;
-    edit->RootCrossMaterials->diffuseColor.set1Value(0,CrossColor);
-    edit->RootCrossMaterials->diffuseColor.set1Value(1,CrossColor);
-    edit->EditRoot->addChild(edit->RootCrossMaterials);
-
     MtlBind = new SoMaterialBinding;
     MtlBind->value = SoMaterialBinding::PER_FACE;
     edit->EditRoot->addChild(MtlBind);
-
-    edit->RootCrossCoordinate = new SoCoordinate3;
-    edit->EditRoot->addChild(edit->RootCrossCoordinate);
 
     DrawStyle = new SoDrawStyle;
     DrawStyle->lineWidth = 2;
     edit->EditRoot->addChild(DrawStyle);
 
-    edit->RootCrossSet = new SoLineSet;
-    edit->RootCrossSet->numVertices.set1Value(0,2);
-    edit->RootCrossSet->numVertices.set1Value(1,2);
-    edit->EditRoot->addChild(edit->RootCrossSet);
+    edit->RootCrossMaterialsV = new SoMaterial;
+    edit->RootCrossMaterialsV->diffuseColor.set1Value(0,CrossColorV);
+    edit->EditRoot->addChild(edit->RootCrossMaterialsV);
+
+    edit->RootCrossCoordinateV = new SoCoordinate3;
+    edit->EditRoot->addChild(edit->RootCrossCoordinateV);
+
+    edit->RootCrossSetV = new SoLineSet;
+    edit->RootCrossSetV->numVertices.set1Value(0,2);
+    edit->EditRoot->addChild(edit->RootCrossSetV);
+
+    edit->RootCrossMaterialsH = new SoMaterial;
+    edit->RootCrossMaterialsH->diffuseColor.set1Value(0,CrossColorH);
+    edit->EditRoot->addChild(edit->RootCrossMaterialsH);
+
+    edit->RootCrossCoordinateH = new SoCoordinate3;
+    edit->EditRoot->addChild(edit->RootCrossCoordinateH);
+
+    edit->RootCrossSetH = new SoLineSet;
+    edit->RootCrossSetH->numVertices.set1Value(0,2);
+    edit->EditRoot->addChild(edit->RootCrossSetH);
+
 
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
     edit->EditCurvesMaterials = new SoMaterial;
