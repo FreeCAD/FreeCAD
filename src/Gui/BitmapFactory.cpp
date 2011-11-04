@@ -37,7 +37,10 @@
 # include <sstream>
 #endif
 
-//#define QTWEBKIT
+#ifdef FC_OS_WIN32
+#define QTWEBKIT
+#endif
+
 #ifdef QTWEBKIT
 #include <QWebView>
 #include <QWebFrame>
