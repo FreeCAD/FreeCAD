@@ -37,6 +37,12 @@
 # include <sstream>
 #endif
 
+//#define QTWEBKIT
+#ifdef QTWEBKIT
+#include <QWebView>
+#include <QWebFrame>
+#endif
+
 #include <string>
 #include <Inventor/fields/SoSFImage.h>
 
@@ -191,6 +197,11 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     if (icon.isNull() && QFile(fn).exists())
         icon.load(fn);
 
+    // first check if it's an SVG because Qt's qsvg4 module shouldn't be used therefore
+    if (icon.isNull()) {
+        icon = pixmapFromSvg(name, QSize(24,24));
+    }
+
     // try to find it in the given directories
     if (icon.isNull()) {
         bool found = false;
@@ -214,11 +225,6 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
                 }
             }
         }
-    }
-
-    // as last possibility check if it's an SVG
-    if (icon.isNull()) {
-        icon = pixmapFromSvg(name, QSize(24,24));
     }
 
     if (!icon.isNull()) {
@@ -260,18 +266,8 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) co
     if (!iconPath.isEmpty()) {
         QFile file(iconPath);
         if (file.open(QFile::ReadOnly | QFile::Text)) {
-#if QT_VERSION >= 0x040400
-            // SVG graphics can be directly loaded
-            if (icon.load(iconPath))
-                icon = icon.scaled(size);
-            else {
-                QByteArray content = file.readAll();
-                icon = pixmapFromSvg(content, size);
-            }
-#else
             QByteArray content = file.readAll();
             icon = pixmapFromSvg(content, size);
-#endif
         }
     }
 
@@ -280,17 +276,48 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) co
 
 QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize& size) const
 {
+#ifdef QTWEBKIT
+    QWebView webView;
+    QPalette pal = webView.palette();
+    pal.setColor(QPalette::Background, Qt::transparent);
+    webView.setPalette(pal);
+    webView.setContent(contents, QString::fromAscii("image/svg+xml"));
+    QString node = QString::fromAscii("document.rootElement.nodeName");
+    QString root = webView.page()->mainFrame()->evaluateJavaScript(node).toString();
+    if (root.isEmpty() || root.compare(QLatin1String("svg"), Qt::CaseInsensitive)) {
+        return QPixmap();
+    }
+
+    QString w = QString::fromAscii("document.rootElement.width.baseVal.value");
+    QString h = QString::fromAscii("document.rootElement.height.baseVal.value");
+    double ww = webView.page()->mainFrame()->evaluateJavaScript(w).toDouble();
+    double hh = webView.page()->mainFrame()->evaluateJavaScript(h).toDouble();
+    if (ww == 0.0 || hh == 0.0)
+        return QPixmap();
+#endif
+
     QImage image(size, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
 
     QPainter p(&image);
+#ifdef QTWEBKIT
+    qreal xs = size.isValid() ? size.width() / ww : 1.0;
+    qreal ys = size.isValid() ? size.height() / hh : 1.0;
+    p.scale(xs, ys);
+
+    // the best quality
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setRenderHint(QPainter::TextAntialiasing);
+    p.setRenderHint(QPainter::SmoothPixmapTransform);
+    webView.page()->mainFrame()->render(&p);
+#else
     // tmp. disable the report window to suppress some bothering warnings
     Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, false);
-    QSvgRenderer* svg = new QSvgRenderer(contents);
+    QSvgRenderer svg(contents);
     Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, true);
-    svg->render(&p);
+    svg.render(&p);
+#endif
     p.end();
-    delete svg;
 
     return QPixmap::fromImage(image);
 }
