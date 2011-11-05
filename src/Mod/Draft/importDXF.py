@@ -464,6 +464,48 @@ def drawSolid(solid):
             warn(solid)
     return None
 
+def drawSpline(spline,shapemode=False):
+    "returns a Part Shape from a dxf spline"
+    flag = rawValue(spline,70)
+    if flag == 1:
+        closed = True
+    else:
+        closed = False
+    verts = []
+    knots = []
+    for dline in spline.data:
+        if dline[0] == 10:
+            cp = [dline[1]]
+        elif dline[0] == 20:
+            cp.append(dline[1])
+        elif dline[0] == 30:
+            cp.append(dline[1])
+            pt = Vector(cp[0],cp[1],cp[2])
+            if verts:
+                if pt != verts[-1]:
+                    verts.append(pt)
+            else:
+                verts.append(pt)
+        elif dline[0] == 40:
+            knots.append(dline[1])
+    try:
+        if (fmt.paramstyle == 4) and (not fmt.makeBlocks) and (not shapemode):
+            ob = Draft.makeSpline(verts)
+            ob.Closed = closed
+            return ob
+        else:
+            sp = Part.BSplineCurve()
+            print knots
+            sp.interpolate(verts)
+            sh = Part.Wire(sp.toShape())
+            if closed:
+                return Part.Face(sh)
+            else:
+                return sh                          
+    except:
+        warn(spline)
+    return None
+    
 def drawBlock(blockref):
     "returns a shape from a dxf block reference"
     shapes = []
@@ -487,6 +529,9 @@ def drawBlock(blockref):
         if s: shapes.append(s)
     for solid in blockref.entities.get_type('solid'):
         s = drawSolid(solid)
+        if s: shapes.append(s)
+    for spline in blockref.entities.get_type('spline'):
+        s = drawSpline(spline,shapemode=True)
         if s: shapes.append(s)
     for text in blockref.entities.get_type('text'):
         if fmt.dxflayout or (not rawValue(text,67)):
@@ -744,6 +789,24 @@ def processdxf(document,filename):
                     newob = addObject(shape,"Solid",lay)
                     if gui: fmt.formatObject(newob,solid)
 
+    # drawing splines
+
+    splines = drawing.entities.get_type("spline")
+    if splines: FreeCAD.Console.PrintMessage("drawing "+str(len(splines))+" splines...\n")
+    for spline in splines:
+        lay = rawValue(spline,8)
+        if fmt.dxflayout or (not rawValue(spline,67)):
+            shape = drawSpline(spline)
+            if shape:
+                if fmt.makeBlocks:
+                    if isinstance(shape,Part.Shape):
+                        addToBlock(shape,lay)
+                    else:
+                        addToBlock(shape.Shape,lay)
+                else:
+                    newob = addObject(shape,"Spline",lay)
+                    if gui: fmt.formatObject(newob,spline)
+
     # drawing texts
 
     if fmt.paramtext:
@@ -873,7 +936,7 @@ def processdxf(document,filename):
 
 def warn(dxfobject):
     "outputs a warning if a dxf object couldn't be imported"
-    print "dxf: couldn't import", dxfobject
+    print "dxf: couldn't import ", dxfobject
     badobjects.append(dxfobject)
 
 def open(filename):
