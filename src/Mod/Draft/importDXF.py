@@ -53,7 +53,10 @@ try: draftui = FreeCADGui.draftToolBar
 except: draftui = None
 
 pythonopen = open # to distinguish python built-in open function from the one declared here
-prec = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("precision")
+
+def prec():
+    "returns the current Draft precision level"
+    return Draft.getParam("precision")
 
 def decodeName(name):
     "decodes encoded strings"
@@ -270,7 +273,7 @@ class fcformat:
 
 def vec(pt):
     "returns a rounded Vector from a dxf point"
-    return FreeCAD.Vector(round(pt[0],prec),round(pt[1],prec),round(pt[2],prec))
+    return FreeCAD.Vector(round(pt[0],prec()),round(pt[1],prec()),round(pt[2],prec()))
 
 def drawLine(line,shapemode=False):
     "returns a Part shape from a dxf line"
@@ -296,8 +299,8 @@ def drawPolyline(polyline,shapemode=False):
         for p in range(len(polyline.points)-1):
             p1 = polyline.points[p]
             p2 = polyline.points[p+1]
-            v1 = FreeCAD.Vector(round(p1[0],prec),round(p1[1],prec),round(p2[2],prec))
-            v2 = FreeCAD.Vector(round(p2[0],prec),round(p2[1],prec),round(p2[2],prec))
+            v1 = vec(p1)
+            v2 = vec(p2)
             verts.append(v1)
             if not fcvec.equals(v1,v2):
                 if polyline.points[p].bulge:
@@ -316,8 +319,8 @@ def drawPolyline(polyline,shapemode=False):
         if polyline.closed:
             p1 = polyline.points[len(polyline.points)-1]
             p2 = polyline.points[0]
-            v1 = FreeCAD.Vector(round(p1[0],prec),round(p1[1],prec),round(p1[2],prec))
-            v2 = FreeCAD.Vector(round(p2[0],prec),round(p2[1],prec),round(p2[2],prec))
+            v1 = vec(p1)
+            v2 = vec(p2)
             cv = calcBulge(v1,polyline.points[-1].bulge,v2)
             if not fcvec.equals(v1,v2):
                 if fcvec.isColinear([v1,cv,v2]):
@@ -345,11 +348,11 @@ def drawPolyline(polyline,shapemode=False):
 def drawArc(arc,shapemode=False):
     "returns a Part shape from a dxf arc"
     v=vec(arc.loc)
-    firstangle=round(arc.start_angle,prec)
-    lastangle=round(arc.end_angle,prec)
+    firstangle=round(arc.start_angle,prec())
+    lastangle=round(arc.end_angle,prec())
     circle=Part.Circle()
     circle.Center=v
-    circle.Radius=round(arc.radius,prec)
+    circle.Radius=round(arc.radius,prec())
     try:
         if (fmt.paramstyle == 4) and (not fmt.makeBlocks) and (not shapemode):
             pl = FreeCAD.Placement()
@@ -365,7 +368,7 @@ def drawCircle(circle,shapemode=False):
     "returns a Part shape from a dxf circle"
     v = vec(circle.loc)
     curve = Part.Circle()
-    curve.Radius = round(circle.radius,prec)
+    curve.Radius = round(circle.radius,prec())
     curve.Center = v
     try:
         if (fmt.paramstyle == 4) and (not fmt.makeBlocks) and (not shapemode):

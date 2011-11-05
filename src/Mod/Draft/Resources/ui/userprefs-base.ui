@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>575</width>
+    <width>590</width>
     <height>629</height>
    </rect>
   </property>
@@ -583,7 +583,7 @@
            <string>The number of decimals in internal coordinates operations (for ex. 3 = 0.001)</string>
           </property>
           <property name="value">
-           <number>3</number>
+           <number>6</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>precision</cstring>
