@@ -1673,16 +1673,16 @@ bool TopoShape::removeInternalWires(double minArea)
 }
 
 namespace Part {
-struct Vertex
+struct MeshVertex
 {
     Standard_Real x,y,z;
     Standard_Integer i;
 
-    Vertex(Standard_Real X, Standard_Real Y, Standard_Real Z)
+    MeshVertex(Standard_Real X, Standard_Real Y, Standard_Real Z)
         : x(X),y(Y),z(Z)
     {
     }
-    Vertex(const gp_Pnt& p)
+    MeshVertex(const gp_Pnt& p)
         : x(p.X()),y(p.Y()),z(p.Z())
     {
     }
@@ -1690,7 +1690,7 @@ struct Vertex
     gp_Pnt toPoint() const
     { return gp_Pnt(x,y,z); }
 
-    bool operator < (const Vertex &rclPt) const
+    bool operator < (const MeshVertex &rclPt) const
     {
         if (fabs ( this->x - rclPt.x) >= MESH_MIN_PT_DIST)
             return this->x < rclPt.x;
@@ -1708,7 +1708,7 @@ private:
 }
 
 //const double Vertex::MESH_MIN_PT_DIST = 1.0e-6;
-const double Vertex::MESH_MIN_PT_DIST = gp::Resolution();
+const double MeshVertex::MESH_MIN_PT_DIST = gp::Resolution();
 
 #include <StlTransfer.hxx>
 #include <StlMesh_Mesh.hxx>
@@ -1721,7 +1721,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
 #if 1
     if (this->_Shape.IsNull())
         return;
-    std::set<Vertex> vertices;
+    std::set<MeshVertex> vertices;
     Standard_Real x1, y1, z1;
     Standard_Real x2, y2, z2;
     Standard_Real x3, y3, z3;
@@ -1733,10 +1733,10 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
         for (xp.InitTriangle (nbd); xp.MoreTriangle (); xp.NextTriangle ()) {
             xp.TriangleVertices (x1,y1,z1,x2,y2,z2,x3,y3,z3);
             Data::ComplexGeoData::Facet face;
-            std::set<Vertex>::iterator it;
+            std::set<MeshVertex>::iterator it;
 
             // 1st vertex
-            Vertex v1(x1,y1,z1);
+            MeshVertex v1(x1,y1,z1);
             it = vertices.find(v1);
             if (it == vertices.end()) {
                 v1.i = vertices.size();
@@ -1748,7 +1748,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
             }
 
             // 2nd vertex
-            Vertex v2(x2,y2,z2);
+            MeshVertex v2(x2,y2,z2);
             it = vertices.find(v2);
             if (it == vertices.end()) {
                 v2.i = vertices.size();
@@ -1760,7 +1760,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
             }
 
             // 3rd vertex
-            Vertex v3(x3,y3,z3);
+            MeshVertex v3(x3,y3,z3);
             it = vertices.find(v3);
             if (it == vertices.end()) {
                 v3.i = vertices.size();
@@ -1781,14 +1781,14 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
 
     std::vector<gp_Pnt> points;
     points.resize(vertices.size());
-    for (std::set<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
+    for (std::set<MeshVertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
         points[it->i] = it->toPoint();
     for (std::vector<gp_Pnt>::iterator it = points.begin(); it != points.end(); ++it)
         aPoints.push_back(Base::Vector3d(it->X(),it->Y(),it->Z()));
 #endif
 #if 0
     BRepMesh::Mesh (this->_Shape, accuracy);
-    std::set<Vertex> vertices;
+    std::set<MeshVertex> vertices;
     for (TopExp_Explorer xp(this->_Shape,TopAbs_FACE); xp.More(); xp.Next()) {
         TopoDS_Face face = TopoDS::Face(xp.Current());
         TopAbs_Orientation orient = face.Orientation();
@@ -1828,12 +1828,12 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
                     std::swap(V1,V2);
                 gp_Pnt P1, P2, P3;
                 Data::ComplexGeoData::Facet face;
-                std::set<Vertex>::iterator it;
+                std::set<MeshVertex>::iterator it;
 
                 // 1st vertex
                 P1 = Nodes(V1);
                 P1.Transform(myTransf);
-                Vertex v1(P1);
+                MeshVertex v1(P1);
                 it = vertices.find(v1);
                 if (it == vertices.end()) {
                     v1.i = vertices.size();
@@ -1847,7 +1847,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
                 // 2nd vertex
                 P2 = Nodes(V2);
                 P2.Transform(myTransf);
-                Vertex v2(P2);
+                MeshVertex v2(P2);
                 it = vertices.find(v2);
                 if (it == vertices.end()) {
                     v2.i = vertices.size();
@@ -1861,7 +1861,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
                 // 3rd vertex
                 P3 = Nodes(V3);
                 P3.Transform(myTransf);
-                Vertex v3(P3);
+                MeshVertex v3(P3);
                 it = vertices.find(v3);
                 if (it == vertices.end()) {
                     v3.i = vertices.size();
@@ -1884,7 +1884,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
     }
 
     std::map<Standard_Integer,gp_Pnt> points;
-    for (std::set<Vertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
+    for (std::set<MeshVertex>::iterator it = vertices.begin(); it != vertices.end(); ++it)
         points[it->i] = it->toPoint();
     for (std::map<Standard_Integer,gp_Pnt>::iterator it = points.begin(); it != points.end(); ++it)
         aPoints.push_back(Base::Vector3d(it->second.X(),it->second.Y(),it->second.Z()));
