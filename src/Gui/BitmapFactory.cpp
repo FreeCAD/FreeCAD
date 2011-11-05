@@ -312,6 +312,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     p.setRenderHint(QPainter::Antialiasing);
     p.setRenderHint(QPainter::TextAntialiasing);
     p.setRenderHint(QPainter::SmoothPixmapTransform);
+    p.setOpacity(0); // important to keep transparent background
     webView.page()->mainFrame()->render(&p);
 #else
     // tmp. disable the report window to suppress some bothering warnings
