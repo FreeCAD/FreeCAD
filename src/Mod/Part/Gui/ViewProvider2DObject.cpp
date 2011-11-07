@@ -62,7 +62,8 @@ ViewProvider2DObject::ViewProvider2DObject()
     ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid on/off");
     ADD_PROPERTY_TYPE(GridSize,(10),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
     ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearence style of the grid");
-    ADD_PROPERTY_TYPE(GridSnap,(false),"GridSnap",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
+    ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
+    ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
 
     GridRoot = new SoSeparator();
     GridRoot->ref();
@@ -89,20 +90,30 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     //double dy = 10 * GridSize.getValue();
     // float Size = (MaxX-MinX > MaxY-MinY) ? MaxX-MinX : MaxY-MinY;
     float Step = GridSize.getValue(); //pow(10,floor(log10(Size/5.0)));
-    float MiX = MinX - (MaxX-MinX)*0.5;
-    float MaX = MaxX + (MaxX-MinX)*0.5;
-    float MiY = MinY - (MaxY-MinY)*0.5;
-    float MaY = MaxY + (MaxY-MinY)*0.5;
-
+    float MiX, MaX, MiY, MaY;
+    if (TightGrid.getValue()) {
+        MiX = MinX - (MaxX-MinX)*0.2f;
+        MaX = MaxX + (MaxX-MinX)*0.2f;
+        MiY = MinY - (MaxY-MinY)*0.2f;
+        MaY = MaxY + (MaxY-MinY)*0.2f;
+    }
+    else {
+        MiX = -exp(ceil(log(std::abs(MinX))));
+        MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*MaxX)))));
+        MaX = exp(ceil(log(std::abs(MaxX))));
+        MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*MinX)))));
+        MiY = -exp(ceil(log(std::abs(MinY))));
+        MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*MaxY)))));
+        MaY = exp(ceil(log(std::abs(MaxY))));
+        MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*MinY)))));
+    }
     //Round the values otherwise grid is not aligned with center
-    MiX = ceil(MiX / Step) * Step;
+    MiX = floor(MiX / Step) * Step;
     MaX = ceil(MaX / Step) * Step;
-    MiY = ceil(MiY / Step) * Step;
+    MiY = floor(MiY / Step) * Step;
     MaY = ceil(MaY / Step) * Step;
-    
-    //float Step = 10.0;
-    double dz = 0.0;                     // carpet-grid separation
-    //int gridsize = 20;                    // grid size
+
+    double zGrid = 0.0;                     // carpet-grid separation
 
     SoSeparator *parent = GridRoot;
     GridRoot->removeAllChildren();
@@ -115,10 +126,10 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     parent->addChild(mycolor);
 
     vts = new SoVertexProperty;
-    vts->vertex.set1Value(0, -0.5*dx, -1.5*dy,  0.5*dz);
-    vts->vertex.set1Value(1, -0.5*dx, -1.5*dy, -0.5*dz);
-    vts->vertex.set1Value(2,  0.5*dx, -1.5*dy,  0.5*dz);
-    vts->vertex.set1Value(3,  0.5*dx, -1.5*dy, -0.5*dz);
+    vts->vertex.set1Value(0, -0.5*dx, -1.5*dy,  0.5*zGrid);
+    vts->vertex.set1Value(1, -0.5*dx, -1.5*dy, -0.5*zGrid);
+    vts->vertex.set1Value(2,  0.5*dx, -1.5*dy,  0.5*zGrid);
+    vts->vertex.set1Value(3,  0.5*dx, -1.5*dy, -0.5*zGrid);
 
     SoQuadMesh *carpet = new SoQuadMesh;
     carpet->verticesPerColumn = 2;
@@ -158,16 +169,16 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     float i;
     for (i=MiX; i<MaX; i+=Step) {
         /*float h=-0.5*dx + float(i) / gridsize * dx;*/
-        vts->vertex.set1Value(vi++, i, MiY, dz);
-        vts->vertex.set1Value(vi++, i,  MaY, dz);
+        vts->vertex.set1Value(vi++, i, MiY, zGrid);
+        vts->vertex.set1Value(vi++, i,  MaY, zGrid);
         grid->numVertices.set1Value(l++, 2);
     }
 
     // horizontal lines
     for (i=MiY; i<MaY; i+=Step) {
         //float v=-0.5*dy + float(i) / gridsize * dy;
-        vts->vertex.set1Value(vi++, MiX, i, dz );
-        vts->vertex.set1Value(vi++,  MaX, i, dz );
+        vts->vertex.set1Value(vi++, MiX, i, zGrid);
+        vts->vertex.set1Value(vi++,  MaX, i, zGrid);
         grid->numVertices.set1Value(l++, 2);
     }
     parent->addChild(vts);
@@ -204,12 +215,12 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
     ViewProviderPart::onChanged(prop);
 
     if (prop == &ShowGrid) {
-        if(ShowGrid.getValue())
+        if (ShowGrid.getValue())
             createGrid();
         else
             GridRoot->removeAllChildren();
     }
-    if ((prop == &GridSize) || (prop == &GridStyle)) {
+    if ((prop == &GridSize) || (prop == &GridStyle) || (prop == &TightGrid)) {
         if (ShowGrid.getValue()) {
             GridRoot->removeAllChildren();
             createGrid();

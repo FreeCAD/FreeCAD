@@ -178,9 +178,6 @@ public:
     /// signals if the sketch has been solved
     boost::signal<void (int type, float time)> signalSolved;
 
-    void setGridSnap(bool status);
-    void setGridSize(float size);
-
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);

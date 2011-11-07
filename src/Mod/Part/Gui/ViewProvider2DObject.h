@@ -56,8 +56,7 @@ public:
   App::PropertyBool ShowGrid;
   App::PropertyDistance GridSize;
   App::PropertyEnumeration GridStyle;
-
-  /// Properties for Grid Snap
+  App::PropertyBool TightGrid;
   App::PropertyBool GridSnap;
 
   virtual void attach(App::DocumentObject *);

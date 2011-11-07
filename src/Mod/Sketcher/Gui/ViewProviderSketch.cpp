@@ -1650,18 +1650,22 @@ void ViewProviderSketch::draw(bool temp)
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
 
     // set cross coordinates
-    if(MinY > 0 || MaxY < 0)
-        edit->RootCrossSetV->numVertices.set1Value(0,0);
-    else
-        edit->RootCrossSetV->numVertices.set1Value(0,2);
-    if(MinX > 0 || MaxX < 0)
-        edit->RootCrossSetH->numVertices.set1Value(0,0);
-    else
-        edit->RootCrossSetH->numVertices.set1Value(0,2);
-    edit->RootCrossCoordinateV->point.set1Value(0,SbVec3f((float)MinX - (MaxX-MinX)*0.5,0.0,zCross));
-    edit->RootCrossCoordinateV->point.set1Value(1,SbVec3f((float)MaxX + (MaxX-MinX)*0.5,0.0,zCross));
-    edit->RootCrossCoordinateH->point.set1Value(0,SbVec3f(0.0f,(float)MinY - (MaxY-MinY)*0.5f,zCross));
-    edit->RootCrossCoordinateH->point.set1Value(1,SbVec3f(0.0f,(float)MaxY + (MaxY-MinY)*0.5f,zCross));
+    edit->RootCrossSetV->numVertices.set1Value(0,2);
+    edit->RootCrossSetH->numVertices.set1Value(0,2);
+
+    float MiX = -exp(ceil(log(std::abs(MinX))));
+    MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*MaxX)))));
+    float MaX = exp(ceil(log(std::abs(MaxX))));
+    MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*MinX)))));
+    float MiY = -exp(ceil(log(std::abs(MinY))));
+    MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*MaxY)))));
+    float MaY = exp(ceil(log(std::abs(MaxY))));
+    MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*MinY)))));
+
+    edit->RootCrossCoordinateV->point.set1Value(0,SbVec3f(MiX, 0.0f, zCross));
+    edit->RootCrossCoordinateV->point.set1Value(1,SbVec3f(MaX, 0.0f, zCross));
+    edit->RootCrossCoordinateH->point.set1Value(0,SbVec3f(0.0f, MiY, zCross));
+    edit->RootCrossCoordinateH->point.set1Value(1,SbVec3f(0.0f, MaY, zCross));
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
@@ -2606,6 +2610,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     this->hide(); // avoid that the wires interfere with the edit lines
 
     ShowGrid.setValue(true);
+    TightGrid.setValue(false);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     float transparency;
@@ -2826,6 +2831,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
     ShowGrid.setValue(false);
+    TightGrid.setValue(true);
 
     edit->EditRoot->removeAllChildren();
     pcRoot->removeChild(edit->EditRoot);
@@ -2982,17 +2988,6 @@ int ViewProviderSketch::getPreselectConstraint(void) const
     if (edit)
         return edit->PreselectConstraint;
     return -1;
-}
-
-void ViewProviderSketch::setGridSnap(bool status)
-{
-    GridSnap.setValue(status);
-}
-
-void ViewProviderSketch::setGridSize(float size)
-{
-    if (size > 0)
-        GridSize.setValue(size);
 }
 
 Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const

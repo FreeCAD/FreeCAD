@@ -80,13 +80,14 @@ TaskSketcherGeneral::~TaskSketcherGeneral()
 void TaskSketcherGeneral::setGridSize(const QString& val)
 {
     float gridSize = (float) Base::UnitsApi::translateUnit(val);
-    sketchView->setGridSize(gridSize);
+    if (gridSize > 0)
+        sketchView->GridSize.setValue(gridSize);
 }
 
 void TaskSketcherGeneral::toggleGridSnap(int state)
 {
     setGridSize(ui->comboBoxGridSize->currentText()); // Ensure consistency
-    sketchView->setGridSnap(state == Qt::Checked);
+    sketchView->GridSnap.setValue(state == Qt::Checked);
 }
 
 void TaskSketcherGeneral::toggleAutoconstraints(int state)
