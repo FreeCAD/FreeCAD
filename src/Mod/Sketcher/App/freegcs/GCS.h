@@ -48,7 +48,9 @@ namespace GCS
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
         std::map<double *,std::vector<Constraint *> > p2c; // parameter to constraint adjacency list
 
-        std::vector<SubSystem *> subsystems;
+        SubSystem *subsys0; // has the highest priority, always used as the primary subsystem
+        SubSystem *subsys1; // normally used as secondary subsystem, it is considered primary only if subsys0 is missing
+        SubSystem *subsys2; // has the lowest priority, always used as secondary system
         void clearSubSystems();
 
         MAP_pD_D reference;

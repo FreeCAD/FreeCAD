@@ -133,6 +133,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std:
         addConstraints(ConstraintList);
 
     GCSsys.clearByTag(-1);
+    GCSsys.clearByTag(-2);
     GCSsys.initSolution(Parameters);
 
     if (withDiagnose)
@@ -1302,6 +1303,18 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
 
 int Sketch::solve() {
 
+    if (!isInitMove) {
+        GCSsys.clearByTag(-1);
+        GCSsys.clearByTag(-2);
+        InitParameters.resize(Parameters.size());
+        int i=0;
+        for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
+            InitParameters[i] = **it;
+            GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
+        }
+        GCSsys.initSolution(Parameters);
+    }
+
     Base::TimeInfo start_time;
 
     // solving with freegcs
@@ -1362,6 +1375,7 @@ int Sketch::initMove(int geoId, PointPos pos)
     assert(geoId >= 0 && geoId < int(Geoms.size()));
 
     GCSsys.clearByTag(-1);
+    GCSsys.clearByTag(-2);
 
     // don't try to move sketches that contain conflicting constraints
     if (hasConflicts()) {

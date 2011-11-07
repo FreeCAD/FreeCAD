@@ -37,7 +37,9 @@ namespace GCS
 System::System()
 : clist(0),
   c2p(), p2c(),
-  subsystems(0),
+  subsys0(0),
+  subsys1(0),
+  subsys2(0),
   reference(),
   init(false)
 {
@@ -45,7 +47,9 @@ System::System()
 
 System::System(std::vector<Constraint *> clist_)
 : c2p(), p2c(),
-  subsystems(0),
+  subsys0(0),
+  subsys1(0),
+  subsys2(0),
   reference(),
   init(false)
 {
@@ -444,23 +448,26 @@ void System::initSolution(VEC_pD &params)
     }
 
     int i=0;
-    std::vector<Constraint *> clist0, clist1;
+    std::vector<Constraint *> clist0, clist1, clist2;
     for (std::vector<Constraint *>::const_iterator constr=clist.begin();
          constr != clist.end(); ++constr, i++) {
         if (eliminated.count(*constr) == 0) {
             if ((*constr)->getTag() >= 0)
                 clist0.push_back(*constr);
-            else
+            else if ((*constr)->getTag() == -1) // move constraints
                 clist1.push_back(*constr);
+            else // distance from reference constraints
+                clist2.push_back(*constr);
         }
     }
 
     clearSubSystems();
     if (clist0.size() > 0)
-        subsystems.push_back(new SubSystem(clist0, params, reductionmap));
+        subsys0 = new SubSystem(clist0, params, reductionmap);
     if (clist1.size() > 0)
-        subsystems.push_back(new SubSystem(clist1, params, reductionmap));
-
+        subsys1 = new SubSystem(clist1, params, reductionmap);
+    if (clist2.size() > 0)
+        subsys2 = new SubSystem(clist2, params, reductionmap);
     init = true;
 }
 
@@ -485,17 +492,31 @@ int System::solve(VEC_pD &params, bool isFine)
 
 int System::solve(bool isFine)
 {
-    if (subsystems.size() == 0)
-        return 0;
-    else if (subsystems.size() == 1) {
+    if (subsys0) {
         resetToReference();
-        return solve(subsystems[0], isFine);
+        if (subsys2) {
+            int ret = solve(subsys0, subsys2, isFine);
+            if (subsys1) // give subsys1 higher priority than subsys2
+                         // in this case subsys2 acts like a preconditioner
+                return solve(subsys0, subsys1, isFine);
+            else
+                return ret;
+        }
+        else if (subsys1)
+            return solve(subsys0, subsys1, isFine);
+        else
+            return solve(subsys0, isFine);
     }
-    else {
+    else if (subsys1) {
         resetToReference();
-        solve(subsystems[0], isFine);
-        return solve(subsystems[0], subsystems[1], isFine);
+        if (subsys2)
+            return solve(subsys1, subsys2, isFine);
+        else
+            return solve(subsys1, isFine);
     }
+    else
+        // return success in order to permit coincidence constraints to be applied
+        return Success;
 }
 
 int System::solve(SubSystem *subsys, bool isFine)
@@ -734,15 +755,23 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 
 void System::getSubSystems(std::vector<SubSystem *> &subsysvec)
 {
-    subsysvec = subsystems;
+    subsysvec.clear();
+    if (subsys0)
+        subsysvec.push_back(subsys0);
+    if (subsys1)
+        subsysvec.push_back(subsys1);
+    if (subsys2)
+        subsysvec.push_back(subsys2);
 }
 
 void System::applySolution()
 {
-    if (subsystems.size() > 1)
-        subsystems[1]->applySolution();
-    if (subsystems.size() > 0)
-        subsystems[0]->applySolution();
+    if (subsys2)
+        subsys2->applySolution();
+    if (subsys1)
+        subsys1->applySolution();
+    if (subsys0)
+        subsys0->applySolution();
 
     for (MAP_pD_pD::const_iterator it=reductionmap.begin();
          it != reductionmap.end(); ++it)
@@ -755,7 +784,7 @@ int System::diagnose(VEC_pD &params, VEC_I &conflicting)
     // The vector "conflicting" will hold a group of conflicting constraints
     conflicting.clear();
     std::vector<VEC_I> conflictingIndex;
-    std::vector<int> tags;
+    VEC_I tags;
     Eigen::MatrixXd J(clist.size(), params.size());
     int count=0;
     for (std::vector<Constraint *>::iterator constr=clist.begin();
@@ -829,7 +858,12 @@ int System::diagnose(VEC_pD &params, VEC_I &conflicting)
 void System::clearSubSystems()
 {
     init = false;
+    std::vector<SubSystem *> subsystems;
+    getSubSystems(subsystems);
     free(subsystems);
+    subsys0 = NULL;
+    subsys1 = NULL;
+    subsys2 = NULL;
 }
 
 double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
@@ -964,7 +998,6 @@ void free(std::vector<SubSystem *> &subsysvec)
     for (std::vector<SubSystem *>::iterator it=subsysvec.begin();
          it != subsysvec.end(); ++it)
         if (*it) delete *it;
-    subsysvec.clear();
 }
 
 
