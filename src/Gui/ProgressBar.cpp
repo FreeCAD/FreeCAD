@@ -57,6 +57,19 @@ struct ProgressBarPrivate
     QTimer* delayShowTimer;
     int minimumDuration;
     int observeEventFilter;
+
+    bool isModalDialog(QObject* o) const
+    {
+        QWidget* parent = qobject_cast<QWidget*>(o);
+        while (parent) {
+            QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
+            if (dlg && dlg->isModal())
+                return true;
+            parent = parent->parentWidget();
+        }
+
+        return false;
+    }
 };
 }
 
@@ -465,6 +478,8 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         // do a system beep and ignore the event
         case QEvent::MouseButtonPress:
             {
+                if (d->isModalDialog(o))
+                    return false;
                 QApplication::beep();
                 return true;
             }   break;

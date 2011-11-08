@@ -24,8 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qapplication.h>
-# include <qdatetime.h>
+# include <QApplication>
+# include <QDateTime>
+# include <QMessageBox>
 # ifdef FC_OS_WIN32
 #   include <windows.h>
 # endif
@@ -45,6 +46,7 @@ public:
 
 protected:
     bool eventFilter(QObject*, QEvent*);
+    bool isModalDialog(QObject* o) const;
 
 private:
     WaitCursorP(); // Disable constructor
@@ -89,18 +91,35 @@ void WaitCursorP::setIgnoreEvents(WaitCursor::FilterEventsFlags flags)
     this->flags = flags;
 }
 
-bool WaitCursorP::eventFilter(QObject*, QEvent* e)
+bool WaitCursorP::isModalDialog(QObject* o) const
+{
+    QWidget* parent = qobject_cast<QWidget*>(o);
+    while (parent) {
+        QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
+        if (dlg && dlg->isModal())
+            return true;
+        parent = parent->parentWidget();
+    }
+
+    return false;
+}
+
+bool WaitCursorP::eventFilter(QObject* o, QEvent* e)
 {
     // Note: This might cause problems when we want to open a modal dialog at the lifetime 
     // of a WaitCursor instance because the incoming events are still filtered.
     if (e->type() == QEvent::KeyPress ||
         e->type() == QEvent::KeyRelease) {
+        if (isModalDialog(o))
+            return false;
         if (this->flags & WaitCursor::KeyEvents)
             return true;
     }
     if (e->type() == QEvent::MouseButtonPress ||
         e->type() == QEvent::MouseButtonRelease ||
         e->type() == QEvent::MouseButtonDblClick) {
+        if (isModalDialog(o))
+            return false;
         if (this->flags & WaitCursor::MouseEvents)
             return true;
     }
