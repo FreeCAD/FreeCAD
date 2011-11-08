@@ -42,6 +42,7 @@ class WaitCursorP : public QObject
 public:
     static WaitCursorP* getInstance();
     void setBusy(bool);
+    WaitCursor::FilterEventsFlags ignoreEvents() const;
     void setIgnoreEvents(WaitCursor::FilterEventsFlags flags);
 
 protected:
@@ -84,6 +85,11 @@ void WaitCursorP::setBusy(bool on)
     }
 
     this->isOn = on;
+}
+
+WaitCursor::FilterEventsFlags WaitCursorP::ignoreEvents() const
+{
+    return this->flags;
 }
 
 void WaitCursorP::setIgnoreEvents(WaitCursor::FilterEventsFlags flags)
@@ -161,6 +167,11 @@ void WaitCursor::setWaitCursor()
 void WaitCursor::restoreCursor()
 {
     WaitCursorP::getInstance()->setBusy(false);
+}
+
+WaitCursor::FilterEventsFlags WaitCursor::ignoreEvents() const
+{
+    return WaitCursorP::getInstance()->ignoreEvents();
 }
 
 void WaitCursor::setIgnoreEvents(FilterEventsFlags flags)

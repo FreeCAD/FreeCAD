@@ -74,6 +74,7 @@ public:
 
     void setWaitCursor();
     void restoreCursor();
+    FilterEventsFlags ignoreEvents() const;
     void setIgnoreEvents(FilterEventsFlags flags = AllEvents);
 
 private:
