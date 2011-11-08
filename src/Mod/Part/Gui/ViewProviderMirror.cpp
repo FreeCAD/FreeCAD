@@ -65,14 +65,13 @@ void ViewProviderMirror::setupContextMenu(QMenu* menu, QObject* receiver, const 
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit mirror plane"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-    act = menu->addAction(QObject::tr("Transform"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Transform));
+    act->setData(QVariant((int)ViewProvider::Mirror));
+    ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderMirror::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Mirror) {
         // get the properties from the mirror feature
         Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
         Base::BoundBox3d bbox = mf->Shape.getBoundingBox();
@@ -135,7 +134,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
 
 void ViewProviderMirror::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Mirror) {
         SoCenterballManip* manip = static_cast<SoCenterballManip *>(pcEditNode->getChild(0));
 
         SbVec3f move = manip->translation.getValue();
@@ -206,19 +205,18 @@ void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const 
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit fillet edges"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-    act = menu->addAction(QObject::tr("Transform"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Transform));
+    act->setData(QVariant((int)ViewProvider::Fillet));
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderFillet::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Fillet) {
         if (Gui::Control().activeDialog())
             return false;
         Part::Fillet* fillet = static_cast<Part::Fillet*>(getObject());
         Gui::Control().showDialog(new PartGui::TaskFilletEdges(fillet));
-        return false;
+        return true;
     }
     else {
         ViewProviderPart::setEdit(ModNum);
@@ -228,7 +226,8 @@ bool ViewProviderFillet::setEdit(int ModNum)
 
 void ViewProviderFillet::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Fillet) {
+        Gui::Control().closeDialog();
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);

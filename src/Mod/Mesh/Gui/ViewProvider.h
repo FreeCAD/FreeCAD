@@ -125,8 +125,7 @@ public:
 
     /** @name Editing */
     //@{
-    bool doubleClicked(void){return false;}
-    void setupContextMenu(QMenu*, QObject*, const char*) {}
+    bool doubleClicked(void){ return false; }
     void selectComponent(unsigned long facet);
     void deselectComponent(unsigned long facet);
     void selectFacet(unsigned long facet);

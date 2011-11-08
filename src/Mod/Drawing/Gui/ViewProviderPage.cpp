@@ -109,7 +109,6 @@ void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, c
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
 }
 
 bool ViewProviderDrawingPage::setEdit(int ModNum)

@@ -508,12 +508,12 @@ void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const
 {
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
     QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
-    act->setData(QVariant(getClassTypeId().getKey()));
+    act->setData(QVariant((int)ViewProvider::Color));
 }
 
 bool ViewProviderPartExt::setEdit(int ModNum)
 {
-    if (ModNum == (int)getClassTypeId().getKey()) {
+    if (ModNum == ViewProvider::Color) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -534,7 +534,7 @@ bool ViewProviderPartExt::setEdit(int ModNum)
 
 void ViewProviderPartExt::unsetEdit(int ModNum)
 {
-    if (ModNum == (int)getClassTypeId().getKey()) {
+    if (ModNum == ViewProvider::Color) {
     }
     else {
         Gui::ViewProviderGeometryObject::unsetEdit(ModNum);

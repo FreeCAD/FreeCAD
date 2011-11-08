@@ -484,11 +484,15 @@ std::vector<std::string> ViewProviderMesh::getDisplayModes(void) const
 
 bool ViewProviderMesh::setEdit(int ModNum)
 {
+    if (ModNum == ViewProvider::Transform)
+        return ViewProviderGeometryObject::setEdit(ModNum);
     return true;
 }
 
 void ViewProviderMesh::unsetEdit(int ModNum)
 {
+    if (ModNum == ViewProvider::Transform)
+        ViewProviderGeometryObject::unsetEdit(ModNum);
 }
 
 bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const SbViewVolume& vol,

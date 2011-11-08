@@ -59,50 +59,54 @@ void ViewProviderRevolution::setupContextMenu(QMenu* menu, QObject* receiver, co
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit revolution"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-    act = menu->addAction(QObject::tr("Transform"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Transform));
+    act->setData(QVariant((int)ViewProvider::Revolve));
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderRevolution::setEdit(int ModNum)
 {
-    // When double-clicking on the item for this pad the
-    // object unsets and sets its edit mode without closing
-    // the task panel
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    TaskDlgRevolutionParameters *padDlg = qobject_cast<TaskDlgRevolutionParameters *>(dlg);
-    if (padDlg && padDlg->getRevolutionView() != this)
-        padDlg = 0; // another pad left open its task panel
-    if (dlg && !padDlg) {
-        QMessageBox msgBox;
-        msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-        msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::Yes);
-        int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes)
-            Gui::Control().closeDialog();
+    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Revolve) {
+        // When double-clicking on the item for this pad the
+        // object unsets and sets its edit mode without closing
+        // the task panel
+        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+        TaskDlgRevolutionParameters *padDlg = qobject_cast<TaskDlgRevolutionParameters *>(dlg);
+        if (padDlg && padDlg->getRevolutionView() != this)
+            padDlg = 0; // another pad left open its task panel
+        if (dlg && !padDlg) {
+            QMessageBox msgBox;
+            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
+            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::Yes);
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::Yes)
+                Gui::Control().closeDialog();
+            else
+                return false;
+        }
+
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        if (ModNum == 1)
+            Gui::Command::openCommand("Change revolution parameters");
+
+        // start the edit dialog
+        if (padDlg)
+            Gui::Control().showDialog(padDlg);
         else
-            return false;
+            Gui::Control().showDialog(new TaskDlgRevolutionParameters(this));
+
+        return true;
     }
-
-    // clear the selection (convenience)
-    Gui::Selection().clearSelection();
-    if(ModNum == 1)
-        Gui::Command::openCommand("Change revolution parameters");
-
-    // start the edit dialog
-    if (padDlg)
-        Gui::Control().showDialog(padDlg);
-    else
-        Gui::Control().showDialog(new TaskDlgRevolutionParameters(this));
-
-    return true;
+    else {
+        return PartGui::ViewProviderPart::setEdit(ModNum);
+    }
 }
 
 void ViewProviderRevolution::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Revolve) {
         // and update the pad
         //getSketchObject()->getDocument()->recompute();
 

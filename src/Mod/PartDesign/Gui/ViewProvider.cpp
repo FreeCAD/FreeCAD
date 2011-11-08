@@ -44,7 +44,7 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',2)",this->pcObject->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
     return true;
 }
 

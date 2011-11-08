@@ -181,10 +181,18 @@ public:
      * you can handle most of the events in the viewer by yourself
      */
     //@{
-protected:
     enum EditMode {Default = 0,
-                   Transform = 1
+                   Transform,
+                   Cutting,
+                   Color,
+                   Mirror,
+                   Fillet,
+                   Sketch,
+                   Pad,
+                   Pocket,
+                   Revolve
     };
+protected:
     /// is called by the document when the provider goes in edit mode
     virtual bool setEdit(int ModNum);
     /// is called when you loose the edit mode

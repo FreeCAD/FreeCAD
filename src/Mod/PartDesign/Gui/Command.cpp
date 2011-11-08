@@ -146,7 +146,7 @@ void CmdPartDesignPad::activated(int iMsg)
         if (support)
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s',2)",FeatName.c_str());
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     //commitCommand();
     adjustCameraPosition();
@@ -227,7 +227,7 @@ void CmdPartDesignPocket::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s',2)",FeatName.c_str());
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
     copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
@@ -301,7 +301,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
         if (support)
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s',2)",FeatName.c_str());
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     if (support) {
         copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());

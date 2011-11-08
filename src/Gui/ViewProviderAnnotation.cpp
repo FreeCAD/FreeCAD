@@ -369,8 +369,7 @@ bool ViewProviderAnnotationLabel::doubleClicked(void)
 
 void ViewProviderAnnotationLabel::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act = menu->addAction(QObject::tr("Move annotation"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Transform));
+    menu->addAction(QObject::tr("Move annotation"), receiver, member);
 }
 
 void ViewProviderAnnotationLabel::dragStartCallback(void *data, SoDragger *)

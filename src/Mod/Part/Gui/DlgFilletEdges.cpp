@@ -675,11 +675,15 @@ void TaskFilletEdges::clicked(int)
 
 bool TaskFilletEdges::accept()
 {
-    return widget->accept();
+    bool ok = widget->accept();
+    if (ok)
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    return ok;
 }
 
 bool TaskFilletEdges::reject()
 {
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     return true;
 }
 

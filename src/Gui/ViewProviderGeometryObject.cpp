@@ -197,7 +197,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
 
 bool ViewProviderGeometryObject::doubleClicked(void)
 {
-    Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Transform);
+    Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
 }
 
