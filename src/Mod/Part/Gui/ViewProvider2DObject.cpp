@@ -99,13 +99,13 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     }
     else {
         MiX = -exp(ceil(log(std::abs(MinX))));
-        MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*MaxX)))));
+        MiX = std::min<float>(MiX,(float)-exp(ceil(log(std::abs(0.1f*MaxX)))));
         MaX = exp(ceil(log(std::abs(MaxX))));
-        MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*MinX)))));
+        MaX = std::max<float>(MaX,(float)exp(ceil(log(std::abs(0.1f*MinX)))));
         MiY = -exp(ceil(log(std::abs(MinY))));
-        MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*MaxY)))));
+        MiY = std::min<float>(MiY,(float)-exp(ceil(log(std::abs(0.1f*MaxY)))));
         MaY = exp(ceil(log(std::abs(MaxY))));
-        MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*MinY)))));
+        MaY = std::max<float>(MaY,(float)exp(ceil(log(std::abs(0.1f*MinY)))));
     }
     //Round the values otherwise grid is not aligned with center
     MiX = floor(MiX / Step) * Step;
