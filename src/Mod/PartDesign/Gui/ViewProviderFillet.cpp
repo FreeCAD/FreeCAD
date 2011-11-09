@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,51 +26,45 @@
 #ifndef _PreComp_
 #endif
 
-#include "ViewProviderPad.h"
-#include "TaskPadParameters.h"
-#include <Mod/PartDesign/App/FeaturePad.h>
+#include "ViewProviderFillet.h"
+#include "TaskFilletParameters.h"
+#include <Mod/PartDesign/App/FeatureFillet.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 
+
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPad,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderFillet,PartDesignGui::ViewProvider)
 
-ViewProviderPad::ViewProviderPad()
+ViewProviderFillet::ViewProviderFillet()
 {
 }
 
-ViewProviderPad::~ViewProviderPad()
+ViewProviderFillet::~ViewProviderFillet()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderPad::claimChildren(void)const
-{
-    std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Pad*>(getObject())->Sketch.getValue());
 
-    return temp;
-}
-
-void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit pad"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit pocket"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPad::setEdit(int ModNum)
+bool ViewProviderFillet::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this pad the
+        // When double-clicking on the item for this fillet the
         // object unsets and sets its edit mode without closing
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgPadParameters *padDlg = qobject_cast<TaskDlgPadParameters *>(dlg);
-        if (padDlg && padDlg->getPadView() != this)
+        TaskDlgFilletParameters *padDlg = qobject_cast<TaskDlgFilletParameters *>(dlg);
+        if (padDlg && padDlg->getFilletView() != this)
             padDlg = 0; // another pad left open its task panel
         if (dlg && !padDlg) {
             QMessageBox msgBox;
@@ -87,25 +81,25 @@ bool ViewProviderPad::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        //if (ModNum == 1)
-        //    Gui::Command::openCommand("Change pad parameters");
+        //if(ModNum == 1)
+        //    Gui::Command::openCommand("Change fillet parameters");
 
         // start the edit dialog
         if (padDlg)
             Gui::Control().showDialog(padDlg);
         else
-            Gui::Control().showDialog(new TaskDlgPadParameters(this));
+            Gui::Control().showDialog(new TaskDlgFilletParameters(this));
 
         return true;
     }
     else {
-        return ViewProviderPart::setEdit(ModNum);
+        return PartGui::ViewProviderPart::setEdit(ModNum);
     }
 }
 
-void ViewProviderPad::unsetEdit(int ModNum)
+void ViewProviderFillet::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
+    if (ModNum == ViewProvider::Default ) {
         // and update the pad
         //getSketchObject()->getDocument()->recompute();
 
@@ -117,23 +111,20 @@ void ViewProviderPad::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderPad::onDelete(const std::vector<std::string> &)
+bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject()); 
-    Sketcher::SketchObject *pcSketch;
+    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(getObject()); 
     App::DocumentObject    *pcSupport;
-    if (pcPad->Sketch.getValue()){
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
-        pcSupport = pcSketch->Support.getValue();
+    if (pcFillet->Base.getValue()){
+        pcSupport = static_cast<Sketcher::SketchObject*>(pcFillet->Base.getValue()); 
     }
 
     // if abort command deleted the object the support is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
     if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
         Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
     return true;
 }
+
 

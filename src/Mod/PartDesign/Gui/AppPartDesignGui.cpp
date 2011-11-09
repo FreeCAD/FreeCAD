@@ -34,6 +34,7 @@
 #include "Workbench.h"
 #include "ViewProviderPocket.h"
 #include "ViewProviderPad.h"
+#include "ViewProviderFillet.h"
 #include "ViewProviderRevolution.h"
 #include "TaskChamfer.h"
 
@@ -78,10 +79,12 @@ void PartDesignGuiExport initPartDesignGui()
     CreatePartDesignCommands();
 
     PartDesignGui::Workbench             ::init();
+    PartDesignGui::ViewProvider          ::init();
     PartDesignGui::ViewProviderPocket    ::init();
     PartDesignGui::ViewProviderPad       ::init();
     PartDesignGui::ViewProviderRevolution::init();
     PartDesignGui::ViewProviderChamfer   ::init();
+    PartDesignGui::ViewProviderFillet    ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();

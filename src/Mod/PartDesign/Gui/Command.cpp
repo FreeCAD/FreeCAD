@@ -354,8 +354,7 @@ void CmdPartDesignFillet::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Fillet\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
     doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",selection[0].getFeatName());
-    updateActive();
-    commitCommand();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", selection[0].getFeatName());
     copyVisual(FeatName.c_str(), "LineColor",  selection[0].getFeatName());

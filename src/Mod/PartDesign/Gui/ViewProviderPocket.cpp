@@ -37,7 +37,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPocket,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPocket,PartDesignGui::ViewProvider)
 
 ViewProviderPocket::ViewProviderPocket()
 {
@@ -59,13 +59,13 @@ void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const 
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit pocket"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Pocket));
+    act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderPocket::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Pocket) {
+    if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -88,8 +88,8 @@ bool ViewProviderPocket::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        if(ModNum == 1)
-            Gui::Command::openCommand("Change pocket parameters");
+        //if(ModNum == ViewProvider::Default)
+        //    Gui::Command::openCommand("Change pocket parameters");
 
         // start the edit dialog
         if (padDlg)
@@ -106,7 +106,7 @@ bool ViewProviderPocket::setEdit(int ModNum)
 
 void ViewProviderPocket::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Pocket) {
+    if (ModNum == ViewProvider::Default ) {
         // and update the pad
         //getSketchObject()->getDocument()->recompute();
 

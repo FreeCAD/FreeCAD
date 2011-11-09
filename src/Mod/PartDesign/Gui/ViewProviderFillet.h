@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATUREFILLET_H
-#define PARTDESIGN_FEATUREFILLET_H
+#ifndef PARTGUI_ViewProviderFillet_H
+#define PARTGUI_ViewProviderFillet_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include "FeatureDressUp.h"
+#include "ViewProvider.h"
 
-namespace PartDesign
+
+namespace PartDesignGui {
+
+class PartDesignGuiExport ViewProviderFillet : public ViewProvider
 {
-
-class Fillet : public DressUp
-{
-    PROPERTY_HEADER(PartDesign::Fillet);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderFillet);
 
 public:
-    Fillet();
+    /// constructor
+    ViewProviderFillet();
+    /// destructor
+    virtual ~ViewProviderFillet();
 
-    App::PropertyFloatConstraint Radius;
+    /// grouping handling 
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    // returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderFillet";
-    }
-    //@}
+    virtual bool onDelete(const std::vector<std::string> &);
+
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+
 };
 
-} //namespace Part
 
 
-#endif // PARTDESIGN_FEATUREFILLET_H
+} // namespace PartDesignGui
+
+
+#endif // PARTGUI_ViewProviderFillet_H

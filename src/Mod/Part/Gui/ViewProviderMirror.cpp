@@ -205,13 +205,13 @@ void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const 
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit fillet edges"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Fillet));
+    act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderFillet::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Fillet) {
+    if (ModNum == ViewProvider::Default ) {
         if (Gui::Control().activeDialog())
             return false;
         Part::Fillet* fillet = static_cast<Part::Fillet*>(getObject());
@@ -226,7 +226,7 @@ bool ViewProviderFillet::setEdit(int ModNum)
 
 void ViewProviderFillet::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Fillet) {
+    if (ModNum == ViewProvider::Default) {
         Gui::Control().closeDialog();
     }
     else {

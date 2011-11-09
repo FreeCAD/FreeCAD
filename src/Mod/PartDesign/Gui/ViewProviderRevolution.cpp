@@ -59,13 +59,13 @@ void ViewProviderRevolution::setupContextMenu(QMenu* menu, QObject* receiver, co
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit revolution"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Revolve));
+    act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderRevolution::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Revolve) {
+    if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -88,8 +88,8 @@ bool ViewProviderRevolution::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        if (ModNum == 1)
-            Gui::Command::openCommand("Change revolution parameters");
+        //if (ModNum == 1)
+        //    Gui::Command::openCommand("Change revolution parameters");
 
         // start the edit dialog
         if (padDlg)
@@ -106,7 +106,7 @@ bool ViewProviderRevolution::setEdit(int ModNum)
 
 void ViewProviderRevolution::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default || ModNum == ViewProvider::Revolve) {
+    if (ModNum == ViewProvider::Default) {
         // and update the pad
         //getSketchObject()->getDocument()->recompute();
 
