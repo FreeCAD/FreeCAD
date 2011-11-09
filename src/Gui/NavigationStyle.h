@@ -116,7 +116,7 @@ public:
     void redraw();
 
     void setCameraOrientation(const SbRotation& rot);
-    void setCameraPosition(const SbVec3f&);
+    void lookAtPoint(const SbVec3f&);
     void boxZoom(const SbBox2s& box);
     virtual void viewAll();
 
@@ -150,7 +150,7 @@ protected:
     void setSeekMode(SbBool enable);
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
-    SbBool moveToPoint(const SbVec2s screenpos);
+    SbBool lookAtPoint(const SbVec2s screenpos);
 
     void reorientCamera(SoCamera * camera, const SbRotation & rot);
     void panCamera(SoCamera * camera,

@@ -276,7 +276,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a middle click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->moveToPoint(pos)) {
+                    if (!this->lookAtPoint(pos)) {
                         panToCenter(panningplane, posn);
                         this->interactiveCountDec();
                     }

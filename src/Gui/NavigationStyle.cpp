@@ -281,7 +281,7 @@ void NavigationStyle::seekToPoint(const SbVec3f& scenepos)
     viewer->seekToPoint(scenepos);
 }
 
-SbBool NavigationStyle::moveToPoint(const SbVec2s screenpos)
+SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 {
     SoCamera* cam = viewer->getCamera();
     if (cam == 0) return FALSE;
@@ -299,11 +299,11 @@ SbBool NavigationStyle::moveToPoint(const SbVec2s screenpos)
 
     SbVec3f hitpoint;
     hitpoint = picked->getPoint();
-    setCameraPosition(hitpoint);
+    lookAtPoint(hitpoint);
     return TRUE;
 }
 
-void NavigationStyle::setCameraPosition(const SbVec3f& pos)
+void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 {
     SoCamera* cam = viewer->getCamera();
     if (cam == 0) return;
