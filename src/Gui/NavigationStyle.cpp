@@ -321,6 +321,7 @@ void NavigationStyle::setCameraPosition(const SbVec3f& pos)
 
     if (PRIVATE(this)->animsensor->isScheduled()) {
         PRIVATE(this)->animsensor->unschedule();
+        this->interactiveCountDec();
     }
 
     if (isAnimationEnabled()) {
@@ -342,6 +343,7 @@ void NavigationStyle::setCameraPosition(const SbVec3f& pos)
             PRIVATE(this)->animationdelta = std::max<int>(100/steps, 5);
             PRIVATE(this)->animsensor->setBaseTime(SbTime::getTimeOfDay());
             PRIVATE(this)->animsensor->schedule();
+            this->interactiveCountInc();
         }
         else {
             // set to the given position
@@ -387,6 +389,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot)
 
     if (PRIVATE(this)->animsensor->isScheduled()) {
         PRIVATE(this)->animsensor->unschedule();
+        this->interactiveCountDec();
     }
 
     if (isAnimationEnabled()) {
@@ -407,6 +410,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot)
             PRIVATE(this)->animationdelta = std::max<int>(100/steps, 5);
             PRIVATE(this)->animsensor->setBaseTime(SbTime::getTimeOfDay());
             PRIVATE(this)->animsensor->schedule();
+            this->interactiveCountInc();
         }
         else {
             // due to possible round-off errors make sure that the
@@ -444,6 +448,7 @@ void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
             // now we have reached the end of the movement
             PRIVATE(that)->animationsteps=0;
             PRIVATE(that)->animsensor->unschedule();
+            that->interactiveCountDec();
             // set to the actual given rotation
             cam->orientation.setValue(PRIVATE(that)->endRotation);
             cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
