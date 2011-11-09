@@ -299,12 +299,63 @@ SbBool NavigationStyle::moveToPoint(const SbVec2s screenpos)
 
     SbVec3f hitpoint;
     hitpoint = picked->getPoint();
+    setCameraPosition(hitpoint);
+    return TRUE;
+}
 
+void NavigationStyle::setCameraPosition(const SbVec3f& pos)
+{
+    SoCamera* cam = viewer->getCamera();
+    if (cam == 0) return;
+
+    // Find global coordinates of focal point.
     SbVec3f direction;
     cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    cam->focalDistance = viewer->getSeekDistance();
-    cam->position = hitpoint - cam->focalDistance.getValue() * direction;
-    return TRUE;
+    PRIVATE(this)->focal1 = cam->position.getValue() +
+                            cam->focalDistance.getValue() * direction;
+    PRIVATE(this)->focal2 = pos;
+
+    // avoid to interfere with spinning (fixes #3101462)
+    if (this->isAnimating())
+        this->stopAnimating();
+
+    if (PRIVATE(this)->animsensor->isScheduled()) {
+        PRIVATE(this)->animsensor->unschedule();
+    }
+
+    if (isAnimationEnabled()) {
+        SbRotation cam_rot = cam->orientation.getValue();
+        // get the amount of movement
+        SbVec3f dir1 = direction, dir2;
+        dir2 = pos - cam->position.getValue();
+        dir2.normalize();
+        SbRotation rot(dir1, dir2);
+        float val = 0.5f*(1.0f + dir1.dot(dir2)); // value in range [0,1]
+        int div = (int)(val * 20.0f);
+        int steps = 20-div; // do it with max. 20 steps
+
+        // check whether a movement is required
+        if (steps > 0) {
+            PRIVATE(this)->endRotation = cam_rot;
+            this->spinRotation = cam_rot;
+            PRIVATE(this)->animationsteps = 5;
+            PRIVATE(this)->animationdelta = std::max<int>(100/steps, 5);
+            PRIVATE(this)->animsensor->setBaseTime(SbTime::getTimeOfDay());
+            PRIVATE(this)->animsensor->schedule();
+        }
+        else {
+            // set to the given position
+            SbVec3f direction;
+            cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+            cam->position = pos - cam->focalDistance.getValue() * direction;
+        }
+    }
+    else {
+        // set to the given position
+        SbVec3f direction;
+        cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+        cam->position = pos - cam->focalDistance.getValue() * direction;
+    }
 }
 
 void NavigationStyle::setCameraOrientation(const SbRotation& rot)
