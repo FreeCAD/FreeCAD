@@ -211,9 +211,9 @@ ViewProviderSketch::ViewProviderSketch()
     PointSize.setValue(4);
 
     zCross=0.001f;
-    zLines=0.002f;
+    zConstr=0.002f;
+    zLines=0.003f;
     zPoints=0.004f;
-    zConstr=0.003f;
     zHighlight=0.005f;
     zText=0.006f;
     zEdit=0.001f;
