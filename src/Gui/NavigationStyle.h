@@ -149,6 +149,7 @@ protected:
     void setSeekMode(SbBool enable);
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
+    SbBool moveToPoint(const SbVec2s screenpos);
 
     void reorientCamera(SoCamera * camera, const SbRotation & rot);
     void panCamera(SoCamera * camera,

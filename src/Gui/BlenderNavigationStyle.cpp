@@ -247,7 +247,10 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a middle click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    panToCenter(panningplane, posn);
+                    if (!this->moveToPoint(pos)) {
+                        panToCenter(panningplane, posn);
+                        this->interactiveCountDec();
+                    }
                     processed = TRUE;
                 }
             }

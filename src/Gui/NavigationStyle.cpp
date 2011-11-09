@@ -281,6 +281,32 @@ void NavigationStyle::seekToPoint(const SbVec3f& scenepos)
     viewer->seekToPoint(scenepos);
 }
 
+SbBool NavigationStyle::moveToPoint(const SbVec2s screenpos)
+{
+    SoCamera* cam = viewer->getCamera();
+    if (cam == 0) return FALSE;
+
+    SoRayPickAction rpaction(viewer->getViewportRegion());
+    rpaction.setPoint(screenpos);
+    rpaction.setRadius(2);
+    rpaction.apply(viewer->getSceneManager()->getSceneGraph());
+
+    SoPickedPoint * picked = rpaction.getPickedPoint();
+    if (!picked) {
+        this->interactiveCountInc();
+        return FALSE;
+    }
+
+    SbVec3f hitpoint;
+    hitpoint = picked->getPoint();
+
+    SbVec3f direction;
+    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    cam->focalDistance = viewer->getSeekDistance();
+    cam->position = hitpoint - cam->focalDistance.getValue() * direction;
+    return TRUE;
+}
+
 void NavigationStyle::setCameraOrientation(const SbRotation& rot)
 {
     SoCamera* cam = viewer->getCamera();
