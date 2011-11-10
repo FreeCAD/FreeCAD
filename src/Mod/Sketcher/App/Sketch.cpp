@@ -1303,22 +1303,51 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
 
 int Sketch::solve() {
 
-    if (!isInitMove) {
-        GCSsys.clearByTag(-1);
-        GCSsys.clearByTag(-2);
-        InitParameters.resize(Parameters.size());
-        int i=0;
-        for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
-            InitParameters[i] = **it;
-            GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
-        }
-        GCSsys.initSolution(Parameters);
-    }
-
     Base::TimeInfo start_time;
 
     // solving with freegcs
-    int ret = GCSsys.solve();
+    // (either with SQP solver for two subsystems or
+    //  with the default DogLeg solver for a single subsystem)
+    int ret = GCSsys.solve(GCS::DogLeg);
+
+    if (ret != GCS::Success && !isInitMove) {
+        // if we are not in dragging mode and the solver fails we try
+        // alternative solvers
+        ret = GCSsys.solve(GCS::BFGS);
+        if (ret == GCS::Success) {
+            Base::Console().Warning("Important: the BFGS solver succeeded where the DogLeg solver had failed.\n");
+            Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
+            Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
+        }
+        else {
+            ret = GCSsys.solve(GCS::LevenbergMarquardt);
+            if (ret == GCS::Success) {
+                Base::Console().Warning("Important: the LevenbergMarquardt solver succeeded where the DogLeg and BFGS solvers have failed.\n");
+                Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
+                Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
+            } else {
+                // last resort: augment the system with a second subsystem and use the SQP solver
+                GCSsys.clearByTag(-1);
+                GCSsys.clearByTag(-2);
+                InitParameters.resize(Parameters.size());
+                int i=0;
+                for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
+                    InitParameters[i] = **it;
+                    GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
+                }
+                GCSsys.initSolution(Parameters);
+
+                ret = GCSsys.solve();
+                if (ret == GCS::Success) {
+                    Base::Console().Warning("Important: the SQP solver succeeded where all single subsystem solvers have failed.\n");
+                    Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
+                    Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
+                }
+            }
+        }
+
+    }
+
     // if successfully solve write the parameter back
     if (ret == GCS::Success) {
         GCSsys.applySolution();

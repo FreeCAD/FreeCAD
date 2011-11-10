@@ -38,6 +38,12 @@ namespace GCS
         Failed = 2     // Failed to find any solution
     };
 
+    enum Algorithm {
+        BFGS = 0,
+        LevenbergMarquardt = 1,
+        DogLeg = 2
+    };
+
     class System
     {
     // This is the main class. It holds all constraints and information
@@ -60,6 +66,10 @@ namespace GCS
         MAP_pD_pD reductionmap; // for simplification of equality constraints
 
         bool init;
+
+        int solve_BFGS(SubSystem *subsys, bool isFine);
+        int solve_LM(SubSystem *subsys);
+        int solve_DL(SubSystem *subsys);
     public:
         System();
         System(std::vector<Constraint *> clist_);
@@ -117,9 +127,9 @@ namespace GCS
 
         void initSolution(VEC_pD &params);
 
-        int solve(bool isFine=true);
-        int solve(VEC_pD &params, bool isFine=true);
-        int solve(SubSystem *subsys, bool isFine=true);
+        int solve(bool isFine=true, Algorithm alg=DogLeg);
+        int solve(VEC_pD &params, bool isFine=true, Algorithm alg=DogLeg);
+        int solve(SubSystem *subsys, bool isFine=true, Algorithm alg=DogLeg);
         int solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine=true);
 
         void getSubSystems(std::vector<SubSystem *> &subsysvec);

@@ -59,7 +59,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create sketch");
-    sToolTipText    = QT_TR_NOOP("Create a new sketch");
+    sToolTipText    = QT_TR_NOOP("Create a new or edit the selected sketch");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_NewSketch";
