@@ -613,13 +613,10 @@ int System::solve_LM(SubSystem* subsys)
     if (xsize == 0)
         return Success;
 
-    int itmax = MaxIterations*xsize;
-
     Eigen::VectorXd e(csize), e_new(csize); // vector of all function errors (every constraint is one function)
     Eigen::MatrixXd J(csize, xsize);        // Jacobi of the subsystem
-    Eigen::VectorXd x(xsize), h(xsize), x_new(xsize), g(xsize);
-    Eigen::MatrixXd A;
-    Eigen::VectorXd diag_A(xsize);
+    Eigen::MatrixXd A(xsize, xsize);
+    Eigen::VectorXd x(xsize), h(xsize), x_new(xsize), g(xsize), diag_A(xsize);
 
     subsys->redirectParams();
 
@@ -627,17 +624,23 @@ int System::solve_LM(SubSystem* subsys)
     subsys->calcResidual(e);
     e*=-1;
 
+    int maxIterNumber = MaxIterations * xsize;
+    double diverging_lim = 1e6*e.squaredNorm() + 1e12;
+
     double eps=1e-10, eps1=1e-80;
     double tau=1e-3;
     double nu=2, mu=0;
-    int k=0, stop=0;
-    for (k=0; k < itmax && !stop; ++k) {
+    int iter=0, stop=0;
+    for (iter=0; iter < maxIterNumber && !stop; ++iter) {
 
         // check error
-// (logari81) why not using:
-//        if (e.squaredNorm() <= eps) { // error is small
-        if (e.dot(e) <= eps) { // error is small
-            stop=1;
+        double err=e.squaredNorm();
+        if (err <= eps) { // error is small, Success
+            stop = 1;
+            break;
+        }
+        else if (err > diverging_lim || err != err) { // check for diverging and NaN
+            stop = 6;
             break;
         }
 
@@ -648,64 +651,42 @@ int System::solve_LM(SubSystem* subsys)
         g = J.transpose()*e;
 
         // Compute ||J^T e||_inf
-        double g_inf = -DBL_EPSILON; // (logari81) is this initialization correct?
-        for (int i=0; i < xsize; i++) {
-            if (g_inf < g(i))
-                g_inf = g(i);
-            diag_A(i) = A(i,i); // save diagonal entries so that augmentation can be later canceled
-        }
-// (logari81) to be replaced with (if max(abs(g)) == max(g)):
-//        g_inf = g.lpNorm<Eigen::Infinity>();
-//        diag_A = A.diagonal();
+        double g_inf = g.lpNorm<Eigen::Infinity>();
+        diag_A = A.diagonal(); // save diagonal entries so that augmentation can be later canceled
 
         // check for convergence
         if (g_inf <= eps1) {
-            stop=2;
+            stop = 2;
             break;
         }
 
         // compute initial damping factor
-        if (k==0) {
-            double temp=-DBL_EPSILON;
-            for (int i=0; i < xsize; i++) {
-                double z=A(i,i);
-                if (z > temp) temp=z; // find max diagonal element
-            }
-            mu=tau*temp;
-        }
-// (logari81) to be replaced with (diagonal of A is positive):
-//        if (k==0)
-//            mu = tau * A.diagonal().lpNorm<Eigen::Infinity>();
+        if (iter == 0)
+            mu = tau * A.diagonal().lpNorm<Eigen::Infinity>();
 
         // determine increment using adaptive damping
         while (1) {
             // augment normal equations A = A+uI
             for (int i=0; i < xsize; ++i)
                 A(i,i) += mu;
-// (logari81) to be replaced with:
-//          mu = tau * A.diagonal().lpNorm<Eigen::Infinity>();
 
             //solve augmented functions A*h=-g
             h = A.fullPivLu().solve(g);
             double rel_error = (A*h - g).norm() / g.norm();
 
-            // check if solving workes
+            // check if solving works
             if (rel_error < 1e-5) {
 
                 // compute par's new estimate and ||d_par||^2
                 x_new = x + h;
-                double h_norm = h.dot(h);
-// (logari81) why not using:
-//                h_norm = h.squaredNorm();
+                double h_norm = h.squaredNorm();
 
-                if (h_norm <= eps1*(x.norm()*eps1)) { // relative change in p is small, stop
-// (logari81) why not write:
-//                if (h_norm <= eps1*eps1*x.norm()) { // relative change in p is small, stop
-                    stop=3;
+                if (h_norm <= eps1*eps1*x.norm()) { // relative change in p is small, stop
+                    stop = 3;
                     break;
                 }
                 else if (h_norm >= (x.norm()+eps1)/(DBL_EPSILON*DBL_EPSILON)) { // almost singular
-                    stop=4;
+                    stop = 4;
                     break;
                 }
 
@@ -713,22 +694,12 @@ int System::solve_LM(SubSystem* subsys)
                 subsys->calcResidual(e_new);
                 e_new *= -1;
 
-                double error_new = e_new.dot(e_new);
-                double dF = e.dot(e) - error_new;
-// (logari81) why not using:
-//                double error_new = e_new.squaredNorm();
-//                double dF = e.squaredNorm() - error_new;
+                double dF = e.squaredNorm() - e_new.squaredNorm();
                 double dL = h.dot(mu*h+g);
 
                 if (dF>0. && dL>0.) { // reduction in error, increment is accepted
-                    double tmp=(2.0*dF/dL)-1.0;
-                    tmp = 1.0 - pow(tmp, 3);
-                    if (tmp <= 1./3.)
-                        mu *= 1./3.;
-                    else
-                        mu *= tmp;
-// (logari81) to be replaced with:
-//                    mu *= std::max(1./3.,tmp);
+                    double tmp=2*dF/dL-1.;
+                    mu *= std::max(1./3., 1.-tmp*tmp*tmp);
                     nu=2;
 
                     // update par's estimate
@@ -744,11 +715,11 @@ int System::solve_LM(SubSystem* subsys)
             mu*=nu;
             nu*=2.0;
             for (int i=0; i < xsize; ++i) // restore diagonal J^T J entries
-                A(i,i)=diag_A(i);
+                A(i,i) = diag_A(i);
         }
     }
 
-    if (k >= itmax)
+    if (iter >= maxIterNumber)
         stop = 5;
 
     subsys->revertParams();
@@ -760,12 +731,9 @@ int System::solve_LM(SubSystem* subsys)
 int System::solve_DL(SubSystem* subsys)
 {
     double tolg=1e-80, tolx=1e-80, tolf=1e-10;
-    double error, error_new;
 
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
-
-    int itmax = MaxIterations*xsize;
 
     Eigen::VectorXd x(xsize), x_new(xsize);
     Eigen::VectorXd fx(csize), fx_new(csize);
@@ -774,46 +742,45 @@ int System::solve_DL(SubSystem* subsys)
 
     subsys->redirectParams();
 
+    double err;
     subsys->getParams(x);
-    subsys->calcResidual(fx, error);
+    subsys->calcResidual(fx, err);
     subsys->calcJacobi(Jx);
 
-    g = -1*(Jx.transpose()*fx);
-// (logari81) why not:
-//    g = Jx.transpose()*(-fx);
+    g = Jx.transpose()*(-fx);
 
     // get the infinity norm fx_inf and g_inf
-    double fx_inf=0, g_inf=0;
-    for (int i=0; i < xsize; i++)
-        g_inf  = fabs(g(i)) > g_inf ? fabs(g(i)) : g_inf;
-    for (int i=0; i < csize; i++)
-        fx_inf = fabs(fx(i)) > fx_inf ? fabs(fx(i)) : fx_inf;
-// (logari81) to be replaced with:
-//    double g_inf = g.lpNorm<Eigen::Infinity>();
-//    double f_inf = f.lpNorm<Eigen::Infinity>();
+    double g_inf = g.lpNorm<Eigen::Infinity>();
+    double fx_inf = fx.lpNorm<Eigen::Infinity>();
+
+    int maxIterNumber = MaxIterations * xsize;
+    double diverging_lim = 1e6*err + 1e12;
 
     double delta=0.1;
     double alpha=0.;
     double nu=2.;
-    int k=0, stop=0, reduce=0;
+    int iter=0, stop=0, reduce=0;
     while (!stop) {
 
         // check if finished
-        if (fx_inf <= tolf)
+        if (fx_inf <= tolf) // Success
             stop = 1;
         else if (g_inf <= tolg)
             stop = 2;
         else if (delta <= tolx*(tolx + x.norm()))
             stop = 2;
-        else if (k >= itmax)
+        else if (iter >= maxIterNumber)
             stop = 4;
+        else if (err > diverging_lim || err != err) { // check for diverging and NaN
+            stop = 6;
+        }
         else {
             // get the steepest descent direction
-            alpha = pow(g.norm()/(Jx*g).norm() ,2);
+            alpha = g.squaredNorm()/(Jx*g).squaredNorm();
             h_sd  = alpha*g;
 
             // get the gauss-newton step
-            h_gn = Jx.fullPivLu().solve(-1*fx);
+            h_gn = Jx.fullPivLu().solve(-fx);
             double rel_error = (Jx*h_gn + fx).norm() / fx.norm();
             if (rel_error > 1e15)
                 break;
@@ -838,9 +805,9 @@ int System::solve_DL(SubSystem* subsys)
                 double c = (delta + h_sd.norm())*(delta - h_sd.norm());
 
                 if (gb > 0)
-                    beta = c / (gb + sqrt(pow(gb,2) + c * bb));
+                    beta = c / (gb + sqrt(gb * gb + c * bb));
                 else
-                    beta = (sqrt(pow(gb,2) + c * bb) - gb)/bb;
+                    beta = (sqrt(gb * gb + c * bb) - gb)/bb;
 
                 // and update h_dl and dL with beta
                 h_dl = h_sd + beta*b;
@@ -852,33 +819,28 @@ int System::solve_DL(SubSystem* subsys)
             break;
 
         // get the new values
+        double err_new;
         x_new = x + h_dl;
         subsys->setParams(x_new);
-        subsys->calcResidual(fx_new, error_new);
+        subsys->calcResidual(fx_new, err_new);
         subsys->calcJacobi(Jx_new);
 
         // calculate the linear model and the update ratio
-        double dL = error - 0.5*pow((fx + Jx*h_dl).norm(),2);
-        double dF = error - error_new;
+        double dL = err - 0.5*(fx + Jx*h_dl).squaredNorm();
+        double dF = err - err_new;
         double rho = dL/dF;
 
         if (dF > 0 && dL > 0) {
             x  = x_new;
             Jx = Jx_new;
             fx = fx_new;
-            error = error_new;
+            err = err_new;
 
-            g = -1*(Jx.transpose()*fx);
+            g = Jx.transpose()*(-fx);
 
             // get infinity norms
-            fx_inf = g_inf = 0.;
-            for (int i=0; i < xsize; i++)
-                g_inf = fabs(g(i)) > g_inf  ? fabs(g(i)) : g_inf;
-            for (int i=0; i < csize; i++)
-                fx_inf = fabs(fx(i)) > fx_inf ? fabs(fx(i)) : fx_inf;
-// (logari81) to be replaced with:
-//            g_inf = g.lpNorm<Eigen::Infinity>();
-//            f_inf = f.lpNorm<Eigen::Infinity>();
+            g_inf = g.lpNorm<Eigen::Infinity>();
+            fx_inf = fx.lpNorm<Eigen::Infinity>();
         }
         else
             rho = -1;
@@ -898,7 +860,7 @@ int System::solve_DL(SubSystem* subsys)
             reduce--;
 
         // count this iteration and start again
-        k++;
+        iter++;
     }
 
     subsys->revertParams();
