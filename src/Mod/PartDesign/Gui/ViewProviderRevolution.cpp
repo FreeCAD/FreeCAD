@@ -37,7 +37,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution,PartDesignGui::ViewProvider)
 
 ViewProviderRevolution::ViewProviderRevolution()
 {

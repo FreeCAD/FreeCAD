@@ -30,7 +30,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPatternRectangular,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPatternRectangular,PartDesignGui::ViewProvider)
 
 ViewProviderPatternRectangular::ViewProviderPatternRectangular()
 {

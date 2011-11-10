@@ -185,14 +185,6 @@ public:
                    Transform,
                    Cutting,
                    Color,
-                   Mirror
-                   //FIXME: Never do such stuff in the base system
-/*,
-                   Fillet,
-                   Sketch,
-                   Pad,
-                   Pocket,
-                   Revolve*/
     };
 protected:
     /// is called by the document when the provider goes in edit mode

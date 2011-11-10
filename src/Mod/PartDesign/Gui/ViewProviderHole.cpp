@@ -31,7 +31,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderHole,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderHole,PartDesignGui::ViewProvider)
 
 ViewProviderHole::ViewProviderHole()
 {
