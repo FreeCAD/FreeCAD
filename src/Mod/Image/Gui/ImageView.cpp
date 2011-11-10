@@ -85,50 +85,15 @@ void ImageView::createActions()
   _pOneToOneAct->setStatusTip(tr("Display the image at a 1:1 scale"));
   connect(_pOneToOneAct, SIGNAL(triggered()), this, SLOT(oneToOneImage()));
 
-  // Create an action group for the exclusive color actions
-  _pShowColActGrp = new QActionGroup (this);
-  _pShowColActGrp->setExclusive(true);
-  connect(_pShowColActGrp, SIGNAL(triggered(QAction*)), this, SLOT(handleColorAct(QAction*)));
-
-  _pShowOrigAct = new QAction(_pShowColActGrp);
-  _pShowOrigAct->setCheckable(true);
-  _pShowOrigAct->setText(tr("&Original color"));
-  _pShowOrigAct->setIcon(QPixmap(image_orig));
-  _pShowOrigAct->setStatusTip(tr("Display the image with its original color(s)"));
-
-  _pShowBrightAct = new QAction(_pShowColActGrp);
-  _pShowBrightAct->setCheckable(true);
-  _pShowBrightAct->setText(tr("&Brightened color"));
-  _pShowBrightAct->setIcon(QPixmap(image_bright));
-  _pShowBrightAct->setStatusTip(tr("Display the image with brightened color(s)"));
-
   // Create the menus and add the actions
   _pContextMenu = new QMenu(this);
   _pContextMenu->addAction(_pFitAct);
   _pContextMenu->addAction(_pOneToOneAct);
-  _pContextMenu->addAction(_pShowOrigAct);
-  _pContextMenu->addAction(_pShowBrightAct);
 
   // Create the toolbars and add the actions
   _pStdToolBar = this->addToolBar(tr("Standard"));
   _pStdToolBar->addAction(_pFitAct);
   _pStdToolBar->addAction(_pOneToOneAct);
-  _pStdToolBar->addAction(_pShowOrigAct);
-  _pStdToolBar->addAction(_pShowBrightAct);
-
-  // Add a slider to the toolbar (for brightness adjustment)
-  _sliderBrightAdjVal = 10;
-  _pSliderBrightAdj = new QSlider(Qt::Horizontal, _pStdToolBar);
-  _pSliderBrightAdj->setRange(0, 100);
-  _pSliderBrightAdj->setValue(_sliderBrightAdjVal);
-  _pSliderBrightAdj->setPageStep(10);
-  _pStdToolBar->addWidget(_pSliderBrightAdj);
-  _pSliderBrightAdj->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-  _pSliderBrightAdj->setEnabled(false);
-  connect(_pSliderBrightAdj, SIGNAL(valueChanged(int)), this, SLOT(sliderValueAdjusted(int)));
-
-  // Set the original color action to ON
-  _pShowOrigAct->setChecked(true);
 }
 
 // Enable or disable the status bar
@@ -176,31 +141,6 @@ void ImageView::EnableFitImageAction(bool Enable)
   _pFitAct->setVisible(Enable);
 }
 
-// Enable (show) or disable (hide) the color actions (_pShowOrigAct and _pShowBrightAct)
-// If enabling:
-//      image is redisplayed with either original or brightened colors (depending on which state the toggle buttons are in)
-// If disabling
-//      color map is left as is and image is not redisplayed
-// This function should be used to hide the color actions when a derived class implements its own color map scheme
-void ImageView::EnableColorActions(bool Enable)
-{
-  if (Enable == true)
-  {
-    _pShowOrigAct->setVisible(true);
-    _pShowBrightAct->setVisible(true);
-    if (_pShowBrightAct->isChecked() == true)
-      showBrightened();
-    else
-      showOriginalColors();
-  }
-  else
-  {
-    _pShowOrigAct->setVisible(false);
-    _pShowBrightAct->setVisible(false);
-    _pSliderBrightAdj->setVisible(false);
-  }
-}
-
 // Slot function to fit (stretch/shrink) the image to the view size
 void ImageView::fitImage()
 {
@@ -216,21 +156,6 @@ void ImageView::oneToOneImage()
    updateStatusBar();
 }
 
-// Slot function to handle the color actions
-void ImageView::handleColorAct( QAction* act)
-{
-  if (act == _pShowOrigAct)
-  {
-    _pSliderBrightAdj->setEnabled(false);
-    showOriginalColors();
-  }
-  else if (act == _pShowBrightAct)
-  {
-    _pSliderBrightAdj->setEnabled(true);
-    showBrightened();
-  }
-}
-
 // Show the original colors (no enhancement)
 // but image will be scaled for the number of significant bits
 // (i.e if 12 significant bits (in 16-bit image) a value of 4095 will be shown as white)
@@ -238,36 +163,6 @@ void ImageView::showOriginalColors()
 {
   _pGLImageBox->clearColorMap();
   _pGLImageBox->redraw();
-}
-
-// Show the image with a brightness adjustment
-void ImageView::showBrightened()
-{
-    if (createColorMap(0, false) == 0)
-    {
-        // Fill the color map with the preset enhancement
-        int numMapEntries = getNumColorMapEntries();
-        double expValue = (_sliderBrightAdjVal / 1000.0) * 256 / numMapEntries;
-        for (int in = 0; in < numMapEntries; in++)
-        {
-            double out = 1.0 - exp (-(double)in * expValue);
-            setColorMapRedValue(in, (float)out);
-            setColorMapGreenValue(in, (float)out);
-            setColorMapBlueValue(in, (float)out);
-            setColorMapAlphaValue(in, 1.0);
-        }
-
-        // redraw
-        _pGLImageBox->redraw();
-    }
-}
-
-// Slot function to adjust the brightness slider's value
-void ImageView::sliderValueAdjusted(int NewValue)
-{
-    _sliderBrightAdjVal = NewValue;
-    if (_pShowBrightAct->isChecked() == true)
-        showBrightened();
 }
 
 // Create a color map
@@ -366,10 +261,7 @@ void ImageView::clearImage()
 int ImageView::createImageCopy(void* pSrcPixelData, unsigned long width, unsigned long height, int format, unsigned short numSigBitsPerSample, int displayMode)
 {
     int ret = _pGLImageBox->createImageCopy(pSrcPixelData, width, height, format, numSigBitsPerSample, displayMode);
-    if (_pShowBrightAct->isChecked() == true)
-        showBrightened();
-    else
-        showOriginalColors();
+    showOriginalColors();
 	updateStatusBar();
     return ret;
 }
@@ -393,10 +285,7 @@ int ImageView::createImageCopy(void* pSrcPixelData, unsigned long width, unsigne
 int ImageView::pointImageTo(void* pSrcPixelData, unsigned long width, unsigned long height, int format, unsigned short numSigBitsPerSample, bool takeOwnership, int displayMode)
 {
     int ret = _pGLImageBox->pointImageTo(pSrcPixelData, width, height, format, numSigBitsPerSample, takeOwnership, displayMode);
-    if (_pShowBrightAct->isChecked() == true)
-        showBrightened();
-    else
-        showOriginalColors();
+    showOriginalColors();
 	updateStatusBar();
     return ret;
 }

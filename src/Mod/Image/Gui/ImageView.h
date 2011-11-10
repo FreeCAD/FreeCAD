@@ -53,7 +53,6 @@ public:
     virtual void EnableMouseEvents(bool Enable);
     virtual void EnableOneToOneAction(bool Enable);
     virtual void EnableFitImageAction(bool Enable);
-    virtual void EnableColorActions(bool Enable);
     virtual int createColorMap(int numEntriesReq = 0, bool Initialise = true);
     virtual void clearColorMap();
     virtual int getNumColorMapEntries() const;
@@ -68,14 +67,11 @@ public Q_SLOTS:
     virtual void oneToOneImage();
 
 protected Q_SLOTS:
-    virtual void handleColorAct( QAction* act);
-    virtual void sliderValueAdjusted(int NewValue);
     virtual void drawGraphics();
 
 protected:
     virtual void createActions();
     virtual void showOriginalColors();
-    virtual void showBrightened();
     virtual void mousePressEvent(QMouseEvent* cEvent);
     virtual void mouseDoubleClickEvent(QMouseEvent* cEvent);
     virtual void mouseMoveEvent(QMouseEvent* cEvent);
@@ -107,14 +103,9 @@ protected:
     int dragStartWCx;
     int dragStartWCy;
 
-    // Action groups
-    QActionGroup* _pShowColActGrp;
-
     // Actions
     QAction* _pFitAct;
     QAction* _pOneToOneAct;
-    QAction* _pShowOrigAct;
-    QAction* _pShowBrightAct;
 
     // Menus
     QMenu* _pContextMenu;
@@ -122,14 +113,9 @@ protected:
     // Toolbars
     QToolBar* _pStdToolBar;
 
-    // Slider for brightness adjustment
-    QSlider* _pSliderBrightAdj;
-    int _sliderBrightAdjVal;
-
     // Flag for status bar enablement
     bool _statusBarEnabled;
 	bool _mouseEventsEnabled;
-
 };
 
 } // namespace ImageViewGui
