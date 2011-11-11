@@ -82,6 +82,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/SoFCUnifiedSelection.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -2871,11 +2872,15 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     }
 
     viewer->setEditing(TRUE);
+    SoNode* root = viewer->getSceneGraph();
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
     viewer->setEditing(FALSE);
+    SoNode* root = viewer->getSceneGraph();
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
 }
 
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
