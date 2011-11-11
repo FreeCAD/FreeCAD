@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QIcon>
 # include <QImage>
+# include <QFileInfo>
 #endif
 
 #include "ImageView.h"
@@ -49,36 +50,39 @@ open(PyObject *self, PyObject *args)
     
     PY_TRY {
         QString fileName = QString::fromUtf8(Name);
-        Base::FileInfo file(Name);
-        if (file.hasExtension("png") || file.hasExtension("xpm") || 
-            file.hasExtension("jpg") || file.hasExtension("bmp"))
-        {
-            QImage imageq(fileName);
-            int format;
-            if (imageq.isNull() == false)
-            {
-                if ((imageq.depth() == 8) && (imageq.isGrayscale() == true))
-                    format = IB_CF_GREY8;
-                else if ((imageq.depth() == 16) && (imageq.isGrayscale() == true))
-                    format = IB_CF_GREY16;
-                else if ((imageq.depth() == 32) && (imageq.isGrayscale() == false))
-                    format = IB_CF_BGRA32;
-                else
-                    Py_Error(PyExc_Exception,"Unsupported image format");
-            }
-            else
-                Py_Error(PyExc_Exception,"Could not load image");
+        QFileInfo file(fileName);
+            
+        // Load image from file into a QImage object
+        QImage imageq(fileName);
 
-            // Displaying the image in a view
-            ImageView* iView = new ImageView(Gui::getMainWindow());
-            iView->setWindowIcon( Gui::BitmapFactory().pixmap("colors") );
-            iView->setWindowTitle(QObject::tr("Image viewer"));
-            iView->resize( 400, 300 );
-            Gui::getMainWindow()->addWindow( iView );
-            iView->createImageCopy((void *)(imageq.bits()), (unsigned long)imageq.width(), (unsigned long)imageq.height(), format, 0);
+        // Extract image into a general RGB format recognised by the ImageView class
+        int format = IB_CF_RGB24;
+        unsigned char *pPixelData = NULL;
+        if (imageq.isNull() == false) {
+            pPixelData = new unsigned char[3 * (unsigned long)imageq.width() * (unsigned long)imageq.height()];
+            unsigned char *pPix = pPixelData;
+            for (int r = 0; r < imageq.height(); r++) {
+                for (int c = 0; c < imageq.width(); c++) {
+                    QRgb rgb = imageq.pixel(c,r);
+                    *pPix = (unsigned char)qRed(rgb);
+                    *(pPix + 1) = (unsigned char)qGreen(rgb);
+                    *(pPix + 2) = (unsigned char)qBlue(rgb);
+                    pPix += 3;
+                }
+            }
         }
         else
-            Py_Error(PyExc_Exception,"unknown file ending");
+            Py_Error(PyExc_Exception,"Could not load image");
+
+        // Displaying the image in a view.
+        // This ImageView object takes ownership of the pixel data (in 'pointImageTo') so we don't need to delete it here
+        ImageView* iView = new ImageView(Gui::getMainWindow());
+        iView->setWindowIcon( Gui::BitmapFactory().pixmap("colors") );
+        iView->setWindowTitle(file.fileName());
+        iView->resize( 400, 300 );
+        Gui::getMainWindow()->addWindow( iView );
+        iView->pointImageTo((void *)pPixelData, (unsigned long)imageq.width(), (unsigned long)imageq.height(), format, 0, true);
+
     } PY_CATCH;
 
     Py_Return; 

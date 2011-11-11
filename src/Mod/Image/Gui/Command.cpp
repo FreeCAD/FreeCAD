@@ -14,7 +14,9 @@
 # include <QAction>
 # include <QFileDialog>
 # include <QImage>
+# include <QImageReader>
 # include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include <time.h>
@@ -56,9 +58,18 @@ CmdImageOpen::CmdImageOpen()
 
 void CmdImageOpen::activated(int iMsg)
 {
+    // add all supported QImage formats
+    QString formats;
+    QTextStream str(&formats);
+    str << QObject::tr("Images") << " (";
+    QList<QByteArray> qtformats = QImageReader::supportedImageFormats();
+    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
+        str << "*." << it->toLower() << " ";
+    }
+    str << ");;" << QObject::tr("All files") << " (*.*)";
     // Reading an image
-    QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"), QString::null, 
-                                             QObject::tr("Images (*.png *.xpm *.jpg *.bmp)"));
+    QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"),
+                                             QString::null, formats);
     if (!s.isEmpty()) {
         try{
             // load the file with the module
@@ -81,7 +92,7 @@ CmdCreateImagePlane::CmdCreateImagePlane()
     sAppModule      = "Image";
     sGroup          = QT_TR_NOOP("Image");
     sMenuText       = QT_TR_NOOP("Create image plane...");
-    sToolTipText    = QT_TR_NOOP("create a planar image in the 3D space");
+    sToolTipText    = QT_TR_NOOP("Create a planar image in the 3D space");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "image-import";
@@ -89,9 +100,17 @@ CmdCreateImagePlane::CmdCreateImagePlane()
 
 void CmdCreateImagePlane::activated(int iMsg)
 {
+    QString formats;
+    QTextStream str(&formats);
+    str << QObject::tr("Images") << " (";
+    QList<QByteArray> qtformats = QImageReader::supportedImageFormats();
+    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
+        str << "*." << it->toLower() << " ";
+    }
+    str << ");;" << QObject::tr("All files") << " (*.*)";
     // Reading an image
-    QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"), QString::null, 
-                                             QObject::tr("Images (*.png *.xpm *.jpg *.bmp)"));
+    QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"),
+                                             QString::null, formats);
     if (!s.isEmpty()) {
 
         QImage impQ(s);
