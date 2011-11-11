@@ -43,7 +43,7 @@ const App::PropertyFloatConstraint::Constraints floatRadius = {0.0f,FLT_MAX,0.1f
 
 Fillet::Fillet()
 {
-    ADD_PROPERTY(Radius,(0.2f));
+    ADD_PROPERTY(Radius,(1.0f));
     Radius.setConstraints(&floatRadius);
 }
 

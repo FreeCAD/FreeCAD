@@ -155,30 +155,31 @@ def crawl(site=DEFAULTURL):
     # tests ###############################################
     
     if COMPILE and os.system(QHELPCOMPILER +' -v'):
-        print "Error: QAssistant not fully installed, exiting."
+        print ("Error: QAssistant not fully installed, exiting.")
+        print (QHELPCOMPILER)
         return 1
     if COMPILE and os.system(QCOLLECTIOMGENERATOR +' -v'):
-        print "Error: QAssistant not fully installed, exiting."
+        print ("Error: QAssistant not fully installed, exiting.")
         return 1
     if PDFOUTPUT:
         if PDFCONVERTOR == 'pisa':
             try:
                 import ho.pisa as pisa
-            except: "Error: Python-pisa not installed, exiting."
+            except: ("Error: Python-pisa not installed, exiting.")
             return 1
         else:
             if os.system('htmldoc --version'):
-                print "Error: Htmldoc not found, exiting."
+                print ("Error: Htmldoc not found, exiting.")
                 return 1
         try:
             from pyPdf import PdfFileReader,PdfFileWriter
         except:
-            print "Error: Python-pypdf not installed, exiting."
+            print ("Error: Python-pypdf not installed, exiting.")
 
     # run ########################################################
     
     URL = site
-    if VERBOSE: print "crawling ", URL, ", saving in ", TMPFOLDER
+    if VERBOSE: print ("crawling "), URL, ", saving in ", TMPFOLDER
     if not os.path.isdir(TMPFOLDER): os.mkdir(TMPFOLDER)
     file = open(TMPFOLDER + os.sep + "wiki.css",'wb')
     file.write(css)
@@ -190,31 +191,31 @@ def crawl(site=DEFAULTURL):
     while todolist:
         targetpage = todolist.pop()
         if not targetpage in NORETRIEVE:
-            if VERBOSE: print count, ": Fetching ", targetpage
+            if VERBOSE: print (count, ": Fetching ", targetpage)
             pages = get(targetpage)
             count += 1
             processed.append(targetpage)
             for p in pages:
                 if (not (p in todolist)) and (not (p in processed)):
                     todolist.append(p)
-    if VERBOSE: print "Fetched ", count, " pages"
+    if VERBOSE: print ("Fetched ", count, " pages")
     if PDFOUTPUT:
         buildpdffiles()
         joinpdf()
         if REMOVE:
-            if VERBOSE: print "Deleting temp files..."
+            if VERBOSE: print ("Deleting temp files...")
             rmall(TMPFOLDER)
     if COMPILE:
         qhp = buildtoc()
         qhcp = createCollProjectFile()
         if generate(qhcp) or compile(qhp):
-            print "Temp Folder ",TMPFOLDER," has not been deleted."
+            print ("Temp Folder ",TMPFOLDER," has not been deleted.")
             return 1
         else:
             if REMOVE:
-                if VERBOSE: print "Deleting temp files..."
+                if VERBOSE: print ("Deleting temp files...")
                 rmall(TMPFOLDER)
-    if VERBOSE: print "All done!"
+    if VERBOSE: print ("All done!")
     return 0
 
 def buildpdffiles(folder=TMPFOLDER,convertor=PDFCONVERTOR):
@@ -243,7 +244,7 @@ def createpdf_pisa(pagename,folder=TMPFOLDER):
     "creates a pdf file from a saved page using pisa (python module)"
     infile = file(folder + os.sep + pagename+'.html','ro')
     outfile = file(folder + os.sep + pagename+'.pdf','wb')
-    if VERBOSE: print "Converting " + pagename + " to pdf..."
+    if VERBOSE: print ("Converting " + pagename + " to pdf...")
     pdf = pisa.CreatePDF(infile,outfile,folder,link_callback=fetch_resources)
     outfile.close()
     if pdf.err: return pdf.err
@@ -257,7 +258,7 @@ def createpdf_htmldoc(pagename,folder=TMPFOLDER):
 
 def joinpdf(folder=TMPFOLDER,startpage=INDEX,outputname='freecad.pdf'):
     "creates one pdf file from several others, following order from startpage"
-    if VERBOSE: print "Building table of contents..."
+    if VERBOSE: print ("Building table of contents...")
     f = open(folder+os.sep+startpage+'.html')
     html = ''
     for line in f: html += line
@@ -270,22 +271,22 @@ def joinpdf(folder=TMPFOLDER,startpage=INDEX,outputname='freecad.pdf'):
     result = PdfFileWriter()
     for p in pages:
         if exists(p[:-5]):
-            if VERBOSE: print 'Appending',p
+            if VERBOSE: print ('Appending',p)
             try: inputfile = PdfFileReader(file(folder+os.sep+p[:-5]+'.pdf','rb'))
-            except: print 'Unable to append',p
+            except: print ('Unable to append',p)
             else:
                 for i in range(inputfile.getNumPages()):
                     result.addPage(inputfile.getPage(i))
     outputfile = file(OUTPUTPATH + os.sep + outputname,'wb')
     result.write(outputfile)
     outputfile.close()
-    if VERBOSE: print 'Successfully created',OUTPUTPATH,os.sep,outputname
+    if VERBOSE: print ('Successfully created',OUTPUTPATH,os.sep,outputname)
     
 def compile(qhpfile,outputname='freecad.qch'):
     "compiles the whole html doc with qassistant"
     qchfile = OUTPUTPATH + os.sep + outputname
     if not os.system(QHELPCOMPILER + ' '+qhpfile+' -o '+qchfile):
-        if VERBOSE: print "Successfully created",qchfile
+        if VERBOSE: print ("Successfully created",qchfile)
         return 0
 
 def generate(qhcpfile):
@@ -298,7 +299,7 @@ The help files for FreeCAD.
     about.close()
     qhcfile = OUTPUTPATH + os.sep + "freecad.qhc"
     if not os.system(QCOLLECTIOMGENERATOR+' '+qhcpfile+' -o '+qhcfile):
-        if VERBOSE: print "Successfully created ",qhcfile
+        if VERBOSE: print ("Successfully created ",qhcfile)
         return 0
 
 def createCollProjectFile(folder=TMPFOLDER):
@@ -336,12 +337,12 @@ def createCollProjectFile(folder=TMPFOLDER):
     </docFiles>
 </QHelpCollectionProject>
 '''
-    if VERBOSE: print "Building project file..."
+    if VERBOSE: print ("Building project file...")
     qfilename = folder + os.sep + "freecad.qhcp"
     f = open(qfilename,'w')
     f.write(qprojectfile)
     f.close()
-    if VERBOSE: print "Done writing qhcp file."
+    if VERBOSE: print ("Done writing qhcp file.")
     return qfilename
 
 def buildtoc(folder=TMPFOLDER,page=INDEX):
@@ -383,7 +384,7 @@ def buildtoc(folder=TMPFOLDER,page=INDEX):
             link = re.findall('href="(.*?)"',line)[0].strip()
         return title,link
 
-    if VERBOSE: print "Building table of contents..."
+    if VERBOSE: print ("Building table of contents...")
     f = open(folder+os.sep+page+'.html')
     html = ''
     for line in f: html += line
@@ -430,7 +431,7 @@ def buildtoc(folder=TMPFOLDER,page=INDEX):
     f = open(qfilename,'wb')
     f.write(qhelpfile)
     f.close()
-    if VERBOSE: print "Done writing qhp file."
+    if VERBOSE: print ("Done writing qhp file.")
     return qfilename
 
 def get(page):
@@ -520,7 +521,7 @@ def fetchpage(page):
             return html
         except HTTPError:
             failcount += 1
-    print 'Error: unable to fetch page ' + page
+    print ('Error: unable to fetch page ' + page)
 
 def fetchimage(imagelink):
     "retrieves given image from the wiki and saves it"
@@ -529,7 +530,7 @@ def fetchimage(imagelink):
         failcount = 0
         while failcount < MAXFAIL:
             try:
-                if VERBOSE: print "Fetching " + filename
+                if VERBOSE: print ("Fetching " + filename)
                 data = (urlopen(webroot(URL) + imagelink).read())
                 path = local(filename,image=True)
                 file = open(path,'wb')
@@ -539,7 +540,7 @@ def fetchimage(imagelink):
                 return
             except:
                 failcount += 1
-        print 'Error: unable to fetch file ' + filename
+        print ('Error: unable to fetch file ' + filename)
 
 def local(page,image=False):
     "returns a local path for a given page/image"
@@ -588,21 +589,21 @@ def main(arg):
 		if o in ("-p","--pdf"):
 			PDFOUTPUT = True
 			if a in ['pisa','htmldoc']:
-				print "using pdf converter:",a
+				print ("using pdf converter:",a)
 				PDFCONVERTOR = a
 		if o in ("-t","--tempfolder"):
-			print "using tempfolder:",a
+			print ("using tempfolder:",a)
 			TMPFOLDER = a
 		if o in ("-h", "--help"):
 			sys.stderr.write(usage)
 			sys.exit()
 		if o in ("-c", "--helpcompiler-exe"):
 			QHELPCOMPILER = a
-			print 'Using: ',QHELPCOMPILER
+			print ('Using: ',QHELPCOMPILER)
 		if o in ("-g", "--helpgenerator-exe"):
 			QCOLLECTIOMGENERATOR = a
 		if o in ("-o", "--out-path"):
-			print "Using output path:",a
+			print ("Using output path:",a)
 			OUTPUTPATH = a
 #    if arg:
 #        if (arg[0] == '-h') or (arg[0] == '--help'):
@@ -613,8 +614,8 @@ def main(arg):
 #            if len(arg) > 2: OUTPUTPATH = arg[2]
 #            crawl()
 #    else:
-        crawl()
-    
+		crawl()
+
 if __name__ == "__main__":
 	main(sys.argv[1:])
       

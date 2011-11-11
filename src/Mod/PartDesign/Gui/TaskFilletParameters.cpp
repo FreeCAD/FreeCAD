@@ -48,7 +48,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskFilletParameters */
 
 TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Fillet"),tr("Fillet parameters"),true, parent),FilletView(FilletView)
+    : TaskBox(Gui::BitmapFactory().pixmap("Part_Fillet"),tr("Fillet parameters"),true, parent),FilletView(FilletView)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
