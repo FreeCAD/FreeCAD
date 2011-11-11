@@ -1308,19 +1308,19 @@ int Sketch::solve() {
     // solving with freegcs
     // (either with SQP solver for two subsystems or
     //  with the default DogLeg solver for a single subsystem)
-    int ret = GCSsys.solve(GCS::DogLeg);
+    int ret = GCSsys.solve(true, GCS::DogLeg);
 
     if (ret != GCS::Success && !isInitMove) {
         // if we are not in dragging mode and the solver fails we try
         // alternative solvers
-        ret = GCSsys.solve(GCS::BFGS);
+        ret = GCSsys.solve(true, GCS::BFGS);
         if (ret == GCS::Success) {
             Base::Console().Warning("Important: the BFGS solver succeeded where the DogLeg solver had failed.\n");
             Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
             Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
         }
         else {
-            ret = GCSsys.solve(GCS::LevenbergMarquardt);
+            ret = GCSsys.solve(true, GCS::LevenbergMarquardt);
             if (ret == GCS::Success) {
                 Base::Console().Warning("Important: the LevenbergMarquardt solver succeeded where the DogLeg and BFGS solvers have failed.\n");
                 Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
