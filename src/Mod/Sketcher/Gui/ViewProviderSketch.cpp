@@ -904,9 +904,9 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         if (Constr->Type == Distance || Constr->Type == Radius)
             dir = (p2-p1).Normalize();
         else if (Constr->Type == DistanceX)
-            dir = Base::Vector3d( (p2.x > p1.x) ? 1 : -1, 0, 0);
+            dir = Base::Vector3d( (p2.x - p1.x >= FLT_EPSILON) ? 1 : -1, 0, 0);
         else if (Constr->Type == DistanceY)
-            dir = Base::Vector3d(0, (p2.y > p1.y) ? 1 : -1, 0);
+            dir = Base::Vector3d(0, (p2.y - p1.y >= FLT_EPSILON) ? 1 : -1, 0);
 
         if (Constr->Type == Radius)
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
@@ -2847,7 +2847,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     // and update the sketch
     getSketchObject()->getDocument()->recompute();
 
-    // clear the selction and set the new/edited sketch(convenience)
+    // clear the selection and set the new/edited sketch(convenience)
     Gui::Selection().clearSelection();
     std::string ObjName = getSketchObject()->getNameInDocument();
     std::string DocName = getSketchObject()->getDocument()->getName();
