@@ -218,7 +218,7 @@ protected:
     static SbColor CrossColorV;
     static SbColor CrossColorH;
     static SbColor FullyConstrainedColor;
-    static SbColor ConstraintColor;
+    static SbColor ConstrDimColor;
     static SbColor ConstrIcoColor;
     static SbColor PreselectColor;
     static SbColor SelectColor;

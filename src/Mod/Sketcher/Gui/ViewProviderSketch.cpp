@@ -98,16 +98,16 @@
 using namespace SketcherGui;
 using namespace Sketcher;
 
-SbColor ViewProviderSketch::VertexColor           (0.5f,0.5f,0.5f);
-SbColor ViewProviderSketch::CurveColor            (1.0f,1.0f,1.0f);
-SbColor ViewProviderSketch::CurveDraftColor       (0.4f,0.4f,0.8f);
-SbColor ViewProviderSketch::CrossColorV           (0.8f,0.4f,0.4f);
-SbColor ViewProviderSketch::CrossColorH           (0.4f,0.8f,0.4f);
-SbColor ViewProviderSketch::FullyConstrainedColor (0.6f,0.6f,0.9f);
-SbColor ViewProviderSketch::ConstraintColor       (0.0f,0.8f,0.0f);
-SbColor ViewProviderSketch::ConstrIcoColor        (1.0f,0.125f,0.f);
-SbColor ViewProviderSketch::PreselectColor        (0.1f, 0.1f, 0.8f);
-SbColor ViewProviderSketch::SelectColor           (0.1f, 0.1f, 0.8f);
+SbColor ViewProviderSketch::VertexColor           (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::CurveColor            (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
+SbColor ViewProviderSketch::CurveDraftColor       (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
+SbColor ViewProviderSketch::CrossColorV           (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
+SbColor ViewProviderSketch::CrossColorH           (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
+SbColor ViewProviderSketch::FullyConstrainedColor (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor ViewProviderSketch::ConstrDimColor        (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::ConstrIcoColor        (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::PreselectColor        (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
+SbColor ViewProviderSketch::SelectColor           (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
 
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
@@ -1363,10 +1363,10 @@ void ViewProviderSketch::updateColor(void)
             }
         }
         else {
-            m->diffuseColor = ConstraintColor;
+            m->diffuseColor = ConstrDimColor;
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(4));
-                l->textColor = ConstraintColor;
+                l->textColor = ConstrDimColor;
             }
         }
     }
@@ -2387,7 +2387,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         sep->renderCaching = SoSeparator::OFF;
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial *Material = new SoMaterial;
-        Material->diffuseColor = ConstraintColor;
+        Material->diffuseColor = ConstrDimColor;
         sep->addChild(Material);
 
         // distinguish different constraint types to build up
@@ -2418,7 +2418,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                     SoDatumLabel *text = new SoDatumLabel();
                     //text->justification =  SoDatumLabel::CENTER;
                     text->string = "";
-                    text->textColor = ConstraintColor;
+                    text->textColor = ConstrDimColor;
                     sep->addChild(text);
 
                     edit->vConstrType.push_back((*it)->Type);
@@ -2635,7 +2635,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = hGrp->GetUnsigned("FullyConstrainedColor", color);
     FullyConstrainedColor.setPackedValue((uint32_t)color, transparency);
     // constraints dimensions and icons colors are hard coded
-    // ConstraintColor;
+    // ConstrDimColor;
     // ConstrIcoColor;
 
     // set the highlight color
