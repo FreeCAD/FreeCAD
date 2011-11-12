@@ -42,7 +42,8 @@
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
-# ifdef _MSC_VER
+// Doesn't seem to work with VS2010
+# if (defined(_MSC_VER) && (_MSC_VER < 1800))
 # include <Shfolder.h>
 # endif
 #endif
@@ -90,8 +91,9 @@
 #include "Annotation.h"
 #include "MeasureDistance.h"
 
-// If you stumble here, run the target "BuildExtractRevision" on Windows systems or the Python script "SubWCRev.py" on Linux based systems
-// which builds src/Build/Version.h. Or create your own from src/Build/Version.h.in!
+// If you stumble here, run the target "BuildExtractRevision" on Windows systems
+// or the Python script "SubWCRev.py" on Linux based systems which builds
+// src/Build/Version.h. Or create your own from src/Build/Version.h.in!
 #include <Build/Version.h>
 
 #include <boost/tokenizer.hpp>
@@ -1279,7 +1281,7 @@ void Application::LoadParameters(void)
 }
 
 
-#if (defined(_MSC_VER) && (_MSC_VER < 1600))
+#if (defined(_MSC_VER) && (_MSC_VER != 1600))
 // fix weird error while linking boost (all versions of VC)
 namespace boost { namespace program_options { std::string arg="arg"; } }
 #if (defined (BOOST_VERSION) && (BOOST_VERSION == 104100))
