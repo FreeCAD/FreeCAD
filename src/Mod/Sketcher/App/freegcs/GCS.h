@@ -134,6 +134,7 @@ namespace GCS
 
         void getSubSystems(std::vector<SubSystem *> &subsysvec);
         void applySolution();
+        void undoSolution();
 
         bool isInit() const { return init; }
 

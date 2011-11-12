@@ -214,6 +214,10 @@ protected:
     std::vector<GCS::Circle> Circles;
 
     bool isInitMove;
+
+private:
+    bool updateGeometry(void);
+
 };
 
 } //namespace Part

@@ -1299,100 +1299,131 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
     return -1;
 }
 
-// solving ==========================================================
-
-int Sketch::solve() {
-
-    Base::TimeInfo start_time;
-
-    // solving with freegcs
-    // (either with SQP solver for two subsystems or
-    //  with the default DogLeg solver for a single subsystem)
-    int ret = GCSsys.solve(true, GCS::DogLeg);
-
-    if (ret != GCS::Success && !isInitMove) {
-        // if we are not in dragging mode and the solver fails we try
-        // alternative solvers
-        ret = GCSsys.solve(true, GCS::BFGS);
-        if (ret == GCS::Success) {
-            Base::Console().Warning("Important: the BFGS solver succeeded where the DogLeg solver had failed.\n");
-            Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
-            Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
-        }
-        else {
-            ret = GCSsys.solve(true, GCS::LevenbergMarquardt);
-            if (ret == GCS::Success) {
-                Base::Console().Warning("Important: the LevenbergMarquardt solver succeeded where the DogLeg and BFGS solvers have failed.\n");
-                Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
-                Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
-            } else {
-                // last resort: augment the system with a second subsystem and use the SQP solver
-                GCSsys.clearByTag(-1);
-                GCSsys.clearByTag(-2);
-                InitParameters.resize(Parameters.size());
-                int i=0;
-                for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
-                    InitParameters[i] = **it;
-                    GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
-                }
-                GCSsys.initSolution(Parameters);
-
-                ret = GCSsys.solve();
-                if (ret == GCS::Success) {
-                    Base::Console().Warning("Important: the SQP solver succeeded where all single subsystem solvers have failed.\n");
-                    Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
-                    Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
-                }
-            }
-        }
-
-    }
-
-    // if successfully solve write the parameter back
-    if (ret == GCS::Success) {
-        GCSsys.applySolution();
-        int i=0;
-        for (std::vector<GeoDef>::const_iterator it=Geoms.begin();it!=Geoms.end();++it,i++) {
-            try {
-                if (it->type == Line) {
-                    GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo);
-                    lineSeg->setPoints(Vector3d(*Lines[it->index].p1.x,
-                                                *Lines[it->index].p1.y,
-                                                0.0),
-                                       Vector3d(*Lines[it->index].p2.x,
-                                                *Lines[it->index].p2.y,
-                                                0.0)
-                                      );
-                } else if (it->type == Arc) {
-                    GCS::Arc &myArc = Arcs[it->index];
-                    // the following 4 lines are redundant since these equations are already included in the arc constraints
-//                    *myArc.start.x = *myArc.center.x + *myArc.rad * cos(*myArc.startAngle);
-//                    *myArc.start.y = *myArc.center.y + *myArc.rad * sin(*myArc.startAngle);
-//                    *myArc.end.x = *myArc.center.x + *myArc.rad * cos(*myArc.endAngle);
-//                    *myArc.end.y = *myArc.center.y + *myArc.rad * sin(*myArc.endAngle);
-                    GeomArcOfCircle *aoc = dynamic_cast<GeomArcOfCircle*>(it->geo);
-                    aoc->setCenter(Vector3d(*Points[it->midPointId].x,
-                                            *Points[it->midPointId].y,
+bool Sketch::updateGeometry()
+{
+    int i=0;
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin();it!=Geoms.end();++it,i++) {
+        try {
+            if (it->type == Line) {
+                GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo);
+                lineSeg->setPoints(Vector3d(*Lines[it->index].p1.x,
+                                            *Lines[it->index].p1.y,
+                                            0.0),
+                                   Vector3d(*Lines[it->index].p2.x,
+                                            *Lines[it->index].p2.y,
                                             0.0)
                                   );
-                    aoc->setRadius(*myArc.rad);
-                    aoc->setRange(*myArc.startAngle, *myArc.endAngle);
-                } else if (it->type == Circle) {
-                    GeomCircle *circ = dynamic_cast<GeomCircle*>(it->geo);
-                    circ->setCenter(Vector3d(*Points[it->midPointId].x,
-                                             *Points[it->midPointId].y,
-                                             0.0)
-                                   );
-                    circ->setRadius(*Circles[it->index].rad);
-                }
-            } catch (Base::Exception e) {
-                Base::Console().Error("Solve: Error build geometry(%d): %s\n",i,e.what());
-                return -1;
+            } else if (it->type == Arc) {
+                GCS::Arc &myArc = Arcs[it->index];
+                // the following 4 lines are redundant since these equations are already included in the arc constraints
+//                *myArc.start.x = *myArc.center.x + *myArc.rad * cos(*myArc.startAngle);
+//                *myArc.start.y = *myArc.center.y + *myArc.rad * sin(*myArc.startAngle);
+//                *myArc.end.x = *myArc.center.x + *myArc.rad * cos(*myArc.endAngle);
+//                *myArc.end.y = *myArc.center.y + *myArc.rad * sin(*myArc.endAngle);
+                GeomArcOfCircle *aoc = dynamic_cast<GeomArcOfCircle*>(it->geo);
+                aoc->setCenter(Vector3d(*Points[it->midPointId].x,
+                                        *Points[it->midPointId].y,
+                                        0.0)
+                              );
+                aoc->setRadius(*myArc.rad);
+                aoc->setRange(*myArc.startAngle, *myArc.endAngle);
+            } else if (it->type == Circle) {
+                GeomCircle *circ = dynamic_cast<GeomCircle*>(it->geo);
+                circ->setCenter(Vector3d(*Points[it->midPointId].x,
+                                         *Points[it->midPointId].y,
+                                         0.0)
+                               );
+                circ->setRadius(*Circles[it->index].rad);
             }
+        } catch (Base::Exception e) {
+            Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
+                                  i,e.what());
+            return false;
         }
-    } else {
-        //Base::Console().Log("NotSolved ");
     }
+    return true;
+}
+
+// solving ==========================================================
+
+int Sketch::solve()
+{
+
+    Base::TimeInfo start_time;
+    if (!isInitMove) { // make sure we are in single subsystem mode
+        GCSsys.clearByTag(-1);
+        GCSsys.clearByTag(-2);
+    }
+
+    int ret;
+    bool valid_solution;
+    for (int soltype=0; soltype < (isInitMove ? 1 : 4); soltype++) {
+        std::string solvername;
+        switch (soltype) {
+        case 0: // solving with the default DogLeg solver
+                // (or with SQP if we are in moving mode)
+            solvername = isInitMove ? "SQP" : "DogLeg";
+            ret = GCSsys.solve(true, GCS::DogLeg);
+            break;
+        case 1: // solving with the LevenbergMarquardt solver
+            solvername = "LevenbergMarquardt";
+            ret = GCSsys.solve(true, GCS::LevenbergMarquardt);
+            break;
+        case 2: // solving with the BFGS solver
+            solvername = "BFGS";
+            ret = GCSsys.solve(true, GCS::BFGS);
+            break;
+        case 3: // last resort: augment the system with a second subsystem and use the SQP solver
+            solvername = "SQP(augmented system)";
+            GCSsys.clearByTag(-1);
+            GCSsys.clearByTag(-2);
+            InitParameters.resize(Parameters.size());
+            int i=0;
+            for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
+                InitParameters[i] = **it;
+                GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
+            }
+            GCSsys.initSolution(Parameters);
+            ret = GCSsys.solve(true);
+            break;
+        }
+
+        // if successfully solved try write the parameters back
+        if (ret == GCS::Success) {
+            GCSsys.applySolution();
+            valid_solution = updateGeometry();
+            if (!valid_solution)
+                Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
+        } else {
+            valid_solution = false;
+            //Base::Console().Log("NotSolved ");
+        }
+
+        if (soltype == 3) // cleanup temporary constraints of the augmented system
+            GCSsys.clearByTag(-2);
+
+        if (valid_solution) {
+            if (soltype == 1)
+                Base::Console().Warning("Important: the LevenbergMarquardt solver succeeded where the DogLeg solver had failed.\n");
+            else if (soltype == 2)
+                Base::Console().Warning("Important: the BFGS solver succeeded where the DogLeg and LevenbergMarquardt solvers have failed.\n");
+            else if (soltype == 3)
+                Base::Console().Warning("Important: the SQP solver succeeded where all single subsystem solvers have failed.\n");
+
+            if (soltype > 0) {
+                Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
+                Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
+            }
+
+            break;
+        }
+    } // soltype
+
+    if (!valid_solution) { // undo any changes
+        GCSsys.undoSolution();
+        updateGeometry();
+    }
+
     Base::TimeInfo end_time;
     //Base::Console().Log("T:%s\n",Base::TimeInfo::diffTime(start_time,end_time).c_str());
     SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);

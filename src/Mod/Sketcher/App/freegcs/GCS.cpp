@@ -1052,6 +1052,11 @@ void System::applySolution()
         *(it->first) = *(it->second);
 }
 
+void System::undoSolution()
+{
+    resetToReference();
+}
+
 int System::diagnose(VEC_pD &params, VEC_I &conflicting)
 {
     // Analyses the constrainess grad of the system and provides feedback
