@@ -2864,12 +2864,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     Base::Rotation tmp(plm.getRotation());
 
     SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
-    SbVec3f axis(0,0,1);
-    rot.multVec(axis,axis);
-    SbVec3f normal = viewer->getViewDirection();
-    if (fabs(axis.dot(normal)) < FLT_EPSILON) {
-        viewer->setCameraOrientation(rot);
-    }
+    viewer->setCameraOrientation(rot);
 
     viewer->setEditing(TRUE);
     SoNode* root = viewer->getSceneGraph();
