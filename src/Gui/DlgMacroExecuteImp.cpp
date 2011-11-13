@@ -99,10 +99,12 @@ void DlgMacroExecuteImp::fillUpList(void)
  */
 void DlgMacroExecuteImp::on_macroListBox_currentItemChanged(QTreeWidgetItem* item)
 {
-    LineEditMacroName->setText(item->text(0));
-    executeButton->setEnabled(true);
-    editButton->setEnabled(true);
-    deleteButton->setEnabled(true);
+    if (item) {
+        LineEditMacroName->setText(item->text(0));
+        executeButton->setEnabled(true);
+        editButton->setEnabled(true);
+        deleteButton->setEnabled(true);
+    }
 }
 
 /**
