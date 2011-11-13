@@ -40,7 +40,7 @@
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
-#include "Features.h"
+#include "PartFeatures.h"
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
