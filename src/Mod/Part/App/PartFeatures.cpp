@@ -30,7 +30,7 @@
 #endif
 
 
-#include "Features.h"
+#include "PartFeatures.h"
 
 
 using namespace Part;
