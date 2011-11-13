@@ -366,7 +366,32 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
             }
         }
         else if (!onlyCoincident) {
-            if ((*it)->Type == Sketcher::PointOnObject) {
+            if ((*it)->Type == Sketcher::Distance ||
+                (*it)->Type == Sketcher::DistanceX || (*it)->Type == Sketcher::DistanceY) {
+                if ((*it)->First == GeoId && (*it)->FirstPos == none &&
+                    (PosId == start || PosId ==end)) {
+                    // remove the constraint even if it is not directly associated
+                    // with the given point
+                    continue; // skip this constraint
+                }
+                else if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
+                    if (replaceGeoId != -1) { // redirect this constraint
+                        (*it)->First = replaceGeoId;
+                        (*it)->FirstPos = replacePosId;
+                    }
+                    else
+                        continue; // skip this constraint
+                }
+                else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
+                    if (replaceGeoId != -1) { // redirect this constraint
+                        (*it)->Second = replaceGeoId;
+                        (*it)->SecondPos = replacePosId;
+                    }
+                    else
+                        continue; // skip this constraint
+                }
+            }
+            else if ((*it)->Type == Sketcher::PointOnObject) {
                 if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
                     if (replaceGeoId != -1) { // redirect this constraint
                         (*it)->First = replaceGeoId;
@@ -374,6 +399,20 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                     }
                     else
                         continue; // skip this constraint
+                }
+            }
+            else if ((*it)->Type == Sketcher::Tangent) {
+                if (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
+                    ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
+                    // we could keep the tangency constraint by converting it
+                    // to a simple one but it is not really worth
+                    continue; // skip this constraint
+                }
+            }
+            else if ((*it)->Type == Sketcher::Symmetric) {
+                if (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
+                    ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
+                    continue; // skip this constraint
                 }
             }
         }
