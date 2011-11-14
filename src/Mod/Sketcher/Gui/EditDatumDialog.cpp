@@ -31,6 +31,7 @@
 
 # include <Inventor/sensors/SoSensor.h>
 
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -75,7 +76,7 @@ void EditDatumDialog::exec(bool atCursor)
 
         double datum = Constr->Value;
         if (Constr->Type == Sketcher::Angle)
-            datum = datum * 180./M_PI;
+            datum = Base::toDegrees<double>(datum);
 
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -85,7 +86,14 @@ void EditDatumDialog::exec(bool atCursor)
         Ui::InsertDatum ui_ins_datum;
         ui_ins_datum.setupUi(&dlg);
 
-        ui_ins_datum.lineEdit->setText(QLocale::system().toString(datum,'g',6));
+        double init_val;
+        if (Constr->Type == Sketcher::Angle ||
+            Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY)
+            init_val = std::abs(datum);
+        else
+            init_val = datum;
+           
+        ui_ins_datum.lineEdit->setText(QLocale::system().toString(init_val,'g',6));
         ui_ins_datum.lineEdit->selectAll();
 
         if (atCursor)
@@ -96,15 +104,25 @@ void EditDatumDialog::exec(bool atCursor)
             double newDatum = ui_ins_datum.lineEdit->text().toDouble(&ok);
             if (ok) {
                 if (Constr->Type == Sketcher::Angle)
-                    newDatum = newDatum * M_PI/180.;
+                    newDatum = Base::toRadians<double>(newDatum);
+
+                if (newDatum < 0 &&
+                    (Constr->Type == Sketcher::Angle ||
+                     Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY)) {
+                    // Permit negative values to flip the sign of the constraint
+                    newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
+                }
+
                 try {
                     Gui::Command::openCommand("Modify sketch constraints");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,%f)",
                                 vp->getObject()->getNameInDocument(),
                                 ConstrNbr, newDatum);
+                    Gui::Command::commitCommand();
                 }
                 catch (const Base::Exception& e) {
-                    QMessageBox::critical(qApp->activeWindow(), QObject::tr("Distance constraint"), QString::fromUtf8(e.what()));
+                    QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
+                    Gui::Command::abortCommand();
                 }
             }
         }

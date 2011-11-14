@@ -68,6 +68,7 @@
 #include <Inventor/SbTime.h>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Tools.h>
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
@@ -1917,7 +1918,7 @@ Restart:
                     SbVec3f midpos = (p1_ + p2)/2;
 
                     SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(4));
-                    asciiText->string = SbString().sprintf("%.2f",Constr->Value);
+                    asciiText->string = SbString().sprintf("%.2f",std::abs(Constr->Value));
 
                     // Get Bounding box dimensions for Datum text
                     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -2197,7 +2198,7 @@ Restart:
                         break;
 
                     SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(4));
-                    asciiText->string = SbString().sprintf("%.2f",Constr->Value * 180./M_PI);
+                    asciiText->string = SbString().sprintf("%.2f",Base::toDegrees<double>(std::abs(Constr->Value)));
 
                     // Get Bounding box dimensions for Datum text
                     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();

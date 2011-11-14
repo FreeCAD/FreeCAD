@@ -136,6 +136,9 @@ int SketchObject::setDatum(int ConstrId, double Datum)
         type != Angle)
         return -1;
 
+    if ((type == Distance || type == Radius) && Datum <= 0)
+        return (Datum == 0) ? -5 : -4;
+
     // copy the list
     std::vector<Constraint *> newVals(vals);
     // clone the changed Constraint
@@ -148,21 +151,25 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     Sketch sketch;
     int dofs = sketch.setUpSketch(Geometry.getValues(), Constraints.getValues());
+    int err=0;
     if (dofs < 0) // over-constrained sketch
-        return -3;
-    if (sketch.hasConflicts()) // conflicting constraints
-        return -3;
-    // solving
-    if (sketch.solve() != 0)
-        return -2;
+        err = -3;
+    else if (sketch.hasConflicts()) // conflicting constraints
+        err = -3;
+    else if (sketch.solve() != 0) // solving
+        err = -2;
 
-    // set the newly solved geometry
-    std::vector<Part::Geometry *> geomlist = sketch.getGeometry();
-    Geometry.setValues(geomlist);
-    for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
-        if (*it) delete *it;
+    if (err == 0) {
+        // set the newly solved geometry
+        std::vector<Part::Geometry *> geomlist = sketch.getGeometry();
+        Geometry.setValues(geomlist);
+        for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
+            if (*it) delete *it;
+    }
+    else
+        this->Constraints.setValues(vals);
 
-    return 0;
+    return err;
 }
 
 int SketchObject::movePoint(int geoIndex, PointPos PosId, const Base::Vector3d& toPoint, bool relative)

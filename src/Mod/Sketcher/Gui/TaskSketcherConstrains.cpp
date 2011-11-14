@@ -35,6 +35,7 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -261,13 +262,13 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
                 break;
             case Sketcher::DistanceX:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg((*it)->Value);
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(std::abs((*it)->Value));
                     ui->listWidgetConstraints->addItem(new ConstraintItem(hdist,name,i-1,(*it)->Type));
                 }
                 break;
             case Sketcher::DistanceY:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg((*it)->Value);
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(std::abs((*it)->Value));
                     ui->listWidgetConstraints->addItem(new ConstraintItem(vdist,name,i-1,(*it)->Type));
                 }
                 break;
@@ -279,7 +280,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
                 break;
             case Sketcher::Angle:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg((*it)->Value * 180./M_PI);
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::toDegrees<double>(std::abs((*it)->Value)));
                     ui->listWidgetConstraints->addItem(new ConstraintItem(angl,name,i-1,(*it)->Type));
                 }
                 break;
