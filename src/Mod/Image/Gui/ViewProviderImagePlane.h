@@ -27,11 +27,10 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/SoFCSelection.h>
 
-class SoDragger;
-class SoJackDragger;
 class SoCoordinate3;
 class SoDrawStyle;  
 class SoTexture2; 
+class QImage;
 
 namespace ImageGui
 {
@@ -51,6 +50,9 @@ public:
     void setDisplayMode(const char* ModeName);
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
+
+private:
+    bool loadSvg(const char*, float x, float y, QImage& img);
 
 protected:
     Gui::SoFCSelection    * pcImagePlaneRoot;
