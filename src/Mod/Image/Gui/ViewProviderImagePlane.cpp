@@ -58,28 +58,16 @@ PROPERTY_SOURCE(ImageGui::ViewProviderImagePlane, Gui::ViewProviderGeometryObjec
 
 ViewProviderImagePlane::ViewProviderImagePlane()
 {
-    pcImagePlaneRoot = new Gui::SoFCSelection();
-    pcImagePlaneRoot->highlightMode = Gui::SoFCSelection::OFF;
-    pcImagePlaneRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    //pcImageRoot->style = Gui::SoFCSelection::BOX;
-    pcImagePlaneRoot->ref();
-
     texture = new SoTexture2;
     texture->ref();
 
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
-    pcDrawStyle = new SoDrawStyle();
-    pcDrawStyle->ref();
-    pcDrawStyle->style = SoDrawStyle::LINES;
-    pcDrawStyle->lineWidth = 2;
 }
 
 ViewProviderImagePlane::~ViewProviderImagePlane()
 {
-    pcImagePlaneRoot->unref();
     pcCoords->unref();
-    pcDrawStyle->unref();
     texture->unref();
 }
 
@@ -87,7 +75,9 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
 
-    //// Draw trajectory lines
+    // NOTE: SoFCSelection node has beem removed because it led to
+    // problems using the image as a construction plan with the
+    // draft commands
     SoSeparator* planesep = new SoSeparator;
     planesep->addChild(pcCoords);
 
@@ -102,7 +92,6 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     texture->model = SoTexture2::MODULATE;
     planesep->addChild(texture);
 
-    //planesep->addChild( pcDrawStyle );
     // plane
     pcCoords->point.set1Value(0,0,0,0);
     pcCoords->point.set1Value(1,1,0,0);
@@ -110,21 +99,16 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     pcCoords->point.set1Value(3,0,1,0);
     SoFaceSet *faceset = new SoFaceSet;
     faceset->numVertices.set1Value(0,4);
-    planesep->addChild( faceset );
+    planesep->addChild(faceset);
 
-    pcImagePlaneRoot->addChild(planesep);
-
-    addDisplayMaskMode(pcImagePlaneRoot, "ImagePlane");
-    pcImagePlaneRoot->objectName = pcObj->getNameInDocument();
-    pcImagePlaneRoot->documentName = pcObj->getDocument()->getName();
-    pcImagePlaneRoot->subElementName = "Main";
+    addDisplayMaskMode(planesep, "ImagePlane");
 }
 
 void ViewProviderImagePlane::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("ImagePlane",ModeName)==0 )
+    if (strcmp("ImagePlane",ModeName) == 0)
         setDisplayMaskMode("ImagePlane");
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderImagePlane::getDisplayModes(void) const

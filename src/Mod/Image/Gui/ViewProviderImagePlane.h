@@ -28,7 +28,7 @@
 #include <Gui/SoFCSelection.h>
 
 class SoCoordinate3;
-class SoDrawStyle;  
+class SoDrawStyle;
 class SoTexture2; 
 class QImage;
 
@@ -55,9 +55,7 @@ private:
     bool loadSvg(const char*, float x, float y, QImage& img);
 
 protected:
-    Gui::SoFCSelection    * pcImagePlaneRoot;
     SoCoordinate3         * pcCoords;
-    SoDrawStyle           * pcDrawStyle;
     SoTexture2            * texture;
  };
 
