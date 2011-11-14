@@ -665,7 +665,8 @@ int System::solve_LM(SubSystem* subsys)
             mu = tau * A.diagonal().lpNorm<Eigen::Infinity>();
 
         // determine increment using adaptive damping
-        while (1) {
+        int k=0;
+        while (k < 50) {
             // augment normal equations A = A+uI
             for (int i=0; i < xsize; ++i)
                 A(i,i) += mu;
@@ -716,6 +717,12 @@ int System::solve_LM(SubSystem* subsys)
             nu*=2.0;
             for (int i=0; i < xsize; ++i) // restore diagonal J^T J entries
                 A(i,i) = diag_A(i);
+
+            k++;
+        }
+        if (k > 50) {
+            stop = 7;
+            break;
         }
     }
 
