@@ -94,39 +94,37 @@ Base::Placement Part2DObject::positionBySupport(const TopoDS_Face &face, const B
     if (Reverse)
         Normal.Reverse();
 
+    Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
+    GeomAPI_ProjectPointOnSurf projector(ObjOrg,gPlane);
+    gp_Pnt SketchBasePoint = projector.NearestPoint();
+
     gp_Dir dir = Normal.Direction();
-    gp_Pnt pos = Normal.Location();
     gp_Ax3 SketchPos;
     // +X
     if (dir.IsEqual(gp::DX(),0)) {
-        SketchPos = gp_Ax3(pos, dir, gp_Dir(0,1,0));
+        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,1,0));
     }
     // -X
     else if (dir.IsOpposite(gp::DX(),0)) {
-        SketchPos = gp_Ax3(pos, dir, gp_Dir(0,-1,0));
+        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,-1,0));
     }
     // +Y
     else if (dir.IsEqual(gp::DY(),0)) {
-        SketchPos = gp_Ax3(pos, dir, gp_Dir(-1,0,0));
+        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(-1,0,0));
     }
     // -Y
     else if (dir.IsOpposite(gp::DY(),0)) {
-        SketchPos = gp_Ax3(pos, dir, gp_Dir(1,0,0));
+        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
     }
     // +Z
     else if (dir.IsEqual(gp::DZ(),0)) {
-        SketchPos = gp_Ax3(pos, dir, gp_Dir(1,0,0));
+        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
     }
     // -Z
     else if (dir.IsOpposite(gp::DZ(),0)) {
-        SketchPos = gp_Ax3(pos, dir, gp_Dir(1,0,0));
+        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
     }
     else {
-        Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
-        GeomAPI_ProjectPointOnSurf projector(ObjOrg,gPlane);
-
-        gp_Pnt SketchBasePoint = projector.NearestPoint();
-
         // check the angle against the Y Axis
         Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,1,0)));
 
