@@ -100,38 +100,34 @@ Base::Placement Part2DObject::positionBySupport(const TopoDS_Face &face, const B
 
     gp_Dir dir = Normal.Direction();
     gp_Ax3 SketchPos;
-    // +X
-    if (dir.IsEqual(gp::DX(),0)) {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,1,0));
-    }
-    // -X
-    else if (dir.IsOpposite(gp::DX(),0)) {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,-1,0));
-    }
-    // +Y
-    else if (dir.IsEqual(gp::DY(),0)) {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(-1,0,0));
-    }
-    // -Y
-    else if (dir.IsOpposite(gp::DY(),0)) {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
-    }
-    // +Z
-    else if (dir.IsEqual(gp::DZ(),0)) {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
-    }
-    // -Z
-    else if (dir.IsOpposite(gp::DZ(),0)) {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
-    }
-    else {
-        // check the angle against the Y Axis
-        Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,1,0)));
 
-        if (fabs(a)<0.1 || fabs((fabs(a)-M_PI))< 0.1)
-            SketchPos = gp_Ax3(SketchBasePoint,Normal._CSFDB_Getgp_Ax1vdir(),gp_Dir(1,0,0));
+    double cosNX = dir.Dot(gp::DX());
+    double cosNY = dir.Dot(gp::DY());
+    double cosNZ = dir.Dot(gp::DZ());
+    std::vector<double> cosXYZ;
+    cosXYZ.push_back(fabs(cosNX));
+    cosXYZ.push_back(fabs(cosNY));
+    cosXYZ.push_back(fabs(cosNZ));
+
+    int pos = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
+
+    // +X/-X
+    if (pos == 0) {
+        if (cosNX > 0)
+            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,1,0));
         else
-            SketchPos = gp_Ax3(SketchBasePoint,Normal._CSFDB_Getgp_Ax1vdir());
+            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,-1,0));
+    }
+    // +Y/-Y
+    else if (pos == 1) {
+        if (cosNY > 0)
+            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(-1,0,0));
+        else
+            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
+    }
+    // +Z/-Z
+    else {
+        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
     }
 
     gp_Trsf Trf;
