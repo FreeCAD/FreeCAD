@@ -171,9 +171,9 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
         it->Type == Sketcher::DistanceX || it->Type == Sketcher::DistanceY ||
         it->Type == Sketcher::Radius || it->Type == Sketcher::Angle) {
 
-		EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
-		editDatumDialog->exec(false);
-		delete editDatumDialog;
+        EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
+        editDatumDialog->exec(false);
+        delete editDatumDialog;
     }
 }
 
@@ -230,8 +230,8 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
                 if(Filter<1 || (*it)->Name != "")
                     ui->listWidgetConstraints->addItem(new ConstraintItem(coinc,name,i-1,(*it)->Type));
                 break;
-	        case Sketcher::PointOnObject:
-                if(Filter<1 || (*it)->Name != "")
+            case Sketcher::PointOnObject:
+                if(Filter<2 || (*it)->Name != "")
                 ui->listWidgetConstraints->addItem(new ConstraintItem(pntoo,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Parallel:
