@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 7.0.50~), autotools-dev, libtool, automake,
  libboost-regex-dev, libboost-serialization-dev, libboost-signals-dev,
  libboost-python-dev, python-dev, python-support,
  libqt4-dev, libxt-dev, libxext-dev, libxmu-dev, libxi-dev, libx11-dev,
- libcoin60-dev, libsoqt4-dev (>= 1.4.2~svn20090224), libeigen2-dev, libeigen3-dev, libgl1-mesa-dev,
+ libcoin60-dev, libsoqt4-dev (>= 1.4.2~svn20090224), libeigen3-dev, libgl1-mesa-dev,
  zlib1g-dev, libxerces-c2-dev, libopencascade-foundation-dev, libopencascade-modeling-dev, 
  libopencascade-visualization-dev, python-cxx-dev, libswscale-dev, 
  libzipios++-dev, swig, gfortran, libqtwebkit-dev
