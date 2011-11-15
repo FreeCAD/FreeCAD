@@ -1012,6 +1012,14 @@ Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &
     return freePos;
 }
 
+bool ViewProviderSketch::isSelectable(void) const
+{
+    if (isEditing())
+        return false;
+    else
+        return PartGui::ViewProvider2DObject::isSelectable();
+}
+
 void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // are we in edit?

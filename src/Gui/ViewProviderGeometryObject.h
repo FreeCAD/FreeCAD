@@ -68,6 +68,8 @@ public:
     void updateData(const App::Property*);
 
     SoFCSelection* getHighlightNode() const { return pcHighlight; }
+    bool isSelectable(void) const {return Selectable.getValue();}
+
     /**
      * Returns a list of picked points from the geometry under \a pcHighlight.
      * If \a pickAll is false (the default) only the intersection point closest to the camera will be picked, otherwise

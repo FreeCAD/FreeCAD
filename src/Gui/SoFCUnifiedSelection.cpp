@@ -250,7 +250,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
                 App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
                 ViewProvider*vp = Application::Instance->getViewProvider(obj);
-                if (vp && vp->useNewSelectionModel()) {
+                if (vp && vp->useNewSelectionModel() && vp->isSelectable()) {
                     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
                     if (selaction->SelChange.Type == SelectionChanges::AddSelection)
                         type = SoSelectionElementAction::All;
@@ -269,7 +269,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
                 if (vpd->useNewSelectionModel()) {
-                    if (Selection().isSelected(vpd->getObject())) {
+                    if (Selection().isSelected(vpd->getObject()) && vpd->isSelectable()) {
                         SoSelectionElementAction action(SoSelectionElementAction::All);
                         action.setColor(this->colorSelection.getValue());
                         action.apply(vpd->getRoot());
