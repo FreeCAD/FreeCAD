@@ -540,7 +540,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             Gui::Command::openCommand("Drag Curve");
                             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                                    ,getObject()->getNameInDocument()
-                                                   ,edit->DragCurve, none, x-xInit, y-yInit, relative ? 1 : 0
+                                                   ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
                                                    );
                             Gui::Command::commitCommand();
                             Gui::Command::updateActive();
@@ -766,7 +766,7 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 edit->PreselectCurve != -1 && edit->DragCurve != edit->PreselectCurve) {
                 Mode = STATUS_SKETCH_DragCurve;
                 edit->DragCurve = edit->PreselectCurve;
-                edit->ActSketch.initMove(edit->DragCurve, none);
+                edit->ActSketch.initMove(edit->DragCurve, Sketcher::none);
                 Part::Geometry *geo = getSketchObject()->Geometry.getValues()[edit->DragCurve];
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     relative = true;
@@ -813,7 +813,7 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
         case STATUS_SKETCH_DragCurve:
             if (edit->DragCurve != -1) {
                 Base::Vector3d vec(x-xInit,y-yInit,0);
-                if (edit->ActSketch.movePoint(edit->DragCurve, none, vec, relative) == 0) {
+                if (edit->ActSketch.movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2D(x,y));
                     draw(true);
                     signalSolved(0, edit->ActSketch.SolveTime);
@@ -857,7 +857,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         assert(Constr->First < int(geomlist.size()));
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
-        if (Constr->SecondPos != none) { // point to point distance
+        if (Constr->SecondPos != Sketcher::none) { // point to point distance
             p1 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
             p2 = edit->ActSketch.getPoint(Constr->Second, Constr->SecondPos);
         } else if (Constr->Second != Constraint::GeoUndef) { // point to line distance
@@ -872,7 +872,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 p2 += p1;
             } else
                 return;
-        } else if (Constr->FirstPos != none) {
+        } else if (Constr->FirstPos != Sketcher::none) {
             p2 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
         } else if (Constr->First != Constraint::GeoUndef) {
             const Part::Geometry *geo = geomlist[Constr->First];
@@ -1338,14 +1338,14 @@ void ViewProviderSketch::updateColor(void)
         ccolorV[0] = PreselectColor;
     else
         ccolorV[0] = CrossColorV;
-    
+
     if (edit->SelCrossSet.find(2) != edit->SelCrossSet.end())
         ccolorH[0] = SelectColor;
     else if (edit->PreselectCross == 2)
         ccolorH[0] = PreselectColor;
     else
         ccolorH[0] = CrossColorH;
-    
+
 
     // colors of the constraints
     for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
@@ -1863,7 +1863,7 @@ Restart:
                     assert(Constr->First < int(geomlist->size()));
 
                     Base::Vector3d pnt1(0.,0.,0.), pnt2(0.,0.,0.);
-                    if (Constr->SecondPos != none) { // point to point distance
+                    if (Constr->SecondPos != Sketcher::none) { // point to point distance
                         if (temp) {
                             pnt1 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
                             pnt2 = edit->ActSketch.getPoint(Constr->Second, Constr->SecondPos);
@@ -1887,7 +1887,7 @@ Restart:
                             pnt2 += pnt1;
                         } else
                             break;
-                    } else if (Constr->FirstPos != none) {
+                    } else if (Constr->FirstPos != Sketcher::none) {
                         if (temp) {
                             pnt2 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
                         } else {
@@ -1926,7 +1926,12 @@ Restart:
                     SbVec3f midpos = (p1_ + p2)/2;
 
                     SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(4));
-                    asciiText->string = SbString().sprintf("%.2f",std::abs(Constr->Value));
+                    if ((Constr->Type == DistanceX || Constr->Type == DistanceY) &&
+                        Constr->FirstPos != Sketcher::none && Constr->Second == Constraint::GeoUndef)
+                        // display negative sign for absolute coordinates
+                        asciiText->string = SbString().sprintf("%.2f",Constr->Value);
+                    else // hide negative sign
+                        asciiText->string = SbString().sprintf("%.2f",std::abs(Constr->Value));
 
                     // Get Bounding box dimensions for Datum text
                     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();

@@ -72,7 +72,7 @@ void EditDatumDialog::exec(bool atCursor)
             QMessageBox::critical(qApp->activeWindow(), QObject::tr("Distance constraint"),
                                   QObject::tr("Not allowed to edit the datum because the sketch contains conflicting constraints"));
             return;
-		}
+        }
 
         double datum = Constr->Value;
         if (Constr->Type == Sketcher::Angle)
@@ -88,11 +88,13 @@ void EditDatumDialog::exec(bool atCursor)
 
         double init_val;
         if (Constr->Type == Sketcher::Angle ||
-            Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY)
+            ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
+             Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))
+            // hide negative sign
             init_val = std::abs(datum);
-        else
+        else // show negative sign
             init_val = datum;
-           
+
         ui_ins_datum.lineEdit->setText(QLocale::system().toString(init_val,'g',6));
         ui_ins_datum.lineEdit->selectAll();
 
@@ -106,11 +108,14 @@ void EditDatumDialog::exec(bool atCursor)
                 if (Constr->Type == Sketcher::Angle)
                     newDatum = Base::toRadians<double>(newDatum);
 
-                if (newDatum < 0 &&
-                    (Constr->Type == Sketcher::Angle ||
-                     Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY)) {
+                if (Constr->Type == Sketcher::Angle ||
+                    ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
+                     Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)) {
                     // Permit negative values to flip the sign of the constraint
-                    newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
+                    if (newDatum >= 0) // keep the old sign
+                        newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
+                    else // flip sign
+                        newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
                 }
 
                 try {
