@@ -35,6 +35,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <gp_Circ.hxx>
 # include <gp_GTrsf.hxx>
@@ -661,8 +662,9 @@ App::DocumentObjectExecReturn *Wedge::execute(void)
         BRepPrim_Wedge mkWedge(gp_Ax2(pnt,dir),
             xmin, ymin, zmin, z2min, x2min,
             xmax, ymax, zmax, z2max, x2max);
-        TopoDS_Shape resultShape = mkWedge.Shell();
-        this->Shape.setValue(resultShape);
+        BRepBuilderAPI_MakeSolid mkSolid;
+        mkSolid.Add(mkWedge.Shell());
+        this->Shape.setValue(mkSolid.Solid());
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
