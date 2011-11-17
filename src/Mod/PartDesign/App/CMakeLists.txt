@@ -77,13 +77,14 @@ SET(PartDesign_SRCS
 
 SET(PartDesign_Scripts
     __init__.py
-	Init.py
-	TestPartDesignApp.py
+    Init.py
+    TestPartDesignApp.py
     Scripts/__init__.py
     Scripts/Gear.py
     Scripts/DistanceBolt.py
     Scripts/RadialCopy.py
     Scripts/Parallelepiped.py
+    Scripts/Spring.py
 )
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})

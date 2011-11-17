@@ -106,7 +106,7 @@ SOURCE_GROUP("Module" FILES ${PartDesignGuiModule_SRCS})
 
 SET(PartDesignGui_Scripts
     InitGui.py
-	TestPartDesignGui.py
+    TestPartDesignGui.py
 )
 
 SET(PartDesignGui_SRCS

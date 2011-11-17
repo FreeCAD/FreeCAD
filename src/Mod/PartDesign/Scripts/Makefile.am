@@ -5,7 +5,8 @@ data_DATA = \
 		Gear.py \
 		DistanceBolt.py \
 		RadialCopy.py \
-		Parallelepiped.py
+		Parallelepiped.py \
+		Spring.py
 
 EXTRA_DIST = \
 		$(data_DATA)
