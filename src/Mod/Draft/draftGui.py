@@ -64,7 +64,10 @@ class todo:
         for f, arg in todo.itinerary:
             try:
                 # print "debug: executing",f
-                f(arg)
+                if arg:
+                    f(arg)
+                else:
+                    f()
             except:
                 wrn = "[Draft.todo] Unexpected error:" + sys.exc_info()[0]
                 FreeCAD.Console.PrintWarning (wrn)
@@ -72,10 +75,14 @@ class todo:
         if todo.commitlist:
             for name,func in todo.commitlist:
                 # print "debug: committing ",str(name)
-                name = str(name)
-                FreeCAD.ActiveDocument.openTransaction(name)
-                func()
-                FreeCAD.ActiveDocument.commitTransaction()
+                try:
+                    name = str(name)
+                    FreeCAD.ActiveDocument.openTransaction(name)
+                    func()
+                    FreeCAD.ActiveDocument.commitTransaction()
+                except:
+                    wrn = "[Draft.todo] Unexpected error:" + sys.exc_info()[0]
+                    FreeCAD.Console.PrintWarning (wrn)
         todo.commitlist = []
 
     @staticmethod
@@ -160,6 +167,7 @@ class DraftToolBar:
         self.textbuffer = []
         self.crossedViews = []
         self.isTaskOn = False
+        self.fillmode = Draft.getParam("fillmode")
         
         if self.taskmode:
             # only a dummy widget, since widgets are created on demand
@@ -289,7 +297,7 @@ class DraftToolBar:
         self.radiusValue = self._lineedit("radiusValue", self.layout, width=60)
         self.radiusValue.setText("0.00")
         self.isRelative = self._checkbox("isRelative",self.layout,checked=True)
-        self.hasFill = self._checkbox("hasFill",self.layout,checked=Draft.getParam("fillmode"))
+        self.hasFill = self._checkbox("hasFill",self.layout,checked=self.fillmode)
         self.continueCmd = self._checkbox("continueCmd",self.layout,checked=False)
         self.occOffset = self._checkbox("occOffset",self.layout,checked=False)
         self.undoButton = self._pushbutton("undoButton", self.layout, icon='Draft_Rotate')
@@ -339,6 +347,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.xzButton,QtCore.SIGNAL("clicked()"),self.selectXZ)
         QtCore.QObject.connect(self.yzButton,QtCore.SIGNAL("clicked()"),self.selectYZ)
         QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)               
+        QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill) 
         QtCore.QObject.connect(self.currentViewButton,QtCore.SIGNAL("clicked()"),self.selectCurrentView)
         QtCore.QObject.connect(self.resetPlaneButton,QtCore.SIGNAL("clicked()"),self.selectResetPlane)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("escaped()"),self.finish)
@@ -527,7 +536,7 @@ class DraftToolBar:
     def offUi(self):
         if self.taskmode:
             self.isTaskOn = False
-            FreeCADGui.Control.closeDialog()
+            todo.delay(FreeCADGui.Control.closeDialog,None)
             self.baseWidget = QtGui.QWidget()
             # print "UI turned off"
         else:
@@ -662,12 +671,36 @@ class DraftToolBar:
         self.addButton.setEnabled(mode)
         self.delButton.setEnabled(mode)
 
+    def setNextFocus(self):
+        def isThere(widget):
+            if widget.isEnabled() and widget.isVisible():
+                return True
+            else:
+                return False
+        if (not self.taskmode) or self.isTaskOn:
+            if isThere(self.xValue):
+                self.xValue.setFocus()
+                self.xValue.selectAll()
+            elif isThere(self.yValue):
+                self.yValue.setFocus()
+                self.yValue.selectAll()
+            elif isThere(self.zValue):
+                self.zValue.setFocus()
+                self.zValue.selectAll()
+            elif isThere(self.radiusValue):
+                self.radiusValue.setFocus()
+                self.radiusValue.selectAll()
+
+    def setRelative(self):
+        if (not self.taskmode) or self.isTaskOn:
+            self.isRelative.show()
+
     def relocate(self):
         "relocates the right-aligned buttons depending on the toolbar size"
         if self.baseWidget.geometry().width() < 400:
             self.layout.setDirection(QtGui.QBoxLayout.TopToBottom)
         else:
-            self.layout.setDirection(QtGui.QBoxLayout.LeftToRight) 
+            self.layout.setDirection(QtGui.QBoxLayout.LeftToRight)
 
 
 #---------------------------------------------------------------------------
@@ -726,6 +759,9 @@ class DraftToolBar:
     def setContinue(self,val):
         self.continueMode = bool(val)
 
+    def setFill(self,val):
+        self.fillmode = bool(val)
+        
     def apply(self):
         for i in FreeCADGui.Selection.getSelection():
             Draft.formatObject(i)	

@@ -1308,7 +1308,7 @@ class Line(Creator):
         if (len(self.node) > 1):
             self.commit(translate("draft","Create Wire"),
                         partial(Draft.makeWire,self.node,closed,
-                                face=self.ui.hasFill.isChecked(),support=self.support))
+                                face=self.ui.fillmode,support=self.support))
         if self.ui:
             self.linetrack.finalize()
             self.constraintrack.finalize()
@@ -1416,16 +1416,7 @@ class Line(Creator):
         self.drawSegment(point)
         if (not self.isWire and len(self.node) == 2):
             self.finish(False,cont=True)
-        if self.ui.xValue.isEnabled():
-            self.ui.xValue.setFocus()
-            self.ui.xValue.selectAll()
-        elif self.ui.yValue.isEnabled():
-            self.ui.yValue.setFocus()
-            self.ui.yValue.selectAll()
-        else:
-            self.ui.zValue.setFocus()
-            self.ui.zValue.selectAll()
-
+        self.ui.setNextFocus()
             
 class Wire(Line):
     "a FreeCAD command for creating a wire"
@@ -1520,9 +1511,12 @@ class BSpline(Line):
         if (len(self.node) > 1):
             old = self.obj.Name
             self.doc.removeObject(old)
-            self.commit(translate("draft","Create BSpline"),
-                        partial(Draft.makeBSpline,self.node,closed,
-                                face=self.ui.hasFill.isChecked(),support=self.support))
+            try:
+                self.commit(translate("draft","Create BSpline"),
+                            partial(Draft.makeBSpline,self.node,closed,
+                                    face=self.ui.fillmode,support=self.support))
+            except:
+                print "Draft: error delaying commit"
         if self.ui:
 			self.bsplinetrack.finalize()
 			self.constraintrack.finalize()
@@ -1632,10 +1626,14 @@ class Rectangle(Creator):
         if abs(fcvec.angle(p2.sub(p1),plane.v,plane.axis)) > 1: height = -height
         p = plane.getRotation()
         p.move(p1)
-        self.commit(translate("draft","Create Rectangle"),
-                    partial(Draft.makeRectangle,length,height,
-                            p,self.ui.hasFill.isChecked(),support=self.support))
+        try:
+            self.commit(translate("draft","Create Rectangle"),
+                        partial(Draft.makeRectangle,length,height,
+                                p,self.ui.fillmode,support=self.support))
+        except:
+            print "Draft: error delaying commit"
         self.finish(cont=True)
+        print "all done"
 
     def action(self,arg):
         "scene event handler"
@@ -1667,7 +1665,7 @@ class Rectangle(Creator):
             self.createObject()
         else:
             msg(translate("draft", "Pick opposite point:\n"))
-            self.ui.isRelative.show()
+            self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()
             self.planetrack.set(point)
@@ -1903,17 +1901,22 @@ class Arc(Creator):
         p = plane.getRotation()
         p.move(self.center)
         if self.closedCircle:
-            self.commit(translate("draft","Create Circle"),
-                        partial(Draft.makeCircle,self.rad,p,
-                                self.ui.hasFill.isChecked(),support=self.support))
+            try:
+                    self.commit(translate("draft","Create Circle"),
+                                partial(Draft.makeCircle,self.rad,p,
+                                        self.ui.fillmode,support=self.support))
+            except:
+                    print "Draft: error delaying commit"
         else:
             sta = math.degrees(self.firstangle)
             end = math.degrees(self.firstangle+self.angle)
-            print "debug:",sta, end
             if end < sta: sta,end = end,sta
-            self.commit(translate("draft","Create Arc"),
-                        partial(Draft.makeCircle,self.rad,p,self.ui.hasFill.isChecked(),
-                                sta,end,support=self.support))
+            try:
+                    self.commit(translate("draft","Create Arc"),
+                                partial(Draft.makeCircle,self.rad,p,self.ui.fillmode,
+                                        sta,end,support=self.support))
+            except:
+                    print "Draft: error delaying commit"
         self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
@@ -1924,7 +1927,7 @@ class Arc(Creator):
         self.arctrack.on()
         self.ui.radiusUi()
         self.step = 1
-        self.ui.radiusValue.setFocus()
+        self.ui.setNextFocus()
         msg(translate("draft", "Pick radius:\n"))
 		
     def numericRadius(self,rad):
@@ -1948,14 +1951,14 @@ class Arc(Creator):
             else:
                 self.step = 2
                 self.arctrack.setCenter(self.center)
-                self.ui.labelRadius.setText("Start angle")
+                self.ui.labelRadius.setText(str(translate("draft", "Start Angle")))
                 self.linetrack.p1(self.center)
                 self.linetrack.on()
                 self.ui.radiusValue.setText("")
                 self.ui.radiusValue.setFocus()
                 msg(translate("draft", "Pick start angle:\n"))
         elif (self.step == 2):
-            self.ui.labelRadius.setText("Aperture")
+            self.ui.labelRadius.setText(str(translate("draft", "Aperture")))
             self.firstangle = math.radians(rad)
             if fcvec.equals(plane.axis, Vector(1,0,0)): u = Vector(0,self.rad,0)
             else: u = fcvec.scaleTo(Vector(1,0,0).cross(plane.axis), self.rad)
@@ -2143,7 +2146,7 @@ class Polygon(Creator):
         p.move(self.center)
         self.commit(translate("draft","Create Polygon"),
                     partial(Draft.makePolygon,self.ui.numFaces.value(),self.rad,
-                            True,p,face=self.ui.hasFill.isChecked(),support=self.support))
+                            True,p,face=self.ui.fillmode,support=self.support))
         self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
