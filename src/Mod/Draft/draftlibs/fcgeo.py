@@ -515,8 +515,13 @@ def findMidpoint(edge):
 	first = edge.Vertexes[0].Point
 	last = edge.Vertexes[-1].Point
 	if isinstance(edge.Curve,Part.Circle):
-		center = edge.Curve.Center
+                center = edge.Curve.Center
 		radius = edge.Curve.Radius
+                if len(edge.Vertexes) == 1:
+                        # Circle
+                        dv = first.sub(center)
+                        dv = fcvec.neg(dv)
+                        return center.add(dv)
 		axis = edge.Curve.Axis
 		chord = last.sub(first)
 		perp = chord.cross(axis)
