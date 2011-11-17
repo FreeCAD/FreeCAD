@@ -984,11 +984,15 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
                         break;
                 }
                 alpha = tau * alpha;
+                if (alpha < 1e-8) // let the linesearch fail
+                    alpha = 0.;
                 x = x0 + alpha * xdir;
                 subsysA->setParams(plist,x);
                 subsysB->setParams(plist,x);
                 subsysA->calcResidual(resA);
                 f = subsysB->error() + mu * resA.lpNorm<1>();
+                if (alpha < 1e-8) // let the linesearch fail
+                    break;
             }
             lambda = lambda0 + alpha * lambdadir;
 
