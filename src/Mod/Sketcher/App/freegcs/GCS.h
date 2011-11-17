@@ -74,7 +74,7 @@ namespace GCS
         System();
         System(std::vector<Constraint *> clist_);
         ~System();
-        
+
         void clear();
         void clearByTag(int tagId);
 
@@ -124,6 +124,7 @@ namespace GCS
         int addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId=0);
         int addConstraintEqualRadius(Arc &a1, Arc &a2, int tagId=0);
         int addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId=0);
+        void rescaleConstraint(int id, double coeff);
 
         void initSolution(VEC_pD &params);
 

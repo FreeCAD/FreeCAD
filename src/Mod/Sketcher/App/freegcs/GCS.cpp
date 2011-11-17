@@ -403,6 +403,14 @@ int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId)
     return addConstraintMidpointOnLine(p1, p2, l.p1, l.p2, tagId);
 }
 
+void System::rescaleConstraint(int id, double coeff)
+{
+    if (id >= clist.size() || id < 0)
+        return;
+    if (clist[id])
+        clist[id]->rescale(coeff);
+}
+
 
 void System::initSolution(VEC_pD &params)
 {

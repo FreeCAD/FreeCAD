@@ -1497,7 +1497,9 @@ int Sketch::initMove(int geoId, PointPos pos)
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p1,center,-1);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
+            GCSsys.rescaleConstraint(i-1, 0.01);
+            GCSsys.rescaleConstraint(i, 0.01);
         }
     } else if (Geoms[geoId].type == Arc) {
         GCS::Point &center = Points[Geoms[geoId].midPointId];
@@ -1531,7 +1533,9 @@ int Sketch::initMove(int geoId, PointPos pos)
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p1,center,-1);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
+            GCSsys.rescaleConstraint(i-1, 0.01);
+            GCSsys.rescaleConstraint(i, 0.01);
         }
     }
     InitParameters = MoveParameters;
