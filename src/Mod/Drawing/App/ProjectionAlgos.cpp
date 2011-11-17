@@ -119,11 +119,19 @@ void ProjectionAlgos::execute(void)
     Handle( HLRBRep_Algo ) brep_hlr = new HLRBRep_Algo;
     brep_hlr->Add(Input);
 
-    gp_Ax2 transform(gp_Pnt(0,0,0),gp_Dir(Direction.x,Direction.y,Direction.z));
-    HLRAlgo_Projector projector( transform );
-    brep_hlr->Projector(projector);
-    brep_hlr->Update();
-    brep_hlr->Hide();
+    try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+        Base::SignalException se;
+#endif
+        gp_Ax2 transform(gp_Pnt(0,0,0),gp_Dir(Direction.x,Direction.y,Direction.z));
+        HLRAlgo_Projector projector( transform );
+        brep_hlr->Projector(projector);
+        brep_hlr->Update();
+        brep_hlr->Hide();
+    }
+    catch (...) {
+        Standard_Failure::Raise("Fatal error occurred while projecting shape");
+    }
 
     // extracting the result sets:
     HLRBRep_HLRToShape shapes( brep_hlr );

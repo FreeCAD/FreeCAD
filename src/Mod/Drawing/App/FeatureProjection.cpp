@@ -77,33 +77,39 @@ App::DocumentObjectExecReturn *FeatureProjection::execute(void)
     if (shape.IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
-    const Base::Vector3f& dir = Direction.getValue();
-    Drawing::ProjectionAlgos alg(shape, dir);
+    try {
+        const Base::Vector3f& dir = Direction.getValue();
+        Drawing::ProjectionAlgos alg(shape, dir);
 
-    TopoDS_Compound comp;
-    BRep_Builder builder;
-    builder.MakeCompound(comp);
-    if (!alg.V.IsNull() && VCompound.getValue())
-        builder.Add(comp, alg.V);
-    if (!alg.V1.IsNull() && Rg1LineVCompound.getValue())
-        builder.Add(comp, alg.V1);
-    if (!alg.VN.IsNull() && RgNLineVCompound.getValue())
-        builder.Add(comp, alg.VN);
-    if (!alg.VO.IsNull() && OutLineVCompound.getValue())
-        builder.Add(comp, alg.VO);
-    if (!alg.VI.IsNull() && IsoLineVCompound.getValue())
-        builder.Add(comp, alg.VI);
-    if (!alg.H.IsNull() && HCompound.getValue())
-        builder.Add(comp, alg.H);
-    if (!alg.H1.IsNull() && Rg1LineHCompound.getValue())
-        builder.Add(comp, alg.H1);
-    if (!alg.HN.IsNull() && RgNLineHCompound.getValue())
-        builder.Add(comp, alg.HN);
-    if (!alg.HO.IsNull() && OutLineHCompound.getValue())
-        builder.Add(comp, alg.HO);
-    if (!alg.HI.IsNull() && IsoLineHCompound.getValue())
-        builder.Add(comp, alg.HI);
+        TopoDS_Compound comp;
+        BRep_Builder builder;
+        builder.MakeCompound(comp);
+        if (!alg.V.IsNull() && VCompound.getValue())
+            builder.Add(comp, alg.V);
+        if (!alg.V1.IsNull() && Rg1LineVCompound.getValue())
+            builder.Add(comp, alg.V1);
+        if (!alg.VN.IsNull() && RgNLineVCompound.getValue())
+            builder.Add(comp, alg.VN);
+        if (!alg.VO.IsNull() && OutLineVCompound.getValue())
+            builder.Add(comp, alg.VO);
+        if (!alg.VI.IsNull() && IsoLineVCompound.getValue())
+            builder.Add(comp, alg.VI);
+        if (!alg.H.IsNull() && HCompound.getValue())
+            builder.Add(comp, alg.H);
+        if (!alg.H1.IsNull() && Rg1LineHCompound.getValue())
+            builder.Add(comp, alg.H1);
+        if (!alg.HN.IsNull() && RgNLineHCompound.getValue())
+            builder.Add(comp, alg.HN);
+        if (!alg.HO.IsNull() && OutLineHCompound.getValue())
+            builder.Add(comp, alg.HO);
+        if (!alg.HI.IsNull() && IsoLineHCompound.getValue())
+            builder.Add(comp, alg.HI);
 
-    Shape.setValue(comp);
-    return App::DocumentObject::StdReturn;
+        Shape.setValue(comp);
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
 }

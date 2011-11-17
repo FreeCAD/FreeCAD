@@ -230,8 +230,8 @@ SET(Part_SRCS
 )
 
 SET(Part_Scripts
-	Init.py
-	TestPartApp.py
+    Init.py
+    TestPartApp.py
     MakeBottle.py
 )
 
