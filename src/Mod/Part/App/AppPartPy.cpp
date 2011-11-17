@@ -760,38 +760,8 @@ static PyObject * makeHelix(PyObject *self, PyObject *args)
         return 0;
 
     try {
-        if (pitch < Precision::Confusion())
-            Standard_Failure::Raise("Pitch of helix too small");
-
-        if (height < Precision::Confusion())
-            Standard_Failure::Raise("Height of helix too small");
-
-        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-        Handle_Geom_Surface surf;
-        if (angle < 0) {
-            if (radius < Precision::Confusion())
-                Standard_Failure::Raise("Radius of helix too small");
-            surf = new Geom_CylindricalSurface(cylAx2, radius);
-        }
-        else {
-            angle = angle*(M_PI/180);
-            if (angle < Precision::Confusion())
-                Standard_Failure::Raise("Angle of helix too small");
-            surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
-        }
-
-        gp_Pnt2d aPnt(0, 0);
-        gp_Dir2d aDir(2. * PI, pitch);
-        gp_Ax2d aAx2d(aPnt, aDir);
-
-        Handle_Geom2d_Line line = new Geom2d_Line(aAx2d);
-        gp_Pnt2d beg = line->Value(0);
-        gp_Pnt2d end = line->Value(2.0*PI*(height/pitch));
-        Handle_Geom2d_TrimmedCurve segm = GCE2d_MakeSegment(beg , end);
-
-        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
-        BRepLib::BuildCurves3d(wire);
+        TopoShape helix;
+        TopoDS_Shape wire = helix.makeHelix(pitch, height, radius, angle);
         return new TopoShapeWirePy(new TopoShape(wire));
     }
     catch (Standard_Failure) {

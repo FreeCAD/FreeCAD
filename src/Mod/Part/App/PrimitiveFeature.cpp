@@ -547,39 +547,8 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myHeight = Height.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
-
-        if (myPitch < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Pitch of helix too small");
-
-        if (myHeight < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Height of helix too small");
-
-        if (myRadius < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Radius of helix too small");
-
-        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-        Handle_Geom_Surface surf;
-        if (myAngle < Precision::Confusion()) {
-            surf = new Geom_CylindricalSurface(cylAx2, myRadius);
-        }
-        else {
-            myAngle = Base::toRadians(myAngle);
-            surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), myAngle, myRadius);
-        }
-
-        gp_Pnt2d aPnt(0, 0);
-        gp_Dir2d aDir(2. * PI, myPitch);
-        gp_Ax2d aAx2d(aPnt, aDir);
-
-        Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
-        gp_Pnt2d beg = line->Value(0);
-        gp_Pnt2d end = line->Value(sqrt(4.0*PI*PI+myPitch*myPitch)*(myHeight/myPitch));
-        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
-
-        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
-        BRepLib::BuildCurves3d(wire);
-        this->Shape.setValue(wire);
+        TopoShape helix;
+        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
