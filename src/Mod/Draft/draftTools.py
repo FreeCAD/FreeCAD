@@ -1633,7 +1633,6 @@ class Rectangle(Creator):
         except:
             print "Draft: error delaying commit"
         self.finish(cont=True)
-        print "all done"
 
     def action(self,arg):
         "scene event handler"
