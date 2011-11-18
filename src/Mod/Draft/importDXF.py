@@ -963,6 +963,37 @@ def insert(filename,docname):
 		
 # EXPORT ########################################################################
 
+def getArcData(edge):
+    "returns center, radius, start and end angles of a circle-based edge"
+    ce = edge.Curve.Center
+    radius = edge.Curve.Radius
+    if len(edge.Vertexes) == 1:
+        # closed circle
+        return ce, radius, 0, 0
+    else:
+        # find direction of arc
+        tang1 = edge.Curve.tangent(edge.ParameterRange[0])
+        tang2 = edge.Curve.tangent(edge.ParameterRange[1])
+        
+        # following code doesn't seem to give right result?
+        # cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
+        # if cross1[2] > 0: # >0 ccw <0 cw
+        #    ve1 = edge.Vertexes[0].Point
+        #    ve2 = edge.Vertexes[-1].Point
+        # else:
+        #    ve1 = edge.Vertexes[-1].Point
+        #    ve2 = edge.Vertexes[0].Point
+
+        # check the midpoint seems more reliable
+        ve1 = edge.Vertexes[0].Point
+        ve2 = edge.Vertexes[-1].Point
+        ang1 = -math.degrees(fcvec.angle(ve1.sub(ce)))
+        ang2 = -math.degrees(fcvec.angle(ve2.sub(ce)))
+        ve3 = fcgeo.findMidpoint(edge)
+        ang3 = -math.degrees(fcvec.angle(ve3.sub(ce)))
+        if (ang3 < ang1) and (ang2 < ang3):
+            ang1, ang2 = ang2, ang1
+        return fcvec.tup(ce), radius, ang1, ang2
 
 def getSplineSegs(edge):
     "returns an array of vectors from a bSpline edge"
@@ -1033,13 +1064,18 @@ def writeShape(ob,dxfobject,nospline=False):
     "writes the object's shape contents in the given dxf object"
     processededges = []
     for wire in ob.Shape.Wires: # polylines
-        for e in wire.Edges: processededges.append(e.hashCode())
+        for e in wire.Edges:
+            processededges.append(e.hashCode())
         if (len(wire.Edges) == 1) and isinstance(wire.Edges[0].Curve,Part.Circle):
-            center = fcvec.tup(wire.Edges[0].Curve.Center)
-            radius = wire.Edges[0].Curve.Radius
-            dxfobject.append(dxfLibrary.Circle(center, radius,
-                                               color=getACI(ob),
-                                               layer=getGroup(ob,exportList)))
+            center, radius, ang1, ang2 = getArcData(wire.Edges[0])
+            if len(wire.Edges[0].Vertexes) == 1: # circle
+                dxfobject.append(dxfLibrary.Circle(center, radius,
+                                                   color=getACI(ob),
+                                                   layer=getGroup(ob,exportList)))
+            else: # arc
+                dxfobject.append(dxfLibrary.Arc(center, radius,
+                                                ang1, ang2, color=getACI(ob),
+                                                layer=getGroup(ob,exportList)))                
         else:
             dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
                                                  int(fcgeo.isReallyClosed(wire)), color=getACI(ob),
@@ -1049,7 +1085,6 @@ def writeShape(ob,dxfobject,nospline=False):
         for e in ob.Shape.Edges:
             if not(e.hashCode() in processededges): loneedges.append(e)
         # print "lone edges ",loneedges
-        edge_index = 0
         for edge in loneedges:
             if (isinstance(edge.Curve,Part.BSplineCurve)) and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
                 points = []
@@ -1059,38 +1094,23 @@ def writeShape(ob,dxfobject,nospline=False):
                 dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
                                                      0, color=getACI(ob),
                                                      layer=getGroup(ob,exportList)))
-            elif (len(edge.Vertexes) == 1) and (isinstance(edge.Curve,Part.Circle)): # circles
-                center = fcvec.tup(edge.Curve.Center)
-                radius = ob.Shape.Edges[edge_index].Curve.Radius
-                dxfobject.append(dxfLibrary.Circle(center, radius,
-                                                   color=getACI(ob),
-                                                   layer=getGroup(ob,exportList)))
-            elif (len(edge.Vertexes) == 3) or (isinstance (edge.Curve,Part.Circle)): # arcs
-                ce = ob.Shape.Edges[edge_index].Curve.Center
-                radius = ob.Shape.Edges[edge_index].Curve.Radius
-                #find direction of arc
-                tang1 = edge.Curve.tangent(edge.ParameterRange[0])
-                tang2 = edge.Curve.tangent(edge.ParameterRange[1])
-                cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
-                if cross1[2] > 0: # >0 ccw <0 cw
-                    ve1 = edge.Vertexes[0].Point
-                    ve2 = edge.Vertexes[-1].Point
-                else:
-                    ve1 = edge.Vertexes[-1].Point
-                    ve2 = edge.Vertexes[0].Point
-                ang1=-math.degrees(fcvec.angle(ve1.sub(ce)))
-                ang2=-math.degrees(fcvec.angle(ve2.sub(ce)))
-                dxfobject.append(dxfLibrary.Arc(fcvec.tup(ce), radius,
-                                                ang1, ang2, color=getACI(ob),
-                                                layer=getGroup(ob,exportList)))
+            elif isinstance(edge.Curve,Part.Circle): # curves
+                center, radius, ang1, ang2 = getArcData(edge)
+                if len(edge.Vertexes) == 1: # circles
+                    dxfobject.append(dxfLibrary.Circle(center, radius,
+                                                       color=getACI(ob),
+                                                       layer=getGroup(ob,exportList)))
+                else : # arcs
+                    dxfobject.append(dxfLibrary.Arc(center, radius,
+                                                    ang1, ang2, color=getACI(ob),
+                                                    layer=getGroup(ob,exportList)))
             else: # anything else is treated as lines
-            # if (len(edge.Vertexes) == 2) and (isinstance (edge.Curve,Part.Line)): # lines
                 ve1=edge.Vertexes[0].Point
                 ve2=edge.Vertexes[1].Point
                 dxfobject.append(dxfLibrary.Line([fcvec.tup(ve1), fcvec.tup(ve2)],
                                                  color=getACI(ob),
                                                  layer=getGroup(ob,exportList)))
-            edge_index = edge_index+1
+
 def writeMesh(ob,dxfobject):
     "export a shape as a polyface mesh"
     meshdata = ob.Shape.tessellate(0.5)
