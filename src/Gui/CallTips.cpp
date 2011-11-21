@@ -579,8 +579,9 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     QString sel = cursor.selectedText();
     if (!sel.isEmpty()) {
         // in case the cursor moved too far on the right side
-        QChar ch = sel.at(sel.count()-1);
-        if (!ch.isLetterOrNumber())
+        const QChar underscore =  QLatin1Char('_');
+        const QChar ch = sel.at(sel.count()-1);
+        if (!ch.isLetterOrNumber() && ch != underscore)
             cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
     }
     cursor.insertText( text );
