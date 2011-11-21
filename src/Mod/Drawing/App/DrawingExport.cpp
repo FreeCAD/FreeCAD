@@ -126,7 +126,7 @@ void SVGOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     double a = v3.DotCross(v1,v2);
 
     // a full circle
-    if (s.SquareDistance(e) < 0.001) {
+    if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
         out << "<circle cx =\"" << p.X() << "\" cy =\"" 
             << p.Y() << "\" r =\"" << r << "\" />";
     }
@@ -161,7 +161,7 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     double a = v3.DotCross(v1,v2);
 
     // a full ellipse
-    if (s.SquareDistance(e) < 0.001) {
+    if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
         out << "<ellipse cx =\"" << p.X() << "\" cy =\"" 
             << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>";
     }
