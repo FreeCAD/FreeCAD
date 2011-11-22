@@ -244,10 +244,12 @@ void Rotation::normalize()
                               this->quat[1]*this->quat[1]+
                               this->quat[2]*this->quat[2]+
                               this->quat[3]*this->quat[3]);
-    this->quat[0] /= len;
-    this->quat[1] /= len;
-    this->quat[2] /= len;
-    this->quat[3] /= len;
+    if (len != 0) {
+        this->quat[0] /= len;
+        this->quat[1] /= len;
+        this->quat[2] /= len;
+        this->quat[3] /= len;
+    }
 }
 
 Rotation & Rotation::invert(void)
