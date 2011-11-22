@@ -82,6 +82,7 @@ SET(PartDesign_Scripts
     Scripts/__init__.py
     Scripts/Gear.py
     Scripts/DistanceBolt.py
+    Scripts/Epitrochoid.py
     Scripts/RadialCopy.py
     Scripts/Parallelepiped.py
     Scripts/Spring.py

@@ -4,6 +4,7 @@ data_DATA = \
 		__init__.py \
 		Gear.py \
 		DistanceBolt.py \
+		Epitrochoid.py \
 		RadialCopy.py \
 		Parallelepiped.py \
 		Spring.py
