@@ -94,9 +94,9 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
         if (adapt.GetType() == GeomAbs_Circle) {
             printCircle(adapt, result);
         }
-        else if (adapt.GetType() == GeomAbs_Ellipse) {
-            printEllipse(adapt, i, result);
-        }
+        //else if (adapt.GetType() == GeomAbs_Ellipse) {
+        //    printEllipse(adapt, i, result);
+        //}
         else if (adapt.GetType() == GeomAbs_BSplineCurve) {
             printBSpline(adapt, i, result);
         }
