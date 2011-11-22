@@ -1404,15 +1404,15 @@ int Sketch::solve()
 
         if (valid_solution) {
             if (soltype == 1)
-                Base::Console().Warning("Important: the LevenbergMarquardt solver succeeded where the DogLeg solver had failed.\n");
+                Base::Console().Log("Important: the LevenbergMarquardt solver succeeded where the DogLeg solver had failed.\n");
             else if (soltype == 2)
-                Base::Console().Warning("Important: the BFGS solver succeeded where the DogLeg and LevenbergMarquardt solvers have failed.\n");
+                Base::Console().Log("Important: the BFGS solver succeeded where the DogLeg and LevenbergMarquardt solvers have failed.\n");
             else if (soltype == 3)
-                Base::Console().Warning("Important: the SQP solver succeeded where all single subsystem solvers have failed.\n");
+                Base::Console().Log("Important: the SQP solver succeeded where all single subsystem solvers have failed.\n");
 
             if (soltype > 0) {
-                Base::Console().Warning("If you see this message please report a way of reproducing this result at\n");
-                Base::Console().Warning("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
+                Base::Console().Log("If you see this message please report a way of reproducing this result at\n");
+                Base::Console().Log("https://sourceforge.net/apps/mantisbt/free-cad/main_page.php\n");
             }
 
             break;
