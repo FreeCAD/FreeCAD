@@ -240,6 +240,7 @@ QWidget* setupMainWindow()
     }
 
     if (!Gui::MainWindow::getInstance()) {
+        PyObject* input = PySys_GetObject("stdin");
         Gui::MainWindow *mw = new Gui::MainWindow();
         QIcon icon = qApp->windowIcon();
         if (icon.isNull())
@@ -288,6 +289,7 @@ QWidget* setupMainWindow()
 
         Gui::Application::Instance->activateWorkbench(start.c_str());
         mw->loadWindowSettings();
+        PySys_SetObject("stdin", input);
     }
     else {
         Gui::getMainWindow()->show();

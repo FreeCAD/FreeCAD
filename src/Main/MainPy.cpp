@@ -46,6 +46,7 @@
 
 // FreeCAD Base header
 #include <Base/Exception.h>
+#include <Base/Uuid.h>
 #include <App/Application.h>
 
 
@@ -112,6 +113,8 @@ extern "C"
         strncpy(argv[0],szFileName,MAX_PATH);
         argv[0][MAX_PATH-1] = '\0'; // ensure null termination
 #elif defined(FC_OS_LINUX)
+        putenv("LANG=C");
+        putenv("LC_ALL=C");
         // get whole path of the library
         Dl_info info;
         int ret = dladdr((void*)initFreeCAD, &info);
@@ -123,6 +126,9 @@ extern "C"
         argv[0] = (char*)malloc(PATH_MAX);
         strncpy(argv[0], info.dli_fname,PATH_MAX);
         argv[0][PATH_MAX-1] = '\0'; // ensure null termination
+        // this is a workaround to avoid a crash in libuuid.so
+        Base::Uuid uuid;
+        uuid.UuidStr="";
 #elif defined(FC_OS_MACOSX)
         uint32_t sz = 0;
         char *buf;
