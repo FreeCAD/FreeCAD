@@ -673,7 +673,7 @@ void CmdPartReverseShape::activated(int iMsg)
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
             QString str = QString::fromAscii(
-                "__s__=App.ActiveDocument.%1.Shape\n"
+                "__s__=App.ActiveDocument.%1.Shape.copy()\n"
                 "__s__.reverse()\n"
                 "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_rev\")\n"
                 "__o__.Label=\"%2 (Rev)\"\n"
