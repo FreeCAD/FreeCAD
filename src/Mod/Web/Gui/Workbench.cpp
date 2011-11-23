@@ -210,9 +210,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //          << "Part_Boolean"
 //          << "Part_Extrude"
 //          << "Part_Revolve"
-//          << "Part_Fillet"
-//          << "Separator"
-//          << "Part_ShapeInfo";
+//          << "Part_Fillet";
 //
 //#   ifdef WEB_SHOW_SKETCHER
 //    if (mgr.getCommandByName("Sketcher_NewSketch")) {

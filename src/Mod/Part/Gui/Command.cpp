@@ -1000,12 +1000,12 @@ void CmdShapeInfo::activated(int iMsg)
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-    if (view) {
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        viewer->setEditing(true);
-        viewer->getWidget()->setCursor(QCursor(QPixmap(part_pipette),4,29));
-        viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), PartGui::ViewProviderPart::shapeInfoCallback);
-     }
+    //if (view) {
+    //    Gui::View3DInventorViewer* viewer = view->getViewer();
+    //    viewer->setEditing(true);
+    //    viewer->getWidget()->setCursor(QCursor(QPixmap(part_pipette),4,29));
+    //    viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), PartGui::ViewProviderPart::shapeInfoCallback);
+    // }
 }
 
 bool CmdShapeInfo::isActive(void)

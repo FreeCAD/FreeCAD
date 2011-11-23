@@ -401,54 +401,6 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* E
     return std::vector<Base::Vector3d>();
 }
 
-void ViewProviderPartExt::shapeInfoCallback(void * ud, SoEventCallback * n)
-{
-    const SoMouseButtonEvent * mbe = (SoMouseButtonEvent *)n->getEvent();
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-
-    // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
-    n->getAction()->setHandled();
-    if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
-        n->setHandled();
-        view->setEditing(false);
-        view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
-        view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), shapeInfoCallback);
-    }
-    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
-        const SoPickedPoint * point = n->getPickedPoint();
-        if (point == NULL) {
-            Base::Console().Message("No point picked.\n");
-            return;
-        }
-
-        n->setHandled();
-
-        // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
-        // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
-        if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderPartExt::getClassTypeId()))
-            return;
-        ViewProviderPartExt* that = static_cast<ViewProviderPartExt*>(vp);
-        TopoDS_Shape sh = that->getShape(point);
-        if (!sh.IsNull()) {
-            SbVec3f pt = point->getPoint();
-            Base::Console().Message("(%.6f, %.6f, %.6f, %d)\n", pt[0], pt[1], pt[2], sh.HashCode(IntegerLast()));
-        }
-    }
-}
-
-TopoDS_Shape ViewProviderPartExt::getShape(const SoPickedPoint* point) const
-{
-    if (point && point->getPath()->getTail()->getTypeId().isDerivedFrom(SoVertexShape::getClassTypeId())) {
-        SoVertexShape* vs = static_cast<SoVertexShape*>(point->getPath()->getTail());
-        std::map<SoVertexShape*, TopoDS_Shape>::const_iterator it = vertexShapeMap.find(vs);
-        if (it != vertexShapeMap.end())
-            return it->second;
-    }
-
-    return TopoDS_Shape();
-}
-
 bool ViewProviderPartExt::loadParameter()
 {
     bool changed = false;

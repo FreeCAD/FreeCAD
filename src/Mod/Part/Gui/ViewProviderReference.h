@@ -78,8 +78,6 @@ public:
     void reload();
 
     virtual void updateData(const App::Property*);
-    TopoDS_Shape getShape(const SoPickedPoint*) const;
-    static void shapeInfoCallback(void * ud, SoEventCallback * n);
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -104,7 +102,6 @@ private:
     bool qualityNormals;
     static App::PropertyFloatConstraint::Constraints floatRange;
     static const char* LightingEnums[];
-    std::map<SoVertexShape*, TopoDS_Shape> vertexShapeMap;
 };
 
 

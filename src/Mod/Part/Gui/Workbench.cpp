@@ -67,7 +67,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Boolean" << "Part_CrossSections" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet"
           << "Part_RuledSurface" << "Part_Loft"
-          << "Part_Builder" << "Separator" << "Part_ShapeInfo";
+          << "Part_Builder";
 
     Gui::MenuItem* partSimple = new Gui::MenuItem;
     root->insertItem(item, partSimple);
@@ -97,7 +97,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
-    *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common" << "Part_Section"/* << "Part_ShapeInfo"*/;
+    *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common" << "Part_Section";
 
     return root;
 }

@@ -89,8 +89,6 @@ public:
     void reload();
 
     virtual void updateData(const App::Property*);
-    TopoDS_Shape getShape(const SoPickedPoint*) const;
-    static void shapeInfoCallback(void * ud, SoEventCallback * n);
 
       /** @name Selection handling
       * This group of methodes do the selection handling.
@@ -145,7 +143,6 @@ private:
     static App::PropertyFloatConstraint::Constraints sizeRange;
     static App::PropertyFloatConstraint::Constraints tessRange;
     static const char* LightingEnums[];
-    std::map<SoVertexShape*, TopoDS_Shape> vertexShapeMap;
 };
 
 }
