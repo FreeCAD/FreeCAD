@@ -168,8 +168,8 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
 QWidget* DockWindowManager::getDockWindow(const char* name) const
 {
     for (QList<QDockWidget*>::ConstIterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
-    if ((*it)->objectName() == QLatin1String(name))
-        return (*it)->widget();
+        if ((*it)->objectName() == QLatin1String(name))
+            return (*it)->widget();
     }
 
     return 0;

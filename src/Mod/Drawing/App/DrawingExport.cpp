@@ -170,23 +170,16 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
         gp_Dir xaxis = ellp.XAxis().Direction();
            
-        Standard_Real angle = xaxis.Angle(gp_Dir(1,0,0));
-        Standard_Real angle2 = xaxis.Angle(gp_Dir(0,1,0));
-        
+        Standard_Real angle = xaxis.AngleWithRef(gp_Dir(1,0,0),gp_Dir(0,0,-1));
         angle = Base::toDegrees<double>(angle);
-        angle2 = Base::toDegrees<double>(angle2);
-        
+
         char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
 
-        if (angle2 > 90) {
-            angle = 180 - angle;
-        }
-        
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r1 << " " << r2 << " "
             << angle << " " << las << " " << swp << " "
-            << e.X() << " " << e.Y() << "\" />" << endl;   
+            << e.X() << " " << e.Y() << "\" />" << std::endl;
     }
 }
 
