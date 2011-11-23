@@ -243,10 +243,6 @@ page = """
             defaultexamples
       </div>
 
-      <div class="block">
-        <h2>""" + text14 + """</h2>
-            webexamples
-      </div>
 
       customblocks
 
@@ -464,7 +460,7 @@ def handle():
         html = html.replace("defaultexamples",getExamples())
 
         # add web examples
-        html = html.replace("webexamples",getWebExamples())
+        #html = html.replace("webexamples",getWebExamples())
 
         # add custom blocks
         html = html.replace("customblocks",getCustomBlocks())
