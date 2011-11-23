@@ -94,9 +94,9 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
         if (adapt.GetType() == GeomAbs_Circle) {
             printCircle(adapt, result);
         }
-        //else if (adapt.GetType() == GeomAbs_Ellipse) {
-        //    printEllipse(adapt, i, result);
-        //}
+        else if (adapt.GetType() == GeomAbs_Ellipse) {
+            printEllipse(adapt, i, result);
+        }
         else if (adapt.GetType() == GeomAbs_BSplineCurve) {
             printBSpline(adapt, i, result);
         }
@@ -159,7 +159,7 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     gp_Vec v2(m,e);
     gp_Vec v3(0,0,1);
     double a = v3.DotCross(v1,v2);
-
+    
     // a full ellipse
     if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
         out << "<ellipse cx =\"" << p.X() << "\" cy =\"" 
@@ -169,14 +169,24 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     else {
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
         gp_Dir xaxis = ellp.XAxis().Direction();
+           
         Standard_Real angle = xaxis.Angle(gp_Dir(1,0,0));
+        Standard_Real angle2 = xaxis.Angle(gp_Dir(0,1,0));
+        
         angle = Base::toDegrees<double>(angle);
+        angle2 = Base::toDegrees<double>(angle2);
+        
         char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
+
+        if (angle2 > 90) {
+            angle = 180 - angle;
+        }
+        
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r1 << " " << r2 << " "
             << angle << " " << las << " " << swp << " "
-            << e.X() << " " << e.Y() << "\" />";
+            << e.X() << " " << e.Y() << "\" />" << endl;   
     }
 }
 
