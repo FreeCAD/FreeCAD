@@ -165,4 +165,7 @@ void ViewProviderImagePlane::updateData(const App::Property* prop)
             texture->image = img;
         }
     }
+    else {
+        Gui::ViewProviderGeometryObject::updateData(prop);
+    }
 }
