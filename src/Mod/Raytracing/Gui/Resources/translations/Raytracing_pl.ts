@@ -6,15 +6,15 @@
     <message>
       <location filename="../../Command.cpp" line="+452"/>
       <source>File</source>
-      <translation>Datei</translation>
+      <translation>Plik</translation>
     </message>
     <message>
       <source>&amp;Export project...</source>
-      <translation>Projekt &amp;exportieren...</translation>
+      <translation>&amp;Export project...</translation>
     </message>
     <message>
       <source>Export the Povray project file</source>
-      <translation>Povray-Projektdatei exportieren</translation>
+      <translation>Eksport pliku projektu Povray</translation>
     </message>
   </context>
   <context>
@@ -25,11 +25,11 @@
     </message>
     <message>
       <source>Insert part</source>
-      <translation>Teil einfügen</translation>
+      <translation>Wstaw część</translation>
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
-      <translation>Ein neues Formteil in ein Povray-Projekt einfügen</translation>
+      <translation>Wstaw nowy obiekt do projektu Povray</translation>
     </message>
   </context>
   <context>
@@ -40,11 +40,11 @@
     </message>
     <message>
       <source>New Povray project</source>
-      <translation>Neues Povray-Projekt</translation>
+      <translation>Nowy projekt Povray</translation>
     </message>
     <message>
       <source>Insert new Povray project into the document</source>
-      <translation>Neues Povray-Projekt in Dokument einfügen</translation>
+      <translation>Wstaw nowy projekt Povray do dokumentu</translation>
     </message>
   </context>
   <context>
@@ -55,11 +55,11 @@
     </message>
     <message>
       <source>Export camera to povray...</source>
-      <translation>Kamera nach Povray exportieren...</translation>
+      <translation>Eksport kamery do Povray...</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation>Kameraposition der aktiven 3D-Ansicht im Povray-Format in eine Datei exportieren</translation>
+      <translation>Eksport kamery aktywnego widoku Povray do pliku</translation>
     </message>
   </context>
   <context>
@@ -70,11 +70,11 @@
     </message>
     <message>
       <source>Export part to povray...</source>
-      <translation>Formteil nach Povray exportieren...</translation>
+      <translation>Eksport obiektu do Povray...</translation>
     </message>
     <message>
       <source>Write the selected Part (object) as a povray file</source>
-      <translation>Selektiertes Formteil in Povray-Datei schreiben</translation>
+      <translation>Zapisz wybrany obiekt jako plik Povray</translation>
     </message>
   </context>
   <context>
@@ -85,46 +85,46 @@
     </message>
     <message>
       <source>Export view to povray...</source>
-      <translation>Ansicht nach Povray exportieren...</translation>
+      <translation>Eksport widoku do Povray...</translation>
     </message>
     <message>
       <source>Write the active 3D view with camera and all its content to a povray file</source>
-      <translation>Aktive 3D-Ansicht mit Kamera und ganzem Inhalt in eine Povray-Datei schreiben</translation>
+      <translation>Zapisz aktywny widok 3D wraz z zawartością do pliku Povray</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Povray(*.pov)</source>
-      <translation>Povray(*.pov)</translation>
+      <translation>Povray (*. pov)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Alle Dateien (*.*)</translation>
+      <translation>Wszystkie pliki (*.*)</translation>
     </message>
     <message>
       <source>Export page</source>
-      <translation>Seite exportieren</translation>
+      <translation>Wyślij stronę</translation>
     </message>
     <message>
       <source>Wrong selection</source>
-      <translation>Falsche Auswahl</translation>
+      <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
       <source>Select a Part object.</source>
-      <translation>Formteil auswählen.</translation>
+      <translation>Wybierz stronę.</translation>
     </message>
     <message>
       <source>No Povray project to insert</source>
-      <translation>Kein Povray-Projekt zum Einfügen</translation>
+      <translation>Brak obiektu Povray do wstawienia</translation>
     </message>
     <message>
       <source>Create a Povray project to insert a view.</source>
-      <translation>Povray-Projekt erstellen, um eine Ansicht einzufügen.</translation>
+      <translation>Utwórz projekt Povray aby wstawić widok</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>
-      <translation>Wählen Sie ein Povray-Projekt aus.</translation>
+      <translation>Wybierz jeden obiekt projektu Povray</translation>
     </message>
   </context>
   <context>
@@ -136,19 +136,19 @@
     </message>
     <message>
       <source>Directories</source>
-      <translation>Verzeichnisse</translation>
+      <translation>Foldery:</translation>
     </message>
     <message>
       <source>Default Project dir:</source>
-      <translation>Standard-Projektverzeichnis:</translation>
+      <translation>Domyślny folder Projektu:</translation>
     </message>
     <message>
       <source>Camera file name:</source>
-      <translation>Kamera-Dateiname:</translation>
+      <translation>Nazwa pliku Kamery:</translation>
     </message>
     <message>
       <source>Part file name:</source>
-      <translation>Formteil-Dateiname:</translation>
+      <translation>Nazwa pliku Obiektu:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
@@ -160,19 +160,19 @@
     </message>
     <message>
       <source>Mesh export settings</source>
-      <translation>Mesh-Exporteinstellungen</translation>
+      <translation>Ustawienia eksportu siatki</translation>
     </message>
     <message>
       <source>max mesh deviation:</source>
-      <translation>max. Mesh-Abweichung:</translation>
+      <translation>Max. odchylenie siatki:</translation>
     </message>
     <message>
       <source>Do not calculate vertex normals</source>
-      <translation>Vertexnormalen nicht berechnen</translation>
+      <translation>Nie przeliczaj 'normalnych' wierzchołków</translation>
     </message>
     <message>
       <source>Write u,v coordinates</source>
-      <translation>U, V-Koordinaten schreiben</translation>
+      <translation>Zapisz współrzędne U,V</translation>
     </message>
   </context>
   <context>
@@ -180,7 +180,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
   </context>
 </TS>

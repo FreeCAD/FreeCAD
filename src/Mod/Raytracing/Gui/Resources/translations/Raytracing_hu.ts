@@ -6,90 +6,90 @@
     <message>
       <location filename="../../Command.cpp" line="+452"/>
       <source>File</source>
-      <translation>Datei</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Export project...</source>
-      <translation>Projekt &amp;exportieren...</translation>
+      <translation>&amp;Export projekt ...</translation>
     </message>
     <message>
       <source>Export the Povray project file</source>
-      <translation>Povray-Projektdatei exportieren</translation>
+      <translation>Povray-project fájl exportálása</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Sugárkövetés</translation>
     </message>
     <message>
       <source>Insert part</source>
-      <translation>Teil einfügen</translation>
+      <translation>Alkatrész beillesztése</translation>
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
-      <translation>Ein neues Formteil in ein Povray-Projekt einfügen</translation>
+      <translation>Új alkatrész objektum beillesztése egy Povray pojekt-be</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Sugárkövetés</translation>
     </message>
     <message>
       <source>New Povray project</source>
-      <translation>Neues Povray-Projekt</translation>
+      <translation>Új Povray projekt</translation>
     </message>
     <message>
       <source>Insert new Povray project into the document</source>
-      <translation>Neues Povray-Projekt in Dokument einfügen</translation>
+      <translation>Új Povray projekt beszúrása a dokumentumba</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Sugárkövetés</translation>
     </message>
     <message>
       <source>Export camera to povray...</source>
-      <translation>Kamera nach Povray exportieren...</translation>
+      <translation>Kamera exportálása Povray-be...</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation>Kameraposition der aktiven 3D-Ansicht im Povray-Format in eine Datei exportieren</translation>
+      <translation>Az aktuális 3D-s nézet kamera pozícióját exportálja Povray formában egy fájlba</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWritePart</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Sugárkövetés</translation>
     </message>
     <message>
       <source>Export part to povray...</source>
-      <translation>Formteil nach Povray exportieren...</translation>
+      <translation>Alkatrész exportálása Povray-be ...</translation>
     </message>
     <message>
       <source>Write the selected Part (object) as a povray file</source>
-      <translation>Selektiertes Formteil in Povray-Datei schreiben</translation>
+      <translation>A kijelölt alkatrész (objektum) kiírása egy povray-fájlként</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteView</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Sugárkövetés</translation>
     </message>
     <message>
       <source>Export view to povray...</source>
-      <translation>Ansicht nach Povray exportieren...</translation>
+      <translation>Nézet exportálása povray-be...</translation>
     </message>
     <message>
       <source>Write the active 3D view with camera and all its content to a povray file</source>
-      <translation>Aktive 3D-Ansicht mit Kamera und ganzem Inhalt in eine Povray-Datei schreiben</translation>
+      <translation>Az aktuális 3D nézet minden tartalmának írása egy Povray fájlba</translation>
     </message>
   </context>
   <context>
@@ -100,31 +100,31 @@
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Alle Dateien (*.*)</translation>
+      <translation>Minden fájl (*.*)</translation>
     </message>
     <message>
       <source>Export page</source>
-      <translation>Seite exportieren</translation>
+      <translation>Oldal exportálása</translation>
     </message>
     <message>
       <source>Wrong selection</source>
-      <translation>Falsche Auswahl</translation>
+      <translation>Rossz választás</translation>
     </message>
     <message>
       <source>Select a Part object.</source>
-      <translation>Formteil auswählen.</translation>
+      <translation>Válasszon ki egy alkatrész objektumot.</translation>
     </message>
     <message>
       <source>No Povray project to insert</source>
-      <translation>Kein Povray-Projekt zum Einfügen</translation>
+      <translation>Nem Povray projekt beszúrása</translation>
     </message>
     <message>
       <source>Create a Povray project to insert a view.</source>
-      <translation>Povray-Projekt erstellen, um eine Ansicht einzufügen.</translation>
+      <translation>Hozzon létre egy Povray kivetítést a nézet beszúrás érdekében.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>
-      <translation>Wählen Sie ein Povray-Projekt aus.</translation>
+      <translation>Válasszon ki egy Povray terv objektumot.</translation>
     </message>
   </context>
   <context>
@@ -132,23 +132,23 @@
     <message>
       <location filename="../../DlgSettingsRay.ui" line="+16"/>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Sugárkövetés</translation>
     </message>
     <message>
       <source>Directories</source>
-      <translation>Verzeichnisse</translation>
+      <translation>Könyvtárak</translation>
     </message>
     <message>
       <source>Default Project dir:</source>
-      <translation>Standard-Projektverzeichnis:</translation>
+      <translation>Alapértelmezett projekt könyvtár:</translation>
     </message>
     <message>
       <source>Camera file name:</source>
-      <translation>Kamera-Dateiname:</translation>
+      <translation>Kamera fájl neve:</translation>
     </message>
     <message>
       <source>Part file name:</source>
-      <translation>Formteil-Dateiname:</translation>
+      <translation>Alkatrész fájlnév:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
@@ -160,19 +160,19 @@
     </message>
     <message>
       <source>Mesh export settings</source>
-      <translation>Mesh-Exporteinstellungen</translation>
+      <translation>Háló objektum beállítások</translation>
     </message>
     <message>
       <source>max mesh deviation:</source>
-      <translation>max. Mesh-Abweichung:</translation>
+      <translation>Max. háló eltérés:</translation>
     </message>
     <message>
       <source>Do not calculate vertex normals</source>
-      <translation>Vertexnormalen nicht berechnen</translation>
+      <translation>Nem számítson vertex helyzetet</translation>
     </message>
     <message>
       <source>Write u,v coordinates</source>
-      <translation>U, V-Koordinaten schreiben</translation>
+      <translation>u,v-koordináták írása</translation>
     </message>
   </context>
   <context>
@@ -180,7 +180,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+      <translation>Sugáriánynyomvonal</translation>
     </message>
   </context>
 </TS>
