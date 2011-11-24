@@ -6,15 +6,15 @@
     <message>
       <location filename="../../Command.cpp" line="+46"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>siatka</translation>
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Create mesh from shape...</translation>
+      <translation>Utwórz siatkę z obwiedni...</translation>
     </message>
     <message>
       <source>Tessellate shape</source>
-      <translation>Tessellate shape</translation>
+      <translation>Tesselacja obwiedni</translation>
     </message>
   </context>
   <context>
@@ -22,32 +22,32 @@
     <message>
       <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Tessellation</translation>
+      <translation>Tesselacja</translation>
     </message>
     <message>
       <source>Shapes</source>
-      <translation>Vormen</translation>
+      <translation>Kształty</translation>
     </message>
     <message>
       <source>Settings</source>
-      <translation>Instellingen</translation>
+      <translation>Ustawienia</translation>
     </message>
     <message>
       <source>Surface deviation:</source>
-      <translation>Oppervlakte-afwijking:</translation>
+      <translation>Odchylenie powierzchni</translation>
     </message>
     <message>
       <source>Max. edge length:</source>
-      <translation>Max. randlengte:</translation>
+      <translation>Max. Długość krawędzi:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Selecteer eerst een vorm voor rasteren</translation>
+      <translation>Zaznacz najpierw obwiednię w celu utworzenia siatki</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
-      <translation>Geen dergelijk document '%1'.</translation>
+      <translation>Brak dokumentu '%1'.</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
-      <translation>Net-onderdeel</translation>
+      <translation>Składnik_Siatki</translation>
     </message>
   </context>
 </TS>

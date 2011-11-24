@@ -4,63 +4,56 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+46"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Create mesh from shape...</source>
-      <translation>Create mesh from shape...</translation>
+      <translation>Skep 'n maas van die vorm ...</translation>
     </message>
     <message>
-      <location/>
       <source>Tessellate shape</source>
-      <translation>Tessellate shape</translation>
+      <translation>Tesselleer die vorm</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location/>
+      <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Tessellation</translation>
+      <translation>Tessellasie</translation>
     </message>
     <message>
-      <location/>
       <source>Shapes</source>
-      <translation>Shapes</translation>
+      <translation>Vorms</translation>
     </message>
     <message>
-      <location/>
       <source>Settings</source>
-      <translation>Settings</translation>
+      <translation>Instellings</translation>
     </message>
     <message>
-      <location/>
       <source>Surface deviation:</source>
-      <translation>Surface deviation:</translation>
+      <translation>Oppervlakafwyking:</translation>
     </message>
     <message>
-      <location/>
       <source>Max. edge length:</source>
-      <translation>Max. edge length:</translation>
+      <translation>Maks kantlengte:</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Select a shape for meshing, first.</translation>
+      <translation>Kies eers 'n vorm om te omskep in 'n maas.</translation>
     </message>
     <message>
-      <location/>
       <source>No such document '%1'.</source>
-      <translation>No such document '%1'.</translation>
+      <translation>Dokument bestaan nie '%1'.</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
       <translation>MaasOnderdeel</translation>
     </message>

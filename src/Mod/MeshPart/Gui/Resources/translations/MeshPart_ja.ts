@@ -26,28 +26,28 @@
     </message>
     <message>
       <source>Shapes</source>
-      <translation>Vormen</translation>
+      <translation>Shapes</translation>
     </message>
     <message>
       <source>Settings</source>
-      <translation>Instellingen</translation>
+      <translation>Settings</translation>
     </message>
     <message>
       <source>Surface deviation:</source>
-      <translation>Oppervlakte-afwijking:</translation>
+      <translation>Surface deviation:</translation>
     </message>
     <message>
       <source>Max. edge length:</source>
-      <translation>Max. randlengte:</translation>
+      <translation>Max. edge length:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Selecteer eerst een vorm voor rasteren</translation>
+      <translation>Select a shape for meshing, first.</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
-      <translation>Geen dergelijk document '%1'.</translation>
+      <translation>No such document '%1'.</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
-      <translation>Net-onderdeel</translation>
+      <translation>MeshPart</translation>
     </message>
   </context>
 </TS>

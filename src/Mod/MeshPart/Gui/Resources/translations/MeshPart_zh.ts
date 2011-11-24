@@ -4,55 +4,48 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+46"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location/>
       <source>Create mesh from shape...</source>
-      <translation>从形状创建网格...</translation>
+      <translation>从形体创建网格...</translation>
     </message>
     <message>
-      <location/>
       <source>Tessellate shape</source>
-      <translation>嵌饰形状</translation>
+      <translation>细分形状</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location/>
+      <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>嵌饰</translation>
+      <translation>曲面细分</translation>
     </message>
     <message>
-      <location/>
       <source>Shapes</source>
       <translation>形状</translation>
     </message>
     <message>
-      <location/>
       <source>Settings</source>
       <translation>设置</translation>
     </message>
     <message>
-      <location/>
       <source>Surface deviation:</source>
-      <translation>表面偏差：</translation>
+      <translation>表面偏差:</translation>
     </message>
     <message>
-      <location/>
       <source>Max. edge length:</source>
-      <translation>最大边缘长度：</translation>
+      <translation>最大边长:</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>请先选择需要网格化的形状。</translation>
+      <translation>请先选择需要网格化的形状.</translation>
     </message>
     <message>
-      <location/>
       <source>No such document '%1'.</source>
       <translation>无此文档 '%1'。</translation>
     </message>
@@ -60,9 +53,9 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
-      <translation>网格部件</translation>
+      <translation>网格零件</translation>
     </message>
   </context>
 </TS>

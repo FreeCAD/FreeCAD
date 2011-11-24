@@ -4,55 +4,48 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+46"/>
       <source>Mesh</source>
-      <translation>Maille</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
-      <location/>
       <source>Create mesh from shape...</source>
-      <translation>Créer une maille a partir d'une forme...</translation>
+      <translation>Créer un maillage à partir d'une forme...</translation>
     </message>
     <message>
-      <location/>
       <source>Tessellate shape</source>
-      <translation>Polygonaliser une forme</translation>
+      <translation>Tessellation de la forme</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location/>
+      <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Polygonalisation</translation>
+      <translation>Tessellation</translation>
     </message>
     <message>
-      <location/>
       <source>Shapes</source>
       <translation>Formes</translation>
     </message>
     <message>
-      <location/>
       <source>Settings</source>
-      <translation>Configuration</translation>
+      <translation>Réglages</translation>
     </message>
     <message>
-      <location/>
       <source>Surface deviation:</source>
-      <translation>Déviation de surface:</translation>
+      <translation>Déviation de surface :</translation>
     </message>
     <message>
-      <location/>
       <source>Max. edge length:</source>
-      <translation>Longueur maximale d'arête:</translation>
+      <translation>Longueur maximale d'arête :</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Sélectionner d'abord une forme pour le maillage.</translation>
     </message>
     <message>
-      <location/>
       <source>No such document '%1'.</source>
       <translation>Aucun document '%1'.</translation>
     </message>
@@ -60,7 +53,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
       <translation>Maillage</translation>
     </message>

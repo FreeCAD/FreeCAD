@@ -4,65 +4,58 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+46"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Сетка</translation>
     </message>
     <message>
-      <location/>
       <source>Create mesh from shape...</source>
-      <translation>Create mesh from shape...</translation>
+      <translation>Создайте сетку из фигуры...</translation>
     </message>
     <message>
-      <location/>
       <source>Tessellate shape</source>
-      <translation>Tessellate shape</translation>
+      <translation>Мозаика из фигуры</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location/>
+      <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Tessellation</translation>
+      <translation>Мозаика</translation>
     </message>
     <message>
-      <location/>
       <source>Shapes</source>
-      <translation>Shapes</translation>
+      <translation>Фигуры</translation>
     </message>
     <message>
-      <location/>
       <source>Settings</source>
-      <translation>Settings</translation>
+      <translation>Настройки</translation>
     </message>
     <message>
-      <location/>
       <source>Surface deviation:</source>
-      <translation>Surface deviation:</translation>
+      <translation>Отклонение поверхности:</translation>
     </message>
     <message>
-      <location/>
       <source>Max. edge length:</source>
-      <translation>Max. edge length:</translation>
+      <translation>Макс. длина ребра:</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Select a shape for meshing, first.</translation>
+      <translation>Сначала выберите форму для слияния.</translation>
     </message>
     <message>
-      <location/>
       <source>No such document '%1'.</source>
-      <translation>No such document '%1'.</translation>
+      <translation>Нет такого документа '%1'.</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
-      <translation>MeshPart</translation>
+      <translation>Деталь Сетки</translation>
     </message>
   </context>
 </TS>
