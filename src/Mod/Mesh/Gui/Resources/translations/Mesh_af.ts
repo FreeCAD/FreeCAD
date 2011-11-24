@@ -4,998 +4,747 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Add triangle</source>
-      <translation>Add triangle</translation>
+      <translation>Voeg driehoek by</translation>
     </message>
     <message>
-      <location/>
       <source>Add triangle manually to a mesh</source>
-      <translation>Add triangle manually to a mesh</translation>
+      <translation>Voeg driehoek self by die maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Boundings info...</source>
-      <translation>Boundings info...</translation>
+      <translation>Begrensings informasie ...</translation>
     </message>
     <message>
-      <location/>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Shows the boundings of the selected mesh</translation>
+      <translation>Wys die begrensings van die gekose maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Regular solid...</source>
-      <translation>Regular solid...</translation>
+      <translation>Tipiese soliede liggaam ...</translation>
     </message>
     <message>
-      <location/>
       <source>Builds a regular solid</source>
-      <translation>Builds a regular solid</translation>
+      <translation>Skep 'n soliede liggaam</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDemolding</name>
     <message>
-      <location/>
       <source>Interactive demolding direction</source>
-      <translation>Interactive demolding direction</translation>
+      <translation>Interaktiewe ontgietingsrigting</translation>
     </message>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Difference</source>
-      <translation>Difference</translation>
+      <translation>Verskil</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Face info</source>
-      <translation>Face info</translation>
+      <translation>Vlakinformasie</translation>
     </message>
     <message>
-      <location/>
       <source>Information about face</source>
-      <translation>Information about face</translation>
+      <translation>Informasie oor die vlak</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Check solid mesh</source>
-      <translation>Check solid mesh</translation>
+      <translation>Kontroleer soliede maas</translation>
     </message>
     <message>
-      <location/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Checks whether the mesh is a solid</translation>
+      <translation>Kontroleer of die maas 'n soliede is</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
-      <source>Evaluate mesh...</source>
-      <translation>Evaluate mesh...</translation>
-    </message>
-    <message>
-      <location/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Opens a dialog to analyze and repair a mesh</translation>
+      <translation>Maak 'n dialoog oop om 'n maas te ontleed en herstel</translation>
     </message>
     <message>
-      <location/>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Evaluate &amp;&amp; Repair mesh...</translation>
+      <translation>Evalueer en herstel maas...</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Make a Box</source>
-      <translation>Make a Box</translation>
+      <translation>Maak 'n boks</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeTool</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Make a Tool</source>
-      <translation>Make a Tool</translation>
+      <translation>Maak 'n werktuig</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeUnion</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Make Union</source>
-      <translation>Make Union</translation>
+      <translation>Maak unie</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Export mesh...</source>
-      <translation>Export mesh...</translation>
+      <translation>Voer maas uit ...</translation>
     </message>
     <message>
-      <location/>
       <source>Exports a mesh to file</source>
-      <translation>Exports a mesh to file</translation>
+      <translation>Voer maas uit na lêer</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Close hole</source>
-      <translation>Close hole</translation>
+      <translation>Vul gaping</translation>
     </message>
     <message>
-      <location/>
       <source>Close holes interactively</source>
-      <translation>Close holes interactively</translation>
+      <translation>Vul gapings interaktief</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Fill holes...</source>
-      <translation>Fill holes...</translation>
+      <translation>Vul gapings ...</translation>
     </message>
     <message>
-      <location/>
       <source>Fill holes of the mesh</source>
-      <translation>Fill holes of the mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshFixDegenerations</name>
-    <message>
-      <location/>
-      <source>Mesh</source>
-      <translation>Mesh</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Remove degenerated faces</source>
-      <translation>Remove degenerated faces</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Remove degenerated faces from the mesh</source>
-      <translation>Remove degenerated faces from the mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshFixDuplicateFaces</name>
-    <message>
-      <location/>
-      <source>Mesh</source>
-      <translation>Mesh</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Remove duplicated faces</source>
-      <translation>Remove duplicated faces</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Remove duplicated faces from the mesh</source>
-      <translation>Remove duplicated faces from the mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshFixDuplicatePoints</name>
-    <message>
-      <location/>
-      <source>Mesh</source>
-      <translation>Mesh</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Remove duplicated points</source>
-      <translation>Remove duplicated points</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Remove duplicated points from the mesh</source>
-      <translation>Remove duplicated points from the mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshFixIndices</name>
-    <message>
-      <location/>
-      <source>Mesh</source>
-      <translation>Mesh</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Fix indices</source>
-      <translation>Fix indices</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Fixes invalid indices in the mesh structure</source>
-      <translation>Fixes invalid indices in the mesh structure</translation>
+      <translation>Vul gapings in die maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Flip normals</source>
-      <translation>Flip normals</translation>
+      <translation>Keer normaallyne om</translation>
     </message>
     <message>
-      <location/>
       <source>Flips the normals of the mesh</source>
-      <translation>Flips the normals of the mesh</translation>
+      <translation>Keer die maas se normaallyne om</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Create mesh from geometry...</source>
-      <translation>Create mesh from geometry...</translation>
+      <translation>Skep 'n maas van 'n vorm ...</translation>
     </message>
     <message>
-      <location/>
       <source>Create mesh from the selected geometry</source>
-      <translation>Create mesh from the selected geometry</translation>
+      <translation>Skep maas van die gekose vorm</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Harmonize normals</source>
-      <translation>Harmonize normals</translation>
+      <translation>Harmoniseer normaallyne</translation>
     </message>
     <message>
-      <location/>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Harmonizes the normals of the mesh</translation>
+      <translation>Harmoniseer die normaallyne van die maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Import mesh...</source>
-      <translation>Import mesh...</translation>
+      <translation>Voer maas in ...</translation>
     </message>
     <message>
-      <location/>
       <source>Imports a mesh from file</source>
-      <translation>Imports a mesh from file</translation>
+      <translation>Voer 'n maas in van 'n lêer</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Intersection</source>
-      <translation>Intersection</translation>
+      <translation>Snyding</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Cut mesh</source>
-      <translation>Cut mesh</translation>
+      <translation>Sny maas</translation>
     </message>
     <message>
-      <location/>
       <source>Cuts a mesh with a picked polygon</source>
-      <translation>Cuts a mesh with a picked polygon</translation>
+      <translation>Sny 'n maas met 'n gekose veelhoek</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Make segment</source>
-      <translation>Make segment</translation>
+      <translation>Maak segment</translation>
     </message>
     <message>
-      <location/>
       <source>Creates a mesh segment</source>
-      <translation>Creates a mesh segment</translation>
+      <translation>Skep 'n maassegment</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySelect</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Select mesh</source>
-      <translation>Select mesh</translation>
+      <translation>Kies maas</translation>
     </message>
     <message>
-      <location/>
       <source>Select an area of the mesh</source>
-      <translation>Select an area of the mesh</translation>
+      <translation>Kies 'n gedeelte van die maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Split mesh</source>
-      <translation>Split mesh</translation>
+      <translation>Verdeel 'n maas</translation>
     </message>
     <message>
-      <location/>
       <source>Splits a mesh into two meshes</source>
-      <translation>Splits a mesh into two meshes</translation>
+      <translation>Verdeel 'n maas in twee mase</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Remove components by hand...</source>
-      <translation>Remove components by hand...</translation>
+      <translation>Verwyder komponente met die hand ...</translation>
     </message>
     <message>
-      <location/>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Mark a component to remove it from the mesh</translation>
+      <translation>Merk 'n komponent om dit te verwyder uit die maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Remove components...</source>
-      <translation>Remove components...</translation>
+      <translation>Verwyder komponente ...</translation>
     </message>
     <message>
-      <location/>
-      <source>Remove topologic independant components from the mesh</source>
-      <translation>Remove topologic independant components from the mesh</translation>
+      <source>Remove topologic independent components from the mesh</source>
+      <translation>Remove topologic independent components from the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Smooth...</source>
-      <translation>Smooth...</translation>
+      <translation>Stryk ...</translation>
     </message>
     <message>
-      <location/>
       <source>Smooth the selected meshes</source>
-      <translation>Smooth the selected meshes</translation>
+      <translation>Stryk die geselekteerde mase se oppervlakke uit</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshToolMesh</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Segment by tool mesh</source>
-      <translation>Segment by tool mesh</translation>
+      <translation>Segmenteer met 'n maaswerktuig</translation>
     </message>
     <message>
-      <location/>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Creates a segment from a given tool mesh</translation>
+      <translation>Skep 'n segment van 'n gegewe maaswerktuig</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshTransform</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Transform mesh</source>
-      <translation>Transform mesh</translation>
+      <translation>Transformeer maas</translation>
     </message>
     <message>
-      <location/>
       <source>Rotate or move a mesh</source>
-      <translation>Rotate or move a mesh</translation>
+      <translation>Draai of skuif 'n maas</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshUnion</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Union</source>
-      <translation>Union</translation>
+      <translation>Vereniging</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Calculates the curvature of the vertices of a mesh</translation>
+      <translation>Bereken die kromming van die hoekpunte van 'n maas</translation>
     </message>
     <message>
-      <location/>
       <source>Curvature plot</source>
-      <translation>Curvature plot</translation>
+      <translation>Krommingplot</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Curvature info</source>
-      <translation>Curvature info</translation>
+      <translation>Kromminginformasie</translation>
     </message>
     <message>
-      <location/>
       <source>Information about curvature</source>
-      <translation>Information about curvature</translation>
-    </message>
-  </context>
-  <context>
-    <name>DockEvaluateMeshImp</name>
-    <message>
-      <location/>
-      <source>Evaluate Mesh</source>
-      <translation>Evaluate Mesh</translation>
+      <translation>Inligting oor die kromming</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
-      <location/>
-      <source>Evaluate Mesh</source>
-      <translation>Evaluate Mesh</translation>
-    </message>
-    <message>
-      <location/>
       <source>&amp;Help</source>
-      <translation>&amp;Help</translation>
+      <translation>&amp;Hulp</translation>
     </message>
     <message>
-      <location/>
       <source>F1</source>
       <translation>F1</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Close</source>
-      <translation>&amp;Close</translation>
+      <translation>&amp;MaakToe</translation>
     </message>
     <message>
-      <location/>
       <source>Alt+C</source>
       <translation>Alt+C</translation>
     </message>
     <message>
-      <location/>
       <source>Mesh information</source>
-      <translation>Mesh information</translation>
+      <translation>Maas inligting</translation>
     </message>
     <message>
-      <location/>
       <source>No information</source>
-      <translation>No information</translation>
+      <translation>Geen inligting</translation>
     </message>
     <message>
-      <location/>
       <source>Number of points:</source>
-      <translation>Number of points:</translation>
+      <translation>Aantal punte:</translation>
     </message>
     <message>
-      <location/>
       <source>Number of edges:</source>
-      <translation>Number of edges:</translation>
+      <translation>Aantal kante:</translation>
     </message>
     <message>
-      <location/>
       <source>Refresh</source>
-      <translation>Refresh</translation>
+      <translation>Verfris</translation>
     </message>
     <message>
-      <location/>
       <source>Analyze</source>
-      <translation>Analyze</translation>
+      <translation>Ontleed</translation>
     </message>
     <message>
-      <location/>
       <source>Repair</source>
-      <translation>Repair</translation>
+      <translation>Herstel</translation>
     </message>
     <message>
-      <location/>
       <source>Orientation</source>
-      <translation>Orientation</translation>
+      <translation>Oriëntasie</translation>
     </message>
     <message>
-      <location/>
       <source>Degenerated faces</source>
-      <translation>Degenerated faces</translation>
+      <translation>Vervalle vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>Face indices</source>
-      <translation>Face indices</translation>
+      <translation>Vlakindekse</translation>
     </message>
     <message>
-      <location/>
       <source>Number of faces:</source>
-      <translation>Number of faces:</translation>
+      <translation>Aantal vlakke:</translation>
     </message>
     <message>
-      <location/>
       <source>Duplicated faces</source>
-      <translation>Duplicated faces</translation>
+      <translation>Herhaalde vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>Duplicated points</source>
-      <translation>Duplicated points</translation>
+      <translation>Herhaalde punte</translation>
     </message>
     <message>
-      <location/>
       <source>Non-manifolds</source>
-      <translation>Non-manifolds</translation>
+      <translation>Nie-menigvoude</translation>
     </message>
     <message>
-      <location/>
       <source>Self-intersections</source>
-      <translation>Self-intersections</translation>
+      <translation>Self-snydings</translation>
     </message>
     <message>
-      <location/>
       <source>All above tests together</source>
-      <translation>All above tests together</translation>
+      <translation>Al die bogenoemde toetse saam</translation>
     </message>
     <message>
-      <location/>
       <source>Repetitive repair</source>
-      <translation>Repetitive repair</translation>
+      <translation>Herhalende herstelling</translation>
     </message>
     <message>
-      <location/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
+      <translation>Evalueer en herstel maas</translation>
     </message>
     <message>
-      <location/>
       <source>Folds on surface</source>
-      <translation>Folds on surface</translation>
+      <translation>Voue op die oppervlak</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location/>
       <source>No information</source>
-      <translation>No information</translation>
+      <translation>Geen inligting</translation>
     </message>
     <message>
-      <location/>
       <source>Invalid neighbour indices</source>
-      <translation>Invalid neighbour indices</translation>
+      <translation>Ongeldige buurindekse</translation>
     </message>
     <message>
-      <location/>
       <source>Invalid face indices</source>
-      <translation>Invalid face indices</translation>
+      <translation>Ongeldige vlakindekse</translation>
     </message>
     <message>
-      <location/>
       <source>Invalid point indices</source>
-      <translation>Invalid point indices</translation>
+      <translation>Ongeldige puntindekse</translation>
     </message>
     <message>
-      <location/>
       <source>Multiple point indices</source>
-      <translation>Multiple point indices</translation>
+      <translation>Veelvuldige puntindekse</translation>
     </message>
     <message>
-      <location/>
       <source>Non-manifolds</source>
-      <translation>Non-manifolds</translation>
+      <translation>Nie-menigvoude</translation>
     </message>
     <message>
-      <location/>
       <source>Cannot remove non-manifolds</source>
-      <translation>Cannot remove non-manifolds</translation>
+      <translation>Kan nie nie-menigvoude verwyder nie</translation>
     </message>
     <message>
-      <location/>
       <source>No selection</source>
-      <translation>No selection</translation>
+      <translation>Geen keuse</translation>
     </message>
     <message>
-      <location/>
       <source>No flipped normals</source>
-      <translation>No flipped normals</translation>
+      <translation>Geen omgekeerde normaallyne nie</translation>
     </message>
     <message>
-      <location/>
       <source>%1 flipped normals</source>
-      <translation>%1 flipped normals</translation>
+      <translation>%1 omgekeerde normaallyne</translation>
     </message>
     <message>
-      <location/>
       <source>No non-manifolds</source>
-      <translation>No non-manifolds</translation>
+      <translation>Geen nie-menigvoude nie</translation>
     </message>
     <message>
-      <location/>
       <source>%1 non-manifolds</source>
-      <translation>%1 non-manifolds</translation>
+      <translation>%1 nie-menigvoude</translation>
     </message>
     <message>
-      <location/>
       <source>No invalid indices</source>
-      <translation>No invalid indices</translation>
+      <translation>Geen ongeldige indekse</translation>
     </message>
     <message>
-      <location/>
       <source>No degenerations</source>
-      <translation>No degenerations</translation>
+      <translation>Geen vervallings</translation>
     </message>
     <message>
-      <location/>
       <source>%1 degenerated faces</source>
-      <translation>%1 degenerated faces</translation>
+      <translation>%1 vervalle vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>No duplicated faces</source>
-      <translation>No duplicated faces</translation>
+      <translation>Geen herhaalde vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>%1 duplicated faces</source>
-      <translation>%1 duplicated faces</translation>
+      <translation>%1 herhaalde vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>No duplicated points</source>
-      <translation>No duplicated points</translation>
+      <translation>Geen herhaalde punte nie</translation>
     </message>
     <message>
-      <location/>
       <source>Duplicated points</source>
-      <translation>Duplicated points</translation>
+      <translation>Herhaalde punte</translation>
     </message>
     <message>
-      <location/>
       <source>Orientation</source>
-      <translation>Orientation</translation>
+      <translation>Oriëntasie</translation>
     </message>
     <message>
-      <location/>
       <source>Indices</source>
-      <translation>Indices</translation>
+      <translation>Indekse</translation>
     </message>
     <message>
-      <location/>
       <source>Degenerations</source>
-      <translation>Degenerations</translation>
+      <translation>Vervallings</translation>
     </message>
     <message>
-      <location/>
       <source>Duplicated faces</source>
-      <translation>Duplicated faces</translation>
+      <translation>Herhaalde vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>No self-intersections</source>
-      <translation>No self-intersections</translation>
+      <translation>Geen selfsnydings</translation>
     </message>
     <message>
-      <location/>
       <source>Self-intersections</source>
-      <translation>Self-intersections</translation>
+      <translation>Self-snydings</translation>
     </message>
     <message>
-      <location/>
       <source>Mesh repair</source>
-      <translation>Mesh repair</translation>
+      <translation>Maasherstelling</translation>
     </message>
     <message>
-      <location/>
       <source>Flipped normals found</source>
-      <translation>Flipped normals found</translation>
+      <translation>Omgekeerde normaallyne gevind</translation>
     </message>
     <message>
-      <location/>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation>Check failed due to folds on the surface.
-Please run the command to repair folds first</translation>
+      <translation>Kontrole het misluk weens voue op die oppervlak. 
+Gee eers die opdrag om die voue te herstel</translation>
     </message>
     <message>
-      <location/>
       <source>No folds on surface</source>
-      <translation>No folds on surface</translation>
+      <translation>Geen voue op die oppervlak</translation>
     </message>
     <message>
-      <location/>
       <source>%1 folds on surface</source>
-      <translation>%1 folds on surface</translation>
+      <translation>%1 voue op die oppervlak</translation>
     </message>
     <message>
-      <location/>
       <source>Folds</source>
-      <translation>Folds</translation>
+      <translation>Voue</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgRegularSolid</name>
     <message>
-      <location/>
       <source>Regular Solid</source>
-      <translation>Regular Solid</translation>
+      <translation>Tipiese Soliede</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Create</source>
-      <translation>&amp;Create</translation>
+      <translation>&amp;Skep</translation>
     </message>
     <message>
-      <location/>
       <source>Alt+C</source>
       <translation>Alt+C</translation>
     </message>
     <message>
-      <location/>
       <source>Cl&amp;ose</source>
-      <translation>Cl&amp;ose</translation>
+      <translation>&amp;MaakToe</translation>
     </message>
     <message>
-      <location/>
       <source>Alt+O</source>
       <translation>Alt+O</translation>
     </message>
     <message>
-      <location/>
       <source>Solid:</source>
-      <translation>Solid:</translation>
+      <translation>Soliede:</translation>
     </message>
     <message>
-      <location/>
       <source>Cube</source>
-      <translation>Cube</translation>
+      <translation>Kubus</translation>
     </message>
     <message>
-      <location/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Silinder</translation>
     </message>
     <message>
-      <location/>
       <source>Cone</source>
-      <translation>Cone</translation>
+      <translation>Keël</translation>
     </message>
     <message>
-      <location/>
       <source>Sphere</source>
-      <translation>Sphere</translation>
+      <translation>Sfeer</translation>
     </message>
     <message>
-      <location/>
       <source>Ellipsoid</source>
-      <translation>Ellipsoid</translation>
+      <translation>Ellipsoïed</translation>
     </message>
     <message>
-      <location/>
       <source>Torus</source>
       <translation>Torus</translation>
     </message>
     <message>
-      <location/>
       <source>Height:</source>
-      <translation>Height:</translation>
+      <translation>Hoogte:</translation>
     </message>
     <message>
-      <location/>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>Lengte:</translation>
     </message>
     <message>
-      <location/>
       <source>Width:</source>
-      <translation>Width:</translation>
+      <translation>Wydte:</translation>
     </message>
     <message>
-      <location/>
       <source>Radius:</source>
       <translation>Radius:</translation>
     </message>
     <message>
-      <location/>
       <source>Closed</source>
-      <translation>Closed</translation>
+      <translation>Gesluit</translation>
     </message>
     <message>
-      <location/>
       <source>Sampling:</source>
-      <translation>Sampling:</translation>
+      <translation>Steekproefneming:</translation>
     </message>
     <message>
-      <location/>
       <source>Edge length:</source>
-      <translation>Edge length:</translation>
+      <translation>Kantlengte:</translation>
     </message>
     <message>
-      <location/>
       <source>Radius 1:</source>
       <translation>Radius 1:</translation>
     </message>
     <message>
-      <location/>
       <source>Radius 2:</source>
       <translation>Radius 2:</translation>
     </message>
@@ -1003,520 +752,372 @@ Please run the command to repair folds first</translation>
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location/>
       <source>Create %1</source>
-      <translation>Create %1</translation>
+      <translation>Skep %1</translation>
     </message>
     <message>
-      <location/>
       <source>No active document</source>
-      <translation>No active document</translation>
+      <translation>Geen aktiewe dokument</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
-      <location/>
       <source>Mesh view</source>
-      <translation>Mesh view</translation>
+      <translation>Maasaansig</translation>
     </message>
     <message>
-      <location/>
-      <source>Appearance</source>
-      <translation>Appearance</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Face color</source>
-      <translation>Face color</translation>
-    </message>
-    <message>
-      <location/>
       <source>Two-side rendering</source>
-      <translation>Two-side rendering</translation>
+      <translation>Tweekantige vorming</translation>
     </message>
     <message>
-      <location/>
       <source>Backface color</source>
-      <translation>Backface color</translation>
+      <translation>Agtervlakkleur</translation>
     </message>
     <message>
-      <location/>
       <source>Smoothing</source>
-      <translation>Smoothing</translation>
+      <translation>Gladmaking</translation>
     </message>
     <message>
-      <location/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Hierdie is die kleinste hoek tussen twee vlakke waar normaallyne bereken word om platskaduïng te doen.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Indien die hoek tussen die normaallyne van twee aangrensende vlakke kleiner is as die plooihoek, sal die vlakke gladgeskadu word om hulle gemeensame kant.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>Crease angle</source>
-      <translation>Crease angle</translation>
+      <translation>Plooihoek</translation>
     </message>
     <message>
-      <location/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Platskaduïng/Phong-skaduïng&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definieer die voorkoms van oppervlakke.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Met platskaduïng word die vlaknormaallyne nie gedefinieer per hoekpunt nie, dit lei tot 'n onrealistiese voorkoms vir gekurwe oppervlakke, terwyl Phong-skaduïng 'n gladder voorkoms gee. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Indien hierdie opsie gekies is, word Phong-skaduïng gebruik, andersins word platskaduïng gebruik.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>Define normal per vertex</source>
-      <translation>Define normal per vertex</translation>
+      <translation>Definieer die normale per hoekpunt</translation>
     </message>
     <message>
-      <location/>
       <source> °</source>
       <translation> °</translation>
     </message>
     <message>
-      <location/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Om die normaallyne per hoekpunt te definieer word ook genoem&lt;span style=" font-style:italic;"&gt;Phong-skaduïng&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;terwyl die definiëring van die normale per vlak beskryf word as&lt;/span&gt;platskaduïng&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>Default appearance for new meshes</source>
-      <translation>Default appearance for new meshes</translation>
+      <translation>Versuimvoorkoms vir nuwe mase</translation>
     </message>
     <message>
-      <location/>
       <source>Default line color</source>
-      <translation>Default line color</translation>
+      <translation>Versuimlynkleur</translation>
     </message>
     <message>
-      <location/>
       <source>Mesh transparency</source>
-      <translation>Mesh transparency</translation>
+      <translation>Maasdeursigtigheid</translation>
     </message>
     <message>
-      <location/>
       <source>Default mesh color</source>
-      <translation>Default mesh color</translation>
+      <translation>Standaard maaskleur</translation>
     </message>
     <message>
-      <location/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Show bounding-box for highlighted or selected meshes</translation>
+      <translation>Wys begrensingsboks vir beklemtoonde of gekose mase</translation>
     </message>
     <message>
-      <location/>
       <source>Line transparency</source>
-      <translation>Line transparency</translation>
+      <translation>Lyndeursigtigheid</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgSmoothing</name>
     <message>
-      <location/>
       <source>Smoothing</source>
-      <translation>Smoothing</translation>
+      <translation>Gladmaking</translation>
     </message>
     <message>
-      <location/>
       <source>Method</source>
-      <translation>Method</translation>
+      <translation>Metode</translation>
     </message>
     <message>
-      <location/>
       <source>Taubin</source>
       <translation>Taubin</translation>
     </message>
     <message>
-      <location/>
       <source>Laplace</source>
       <translation>Laplace</translation>
     </message>
     <message>
-      <location/>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
     <message>
-      <location/>
       <source>Iterations:</source>
-      <translation>Iterations:</translation>
+      <translation>Iterasies:</translation>
     </message>
     <message>
-      <location/>
       <source>Lambda:</source>
       <translation>Lambda:</translation>
     </message>
     <message>
-      <location/>
       <source>Mu:</source>
       <translation>Mu:</translation>
     </message>
   </context>
   <context>
-    <name>MeshGui::DockEvaluateMeshImp</name>
-    <message>
-      <location/>
-      <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
-    </message>
-  </context>
-  <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location/>
       <source>Add triangle</source>
-      <translation>Add triangle</translation>
+      <translation>Voeg driehoek by</translation>
     </message>
     <message>
-      <location/>
       <source>Flip normal</source>
-      <translation>Flip normal</translation>
+      <translation>Swaai normaallyn om</translation>
     </message>
     <message>
-      <location/>
       <source>Clear</source>
-      <translation>Clear</translation>
+      <translation>Maak skoon</translation>
     </message>
     <message>
-      <location/>
       <source>Finish</source>
-      <translation>Finish</translation>
+      <translation>Klaar</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
-      <location/>
       <source>Remove components</source>
-      <translation>Remove components</translation>
+      <translation>Verwyder komponente</translation>
     </message>
     <message>
-      <location/>
       <source>Select</source>
-      <translation>Select</translation>
+      <translation>Kies</translation>
     </message>
     <message>
-      <location/>
       <source>Select whole component</source>
-      <translation>Select whole component</translation>
+      <translation>Kies die hele komponent</translation>
     </message>
     <message>
-      <location/>
       <source>Pick triangle</source>
-      <translation>Pick triangle</translation>
+      <translation>Kies driehoek</translation>
     </message>
     <message>
-      <location/>
       <source>&lt; faces than</source>
-      <translation>&lt; faces than</translation>
+      <translation>&lt; vlakke as</translation>
     </message>
     <message>
-      <location/>
       <source>Region</source>
-      <translation>Region</translation>
+      <translation>Streek</translation>
     </message>
     <message>
-      <location/>
       <source>Components</source>
-      <translation>Components</translation>
+      <translation>Komponente</translation>
     </message>
     <message>
-      <location/>
       <source>All</source>
-      <translation>All</translation>
+      <translation>Almal</translation>
     </message>
     <message>
-      <location/>
       <source>Deselect</source>
-      <translation>Deselect</translation>
+      <translation>Deselekteer</translation>
     </message>
     <message>
-      <location/>
       <source>Deselect whole component</source>
-      <translation>Deselect whole component</translation>
+      <translation>Deselekteer die hele komponent</translation>
     </message>
     <message>
-      <location/>
       <source>&gt; faces than</source>
-      <translation>&gt; faces than</translation>
+      <translation>&gt; vlakke as</translation>
     </message>
     <message>
-      <location/>
       <source>Region options</source>
-      <translation>Region options</translation>
+      <translation>Streekopsies</translation>
     </message>
     <message>
-      <location/>
-      <source>Respect only front triangles</source>
-      <translation>Respect only front triangles</translation>
-    </message>
-    <message>
-      <location/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Respect only triangles with normals facing screen</translation>
+      <translation>Respekteer slegs driehoeke waarvan die normale in lyn met die skerm is</translation>
     </message>
     <message>
-      <location/>
       <source>Respect only visible triangles</source>
-      <translation>Respect only visible triangles</translation>
+      <translation>Respekteer slegs sigbare driehoeke</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
-      <location/>
       <source>Delete</source>
-      <translation>Delete</translation>
+      <translation>Verwyder</translation>
     </message>
     <message>
-      <location/>
       <source>Invert</source>
-      <translation>Invert</translation>
+      <translation>Inverteer</translation>
     </message>
   </context>
   <context>
-    <name>MeshGui::Workbench</name>
+    <name>QDockWidget</name>
     <message>
-      <location/>
-      <source>Analyze</source>
-      <translation>Analyze</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Boolean</source>
-      <translation>Boolean</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Meshes</source>
-      <translation>&amp;Meshes</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Mesh tools</source>
-      <translation>Mesh tools</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Mesh test suite</source>
-      <translation>Mesh test suite</translation>
+      <source>Evaluate &amp; Repair Mesh</source>
+      <translation>Evalueer en herstel maas</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location/>
       <source>Import mesh</source>
-      <translation>Import mesh</translation>
+      <translation>Voer maas in</translation>
     </message>
     <message>
-      <location/>
       <source>Export mesh</source>
-      <translation>Export mesh</translation>
+      <translation>Voer maas uit</translation>
     </message>
     <message>
-      <location/>
       <source>Solid Mesh</source>
-      <translation>Solid Mesh</translation>
+      <translation>Soliede Maas</translation>
     </message>
     <message>
-      <location/>
       <source>Boundings</source>
-      <translation>Boundings</translation>
+      <translation>Begrensings</translation>
     </message>
     <message>
-      <location/>
       <source>Fill holes</source>
-      <translation>Fill holes</translation>
+      <translation>Vul gapings</translation>
     </message>
     <message>
-      <location/>
       <source>Fill holes with maximum number of edges:</source>
-      <translation>Fill holes with maximum number of edges:</translation>
+      <translation>Vul gapings met 'n maksimum aantal kante:</translation>
     </message>
     <message>
-      <location/>
-      <source>Remove components</source>
-      <translation>Remove components</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Removes components up to a maximum number of triangles:</source>
-      <translation>Removes components up to a maximum number of triangles:</translation>
-    </message>
-    <message>
-      <location/>
-      <source>All Mesh Files (*.stl *.ast *.bms *.obj)</source>
-      <translation>All Mesh Files (*.stl *.ast *.bms *.obj)</translation>
-    </message>
-    <message>
-      <location/>
       <source>Binary STL (*.stl)</source>
-      <translation>Binary STL (*.stl)</translation>
+      <translation>Binêre STL (*.stl)</translation>
     </message>
     <message>
-      <location/>
       <source>ASCII STL (*.ast)</source>
       <translation>ASCII STL (*.ast)</translation>
     </message>
     <message>
-      <location/>
       <source>Binary Mesh (*.bms)</source>
-      <translation>Binary Mesh (*.bms)</translation>
+      <translation>Binêre maas (*.bms)</translation>
     </message>
     <message>
-      <location/>
       <source>Alias Mesh (*.obj)</source>
-      <translation>Alias Mesh (*.obj)</translation>
+      <translation>Alias Maas (*.obj)</translation>
     </message>
     <message>
-      <location/>
       <source>Inventor V2.1 ascii (*.iv)</source>
       <translation>Inventor V2.1 ascii (*.iv)</translation>
     </message>
     <message>
-      <location/>
       <source>All Files (*.*)</source>
-      <translation>All Files (*.*)</translation>
+      <translation>Alle lêers (*.*)</translation>
     </message>
     <message>
-      <location/>
       <source>ASCII STL (*.stl)</source>
       <translation>ASCII STL (*.stl)</translation>
     </message>
     <message>
-      <location/>
       <source>VRML V2.0 (*.wrl *.vrml)</source>
       <translation>VRML V2.0 (*.wrl *.vrml)</translation>
     </message>
     <message>
-      <location/>
       <source>Compressed VRML 2.0 (*.wrz)</source>
-      <translation>Compressed VRML 2.0 (*.wrz)</translation>
+      <translation>Gekomprimeerde VRML 2.0 (*.wrz)</translation>
     </message>
     <message>
-      <location/>
       <source>Nastran (*.nas *.bdf)</source>
       <translation>Nastran (*.nas *.bdf)</translation>
     </message>
     <message>
-      <location/>
       <source>Python module def (*.py)</source>
-      <translation>Python module def (*.py)</translation>
+      <translation>Pythonmodule def (*.py)</translation>
     </message>
     <message>
-      <location/>
       <source>Meshing Tolerance</source>
-      <translation>Meshing Tolerance</translation>
+      <translation>Maastoleransie</translation>
     </message>
     <message>
-      <location/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Enter tolerance for meshing geometry:</translation>
+      <translation>Gee toleransie vir maasvorms:</translation>
     </message>
     <message>
-      <location/>
       <source>The mesh '%1' is a solid.</source>
-      <translation>The mesh '%1' is a solid.</translation>
+      <translation>Die maas '%1' is 'n soliede.</translation>
     </message>
     <message>
-      <location/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>The mesh '%1' is not a solid.</translation>
+      <translation>Die maas '%1' is nie 'n soliede nie.</translation>
     </message>
     <message>
-      <location/>
       <source>Min=&lt;%1,%2,%3&gt;
 
 Max=&lt;%4,%5,%6&gt;</source>
       <translation>Min=&lt;%1,%2,%3&gt;
 
-Max=&lt;%4,%5,%6&gt;</translation>
+Maks=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>[Points: %1, Edges: %2 Faces: %3]</source>
-      <translation>[Points: %1, Edges: %2 Faces: %3]</translation>
+      <translation>[Punte: %1, Kante: %2, Vlakke: %3]</translation>
     </message>
     <message>
-      <location/>
       <source>Leave info mode</source>
-      <translation>Leave info mode</translation>
+      <translation>Verlaat inligtingsmodus</translation>
     </message>
     <message>
-      <location/>
       <source>Index: %1</source>
-      <translation>Index: %1</translation>
+      <translation>Indeks: %1</translation>
     </message>
     <message>
-      <location/>
       <source>Leave hole-filling mode</source>
-      <translation>Leave hole-filling mode</translation>
+      <translation>Verlaat gapingvullingsmodus</translation>
     </message>
     <message>
-      <location/>
       <source>Leave removal mode</source>
-      <translation>Leave removal mode</translation>
+      <translation>Verlaat verwyderingsmodus</translation>
     </message>
     <message>
-      <location/>
       <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>
-      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</translation>
+      <translation>Alle maaslêers (*.stl *.ast *.bms *.obj *.ply)</translation>
     </message>
     <message>
-      <location/>
       <source>Stanford Polygon (*.ply)</source>
-      <translation>Stanford Polygon (*.ply)</translation>
+      <translation>Stanford-veelhoek (*.ply)</translation>
     </message>
     <message>
-      <location/>
       <source>Object File Format (*.off)</source>
-      <translation>Object File Format (*.off)</translation>
+      <translation>Voorwerp-lêerformaat (*.off)</translation>
     </message>
     <message>
-      <location/>
       <source>Standford Polygon (*.ply)</source>
-      <translation>Standford Polygon (*.ply)</translation>
+      <translation>Standford-veelhoek (*.ply)</translation>
     </message>
     <message>
-      <location/>
       <source>Delete selected faces</source>
-      <translation>Delete selected faces</translation>
+      <translation>Verwyder gekose vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>Clear selected faces</source>
-      <translation>Clear selected faces</translation>
+      <translation>Verwyder gekose vlakke</translation>
     </message>
     <message>
-      <location/>
       <source>Annotation</source>
-      <translation>Annotation</translation>
+      <translation>Aantekening</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
       <source>Analyze</source>
-      <translation>Analyze</translation>
+      <translation>Ontleed</translation>
     </message>
     <message>
-      <location/>
       <source>Boolean</source>
-      <translation>Boolean</translation>
+      <translation>Boolese</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Meshes</source>
-      <translation>&amp;Meshes</translation>
+      <translation>&amp;Mase</translation>
     </message>
     <message>
-      <location/>
       <source>Mesh tools</source>
-      <translation>Mesh tools</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Mesh test suite</source>
-      <translation>Mesh test suite</translation>
+      <translation>Maaswerktuie</translation>
     </message>
   </context>
 </TS>

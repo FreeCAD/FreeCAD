@@ -5,444 +5,444 @@
     <name>CmdMeshAddFacet</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Add triangle</source>
-      <translation>Добавить треугольник</translation>
+      <translation>Háromszöget adjon hozzá</translation>
     </message>
     <message>
       <source>Add triangle manually to a mesh</source>
-      <translation>Добавить треугольник в сетку вручную</translation>
+      <translation>Addjon háromszöget kézzel a hálóhoz</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Boundings info...</source>
-      <translation>Информация о структуре...</translation>
+      <translation>Határolók információi...</translation>
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Показывает структуру выбранной сетки</translation>
+      <translation>Megmutatja a kiválasztott háló határvoalait</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Regular solid...</source>
-      <translation>Правлю твердое ...</translation>
+      <translation>Szabályos szilárd test...</translation>
     </message>
     <message>
       <source>Builds a regular solid</source>
-      <translation>Построение правильного твердого тела</translation>
+      <translation>Szabályos szilárd testet épít</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDemolding</name>
     <message>
       <source>Interactive demolding direction</source>
-      <translation>Интерактивное извлечения направлении из формы</translation>
+      <translation>Interaktív formárambontás iránya</translation>
     </message>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDifference</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Difference</source>
-      <translation>Разность</translation>
+      <translation>Különbség</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Face info</source>
-      <translation>Информация о поверхности</translation>
+      <translation>Felület infó</translation>
     </message>
     <message>
       <source>Information about face</source>
-      <translation>Информация о поверхности</translation>
+      <translation>Információ a felületről</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Check solid mesh</source>
-      <translation>Проверить прочность сетки</translation>
+      <translation>Szilárd háló ellenőrzése</translation>
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Проверяет, тверда ли сетка</translation>
+      <translation>Ellenőrzi, ha a háló egy szilárd testet ad ki</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Открывает диалог для анализа и ремонта сети</translation>
+      <translation>Megnyit egy párbeszédablakot, a háló elemezzéséehez és javításához</translation>
     </message>
     <message>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Оценить и ремонтировать сетку...</translation>
+      <translation>Háló értékelése &amp; javítása...</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeMesh</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Make a Box</source>
-      <translation>Создать параллелепипед</translation>
+      <translation>Make a Box</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeTool</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Make a Tool</source>
-      <translation>Создать инструмент</translation>
+      <translation>Make a Tool</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExMakeUnion</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Make Union</source>
-      <translation>Создать объединение</translation>
+      <translation>Make Union</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExport</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Export mesh...</source>
-      <translation>Экспорт сети...</translation>
+      <translation>Háló exportálása...</translation>
     </message>
     <message>
       <source>Exports a mesh to file</source>
-      <translation>Экспорт сети в файл</translation>
+      <translation>Fájlba exportálja a hálót</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Close hole</source>
-      <translation>Закрыть отверстие</translation>
+      <translation>Lyukat bezárja</translation>
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Закрыть отверстия интерактивно</translation>
+      <translation>Interaktívan bezárja a lyukakat</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Fill holes...</source>
-      <translation>Закрыть отверстия ...</translation>
+      <translation>Lyukak kitöltése...</translation>
     </message>
     <message>
       <source>Fill holes of the mesh</source>
-      <translation>Закрыть отверстия сетки</translation>
+      <translation>A hálón lévő lyukak kitöltése</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Flip normals</source>
-      <translation>Сменить направление нормалей на противоположное</translation>
+      <translation>Normál tükrözés</translation>
     </message>
     <message>
       <source>Flips the normals of the mesh</source>
-      <translation>Сменить направление нормалей сети на противоположное</translation>
+      <translation>A háló normál tükrözése</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Create mesh from geometry...</source>
-      <translation>Создать сеть по геометрии ...</translation>
+      <translation>Háló létrehozása a geometriából...</translation>
     </message>
     <message>
       <source>Create mesh from the selected geometry</source>
-      <translation>Создание сети из выбранного геометрии</translation>
+      <translation>Háló létrehozása a kijelölt geometriából</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Harmonize normals</source>
-      <translation>Согласование нормалей</translation>
+      <translation>Normálisok összehangolása</translation>
     </message>
     <message>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Согласует нормали сети</translation>
+      <translation>A hálón lévő normálisok összehangolása</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshImport</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Import mesh...</source>
-      <translation>Импорт сети...</translation>
+      <translation>Háló importálása...</translation>
     </message>
     <message>
       <source>Imports a mesh from file</source>
-      <translation>Импорт сети из файла</translation>
+      <translation>A háló importálása fájlból</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshIntersection</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Пересечение</translation>
+      <translation>Metszet</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Cut mesh</source>
-      <translation>Обрезать сеть</translation>
+      <translation>Háló vágása</translation>
     </message>
     <message>
       <source>Cuts a mesh with a picked polygon</source>
-      <translation>Обрезать сеть, выбранным многоугольником</translation>
+      <translation>Háló kivágása a kiválasztott sokszög rácsvonallal</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Make segment</source>
-      <translation>Создать сегмент</translation>
+      <translation>Szegmens létrehozása</translation>
     </message>
     <message>
       <source>Creates a mesh segment</source>
-      <translation>Создает сегмент сетки</translation>
+      <translation>A háló szegmens létrehozása</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySelect</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Select mesh</source>
-      <translation>Выберите сеть</translation>
+      <translation>Háló kijelölése</translation>
     </message>
     <message>
       <source>Select an area of the mesh</source>
-      <translation>Выберите область сетки</translation>
+      <translation>Jelöljön egy területet a hálón</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Split mesh</source>
-      <translation>Разделить сети</translation>
+      <translation>Háló osztása</translation>
     </message>
     <message>
       <source>Splits a mesh into two meshes</source>
-      <translation>Разделяет сетку на две сетки</translation>
+      <translation>Háló osztása két részre</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Remove components by hand...</source>
-      <translation>Удалить компоненты вручную ...</translation>
+      <translation>Távolítsa el kézzel az összetevőket...</translation>
     </message>
     <message>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Пометьте компонент для удаления из сетки</translation>
+      <translation>Egy összetevő megjelölése a hálóból való eltávolításához</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Remove components...</source>
-      <translation>Удалить компоненты...</translation>
+      <translation>Összetevők eltávolítása...</translation>
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Удалить топологически-независимые компоненты из сетки</translation>
+      <translation>Vegye ki a topológiailag független részegységeket a hálóból</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Smooth...</source>
-      <translation>Сгладить ...</translation>
+      <translation>Simítás</translation>
     </message>
     <message>
       <source>Smooth the selected meshes</source>
-      <translation>Сгладить, выбранные сети</translation>
+      <translation>Kiválasztott háló simítása</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshToolMesh</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Segment by tool mesh</source>
-      <translation>Часть инструмента сетки</translation>
+      <translation>Metszet a háló eszközből</translation>
     </message>
     <message>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Создает сегмент из данного инструмента сети</translation>
+      <translation>A megadott háló eszközből készít egy metszetet</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshTransform</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Transform mesh</source>
-      <translation>Преобразование сетки</translation>
+      <translation>Háló átalakítás</translation>
     </message>
     <message>
       <source>Rotate or move a mesh</source>
-      <translation>Поворот или перемещение сетки</translation>
+      <translation>Háló forgatása vagy mozgatása</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshUnion</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Union</source>
-      <translation>Объединение</translation>
+      <translation>Egyesítés</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Вычисляет кривизну вершин сетки</translation>
+      <translation>Kiszámítja egy háló csúcspont görbületét</translation>
     </message>
     <message>
       <source>Curvature plot</source>
-      <translation>Кривой участок</translation>
+      <translation>Görbület terv</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Curvature info</source>
-      <translation>Информация о кривизне</translation>
+      <translation>Görbület információ</translation>
     </message>
     <message>
       <source>Information about curvature</source>
-      <translation>Информация о кривизне</translation>
+      <translation>Görbület információk</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp; Справки</translation>
+      <translation>&amp;Súgó</translation>
     </message>
     <message>
       <source>F1</source>
@@ -450,7 +450,7 @@
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp; Закрыть</translation>
+      <translation>&amp;Bezárás</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -458,218 +458,219 @@
     </message>
     <message>
       <source>Mesh information</source>
-      <translation>Информация о сети</translation>
+      <translation>Háló információ</translation>
     </message>
     <message>
       <source>No information</source>
-      <translation>Информация отсутствует</translation>
+      <translation>Nincs információ</translation>
     </message>
     <message>
       <source>Number of points:</source>
-      <translation>Количество точек:</translation>
+      <translation>Pontok száma:</translation>
     </message>
     <message>
       <source>Number of edges:</source>
-      <translation>Количество ребер:</translation>
+      <translation>Élek száma:</translation>
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Обновить</translation>
+      <translation>Frissítés</translation>
     </message>
     <message>
       <source>Analyze</source>
-      <translation>Анализировать</translation>
+      <translation>Elemzése</translation>
     </message>
     <message>
       <source>Repair</source>
-      <translation>Ремонт</translation>
+      <translation>Javítás</translation>
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Ориентация</translation>
+      <translation>Tájolás</translation>
     </message>
     <message>
       <source>Degenerated faces</source>
-      <translation>Ухудшившийся лица</translation>
+      <translation>Elváltoztatott felület</translation>
     </message>
     <message>
       <source>Face indices</source>
-      <translation>Индексы лица</translation>
+      <translation>Felületi jelzőszám</translation>
     </message>
     <message>
       <source>Number of faces:</source>
-      <translation>Количество лиц:</translation>
+      <translation>Felületek száma:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Повторяющиеся лица</translation>
+      <translation>Felületek megduplázása</translation>
     </message>
     <message>
       <source>Duplicated points</source>
-      <translation>Повторяющиеся точки</translation>
+      <translation>Pontok megkettőzése</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Однообразия</translation>
+      <translation>Nem szthatók</translation>
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Самопересеченые</translation>
+      <translation>Saját csomópontok</translation>
     </message>
     <message>
       <source>All above tests together</source>
-      <translation>Использоват вместе все указанные выше тесты</translation>
+      <translation>Minden fenti vizsgálat együtt</translation>
     </message>
     <message>
       <source>Repetitive repair</source>
-      <translation>Серийный ремонт</translation>
+      <translation>Ismétlődő javítás</translation>
     </message>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Оценить и ремонтировать сетку</translation>
+      <translation>Háló értékelése &amp; javítása</translation>
     </message>
     <message>
       <source>Folds on surface</source>
-      <translation>Складки на поверхности</translation>
+      <translation>Felszíní hajlítás</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
       <source>No information</source>
-      <translation>Информация отсутствует</translation>
+      <translation>Nincs információ</translation>
     </message>
     <message>
       <source>Invalid neighbour indices</source>
-      <translation>Неверные соседи указателей</translation>
+      <translation>Érvénytelen szomszédos indexek</translation>
     </message>
     <message>
       <source>Invalid face indices</source>
-      <translation>Неверные индексы граней</translation>
+      <translation>Érvénytelen felület indexek</translation>
     </message>
     <message>
       <source>Invalid point indices</source>
-      <translation>Неверные индексы точки</translation>
+      <translation>Érvénytelen pont indexek</translation>
     </message>
     <message>
       <source>Multiple point indices</source>
-      <translation>Составные указатели точек</translation>
+      <translation>Több pontos indexek</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Однообразия</translation>
+      <translation>Nem szthatók</translation>
     </message>
     <message>
       <source>Cannot remove non-manifolds</source>
-      <translation>Не могу удалить однообразия</translation>
+      <translation>Nem lehet eltávolítani a nem-szétágazottakat</translation>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Нет выбора</translation>
+      <translation>Nincs kijelölés</translation>
     </message>
     <message>
       <source>No flipped normals</source>
-      <translation>Перевернутых нормалей нет</translation>
+      <translation>Nincsenek tükrözött normálisok</translation>
     </message>
     <message>
       <source>%1 flipped normals</source>
-      <translation>%1 перевернуть нормали</translation>
+      <translation>%1 tükrözött normalisok</translation>
     </message>
     <message>
       <source>No non-manifolds</source>
-      <translation>Нет однообразий</translation>
+      <translation>Nincsenek nem-szétágazottak</translation>
     </message>
     <message>
       <source>%1 non-manifolds</source>
-      <translation>%1 однообразный</translation>
+      <translation>%1 nem-szétágazott</translation>
     </message>
     <message>
       <source>No invalid indices</source>
-      <translation>Нет недействительных индексов</translation>
+      <translation>Nincsenek érvénytelen indexek</translation>
     </message>
     <message>
       <source>No degenerations</source>
-      <translation>Не вырождать</translation>
+      <translation>Nincs elváltozás</translation>
     </message>
     <message>
       <source>%1 degenerated faces</source>
-      <translation>%1 выродившиеся грани</translation>
+      <translation>%1 elváltozott felület</translation>
     </message>
     <message>
       <source>No duplicated faces</source>
-      <translation>Нет дублировать грани</translation>
+      <translation>Nincsenek duplikált felületek</translation>
     </message>
     <message>
       <source>%1 duplicated faces</source>
-      <translation>%1 дублирующиеся грани</translation>
+      <translation>%1 duplikált felület</translation>
     </message>
     <message>
       <source>No duplicated points</source>
-      <translation>Нет дублировать точки</translation>
+      <translation>Nincsenek duplikált pontok</translation>
     </message>
     <message>
       <source>Duplicated points</source>
-      <translation>Повторяющиеся точки</translation>
+      <translation>Pontok megkettőzése</translation>
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Ориентация</translation>
+      <translation>Tájolás</translation>
     </message>
     <message>
       <source>Indices</source>
-      <translation>Индексы</translation>
+      <translation>Indexek</translation>
     </message>
     <message>
       <source>Degenerations</source>
-      <translation>Ухудшения</translation>
+      <translation>Elváltozás</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Повторяющиеся лица</translation>
+      <translation>Felületek megduplázása</translation>
     </message>
     <message>
       <source>No self-intersections</source>
-      <translation>Не самопересечений</translation>
+      <translation>Nem belső-csomópontok</translation>
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Самопересеченые</translation>
+      <translation>Saját csomópontok</translation>
     </message>
     <message>
       <source>Mesh repair</source>
-      <translation>Ремонт сетки</translation>
+      <translation>Háló javítása</translation>
     </message>
     <message>
       <source>Flipped normals found</source>
-      <translation>Найдены перевёрнутые нормали</translation>
+      <translation>Tükrözött normalist talált</translation>
     </message>
     <message>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation>Не удалось проверить из-за складок на поверхности. Сначала запустите команду для отладки складок</translation>
+      <translation>A felület hajlításának ellenőrzése nem sikerült.
+Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>No folds on surface</source>
-      <translation>Нет складок на поверхности</translation>
+      <translation>Nem hajítható felület</translation>
     </message>
     <message>
       <source>%1 folds on surface</source>
-      <translation>%1 складки на поверхности</translation>
+      <translation>%1 felület hajlítása</translation>
     </message>
     <message>
       <source>Folds</source>
-      <translation>Складки</translation>
+      <translation>Hajlítás</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgRegularSolid</name>
     <message>
       <source>Regular Solid</source>
-      <translation>Правильное геометрическое тело</translation>
+      <translation>Szabályos szilárd test</translation>
     </message>
     <message>
       <source>&amp;Create</source>
-      <translation>&amp; Создать</translation>
+      <translation>&amp;Létrehozás</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -677,7 +678,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>Закрыть</translation>
+      <translation>Bezár</translation>
     </message>
     <message>
       <source>Alt+O</source>
@@ -685,176 +686,176 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Solid:</source>
-      <translation>Правильные:</translation>
+      <translation>Szilárd test:</translation>
     </message>
     <message>
       <source>Cube</source>
-      <translation>Куб</translation>
+      <translation>Kocka</translation>
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Цилиндр</translation>
+      <translation>Henger</translation>
     </message>
     <message>
       <source>Cone</source>
-      <translation>Конус</translation>
+      <translation>Kúp</translation>
     </message>
     <message>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Gömb</translation>
     </message>
     <message>
       <source>Ellipsoid</source>
-      <translation>Эллипсоид</translation>
+      <translation>Ellipszoid</translation>
     </message>
     <message>
       <source>Torus</source>
-      <translation>Тор</translation>
+      <translation>Tórusz</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Высота:</translation>
+      <translation>Magasság:</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Длина:</translation>
+      <translation>Hossz:</translation>
     </message>
     <message>
       <source>Width:</source>
-      <translation>Ширина:</translation>
+      <translation>Szélesség:</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Радиус:</translation>
+      <translation>Sugár:</translation>
     </message>
     <message>
       <source>Closed</source>
-      <translation>Закрыто</translation>
+      <translation>Zárva</translation>
     </message>
     <message>
       <source>Sampling:</source>
-      <translation>Выборка:</translation>
+      <translation>Mintavétel:</translation>
     </message>
     <message>
       <source>Edge length:</source>
-      <translation>Длина кромки:</translation>
+      <translation>Él hossz:</translation>
     </message>
     <message>
       <source>Radius 1:</source>
-      <translation>Радиус 1:</translation>
+      <translation>Sugár 1:</translation>
     </message>
     <message>
       <source>Radius 2:</source>
-      <translation>Радиус 2:</translation>
+      <translation>Sugár 2:</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
       <source>Create %1</source>
-      <translation>Создать %1</translation>
+      <translation>Létrehozás %1</translation>
     </message>
     <message>
       <source>No active document</source>
-      <translation>Нет активного документа</translation>
+      <translation>Nincs aktív dokumentum</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
       <source>Mesh view</source>
-      <translation>Просмотр в виде сетки</translation>
+      <translation>Háló nézet</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
-      <translation>Двустороннее отображение</translation>
+      <translation>Két oldali renderelés</translation>
     </message>
     <message>
       <source>Backface color</source>
-      <translation>Цвет оборотной стороны</translation>
+      <translation>Hátsó lap szín</translation>
     </message>
     <message>
       <source>Smoothing</source>
-      <translation>Размытие</translation>
+      <translation>Simítás</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Ha a két felület között bezárt szög kisebb mint a gyűrődési szög, akkor a közös élen található felületek simák maradnak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Crease angle</source>
-      <translation>Угол сгиба</translation>
+      <translation>Gyűrődési szög</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A lapos árnyékolással a felületi normák nem vertexként definiáltak, így az ívelt felületek írreálisan jelenik meg, azonban Pong árnyékolásnál simábban jelennek meg. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
-      <translation>Определить нормаль для каждой вершины</translation>
+      <translation>Normál vertex meghatározás</translation>
     </message>
     <message>
       <source> °</source>
-      <translation>°</translation>
+      <translation> °</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A normálisok vertexként való megjelenítését úgy is nevezik, hogy&lt;span style=" font-style:italic;"&gt;Phong árnyékolás&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Default appearance for new meshes</source>
-      <translation>Внешний вид новых сеток по умолчанию</translation>
+      <translation>Új háló alapértelmezett megjelenítése</translation>
     </message>
     <message>
       <source>Default line color</source>
-      <translation>Цвет линии по умолчанию</translation>
+      <translation>Alapértelmezett vonalszín</translation>
     </message>
     <message>
       <source>Mesh transparency</source>
-      <translation>Прозрачность сетки</translation>
+      <translation>Háló átlátszóság</translation>
     </message>
     <message>
       <source>Default mesh color</source>
-      <translation>Цвет сетки по умолчанию</translation>
+      <translation>Alapértelmezett Rácsvonal szín</translation>
     </message>
     <message>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Показать ограничивающий прямоугольник для подсвеченных или выбранных сеток</translation>
+      <translation>Határolókeretben mutatja a kiemelt vagy kiválasztott hálókat</translation>
     </message>
     <message>
       <source>Line transparency</source>
-      <translation>Прозрачность линии</translation>
+      <translation>Vonal átlátszóság</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgSmoothing</name>
     <message>
       <source>Smoothing</source>
-      <translation>Размытие</translation>
+      <translation>Simítás</translation>
     </message>
     <message>
       <source>Method</source>
-      <translation>Метод</translation>
+      <translation>Módszer</translation>
     </message>
     <message>
       <source>Taubin</source>
-      <translation>Таубин</translation>
+      <translation>Taubin</translation>
     </message>
     <message>
       <source>Laplace</source>
-      <translation>Лапласа</translation>
+      <translation>Laplace</translation>
     </message>
     <message>
       <source>Parameter</source>
-      <translation>Параметр</translation>
+      <translation>Paraméter</translation>
     </message>
     <message>
       <source>Iterations:</source>
-      <translation>Итерации:</translation>
+      <translation>Lépésszám:</translation>
     </message>
     <message>
       <source>Lambda:</source>
-      <translation>Лямбда:</translation>
+      <translation>Lambda:</translation>
     </message>
     <message>
       <source>Mu:</source>
@@ -865,127 +866,127 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <source>Add triangle</source>
-      <translation>Добавить треугольник</translation>
+      <translation>Háromszöget adjon hozzá</translation>
     </message>
     <message>
       <source>Flip normal</source>
-      <translation>Направить нормаль в противоположную сторону</translation>
+      <translation>Normál tükrözés</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Очистить</translation>
+      <translation>Tiszta</translation>
     </message>
     <message>
       <source>Finish</source>
-      <translation>Завершить</translation>
+      <translation>Befejezés</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
-      <translation>Удалить компоненты</translation>
+      <translation>Összetevők eltávolítása</translation>
     </message>
     <message>
       <source>Select</source>
-      <translation>Выбрать</translation>
+      <translation>Kijelölés</translation>
     </message>
     <message>
       <source>Select whole component</source>
-      <translation>Выбрать все компоненты</translation>
+      <translation>Összetevő kiválasztása</translation>
     </message>
     <message>
       <source>Pick triangle</source>
-      <translation>Подобрать треугольник</translation>
+      <translation>Háromszög választása</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
-      <translation>&lt; faces than</translation>
+      <translation>&lt;nézd mint</translation>
     </message>
     <message>
       <source>Region</source>
-      <translation>Регион</translation>
+      <translation>Régió</translation>
     </message>
     <message>
       <source>Components</source>
-      <translation>Компоненты</translation>
+      <translation>Összetevők</translation>
     </message>
     <message>
       <source>All</source>
-      <translation>Все</translation>
+      <translation>Minden</translation>
     </message>
     <message>
       <source>Deselect</source>
-      <translation>Снять выделение</translation>
+      <translation>Kijelölés megszüntetése</translation>
     </message>
     <message>
       <source>Deselect whole component</source>
-      <translation>Снять выделение все компоненты</translation>
+      <translation>Kijelölés megszüntetése az egész alkatrészen</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
-      <translation>&gt; наружное покрытие</translation>
+      <translation>&gt;nézd mint</translation>
     </message>
     <message>
       <source>Region options</source>
-      <translation>Параметры региона</translation>
+      <translation>Területi beállítások</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Привилегировать треугольники с наружным покрытием</translation>
+      <translation>Csak a normál felülettel kijelzett háromszögeket részesíti előnybern</translation>
     </message>
     <message>
       <source>Respect only visible triangles</source>
-      <translation>Уважать только видимые треугольники</translation>
+      <translation>Csak a látható háromszögek figyelembevétele</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
-      <translation>Удалить</translation>
+      <translation>Töröl</translation>
     </message>
     <message>
       <source>Invert</source>
-      <translation>Инвертировать</translation>
+      <translation>Invertálás</translation>
     </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Оценить и ремонтировать сетку</translation>
+      <translation>Háló értékelése &amp; javítása</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Import mesh</source>
-      <translation>Импорт сети</translation>
+      <translation>Háló importálása</translation>
     </message>
     <message>
       <source>Export mesh</source>
-      <translation>Экспорт сети</translation>
+      <translation>Háló exportálása</translation>
     </message>
     <message>
       <source>Solid Mesh</source>
-      <translation>Прочная сетка</translation>
+      <translation>Szilárde test háló</translation>
     </message>
     <message>
       <source>Boundings</source>
-      <translation>Ограничения</translation>
+      <translation>Csatlakozások</translation>
     </message>
     <message>
       <source>Fill holes</source>
-      <translation>Закрыть отверстия</translation>
+      <translation>Lyukak kitöltése</translation>
     </message>
     <message>
       <source>Fill holes with maximum number of edges:</source>
-      <translation>Заполнить отверстия с максимальным числом ребер:</translation>
+      <translation>Töltse ki a lyukakat maximális számú élekkel:</translation>
     </message>
     <message>
       <source>Binary STL (*.stl)</source>
-      <translation>Двоичный STL (*.stl)</translation>
+      <translation>Bináris STL (*.stl)</translation>
     </message>
     <message>
       <source>ASCII STL (*.ast)</source>
@@ -993,19 +994,19 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Binary Mesh (*.bms)</source>
-      <translation>Двоичный сетки (*.bms)</translation>
+      <translation>Bináris háló (*.bms)</translation>
     </message>
     <message>
       <source>Alias Mesh (*.obj)</source>
-      <translation>Псевдонимные сетки (*.obj)</translation>
+      <translation>Alias háló (*.obj)</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii (*.iv)</source>
-      <translation>Изобретатель V2.1 ascii (* .iv)</translation>
+      <translation>Inventor V2.1 ascii (*.iv)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Все файлы (*.*)</translation>
+      <translation>Minden fájl (*. *)</translation>
     </message>
     <message>
       <source>ASCII STL (*.stl)</source>
@@ -1013,11 +1014,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>VRML V2.0 (*.wrl *.vrml)</source>
-      <translation>VRML V2.0 (*.wrl *.vrml)</translation>
+      <translation>VRML 2.0 (*.wrl *.vrml)</translation>
     </message>
     <message>
       <source>Compressed VRML 2.0 (*.wrz)</source>
-      <translation>Сжатый VRML 2.0 (*.wrz)</translation>
+      <translation>Tömörített VRML 2.0 (*.wrz)</translation>
     </message>
     <message>
       <source>Nastran (*.nas *.bdf)</source>
@@ -1025,23 +1026,23 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Python module def (*.py)</source>
-      <translation>Python module def (*.py)</translation>
+      <translation>Python modul def (*.py)</translation>
     </message>
     <message>
       <source>Meshing Tolerance</source>
-      <translation>Возможное отклонение сетки</translation>
+      <translation>Hálózás tűrése</translation>
     </message>
     <message>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Введите возможное отклонение для слияния геометрии:</translation>
+      <translation>Adja meg a tűrést az erővonal geometriájának:</translation>
     </message>
     <message>
       <source>The mesh '%1' is a solid.</source>
-      <translation>Сетка '%1' прочная.</translation>
+      <translation>A(z)'%1' háló egy szilárd test.</translation>
     </message>
     <message>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>Сетка '%1' не прочная.</translation>
+      <translation>A(z)'%1' háló nem szilárd test.</translation>
     </message>
     <message>
       <source>Min=&lt;%1,%2,%3&gt;
@@ -1053,35 +1054,35 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>[Points: %1, Edges: %2 Faces: %3]</source>
-      <translation>[Пунктов: %1, Ребер: %2 Лиц: %3]</translation>
+      <translation>[Pontok: %1, Élek: %2 Felületek: %3]</translation>
     </message>
     <message>
       <source>Leave info mode</source>
-      <translation>Выйти из информационного режима</translation>
+      <translation>Hagyja az info módot</translation>
     </message>
     <message>
       <source>Index: %1</source>
-      <translation>Индекс: %1</translation>
+      <translation>Index: %1</translation>
     </message>
     <message>
       <source>Leave hole-filling mode</source>
-      <translation>Выйти из режима заполнения отверстий</translation>
+      <translation>Hagyja lyuk betöltő üzemmódban</translation>
     </message>
     <message>
       <source>Leave removal mode</source>
-      <translation>Выйти из режима удаления</translation>
+      <translation>Hagyja eltávolítása módban</translation>
     </message>
     <message>
       <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>
-      <translation>Все файлы сеток (*.stl *.ast *.bms *.obj * .ply)</translation>
+      <translation>Minden háló Fájl (*.stl *.ast *.bms *.obj *.ply)</translation>
     </message>
     <message>
       <source>Stanford Polygon (*.ply)</source>
-      <translation>Stanford Polygon (*.ply)</translation>
+      <translation>Standford Polygon (*.ply)</translation>
     </message>
     <message>
       <source>Object File Format (*.off)</source>
-      <translation>Object File Format (*.off)</translation>
+      <translation>Objektum formátum (*.off)</translation>
     </message>
     <message>
       <source>Standford Polygon (*.ply)</source>
@@ -1089,34 +1090,34 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Delete selected faces</source>
-      <translation>Удалить выбранные лица</translation>
+      <translation>Törli a kijelölt felületeket</translation>
     </message>
     <message>
       <source>Clear selected faces</source>
-      <translation>Очистить выбранные грани</translation>
+      <translation>Kijelölt felületek törlése</translation>
     </message>
     <message>
       <source>Annotation</source>
-      <translation>Аннотация</translation>
+      <translation>Jegyzet</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Analyze</source>
-      <translation>Анализировать</translation>
+      <translation>Elemzése</translation>
     </message>
     <message>
       <source>Boolean</source>
-      <translation>Булевый</translation>
+      <translation>Logikai érték</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>&amp; Сетки</translation>
+      <translation>&amp;Behálóz</translation>
     </message>
     <message>
       <source>Mesh tools</source>
-      <translation>Инструменты сетки</translation>
+      <translation>Háló eszközök</translation>
     </message>
   </context>
 </TS>
