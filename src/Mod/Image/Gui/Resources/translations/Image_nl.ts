@@ -4,35 +4,34 @@
   <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+93"/>
       <source>Image</source>
       <translation>Afbeelding</translation>
     </message>
     <message>
-      <location/>
       <source>Create image plane...</source>
-      <translation>Create image plane...</translation>
+      <translation>Maak beeldvlak ...</translation>
     </message>
     <message>
-      <location/>
+      <source>Create a planar image in the 3D space</source>
+      <translation>Create a planar image in the 3D space</translation>
+    </message>
+    <message>
       <source>create a planar image in the 3D space</source>
-      <translation>create a planar image in the 3D space</translation>
+      <translation>een vlakke afbeelding maken in de 3D-ruimte</translation>
     </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location/>
       <source>Image</source>
       <translation>Afbeelding</translation>
     </message>
     <message>
-      <location/>
       <source>Open...</source>
       <translation>Openen...</translation>
     </message>
     <message>
-      <location/>
       <source>Open image view</source>
       <translation>Open afbeelding weergave</translation>
     </message>
@@ -40,12 +39,11 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location/>
+      <location filename="../../GLImageBox.cpp" line="+308"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Ongedefinieerd type kleurruimte om beelden te bekijken</translation>
     </message>
     <message>
-      <location/>
       <source>Image pixel format</source>
       <translation>Pixel-formaat</translation>
     </message>
@@ -53,111 +51,95 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location/>
+      <location filename="../../ImageView.cpp" line="+77"/>
       <source>&amp;Fit image</source>
       <translation>&amp;Passend</translation>
     </message>
     <message>
-      <location/>
       <source>Stretch the image to fit the view</source>
       <translation>Uitrekken tot grootte weergave venster</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;1:1 scale</source>
       <translation>Schaal &amp;1:1</translation>
     </message>
     <message>
-      <location/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Toon de afbeelding op schaal van 1:1</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Original color</source>
       <translation>&amp;Oorspronkelijke kleur</translation>
     </message>
     <message>
-      <location/>
       <source>Display the image with its original color(s)</source>
       <translation>Toon de afbeelding met de oorspronkelijke kleur(en)</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Brightened color</source>
       <translation>&amp;Verhelder kleur</translation>
     </message>
     <message>
-      <location/>
       <source>Display the image with brightened color(s)</source>
       <translation>Toon de afbeelding met verhelderde kleur(en)</translation>
     </message>
     <message>
-      <location/>
       <source>Standard</source>
       <translation>Standaard</translation>
     </message>
     <message>
-      <location/>
       <source>Ready...</source>
       <translation>Gereed...</translation>
     </message>
     <message>
-      <location/>
       <source>grey</source>
       <translation>grijs</translation>
     </message>
     <message>
-      <location/>
       <source>zoom</source>
       <translation>zoom</translation>
     </message>
     <message>
-      <location/>
       <source>outside image</source>
       <translation>buiten afbeelding</translation>
     </message>
   </context>
   <context>
-    <name>ImageGui::Workbench</name>
-    <message>
-      <location/>
-      <source>Image</source>
-      <translation>Afbeelding</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
-      <location/>
       <source>Image viewer</source>
       <translation>Afbeeldingenviewer</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+106"/>
       <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation>Afbeeldingen (*.png *.xpm *.jpg *.bmp)</translation>
+      <translation>Afbeeldingen(*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location/>
       <source>Choose an image file to open</source>
       <translation>Kies een te openen afbeeldingsbestand</translation>
     </message>
     <message>
-      <location/>
-      <source>Error open image</source>
-      <translation>Error open image</translation>
+      <source>Images</source>
+      <translation>Images</translation>
     </message>
     <message>
-      <location/>
+      <source>All files</source>
+      <translation>All files</translation>
+    </message>
+    <message>
+      <source>Error open image</source>
+      <translation>Fout geopende afbeelding</translation>
+    </message>
+    <message>
       <source>Could not load the choosen image</source>
-      <translation>Could not load the choosen image</translation>
+      <translation>Kon geselecteerde afbeelding niet laden</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+36"/>
       <source>Image</source>
       <translation>Afbeelding</translation>
     </message>

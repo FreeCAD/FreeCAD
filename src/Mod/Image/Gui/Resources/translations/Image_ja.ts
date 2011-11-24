@@ -6,11 +6,11 @@
     <message>
       <location filename="../../Command.cpp" line="+93"/>
       <source>Image</source>
-      <translation>Bild</translation>
+      <translation>画像</translation>
     </message>
     <message>
       <source>Create image plane...</source>
-      <translation>Skapa bildplan ...</translation>
+      <translation>Create image plane...</translation>
     </message>
     <message>
       <source>Create a planar image in the 3D space</source>
@@ -18,22 +18,22 @@
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
-      <translation>skapa en plan bild i 3D-rymden</translation>
+      <translation>create a planar image in the 3D space</translation>
     </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
     <message>
       <source>Image</source>
-      <translation>Bild</translation>
+      <translation>画像</translation>
     </message>
     <message>
       <source>Open...</source>
-      <translation>Öppna...</translation>
+      <translation>開く...</translation>
     </message>
     <message>
       <source>Open image view</source>
-      <translation>Öppna bildvy</translation>
+      <translation>画像ビューを開く</translation>
     </message>
   </context>
   <context>
@@ -41,11 +41,11 @@
     <message>
       <location filename="../../GLImageBox.cpp" line="+308"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Odefinierad färgrymd för bildvisning</translation>
+      <translation>表示中の画像の色空間は未定義です</translation>
     </message>
     <message>
       <source>Image pixel format</source>
-      <translation>Bildens pixelformat</translation>
+      <translation>画像のピクセルフォーマット</translation>
     </message>
   </context>
   <context>
@@ -53,71 +53,71 @@
     <message>
       <location filename="../../ImageView.cpp" line="+77"/>
       <source>&amp;Fit image</source>
-      <translation>An&amp;passa bild</translation>
+      <translation>画像に合わせる(&amp;F)</translation>
     </message>
     <message>
       <source>Stretch the image to fit the view</source>
-      <translation>Skala bilden till vyn</translation>
+      <translation>画像ビューサイズに合わせて画像を拡大</translation>
     </message>
     <message>
       <source>&amp;1:1 scale</source>
-      <translation>&amp;1:1 Skala</translation>
+      <translation>1:1スケール(&amp;1)</translation>
     </message>
     <message>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Visa bilden i 1:1 skala</translation>
+      <translation>1:1のスケールで画像を表示する</translation>
     </message>
     <message>
       <source>&amp;Original color</source>
-      <translation>&amp;Originalfärg</translation>
+      <translation>元の色 (&amp;O)</translation>
     </message>
     <message>
       <source>Display the image with its original color(s)</source>
-      <translation>Visa bilden med dess originalfärger</translation>
+      <translation>元の色で画像を表示する</translation>
     </message>
     <message>
       <source>&amp;Brightened color</source>
-      <translation>&amp;Ljusa färger</translation>
+      <translation>&amp;Brightened color</translation>
     </message>
     <message>
       <source>Display the image with brightened color(s)</source>
-      <translation>Visa bilden med ljusare färger</translation>
+      <translation>Display the image with brightened color(s)</translation>
     </message>
     <message>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>標準</translation>
     </message>
     <message>
       <source>Ready...</source>
-      <translation>Klar...</translation>
+      <translation>Ready...</translation>
     </message>
     <message>
       <source>grey</source>
-      <translation>Grå</translation>
+      <translation>グレー</translation>
     </message>
     <message>
       <source>zoom</source>
-      <translation>zoom</translation>
+      <translation>ズーム</translation>
     </message>
     <message>
       <source>outside image</source>
-      <translation>Utanför bild</translation>
+      <translation>outside image</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Image viewer</source>
-      <translation>Bildvisare</translation>
+      <translation>画像ビューア</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="+106"/>
       <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation>Bildformat (*.png *.xpm *.jpg *.bmp)</translation>
+      <translation>Images (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
       <source>Choose an image file to open</source>
-      <translation>Välj en bildfil att öppna</translation>
+      <translation>Choose an image file to open</translation>
     </message>
     <message>
       <source>Images</source>
@@ -129,11 +129,11 @@
     </message>
     <message>
       <source>Error open image</source>
-      <translation>Fel vid öppning av bilden</translation>
+      <translation>Error open image</translation>
     </message>
     <message>
       <source>Could not load the choosen image</source>
-      <translation>Kunde inte ladda den valda bilden</translation>
+      <translation>Could not load the choosen image</translation>
     </message>
   </context>
   <context>
@@ -141,7 +141,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+36"/>
       <source>Image</source>
-      <translation>Bild</translation>
+      <translation>画像</translation>
     </message>
   </context>
 </TS>

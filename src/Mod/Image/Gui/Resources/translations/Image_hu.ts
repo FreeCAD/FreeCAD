@@ -6,11 +6,11 @@
     <message>
       <location filename="../../Command.cpp" line="+93"/>
       <source>Image</source>
-      <translation>Bild</translation>
+      <translation>Kép</translation>
     </message>
     <message>
       <source>Create image plane...</source>
-      <translation>Skapa bildplan ...</translation>
+      <translation>Kép sík létrehozása...</translation>
     </message>
     <message>
       <source>Create a planar image in the 3D space</source>
@@ -18,22 +18,22 @@
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
-      <translation>skapa en plan bild i 3D-rymden</translation>
+      <translation>hozzon létre egy síkbeli képet a 3D-s térben</translation>
     </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
     <message>
       <source>Image</source>
-      <translation>Bild</translation>
+      <translation>Kép</translation>
     </message>
     <message>
       <source>Open...</source>
-      <translation>Öppna...</translation>
+      <translation>Megnyitás...</translation>
     </message>
     <message>
       <source>Open image view</source>
-      <translation>Öppna bildvy</translation>
+      <translation>Kép megnyitása megtekintése</translation>
     </message>
   </context>
   <context>
@@ -41,11 +41,11 @@
     <message>
       <location filename="../../GLImageBox.cpp" line="+308"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Odefinierad färgrymd för bildvisning</translation>
+      <translation>A képnéző által meghatározhatatlan típusú színtér</translation>
     </message>
     <message>
       <source>Image pixel format</source>
-      <translation>Bildens pixelformat</translation>
+      <translation>Képpont formátum</translation>
     </message>
   </context>
   <context>
@@ -53,71 +53,71 @@
     <message>
       <location filename="../../ImageView.cpp" line="+77"/>
       <source>&amp;Fit image</source>
-      <translation>An&amp;passa bild</translation>
+      <translation>Kép kitöltse a képernyőt</translation>
     </message>
     <message>
       <source>Stretch the image to fit the view</source>
-      <translation>Skala bilden till vyn</translation>
+      <translation>Nyújtsa ki a képet, hogy illeszkedjen a nézethez</translation>
     </message>
     <message>
       <source>&amp;1:1 scale</source>
-      <translation>&amp;1:1 Skala</translation>
+      <translation>&amp;1:1 léptékű</translation>
     </message>
     <message>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Visa bilden i 1:1 skala</translation>
+      <translation>A kép megjelenítése 1:1 méretarányban</translation>
     </message>
     <message>
       <source>&amp;Original color</source>
-      <translation>&amp;Originalfärg</translation>
+      <translation>&amp;Eredeti szín</translation>
     </message>
     <message>
       <source>Display the image with its original color(s)</source>
-      <translation>Visa bilden med dess originalfärger</translation>
+      <translation>Eredeti színekkel jelenítse meg a képet</translation>
     </message>
     <message>
       <source>&amp;Brightened color</source>
-      <translation>&amp;Ljusa färger</translation>
+      <translation>&amp;Világosított szín</translation>
     </message>
     <message>
       <source>Display the image with brightened color(s)</source>
-      <translation>Visa bilden med ljusare färger</translation>
+      <translation>Világosított színekkel jelenítse meg a képet</translation>
     </message>
     <message>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Szabvány</translation>
     </message>
     <message>
       <source>Ready...</source>
-      <translation>Klar...</translation>
+      <translation>Kész ...</translation>
     </message>
     <message>
       <source>grey</source>
-      <translation>Grå</translation>
+      <translation>szürke</translation>
     </message>
     <message>
       <source>zoom</source>
-      <translation>zoom</translation>
+      <translation>Nagyítás</translation>
     </message>
     <message>
       <source>outside image</source>
-      <translation>Utanför bild</translation>
+      <translation>külső kép</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Image viewer</source>
-      <translation>Bildvisare</translation>
+      <translation>Képnéző</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="+106"/>
       <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation>Bildformat (*.png *.xpm *.jpg *.bmp)</translation>
+      <translation>Képek (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
       <source>Choose an image file to open</source>
-      <translation>Välj en bildfil att öppna</translation>
+      <translation>Egy képfájl kiválasztása megnyitásra</translation>
     </message>
     <message>
       <source>Images</source>
@@ -129,11 +129,11 @@
     </message>
     <message>
       <source>Error open image</source>
-      <translation>Fel vid öppning av bilden</translation>
+      <translation>Hiba a kép megnyitásakor</translation>
     </message>
     <message>
       <source>Could not load the choosen image</source>
-      <translation>Kunde inte ladda den valda bilden</translation>
+      <translation>Nem sikerült betölteni a kiválasztott képet</translation>
     </message>
   </context>
   <context>
@@ -141,7 +141,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+36"/>
       <source>Image</source>
-      <translation>Bild</translation>
+      <translation>Kép</translation>
     </message>
   </context>
 </TS>
