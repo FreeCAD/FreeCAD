@@ -4,27 +4,32 @@
   <context>
     <name>AssemblyGui::Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+50"/>
       <source>Assembly</source>
-      <translation>assemblage</translation>
+      <translation>Assemblage</translation>
     </message>
   </context>
   <context>
     <name>CmdAssemblyConstraintAxle</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+42"/>
       <source>Assembly</source>
-      <translation>assemblage</translation>
+      <translation>Assemblage</translation>
     </message>
     <message>
-      <location/>
       <source>Constraint Axle...</source>
       <translation>Contrainte axiale...</translation>
     </message>
     <message>
-      <location/>
       <source>set a axle constraint between two objects</source>
       <translation>définir une contrainte axiale entre deux objets</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <source>Assembly</source>
+      <translation>Assemblage</translation>
     </message>
   </context>
 </TS>

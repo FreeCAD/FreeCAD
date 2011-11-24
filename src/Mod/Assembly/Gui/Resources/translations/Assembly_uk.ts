@@ -4,7 +4,7 @@
   <context>
     <name>AssemblyGui::Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+50"/>
       <source>Assembly</source>
       <translation>Збірка</translation>
     </message>
@@ -12,19 +12,24 @@
   <context>
     <name>CmdAssemblyConstraintAxle</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+42"/>
       <source>Assembly</source>
       <translation>Збірка</translation>
     </message>
     <message>
-      <location/>
       <source>Constraint Axle...</source>
       <translation>Обмеження осі...</translation>
     </message>
     <message>
-      <location/>
       <source>set a axle constraint between two objects</source>
       <translation>задати вісь обмежену двома об'єктами</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <source>Assembly</source>
+      <translation>Збірка</translation>
     </message>
   </context>
 </TS>

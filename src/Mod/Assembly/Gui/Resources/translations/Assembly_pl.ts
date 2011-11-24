@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+50"/>
       <source>Assembly</source>
-      <translation>Samevoeging</translation>
+      <translation>Złożenie</translation>
     </message>
   </context>
   <context>
@@ -14,22 +14,22 @@
     <message>
       <location filename="../../Command.cpp" line="+42"/>
       <source>Assembly</source>
-      <translation>Samevoeging</translation>
+      <translation>Złożenie</translation>
     </message>
     <message>
       <source>Constraint Axle...</source>
-      <translation>Beperking met 'n as...</translation>
+      <translation>Ograniczenie osi ...</translation>
     </message>
     <message>
       <source>set a axle constraint between two objects</source>
-      <translation>definieer 'n bewegingsbeperking tussen twee voorwerpe met 'n as</translation>
+      <translation>ustaw oś graniczną między dwoma obiektami</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Assembly</source>
-      <translation>Samevoeging</translation>
+      <translation>Złożenie</translation>
     </message>
   </context>
 </TS>

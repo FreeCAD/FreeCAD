@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>AssemblyGui::Workbench</name>
     <message>
-      <location/>
-      <source>Assembly</source>
-      <translation>Kokoonpano</translation>
+        <location filename="../../Workbench.cpp" line="+50"/>
+        <source>Assembly</source>
+        <translation>Kokoonpano</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdAssemblyConstraintAxle</name>
     <message>
-      <location/>
-      <source>Assembly</source>
-      <translation>Kokoonpano</translation>
+        <location filename="../../Command.cpp" line="+42"/>
+        <source>Assembly</source>
+        <translation>Kokoonpano</translation>
     </message>
     <message>
-      <location/>
-      <source>Constraint Axle...</source>
-      <translation>Akseli rajoite...</translation>
+        <location line="+1"/>
+        <source>Constraint Axle...</source>
+        <translation>Akseli rajoite...</translation>
     </message>
     <message>
-      <location/>
-      <source>set a axle constraint between two objects</source>
-      <translation>aseta akselirajoite kahden kohteen välille</translation>
+        <location line="+1"/>
+        <source>set a axle constraint between two objects</source>
+        <translation>aseta akselirajoite kahden kohteen välille</translation>
     </message>
-  </context>
+</context>
 </TS>

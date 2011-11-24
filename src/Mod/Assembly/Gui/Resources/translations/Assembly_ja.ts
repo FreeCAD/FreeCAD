@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+50"/>
       <source>Assembly</source>
-      <translation>Samevoeging</translation>
+      <translation>アセンブリ</translation>
     </message>
   </context>
   <context>
@@ -14,22 +14,22 @@
     <message>
       <location filename="../../Command.cpp" line="+42"/>
       <source>Assembly</source>
-      <translation>Samevoeging</translation>
+      <translation>アセンブリ</translation>
     </message>
     <message>
       <source>Constraint Axle...</source>
-      <translation>Beperking met 'n as...</translation>
+      <translation>軸拘束の設定...</translation>
     </message>
     <message>
       <source>set a axle constraint between two objects</source>
-      <translation>definieer 'n bewegingsbeperking tussen twee voorwerpe met 'n as</translation>
+      <translation>二つのオブジェクト間に軸拘束を設定します。</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Assembly</source>
-      <translation>Samevoeging</translation>
+      <translation>アセンブリ</translation>
     </message>
   </context>
 </TS>
