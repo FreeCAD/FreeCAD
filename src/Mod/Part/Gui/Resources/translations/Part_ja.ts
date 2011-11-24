@@ -6,95 +6,95 @@
     <message>
       <location filename="../../DlgBlock.ui" line="+14"/>
       <source>Block definition</source>
-      <translation>Визначення блоку</translation>
+      <translation>Block definition</translation>
     </message>
     <message>
       <source>First limit</source>
-      <translation>Перше обмеження</translation>
+      <translation>First limit</translation>
     </message>
     <message>
       <source>Type:</source>
-      <translation>Тип:</translation>
+      <translation>Type:</translation>
     </message>
     <message>
       <source>mm</source>
-      <translation>мм</translation>
+      <translation>mm</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Довжина:</translation>
+      <translation>Length:</translation>
     </message>
     <message>
       <source>Dimension</source>
-      <translation>Розмір</translation>
+      <translation>寸法</translation>
     </message>
     <message>
       <source>Up to next</source>
-      <translation>До наступного</translation>
+      <translation>Up to next</translation>
     </message>
     <message>
       <source>Up to last</source>
-      <translation>До останнього</translation>
+      <translation>Up to last</translation>
     </message>
     <message>
       <source>Up to plane</source>
-      <translation>До площини</translation>
+      <translation>Up to plane</translation>
     </message>
     <message>
       <source>Up to face</source>
-      <translation>До лиця</translation>
+      <translation>Up to face</translation>
     </message>
     <message>
       <source>Limit:</source>
-      <translation>Обмеження:</translation>
+      <translation>Limit:</translation>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Нічого не вибрано</translation>
+      <translation>No selection</translation>
     </message>
     <message>
       <source>Profile</source>
-      <translation>Профіль</translation>
+      <translation>プロファイル</translation>
     </message>
     <message>
       <source>Selection:</source>
-      <translation>Вибір:</translation>
+      <translation>Selection:</translation>
     </message>
     <message>
       <source>Reverse</source>
-      <translation>Навпаки</translation>
+      <translation>Reverse</translation>
     </message>
     <message>
       <source>Both sides</source>
-      <translation>Обидві сторони</translation>
+      <translation>両側</translation>
     </message>
     <message>
       <source>Second limit</source>
-      <translation>Друге обмеження</translation>
+      <translation>Second limit</translation>
     </message>
     <message>
       <source>Direction</source>
-      <translation>Напрямок</translation>
+      <translation>方向</translation>
     </message>
     <message>
       <source>Perpendicular to sketch</source>
-      <translation>Перпендикулярно до ескізу</translation>
+      <translation>スケッチに垂直</translation>
     </message>
     <message>
       <source>Reference</source>
-      <translation>Посилання</translation>
+      <translation>Reference</translation>
     </message>
     <message>
       <source>Apply</source>
-      <translation>Застосувати</translation>
+      <translation>適用する</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Скасувати</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>OK</translation>
     </message>
   </context>
   <context>
@@ -102,15 +102,15 @@
     <message>
       <location filename="../../Command.cpp" line="+713"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Boolean...</source>
-      <translation>Логічне...</translation>
+      <translation>ブーリアン演算...</translation>
     </message>
     <message>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Виконати логічну операцію з двома обраними формами</translation>
+      <translation>選択された二つの図形のブーリアン演算を実行します</translation>
     </message>
   </context>
   <context>
@@ -118,11 +118,11 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+79"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Box</source>
-      <translation>Коробка</translation>
+      <translation>Box</translation>
     </message>
     <message>
       <source>Create a box solid</source>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="-595"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Box fix 1</source>
@@ -149,7 +149,7 @@
     <name>CmdPartBox3</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Box fix 2</source>
@@ -164,30 +164,30 @@
     <name>CmdPartBuilder</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Shape builder...</source>
-      <translation>Shape builder...</translation>
+      <translation>形状ビルダー...</translation>
     </message>
     <message>
       <source>Advanced utility to create shapes</source>
-      <translation>Advanced utility to create shapes</translation>
+      <translation>高度な図形作成ユーティリティ</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCommon</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Перетин</translation>
+      <translation>Intersection</translation>
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
-      <translation>Make an intersection of two shapes</translation>
+      <translation>二つの図形の交点を作成</translation>
     </message>
   </context>
   <context>
@@ -195,11 +195,11 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+66"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Cone</source>
-      <translation>Конус</translation>
+      <translation>Cone</translation>
     </message>
     <message>
       <source>Create a cone solid</source>
@@ -211,26 +211,26 @@
     <message>
       <location filename="../../Command.cpp" line="+569"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Cross-sections...</source>
-      <translation>Поперечні перерізи...</translation>
+      <translation>断面...</translation>
     </message>
     <message>
       <source>Cross-sections</source>
-      <translation>Поперечні перерізи</translation>
+      <translation>断面</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCut</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Cut</source>
-      <translation>Вирізати</translation>
+      <translation>切り取り</translation>
     </message>
     <message>
       <source>Make a cut of two shapes</source>
@@ -242,15 +242,15 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="-104"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Create a Cylinder</source>
-      <translation>Створення циліндру</translation>
+      <translation>円柱を作成</translation>
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Циліндр</translation>
+      <translation>Cylinder</translation>
     </message>
   </context>
   <context>
@@ -258,56 +258,56 @@
     <message>
       <location filename="../../Command.cpp" line="+254"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Export CAD...</source>
-      <translation>Export CAD...</translation>
+      <translation>CAD をエクスポート...</translation>
     </message>
     <message>
       <source>Exports to a CAD file</source>
-      <translation>Exports to a CAD file</translation>
+      <translation>CADファイルにエクスポート</translation>
     </message>
   </context>
   <context>
     <name>CmdPartExtrude</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Extrude...</source>
-      <translation>Видавлювання...</translation>
+      <translation>押し出し...</translation>
     </message>
     <message>
       <source>Extrude a selected sketch</source>
-      <translation>Видавлювання вибраного ескізу</translation>
+      <translation>Extrude a selected sketch</translation>
     </message>
   </context>
   <context>
     <name>CmdPartFillet</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Fillet...</source>
-      <translation>Округлення...</translation>
+      <translation>フィレット...</translation>
     </message>
     <message>
       <source>Fillet the selected edges of a shape</source>
-      <translation>Округлення вибраного краю форми</translation>
+      <translation>Fillet the selected edges of a shape</translation>
     </message>
   </context>
   <context>
     <name>CmdPartFuse</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Union</source>
-      <translation>Об'єднання</translation>
+      <translation>Union</translation>
     </message>
     <message>
       <source>Make a union of several shapes</source>
@@ -318,22 +318,22 @@
     <name>CmdPartImport</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Imports a CAD file</source>
-      <translation>Імпорт файлу CAD</translation>
+      <translation>CADファイルをインポート</translation>
     </message>
     <message>
       <source>Import CAD...</source>
-      <translation>Імпорт CAD ...</translation>
+      <translation>Import CAD...</translation>
     </message>
   </context>
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Import a curve network</source>
@@ -348,7 +348,7 @@
     <name>CmdPartLoft</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Loft...</source>
@@ -363,37 +363,37 @@
     <name>CmdPartMakeSolid</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Convert to solid</source>
-      <translation>Перетворити в суцільну</translation>
+      <translation>ソリッドに変換</translation>
     </message>
     <message>
       <source>Create solid from a shell or compound</source>
-      <translation>Створити суцільну форму із оболонки чи складових</translation>
+      <translation>Create solid from a shell or compound</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMirror</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Mirroring...</source>
-      <translation>Віддзеркалення...</translation>
+      <translation>ミラーリング...</translation>
     </message>
     <message>
       <source>Mirroring a selected shape</source>
-      <translation>Віддзеркалення обраної форми</translation>
+      <translation>選択した図形をミラーリング</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Pick curve network</source>
@@ -408,52 +408,52 @@
     <name>CmdPartPrimitives</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Create primitives...</source>
-      <translation>Створення примітивів ...</translation>
+      <translation>プリミティブを作成...</translation>
     </message>
     <message>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Створення параметризованих геометричних примітивів</translation>
+      <translation>Creation of parametrized geometric primitives</translation>
     </message>
   </context>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Reverse shapes</source>
-      <translation>Обернути форми</translation>
+      <translation>図形を反転</translation>
     </message>
     <message>
       <source>Reverse orientation of shapes</source>
-      <translation>Зворотня орієнтація форм</translation>
+      <translation>Reverse orientation of shapes</translation>
     </message>
   </context>
   <context>
     <name>CmdPartRevolve</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Revolve...</source>
-      <translation>Обертати...</translation>
+      <translation>回転...</translation>
     </message>
     <message>
       <source>Revolve a selected shape</source>
-      <translation>Обертати обрану форму</translation>
+      <translation>選択した図形を回転</translation>
     </message>
   </context>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Create ruled surface</source>
@@ -472,11 +472,11 @@
     </message>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Section</source>
-      <translation>Секція</translation>
+      <translation>Section</translation>
     </message>
   </context>
   <context>
@@ -484,22 +484,22 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="+107"/>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Create shape from mesh...</source>
-      <translation>Створити форму з сітки...</translation>
+      <translation>メッシュから形状を作成...</translation>
     </message>
     <message>
       <source>Create shape from selected mesh object</source>
-      <translation>Створити форми з обраної сітки (мешу)</translation>
+      <translation>Create shape from selected mesh object</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Create simple copy</source>
@@ -514,15 +514,15 @@
     <name>CmdPartSimpleCylinder</name>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Create Cylinder...</source>
-      <translation>Створити циліндр ...</translation>
+      <translation>円柱を作成...</translation>
     </message>
     <message>
       <source>Create a Cylinder</source>
-      <translation>Створення циліндру</translation>
+      <translation>円柱を作成</translation>
     </message>
   </context>
   <context>
@@ -534,11 +534,11 @@
     </message>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Sphere</translation>
     </message>
   </context>
   <context>
@@ -549,11 +549,11 @@
     </message>
     <message>
       <source>Part</source>
-      <translation>Частина</translation>
+      <translation>部品</translation>
     </message>
     <message>
       <source>Torus</source>
-      <translation>Тор</translation>
+      <translation>Torus</translation>
     </message>
   </context>
   <context>
@@ -578,7 +578,7 @@
     <name>DlgSettings3DViewPart</name>
     <message>
       <source>Deviation</source>
-      <translation>Відхилення</translation>
+      <translation>Deviation</translation>
     </message>
     <message>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
@@ -590,11 +590,11 @@
     <message>
       <location filename="../../CrossSections.ui" line="+14"/>
       <source>Cross sections</source>
-      <translation>Поперечні перерізи</translation>
+      <translation>断面</translation>
     </message>
     <message>
       <source>Guiding plane</source>
-      <translation>Керівна площина</translation>
+      <translation>Guiding plane</translation>
     </message>
     <message>
       <source>XY</source>
@@ -610,23 +610,23 @@
     </message>
     <message>
       <source>Position:</source>
-      <translation>Позиція:</translation>
+      <translation>位置:</translation>
     </message>
     <message>
       <source>Sections</source>
-      <translation>Секції</translation>
+      <translation>Sections</translation>
     </message>
     <message>
       <source>On both sides</source>
-      <translation>З обох сторін</translation>
+      <translation>On both sides</translation>
     </message>
     <message>
       <source>Count</source>
-      <translation>Кількість</translation>
+      <translation>Count</translation>
     </message>
     <message>
       <source>Distance:</source>
-      <translation>Відстань:</translation>
+      <translation>距離:</translation>
     </message>
   </context>
   <context>
@@ -634,57 +634,57 @@
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="+14"/>
       <source>Boolean Operation</source>
-      <translation>Логічна операція</translation>
+      <translation>ブール演算</translation>
     </message>
     <message>
       <source>Second shape</source>
-      <translation>Друга форма</translation>
+      <translation>2番目の図形</translation>
     </message>
     <message>
       <source>First shape</source>
-      <translation>Перша форма</translation>
+      <translation>最初の図形</translation>
     </message>
     <message>
       <source>Boolean operation</source>
-      <translation>Логічна операція</translation>
+      <translation>ブール演算</translation>
     </message>
     <message>
       <source>Section</source>
-      <translation>Секція</translation>
+      <translation>Section</translation>
     </message>
     <message>
       <source>Difference</source>
-      <translation>Різниця</translation>
+      <translation>Difference</translation>
     </message>
     <message>
       <source>Union</source>
-      <translation>Об'єднання</translation>
+      <translation>Union</translation>
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Перетин</translation>
+      <translation>Intersection</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="+317"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Неможливо виконати логічну операцію з тією ж формою</translation>
+      <translation>Cannot perform a boolean operation with the same shape</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="+25"/>
       <source>Solids</source>
-      <translation>Суцільні</translation>
+      <translation>ソリッド</translation>
     </message>
     <message>
       <source>Shells</source>
-      <translation>Оболонки</translation>
+      <translation>Shells</translation>
     </message>
     <message>
       <source>Compounds</source>
-      <translation>Складові</translation>
+      <translation>Compounds</translation>
     </message>
     <message>
       <source>Faces</source>
-      <translation>Faces</translation>
+      <translation>面</translation>
     </message>
     <message>
       <source>Swap selection</source>
@@ -693,19 +693,19 @@
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="-10"/>
       <source>Select a shape on the left side, first</source>
-      <translation>Select a shape on the left side, first</translation>
+      <translation>最初に左側の図形を選択します</translation>
     </message>
     <message>
       <source>Select a shape on the right side, first</source>
-      <translation>Select a shape on the right side, first</translation>
+      <translation>最初に右側の図形を選択します</translation>
     </message>
     <message>
       <source>No active document available</source>
-      <translation>No active document available</translation>
+      <translation>利用可能なアクティブドキュメントはありませんでした</translation>
     </message>
     <message>
       <source>One of the selected objects doesn't exist anymore</source>
-      <translation>One of the selected objects doesn't exist anymore</translation>
+      <translation>選択したオブジェクトはもう存在しません</translation>
     </message>
     <message>
       <source>Performing union on non-solids is not possible</source>
@@ -725,23 +725,23 @@
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
       <source>Extrude</source>
-      <translation>Видавлювання</translation>
+      <translation>Extrude</translation>
     </message>
     <message>
       <source>Direction</source>
-      <translation>Напрямок</translation>
+      <translation>方向</translation>
     </message>
     <message>
       <source>Along normal</source>
-      <translation>Вздовж нормалі</translation>
+      <translation>Along normal</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Довжина:</translation>
+      <translation>Length:</translation>
     </message>
     <message>
       <source>3D view</source>
-      <translation>3D view</translation>
+      <translation>3Dビュー</translation>
     </message>
     <message>
       <source>Note:This option works for planes only</source>
@@ -749,11 +749,11 @@
     </message>
     <message>
       <source>Shape</source>
-      <translation>Форма</translation>
+      <translation>図形</translation>
     </message>
     <message>
       <source></source>
-      <translation>Про програму</translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>X:</source>
@@ -761,7 +761,7 @@
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -782,90 +782,90 @@
     <message>
       <location filename="../../DlgFilletEdges.ui" line="+14"/>
       <source>Fillet Edges</source>
-      <translation>Закруглити краї</translation>
+      <translation>Fillet Edges</translation>
     </message>
     <message>
       <source>Fillet Parameter</source>
-      <translation>Параметри закруглення</translation>
+      <translation>Fillet Parameter</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Радіус:</translation>
+      <translation>半径:</translation>
     </message>
     <message>
       <source>Fillet type:</source>
-      <translation>Тип закруглення:</translation>
+      <translation>フィレットの種類:</translation>
     </message>
     <message>
       <source>Constant Radius</source>
-      <translation>Постійний радіус</translation>
+      <translation>Constant Radius</translation>
     </message>
     <message>
       <source>Variable Radius</source>
-      <translation>Змінний радіус</translation>
+      <translation>Variable Radius</translation>
     </message>
     <message>
       <source>Shape</source>
-      <translation>Форма</translation>
+      <translation>図形</translation>
     </message>
     <message>
       <source>Selected shape:</source>
-      <translation>Обрана форма:</translation>
+      <translation>Selected shape:</translation>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Нічого не вибрано</translation>
+      <translation>No selection</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="+185"/>
       <source>Edges to fillet</source>
-      <translation>Краї для закруглення</translation>
+      <translation>Edges to fillet</translation>
     </message>
     <message>
       <source>Start radius</source>
-      <translation>Початковий радіус</translation>
+      <translation>Start radius</translation>
     </message>
     <message>
       <source>End radius</source>
-      <translation>Кінцевий радіус</translation>
+      <translation>End radius</translation>
     </message>
     <message>
       <source>Radius</source>
-      <translation>Радіус</translation>
+      <translation>半径</translation>
     </message>
     <message>
       <source>No edge selected</source>
-      <translation>Край не обрано</translation>
+      <translation>エッジが選択されていません</translation>
     </message>
     <message>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation>Не обрано край для згладжування
-Будь ласка, спочатку оберіть один, або більше країв.</translation>
+      <translation>No edge entity is checked to fillet.
+Please check one or more edge entities first.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="+30"/>
       <source>All</source>
-      <translation>Все</translation>
+      <translation>すべて</translation>
     </message>
     <message>
       <source>None</source>
-      <translation>Немає</translation>
+      <translation>なし</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="-188"/>
       <source>Edge%1</source>
-      <translation>Край%1</translation>
+      <translation>Edge%1</translation>
     </message>
     <message>
       <source>No shape selected</source>
-      <translation>Немає обраної форми</translation>
+      <translation>図形が選択されていません</translation>
     </message>
     <message>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>Не обрано вірної форми
-Будь ласка, оберіть вірну форму у виринаючому списку.</translation>
+      <translation>No valid shape is selected.
+Please select a valid shape in the drop-down box first.</translation>
     </message>
   </context>
   <context>
@@ -881,7 +881,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -889,35 +889,35 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Скасувати</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Size:</source>
-      <translation>Розмір:</translation>
+      <translation>サイズ:</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Висота:</translation>
+      <translation>Height:</translation>
     </message>
     <message>
       <source>Width:</source>
-      <translation>Ширина:</translation>
+      <translation>幅：</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Довжина:</translation>
+      <translation>Length:</translation>
     </message>
     <message>
       <source>Position:</source>
-      <translation>Позиція:</translation>
+      <translation>位置:</translation>
     </message>
     <message>
       <source>Direction:</source>
-      <translation>Напрям:</translation>
+      <translation>Direction:</translation>
     </message>
   </context>
   <context>
@@ -925,27 +925,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="+16"/>
       <source>Cylinder definition</source>
-      <translation>Визначення циліндра</translation>
+      <translation>円柱の定義</translation>
     </message>
     <message>
       <source>Parameter</source>
-      <translation>Параметр</translation>
+      <translation>パラメータ</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Висота:</translation>
+      <translation>Height:</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Радіус:</translation>
+      <translation>半径:</translation>
     </message>
     <message>
       <source>Position:</source>
-      <translation>Позиція:</translation>
+      <translation>位置:</translation>
     </message>
     <message>
       <source>Direction:</source>
-      <translation>Напрям:</translation>
+      <translation>Direction:</translation>
     </message>
     <message>
       <source>X:</source>
@@ -953,7 +953,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -961,11 +961,11 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Скасувати</translation>
+      <translation>キャンセル</translation>
     </message>
   </context>
   <context>
@@ -973,7 +973,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="+16"/>
       <source>IGES input file</source>
-      <translation>Вхідний файл IGES</translation>
+      <translation>IGES input file</translation>
     </message>
     <message>
       <source>...</source>
@@ -981,19 +981,19 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Скасувати</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>File Name</source>
-      <translation>Ім'я файлу</translation>
+      <translation>File Name</translation>
     </message>
     <message>
       <source></source>
-      <translation>Про програму</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1001,7 +1001,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
       <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-      <translation>IGES (*.igs *.iges);;Всі файли (*.*)</translation>
+      <translation>IGES（*.IGS *.IGES）;;すべてのファイル(*.*)</translation>
     </message>
   </context>
   <context>
@@ -1013,23 +1013,23 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Скасувати</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Step input file</source>
-      <translation>Крок вхідного файлу</translation>
+      <translation>Step input file</translation>
     </message>
     <message>
       <source>File Name</source>
-      <translation>Ім'я файлу</translation>
+      <translation>File Name</translation>
     </message>
     <message>
       <source></source>
-      <translation>Про програму</translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -1037,7 +1037,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="+68"/>
       <source>STEP (*.stp *.step);;All Files (*.*)</source>
-      <translation>STEP (*.stp *.step);;Всі файли (*.*)</translation>
+      <translation>STEP (*.stp *.step);;All Files (*.*)</translation>
     </message>
   </context>
   <context>
@@ -1045,11 +1045,11 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="+14"/>
       <source>Geometric Primitives</source>
-      <translation>Геометричні примітиви</translation>
+      <translation>Geometric Primitives</translation>
     </message>
     <message>
       <source>Primitive</source>
-      <translation>Примітив</translation>
+      <translation>プリミティブ</translation>
     </message>
     <message>
       <source>X min</source>
@@ -1105,15 +1105,15 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>X Axis Value:</source>
-      <translation>X Axis Value:</translation>
+      <translation>X軸の値：</translation>
     </message>
     <message>
       <source>Y Axis Value:</source>
-      <translation>Y Axis Value:</translation>
+      <translation>Y軸の値：</translation>
     </message>
     <message>
       <source>Z Axis Value:</source>
-      <translation>Z Axis Value:</translation>
+      <translation>Z軸の値：</translation>
     </message>
     <message>
       <source>Wedge</source>
@@ -1121,19 +1121,19 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Circle</source>
-      <translation>Коло</translation>
+      <translation>円</translation>
     </message>
     <message>
       <source>Vertex</source>
-      <translation>Vertex</translation>
+      <translation>頂点</translation>
     </message>
     <message>
       <source>Position</source>
-      <translation>Позиція</translation>
+      <translation>Position</translation>
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>X:</source>
@@ -1141,7 +1141,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Direction:</source>
-      <translation>Напрям:</translation>
+      <translation>Direction:</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -1149,75 +1149,75 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Plane</source>
-      <translation>Площини</translation>
+      <translation>Plane</translation>
     </message>
     <message>
       <source>Box</source>
-      <translation>Коробка</translation>
+      <translation>Box</translation>
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Циліндр</translation>
+      <translation>Cylinder</translation>
     </message>
     <message>
       <source>Cone</source>
-      <translation>Конус</translation>
+      <translation>Cone</translation>
     </message>
     <message>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Sphere</translation>
     </message>
     <message>
       <source>Ellipsoid</source>
-      <translation>Еліпсоїд</translation>
+      <translation>Ellipsoid</translation>
     </message>
     <message>
       <source>Torus</source>
-      <translation>Тор</translation>
+      <translation>Torus</translation>
     </message>
     <message>
       <source>Parameter</source>
-      <translation>Параметр</translation>
+      <translation>パラメータ</translation>
     </message>
     <message>
       <source>Width:</source>
-      <translation>Ширина:</translation>
+      <translation>幅：</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Довжина:</translation>
+      <translation>Length:</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Висота:</translation>
+      <translation>Height:</translation>
     </message>
     <message>
       <source>Angle:</source>
-      <translation>Кут:</translation>
+      <translation>角度:</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Радіус:</translation>
+      <translation>半径:</translation>
     </message>
     <message>
       <source>Radius 1:</source>
-      <translation>Радіус 1:</translation>
+      <translation>半径 1:</translation>
     </message>
     <message>
       <source>Radius 2:</source>
-      <translation>Радіус 2:</translation>
+      <translation>半径 2:</translation>
     </message>
     <message>
       <source>U parametric:</source>
-      <translation>U параметричне:</translation>
+      <translation>U parametric:</translation>
     </message>
     <message>
       <source>V parametric:</source>
-      <translation>V параметричне:</translation>
+      <translation>V parametric:</translation>
     </message>
     <message>
       <source>&amp;Create</source>
-      <translation>Створити</translation>
+      <translation>&amp;Create</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1225,7 +1225,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>Закрити</translation>
+      <translation>閉じる(&amp;O)</translation>
     </message>
     <message>
       <source>Alt+O</source>
@@ -1234,24 +1234,24 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
-      <translation>Створити %1</translation>
+      <translation>Create %1</translation>
     </message>
     <message>
       <source>No active document</source>
-      <translation>Немає активного документу</translation>
+      <translation>No active document</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="+1048"/>
       <source>Pitch:</source>
-      <translation>Крок:</translation>
+      <translation>Pitch:</translation>
     </message>
     <message>
       <source>Helix</source>
-      <translation>Спіраль</translation>
+      <translation>螺旋</translation>
     </message>
     <message>
       <source>3D View</source>
-      <translation>3D Вигляд</translation>
+      <translation>3D 表示</translation>
     </message>
   </context>
   <context>
@@ -1259,7 +1259,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="+14"/>
       <source>Revolve</source>
-      <translation>Обертатися</translation>
+      <translation>回転</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -1271,19 +1271,19 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Angle:</source>
-      <translation>Кут:</translation>
+      <translation>角度:</translation>
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>Axis:</source>
-      <translation>Осі:</translation>
+      <translation>軸:</translation>
     </message>
     <message>
       <source>Shape</source>
-      <translation>Форма</translation>
+      <translation>図形</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="+118"/>
@@ -1296,7 +1296,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="+171"/>
       <source>View accuracy / Performance</source>
-      <translation>Переглянути точність/характеристики</translation>
+      <translation>View accuracy / Performance</translation>
     </message>
     <message>
       <source>View smoothing</source>
@@ -1304,23 +1304,23 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Using high-quality normals</source>
-      <translation>Використання високоякісних нормалей</translation>
+      <translation>Using high-quality normals</translation>
     </message>
     <message>
       <source>This will slow down render speed but will lead to nicer results</source>
-      <translation>Це буде сповільняти швидкість візуалізації, але приведе до кращих результатів</translation>
+      <translation>This will slow down render speed but will lead to nicer results</translation>
     </message>
     <message>
       <source>Defines the appearance of surfaces</source>
-      <translation>Визначає зовнішній вигляд поверхонь</translation>
+      <translation>Defines the appearance of surfaces</translation>
     </message>
     <message>
       <source>Shape view</source>
-      <translation>Перегляд форми</translation>
+      <translation>図形ビュー</translation>
     </message>
     <message>
       <source>Tessellation</source>
-      <translation>Мозаїка</translation>
+      <translation>Tessellation</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1328,11 +1328,11 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Do not define normal per vertex</source>
-      <translation>Не визначайте нормалей для кожної вершини</translation>
+      <translation>Do not define normal per vertex</translation>
     </message>
     <message>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Визначає відхилення тесселяції до активної поверхні</translation>
+      <translation>Defines the deviation of tessellation to the actual surface</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1340,7 +1340,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style=" font-weight:600;"&gt;ヒント&lt;/span&gt; &lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;頂点ごとに法線を定義する方法は&lt;span style=" font-style:italic;"&gt;フォンシェーディング&lt;/span&gt;と呼ばれています&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt; &lt;span style=" font-style:normal;"&gt;また、面ごとの法線を定義する方法は&lt;/span&gt;フラットシェーディング&lt;span style=" font-style:normal;"&gt;と呼ばれています。&lt;/span&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1357,7 +1357,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="+64"/>
       <source>Deviation</source>
-      <translation>Відхилення</translation>
+      <translation>Deviation</translation>
     </message>
     <message>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
@@ -1369,27 +1369,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
       <source>General</source>
-      <translation>Загальне</translation>
+      <translation>標準</translation>
     </message>
     <message>
       <source>Export</source>
-      <translation>Експорт</translation>
+      <translation>エクスポート</translation>
     </message>
     <message>
       <source>Millimeter</source>
-      <translation>Міліметри</translation>
+      <translation>ミリメートル</translation>
     </message>
     <message>
       <source>Meter</source>
-      <translation>Метри</translation>
+      <translation>メートル</translation>
     </message>
     <message>
       <source>Inch</source>
-      <translation>Дюйми</translation>
+      <translation>インチ</translation>
     </message>
     <message>
       <source>Units for export of STEP/IGES</source>
-      <translation>Одиниці для експорту STEP/IGES</translation>
+      <translation>Units for export of STEP/IGES</translation>
     </message>
   </context>
   <context>
@@ -1401,7 +1401,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
-      <translation>At least two vertices or wires are required.</translation>
+      <translation>少なくとも二つの頂点か連線が必要です。</translation>
     </message>
   </context>
   <context>
@@ -1409,27 +1409,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../Mirroring.ui" line="+14"/>
       <source>Mirroring</source>
-      <translation>Віддзеркалення</translation>
+      <translation>ミラーリング</translation>
     </message>
     <message>
       <source>Shapes</source>
-      <translation>Форми</translation>
+      <translation>Shapes</translation>
     </message>
     <message>
       <source>Mirror plane:</source>
-      <translation>Дзеркальна площина:</translation>
+      <translation>Mirror plane:</translation>
     </message>
     <message>
       <source>XY plane</source>
-      <translation>Площина XY</translation>
+      <translation>XY平面</translation>
     </message>
     <message>
       <source>XZ plane</source>
-      <translation>Площина XZ</translation>
+      <translation>XZ平面</translation>
     </message>
     <message>
       <source>YZ plane</source>
-      <translation>Площина YZ</translation>
+      <translation>YZ平面</translation>
     </message>
     <message>
       <source>Base point:</source>
@@ -1450,11 +1450,11 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../Mirroring.cpp" line="+117"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation>Спочатку виберіть форму для дзеркального відображення.</translation>
+      <translation>最初にミラーリングのための図形を選択します</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
-      <translation>Документ '%1' не знайдено.</translation>
+      <translation>No such document '%1'.</translation>
     </message>
   </context>
   <context>
@@ -1462,19 +1462,19 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>誤った選択</translation>
     </message>
     <message>
       <source>Select two vertices</source>
-      <translation>Select two vertices</translation>
+      <translation>二つの頂点を選択</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
-      <translation>Select three or more edges</translation>
+      <translation>三つ以上のエッジを選択</translation>
     </message>
     <message>
       <source>Select two or more faces</source>
-      <translation>Select two or more faces</translation>
+      <translation>二つ以上の面を選択</translation>
     </message>
     <message>
       <source>Select only one part object</source>
@@ -1490,7 +1490,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Select adjacent faces</source>
-      <translation>Select adjacent faces</translation>
+      <translation>隣接する面を選択</translation>
     </message>
     <message>
       <source>All shape types can be selected</source>
@@ -1522,7 +1522,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Value</source>
-      <translation>Значення</translation>
+      <translation>値</translation>
     </message>
     <message>
       <source>Special</source>
@@ -1530,7 +1530,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Command</source>
-      <translation>Команда</translation>
+      <translation>コマンド</translation>
     </message>
     <message>
       <source>Stretch</source>
@@ -1538,15 +1538,15 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Move</source>
-      <translation>Переміщення</translation>
+      <translation>移動</translation>
     </message>
     <message>
       <source>Rotate</source>
-      <translation>Обертання</translation>
+      <translation>回転</translation>
     </message>
     <message>
       <source>Offset</source>
-      <translation>Зміщення</translation>
+      <translation>オフセット</translation>
     </message>
     <message>
       <source>Orient</source>
@@ -1666,15 +1666,15 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../TaskFaceColors.ui" line="+14"/>
       <source>Set color per face</source>
-      <translation>Set color per face</translation>
+      <translation>面ごとの色の設定</translation>
     </message>
     <message>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Click on the faces in the 3d view to select them.</translation>
+      <translation>それらを選択するには、3Dビューで面をクリックしてください。</translation>
     </message>
     <message>
       <source>Faces:</source>
-      <translation>Faces:</translation>
+      <translation>面:</translation>
     </message>
     <message>
       <source>Set to default</source>
@@ -1690,43 +1690,43 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Vertex/Wire</source>
-      <translation>Vertex/Wire</translation>
+      <translation>頂点/連線</translation>
     </message>
     <message>
       <source>Move right</source>
-      <translation>Перемістити праворуч</translation>
+      <translation>右へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Переміщення обраного елемента на один рівень вниз.&lt;/b&gt;&lt;p&gt;Це також призведе до зміни рівня батьківського елемента.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択した項目1つ下のレベルに移動します。&lt;/b&gt; &lt;p&gt;これは、親項目のレベルも変更します。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
-      <translation>Перемістити ліворуч</translation>
+      <translation>左へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Переміщення обраного елемента на один рівень вгору.&lt;/b&gt;&lt;p&gt;Це також призведе до зміни рівня батьківського елемента.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択した項目を1つ上のレベルに移動します。&lt;/b&gt; &lt;p&gt;これは、親項目のレベルも変更します。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
-      <translation>Перемістити вгору</translation>
+      <translation>上へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Перемістити обраний елемент вгору.&lt;/b&gt;&lt;p&gt;Елемент буде переміщено в межах ієрархії рівня.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択された項目を上へ移動します。&lt;/b&gt; &lt;p&gt;項目は階層レベル内で移動されます。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
-      <translation>Перемістити вниз</translation>
+      <translation>下へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Перемістити обраний елемент вниз.&lt;/b&gt;&lt;p&gt;Елемент буде переміщено в межах ієрархії рівня.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択された項目を下へ移動します。&lt;/b&gt; &lt;p&gt;項目は階層レベル内で移動されます。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Create solid</source>
-      <translation>Create solid</translation>
+      <translation>ソリッド作成</translation>
     </message>
     <message>
       <source>Ruled surface</source>
@@ -1762,11 +1762,11 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Create</source>
-      <translation>Створити</translation>
+      <translation>作成</translation>
     </message>
     <message>
       <source>All faces</source>
-      <translation>All faces</translation>
+      <translation>すべての面</translation>
     </message>
   </context>
   <context>
@@ -1774,15 +1774,15 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../Command.cpp" line="-141"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>誤った選択</translation>
     </message>
     <message>
       <source>Select two shapes please.</source>
-      <translation>Виберіть дві форми, будь ласка.</translation>
+      <translation>Select two shapes please.</translation>
     </message>
     <message>
       <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-      <translation>Усі файли CAD (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+      <translation>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
     </message>
     <message>
       <source>STEP (*.stp *.step)</source>
@@ -1798,7 +1798,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Всі файли (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="+58"/>
@@ -1812,21 +1812,21 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="+67"/>
       <source>Edit mirror plane</source>
-      <translation>Редагувати площину відзеркалення</translation>
+      <translation>Edit mirror plane</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Перетворення</translation>
+      <translation>変換</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="+121"/>
       <source>Part design</source>
-      <translation>Дизайн частини</translation>
+      <translation>Part design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-260"/>
       <source>Select two shapes or more, please.</source>
-      <translation>Select two shapes or more, please.</translation>
+      <translation>二つ以上の図形を選択してください．</translation>
     </message>
     <message>
       <source>You have to select either two edges or two wires.</source>
@@ -1835,12 +1835,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="+140"/>
       <source>Edit fillet edges</source>
-      <translation>Редагувати кромку граней</translation>
+      <translation>フィレットエッジを編集</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="+462"/>
       <source>Set colors...</source>
-      <translation>Set colors...</translation>
+      <translation>色を設定...</translation>
     </message>
   </context>
   <context>
@@ -1848,27 +1848,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Part</source>
-      <translation>Частина</translation>
+      <translation>部品(&amp;p)</translation>
     </message>
     <message>
       <source>&amp;Simple</source>
-      <translation>&amp;Просте</translation>
+      <translation>&amp;Simple</translation>
     </message>
     <message>
       <source>&amp;Parametric</source>
-      <translation>&amp;Параметричне</translation>
+      <translation>&amp;Parametric</translation>
     </message>
     <message>
       <source>Part tools</source>
-      <translation>Інструменти деталі</translation>
+      <translation>部品ツール</translation>
     </message>
     <message>
       <source>Solids</source>
-      <translation>Суцільні</translation>
+      <translation>ソリッド</translation>
     </message>
     <message>
       <source>Boolean</source>
-      <translation>Логічне</translation>
+      <translation>Boolean</translation>
     </message>
   </context>
 </TS>
