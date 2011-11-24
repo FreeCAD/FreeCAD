@@ -5,7 +5,7 @@
     <name>Angle</name>
     <message>
       <source>Form</source>
-      <translation>Vorm</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>A:</source>
@@ -21,136 +21,136 @@
     </message>
     <message>
       <source>Angle Snap</source>
-      <translation>Hoekspronge</translation>
+      <translation>Szögtartás</translation>
     </message>
     <message>
       <source>1 °</source>
-      <translation>1°</translation>
+      <translation>1 °</translation>
     </message>
     <message>
       <source>2 °</source>
-      <translation>2°</translation>
+      <translation>2 °</translation>
     </message>
     <message>
       <source>5 °</source>
-      <translation>5°</translation>
+      <translation>5 °</translation>
     </message>
     <message>
       <source>10 °</source>
-      <translation>10°</translation>
+      <translation>10 °</translation>
     </message>
     <message>
       <source>20 °</source>
-      <translation>20°</translation>
+      <translation>20 °</translation>
     </message>
     <message>
       <source>45 °</source>
-      <translation>45°</translation>
+      <translation>45 °</translation>
     </message>
     <message>
       <source>90 °</source>
-      <translation>90°</translation>
+      <translation>90 °</translation>
     </message>
     <message>
       <source>180 °</source>
-      <translation>180°</translation>
+      <translation>180 °</translation>
     </message>
   </context>
   <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
-      <translation>geen</translation>
+      <translation>egyik sem</translation>
     </message>
   </context>
   <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Druk linker muisknoppie</translation>
+      <translation>Nyomja meg a bal egérgombot</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Press SHIFT and middle mouse button</translation>
+      <translation>Nyomja le a SHIFT BILLENTYŰT, és a középső egérgomb</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Druk middelste muisknoppie</translation>
+      <translation>Nyomja meg a középső egérgombot</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Blaai neer met middelste muisknoppie</translation>
+      <translation>Görgesse a középső egérgombot</translation>
     </message>
   </context>
   <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Druk linker muisknoppie</translation>
+      <translation>Nyomja meg a bal egérgombot</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Druk middelste muisknoppie</translation>
+      <translation>Nyomja meg a középső egérgombot</translation>
     </message>
     <message>
       <source>Press left and middle mouse button</source>
-      <translation>Druk linker- en middelste muisknoppie</translation>
+      <translation>Nyomja meg a bal és a középső egérgombot</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Blaai neer met middelste muisknoppie</translation>
+      <translation>Görgesse a középső egérgombot</translation>
     </message>
   </context>
   <context>
     <name>Gui::Command</name>
     <message>
       <source>Standard</source>
-      <translation>Standaard</translation>
+      <translation>Szabvány</translation>
     </message>
   </context>
   <context>
     <name>Gui::ContainerDialog</name>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
   </context>
   <context>
     <name>Gui::ControlSingleton</name>
     <message>
       <source>Task panel</source>
-      <translation>Taakpaneel</translation>
+      <translation>Feladat panel</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
       <source>About</source>
-      <translation>Aangaande</translation>
+      <translation>Névjegy</translation>
     </message>
     <message>
       <source>Revision number</source>
-      <translation>Hersieningsnommer</translation>
+      <translation>Felülvizsgálati szám</translation>
     </message>
     <message>
       <source>Version</source>
-      <translation>Weergawe</translation>
+      <translation>Verzió</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
     <message>
       <source>Release date</source>
-      <translation>Uitgawedatum</translation>
+      <translation>Megjelenés éve</translation>
     </message>
     <message>
       <source>Platform</source>
@@ -158,52 +158,52 @@
     </message>
     <message>
       <source>License...</source>
-      <translation>License...</translation>
+      <translation>Licenc...</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
-      <translation>Button %1</translation>
+      <translation>Gomb % 1</translation>
     </message>
     <message>
       <source>Out Of Range</source>
-      <translation>Out Of Range</translation>
+      <translation>Tartományon kívüli</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
       <source>Commands</source>
-      <translation>Bevele</translation>
+      <translation>Parancsok</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DemoMode</name>
     <message>
       <source>View Turntable</source>
-      <translation>Kyk na Draaitafel</translation>
+      <translation>Forgó asztal nézet</translation>
     </message>
     <message>
       <source>Speed</source>
-      <translation>Spoed</translation>
+      <translation>Sebesség</translation>
     </message>
     <message>
       <source>Maximum</source>
-      <translation>Maksimum</translation>
+      <translation>Maximális</translation>
     </message>
     <message>
       <source>Minimum</source>
-      <translation>Minimum</translation>
+      <translation>Minimális</translation>
     </message>
     <message>
       <source>Fullscreen</source>
-      <translation>Volskerm</translation>
+      <translation>Teljes képernyős</translation>
     </message>
     <message>
       <source>Enable timer</source>
-      <translation>Aktiveer tydhouer</translation>
+      <translation>Időzítő engedélezése</translation>
     </message>
     <message>
       <source> s</source>
@@ -211,7 +211,7 @@
     </message>
     <message>
       <source>Angle</source>
-      <translation>Hoek</translation>
+      <translation>Szög</translation>
     </message>
     <message>
       <source>90°</source>
@@ -223,26 +223,26 @@
     </message>
     <message>
       <source>Play</source>
-      <translation>Speel</translation>
+      <translation>Lejátszás</translation>
     </message>
     <message>
       <source>Stop</source>
-      <translation>Stop</translation>
+      <translation>Megállít</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>Bezárás</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgActivateWindow</name>
     <message>
       <source>Choose Window</source>
-      <translation>Kies Venster</translation>
+      <translation>Válasszon ablakot</translation>
     </message>
     <message>
       <source>&amp;Activate</source>
-      <translation>&amp;Aktiveer</translation>
+      <translation>&amp;Aktiválás</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -250,79 +250,79 @@
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgActivateWindowImp</name>
     <message>
       <source>Windows</source>
-      <translation>Vensters</translation>
+      <translation>Ablak</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgAuthorization</name>
     <message>
       <source>Authorization</source>
-      <translation>Magtiging</translation>
+      <translation>Azonosítás</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source>Password:</source>
-      <translation>Wagwoord:</translation>
+      <translation>Jelszó:</translation>
     </message>
     <message>
       <source>User name:</source>
-      <translation>Gebruikersnaam:</translation>
+      <translation>Felhasználói név:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
       <source>Choose Icon</source>
-      <translation>Kies ikoon</translation>
+      <translation>Válassz ikont</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source>Add icons...</source>
-      <translation>Add icons...</translation>
+      <translation>Ikon hozzáadása...</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>Makrók</translation>
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Maak Pasgemaakte Makros</translation>
+      <translation>Egyedi makrók beállítása</translation>
     </message>
     <message>
       <source>Macro:</source>
-      <translation>Makro:</translation>
+      <translation>Makró:</translation>
     </message>
     <message>
       <source>...</source>
@@ -330,151 +330,151 @@
     </message>
     <message>
       <source>Pixmap</source>
-      <translation>Beeldelementkaart</translation>
+      <translation>Pixkép</translation>
     </message>
     <message>
       <source>Accelerator:</source>
-      <translation>Versneller:</translation>
+      <translation>Gyorsító:</translation>
     </message>
     <message>
       <source>What's this:</source>
-      <translation>Wat is dit:</translation>
+      <translation>Mi ez:</translation>
     </message>
     <message>
       <source>Status text:</source>
-      <translation>Status teks:</translation>
+      <translation>Állapot szöveg:</translation>
     </message>
     <message>
       <source>Tool tip:</source>
-      <translation>Werktuigwenk:</translation>
+      <translation>Eszközleírás:</translation>
     </message>
     <message>
       <source>Menu text:</source>
-      <translation>Kieslys teks:</translation>
+      <translation>Menü szöveg:</translation>
     </message>
     <message>
       <source>Add</source>
-      <translation>Voeg by</translation>
+      <translation>Hozzáad</translation>
     </message>
     <message>
       <source>Remove</source>
-      <translation>Verwyder</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <source>Replace</source>
-      <translation>Vervang</translation>
+      <translation>Módosít</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomActionsImp</name>
     <message>
       <source>Icons</source>
-      <translation>Ikone</translation>
+      <translation>Ikonok</translation>
     </message>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>Makrók</translation>
     </message>
     <message>
       <source>No macro</source>
-      <translation>Geen makro</translation>
+      <translation>Nincs makró</translation>
     </message>
     <message>
       <source>No macros found.</source>
-      <translation>Geen makros gevind nie.</translation>
+      <translation>Nem találhatók makrók.</translation>
     </message>
     <message>
       <source>Macro not found</source>
-      <translation>Makro nie gevind nie</translation>
+      <translation>Makró nem található</translation>
     </message>
     <message>
       <source>Sorry, couldn't find macro file '%1'.</source>
-      <translation>Jammer, kon nie die makro-lêer '%1' vind nie.</translation>
+      <translation>Sajnáljuk, nem található makró file '%1'.</translation>
     </message>
     <message>
       <source>Empty macro</source>
-      <translation>Leë makro</translation>
+      <translation>Üres makró</translation>
     </message>
     <message>
       <source>Please specify the macro first.</source>
-      <translation>Kies asseblief eers 'n makro.</translation>
+      <translation>Először adjon meg makrót.</translation>
     </message>
     <message>
       <source>Empty text</source>
-      <translation>Leë teks</translation>
+      <translation>Üres szöveg</translation>
     </message>
     <message>
       <source>Please specify the menu text first.</source>
-      <translation>Spesifiseer asseblief eers die kieslysteks.</translation>
+      <translation>Először adjon meg menü szöveget.</translation>
     </message>
     <message>
       <source>No item selected</source>
-      <translation>Geen item gekies</translation>
+      <translation>Nincs elem kiválasztva</translation>
     </message>
     <message>
       <source>Please select a macro item first.</source>
-      <translation>Kies eers 'n makro-item.</translation>
+      <translation>Kérem előbb adjon meg makró elemet.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomCommands</name>
     <message>
       <source>Commands</source>
-      <translation>Bevele</translation>
+      <translation>Parancsok</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomCommandsImp</name>
     <message>
       <source>Category</source>
-      <translation>Kategorie</translation>
+      <translation>Kategória</translation>
     </message>
     <message>
       <source>Icon</source>
-      <translation>Ikoon</translation>
+      <translation>Ikon</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>Parancs</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomKeyboard</name>
     <message>
       <source>Keyboard</source>
-      <translation>Sleutelbord</translation>
+      <translation>Billentyűzet</translation>
     </message>
     <message>
       <source>Description:</source>
-      <translation>Beskrywing:</translation>
+      <translation>Leírás:</translation>
     </message>
     <message>
       <source>&amp;Category:</source>
-      <translation>&amp;Kategorie:</translation>
+      <translation>&amp;Csoportosítás:</translation>
     </message>
     <message>
       <source>C&amp;ommands:</source>
-      <translation>&amp;Bevele:</translation>
+      <translation>Parancs&amp;ok:</translation>
     </message>
     <message>
       <source>Current shortcut:</source>
-      <translation>Huidige kortpad:</translation>
+      <translation>Meglévő útvonal:</translation>
     </message>
     <message>
       <source>Press &amp;new shortcut:</source>
-      <translation>Druk &amp; nuwe kortpad:</translation>
+      <translation>Nyomja le új elérési úthoz:</translation>
     </message>
     <message>
       <source>Currently assigned to:</source>
-      <translation>Tans toegeken aan:</translation>
+      <translation>Aktuális hozzárendelés:</translation>
     </message>
     <message>
       <source>&amp;Assign</source>
-      <translation>&amp;KenToe</translation>
+      <translation>Hozzárendelés</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -482,7 +482,7 @@
     </message>
     <message>
       <source>&amp;Reset</source>
-      <translation>Herstel</translation>
+      <translation>Visszaállít</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -490,7 +490,7 @@
     </message>
     <message>
       <source>Re&amp;set All</source>
-      <translation>&amp;Herstel Alles</translation>
+      <translation>Mind visszaállít</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -498,154 +498,155 @@
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomKeyboardImp</name>
     <message>
       <source>Icon</source>
-      <translation>Ikoon</translation>
+      <translation>Ikon</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>Parancs</translation>
     </message>
     <message>
       <source>none</source>
-      <translation>geen</translation>
+      <translation>egyik sem</translation>
     </message>
     <message>
       <source>Multiple defined shortcut</source>
-      <translation>Veelvuldig gedefinieerde kortpad</translation>
+      <translation>Többszörösen definiált elérési út</translation>
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Die kortpad '%1' is meer as een keer gedefinieer. Dit kan lei tot onverwagte gedrag.</translation>
+      <translation>Az '%1' elérési út többszőr lett definiálva. Ez nem megfelelő működéshez vezethet.</translation>
     </message>
     <message>
       <source>Already defined shortcut</source>
-      <translation>Reeds gedefinieerde kortpad</translation>
+      <translation>Már definiált elérési út</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
 Please define another shortcut.</source>
-      <translation>Die kortpad '%1' is reeds toegeken aan '%2'. 
-Definieer asseblief 'n ander kortpad.</translation>
+      <translation>A '%1' elérési út már a '%2' hoz rendelve.
+
+Kérem másik elérési utat definiálni.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
       <source>Toolbox bars</source>
-      <translation>Gereedskapskisbalke</translation>
+      <translation>Eszköztár ablakok</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomToolbars</name>
     <message>
       <source>Toolbars</source>
-      <translation>Nutsbalke</translation>
+      <translation>Eszköztárak</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Die veranderinge word aktief die volgende keer wat jy die gepaste werkbank gebruik&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; A változások következő alkalommal válnak aktívvá, amikor betölti a megfelelő munkafelületet &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
-      <translation>Skuif na regs</translation>
+      <translation>Mozgatás jobbra</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item een vlak neer.&lt;/b&gt;&lt;p&gt;Dit sal ook die vlak van die oueritem verander.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd a kiválasztott elemet egy szinttel lejjebb.&lt;/b&gt;&lt;p&gt;Ez a meglévő elemet szintjét is megváltoztatja.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
-      <translation>Skuif na links</translation>
+      <translation>Mozgatás balra</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item een vlak op.&lt;/b&gt;&lt;p&gt;Dit sal ook die vlak van die oueritem verander.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd a kiválasztott elemet egy szinttel lejjebb.&lt;/b&gt;&lt;p&gt;Ez a meglévő elemet szintjét is megváltoztatja.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
-      <translation>Skuif neer</translation>
+      <translation>Mozgatás lefelé</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item neer.&lt;/b&gt;&lt;p&gt;Die item sal geskuif word binne die hiërargie vlak.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd a kiválasztott elemet lejjebb.&lt;/b&gt;&lt;p&gt;Az elem a hierarchia szinten lesz mozgatva.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
-      <translation>Skuif op</translation>
+      <translation>Mozgatás felfelé</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item op.&lt;/b&gt;&lt;p&gt;Die item sal geskuif word binne die hiërargie vlak.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd a kiválasztott elemet lejjebb.&lt;/b&gt;&lt;p&gt;Az elem a hierarchia szinten lesz mozgatva.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>New...</source>
-      <translation>Nuwe...</translation>
+      <translation>Új...</translation>
     </message>
     <message>
       <source>Rename...</source>
-      <translation>Hernoem...</translation>
+      <translation>Átnevezés...</translation>
     </message>
     <message>
       <source>Delete</source>
-      <translation>Vee uit</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <source>Icon</source>
-      <translation>Ikoon</translation>
+      <translation>Ikon</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>Parancs</translation>
     </message>
     <message>
       <source>&lt;Separator&gt;</source>
-      <translation>&lt;Verdeler&gt;</translation>
+      <translation>&lt;Szóköz&gt;</translation>
     </message>
     <message>
       <source>New toolbar</source>
-      <translation>Nuwe nutsbalk</translation>
+      <translation>Új eszköztár</translation>
     </message>
     <message>
       <source>Toolbar name:</source>
-      <translation>Nutsbalknaam:</translation>
+      <translation>Eszköztár neve:</translation>
     </message>
     <message>
       <source>Duplicated name</source>
-      <translation>Gedupliseerde naam</translation>
+      <translation>Ismételt név</translation>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
-      <translation>Die nutsbalknaam '%1' is reeds in gebruik</translation>
+      <translation>Az '%1' eszköztár név már használatban</translation>
     </message>
     <message>
       <source>Rename toolbar</source>
-      <translation>Hernoem nutsbalk</translation>
+      <translation>Eszköztár átnevezése</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
     <message>
       <source>Customize</source>
-      <translation>Pas aan</translation>
+      <translation>Testreszabás</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Help</translation>
+      <translation>&amp;Súgó</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>Be&amp;zárás</translation>
     </message>
   </context>
   <context>
@@ -660,42 +661,42 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>Buttons</source>
-      <translation>Buttons</translation>
+      <translation>Gombok</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <source>Print Reference</source>
-      <translation>Print Reference</translation>
+      <translation>Nyomtatási hivatkozás</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
       <source>Display properties</source>
-      <translation>Vertoon eienskappe</translation>
+      <translation>Tulajdonságok megjelenítése</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Vertoon</translation>
+      <translation>Megjelenítés</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Deursigtigheid:</translation>
+      <translation>Átlátszóság:</translation>
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Lynwydte:</translation>
+      <translation>Vonalstílus:</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Puntgrootte:</translation>
+      <translation>Méret:</translation>
     </message>
     <message>
       <source>Material</source>
-      <translation>Materiaal</translation>
+      <translation>Anyag</translation>
     </message>
     <message>
       <source>...</source>
@@ -703,289 +704,288 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>Bezárás</translation>
     </message>
     <message>
       <source>Viewing mode</source>
-      <translation>Besigtingsmodus</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Display mode:</source>
-      <translation>Vertoningsmodus:</translation>
+      <translation>Megjelenítési mód:</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Plotmodus:</translation>
+      <translation>Nyomtatási mód:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
     <message>
       <source>Line transparency:</source>
-      <translation>Lyndeursigtigheid:</translation>
+      <translation>Vonal átláthatóság:</translation>
     </message>
     <message>
       <source>Line color:</source>
-      <translation>Lynkleur:</translation>
+      <translation>Vonal színe:</translation>
     </message>
     <message>
       <source>Shape color:</source>
-      <translation>Vormkleur:</translation>
+      <translation>Alakzat színe:</translation>
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Color plot:</translation>
+      <translation>Színes nyomtatás:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
       <source>Editor</source>
-      <translation>Redakteur</translation>
+      <translation>Szerkesztő</translation>
     </message>
     <message>
       <source>Options</source>
-      <translation>Opsies</translation>
+      <translation>Beállítások</translation>
     </message>
     <message>
       <source>Enable line numbers</source>
-      <translation>Aktiveer lynnommers</translation>
+      <translation>Sorszámozás bekapcsolása</translation>
     </message>
     <message>
       <source>Enable folding</source>
-      <translation>Aktiveer vouing</translation>
+      <translation>Hajlítás bekapcsolása</translation>
     </message>
     <message>
       <source>Indentation</source>
-      <translation>Verskuiwing</translation>
+      <translation>Azonosítás</translation>
     </message>
     <message>
       <source>Insert spaces</source>
-      <translation>Voeg spasies in</translation>
+      <translation>Szóközök beszúrása</translation>
     </message>
     <message>
       <source>Tab size:</source>
-      <translation>Spronggrootte:</translation>
+      <translation>Tabulátorméret:</translation>
     </message>
     <message>
       <source>Indent size:</source>
-      <translation>Verskuiwinggrootte:</translation>
+      <translation>Azonosítási méret:</translation>
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Behou spronge</translation>
+      <translation>Tabulátorok megtartása</translation>
     </message>
     <message>
       <source>Display Items</source>
-      <translation>Wys items</translation>
+      <translation>Részletek megtekintése</translation>
     </message>
     <message>
       <source>Family:</source>
-      <translation>Familie:</translation>
+      <translation>Szülő:</translation>
     </message>
     <message>
       <source>Size:</source>
-      <translation>Grootte:</translation>
+      <translation>Méret:</translation>
     </message>
     <message>
       <source>Preview:</source>
-      <translation>Voorskou:</translation>
+      <translation>Előnézet:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
     <message>
       <source>General</source>
-      <translation>Algemeen</translation>
+      <translation>Általános</translation>
     </message>
     <message>
       <source>Start up</source>
-      <translation>Begin</translation>
+      <translation>Kezdő oldal</translation>
     </message>
     <message>
       <source>Enable splash screen at start up</source>
-      <translation>Aktiveer introduksiebeeld gedurende programaanvang</translation>
+      <translation>Felugró ablak bekapcsolása a kezdő oldalon</translation>
     </message>
     <message>
       <source>Switch to tab of report window:</source>
-      <translation>Slaan oor na die blad van die rapporteringsvenster:</translation>
+      <translation>Váltás a jelentés ablakra:</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Autolaai module na programaanvang:</translation>
+      <translation>Modul automatikus betöltése indulás után:</translation>
     </message>
     <message>
       <source>Language</source>
-      <translation>Taal</translation>
+      <translation>Nyelv</translation>
     </message>
     <message>
       <source>Change language:</source>
-      <translation>Verander taal:</translation>
+      <translation>Nyelvválasztás:</translation>
     </message>
     <message>
       <source>Main window</source>
-      <translation>Hoofvenster</translation>
+      <translation>Főablak</translation>
     </message>
     <message>
       <source>Size of recent file list</source>
-      <translation>Grootte van onlangse lêerlys</translation>
+      <translation>Utoljára megnyitott fájlok listájának mérete</translation>
     </message>
     <message>
       <source>Window style:</source>
-      <translation>Vensterstyl:</translation>
+      <translation>Ablakstílus:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
-      <translation>Size of toolbar icons:</translation>
+      <translation>Eszköztárikonok mérete:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>Default (%1 x %1)</source>
-      <translation>Default (%1 x %1)</translation>
+      <translation>Alapértelmezett (% 1 x% 1)</translation>
     </message>
     <message>
       <source>Small (%1 x %1)</source>
-      <translation>Small (%1 x %1)</translation>
+      <translation>Kicsi (% 1 x% 1)</translation>
     </message>
     <message>
       <source>Large (%1 x %1)</source>
-      <translation>Large (%1 x %1)</translation>
+      <translation>Nagy (% 1 x% 1)</translation>
     </message>
     <message>
       <source>Extra large (%1 x %1)</source>
-      <translation>Extra large (%1 x %1)</translation>
+      <translation>Extra nagy (%1 x%1)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgInputDialog</name>
     <message>
       <source>Input</source>
-      <translation>Invoer</translation>
+      <translation>Bevitel</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
       <source>Scene Inspector</source>
-      <translation>Toneelinspekteur</translation>
+      <translation>Jelenet felügyelő</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecute</name>
     <message>
       <source>Execute macro</source>
-      <translation>Voer makro uit</translation>
+      <translation>Makró végrehajtása</translation>
     </message>
     <message>
       <source>Macro name:</source>
-      <translation>Makronaam:</translation>
+      <translation>Makrónév:</translation>
     </message>
     <message>
       <source>Macro destination:</source>
-      <translation>Makrobestemming:</translation>
+      <translation>Makró helye:</translation>
     </message>
     <message>
       <source>Execute</source>
-      <translation>Voer uit</translation>
+      <translation>Végrehajtás</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>Bezárás</translation>
     </message>
     <message>
       <source>Create</source>
-      <translation>Skep</translation>
+      <translation>Létrehozás</translation>
     </message>
     <message>
       <source>Delete</source>
-      <translation>Vee uit</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>Makrók</translation>
     </message>
     <message>
       <source>Macro file</source>
-      <translation>Makro-lêer</translation>
+      <translation>Makró fájl</translation>
     </message>
     <message>
       <source>Enter a file name, please:</source>
-      <translation>Gee 'n lêernaam, asseblief:</translation>
+      <translation>Kérem, adja meg a fájl nevét:</translation>
     </message>
     <message>
       <source>Existing file</source>
-      <translation>Bestaande lêer</translation>
+      <translation>Létező fájl</translation>
     </message>
     <message>
       <source>'%1'.
 This file already exists.</source>
-      <translation>'%1'.
-Hierdie lêer bestaan reeds.</translation>
+      <translation>'%1'. Ez a fájl már létezik.</translation>
     </message>
     <message>
       <source>Delete macro</source>
-      <translation>Verwyder makro</translation>
+      <translation>Makró törlése</translation>
     </message>
     <message>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Wil jy regtig die makro '%1' verwyder?</translation>
+      <translation>Valóban törölni szeretné a "'%1'" nevű makrót?</translation>
     </message>
     <message>
       <source>Cannot create file</source>
-      <translation>Kan nie lêer skep nie</translation>
+      <translation>Nem lehet létrehozni a fájlt</translation>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
-      <translation>Wat is hierdie?</translation>
+      <translation>Nem sikerült létrehozni a(z) '%1'.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
       <source>Macro recording</source>
-      <translation>Makro-opname</translation>
+      <translation>Makró rögzítése</translation>
     </message>
     <message>
       <source>Macro name:</source>
-      <translation>Makronaam:</translation>
+      <translation>Makrónév:</translation>
     </message>
     <message>
       <source>Stop</source>
-      <translation>Stop</translation>
+      <translation>Megállít</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source>Macro path:</source>
-      <translation>Makropad:</translation>
+      <translation>Makró elérési útja:</translation>
     </message>
     <message>
       <source>...</source>
@@ -993,65 +993,65 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
       <source>Record</source>
-      <translation>Neem op</translation>
+      <translation>Rögzítés</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
     <message>
       <source>Macro recorder</source>
-      <translation>Makro-opnemer</translation>
+      <translation>Makrórögzítő</translation>
     </message>
     <message>
       <source>Specify first a place to save.</source>
-      <translation>Spesifiseer eers waar om te spaar.</translation>
+      <translation>Először adjon meg egy helyet a mentésnek.</translation>
     </message>
     <message>
       <source>Existing macro</source>
-      <translation>Bestaande makro</translation>
+      <translation>Létező makró</translation>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation>Die makro '%1' bestaan reeds. Wil jy hom vervang?</translation>
+      <translation>A '%1' makró már létezik. Szeretné felülírni?</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Die makrogids bestaan nie. Kies asseblief 'n ander een.</translation>
+      <translation>A makró könyvtár nem létezik. Kérjük, válasszon egy másikat.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
-      <translation>Kies makrogids</translation>
+      <translation>Válassza ki a makró könyvtárat</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
       <source>Material properties</source>
-      <translation>Materiaaleienskappe</translation>
+      <translation>Alapanyag tulajdonságai</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>Be&amp;zárás</translation>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <translation>Alt + C</translation>
     </message>
     <message>
       <source>Material</source>
-      <translation>Materiaal</translation>
+      <translation>Anyag</translation>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>Diffuse kleur:</translation>
+      <translation>Szórt szín:</translation>
     </message>
     <message>
       <source>Specular color:</source>
-      <translation>Reflekterende kleur:</translation>
+      <translation>Tükröződési szín:</translation>
     </message>
     <message>
       <source>Shininess:</source>
-      <translation>Blinkheid:</translation>
+      <translation>Fényesség:</translation>
     </message>
     <message>
       <source>%</source>
@@ -1059,113 +1059,114 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
       <source>Ambient color:</source>
-      <translation>Skadukleur:</translation>
+      <translation>Környezeti szín:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
     <message>
       <source>Emissive color:</source>
-      <translation>Uitstralende kleur:</translation>
+      <translation>Sugárzó szín:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgOnlineHelp</name>
     <message>
       <source>On-line help</source>
-      <translation>Internethulp</translation>
+      <translation>On-line segítség</translation>
     </message>
     <message>
       <source>Help viewer</source>
-      <translation>Hulpbeskouer</translation>
+      <translation>Segítség nézegető</translation>
     </message>
     <message>
       <source>Location of start page</source>
-      <translation>Ligging van tuisblad</translation>
+      <translation>A start oldal helye</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
       <source>HTML files (*.html *.htm)</source>
-      <translation>HTML-lêers (*.html *.htm)</translation>
+      <translation>HTML file-k (*.html *.htm)</translation>
     </message>
     <message>
       <source>Access denied</source>
-      <translation>Toegang geweier</translation>
+      <translation>Hozzáférés megtagadva</translation>
     </message>
     <message>
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Toegang geweier vir '%1' 
-Spesifiseer asseblief 'n ander gids.</translation>
+      <translation>Az '%1' -hez hozzáférés megtagadva
+
+Kérem válasszon másik könyvtárat.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
       <source>Parameter Editor</source>
-      <translation>Parameter Wysiger</translation>
+      <translation>Paraméterszerkesztő</translation>
     </message>
     <message>
       <source>Save to disk</source>
-      <translation>Stoor op skyf</translation>
+      <translation>Mentés lemezre</translation>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <translation>Alt + C</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>Be&amp;zárás</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameterImp</name>
     <message>
       <source>Group</source>
-      <translation>Groep</translation>
+      <translation>Csoport</translation>
     </message>
     <message>
       <source>Name</source>
-      <translation>Naam</translation>
+      <translation>Név</translation>
     </message>
     <message>
       <source>Type</source>
-      <translation>Soort</translation>
+      <translation>Típus</translation>
     </message>
     <message>
       <source>Value</source>
-      <translation>Waarde</translation>
+      <translation>Érték</translation>
     </message>
     <message>
       <source>User parameter</source>
-      <translation>Gebruikersparameter</translation>
+      <translation>Felhasználói paraméterek</translation>
     </message>
     <message>
       <source>Invalid input</source>
-      <translation>Ongeldige inset</translation>
+      <translation>Érvénytelen adat</translation>
     </message>
     <message>
       <source>Invalid key name '%1'</source>
-      <translation>Ongeldige sleutelnaam '%1'</translation>
+      <translation>Érvénytelen kulcs név '%1'</translation>
     </message>
     <message>
       <source>System parameter</source>
-      <translation>Stelselparameter</translation>
+      <translation>Rendszer paraméter</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
-      <translation>Voorkeure</translation>
+      <translation>Testreszabás</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Help</translation>
+      <translation>&amp;Súgó</translation>
     </message>
     <message>
       <source>Alt+H</source>
@@ -1173,11 +1174,11 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Apply</source>
-      <translation>&amp;Pas toe</translation>
+      <translation>Alkalmaz</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -1185,104 +1186,104 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
       <source>Wrong parameter</source>
-      <translation>Verkeerde parameter</translation>
+      <translation>Hibás paraméter</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
       <source>Project information</source>
-      <translation>Projekinformasie</translation>
+      <translation>Információ a feladatról</translation>
     </message>
     <message>
       <source>Information</source>
-      <translation>Inligting</translation>
+      <translation>Információ</translation>
     </message>
     <message>
       <source>&amp;Name:</source>
-      <translation>&amp;Naam:</translation>
+      <translation>&amp;Név:</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>&amp;Kommentaar:</translation>
+      <translation>Megjegyzés:</translation>
     </message>
     <message>
       <source>Path:</source>
-      <translation>Pad:</translation>
+      <translation>Útvonalak:</translation>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>&amp;Laas verander deur:</translation>
+      <translation>&amp;Utoljára módosította:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>&amp;Geskep deur:</translation>
+      <translation>Létrehozta:</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>&amp;Maatskappy:</translation>
+      <translation>Szervezet:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation>&amp;Laaste veranderingsdatum:</translation>
+      <translation>Utolsó &amp;módosítás dátuma:</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation>&amp;Skeppingsdatum:</translation>
+      <translation>Létrehozás &amp;dátuma:</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <source>Project utility</source>
-      <translation>Project utility</translation>
+      <translation>Project segédprogram</translation>
     </message>
     <message>
       <source>Extract project</source>
-      <translation>Extract project</translation>
+      <translation>Terv kivonat</translation>
     </message>
     <message>
       <source>Source</source>
-      <translation>Source</translation>
+      <translation>Forrás</translation>
     </message>
     <message>
       <source>Project file (*.fcstd)</source>
-      <translation>Project file (*.fcstd)</translation>
+      <translation>Project file (*. fcstd)</translation>
     </message>
     <message>
       <source>Destination</source>
-      <translation>Destination</translation>
+      <translation>Célállomás</translation>
     </message>
     <message>
       <source>Extract</source>
-      <translation>Extract</translation>
+      <translation>Kivonat</translation>
     </message>
     <message>
       <source>Create project</source>
-      <translation>Create project</translation>
+      <translation>Projekt létrehozása</translation>
     </message>
     <message>
       <source>Document.xml</source>
@@ -1290,97 +1291,97 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Create</source>
-      <translation>Skep</translation>
+      <translation>Létrehozás</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
-      <translation>Load project file after creation</translation>
+      <translation>Betöltése után a projekt fájl létrehozása</translation>
     </message>
     <message>
       <source>Empty source</source>
-      <translation>Empty source</translation>
+      <translation>Üres forrás.</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>No source is defined.</translation>
+      <translation>Nincs forrás definiálva.</translation>
     </message>
     <message>
       <source>Empty destination</source>
-      <translation>Empty destination</translation>
+      <translation>Üres célállomás.</translation>
     </message>
     <message>
       <source>No destination is defined.</source>
-      <translation>No destination is defined.</translation>
+      <translation>Nincs célállomás meghatározva.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
       <source>Output window</source>
-      <translation>Resultaatvenster</translation>
+      <translation>Kimeneti ablak</translation>
     </message>
     <message>
       <source>Output</source>
-      <translation>Resultaat</translation>
+      <translation>Kimenet</translation>
     </message>
     <message>
       <source>Record log messages</source>
-      <translation>Stoor opgawesboodskappe</translation>
+      <translation>Változások naplózása</translation>
     </message>
     <message>
       <source>Record warnings</source>
-      <translation>Stoor waarskuwings</translation>
+      <translation>Riasztások feljegyzése</translation>
     </message>
     <message>
       <source>Record error messages</source>
-      <translation>Stoor foutboodskappe</translation>
+      <translation>Hibák feljegyzése</translation>
     </message>
     <message>
       <source>Colors</source>
-      <translation>Kleure</translation>
+      <translation>Színek</translation>
     </message>
     <message>
       <source>Normal messages:</source>
-      <translation>Algemene boodskappe:</translation>
+      <translation>Normal üzenetek:</translation>
     </message>
     <message>
       <source>Log messages:</source>
-      <translation>Opgawesboodskappe:</translation>
+      <translation>Naplóüzenetek:</translation>
     </message>
     <message>
       <source>Warnings:</source>
-      <translation>Waarskuwings:</translation>
+      <translation>Riasztások:</translation>
     </message>
     <message>
       <source>Errors:</source>
-      <translation>Foute:</translation>
+      <translation>Hibaüzenetek:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Herlei interne Python foute na die rapportvenster</translation>
+      <translation>Belső Python hibák átirányítása a jelentés nézetbe</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Redirect internal Python output to report view</translation>
+      <translation>Belső Python kimenet átirányítása jelentés megtekintéséhez</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
       <source>Running external program</source>
-      <translation>Loop eksterne program</translation>
+      <translation>Külső program futtatása</translation>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>TeksEtiket</translation>
+      <translation>TextLabel</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
-      <translation>Gevorderd &gt;&gt;</translation>
+      <translation>Haladó &gt;&gt;</translation>
     </message>
     <message>
       <source>...</source>
@@ -1388,94 +1389,94 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Accept changes</source>
-      <translation>Aanvaar veranderinge</translation>
+      <translation>Módosítások elfogadása</translation>
     </message>
     <message>
       <source>Discard changes</source>
-      <translation>Laat vaar veranderinge</translation>
+      <translation>Módosítások elvetése</translation>
     </message>
     <message>
       <source>Abort program</source>
-      <translation>Stop program</translation>
+      <translation>Megszakítja a programot</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Select a file</source>
-      <translation>Kies 'n lêer</translation>
+      <translation>Válasszon ki egy fájlt</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
       <source>3D View</source>
-      <translation>3D-aansig</translation>
+      <translation>3D-s nézet</translation>
     </message>
     <message>
       <source>3D View settings</source>
-      <translation>3D-aansig instellings</translation>
+      <translation>3D-s nézet beállítások</translation>
     </message>
     <message>
       <source>Show coordinate system in the corner</source>
-      <translation>Wys koördinaatstelsel in die hoek</translation>
+      <translation>Koordináta rendszer mutatása a sarokban</translation>
     </message>
     <message>
       <source>Show counter of frames per second</source>
-      <translation>Wys rame per sekonde teller</translation>
+      <translation>A keret / másodperc mutatása</translation>
     </message>
     <message>
       <source>Enable animation</source>
-      <translation>Aktiveer animasie</translation>
+      <translation>Animáció engedélyezése</translation>
     </message>
     <message>
       <source>Enable anti-aliasing (slower)</source>
-      <translation>Aktiveer kantversagting (stadiger)</translation>
+      <translation>Élsimítás engedélyezése (lassab megjelenítés)</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes:</source>
-      <translation>Oog-na-oog afstand vir stereomodusse:</translation>
+      <translation>Szem távolságának a sztereó módhoz:</translation>
     </message>
     <message>
       <source>Camera type</source>
-      <translation>Kamerasoort</translation>
+      <translation>Kamera típus</translation>
     </message>
     <message>
       <source>Orthographic rendering</source>
-      <translation>Ortografiese weergawe</translation>
+      <translation>Függőleges vetület leképezés</translation>
     </message>
     <message>
       <source>Perspective rendering</source>
-      <translation>Perspektief weergawe</translation>
+      <translation>Perspektivikus leképezés</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
     <message>
       <source>3D Navigation</source>
-      <translation>3D Navigasie</translation>
+      <translation>3D-s navigáció</translation>
     </message>
     <message>
       <source>Mouse...</source>
-      <translation>Muis...</translation>
+      <translation>Egér ...</translation>
     </message>
     <message>
       <source>Intensity of backlight</source>
-      <translation>Intensiteit van die agterlig</translation>
+      <translation>Háttérvilágítás intenzitása</translation>
     </message>
     <message>
       <source>Enable backlight color</source>
-      <translation>Aktiveer agterligkleur</translation>
+      <translation>Háttérvilágítás színének engedélyezése</translation>
     </message>
     <message>
       <source>Orbit style</source>
-      <translation>Orbit style</translation>
+      <translation>Orbit stílus</translation>
     </message>
     <message>
       <source>Turntable</source>
-      <translation>Turntable</translation>
+      <translation>Fordítótábla</translation>
     </message>
     <message>
       <source>Trackball</source>
@@ -1483,49 +1484,49 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Invert zoom</source>
-      <translation>Invert zoom</translation>
+      <translation>Kicsinyítés</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigasie</translation>
+      <translation>%1 navigáció</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradient</name>
     <message>
       <source>Color model</source>
-      <translation>Kleurmodel</translation>
+      <translation>Színmodell</translation>
     </message>
     <message>
       <source>&amp;Gradient:</source>
-      <translation>&amp;Gradiënt:</translation>
+      <translation>&amp;Színátmenet</translation>
     </message>
     <message>
       <source>red-yellow-green-cyan-blue</source>
-      <translation>rooi-geel-groen-siaan-blou</translation>
+      <translation>piros-sárga-zöld-cián-kék</translation>
     </message>
     <message>
       <source>blue-cyan-green-yellow-red</source>
-      <translation>blou-siaan-groen-geel-rooi</translation>
+      <translation>kék-cián-zöld-sárga-piros</translation>
     </message>
     <message>
       <source>white-black</source>
-      <translation>wit-swart</translation>
+      <translation>fehér-fekete</translation>
     </message>
     <message>
       <source>black-white</source>
-      <translation>swart-wit</translation>
+      <translation>fekete-fehér</translation>
     </message>
     <message>
       <source>Visibility</source>
-      <translation>Sigbaarheid</translation>
+      <translation>Láthatóság</translation>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>&amp;Uitvergrys</translation>
+      <translation>Kiszűrkít</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -1533,7 +1534,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>&amp;Uitonsigbaar</translation>
+      <translation>Kívül esik&amp;láthatatlan:</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -1541,11 +1542,11 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Style</source>
-      <translation>Styl</translation>
+      <translation>Stílus</translation>
     </message>
     <message>
       <source>&amp;Zero</source>
-      <translation>&amp;Nul</translation>
+      <translation>$Zéró</translation>
     </message>
     <message>
       <source>Alt+Z</source>
@@ -1553,7 +1554,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
-      <translation>&amp;Vloei</translation>
+      <translation>&amp;Folyás</translation>
     </message>
     <message>
       <source>Alt+F</source>
@@ -1561,142 +1562,142 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source>Parameter range</source>
-      <translation>Parameteromvang</translation>
+      <translation>Paraméter-tartomány</translation>
     </message>
     <message>
       <source>Mi&amp;nimum:</source>
-      <translation>&amp;Minimum:</translation>
+      <translation>Mi&amp;nimum:</translation>
     </message>
     <message>
       <source>Ma&amp;ximum:</source>
-      <translation>&amp;Maximum:</translation>
+      <translation>Ma&amp;ximum:</translation>
     </message>
     <message>
       <source>&amp;Labels:</source>
-      <translation>&amp;Etikette:</translation>
+      <translation>&amp;Cimke:</translation>
     </message>
     <message>
       <source>&amp;Decimals:</source>
-      <translation>&amp;Desimale:</translation>
+      <translation>&amp;Tizedesjegyek:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
     <message>
       <source>Color-gradient settings</source>
-      <translation>Kleurgradiënt instellings</translation>
+      <translation>Színátmenet beállítások</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradientImp</name>
     <message>
       <source>Wrong parameter</source>
-      <translation>Verkeerde parameter</translation>
+      <translation>Hibás paraméter</translation>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation>Die maksimum waarde moet hoër wees as die minimum waarde.</translation>
+      <translation>A maximális értéknek magasabbnak kell lennie, mint a minimális érték.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocument</name>
     <message>
       <source>Document</source>
-      <translation>Dokument</translation>
+      <translation>Dokumentum</translation>
     </message>
     <message>
       <source>General</source>
-      <translation>Algemeen</translation>
+      <translation>Általános</translation>
     </message>
     <message>
       <source>Document save compression level
 (0 = none, 9 = highest, 3 = default)</source>
-      <translation>Kompressievlak vir dokumentstoring
-(0 = geen, 9 = hoogste, 3  = versuimwaarde)</translation>
+      <translation>Dokumentum mentésének tömörítési szintje
+(0=nincs, 9=legnagyobb, 3=alapértelmezett)</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
-      <translation>Skep nuwe dokument tydens programaanvang</translation>
+      <translation>Indításkor egy új munkalap létrehozása</translation>
     </message>
     <message>
       <source>Storage</source>
-      <translation>Stoorplek</translation>
+      <translation>Tárolás</translation>
     </message>
     <message>
       <source>Saving transactions (Auto-save)</source>
-      <translation>Stoor transaksies (Autospaar)</translation>
+      <translation>Mentési tranzakciók (Automatikus mentés)</translation>
     </message>
     <message>
       <source>Discard saved transaction after saving document</source>
-      <translation>Vee gestoorde transaksie uit na dokument gestoor is</translation>
+      <translation>Dobja el a mentett tranzakciókat a munkalap mentését követően</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
-      <translation>Stoor miniatuurvoorskou in projeklêer wanneer dokument gestoor word</translation>
+      <translation>Bélyegkép mentése a projektfájlba, munkalap mentésekor</translation>
     </message>
     <message>
       <source>Create up to backup files when resaving document</source>
-      <translation>Skep rugsteunlêers wanneer dokument weer gestoor word</translation>
+      <translation>Készítsen biztonsági másolatot a fájlról, ha a munkát újra szeretné menteni</translation>
     </message>
     <message>
       <source>Document objects</source>
-      <translation>Dokumentvoorwerpe</translation>
+      <translation>Dokumentum objektumok</translation>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Laat duplikaat voorwerpetikette toe in een dokument</translation>
+      <translation>Engedélyezi, hogy egy dokumentumban duplikált objektumazonosítók legyenek </translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Maximum Undo/Redo steps</translation>
+      <translation>Maximális Visszalépés / Újra létrehozás lépések</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Using Undo/Redo on documents</translation>
+      <translation>Visszalépés / Újra létrehozás használata a dokumentumokhoz</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
     <message>
       <source>Text</source>
-      <translation>Teks</translation>
+      <translation>Szöveg</translation>
     </message>
     <message>
       <source>Bookmark</source>
-      <translation>Boekmerk</translation>
+      <translation>Könyvjelző</translation>
     </message>
     <message>
       <source>Breakpoint</source>
-      <translation>Breekpunt</translation>
+      <translation>Töréspont</translation>
     </message>
     <message>
       <source>Keyword</source>
-      <translation>Sleutelwoord</translation>
+      <translation>Kulcsszó</translation>
     </message>
     <message>
       <source>Comment</source>
-      <translation>Opmerking</translation>
+      <translation>Megjegyzés</translation>
     </message>
     <message>
       <source>Block comment</source>
-      <translation>Blok kommentaar</translation>
+      <translation>Megjegyzés tömb</translation>
     </message>
     <message>
       <source>Number</source>
-      <translation>Syfer</translation>
+      <translation>Szám</translation>
     </message>
     <message>
       <source>String</source>
-      <translation>String</translation>
+      <translation>Karakterlánc</translation>
     </message>
     <message>
       <source>Character</source>
@@ -1704,130 +1705,130 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Class name</source>
-      <translation>Klasnaam</translation>
+      <translation>Osztálynév</translation>
     </message>
     <message>
       <source>Define name</source>
-      <translation>Definieer naam</translation>
+      <translation>Definiált név</translation>
     </message>
     <message>
       <source>Operator</source>
-      <translation>Operateur</translation>
+      <translation>Irányító</translation>
     </message>
     <message>
       <source>Python output</source>
-      <translation>Python resultaat</translation>
+      <translation>Python kimenet</translation>
     </message>
     <message>
       <source>Python error</source>
-      <translation>Python fout</translation>
+      <translation>Python hiba</translation>
     </message>
     <message>
       <source>Items</source>
-      <translation>Items</translation>
+      <translation>Elemek</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
     <message>
       <source>Image settings</source>
-      <translation>Beeldinstellings</translation>
+      <translation>Kép beállításai</translation>
     </message>
     <message>
       <source>Image properties</source>
-      <translation>Beeldeienskappe</translation>
+      <translation>Kép tulajdonságai</translation>
     </message>
     <message>
       <source>Back&amp;ground:</source>
-      <translation>&amp;Agtergrond:</translation>
+      <translation>Háttér:</translation>
     </message>
     <message>
       <source>Current</source>
-      <translation>Huidige</translation>
+      <translation>Aktiális</translation>
     </message>
     <message>
       <source>White</source>
-      <translation>Wit</translation>
+      <translation>Fehér</translation>
     </message>
     <message>
       <source>Black</source>
-      <translation>Swart</translation>
+      <translation>Fekete</translation>
     </message>
     <message>
       <source>Transparent</source>
-      <translation>Deursigtig</translation>
+      <translation>Átlátszó</translation>
     </message>
     <message>
       <source>Image dimensions</source>
-      <translation>Beelddimensies</translation>
+      <translation>Kép méretei</translation>
     </message>
     <message>
       <source>Pixel</source>
-      <translation>Beeldelement</translation>
+      <translation>Képpont</translation>
     </message>
     <message>
       <source>&amp;Width:</source>
-      <translation>&amp;Wydte:</translation>
+      <translation>Szélesség:</translation>
     </message>
     <message>
       <source>Current screen</source>
-      <translation>Huidige skerm</translation>
+      <translation>Aktuális képernyő</translation>
     </message>
     <message>
       <source>Icon       32  x 32</source>
-      <translation>Ikoon 32 x 32</translation>
+      <translation>Ikon       32  x 32</translation>
     </message>
     <message>
       <source>Icon       64 x 64</source>
-      <translation>Ikoon 64 x 64</translation>
+      <translation>Ikon       64 x 64</translation>
     </message>
     <message>
       <source>Icon       128 x 128</source>
-      <translation>Ikoon 128 x 128</translation>
+      <translation>Ikon       128 x 128</translation>
     </message>
     <message>
       <source>CGA       320 x 200</source>
-      <translation>CGA 320 x 200</translation>
+      <translation>CGA       320 x 200</translation>
     </message>
     <message>
       <source>QVGA     320 x 240</source>
-      <translation>QVGA 320 x 240</translation>
+      <translation>QVGA     320 x 240</translation>
     </message>
     <message>
       <source>VGA       640 x 480</source>
-      <translation>VGA 640 x 480</translation>
+      <translation>VGA       640 x 480</translation>
     </message>
     <message>
       <source>NTSC     720 x 480</source>
-      <translation>NTSC 720 x 480</translation>
+      <translation>NTSC     720 x 480</translation>
     </message>
     <message>
       <source>PAL        768 x 578</source>
-      <translation>PAL 768 x 578</translation>
+      <translation>PAL        768 x 578</translation>
     </message>
     <message>
       <source>SVGA     800 x 600</source>
-      <translation>SVGA 800 x 600</translation>
+      <translation>SVGA     800 x 600</translation>
     </message>
     <message>
       <source>XGA       1024 x 768</source>
-      <translation>XGA 1024 x 768</translation>
+      <translation>XGA       1024 x 768</translation>
     </message>
     <message>
       <source>HD720   1280 x 720</source>
-      <translation>HD720 1280 x 720</translation>
+      <translation>HD720   1280 x 720</translation>
     </message>
     <message>
       <source>SXGA     1280 x 1024</source>
-      <translation>SXGA 1280 x 1024</translation>
+      <translation>SXGA     1280 x 1024</translation>
     </message>
     <message>
       <source>SXGA+   1400 x 1050</source>
-      <translation>SXGA + 1400 x 1050</translation>
+      <translation>SXGA+   1400 x 1050</translation>
     </message>
     <message>
       <source>UXGA     1600 x 1200</source>
-      <translation>UXGA 1600 x 1200</translation>
+      <translation>UXGA     1600 x 1200</translation>
     </message>
     <message>
       <source>HD1080 1920 x 1080</source>
@@ -1835,47 +1836,47 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>WUXGA  1920 x 1200</source>
-      <translation>WUXGA 1920 x 1200</translation>
+      <translation>WUXGA  1920 x 1200</translation>
     </message>
     <message>
       <source>QXGA     2048 x 1538</source>
-      <translation>QXGA 2048 x 1538</translation>
+      <translation>QXGA     2048 x 1538</translation>
     </message>
     <message>
       <source>WQXGA  2560 x 1600</source>
-      <translation>WQXGA 2560 x 1600</translation>
+      <translation>WQXGA  2560 x 1600</translation>
     </message>
     <message>
       <source>QSXGA   2560 x 2048</source>
-      <translation>QSXGA 2560 x 2048</translation>
+      <translation>QSXGA   2560 x 2048</translation>
     </message>
     <message>
       <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA 3200 × 2400</translation>
+      <translation>QUXGA   3200 × 2400</translation>
     </message>
     <message>
       <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA 6400 × 4800</translation>
+      <translation>HUXGA   6400 × 4800</translation>
     </message>
     <message>
       <source>!!!          10000 x 10000</source>
-      <translation>!!! 10000 x 10000</translation>
+      <translation>!!!          10000 x 10000</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
-      <translation>Standaardgroottes:</translation>
+      <translation>Alap méretek:</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
-      <translation>&amp;Hoogte:</translation>
+      <translation>Magasság:</translation>
     </message>
     <message>
       <source>Aspect ratio:</source>
-      <translation>Vormverhouding:</translation>
+      <translation>Méretarány:</translation>
     </message>
     <message>
       <source>&amp;Screen</source>
-      <translation>&amp;Skerm</translation>
+      <translation>Képernyő</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -1907,38 +1908,38 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Image comment</source>
-      <translation>Beeldkommentaar</translation>
+      <translation>Kép Megjegyzés</translation>
     </message>
     <message>
       <source>Insert MIBA</source>
-      <translation>Voeg MIBA in</translation>
+      <translation>MIBA beszúrása</translation>
     </message>
     <message>
       <source>Insert comment</source>
-      <translation>Voeg opmerking in</translation>
+      <translation>Megjegyzés beszúrása</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>Macro recording settings</source>
-      <translation>Makro-opname instellings</translation>
+      <translation>Makró felvétel beállításai</translation>
     </message>
     <message>
       <source>Logging Commands</source>
-      <translation>Noteer bevele</translation>
+      <translation>Naplózási parancsok</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation>Wys bevele in pythonvenster</translation>
+      <translation>A parancsutasítások megjelenítése a python konzolon</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
-      <translation>Noteer alle bevele vanuit kieslyse na lêer:</translation>
+      <translation>Naplózza fájlba a menük által kiadott összes parancsot:</translation>
     </message>
     <message>
       <source>FullScript.FCScript</source>
@@ -1946,140 +1947,140 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Gui commands</source>
-      <translation>Grafiese Gebruikerskoppelvlak (GGKV) instruksies</translation>
+      <translation>GUI parancsok</translation>
     </message>
     <message>
       <source>Recording GUI commands</source>
-      <translation>Neem Grafiese Gebruikerskoppelvlak (GGKV) instruksies op</translation>
+      <translation>GUI parancsok rögzítése</translation>
     </message>
     <message>
       <source>Record as comment</source>
-      <translation>Neem op as opmerking</translation>
+      <translation>Rögzítés megjegyzésként</translation>
     </message>
     <message>
       <source>Macro path</source>
-      <translation>Makropad</translation>
+      <translation>Makró elérési út</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
       <source>Units</source>
-      <translation>Eenhede</translation>
+      <translation>Egységek</translation>
     </message>
     <message>
       <source>Units settings</source>
-      <translation>Eenheidsinstellings</translation>
+      <translation>Egységek beállítása</translation>
     </message>
     <message>
       <source>Standard (mm/kg/s/degree)</source>
-      <translation>Standaard (mm/kg/s/graad)</translation>
+      <translation>Standard (mm/kg/s/fok)</translation>
     </message>
     <message>
       <source>MKS (m/kg/s/degree)</source>
-      <translation>MKS (m/kg/s/graad)</translation>
+      <translation>MKS (m/kg/s/fok)</translation>
     </message>
     <message>
       <source>Magnitude</source>
-      <translation>Grootte</translation>
+      <translation>Méret</translation>
     </message>
     <message>
       <source>Unit</source>
-      <translation>Eenheid</translation>
+      <translation>Egység</translation>
     </message>
     <message>
       <source>User system:</source>
-      <translation>Gebruikerstelsel:</translation>
+      <translation>Felhasználó rendszer:</translation>
     </message>
     <message>
       <source>Imperial (in/lb)</source>
-      <translation>Engelse eenhede (duim/pond)</translation>
+      <translation>Angolszász(in/lb)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
     <message>
       <source>Colors</source>
-      <translation>Kleure</translation>
+      <translation>Színek</translation>
     </message>
     <message>
       <source>Selection</source>
-      <translation>Seleksie</translation>
+      <translation>Kijelölés</translation>
     </message>
     <message>
       <source>Enable selection highlighting</source>
-      <translation>Aktiveer seleksieverligting</translation>
+      <translation>Kijelölésnél kiemelés alkalmazása</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
-      <translation>Aktiveer seleksieverligting</translation>
+      <translation>Előválasztás kiemelést tesz lehetővé</translation>
     </message>
     <message>
       <source>Background color</source>
-      <translation>Agtergrond kleur</translation>
+      <translation>Háttér szín</translation>
     </message>
     <message>
       <source>Middle color</source>
-      <translation>Middelste kleur</translation>
+      <translation>Középső szín</translation>
     </message>
     <message>
       <source>Color gradient</source>
-      <translation>Kleurgradient</translation>
+      <translation>Színátmenet</translation>
     </message>
     <message>
       <source>Simple color</source>
-      <translation>Eenvoudige kleur</translation>
+      <translation>Egyszínű</translation>
     </message>
     <message>
       <source>Default colors</source>
-      <translation>Default colors</translation>
+      <translation>Alapértelmezett színek</translation>
     </message>
     <message>
       <source>Edited edge color</source>
-      <translation>Edited edge color</translation>
+      <translation>Szerkesztett él színek</translation>
     </message>
     <message>
       <source>Edited vertex color</source>
-      <translation>Edited vertex color</translation>
+      <translation>Szerkesztett vertex színek</translation>
     </message>
     <message>
       <source>Construction geometry</source>
-      <translation>Construction geometry</translation>
+      <translation>Építőipari geometria</translation>
     </message>
     <message>
       <source>Fully constrained geometry</source>
-      <translation>Fully constrained geometry</translation>
+      <translation>Teljesen korlátozott geometria</translation>
     </message>
     <message>
       <source>The color of construction geometry in editmode</source>
-      <translation>The color of construction geometry in editmode</translation>
+      <translation>Az építési geometria színei szerkesztő módban</translation>
     </message>
     <message>
       <source>The color of fully constrained geometry in editmode</source>
-      <translation>The color of fully constrained geometry in editmode</translation>
+      <translation>A teljesen korlátozott geometriai színei szerkesztő módban</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
-      <translation>The color of vertices being edited</translation>
+      <translation>A csúcsok színei szerkesztés alatt</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
-      <translation>The color of edges being edited</translation>
+      <translation>Az élek színe szerkesztés alatt</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
       <source>Tip of the day</source>
-      <translation>Wenk van die dag</translation>
+      <translation>Napi jótanács</translation>
     </message>
     <message>
       <source>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-      <translation>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Het jy geweet...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+      <translation>&lt;font size="+3"&gt;&lt;font face="Times New Roman"&gt;&lt;b&gt;Tudta, hogy ...&lt;/b&gt;&lt;/font&gt;&lt;/font&gt;</translation>
     </message>
     <message>
       <source>&amp;Show tips at start up</source>
-      <translation>&amp;Wys wenke tydens programaanvang</translation>
+      <translation>&amp;Tanácsok megjelenítése induláskor</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -2087,7 +2088,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Next Tip</source>
-      <translation>&amp;Volgende Wenk</translation>
+      <translation>&amp;Következő tanács</translation>
     </message>
     <message>
       <source>Alt+N</source>
@@ -2095,15 +2096,15 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>Be&amp;zárás</translation>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <translation>Alt + C</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
@@ -2111,40 +2112,39 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <message>
       <source>Download failed: %1
 </source>
-      <translation>Aflaai het misluk: '%1'
-</translation>
+      <translation>Letöltés nem sikerült: %1</translation>
     </message>
     <message>
       <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-      <translation>As jy meer wil weet oor FreeCAD moet jy gaan na '%1' of druk die Help item in die Hulpkieslys.</translation>
+      <translation>Ha szeretne többet megtudni FreeCAD-ről, menjen a %1, vagy nyomja meg a Súgó gombot a Súgó menüben.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
       <source>Placement</source>
-      <translation>Plasing</translation>
+      <translation>Elhelyezés</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
       <source>Canceled.</source>
-      <translation>Canceled.</translation>
+      <translation>Törlődik.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
       <source>Add icon</source>
-      <translation>Add icon</translation>
+      <translation>Ikon hozzáadása</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
       <source>Input vector</source>
-      <translation>Invoervektor</translation>
+      <translation>Bemeneti vektor</translation>
     </message>
     <message>
       <source>Vector</source>
@@ -2164,81 +2164,81 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::MouseButtons</name>
     <message>
       <source>Mouse buttons</source>
-      <translation>Muisknoppies</translation>
+      <translation>Egérgombok</translation>
     </message>
     <message>
       <source>Configuration</source>
-      <translation>Opstelling</translation>
+      <translation>Konfiguráció</translation>
     </message>
     <message>
       <source>Selection:</source>
-      <translation>Seleksie:</translation>
+      <translation>Kiválasztás:</translation>
     </message>
     <message>
       <source>Panning</source>
-      <translation>Panorama</translation>
+      <translation>Mozgatás</translation>
     </message>
     <message>
       <source>Rotation:</source>
-      <translation>Rotasie:</translation>
+      <translation>Elforgatás:</translation>
     </message>
     <message>
       <source>Zooming:</source>
-      <translation>Nabyheid:</translation>
+      <translation>Nagyítás:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ParameterGroup</name>
     <message>
       <source>Expand</source>
-      <translation>Brei uit</translation>
+      <translation>Kibontás</translation>
     </message>
     <message>
       <source>Add sub-group</source>
-      <translation>Voeg subgroep by</translation>
+      <translation>Alcsoport hozzáadás</translation>
     </message>
     <message>
       <source>Remove group</source>
-      <translation>Verwyder groep</translation>
+      <translation>Csoport eltávolítása</translation>
     </message>
     <message>
       <source>Rename group</source>
-      <translation>Hernoem groep</translation>
+      <translation>Csoport átnevezése</translation>
     </message>
     <message>
       <source>Export parameter</source>
-      <translation>Voer parameter uit</translation>
+      <translation>Paraméter export</translation>
     </message>
     <message>
       <source>Import parameter</source>
-      <translation>Voer parameter in</translation>
+      <translation>Paraméter import</translation>
     </message>
     <message>
       <source>Collapse</source>
-      <translation>Stort ineen</translation>
+      <translation>Összevonás</translation>
     </message>
     <message>
       <source>Do really want to remove this parameter group?</source>
-      <translation>Wil jy regtig hierdie parametergroep verwyder?</translation>
+      <translation>Valóban el szeretné távolítani ezt a paramétert csoportot?</translation>
     </message>
     <message>
       <source>Existing sub-group</source>
-      <translation>Bestaande subgroep</translation>
+      <translation>Létező alcsoport</translation>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
-      <translation>Die subgroep '%1' bestaan reeds.</translation>
+      <translation>Az alcsoport '%1' már létezik.</translation>
     </message>
     <message>
       <source>Export parameter to file</source>
-      <translation>Voer parameter uit na 'n lêer</translation>
+      <translation>Paraméter exportálása fájlba</translation>
     </message>
     <message>
       <source>XML (*.FCParam)</source>
@@ -2246,77 +2246,77 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Import parameter from file</source>
-      <translation>Voer parameter in van lêer</translation>
+      <translation>Paraméter importálása fájlból</translation>
     </message>
     <message>
       <source>Import Error</source>
-      <translation>Invoer Fout</translation>
+      <translation>Importálási hiba</translation>
     </message>
     <message>
       <source>Reading from '%1' failed.</source>
-      <translation>Lees van '%1' het misluk.</translation>
+      <translation>Olvasási hiba: %1</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ParameterValue</name>
     <message>
       <source>Change value</source>
-      <translation>Verander waarde</translation>
+      <translation>Érték módosítása</translation>
     </message>
     <message>
       <source>Remove key</source>
-      <translation>Verwyder sleutel</translation>
+      <translation>Kulcs eltávolítása</translation>
     </message>
     <message>
       <source>Rename key</source>
-      <translation>Hernoem sleutel</translation>
+      <translation>Kulcs átnevezése</translation>
     </message>
     <message>
       <source>New</source>
-      <translation>Nuwe</translation>
+      <translation>Új</translation>
     </message>
     <message>
       <source>New string item</source>
-      <translation>Nuwe stringitem</translation>
+      <translation>Új karakterlánc-elem</translation>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Nuwe dryfitem</translation>
+      <translation>Új float-elem</translation>
     </message>
     <message>
       <source>New integer item</source>
-      <translation>Nuwe heelgetalitem</translation>
+      <translation>Új egész elem</translation>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>Nuwe onondertekende item</translation>
+      <translation>Új meghatározatlan elem</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Nuwe Boole-item</translation>
+      <translation>Új logikai elem</translation>
     </message>
     <message>
       <source>Existing item</source>
-      <translation>Bestaande item</translation>
+      <translation>Meglévő elem</translation>
     </message>
     <message>
       <source>The item '%1' already exists.</source>
-      <translation>Die item '%1' bestaan reeds.</translation>
+      <translation>Az '%1' tétel már létezik.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::Placement</name>
     <message>
       <source>Placement</source>
-      <translation>Plasing</translation>
+      <translation>Elhelyezés</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>Omsetting:</translation>
+      <translation>Fordítás:</translation>
     </message>
     <message>
       <source>Z:</source>
@@ -2332,31 +2332,31 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Rotation:</source>
-      <translation>Rotasie:</translation>
+      <translation>Elforgatás:</translation>
     </message>
     <message>
       <source>Angle:</source>
-      <translation>Hoek:</translation>
+      <translation>Dőlésszög:</translation>
     </message>
     <message>
       <source>Axis:</source>
-      <translation>As:</translation>
+      <translation>Tengely:</translation>
     </message>
     <message>
       <source>Center:</source>
-      <translation>Sentreer:</translation>
+      <translation>Középpont:</translation>
     </message>
     <message>
       <source>Pitch:</source>
-      <translation>Styghoek:</translation>
+      <translation>Döntés:</translation>
     </message>
     <message>
       <source>Roll:</source>
-      <translation>Kantelhoek:</translation>
+      <translation>Gördítés:</translation>
     </message>
     <message>
       <source>Yaw:</source>
-      <translation>Rigtinghoek:</translation>
+      <translation>Tengely körüli fordulás:</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
@@ -2364,478 +2364,479 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Euler angles</source>
-      <translation>Eulerhoeke</translation>
+      <translation>Euler-szögek</translation>
     </message>
     <message>
       <source>Apply placement changes immediately</source>
-      <translation>Pas plasingveranderings onmiddellik toe</translation>
+      <translation>Elhelyezés változtatásának alkalmazása azonnal</translation>
     </message>
     <message>
       <source>Apply incremental changes to object placement</source>
-      <translation>Pas inkrementele veranderinge toe met die plasing van die voorwerp</translation>
+      <translation>A növekvő változások tárgy helyzetre való alkalmazása</translation>
     </message>
     <message>
       <source>Apply</source>
-      <translation>Pas toe</translation>
+      <translation>Alkalmaz</translation>
     </message>
     <message>
       <source>Reset</source>
-      <translation>Herstel</translation>
+      <translation>Alaphelyzetbe állítása</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>Bezárás</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
       <source>Button</source>
-      <translation>Button</translation>
+      <translation>Gomb</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>Parancs</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::SceneInspector</name>
     <message>
       <source>Dialog</source>
-      <translation>Dialoog</translation>
+      <translation>Párbeszédablak</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>Bezárás</translation>
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Verfris</translation>
+      <translation>Frissítés</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation>Uitvinderboom</translation>
+      <translation>Inventor struktúra</translation>
     </message>
     <message>
       <source>Nodes</source>
-      <translation>Knooppunte</translation>
+      <translation>Csomópontok</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::TextureMapping</name>
     <message>
       <source>Texture</source>
-      <translation>Tekstuur</translation>
+      <translation>Anyagminta</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Tekstuurkartering</translation>
+      <translation>Textúra leképezés</translation>
     </message>
     <message>
       <source>Global</source>
-      <translation>Globaal</translation>
+      <translation>Globális</translation>
     </message>
     <message>
       <source>Environment</source>
-      <translation>Omgewing</translation>
+      <translation>Környezet</translation>
     </message>
     <message>
       <source>Image files (%1)</source>
-      <translation>Beeldlêers (%1)</translation>
+      <translation>A kép fájl (%1)</translation>
     </message>
     <message>
       <source>No image</source>
-      <translation>Geen beeld</translation>
+      <translation>Nincs kép</translation>
     </message>
     <message>
       <source>The specified file is not a valid image file.</source>
-      <translation>Die gespesifiseerde lêer is nie 'n geldige beeldlêer nie.</translation>
+      <translation>A megadott fájl nem érvényes képfájl.</translation>
     </message>
     <message>
       <source>No 3d view</source>
-      <translation>Geen 3D aansig</translation>
+      <translation>Nem 3D nézet</translation>
     </message>
     <message>
       <source>No active 3d view found.</source>
-      <translation>Geen aktiewe 3D aansig gevind nie.</translation>
+      <translation>Nem található aktív 3D-s nézet.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::Transform</name>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Omskep</translation>
+      <translation>Átalakítás</translation>
     </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
     <message>
       <source>Dialog</source>
-      <translation>Dialoog</translation>
+      <translation>Párbeszédablak</translation>
     </message>
     <message>
       <source>Items</source>
-      <translation>Items</translation>
+      <translation>Elemek</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation>Program infó</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::CombiView</name>
     <message>
       <source>CombiView</source>
-      <translation>SaamgesteldeVoorkoms</translation>
+      <translation>Össz nézet</translation>
     </message>
     <message>
       <source>Project</source>
-      <translation>Projek</translation>
+      <translation>Terv</translation>
     </message>
     <message>
       <source>Tasks</source>
-      <translation>Take</translation>
+      <translation>Feladatok</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::HelpView</name>
     <message>
       <source>Previous</source>
-      <translation>Vorige</translation>
+      <translation>Vissza</translation>
     </message>
     <message>
       <source>Next</source>
-      <translation>Volgende</translation>
+      <translation>Tovább</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation>Tuis</translation>
+      <translation>Kezdőlap</translation>
     </message>
     <message>
       <source>Open</source>
-      <translation>Maak oop</translation>
+      <translation>Megnyit</translation>
     </message>
     <message>
       <source>Open file</source>
-      <translation>Maak lêer oop</translation>
+      <translation>Fájl megnyitás</translation>
     </message>
     <message>
       <source>All HTML files (*.html *.htm)</source>
-      <translation>Alle HTML-lêers (*.html *.htm)</translation>
+      <translation>Minden HTML file (*.html *.htm)</translation>
     </message>
     <message>
       <source>External browser</source>
-      <translation>Eksterne leser</translation>
+      <translation>Külső böngésző</translation>
     </message>
     <message>
       <source>No external browser found. Specify in preferences, please</source>
-      <translation>Geen eksterne leser gevind nie. Spesifiseer asseblief in die voorkeure</translation>
+      <translation>Nem található külső böngésző. Kérem, adjon meg egyet a beállításoknál</translation>
     </message>
     <message>
       <source>Starting of %1 failed</source>
-      <translation>Begin van '%1' het misluk</translation>
+      <translation>Az %1 elindítása sikertelen</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
       <source>Property View</source>
-      <translation>Eiendomsaansig</translation>
+      <translation>Tulajdonságok nézet</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
       <source>Logging</source>
-      <translation>Opgawe</translation>
+      <translation>Naplózás</translation>
     </message>
     <message>
       <source>Warning</source>
-      <translation>Waarskuwing</translation>
+      <translation>Riasztás</translation>
     </message>
     <message>
       <source>Error</source>
-      <translation>Fout</translation>
+      <translation>Hiba</translation>
     </message>
     <message>
       <source>Options</source>
-      <translation>Opsies</translation>
+      <translation>Beállítások</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <source>Save As...</source>
-      <translation>Stoor as...</translation>
+      <translation>Mentés másként...</translation>
     </message>
     <message>
       <source>Save Report Output</source>
-      <translation>Stoor Rapportresultaat</translation>
+      <translation>Jelentés kimenet mentése</translation>
     </message>
     <message>
       <source>Plain Text Files (*.txt *.log)</source>
-      <translation>Eenvoudige Tekslêers (*.txt *.log)</translation>
+      <translation>Egyszerű Text File (*.txt *.log)</translation>
     </message>
     <message>
       <source>Go to end</source>
-      <translation>Gaan na die einde</translation>
+      <translation>Ugrás a végére</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
-      <translation>Redirect Python output</translation>
+      <translation>Python kimenet átirányítása</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
-      <translation>Herlei Python foute</translation>
+      <translation>Átirányított Python-hibák</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportView</name>
     <message>
       <source>Output</source>
-      <translation>Resultaat</translation>
+      <translation>Kimenet</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Pythonkonsole</translation>
+      <translation>Python konzol</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
       <source>Property View</source>
-      <translation>Eiendomsaansig</translation>
+      <translation>Tulajdonságok nézet</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::TaskPanelView</name>
     <message>
       <source>Task View</source>
-      <translation>Taakaansig</translation>
+      <translation>Feladat nézet</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
       <source>Could not open file.</source>
-      <translation>Kon nie lêer oopmaak nie.</translation>
+      <translation>A fájl megnyitása sikertelen.</translation>
     </message>
     <message>
       <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-      <translation>Jy het probeer om die adres '%1' wat tans onbeskikbaar is, oop te maak. Maak asseblief seker dat die URL bestaan, en probeer die blad herlaai.</translation>
+      <translation>Megpróbálta a %1 címet elérni, ami jelenleg nem elérhető. Győződjön meg róla, hogy az URL létezik és frissítse az oldalt.</translation>
     </message>
     <message>
       <source>Connecting to %1</source>
-      <translation>Verbind met '%1'</translation>
+      <translation>Csatlakozás az %1-hez</translation>
     </message>
     <message>
       <source>Sending to %1</source>
-      <translation>Stuur na '%1'</translation>
+      <translation>Küldés: %1 részére</translation>
     </message>
     <message>
       <source>Reading from %1</source>
-      <translation>Lees van '%1'</translation>
+      <translation>Olvasás az %1 -től</translation>
     </message>
     <message>
       <source>Download failed: %1.</source>
-      <translation>Aflaai het misluk: '%1'.</translation>
+      <translation>Letöltés meghiusult: %1.</translation>
     </message>
     <message>
       <source>Previous</source>
-      <translation>Vorige</translation>
+      <translation>Vissza</translation>
     </message>
     <message>
       <source>Forward</source>
-      <translation>Vorentoe</translation>
+      <translation>Ismétlés</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation>Tuis</translation>
+      <translation>Kezdőlap</translation>
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Verfris</translation>
+      <translation>Frissítés</translation>
     </message>
     <message>
       <source>Copy</source>
-      <translation>Kopieer</translation>
+      <translation>Másolás</translation>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Kies alles</translation>
+      <translation>Összes kijelölése</translation>
     </message>
     <message>
       <source>No description for</source>
-      <translation>Geen beskrywing vir</translation>
+      <translation>Új leírás a</translation>
     </message>
   </context>
   <context>
     <name>Gui::DocumentModel</name>
     <message>
       <source>Application</source>
-      <translation>Toepassing</translation>
+      <translation>Alkalmazás</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Etikette &amp; Eienskappe</translation>
+      <translation>Cimkék &amp; Tulajdonságok</translation>
     </message>
   </context>
   <context>
     <name>Gui::EditorView</name>
     <message>
       <source>Modified file</source>
-      <translation>Gewysigde lêer</translation>
+      <translation>Módosított file</translation>
     </message>
     <message>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>'%1'. 
-Dit is verander buite die bronwysiger. Wil jy dit herlaai?</translation>
+      <translation>%1.
+
+Az eredeti szerkesztőn kívül lett módosítva. Újra akarja tölteni?</translation>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation>Ongestoorde dokument</translation>
+      <translation>Nem mentett dokumentum</translation>
     </message>
     <message>
       <source>The document has been modified.
 Do you want to save your changes?</source>
-      <translation>Die dokument is verander.
-Wil jy jou veranderinge stoor?</translation>
+      <translation>A dokumentum módosítva lett.
+El akarja menteni a változásokat?</translation>
     </message>
     <message>
       <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-      <translation>FreeCAD makro (*.FCMacro); Python (*.py)</translation>
+      <translation>FreeCAD makro (*.FCMacro);;Python (*.py)</translation>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>Stoor na PDF</translation>
+      <translation>Exportálás PDF-be</translation>
     </message>
     <message>
       <source>PDF file (*.pdf)</source>
-      <translation>PDF-lêer (*.pdf)</translation>
+      <translation>PDF file (*.pdf)</translation>
     </message>
     <message>
       <source>untitled[*]</source>
-      <translation>ongetiteld[*]</translation>
+      <translation>névtelen[*]</translation>
     </message>
     <message>
       <source> - Editor</source>
-      <translation> -Wysiger</translation>
+      <translation>- Szerkesztő</translation>
     </message>
     <message>
       <source>%1 chars removed</source>
-      <translation>%1 karakters verwyder</translation>
+      <translation>%1 karakter eltávolítása</translation>
     </message>
     <message>
       <source>%1 chars added</source>
-      <translation>%1 karakters bygevoeg</translation>
+      <translation>%1 karakter hozzáadása</translation>
     </message>
     <message>
       <source>Formatted</source>
-      <translation>Geformateer</translation>
+      <translation>Formázott</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
-      <translation>Kies 'n lêer</translation>
+      <translation>Válasszon ki egy fájlt</translation>
     </message>
     <message>
       <source>Select a directory</source>
-      <translation>Kies 'n gids</translation>
+      <translation>Válasszon ki egy könyvtárat</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileDialog</name>
     <message>
       <source>Save as</source>
-      <translation>Stoor as</translation>
+      <translation>Mentés másként</translation>
     </message>
     <message>
       <source>Open</source>
-      <translation>Maak oop</translation>
+      <translation>Megnyit</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
       <source>Extended</source>
-      <translation>Uitgebrei</translation>
+      <translation>Kiterjesztés</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>Minden fájl (*.*)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Flag</name>
     <message>
       <source>Top left</source>
-      <translation>Bo links</translation>
+      <translation>Bal felső</translation>
     </message>
     <message>
       <source>Bottom left</source>
-      <translation>Onder links</translation>
+      <translation>Bal alsó</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>Bo regs</translation>
+      <translation>Jobb felső</translation>
     </message>
     <message>
       <source>Bottom right</source>
-      <translation>Onder regs</translation>
+      <translation>Jobb alsó</translation>
     </message>
     <message>
       <source>Remove</source>
-      <translation>Verwyder</translation>
+      <translation>Törlés</translation>
     </message>
   </context>
   <context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Druk CTRL en linker muisknoppie</translation>
+      <translation>Nyomja meg a CTRL és a bal egérgombot</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Druk middelste muisknoppie</translation>
+      <translation>Nyomja meg a középső egérgombot</translation>
     </message>
     <message>
       <source>Press left mouse button</source>
-      <translation>Druk linker muisknoppie</translation>
+      <translation>Nyomja meg a bal egérgombot</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Blaai neer met middelste muisknoppie</translation>
+      <translation>Görgesse a középső egérgombot</translation>
     </message>
   </context>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
       <source>Wrong direction</source>
-      <translation>Verkeerde rigting</translation>
+      <translation>Rossz irány</translation>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
-      <translation>Rigting moet nie die nul vektor wees nie</translation>
+      <translation>Irány nem lehet nullvektor</translation>
     </message>
     <message>
       <source>X</source>
@@ -2851,37 +2852,37 @@ Wil jy jou veranderinge stoor?</translation>
     </message>
     <message>
       <source>User defined...</source>
-      <translation>Gebruikergedefinieerd...</translation>
+      <translation>Felhasználó által megadott...</translation>
     </message>
   </context>
   <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>Makrók</translation>
     </message>
   </context>
   <context>
     <name>Gui::MainWindow</name>
     <message>
       <source>Dimension</source>
-      <translation>Dimensioneer</translation>
+      <translation>Dimenzió</translation>
     </message>
     <message>
       <source>Ready</source>
-      <translation>Gereed</translation>
+      <translation>Kész</translation>
     </message>
     <message>
       <source>Toggles this toolbar</source>
-      <translation>Aktiveer/Inaktiveer die nutsbalk</translation>
+      <translation>Eszköztár megjelenítése</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
-      <translation>Aktiveer/inaktiveer hierdie ingebedde venster</translation>
+      <translation>Dokkolható ablak megjelenítése</translation>
     </message>
     <message>
       <source>Close All</source>
-      <translation>Maak alles toe</translation>
+      <translation>Minden bezárása</translation>
     </message>
   </context>
   <context>
@@ -2889,322 +2890,322 @@ Wil jy jou veranderinge stoor?</translation>
     <message>
       <source>Download started...
 </source>
-      <translation>Aflaai het begin... </translation>
+      <translation>Letöltés indítása... </translation>
     </message>
   </context>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Oorblywende: %1</translation>
+      <translation>Maradt: %1</translation>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Staak</translation>
+      <translation>Megszakítása</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
-      <translation>Wil jy regtig die aksie staak?</translation>
+      <translation>Biztosan megszakítja a műveletet?</translation>
     </message>
   </context>
   <context>
     <name>Gui::ProgressDialog</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Oorblywende: %1</translation>
+      <translation>Maradt: %1</translation>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Staak</translation>
+      <translation>Megszakítása</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
-      <translation>Wil jy regtig die aksie staak?</translation>
+      <translation>Biztosan megszakítja a műveletet?</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
-      <translation>Eienskap</translation>
+      <translation>Tulajdonság</translation>
     </message>
     <message>
       <source>Value</source>
-      <translation>Waarde</translation>
+      <translation>Érték</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Data</source>
-      <translation>Data</translation>
+      <translation>Adat</translation>
     </message>
   </context>
   <context>
     <name>Gui::PythonConsole</name>
     <message>
       <source>System exit</source>
-      <translation>Verlaat stelsel</translation>
+      <translation>Kilépés a rendszerből</translation>
     </message>
     <message>
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
-      <translation>Die program loop nog. 
-Wil jy afsluit sonder om jou data te stoor?</translation>
+      <translation>Az alkalmazás még mindig fut.
+Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Pythonkonsole</translation>
+      <translation>Python konzol</translation>
     </message>
     <message>
       <source>Unhandled PyCXX exception.</source>
-      <translation>Ongehanteerde PyCXX uitsondering.</translation>
+      <translation>Nem kezelt PyCXX kivétel.</translation>
     </message>
     <message>
       <source>Unhandled FreeCAD exception.</source>
-      <translation>Ongehanteerde FreeCAD uitsondering.</translation>
+      <translation>Nem kezelt FreeCAD kivétel.</translation>
     </message>
     <message>
       <source>Unhandled unknown C++ exception.</source>
-      <translation>Ongehanteerde onbekende C++ uitsondering.</translation>
+      <translation>Nem kezelt ismeretlen C++ kivétel.</translation>
     </message>
     <message>
       <source>&amp;Copy command</source>
-      <translation>&amp;Kopieer bevel</translation>
+      <translation>Parancs &amp;másolás</translation>
     </message>
     <message>
       <source>&amp;Copy history</source>
-      <translation>&amp;Kopieer geskiedenis</translation>
+      <translation>Előzmények &amp;másolás</translation>
     </message>
     <message>
       <source>Save history as...</source>
-      <translation>Stoor geskiedenis as...</translation>
+      <translation>Előzmények mentése mint ...</translation>
     </message>
     <message>
       <source>Insert file name...</source>
-      <translation>Gee lêernaam...</translation>
+      <translation>Fájlnév beszúrása...</translation>
     </message>
     <message>
       <source>Save History</source>
-      <translation>Stoor geskiedenis</translation>
+      <translation>Előzmények mentése</translation>
     </message>
     <message>
       <source>Macro Files (*.FCMacro *.py)</source>
-      <translation>Makro-lêers (*.FCMacro *.py)</translation>
+      <translation>Makrófájlok (*.FCMacro *.py)</translation>
     </message>
     <message>
       <source>Insert file name</source>
-      <translation>Gee lêernaam</translation>
+      <translation>Fájlnév beszúrása</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>Minden fájl (*.*)</translation>
     </message>
     <message>
       <source>Python Input Dialog</source>
-      <translation>Python Invoer Dialoog</translation>
+      <translation>Python bemeneti párbeszédpanel</translation>
     </message>
     <message>
       <source>Unhandled std C++ exception.</source>
-      <translation>Ongehanteerde std C++ uitsondering.</translation>
+      <translation>Kezeletlen C++ kivétel.</translation>
     </message>
     <message>
       <source>Word wrap</source>
-      <translation>Woordomvouding</translation>
+      <translation>Sortörés</translation>
     </message>
     <message>
       <source>&amp;Copy</source>
-      <translation>&amp;Kopieer</translation>
+      <translation>&amp;Másolás</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
-      <translation>&amp;Plak</translation>
+      <translation>&amp;Beillesztés</translation>
     </message>
     <message>
       <source>Select All</source>
-      <translation>Kies alles</translation>
+      <translation>Mindent kijelöl</translation>
     </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
     <message>
       <source>Comment</source>
-      <translation>Opmerking</translation>
+      <translation>Megjegyzés</translation>
     </message>
     <message>
       <source>Uncomment</source>
-      <translation>Verwyder opmerking</translation>
+      <translation>Kijelölés törlés</translation>
     </message>
   </context>
   <context>
     <name>Gui::PythonInputField</name>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>Törlés</translation>
     </message>
   </context>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
       <source>Open file %1</source>
-      <translation>Maak lêer '%1' oop</translation>
+      <translation>Fájl megnyitása %1</translation>
     </message>
     <message>
       <source>File not found</source>
-      <translation>Lêer nie gevind nie</translation>
+      <translation>A fájl nem található</translation>
     </message>
     <message>
       <source>The file '%1' cannot be opened.</source>
-      <translation>Die lêer '%1' kan nie oopgemaak word nie.</translation>
+      <translation>A fájl nem nyitható meg ('%1').</translation>
     </message>
   </context>
   <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
-      <translation>Kies module</translation>
+      <translation>Modul választás</translation>
     </message>
     <message>
       <source>Open %1 as</source>
-      <translation>Maak '%1' oop as</translation>
+      <translation>Megnyitás mint %1</translation>
     </message>
     <message>
       <source>Select</source>
-      <translation>Kies</translation>
+      <translation>Kiválaszt</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Des&amp;cription</source>
-      <translation>&amp;Beskrywing</translation>
+      <translation>Leírás</translation>
     </message>
     <message>
       <source>Long description of commands</source>
-      <translation>Lang beskrywing van bevele</translation>
+      <translation>Parancsok hosszú leírása</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Download online help</source>
-      <translation>Laai internethulp af</translation>
+      <translation>Online súgó letöltése</translation>
     </message>
     <message>
       <source>Download %1's online help</source>
-      <translation>Laai %1 se internethulp af</translation>
+      <translation>Online súgó letöltése %1</translation>
     </message>
     <message>
       <source>Non-existing directory</source>
-      <translation>Gids bestaan nie</translation>
+      <translation>Nem létező könyvtár</translation>
     </message>
     <message>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>Die gids '%1' bestaan nie. 
-Wil jy 'n bestaande gids spesifiseer?</translation>
+      <translation>A könyvtár '%1' nem létezik.
+Szeretne megadni egy létező könyvtár?</translation>
     </message>
     <message>
       <source>Missing permission</source>
-      <translation>Toestemming ontbreek</translation>
+      <translation>Hiányzó engedély</translation>
     </message>
     <message>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>Jy het nie toestemming om te skryf na '%1' nie
-Wil jy 'n ander gids aangee?</translation>
+      <translation>Nincs írási engedélye '%1'
+Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
-      <translation>Stop aflaai</translation>
+      <translation>Letöltés leállítása</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>Python Modules</source>
-      <translation>Pythonmodules</translation>
+      <translation>Python Modulok</translation>
     </message>
     <message>
       <source>Opens a browser to show the Python modules</source>
-      <translation>Maak 'n leser oop om die Pythonmodules te wys</translation>
+      <translation>Python modul böngésző megnyitása</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskBoxAngle</name>
     <message>
       <source>Angle</source>
-      <translation>Hoek</translation>
+      <translation>Szög</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskBoxPosition</name>
     <message>
       <source>Position</source>
-      <translation>Posisie</translation>
+      <translation>Pozíció</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Display mode:</source>
-      <translation>Vertoningsmodus:</translation>
+      <translation>Megjelenítési mód:</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Plotmodus:</translation>
+      <translation>Nyomtatási mód:</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Puntgrootte:</translation>
+      <translation>Méret:</translation>
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Lynwydte:</translation>
+      <translation>Vonalstílus:</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Deursigtigheid:</translation>
+      <translation>Átlátszóság:</translation>
     </message>
     <message>
       <source>Appearance</source>
-      <translation>Voorkoms</translation>
+      <translation>Megjelenés</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskSelectLinkProperty</name>
     <message>
       <source>Appearance</source>
-      <translation>Voorkoms</translation>
+      <translation>Megjelenés</translation>
     </message>
     <message>
       <source>...</source>
@@ -3212,93 +3213,93 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>edit selection</source>
-      <translation>Wysig seleksie</translation>
+      <translation>kijelölés szerkesztése</translation>
     </message>
   </context>
   <context>
     <name>Gui::Translator</name>
     <message>
       <source>English</source>
-      <translation>Engels</translation>
+      <translation>Angol</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Boomvoorkoms</translation>
+      <translation>Fanézet</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
-      <translation>Skep groep ...</translation>
+      <translation>Csoport létrehozása...</translation>
     </message>
     <message>
       <source>Create a group</source>
-      <translation>Skep 'n groep</translation>
+      <translation>Új csoport létrehozása</translation>
     </message>
     <message>
       <source>Group</source>
-      <translation>Groep</translation>
+      <translation>Csoport</translation>
     </message>
     <message>
       <source>Rename</source>
-      <translation>Hernoem</translation>
+      <translation>Átnevezés</translation>
     </message>
     <message>
       <source>Rename object</source>
-      <translation>Hernoem voorwerp</translation>
+      <translation>Objektum átnevezése</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Etikette &amp; Eienskappe</translation>
+      <translation>Cimkék &amp; Tulajdonságok</translation>
     </message>
     <message>
       <source>Application</source>
-      <translation>Toepassing</translation>
+      <translation>Alkalmazás</translation>
     </message>
     <message>
       <source>Finish editing</source>
-      <translation>Klaar gewysig</translation>
+      <translation>Szerkesztés befejezése</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Voltooi voorwerpwysiging</translation>
+      <translation>Objektumszerkesztés befejezése</translation>
     </message>
     <message>
       <source>Activate document</source>
-      <translation>Aktiveer dokument</translation>
+      <translation>Dokumentum aktiválása</translation>
     </message>
     <message>
       <source>Activate document %1</source>
-      <translation>Aktiveer dokument %1</translation>
+      <translation>Dokumentum aktiválása (%1)</translation>
     </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
       <source>Export PDF</source>
-      <translation>Stoor na PDF</translation>
+      <translation>Exportálás PDF-be</translation>
     </message>
     <message>
       <source>PDF file (*.pdf)</source>
-      <translation>PDF-lêer (*.pdf)</translation>
+      <translation>PDF file (*.pdf)</translation>
     </message>
   </context>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Kies die '%1' werkbank</translation>
+      <translation>'%1' munkafelület kiválasztása</translation>
     </message>
   </context>
   <context>
     <name>Position</name>
     <message>
       <source>Form</source>
-      <translation>Vorm</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>X:</source>
@@ -3314,11 +3315,11 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation>0,1 mm</translation>
+      <translation>0.1 mm</translation>
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation>0,5 mm</translation>
+      <translation>0.5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
@@ -3370,73 +3371,73 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>Grid Snap in</source>
-      <translation>Gidslynvashegting</translation>
+      <translation>Rácshoz illeszt</translation>
     </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Boomvoorkoms</translation>
+      <translation>Fanézet</translation>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Eiendomsaansig</translation>
+      <translation>Tulajdonságok nézet</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Seleksieaansig</translation>
+      <translation>Részlet nézet</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Rapportaansig</translation>
+      <translation>Jelentés nézet</translation>
     </message>
     <message>
       <source>Task View</source>
-      <translation>Taakaansig</translation>
+      <translation>Feladat nézet</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Saamgestelde aansig</translation>
+      <translation>Összetett nézet</translation>
     </message>
     <message>
       <source>Toolbox</source>
-      <translation>Gereedskapskis</translation>
+      <translation>Eszközkészlet</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Pythonkonsole</translation>
+      <translation>Python konzol</translation>
     </message>
     <message>
       <source>Display properties</source>
-      <translation>Vertoon eienskappe</translation>
+      <translation>Tulajdonságok megjelenítése</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>General</source>
-      <translation>Algemeen</translation>
+      <translation>Általános</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Vertoon</translation>
+      <translation>Megjelenítés</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
-      <translation>Onbekende lêersoort</translation>
+      <translation>Ismeretlen filetípus</translation>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
-      <translation>Kan nie onbekende lêersoort oop maak nie: '%1'</translation>
+      <translation>Nem megnyitható fájltípus: %1</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
-      <translation>Kan nie stoor na 'n onbekende lêersoort nie: '%1'</translation>
+      <translation>Nem menthető fájltípus: %1</translation>
     </message>
     <message>
       <source>Workbench failure</source>
-      <translation>Werkbankmislukking</translation>
+      <translation>Munkafelület hiba</translation>
     </message>
     <message>
       <source>%1</source>
@@ -3444,677 +3445,677 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
-      <translation>Kan nie Qt-assistent (%1) lanseer nie</translation>
+      <translation>Nem lehet elindítani a Qt támogatást(%1)</translation>
     </message>
     <message>
       <source>Exception</source>
-      <translation>Uitsondering</translation>
+      <translation>Kivétel</translation>
     </message>
     <message>
       <source>Open document</source>
-      <translation>Maak dokument oop</translation>
+      <translation>Dokumentum megnyitása</translation>
     </message>
     <message>
       <source>Import file</source>
-      <translation>Voer lêer in</translation>
+      <translation>Fájl importálása</translation>
     </message>
     <message>
       <source>Export file</source>
-      <translation>Voer lêer uit</translation>
+      <translation>Fájl exportálása</translation>
     </message>
     <message>
       <source>Printing...</source>
-      <translation>Druk tans...</translation>
+      <translation>Nyomtatás...</translation>
     </message>
     <message>
       <source>Cannot load workbench</source>
-      <translation>Kan nie werkbank laai nie</translation>
+      <translation>Munkamenet nem betölthető</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
-      <translation>'n Algemene fout het voorgekom tydens die laai van die werkbank</translation>
+      <translation>A munkamenet betöltése közben hiba lépett fel</translation>
     </message>
     <message>
       <source>File not found</source>
-      <translation>Lêer nie gevind nie</translation>
+      <translation>A fájl nem található</translation>
     </message>
     <message>
       <source>Cannot open file %1</source>
-      <translation>Kan nie lêer '%1' oop maak nie</translation>
+      <translation>Nem sikerült megnyitni a(z) %1 fájlt</translation>
     </message>
     <message>
       <source>Save views...</source>
-      <translation>Stoor aansigte...</translation>
+      <translation>Nézet mentése...</translation>
     </message>
     <message>
       <source>Load views...</source>
-      <translation>Laai aansigte...</translation>
+      <translation>Nézet betöltése...</translation>
     </message>
     <message>
       <source>Freeze view</source>
-      <translation>Vries aansig</translation>
+      <translation>Nézet megállítása</translation>
     </message>
     <message>
       <source>Clear views</source>
-      <translation>Maak aansigte skoon</translation>
+      <translation>Tiszta nézet</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
-      <translation>Herstel aansig &amp;%1</translation>
+      <translation>Nézet visszaállítás %1</translation>
     </message>
     <message>
       <source>Save frozen views</source>
-      <translation>Stoor gevriesde aansigte</translation>
+      <translation>Fagyasztott nézetek mentése</translation>
     </message>
     <message>
       <source>Frozen views (*.cam)</source>
-      <translation>Bevrore aansigte (*.cam)</translation>
+      <translation>Fagyasztott nézetek (*.cam)</translation>
     </message>
     <message>
       <source>Restore views</source>
-      <translation>Herstel aansigte</translation>
+      <translation>Nézetek visszaállítása</translation>
     </message>
     <message>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-      <translation>Die invoer van die herstelde aansigte verwyder die reeds gestoorde aansigte. Wil jy voortgaan?</translation>
+      <translation>A visszaállított nézetek importálása felülírja a már tárolt nézetet.
+Folytatni kívánja?</translation>
     </message>
     <message>
       <source>Restore frozen views</source>
-      <translation>Herstel bevrore aansigte</translation>
+      <translation>Fagyasztott nézet visszaállítása</translation>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
-      <translation>Kan nie lêer '%1' oop maak nie.</translation>
+      <translation>Nem lehet megnyitni a fájlt (%1).</translation>
     </message>
     <message>
       <source>Docked</source>
-      <translation>Vasgekoppel</translation>
+      <translation>Rögzített</translation>
     </message>
     <message>
       <source>Undocked</source>
-      <translation>Losgekoppel</translation>
+      <translation>Nem rögzített</translation>
     </message>
     <message>
       <source>Fullscreen</source>
-      <translation>Volskerm</translation>
+      <translation>Teljes képernyős</translation>
     </message>
     <message>
       <source>files</source>
-      <translation>lêers</translation>
+      <translation>fájlok</translation>
     </message>
     <message>
       <source>Save picture</source>
-      <translation>Stoor beeld</translation>
+      <translation>Kép mentése</translation>
     </message>
     <message>
       <source>New sub-group</source>
-      <translation>Nuwe subgroep</translation>
+      <translation>Új alcsoport</translation>
     </message>
     <message>
       <source>Enter the name:</source>
-      <translation>Gee die naam:</translation>
+      <translation>Adja meg a nevét:</translation>
     </message>
     <message>
       <source>New text item</source>
-      <translation>Nuwe teksitem</translation>
+      <translation>Új szöveges elem</translation>
     </message>
     <message>
       <source>Enter your text:</source>
-      <translation>Gee jou teks:</translation>
+      <translation>Írja be a szöveget:</translation>
     </message>
     <message>
       <source>New integer item</source>
-      <translation>Nuwe heelgetalitem</translation>
+      <translation>Új egész elem</translation>
     </message>
     <message>
       <source>Enter your number:</source>
-      <translation>Gee jou nommer:</translation>
+      <translation>Írja be a számot:</translation>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>Nuwe onondertekende item</translation>
+      <translation>Új meghatározatlan elem</translation>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Nuwe dryfitem</translation>
+      <translation>Új float-elem</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Nuwe Boole-item</translation>
+      <translation>Új logikai elem</translation>
     </message>
     <message>
       <source>Choose an item:</source>
-      <translation>Kies 'n item:</translation>
+      <translation>Válasszon egy elemet:</translation>
     </message>
     <message>
       <source>Rename group</source>
-      <translation>Hernoem groep</translation>
+      <translation>Csoport átnevezése</translation>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
-      <translation>Die groep '%1' kan nie hernoem word nie.</translation>
+      <translation>A csoport (%1) nem nevezhető át.</translation>
     </message>
     <message>
       <source>Existing group</source>
-      <translation>Bestaande groep</translation>
+      <translation>Létező csoport</translation>
     </message>
     <message>
       <source>The group '%1' already exists.</source>
-      <translation>Die groep '%1' bestaan reeds.</translation>
+      <translation>A csoport (%1) már létezik.</translation>
     </message>
     <message>
       <source>Change value</source>
-      <translation>Verander waarde</translation>
+      <translation>Érték módosítása</translation>
     </message>
     <message>
       <source>Save document under new filename...</source>
-      <translation>Stoor dokument onder 'n nuwe lêernaam ...</translation>
+      <translation>Dokumentum mentése új fájlnéven...</translation>
     </message>
     <message>
       <source>Saving aborted</source>
-      <translation>Storing gestaak</translation>
+      <translation>Mentése megszakítva</translation>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation>Ongestoorde dokument</translation>
+      <translation>Nem mentett dokumentum</translation>
     </message>
     <message>
       <source>Save document before close?</source>
-      <translation>Stoor dokument voor jy dit toe maak?</translation>
+      <translation>Mentse a dokumentumot a bezárás előtt?</translation>
     </message>
     <message>
       <source>Save Macro</source>
-      <translation>Stoor Makro</translation>
+      <translation>Mentse a makrót</translation>
     </message>
     <message>
       <source>Finish</source>
-      <translation>Voltooi</translation>
+      <translation>Befejezés</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>Mégse</translation>
     </message>
     <message>
       <source>Inner</source>
-      <translation>Binneste</translation>
+      <translation>Belső</translation>
     </message>
     <message>
       <source>Outer</source>
-      <translation>Buitenste</translation>
+      <translation>Külső</translation>
     </message>
     <message>
       <source>No Browser</source>
-      <translation>Geen Leser</translation>
+      <translation>Nincs böngésző</translation>
     </message>
     <message>
       <source>Unable to open your browser.
 
 Please open a browser window and type in: http://localhost:%1.</source>
-      <translation>Kan nie jou webleser oop maak nie.
-Maak asb. 'n leservenster oop en tik in http://localhost:%1</translation>
+      <translation>Nem lehet megnyitni a böngészőt.
+Nyisson meg egy böngészőt, és írja be: http://localhost:%1.</translation>
     </message>
     <message>
       <source>No Server</source>
-      <translation>Geen Bediener</translation>
+      <translation>Nincs szerver</translation>
     </message>
     <message>
       <source>Unable to start the server to port %1: %2.</source>
-      <translation>Nie in staat om die bediener te begin na poort %1:%2 nie.</translation>
+      <translation>Nem sikerült elindítani a szervert a %1:%2 porton</translation>
     </message>
     <message>
       <source>Unable to open your system browser.</source>
-      <translation>Nie in staat om stelselleser oop te maak nie.</translation>
+      <translation>Nem lehet megnyitni a rendszer böngészőt.</translation>
     </message>
     <message>
       <source>Options...</source>
-      <translation>Opsies...</translation>
+      <translation>Beállítások...</translation>
     </message>
     <message>
       <source>Out of memory</source>
-      <translation>Onvoldoende geheue</translation>
+      <translation>Elfogyott a memória</translation>
     </message>
     <message>
       <source>Not enough memory available to display the data.</source>
-      <translation>Nie genoeg geheue is beskikbaar om die data te vertoon nie.</translation>
+      <translation>Nincs elég memória az adatok megjelenítéséhez.</translation>
     </message>
     <message>
       <source>Cannot find file %1</source>
-      <translation>Kan nie lêer '%1' vind nie</translation>
+      <translation>A fájl nem található: %1</translation>
     </message>
     <message>
       <source>Cannot find file %1 neither in %2 nor in %3</source>
-      <translation>Kan nie lêer '%1' vind nie, nie in '%2' of '%3' nie</translation>
+      <translation>Nem talál fájlt %1 -nek %2 -ben, sem  %3 -ban.</translation>
     </message>
     <message>
       <source>Save %1 Document</source>
-      <translation>Stoor '%1' Dokument</translation>
+      <translation>A(z) %1 dokumentum mentése</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation>%1-dokument (*.FCStd)</translation>
+      <translation>a(z) %1 dokumentum (*.FCStd)</translation>
     </message>
     <message>
       <source>Save As</source>
-      <translation>Stoor as</translation>
+      <translation>Mentés másként</translation>
     </message>
     <message>
       <source>%1 already exists.
 Do you want to replace it?</source>
-      <translation>%1 bestaan reeds. Wil jy dit vervang?</translation>
+      <translation>A(z) %1 már létezik. Valóban le szeretné cserélni?</translation>
     </message>
     <message>
       <source>Document not closable</source>
-      <translation>Dokument nie toemaakbaar nie</translation>
+      <translation>A dokumentum nem zárható be</translation>
     </message>
     <message>
       <source>The document is not closable for the moment.</source>
-      <translation>Die dokument is huidiglik nie toemaakbaar nie.</translation>
+      <translation>A dokumentum nem zárható be pillanatnyilag.</translation>
     </message>
     <message>
       <source>No OpenGL</source>
-      <translation>Geen OpenGL</translation>
+      <translation>Nincs OpenGL</translation>
     </message>
     <message>
       <source>This system does not support OpenGL</source>
-      <translation>Hierdie stelsel ondersteun nie OpenGL nie</translation>
+      <translation>Ez a rendszer nem támogatja az OpenGL-t</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Kan nie dokumentasie laai nie. 
-Om dit te laai word Qt 4.4 of hoër benodig.</translation>
+      <translation>Nem sikerült betölteni a dokumentációt.
+A betöltéshez Qt 4.4 vagy magasabb verzió szükséges.</translation>
     </message>
     <message>
       <source>%1 Help</source>
-      <translation>%1 Hulp</translation>
+      <translation>%1 Súgó</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
-      <translation>Voer PDF uit...</translation>
+      <translation>PDF exportálása...</translation>
     </message>
     <message>
       <source>Wrong selection</source>
-      <translation>Verkeerde keuse</translation>
+      <translation>Rossz kijelölés</translation>
     </message>
     <message>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Slegs een voorwerp gekies. Kies asseblief twee.
-Wees bewus dat die plek waar jy kliek belangrik is.</translation>
+      <translation>Csak egy objektum van kiválasztva.Kérjük válasszon ki két objektumot.
+Legyen körültekintő, számít melyik pontra kattint.</translation>
     </message>
     <message>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Kies asseblief twee voorwerpe. 
-Wees bewus dat die punt waar jy kliek belangrik is.</translation>
+      <translation>Kérjük, válasszon ki két objektumot.
+Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
       <source>New boolean item</source>
-      <translation>Nuwe Boole-item</translation>
+      <translation>Új logikai elem</translation>
     </message>
     <message>
       <source>Navigation styles</source>
-      <translation>Navigasiestyle</translation>
+      <translation>Navigációs stílusok</translation>
     </message>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigasie</translation>
+      <translation>%1 navigáció</translation>
     </message>
     <message>
       <source>Move annotation</source>
-      <translation>Skuif annotasie</translation>
+      <translation>Lépés jegyzék</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Omskep</translation>
+      <translation>Átalakítás</translation>
     </message>
     <message>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-      <translation>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</translation>
+      <translation>A dokumentum szerkesztési módban, így nem zárható be ebben a pillanatban. Vagy be kell fejezni, vagy törölheti a szerkesztést a feladat panelen.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>&amp;About %1</source>
-      <translation>&amp;Aangaande %1</translation>
+      <translation>&amp;Névjegy %1</translation>
     </message>
     <message>
       <source>About %1</source>
-      <translation>Aangaande %1</translation>
+      <translation>Névjegy %1</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>About &amp;Qt</source>
-      <translation>&amp;Aangaande Qt</translation>
+      <translation>Qt névjegye</translation>
     </message>
     <message>
       <source>About Qt</source>
-      <translation>Aangaande Qt</translation>
+      <translation>Qt névjegye</translation>
     </message>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>&amp;Volgende</translation>
+      <translation>Ismét</translation>
     </message>
     <message>
       <source>Activate next window</source>
-      <translation>Aktiveer volgende venster</translation>
+      <translation>Következő ablak aktiválása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>&amp;Vorige</translation>
+      <translation>Visszavonás</translation>
     </message>
     <message>
       <source>Activate previous window</source>
-      <translation>Aktiveer vorige venster</translation>
+      <translation>Előző ablak aktiválása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
-      <translation>&amp;Organiseer Ikone</translation>
+      <translation>&amp;Ikonok rendezése</translation>
     </message>
     <message>
       <source>Arrange Icons</source>
-      <translation>Organiseer Ikone</translation>
+      <translation>Ikonok rendezése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>Toggle axis cross</translation>
+      <translation>Tengely kereszteződés váltása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Kaskade</translation>
+      <translation>&amp;Lépcsőzetes</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Teël pragmaties</translation>
+      <translation>Részek gakorlása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>Be&amp;zárás</translation>
     </message>
     <message>
       <source>Close active window</source>
-      <translation>Maak aktiewe venster toe</translation>
+      <translation>Aktív ablak bezárása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>&amp;Maak alles toe</translation>
+      <translation>Öss&amp;zes bezárása</translation>
     </message>
     <message>
       <source>Close all windows</source>
-      <translation>Maak alle vensters toe</translation>
+      <translation>Összes ablak bezárása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>&amp;Begin bevelmodus...</translation>
+      <translation>Parancs &amp;sor indítása...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
-      <translation>Maak bevelmodus oop in die konsool</translation>
+      <translation>Parancs sor konzolban való futtatása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCopy</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>&amp;Kopieer</translation>
+      <translation>&amp;Másolás</translation>
     </message>
     <message>
       <source>Copy operation</source>
-      <translation>Kopieer verwerking</translation>
+      <translation>Másolási művelet</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCut</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>&amp;Cut</source>
-      <translation>&amp;Knip</translation>
+      <translation>&amp;Kivágás</translation>
     </message>
     <message>
       <source>Cut out</source>
-      <translation>Knip uit</translation>
+      <translation>Kimetszés</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDDuplicateSelection</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>Duplicate selection</source>
-      <translation>Duplikaatseleksie</translation>
+      <translation>Másolat létrehozása a kijelölésről</translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Plaas duplikate van die geselekteerde voorwerpe in die aktiewe dokument</translation>
+      <translation>A kijelölt objektumokat másolja az aktuális dokumentumba</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDelete</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>&amp;Delete</source>
-      <translation>&amp;Verwyder</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <source>Deletes the selected objects</source>
-      <translation>Verwyder die geselekteerde voorwerpe</translation>
+      <translation>Kiválasztott elem törlése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>View turntable...</source>
-      <translation>Wys draaitafel...</translation>
+      <translation>Forgóasztal nézet...</translation>
     </message>
     <message>
       <source>View turntable</source>
-      <translation>Wys draaitafel</translation>
+      <translation>Forgóasztal nézet</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
-      <translation>&amp;Aanpassing...</translation>
+      <translation>&amp;Testreszabás...</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
-      <translation>Verander nutsbalke and bevelbalke</translation>
+      <translation>Eszköztás és parancs oszlopok testreszabása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecute</name>
     <message>
       <source>Macros ...</source>
-      <translation>Makros...</translation>
+      <translation>Makrók ...</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Maak 'n dialoog oop om 'n opgeneemde makro uit te voer</translation>
+      <translation>Párbeszédpanel megnyitása a rögzített makró végrehajtásához</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>Execute macro</source>
-      <translation>Voer makro uit</translation>
+      <translation>Makró végrehajtása</translation>
     </message>
     <message>
       <source>Execute the macro in the editor</source>
-      <translation>Voer die makro in die wysiger uit</translation>
+      <translation>Szerkesztőben futtatja a makrót</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>&amp;Makro-opname...</translation>
+      <translation>&amp;Makró felvétel ...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
-      <translation>Maak 'n dialoog oop om 'n makro op te neem</translation>
+      <translation>Párbeszédpanel megnyitása a makró rögzítéséhez</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>&amp;Wysig parameters...</translation>
+      <translation>Paraméterek &amp;szerkesztése</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation>Maak 'n dialoog oop om die parameters te wysig</translation>
+      <translation>Párbeszédablak megnyitása a paraméterek szerkesztéséhez</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Voorkeure...</translation>
+      <translation>&amp;Beállítások...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation>Maak 'n dialoog oop om die voorkeure te wysig</translation>
+      <translation>Párbeszédablak megnyitása a beállítások szerkesztéséhez</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Vie&amp;ws</source>
-      <translation>&amp;Aansigte</translation>
+      <translation>Nézetek</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Aktiveer/inaktiveer hierdie venster</translation>
+      <translation>Ablak váltás</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Draw style</source>
@@ -4125,1241 +4126,1241 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdExport</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Voer uit...</translation>
+      <translation>&amp;Exportálás</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Voer 'n voorwerp in die aktiewe dokument uit</translation>
+      <translation>Egy objektum exportálása az aktív munkalapból</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Ondersteunde formate</translation>
+      <translation>Támogatott formátumok</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Recompute</source>
-      <translation>&amp;Herbereken</translation>
+      <translation>Új&amp;raszámítás</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Herbereken eienskap of dokument</translation>
+      <translation>Jellemzők vagy dokumentum újraszámítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>FreeCAD Website</source>
-      <translation>FreeCAD Webwerf</translation>
+      <translation>FreeCAD honlapja</translation>
     </message>
     <message>
       <source>The FreeCAD website</source>
-      <translation>Die FreeCAD webwerf</translation>
+      <translation>A FreeCAD honlapja</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Freeze display</source>
-      <translation>Vries vertoning</translation>
+      <translation>Képernyő fagyasztása</translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
-      <translation>Vries die huidige aansigposisie</translation>
+      <translation>Az aktuális nézet pozíció fagyasztása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Hide all objects</source>
-      <translation>Verskuil al die voorwerpe</translation>
+      <translation>Az összes objektum elrejtése</translation>
     </message>
     <message>
       <source>Hide all objects in the document</source>
-      <translation>Verskuil al die voorwerpe in die dokument</translation>
+      <translation>A dokumentumban lévő összes objektum elrejtéséhez</translation>
     </message>
   </context>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Hide selection</source>
-      <translation>Verskuil seleksie</translation>
+      <translation>Kijelölt elrejtése</translation>
     </message>
     <message>
       <source>Hide all selected objects</source>
-      <translation>Verskuil al die gekose voorwerpe</translation>
+      <translation>Minden kijelölt objektum elrejtése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdImport</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Import...</source>
-      <translation>&amp;Voer in...</translation>
+      <translation>&amp;Import...</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
-      <translation>Voer 'n lêer in in die aktiewe dokument</translation>
+      <translation>Fájl importálása az aktív dokumentumba</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Ondersteunde formate</translation>
+      <translation>Támogatott formátumok</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>Minden fájl (*.*)</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>Debug macro</source>
-      <translation>Stel foute in die makro reg</translation>
+      <translation>Makró hibakeresés</translation>
     </message>
     <message>
       <source>Start debugging of macro</source>
-      <translation>Begin om makrofoute te soek</translation>
+      <translation>Makró hibakeresés indítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>Step over</source>
-      <translation>Spring oor</translation>
+      <translation>Átlép</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>Stop debugging</source>
-      <translation>Stop foutsoeking</translation>
+      <translation>Hibakeresés leállítása</translation>
     </message>
     <message>
       <source>Stop debugging of macro</source>
-      <translation>Stop makrofoutsoeking</translation>
+      <translation>Makró hibakereső leállítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
-      <translation>&amp;Stop makro opname</translation>
+      <translation>Makró rögzítés leállítása</translation>
     </message>
     <message>
       <source>Stop the macro recording session</source>
-      <translation>Stop die makro opnamesessie</translation>
+      <translation>Leállítja a makrófelvételi folyamatot</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Meet afstand</translation>
+      <translation>Távolság mérés</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>Mesure distance</source>
-      <translation>Meet afstand</translation>
+      <translation>Távolságmérés</translation>
     </message>
     <message>
       <source>Measures distance between two selected objects</source>
-      <translation>Meet afstand tussen twee geselekteerde voorwerpe</translation>
+      <translation>Távolságmérés két kijelölt objektum között</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>Merge project...</source>
-      <translation>Verenig projek ...</translation>
+      <translation>Projekt egyesítése...</translation>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Verenig projek</translation>
+      <translation>Projekt egyesítése</translation>
     </message>
     <message>
       <source>%1 document (*.fcstd)</source>
-      <translation>%1 dokument (*.fcstd)</translation>
+      <translation>%1 dokumentum (*.fcstd)</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
-      <translation>Kan nie die projek met homself verenig nie.</translation>
+      <translation>Nem tudja egyesíteni önmagával a projektet.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdNew</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;New</source>
-      <translation>&amp;Nuwe</translation>
+      <translation>&amp;Új</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Skep 'n nuwe leë dokument</translation>
+      <translation>Új üres munkalap létrehozása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Show help to the application</source>
-      <translation>Wys hulp vir die toepassing</translation>
+      <translation>Program Súgó megjelenítése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOnlineHelpPython</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Python Manuals</source>
-      <translation>Python Handleidings</translation>
+      <translation>Python kézikönyvek</translation>
     </message>
     <message>
       <source>Show the Python documentation</source>
-      <translation>Wys die Python dokumentasie</translation>
+      <translation>A Python-dokumentáció megjelenítése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Help Website</source>
-      <translation>Hulpwebwerf</translation>
+      <translation>Súgó Honlap</translation>
     </message>
     <message>
       <source>The website where the help is maintained</source>
-      <translation>Die webwerf waar die hulp in stand gehou word</translation>
+      <translation>A honlap, ahol a súgót tartják</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOpen</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Open...</source>
-      <translation>&amp;Maak oop...</translation>
+      <translation>&amp;Megnyitás ...</translation>
     </message>
     <message>
       <source>Open a document or import files</source>
-      <translation>Maak 'n dokument oop of voer lêers in</translation>
+      <translation>Dokumentum megnyitása vagy fájl importálása</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Ondersteunde formate</translation>
+      <translation>Támogatott formátumok</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>Minden fájl (*.*)</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPaste</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
-      <translation>&amp;Plak</translation>
+      <translation>&amp;Beillesztés</translation>
     </message>
     <message>
       <source>Paste operation</source>
-      <translation>Plak operasie</translation>
+      <translation>Beillesztési művelet</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPlacement</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>Placement...</source>
-      <translation>Plasing...</translation>
+      <translation>Elhelyezés ...</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
-      <translation>Plaseer die geselekteerde objekte</translation>
+      <translation>A kijelölt objektumok helye</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrint</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Print...</source>
-      <translation>&amp;Druk...</translation>
+      <translation>&amp;Nyomtatás ...</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Druk die dokument</translation>
+      <translation>A dokumentum nyomtatása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>&amp;Stoor na PDF...</translation>
+      <translation>PDF &amp;exportálása...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
-      <translation>Voer die dokument uit na PDF</translation>
+      <translation>Dokumentum exportálása PDF fájlba</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>&amp;Print preview...</translation>
+      <translation>Nyomtatási kép...</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Druk die dokument</translation>
+      <translation>A dokumentum nyomtatása</translation>
     </message>
     <message>
       <source>Print preview</source>
-      <translation>Print preview</translation>
+      <translation>Nyomtatási kép</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>Project i&amp;nformation...</source>
-      <translation>&amp;Projekinligting...</translation>
+      <translation>Projekt i&amp;nformáció...</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Wys besonderhede van die aktiewe projek</translation>
+      <translation>Részletek megjelenítése az aktuális projektről</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>Project utility...</source>
-      <translation>Project utility...</translation>
+      <translation>Project segédprogram...</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation>Utility to extract or create project files</translation>
+      <translation>Felhasználót kivon, vagy hozzon létre a projekt fájlokat</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>Python Website</source>
-      <translation>Python Webwerf</translation>
+      <translation>Python honlapja</translation>
     </message>
     <message>
       <source>The official Python website</source>
-      <translation>Die amptelike Python webwerf</translation>
+      <translation>Python hivatalos honlapja</translation>
     </message>
   </context>
   <context>
     <name>StdCmdQuit</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>&amp;Verlaat</translation>
+      <translation>&amp;Kilépés</translation>
     </message>
     <message>
       <source>Quits the application</source>
-      <translation>Verlaat die toepassing</translation>
+      <translation>Kilépés az alkalmazásból</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>Random color</source>
-      <translation>Willekeurige kleur</translation>
+      <translation>Véletlen szín</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>Recent files</source>
-      <translation>Onlangse lêers</translation>
+      <translation>Legutóbbi fájlok</translation>
     </message>
     <message>
       <source>Recent file list</source>
-      <translation>Onlangse lêerlys</translation>
+      <translation>Legutóbbi fájlok listája</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>&amp;Redo</source>
-      <translation>&amp;Herdoen</translation>
+      <translation>&amp;Ismét:</translation>
     </message>
     <message>
       <source>Redoes a previously undone action</source>
-      <translation>Herdoen 'n voorheen ongedane aksie</translation>
+      <translation>Egy előzőleg visszavont művelet megismétlése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRefresh</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>&amp;Refresh</source>
-      <translation>&amp;Verfris</translation>
+      <translation>&amp;Frissítés</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation>Herbereken die huidige aktiewe dokument</translation>
+      <translation>Újraszámítja a jelenlegi aktív dokumentumot</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSave</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>&amp;Save</source>
-      <translation>&amp;Stoor</translation>
+      <translation>&amp;Mentés</translation>
     </message>
     <message>
       <source>Save the active document</source>
-      <translation>Stoor die aktiewe dokument</translation>
+      <translation>Az aktív dokumentum mentése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>&amp;Stoor as...</translation>
+      <translation>Mentés másként ...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
-      <translation>Stoor die aktiewe dokument onder 'n nuwe lêernaam</translation>
+      <translation>Az aktuális dokumentum mentése új néven</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>Scene inspector...</source>
-      <translation>Toneelinspekteur...</translation>
+      <translation>Jelenet ellenőr ...</translation>
     </message>
     <message>
       <source>Scene inspector</source>
-      <translation>Toneelinspekteur</translation>
+      <translation>Jelenet ellenőr</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>Select &amp;All</source>
-      <translation>&amp;Kies alles</translation>
+      <translation>Összes kijelölése</translation>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Kies alles</translation>
+      <translation>Összes kijelölése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Appearance...</source>
-      <translation>Voorkoms ...</translation>
+      <translation>Megjelenés...</translation>
     </message>
     <message>
       <source>Sets the display properties of the selected object</source>
-      <translation>Stel die vertooneienskappe van die gekose objek</translation>
+      <translation>A képernyő tulajdonságok beállítása az objektumhoz</translation>
     </message>
   </context>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Show all objects</source>
-      <translation>Wys alle voorwerpe</translation>
+      <translation>Összes objektum megjelenítése</translation>
     </message>
     <message>
       <source>Show all objects in the document</source>
-      <translation>Wys alle voorwerpe in die dokument</translation>
+      <translation>Összes objektum megjelenítése a dokumentumban</translation>
     </message>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Show selection</source>
-      <translation>Wys seleksie</translation>
+      <translation>Kijelölés megjelenítése</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
-      <translation>Wys alle gekose voorwerpe</translation>
+      <translation>Összes kijelölt objektum megjelenítése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Status bar</source>
-      <translation>Statusbalk</translation>
+      <translation>Állapotsor</translation>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Aktiveer/inaktiveer die statusbalk</translation>
+      <translation>Állapotsort kapcsoló.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>Eszközök</translation>
     </message>
     <message>
       <source>Texture mapping...</source>
-      <translation>Tekstuurkartering...</translation>
+      <translation>Textúra leképezés ...</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Tekstuurkartering</translation>
+      <translation>Textúra leképezés</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>&amp;Teël</translation>
+      <translation>Mozaik elrendezés</translation>
     </message>
     <message>
       <source>Tile the windows</source>
-      <translation>Teël die vensters</translation>
+      <translation>Mozaikszerű elrendezés</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>Toggle breakpoint</source>
-      <translation>Aktiveer/Inaktiveer Breekpunt</translation>
+      <translation>Töréspont váltás</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Knipvlak</translation>
+      <translation>Vágás sík</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Aktiveer/inaktiveer knipvlak vir aktiewe aansig</translation>
+      <translation>Aktív nézet váltása a vágási síkra</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Kies navigasie- of wysigingsmodus</translation>
+      <translation>Váltás a navigációs/szerkesztési mód között</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Skakel tussen die navigasie- en wysigingsmodus</translation>
+      <translation>Váltás a navigációs és szerkesztési mód között</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Toggle all objects</source>
-      <translation>Aktiveer/inaktiveer alle voorwerpe</translation>
+      <translation>Az összes objektum ki-/ bekapcsolása</translation>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Verander sigbaarheid van al die voorwerpe in die aktiewe dokument</translation>
+      <translation>Megjeleníti, illetve eltünteti az aktív dokumentumban található összes objektumot</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Toggle selectability</source>
-      <translation>Aktiveer/Inaktiveer kiesbaarheid</translation>
+      <translation>Kiválaszthatóság ki-/bekapcsolása</translation>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Aktiveer/inaktiveer die eienskap van die voorwerpe om gekies te word in die 3D-aansig</translation>
+      <translation>A tárgy tulajdonságainak változtatása a 3D-nézet kiválasztásához</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Verander sigbaarheid</translation>
+      <translation>Láthatóság váltása</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
-      <translation>Verander sigbaarheid</translation>
+      <translation>Be-és kikapcsolja a láthatóságot</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
-      <translation>&amp;Nutsbalke</translation>
+      <translation>Eszköztárak</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Aktiveer/inaktiveer hierdie venster</translation>
+      <translation>Ablak váltás</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTransform</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>Transform...</source>
-      <translation>Omskep...</translation>
+      <translation>Átalakítás...</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
-      <translation>Omskep die geometrie van gekose voorwerpe</translation>
+      <translation>A kijelölt objektum geometriájának átalakítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Go to selection</source>
-      <translation>Gaan na seleksie</translation>
+      <translation>Kijelöltre ugrás</translation>
     </message>
     <message>
       <source>Scroll to first selected item</source>
-      <translation>Blaai na die eerste geselekteerde item</translation>
+      <translation>Lapozzon az első kijelölt elemre</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUndo</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>Módosítás</translation>
     </message>
     <message>
       <source>&amp;Undo</source>
-      <translation>&amp;Herstel</translation>
+      <translation>&amp;Visszavonás</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Herstel presies een aksie</translation>
+      <translation>Egyetlen művelet visszavonása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Dock views</source>
-      <translation>Koppel aansigte vas</translation>
+      <translation>Dokkoló nézet</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
-      <translation>Koppel alle topvlak aansigte vas</translation>
+      <translation>Összes felülnézet kapcslása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewAxo</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Axometric</source>
-      <translation>Aksonometries</translation>
+      <translation>Axonometria</translation>
     </message>
     <message>
       <source>Set to axometric view</source>
-      <translation>Ingestel op aksonometriese aansig</translation>
+      <translation>Axonometrikus nézet beállítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Bodem</translation>
+      <translation>Alsó</translation>
     </message>
     <message>
       <source>Set to bottom view</source>
-      <translation>Stel in op onderaansig</translation>
+      <translation>Alsó nézet beállítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Create new view</source>
-      <translation>Skep nuwe aansig</translation>
+      <translation>Új nézet</translation>
     </message>
     <message>
       <source>Creates a new  view window for the active document</source>
-      <translation>Skep 'n nuwe aansigvenster vir die aktiewe dokument</translation>
+      <translation>Új nézet ablakot hoz létre az aktív dokumentumban</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Uitvinder voorbeeld #1</translation>
+      <translation>Feltaláló példa #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
-      <translation>Toon 'n 3D tekstuur met manipuleerder</translation>
+      <translation>A kezelővel jeleníti meg a 3D textúrát</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>Uitvinder voorbeeld #2</translation>
+      <translation>Feltaláló példa #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
-      <translation>Wys sfere en sleepligte</translation>
+      <translation>Gömb felület és mozgó fényforrás mutatása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>Uitvinder voorbeeld #3</translation>
+      <translation>Feltaláló példa #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
-      <translation>Wys 'n geanimeerde tekstuur</translation>
+      <translation>Animált textúra megjelenítése</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>Pas alles</translation>
+      <translation>Összes megjelenítése</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Pas die hele inhoud op die skerm</translation>
+      <translation>A teljes tartalom töltse ki a képernyőt</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>Pas seleksie</translation>
+      <translation>Kijelöltek képernyőre</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>Pas die geselekteerde inhoud op die skerm</translation>
+      <translation>A kiválasztott tartalom kitöltse a képernyőt</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFront</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Front</source>
-      <translation>Vooraansig</translation>
+      <translation>Elölnézet</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Ingestel op vooraansig</translation>
+      <translation>Elölnézetre állítás</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Issue camera position</source>
-      <translation>Stel kameraposisie</translation>
+      <translation>Kamera pozicionálása </translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Stuur die kameraposisie na die konsool en na 'n makro, om hierdie posisie maklik te onthou</translation>
+      <translation>Írd be a kamera helyzetét, hogy a konzol és a makró könnyen felvegye ezt a pozíciót</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Stereo Interleaved Columns</source>
-      <translation>Stereo oorvleuelende kolomme</translation>
+      <translation>Váltott oszlopú sztereó</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Verander stereo vertoning na Oorvleuelende Kolomme</translation>
+      <translation>Sztereó nézet váltása: Váltott oszloposra</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Stereo Interleaved Rows</source>
-      <translation>Stereo Oorvleuelende Rye</translation>
+      <translation>Váltott soros sztereó</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Verander stereo vertoning na Oorvleuelende Rye</translation>
+      <translation>Sztereó nézet váltása: Váltott sorosra</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Stereo Off</source>
-      <translation>Stereo Af</translation>
+      <translation>Sztereó kikapcsolása</translation>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Skakel stereo vertoning af</translation>
+      <translation>Sztereó nézet kikapcsolása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Stereo viervuldige buffer</translation>
+      <translation>Stereo quad buffer</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Verander stereo beskouing na viervuldige buffer</translation>
+      <translation>Sztereó nézet váltása: quad buffer</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Stereo red/green</source>
-      <translation>Stereo rooi/groen</translation>
+      <translation>Sztereó piros/zöld</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/green</source>
-      <translation>Verander stereo vertoning na rooi/groen</translation>
+      <translation>Sztereó nézet váltása: piros/zöld</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>Links</translation>
+      <translation>Bal nézet</translation>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Ingestel op linkeraansig</translation>
+      <translation>Bal oldali nézet beállítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRear</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Rear</source>
-      <translation>Agterste</translation>
+      <translation>Hátsó nézet</translation>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Stel na agteraansig</translation>
+      <translation>Hátulnézet beállítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Right</source>
-      <translation>Regs</translation>
+      <translation>Jobb</translation>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>Stel op regteraansig</translation>
+      <translation>Jobb oldali nézet beállítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Top</source>
-      <translation>Bo-aansig</translation>
+      <translation>Felülnézet</translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Stel op bo-aansig</translation>
+      <translation>Felülnézet beállítása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>Súgó</translation>
     </message>
     <message>
       <source>&amp;What's This?</source>
-      <translation>&amp;Wat is hierdie?</translation>
+      <translation>&amp;Mi ez?</translation>
     </message>
     <message>
       <source>What's This</source>
-      <translation>Wat is hierdie?</translation>
+      <translation>Mi ez</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>&amp;Windows...</source>
-      <translation>&amp;Vensters...</translation>
+      <translation>Ablakok</translation>
     </message>
     <message>
       <source>Windows list</source>
-      <translation>Vensterlys</translation>
+      <translation>Ablaklista</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>Ablak</translation>
     </message>
     <message>
       <source>Activates this window</source>
-      <translation>Aktiveer hierdie venster</translation>
+      <translation>Ablak aktiválása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Workbench</source>
-      <translation>Werkbank</translation>
+      <translation>Munkafelület</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Skakel tussen werkbanke</translation>
+      <translation>Váltás munkafelületek között</translation>
     </message>
   </context>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Orthographic view</source>
-      <translation>Ortografiese aansig</translation>
+      <translation>Függőleges vetületi nézet</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Skakel na ortografiese aansigmodus</translation>
+      <translation>Váltás függőleges vetületi nézetre</translation>
     </message>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>Perspektief aansig</translation>
+      <translation>Perspektivikus nézet</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Skakel na perspektief aansigmodus</translation>
+      <translation>Váltás perspektivikus nézetre</translation>
     </message>
   </context>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Box zoom</source>
-      <translation>Bokszoem</translation>
+      <translation>Mező nagyítása</translation>
     </message>
   </context>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Display mode</source>
-      <translation>Vertoningsmodus</translation>
+      <translation>Megjelenítési mód</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Vertoon die aktiewe aansig in volskerm, losgekoppelde, of vasgekoppelde modus</translation>
+      <translation>Az aktív nézet megjelenítése teljes képernyőben, rögzített és nem rögzített módban is</translation>
     </message>
   </context>
   <context>
     <name>StdViewScreenShot</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Save picture...</source>
-      <translation>Stoor beeld...</translation>
+      <translation>Kép mentése ...</translation>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
-      <translation>Vang 'n beeld van die huidige aansig</translation>
+      <translation>Képernyőkép készítése az aktuális nézetről</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomIn</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Zoom In</source>
-      <translation>Zoem in</translation>
+      <translation>Nagyítás</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>Standard-nézet</translation>
     </message>
     <message>
       <source>Zoom Out</source>
-      <translation>Zoem Uit</translation>
+      <translation>Kicsinyítés</translation>
     </message>
   </context>
   <context>
@@ -5385,74 +5386,74 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
-      <translation>&amp;Lêer</translation>
+      <translation>&amp;File</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>&amp;Wysig</translation>
+      <translation>S&amp;zerkesztés</translation>
     </message>
     <message>
       <source>Standard views</source>
-      <translation>Standaard voorkomste</translation>
+      <translation>Alap nézetek</translation>
     </message>
     <message>
       <source>&amp;Stereo</source>
-      <translation>&amp;Stereo</translation>
+      <translation>&amp;Sztereo</translation>
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>&amp;Nabyheid</translation>
+      <translation>&amp;Nagyítás</translation>
     </message>
     <message>
       <source>Visibility</source>
-      <translation>Sigbaarheid</translation>
+      <translation>Láthatóság</translation>
     </message>
     <message>
       <source>&amp;View</source>
-      <translation>&amp;Voorkoms</translation>
+      <translation>&amp;Nézet</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp;Gereedskap</translation>
+      <translation>&amp;Eszköztárak</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
-      <translation>&amp;Makro</translation>
+      <translation>&amp;Makró</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
-      <translation>&amp;Vensters</translation>
+      <translation>&amp;Ablakok</translation>
     </message>
     <message>
       <source>&amp;On-line help</source>
-      <translation>&amp;Internethulp</translation>
+      <translation>&amp;On-line támogatás</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Help</translation>
+      <translation>&amp;Súgó</translation>
     </message>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>Fájl</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makró</translation>
     </message>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>Nézet</translation>
     </message>
     <message>
       <source>Special Ops</source>
-      <translation>Spesiale verwerkings</translation>
+      <translation>Speciális  lehetőségek</translation>
     </message>
   </context>
   <context>
     <name>testClass</name>
     <message>
       <source>test</source>
-      <translation>Toets</translation>
+      <translation>teszt</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
@@ -5466,19 +5467,19 @@ p, li { white-space: pre-wrap; }
       <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaakPaneel&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Geskep vir Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Choose the style of the Task Panel</source>
-      <translation>Kies die styl van die taakpaneel</translation>
+      <translation>Válassza ki a feladat panel stílusát</translation>
     </message>
     <message>
       <source>Default</source>
-      <translation>Versuiminstelling</translation>
+      <translation>Alapértelmezett</translation>
     </message>
     <message>
       <source>Windows XP</source>

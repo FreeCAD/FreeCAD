@@ -5,7 +5,7 @@
     <name>Angle</name>
     <message>
       <source>Form</source>
-      <translation>Vorm</translation>
+      <translation>Form</translation>
     </message>
     <message>
       <source>A:</source>
@@ -21,144 +21,144 @@
     </message>
     <message>
       <source>Angle Snap</source>
-      <translation>Hoekspronge</translation>
+      <translation>角度スナップ</translation>
     </message>
     <message>
       <source>1 °</source>
-      <translation>1°</translation>
+      <translation>1 °</translation>
     </message>
     <message>
       <source>2 °</source>
-      <translation>2°</translation>
+      <translation>2 °</translation>
     </message>
     <message>
       <source>5 °</source>
-      <translation>5°</translation>
+      <translation>5 °</translation>
     </message>
     <message>
       <source>10 °</source>
-      <translation>10°</translation>
+      <translation>10 °</translation>
     </message>
     <message>
       <source>20 °</source>
-      <translation>20°</translation>
+      <translation>20 °</translation>
     </message>
     <message>
       <source>45 °</source>
-      <translation>45°</translation>
+      <translation>45 °</translation>
     </message>
     <message>
       <source>90 °</source>
-      <translation>90°</translation>
+      <translation>90 °</translation>
     </message>
     <message>
       <source>180 °</source>
-      <translation>180°</translation>
+      <translation>180 °</translation>
     </message>
   </context>
   <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
-      <translation>geen</translation>
+      <translation>なし</translation>
     </message>
   </context>
   <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Druk linker muisknoppie</translation>
+      <translation>マウスの左ボタンを押す</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Press SHIFT and middle mouse button</translation>
+      <translation>SHIFTとマウスの中央ボタンを押してください</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Druk middelste muisknoppie</translation>
+      <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Blaai neer met middelste muisknoppie</translation>
+      <translation>マウスの中央ボタンをスクロールする</translation>
     </message>
   </context>
   <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Druk linker muisknoppie</translation>
+      <translation>マウスの左ボタンを押す</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Druk middelste muisknoppie</translation>
+      <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
       <source>Press left and middle mouse button</source>
-      <translation>Druk linker- en middelste muisknoppie</translation>
+      <translation>マウスの左と中央のボタンを押す</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Blaai neer met middelste muisknoppie</translation>
+      <translation>マウスの中央ボタンをスクロールする</translation>
     </message>
   </context>
   <context>
     <name>Gui::Command</name>
     <message>
       <source>Standard</source>
-      <translation>Standaard</translation>
+      <translation>標準</translation>
     </message>
   </context>
   <context>
     <name>Gui::ContainerDialog</name>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
   </context>
   <context>
     <name>Gui::ControlSingleton</name>
     <message>
       <source>Task panel</source>
-      <translation>Taakpaneel</translation>
+      <translation>タスクパネル</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
       <source>About</source>
-      <translation>Aangaande</translation>
+      <translation>このプログラムについて</translation>
     </message>
     <message>
       <source>Revision number</source>
-      <translation>Hersieningsnommer</translation>
+      <translation>リビジョン番号</translation>
     </message>
     <message>
       <source>Version</source>
-      <translation>Weergawe</translation>
+      <translation>バージョン</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Release date</source>
-      <translation>Uitgawedatum</translation>
+      <translation>公開日</translation>
     </message>
     <message>
       <source>Platform</source>
-      <translation>Platform</translation>
+      <translation>プラットフォーム</translation>
     </message>
     <message>
       <source>License...</source>
-      <translation>License...</translation>
+      <translation>ライセンス...</translation>
     </message>
   </context>
   <context>
@@ -169,41 +169,41 @@
     </message>
     <message>
       <source>Out Of Range</source>
-      <translation>Out Of Range</translation>
+      <translation>範囲外</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
       <source>Commands</source>
-      <translation>Bevele</translation>
+      <translation>コマンド</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DemoMode</name>
     <message>
       <source>View Turntable</source>
-      <translation>Kyk na Draaitafel</translation>
+      <translation>View Turntable</translation>
     </message>
     <message>
       <source>Speed</source>
-      <translation>Spoed</translation>
+      <translation>スピード</translation>
     </message>
     <message>
       <source>Maximum</source>
-      <translation>Maksimum</translation>
+      <translation>最大値</translation>
     </message>
     <message>
       <source>Minimum</source>
-      <translation>Minimum</translation>
+      <translation>最小値</translation>
     </message>
     <message>
       <source>Fullscreen</source>
-      <translation>Volskerm</translation>
+      <translation>全画面表示</translation>
     </message>
     <message>
       <source>Enable timer</source>
-      <translation>Aktiveer tydhouer</translation>
+      <translation>タイマーを有効にします。</translation>
     </message>
     <message>
       <source> s</source>
@@ -211,7 +211,7 @@
     </message>
     <message>
       <source>Angle</source>
-      <translation>Hoek</translation>
+      <translation>Angle</translation>
     </message>
     <message>
       <source>90°</source>
@@ -223,106 +223,106 @@
     </message>
     <message>
       <source>Play</source>
-      <translation>Speel</translation>
+      <translation>Play</translation>
     </message>
     <message>
       <source>Stop</source>
-      <translation>Stop</translation>
+      <translation>停止</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>閉じる</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgActivateWindow</name>
     <message>
       <source>Choose Window</source>
-      <translation>Kies Venster</translation>
+      <translation>ウィンドウを選択します。</translation>
     </message>
     <message>
       <source>&amp;Activate</source>
-      <translation>&amp;Aktiveer</translation>
+      <translation>有効にする</translation>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt+A</translation>
+      <translation>[Alt] + A</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgActivateWindowImp</name>
     <message>
       <source>Windows</source>
-      <translation>Vensters</translation>
+      <translation>Windows</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgAuthorization</name>
     <message>
       <source>Authorization</source>
-      <translation>Magtiging</translation>
+      <translation>許可</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>Password:</source>
-      <translation>Wagwoord:</translation>
+      <translation>パスワード:</translation>
     </message>
     <message>
       <source>User name:</source>
-      <translation>Gebruikersnaam:</translation>
+      <translation>ユーザー名：</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
       <source>Choose Icon</source>
-      <translation>Kies ikoon</translation>
+      <translation>アイコンを選択してください</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>Add icons...</source>
-      <translation>Add icons...</translation>
+      <translation>アイコンを追加...</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Maak Pasgemaakte Makros</translation>
+      <translation>カスタムマクロのセットアップ</translation>
     </message>
     <message>
       <source>Macro:</source>
-      <translation>Makro:</translation>
+      <translation>マクロ：</translation>
     </message>
     <message>
       <source>...</source>
@@ -330,159 +330,159 @@
     </message>
     <message>
       <source>Pixmap</source>
-      <translation>Beeldelementkaart</translation>
+      <translation>ピックスマップ</translation>
     </message>
     <message>
       <source>Accelerator:</source>
-      <translation>Versneller:</translation>
+      <translation>アクセラレータ:</translation>
     </message>
     <message>
       <source>What's this:</source>
-      <translation>Wat is dit:</translation>
+      <translation>これは、何ですか：</translation>
     </message>
     <message>
       <source>Status text:</source>
-      <translation>Status teks:</translation>
+      <translation>ステータステキスト：</translation>
     </message>
     <message>
       <source>Tool tip:</source>
-      <translation>Werktuigwenk:</translation>
+      <translation>ツールのヒント：</translation>
     </message>
     <message>
       <source>Menu text:</source>
-      <translation>Kieslys teks:</translation>
+      <translation>メニューテキスト:</translation>
     </message>
     <message>
       <source>Add</source>
-      <translation>Voeg by</translation>
+      <translation>追加</translation>
     </message>
     <message>
       <source>Remove</source>
-      <translation>Verwyder</translation>
+      <translation>削除</translation>
     </message>
     <message>
       <source>Replace</source>
-      <translation>Vervang</translation>
+      <translation>置換</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomActionsImp</name>
     <message>
       <source>Icons</source>
-      <translation>Ikone</translation>
+      <translation>アイコン</translation>
     </message>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>No macro</source>
-      <translation>Geen makro</translation>
+      <translation>マクロ不可</translation>
     </message>
     <message>
       <source>No macros found.</source>
-      <translation>Geen makros gevind nie.</translation>
+      <translation>マクロが見つかりません。</translation>
     </message>
     <message>
       <source>Macro not found</source>
-      <translation>Makro nie gevind nie</translation>
+      <translation>マクロが見つかりません</translation>
     </message>
     <message>
       <source>Sorry, couldn't find macro file '%1'.</source>
-      <translation>Jammer, kon nie die makro-lêer '%1' vind nie.</translation>
+      <translation>申し訳ありませんが、マクロ ファイル '%1' を見つけることができませんでした。</translation>
     </message>
     <message>
       <source>Empty macro</source>
-      <translation>Leë makro</translation>
+      <translation>空のマクロ</translation>
     </message>
     <message>
       <source>Please specify the macro first.</source>
-      <translation>Kies asseblief eers 'n makro.</translation>
+      <translation>最初に、マクロを指定してください。</translation>
     </message>
     <message>
       <source>Empty text</source>
-      <translation>Leë teks</translation>
+      <translation>空のテキスト</translation>
     </message>
     <message>
       <source>Please specify the menu text first.</source>
-      <translation>Spesifiseer asseblief eers die kieslysteks.</translation>
+      <translation>最初にメニューテキストを指定してください。</translation>
     </message>
     <message>
       <source>No item selected</source>
-      <translation>Geen item gekies</translation>
+      <translation>アイテムが選択されていません</translation>
     </message>
     <message>
       <source>Please select a macro item first.</source>
-      <translation>Kies eers 'n makro-item.</translation>
+      <translation>最初に、マクロの項目を選択してください。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomCommands</name>
     <message>
       <source>Commands</source>
-      <translation>Bevele</translation>
+      <translation>コマンド</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomCommandsImp</name>
     <message>
       <source>Category</source>
-      <translation>Kategorie</translation>
+      <translation>分類</translation>
     </message>
     <message>
       <source>Icon</source>
-      <translation>Ikoon</translation>
+      <translation>アイコン</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>コマンド</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomKeyboard</name>
     <message>
       <source>Keyboard</source>
-      <translation>Sleutelbord</translation>
+      <translation>キーボード</translation>
     </message>
     <message>
       <source>Description:</source>
-      <translation>Beskrywing:</translation>
+      <translation>説明:</translation>
     </message>
     <message>
       <source>&amp;Category:</source>
-      <translation>&amp;Kategorie:</translation>
+      <translation>カテゴリ(&amp;C):</translation>
     </message>
     <message>
       <source>C&amp;ommands:</source>
-      <translation>&amp;Bevele:</translation>
+      <translation>コマンド(&amp;O):</translation>
     </message>
     <message>
       <source>Current shortcut:</source>
-      <translation>Huidige kortpad:</translation>
+      <translation>現在のショートカット：</translation>
     </message>
     <message>
       <source>Press &amp;new shortcut:</source>
-      <translation>Druk &amp; nuwe kortpad:</translation>
+      <translation>新しいショートカットをプレス(&amp;N):</translation>
     </message>
     <message>
       <source>Currently assigned to:</source>
-      <translation>Tans toegeken aan:</translation>
+      <translation>現在の割り当て:</translation>
     </message>
     <message>
       <source>&amp;Assign</source>
-      <translation>&amp;KenToe</translation>
+      <translation>割り当て(&amp;A)</translation>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt+A</translation>
+      <translation>[Alt] + A</translation>
     </message>
     <message>
       <source>&amp;Reset</source>
-      <translation>Herstel</translation>
+      <translation>リセット(&amp;R)</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -490,7 +490,7 @@
     </message>
     <message>
       <source>Re&amp;set All</source>
-      <translation>&amp;Herstel Alles</translation>
+      <translation>すべてリセット(&amp;S)</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -498,154 +498,155 @@
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomKeyboardImp</name>
     <message>
       <source>Icon</source>
-      <translation>Ikoon</translation>
+      <translation>アイコン</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>コマンド</translation>
     </message>
     <message>
       <source>none</source>
-      <translation>geen</translation>
+      <translation>なし</translation>
     </message>
     <message>
       <source>Multiple defined shortcut</source>
-      <translation>Veelvuldig gedefinieerde kortpad</translation>
+      <translation>ショートカットの複数回定義</translation>
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Die kortpad '%1' is meer as een keer gedefinieer. Dit kan lei tot onverwagte gedrag.</translation>
+      <translation>このショートカット'%1'はすでに使われています。これは予期しない結果を引き起こす原因になる場合があります。</translation>
     </message>
     <message>
       <source>Already defined shortcut</source>
-      <translation>Reeds gedefinieerde kortpad</translation>
+      <translation>既に定義されたショートカット</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
 Please define another shortcut.</source>
-      <translation>Die kortpad '%1' is reeds toegeken aan '%2'. 
-Definieer asseblief 'n ander kortpad.</translation>
+      <translation>このショートカット'%1'は、'%2'に割り当てられています。
+
+別のショートカットを割り当ててください。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
       <source>Toolbox bars</source>
-      <translation>Gereedskapskisbalke</translation>
+      <translation>ツールボックスバー</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomToolbars</name>
     <message>
       <source>Toolbars</source>
-      <translation>Nutsbalke</translation>
+      <translation>ツールバー</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Die veranderinge word aktief die volgende keer wat jy die gepaste werkbank gebruik&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
-      <translation>Skuif na regs</translation>
+      <translation>右へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item een vlak neer.&lt;/b&gt;&lt;p&gt;Dit sal ook die vlak van die oueritem verander.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択した項目1つ下のレベルに移動します。&lt;/b&gt; &lt;p&gt;これは、親項目のレベルも変更します。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
-      <translation>Skuif na links</translation>
+      <translation>左へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item een vlak op.&lt;/b&gt;&lt;p&gt;Dit sal ook die vlak van die oueritem verander.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択した項目を1つ上のレベルに移動します。&lt;/b&gt; &lt;p&gt;これは、親項目のレベルも変更します。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
-      <translation>Skuif neer</translation>
+      <translation>下へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item neer.&lt;/b&gt;&lt;p&gt;Die item sal geskuif word binne die hiërargie vlak.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択された項目を下へ移動します。&lt;/b&gt; &lt;p&gt;項目は階層レベル内で移動されます。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
-      <translation>Skuif op</translation>
+      <translation>上へ移動</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Beweeg die gekose item op.&lt;/b&gt;&lt;p&gt;Die item sal geskuif word binne die hiërargie vlak.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;選択された項目を上へ移動します。&lt;/b&gt; &lt;p&gt;項目は階層レベル内で移動されます。 &lt;/p&gt;</translation>
     </message>
     <message>
       <source>New...</source>
-      <translation>Nuwe...</translation>
+      <translation>新規...</translation>
     </message>
     <message>
       <source>Rename...</source>
-      <translation>Hernoem...</translation>
+      <translation>名前の変更...</translation>
     </message>
     <message>
       <source>Delete</source>
-      <translation>Vee uit</translation>
+      <translation>削除</translation>
     </message>
     <message>
       <source>Icon</source>
-      <translation>Ikoon</translation>
+      <translation>アイコン</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>コマンド</translation>
     </message>
     <message>
       <source>&lt;Separator&gt;</source>
-      <translation>&lt;Verdeler&gt;</translation>
+      <translation>&lt;Separator&gt;</translation>
     </message>
     <message>
       <source>New toolbar</source>
-      <translation>Nuwe nutsbalk</translation>
+      <translation>新しいツールバー</translation>
     </message>
     <message>
       <source>Toolbar name:</source>
-      <translation>Nutsbalknaam:</translation>
+      <translation>ツールバー名:</translation>
     </message>
     <message>
       <source>Duplicated name</source>
-      <translation>Gedupliseerde naam</translation>
+      <translation>重複名</translation>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
-      <translation>Die nutsbalknaam '%1' is reeds in gebruik</translation>
+      <translation>ツールバーの名前'%1'は既に使われています。</translation>
     </message>
     <message>
       <source>Rename toolbar</source>
-      <translation>Hernoem nutsbalk</translation>
+      <translation>ツールバーの名前を変更</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
     <message>
       <source>Customize</source>
-      <translation>Pas aan</translation>
+      <translation>カスタマイズ</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Help</translation>
+      <translation>ヘルプ (&amp;H)</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>閉じる(&amp;C)</translation>
     </message>
   </context>
   <context>
@@ -660,11 +661,11 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>Buttons</source>
-      <translation>Buttons</translation>
+      <translation>ボタン</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>クリア</translation>
     </message>
     <message>
       <source>Print Reference</source>
@@ -675,27 +676,27 @@ Definieer asseblief 'n ander kortpad.</translation>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
       <source>Display properties</source>
-      <translation>Vertoon eienskappe</translation>
+      <translation>プロパティの表示</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Vertoon</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Deursigtigheid:</translation>
+      <translation>透明度:</translation>
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Lynwydte:</translation>
+      <translation>線幅:</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Puntgrootte:</translation>
+      <translation>点の大きさ：</translation>
     </message>
     <message>
       <source>Material</source>
-      <translation>Materiaal</translation>
+      <translation>素材</translation>
     </message>
     <message>
       <source>...</source>
@@ -703,35 +704,35 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>閉じる</translation>
     </message>
     <message>
       <source>Viewing mode</source>
-      <translation>Besigtingsmodus</translation>
+      <translation>表示モード</translation>
     </message>
     <message>
       <source>Display mode:</source>
-      <translation>Vertoningsmodus:</translation>
+      <translation>ディスプレイモード：</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Plotmodus:</translation>
+      <translation>プロットモード：</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Line transparency:</source>
-      <translation>Lyndeursigtigheid:</translation>
+      <translation>Line transparency:</translation>
     </message>
     <message>
       <source>Line color:</source>
-      <translation>Lynkleur:</translation>
+      <translation>線の色:</translation>
     </message>
     <message>
       <source>Shape color:</source>
-      <translation>Vormkleur:</translation>
+      <translation>図形の色:</translation>
     </message>
     <message>
       <source>Color plot:</source>
@@ -742,102 +743,102 @@ Definieer asseblief 'n ander kortpad.</translation>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
       <source>Editor</source>
-      <translation>Redakteur</translation>
+      <translation>エディタ</translation>
     </message>
     <message>
       <source>Options</source>
-      <translation>Opsies</translation>
+      <translation>オプション</translation>
     </message>
     <message>
       <source>Enable line numbers</source>
-      <translation>Aktiveer lynnommers</translation>
+      <translation>行番号を有効にします。</translation>
     </message>
     <message>
       <source>Enable folding</source>
-      <translation>Aktiveer vouing</translation>
+      <translation>折りたたみを有効にします。</translation>
     </message>
     <message>
       <source>Indentation</source>
-      <translation>Verskuiwing</translation>
+      <translation>字下げ</translation>
     </message>
     <message>
       <source>Insert spaces</source>
-      <translation>Voeg spasies in</translation>
+      <translation>空白の挿入</translation>
     </message>
     <message>
       <source>Tab size:</source>
-      <translation>Spronggrootte:</translation>
+      <translation>タブサイズ:</translation>
     </message>
     <message>
       <source>Indent size:</source>
-      <translation>Verskuiwinggrootte:</translation>
+      <translation>インデントのサイズ：</translation>
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Behou spronge</translation>
+      <translation>タブを維持</translation>
     </message>
     <message>
       <source>Display Items</source>
-      <translation>Wys items</translation>
+      <translation>表示項目</translation>
     </message>
     <message>
       <source>Family:</source>
-      <translation>Familie:</translation>
+      <translation>ファミリー:</translation>
     </message>
     <message>
       <source>Size:</source>
-      <translation>Grootte:</translation>
+      <translation>サイズ:</translation>
     </message>
     <message>
       <source>Preview:</source>
-      <translation>Voorskou:</translation>
+      <translation>プレビュー:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
     <message>
       <source>General</source>
-      <translation>Algemeen</translation>
+      <translation>標準</translation>
     </message>
     <message>
       <source>Start up</source>
-      <translation>Begin</translation>
+      <translation>起動</translation>
     </message>
     <message>
       <source>Enable splash screen at start up</source>
-      <translation>Aktiveer introduksiebeeld gedurende programaanvang</translation>
+      <translation>起動時にスプラッシュ画面を表示</translation>
     </message>
     <message>
       <source>Switch to tab of report window:</source>
-      <translation>Slaan oor na die blad van die rapporteringsvenster:</translation>
+      <translation>レポートウィンドウのタブに切り替え:</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Autolaai module na programaanvang:</translation>
+      <translation>スタートアップの後の自動ロード・モジュール：</translation>
     </message>
     <message>
       <source>Language</source>
-      <translation>Taal</translation>
+      <translation>言語</translation>
     </message>
     <message>
       <source>Change language:</source>
-      <translation>Verander taal:</translation>
+      <translation>言語を変更:</translation>
     </message>
     <message>
       <source>Main window</source>
-      <translation>Hoofvenster</translation>
+      <translation>メインウィンドウ</translation>
     </message>
     <message>
       <source>Size of recent file list</source>
-      <translation>Grootte van onlangse lêerlys</translation>
+      <translation>最近使ったファイルリストのサイズ</translation>
     </message>
     <message>
       <source>Window style:</source>
-      <translation>Vensterstyl:</translation>
+      <translation>ウィンドウスタイル：</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -867,125 +868,124 @@ Definieer asseblief 'n ander kortpad.</translation>
     <name>Gui::Dialog::DlgInputDialog</name>
     <message>
       <source>Input</source>
-      <translation>Invoer</translation>
+      <translation>ウィンドウスタイル：</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
       <source>Scene Inspector</source>
-      <translation>Toneelinspekteur</translation>
+      <translation>シーンインスペクタ</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecute</name>
     <message>
       <source>Execute macro</source>
-      <translation>Voer makro uit</translation>
+      <translation>マクロの実行</translation>
     </message>
     <message>
       <source>Macro name:</source>
-      <translation>Makronaam:</translation>
+      <translation>マクロ名:</translation>
     </message>
     <message>
       <source>Macro destination:</source>
-      <translation>Makrobestemming:</translation>
+      <translation>マクロのコピー先:</translation>
     </message>
     <message>
       <source>Execute</source>
-      <translation>Voer uit</translation>
+      <translation>実行</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>閉じる</translation>
     </message>
     <message>
       <source>Create</source>
-      <translation>Skep</translation>
+      <translation>作成</translation>
     </message>
     <message>
       <source>Delete</source>
-      <translation>Vee uit</translation>
+      <translation>削除</translation>
     </message>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Macro file</source>
-      <translation>Makro-lêer</translation>
+      <translation>マクロファイル</translation>
     </message>
     <message>
       <source>Enter a file name, please:</source>
-      <translation>Gee 'n lêernaam, asseblief:</translation>
+      <translation>ファイル名を入力してください:</translation>
     </message>
     <message>
       <source>Existing file</source>
-      <translation>Bestaande lêer</translation>
+      <translation>既存ファイル</translation>
     </message>
     <message>
       <source>'%1'.
 This file already exists.</source>
-      <translation>'%1'.
-Hierdie lêer bestaan reeds.</translation>
+      <translation>'%1'.このファイルは既に存在します。</translation>
     </message>
     <message>
       <source>Delete macro</source>
-      <translation>Verwyder makro</translation>
+      <translation>マクロの削除</translation>
     </message>
     <message>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Wil jy regtig die makro '%1' verwyder?</translation>
+      <translation>マクロ '%1' を削除しますか?</translation>
     </message>
     <message>
       <source>Cannot create file</source>
-      <translation>Kan nie lêer skep nie</translation>
+      <translation>ファイルを作成できません。</translation>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
-      <translation>Wat is hierdie?</translation>
+      <translation>ファイル '%1' の作成に失敗しました。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
       <source>Macro recording</source>
-      <translation>Makro-opname</translation>
+      <translation>マクロの記録</translation>
     </message>
     <message>
       <source>Macro name:</source>
-      <translation>Makronaam:</translation>
+      <translation>マクロ名:</translation>
     </message>
     <message>
       <source>Stop</source>
-      <translation>Stop</translation>
+      <translation>停止</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>Macro path:</source>
-      <translation>Makropad:</translation>
+      <translation>マクロのパス:</translation>
     </message>
     <message>
       <source>...</source>
@@ -993,45 +993,45 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
       <source>Record</source>
-      <translation>Neem op</translation>
+      <translation>記録</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
     <message>
       <source>Macro recorder</source>
-      <translation>Makro-opnemer</translation>
+      <translation>マクロの記録</translation>
     </message>
     <message>
       <source>Specify first a place to save.</source>
-      <translation>Spesifiseer eers waar om te spaar.</translation>
+      <translation>最初に保存する場所を指定してください。</translation>
     </message>
     <message>
       <source>Existing macro</source>
-      <translation>Bestaande makro</translation>
+      <translation>既存のマクロ</translation>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation>Die makro '%1' bestaan reeds. Wil jy hom vervang?</translation>
+      <translation>マクロ'%1'は既に存在します。上書きしますか?</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Die makrogids bestaan nie. Kies asseblief 'n ander een.</translation>
+      <translation>マクロのディレクトリが存在しません。別のものを選択してください。</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
-      <translation>Kies makrogids</translation>
+      <translation>マクロのディレクトリを選択します。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
       <source>Material properties</source>
-      <translation>Materiaaleienskappe</translation>
+      <translation>材料特性</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>閉じる(&amp;C)</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1039,19 +1039,19 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
       <source>Material</source>
-      <translation>Materiaal</translation>
+      <translation>素材</translation>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>Diffuse kleur:</translation>
+      <translation>散乱光の色:</translation>
     </message>
     <message>
       <source>Specular color:</source>
-      <translation>Reflekterende kleur:</translation>
+      <translation>鏡面反射光の色:</translation>
     </message>
     <message>
       <source>Shininess:</source>
-      <translation>Blinkheid:</translation>
+      <translation>光沢:</translation>
     </message>
     <message>
       <source>%</source>
@@ -1059,59 +1059,58 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
       <source>Ambient color:</source>
-      <translation>Skadukleur:</translation>
+      <translation>環境光の色:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Emissive color:</source>
-      <translation>Uitstralende kleur:</translation>
+      <translation>Emissive color:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgOnlineHelp</name>
     <message>
       <source>On-line help</source>
-      <translation>Internethulp</translation>
+      <translation>オンライン ヘルプ</translation>
     </message>
     <message>
       <source>Help viewer</source>
-      <translation>Hulpbeskouer</translation>
+      <translation>ヘルプ ・ ビューアー</translation>
     </message>
     <message>
       <source>Location of start page</source>
-      <translation>Ligging van tuisblad</translation>
+      <translation>スタートページの場所</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
       <source>HTML files (*.html *.htm)</source>
-      <translation>HTML-lêers (*.html *.htm)</translation>
+      <translation>HTML ファイル (*.htm *.html)</translation>
     </message>
     <message>
       <source>Access denied</source>
-      <translation>Toegang geweier</translation>
+      <translation>アクセスが拒否されました</translation>
     </message>
     <message>
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Toegang geweier vir '%1' 
-Spesifiseer asseblief 'n ander gids.</translation>
+      <translation>'%1'にアクセス拒否されました 別のディレクトリを指定してください。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
       <source>Parameter Editor</source>
-      <translation>Parameter Wysiger</translation>
+      <translation>パラメータエディタ</translation>
     </message>
     <message>
       <source>Save to disk</source>
-      <translation>Stoor op skyf</translation>
+      <translation>ディスクに保存</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1119,53 +1118,53 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>閉じる(&amp;C)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameterImp</name>
     <message>
       <source>Group</source>
-      <translation>Groep</translation>
+      <translation>グループ</translation>
     </message>
     <message>
       <source>Name</source>
-      <translation>Naam</translation>
+      <translation>名前</translation>
     </message>
     <message>
       <source>Type</source>
-      <translation>Soort</translation>
+      <translation>タイプ</translation>
     </message>
     <message>
       <source>Value</source>
-      <translation>Waarde</translation>
+      <translation>値</translation>
     </message>
     <message>
       <source>User parameter</source>
-      <translation>Gebruikersparameter</translation>
+      <translation>ユーザー パラメータ</translation>
     </message>
     <message>
       <source>Invalid input</source>
-      <translation>Ongeldige inset</translation>
+      <translation>無効な入力</translation>
     </message>
     <message>
       <source>Invalid key name '%1'</source>
-      <translation>Ongeldige sleutelnaam '%1'</translation>
+      <translation>無効なキー名 '%1'</translation>
     </message>
     <message>
       <source>System parameter</source>
-      <translation>Stelselparameter</translation>
+      <translation>システム パラメータ</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
-      <translation>Voorkeure</translation>
+      <translation>設定</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Help</translation>
+      <translation>ヘルプ (&amp;H)</translation>
     </message>
     <message>
       <source>Alt+H</source>
@@ -1173,96 +1172,96 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Apply</source>
-      <translation>&amp;Pas toe</translation>
+      <translation>適用(&amp;A)</translation>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt+A</translation>
+      <translation>[Alt] + A</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
       <source>Wrong parameter</source>
-      <translation>Verkeerde parameter</translation>
+      <translation>間違ったパラメータ</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
       <source>Project information</source>
-      <translation>Projekinformasie</translation>
+      <translation>プロジェクト情報</translation>
     </message>
     <message>
       <source>Information</source>
-      <translation>Inligting</translation>
+      <translation>情報</translation>
     </message>
     <message>
       <source>&amp;Name:</source>
-      <translation>&amp;Naam:</translation>
+      <translation>名前(&amp;N):</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>&amp;Kommentaar:</translation>
+      <translation>コメント(&amp;T):</translation>
     </message>
     <message>
       <source>Path:</source>
-      <translation>Pad:</translation>
+      <translation>パス:</translation>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>&amp;Laas verander deur:</translation>
+      <translation>最終更新日時(&amp;C):</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>&amp;Geskep deur:</translation>
+      <translation>Created &amp;by:</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>&amp;Maatskappy:</translation>
+      <translation>Com&amp;pany:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation>&amp;Laaste veranderingsdatum:</translation>
+      <translation>最終更新日(&amp;M)：</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation>&amp;Skeppingsdatum:</translation>
+      <translation>作成日(&amp;D):</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <source>Project utility</source>
-      <translation>Project utility</translation>
+      <translation>プロジェクトユーティリティ</translation>
     </message>
     <message>
       <source>Extract project</source>
-      <translation>Extract project</translation>
+      <translation>プロジェクトを抽出</translation>
     </message>
     <message>
       <source>Source</source>
@@ -1270,7 +1269,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Project file (*.fcstd)</source>
-      <translation>Project file (*.fcstd)</translation>
+      <translation>プロジェクトファイル (*.fcstd)</translation>
     </message>
     <message>
       <source>Destination</source>
@@ -1278,7 +1277,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Extract</source>
-      <translation>Extract</translation>
+      <translation>抽出</translation>
     </message>
     <message>
       <source>Create project</source>
@@ -1290,7 +1289,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Create</source>
-      <translation>Skep</translation>
+      <translation>作成</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
@@ -1317,51 +1316,51 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
       <source>Output window</source>
-      <translation>Resultaatvenster</translation>
+      <translation>出力ウィンドウ</translation>
     </message>
     <message>
       <source>Output</source>
-      <translation>Resultaat</translation>
+      <translation>出力</translation>
     </message>
     <message>
       <source>Record log messages</source>
-      <translation>Stoor opgawesboodskappe</translation>
+      <translation>ログメッセージを記録</translation>
     </message>
     <message>
       <source>Record warnings</source>
-      <translation>Stoor waarskuwings</translation>
+      <translation>警告メッセージを記録</translation>
     </message>
     <message>
       <source>Record error messages</source>
-      <translation>Stoor foutboodskappe</translation>
+      <translation>エラーメッセージを記録</translation>
     </message>
     <message>
       <source>Colors</source>
-      <translation>Kleure</translation>
+      <translation>色</translation>
     </message>
     <message>
       <source>Normal messages:</source>
-      <translation>Algemene boodskappe:</translation>
+      <translation>通常のメッセージ:</translation>
     </message>
     <message>
       <source>Log messages:</source>
-      <translation>Opgawesboodskappe:</translation>
+      <translation>ログ メッセージ:</translation>
     </message>
     <message>
       <source>Warnings:</source>
-      <translation>Waarskuwings:</translation>
+      <translation>警告メッセージ:</translation>
     </message>
     <message>
       <source>Errors:</source>
-      <translation>Foute:</translation>
+      <translation>エラー:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Herlei interne Python foute na die rapportvenster</translation>
+      <translation>Redirect internal Python errors to report view</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
@@ -1372,15 +1371,15 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
       <source>Running external program</source>
-      <translation>Loop eksterne program</translation>
+      <translation>外部プログラムを実行する</translation>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>TeksEtiket</translation>
+      <translation>テキストラベル</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
-      <translation>Gevorderd &gt;&gt;</translation>
+      <translation>高度な &gt;&gt;</translation>
     </message>
     <message>
       <source>...</source>
@@ -1388,86 +1387,86 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Accept changes</source>
-      <translation>Aanvaar veranderinge</translation>
+      <translation>変更を確定します。</translation>
     </message>
     <message>
       <source>Discard changes</source>
-      <translation>Laat vaar veranderinge</translation>
+      <translation>変更を破棄</translation>
     </message>
     <message>
       <source>Abort program</source>
-      <translation>Stop program</translation>
+      <translation>プログラムを中止します。</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Select a file</source>
-      <translation>Kies 'n lêer</translation>
+      <translation>ファイルを選択してください</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
       <source>3D View</source>
-      <translation>3D-aansig</translation>
+      <translation>3D 表示</translation>
     </message>
     <message>
       <source>3D View settings</source>
-      <translation>3D-aansig instellings</translation>
+      <translation>3D表示の設定</translation>
     </message>
     <message>
       <source>Show coordinate system in the corner</source>
-      <translation>Wys koördinaatstelsel in die hoek</translation>
+      <translation>角で座標系を表示する</translation>
     </message>
     <message>
       <source>Show counter of frames per second</source>
-      <translation>Wys rame per sekonde teller</translation>
+      <translation>1 秒あたりのフレーム数のカウンターを表示します。</translation>
     </message>
     <message>
       <source>Enable animation</source>
-      <translation>Aktiveer animasie</translation>
+      <translation>アニメーションを有効にします。</translation>
     </message>
     <message>
       <source>Enable anti-aliasing (slower)</source>
-      <translation>Aktiveer kantversagting (stadiger)</translation>
+      <translation>アンチエイリアス (低速) を有効にします。</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes:</source>
-      <translation>Oog-na-oog afstand vir stereomodusse:</translation>
+      <translation>眼球間の距離　ステレオモード時:</translation>
     </message>
     <message>
       <source>Camera type</source>
-      <translation>Kamerasoort</translation>
+      <translation>カメラの種類</translation>
     </message>
     <message>
       <source>Orthographic rendering</source>
-      <translation>Ortografiese weergawe</translation>
+      <translation>正投影図のレンダリング</translation>
     </message>
     <message>
       <source>Perspective rendering</source>
-      <translation>Perspektief weergawe</translation>
+      <translation>視点レンダリング</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>3D Navigation</source>
-      <translation>3D Navigasie</translation>
+      <translation>3Dナビゲーション</translation>
     </message>
     <message>
       <source>Mouse...</source>
-      <translation>Muis...</translation>
+      <translation>マウス...</translation>
     </message>
     <message>
       <source>Intensity of backlight</source>
-      <translation>Intensiteit van die agterlig</translation>
+      <translation>Intensity of backlight</translation>
     </message>
     <message>
       <source>Enable backlight color</source>
-      <translation>Aktiveer agterligkleur</translation>
+      <translation>バックライトの色を有効にする</translation>
     </message>
     <message>
       <source>Orbit style</source>
@@ -1490,42 +1489,42 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigasie</translation>
+      <translation>%1 navigation</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradient</name>
     <message>
       <source>Color model</source>
-      <translation>Kleurmodel</translation>
+      <translation>カラーモデル</translation>
     </message>
     <message>
       <source>&amp;Gradient:</source>
-      <translation>&amp;Gradiënt:</translation>
+      <translation>&amp;グラデーション:</translation>
     </message>
     <message>
       <source>red-yellow-green-cyan-blue</source>
-      <translation>rooi-geel-groen-siaan-blou</translation>
+      <translation>赤、黄、緑-シアン-青</translation>
     </message>
     <message>
       <source>blue-cyan-green-yellow-red</source>
-      <translation>blou-siaan-groen-geel-rooi</translation>
+      <translation>青-シアン-緑-黄-赤</translation>
     </message>
     <message>
       <source>white-black</source>
-      <translation>wit-swart</translation>
+      <translation>白黒</translation>
     </message>
     <message>
       <source>black-white</source>
-      <translation>swart-wit</translation>
+      <translation>白黒</translation>
     </message>
     <message>
       <source>Visibility</source>
-      <translation>Sigbaarheid</translation>
+      <translation>可視性</translation>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>&amp;Uitvergrys</translation>
+      <translation>Out g&amp;rayed</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -1533,7 +1532,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>&amp;Uitonsigbaar</translation>
+      <translation>Out &amp;invisible</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -1541,249 +1540,249 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Style</source>
-      <translation>Styl</translation>
+      <translation>スタイル</translation>
     </message>
     <message>
       <source>&amp;Zero</source>
-      <translation>&amp;Nul</translation>
+      <translation>&amp;Zero</translation>
     </message>
     <message>
       <source>Alt+Z</source>
-      <translation>Alt+Z</translation>
+      <translation>Alt + Zキー</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
-      <translation>&amp;Vloei</translation>
+      <translation>&amp;Flow</translation>
     </message>
     <message>
       <source>Alt+F</source>
-      <translation>Alt+F</translation>
+      <translation>Alt + Fキー</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>&amp;Goedgekeur</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>Parameter range</source>
-      <translation>Parameteromvang</translation>
+      <translation>パラメータの範囲</translation>
     </message>
     <message>
       <source>Mi&amp;nimum:</source>
-      <translation>&amp;Minimum:</translation>
+      <translation>最小(&amp;n):</translation>
     </message>
     <message>
       <source>Ma&amp;ximum:</source>
-      <translation>&amp;Maximum:</translation>
+      <translation>最大 (&amp;x):</translation>
     </message>
     <message>
       <source>&amp;Labels:</source>
-      <translation>&amp;Etikette:</translation>
+      <translation>&amp;Labels:</translation>
     </message>
     <message>
       <source>&amp;Decimals:</source>
-      <translation>&amp;Desimale:</translation>
+      <translation>&amp;Decimals:</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Color-gradient settings</source>
-      <translation>Kleurgradiënt instellings</translation>
+      <translation>Color-gradient settings</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsColorGradientImp</name>
     <message>
       <source>Wrong parameter</source>
-      <translation>Verkeerde parameter</translation>
+      <translation>間違ったパラメータ</translation>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation>Die maksimum waarde moet hoër wees as die minimum waarde.</translation>
+      <translation>最大値は最小値よりも大きくする必要があります。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocument</name>
     <message>
       <source>Document</source>
-      <translation>Dokument</translation>
+      <translation>ドキュメント</translation>
     </message>
     <message>
       <source>General</source>
-      <translation>Algemeen</translation>
+      <translation>標準</translation>
     </message>
     <message>
       <source>Document save compression level
 (0 = none, 9 = highest, 3 = default)</source>
-      <translation>Kompressievlak vir dokumentstoring
-(0 = geen, 9 = hoogste, 3  = versuimwaarde)</translation>
+      <translation>Document save compression level
+(0 = none, 9 = highest, 3 = default)</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
-      <translation>Skep nuwe dokument tydens programaanvang</translation>
+      <translation>開始時に新しいドキュメントを作成します。</translation>
     </message>
     <message>
       <source>Storage</source>
-      <translation>Stoorplek</translation>
+      <translation>ストレージ</translation>
     </message>
     <message>
       <source>Saving transactions (Auto-save)</source>
-      <translation>Stoor transaksies (Autospaar)</translation>
+      <translation>変更内容を保存(自動保存)</translation>
     </message>
     <message>
       <source>Discard saved transaction after saving document</source>
-      <translation>Vee gestoorde transaksie uit na dokument gestoor is</translation>
+      <translation>ドキュメントを保存した後、保存された変更内容を破棄します。</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
-      <translation>Stoor miniatuurvoorskou in projeklêer wanneer dokument gestoor word</translation>
+      <translation>ドキュメントを保存するときにサムネールをプロジェクトファイルに保存します。</translation>
     </message>
     <message>
       <source>Create up to backup files when resaving document</source>
-      <translation>Skep rugsteunlêers wanneer dokument weer gestoor word</translation>
+      <translation>Create up to backup files when resaving document</translation>
     </message>
     <message>
       <source>Document objects</source>
-      <translation>Dokumentvoorwerpe</translation>
+      <translation>Document objects</translation>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Laat duplikaat voorwerpetikette toe in een dokument</translation>
+      <translation>Allow duplicate object labels in one document</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Maximum Undo/Redo steps</translation>
+      <translation>「元に戻す/やり直し」の最大数</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Using Undo/Redo on documents</translation>
+      <translation>ドキュメントで元に戻す/やり直しの使用</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
     <message>
       <source>Text</source>
-      <translation>Teks</translation>
+      <translation>テキスト</translation>
     </message>
     <message>
       <source>Bookmark</source>
-      <translation>Boekmerk</translation>
+      <translation>テキスト</translation>
     </message>
     <message>
       <source>Breakpoint</source>
-      <translation>Breekpunt</translation>
+      <translation>ブレークポイント</translation>
     </message>
     <message>
       <source>Keyword</source>
-      <translation>Sleutelwoord</translation>
+      <translation>キーワード</translation>
     </message>
     <message>
       <source>Comment</source>
-      <translation>Opmerking</translation>
+      <translation>コメント</translation>
     </message>
     <message>
       <source>Block comment</source>
-      <translation>Blok kommentaar</translation>
+      <translation>Block comment</translation>
     </message>
     <message>
       <source>Number</source>
-      <translation>Syfer</translation>
+      <translation>数値</translation>
     </message>
     <message>
       <source>String</source>
-      <translation>String</translation>
+      <translation>文字列</translation>
     </message>
     <message>
       <source>Character</source>
-      <translation>Karakter</translation>
+      <translation>文字</translation>
     </message>
     <message>
       <source>Class name</source>
-      <translation>Klasnaam</translation>
+      <translation>クラス名</translation>
     </message>
     <message>
       <source>Define name</source>
-      <translation>Definieer naam</translation>
+      <translation>名前の定義</translation>
     </message>
     <message>
       <source>Operator</source>
-      <translation>Operateur</translation>
+      <translation>演算子</translation>
     </message>
     <message>
       <source>Python output</source>
-      <translation>Python resultaat</translation>
+      <translation>Python出力</translation>
     </message>
     <message>
       <source>Python error</source>
-      <translation>Python fout</translation>
+      <translation>Pythonエラー</translation>
     </message>
     <message>
       <source>Items</source>
-      <translation>Items</translation>
+      <translation>項目</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
     <message>
       <source>Image settings</source>
-      <translation>Beeldinstellings</translation>
+      <translation>画像設定</translation>
     </message>
     <message>
       <source>Image properties</source>
-      <translation>Beeldeienskappe</translation>
+      <translation>画像のプロパティ</translation>
     </message>
     <message>
       <source>Back&amp;ground:</source>
-      <translation>&amp;Agtergrond:</translation>
+      <translation>背景色:</translation>
     </message>
     <message>
       <source>Current</source>
-      <translation>Huidige</translation>
+      <translation>現在の</translation>
     </message>
     <message>
       <source>White</source>
-      <translation>Wit</translation>
+      <translation>白</translation>
     </message>
     <message>
       <source>Black</source>
-      <translation>Swart</translation>
+      <translation>黒</translation>
     </message>
     <message>
       <source>Transparent</source>
-      <translation>Deursigtig</translation>
+      <translation>透明</translation>
     </message>
     <message>
       <source>Image dimensions</source>
-      <translation>Beelddimensies</translation>
+      <translation>画像の寸法(E)</translation>
     </message>
     <message>
       <source>Pixel</source>
-      <translation>Beeldelement</translation>
+      <translation>ピクセル</translation>
     </message>
     <message>
       <source>&amp;Width:</source>
-      <translation>&amp;Wydte:</translation>
+      <translation>＆幅:</translation>
     </message>
     <message>
       <source>Current screen</source>
-      <translation>Huidige skerm</translation>
+      <translation>現在の画面</translation>
     </message>
     <message>
       <source>Icon       32  x 32</source>
-      <translation>Ikoon 32 x 32</translation>
+      <translation>アイコン32 × 32</translation>
     </message>
     <message>
       <source>Icon       64 x 64</source>
-      <translation>Ikoon 64 x 64</translation>
+      <translation>アイコン 64 × 64</translation>
     </message>
     <message>
       <source>Icon       128 x 128</source>
-      <translation>Ikoon 128 x 128</translation>
+      <translation>アイコン 128 × 128</translation>
     </message>
     <message>
       <source>CGA       320 x 200</source>
@@ -1815,7 +1814,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>HD720   1280 x 720</source>
-      <translation>HD720 1280 x 720</translation>
+      <translation>HD720 1280 × 720</translation>
     </message>
     <message>
       <source>SXGA     1280 x 1024</source>
@@ -1831,7 +1830,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>HD1080 1920 x 1080</source>
-      <translation>HD1080 1920 x 1080</translation>
+      <translation>HD1080 1920 × 1080</translation>
     </message>
     <message>
       <source>WUXGA  1920 x 1200</source>
@@ -1839,7 +1838,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>QXGA     2048 x 1538</source>
-      <translation>QXGA 2048 x 1538</translation>
+      <translation>QXGA 2048 x 1651</translation>
     </message>
     <message>
       <source>WQXGA  2560 x 1600</source>
@@ -1859,23 +1858,23 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>!!!          10000 x 10000</source>
-      <translation>!!! 10000 x 10000</translation>
+      <translation>!!!10000 x 10000</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
-      <translation>Standaardgroottes:</translation>
+      <translation>標準サイズ:</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
-      <translation>&amp;Hoogte:</translation>
+      <translation>＆高さ:</translation>
     </message>
     <message>
       <source>Aspect ratio:</source>
-      <translation>Vormverhouding:</translation>
+      <translation>アスペクト比:</translation>
     </message>
     <message>
       <source>&amp;Screen</source>
-      <translation>&amp;Skerm</translation>
+      <translation>＆ 画面</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -1883,62 +1882,62 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;4:3</source>
-      <translation>&amp;4:3</translation>
+      <translation>＆ 4: 3</translation>
     </message>
     <message>
       <source>Alt+4</source>
-      <translation>Alt+4</translation>
+      <translation>Alt + 4</translation>
     </message>
     <message>
       <source>1&amp;6:9</source>
-      <translation>1&amp;6:9</translation>
+      <translation>1＆6:9</translation>
     </message>
     <message>
       <source>Alt+6</source>
-      <translation>Alt+6</translation>
+      <translation>Alt + 6</translation>
     </message>
     <message>
       <source>&amp;1:1</source>
-      <translation>&amp;1:1</translation>
+      <translation>＆1：1</translation>
     </message>
     <message>
       <source>Alt+1</source>
-      <translation>Alt+1</translation>
+      <translation>Alt + 1</translation>
     </message>
     <message>
       <source>Image comment</source>
-      <translation>Beeldkommentaar</translation>
+      <translation>画像のコメント</translation>
     </message>
     <message>
       <source>Insert MIBA</source>
-      <translation>Voeg MIBA in</translation>
+      <translation>MIBA の挿入</translation>
     </message>
     <message>
       <source>Insert comment</source>
-      <translation>Voeg opmerking in</translation>
+      <translation>コメントの挿入</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Macro recording settings</source>
-      <translation>Makro-opname instellings</translation>
+      <translation>マクロの記録の設定</translation>
     </message>
     <message>
       <source>Logging Commands</source>
-      <translation>Noteer bevele</translation>
+      <translation>履歴コマンド</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation>Wys bevele in pythonvenster</translation>
+      <translation>Python コンソールでスクリプト コマンドを表示します。</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
-      <translation>Noteer alle bevele vanuit kieslyse na lêer:</translation>
+      <translation>メニューから発行された全ての命令をファイルに記録します:</translation>
     </message>
     <message>
       <source>FullScript.FCScript</source>
@@ -1946,89 +1945,89 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Gui commands</source>
-      <translation>Grafiese Gebruikerskoppelvlak (GGKV) instruksies</translation>
+      <translation>GUIコマンド</translation>
     </message>
     <message>
       <source>Recording GUI commands</source>
-      <translation>Neem Grafiese Gebruikerskoppelvlak (GGKV) instruksies op</translation>
+      <translation>GUIコマンドの記録</translation>
     </message>
     <message>
       <source>Record as comment</source>
-      <translation>Neem op as opmerking</translation>
+      <translation>コメントとして記録</translation>
     </message>
     <message>
       <source>Macro path</source>
-      <translation>Makropad</translation>
+      <translation>マクロのパス</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
       <source>Units</source>
-      <translation>Eenhede</translation>
+      <translation>Units</translation>
     </message>
     <message>
       <source>Units settings</source>
-      <translation>Eenheidsinstellings</translation>
+      <translation>単位の設定</translation>
     </message>
     <message>
       <source>Standard (mm/kg/s/degree)</source>
-      <translation>Standaard (mm/kg/s/graad)</translation>
+      <translation>Standard (mm/kg/s/degree)</translation>
     </message>
     <message>
       <source>MKS (m/kg/s/degree)</source>
-      <translation>MKS (m/kg/s/graad)</translation>
+      <translation>MKS (m/kg/s/degree)</translation>
     </message>
     <message>
       <source>Magnitude</source>
-      <translation>Grootte</translation>
+      <translation>Magnitude</translation>
     </message>
     <message>
       <source>Unit</source>
-      <translation>Eenheid</translation>
+      <translation>Unit</translation>
     </message>
     <message>
       <source>User system:</source>
-      <translation>Gebruikerstelsel:</translation>
+      <translation>User system:</translation>
     </message>
     <message>
       <source>Imperial (in/lb)</source>
-      <translation>Engelse eenhede (duim/pond)</translation>
+      <translation>Imperial (in/lb)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
     <message>
       <source>Colors</source>
-      <translation>Kleure</translation>
+      <translation>色</translation>
     </message>
     <message>
       <source>Selection</source>
-      <translation>Seleksie</translation>
+      <translation>選択範囲</translation>
     </message>
     <message>
       <source>Enable selection highlighting</source>
-      <translation>Aktiveer seleksieverligting</translation>
+      <translation>選択範囲の強調表示を有効にします。</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
-      <translation>Aktiveer seleksieverligting</translation>
+      <translation>Enable preselection highlighting</translation>
     </message>
     <message>
       <source>Background color</source>
-      <translation>Agtergrond kleur</translation>
+      <translation>背景色</translation>
     </message>
     <message>
       <source>Middle color</source>
-      <translation>Middelste kleur</translation>
+      <translation>Middle color</translation>
     </message>
     <message>
       <source>Color gradient</source>
-      <translation>Kleurgradient</translation>
+      <translation>カラーグラデーション</translation>
     </message>
     <message>
       <source>Simple color</source>
-      <translation>Eenvoudige kleur</translation>
+      <translation>シンプルな色</translation>
     </message>
     <message>
       <source>Default colors</source>
@@ -2071,15 +2070,15 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
       <source>Tip of the day</source>
-      <translation>Wenk van die dag</translation>
+      <translation>ワンポイントアドバイス</translation>
     </message>
     <message>
       <source>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-      <translation>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Het jy geweet...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;&lt;font face="Times New Roman"&gt; &lt;font size="+3"&gt; 知っていますか...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
       <source>&amp;Show tips at start up</source>
-      <translation>&amp;Wys wenke tydens programaanvang</translation>
+      <translation>＆起動時にヒントを表示</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -2087,15 +2086,15 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Next Tip</source>
-      <translation>&amp;Volgende Wenk</translation>
+      <translation>＆次のヒント</translation>
     </message>
     <message>
       <source>Alt+N</source>
-      <translation>Alt+N</translation>
+      <translation>Alt + N</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>閉じる(&amp;C)</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -2103,7 +2102,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2111,19 +2110,19 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <message>
       <source>Download failed: %1
 </source>
-      <translation>Aflaai het misluk: '%1'
+      <translation>ダウンロードに失敗しました: %1
 </translation>
     </message>
     <message>
       <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-      <translation>As jy meer wil weet oor FreeCAD moet jy gaan na '%1' of druk die Help item in die Hulpkieslys.</translation>
+      <translation>FreeCAD についてもっと詳しく知りたい場合 %1 へ行く、あるいはヘルプ項目 [ヘルプ] メニューでキーを押す必要があります.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
       <source>Placement</source>
-      <translation>Plasing</translation>
+      <translation>Placement</translation>
     </message>
   </context>
   <context>
@@ -2144,15 +2143,15 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <name>Gui::Dialog::InputVector</name>
     <message>
       <source>Input vector</source>
-      <translation>Invoervektor</translation>
+      <translation>入力ベクトル</translation>
     </message>
     <message>
       <source>Vector</source>
-      <translation>Vektor</translation>
+      <translation>ベクトル</translation>
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -2164,81 +2163,81 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::MouseButtons</name>
     <message>
       <source>Mouse buttons</source>
-      <translation>Muisknoppies</translation>
+      <translation>マウスボタン</translation>
     </message>
     <message>
       <source>Configuration</source>
-      <translation>Opstelling</translation>
+      <translation>Configuration</translation>
     </message>
     <message>
       <source>Selection:</source>
-      <translation>Seleksie:</translation>
+      <translation>Selection:</translation>
     </message>
     <message>
       <source>Panning</source>
-      <translation>Panorama</translation>
+      <translation>Panning</translation>
     </message>
     <message>
       <source>Rotation:</source>
-      <translation>Rotasie:</translation>
+      <translation>回転:</translation>
     </message>
     <message>
       <source>Zooming:</source>
-      <translation>Nabyheid:</translation>
+      <translation>Zooming:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ParameterGroup</name>
     <message>
       <source>Expand</source>
-      <translation>Brei uit</translation>
+      <translation>開く</translation>
     </message>
     <message>
       <source>Add sub-group</source>
-      <translation>Voeg subgroep by</translation>
+      <translation>サブグループを追加</translation>
     </message>
     <message>
       <source>Remove group</source>
-      <translation>Verwyder groep</translation>
+      <translation>グループを削除</translation>
     </message>
     <message>
       <source>Rename group</source>
-      <translation>Hernoem groep</translation>
+      <translation>グループ名変更</translation>
     </message>
     <message>
       <source>Export parameter</source>
-      <translation>Voer parameter uit</translation>
+      <translation>エクスポートパラメータ</translation>
     </message>
     <message>
       <source>Import parameter</source>
-      <translation>Voer parameter in</translation>
+      <translation>インポートパラメータ</translation>
     </message>
     <message>
       <source>Collapse</source>
-      <translation>Stort ineen</translation>
+      <translation>折りたたむ</translation>
     </message>
     <message>
       <source>Do really want to remove this parameter group?</source>
-      <translation>Wil jy regtig hierdie parametergroep verwyder?</translation>
+      <translation>本当にこのパラメーターのグループを削除しますか。</translation>
     </message>
     <message>
       <source>Existing sub-group</source>
-      <translation>Bestaande subgroep</translation>
+      <translation>既存のサブグループ</translation>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
-      <translation>Die subgroep '%1' bestaan reeds.</translation>
+      <translation>サブグループ '%1' は既に存在します．</translation>
     </message>
     <message>
       <source>Export parameter to file</source>
-      <translation>Voer parameter uit na 'n lêer</translation>
+      <translation>パラメーターをファイルにエクスポートします。</translation>
     </message>
     <message>
       <source>XML (*.FCParam)</source>
@@ -2246,81 +2245,81 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Import parameter from file</source>
-      <translation>Voer parameter in van lêer</translation>
+      <translation>パラメーターをファイルからインポートします。</translation>
     </message>
     <message>
       <source>Import Error</source>
-      <translation>Invoer Fout</translation>
+      <translation>インポートエラー</translation>
     </message>
     <message>
       <source>Reading from '%1' failed.</source>
-      <translation>Lees van '%1' het misluk.</translation>
+      <translation>'%1' からの読み取りに失敗しました。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ParameterValue</name>
     <message>
       <source>Change value</source>
-      <translation>Verander waarde</translation>
+      <translation>値を変更</translation>
     </message>
     <message>
       <source>Remove key</source>
-      <translation>Verwyder sleutel</translation>
+      <translation>キーを削除</translation>
     </message>
     <message>
       <source>Rename key</source>
-      <translation>Hernoem sleutel</translation>
+      <translation>名前変更キー</translation>
     </message>
     <message>
       <source>New</source>
-      <translation>Nuwe</translation>
+      <translation>新規作成</translation>
     </message>
     <message>
       <source>New string item</source>
-      <translation>Nuwe stringitem</translation>
+      <translation>新しい文字列項目</translation>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Nuwe dryfitem</translation>
+      <translation>新しいフロートアイテム</translation>
     </message>
     <message>
       <source>New integer item</source>
-      <translation>Nuwe heelgetalitem</translation>
+      <translation>新しい整数項目</translation>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>Nuwe onondertekende item</translation>
+      <translation>新しい符号なし項目</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Nuwe Boole-item</translation>
+      <translation>新しいブール項目</translation>
     </message>
     <message>
       <source>Existing item</source>
-      <translation>Bestaande item</translation>
+      <translation>既存の項目</translation>
     </message>
     <message>
       <source>The item '%1' already exists.</source>
-      <translation>Die item '%1' bestaan reeds.</translation>
+      <translation>項目 '%1' は既に存在します。</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::Placement</name>
     <message>
       <source>Placement</source>
-      <translation>Plasing</translation>
+      <translation>Placement</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>Omsetting:</translation>
+      <translation>Translation:</translation>
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -2332,31 +2331,31 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Rotation:</source>
-      <translation>Rotasie:</translation>
+      <translation>回転:</translation>
     </message>
     <message>
       <source>Angle:</source>
-      <translation>Hoek:</translation>
+      <translation>角度:</translation>
     </message>
     <message>
       <source>Axis:</source>
-      <translation>As:</translation>
+      <translation>軸:</translation>
     </message>
     <message>
       <source>Center:</source>
-      <translation>Sentreer:</translation>
+      <translation>Center:</translation>
     </message>
     <message>
       <source>Pitch:</source>
-      <translation>Styghoek:</translation>
+      <translation>Pitch:</translation>
     </message>
     <message>
       <source>Roll:</source>
-      <translation>Kantelhoek:</translation>
+      <translation>Roll:</translation>
     </message>
     <message>
       <source>Yaw:</source>
-      <translation>Rigtinghoek:</translation>
+      <translation>Yaw:</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
@@ -2364,27 +2363,27 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Euler angles</source>
-      <translation>Eulerhoeke</translation>
+      <translation>Euler angles</translation>
     </message>
     <message>
       <source>Apply placement changes immediately</source>
-      <translation>Pas plasingveranderings onmiddellik toe</translation>
+      <translation>Apply placement changes immediately</translation>
     </message>
     <message>
       <source>Apply incremental changes to object placement</source>
-      <translation>Pas inkrementele veranderinge toe met die plasing van die voorwerp</translation>
+      <translation>Apply incremental changes to object placement</translation>
     </message>
     <message>
       <source>Apply</source>
-      <translation>Pas toe</translation>
+      <translation>適用する</translation>
     </message>
     <message>
       <source>Reset</source>
-      <translation>Herstel</translation>
+      <translation>リセット</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>閉じる</translation>
     </message>
   </context>
   <context>
@@ -2395,206 +2394,206 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Command</source>
-      <translation>Bevel</translation>
+      <translation>コマンド</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::SceneInspector</name>
     <message>
       <source>Dialog</source>
-      <translation>Dialoog</translation>
+      <translation>ダイアログ</translation>
     </message>
     <message>
       <source>Close</source>
-      <translation>Maak toe</translation>
+      <translation>閉じる</translation>
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Verfris</translation>
+      <translation>更新</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation>Uitvinderboom</translation>
+      <translation>Inventor Tree</translation>
     </message>
     <message>
       <source>Nodes</source>
-      <translation>Knooppunte</translation>
+      <translation>ノード</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::TextureMapping</name>
     <message>
       <source>Texture</source>
-      <translation>Tekstuur</translation>
+      <translation>テクスチャ</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Tekstuurkartering</translation>
+      <translation>テクスチャーマッピング</translation>
     </message>
     <message>
       <source>Global</source>
-      <translation>Globaal</translation>
+      <translation>Global</translation>
     </message>
     <message>
       <source>Environment</source>
-      <translation>Omgewing</translation>
+      <translation>Environment</translation>
     </message>
     <message>
       <source>Image files (%1)</source>
-      <translation>Beeldlêers (%1)</translation>
+      <translation>Image files (%1)</translation>
     </message>
     <message>
       <source>No image</source>
-      <translation>Geen beeld</translation>
+      <translation>画像がありません</translation>
     </message>
     <message>
       <source>The specified file is not a valid image file.</source>
-      <translation>Die gespesifiseerde lêer is nie 'n geldige beeldlêer nie.</translation>
+      <translation>The specified file is not a valid image file.</translation>
     </message>
     <message>
       <source>No 3d view</source>
-      <translation>Geen 3D aansig</translation>
+      <translation>3Dビューがありません</translation>
     </message>
     <message>
       <source>No active 3d view found.</source>
-      <translation>Geen aktiewe 3D aansig gevind nie.</translation>
+      <translation>No active 3d view found.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::Transform</name>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Omskep</translation>
+      <translation>変換</translation>
     </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
     <message>
       <source>Dialog</source>
-      <translation>Dialoog</translation>
+      <translation>ダイアログ</translation>
     </message>
     <message>
       <source>Items</source>
-      <translation>Items</translation>
+      <translation>項目</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source></source>
-      <translation> </translation>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::CombiView</name>
     <message>
       <source>CombiView</source>
-      <translation>SaamgesteldeVoorkoms</translation>
+      <translation>コンビビュー</translation>
     </message>
     <message>
       <source>Project</source>
-      <translation>Projek</translation>
+      <translation>プロジェクト</translation>
     </message>
     <message>
       <source>Tasks</source>
-      <translation>Take</translation>
+      <translation>作業</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::HelpView</name>
     <message>
       <source>Previous</source>
-      <translation>Vorige</translation>
+      <translation>前へ</translation>
     </message>
     <message>
       <source>Next</source>
-      <translation>Volgende</translation>
+      <translation>次へ</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation>Tuis</translation>
+      <translation>ホーム</translation>
     </message>
     <message>
       <source>Open</source>
-      <translation>Maak oop</translation>
+      <translation>開く</translation>
     </message>
     <message>
       <source>Open file</source>
-      <translation>Maak lêer oop</translation>
+      <translation>ファイルを開く</translation>
     </message>
     <message>
       <source>All HTML files (*.html *.htm)</source>
-      <translation>Alle HTML-lêers (*.html *.htm)</translation>
+      <translation>すべての HTML ファイル (*.htm *.html)</translation>
     </message>
     <message>
       <source>External browser</source>
-      <translation>Eksterne leser</translation>
+      <translation>外部ブラウザ</translation>
     </message>
     <message>
       <source>No external browser found. Specify in preferences, please</source>
-      <translation>Geen eksterne leser gevind nie. Spesifiseer asseblief in die voorkeure</translation>
+      <translation>外部ブラウザーが設定されていません。環境設定で指定してください。</translation>
     </message>
     <message>
       <source>Starting of %1 failed</source>
-      <translation>Begin van '%1' het misluk</translation>
+      <translation>Starting of %1 failed</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
       <source>Property View</source>
-      <translation>Eiendomsaansig</translation>
+      <translation>プロパティ表示</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
       <source>Logging</source>
-      <translation>Opgawe</translation>
+      <translation>ログ記録</translation>
     </message>
     <message>
       <source>Warning</source>
-      <translation>Waarskuwing</translation>
+      <translation>警告</translation>
     </message>
     <message>
       <source>Error</source>
-      <translation>Fout</translation>
+      <translation>エラー</translation>
     </message>
     <message>
       <source>Options</source>
-      <translation>Opsies</translation>
+      <translation>オプション</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>クリア</translation>
     </message>
     <message>
       <source>Save As...</source>
-      <translation>Stoor as...</translation>
+      <translation>名前を付けて保存...</translation>
     </message>
     <message>
       <source>Save Report Output</source>
-      <translation>Stoor Rapportresultaat</translation>
+      <translation>レポート出力を保存する</translation>
     </message>
     <message>
       <source>Plain Text Files (*.txt *.log)</source>
-      <translation>Eenvoudige Tekslêers (*.txt *.log)</translation>
+      <translation>テキスト ファイル (*.txt * .log)</translation>
     </message>
     <message>
       <source>Go to end</source>
-      <translation>Gaan na die einde</translation>
+      <translation>Go to end</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
@@ -2602,240 +2601,241 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
-      <translation>Herlei Python foute</translation>
+      <translation>Pythonのエラーをリダイレクトします。</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportView</name>
     <message>
       <source>Output</source>
-      <translation>Resultaat</translation>
+      <translation>出力</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Pythonkonsole</translation>
+      <translation>Python コンソール</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
       <source>Property View</source>
-      <translation>Eiendomsaansig</translation>
+      <translation>プロパティ表示</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::TaskPanelView</name>
     <message>
       <source>Task View</source>
-      <translation>Taakaansig</translation>
+      <translation>タスクビュー</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
       <source>Could not open file.</source>
-      <translation>Kon nie lêer oopmaak nie.</translation>
+      <translation>ファイルを開けませんでした。</translation>
     </message>
     <message>
       <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-      <translation>Jy het probeer om die adres '%1' wat tans onbeskikbaar is, oop te maak. Maak asseblief seker dat die URL bestaan, en probeer die blad herlaai.</translation>
+      <translation>現在利用できないアドレス％1にアクセスしようとしました。 URLが存在することを確認し、ページを再読み込みしてください。</translation>
     </message>
     <message>
       <source>Connecting to %1</source>
-      <translation>Verbind met '%1'</translation>
+      <translation>%1 へ接続</translation>
     </message>
     <message>
       <source>Sending to %1</source>
-      <translation>Stuur na '%1'</translation>
+      <translation>Sending to %1</translation>
     </message>
     <message>
       <source>Reading from %1</source>
-      <translation>Lees van '%1'</translation>
+      <translation>Reading from %1</translation>
     </message>
     <message>
       <source>Download failed: %1.</source>
-      <translation>Aflaai het misluk: '%1'.</translation>
+      <translation>ダウンロードに失敗しました: %1.</translation>
     </message>
     <message>
       <source>Previous</source>
-      <translation>Vorige</translation>
+      <translation>前へ</translation>
     </message>
     <message>
       <source>Forward</source>
-      <translation>Vorentoe</translation>
+      <translation>Forward</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation>Tuis</translation>
+      <translation>ホーム</translation>
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Verfris</translation>
+      <translation>更新</translation>
     </message>
     <message>
       <source>Copy</source>
-      <translation>Kopieer</translation>
+      <translation>コピー</translation>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Kies alles</translation>
+      <translation>すべてを選択</translation>
     </message>
     <message>
       <source>No description for</source>
-      <translation>Geen beskrywing vir</translation>
+      <translation>No description for</translation>
     </message>
   </context>
   <context>
     <name>Gui::DocumentModel</name>
     <message>
       <source>Application</source>
-      <translation>Toepassing</translation>
+      <translation>アプリケーション</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Etikette &amp; Eienskappe</translation>
+      <translation>ラベルと属性</translation>
     </message>
   </context>
   <context>
     <name>Gui::EditorView</name>
     <message>
       <source>Modified file</source>
-      <translation>Gewysigde lêer</translation>
+      <translation>変更されたファイル</translation>
     </message>
     <message>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>'%1'. 
-Dit is verander buite die bronwysiger. Wil jy dit herlaai?</translation>
+      <translation>%1.
+
+This has been modified outside of the source editor. Do you want to reload it?</translation>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation>Ongestoorde dokument</translation>
+      <translation>未保存のドキュメント</translation>
     </message>
     <message>
       <source>The document has been modified.
 Do you want to save your changes?</source>
-      <translation>Die dokument is verander.
-Wil jy jou veranderinge stoor?</translation>
+      <translation>The document has been modified.
+Do you want to save your changes?</translation>
     </message>
     <message>
       <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-      <translation>FreeCAD makro (*.FCMacro); Python (*.py)</translation>
+      <translation>FreeCADマクロ(*.FCMacro); Python(*.py)</translation>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>Stoor na PDF</translation>
+      <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
       <source>PDF file (*.pdf)</source>
-      <translation>PDF-lêer (*.pdf)</translation>
+      <translation>PDFファイル(*.pdf)</translation>
     </message>
     <message>
       <source>untitled[*]</source>
-      <translation>ongetiteld[*]</translation>
+      <translation>untitled[*]</translation>
     </message>
     <message>
       <source> - Editor</source>
-      <translation> -Wysiger</translation>
+      <translation> - Editor</translation>
     </message>
     <message>
       <source>%1 chars removed</source>
-      <translation>%1 karakters verwyder</translation>
+      <translation>%1 chars removed</translation>
     </message>
     <message>
       <source>%1 chars added</source>
-      <translation>%1 karakters bygevoeg</translation>
+      <translation>%1 chars added</translation>
     </message>
     <message>
       <source>Formatted</source>
-      <translation>Geformateer</translation>
+      <translation>Formatted</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
-      <translation>Kies 'n lêer</translation>
+      <translation>ファイルを選択してください</translation>
     </message>
     <message>
       <source>Select a directory</source>
-      <translation>Kies 'n gids</translation>
+      <translation>ディレクトリを選択</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileDialog</name>
     <message>
       <source>Save as</source>
-      <translation>Stoor as</translation>
+      <translation>名前を付けて保存</translation>
     </message>
     <message>
       <source>Open</source>
-      <translation>Maak oop</translation>
+      <translation>開く</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
       <source>Extended</source>
-      <translation>Uitgebrei</translation>
+      <translation>拡張</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Flag</name>
     <message>
       <source>Top left</source>
-      <translation>Bo links</translation>
+      <translation>左上</translation>
     </message>
     <message>
       <source>Bottom left</source>
-      <translation>Onder links</translation>
+      <translation>左下</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>Bo regs</translation>
+      <translation>右上</translation>
     </message>
     <message>
       <source>Bottom right</source>
-      <translation>Onder regs</translation>
+      <translation>右下</translation>
     </message>
     <message>
       <source>Remove</source>
-      <translation>Verwyder</translation>
+      <translation>削除</translation>
     </message>
   </context>
   <context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Druk CTRL en linker muisknoppie</translation>
+      <translation>Ctrlキーを押しながらマウスの左ボタンを押してください</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Druk middelste muisknoppie</translation>
+      <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
       <source>Press left mouse button</source>
-      <translation>Druk linker muisknoppie</translation>
+      <translation>マウスの左ボタンを押す</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Blaai neer met middelste muisknoppie</translation>
+      <translation>マウスの中央ボタンをスクロールする</translation>
     </message>
   </context>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
       <source>Wrong direction</source>
-      <translation>Verkeerde rigting</translation>
+      <translation>間違った方向</translation>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
-      <translation>Rigting moet nie die nul vektor wees nie</translation>
+      <translation>方向はnullのベクトルであってはならない</translation>
     </message>
     <message>
       <source>X</source>
@@ -2851,37 +2851,37 @@ Wil jy jou veranderinge stoor?</translation>
     </message>
     <message>
       <source>User defined...</source>
-      <translation>Gebruikergedefinieerd...</translation>
+      <translation>ユーザ定義...</translation>
     </message>
   </context>
   <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
-      <translation>Makros</translation>
+      <translation>マクロ</translation>
     </message>
   </context>
   <context>
     <name>Gui::MainWindow</name>
     <message>
       <source>Dimension</source>
-      <translation>Dimensioneer</translation>
+      <translation>寸法</translation>
     </message>
     <message>
       <source>Ready</source>
-      <translation>Gereed</translation>
+      <translation>準備完了</translation>
     </message>
     <message>
       <source>Toggles this toolbar</source>
-      <translation>Aktiveer/Inaktiveer die nutsbalk</translation>
+      <translation>このツールバーを切り替えます</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
-      <translation>Aktiveer/inaktiveer hierdie ingebedde venster</translation>
+      <translation>このドッキング可能なウィンドウを切り替える</translation>
     </message>
     <message>
       <source>Close All</source>
-      <translation>Maak alles toe</translation>
+      <translation>すべてを閉じる</translation>
     </message>
   </context>
   <context>
@@ -2889,322 +2889,324 @@ Wil jy jou veranderinge stoor?</translation>
     <message>
       <source>Download started...
 </source>
-      <translation>Aflaai het begin... </translation>
+      <translation>ダウンロードを開始しました...
+</translation>
     </message>
   </context>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Oorblywende: %1</translation>
+      <translation>残り：％1</translation>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Staak</translation>
+      <translation>中止します</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
-      <translation>Wil jy regtig die aksie staak?</translation>
+      <translation>操作を中止してよろしいですか？</translation>
     </message>
   </context>
   <context>
     <name>Gui::ProgressDialog</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Oorblywende: %1</translation>
+      <translation>残り：％1</translation>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Staak</translation>
+      <translation>中止します</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
-      <translation>Wil jy regtig die aksie staak?</translation>
+      <translation>操作を中止してよろしいですか？</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
-      <translation>Eienskap</translation>
+      <translation>プロパティ</translation>
     </message>
     <message>
       <source>Value</source>
-      <translation>Waarde</translation>
+      <translation>値</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Data</source>
-      <translation>Data</translation>
+      <translation>データ</translation>
     </message>
   </context>
   <context>
     <name>Gui::PythonConsole</name>
     <message>
       <source>System exit</source>
-      <translation>Verlaat stelsel</translation>
+      <translation>システム終了</translation>
     </message>
     <message>
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
-      <translation>Die program loop nog. 
-Wil jy afsluit sonder om jou data te stoor?</translation>
+      <translation>アプリケーションがまだ実行されています。あなたのデータを保存せずに終了しますか。</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Pythonkonsole</translation>
+      <translation>Python コンソール</translation>
     </message>
     <message>
       <source>Unhandled PyCXX exception.</source>
-      <translation>Ongehanteerde PyCXX uitsondering.</translation>
+      <translation>未処理のPyCXX例外。</translation>
     </message>
     <message>
       <source>Unhandled FreeCAD exception.</source>
-      <translation>Ongehanteerde FreeCAD uitsondering.</translation>
+      <translation>未処理のFreeCAD例外。</translation>
     </message>
     <message>
       <source>Unhandled unknown C++ exception.</source>
-      <translation>Ongehanteerde onbekende C++ uitsondering.</translation>
+      <translation>処理されていない不明な C++ 例外。</translation>
     </message>
     <message>
       <source>&amp;Copy command</source>
-      <translation>&amp;Kopieer bevel</translation>
+      <translation>＆ コピー コマンド</translation>
     </message>
     <message>
       <source>&amp;Copy history</source>
-      <translation>&amp;Kopieer geskiedenis</translation>
+      <translation>＆ コピー履歴</translation>
     </message>
     <message>
       <source>Save history as...</source>
-      <translation>Stoor geskiedenis as...</translation>
+      <translation>名前を付けて履歴を保存(H)...</translation>
     </message>
     <message>
       <source>Insert file name...</source>
-      <translation>Gee lêernaam...</translation>
+      <translation>ファイル名を挿入...</translation>
     </message>
     <message>
       <source>Save History</source>
-      <translation>Stoor geskiedenis</translation>
+      <translation>履歴の保存。</translation>
     </message>
     <message>
       <source>Macro Files (*.FCMacro *.py)</source>
-      <translation>Makro-lêers (*.FCMacro *.py)</translation>
+      <translation>マクロ ファイル (*.FCMacro *.py)</translation>
     </message>
     <message>
       <source>Insert file name</source>
-      <translation>Gee lêernaam</translation>
+      <translation>ファイル名を挿入します。</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
     <message>
       <source>Python Input Dialog</source>
-      <translation>Python Invoer Dialoog</translation>
+      <translation>Pythonの入力ダイアログ</translation>
     </message>
     <message>
       <source>Unhandled std C++ exception.</source>
-      <translation>Ongehanteerde std C++ uitsondering.</translation>
+      <translation>Unhandled std C++ exception.</translation>
     </message>
     <message>
       <source>Word wrap</source>
-      <translation>Woordomvouding</translation>
+      <translation>ワードラップ</translation>
     </message>
     <message>
       <source>&amp;Copy</source>
-      <translation>&amp;Kopieer</translation>
+      <translation>＆コピー</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
-      <translation>&amp;Plak</translation>
+      <translation>＆ペースト</translation>
     </message>
     <message>
       <source>Select All</source>
-      <translation>Kies alles</translation>
+      <translation>全て選択</translation>
     </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
     <message>
       <source>Comment</source>
-      <translation>Opmerking</translation>
+      <translation>コメント</translation>
     </message>
     <message>
       <source>Uncomment</source>
-      <translation>Verwyder opmerking</translation>
+      <translation>コメントを解除</translation>
     </message>
   </context>
   <context>
     <name>Gui::PythonInputField</name>
     <message>
       <source>OK</source>
-      <translation>Goed</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>クリア</translation>
     </message>
   </context>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
       <source>Open file %1</source>
-      <translation>Maak lêer '%1' oop</translation>
+      <translation>％1ファイルを開く</translation>
     </message>
     <message>
       <source>File not found</source>
-      <translation>Lêer nie gevind nie</translation>
+      <translation>ファイルが見つかりませんでした</translation>
     </message>
     <message>
       <source>The file '%1' cannot be opened.</source>
-      <translation>Die lêer '%1' kan nie oopgemaak word nie.</translation>
+      <translation>ファイル '%1' を開くことができませんでした。</translation>
     </message>
   </context>
   <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
-      <translation>Kies module</translation>
+      <translation>モジュールを選択します。</translation>
     </message>
     <message>
       <source>Open %1 as</source>
-      <translation>Maak '%1' oop as</translation>
+      <translation>%1 を開く</translation>
     </message>
     <message>
       <source>Select</source>
-      <translation>Kies</translation>
+      <translation>選択</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Des&amp;cription</source>
-      <translation>&amp;Beskrywing</translation>
+      <translation>説明(&amp;C):</translation>
     </message>
     <message>
       <source>Long description of commands</source>
-      <translation>Lang beskrywing van bevele</translation>
+      <translation>コマンドの説明</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Download online help</source>
-      <translation>Laai internethulp af</translation>
+      <translation>Download online help</translation>
     </message>
     <message>
       <source>Download %1's online help</source>
-      <translation>Laai %1 se internethulp af</translation>
+      <translation>Download %1's online help</translation>
     </message>
     <message>
       <source>Non-existing directory</source>
-      <translation>Gids bestaan nie</translation>
+      <translation>Non-existing directory</translation>
     </message>
     <message>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>Die gids '%1' bestaan nie. 
-Wil jy 'n bestaande gids spesifiseer?</translation>
+      <translation>The directory '%1' does not exist.
+
+Do you want to specify an existing directory?</translation>
     </message>
     <message>
       <source>Missing permission</source>
-      <translation>Toestemming ontbreek</translation>
+      <translation>Missing permission</translation>
     </message>
     <message>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>Jy het nie toestemming om te skryf na '%1' nie
-Wil jy 'n ander gids aangee?</translation>
+      <translation>You don't have write permission to '%1'
+
+Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
-      <translation>Stop aflaai</translation>
+      <translation>Stop downloading</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>Python Modules</source>
-      <translation>Pythonmodules</translation>
+      <translation>Pythonモジュール</translation>
     </message>
     <message>
       <source>Opens a browser to show the Python modules</source>
-      <translation>Maak 'n leser oop om die Pythonmodules te wys</translation>
+      <translation>Python モジュールを表示するには、ブラウザーを開きます。</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskBoxAngle</name>
     <message>
       <source>Angle</source>
-      <translation>Hoek</translation>
+      <translation>Angle</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskBoxPosition</name>
     <message>
       <source>Position</source>
-      <translation>Posisie</translation>
+      <translation>Position</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Display mode:</source>
-      <translation>Vertoningsmodus:</translation>
+      <translation>ディスプレイモード：</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Plotmodus:</translation>
+      <translation>プロットモード：</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Puntgrootte:</translation>
+      <translation>点の大きさ：</translation>
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Lynwydte:</translation>
+      <translation>線幅:</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Deursigtigheid:</translation>
+      <translation>透明度:</translation>
     </message>
     <message>
       <source>Appearance</source>
-      <translation>Voorkoms</translation>
+      <translation>外観</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskSelectLinkProperty</name>
     <message>
       <source>Appearance</source>
-      <translation>Voorkoms</translation>
+      <translation>外観</translation>
     </message>
     <message>
       <source>...</source>
@@ -3212,93 +3214,93 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>edit selection</source>
-      <translation>Wysig seleksie</translation>
+      <translation>edit selection</translation>
     </message>
   </context>
   <context>
     <name>Gui::Translator</name>
     <message>
       <source>English</source>
-      <translation>Engels</translation>
+      <translation>英語</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Boomvoorkoms</translation>
+      <translation>ツリービュー</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
-      <translation>Skep groep ...</translation>
+      <translation>グループを作成...</translation>
     </message>
     <message>
       <source>Create a group</source>
-      <translation>Skep 'n groep</translation>
+      <translation>グループを作成します。</translation>
     </message>
     <message>
       <source>Group</source>
-      <translation>Groep</translation>
+      <translation>グループ</translation>
     </message>
     <message>
       <source>Rename</source>
-      <translation>Hernoem</translation>
+      <translation>名前の変更</translation>
     </message>
     <message>
       <source>Rename object</source>
-      <translation>Hernoem voorwerp</translation>
+      <translation>オブジェクトの名前を変更します。</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Etikette &amp; Eienskappe</translation>
+      <translation>ラベルと属性</translation>
     </message>
     <message>
       <source>Application</source>
-      <translation>Toepassing</translation>
+      <translation>アプリケーション</translation>
     </message>
     <message>
       <source>Finish editing</source>
-      <translation>Klaar gewysig</translation>
+      <translation>編集を終了</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Voltooi voorwerpwysiging</translation>
+      <translation>オブジェクトの編集を終了します。</translation>
     </message>
     <message>
       <source>Activate document</source>
-      <translation>Aktiveer dokument</translation>
+      <translation>ドキュメントをアクティブにする</translation>
     </message>
     <message>
       <source>Activate document %1</source>
-      <translation>Aktiveer dokument %1</translation>
+      <translation>文書の％1をアクティブにする</translation>
     </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
       <source>Export PDF</source>
-      <translation>Stoor na PDF</translation>
+      <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
       <source>PDF file (*.pdf)</source>
-      <translation>PDF-lêer (*.pdf)</translation>
+      <translation>PDFファイル(*.pdf)</translation>
     </message>
   </context>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Kies die '%1' werkbank</translation>
+      <translation>ワークベンチ'%1'を選択</translation>
     </message>
   </context>
   <context>
     <name>Position</name>
     <message>
       <source>Form</source>
-      <translation>Vorm</translation>
+      <translation>Form</translation>
     </message>
     <message>
       <source>X:</source>
@@ -3310,15 +3312,15 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation>z:</translation>
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation>0,1 mm</translation>
+      <translation>0.1 mm</translation>
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation>0,5 mm</translation>
+      <translation>0.5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
@@ -3370,73 +3372,73 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>Grid Snap in</source>
-      <translation>Gidslynvashegting</translation>
+      <translation>Grid Snap in</translation>
     </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Boomvoorkoms</translation>
+      <translation>ツリービュー</translation>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Eiendomsaansig</translation>
+      <translation>プロパティの表示</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Seleksieaansig</translation>
+      <translation>選択ビュー</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Rapportaansig</translation>
+      <translation>レポートビュー</translation>
     </message>
     <message>
       <source>Task View</source>
-      <translation>Taakaansig</translation>
+      <translation>タスクビュー</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Saamgestelde aansig</translation>
+      <translation>コンボビュー</translation>
     </message>
     <message>
       <source>Toolbox</source>
-      <translation>Gereedskapskis</translation>
+      <translation>ツールボックス</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Pythonkonsole</translation>
+      <translation>Python コンソール</translation>
     </message>
     <message>
       <source>Display properties</source>
-      <translation>Vertoon eienskappe</translation>
+      <translation>プロパティの表示</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>General</source>
-      <translation>Algemeen</translation>
+      <translation>標準</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Vertoon</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
-      <translation>Onbekende lêersoort</translation>
+      <translation>不明なファイル形式</translation>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
-      <translation>Kan nie onbekende lêersoort oop maak nie: '%1'</translation>
+      <translation>％1：不明なファイルタイプを開くことができません。</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
-      <translation>Kan nie stoor na 'n onbekende lêersoort nie: '%1'</translation>
+      <translation>不明なファイル形式に保存できません: %1</translation>
     </message>
     <message>
       <source>Workbench failure</source>
-      <translation>Werkbankmislukking</translation>
+      <translation>ワークベンチのエラー</translation>
     </message>
     <message>
       <source>%1</source>
@@ -3444,338 +3446,338 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
-      <translation>Kan nie Qt-assistent (%1) lanseer nie</translation>
+      <translation>Qt アシスタント (%1) を起動できません。</translation>
     </message>
     <message>
       <source>Exception</source>
-      <translation>Uitsondering</translation>
+      <translation>例外</translation>
     </message>
     <message>
       <source>Open document</source>
-      <translation>Maak dokument oop</translation>
+      <translation>ドキュメントを開く</translation>
     </message>
     <message>
       <source>Import file</source>
-      <translation>Voer lêer in</translation>
+      <translation>ファイルをインポート</translation>
     </message>
     <message>
       <source>Export file</source>
-      <translation>Voer lêer uit</translation>
+      <translation>ファイルのエクスポート</translation>
     </message>
     <message>
       <source>Printing...</source>
-      <translation>Druk tans...</translation>
+      <translation>印刷...</translation>
     </message>
     <message>
       <source>Cannot load workbench</source>
-      <translation>Kan nie werkbank laai nie</translation>
+      <translation>ワークベンチを読み込めません</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
-      <translation>'n Algemene fout het voorgekom tydens die laai van die werkbank</translation>
+      <translation>ワークベンチを読み込み中に一般的なエラーが発生しました</translation>
     </message>
     <message>
       <source>File not found</source>
-      <translation>Lêer nie gevind nie</translation>
+      <translation>ファイルが見つかりませんでした</translation>
     </message>
     <message>
       <source>Cannot open file %1</source>
-      <translation>Kan nie lêer '%1' oop maak nie</translation>
+      <translation>ファイル %1 を開けません</translation>
     </message>
     <message>
       <source>Save views...</source>
-      <translation>Stoor aansigte...</translation>
+      <translation>ビューを保存...</translation>
     </message>
     <message>
       <source>Load views...</source>
-      <translation>Laai aansigte...</translation>
+      <translation>ビューを読み込み...</translation>
     </message>
     <message>
       <source>Freeze view</source>
-      <translation>Vries aansig</translation>
+      <translation>ビューを固定</translation>
     </message>
     <message>
       <source>Clear views</source>
-      <translation>Maak aansigte skoon</translation>
+      <translation>ビューをクリア</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
-      <translation>Herstel aansig &amp;%1</translation>
+      <translation>ビュー'%1'を復元</translation>
     </message>
     <message>
       <source>Save frozen views</source>
-      <translation>Stoor gevriesde aansigte</translation>
+      <translation>固定ビューを保存</translation>
     </message>
     <message>
       <source>Frozen views (*.cam)</source>
-      <translation>Bevrore aansigte (*.cam)</translation>
+      <translation>固定ビュー(*.cam)</translation>
     </message>
     <message>
       <source>Restore views</source>
-      <translation>Herstel aansigte</translation>
+      <translation>ビューを復元</translation>
     </message>
     <message>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-      <translation>Die invoer van die herstelde aansigte verwyder die reeds gestoorde aansigte. Wil jy voortgaan?</translation>
+      <translation>ビューの復元を行うと、現在保存されているビューはクリアされます。
+処理を続行しますか？</translation>
     </message>
     <message>
       <source>Restore frozen views</source>
-      <translation>Herstel bevrore aansigte</translation>
+      <translation>固定ビューの復元</translation>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
-      <translation>Kan nie lêer '%1' oop maak nie.</translation>
+      <translation>ファイル %1 を開くことができません.</translation>
     </message>
     <message>
       <source>Docked</source>
-      <translation>Vasgekoppel</translation>
+      <translation>ドッキングされている</translation>
     </message>
     <message>
       <source>Undocked</source>
-      <translation>Losgekoppel</translation>
+      <translation>ドッキングされていない</translation>
     </message>
     <message>
       <source>Fullscreen</source>
-      <translation>Volskerm</translation>
+      <translation>全画面表示</translation>
     </message>
     <message>
       <source>files</source>
-      <translation>lêers</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>Save picture</source>
-      <translation>Stoor beeld</translation>
+      <translation>画像を保存。</translation>
     </message>
     <message>
       <source>New sub-group</source>
-      <translation>Nuwe subgroep</translation>
+      <translation>新しいサブグループ</translation>
     </message>
     <message>
       <source>Enter the name:</source>
-      <translation>Gee die naam:</translation>
+      <translation>名前を入力:</translation>
     </message>
     <message>
       <source>New text item</source>
-      <translation>Nuwe teksitem</translation>
+      <translation>新しいテキスト項目</translation>
     </message>
     <message>
       <source>Enter your text:</source>
-      <translation>Gee jou teks:</translation>
+      <translation>テキストを入力してください：</translation>
     </message>
     <message>
       <source>New integer item</source>
-      <translation>Nuwe heelgetalitem</translation>
+      <translation>新しい整数項目</translation>
     </message>
     <message>
       <source>Enter your number:</source>
-      <translation>Gee jou nommer:</translation>
+      <translation>あなたの番号を入力します。</translation>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>Nuwe onondertekende item</translation>
+      <translation>新しい符号なし項目</translation>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Nuwe dryfitem</translation>
+      <translation>新しいフロートアイテム</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Nuwe Boole-item</translation>
+      <translation>新しいブール項目</translation>
     </message>
     <message>
       <source>Choose an item:</source>
-      <translation>Kies 'n item:</translation>
+      <translation>項目を選択します：</translation>
     </message>
     <message>
       <source>Rename group</source>
-      <translation>Hernoem groep</translation>
+      <translation>グループ名変更</translation>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
-      <translation>Die groep '%1' kan nie hernoem word nie.</translation>
+      <translation>グループ '%1' の名前は変更できません。</translation>
     </message>
     <message>
       <source>Existing group</source>
-      <translation>Bestaande groep</translation>
+      <translation>既存のグループ</translation>
     </message>
     <message>
       <source>The group '%1' already exists.</source>
-      <translation>Die groep '%1' bestaan reeds.</translation>
+      <translation>グループ '%1' は既に存在します。</translation>
     </message>
     <message>
       <source>Change value</source>
-      <translation>Verander waarde</translation>
+      <translation>値を変更</translation>
     </message>
     <message>
       <source>Save document under new filename...</source>
-      <translation>Stoor dokument onder 'n nuwe lêernaam ...</translation>
+      <translation>ドキュメントに新しいファイル名を付けて保存</translation>
     </message>
     <message>
       <source>Saving aborted</source>
-      <translation>Storing gestaak</translation>
+      <translation>保存は中断されました</translation>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation>Ongestoorde dokument</translation>
+      <translation>未保存のドキュメント</translation>
     </message>
     <message>
       <source>Save document before close?</source>
-      <translation>Stoor dokument voor jy dit toe maak?</translation>
+      <translation>閉じる前にドキュメントを保存しますか？</translation>
     </message>
     <message>
       <source>Save Macro</source>
-      <translation>Stoor Makro</translation>
+      <translation>マクロを保存します。</translation>
     </message>
     <message>
       <source>Finish</source>
-      <translation>Voltooi</translation>
+      <translation>完了</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Maak skoon</translation>
+      <translation>クリア</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Kanselleer</translation>
+      <translation>キャンセル</translation>
     </message>
     <message>
       <source>Inner</source>
-      <translation>Binneste</translation>
+      <translation>内側</translation>
     </message>
     <message>
       <source>Outer</source>
-      <translation>Buitenste</translation>
+      <translation>外側</translation>
     </message>
     <message>
       <source>No Browser</source>
-      <translation>Geen Leser</translation>
+      <translation>ブラウザーが無い</translation>
     </message>
     <message>
       <source>Unable to open your browser.
 
 Please open a browser window and type in: http://localhost:%1.</source>
-      <translation>Kan nie jou webleser oop maak nie.
-Maak asb. 'n leservenster oop en tik in http://localhost:%1</translation>
+      <translation>お使いのブラウザーを開くことができません。ブラウザーウィンドウを開いて
+次のURLを表示してください: http://localhost:%1</translation>
     </message>
     <message>
       <source>No Server</source>
-      <translation>Geen Bediener</translation>
+      <translation>サーバーが無い</translation>
     </message>
     <message>
       <source>Unable to start the server to port %1: %2.</source>
-      <translation>Nie in staat om die bediener te begin na poort %1:%2 nie.</translation>
+      <translation>%1: %2 のポートにサーバーを開始できませんでした。</translation>
     </message>
     <message>
       <source>Unable to open your system browser.</source>
-      <translation>Nie in staat om stelselleser oop te maak nie.</translation>
+      <translation>お使いのシステムのブラウザーを開くことができません。</translation>
     </message>
     <message>
       <source>Options...</source>
-      <translation>Opsies...</translation>
+      <translation>オプション...</translation>
     </message>
     <message>
       <source>Out of memory</source>
-      <translation>Onvoldoende geheue</translation>
+      <translation>メモリ不足</translation>
     </message>
     <message>
       <source>Not enough memory available to display the data.</source>
-      <translation>Nie genoeg geheue is beskikbaar om die data te vertoon nie.</translation>
+      <translation>データを表示するのに十分なメモリがありません。</translation>
     </message>
     <message>
       <source>Cannot find file %1</source>
-      <translation>Kan nie lêer '%1' vind nie</translation>
+      <translation>ファイル %1 が見つかりません。</translation>
     </message>
     <message>
       <source>Cannot find file %1 neither in %2 nor in %3</source>
-      <translation>Kan nie lêer '%1' vind nie, nie in '%2' of '%3' nie</translation>
+      <translation>%2 にも %3 にもファイル %1 が見つかりません。</translation>
     </message>
     <message>
       <source>Save %1 Document</source>
-      <translation>Stoor '%1' Dokument</translation>
+      <translation>%1 のドキュメントを保存します。</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation>%1-dokument (*.FCStd)</translation>
+      <translation>%1 のドキュメント (*.FCStd)</translation>
     </message>
     <message>
       <source>Save As</source>
-      <translation>Stoor as</translation>
+      <translation>名前を付けて保存</translation>
     </message>
     <message>
       <source>%1 already exists.
 Do you want to replace it?</source>
-      <translation>%1 bestaan reeds. Wil jy dit vervang?</translation>
+      <translation>%1 は既に存在します。上書きしますか。</translation>
     </message>
     <message>
       <source>Document not closable</source>
-      <translation>Dokument nie toemaakbaar nie</translation>
+      <translation>閉じられないドキュメント</translation>
     </message>
     <message>
       <source>The document is not closable for the moment.</source>
-      <translation>Die dokument is huidiglik nie toemaakbaar nie.</translation>
+      <translation>今閉じることができないドキュメント</translation>
     </message>
     <message>
       <source>No OpenGL</source>
-      <translation>Geen OpenGL</translation>
+      <translation>OpenGLがありません</translation>
     </message>
     <message>
       <source>This system does not support OpenGL</source>
-      <translation>Hierdie stelsel ondersteun nie OpenGL nie</translation>
+      <translation>このシステムは OpenGL をサポートしていません</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Kan nie dokumentasie laai nie. 
-Om dit te laai word Qt 4.4 of hoër benodig.</translation>
+      <translation>ドキュメントを読み込むことができません。それをロードするために Qt 4.4 以降が必要です。</translation>
     </message>
     <message>
       <source>%1 Help</source>
-      <translation>%1 Hulp</translation>
+      <translation>%1 Help</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
-      <translation>Voer PDF uit...</translation>
+      <translation>PDF ファイルをエクスポートしています</translation>
     </message>
     <message>
       <source>Wrong selection</source>
-      <translation>Verkeerde keuse</translation>
+      <translation>誤った選択</translation>
     </message>
     <message>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Slegs een voorwerp gekies. Kies asseblief twee.
-Wees bewus dat die plek waar jy kliek belangrik is.</translation>
+      <translation>Only one object selected. Please select two objects.
+Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Kies asseblief twee voorwerpe. 
-Wees bewus dat die punt waar jy kliek belangrik is.</translation>
+      <translation>Please select two objects.
+Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>New boolean item</source>
-      <translation>Nuwe Boole-item</translation>
+      <translation>新しいブール値項目</translation>
     </message>
     <message>
       <source>Navigation styles</source>
-      <translation>Navigasiestyle</translation>
+      <translation>Navigation styles</translation>
     </message>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigasie</translation>
+      <translation>%1 navigation</translation>
     </message>
     <message>
       <source>Move annotation</source>
-      <translation>Skuif annotasie</translation>
+      <translation>Move annotation</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Omskep</translation>
+      <translation>変換</translation>
     </message>
     <message>
       <source>The document is in editing mode and thus cannot be closed for the moment.
@@ -3788,82 +3790,82 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>&amp;About %1</source>
-      <translation>&amp;Aangaande %1</translation>
+      <translation>%1について(&amp;A)</translation>
     </message>
     <message>
       <source>About %1</source>
-      <translation>Aangaande %1</translation>
+      <translation>%1 について</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>About &amp;Qt</source>
-      <translation>&amp;Aangaande Qt</translation>
+      <translation>Qtについて(&amp;Q)</translation>
     </message>
     <message>
       <source>About Qt</source>
-      <translation>Aangaande Qt</translation>
+      <translation>Qtについて</translation>
     </message>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>&amp;Volgende</translation>
+      <translation>次へ(&amp;X)</translation>
     </message>
     <message>
       <source>Activate next window</source>
-      <translation>Aktiveer volgende venster</translation>
+      <translation>次のウィンドウをアクティブにする</translation>
     </message>
   </context>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>&amp;Vorige</translation>
+      <translation>前へ(&amp;V)</translation>
     </message>
     <message>
       <source>Activate previous window</source>
-      <translation>Aktiveer vorige venster</translation>
+      <translation>前のウィンドウをアクティブにする</translation>
     </message>
   </context>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
-      <translation>&amp;Organiseer Ikone</translation>
+      <translation>アイコンの整列(&amp;I)</translation>
     </message>
     <message>
       <source>Arrange Icons</source>
-      <translation>Organiseer Ikone</translation>
+      <translation>アイコンの整列</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
@@ -3874,247 +3876,247 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdCascadeWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Kaskade</translation>
+      <translation>カスケード(&amp;C)</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Teël pragmaties</translation>
+      <translation>タイル</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>閉じる(&amp;O)</translation>
     </message>
     <message>
       <source>Close active window</source>
-      <translation>Maak aktiewe venster toe</translation>
+      <translation>アクティブなウィンドウを閉じる</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>&amp;Maak alles toe</translation>
+      <translation>すべて閉じる(&amp;L)</translation>
     </message>
     <message>
       <source>Close all windows</source>
-      <translation>Maak alle vensters toe</translation>
+      <translation>すべてのウィンドウを閉じる</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>&amp;Begin bevelmodus...</translation>
+      <translation>Start command &amp;line...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
-      <translation>Maak bevelmodus oop in die konsool</translation>
+      <translation>Opens the command line in the console</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCopy</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>&amp;Kopieer</translation>
+      <translation>コピー（&amp;O）</translation>
     </message>
     <message>
       <source>Copy operation</source>
-      <translation>Kopieer verwerking</translation>
+      <translation>Copy operation</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCut</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>&amp;Cut</source>
-      <translation>&amp;Knip</translation>
+      <translation>切り取り(&amp;C)</translation>
     </message>
     <message>
       <source>Cut out</source>
-      <translation>Knip uit</translation>
+      <translation>Cut out</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDDuplicateSelection</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>Duplicate selection</source>
-      <translation>Duplikaatseleksie</translation>
+      <translation>Duplicate selection</translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Plaas duplikate van die geselekteerde voorwerpe in die aktiewe dokument</translation>
+      <translation>Put duplicates of the selected objects to the active document</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDelete</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>&amp;Delete</source>
-      <translation>&amp;Verwyder</translation>
+      <translation>削除(&amp;D)</translation>
     </message>
     <message>
       <source>Deletes the selected objects</source>
-      <translation>Verwyder die geselekteerde voorwerpe</translation>
+      <translation>選択したオブジェクトを削除</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>View turntable...</source>
-      <translation>Wys draaitafel...</translation>
+      <translation>View turntable...</translation>
     </message>
     <message>
       <source>View turntable</source>
-      <translation>Wys draaitafel</translation>
+      <translation>View turntable</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
-      <translation>&amp;Aanpassing...</translation>
+      <translation>カスタマイズ(&amp;S)</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
-      <translation>Verander nutsbalke and bevelbalke</translation>
+      <translation>カスタマイズツールバーとコマンドバー</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecute</name>
     <message>
       <source>Macros ...</source>
-      <translation>Makros...</translation>
+      <translation>マクロ...</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Maak 'n dialoog oop om 'n opgeneemde makro uit te voer</translation>
+      <translation>記録されたマクロを実行できるように、ダイアログ ボックスを開きます</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Execute macro</source>
-      <translation>Voer makro uit</translation>
+      <translation>マクロの実行</translation>
     </message>
     <message>
       <source>Execute the macro in the editor</source>
-      <translation>Voer die makro in die wysiger uit</translation>
+      <translation>エディタでマクロを実行します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>&amp;Makro-opname...</translation>
+      <translation>マクロの記録 (&amp;M).</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
-      <translation>Maak 'n dialoog oop om 'n makro op te neem</translation>
+      <translation>Opens a dialog to record a macro</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>&amp;Wysig parameters...</translation>
+      <translation>E&amp;dit parameters ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation>Maak 'n dialoog oop om die parameters te wysig</translation>
+      <translation>パラメーターを編集するためのダイアログを開きます</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Voorkeure...</translation>
+      <translation>設定 (&amp;P)...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation>Maak 'n dialoog oop om die voorkeure te wysig</translation>
+      <translation>設定を編集するためのダイアログを開きます</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Vie&amp;ws</source>
-      <translation>&amp;Aansigte</translation>
+      <translation>Vie&amp;ws</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Aktiveer/inaktiveer hierdie venster</translation>
+      <translation>Toggles this window</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Draw style</source>
@@ -4125,406 +4127,406 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdExport</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Voer uit...</translation>
+      <translation>&amp;Export...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Voer 'n voorwerp in die aktiewe dokument uit</translation>
+      <translation>Export an object in the active document</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Ondersteunde formate</translation>
+      <translation>Supported formats</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Recompute</source>
-      <translation>&amp;Herbereken</translation>
+      <translation>&amp;Recompute</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Herbereken eienskap of dokument</translation>
+      <translation>Recompute feature or document</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>FreeCAD Website</source>
-      <translation>FreeCAD Webwerf</translation>
+      <translation>FreeCAD Website</translation>
     </message>
     <message>
       <source>The FreeCAD website</source>
-      <translation>Die FreeCAD webwerf</translation>
+      <translation>FreeCADウェブサイト</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Freeze display</source>
-      <translation>Vries vertoning</translation>
+      <translation>Freeze display</translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
-      <translation>Vries die huidige aansigposisie</translation>
+      <translation>現在のビューを固定</translation>
     </message>
   </context>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Hide all objects</source>
-      <translation>Verskuil al die voorwerpe</translation>
+      <translation>すべてのオブジェクトを非表示にします。</translation>
     </message>
     <message>
       <source>Hide all objects in the document</source>
-      <translation>Verskuil al die voorwerpe in die dokument</translation>
+      <translation>ドキュメント内のすべてのオブジェクトを非表示にします。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Hide selection</source>
-      <translation>Verskuil seleksie</translation>
+      <translation>Hide selection</translation>
     </message>
     <message>
       <source>Hide all selected objects</source>
-      <translation>Verskuil al die gekose voorwerpe</translation>
+      <translation>選択したオブジェクトをすべて非表示にします。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdImport</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Import...</source>
-      <translation>&amp;Voer in...</translation>
+      <translation>インポート（&amp;I）...</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
-      <translation>Voer 'n lêer in in die aktiewe dokument</translation>
+      <translation>アクティブなドキュメント内のファイルをインポートします。</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Ondersteunde formate</translation>
+      <translation>Supported formats</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Debug macro</source>
-      <translation>Stel foute in die makro reg</translation>
+      <translation>マクロをデバッグする</translation>
     </message>
     <message>
       <source>Start debugging of macro</source>
-      <translation>Begin om makrofoute te soek</translation>
+      <translation>マクロのデバッグを開始します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Step over</source>
-      <translation>Spring oor</translation>
+      <translation>ステップ オーバー</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Stop debugging</source>
-      <translation>Stop foutsoeking</translation>
+      <translation>デバッグを停止します</translation>
     </message>
     <message>
       <source>Stop debugging of macro</source>
-      <translation>Stop makrofoutsoeking</translation>
+      <translation>Stop debugging of macro</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
-      <translation>&amp;Stop makro opname</translation>
+      <translation>マクロの記録を停止(&amp;S)</translation>
     </message>
     <message>
       <source>Stop the macro recording session</source>
-      <translation>Stop die makro opnamesessie</translation>
+      <translation>マクロの記録セッションを停止します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Meet afstand</translation>
+      <translation>距離を測定</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>Mesure distance</source>
-      <translation>Meet afstand</translation>
+      <translation>Mesure distance</translation>
     </message>
     <message>
       <source>Measures distance between two selected objects</source>
-      <translation>Meet afstand tussen twee geselekteerde voorwerpe</translation>
+      <translation>Measures distance between two selected objects</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>Merge project...</source>
-      <translation>Verenig projek ...</translation>
+      <translation>Merge project...</translation>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Verenig projek</translation>
+      <translation>Merge project</translation>
     </message>
     <message>
       <source>%1 document (*.fcstd)</source>
-      <translation>%1 dokument (*.fcstd)</translation>
+      <translation>%1 document (*.fcstd)</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
-      <translation>Kan nie die projek met homself verenig nie.</translation>
+      <translation>Cannot merge project with itself.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdNew</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;New</source>
-      <translation>&amp;Nuwe</translation>
+      <translation>新規(&amp;N)</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Skep 'n nuwe leë dokument</translation>
+      <translation>新しい空のドキュメントを作成します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Show help to the application</source>
-      <translation>Wys hulp vir die toepassing</translation>
+      <translation>アプリケーションにヘルプを表示する</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOnlineHelpPython</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Python Manuals</source>
-      <translation>Python Handleidings</translation>
+      <translation>Python のマニュアル</translation>
     </message>
     <message>
       <source>Show the Python documentation</source>
-      <translation>Wys die Python dokumentasie</translation>
+      <translation>Python のドキュメントを表示します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Help Website</source>
-      <translation>Hulpwebwerf</translation>
+      <translation>サイトのヘルプ</translation>
     </message>
     <message>
       <source>The website where the help is maintained</source>
-      <translation>Die webwerf waar die hulp in stand gehou word</translation>
+      <translation>ヘルプが維持されているウェブサイト</translation>
     </message>
   </context>
   <context>
     <name>StdCmdOpen</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Open...</source>
-      <translation>&amp;Maak oop...</translation>
+      <translation>開く (&amp;o).</translation>
     </message>
     <message>
       <source>Open a document or import files</source>
-      <translation>Maak 'n dokument oop of voer lêers in</translation>
+      <translation>ドキュメントを開くか、ファイルをインポートします。</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Ondersteunde formate</translation>
+      <translation>Supported formats</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>Alle lêers (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPaste</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
-      <translation>&amp;Plak</translation>
+      <translation>＆ペースト</translation>
     </message>
     <message>
       <source>Paste operation</source>
-      <translation>Plak operasie</translation>
+      <translation>貼り付け操作</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPlacement</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>Placement...</source>
-      <translation>Plasing...</translation>
+      <translation>Placement...</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
-      <translation>Plaseer die geselekteerde objekte</translation>
+      <translation>Place the selected objects</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrint</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Print...</source>
-      <translation>&amp;Druk...</translation>
+      <translation>＆プリント...</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Druk die dokument</translation>
+      <translation>ドキュメントを印刷します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>&amp;Stoor na PDF...</translation>
+      <translation>PDFファイル形式でエクスポート(&amp;E)...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
-      <translation>Voer die dokument uit na PDF</translation>
+      <translation>ドキュメントを PDF ファイル形式でエクスポートします。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>&amp;Print preview...</translation>
+      <translation>印刷プレビュー (&amp;P).</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Druk die dokument</translation>
+      <translation>ドキュメントを印刷します。</translation>
     </message>
     <message>
       <source>Print preview</source>
-      <translation>Print preview</translation>
+      <translation>印刷プレビュー</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>Project i&amp;nformation...</source>
-      <translation>&amp;Projekinligting...</translation>
+      <translation>プロジェクトインフォメーション(&amp;I)</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Wys besonderhede van die aktiewe projek</translation>
+      <translation>現在アクティブなプロジェクトの詳細を表示します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>Project utility...</source>
-      <translation>Project utility...</translation>
+      <translation>プロジェクトユーティリティ...</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
@@ -4535,831 +4537,831 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdPythonWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>Python Website</source>
-      <translation>Python Webwerf</translation>
+      <translation>Python のウェブサイト</translation>
     </message>
     <message>
       <source>The official Python website</source>
-      <translation>Die amptelike Python webwerf</translation>
+      <translation>Python の公式サイト</translation>
     </message>
   </context>
   <context>
     <name>StdCmdQuit</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>&amp;Verlaat</translation>
+      <translation>終了（&amp;X）</translation>
     </message>
     <message>
       <source>Quits the application</source>
-      <translation>Verlaat die toepassing</translation>
+      <translation>アプリケーションを終了します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>Random color</source>
-      <translation>Willekeurige kleur</translation>
+      <translation>ランダムな色</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>Recent files</source>
-      <translation>Onlangse lêers</translation>
+      <translation>最近開いたファイル</translation>
     </message>
     <message>
       <source>Recent file list</source>
-      <translation>Onlangse lêerlys</translation>
+      <translation>最近使ったファイルの一覧</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>&amp;Redo</source>
-      <translation>&amp;Herdoen</translation>
+      <translation>やり直し（&amp;R）</translation>
     </message>
     <message>
       <source>Redoes a previously undone action</source>
-      <translation>Herdoen 'n voorheen ongedane aksie</translation>
+      <translation>取り消した操作をやり直します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRefresh</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>&amp;Refresh</source>
-      <translation>&amp;Verfris</translation>
+      <translation>更新(&amp;R)</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation>Herbereken die huidige aktiewe dokument</translation>
+      <translation>現在アクティブなドキュメントを再計算します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSave</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Save</source>
-      <translation>&amp;Stoor</translation>
+      <translation>保存 (&amp;s)</translation>
     </message>
     <message>
       <source>Save the active document</source>
-      <translation>Stoor die aktiewe dokument</translation>
+      <translation>作業中のドキュメントを保存します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>&amp;Stoor as...</translation>
+      <translation>名前を付けて保存(&amp;A)</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
-      <translation>Stoor die aktiewe dokument onder 'n nuwe lêernaam</translation>
+      <translation>新しいファイル名で、作業中のドキュメントを保存する</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>Scene inspector...</source>
-      <translation>Toneelinspekteur...</translation>
+      <translation>Scene inspector...</translation>
     </message>
     <message>
       <source>Scene inspector</source>
-      <translation>Toneelinspekteur</translation>
+      <translation>Scene inspector</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>Select &amp;All</source>
-      <translation>&amp;Kies alles</translation>
+      <translation>すべて選択（&amp;A）</translation>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Kies alles</translation>
+      <translation>すべてを選択</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Appearance...</source>
-      <translation>Voorkoms ...</translation>
+      <translation>Appearance...</translation>
     </message>
     <message>
       <source>Sets the display properties of the selected object</source>
-      <translation>Stel die vertooneienskappe van die gekose objek</translation>
+      <translation>選択したオブジェクトの表示プロパティを設定します</translation>
     </message>
   </context>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Show all objects</source>
-      <translation>Wys alle voorwerpe</translation>
+      <translation>すべてのオブジェクトを表示します。</translation>
     </message>
     <message>
       <source>Show all objects in the document</source>
-      <translation>Wys alle voorwerpe in die dokument</translation>
+      <translation>ドキュメント内のすべてのオブジェクトを表示します。</translation>
     </message>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Show selection</source>
-      <translation>Wys seleksie</translation>
+      <translation>表示の選択</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
-      <translation>Wys alle gekose voorwerpe</translation>
+      <translation>選択したすべてのオブジェクトを表示する</translation>
     </message>
   </context>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Status bar</source>
-      <translation>Statusbalk</translation>
+      <translation>ステータスバー</translation>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Aktiveer/inaktiveer die statusbalk</translation>
+      <translation>ステータス バーを切り替えます</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
       <source>Tools</source>
-      <translation>Gereedskap</translation>
+      <translation>ツール</translation>
     </message>
     <message>
       <source>Texture mapping...</source>
-      <translation>Tekstuurkartering...</translation>
+      <translation>テクスチャマッピング...</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Tekstuurkartering</translation>
+      <translation>テクスチャーマッピング</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>&amp;Teël</translation>
+      <translation>タイル (&amp;T)</translation>
     </message>
     <message>
       <source>Tile the windows</source>
-      <translation>Teël die vensters</translation>
+      <translation>ウィンドウを並べて表示</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>Toggle breakpoint</source>
-      <translation>Aktiveer/Inaktiveer Breekpunt</translation>
+      <translation>ブレークポイントの切り替え</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Knipvlak</translation>
+      <translation>Clipping plane</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Aktiveer/inaktiveer knipvlak vir aktiewe aansig</translation>
+      <translation>Toggles clipping plane for active view</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Kies navigasie- of wysigingsmodus</translation>
+      <translation>Toggle navigation/Edit mode</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Skakel tussen die navigasie- en wysigingsmodus</translation>
+      <translation>Toggle between navigation and edit mode</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Toggle all objects</source>
-      <translation>Aktiveer/inaktiveer alle voorwerpe</translation>
+      <translation>すべてのオブジェクトを切り替える</translation>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Verander sigbaarheid van al die voorwerpe in die aktiewe dokument</translation>
+      <translation>Toggles visibility of all objects in the active document</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Toggle selectability</source>
-      <translation>Aktiveer/Inaktiveer kiesbaarheid</translation>
+      <translation>Toggle selectability</translation>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Aktiveer/inaktiveer die eienskap van die voorwerpe om gekies te word in die 3D-aansig</translation>
+      <translation>Toggles the property of the objects to get selected in the 3D-View</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Verander sigbaarheid</translation>
+      <translation>表示切り替え</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
-      <translation>Verander sigbaarheid</translation>
+      <translation>表示切り替え</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
-      <translation>&amp;Nutsbalke</translation>
+      <translation>ツールバー(&amp;B)</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Aktiveer/inaktiveer hierdie venster</translation>
+      <translation>Toggles this window</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTransform</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>Transform...</source>
-      <translation>Omskep...</translation>
+      <translation>Transform...</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
-      <translation>Omskep die geometrie van gekose voorwerpe</translation>
+      <translation>Transform the geometry of selected objects</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Go to selection</source>
-      <translation>Gaan na seleksie</translation>
+      <translation>Go to selection</translation>
     </message>
     <message>
       <source>Scroll to first selected item</source>
-      <translation>Blaai na die eerste geselekteerde item</translation>
+      <translation>最初に選択した項目までスクロール</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUndo</name>
     <message>
       <source>Edit</source>
-      <translation>Wysig</translation>
+      <translation>編集</translation>
     </message>
     <message>
       <source>&amp;Undo</source>
-      <translation>&amp;Herstel</translation>
+      <translation>元に戻す（&amp;U）</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Herstel presies een aksie</translation>
+      <translation>1つのアクションを元に戻す</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Dock views</source>
-      <translation>Koppel aansigte vas</translation>
+      <translation>Dock views</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
-      <translation>Koppel alle topvlak aansigte vas</translation>
+      <translation>Dock all top-level views</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewAxo</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Axometric</source>
-      <translation>Aksonometries</translation>
+      <translation>Axometric</translation>
     </message>
     <message>
       <source>Set to axometric view</source>
-      <translation>Ingestel op aksonometriese aansig</translation>
+      <translation>Set to axometric view</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Bodem</translation>
+      <translation>Bottom</translation>
     </message>
     <message>
       <source>Set to bottom view</source>
-      <translation>Stel in op onderaansig</translation>
+      <translation>底面ビューに設定</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Create new view</source>
-      <translation>Skep nuwe aansig</translation>
+      <translation>ビューを作成</translation>
     </message>
     <message>
       <source>Creates a new  view window for the active document</source>
-      <translation>Skep 'n nuwe aansigvenster vir die aktiewe dokument</translation>
+      <translation>Creates a new  view window for the active document</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Uitvinder voorbeeld #1</translation>
+      <translation>Inventor example #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
-      <translation>Toon 'n 3D tekstuur met manipuleerder</translation>
+      <translation>Shows a 3D texture with manipulator</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>Uitvinder voorbeeld #2</translation>
+      <translation>Inventor example #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
-      <translation>Wys sfere en sleepligte</translation>
+      <translation>Shows spheres and drag-lights</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>Uitvinder voorbeeld #3</translation>
+      <translation>Inventor example #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
-      <translation>Wys 'n geanimeerde tekstuur</translation>
+      <translation>Shows a animated texture</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>Pas alles</translation>
+      <translation>Fit all</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Pas die hele inhoud op die skerm</translation>
+      <translation>Fits the whole content on the screen</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>Pas seleksie</translation>
+      <translation>Fit selection</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>Pas die geselekteerde inhoud op die skerm</translation>
+      <translation>Fits the selected content on the screen</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFront</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Front</source>
-      <translation>Vooraansig</translation>
+      <translation>Front</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Ingestel op vooraansig</translation>
+      <translation>Set to front view</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Issue camera position</source>
-      <translation>Stel kameraposisie</translation>
+      <translation>Issue camera position</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Stuur die kameraposisie na die konsool en na 'n makro, om hierdie posisie maklik te onthou</translation>
+      <translation>Issue the camera position to the console and to a macro, to easily recall this position</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Stereo Interleaved Columns</source>
-      <translation>Stereo oorvleuelende kolomme</translation>
+      <translation>Stereo Interleaved Columns</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Verander stereo vertoning na Oorvleuelende Kolomme</translation>
+      <translation>Switch stereo viewing to Interleaved Columns</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Stereo Interleaved Rows</source>
-      <translation>Stereo Oorvleuelende Rye</translation>
+      <translation>Stereo Interleaved Rows</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Verander stereo vertoning na Oorvleuelende Rye</translation>
+      <translation>Switch stereo viewing to Interleaved Rows</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Stereo Off</source>
-      <translation>Stereo Af</translation>
+      <translation>Stereo Off</translation>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Skakel stereo vertoning af</translation>
+      <translation>Switch stereo viewing off</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Stereo viervuldige buffer</translation>
+      <translation>Stereo quad buffer</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Verander stereo beskouing na viervuldige buffer</translation>
+      <translation>Switch stereo viewing to quad buffer</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Stereo red/green</source>
-      <translation>Stereo rooi/groen</translation>
+      <translation>Stereo red/green</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/green</source>
-      <translation>Verander stereo vertoning na rooi/groen</translation>
+      <translation>Switch stereo viewing to red/green</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>Links</translation>
+      <translation>Left</translation>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Ingestel op linkeraansig</translation>
+      <translation>Set to left view</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRear</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Rear</source>
-      <translation>Agterste</translation>
+      <translation>Rear</translation>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Stel na agteraansig</translation>
+      <translation>Set to rear view</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Right</source>
-      <translation>Regs</translation>
+      <translation>Right</translation>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>Stel op regteraansig</translation>
+      <translation>Set to right view</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Top</source>
-      <translation>Bo-aansig</translation>
+      <translation>Top</translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Stel op bo-aansig</translation>
+      <translation>Set to top view</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
       <source>Help</source>
-      <translation>Hulp</translation>
+      <translation>ヘルプ</translation>
     </message>
     <message>
       <source>&amp;What's This?</source>
-      <translation>&amp;Wat is hierdie?</translation>
+      <translation>&amp;What's This?</translation>
     </message>
     <message>
       <source>What's This</source>
-      <translation>Wat is hierdie?</translation>
+      <translation>What's This</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWindows</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>&amp;Windows...</source>
-      <translation>&amp;Vensters...</translation>
+      <translation>&amp;Windows...</translation>
     </message>
     <message>
       <source>Windows list</source>
-      <translation>Vensterlys</translation>
+      <translation>Windows list</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
       <source>Window</source>
-      <translation>Venster</translation>
+      <translation>ウィンドウ</translation>
     </message>
     <message>
       <source>Activates this window</source>
-      <translation>Aktiveer hierdie venster</translation>
+      <translation>Activates this window</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Workbench</source>
-      <translation>Werkbank</translation>
+      <translation>Workbench</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Skakel tussen werkbanke</translation>
+      <translation>Switch between workbenches</translation>
     </message>
   </context>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Orthographic view</source>
-      <translation>Ortografiese aansig</translation>
+      <translation>Orthographic view</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Skakel na ortografiese aansigmodus</translation>
+      <translation>Switches to orthographic view mode</translation>
     </message>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>Perspektief aansig</translation>
+      <translation>Perspective view</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Skakel na perspektief aansigmodus</translation>
+      <translation>Switches to perspective view mode</translation>
     </message>
   </context>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Box zoom</source>
-      <translation>Bokszoem</translation>
+      <translation>Box zoom</translation>
     </message>
   </context>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Display mode</source>
-      <translation>Vertoningsmodus</translation>
+      <translation>表示モード</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Vertoon die aktiewe aansig in volskerm, losgekoppelde, of vasgekoppelde modus</translation>
+      <translation>Display the active view either in fullscreen, in undocked or docked mode</translation>
     </message>
   </context>
   <context>
     <name>StdViewScreenShot</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Save picture...</source>
-      <translation>Stoor beeld...</translation>
+      <translation>画像を保存...</translation>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
-      <translation>Vang 'n beeld van die huidige aansig</translation>
+      <translation>Creates a screenshot of the active view</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomIn</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Zoom In</source>
-      <translation>Zoem in</translation>
+      <translation>Zoom In</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standaardaansig</translation>
+      <translation>標準ビュー</translation>
     </message>
     <message>
       <source>Zoom Out</source>
-      <translation>Zoem Uit</translation>
+      <translation>Zoom Out</translation>
     </message>
   </context>
   <context>
@@ -5385,74 +5387,74 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
-      <translation>&amp;Lêer</translation>
+      <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>&amp;Wysig</translation>
+      <translation>編集(&amp;E)</translation>
     </message>
     <message>
       <source>Standard views</source>
-      <translation>Standaard voorkomste</translation>
+      <translation>標準のビュー</translation>
     </message>
     <message>
       <source>&amp;Stereo</source>
-      <translation>&amp;Stereo</translation>
+      <translation>ステレオ(&amp;S)</translation>
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>&amp;Nabyheid</translation>
+      <translation>ズーム(&amp;Z)</translation>
     </message>
     <message>
       <source>Visibility</source>
-      <translation>Sigbaarheid</translation>
+      <translation>可視性</translation>
     </message>
     <message>
       <source>&amp;View</source>
-      <translation>&amp;Voorkoms</translation>
+      <translation>表示(&amp;V)</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp;Gereedskap</translation>
+      <translation>ツール(&amp;T)</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
-      <translation>&amp;Makro</translation>
+      <translation>&amp;Macro</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
-      <translation>&amp;Vensters</translation>
+      <translation>ウインドウ(&amp;W)</translation>
     </message>
     <message>
       <source>&amp;On-line help</source>
-      <translation>&amp;Internethulp</translation>
+      <translation>オンライン ヘルプ(&amp;O)</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Help</translation>
+      <translation>ヘルプ (&amp;H)</translation>
     </message>
     <message>
       <source>File</source>
-      <translation>Lêer</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>マクロ</translation>
     </message>
     <message>
       <source>View</source>
-      <translation>Voorkoms</translation>
+      <translation>ビュー</translation>
     </message>
     <message>
       <source>Special Ops</source>
-      <translation>Spesiale verwerkings</translation>
+      <translation>特殊設定</translation>
     </message>
   </context>
   <context>
     <name>testClass</name>
     <message>
       <source>test</source>
-      <translation>Toets</translation>
+      <translation>test</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
@@ -5466,19 +5468,19 @@ p, li { white-space: pre-wrap; }
       <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaakPaneel&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Geskep vir Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Choose the style of the Task Panel</source>
-      <translation>Kies die styl van die taakpaneel</translation>
+      <translation>タスクパネルのスタイルを選択します。</translation>
     </message>
     <message>
       <source>Default</source>
-      <translation>Versuiminstelling</translation>
+      <translation>デフォルト</translation>
     </message>
     <message>
       <source>Windows XP</source>
