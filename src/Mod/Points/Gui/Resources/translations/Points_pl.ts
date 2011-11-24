@@ -6,60 +6,60 @@
     <message>
       <location filename="../../Command.cpp" line="+104"/>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>Punkty</translation>
     </message>
     <message>
       <source>Export points...</source>
-      <translation>Exporteer punten...</translation>
+      <translation>Eksport punktów...</translation>
     </message>
     <message>
       <source>Exports a point cloud</source>
-      <translation>Exporteert een puntenwolk</translation>
+      <translation>Exports a point cloud</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsImport</name>
     <message>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>Punkty</translation>
     </message>
     <message>
       <source>Import points...</source>
-      <translation>Importeer punten...</translation>
+      <translation>Import punktów ...</translation>
     </message>
     <message>
       <source>Imports a point cloud</source>
-      <translation>Importeert een puntenwolk</translation>
+      <translation>Imports a point cloud</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>Punkty</translation>
     </message>
     <message>
       <source>Cut point cloud</source>
-      <translation>Snij puntenwolk</translation>
+      <translation>Cut point cloud</translation>
     </message>
     <message>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Knipt een puntwolk met een geselecteerde veelhoek</translation>
+      <translation>Cuts a point cloud with a picked polygon</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>Punkty</translation>
     </message>
     <message>
       <source>Transform Points</source>
-      <translation>Transformeer Punten</translation>
+      <translation>Przekształcenie punktów</translation>
     </message>
     <message>
       <source>Test to transform a point cloud</source>
-      <translation>Test om een puntwolk te transformeren</translation>
+      <translation>Test to transform a point cloud</translation>
     </message>
   </context>
   <context>
@@ -67,47 +67,47 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="+14"/>
       <source>ASCII points import</source>
-      <translation>ASCII-punten import</translation>
+      <translation>Import punktów ASCII</translation>
     </message>
     <message>
       <source>Template:</source>
-      <translation>Sjabloon:</translation>
+      <translation>Szablon:</translation>
     </message>
     <message>
       <source>Special lines</source>
-      <translation>Speciale lijnen</translation>
+      <translation>Linie specjalne</translation>
     </message>
     <message>
       <source>First line:</source>
-      <translation>Eerste regel:</translation>
+      <translation>First line:</translation>
     </message>
     <message>
       <source>Ignore</source>
-      <translation>Negeren</translation>
+      <translation>Ignoruj</translation>
     </message>
     <message>
       <source>Cluster by lines starting with:</source>
-      <translation>Clusteren van regels die beginnen met:</translation>
+      <translation>Cluster by lines starting with:</translation>
     </message>
     <message>
       <source>Ignore lines starting with:</source>
-      <translation>Negeer regels die beginnen met:</translation>
+      <translation>Ignoruj ​​linie zaczynające się od:</translation>
     </message>
     <message>
       <source>Point format</source>
-      <translation>Punt-formaat</translation>
+      <translation>Format punktu</translation>
     </message>
     <message>
       <source>Number separator:</source>
-      <translation>Getal-scheidingsteken:</translation>
+      <translation>Separator dziesiętny:</translation>
     </message>
     <message>
       <source>Points format:</source>
-      <translation>Punten-formaat:</translation>
+      <translation>Styl Punktów:</translation>
     </message>
     <message>
       <source>Next block:</source>
-      <translation>Volgend blok:</translation>
+      <translation>Następny blok:</translation>
     </message>
     <message>
       <source>,</source>
@@ -127,35 +127,35 @@
     </message>
     <message>
       <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
+      <translation>X, Y, Z</translation>
     </message>
     <message>
       <source>X,Y</source>
-      <translation>X,Y</translation>
+      <translation>X, Y</translation>
     </message>
     <message>
       <source>none</source>
-      <translation>(leeg)</translation>
+      <translation>żaden</translation>
     </message>
     <message>
       <source>I,J,K (normal vector)</source>
-      <translation>I,J,K (normaalvector)</translation>
+      <translation>I,J,K (normal vector)</translation>
     </message>
     <message>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K (normaalvector 2D)</translation>
+      <translation>I,K (normal vector 2D)</translation>
     </message>
     <message>
       <source>R,G,B (color)</source>
-      <translation>R,G,B (kleur)</translation>
+      <translation>R, G, B (kolor)</translation>
     </message>
     <message>
       <source>I (Gray value)</source>
-      <translation>I (Grijstint)</translation>
+      <translation>I (Gray value)</translation>
     </message>
     <message>
       <source>Preview</source>
-      <translation>Voorbeeldweergave</translation>
+      <translation>Podgląd</translation>
     </message>
     <message>
       <source>100</source>
@@ -163,11 +163,11 @@
     </message>
     <message>
       <source>Number of points</source>
-      <translation>Aantal punten</translation>
+      <translation>Liczba punktów</translation>
     </message>
     <message>
       <source>Number of previewed lines:</source>
-      <translation>Aantal regels bekeken:</translation>
+      <translation>Number of previewed lines:</translation>
     </message>
   </context>
   <context>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Command.cpp" line="-84"/>
       <source>Ascii Points (*.asc);;All Files (*.*)</source>
-      <translation>ASCII-punten (*.asc);;alle bestanden (*.*)</translation>
+      <translation>Ascii Points (*.asc);;All Files (*.*)</translation>
     </message>
   </context>
   <context>
@@ -183,11 +183,11 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Points tools</source>
-      <translation>Punten-gereedschap</translation>
+      <translation>Narzędzia Punktów</translation>
     </message>
     <message>
       <source>&amp;Points</source>
-      <translation>&amp;Punten</translation>
+      <translation>&amp;Punkty</translation>
     </message>
   </context>
 </TS>

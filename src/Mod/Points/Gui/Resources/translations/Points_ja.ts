@@ -6,60 +6,60 @@
     <message>
       <location filename="../../Command.cpp" line="+104"/>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>点</translation>
     </message>
     <message>
       <source>Export points...</source>
-      <translation>Exporteer punten...</translation>
+      <translation>点をエクスポート...</translation>
     </message>
     <message>
       <source>Exports a point cloud</source>
-      <translation>Exporteert een puntenwolk</translation>
+      <translation>点群をエクスポート</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsImport</name>
     <message>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>点</translation>
     </message>
     <message>
       <source>Import points...</source>
-      <translation>Importeer punten...</translation>
+      <translation>点をインポート...</translation>
     </message>
     <message>
       <source>Imports a point cloud</source>
-      <translation>Importeert een puntenwolk</translation>
+      <translation>点群をインポート</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>点</translation>
     </message>
     <message>
       <source>Cut point cloud</source>
-      <translation>Snij puntenwolk</translation>
+      <translation>Cut point cloud</translation>
     </message>
     <message>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Knipt een puntwolk met een geselecteerde veelhoek</translation>
+      <translation>Cuts a point cloud with a picked polygon</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
       <source>Points</source>
-      <translation>Punten</translation>
+      <translation>点</translation>
     </message>
     <message>
       <source>Transform Points</source>
-      <translation>Transformeer Punten</translation>
+      <translation>点を変換</translation>
     </message>
     <message>
       <source>Test to transform a point cloud</source>
-      <translation>Test om een puntwolk te transformeren</translation>
+      <translation>Test to transform a point cloud</translation>
     </message>
   </context>
   <context>
@@ -67,47 +67,47 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="+14"/>
       <source>ASCII points import</source>
-      <translation>ASCII-punten import</translation>
+      <translation>ASCII points import</translation>
     </message>
     <message>
       <source>Template:</source>
-      <translation>Sjabloon:</translation>
+      <translation>テンプレート:</translation>
     </message>
     <message>
       <source>Special lines</source>
-      <translation>Speciale lijnen</translation>
+      <translation>Special lines</translation>
     </message>
     <message>
       <source>First line:</source>
-      <translation>Eerste regel:</translation>
+      <translation>First line:</translation>
     </message>
     <message>
       <source>Ignore</source>
-      <translation>Negeren</translation>
+      <translation>無視</translation>
     </message>
     <message>
       <source>Cluster by lines starting with:</source>
-      <translation>Clusteren van regels die beginnen met:</translation>
+      <translation>Cluster by lines starting with:</translation>
     </message>
     <message>
       <source>Ignore lines starting with:</source>
-      <translation>Negeer regels die beginnen met:</translation>
+      <translation>～で始まる行を無視する：</translation>
     </message>
     <message>
       <source>Point format</source>
-      <translation>Punt-formaat</translation>
+      <translation>点の形式</translation>
     </message>
     <message>
       <source>Number separator:</source>
-      <translation>Getal-scheidingsteken:</translation>
+      <translation>区切り文字：</translation>
     </message>
     <message>
       <source>Points format:</source>
-      <translation>Punten-formaat:</translation>
+      <translation>点の形式:</translation>
     </message>
     <message>
       <source>Next block:</source>
-      <translation>Volgend blok:</translation>
+      <translation>次のブロック：</translation>
     </message>
     <message>
       <source>,</source>
@@ -135,27 +135,27 @@
     </message>
     <message>
       <source>none</source>
-      <translation>(leeg)</translation>
+      <translation>なし</translation>
     </message>
     <message>
       <source>I,J,K (normal vector)</source>
-      <translation>I,J,K (normaalvector)</translation>
+      <translation>I、J、K（法線ベクトル）</translation>
     </message>
     <message>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K (normaalvector 2D)</translation>
+      <translation>Ｉ,K　（2D法線ベクトル）</translation>
     </message>
     <message>
       <source>R,G,B (color)</source>
-      <translation>R,G,B (kleur)</translation>
+      <translation>R,G,B （カラー）</translation>
     </message>
     <message>
       <source>I (Gray value)</source>
-      <translation>I (Grijstint)</translation>
+      <translation>I （グレーレベル）</translation>
     </message>
     <message>
       <source>Preview</source>
-      <translation>Voorbeeldweergave</translation>
+      <translation>プレビュー</translation>
     </message>
     <message>
       <source>100</source>
@@ -163,11 +163,11 @@
     </message>
     <message>
       <source>Number of points</source>
-      <translation>Aantal punten</translation>
+      <translation>点の数</translation>
     </message>
     <message>
       <source>Number of previewed lines:</source>
-      <translation>Aantal regels bekeken:</translation>
+      <translation>Number of previewed lines:</translation>
     </message>
   </context>
   <context>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Command.cpp" line="-84"/>
       <source>Ascii Points (*.asc);;All Files (*.*)</source>
-      <translation>ASCII-punten (*.asc);;alle bestanden (*.*)</translation>
+      <translation>Ascii点ファイル (*.asc);すべてのファイル (*. *)</translation>
     </message>
   </context>
   <context>
@@ -183,11 +183,11 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Points tools</source>
-      <translation>Punten-gereedschap</translation>
+      <translation>点ツール</translation>
     </message>
     <message>
       <source>&amp;Points</source>
-      <translation>&amp;Punten</translation>
+      <translation>点(&amp;P)</translation>
     </message>
   </context>
 </TS>
