@@ -4,61 +4,45 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Onderdeel</translation>
     </message>
     <message>
-      <location/>
       <source>Chamfer...</source>
-      <translation>Chamfer...</translation>
+      <translation>Afschuining ...</translation>
     </message>
     <message>
-      <location/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Chamfer the selected edges of a shape</translation>
+      <translation>Afschuining van de geselecteerde randen van een vorm</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
-      <location/>
       <source>Fillet</source>
       <translation>Afronding</translation>
     </message>
     <message>
-      <location/>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Maak een filet op een rand, vlak of lichaam</translation>
     </message>
   </context>
   <context>
-    <name>CmdPartDesignNewSketch</name>
-    <message>
-      <location/>
-      <source>PartDesign</source>
-      <translation>Onderdeel-ontwerp</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
-      <location/>
       <source>Pad</source>
       <translation>Pad</translation>
     </message>
     <message>
-      <location/>
       <source>Pad a selected sketch</source>
       <translation>Pad a selected sketch</translation>
     </message>
@@ -66,225 +50,414 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location/>
       <source>PartDesign</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
-      <location/>
       <source>Pocket</source>
-      <translation>Pocket</translation>
+      <translation>Uitsparing</translation>
     </message>
     <message>
-      <location/>
       <source>create a pocket with the selected sketch</source>
-      <translation>create a pocket with the selected sketch</translation>
+      <translation>Creëer een uitspring met de geselecteerde schets</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignRevolution</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+      <source>Revolution</source>
+      <translation>Revolution</translation>
+    </message>
+    <message>
+      <source>Revolve a selected sketch</source>
+      <translation>Revolve a selected sketch</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskView::TaskWatcherCommands</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="+39"/>
+      <source>Face tools</source>
+      <translation>Face tools</translation>
+    </message>
+    <message>
+      <source>Sketch tools</source>
+      <translation>Sketch tools</translation>
+    </message>
+    <message>
+      <source>Create Geometry</source>
+      <translation>Create Geometry</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location/>
+      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
-      <translation>Edges to chamfer</translation>
+      <translation>Randen om af te schuinen</translation>
     </message>
     <message>
-      <location/>
       <source>Start distance</source>
-      <translation>Start distance</translation>
+      <translation>Start op afstand</translation>
     </message>
     <message>
-      <location/>
       <source>End distance</source>
-      <translation>End distance</translation>
+      <translation>Eindafstand</translation>
     </message>
     <message>
-      <location/>
       <source>Edge%1</source>
-      <translation>Edge%1</translation>
+      <translation>Rand%1</translation>
     </message>
     <message>
-      <location/>
       <source>Distance</source>
-      <translation>Distance</translation>
+      <translation>Afstand</translation>
     </message>
     <message>
-      <location/>
       <source>No shape selected</source>
-      <translation>No shape selected</translation>
+      <translation>Geen vorm geselecteerd</translation>
     </message>
     <message>
-      <location/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>No valid shape is selected.
-Please select a valid shape in the drop-down box first.</translation>
+      <translation>Geen geldige vorm geselecteerd.
+Selecteer eerst een geldige vorm in het uitklap-scherm.</translation>
     </message>
     <message>
-      <location/>
       <source>No edge selected</source>
-      <translation>No edge selected</translation>
+      <translation>Geen rand geselecteerd</translation>
     </message>
     <message>
-      <location/>
       <source>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</source>
-      <translation>No edge entity is checked to chamfer.
-Please check one or more edge entities first.</translation>
+      <translation>Geen rand is geselecteerd om af te ronden.
+Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location/>
+      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
-      <translation>Chamfer Edges</translation>
+      <translation>Afschuinen Randen</translation>
     </message>
     <message>
-      <location/>
       <source>Shape</source>
-      <translation>Shape</translation>
+      <translation>Vorm</translation>
     </message>
     <message>
-      <location/>
       <source>Selected shape:</source>
-      <translation>Selected shape:</translation>
+      <translation>Geselecteerde vorm:</translation>
     </message>
     <message>
-      <location/>
       <source>No selection</source>
-      <translation>No selection</translation>
+      <translation>Geen selectie</translation>
     </message>
     <message>
-      <location/>
       <source>Chamfer Parameter</source>
-      <translation>Chamfer Parameter</translation>
+      <translation>Afschuin-parameter</translation>
     </message>
     <message>
-      <location/>
       <source>All</source>
-      <translation>All</translation>
+      <translation>Alle</translation>
     </message>
     <message>
-      <location/>
       <source>None</source>
-      <translation>None</translation>
+      <translation>Geen</translation>
     </message>
     <message>
-      <location/>
       <source>Chamfer type:</source>
-      <translation>Chamfer type:</translation>
+      <translation>Afschuin type:</translation>
     </message>
     <message>
-      <location/>
       <source>Constant Distance</source>
-      <translation>Constant Distance</translation>
+      <translation>Constante afstand</translation>
     </message>
     <message>
-      <location/>
       <source>Variable Distance</source>
-      <translation>Variable Distance</translation>
+      <translation>Variabele afstand</translation>
     </message>
     <message>
-      <location/>
       <source>Distance:</source>
-      <translation>Distance:</translation>
+      <translation>Afstand:</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgPadParameters</name>
+    <message>
+      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <source>Input error</source>
+      <translation>Input error</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskFilletParameters</name>
+    <message>
+      <location filename="../../TaskFilletParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Radius:</source>
+      <translation>Straal:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFilletParameters.cpp" line="+51"/>
+      <source>Fillet parameters</source>
+      <translation>Fillet parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskHoleParameters</name>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Type:</source>
+      <translation>Type:</translation>
+    </message>
+    <message>
+      <source>Dimension</source>
+      <translation>Afmeting</translation>
+    </message>
+    <message>
+      <source>Up to last</source>
+      <translation>Naar de laatste</translation>
+    </message>
+    <message>
+      <source>Up to first</source>
+      <translation>Up to first</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Grootte:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="+47"/>
+      <source>TaskHoleParameters</source>
+      <translation>TaskHoleParameters</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPadParameters</name>
     <message>
-      <location/>
+      <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Vorm</translation>
     </message>
     <message>
-      <location/>
+      <source>Type:</source>
+      <translation>Type:</translation>
+    </message>
+    <message>
+      <source>Dimension</source>
+      <translation>Afmeting</translation>
+    </message>
+    <message>
+      <source>Length:</source>
+      <translation>Lengte:</translation>
+    </message>
+    <message>
+      <source>Mirrored extent</source>
+      <translation>Mirrored extent</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Reversed</translation>
+    </message>
+    <message>
       <source>Display mode:</source>
       <translation>Weergavemodus:</translation>
     </message>
     <message>
-      <location/>
       <source>Plot mode:</source>
       <translation>Plot modus:</translation>
     </message>
     <message>
-      <location/>
       <source>Point size:</source>
       <translation>Puntgrootte:</translation>
     </message>
     <message>
-      <location/>
       <source>Line width:</source>
       <translation>Lijndikte:</translation>
     </message>
     <message>
-      <location/>
       <source>Transparency:</source>
       <translation>Transparantie:</translation>
     </message>
     <message>
-      <location/>
       <source>TaskPadParameters</source>
       <translation>TaskPadParameters</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <source>Pad parameters</source>
+      <translation>Pad parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskPatternRectangularParameters</name>
+    <message>
+      <location filename="../../TaskPatternRectangularParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Spacing1:</source>
+      <translation>Spacing1:</translation>
+    </message>
+    <message>
+      <source>Number1:</source>
+      <translation>Number1:</translation>
+    </message>
+    <message>
+      <source>Second extend</source>
+      <translation>Second extend</translation>
+    </message>
+    <message>
+      <source>Spacing2:</source>
+      <translation>Spacing2:</translation>
+    </message>
+    <message>
+      <source>Number2:</source>
+      <translation>Number2:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPatternRectangularParameters.cpp" line="+47"/>
+      <source>TaskPatternRectangularParameters</source>
+      <translation>TaskPatternRectangularParameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskPocketParameters</name>
+    <message>
+      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Type:</source>
+      <translation>Type:</translation>
+    </message>
+    <message>
+      <source>Dimension</source>
+      <translation>Afmeting</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Length</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <source>Pocket parameters</source>
+      <translation>Pocket parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskRevolutionParameters</name>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Assen:</translation>
+    </message>
+    <message>
+      <source>Vertical</source>
+      <translation>Vertical</translation>
+    </message>
+    <message>
+      <source>Horizontal</source>
+      <translation>Horizontal</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Hoek:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
+      <source>Revolution parameters</source>
+      <translation>Revolution parameters</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="-144"/>
       <source>Wrong selection</source>
       <translation>Verkeerde selectie</translation>
     </message>
     <message>
-      <location/>
       <source>Select a sketch or 2D object.</source>
       <translation>Selecteer een schets of 2D-object.</translation>
     </message>
     <message>
-      <location/>
       <source>The shape of the selected object is empty.</source>
       <translation>De vorm van het geselecteerde object is leeg.</translation>
     </message>
     <message>
-      <location/>
       <source>The shape of the selected object is not a wire.</source>
       <translation>De vorm van het geselecteerde object is geen draad.</translation>
     </message>
     <message>
-      <location/>
       <source>Select an edge, face or body. Only one body is allowed.</source>
       <translation>Selecteer een rand, vlak of lichaam. Slechts één lichaam is toegestaan.</translation>
     </message>
     <message>
-      <location/>
       <source>Wrong object type</source>
       <translation>Verkeerde objecttype</translation>
     </message>
     <message>
-      <location/>
       <source>Fillet works only on parts</source>
       <translation>Afrondingen werken alleen op onderdelen</translation>
     </message>
     <message>
-      <location/>
       <source>No Support</source>
-      <translation>No Support</translation>
+      <translation>Geen ondersteuning</translation>
     </message>
     <message>
-      <location/>
       <source>The sketch has to have a support for the pocket feature.
 Create the sketch on a face.</source>
-      <translation>The sketch has to have a support for the pocket feature.
-Create the sketch on a face.</translation>
+      <translation>De schets heeft een ondersteuning voor de uitsparingsfunctie nodig.
+Creëer de schets op een vlak.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPad.cpp" line="+60"/>
+      <source>Edit pad</source>
+      <translation>Edit pad</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <source>Edit pocket</source>
+      <translation>Edit pocket</translation>
+    </message>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>A dialog is already open in the task panel</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Do you want to close this dialog?</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
+      <source>Edit revolution</source>
+      <translation>Edit revolution</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="-3"/>
       <source>Part Design</source>
-      <translation>Part Design</translation>
+      <translation>Onderdelen ontwerp</translation>
     </message>
   </context>
 </TS>

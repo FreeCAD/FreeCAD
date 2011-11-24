@@ -6,75 +6,75 @@
     <message>
       <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
-      <translation>Tijelo</translation>
+      <translation>Rész</translation>
     </message>
     <message>
       <source>Chamfer...</source>
-      <translation>Zarubi...</translation>
+      <translation>Letörés ...</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Zarubi odabrane rubove, površine ili tijela</translation>
+      <translation>Az alakzat kijelölt éleinek letörése</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Alkatrész tervezés</translation>
     </message>
     <message>
       <source>Fillet</source>
-      <translation>Utisni</translation>
+      <translation>Lekerekítés</translation>
     </message>
     <message>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Zaobli rub, površinu ili tijelo</translation>
+      <translation>Létrehoz egy lekerekítést az élen, felületen vagy testen</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Alkatrész tervezés</translation>
     </message>
     <message>
       <source>Pad</source>
-      <translation>Izvučeni oblik</translation>
+      <translation>Blokk</translation>
     </message>
     <message>
       <source>Pad a selected sketch</source>
-      <translation>Izvuci odabranu skicu</translation>
+      <translation>Blokkba a kiválasztott vázlatot</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Alkatrész tervezés</translation>
     </message>
     <message>
       <source>Pocket</source>
-      <translation>Džep</translation>
+      <translation>Zseb</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
-      <translation>stvoriti džep s odabranom skicom</translation>
+      <translation>Hozzon létre egy zsebet a kiválasztott vázlattal</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Alkatrész tervezés</translation>
     </message>
     <message>
       <source>Revolution</source>
-      <translation>Obrtaj</translation>
+      <translation>Forradalom</translation>
     </message>
     <message>
       <source>Revolve a selected sketch</source>
-      <translation>Kreiraj tijelo obrtanjem skice</translation>
+      <translation>Esztergáld a kiválasztott vázlatot</translation>
     </message>
   </context>
   <context>
@@ -82,15 +82,15 @@
     <message>
       <location filename="../../Workbench.cpp" line="+39"/>
       <source>Face tools</source>
-      <translation>Alati plohe</translation>
+      <translation>Felület eszközök</translation>
     </message>
     <message>
       <source>Sketch tools</source>
-      <translation>Alati skice</translation>
+      <translation>Vázlat eszközök</translation>
     </message>
     <message>
       <source>Create Geometry</source>
-      <translation>Napravi geometriju</translation>
+      <translation>Geometria létrehozása</translation>
     </message>
   </context>
   <context>
@@ -98,41 +98,42 @@
     <message>
       <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
-      <translation>Rubove za zarubljivanje</translation>
+      <translation>Élek letörése</translation>
     </message>
     <message>
       <source>Start distance</source>
-      <translation>Početna udaljenost</translation>
+      <translation>Eleje távolság</translation>
     </message>
     <message>
       <source>End distance</source>
-      <translation>Krajnja udaljenosti</translation>
+      <translation>Vége távolsága</translation>
     </message>
     <message>
       <source>Edge%1</source>
-      <translation>Rub%1</translation>
+      <translation>Él %1</translation>
     </message>
     <message>
       <source>Distance</source>
-      <translation>Udaljenost</translation>
+      <translation>Távolság</translation>
     </message>
     <message>
       <source>No shape selected</source>
-      <translation>Nema odabranog oblika</translation>
+      <translation>Nincs alakzat kijelölve</translation>
     </message>
     <message>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>Nije odabran vanljan oblik. Molimo odaberite valjan oblik u padajućem okviru.</translation>
+      <translation>Nem érvényes alakzat van kiválasztva. 
+Kérjük, először a legördülő listából válasszon egy érvényes alakzatot.</translation>
     </message>
     <message>
       <source>No edge selected</source>
-      <translation>Nema odabranih rubova</translation>
+      <translation>Nincs kijelölve él</translation>
     </message>
     <message>
       <source>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</source>
-      <translation>Nije odabran ni jedan rub. Molimo prvo odaberite jedan ili više rubova.</translation>
+      <translation>A letöréshez nem lett él létezés ellenőrzés végezve. Ellenőrizze először egy vagy több él meglétét.</translation>
     </message>
   </context>
   <context>
@@ -140,47 +141,47 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
-      <translation>Zarubi stranice</translation>
+      <translation>Élek letörése</translation>
     </message>
     <message>
       <source>Shape</source>
-      <translation>Oblik</translation>
+      <translation>Alakzat</translation>
     </message>
     <message>
       <source>Selected shape:</source>
-      <translation>Odabrani oblik:</translation>
+      <translation>Kijelölt alakzat:</translation>
     </message>
     <message>
       <source>No selection</source>
-      <translation>Nema odabira</translation>
+      <translation>Nincs kijelölés</translation>
     </message>
     <message>
       <source>Chamfer Parameter</source>
-      <translation>Parametar zarubljenja</translation>
+      <translation>Letörési Paraméter</translation>
     </message>
     <message>
       <source>All</source>
-      <translation>Sve</translation>
+      <translation>Mind</translation>
     </message>
     <message>
       <source>None</source>
-      <translation>Nijedan</translation>
+      <translation>Egyik sem</translation>
     </message>
     <message>
       <source>Chamfer type:</source>
-      <translation>Oluk tip:</translation>
+      <translation>Letörés típusa:</translation>
     </message>
     <message>
       <source>Constant Distance</source>
-      <translation>Konstantna Udaljenost</translation>
+      <translation>Állandó távolság</translation>
     </message>
     <message>
       <source>Variable Distance</source>
-      <translation>Promjenjiva udaljenost</translation>
+      <translation>Változó távolság</translation>
     </message>
     <message>
       <source>Distance:</source>
-      <translation>Udaljenost:</translation>
+      <translation>Távolság:</translation>
     </message>
   </context>
   <context>
@@ -196,11 +197,11 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Polumjer:</translation>
+      <translation>Sugár:</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
@@ -213,32 +214,32 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Type:</source>
-      <translation>Vrsta:</translation>
+      <translation>Típus:</translation>
     </message>
     <message>
       <source>Dimension</source>
-      <translation>Dimenzija</translation>
+      <translation>Dimenzió</translation>
     </message>
     <message>
       <source>Up to last</source>
-      <translation>Do posljednjeg</translation>
+      <translation>Előzőig</translation>
     </message>
     <message>
       <source>Up to first</source>
-      <translation>Do prve</translation>
+      <translation>Fel a tetejére</translation>
     </message>
     <message>
       <source>Size:</source>
-      <translation>Veličina:</translation>
+      <translation>Méret:</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+47"/>
       <source>TaskHoleParameters</source>
-      <translation>TaskHoleParametri</translation>
+      <translation>TaskHoleParaméterek</translation>
     </message>
   </context>
   <context>
@@ -246,56 +247,56 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Type:</source>
-      <translation>Vrsta:</translation>
+      <translation>Típus:</translation>
     </message>
     <message>
       <source>Dimension</source>
-      <translation>Dimenzija</translation>
+      <translation>Dimenzió</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Duljina:</translation>
+      <translation>Hossz:</translation>
     </message>
     <message>
       <source>Mirrored extent</source>
-      <translation>Mjera zrcaljenja</translation>
+      <translation>Tükrözött mértékek</translation>
     </message>
     <message>
       <source>Reversed</source>
-      <translation>Obrnuti</translation>
+      <translation>Fordított</translation>
     </message>
     <message>
       <source>Display mode:</source>
-      <translation>Prikaz:</translation>
+      <translation>Megjelenítési mód:</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Način crtanja:</translation>
+      <translation>Ábrázolási mód:</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Veličina točke:</translation>
+      <translation>Pontméret:</translation>
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Širina linije:</translation>
+      <translation>Vonalvastagság:</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Prozirnost:</translation>
+      <translation>Átlátszóság:</translation>
     </message>
     <message>
       <source>TaskPadParameters</source>
-      <translation>TaskPadParameters</translation>
+      <translation>FeladatBlokkParaméter</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="-137"/>
       <source>Pad parameters</source>
-      <translation>Parametri izvučenog oblika</translation>
+      <translation>Pad paraméterek</translation>
     </message>
   </context>
   <context>
@@ -303,32 +304,32 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPatternRectangularParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Spacing1:</source>
-      <translation>Razmak1:</translation>
+      <translation>Hehyköz1:</translation>
     </message>
     <message>
       <source>Number1:</source>
-      <translation>Broj1:</translation>
+      <translation>Szám1:</translation>
     </message>
     <message>
       <source>Second extend</source>
-      <translation>Drugi kraj</translation>
+      <translation>Második értékek</translation>
     </message>
     <message>
       <source>Spacing2:</source>
-      <translation>Razmak2:</translation>
+      <translation>Szóköz2:</translation>
     </message>
     <message>
       <source>Number2:</source>
-      <translation>Broj2:</translation>
+      <translation>Szám2:</translation>
     </message>
     <message>
       <location filename="../../TaskPatternRectangularParameters.cpp" line="+47"/>
       <source>TaskPatternRectangularParameters</source>
-      <translation>TaskPatternRectangularParametri</translation>
+      <translation>TaskPatternRectangularParaméterek</translation>
     </message>
   </context>
   <context>
@@ -336,15 +337,15 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Type:</source>
-      <translation>Vrsta:</translation>
+      <translation>Típus:</translation>
     </message>
     <message>
       <source>Dimension</source>
-      <translation>Dimenzija</translation>
+      <translation>Dimenzió</translation>
     </message>
     <message>
       <source>Length</source>
@@ -361,11 +362,11 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Axis:</source>
-      <translation>Os:</translation>
+      <translation>Tengely:</translation>
     </message>
     <message>
       <source>Vertical</source>
@@ -377,7 +378,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Angle:</source>
-      <translation>Kut:</translation>
+      <translation>Dőlésszög:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
@@ -390,45 +391,45 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../Command.cpp" line="-144"/>
       <source>Wrong selection</source>
-      <translation>Pogrešan odabir</translation>
+      <translation>Rossz kiválasztás</translation>
     </message>
     <message>
       <source>Select a sketch or 2D object.</source>
-      <translation>Odaberite skicu ili 2D objekt.</translation>
+      <translation>Vázlat vagy 2D kijelölése.</translation>
     </message>
     <message>
       <source>The shape of the selected object is empty.</source>
-      <translation>Oblik odabranog objekta je prazan.</translation>
+      <translation>Az alakzat, a kijelölt objektumon üres.</translation>
     </message>
     <message>
       <source>The shape of the selected object is not a wire.</source>
-      <translation>Oblik odabranog objekta nije žica.</translation>
+      <translation>Az alakzat, a kijelölt objektumon nem vonal.</translation>
     </message>
     <message>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation>Odaberite rub, plohu ili tijelo. Samo jedno tijelo je dozvoljeno.</translation>
+      <translation>Egy él, felület vagy test kiválasztása. Csak egy test megengedett.</translation>
     </message>
     <message>
       <source>Wrong object type</source>
-      <translation>Pogrešan tip objekta</translation>
+      <translation>Hibás objektumtípus</translation>
     </message>
     <message>
       <source>Fillet works only on parts</source>
-      <translation>Rubove možete zaobliti samo na tijelima</translation>
+      <translation>Lekerekítés csak az alkatrészeken működik</translation>
     </message>
     <message>
       <source>No Support</source>
-      <translation>Bez podrške</translation>
+      <translation>Nem támogatott</translation>
     </message>
     <message>
       <source>The sketch has to have a support for the pocket feature.
 Create the sketch on a face.</source>
-      <translation>Skica mora imati podršku za udubljenje. Napravite skicu na površini.</translation>
+      <translation>A vázlatnak támogatnia kell a zseb funkciót. Hozza létre a vázlatot a felületen.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="+60"/>
       <source>Edit pad</source>
-      <translation>Uredi izvučeni oblik</translation>
+      <translation>Szerkesztés pad</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="+54"/>
@@ -437,11 +438,11 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>Dijalog je već otvoren u ploči zadataka</translation>
+      <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation>Želite li zatvoriti ovaj dijalog?</translation>
+      <translation>Biztos be szeretné zárni a párbeszédpanelt?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
@@ -454,7 +455,7 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../Workbench.cpp" line="-3"/>
       <source>Part Design</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Alkatrész tervezés</translation>
     </message>
   </context>
 </TS>
