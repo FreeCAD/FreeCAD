@@ -6,82 +6,82 @@
     <message>
       <location filename="../../Command.cpp" line="+285"/>
       <source>File</source>
-      <translation>Fichier</translation>
+      <translation>ファイル</translation>
     </message>
     <message>
       <source>&amp;Export page...</source>
-      <translation>&amp;Exporter la page...</translation>
+      <translation>&amp;Export page...</translation>
     </message>
     <message>
       <source>Export a page to an SVG file</source>
-      <translation>Exporter une page vers un fichier SVG</translation>
+      <translation>SVGファイルにエクスポート</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
       <source>Drawing</source>
-      <translation>Mise en plan</translation>
+      <translation>図面</translation>
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Insérer une nouvelle mise en plan A3 paysage</translation>
+      <translation>Insert new A3 landscape drawing</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
       <source>Drawing</source>
-      <translation>Mise en plan</translation>
+      <translation>図面</translation>
     </message>
     <message>
       <source>Insert new drawing</source>
-      <translation>Insérer une nouvelle mise en plan</translation>
+      <translation>新しい図面を挿入</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingNewView</name>
     <message>
       <source>Drawing</source>
-      <translation>Mise en plan</translation>
+      <translation>図面</translation>
     </message>
     <message>
       <source>Insert view in drawing</source>
-      <translation>Insérer une vue dans la page</translation>
+      <translation>Insert view in drawing</translation>
     </message>
     <message>
       <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Insérer une nouvelle vue de la pièce dans la page active</translation>
+      <translation>Insert a new View of a Part in the active drawing</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingOpen</name>
     <message>
       <source>Drawing</source>
-      <translation>Mise en plan</translation>
+      <translation>図面</translation>
     </message>
     <message>
       <source>Open SVG...</source>
-      <translation>Ouvrir SVG...</translation>
+      <translation>Open SVG...</translation>
     </message>
     <message>
       <source>Open a scalable vector graphic</source>
-      <translation>Ouvrir un fichier vectoriel SVG</translation>
+      <translation>ベクトルグラフィックを開きます。</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
       <source>Drawing</source>
-      <translation>Mise en plan</translation>
+      <translation>図面</translation>
     </message>
     <message>
       <source>Project shape...</source>
-      <translation>Projeter la forme...</translation>
+      <translation>Project shape...</translation>
     </message>
     <message>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Projeter une forme sur un plan défini par l'utilisateur</translation>
+      <translation>Project shape onto a user-defined plane</translation>
     </message>
   </context>
   <context>
@@ -89,51 +89,51 @@
     <message>
       <location filename="../../DrawingView.cpp" line="+206"/>
       <source>&amp;Background</source>
-      <translation>&amp;Arrière-plan</translation>
+      <translation>&amp;Background</translation>
     </message>
     <message>
       <source>&amp;Outline</source>
-      <translation>&amp;Contour</translation>
+      <translation>&amp;Outline</translation>
     </message>
     <message>
       <source>&amp;Native</source>
-      <translation>&amp;Natif</translation>
+      <translation>&amp;Native</translation>
     </message>
     <message>
       <source>&amp;OpenGL</source>
-      <translation>&amp;OpenGL</translation>
+      <translation>OpenGL (&amp;o)</translation>
     </message>
     <message>
       <source>&amp;Image</source>
-      <translation>&amp;Image</translation>
+      <translation>画像（&amp;ｉ）</translation>
     </message>
     <message>
       <source>&amp;High Quality Antialiasing</source>
-      <translation>Anticrénelage &amp;haute qualité</translation>
+      <translation>高品質アンチエイリアス(&amp;H)</translation>
     </message>
     <message>
       <source>Open SVG File</source>
-      <translation>Ouvrir un fichier SVG</translation>
+      <translation>SVG ファイルを開く</translation>
     </message>
     <message>
       <source>Could not open file '%1'.</source>
-      <translation>Impossible d'ouvrir le fichier'%1'.</translation>
+      <translation>Could not open file '%1'.</translation>
     </message>
     <message>
       <source>&amp;Renderer</source>
-      <translation>Moteur de &amp;rendu</translation>
+      <translation>&amp;Renderer</translation>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
       <source>PDF file (*.pdf)</source>
-      <translation>Fichier PDF (*.pdf)</translation>
+      <translation>PDF ファイル (*.pdf)</translation>
     </message>
     <message>
       <source>Page sizes</source>
-      <translation>Formats de papier</translation>
+      <translation>ページサイズ</translation>
     </message>
     <message>
       <source>A0</source>
@@ -165,47 +165,47 @@
     <message>
       <location filename="../../TaskDialog.cpp" line="+49"/>
       <source>Visible sharp edges</source>
-      <translation>Arêtes vives visibles</translation>
+      <translation>Visible sharp edges</translation>
     </message>
     <message>
       <source>Visible smooth edges</source>
-      <translation>Arêtes de tangence visibles</translation>
+      <translation>Visible smooth edges</translation>
     </message>
     <message>
       <source>Visible sewn edges</source>
-      <translation>Arêtes cousues visibles</translation>
+      <translation>Visible sewn edges</translation>
     </message>
     <message>
       <source>Visible outline edges</source>
-      <translation>Arêtes de contour visibles</translation>
+      <translation>Visible outline edges</translation>
     </message>
     <message>
       <source>Visible isoparameters</source>
-      <translation>Isoparamètres visibles</translation>
+      <translation>Visible isoparameters</translation>
     </message>
     <message>
       <source>Hidden sharp edges</source>
-      <translation>Arêtes vives masquées</translation>
+      <translation>Hidden sharp edges</translation>
     </message>
     <message>
       <source>Hidden smooth edges</source>
-      <translation>Arêtes de tangence masquées</translation>
+      <translation>Hidden smooth edges</translation>
     </message>
     <message>
       <source>Hidden sewn edges</source>
-      <translation>Arêtes cousues masquées</translation>
+      <translation>Hidden sewn edges</translation>
     </message>
     <message>
       <source>Hidden outline edges</source>
-      <translation>Arêtes de contour masquées</translation>
+      <translation>Hidden outline edges</translation>
     </message>
     <message>
       <source>Hidden isoparameters</source>
-      <translation>Isoparamètres masqués</translation>
+      <translation>Hidden isoparameters</translation>
     </message>
     <message>
       <source>Project shapes</source>
-      <translation>Projeter les formes</translation>
+      <translation>Project shapes</translation>
     </message>
   </context>
   <context>
@@ -213,97 +213,97 @@
     <message>
       <location filename="../../Command.cpp" line="-196"/>
       <source>A0 landscape</source>
-      <translation>A0 paysage</translation>
+      <translation>A0 横</translation>
     </message>
     <message>
       <source>Insert new A0 landscape drawing</source>
-      <translation>Insérer une mise en plan A0 paysage</translation>
+      <translation>Insert new A0 landscape drawing</translation>
     </message>
     <message>
       <source>A1 landscape</source>
-      <translation>A1 paysage</translation>
+      <translation>A1 横</translation>
     </message>
     <message>
       <source>Insert new A1 landscape drawing</source>
-      <translation>Insérer une mise en plan A1 paysage</translation>
+      <translation>Insert new A1 landscape drawing</translation>
     </message>
     <message>
       <source>A2 landscape</source>
-      <translation>A2 paysage</translation>
+      <translation>A2 横</translation>
     </message>
     <message>
       <source>Insert new A2 landscape drawing</source>
-      <translation>Insérer une mise en plan A2 paysage</translation>
+      <translation>Insert new A2 landscape drawing</translation>
     </message>
     <message>
       <source>A3 landscape</source>
-      <translation>A3 Paysage</translation>
+      <translation>A3 横</translation>
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Insérer une nouvelle mise en plan A3 paysage</translation>
+      <translation>Insert new A3 landscape drawing</translation>
     </message>
     <message>
       <source>A4 landscape</source>
-      <translation>A4 paysage</translation>
+      <translation>A4 横</translation>
     </message>
     <message>
       <source>Insert new A4 landscape drawing</source>
-      <translation>Insérer une mise en plan A4 paysage</translation>
+      <translation>Insert new A4 landscape drawing</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Choose an SVG file to open</source>
-      <translation>Choisir un fichier SVG à ouvrir</translation>
+      <translation>SVG ファイルを選択</translation>
     </message>
     <message>
       <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
       <source>Drawing viewer</source>
-      <translation>Visionneuse de mise en plan</translation>
+      <translation>Drawing viewer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="+1"/>
       <source>Scalable Vector Graphics (*.svg *.svgz)</source>
-      <translation>Fichier vectoriel SVG (*.svg *.svgz)</translation>
+      <translation>Scalable Vector Graphics (*.svg *.svgz)</translation>
     </message>
     <message>
       <source>Wrong selection</source>
-      <translation>Mauvaise sélection</translation>
+      <translation>誤った選択</translation>
     </message>
     <message>
       <source>Select a Part object.</source>
-      <translation>Sélectionnez un objet pièce.</translation>
+      <translation>Select a Part object.</translation>
     </message>
     <message>
       <source>No page to insert</source>
-      <translation>Aucune page pour insérer</translation>
+      <translation>No page to insert</translation>
     </message>
     <message>
       <source>Create a page to insert.</source>
-      <translation>Créer une page à insérer.</translation>
+      <translation>Create a page to insert.</translation>
     </message>
     <message>
       <source>Select one Page object.</source>
-      <translation>Sélectionnez un objet Page.</translation>
+      <translation>Select one Page object.</translation>
     </message>
     <message>
       <source>SVG(*.svg)</source>
-      <translation>SVG (*.svg)</translation>
+      <translation>SVG(*.svg)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Tous les fichiers (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
     <message>
       <source>Export page</source>
-      <translation>Exporter la page</translation>
+      <translation>Export page</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="-25"/>
       <source>Show drawing</source>
-      <translation>Afficher la mise en plan</translation>
+      <translation>Show drawing</translation>
     </message>
   </context>
   <context>
@@ -311,7 +311,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Drawing</source>
-      <translation>Mise en plan</translation>
+      <translation>図面</translation>
     </message>
   </context>
 </TS>
