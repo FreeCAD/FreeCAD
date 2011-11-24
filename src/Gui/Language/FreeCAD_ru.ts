@@ -2639,8 +2639,8 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location/>
-      <source>Rotation axis wih angle</source>
-      <translation>Rotation axis wih angle</translation>
+      <source>Rotation axis with angle</source>
+      <translation>Rotation axis with angle</translation>
     </message>
     <message>
       <location/>

@@ -2643,7 +2643,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <location/>
-      <source>Rotation axis wih angle</source>
+      <source>Rotation axis with angle</source>
       <translation>Rotationsaxel med vinkel</translation>
     </message>
     <message>

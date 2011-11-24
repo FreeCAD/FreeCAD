@@ -2639,7 +2639,7 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
       <location/>
-      <source>Rotation axis wih angle</source>
+      <source>Rotation axis with angle</source>
       <translation>Rotasjonsakse med vinkel</translation>
     </message>
     <message>

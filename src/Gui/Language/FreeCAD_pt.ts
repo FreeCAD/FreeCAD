@@ -2639,7 +2639,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <location/>
-      <source>Rotation axis wih angle</source>
+      <source>Rotation axis with angle</source>
       <translation>Eixo de rotação com ângulo</translation>
     </message>
     <message>

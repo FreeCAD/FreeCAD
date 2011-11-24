@@ -2641,7 +2641,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <location/>
-      <source>Rotation axis wih angle</source>
+      <source>Rotation axis with angle</source>
       <translation>Rotasie-as met hoek</translation>
     </message>
     <message>

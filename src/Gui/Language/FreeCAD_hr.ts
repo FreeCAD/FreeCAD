@@ -2637,7 +2637,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location/>
-      <source>Rotation axis wih angle</source>
+      <source>Rotation axis with angle</source>
       <translation>Os rotacije s kutem</translation>
     </message>
     <message>

@@ -433,7 +433,7 @@
        <widget class="QComboBox" name="rotationInput">
         <item>
          <property name="text">
-          <string>Rotation axis wih angle</string>
+          <string>Rotation axis with angle</string>
          </property>
         </item>
         <item>

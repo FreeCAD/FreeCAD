@@ -2642,7 +2642,7 @@ Spécifier un autre dossier, svp.</translation>
     </message>
     <message>
       <location/>
-      <source>Rotation axis wih angle</source>
+      <source>Rotation axis with angle</source>
       <translation>Axe de rotation avec angle</translation>
     </message>
     <message>

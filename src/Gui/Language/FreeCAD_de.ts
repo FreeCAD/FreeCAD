@@ -2867,7 +2867,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <location line="+28"/>
-        <source>Rotation axis wih angle</source>
+        <source>Rotation axis with angle</source>
         <translation>Rotationsachse mit Winkel</translation>
     </message>
     <message>

@@ -2145,7 +2145,7 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation axis wih angle</source>
+        <source>Rotation axis with angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
