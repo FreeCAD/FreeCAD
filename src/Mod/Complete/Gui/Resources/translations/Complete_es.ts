@@ -4,280 +4,64 @@
   <context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+42"/>
       <source>Complete</source>
       <translation>Completado</translation>
     </message>
     <message>
-      <location/>
       <source>Constraint Axle...</source>
       <translation>Restricción de eje...</translation>
     </message>
     <message>
-      <location/>
       <source>set a axle constraint between two objects</source>
       <translation>definir una restricción de eje entre dos objetos</translation>
     </message>
   </context>
   <context>
-    <name>CompleteGui::Workbench</name>
+    <name>Test_Test</name>
     <message>
-      <location/>
-      <source>&amp;File</source>
-      <translation>%Archivo</translation>
+      <location filename="../../Workbench.cpp" line="+57"/>
+      <source>Self-test...</source>
+      <translation>Self-test...</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Edit</source>
-      <translation>&amp;Editar</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Standard views</source>
-      <translation>Vistas estándar</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Stereo</source>
-      <translation>&amp;Estéreo</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Zoom</source>
-      <translation>Zoom</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Visibility</source>
-      <translation>Visibilidad</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;View</source>
-      <translation>&amp;Vista</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Tools</source>
-      <translation>&amp;Herramientas</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Analyze</source>
-      <translation>Analizar</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Boolean</source>
-      <translation>Booleano</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Meshes</source>
-      <translation>&amp;Mallas</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Part</source>
-      <translation>&amp;Pieza</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Parametric</source>
-      <translation>Paramétrico</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Ske&amp;tch</source>
-      <translation>Boc&amp;eto</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Drawing</source>
-      <translation>%Dibujo</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Borrador</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Windows</source>
-      <translation>&amp;Ventanas</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Online-help</source>
-      <translation>%Ayuda en línea</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Help</source>
-      <translation>&amp;Ayuda</translation>
-    </message>
-    <message>
-      <location/>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
-      <location/>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Part design</source>
-      <translation>Diseño de piezas</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Sketch based</source>
-      <translation>Basado en esbozo</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Drawings</source>
-      <translation>Dibujos</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Drafting</source>
-      <translation>Borrador</translation>
+      <source>Runs a self-test to check if the application works properly</source>
+      <translation>Runs a self-test to check if the application works properly</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
-      <source>&amp;File</source>
-      <translation>%Archivo</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Edit</source>
-      <translation>&amp;Editar</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Standard views</source>
-      <translation>Vistas estándar</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;3D View</source>
-      <translation>&amp;Vista 3D</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Zoom</source>
-      <translation>Zoom</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;View</source>
-      <translation>&amp;Vista</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Tools</source>
-      <translation>&amp;Herramientas</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Analyze</source>
-      <translation>Analizar</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Boolean</source>
-      <translation>Booleano</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Meshes</source>
-      <translation>&amp;Mallas</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Part</source>
-      <translation>&amp;Pieza</translation>
-    </message>
-    <message>
-      <location/>
       <source>&amp;Drawing</source>
       <translation>%Dibujo</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Windows</source>
-      <translation>&amp;Ventanas</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Online-help</source>
-      <translation>%Ayuda en línea</translation>
-    </message>
-    <message>
-      <location/>
-      <source>&amp;Help</source>
-      <translation>&amp;Ayuda</translation>
-    </message>
-    <message>
-      <location/>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
-      <location/>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
-      <location/>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
-      <location/>
       <source>Ske&amp;tch</source>
       <translation>Boc&amp;eto</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Raytracing</source>
       <translation>&amp;Raytracing</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Drafting</source>
       <translation>&amp;Borrador</translation>
     </message>
     <message>
-      <location/>
       <source>Sketch based</source>
       <translation>Basado en esbozo</translation>
     </message>
     <message>
-      <location/>
       <source>Parametric</source>
       <translation>Paramétrico</translation>
+    </message>
+    <message>
+      <source>Object appearence</source>
+      <translation>Apariencia del objeto</translation>
+    </message>
+    <message>
+      <source>Wire Tools</source>
+      <translation>Wire Tools</translation>
     </message>
   </context>
 </TS>

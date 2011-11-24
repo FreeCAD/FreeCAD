@@ -6,15 +6,15 @@
     <message>
       <location filename="../../Command.cpp" line="+42"/>
       <source>Complete</source>
-      <translation>Fullført</translation>
+      <translation>Befejez</translation>
     </message>
     <message>
       <source>Constraint Axle...</source>
-      <translation>Aksellås...</translation>
+      <translation>Tengely menti kötés...</translation>
     </message>
     <message>
       <source>set a axle constraint between two objects</source>
-      <translation>angi en akselbetingelse mellom to objekter</translation>
+      <translation>tengely menti kötést hoz létre két tárgy között</translation>
     </message>
   </context>
   <context>
@@ -22,46 +22,46 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>Ön-teszt...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>Fut egy önteszt, hogy ellenőrizze, ha az alkalmazás megfelelően működik</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>&amp;Drawing</source>
-      <translation>&amp;Tegning</translation>
+      <translation>Rajzolás</translation>
     </message>
     <message>
       <source>Ske&amp;tch</source>
-      <translation>Sk&amp;isser</translation>
+      <translation>Vázlat</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Strålesporing</translation>
+      <translation>Sugáriánynyomvonal</translation>
     </message>
     <message>
       <source>&amp;Drafting</source>
-      <translation>&amp;Skissering</translation>
+      <translation>Vázlatkészítés</translation>
     </message>
     <message>
       <source>Sketch based</source>
-      <translation>Skissebasert</translation>
+      <translation>Vázlat alap</translation>
     </message>
     <message>
       <source>Parametric</source>
-      <translation>Parametrisk</translation>
+      <translation>Változós</translation>
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Object appearence</translation>
+      <translation>Az objektum megjelenése</translation>
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Wire Tools</translation>
+      <translation>Vonal eszköztár</translation>
     </message>
   </context>
 </TS>

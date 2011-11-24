@@ -6,15 +6,15 @@
     <message>
       <location filename="../../Command.cpp" line="+42"/>
       <source>Complete</source>
-      <translation>Fullført</translation>
+      <translation>完了</translation>
     </message>
     <message>
       <source>Constraint Axle...</source>
-      <translation>Aksellås...</translation>
+      <translation>軸拘束の設定...</translation>
     </message>
     <message>
       <source>set a axle constraint between two objects</source>
-      <translation>angi en akselbetingelse mellom to objekter</translation>
+      <translation>二つのオブジェクト間に軸拘束を設定します。</translation>
     </message>
   </context>
   <context>
@@ -22,46 +22,46 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>自己診断...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>アプリケーションが正常に動作するかどうかを確認する自己診断を実行します。</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>&amp;Drawing</source>
-      <translation>&amp;Tegning</translation>
+      <translation>ドローイング (&amp;D)</translation>
     </message>
     <message>
       <source>Ske&amp;tch</source>
-      <translation>Sk&amp;isser</translation>
+      <translation>スケッチ(&amp;T)</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Strålesporing</translation>
+      <translation>レイトレーシング (&amp;R)</translation>
     </message>
     <message>
       <source>&amp;Drafting</source>
-      <translation>&amp;Skissering</translation>
+      <translation>ドラフト (&amp;D)</translation>
     </message>
     <message>
       <source>Sketch based</source>
-      <translation>Skissebasert</translation>
+      <translation>スケッチベース</translation>
     </message>
     <message>
       <source>Parametric</source>
-      <translation>Parametrisk</translation>
+      <translation>パラメトリック</translation>
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Object appearence</translation>
+      <translation>オブジェクトの外観</translation>
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Wire Tools</translation>
+      <translation>ポリラインツール</translation>
     </message>
   </context>
 </TS>

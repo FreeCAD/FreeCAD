@@ -1,283 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
-      <location/>
-      <source>Complete</source>
-      <translation>Valmis</translation>
+        <location filename="../../Command.cpp" line="+42"/>
+        <source>Complete</source>
+        <translation>Valmis</translation>
     </message>
     <message>
-      <location/>
-      <source>Constraint Axle...</source>
-      <translation>Akseli rajoite...</translation>
+        <location line="+1"/>
+        <source>Constraint Axle...</source>
+        <translation>Akseli rajoite...</translation>
     </message>
     <message>
-      <location/>
-      <source>set a axle constraint between two objects</source>
-      <translation>Määritä akseli rajoite kahden kohteen välille</translation>
+        <location line="+1"/>
+        <source>set a axle constraint between two objects</source>
+        <translation>Määritä akseli rajoite kahden kohteen välille</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CompleteGui::Workbench</name>
     <message>
-      <location/>
-      <source>&amp;File</source>
-      <translation>&amp;Tiedosto</translation>
+        <source>&amp;File</source>
+        <translation type="obsolete">&amp;Tiedosto</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Edit</source>
-      <translation>&amp;Muokkaa</translation>
+        <source>&amp;Edit</source>
+        <translation type="obsolete">&amp;Muokkaa</translation>
     </message>
     <message>
-      <location/>
-      <source>Standard views</source>
-      <translation>Standardi näkymät</translation>
+        <source>Standard views</source>
+        <translation type="obsolete">Standardi näkymät</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Stereo</source>
-      <translation>&amp;Stereo</translation>
+        <source>&amp;Stereo</source>
+        <translation type="obsolete">&amp;Stereo</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Zoom</source>
-      <translation>&amp;Zoomaus</translation>
+        <source>&amp;Zoom</source>
+        <translation type="obsolete">&amp;Zoomaus</translation>
     </message>
     <message>
-      <location/>
-      <source>Visibility</source>
-      <translation>Näkyvyys</translation>
+        <source>Visibility</source>
+        <translation type="obsolete">Näkyvyys</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;View</source>
-      <translation>&amp;Näytä</translation>
+        <source>&amp;View</source>
+        <translation type="obsolete">&amp;Näytä</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Tools</source>
-      <translation>&amp;Työkalut</translation>
+        <source>&amp;Tools</source>
+        <translation type="obsolete">&amp;Työkalut</translation>
     </message>
     <message>
-      <location/>
-      <source>Analyze</source>
-      <translation>Analysoida</translation>
+        <source>Analyze</source>
+        <translation type="obsolete">Analysoida</translation>
     </message>
     <message>
-      <location/>
-      <source>Boolean</source>
-      <translation>Totuusarvo</translation>
+        <source>Boolean</source>
+        <translation type="obsolete">Totuusarvo</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Meshes</source>
-      <translation>&amp;Meshes</translation>
+        <source>&amp;Meshes</source>
+        <translation type="obsolete">&amp;Meshes</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Part</source>
-      <translation>&amp;Osa</translation>
+        <source>&amp;Part</source>
+        <translation type="obsolete">&amp;Osa</translation>
     </message>
     <message>
-      <location/>
-      <source>Parametric</source>
-      <translation>Parametrinen</translation>
+        <source>Parametric</source>
+        <translation type="obsolete">Parametrinen</translation>
     </message>
     <message>
-      <location/>
-      <source>Ske&amp;tch</source>
-      <translation>Ske&amp;tch</translation>
+        <source>Ske&amp;tch</source>
+        <translation type="obsolete">Ske&amp;tch</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Piirustus</translation>
+        <source>&amp;Drawing</source>
+        <translation type="obsolete">&amp;Piirustus</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+        <source>&amp;Raytracing</source>
+        <translation type="obsolete">&amp;Raytracing</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Drafting</translation>
+        <source>&amp;Drafting</source>
+        <translation type="obsolete">&amp;Drafting</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Windows</source>
-      <translation>&amp;Ikkunat</translation>
+        <source>&amp;Windows</source>
+        <translation type="obsolete">&amp;Ikkunat</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Online-help</source>
-      <translation>&amp;Online-ohje</translation>
+        <source>&amp;Online-help</source>
+        <translation type="obsolete">&amp;Online-ohje</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Help</source>
-      <translation>&amp;Ohje</translation>
+        <source>&amp;Help</source>
+        <translation type="obsolete">&amp;Ohje</translation>
     </message>
     <message>
-      <location/>
-      <source>File</source>
-      <translation>Tiedosto</translation>
+        <source>File</source>
+        <translation type="obsolete">Tiedosto</translation>
     </message>
     <message>
-      <location/>
-      <source>Macro</source>
-      <translation>Makro</translation>
+        <source>Macro</source>
+        <translation type="obsolete">Makro</translation>
     </message>
     <message>
-      <location/>
-      <source>View</source>
-      <translation>Näkymä</translation>
+        <source>View</source>
+        <translation type="obsolete">Näkymä</translation>
     </message>
     <message>
-      <location/>
-      <source>Part design</source>
-      <translation>Part design</translation>
+        <source>Part design</source>
+        <translation type="obsolete">Part design</translation>
     </message>
     <message>
-      <location/>
-      <source>Sketch based</source>
-      <translation>Sketch based</translation>
+        <source>Sketch based</source>
+        <translation type="obsolete">Sketch based</translation>
     </message>
     <message>
-      <location/>
-      <source>Drawings</source>
-      <translation>Piirustukset</translation>
+        <source>Drawings</source>
+        <translation type="obsolete">Piirustukset</translation>
     </message>
     <message>
-      <location/>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
+        <source>Raytracing</source>
+        <translation type="obsolete">Raytracing</translation>
     </message>
     <message>
-      <location/>
-      <source>Drafting</source>
-      <translation>Drafting</translation>
+        <source>Drafting</source>
+        <translation type="obsolete">Drafting</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>Test_Test</name>
+    <message>
+        <location filename="../../Workbench.cpp" line="+57"/>
+        <source>Self-test...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Runs a self-test to check if the application works properly</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <location/>
-      <source>&amp;File</source>
-      <translation>&amp;Tiedosto</translation>
+        <source>&amp;File</source>
+        <translation type="obsolete">&amp;Tiedosto</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Edit</source>
-      <translation>&amp;Muokkaa</translation>
+        <source>&amp;Edit</source>
+        <translation type="obsolete">&amp;Muokkaa</translation>
     </message>
     <message>
-      <location/>
-      <source>Standard views</source>
-      <translation>Standardi näkymät</translation>
+        <source>Standard views</source>
+        <translation type="obsolete">Standardi näkymät</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;3D View</source>
-      <translation>&amp;3D-näkymä</translation>
+        <source>&amp;3D View</source>
+        <translation type="obsolete">&amp;3D-näkymä</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Zoom</source>
-      <translation>&amp;Zoomaus</translation>
+        <source>&amp;Zoom</source>
+        <translation type="obsolete">&amp;Zoomaus</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;View</source>
-      <translation>&amp;Näytä</translation>
+        <source>&amp;View</source>
+        <translation type="obsolete">&amp;Näytä</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Tools</source>
-      <translation>&amp;Työkalut</translation>
+        <source>&amp;Tools</source>
+        <translation type="obsolete">&amp;Työkalut</translation>
     </message>
     <message>
-      <location/>
-      <source>Analyze</source>
-      <translation>Analysoida</translation>
+        <source>Analyze</source>
+        <translation type="obsolete">Analysoida</translation>
     </message>
     <message>
-      <location/>
-      <source>Boolean</source>
-      <translation>Totuusarvo</translation>
+        <source>Boolean</source>
+        <translation type="obsolete">Totuusarvo</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Meshes</source>
-      <translation>&amp;Meshes</translation>
+        <source>&amp;Meshes</source>
+        <translation type="obsolete">&amp;Meshes</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Part</source>
-      <translation>&amp;Osa</translation>
+        <source>&amp;Part</source>
+        <translation type="obsolete">&amp;Osa</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Piirustus</translation>
+        <location line="-9"/>
+        <source>&amp;Drawing</source>
+        <translation>&amp;Piirustus</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Windows</source>
-      <translation>&amp;Ikkunat</translation>
+        <source>&amp;Windows</source>
+        <translation type="obsolete">&amp;Ikkunat</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Online-help</source>
-      <translation>&amp;Online-ohje</translation>
+        <source>&amp;Online-help</source>
+        <translation type="obsolete">&amp;Online-ohje</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Help</source>
-      <translation>&amp;Ohje</translation>
+        <source>&amp;Help</source>
+        <translation type="obsolete">&amp;Ohje</translation>
     </message>
     <message>
-      <location/>
-      <source>File</source>
-      <translation>Tiedosto</translation>
+        <source>File</source>
+        <translation type="obsolete">Tiedosto</translation>
     </message>
     <message>
-      <location/>
-      <source>Macro</source>
-      <translation>Makro</translation>
+        <source>Macro</source>
+        <translation type="obsolete">Makro</translation>
     </message>
     <message>
-      <location/>
-      <source>View</source>
-      <translation>Näkymä</translation>
+        <source>View</source>
+        <translation type="obsolete">Näkymä</translation>
     </message>
     <message>
-      <location/>
-      <source>Ske&amp;tch</source>
-      <translation>Ske&amp;tch</translation>
+        <location line="-1"/>
+        <source>Ske&amp;tch</source>
+        <translation>Ske&amp;tch</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+        <location line="+2"/>
+        <source>&amp;Raytracing</source>
+        <translation>&amp;Raytracing</translation>
     </message>
     <message>
-      <location/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Drafting</translation>
+        <location line="+1"/>
+        <source>&amp;Drafting</source>
+        <translation>&amp;Drafting</translation>
     </message>
     <message>
-      <location/>
-      <source>Sketch based</source>
-      <translation>Sketch based</translation>
+        <location line="+1"/>
+        <source>Sketch based</source>
+        <translation>Sketch based</translation>
     </message>
     <message>
-      <location/>
-      <source>Parametric</source>
-      <translation>Parametrinen</translation>
+        <location line="+1"/>
+        <source>Parametric</source>
+        <translation>Parametrinen</translation>
     </message>
-  </context>
+    <message>
+        <location line="+1"/>
+        <source>Object appearence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Wire Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

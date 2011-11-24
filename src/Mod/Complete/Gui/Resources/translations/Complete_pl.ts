@@ -6,15 +6,15 @@
     <message>
       <location filename="../../Command.cpp" line="+42"/>
       <source>Complete</source>
-      <translation>Fullført</translation>
+      <translation>Kompletny</translation>
     </message>
     <message>
       <source>Constraint Axle...</source>
-      <translation>Aksellås...</translation>
+      <translation>Ograniczenie osi...</translation>
     </message>
     <message>
       <source>set a axle constraint between two objects</source>
-      <translation>angi en akselbetingelse mellom to objekter</translation>
+      <translation>ustaw ograniczenie osi między dwoma obiektami</translation>
     </message>
   </context>
   <context>
@@ -22,46 +22,46 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>Autotest...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>Wykonanie autotestu w celu sprawdzenia poprawności aplikacji.</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>&amp;Drawing</source>
-      <translation>&amp;Tegning</translation>
+      <translation>&amp;Rysunek</translation>
     </message>
     <message>
       <source>Ske&amp;tch</source>
-      <translation>Sk&amp;isser</translation>
+      <translation>Szki&amp;c</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Strålesporing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <source>&amp;Drafting</source>
-      <translation>&amp;Skissering</translation>
+      <translation>&amp;Kreślenie</translation>
     </message>
     <message>
       <source>Sketch based</source>
-      <translation>Skissebasert</translation>
+      <translation>Ze szkicu</translation>
     </message>
     <message>
       <source>Parametric</source>
-      <translation>Parametrisk</translation>
+      <translation>Parametryczny</translation>
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Object appearence</translation>
+      <translation>Wygląd obiektu</translation>
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Wire Tools</translation>
+      <translation>Narzędzia Szkieletu</translation>
     </message>
   </context>
 </TS>
