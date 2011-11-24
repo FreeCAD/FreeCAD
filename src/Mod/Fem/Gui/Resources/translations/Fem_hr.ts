@@ -4,17 +4,15 @@
   <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+50"/>
       <source>Fem</source>
       <translation>Metoda konačnih elemenata</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh</source>
       <translation>Napravi MKE mrežu</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh from shape</source>
       <translation>Napravite MKE mrežu od oblika</translation>
     </message>
@@ -22,12 +20,11 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+38"/>
       <source>FEM</source>
       <translation>MKE</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;FEM</source>
       <translation>&amp;MKE</translation>
     </message>

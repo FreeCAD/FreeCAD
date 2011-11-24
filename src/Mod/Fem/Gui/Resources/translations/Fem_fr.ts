@@ -4,17 +4,15 @@
   <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+50"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh</source>
       <translation>Créer un maillage FEM</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh from shape</source>
       <translation>Créer un maillage FEM à partir d'une forme</translation>
     </message>
@@ -22,12 +20,11 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+38"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;FEM</source>
       <translation>&amp;FEM</translation>
     </message>

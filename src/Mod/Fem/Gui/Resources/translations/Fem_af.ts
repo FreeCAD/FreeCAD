@@ -4,30 +4,27 @@
   <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+50"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh</source>
-      <translation>Create FEM mesh</translation>
+      <translation>Skep FEM-maas</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh from shape</source>
-      <translation>Create FEM mesh from shape</translation>
+      <translation>Skep FEM-maas van vorm</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+38"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;FEM</source>
       <translation>&amp;FEM</translation>
     </message>

@@ -4,32 +4,29 @@
   <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+50"/>
       <source>Fem</source>
-      <translation>Fem</translation>
+      <translation>МКЭ (метод конечных элементов)</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh</source>
-      <translation>Create FEM mesh</translation>
+      <translation>Создать МКЭ сетку</translation>
     </message>
     <message>
-      <location/>
       <source>Create FEM mesh from shape</source>
-      <translation>Create FEM mesh from shape</translation>
+      <translation>Создать МКЭ сетку из формы</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+38"/>
       <source>FEM</source>
-      <translation>FEM</translation>
+      <translation>МКЭ</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;FEM</source>
-      <translation>&amp;FEM</translation>
+      <translation>&amp;МКЭ</translation>
     </message>
   </context>
 </TS>

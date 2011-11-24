@@ -6,15 +6,15 @@
     <message>
       <location filename="../../Command.cpp" line="+50"/>
       <source>Fem</source>
-      <translation>МСЕ (Метод скінченних елементів)</translation>
+      <translation>Mes</translation>
     </message>
     <message>
       <source>Create FEM mesh</source>
-      <translation>Створити МСЕ сітку</translation>
+      <translation>Tworzenie siatki MES</translation>
     </message>
     <message>
       <source>Create FEM mesh from shape</source>
-      <translation>Створити МСЕ сітку з форми</translation>
+      <translation>Tworzenie siatki MES z kształtu</translation>
     </message>
   </context>
   <context>
@@ -22,11 +22,11 @@
     <message>
       <location filename="../../Workbench.cpp" line="+38"/>
       <source>FEM</source>
-      <translation>МСЕ</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <source>&amp;FEM</source>
-      <translation>&amp;МСЕ</translation>
+      <translation>&amp;MES</translation>
     </message>
   </context>
 </TS>
