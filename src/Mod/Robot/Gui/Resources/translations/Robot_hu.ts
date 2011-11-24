@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>Add tool</source>
-      <translation>Lägg till verktyg</translation>
+      <translation>Szerszám hozzáadása</translation>
     </message>
     <message>
       <source>Add a tool shape to the robot</source>
-      <translation>Lägg till en verktygsform till roboten</translation>
+      <translation>Formázó szerszám hozzáadása a robothoz</translation>
     </message>
   </context>
   <context>
@@ -26,11 +26,11 @@
     </message>
     <message>
       <source>Place robot...</source>
-      <translation>Placera roboten ...</translation>
+      <translation>Robot elhelyezése...</translation>
     </message>
     <message>
       <source>Place a robot (experimental!)</source>
-      <translation>Placera en robot (experimentell!)</translation>
+      <translation>Robot helye (kísérleti!)</translation>
     </message>
   </context>
   <context>
@@ -42,11 +42,11 @@
     </message>
     <message>
       <source>Create trajectory</source>
-      <translation>Skapa bana</translation>
+      <translation>Útvonal létrehozása</translation>
     </message>
     <message>
       <source>Create a new empty trajectory </source>
-      <translation>Skapa en ny tom bana </translation>
+      <translation>Új üres útvonal létrehozása </translation>
     </message>
   </context>
   <context>
@@ -57,11 +57,11 @@
     </message>
     <message>
       <source>Edge to Trajectory...</source>
-      <translation>Kant till bana...</translation>
+      <translation>Él az útvonalhoz...</translation>
     </message>
     <message>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Generera en bana från en uppsättning med kanter</translation>
+      <translation>Útvonal létrehozása élek alapján</translation>
     </message>
   </context>
   <context>
@@ -73,11 +73,11 @@
     </message>
     <message>
       <source>Kuka compact subroutine...</source>
-      <translation>KUKA kompakt subrutin ...</translation>
+      <translation>Kuka kompakt eljárás ...</translation>
     </message>
     <message>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Exportera banan som en kompakt KRL subrutin.</translation>
+      <translation>Útvonal exportálása kompakt KRL eljárásként.</translation>
     </message>
   </context>
   <context>
@@ -88,11 +88,11 @@
     </message>
     <message>
       <source>Kuka full subroutine...</source>
-      <translation>fullständig KUKA subrutin ...</translation>
+      <translation>Kuka teljes eljárás ...</translation>
     </message>
     <message>
       <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Exportera banan som en fullständig KRL subrutin.</translation>
+      <translation>Útvonal exportálása teljes KRL eljárásként.</translation>
     </message>
   </context>
   <context>
@@ -104,11 +104,11 @@
     </message>
     <message>
       <source>Kuka IR125</source>
-      <translation>KUKA IR125</translation>
+      <translation>Kuka IR125</translation>
     </message>
     <message>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Sätt in en Kuka IR125 i dokumentet.</translation>
+      <translation>Helyezzen be egy Kuka IR210-et a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -119,11 +119,11 @@
     </message>
     <message>
       <source>Kuka IR16</source>
-      <translation>KUKA IR16</translation>
+      <translation>Kuka IR16</translation>
     </message>
     <message>
       <source>Insert a Kuka IR16 into the document.</source>
-      <translation>Sätt in en Kuka IR16 i dokumentet.</translation>
+      <translation>Helyezzen be egy Kuka IR210-et a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -134,11 +134,11 @@
     </message>
     <message>
       <source>Kuka IR210</source>
-      <translation>KUKA IR210</translation>
+      <translation>Kuka IR210</translation>
     </message>
     <message>
       <source>Insert a Kuka IR210 into the document.</source>
-      <translation>Sätt in en Kuka IR210 i dokumentet.</translation>
+      <translation>Helyezzen be egy Kuka IR16-ot a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -149,11 +149,11 @@
     </message>
     <message>
       <source>Kuka IR500</source>
-      <translation>KUKA IR500</translation>
+      <translation>Kuka IR500</translation>
     </message>
     <message>
       <source>Insert a Kuka IR500 into the document.</source>
-      <translation>Sätt in en Kuka IR500 i dokumentet.</translation>
+      <translation>Helyezzen be egy Kuka IR125-öt a dokumentumba.</translation>
     </message>
   </context>
   <context>
@@ -165,11 +165,11 @@
     </message>
     <message>
       <source>Insert in trajectory</source>
-      <translation>Sätt in i bana</translation>
+      <translation>Útvonal beszúrása</translation>
     </message>
     <message>
       <source>Insert robot Tool location into trajectory</source>
-      <translation>Infoga robotverktygets plats i banan</translation>
+      <translation>Robot szerszám elhelyezése az útvonalon</translation>
     </message>
   </context>
   <context>
@@ -180,11 +180,11 @@
     </message>
     <message>
       <source>Insert in trajectory</source>
-      <translation>Sätt in i bana</translation>
+      <translation>Útvonal beszúrása</translation>
     </message>
     <message>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation>Infoga förvalsposition till banan (W)</translation>
+      <translation>Beállítási pozíció beszúrása az útvonalba (W)</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     </message>
     <message>
       <source>Move to home</source>
-      <translation>Flytta till hemposition</translation>
+      <translation>Alaphelyzetbe állít</translation>
     </message>
   </context>
   <context>
@@ -208,11 +208,11 @@
     </message>
     <message>
       <source>Set default orientation</source>
-      <translation>Ange standard orientering</translation>
+      <translation>Alapértelmezett hely beállítása</translation>
     </message>
     <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Ange standardorienteringen för efterföljande kommandon för skapande av banpunkter</translation>
+      <translation>Alapértelmezett hely beállítása a későbbi szakaszpont parancsokhoz a várópontok létrehozásoknál</translation>
     </message>
   </context>
   <context>
@@ -223,11 +223,11 @@
     </message>
     <message>
       <source>Set default values</source>
-      <translation>Ange standardvärden</translation>
+      <translation>Alapértelmezett értékek</translation>
     </message>
     <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>Ange standardvärden för hastighet, acceleration och kontinuitet för efterföljande kommandon för banpunkter</translation>
+      <translation>Alapértelmezett sebesség, gyorsulás és folytonossági szakaszpont értékeinek beállítása</translation>
     </message>
   </context>
   <context>
@@ -239,7 +239,7 @@
     </message>
     <message>
       <source>Set the home position</source>
-      <translation>Ställ hemposition</translation>
+      <translation>Alaphelyzet beállítása</translation>
     </message>
   </context>
   <context>
@@ -250,11 +250,11 @@
     </message>
     <message>
       <source>Simulate a trajectory</source>
-      <translation>Simulera en bana</translation>
+      <translation>Útvonal szimuláció</translation>
     </message>
     <message>
       <source>Run a simulation on a trajectory</source>
-      <translation>Kör en simulering på en bana</translation>
+      <translation>Szimuláció futtaása az útvonalon</translation>
     </message>
   </context>
   <context>
@@ -266,11 +266,11 @@
     </message>
     <message>
       <source>Trajectory compound...</source>
-      <translation>Sammansatt bana...</translation>
+      <translation>Pálya összetétel...</translation>
     </message>
     <message>
       <source>Group and connect some trajectories to one</source>
-      <translation>Gruppera och anslut vissa banor till en</translation>
+      <translation>Csoportosít és közössé tesz bizonyos pályákat</translation>
     </message>
   </context>
   <context>
@@ -281,11 +281,11 @@
     </message>
     <message>
       <source>Dress up trajectory...</source>
-      <translation>Klä upp banan...</translation>
+      <translation>Útvonal felruházása...</translation>
     </message>
     <message>
       <source>Create a dress up object which overide som aspects of a trajectory</source>
-      <translation>Skapa ett klä upp objekt som åsidosätter vissa aspekter av en bana</translation>
+      <translation>Hozzon létre egy felöltöztetett objektumot mely felülírja a pálya szempontjait</translation>
     </message>
   </context>
   <context>
@@ -293,15 +293,15 @@
     <message>
       <location filename="../../Workbench.cpp" line="+52"/>
       <source>Trajectory tools</source>
-      <translation>Banverktyg</translation>
+      <translation>Trajektória eszközök</translation>
     </message>
     <message>
       <source>Robot tools</source>
-      <translation>Robot verktyg</translation>
+      <translation>Robot eszközök</translation>
     </message>
     <message>
       <source>Insert Robot</source>
-      <translation>Sätt in Robot</translation>
+      <translation>Robotok beszúrása</translation>
     </message>
   </context>
   <context>
@@ -309,97 +309,97 @@
     <message>
       <location filename="../../Command.cpp" line="-126"/>
       <source>Wrong selection</source>
-      <translation>Fel val</translation>
+      <translation>Rossz kiválasztás</translation>
     </message>
     <message>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>Välj en robot och ett banobjekt.</translation>
+      <translation>Egy Robot és egy útvonal objektum kijelölése.</translation>
     </message>
     <message>
       <source>Trajectory not valid</source>
-      <translation>Banan inte giltig</translation>
+      <translation>Érvénytelen útvonal</translation>
     </message>
     <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
-      <translation>Du behöver minst två vägpunkter i en bana för att simulera.</translation>
+      <translation>A szimulációhoz legalább két útvonalpontra van szükség a pályán.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="-43"/>
       <source>KRL file(*.src)</source>
-      <translation>KRL-fil (*.src)</translation>
+      <translation>KRL fájl (*.src)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Alla filer (*.*)</translation>
+      <translation>Minden fájl (*.*)</translation>
     </message>
     <message>
       <source>Export program</source>
-      <translation>Exportera programmet</translation>
+      <translation>Program exportálása</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="+1"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation>Välj en robot och en form eller ett VRML objekt.</translation>
+      <translation>Egy robot és egy alakzat vagy VRML objektum kijelölése.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="+79"/>
       <source>No preselection</source>
-      <translation>Inga förval</translation>
+      <translation>Nincs előzetes kijelölés</translation>
     </message>
     <message>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Du måste sväva ovanför en geometri (Förval) med musen för att använda detta kommando. Se dokumentationen för detaljer.</translation>
+      <translation>A geometria (előválasztás) fölé kell vinni az egérrel a kurzort, hogy használni tudja ezt a parancsot. Részleteket a dokumentációban talál.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-155"/>
       <source>Select one Robot to set home postion</source>
-      <translation>Välj en robot för att ställa in hempositionen</translation>
+      <translation>Robot kiválasztása és alaphelyzetbe állítása</translation>
     </message>
     <message>
       <source>Select one Robot</source>
-      <translation>Välj en Robot</translation>
+      <translation>Válasszon ki egy robotot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="-24"/>
       <source>Select one Trajectory object.</source>
-      <translation>Välj ett banobjekt.</translation>
+      <translation>Válasszon ki egy pálya objektumot.</translation>
     </message>
     <message>
       <source>set default speed</source>
-      <translation>Ange standardhastighet</translation>
+      <translation>alapértelmezett sebesség beállítása</translation>
     </message>
     <message>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-      <translation>hastighet: (t.ex. 1 m/s eller 3 cm/s)</translation>
+      <translation>sebesség: (pl. 1 m/s vagy 3 cm/s)</translation>
     </message>
     <message>
       <source>set default continuity</source>
-      <translation>Ange standardkontinuitet</translation>
+      <translation>alapértelmezett folytonosság</translation>
     </message>
     <message>
       <source>continuous ?</source>
-      <translation>Kontinuerlig?</translation>
+      <translation>folyamatos?</translation>
     </message>
     <message>
       <source>set default acceleration</source>
-      <translation>Ange standardacceleration</translation>
+      <translation>alapértelmezett gyorsulás beállítás</translation>
     </message>
     <message>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-      <translation>acceleration: (t.ex. 1 m/s^2 eller 3 cm/s^2)</translation>
+      <translation>gyorsulás: (pl. 1 m/s^2 vagy 3 cm/s^2)</translation>
     </message>
     <message>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Markera banan som du vill klä upp.</translation>
+      <translation>Válassza ki a Trayectory-t a felöltöztetéshez.</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="+26"/>
       <source>No robot files installed</source>
-      <translation>Inga robotfiler installerade</translation>
+      <translation>Nincs telepített robot-fájl</translation>
     </message>
     <message>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation>Besök %1 och kopiera filerna till %2</translation>
+      <translation>Kérjük, látogasson el ide: %1 és másolja a fájlokat a következő helyre: %2</translation>
     </message>
   </context>
   <context>
@@ -407,7 +407,7 @@
     <message>
       <location filename="../../TrajectorySimulate.ui" line="+20"/>
       <source>Simulation</source>
-      <translation>Simulering</translation>
+      <translation>Szimuláció</translation>
     </message>
     <message>
       <source>|&lt;</source>
@@ -439,11 +439,11 @@
     </message>
     <message>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation>Típus</translation>
     </message>
     <message>
       <source>Name</source>
-      <translation>Namn</translation>
+      <translation>Név</translation>
     </message>
     <message>
       <source>C</source>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>A1</source>
@@ -487,7 +487,7 @@
     </message>
     <message>
       <source>A4</source>
-      <translation>A4</translation>
+      <translation>A4-es</translation>
     </message>
     <message>
       <source>A5</source>
@@ -503,7 +503,7 @@
     </message>
     <message>
       <source>Tool: (0,0,400,0,0,0)</source>
-      <translation>Verktyg: (0,0,400,0,0,0)</translation>
+      <translation>Eszköz:(0,0,400,0,0,0)</translation>
     </message>
     <message>
       <source>...</source>
@@ -512,7 +512,7 @@
     <message>
       <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
       <source>TaskRobot6Axis</source>
-      <translation>Uppgift 6-axlad robot</translation>
+      <translation>TaskRobot6Axis</translation>
     </message>
   </context>
   <context>
@@ -520,7 +520,7 @@
     <message>
       <location filename="../../TaskRobotControl.cpp" line="+46"/>
       <source>TaskRobotControl</source>
-      <translation>Uppgift Robotkontroll</translation>
+      <translation>TaskRobotControl</translation>
     </message>
   </context>
   <context>
@@ -528,7 +528,7 @@
     <message>
       <location filename="../../TaskRobotMessages.cpp" line="+46"/>
       <source>TaskRobotMessages</source>
-      <translation>Uppgift Robot meddelanden</translation>
+      <translation>TaskRobotMessages</translation>
     </message>
   </context>
   <context>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="+20"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>|&lt;</source>
@@ -592,11 +592,11 @@
     </message>
     <message>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation>Típus</translation>
     </message>
     <message>
       <source>Name</source>
-      <translation>Namn</translation>
+      <translation>Név</translation>
     </message>
     <message>
       <source>C</source>
@@ -613,7 +613,7 @@
     <message>
       <location filename="../../TaskTrajectory.cpp" line="+44"/>
       <source>Trajectory</source>
-      <translation>Rörelsebana</translation>
+      <translation>Pálya</translation>
     </message>
   </context>
   <context>
@@ -621,7 +621,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
       <source>Dress Up Parameter</source>
-      <translation>Klä upp Parameter</translation>
+      <translation>Felruházási paraméter</translation>
     </message>
   </context>
   <context>
@@ -629,27 +629,27 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Hide / Show</source>
-      <translation>Dölj / Visa</translation>
+      <translation>Elrejt/megjelenít</translation>
     </message>
     <message>
       <source>Edges: 0</source>
-      <translation>Kanter: 0</translation>
+      <translation>Élek: 0</translation>
     </message>
     <message>
       <source>Cluster: 0</source>
-      <translation>Kluster: 0</translation>
+      <translation>Fürt: 0</translation>
     </message>
     <message>
       <source>Sizing Value:</source>
-      <translation>Storleksguide Värde:</translation>
+      <translation>Méret érték:</translation>
     </message>
     <message>
       <source>Use orientation of edge</source>
-      <translation>Använd orientering av kanten</translation>
+      <translation>Használja az él orientációját</translation>
     </message>
     <message>
       <source>TaskEdge2TracParameter</source>
@@ -660,7 +660,7 @@
     <name>TaskRobot6Axis</name>
     <message>
       <source>TaskRobot6Axis</source>
-      <translation>Uppgift 6-axlad robot</translation>
+      <translation>TaskRobot6Axis</translation>
     </message>
   </context>
   <context>
@@ -668,7 +668,7 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>X+</source>
@@ -720,23 +720,23 @@
     </message>
     <message>
       <source>Tool 0</source>
-      <translation>Verktyg 0</translation>
+      <translation>Eszköz 0</translation>
     </message>
     <message>
       <source>Tool</source>
-      <translation>Verktyg</translation>
+      <translation>Eszköz</translation>
     </message>
     <message>
       <source>Base 0</source>
-      <translation>Bas 0</translation>
+      <translation>Alap 0</translation>
     </message>
     <message>
       <source>Base</source>
-      <translation>Bas</translation>
+      <translation>Alap</translation>
     </message>
     <message>
       <source>World</source>
-      <translation>Värld</translation>
+      <translation>Világ</translation>
     </message>
     <message>
       <source>50mm / 5°</source>
@@ -752,15 +752,15 @@
     </message>
     <message>
       <source>5mm / 0.5°</source>
-      <translation>5mm / 0,5°</translation>
+      <translation>5mm / 0.5°</translation>
     </message>
     <message>
       <source>1mm / 0.1°</source>
-      <translation>1mm / 0,1°</translation>
+      <translation>1mm / 0.1°</translation>
     </message>
     <message>
       <source>TaskRobotControl</source>
-      <translation>Uppgift Robotkontroll</translation>
+      <translation>TaskRobotControl</translation>
     </message>
   </context>
   <context>
@@ -768,22 +768,22 @@
     <message>
       <location filename="../../TaskRobotMessages.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>clear</source>
-      <translation>Rensa</translation>
+      <translation>ürít</translation>
     </message>
     <message>
       <source>TaskRobotMessages</source>
-      <translation>Uppgift Robot meddelanden</translation>
+      <translation>TaskRobotMessages</translation>
     </message>
   </context>
   <context>
     <name>TaskTrajectory</name>
     <message>
       <source>Trajectory</source>
-      <translation>Rörelsebana</translation>
+      <translation>Pálya</translation>
     </message>
   </context>
   <context>
@@ -791,39 +791,39 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Űrlap</translation>
     </message>
     <message>
       <source>Speed &amp; Acceleration:</source>
-      <translation>Hastighet &amp; Acceleration:</translation>
+      <translation>Sebesség és gyorsulás:</translation>
     </message>
     <message>
       <source>Speed:</source>
-      <translation>Hastighet:</translation>
+      <translation>Sebesség:</translation>
     </message>
     <message>
       <source>Use</source>
-      <translation>Använd</translation>
+      <translation>Használ</translation>
     </message>
     <message>
       <source>Accel:</source>
-      <translation>Acceleration:</translation>
+      <translation>Gyorsítás:</translation>
     </message>
     <message>
       <source>Don't change Cont</source>
-      <translation>Ändra inte forts</translation>
+      <translation>Ne módosítsa a tartalmát</translation>
     </message>
     <message>
       <source>Continues</source>
-      <translation>Fortsätter</translation>
+      <translation>Tovább</translation>
     </message>
     <message>
       <source>Discontinues</source>
-      <translation>Upphör</translation>
+      <translation>Befejez</translation>
     </message>
     <message>
       <source>Position and Orientation:</source>
-      <translation>Position och orientering:</translation>
+      <translation>Helyzete és iránya:</translation>
     </message>
     <message>
       <source>(0,0,0),(0,0,0)</source>
@@ -835,23 +835,23 @@
     </message>
     <message>
       <source>Don't change Position &amp; Orientation</source>
-      <translation>Ändra inte position och orientering</translation>
+      <translation>Ne módosítsa a pozíciót és a tájolást</translation>
     </message>
     <message>
       <source>Use Orientation</source>
-      <translation>Använd Orientering</translation>
+      <translation>Orientáció használata</translation>
     </message>
     <message>
       <source>Add Position</source>
-      <translation>Lägg till position</translation>
+      <translation>Pozíció hozzáadása</translation>
     </message>
     <message>
       <source>Add Orientation</source>
-      <translation>Lägg till Orientering</translation>
+      <translation>Orientáció hozzáadása</translation>
     </message>
     <message>
       <source>Dress Up Parameter</source>
-      <translation>Klä upp Parameter</translation>
+      <translation>Felruházási paraméter</translation>
     </message>
   </context>
   <context>
@@ -863,15 +863,15 @@
     </message>
     <message>
       <source>Insert Robots</source>
-      <translation>Infoga robotar</translation>
+      <translation>Robotok beszúrása</translation>
     </message>
     <message>
       <source>&amp;Robot</source>
-      <translation>&amp;Robot</translation>
+      <translation>Robot</translation>
     </message>
     <message>
       <source>Export trajectory</source>
-      <translation>Exportera bana</translation>
+      <translation>Pálya exportálása</translation>
     </message>
   </context>
 </TS>

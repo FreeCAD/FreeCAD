@@ -4,35 +4,31 @@
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
-      <location/>
+      <location filename="../../CommandInsertRobot.cpp" line="+215"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Add tool</source>
       <translation>Додати інструмент</translation>
     </message>
     <message>
-      <location/>
       <source>Add a tool shape to the robot</source>
-      <translation>Add a tool shape to the robot</translation>
+      <translation>Додати інструмент форми до робота</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+158"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Place robot...</source>
       <translation>Розмістити робота ...</translation>
     </message>
     <message>
-      <location/>
       <source>Place a robot (experimental!)</source>
       <translation>Розмістити робота (експериментально!)</translation>
     </message>
@@ -40,17 +36,15 @@
   <context>
     <name>CmdRobotCreateTrajectory</name>
     <message>
-      <location/>
+      <location filename="../../CommandTrajectory.cpp" line="+61"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Create trajectory</source>
       <translation>Створити траєкторію</translation>
     </message>
     <message>
-      <location/>
       <source>Create a new empty trajectory </source>
       <translation>Створити нову порожню траєкторію</translation>
     </message>
@@ -58,174 +52,149 @@
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Edge to Trajectory...</source>
-      <translation>Edge to Trajectory...</translation>
+      <translation>Ребра в Траєкторію...</translation>
     </message>
     <message>
-      <location/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Generate a Trajectory from a set of edges</translation>
+      <translation>Генерувати Траєкторію із встановлених ребер</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotExportKukaCompact</name>
     <message>
-      <location/>
+      <location filename="../../CommandExport.cpp" line="+50"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Kuka compact subroutine...</source>
-      <translation>Kuka compact subroutine...</translation>
+      <translation>Компактна підпрограма Kuka...</translation>
     </message>
     <message>
-      <location/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Export the trajectory as a compact KRL subroutine.</translation>
+      <translation>Експортувати траєкторію як компактну KRL підпрограму.</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Kuka full subroutine...</source>
-      <translation>Kuka full subroutine...</translation>
+      <translation>Повна підпрограма Kuka...</translation>
     </message>
     <message>
-      <location/>
       <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Export the trajectory as a full KRL subroutine.</translation>
+      <translation>Експортувати траєкторію як повну KRL підпрограму.</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR125</name>
     <message>
-      <location/>
+      <location filename="../../CommandInsertRobot.cpp" line="-43"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Kuka IR125</source>
       <translation>Kuka IR125</translation>
     </message>
     <message>
-      <location/>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Insert a Kuka IR125 into the document.</translation>
+      <translation>Вставити Kuka IR125 в документ.</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR16</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Kuka IR16</source>
       <translation>Kuka IR16</translation>
     </message>
     <message>
-      <location/>
       <source>Insert a Kuka IR16 into the document.</source>
-      <translation>Insert a Kuka IR16 into the document.</translation>
+      <translation>Вставити Kuka IR16 в документ.</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR210</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Kuka IR210</source>
       <translation>Kuka IR210</translation>
     </message>
     <message>
-      <location/>
       <source>Insert a Kuka IR210 into the document.</source>
-      <translation>Insert a Kuka IR210 into the document.</translation>
+      <translation>Вставити Kuka IR210 в документ.</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR500</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Kuka IR500</source>
       <translation>Kuka IR500</translation>
     </message>
     <message>
-      <location/>
       <source>Insert a Kuka IR500 into the document.</source>
-      <translation>Insert a Kuka IR500 into the document.</translation>
+      <translation>Вставити Kuka IR500 в документ.</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
-      <location/>
+      <location filename="../../CommandTrajectory.cpp" line="-228"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Insert in trajectory</source>
       <translation>Вставити в траєкторію</translation>
     </message>
     <message>
-      <location/>
       <source>Insert robot Tool location into trajectory</source>
-      <translation>Insert robot Tool location into trajectory</translation>
+      <translation>Вставте інструмент розміщення робота на траєкторії</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertWaypointPreselect</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Insert in trajectory</source>
       <translation>Вставити в траєкторію</translation>
     </message>
     <message>
-      <location/>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation>Insert preselection position into trajectory (W)</translation>
+      <translation>Вставити попередньо обрану позицію в траєкторію (W)</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="-56"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Move to home</source>
       <translation>Рухатись до домівки</translation>
     </message>
@@ -233,48 +202,42 @@
   <context>
     <name>CmdRobotSetDefaultOrientation</name>
     <message>
-      <location/>
+      <location filename="../../CommandTrajectory.cpp" line="+62"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Set default orientation</source>
-      <translation>Set default orientation</translation>
+      <translation>Встановити стандартну орієнтацію</translation>
     </message>
     <message>
-      <location/>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Встановіть стандартну орієнтацію для наступних команд для створення точок маршруту</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Set default values</source>
-      <translation>Set default values</translation>
+      <translation>Встановити стандартні значення</translation>
     </message>
     <message>
-      <location/>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Встановити стандартні значення швидкості, прискорення та послідовності для наступних команд для побудови точок маршруту</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetHomePos</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="-51"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Set the home position</source>
       <translation>Встановити у вихідне положення</translation>
     </message>
@@ -282,17 +245,14 @@
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Simulate a trajectory</source>
       <translation>Моделювання траєкторії</translation>
     </message>
     <message>
-      <location/>
       <source>Run a simulation on a trajectory</source>
       <translation>Виконати моделювання на траєкторії</translation>
     </message>
@@ -300,211 +260,200 @@
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location/>
+      <location filename="../../CommandTrajectory.cpp" line="+175"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Trajectory compound...</source>
-      <translation>Trajectory compound...</translation>
+      <translation>Об'єднання траєкторії...</translation>
     </message>
     <message>
-      <location/>
       <source>Group and connect some trajectories to one</source>
-      <translation>Group and connect some trajectories to one</translation>
+      <translation>Групування та підключення деякий траєкторій в одну</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Dress up trajectory...</source>
-      <translation>Dress up trajectory...</translation>
+      <translation>Одягнути траєкторію ...</translation>
     </message>
     <message>
-      <location/>
       <source>Create a dress up object which overide som aspects of a trajectory</source>
       <translation>Create a dress up object which overide som aspects of a trajectory</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskWatcherCommands</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="+52"/>
+      <source>Trajectory tools</source>
+      <translation>Trajectory tools</translation>
+    </message>
+    <message>
+      <source>Robot tools</source>
+      <translation>Robot tools</translation>
+    </message>
+    <message>
+      <source>Insert Robot</source>
+      <translation>Insert Robot</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="-126"/>
       <source>Wrong selection</source>
       <translation>Невірний вибір</translation>
     </message>
     <message>
-      <location/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Виберіть один робот і одну траєкторію об'єкта.</translation>
     </message>
     <message>
-      <location/>
       <source>Trajectory not valid</source>
       <translation>Траєкторія не дійсна</translation>
     </message>
     <message>
-      <location/>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Вам потрібно щонайменше дві точки на траєкторії для моделювання.</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../CommandExport.cpp" line="-43"/>
       <source>KRL file(*.src)</source>
       <translation>KRL файл(*.src)</translation>
     </message>
     <message>
-      <location/>
       <source>All Files (*.*)</source>
       <translation>Всі файли (*.*)</translation>
     </message>
     <message>
-      <location/>
       <source>Export program</source>
       <translation>Експорт програми</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../CommandInsertRobot.cpp" line="+1"/>
       <source>Select one robot and one shape or VRML object.</source>
       <translation>Виберіть один робот і одну форму або VRML об'єкт.</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../CommandTrajectory.cpp" line="+79"/>
       <source>No preselection</source>
       <translation>Нічого не вибрано</translation>
     </message>
     <message>
-      <location/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
       <translation>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="-155"/>
       <source>Select one Robot to set home postion</source>
-      <translation>Select one Robot to set home postion</translation>
+      <translation>Оберіть одного з роботів щоб встановити домашню позицію</translation>
     </message>
     <message>
-      <location/>
       <source>Select one Robot</source>
-      <translation>Select one Robot</translation>
+      <translation>Оберіть одного Робота</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../CommandTrajectory.cpp" line="-24"/>
       <source>Select one Trajectory object.</source>
-      <translation>Select one Trajectory object.</translation>
+      <translation>Оберіть одну Траєкторію об’єкта.</translation>
     </message>
     <message>
-      <location/>
       <source>set default speed</source>
-      <translation>set default speed</translation>
+      <translation>Встановити стандартну швидкість</translation>
     </message>
     <message>
-      <location/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-      <translation>speed: (e.g. 1 m/s or 3 cm/s)</translation>
+      <translation>швидкість: (напр. 1 м/с або 3 см/с)</translation>
     </message>
     <message>
-      <location/>
       <source>set default continuity</source>
-      <translation>set default continuity</translation>
+      <translation>Встановити стандартну послідовність</translation>
     </message>
     <message>
-      <location/>
       <source>continuous ?</source>
-      <translation>continuous ?</translation>
+      <translation>послідовність ?</translation>
     </message>
     <message>
-      <location/>
       <source>set default acceleration</source>
-      <translation>set default acceleration</translation>
+      <translation>Встановити стандартне прискорення</translation>
     </message>
     <message>
-      <location/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-      <translation>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
+      <translation>прискорення: (напр. 1 м/с^2 або 3 см/с^2)</translation>
     </message>
     <message>
-      <location/>
+      <source>Select the Trajectory which you want to dress up.</source>
+      <translation>Select the Trajectory which you want to dress up.</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="+26"/>
       <source>No robot files installed</source>
-      <translation>No robot files installed</translation>
+      <translation>Файли робота не встановлено</translation>
     </message>
     <message>
-      <location/>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation>Please visit %1 and copy the files to %2</translation>
+      <translation>Будь ласка, відвідайте %1 та скопіюйте файли до %2</translation>
     </message>
   </context>
   <context>
     <name>RobotGui::DlgTrajectorySimulate</name>
     <message>
-      <location/>
+      <location filename="../../TrajectorySimulate.ui" line="+20"/>
       <source>Simulation</source>
       <translation>Моделювання</translation>
     </message>
     <message>
-      <location/>
       <source>|&lt;</source>
       <translation>|&lt;</translation>
     </message>
     <message>
-      <location/>
       <source>&lt;</source>
       <translation>&lt;</translation>
     </message>
     <message>
-      <location/>
       <source>||</source>
       <translation>||</translation>
     </message>
     <message>
-      <location/>
       <source>|&gt;</source>
       <translation>|&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>&gt;</source>
       <translation>&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>&gt;|</source>
       <translation>&gt;|</translation>
     </message>
     <message>
-      <location/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location/>
       <source>A</source>
       <translation>A</translation>
     </message>
@@ -512,7 +461,7 @@
   <context>
     <name>RobotGui::TaskEdge2TracParameter</name>
     <message>
-      <location/>
+      <location filename="../../TaskEdge2TracParameter.cpp" line="+47"/>
       <source>TaskEdge2TracParameter</source>
       <translation>TaskEdge2TracParameter</translation>
     </message>
@@ -520,57 +469,48 @@
   <context>
     <name>RobotGui::TaskRobot6Axis</name>
     <message>
-      <location/>
+      <location filename="../../TaskRobot6Axis.ui" line="+14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location/>
       <source>A6</source>
       <translation>A6</translation>
     </message>
     <message>
-      <location/>
       <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
       <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location/>
       <source>Tool: (0,0,400,0,0,0)</source>
       <translation>Інструмент: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location/>
       <source>...</source>
       <translation>...</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
       <source>TaskRobot6Axis</source>
       <translation>TaskRobot6Axis</translation>
     </message>
@@ -578,7 +518,7 @@
   <context>
     <name>RobotGui::TaskRobotControl</name>
     <message>
-      <location/>
+      <location filename="../../TaskRobotControl.cpp" line="+46"/>
       <source>TaskRobotControl</source>
       <translation>TaskRobotControl</translation>
     </message>
@@ -586,7 +526,7 @@
   <context>
     <name>RobotGui::TaskRobotMessages</name>
     <message>
-      <location/>
+      <location filename="../../TaskRobotMessages.cpp" line="+46"/>
       <source>TaskRobotMessages</source>
       <translation>TaskRobotMessages</translation>
     </message>
@@ -594,102 +534,84 @@
   <context>
     <name>RobotGui::TaskTrajectory</name>
     <message>
-      <location/>
+      <location filename="../../TaskTrajectory.ui" line="+20"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location/>
       <source>|&lt;</source>
       <translation>|&lt;</translation>
     </message>
     <message>
-      <location/>
       <source>&lt;</source>
       <translation>&lt;</translation>
     </message>
     <message>
-      <location/>
       <source>||</source>
       <translation>||</translation>
     </message>
     <message>
-      <location/>
       <source>|&gt;</source>
       <translation>|&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>&gt;</source>
       <translation>&gt;</translation>
     </message>
     <message>
-      <location/>
       <source>&gt;|</source>
       <translation>&gt;|</translation>
     </message>
     <message>
-      <location/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location/>
       <source>10 ms</source>
       <translation>10 мс</translation>
     </message>
     <message>
-      <location/>
       <source>50 ms</source>
       <translation>50 мс</translation>
     </message>
     <message>
-      <location/>
       <source>100 ms</source>
       <translation>100 мс</translation>
     </message>
     <message>
-      <location/>
       <source>500 ms</source>
       <translation>500 мс</translation>
     </message>
     <message>
-      <location/>
       <source>1 s</source>
       <translation>1 с</translation>
     </message>
     <message>
-      <location/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
       <translation>Поз: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
-      <location/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location/>
       <source>A</source>
       <translation>A</translation>
     </message>
     <message>
-      <location/>
+      <location filename="../../TaskTrajectory.cpp" line="+44"/>
       <source>Trajectory</source>
       <translation>Траєкторія</translation>
     </message>
@@ -697,267 +619,257 @@
   <context>
     <name>RobotGui::TaskTrajectoryDressUpParameter</name>
     <message>
-      <location/>
+      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
       <source>Dress Up Parameter</source>
-      <translation>Dress Up Parameter</translation>
+      <translation>Параметри Одягання</translation>
     </message>
   </context>
   <context>
     <name>TaskEdge2TracParameter</name>
     <message>
-      <location/>
+      <location filename="../../TaskEdge2TracParameter.ui" line="+14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location/>
       <source>Hide / Show</source>
-      <translation>Hide / Show</translation>
+      <translation>Сховати / Показати</translation>
     </message>
     <message>
-      <location/>
       <source>Edges: 0</source>
-      <translation>Edges: 0</translation>
+      <translation>Краї: 0</translation>
     </message>
     <message>
-      <location/>
       <source>Cluster: 0</source>
-      <translation>Cluster: 0</translation>
+      <translation>Кластер: 0</translation>
     </message>
     <message>
-      <location/>
       <source>Sizing Value:</source>
-      <translation>Sizing Value:</translation>
+      <translation>Значення калібрування:</translation>
+    </message>
+    <message>
+      <source>Use orientation of edge</source>
+      <translation>Use orientation of edge</translation>
+    </message>
+    <message>
+      <source>TaskEdge2TracParameter</source>
+      <translation>TaskEdge2TracParameter</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskRobot6Axis</name>
+    <message>
+      <source>TaskRobot6Axis</source>
+      <translation>TaskRobot6Axis</translation>
     </message>
   </context>
   <context>
     <name>TaskRobotControl</name>
     <message>
-      <location/>
+      <location filename="../../TaskRobotControl.ui" line="+14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location/>
       <source>X+</source>
       <translation>X+</translation>
     </message>
     <message>
-      <location/>
       <source>Y+</source>
       <translation>Y+</translation>
     </message>
     <message>
-      <location/>
       <source>Z+</source>
       <translation>Z+</translation>
     </message>
     <message>
-      <location/>
       <source>A+</source>
       <translation>A+</translation>
     </message>
     <message>
-      <location/>
       <source>B+</source>
       <translation>B+</translation>
     </message>
     <message>
-      <location/>
       <source>C+</source>
       <translation>C+</translation>
     </message>
     <message>
-      <location/>
       <source>X-</source>
       <translation>X-</translation>
     </message>
     <message>
-      <location/>
       <source>Y-</source>
       <translation>Y-</translation>
     </message>
     <message>
-      <location/>
       <source>Z-</source>
       <translation>Z-</translation>
     </message>
     <message>
-      <location/>
       <source>A-</source>
       <translation>A-</translation>
     </message>
     <message>
-      <location/>
       <source>B-</source>
       <translation>B-</translation>
     </message>
     <message>
-      <location/>
       <source>C-</source>
       <translation>C-</translation>
     </message>
     <message>
-      <location/>
       <source>Tool 0</source>
       <translation>Інструмент 0</translation>
     </message>
     <message>
-      <location/>
       <source>Tool</source>
       <translation>Інструмент</translation>
     </message>
     <message>
-      <location/>
       <source>Base 0</source>
       <translation>Основа 0</translation>
     </message>
     <message>
-      <location/>
       <source>Base</source>
       <translation>Основа</translation>
     </message>
     <message>
-      <location/>
       <source>World</source>
       <translation>Світ</translation>
     </message>
     <message>
-      <location/>
       <source>50mm / 5°</source>
       <translation>50мм / 5°</translation>
     </message>
     <message>
-      <location/>
       <source>20mm / 2°</source>
       <translation>20мм / 2°</translation>
     </message>
     <message>
-      <location/>
       <source>10mm / 1°</source>
       <translation>10мм / 1°</translation>
     </message>
     <message>
-      <location/>
       <source>5mm / 0.5°</source>
       <translation>5мм / 0.5°</translation>
     </message>
     <message>
-      <location/>
       <source>1mm / 0.1°</source>
       <translation>1мм / 0.1°</translation>
+    </message>
+    <message>
+      <source>TaskRobotControl</source>
+      <translation>TaskRobotControl</translation>
     </message>
   </context>
   <context>
     <name>TaskRobotMessages</name>
     <message>
-      <location/>
+      <location filename="../../TaskRobotMessages.ui" line="+14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location/>
       <source>clear</source>
       <translation>очистити</translation>
+    </message>
+    <message>
+      <source>TaskRobotMessages</source>
+      <translation>TaskRobotMessages</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskTrajectory</name>
+    <message>
+      <source>Trajectory</source>
+      <translation>Траєкторія</translation>
     </message>
   </context>
   <context>
     <name>TaskTrajectoryDressUpParameter</name>
     <message>
-      <location/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="+14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location/>
       <source>Speed &amp; Acceleration:</source>
-      <translation>Speed &amp; Acceleration:</translation>
+      <translation>Швидкість та Прискорення:</translation>
     </message>
     <message>
-      <location/>
       <source>Speed:</source>
-      <translation>Speed:</translation>
+      <translation>Швидкість:</translation>
     </message>
     <message>
-      <location/>
       <source>Use</source>
-      <translation>Use</translation>
+      <translation>Вжити</translation>
     </message>
     <message>
-      <location/>
       <source>Accel:</source>
       <translation>Accel:</translation>
     </message>
     <message>
-      <location/>
       <source>Don't change Cont</source>
       <translation>Don't change Cont</translation>
     </message>
     <message>
-      <location/>
       <source>Continues</source>
-      <translation>Continues</translation>
+      <translation>Продовжується</translation>
     </message>
     <message>
-      <location/>
       <source>Discontinues</source>
-      <translation>Discontinues</translation>
+      <translation>Припиняється</translation>
     </message>
     <message>
-      <location/>
       <source>Position and Orientation:</source>
-      <translation>Position and Orientation:</translation>
+      <translation>Позиція та Орієнтація:</translation>
     </message>
     <message>
-      <location/>
       <source>(0,0,0),(0,0,0)</source>
       <translation>(0,0,0),(0,0,0)</translation>
     </message>
     <message>
-      <location/>
       <source>...</source>
       <translation>...</translation>
     </message>
     <message>
-      <location/>
       <source>Don't change Position &amp; Orientation</source>
-      <translation>Don't change Position &amp; Orientation</translation>
+      <translation>Не змінювати Позицію та Орієнтацію</translation>
     </message>
     <message>
-      <location/>
       <source>Use Orientation</source>
-      <translation>Use Orientation</translation>
+      <translation>Використовувати Орієнтацію</translation>
     </message>
     <message>
-      <location/>
       <source>Add Position</source>
-      <translation>Add Position</translation>
+      <translation>Додати Позицію</translation>
     </message>
     <message>
-      <location/>
       <source>Add Orientation</source>
-      <translation>Add Orientation</translation>
+      <translation>Додати Орієнтацію</translation>
+    </message>
+    <message>
+      <source>Dress Up Parameter</source>
+      <translation>Параметри Одягання</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="-33"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Insert Robots</source>
       <translation>Вставити роботів</translation>
     </message>
     <message>
-      <location/>
       <source>&amp;Robot</source>
       <translation>&amp;Робот</translation>
     </message>
     <message>
-      <location/>
       <source>Export trajectory</source>
       <translation>Експорт траєкторії</translation>
     </message>
