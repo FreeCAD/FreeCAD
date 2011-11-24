@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS><TS version="2.0">
 <context>
     <name>Arch</name>
     <message>
-        <location filename="Component.py" line="97"/>
+        <location filename="Component.py" line="151"/>
         <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Component.py" line="98"/>
-        <source>Append selected objects</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Component.py" line="99"/>
+        <location filename="Component.py" line="153"/>
         <source>Remove child</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Component.py" line="100"/>
+        <location filename="Component.py" line="154"/>
         <source>Components of this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -26,12 +21,12 @@
 <context>
     <name>Arch_Add</name>
     <message>
-        <location filename="Commands.py" line="209"/>
+        <location filename="Commands.py" line="221"/>
         <source>Add component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Commands.py" line="210"/>
+        <location filename="Commands.py" line="222"/>
         <source>Adds the selected components to the active object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -78,7 +73,7 @@
 <context>
     <name>Arch_MeshToPart</name>
     <message>
-        <location filename="Commands.py" line="282"/>
+        <location filename="Commands.py" line="294"/>
         <source>Turns selected meshes into Part Shape objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -86,7 +81,7 @@
 <context>
     <name>Arch_MeshToShape</name>
     <message>
-        <location filename="Commands.py" line="281"/>
+        <location filename="Commands.py" line="293"/>
         <source>Mesh to Shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -94,12 +89,12 @@
 <context>
     <name>Arch_Remove</name>
     <message>
-        <location filename="Commands.py" line="230"/>
+        <location filename="Commands.py" line="242"/>
         <source>Remove component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Commands.py" line="231"/>
+        <location filename="Commands.py" line="243"/>
         <source>Remove the selected components from their parents, or create a hole in a component</source>
         <translation type="unfinished"></translation>
     </message>
@@ -107,12 +102,12 @@
 <context>
     <name>Arch_RemoveShape</name>
     <message>
-        <location filename="Commands.py" line="338"/>
+        <location filename="Commands.py" line="350"/>
         <source>Remove Shape from Arch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Commands.py" line="339"/>
+        <location filename="Commands.py" line="351"/>
         <source>Removes cubic shapes from Arch components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -133,12 +128,12 @@
 <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-        <location filename="Commands.py" line="313"/>
+        <location filename="Commands.py" line="325"/>
         <source>Select non-manifold meshes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Commands.py" line="314"/>
+        <location filename="Commands.py" line="326"/>
         <source>Selects all non-manifold meshes from the document or from the selected groups</source>
         <translation type="unfinished"></translation>
     </message>
@@ -159,12 +154,12 @@
 <context>
     <name>Arch_SplitMesh</name>
     <message>
-        <location filename="Commands.py" line="254"/>
+        <location filename="Commands.py" line="266"/>
         <source>Split Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Commands.py" line="255"/>
+        <location filename="Commands.py" line="267"/>
         <source>Splits selected meshes into independent components</source>
         <translation type="unfinished"></translation>
     </message>
