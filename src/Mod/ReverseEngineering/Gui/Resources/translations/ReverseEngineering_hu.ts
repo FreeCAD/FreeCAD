@@ -6,30 +6,30 @@
     <message>
       <location filename="../../Command.cpp" line="+111"/>
       <source>Reverse Engineering</source>
-      <translation>Reversertkonstruksjon</translation>
+      <translation>Visszatervezés</translation>
     </message>
     <message>
       <source>Approximate plane...</source>
-      <translation>Approximate plane...</translation>
+      <translation>Hozzávetőleges sík ...</translation>
     </message>
     <message>
       <source>Approximate a plane</source>
-      <translation>Approximate a plane</translation>
+      <translation>Sík megbecsülése</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
       <source>Reverse Engineering</source>
-      <translation>Reversertkonstruksjon</translation>
+      <translation>Visszatervezés</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
-      <translation>Anslå overflate...</translation>
+      <translation>Felület közelítés...</translation>
     </message>
     <message>
       <source>Approximate a B-Spline surface</source>
-      <translation>Anslå en B-Splineoverflate</translation>
+      <translation>B-Spline felület közelítése</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
-      <translation>Reversertkonstruksjon</translation>
+      <translation>Visszatervezés</translation>
     </message>
   </context>
 </TS>

@@ -2,35 +2,40 @@
 <!DOCTYPE TS>
 <TS>
   <context>
-    <name>CmdApproxSurface</name>
+    <name>CmdApproxPlane</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+111"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location/>
-      <source>Approximate surface...</source>
-      <translation>Surface approchée...</translation>
+      <source>Approximate plane...</source>
+      <translation>Approximer un plan...</translation>
     </message>
     <message>
-      <location/>
-      <source>Approximate a B-Spline surface</source>
-      <translation>Approche une surface B-Spline</translation>
+      <source>Approximate a plane</source>
+      <translation>Approximer un plan</translation>
     </message>
   </context>
   <context>
-    <name>ReverseEngineeringGui::Workbench</name>
+    <name>CmdApproxSurface</name>
     <message>
-      <location/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
+    </message>
+    <message>
+      <source>Approximate surface...</source>
+      <translation>Approximer une surface...</translation>
+    </message>
+    <message>
+      <source>Approximate a B-Spline surface</source>
+      <translation>Approximer une surface B-Spline</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>

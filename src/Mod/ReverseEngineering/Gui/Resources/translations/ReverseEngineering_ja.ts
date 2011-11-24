@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="+111"/>
       <source>Reverse Engineering</source>
-      <translation>Reversertkonstruksjon</translation>
+      <translation>リバースエンジニアリング</translation>
     </message>
     <message>
       <source>Approximate plane...</source>
@@ -21,15 +21,15 @@
     <name>CmdApproxSurface</name>
     <message>
       <source>Reverse Engineering</source>
-      <translation>Reversertkonstruksjon</translation>
+      <translation>リバースエンジニアリング</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
-      <translation>Anslå overflate...</translation>
+      <translation>おおよその表面...</translation>
     </message>
     <message>
       <source>Approximate a B-Spline surface</source>
-      <translation>Anslå en B-Splineoverflate</translation>
+      <translation>B-スプライン曲面を近似</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
-      <translation>Reversertkonstruksjon</translation>
+      <translation>リバースエンジニアリング</translation>
     </message>
   </context>
 </TS>

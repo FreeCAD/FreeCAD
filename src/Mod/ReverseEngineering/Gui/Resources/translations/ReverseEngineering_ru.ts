@@ -2,35 +2,40 @@
 <!DOCTYPE TS>
 <TS>
   <context>
-    <name>CmdApproxSurface</name>
+    <name>CmdApproxPlane</name>
     <message>
-      <location/>
+      <location filename="../../Command.cpp" line="+111"/>
       <source>Reverse Engineering</source>
       <translation>Обратный инжиниринг</translation>
     </message>
     <message>
-      <location/>
+      <source>Approximate plane...</source>
+      <translation>Приблизительная плоскость...</translation>
+    </message>
+    <message>
+      <source>Approximate a plane</source>
+      <translation>Аппроксимировать плоскость</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSurface</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Обратный инжиниринг</translation>
+    </message>
+    <message>
       <source>Approximate surface...</source>
       <translation>Апроксимация поверхности...</translation>
     </message>
     <message>
-      <location/>
       <source>Approximate a B-Spline surface</source>
       <translation>Апроксимировать поверхность B-сплайна</translation>
     </message>
   </context>
   <context>
-    <name>ReverseEngineeringGui::Workbench</name>
-    <message>
-      <location/>
-      <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
-    </message>
-  </context>
-  <context>
     <name>Workbench</name>
     <message>
-      <location/>
+      <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
       <translation>Обратный инжиниринг</translation>
     </message>
