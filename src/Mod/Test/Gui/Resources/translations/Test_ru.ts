@@ -5,27 +5,27 @@
     <name>TestGui::UnitTest</name>
     <message>
       <source>FreeCAD UnitTest</source>
-      <translation>Test unitaire FreeCAD</translation>
+      <translation>FreeCAD Unit-Тест</translation>
     </message>
     <message>
       <source>Failures and errors</source>
-      <translation>Échecs et erreurs</translation>
+      <translation>Сбои и ошибки</translation>
     </message>
     <message>
       <source>Description</source>
-      <translation>Description</translation>
+      <translation>Описание</translation>
     </message>
     <message>
       <source>&amp;Start</source>
-      <translation>&amp;Démarrer</translation>
+      <translation>&amp;Запуск</translation>
     </message>
     <message>
       <source>Alt+S</source>
-      <translation>Alt+D</translation>
+      <translation>Alt+S</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Aide</translation>
+      <translation>Помощь</translation>
     </message>
     <message>
       <source>F1</source>
@@ -33,27 +33,27 @@
     </message>
     <message>
       <source>&amp;About</source>
-      <translation>À &amp;propos</translation>
+      <translation>О программе</translation>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt+p</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Fermer</translation>
+      <translation>Закрыть</translation>
     </message>
     <message>
       <source>Alt+C</source>
-      <translation>Alt+F</translation>
+      <translation>Alt+C</translation>
     </message>
     <message>
       <source>Idle</source>
-      <translation>Inactif</translation>
+      <translation>Простой</translation>
     </message>
     <message>
       <source>Progress</source>
-      <translation>Progression</translation>
+      <translation>Прогресс</translation>
     </message>
     <message>
       <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
@@ -61,54 +61,53 @@
     </message>
     <message>
       <source>Remaining:</source>
-      <translation>Restant :</translation>
+      <translation>Осталось:</translation>
     </message>
     <message>
       <source>Errors:</source>
-      <translation>Erreurs :</translation>
+      <translation>Ошибки:</translation>
     </message>
     <message>
       <source>Failures:</source>
-      <translation>Échecs :</translation>
+      <translation>Сбои:</translation>
     </message>
     <message>
       <source>Run:</source>
-      <translation>Lancer :</translation>
+      <translation>Выполнить:</translation>
     </message>
     <message>
       <source>Test</source>
-      <translation>Test</translation>
+      <translation>Тестировать</translation>
     </message>
     <message>
       <source>Select test name:</source>
-      <translation>Sélectionner le nom du test :</translation>
+      <translation>Выберите название теста:</translation>
     </message>
   </context>
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation>Справка</translation>
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>À propos des tests unitaires FreeCAD</translation>
+      <translation>О Unit-тесте FreeCAD</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>Tous droits réservés (c) Werner Mayer
-
-FreeCAD UnitTest fait partie de FreeCAD et supporte l'écriture de tests unitaires pour vos propres modules.</translation>
+      <translation>Copyright (C) Вернер Майер 
+FreeCAD UnitTest является частью FreeCAD и поддерживает написание Unit тестов для собственных модулей.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Saisir le nom d'un objet qui, une fois appelé, retournera un événement TestCase. Cliquer sur 'Démarrer' et le test démarrera.
+      <translation>Введите имя вызываемого объекта при вызове которого, бедет возвтащаться TestCase. Кликните 'start' и, таким образом, проверка будет выполнена.
 
-Double cliquer sur une erreur dans la vue arborescente pour voir plus d'informations, y compris l'historique de la pile.</translation>
+Выполните двойной щелчок на ошибке в древовидном виджете для дополнительной информации о ней, включая  стек вызовов.</translation>
     </message>
   </context>
 </TS>

@@ -5,27 +5,27 @@
     <name>TestGui::UnitTest</name>
     <message>
       <source>FreeCAD UnitTest</source>
-      <translation>Test unitaire FreeCAD</translation>
+      <translation>Teste de unidade do FreeCAD</translation>
     </message>
     <message>
       <source>Failures and errors</source>
-      <translation>Échecs et erreurs</translation>
+      <translation>Falhas e erros</translation>
     </message>
     <message>
       <source>Description</source>
-      <translation>Description</translation>
+      <translation>Descrição</translation>
     </message>
     <message>
       <source>&amp;Start</source>
-      <translation>&amp;Démarrer</translation>
+      <translation>&amp;Início</translation>
     </message>
     <message>
       <source>Alt+S</source>
-      <translation>Alt+D</translation>
+      <translation>Alt+I</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Aide</translation>
+      <translation>A&amp;juda</translation>
     </message>
     <message>
       <source>F1</source>
@@ -33,15 +33,15 @@
     </message>
     <message>
       <source>&amp;About</source>
-      <translation>À &amp;propos</translation>
+      <translation>S&amp;obre</translation>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt+p</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Fermer</translation>
+      <translation>&amp;Fechar</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -49,11 +49,11 @@
     </message>
     <message>
       <source>Idle</source>
-      <translation>Inactif</translation>
+      <translation>Ocioso</translation>
     </message>
     <message>
       <source>Progress</source>
-      <translation>Progression</translation>
+      <translation>Progresso</translation>
     </message>
     <message>
       <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
@@ -61,54 +61,52 @@
     </message>
     <message>
       <source>Remaining:</source>
-      <translation>Restant :</translation>
+      <translation>Faltando:</translation>
     </message>
     <message>
       <source>Errors:</source>
-      <translation>Erreurs :</translation>
+      <translation>Erros:</translation>
     </message>
     <message>
       <source>Failures:</source>
-      <translation>Échecs :</translation>
+      <translation>Falhas:</translation>
     </message>
     <message>
       <source>Run:</source>
-      <translation>Lancer :</translation>
+      <translation>Executar:</translation>
     </message>
     <message>
       <source>Test</source>
-      <translation>Test</translation>
+      <translation>Teste</translation>
     </message>
     <message>
       <source>Select test name:</source>
-      <translation>Sélectionner le nom du test :</translation>
+      <translation>Selecione o nome do teste:</translation>
     </message>
   </context>
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
       <source>Help</source>
-      <translation>Aide</translation>
+      <translation>Ajuda</translation>
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>À propos des tests unitaires FreeCAD</translation>
+      <translation>Sobre o teste de unidade do FreeCAD</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>Tous droits réservés (c) Werner Mayer
+      <translation>Copyright (c) Werner Mayer
 
-FreeCAD UnitTest fait partie de FreeCAD et supporte l'écriture de tests unitaires pour vos propres modules.</translation>
+O teste de unidade do FreeCAD é parte do FreeCAD e suporta o desenvolvimento de testes de unidade para módulos próprios.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Saisir le nom d'un objet qui, une fois appelé, retournera un événement TestCase. Cliquer sur 'Démarrer' et le test démarrera.
-
-Double cliquer sur une erreur dans la vue arborescente pour voir plus d'informations, y compris l'historique de la pile.</translation>
+      <translation>Digite o nome de um objeto que pode ser chamado que, quando chamado, vai retornar um TestCase. Clique "Iniciar", e o teste assim produzido será executado. Dê um duplo clique sobre um erro na árvore para ver mais informações sobre ele, incluindo o rastreamento de pilha.</translation>
     </message>
   </context>
 </TS>
