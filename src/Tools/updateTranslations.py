@@ -3,12 +3,16 @@
 '''
 Usage:
 
-    updateTranslations.py LANGCODE [LANGCODE LANGCODE...]
+    updateTranslations.py [options] LANGCODE [LANGCODE LANGCODE...]
 
 Example:
 
     ./updateTranslations.py [-d <directory>] fr nl pt_BR
 
+Options:
+
+    -d : specifies a directory containing the freecad.zip file.
+    
 This command must be run from its current source tree location (/src/Tools)
 so it can find the correct places to put the translation files. The
 latest translations from crowdin will be downloaded, unzipped and put to
@@ -20,6 +24,9 @@ NOTE! The crowdin site only allows to download "builds" (zipped archives)
 which must be built prior to downloading. This means a build might not
 reflect the latest state of the translations. Better make a build before
 using this script!
+
+You can specify a directory with the -d option if you already downloaded
+and the build.
 '''
 
 import sys, os, shutil, tempfile, zipfile, getopt, StringIO
@@ -43,7 +50,10 @@ locations = [["Assembly","../Mod/Assembly/Gui/Resources/translations"],
              ["Raytracing","../Mod/Raytracing/Gui/Resources/translations"],
              ["ReverseEngineering","../Mod/ReverseEngineering/Gui/Resources/translations"],
              ["Robot","../Mod/Robot/Gui/Resources/translations"],
-             ["Sketcher","../Mod/Sketcher/Gui/Resources/translations"]]
+             ["Sketcher","../Mod/Sketcher/Gui/Resources/translations"],
+             ["Arch","../Mod/Arch/Resources/translations"],
+             ["StartPage","../Mod/Start/Gui/Resources/translations"],
+             ["Test","../Mod/Test/Gui/Resources/translations"]]
 
 tweaks = [["pt-BR","pt"],["es-ES","es"],["sv-SE","se"],["zh-CN","zh"]]
 
