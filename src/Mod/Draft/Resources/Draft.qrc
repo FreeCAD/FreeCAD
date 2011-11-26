@@ -53,6 +53,8 @@
         <file>translations/Draft_pt.qm</file>
         <file>translations/Draft_hr.qm</file>
         <file>translations/Draft_zh.qm</file>
+        <file>translations/Draft_ja.qm</file>
+        <file>translations/Draft_hu.qm</file>
         <file>ui/userprefs-base.ui</file>
         <file>ui/userprefs-import.ui</file>
     </qresource>
