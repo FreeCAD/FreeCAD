@@ -47,11 +47,11 @@ class ArchWorkbench(Workbench):
                               "Draft_Downgrade"]
                 meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                              "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
-                self.appendToolbar("Arch tools",archtools)
-                self.appendToolbar("Draft tools",drafttools)
-                self.appendMenu(["Architecture","Tools"],meshtools)
-                self.appendMenu("Architecture",archtools)
-                self.appendMenu("Draft",drafttools)
+                self.appendToolbar(str(draftTools.translate("arch","Arch tools")),archtools)
+                self.appendToolbar(str(draftTools.translate("arch","Draft tools")),drafttools)
+                self.appendMenu([str(draftTools.translate("arch","Architecture")),str(draftTools.translate("arch","Tools"))],meshtools)
+                self.appendMenu(str(draftTools.translate("arch","Architecture")),archtools)
+                self.appendMenu(str(draftTools.translate("arch","Draft")),drafttools)
                 FreeCADGui.addIconPath(":/icons")
                 FreeCADGui.addLanguagePath(":/translations")
                 FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")

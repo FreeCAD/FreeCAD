@@ -27,7 +27,6 @@ __url__ = ["http://free-cad.sourceforge.net"]
 
 import os
 
-
 class DraftWorkbench (Workbench):
     "the Draft Workbench"
     Icon = """
@@ -182,8 +181,8 @@ class DraftWorkbench (Workbench):
             return
         Log ('Loading Draft GUI...\n')
         try:
-            import draftTools,draftGui,macros
-            self.appendMenu(["&Macro","Installed Macros"],macros.macrosList)
+            import macros,draftTools,draftGui
+            self.appendMenu(["&Macro",str(draftTools.translate("draft","Installed Macros"))],macros.macrosList)
         except:
             pass
         self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
@@ -195,10 +194,10 @@ class DraftWorkbench (Workbench):
                         "Draft_DelPoint","Draft_Shape2DView"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup","Draft_SelectGroup"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
-        self.appendToolbar("Draft tools",self.cmdList+self.modList)
-        self.appendMenu("Draft",self.cmdList+self.modList)
-        self.appendMenu(["Draft","Display options"],self.treecmdList)
-        self.appendMenu(["Draft","Wire tools"],self.lineList)
+        self.appendToolbar(str(draftTools.translate("draft","Draft tools")),self.cmdList+self.modList)
+        self.appendMenu(str(draftTools.translate("draft","Draft")),self.cmdList+self.modList)
+        self.appendMenu([str(draftTools.translate("draft","Draft")),str(draftTools.translate("draft","Display options"))],self.treecmdList)
+        self.appendMenu([str(draftTools.translate("draft","Draft")),str(draftTools.translate("draft","Wire tools"))],self.lineList)
                                         
     def Activated(self):
         FreeCADGui.draftToolBar.Activated()
@@ -210,16 +209,16 @@ class DraftWorkbench (Workbench):
         if (recipient == "View"):
             if (FreeCAD.activeDraftCommand == None):
                 if (FreeCADGui.Selection.getSelection() != []):
-                    self.appendContextMenu("Draft",self.cmdList+self.modList)
-                    self.appendContextMenu("Display options",self.treecmdList)
+                    self.appendContextMenu(str(draftTools.translate("draft","Draft")),self.cmdList+self.modList)
+                    self.appendContextMenu(str(draftTools.translate("draft","Display options")),self.treecmdList)
                 else:
-                    self.appendContextMenu("Draft",self.cmdList)
+                    self.appendContextMenu(str(draftTools.translate("draft","Draft")),self.cmdList)
             else:
                 if (FreeCAD.activeDraftCommand.featureName == "Line"):
                     self.appendContextMenu("",self.lineList)
         else:
             if (FreeCADGui.Selection.getSelection() != []):
-                self.appendContextMenu("Display options",self.treecmdList)
+                self.appendContextMenu(str(draftTools.translate("draft","Display options")),self.treecmdList)
 
     def GetClassName(self): 
         return "Gui::PythonWorkbench"
