@@ -3,7 +3,7 @@
 '''
 Usage:
 
-    updateTranslations.py [options] LANGCODE [LANGCODE LANGCODE...]
+    updateTranslations.py [options] [LANGCODE] [LANGCODE LANGCODE...]
 
 Example:
 
@@ -11,7 +11,9 @@ Example:
 
 Options:
 
+    -h : prints this help text
     -d : specifies a directory containing the freecad.zip file.
+    -m : specifies a single module name to be updated, instead of all modules
     
 This command must be run from its current source tree location (/src/Tools)
 so it can find the correct places to put the translation files. The
@@ -26,12 +28,17 @@ reflect the latest state of the translations. Better make a build before
 using this script!
 
 You can specify a directory with the -d option if you already downloaded
-and the build.
+and the build, or you can specify a single module to update with -m.
+
+You can also run the script without any language code, in which case the
+default ones specified inside this script will be used.
 '''
 
 import sys, os, shutil, tempfile, zipfile, getopt, StringIO
 import xml.sax, xml.sax.handler, xml.sax.xmlreader
 
+defaultLanguages = ["af","de","es-ES","fi","fr","hr","hu","it","ja","nl",
+                    "no","pl","pt-BR","ru","sv-SE","uk","zh-CN"]
 
 crowdinpath = "http://crowdin.net/download/project/freecad.zip"
 
@@ -116,9 +123,19 @@ def doFile(tsfilepath,targetpath,lncode):
     except:
         pass
 
-def doLanguage(lncode):
+def doLanguage(lncode,fmodule=""):
     " treats a single language"
-    for target in locations:
+    mods = []
+    if fmodule:
+        for l in locations:
+            if l[0].upper() == fmodule.upper():
+                mods = [l]
+    else:
+        mods = locations
+    if not mods:
+        print "Error: Couldn't find module "+fmodule
+        sys.exit()
+    for target in mods:
         basefilepath = tempfolder + os.sep + lncode + os.sep + target[0] + ".ts"
         targetpath = os.path.abspath(target[1])
         doFile(basefilepath,targetpath,lncode)
@@ -130,19 +147,22 @@ if __name__ == "__main__":
         print __doc__
         sys.exit()
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hd:", ["help", "directory="])
+        opts, args = getopt.getopt(sys.argv[1:], "hd:m:", ["help", "directory=","module="])
     except getopt.GetoptError:
         print __doc__
         sys.exit()
         
     # checking on the options
-    inputdir=""
+    inputdir = ""
+    fmodule = ""
     for o, a in opts:
         if o in ("-h", "--help"):
             print __doc__
             sys.exit()
         if o in ("-d", "--directory"):
             inputdir = a
+        if o in ("-m", "--module"):
+            fmodule = a
 
     tempfolder = tempfile.mkdtemp()
     print "creating temp folder " + tempfolder
@@ -164,9 +184,11 @@ if __name__ == "__main__":
     print "extracting freecad.zip..."
     zfile.extractall()
     os.chdir(currentfolder)
+    if not args:
+        args = defaultLanguages
     for ln in args:
         if not os.path.exists(tempfolder + os.sep + ln):
             print "language path for " + ln + " not found!"
         else:
-            doLanguage(ln)
+            doLanguage(ln,fmodule)
 
