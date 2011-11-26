@@ -2,6 +2,9 @@ import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
 from PyQt4 import QtGui
 from xml.etree.ElementTree import parse
 
+FreeCADGui.addLanguagePath(":/translations")
+FreeCADGui.updateLocale()
+
 def translate(context,text):
         "convenience function for the Qt translator"
         return str(QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8())
