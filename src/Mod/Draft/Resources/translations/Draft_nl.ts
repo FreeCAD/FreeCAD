@@ -63,7 +63,7 @@
     <message>
       <location filename="draftTools.py" line="1442"/>
       <source>Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain</source>
-      <translation>Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain</translation>
+      <translation>Creëert een meervoudige b-spline. CTRL om te snappen, SHIFt om te beperken</translation>
     </message>
   </context>
   <context>
@@ -201,7 +201,7 @@
     <message>
       <location filename="draftTools.py" line="2955"/>
       <source>Offset</source>
-      <translation>Verplaatsing</translation>
+      <translation>Verschuiving</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="2956"/>
@@ -219,7 +219,7 @@
     <message>
       <location filename="draftTools.py" line="1998"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
-      <translation>Creates a regular polygon. CTRL to snap, SHIFT to constrain</translation>
+      <translation>Creëert een regelmatige veelhoek. CTRL om te snappen, SHIFT te beperken</translation>
     </message>
   </context>
   <context>
@@ -271,7 +271,7 @@
     <message>
       <location filename="draftTools.py" line="4399"/>
       <source>Selects all objects with the same parents as this group</source>
-      <translation>Selects all objects with the same parents as this group</translation>
+      <translation>Selecteert alle objecten met dezelfde ouders als deze groep</translation>
     </message>
   </context>
   <context>
@@ -292,12 +292,12 @@
     <message>
       <location filename="draftTools.py" line="4422"/>
       <source>Shape 2D view</source>
-      <translation>Shape 2D view</translation>
+      <translation>2D-uitzichtvorm</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="4423"/>
       <source>Creates Shape 2D views of selected objects</source>
-      <translation>Creates Shape 2D views of selected objects</translation>
+      <translation>Maakt 2D-uitzichtvormen van geselecteerde objecten</translation>
     </message>
   </context>
   <context>
@@ -331,12 +331,12 @@
     <message>
       <location filename="draftTools.py" line="3864"/>
       <source>Toggle continue Mode</source>
-      <translation>Toggle continue Mode</translation>
+      <translation>Vervolg-modus schakelen</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3865"/>
       <source>Toggles the Continue Mode for next commands.</source>
-      <translation>Toggles the Continue Mode for next commands.</translation>
+      <translation>Schakelt de vervolg-modus voor de volgende opdrachten.</translation>
     </message>
   </context>
   <context>
@@ -349,7 +349,7 @@
     <message>
       <location filename="draftTools.py" line="3950"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
-      <translation>Swaps display mode of selected objects between wireframe and flatlines</translation>
+      <translation>Schakelt weergavemodus van geselecteerde objecten tussen wireframe en flatlines</translation>
     </message>
   </context>
   <context>
@@ -362,7 +362,7 @@
     <message>
       <location filename="draftTools.py" line="3436"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
-      <translation>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</translation>
+      <translation>Trimt of breidt het geselecteerde object uit, of extrudeert enkele oppervlakken. CTRL snapt, SHIFT, beperkt tot huidige segment of tot de normale, ALT omkeert</translation>
     </message>
   </context>
   <context>
@@ -492,17 +492,17 @@
     <message>
       <location filename="userprefs-base.ui" line="341"/>
       <source>Global copy mode</source>
-      <translation>Global copy mode</translation>
+      <translation>Globale kopieermodus</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="381"/>
       <source>If this is checked, you will always snap to existing objects while drawing. If not, you will be snapping only when pressing CTRL.</source>
-      <translation>If this is checked, you will always snap to existing objects while drawing. If not, you will be snapping only when pressing CTRL.</translation>
+      <translation>Als dit ingeschakeld is, zal u altijd op bestaande objecten snappen tijdens het tekenen. Als niet, u zal snappen enkel wanneer op CTRL drukt.</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="440"/>
       <source>If this is checked, objects will appear as filled as default. Otherwise, they will appear as wireframe</source>
-      <translation>If this is checked, objects will appear as filled as default. Otherwise, they will appear as wireframe</translation>
+      <translation>Als dit ingeschakeld is, verschijnen objecten gevuld op creatie. Ze wordt anders weergegeven als wireframe</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="443"/>
@@ -560,10 +560,7 @@
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
 such as "Arial:Bold"</source>
-      <translation>This is the default font name for all Draft texts and dimensions.
-It can be a font name such as "Arial", a default style such as "sans", "serif"
-or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
-such as "Arial:Bold"</translation>
+      <translation>Dit is de standaard naam van het lettertype voor alle Draft teksten en afmetingen. Het kan een font naam zijn, zoals "Arial", een standaard stijl, zoals "sans", "serif" of "mono", of een familie, zoals "Arial, Helvetica, sans" of een naam met een stijl zoals "Arial: Bold"</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="738"/>
@@ -590,9 +587,7 @@ such as "Arial:Bold"</translation>
       <source>This is the method choosed for importing or translating DXF object color into FreeCAD. 
 If color mapping is choosed, you must choose a color mapping file containing a translation table that will convert colors into linewidths.
 </source>
-      <translation>This is the method choosed for importing or translating DXF object color into FreeCAD. 
-If color mapping is choosed, you must choose a color mapping file containing a translation table that will convert colors into linewidths.
-</translation>
+      <translation>Dit is de methode gekozen voor het importeren of het vertalen van DXF-objecten in FreeCAD-kleuren. Als "kleur vertaling" is gekozen, moet u eem bestand kiezen met een vertaling tabel die kleuren in lijnbreedten omzetten.</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="337"/>
@@ -617,7 +612,7 @@ If color mapping is choosed, you must choose a color mapping file containing a t
     <message>
       <location filename="userprefs-import.ui" line="183"/>
       <source>if this is checked, paper space objects will be imported too</source>
-      <translation>if this is checked, paper space objects will be imported too</translation>
+      <translation>Als dit ingeschakeld is, zijn paper space objecten ook geïmporteerd</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="186"/>
@@ -627,42 +622,42 @@ If color mapping is choosed, you must choose a color mapping file containing a t
     <message>
       <location filename="userprefs-import.ui" line="163"/>
       <source>if this is unchecked, texts/mtexts won't be imported</source>
-      <translation>if this is unchecked, texts/mtexts won't be imported</translation>
+      <translation>Als dit niet ingeschakeld is, werden teksten en mtexts niet geïmporteerd</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="133"/>
       <source>Color mapping file</source>
-      <translation>Color mapping file</translation>
+      <translation>kleurvertalingsbestand</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="146"/>
       <source>The color mapping file for translating dxf colors into linewidths</source>
-      <translation>The color mapping file for translating dxf colors into linewidths</translation>
+      <translation>De kleurvertalingsbestand om te gebruiken voor omzetten van dxf kleuren in lijnbreedten</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="100"/>
       <source>Max Spline Segment</source>
-      <translation>Max Spline Segment</translation>
+      <translation>Max splinesegment</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="113"/>
       <source>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</source>
-      <translation>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</translation>
+      <translation>Bij het exporteren van splines naar DXF-formaat, worden ze omgezet in polylijnen. Deze waarde is de maximale lengte van elk van de polylijn segmenten. Als 0, dan wordt de hele spline behandeld als een recht segment.</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="324"/>
       <source>This is the method choosed for importing SVG object color into FreeCAD.</source>
-      <translation>This is the method choosed for importing SVG object color into FreeCAD.</translation>
+      <translation>Dit is de methode gekozen voor het importeren van SVG-objectkleur in FreeCAD.</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="380"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Check this if you want the areas (3D faces) to be imported too.</translation>
+      <translation>Schakel dit als u wilt de gebieden (3D oppervlakken) te importeren.</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="383"/>
       <source>Import OCA areas</source>
-      <translation>Import OCA areas</translation>
+      <translation>OCA gebieden importeren</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="14"/>
@@ -672,7 +667,7 @@ If color mapping is choosed, you must choose a color mapping file containing a t
     <message>
       <location filename="userprefs-base.ui" line="291"/>
       <source>Construction group name</source>
-      <translation>Construction group name</translation>
+      <translation>Bouwgroepsnaam</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="639"/>
@@ -683,13 +678,12 @@ If color mapping is choosed, you must choose a color mapping file containing a t
       <location filename="userprefs-base.ui" line="652"/>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same.</source>
-      <translation>This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same.</translation>
+      <translation>Deze waarde wordt gebruikt door functies die gebruikmaken van een tolerantie. Waarden met verschillen onder deze waarde zullen als gelijk worden behandeld.</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="801"/>
       <source>Dimensions &amp; Leader arrow style</source>
-      <translation>Dimensions &amp; Leader arrow style</translation>
+      <translation>Pijlstijl voor afmetingen &amp; leiders</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="815"/>
@@ -764,12 +758,12 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-import.ui" line="166"/>
       <source>Import texts and dimensions</source>
-      <translation>Import texts and dimensions</translation>
+      <translation>Teksten en afmetingen importeren</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="203"/>
       <source>Check this if you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation>Check this if you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Schakel dit in als de niet-genoemde blokken (die beginnen met een *) moeten ook worden geïmporteerd</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="206"/>
@@ -779,12 +773,12 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-import.ui" line="243"/>
       <source>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</source>
-      <translation>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</translation>
+      <translation>Indien ingeschakeld, zal freecad proberen gezamenlijk samenvallende objecten in draden omzetten. Pas op, dit kan even duren...</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="246"/>
       <source>Join geometry</source>
-      <translation>Join geometry</translation>
+      <translation>Geometrie koppelen</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="284"/>
@@ -799,22 +793,22 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-base.ui" line="916"/>
       <source>Alternate SVG Patterns location</source>
-      <translation>Alternate SVG Patterns location</translation>
+      <translation>Alternatieve SVG patronen locatie</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="942"/>
       <source>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</source>
-      <translation>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</translation>
+      <translation>Hier kunt u een map aanduiden met SVG bestanden die &lt;pattern&gt; definities bevat die toegevoegd aan de standaard Draft hatch patronen zullen zijn</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="34"/>
       <source>Draft interface mode</source>
-      <translation>Draft interface mode</translation>
+      <translation>Draft interfacemodus</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="41"/>
       <source>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</source>
-      <translation>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</translation>
+      <translation>Dit is de UI-modus waarin de Draft module zal werken: werkbalk modus zal alle ontwerp-instellingen in een aparte werkbalk plaatsen, terwijl taakzicht modus zal het FreeCAD Taskview systeem gebruiken voor alle haar gebruikersinteractie</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="51"/>
@@ -824,17 +818,17 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-base.ui" line="56"/>
       <source>Taskview</source>
-      <translation>Taskview</translation>
+      <translation>Taakzicht</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="176"/>
       <source>Constrain mod</source>
-      <translation>Constrain mod</translation>
+      <translation>Beperken modus</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="183"/>
       <source>The Constraining modifier key</source>
-      <translation>The Constraining modifier key</translation>
+      <translation>De Beperken wijzigingstoets</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="269"/>
@@ -854,22 +848,22 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-base.ui" line="211"/>
       <source>Snap mod</source>
-      <translation>Snap mod</translation>
+      <translation>Snap modus</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="218"/>
       <source>The snap modifier key</source>
-      <translation>The snap modifier key</translation>
+      <translation>De snap-wijzigingstoets</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="249"/>
       <source>Alt mod</source>
-      <translation>Alt mod</translation>
+      <translation>ALT modus</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="256"/>
       <source>The alt modifier key</source>
-      <translation>The alt modifier key</translation>
+      <translation>De alt-wijzigingstoets</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="361"/>
@@ -969,22 +963,22 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-import.ui" line="223"/>
       <source>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
-      <translation>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</translation>
+      <translation>Als dit ingeschakeld is, zullen objecten op de dezelfde lagen in Draft blokken worden omgezet, waardoor het display sneller zal draaien, maar de objecten minder gemakkelijk bewerkbaar zullen zijn</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="226"/>
       <source>Group layers into blocks</source>
-      <translation>Group layers into blocks</translation>
+      <translation>Lagen groeperen in blokken</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="263"/>
       <source>If this is checked, all objects containing faces will be exported as 3d polyfaces</source>
-      <translation>If this is checked, all objects containing faces will be exported as 3d polyfaces</translation>
+      <translation>Als dit ingeschakeld is, worden alle objecten met oppervlakken geëxporteerd als 3D-polyfaces</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="266"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation>Export 3D objects as polyface meshes</translation>
+      <translation>3D-objecten exporteren als polyface netten</translation>
     </message>
   </context>
   <context>
@@ -1062,7 +1056,7 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftTools.py" line="3082"/>
       <source>Offset</source>
-      <translation>Verplaatsing</translation>
+      <translation>Verschuiving</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="441"/>
@@ -1238,8 +1232,7 @@ Values with differences below this value will be treated as same.</translation>
       <location filename="draftTools.py" line="1969"/>
       <source>Aperture angle:
 </source>
-      <translation>Aperture angle:
-</translation>
+      <translation>Openingshoek:</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="2199"/>
@@ -1299,7 +1292,8 @@ Values with differences below this value will be treated as same.</translation>
       <location filename="draftTools.py" line="2971"/>
       <source>Offset only works on one object at a time
 </source>
-      <translation>Offset werkt slechts op één object per keer</translation>
+      <translation>Verschuiving werkt slechts op één object per keer
+</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3508"/>
@@ -1341,7 +1335,7 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftGui.py" line="439"/>
       <source>Number of sides</source>
-      <translation>Number of sides</translation>
+      <translation>Aantal zijden</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="421"/>
@@ -1366,7 +1360,7 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftGui.py" line="427"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation>If checked, command will not finish until you press the command button again</translation>
+      <translation>Indien ingeschakeld, zal de huidige opdracht niet beëindigen totdat u opnieuw op de command-toets druk</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="428"/>
@@ -1395,22 +1389,21 @@ Values with differences below this value will be treated as same.</translation>
       <location filename="draftTools.py" line="2481"/>
       <source>Edges don't intersect!
 </source>
-      <translation>Edges don't intersect!
+      <translation>Randen niet snijden!
 </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="2979"/>
       <source>Cannot offset this object type
 </source>
-      <translation>Cannot offset this object type
+      <translation>Dit objecttype niet kan verschuift worden
 </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3163"/>
       <source>Found groups: closing each open object inside
 </source>
-      <translation>Found groups: closing each open object inside
-</translation>
+      <translation>Groepen gevonden: sluiten alle geopende objecten binnen </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3186"/>
@@ -1422,7 +1415,7 @@ Values with differences below this value will be treated as same.</translation>
       <location filename="draftTools.py" line="3231"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
-      <translation>Found 1 non-parametric objects: draftifying it
+      <translation>1 Niet-parametrische object gevonden: Draft object maken
 </translation>
     </message>
     <message>
@@ -1447,22 +1440,20 @@ Values with differences below this value will be treated as same.</translation>
       <location filename="draftTools.py" line="3286"/>
       <source>Found several edges: wiring them
 </source>
-      <translation>Found several edges: wiring them
+      <translation>Verschillende randen gevonden: draad maken
 </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3295"/>
       <source>Found several non-connected edges: making compound
 </source>
-      <translation>Found several non-connected edges: making compound
-</translation>
+      <translation>Verschillende niet-verbonden randen gevonden: compound maken </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3300"/>
       <source>Found several non-treatable objects: making compound
 </source>
-      <translation>Found several non-treatable objects: making compound
-</translation>
+      <translation>Verschillende niet-behandelbare objecten gevonden: compound maken </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3371"/>
@@ -1510,13 +1501,13 @@ Values with differences below this value will be treated as same.</translation>
       <location filename="draftTools.py" line="4239"/>
       <source>Active object must have more than two points/nodes
 </source>
-      <translation>Active object must have more than two points/nodes
+      <translation>Actieve object moet meer dan twee punten/nodes hebben
 </translation>
     </message>
     <message>
       <location filename="draftGui.py" line="426"/>
       <source>Finishes the current drawing or editing operation (F)</source>
-      <translation>Finishes the current drawing or editing operation (F)</translation>
+      <translation>Eindigt de huidige tekening of bewerking (F)</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="431"/>
@@ -1526,17 +1517,17 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftGui.py" line="432"/>
       <source>Remove points from the current object</source>
-      <translation>Remove points from the current object</translation>
+      <translation>Punten van het huidige object verwijderen</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="423"/>
       <source>F&amp;illed</source>
-      <translation>F&amp;illed</translation>
+      <translation>Gev&amp;uld</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="424"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
-      <translation>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</translation>
+      <translation>Schakel dit in als het object moet als ingevuld verschijnen, anders zal het  als wireframe verschijnen (i)</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="425"/>
@@ -1546,22 +1537,22 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftGui.py" line="429"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Indien ingeschakeld, zal een OCC-stijl verschuiving worden uitgevoerd in plaats van de klassieke stijl</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="430"/>
       <source>&amp;OCC-style offset</source>
-      <translation>&amp;OCC-style offset</translation>
+      <translation>&amp;OCC-stijl verschuiving</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="437"/>
       <source>&amp;Wipe</source>
-      <translation>&amp;Wipe</translation>
+      <translation>&amp;Veeg</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="438"/>
       <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
-      <translation>Wipes the existing segments of this line and starts again from the last point (W)</translation>
+      <translation>Veegt de bestaande segmenten van deze lijn en begint weer vanaf de laatste punt (W)</translation>
     </message>
     <message>
       <location filename="draftGui.py" line="512"/>
@@ -1626,7 +1617,7 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftTools.py" line="3775"/>
       <source>Copy</source>
-      <translation>Copy</translation>
+      <translation>Kopie</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="2651"/>
@@ -1636,7 +1627,7 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftTools.py" line="2747"/>
       <source>Change Style</source>
-      <translation>Change Style</translation>
+      <translation>Stijl wijzigen</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="2811"/>
@@ -1647,21 +1638,21 @@ Values with differences below this value will be treated as same.</translation>
       <location filename="draftTools.py" line="3179"/>
       <source>Found 1 solidificable object: solidifying it
 </source>
-      <translation>Found 1 solidificable object: solidifying it
+      <translation>1 Solide-gelijk object gevonden: solide maken
 </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3209"/>
       <source>Found several objects or faces: making a parametric face
 </source>
-      <translation>Found several objects or faces: making a parametric face
+      <translation>Verschillende objecten of oppervlakken gevonden: een parametrische oppervlak maken
 </translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3214"/>
       <source>Found objects containing curves: fusing them
 </source>
-      <translation>Found objects containing curves: fusing them
+      <translation>Gevonden objecten met curven: versmelten
 </translation>
     </message>
     <message>
@@ -1683,12 +1674,37 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftTools.py" line="1953"/>
       <source>Start Angle</source>
-      <translation>Start Angle</translation>
+      <translation>Starthoek</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="1960"/>
       <source>Aperture</source>
-      <translation>Aperture</translation>
+      <translation>Opening</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="184"/>
+      <source>Installed Macros</source>
+      <translation>Geïnstalleerde macro 's</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="196"/>
+      <source>Draft tools</source>
+      <translation>Draft werktuigen</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="214"/>
+      <source>Draft</source>
+      <translation>Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="220"/>
+      <source>Display options</source>
+      <translation>Weergaveopties</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="199"/>
+      <source>Wire tools</source>
+      <translation>Draadwerktuigen</translation>
     </message>
   </context>
 </TS>

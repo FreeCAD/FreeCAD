@@ -951,12 +951,12 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-base.ui" line="899"/>
       <source>Left (ISO standard)</source>
-      <translation>Left (ISO standard)</translation>
+      <translation>Lewo (standard ISO)</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="904"/>
       <source>Right</source>
-      <translation>Right</translation>
+      <translation>Prawo</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="88"/>
@@ -981,7 +981,7 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="userprefs-import.ui" line="266"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation>Export 3D objects as polyface meshes</translation>
+      <translation>Eksport obiektu 3D jako wielofasetowa siatka</translation>
     </message>
   </context>
   <context>
@@ -1666,17 +1666,42 @@ Values with differences below this value will be treated as same.</translation>
     <message>
       <location filename="draftGui.py" line="573"/>
       <source>Trim</source>
-      <translation>Trim</translation>
+      <translation>Ucinanie</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="1953"/>
       <source>Start Angle</source>
-      <translation>Start Angle</translation>
+      <translation>Kąt początkowy</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="1960"/>
       <source>Aperture</source>
       <translation>Aperture</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="184"/>
+      <source>Installed Macros</source>
+      <translation>Installed Macros</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="196"/>
+      <source>Draft tools</source>
+      <translation>Draft tools</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="214"/>
+      <source>Draft</source>
+      <translation>Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="220"/>
+      <source>Display options</source>
+      <translation>Display options</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="199"/>
+      <source>Wire tools</source>
+      <translation>Wire tools</translation>
     </message>
   </context>
 </TS>

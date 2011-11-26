@@ -1699,7 +1699,7 @@ plus rapide, mais ils seront moins facilement modifiables</translation>
     <message>
       <location filename="draftGui.py" line="573"/>
       <source>Trim</source>
-      <translation>Réduire</translation>
+      <translation>Ajuster</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="1953"/>
@@ -1710,6 +1710,31 @@ plus rapide, mais ils seront moins facilement modifiables</translation>
       <location filename="draftTools.py" line="1960"/>
       <source>Aperture</source>
       <translation>Ouverture</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="184"/>
+      <source>Installed Macros</source>
+      <translation>Macros installées</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="196"/>
+      <source>Draft tools</source>
+      <translation>Outils Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="214"/>
+      <source>Draft</source>
+      <translation>Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="220"/>
+      <source>Display options</source>
+      <translation>Options d'affichage</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="199"/>
+      <source>Wire tools</source>
+      <translation>Outils de filaires</translation>
     </message>
   </context>
 </TS>

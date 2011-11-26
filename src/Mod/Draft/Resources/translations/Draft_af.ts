@@ -24,7 +24,7 @@
     <message>
       <location filename="draftTools.py" line="4263"/>
       <source>Add to group...</source>
-      <translation>Add to group...</translation>
+      <translation>Voeg by groep ...</translation>
     </message>
   </context>
   <context>
@@ -266,12 +266,12 @@
     <message>
       <location filename="draftTools.py" line="4398"/>
       <source>Select group</source>
-      <translation>Select group</translation>
+      <translation>Kies groep</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="4399"/>
       <source>Selects all objects with the same parents as this group</source>
-      <translation>Selects all objects with the same parents as this group</translation>
+      <translation>Kies al die voorwerpe met die dieselfde ouers as hierdie groep</translation>
     </message>
   </context>
   <context>
@@ -292,12 +292,12 @@
     <message>
       <location filename="draftTools.py" line="4422"/>
       <source>Shape 2D view</source>
-      <translation>Shape 2D view</translation>
+      <translation>Vorm 2D aansig</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="4423"/>
       <source>Creates Shape 2D views of selected objects</source>
-      <translation>Creates Shape 2D views of selected objects</translation>
+      <translation>Skep vorm 2D aansigte van die gekose voorwerpe</translation>
     </message>
   </context>
   <context>
@@ -331,12 +331,12 @@
     <message>
       <location filename="draftTools.py" line="3864"/>
       <source>Toggle continue Mode</source>
-      <translation>Toggle continue Mode</translation>
+      <translation>Wissel voortsettingsmodus</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="3865"/>
       <source>Toggles the Continue Mode for next commands.</source>
-      <translation>Toggles the Continue Mode for next commands.</translation>
+      <translation>Wissel die voortsettingsmodus vir die volgende bevele.</translation>
     </message>
   </context>
   <context>
@@ -362,7 +362,7 @@
     <message>
       <location filename="draftTools.py" line="3436"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
-      <translation>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</translation>
+      <translation>Knip of rek die gekose voorwerp, of strek 'n enkele vlak. CTRL heg, SHIFT beperk tot huidige segment of tot die normaallyn, ALT keer om</translation>
     </message>
   </context>
   <context>
@@ -793,7 +793,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="916"/>
       <source>Alternate SVG Patterns location</source>
-      <translation>Alternate SVG Patterns location</translation>
+      <translation>Wissel SVG Patrone ligging</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="942"/>
@@ -1673,6 +1673,31 @@ Values with differences below this value will be treated as same.</source>
       <location filename="draftTools.py" line="1960"/>
       <source>Aperture</source>
       <translation>Aperture</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="184"/>
+      <source>Installed Macros</source>
+      <translation>Installed Macros</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="196"/>
+      <source>Draft tools</source>
+      <translation>Draft tools</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="214"/>
+      <source>Draft</source>
+      <translation>Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="220"/>
+      <source>Display options</source>
+      <translation>Display options</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="199"/>
+      <source>Wire tools</source>
+      <translation>Wire tools</translation>
     </message>
   </context>
 </TS>

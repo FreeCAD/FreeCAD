@@ -1701,5 +1701,30 @@ Values with differences below this value will be treated as same.</source>
       <source>Aperture</source>
       <translation>Abertura</translation>
     </message>
+    <message>
+      <location filename="InitGui.py" line="184"/>
+      <source>Installed Macros</source>
+      <translation>Macros instaladas</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="196"/>
+      <source>Draft tools</source>
+      <translation>Ferramentas do Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="214"/>
+      <source>Draft</source>
+      <translation>Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="220"/>
+      <source>Display options</source>
+      <translation>Opções de exibição</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="199"/>
+      <source>Wire tools</source>
+      <translation>Ferramentas de arame</translation>
+    </message>
   </context>
 </TS>

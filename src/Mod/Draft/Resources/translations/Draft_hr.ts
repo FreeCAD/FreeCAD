@@ -1663,17 +1663,42 @@ Vrijednosti s razlikama ispod te vrijednosti će biti tretirane kao jednake.</tr
     <message>
       <location filename="draftGui.py" line="573"/>
       <source>Trim</source>
-      <translation>Trim</translation>
+      <translation>Skrati</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="1953"/>
       <source>Start Angle</source>
-      <translation>Start Angle</translation>
+      <translation>Početni kut</translation>
     </message>
     <message>
       <location filename="draftTools.py" line="1960"/>
       <source>Aperture</source>
-      <translation>Aperture</translation>
+      <translation>Apertura</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="184"/>
+      <source>Installed Macros</source>
+      <translation>Installed Macros</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="196"/>
+      <source>Draft tools</source>
+      <translation>Draft tools</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="214"/>
+      <source>Draft</source>
+      <translation>Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="220"/>
+      <source>Display options</source>
+      <translation>Display options</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="199"/>
+      <source>Wire tools</source>
+      <translation>Wire tools</translation>
     </message>
   </context>
 </TS>

@@ -237,4 +237,32 @@
       <translation>Ez az alapértelmezett szín az új struktúra tárgyakhoz</translation>
     </message>
   </context>
+  <context>
+    <name>arch</name>
+    <message>
+      <location filename="InitGui.py" line="50"/>
+      <source>Arch tools</source>
+      <translation>Arch tools</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="51"/>
+      <source>Draft tools</source>
+      <translation>Draft tools</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="53"/>
+      <source>Architecture</source>
+      <translation>Architecture</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="52"/>
+      <source>Tools</source>
+      <translation>Eszközök</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="54"/>
+      <source>Draft</source>
+      <translation>Draft</translation>
+    </message>
+  </context>
 </TS>
