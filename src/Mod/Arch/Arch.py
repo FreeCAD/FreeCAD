@@ -25,6 +25,10 @@ __title__="FreeCAD Arch API"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
+import FreeCADGui
+
+FreeCADGui.updateLocale()
+
 from Wall import *
 from Cell import *
 from Floor import *

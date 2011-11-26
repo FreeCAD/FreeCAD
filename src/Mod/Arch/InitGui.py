@@ -51,7 +51,7 @@ class ArchWorkbench(Workbench):
                 self.appendToolbar("Draft tools",drafttools)
                 self.appendMenu(["Architecture","Tools"],meshtools)
                 self.appendMenu("Architecture",archtools)
-                self.appendMenu("Drafting",drafttools)
+                self.appendMenu("Draft",drafttools)
                 FreeCADGui.addIconPath(":/icons")
                 FreeCADGui.addLanguagePath(":/translations")
                 FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
@@ -73,5 +73,4 @@ class ArchWorkbench(Workbench):
 		Msg("Arch workbench deactivated\n")
 
 FreeCADGui.addWorkbench(ArchWorkbench)
-FreeCADGui.updateLocale()
 
