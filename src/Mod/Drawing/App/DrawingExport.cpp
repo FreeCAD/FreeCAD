@@ -161,21 +161,20 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     double a = v3.DotCross(v1,v2);
     
     // a full ellipse
+    // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
+    gp_Dir xaxis = ellp.XAxis().Direction();
+    Standard_Real angle = xaxis.AngleWithRef(gp_Dir(1,0,0),gp_Dir(0,0,-1));
+    angle = Base::toDegrees<double>(angle);
     if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
+        out << "<g transform = \"rotate(" << angle << "," << p.X() << "," << p.Y() << ")\">" << std::endl;
         out << "<ellipse cx =\"" << p.X() << "\" cy =\"" 
-            << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>";
+            << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>" << std::endl;
+        out << "</g>" << std::endl;
     }
     // arc of ellipse
     else {
-        // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
-        gp_Dir xaxis = ellp.XAxis().Direction();
-           
-        Standard_Real angle = xaxis.AngleWithRef(gp_Dir(1,0,0),gp_Dir(0,0,-1));
-        angle = Base::toDegrees<double>(angle);
-
         char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
-
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r1 << " " << r2 << " "
             << angle << " " << las << " " << swp << " "
