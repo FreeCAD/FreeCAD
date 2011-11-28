@@ -358,13 +358,21 @@ static PyObject * makeFilledFace(PyObject *self, PyObject *args)
         
         try {
             Py::List list(obj);
+            int countEdges = 0;
             for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeEdgePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<TopoShapeEdgePy*>((*it).ptr())->
                         getTopoShapePtr()->_Shape;
-                    if (!sh.IsNull())
+                    if (!sh.IsNull()) {
                         builder.Add(TopoDS::Edge(sh), GeomAbs_C0);
+                        countEdges++;
+                    }
                 }
+            }
+
+            if (countEdges == 0) {
+                PyErr_SetString(PyExc_Exception, "Failed to created face with no edges");
+                return 0;
             }
 
             builder.Build();
