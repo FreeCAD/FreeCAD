@@ -72,7 +72,9 @@ def InitApplications():
 	# Search for additional modules in the macro directory
 	if os.path.isdir(MacroMod):
 		MacroMods = os.listdir(MacroMod)
-		for i in MacroMods: ModDict[i.lower()] = os.path.join(MacroMod,i)
+		for i in MacroMods:
+			key = i.lower()
+			if key not in ModDict: ModDict[key] = os.path.join(MacroMod,i)
 	# Search for additional modules in command line
 	for i in AddPath:
 		if os.path.isdir(i): ModDict[i] = i
