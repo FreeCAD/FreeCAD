@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_BROWSERVIEW_H
-#define GUI_BROWSERVIEW_H
+#ifndef WEBGUI_BROWSERVIEW_H
+#define WEBGUI_BROWSERVIEW_H
 
 
 #include <Gui/MDIView.h>
@@ -30,6 +30,7 @@
 
 class QWebView;
 class QUrl;
+class QNetworkRequest;
 
 namespace WebGui {
 
@@ -83,6 +84,7 @@ protected Q_SLOTS:
     void onLoadFinished();
     void onLinkClicked ( const QUrl & url ) ;
     bool chckHostAllowed(const QString& host);
+    void onDownloadRequested(const QNetworkRequest & request);
 
 private:
     QWebView* WebView;
@@ -92,4 +94,4 @@ private:
 
 } // namespace WebGui
 
-#endif // GUI_EDITORVIEW_H
+#endif // WEBGUI_BROWSERVIEW_H

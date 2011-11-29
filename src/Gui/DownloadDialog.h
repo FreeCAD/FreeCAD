@@ -29,10 +29,12 @@
 #include <QMessageBox>
 #include <QBuffer>
 #include <QLabel>
+#include <QProgressBar>
 #include <QProgressDialog>
 #include <QHttp>
 #include <QFileInfo>
 #include <QCloseEvent>
+#include <QDialogButtonBox>
 
 namespace Gui {
 namespace Dialog {
@@ -46,45 +48,30 @@ class GuiExport DownloadDialog : public QDialog
     Q_OBJECT
 
 public:
-
-    DownloadDialog( QUrl url, QString s, QString p = QString() );
+    DownloadDialog(const QUrl& url, QWidget *parent = 0);
     ~DownloadDialog();
-    QUrl url;
-    QString purpose;
-    QString path;
-    QByteArray ba;
-    bool stopped;
-    QByteArray return_data();
 
-public Q_SLOTS:
-
-    void request_finished( int, bool );
-    void cancel_download();
-    void update_progress( int read_bytes, int total_bytes );
-    void read_response_header(const QHttpResponseHeader & response_header);
-
-Q_SIGNALS:
-
-    void download_finished( DownloadDialog * d,
-                            bool ok,
-                            QString s,
-                            QString p,
-                            QString e );
-
-
-protected:
-
-    QHttp * http;
-    int http_request_id;
-    QBuffer * buffer;
-    void closeEvent( QCloseEvent * e );
+private Q_SLOTS:
+    void downloadFile();
+    void cancelDownload();
+    void httpRequestFinished(int requestId, bool error);
+    void readResponseHeader(const QHttpResponseHeader &responseHeader);
+    void updateDataReadProgress(int bytesRead, int totalBytes);
+    void slotAuthenticationRequired(const QString &, quint16, QAuthenticator *);
 
 private:
+    QLabel *statusLabel;
+    QProgressBar *progressBar;
+    QPushButton *downloadButton;
+    QPushButton *closeButton;
+    QPushButton *cancelButton;
+    QDialogButtonBox *buttonBox;
 
-    bool url_is_valid;
-    QProgressDialog * progressDialog;
-    QLabel * statusLabel;
-
+    QUrl url;
+    QHttp *http;
+    QFile *file;
+    int httpGetId;
+    bool httpRequestAborted;
 };
 
 } // namespace Dialog

@@ -157,7 +157,7 @@ CmdWebBrowserStop::CmdWebBrowserStop()
     sAppModule      = "Web";
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Stop loading");
-    sToolTipText    = QT_TR_NOOP("Stop the actuall loading");
+    sToolTipText    = QT_TR_NOOP("Stop the current loading");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-stop";

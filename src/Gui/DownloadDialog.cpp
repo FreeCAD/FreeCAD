@@ -30,139 +30,177 @@
 using namespace Gui::Dialog;
 
 
-
-DownloadDialog::DownloadDialog( QUrl download_url, QString s, QString p )
+DownloadDialog::DownloadDialog(const QUrl& url, QWidget *parent)
+  : QDialog(parent), url(url)
 {
-    this->setAttribute(Qt::WA_DeleteOnClose);
-    stopped = false;
-    purpose = s;
-    url = download_url;
-    path = p;
-    statusLabel = new QLabel( QLatin1String(""), this );
-    progressDialog = new QProgressDialog(this);
+    statusLabel = new QLabel(url.toString());
+    progressBar = new QProgressBar(this);
+    downloadButton = new QPushButton(tr("Download"));
+    downloadButton->setDefault(true);
+    cancelButton = new QPushButton(tr("Cancel"));
+    closeButton = new QPushButton(tr("Close"));
+    closeButton->setAutoDefault(false);
+
+
+    buttonBox = new QDialogButtonBox;
+    buttonBox->addButton(downloadButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(closeButton, QDialogButtonBox::RejectRole);
+    buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
+    cancelButton->hide();
+
     http = new QHttp(this);
-    buffer = new QBuffer(&ba, this);
-    progressDialog->setLabel(statusLabel);
-    QFileInfo fi( url.toString() );
 
-        if ( true != url.isValid() ||
-             true == url.host().isEmpty() )
-        {
-        return;
-        }
-        else
-        {
-        statusLabel->setText( fi.fileName() );
-        }
+    connect(http, SIGNAL(requestFinished(int, bool)),
+            this, SLOT(httpRequestFinished(int, bool)));
+    connect(http, SIGNAL(dataReadProgress(int, int)),
+            this, SLOT(updateDataReadProgress(int, int)));
+    connect(http, SIGNAL(responseHeaderReceived(const QHttpResponseHeader &)),
+            this, SLOT(readResponseHeader(const QHttpResponseHeader &)));
+    connect(http, SIGNAL(authenticationRequired(const QString &, quint16, QAuthenticator *)),
+            this, SLOT(slotAuthenticationRequired(const QString &, quint16, QAuthenticator *)));
+    connect(downloadButton, SIGNAL(clicked()), this, SLOT(downloadFile()));
+    connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelDownload()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
-    buffer->open(QBuffer::ReadWrite);
+    QHBoxLayout *topLayout = new QHBoxLayout;
+    topLayout->addWidget(statusLabel);
 
-        if ( url.port() == -1 )
-        {
-        http->setHost( url.host(), 80 );
-        }
-        else
-        {
-        http->setHost( url.host(), url.port() );
-        }
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(topLayout);
+    mainLayout->addWidget(progressBar);
+    mainLayout->addWidget(buttonBox);
+    setLayout(mainLayout);
 
-    http_request_id = http->get(url.path(), buffer);
-
-    QObject::connect( http,
-                      SIGNAL( requestFinished(int, bool) ),
-                      this,
-                      SLOT( request_finished(int, bool) ) );
-    QObject::connect( http,
-                      SIGNAL( dataReadProgress(int, int)),
-                      this,
-                      SLOT( update_progress(int, int) ) );
-    QObject::connect( http,
-                      SIGNAL( responseHeaderReceived(const QHttpResponseHeader &) ),
-                      this,
-                      SLOT( read_response_header(const QHttpResponseHeader &) ) );
-    QObject::connect( progressDialog,
-                      SIGNAL( canceled() ),
-                      this,
-                      SLOT( cancel_download() ) );
-
+    setWindowTitle(tr("Download"));
 }
 
 DownloadDialog::~DownloadDialog()
 {
 }
 
-void DownloadDialog::request_finished( int request_id , bool request_error )
+void DownloadDialog::downloadFile()
 {
-    if ( true == stopped ){
-        buffer->close();
-        progressDialog->hide();
+    QFileInfo fileInfo(url.path());
+    QString fileName = fileInfo.fileName();
+    if (QFile::exists(fileName)) {
+        if (QMessageBox::question(this, tr("Download"),
+                tr("There already exists a file called %1 in "
+                   "the current directory. Overwrite?").arg(fileName),
+                QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::No)
+            return;
+        QFile::remove(fileName);
+    }
+
+    file = new QFile(fileName);
+    if (!file->open(QIODevice::WriteOnly)) {
+        QMessageBox::information(this, tr("Download"),
+                                 tr("Unable to save the file %1: %2.")
+                                 .arg(fileName).arg(file->errorString()));
+        delete file;
+        file = 0;
         return;
     }
 
-    if ( http_request_id != request_id ){
-        return;
-    }
+    QHttp::ConnectionMode mode = url.scheme().toLower() == QLatin1String("https")
+        ? QHttp::ConnectionModeHttps : QHttp::ConnectionModeHttp;
+    http->setHost(url.host(), mode, url.port() == -1 ? 80 : url.port());
+    
+    if (!url.userName().isEmpty())
+        http->setUser(url.userName(), url.password());
 
-    if ( true == request_error ) {
-        stopped = true;
-        buffer->close();
-        progressDialog->hide();
-        download_finished( this, false, purpose, path, http->errorString() );
-    }else{
-        stopped = true;
-        buffer->close();
-        progressDialog->hide();
-        download_finished( this, true, purpose, path, QLatin1String("") );
-    }
+    httpRequestAborted = false;
+    QByteArray path = QUrl::toPercentEncoding(url.path(), "!$&'()*+,;=:@/");
+    if (path.isEmpty())
+        path = "/";
+    httpGetId = http->get(QString::fromAscii(path), file);
+
+    statusLabel->setText(tr("Downloading %1.").arg(fileName));
+    downloadButton->setEnabled(false);
+    cancelButton->show();
+    closeButton->hide();
 }
 
-void DownloadDialog::read_response_header( const QHttpResponseHeader & response_header )
+void DownloadDialog::cancelDownload()
 {
-    if ( true == stopped ) {
-        return;
-    }
-
-    if ( response_header.statusCode() != 200 ) {
-        stopped = true;
-        progressDialog->hide();
-        http->abort();
-        download_finished( this, false, purpose, path, response_header.reasonPhrase() );
-    }
-}
-
-QByteArray DownloadDialog::return_data()
-{
-    return ba;
-}
-
-void DownloadDialog::update_progress( int read_bytes, int total_bytes )
-{
-    if ( true == stopped ){
-        return;
-    }
-
-    progressDialog->setMaximum(total_bytes);
-    progressDialog->setValue(read_bytes);
-}
-
-void DownloadDialog::cancel_download()
-{
-    statusLabel->setText(tr("Canceled."));
-    stopped = true;
+    statusLabel->setText(tr("Download canceled."));
+    httpRequestAborted = true;
     http->abort();
-    buffer->close();
     close();
 }
 
-void DownloadDialog::closeEvent( QCloseEvent * e )
+void DownloadDialog::httpRequestFinished(int requestId, bool error)
 {
-    if ( stopped == false ){
-        stopped = true;
-        http->abort();
-        buffer->close();
+    if (requestId != httpGetId)
+        return;
+    if (httpRequestAborted) {
+        if (file) {
+            file->close();
+            file->remove();
+            delete file;
+            file = 0;
+        }
+
+        progressBar->hide();
+        return;
     }
 
-    e->accept();
+    if (requestId != httpGetId)
+        return;
+
+    progressBar->hide();
+    file->close();
+
+    if (error) {
+        file->remove();
+        QMessageBox::information(this, tr("Download"),
+                                 tr("Download failed: %1.")
+                                 .arg(http->errorString()));
+    }
+    else {
+        QString fileName = QFileInfo(url.path()).fileName();
+        statusLabel->setText(tr("Downloaded %1 to current directory.").arg(fileName));
+    }
+
+    downloadButton->setEnabled(true);
+    cancelButton->hide();
+    closeButton->show();
+    delete file;
+    file = 0;
 }
+
+void DownloadDialog::readResponseHeader(const QHttpResponseHeader &responseHeader)
+{
+    switch (responseHeader.statusCode()) {
+    case 200:                   // Ok
+    case 301:                   // Moved Permanently
+    case 302:                   // Found
+    case 303:                   // See Other
+    case 307:                   // Temporary Redirect
+        // these are not error conditions
+        break;
+
+    default:
+        QMessageBox::information(this, tr("Download"),
+                                 tr("Download failed: %1.")
+                                 .arg(responseHeader.reasonPhrase()));
+        httpRequestAborted = true;
+        progressBar->hide();
+        http->abort();
+    }
+}
+
+void DownloadDialog::updateDataReadProgress(int bytesRead, int totalBytes)
+{
+    if (httpRequestAborted)
+        return;
+
+    progressBar->setMaximum(totalBytes);
+    progressBar->setValue(bytesRead);
+}
+
+void DownloadDialog::slotAuthenticationRequired(const QString &hostName, quint16, QAuthenticator *authenticator)
+{
+}
+
 
 #include "moc_DownloadDialog.cpp"

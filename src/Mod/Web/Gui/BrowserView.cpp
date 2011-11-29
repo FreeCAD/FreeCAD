@@ -30,6 +30,7 @@
 # include <QDateTime>
 # include <QHBoxLayout>
 # include <QMessageBox>
+# include <QNetworkRequest>
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
@@ -78,6 +79,7 @@ BrowserView::BrowserView(QWidget* parent)
     setCentralWidget(WebView);
 
     WebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    WebView->page()->setForwardUnsupportedContent(true);
 
     connect(WebView, SIGNAL(loadStarted()),
             this, SLOT(onLoadStarted()));
@@ -87,6 +89,8 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onLoadFinished()));
     connect(WebView, SIGNAL(linkClicked(const QUrl &)),
             this, SLOT(onLinkClicked(const QUrl &)));
+    connect(WebView->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
+            this, SLOT(onDownloadRequested(const QNetworkRequest &)));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -107,19 +111,23 @@ void BrowserView::onLinkClicked (const QUrl & url)
 
     //QString fragment = url.	fragment();
 
-    if(scheme==QString::fromLatin1("http")){
-/*         Dialog::DownloadDialog Dlg (url,QString::fromLatin1("c:/temp/test.fcstd"));
-        int result = Dlg.exec();
-       if(ext ==QString::fromLatin1("fcstd") )
-             Gui::Command::doCommand(Gui::Command::Gui,"Gui.open('%s')",);
-
-        load(url);*/
-        OpenURLInBrowser(url.toString().toLatin1());
+    if (scheme==QString::fromLatin1("http")) {
+        bool ok = false;
+        if (ok) {
+            //Dialog::DownloadDialog dlg (url,this/*QString::fromLatin1("c:/temp/test.fcstd")*/);
+            //int result = dlg.exec();
+            //if(ext ==QString::fromLatin1("fcstd") )
+            //      Gui::Command::doCommand(Gui::Command::Gui,"Gui.open('c:/temp/test.fcstd')");
+        }
+        else {
+            load(url);
+        }
+        //OpenURLInBrowser(url.toString().toLatin1());
     }
     // run scripts if not from somewhere else!
-    if((scheme.size() < 2 || scheme==QString::fromLatin1("file"))&& host.isEmpty()){
+    if ((scheme.size() < 2 || scheme==QString::fromLatin1("file"))&& host.isEmpty()) {
         QFileInfo fi(path);
-        if(fi.exists()){
+        if (fi.exists()) {
             QString ext = fi.completeSuffix();
             if (ext == QString::fromLatin1("py")) {
                 try {
@@ -143,6 +151,11 @@ bool BrowserView::chckHostAllowed(const QString& host)
     return host.isEmpty();
 }
 
+void BrowserView::onDownloadRequested(const QNetworkRequest & request)
+{
+    Dialog::DownloadDialog dlg (request.url(),this);
+    int result = dlg.exec();
+}
 
 void BrowserView::load(const char* URL)
 {
@@ -157,21 +170,23 @@ void BrowserView::load(const QUrl & url)
 
     WebView->load(url);
     WebView->setUrl(url);
-    if(url.scheme().size() < 2){
+    if (url.scheme().size() < 2) {
         QString path     = url.path();
         QFileInfo fi(path);
         QString name = fi.baseName();
 
         setWindowTitle(name);
-    }else 
+    }
+    else {
         setWindowTitle(url.host());
+    }
 
     setWindowIcon(QWebSettings::iconForUrl(url));
 }
 
 void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName)
 {
-    if(isLoading)
+    if (isLoading)
         stop();
 
     WebView->setHtml(HtmlCode,BaseUrl);
@@ -261,7 +276,7 @@ bool BrowserView::onHasMsg(const char* pMsg) const
 /** Checking on close state. */
 bool BrowserView::canClose(void)
 {
-   return true;
+    return true;
 }
 
 #include "moc_BrowserView.cpp"
