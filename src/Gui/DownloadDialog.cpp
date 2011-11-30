@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QPushButton>
+# include <QHBoxLayout>
 #endif
 
 #include "DownloadDialog.h"

@@ -30,11 +30,14 @@
 #include <QBuffer>
 #include <QLabel>
 #include <QProgressBar>
-#include <QProgressDialog>
 #include <QHttp>
 #include <QFileInfo>
 #include <QCloseEvent>
 #include <QDialogButtonBox>
+
+class QFile;
+class QHttpResponseHeader;
+class QAuthenticator;
 
 namespace Gui {
 namespace Dialog {
