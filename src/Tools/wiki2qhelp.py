@@ -617,5 +617,6 @@ def main(arg):
 		crawl()
 
 if __name__ == "__main__":
-	main(sys.argv[1:])
+    # main(sys.argv[1:])
+    print "Warning! This script is obsolete. Use the scripts in the offlinedocs folder..."
       

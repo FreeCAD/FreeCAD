@@ -49,7 +49,8 @@ LISTFILE = "wikifiles.txt"
 URL = DEFAULTURL
 wikiindex = "/index.php?title="
 defaultfile = "<html><head><link type='text/css' href='wiki.css' rel='stylesheet'></head><body>&nbsp;</body></html>"
-css = """/* Basic CSS for offline wiki rendering */
+css = """
+/* Basic CSS for offline wiki rendering */
 
 body {
   font-family: Arial,Helvetica,sans-serif;
@@ -65,15 +66,15 @@ h1 {
   background: #46A4D0;
   color: white;
   padding: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  border-radius: 5px;
   }
 
 pre {
-  border: 1px dashed #333333;
+  border: 1px solid #888888;
   text-align: left;
   background: #EEEEEE;
   padding: 5px;
+  border-radius: 5px;
   }
 
 a:link, a:visited {
@@ -100,6 +101,12 @@ a:hover {
   display: none;
   }
 
+.ct, .ctTitle, .ctOdd, .ctEven th {
+  text-align: left;
+  width: 200px;
+  float: right;
+  background: #eeeeee;
+  }
 """
 
 def crawl():

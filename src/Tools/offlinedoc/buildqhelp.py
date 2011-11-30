@@ -30,7 +30,7 @@ __url__ = "http://free-cad.sf.net"
 This script builds qhrlp files from a local copy of the wiki
 """
 
-import sys, os, re, tempfile, getopt
+import sys, os, re, tempfile, getopt, shutil
 from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
@@ -40,6 +40,7 @@ INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
 QHELPCOMPILER = 'qhelpgenerator'
 QCOLLECTIOMGENERATOR = 'qcollectiongenerator'
+RELEASE = '0.12'
 
 #    END CONFIGURATION      ##############################################
 
@@ -65,6 +66,12 @@ def crawl():
         print "Error at compiling"
         return 1
     if VERBOSE: print "All done!"
+    i=raw_input("Copy the files to their correct location in the source tree? y/n (default=no) ")
+    if i.upper() in ["Y","YES"]:
+        shutil.copy("localwiki/freecad.qch","../../Doc/freecad.qch")
+        shutil.copy("localwiki/freecad.qhc","../../Doc/freecad.qhc")
+    else:
+        print 'Files are in localwiki. Test with "assistant -collectionFile localwiki/freecad.qhc"'
     return 0
     
 def compile(qhpfile):
@@ -77,7 +84,7 @@ def compile(qhpfile):
 def generate(qhcpfile):
     "generates qassistant-specific settings like icon, title, ..."
     txt="""
-<center>FreeCAD 0.11 help files<br/>
+<center>FreeCAD """+RELEASE+""" help files<br/>
 <a href="http://free-cad.sf.net">http://free-cad.sf.net</a></center>
     """
     about=open(FOLDER + os.sep + "about.txt","w")
@@ -142,15 +149,15 @@ def buildtoc():
     <namespace>org.freecad.usermanual</namespace>
     <virtualFolder>doc</virtualFolder>
     <!--
-    <customFilter name="FreeCAD 0.11">
+    <customFilter name="FreeCAD '''+RELEASE+'''">
         <filterAttribute>FreeCAD</filterAttribute>
-        <filterAttribute>0.11</filterAttribute>
+        <filterAttribute>'''+RELEASE+'''</filterAttribute>
     </customFilter>
     -->
     <filterSection>
         <!--
         <filterAttribute>FreeCAD</filterAttribute>
-        <filterAttribute>0.11</filterAttribute>
+        <filterAttribute>'''+RELEASE+'''</filterAttribute>
         -->
         <toc>
             <inserttoc>
