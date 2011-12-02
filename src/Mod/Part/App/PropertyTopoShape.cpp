@@ -243,14 +243,16 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
         return;
     // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
     // Before writing to the project we clean all triangulation data to save memory
-    // BRepTools::Clean(_Shape._Shape);
+    BRepBuilderAPI_Copy copy(_Shape._Shape);
+    const TopoDS_Shape& myShape = copy.Shape();
+    BRepTools::Clean(myShape); // remove triangulation
 
     // create a temporary file and copy the content to the zip stream
     // once the tmp. filename is known use always the same because otherwise
     // we may run into some problems on the Linux platform
     static Base::FileInfo fi(Base::FileInfo::getTempFileName());
 
-    if (!BRepTools::Write(_Shape._Shape,(const Standard_CString)fi.filePath().c_str())) {
+    if (!BRepTools::Write(myShape,(const Standard_CString)fi.filePath().c_str())) {
         // Note: Do NOT throw an exception here because if the tmp. file could
         // not be created we should not abort.
         // We only print an error message but continue writing the next files to the
