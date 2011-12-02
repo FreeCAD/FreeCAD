@@ -3635,7 +3635,7 @@ Wollen Sie fortfahren?</translation>
     </message>
     <message>
       <source>Finish</source>
-      <translation>Beenden</translation>
+      <translation>Fertig</translation>
     </message>
     <message>
       <source>Clear</source>

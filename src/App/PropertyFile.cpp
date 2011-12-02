@@ -84,7 +84,7 @@ std::string PropertyFileIncluded::getExchangeTempFile(void) const
 
 void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 {
-    if (sFile) {
+    if (sFile && sFile[0] != '\0') {
         if (_cValue == sFile)
             throw Base::Exception("Not possible to set the same file!");
 
