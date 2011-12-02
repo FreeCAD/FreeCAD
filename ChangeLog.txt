@@ -1,3 +1,6 @@
+Changelog you finde now here:
+https://sourceforge.net/apps/mantisbt/free-cad/changelog_page.php
+
 Version: 
   * Sketcher module added with constraint solver using SketchFlat
   * Add Draft module to installer

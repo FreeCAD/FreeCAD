@@ -1,5 +1,5 @@
 project(FreeCAD_trunk)
-set(FREECAD_VERSION "0.12")
+set(FREECAD_VERSION "0.13")
 
 # Needed for salomesmesh
 if(CMAKE_COMPILER_IS_GNUCXX)
