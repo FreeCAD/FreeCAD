@@ -32,13 +32,13 @@ def makeSite(objectslist,name="Site"):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    Site(obj)
-    ViewProviderSite(obj.ViewObject)
+    _Site(obj)
+    _ViewProviderSite(obj.ViewObject)
     obj.Components = objectslist
     obj.JoinMode = False
     return obj
 
-class CommandSite:
+class _CommandSite:
     "the Arch Site command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Site',
@@ -51,10 +51,10 @@ class CommandSite:
         makeSite(FreeCADGui.Selection.getSelection())
         FreeCAD.ActiveDocument.commitTransaction()
 
-class Site(Cell.Cell):
+class _Site(Cell._Cell):
     "The Site object"
     def __init__(self,obj):
-        Cell.Cell.__init__(self,obj)
+        Cell._Cell.__init__(self,obj)
         self.Type = "Site"
         
     def execute(self,obj):
@@ -63,10 +63,10 @@ class Site(Cell.Cell):
     def onChanged(self,obj,prop):
         pass
     
-class ViewProviderSite(Cell.ViewProviderCell):
+class _ViewProviderSite(Cell._ViewProviderCell):
     "A View Provider for the Site object"
     def __init__(self,vobj):
-        Cell.ViewProviderCell.__init__(self,vobj)
+        Cell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
         return """
@@ -100,4 +100,4 @@ class ViewProviderSite(Cell.ViewProviderCell):
                 "                "};
                 """
 
-FreeCADGui.addCommand('Arch_Site',CommandSite())
+FreeCADGui.addCommand('Arch_Site',_CommandSite())

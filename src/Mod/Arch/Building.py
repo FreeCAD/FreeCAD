@@ -32,15 +32,15 @@ def makeBuilding(objectslist,join=False,name="Building"):
     '''makeBuilding(objectslist,[joinmode]): creates a building including the
     objects from the given list. If joinmode is True, components will be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    Building(obj)
-    ViewProviderBuilding(obj.ViewObject)
+    _Building(obj)
+    _ViewProviderBuilding(obj.ViewObject)
     obj.Components = objectslist
     for comp in obj.Components:
         comp.ViewObject.hide()
     obj.JoinMode = join
     return obj
 
-class CommandBuilding:
+class _CommandBuilding:
     "the Arch Building command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Building',
@@ -53,16 +53,16 @@ class CommandBuilding:
         makeBuilding(FreeCADGui.Selection.getSelection())
         FreeCAD.ActiveDocument.commitTransaction()
 
-class Building(Cell.Cell):
+class _Building(Cell._Cell):
     "The Building object"
     def __init__(self,obj):
-        Cell.Cell.__init__(self,obj)
+        Cell._Cell.__init__(self,obj)
         self.Type = "Building"
         
-class ViewProviderBuilding(Cell.ViewProviderCell):
+class _ViewProviderBuilding(Cell._ViewProviderCell):
     "A View Provider for the Building object"
     def __init__(self,vobj):
-        Cell.ViewProviderCell.__init__(self,vobj)
+        Cell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
         return """
@@ -96,4 +96,4 @@ class ViewProviderBuilding(Cell.ViewProviderCell):
                 "        ..      "};
                 """
 
-FreeCADGui.addCommand('Arch_Building',CommandBuilding())
+FreeCADGui.addCommand('Arch_Building',_CommandBuilding())

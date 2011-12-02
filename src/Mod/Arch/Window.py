@@ -34,8 +34,8 @@ def makeWindow(baseobj=None,name="Window"):
     '''makeWindow(obj,[name]): creates a window based on the
     given object'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    Window(obj)
-    ViewProviderWindow(obj.ViewObject)
+    _Window(obj)
+    _ViewProviderWindow(obj.ViewObject)
     if baseobj: obj.Base = baseobj
     if obj.Base: obj.Base.ViewObject.hide()
     #p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -46,7 +46,7 @@ def makeWindow(baseobj=None,name="Window"):
     #obj.ViewObject.ShapeColor = (r,g,b,1.0)
     return obj
 
-class CommandWindow:
+class _CommandWindow:
     "the Arch Window command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
@@ -65,7 +65,7 @@ class CommandWindow:
             makeWindow(rect)
         FreeCAD.ActiveDocument.commitTransaction()
        
-class Window(Component.Component):
+class _Window(Component.Component):
     "The Window object"
     def __init__(self,obj):
         Component.Component.__init__(self,obj)
@@ -107,7 +107,7 @@ class Window(Component.Component):
             obj.Placement = pl
             self.Subvolume.Placement = pl
 
-class ViewProviderWindow(Component.ViewProviderComponent):
+class _ViewProviderWindow(Component.ViewProviderComponent):
     "A View Provider for the Window object"
 
     def __init__(self,vobj):
@@ -141,4 +141,4 @@ class ViewProviderWindow(Component.ViewProviderComponent):
             "             .  "};
             """
 
-FreeCADGui.addCommand('Arch_Window',CommandWindow())
+FreeCADGui.addCommand('Arch_Window',_CommandWindow())

@@ -287,8 +287,8 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
     (in degrees), they are used and the object appears as an arc.'''
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Circle")
-    Circle(obj)
-    ViewProviderDraft(obj.ViewObject)
+    _Circle(obj)
+    _ViewProviderDraft(obj.ViewObject)
     obj.Radius = radius
     if not face: obj.ViewObject.DisplayMode = "Wireframe"
     if (startangle != None) and (endangle != None):
@@ -309,8 +309,8 @@ def makeRectangle(length, height, placement=None, face=True, support=None):
     rectangle is shown as a wireframe, otherwise as a face.'''
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeRectangle")
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
-    Rectangle(obj)
-    ViewProviderRectangle(obj.ViewObject)
+    _Rectangle(obj)
+    _ViewProviderRectangle(obj.ViewObject)
     obj.Length = length
     obj.Height = height
     obj.Support = support
@@ -335,8 +335,8 @@ def makeDimension(p1,p2,p3=None,p4=None):
     and mode is either "radius" or "diameter".
     '''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
-    Dimension(obj)
-    ViewProviderDimension(obj.ViewObject)
+    _Dimension(obj)
+    _ViewProviderDimension(obj.ViewObject)
     if isinstance(p1,Vector) and isinstance(p2,Vector):
         obj.Start = p1
         obj.End = p2
@@ -368,8 +368,8 @@ def makeAngularDimension(center,angles,p3):
     from the given center, with the given list of angles, passing through p3.
     '''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
-    AngularDimension(obj)
-    ViewProviderAngularDimension(obj.ViewObject)
+    _AngularDimension(obj)
+    _ViewProviderAngularDimension(obj.ViewObject)
     obj.Center = center
     for a in range(len(angles)):
         if angles[a] > 2*math.pi:
@@ -399,8 +399,8 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     if len(pointslist) == 2: fname = "Line"
     else: fname = "Wire"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
-    Wire(obj)
-    ViewProviderWire(obj.ViewObject)
+    _Wire(obj)
+    _ViewProviderWire(obj.ViewObject)
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
@@ -420,8 +420,8 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=True,support=
     '''
     if nfaces < 3: return None
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Polygon")
-    Polygon(obj)
-    ViewProviderDraft(obj.ViewObject)
+    _Polygon(obj)
+    _ViewProviderDraft(obj.ViewObject)
     obj.FacesNumber = nfaces
     obj.Radius = radius
     if inscribed:
@@ -456,8 +456,8 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BSpline"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
-    BSpline(obj)
-    ViewProviderBSpline(obj.ViewObject)
+    _BSpline(obj)
+    _ViewProviderBSpline(obj.ViewObject)
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
@@ -495,31 +495,31 @@ def makeCopy(obj):
     '''makeCopy(object): returns an exact copy of an object'''
     newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
     if getType(obj) == "Rectangle":
-        Rectangle(newobj)
-        ViewProviderRectangle(newobj.ViewObject)
+        _Rectangle(newobj)
+        _ViewProviderRectangle(newobj.ViewObject)
     elif getType(obj) == "Wire":
-        Wire(newobj)
-        ViewProviderWire(newobj.ViewObject)
+        _Wire(newobj)
+        _ViewProviderWire(newobj.ViewObject)
     elif getType(obj) == "Circle":
-        Circle(newobj)
-        ViewProviderCircle(newobj.ViewObject)
+        _Circle(newobj)
+        _ViewProviderCircle(newobj.ViewObject)
     elif getType(obj) == "Polygon":
-        Polygon(newobj)
-        ViewProviderPolygon(newobj.ViewObject)
+        _Polygon(newobj)
+        _ViewProviderPolygon(newobj.ViewObject)
     elif getType(obj) == "BSpline":
-        BSpline(newobj)
-        ViewProviderBSpline(newobj.ViewObject)
+        _BSpline(newobj)
+        _ViewProviderBSpline(newobj.ViewObject)
     elif getType(obj) == "Block":
-        Block(newobj)
-        ViewProviderBlock(newobj.ViewObject)
+        _Block(newobj)
+        _ViewProviderBlock(newobj.ViewObject)
     elif getType(obj) == "Structure":
         import Structure
-        Structure.Structure(newobj)
-        Structure.ViewProviderStructure(newobj.ViewObject)
+        Structure._Structure(newobj)
+        Structure._ViewProviderStructure(newobj.ViewObject)
     elif getType(obj) == "Wall":
         import Wall
-        Wall.Wall(newobj)
-        Wall.ViewProviderWall(newobj.ViewObject)
+        Wall._Wall(newobj)
+        Wall._ViewProviderWall(newobj.ViewObject)
     elif obj.isDerivedFrom("Part::Feature"):
         newobj.Shape = obj.Shape
     else:
@@ -534,8 +534,8 @@ def makeCopy(obj):
 def makeBlock(objectslist):
     '''makeBlock(objectslist): Creates a Draft Block from the given objects'''
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Block")
-    Block(obj)
-    ViewProviderBlock(obj.ViewObject)
+    _Block(obj)
+    _ViewProviderBlock(obj.ViewObject)
     obj.Components = objectslist
     for o in objectslist:
         o.ViewObject.Visibility = False
@@ -561,8 +561,8 @@ def fuse(object1,object2):
     a standard Part fuse.'''
     if fcgeo.isCoplanar(object1.Shape.fuse(object2.Shape).Faces):
         obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Fusion")
-        Wire(obj)
-        ViewProviderWire(obj.ViewObject)
+        _Wire(obj)
+        _ViewProviderWire(obj.ViewObject)
     else:
         obj = FreeCAD.ActiveDocument.addObject("Part::Fuse","Fusion")
     obj.Base = object1
@@ -612,8 +612,8 @@ def move(objectslist,vector,copy=False):
         elif getType(obj) == "Dimension":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
-                Dimension(newobj)
-                DimensionViewProvider(newobj.ViewObject)
+                _Dimension(newobj)
+                _DimensionViewProvider(newobj.ViewObject)
             else:
                 newobj = obj
             newobj.Start = obj.Start.add(vector)
@@ -1117,7 +1117,7 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
     (in percent). The Hint scale, X and Y of the page are used.
     '''
     viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View"+obj.Name)
-    DrawingView(viewobj)
+    _DrawingView(viewobj)
     page.addObject(viewobj)
     viewobj.Scale = page.ViewObject.HintScale
     viewobj.X = page.ViewObject.HintOffsetX
@@ -1133,8 +1133,8 @@ def makeShape2DView(baseobj,projectionVector=None):
     2D projection of the given object. A specific projection vector can also be given.
     '''
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Shape2DView")
-    Shape2DView(obj)
-    ViewProviderDraft(obj.ViewObject)
+    _Shape2DView(obj)
+    _ViewProviderDraft(obj.ViewObject)
     obj.Base = baseobj
     if projectionVector:
         obj.Projection = projectionVector
@@ -1145,7 +1145,7 @@ def makeShape2DView(baseobj,projectionVector=None):
 # Python Features definitions
 #---------------------------------------------------------------------------
 
-class ViewProviderDraft:
+class _ViewProviderDraft:
     "A generic View Provider for Draft objects"
         
     def __init__(self, obj):
@@ -1186,7 +1186,7 @@ class ViewProviderDraft:
     def getIcon(self):
         return(":/icons/Draft_Draft.svg")
 		
-class Dimension:
+class _Dimension:
     "The Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyVector","Start","Base",
@@ -1212,7 +1212,7 @@ class Dimension:
         if obj.ViewObject:
             obj.ViewObject.update()
         
-class ViewProviderDimension:
+class _ViewProviderDimension:
     "A View Provider for the Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Base","Font size")
@@ -1476,7 +1476,7 @@ class ViewProviderDimension:
     def __setstate__(self,state):
         return None
 
-class AngularDimension:
+class _AngularDimension:
     "The AngularDimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyAngle","FirstAngle","Base",
@@ -1501,7 +1501,7 @@ class AngularDimension:
         if fp.ViewObject:
             fp.ViewObject.update()
 
-class ViewProviderAngularDimension:
+class _ViewProviderAngularDimension:
     "A View Provider for the Angular Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Base","Font size")
@@ -1684,7 +1684,7 @@ class ViewProviderAngularDimension:
                         "                "};
                         """
 
-class Rectangle:
+class _Rectangle:
     "The Rectangle object"
         
     def __init__(self, obj):
@@ -1713,10 +1713,10 @@ class Rectangle:
         fp.Shape = shape
         fp.Placement = plm
 
-class ViewProviderRectangle(ViewProviderDraft):
+class _ViewProviderRectangle(_ViewProviderDraft):
     "A View Provider for the Rectangle object"
     def __init__(self, obj):
-        ViewProviderDraft.__init__(self,obj)
+        _ViewProviderDraft.__init__(self,obj)
         obj.addProperty("App::PropertyFile","TextureImage",
                         "Base","Uses an image as a texture map")
 
@@ -1736,7 +1736,7 @@ class ViewProviderRectangle(ViewProviderDraft):
                     self.texture = None
         return
         
-class Circle:
+class _Circle:
     "The Circle object"
         
     def __init__(self, obj):
@@ -1766,7 +1766,7 @@ class Circle:
         fp.Shape = shape
         fp.Placement = plm
 
-class Wire:
+class _Wire:
     "The Wire object"
         
     def __init__(self, obj):
@@ -1829,10 +1829,10 @@ class Wire:
             fp.Shape = shape
         fp.Placement = plm
 
-class ViewProviderWire(ViewProviderDraft):
+class _ViewProviderWire(_ViewProviderDraft):
     "A View Provider for the Wire object"
     def __init__(self, obj):
-        ViewProviderDraft.__init__(self,obj)
+        _ViewProviderDraft.__init__(self,obj)
         obj.addProperty("App::PropertyBool","EndArrow","Base",
                         "Displays a dim symbol at the end of the wire")
 
@@ -1867,7 +1867,7 @@ class ViewProviderWire(ViewProviderDraft):
     def claimChildren(self):
         return [self.Object.Base,self.Object.Tool]
         
-class Polygon:
+class _Polygon:
     "The Polygon object"
         
     def __init__(self, obj):
@@ -1904,7 +1904,7 @@ class Polygon:
         fp.Shape = shape
         fp.Placement = plm
 
-class DrawingView:
+class _DrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyVector","Direction","Shape view","Projection direction")
         obj.addProperty("App::PropertyFloat","LinewidthModifier","Drawing view","Modifies the linewidth of the lines inside this object")
@@ -1945,7 +1945,7 @@ class DrawingView:
         result += '</g>'
         return result
 
-class BSpline:
+class _BSpline:
     "The BSpline object"
         
     def __init__(self, obj):
@@ -1983,10 +1983,10 @@ class BSpline:
                 fp.Shape = spline.toShape()
         fp.Placement = plm
 
-class ViewProviderBSpline(ViewProviderDraft):
+class _ViewProviderBSpline(_ViewProviderDraft):
     "A View Provider for the BSPline object"
     def __init__(self, obj):
-        ViewProviderDraft.__init__(self,obj)
+        _ViewProviderDraft.__init__(self,obj)
         obj.addProperty("App::PropertyBool","EndArrow",
                         "Base","Displays a dim symbol at the end of the wire")
         col = coin.SoBaseColor()
@@ -2015,7 +2015,7 @@ class ViewProviderBSpline(ViewProviderDraft):
                 rn.removeChild(self.pt)
         return
 
-class Block:
+class _Block:
     "The Block object"
     
     def __init__(self, obj):
@@ -2041,13 +2041,15 @@ class Block:
             fp.Shape = shape
         fp.Placement = plm
 
-class ViewProviderBlock(ViewProviderDraft):
+class _ViewProviderBlock(_ViewProviderDraft):
     "A View Provider for the Block object"
+    def __init__(self,obj):
+        _ViewProviderDraft.__init__(self,obj)
 
     def claimChildren(self):
         return self.Object.Components
 
-class Shape2DView:
+class _Shape2DView:
     "The Shape2DView object"
 
     def __init__(self,obj):

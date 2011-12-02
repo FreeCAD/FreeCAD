@@ -33,15 +33,15 @@ def makeFloor(objectslist,join=True,name="Floor"):
     objects from the given list. If joinmode is False, components will
     not be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    Floor(obj)
-    ViewProviderFloor(obj.ViewObject)
+    _Floor(obj)
+    _ViewProviderFloor(obj.ViewObject)
     obj.Components = objectslist
     for comp in obj.Components:
         comp.ViewObject.hide()
     obj.JoinMode = join
     return obj
 
-class CommandFloor:
+class _CommandFloor:
     "the Arch Cell command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Floor',
@@ -54,18 +54,18 @@ class CommandFloor:
         makeFloor(FreeCADGui.Selection.getSelection())
         FreeCAD.ActiveDocument.commitTransaction()
 
-class Floor(Cell.Cell):
+class _Floor(Cell._Cell):
     "The Cell object"
     def __init__(self,obj):
-        Cell.Cell.__init__(self,obj)
+        Cell._Cell.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Height","Base",
                         "The height of this floor")
         self.Type = "Floor"
         
-class ViewProviderFloor(Cell.ViewProviderCell):
+class _ViewProviderFloor(Cell._ViewProviderCell):
     "A View Provider for the Cell object"
     def __init__(self,vobj):
-        Cell.ViewProviderCell.__init__(self,vobj)
+        Cell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
         return """
@@ -99,4 +99,4 @@ class ViewProviderFloor(Cell.ViewProviderCell):
                 "                "};
                 """
 
-FreeCADGui.addCommand('Arch_Floor',CommandFloor())
+FreeCADGui.addCommand('Arch_Floor',_CommandFloor())

@@ -5,7 +5,7 @@ from pivy import coin
 from draftlibs import fcvec,fcgeo
 
 
-class CommandSectionPlane:
+class _CommandSectionPlane:
     "the Arch SectionPlane command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_SectionPlane',
@@ -16,8 +16,8 @@ class CommandSectionPlane:
         sel = FreeCADGui.Selection.getSelection()
         FreeCAD.ActiveDocument.openTransaction("Section Plane")
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Section")
-        SectionPlane(obj)
-        ViewProviderSectionPlane(obj.ViewObject)
+        _SectionPlane(obj)
+        _ViewProviderSectionPlane(obj.ViewObject)
         FreeCAD.ActiveDocument.commitTransaction()
         g = []
         for o in sel:
@@ -32,11 +32,11 @@ class CommandSectionPlane:
         page.Template = template
         view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
         page.addObject(view)
-        ArchDrawingView(view)
+        _ArchDrawingView(view)
         view.Source = obj
         FreeCAD.ActiveDocument.recompute()
 
-class SectionPlane:
+class _SectionPlane:
     "A section plane object"
     def __init__(self,obj):
         obj.Proxy = self
@@ -59,7 +59,7 @@ class SectionPlane:
     def getNormal(self):
         return self.Object.Shape.Faces[0].normalAt(0,0)
 
-class ViewProviderSectionPlane(Component.ViewProviderComponent):
+class _ViewProviderSectionPlane(Component.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","DisplaySize","Base",
@@ -152,7 +152,7 @@ class ViewProviderSectionPlane(Component.ViewProviderComponent):
             vobj.Object.Proxy.execute(vobj.Object)
         return
 
-class ArchDrawingView:
+class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.Proxy = self
@@ -373,4 +373,4 @@ class ArchDrawingView:
         return svg
 
 
-FreeCADGui.addCommand('Arch_SectionPlane',CommandSectionPlane())
+FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

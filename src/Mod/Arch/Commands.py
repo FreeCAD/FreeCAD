@@ -214,7 +214,7 @@ def removeShape(objs,mark=True):
     
 # command definitions ###############################################
                        
-class CommandAdd:
+class _CommandAdd:
     "the Arch Add command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Add',
@@ -235,7 +235,7 @@ class CommandAdd:
         FreeCAD.ActiveDocument.commitTransaction()
 
         
-class CommandRemove:
+class _CommandRemove:
     "the Arch Add command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Remove',
@@ -259,7 +259,7 @@ class CommandRemove:
         FreeCAD.ActiveDocument.commitTransaction()
 
 
-class CommandSplitMesh:
+class _CommandSplitMesh:
     "the Arch SplitMesh command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_SplitMesh',
@@ -286,7 +286,7 @@ class CommandSplitMesh:
             FreeCAD.ActiveDocument.commitTransaction()
 
             
-class CommandMeshToShape:
+class _CommandMeshToShape:
     "the Arch MeshToShape command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_MeshToShape',
@@ -319,7 +319,7 @@ class CommandMeshToShape:
                     g.addObject(newobj)
             FreeCAD.ActiveDocument.commitTransaction()
 
-class CommandSelectNonSolidMeshes:
+class _CommandSelectNonSolidMeshes:
     "the Arch SelectNonSolidMeshes command definition"
     def GetResources(self):
         return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
@@ -343,7 +343,7 @@ class CommandSelectNonSolidMeshes:
             for o in sel:
                 FreeCADGui.Selection.addSelection(o)
 
-class CommandRemoveShape:
+class _CommandRemoveShape:
     "the Arch RemoveShape command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_RemoveShape',
@@ -360,9 +360,9 @@ class CommandRemoveShape:
         sel = FreeCADGui.Selection.getSelection()
         removeShape(sel)
 
-FreeCADGui.addCommand('Arch_Add',CommandAdd())
-FreeCADGui.addCommand('Arch_Remove',CommandRemove())
-FreeCADGui.addCommand('Arch_SplitMesh',CommandSplitMesh())
-FreeCADGui.addCommand('Arch_MeshToShape',CommandMeshToShape())
-FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',CommandSelectNonSolidMeshes())
-FreeCADGui.addCommand('Arch_RemoveShape',CommandRemoveShape())
+FreeCADGui.addCommand('Arch_Add',_CommandAdd())
+FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
+FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
+FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
+FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())
+FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())

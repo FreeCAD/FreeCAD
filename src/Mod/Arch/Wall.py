@@ -34,8 +34,8 @@ def makeWall(baseobj=None,width=None,height=None,align="Center",name="Wall"):
     '''makeWall(obj,[width],[height],[align],[name]): creates a wall based on the
     given object'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    Wall(obj)
-    ViewProviderWall(obj.ViewObject)
+    _Wall(obj)
+    _ViewProviderWall(obj.ViewObject)
     if baseobj: obj.Base = baseobj
     if width: obj.Width = width
     if height: obj.Height = height
@@ -49,7 +49,7 @@ def makeWall(baseobj=None,width=None,height=None,align="Center",name="Wall"):
     obj.ViewObject.ShapeColor = (r,g,b,1.0)
     return obj
 
-class CommandWall:
+class _CommandWall:
     "the Arch Wall command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Wall',
@@ -67,7 +67,7 @@ class CommandWall:
         else:
             wall = makeWall()
        
-class Wall(Component.Component):
+class _Wall(Component.Component):
     "The Wall object"
     def __init__(self,obj):
         Component.Component.__init__(self,obj)
@@ -180,7 +180,7 @@ class Wall(Component.Component):
         if not fcgeo.isNull(pl):
             obj.Placement = pl
 
-class ViewProviderWall(Component.ViewProviderComponent):
+class _ViewProviderWall(Component.ViewProviderComponent):
     "A View Provider for the Wall object"
 
     def __init__(self,vobj):
@@ -218,4 +218,4 @@ class ViewProviderWall(Component.ViewProviderComponent):
                 "                "};
 		"""
 
-FreeCADGui.addCommand('Arch_Wall',CommandWall())
+FreeCADGui.addCommand('Arch_Wall',_CommandWall())

@@ -36,8 +36,8 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
     extrusion height. If no base object is given, you can also specify
     length and width for a cubic object.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    Structure(obj)
-    ViewProviderStructure(obj.ViewObject)
+    _Structure(obj)
+    _ViewProviderStructure(obj.ViewObject)
     if baseobj: obj.Base = baseobj
     if length: obj.Length = length
     if width: obj.Width = width
@@ -56,7 +56,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
     obj.ViewObject.ShapeColor = (r,g,b,1.0)
     return obj
 
-class CommandStructure:
+class _CommandStructure:
     "the Arch Structure command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Structure',
@@ -74,7 +74,7 @@ class CommandStructure:
         else:
             makeStructure()
        
-class Structure(Component.Component):
+class _Structure(Component.Component):
     "The Structure object"
     def __init__(self,obj):
         Component.Component.__init__(self,obj)
@@ -144,7 +144,7 @@ class Structure(Component.Component):
             obj.Shape = base
             if not fcgeo.isNull(pl): obj.Placement = pl
 
-class ViewProviderStructure(Component.ViewProviderComponent):
+class _ViewProviderStructure(Component.ViewProviderComponent):
     "A View Provider for the Structure object"
 
     def __init__(self,vobj):
@@ -182,4 +182,4 @@ class ViewProviderStructure(Component.ViewProviderComponent):
                 "    .++         "};
 		"""
 
-FreeCADGui.addCommand('Arch_Structure',CommandStructure())
+FreeCADGui.addCommand('Arch_Structure',_CommandStructure())

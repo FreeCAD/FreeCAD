@@ -34,15 +34,15 @@ def makeCell(objectslist,join=True,name="Cell"):
     objects from the given list. If joinmode is False, contents will
     not be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    Cell(obj)
-    ViewProviderCell(obj.ViewObject)
+    _Cell(obj)
+    _ViewProviderCell(obj.ViewObject)
     obj.Components = objectslist
     for comp in obj.Components:
         comp.ViewObject.hide()
     obj.JoinMode = join
     return obj
 
-class CommandCell:
+class _CommandCell:
     "the Arch Cell command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Cell',
@@ -55,7 +55,7 @@ class CommandCell:
         makeCell(FreeCADGui.Selection.getSelection())
         FreeCAD.ActiveDocument.commitTransaction()
 
-class Cell:
+class _Cell:
     "The Cell object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLinkList","Components","Base",
@@ -90,7 +90,7 @@ class Cell:
             obj.Shape = baseShape
             obj.Placement = pl
 
-class ViewProviderCell:
+class _ViewProviderCell:
     "A View Provider for the Cell object"
     def __init__(self,vobj):
         vobj.Proxy = self
@@ -154,4 +154,4 @@ class ViewProviderCell:
     def __setstate__(self,state):
         return None
 
-FreeCADGui.addCommand('Arch_Cell',CommandCell())
+FreeCADGui.addCommand('Arch_Cell',_CommandCell())
