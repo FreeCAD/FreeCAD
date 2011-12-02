@@ -43,7 +43,7 @@ texts, colors,layers (from groups)
 import FreeCAD, os, Part, math, re, string, Mesh, Draft
 from draftlibs import fcvec, dxfColorMap, dxfLibrary, fcgeo
 from draftlibs.dxfReader import readDXF
-from Draft import Dimension, ViewProviderDimension
+from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
 try: import FreeCADGui
@@ -876,8 +876,8 @@ def processdxf(document,filename):
                             p2 = FreeCAD.Vector(x2,y3,z2)
                     newob = doc.addObject("App::FeaturePython","Dimension")
                     lay.addObject(newob)
-                    Dimension(newob)
-                    ViewProviderDimension(newob.ViewObject)
+                    _Dimension(newob)
+                    _ViewProviderDimension(newob.ViewObject)
                     newob.Start = p1
                     newob.End = p2
                     newob.Dimline = pt
