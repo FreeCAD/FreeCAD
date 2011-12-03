@@ -1,7 +1,7 @@
 
 /// Version Number
 #define FCVersionMajor "0"
-#define FCVersionMinor "12"
+#define FCVersionMinor "13"
 #define FCVersionName  "Vulcan"
 
 #define FCRevision      "$WCREV$"      //Highest committed revision number
