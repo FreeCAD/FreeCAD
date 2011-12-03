@@ -330,7 +330,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     // check if constraints can be redirected to some other point
-    int replaceGeoId=-1;
+    int replaceGeoId=Constraint::GeoUndef;
     PointPos replacePosId=Sketcher::none;
     if (!onlyCoincident) {
         for (std::vector<Constraint *>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
@@ -354,7 +354,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     for (std::vector<Constraint *>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
         if ((*it)->Type == Sketcher::Coincident) {
             if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                if (replaceGeoId != -1 &&
+                if (replaceGeoId != Constraint::GeoUndef &&
                     (replaceGeoId != (*it)->Second || replacePosId != (*it)->SecondPos)) { // redirect this constraint
                     (*it)->First = replaceGeoId;
                     (*it)->FirstPos = replacePosId;
@@ -363,7 +363,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                     continue; // skip this constraint
             }
             else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                if (replaceGeoId != -1 &&
+                if (replaceGeoId != Constraint::GeoUndef &&
                     (replaceGeoId != (*it)->First || replacePosId != (*it)->FirstPos)) { // redirect this constraint
                     (*it)->Second = replaceGeoId;
                     (*it)->SecondPos = replacePosId;
@@ -382,7 +382,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                     continue; // skip this constraint
                 }
                 else if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != -1) { // redirect this constraint
+                    if (replaceGeoId != Constraint::GeoUndef) { // redirect this constraint
                         (*it)->First = replaceGeoId;
                         (*it)->FirstPos = replacePosId;
                     }
@@ -390,7 +390,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                         continue; // skip this constraint
                 }
                 else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    if (replaceGeoId != -1) { // redirect this constraint
+                    if (replaceGeoId != Constraint::GeoUndef) { // redirect this constraint
                         (*it)->Second = replaceGeoId;
                         (*it)->SecondPos = replacePosId;
                     }
@@ -400,7 +400,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
             }
             else if ((*it)->Type == Sketcher::PointOnObject) {
                 if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != -1) { // redirect this constraint
+                    if (replaceGeoId != Constraint::GeoUndef) { // redirect this constraint
                         (*it)->First = replaceGeoId;
                         (*it)->FirstPos = replacePosId;
                     }
@@ -575,7 +575,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     assert(GeoId < int(geomlist.size()));
 
-    int GeoId1=-1, GeoId2=-1;
+    int GeoId1=Constraint::GeoUndef, GeoId2=Constraint::GeoUndef;
     Base::Vector3d point1, point2;
     Part2DObject::seekTrimPoints(geomlist, GeoId, point, GeoId1, point1, GeoId2, point2);
     if (GeoId1 < 0 && GeoId2 >= 0) {
@@ -1125,7 +1125,7 @@ void SketchObject::onChanged(const App::Property* prop)
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId)
 {
     if (VertexId < 0 || VertexId >= (int)VertexId2GeoId.size()) {
-        GeoId = -1;
+        GeoId = Constraint::GeoUndef;
         PosId = none;
         return;
     }
