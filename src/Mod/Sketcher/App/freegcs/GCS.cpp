@@ -670,7 +670,7 @@ int System::solve_LM(SubSystem* subsys)
 
         // compute initial damping factor
         if (iter == 0)
-            mu = tau * A.diagonal().lpNorm<Eigen::Infinity>();
+            mu = tau * diag_A.lpNorm<Eigen::Infinity>();
 
         // determine increment using adaptive damping
         int k=0;
@@ -685,6 +685,11 @@ int System::solve_LM(SubSystem* subsys)
 
             // check if solving works
             if (rel_error < 1e-5) {
+
+                // restrict h according to maxStep
+                double scale = subsys->maxStep(h);
+                if (scale < 1.)
+                    h *= scale;
 
                 // compute par's new estimate and ||d_par||^2
                 x_new = x + h;
@@ -832,6 +837,12 @@ int System::solve_DL(SubSystem* subsys)
         // see if we are already finished
         if (stop)
             break;
+
+// it didn't work in some tests
+//        // restrict h_dl according to maxStep
+//        double scale = subsys->maxStep(h_dl);
+//        if (scale < 1.)
+//            h_dl *= scale;
 
         // get the new values
         double err_new;
