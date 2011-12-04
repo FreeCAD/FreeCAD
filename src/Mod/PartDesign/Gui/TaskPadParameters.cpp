@@ -87,8 +87,10 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     }
 
     ui->checkBoxReversed->setChecked(reversed);
-
-    setFocus ();
+    // Make sure that the spin box has the focus to get key events
+    // Calling setFocus() directly doesn't work because the spin box is not
+    // yet visible. 
+    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
 }
 
 void TaskPadParameters::onLengthChanged(double len)
