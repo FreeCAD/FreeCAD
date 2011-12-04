@@ -19,6 +19,7 @@ import sys, os
 #sys.path.insert(0, os.path.abspath('.'))
 
 sys.path.append(os.path.abspath('/home/yorik/Apps/FreeCAD/lib/'))
+sys.path.append(os.path.abspath(os.path.join(os.environ["HOME"],"FreeCAD/lib")))
 import FreeCAD, FreeCADGui
 FreeCADGui.showMainWindow() # this is needed for complete import of GUI modules
 
