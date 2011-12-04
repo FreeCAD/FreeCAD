@@ -68,12 +68,12 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     Base::Vector3f Ax = pcRevolution->Axis.getValue();
 
     ui->doubleSpinBox->setValue(l);
-    if(Ax.y > 0)
+    ui->doubleSpinBox->selectAll();
+    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+    if (Ax.y > 0)
         ui->axis->setCurrentIndex(0);        
     else
         ui->axis->setCurrentIndex(1);
-  
-    setFocus ();
 }
 
 void TaskRevolutionParameters::onAngleChanged(double len)

@@ -67,9 +67,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
     ui->doubleSpinBox->setMaximum(INT_MAX);
     ui->doubleSpinBox->setValue(r);
     ui->doubleSpinBox->selectAll();
- 
-
-    setFocus ();
+    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)

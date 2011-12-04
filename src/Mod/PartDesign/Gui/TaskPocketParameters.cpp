@@ -67,6 +67,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->doubleSpinBox->setMaximum(INT_MAX);
     ui->doubleSpinBox->setValue(l);
     ui->doubleSpinBox->selectAll();
+    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
  
     //// check if the sketch has support
     //Sketcher::SketchObject *pcSketch;
@@ -78,8 +79,6 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     //    else
     //        ui->checkBoxReversed->setChecked(reversed);
     //}
-
-    setFocus ();
 }
 
 void TaskPocketParameters::onLengthChanged(double len)
