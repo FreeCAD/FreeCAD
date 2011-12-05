@@ -25,6 +25,16 @@
 #if defined(__MINGW32__)
 # include <GL/gl.h>
 # include <GL/glext.h>
+#elif defined (FC_OS_MACOSX)
+# include <OpenGL/gl.h>
+# include <OpenGL/glu.h>
+#elif defined (FC_OS_WIN32)
+# include <Windows.h>
+# include <GL/gl.h>
+# include <GL/glu.h>
+#else
+# include <GL/gl.h>
+# include <GL/glu.h>
 #endif
 
 #include "GLImageBox.h"
