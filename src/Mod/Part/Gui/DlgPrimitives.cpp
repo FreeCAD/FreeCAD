@@ -24,6 +24,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <Python.h>
+#include <gp_Ax3.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
@@ -128,11 +131,67 @@ DlgPrimitives::~DlgPrimitives()
     }
 }
 
+namespace Base {
+// Specialization for gp_XYZ
+template <>
+struct vec_traits<gp_XYZ> {
+    typedef gp_XYZ vec_type;
+    typedef double float_type;
+    vec_traits(const vec_type& v) : v(v){}
+    inline float_type x() { return v.X(); }
+    inline float_type y() { return v.Y(); }
+    inline float_type z() { return v.Z(); }
+private:
+    const vec_type& v;
+};
+}
+
 QString DlgPrimitives::toPlacement() const
 {
     Base::Vector3f d = ui.getDirection();
-    Base::Rotation rot(Base::Vector3d(0.0,0.0,1.0),
-                       Base::Vector3d(d.x,d.y,d.z));
+    gp_Dir dir = gp_Dir(d.x,d.y,d.z);
+    gp_Pnt pnt = gp_Pnt(0.0,0.0,0.0);
+    gp_Ax3 ax3;
+
+    double cosNX = dir.Dot(gp::DX());
+    double cosNY = dir.Dot(gp::DY());
+    double cosNZ = dir.Dot(gp::DZ());
+    std::vector<double> cosXYZ;
+    cosXYZ.push_back(fabs(cosNX));
+    cosXYZ.push_back(fabs(cosNY));
+    cosXYZ.push_back(fabs(cosNZ));
+
+    int pos = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
+
+    // +X/-X
+    if (pos == 0) {
+        if (cosNX > 0)
+            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,1,0));
+        else
+            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,-1,0));
+    }
+    // +Y/-Y
+    else if (pos == 1) {
+        if (cosNY > 0)
+            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,0,1));
+        else
+            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,0,-1));
+    }
+    // +Z/-Z
+    else {
+        ax3 = gp_Ax3(pnt, dir, gp_Dir(1,0,0));
+    }
+
+    gp_Trsf Trf;
+    Trf.SetTransformation(ax3);
+    Trf.Invert();
+
+    gp_XYZ theAxis(0,0,1);
+    Standard_Real theAngle = 0.0;
+    Trf.GetRotation(theAxis,theAngle);
+
+    Base::Rotation rot(Base::convertTo<Base::Vector3d>(theAxis), theAngle);
+
     return QString::fromAscii("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
         .arg(ui.xPos->value(),0,'f',2)
         .arg(ui.yPos->value(),0,'f',2)
