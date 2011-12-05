@@ -6,6 +6,7 @@ The FreeCAD module
 
 .. automodule:: FreeCAD
    :members:
+   :show-inheritance:
 
    .. autoclass:: Vector
       :members:

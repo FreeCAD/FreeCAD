@@ -11,15 +11,24 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import sys, os, commands
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
-sys.path.append(os.path.abspath('/home/yorik/Apps/FreeCAD/lib/'))
-sys.path.append(os.path.abspath(os.path.join(os.environ["HOME"],"FreeCAD/lib")))
+# first look for local (home-compiled) FreeCAD in its default location:
+
+if os.path.exists(os.path.abspath(os.path.join(os.environ["HOME"],"FreeCAD/lib"))):
+    sys.path.append(os.path.abspath(os.path.join(os.environ["HOME"],"FreeCAD/lib")))
+
+# otherwise try to locate FreeCAD lib somewhere else:
+
+elif commands.getstatusoutput("locate FreeCAD/lib")[0] == 0:
+    path = commands.getstatusoutput("locate FreeCAD/lib")[1].split()[0]
+    sys.path.append(path)
+    
 import FreeCAD, FreeCADGui
 FreeCADGui.showMainWindow() # this is needed for complete import of GUI modules
 
@@ -79,7 +88,7 @@ exclude_patterns = ['_build']
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-#add_module_names = True
+add_module_names = False
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
@@ -110,7 +119,7 @@ html_style = 'freecad.css'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = "FreeCAD API documentation"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -138,11 +147,11 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+# html_sidebars = {}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
-#html_additional_pages = {}
+# html_additional_pages = {}
 
 # If false, no module index is generated.
 #html_domain_indices = True

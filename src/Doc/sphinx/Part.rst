@@ -6,6 +6,4 @@ The Part module
 
 .. automodule:: Part
    :members:
-
-.. automodule:: PartGui
-   :members:
+   :show-inheritance:

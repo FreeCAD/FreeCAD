@@ -343,15 +343,44 @@ body[class*='page-Main_Page'] #content ul {
   margin-left: 30px;
   }
 
-.api .function {
-  padding: 3px;
-  background: #dddddd;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
+.api .function, dl dt {
+  padding: 3px 2px 3px 20px;
+  border-radius: 3px;
+  }
+
+dl.class dt {
+  background: #dddddd url("http://sourceforge.net/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/0/0f/Class.png") left center no-repeat;
+ }
+
+dl.function dt, dl.method dt {
+  background: #dddddd url("http://sourceforge.net/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/2/20/Method.png") left center no-repeat;
+  }
+
+dl.attribute dt {
+  background: #dddddd url("http://sourceforge.net/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/4/47/Property.png") left center no-repeat;
+  }
+
+dl dt tt {
+  font-weight: bold;
+  }
+
+dl dt big {
+  margin: 0 3px 0 3px;
+  font-size: 0.8em;
   }
 
 .api .description {
   padding-left: 30px;
+  }
+
+.highlight {
+  background: #ffffff !important;
+  margin-bottom: 40px;
+  }
+
+.highlight pre {
+  margin-left: 30px;
+  padding: 5px;
   }
 
 /* Screenshots ************************ */

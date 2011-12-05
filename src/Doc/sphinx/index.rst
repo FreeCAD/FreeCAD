@@ -25,3 +25,5 @@ This is the complete python API reference of the FreeCAD appication
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+* `Go back to the FreeCAD wiki <http://free-cad.sf.net>`_
