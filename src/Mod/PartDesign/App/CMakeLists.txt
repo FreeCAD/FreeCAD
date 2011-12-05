@@ -24,8 +24,8 @@ SET(Features_SRCS
     Feature.h
     FeaturePatternRectangular.h
     FeaturePatternRectangular.cpp
-    FeatureMainPart.cpp
-    FeatureMainPart.h
+    Body.cpp
+    Body.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 

@@ -21,37 +21,39 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_MainPart_H
-#define PARTDESIGN_MainPart_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
-#include <App/PropertyStandard.h>
-#include "Feature.h"
+#include <Base/Placement.h>
 
-namespace PartDesign
+#include "Body.h"
+
+
+using namespace PartDesign;
+
+namespace PartDesign {
+
+
+PROPERTY_SOURCE(PartDesign::Body, Part::Feature)
+
+Body::Body()
 {
+    ADD_PROPERTY(Model,(0));
+}
 
-class MainPart : public PartDesign::Feature
+short Body::mustExecute() const
 {
-    PROPERTY_HEADER(PartDesign::MainPart);
+    //if (Sketch.isTouched() ||
+    //    Length.isTouched())
+    //    return 1;
+    return 0;
+}
 
-public:
-    MainPart();
+App::DocumentObjectExecReturn *Body::execute(void)
+{
+ 
+    return App::DocumentObject::StdReturn;
+}
 
-    App::PropertyLinkList   Model;
-
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    //const char* getViewProviderName(void) const {
-    //    return "PartDesignGui::ViewProviderMainPart";
-    //}
-    //@}
-};
-
-} //namespace PartDesign
-
-
-#endif // PART_MainPart_H
+}

@@ -34,7 +34,7 @@
 #include "FeatureFillet.h"
 #include "FeatureSketchBased.h"
 #include "FeatureRevolution.h"
-#include "FeatureMainPart.h"
+#include "Body.h"
 #include "FeatureDressUp.h"
 #include "FeatureChamfer.h"
 #include "FeatureFace.h"
@@ -77,7 +77,7 @@ void PartDesignExport initPartDesign()
     PartDesign::Additive           ::init();
     PartDesign::PatternRectangular ::init();
     PartDesign::Hole               ::init();
-    PartDesign::MainPart           ::init();
+    PartDesign::Body               ::init();
     PartDesign::Pad                ::init();
     PartDesign::Pocket             ::init();
     PartDesign::Fillet             ::init();
