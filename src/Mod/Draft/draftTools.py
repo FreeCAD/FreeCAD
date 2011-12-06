@@ -4432,7 +4432,45 @@ class Shape2DView():
         sellist = []
         for ob in Draft.getSelection():
             Draft.makeShape2DView(ob)
+
+class Draft2Sketch():
+    "The Draft2Sketch FreeCAD command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Draft2Sketch',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Convert bidirectionally between Draft and Sketch objects")}
+
+    def IsActive(self):
+        if Draft.getSelection():
+            return True
+        else:
+            return False
         
+    def Activated(self):
+        for obj in Draft.getSelection():
+            nobj = None
+            name = obj.Name
+            if obj.isDerivedFrom("Sketcher::SketchObject"):
+                wires = []
+                for w in obj.Shape.Wires:
+                    if fcgeo.hasCurves(w):
+                        nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                        nobj.Shape = w
+                    else:
+                        nobj = Draft.makeWire(w)
+                    wires.append(nobj)
+                if len(wires) > 1:
+                    nobj = Draft.makeBlock(wires)
+            elif obj.isDerivedFrom("Part::Part2DObjectPython"):
+                nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",name)
+                for edge in obj.Shape.Edges:
+                    nobj.addGeometry(edge.Curve)
+            if nobj:
+                Draft.formatObject(nobj,obj)
+                FreeCAD.ActiveDocument.removeObject(name)
+                FreeCAD.ActiveDocument.recompute()
+
+            
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
 #---------------------------------------------------------------------------
@@ -4462,6 +4500,7 @@ FreeCADGui.addCommand('Draft_Edit',Edit())
 FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
+FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())

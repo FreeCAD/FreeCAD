@@ -118,7 +118,7 @@ def isPtOnEdge(pt,edge) :
 def hasCurves(shape):
         "checks if the given shape has curves"
         for e in shape.Edges:
-                if not isInstance(e.Curve,Part.Line):
+                if not isinstance(e.Curve,Part.Line):
                         return True
         return False
 	
