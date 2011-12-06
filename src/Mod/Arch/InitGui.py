@@ -44,7 +44,7 @@ class ArchWorkbench(Workbench):
                               "Draft_Circle","Draft_Dimension",
                               "Draft_Move","Draft_Rotate",
                               "Draft_Offset","Draft_Upgrade",
-                              "Draft_Downgrade"]
+                              "Draft_Downgrade","Draft_Trimex"]
                 meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                              "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
                 self.appendToolbar(str(draftTools.translate("arch","Arch tools")),archtools)

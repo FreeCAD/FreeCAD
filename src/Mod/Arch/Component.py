@@ -28,44 +28,73 @@ __url__ = "http://free-cad.sourceforge.net"
 import FreeCAD,FreeCADGui
 from PyQt4 import QtGui,QtCore
 
-def addToComponent(compobject,addobject):
-    '''addToComponent(compobject,addobject): adds addobject
-    to the given component'''
-    if hasattr(compobject,"Additions"):
-        if not addobject in compobject.Additions:
-            l = compobject.Additions
-            l.append(addobject)
-            compobject.Additions = l
-    elif hasattr(compobject,"Objects"):
-        if not addobject in compobject.Objects:
-            l = compobject.Objects
-            l.append(addobject)
-            compobject.Objects = l
+def addToComponent(compobject,addobject,mod=None):
+    '''addToComponent(compobject,addobject,mod): adds addobject
+    to the given component. Default is in "Additions", "Objects" or
+    "Components", the first one that exists in the component. Mod
+    can be set to one of those attributes ("Objects", Base", etc...)
+    to override the default.'''
+    if compobject == addobject: return
+    # first check is already there
+    found = False
+    attribs = ["Additions","Objects","Components","Subtractions","Base"]
+    for a in attribs:
+        if hasattr(compobject,a):
+            if a == "Base":
+                if addobject == getattr(compobject,a):
+                    found = True
+            else:
+                if addobject in getattr(compobject,a):
+                    found = True
+    if not found:
+        if mod:
+            if hasattr(compobject,mod):
+                if mod == "Base":
+                    setattr(compobject,mod,addobject)
+                else:
+                    l = getattr(compobject,mod)
+                    l.append(addobject)
+                    setattr(compobject,mod,l)
+                addobject.ViewObject.hide()
+        else:
+            for a in attribs[:3]:
+                if hasattr(compobject,a):
+                    l = getattr(compobject,a)
+                    l.append(addobject)
+                    setattr(compobject,a,l)
+                    addobject.ViewObject.hide()
+                    break
 
 def removeFromComponent(compobject,subobject):
     '''removeFromComponent(compobject,subobject): subtracts subobject
-    from the given component'''
-    if hasattr(compobject,"Subtractions") and hasattr(compobject,"Additions"):
-        if subobject in compobject.Subtractions:
-            l = compobject.Subtractions
-            l.remove(subobject)
-            compobject.Subtractions = l
-            subobject.ViewObject.show()
-        elif subobject in compobject.Additions:
-            l = compobject.Additions
-            l.remove(subobject)
-            compobject.Additions = l
-            subobject.ViewObject.show()
-        else:
+    from the given component. If the subobject is already part of the
+    component (as addition, subtraction, etc... it is removed. Otherwise,
+    it is added as a subtraction.'''
+    if compobject == subobject: return
+    found = False
+    attribs = ["Additions","Subtractions","Objects","Components","Base"]
+    for a in attribs:
+        if hasattr(compobject,a):
+            if a == "Base":
+                if subobject == getattr(compobject,a):
+                    setattr(compobject,a,None)
+                    subobject.ViewObject.show()
+                    found = True
+            else:
+                if subobject in getattr(compobject,a):
+                    l = getattr(compobject,a)
+                    l.remove(subobject)
+                    setattr(compobject,a,l)
+                    subobject.ViewObject.show()
+                    found = True
+    if not found:
+        if hasattr(compobject,"Subtractions"):
             l = compobject.Subtractions
             l.append(subobject)
             compobject.Subtractions = l
-    elif hasattr(compobject,"Objects"):
-        if subobject in compobject.Objects:
-            l = compobject.Objects
-            l.remove(subobject)
-            compobject.Objects = l
+            subobject.ViewObject.hide()
 
+            
 class ComponentTaskPanel:
     '''The default TaskPanel for all Arch components'''
     def __init__(self):
@@ -74,6 +103,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
         
         self.obj = None
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components"]
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -86,22 +116,6 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.tree, 1, 0, 1, 2)
         self.tree.setColumnCount(1)
         self.tree.header().hide()
-        self.treeBase = QtGui.QTreeWidgetItem(self.tree)
-        self.treeBase.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
-        self.treeBase.ChildIndicatorPolicy = 2
-        self.treeBase.setHidden(True)
-        self.treeAdditions = QtGui.QTreeWidgetItem(self.tree)
-        self.treeAdditions.setIcon(0,QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.treeAdditions.ChildIndicatorPolicy = 2
-        self.treeAdditions.setHidden(True)
-        self.treeSubtractions = QtGui.QTreeWidgetItem(self.tree)
-        self.treeSubtractions.setIcon(0,QtGui.QIcon(":/icons/Arch_Remove.svg"))
-        self.treeSubtractions.ChildIndicatorPolicy = 2
-        self.treeSubtractions.setHidden(True)
-        self.treeObjects = QtGui.QTreeWidgetItem(self.tree)
-        self.treeObjects.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
-        self.treeObjects.ChildIndicatorPolicy = 2
-        self.treeObjects.setHidden(True)
         
         # buttons       
         self.addButton = QtGui.QPushButton(self.form)
@@ -125,8 +139,7 @@ class ComponentTaskPanel:
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         QtCore.QObject.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.finish)
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
-        self.retranslateUi(self.form)
-        self.populate()
+        self.update()
 
     def isAllowedAlterSelection(self):
         return True
@@ -143,8 +156,14 @@ class ComponentTaskPanel:
     def check(self,wid,col):
         if not wid.parent():
             self.delButton.setEnabled(False)
+            if self.obj:
+                sel = FreeCADGui.Selection.getSelection()
+                if sel:
+                    if not(self.obj in sel):
+                        self.addButton.setEnabled(True)
         else:
             self.delButton.setEnabled(True)
+            self.addButton.setEnabled(False)
 
     def getIcon(self,obj):
         if hasattr(obj.ViewObject,"Proxy"):
@@ -154,10 +173,22 @@ class ComponentTaskPanel:
         else:
             return QtGui.QIcon(":/icons/Tree_Part.svg")
 
-    def populate(self):
+    def update(self):
         'fills the treewidget'
+        self.tree.clear()
+        dirIcon = QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
+        for a in self.attribs:
+            setattr(self,"tree"+a,QtGui.QTreeWidgetItem(self.tree))
+            c = getattr(self,"tree"+a)
+            c.setIcon(0,dirIcon)
+            c.ChildIndicatorPolicy = 2
+            if self.obj:
+                if not hasattr(self.obj,a):
+                           c.setHidden(True)
+            else:
+                c.setHidden(True)
         if self.obj:
-            for attrib in ["Base","Additions","Subtractions","Objects"]:
+            for attrib in self.attribs:
                 if hasattr(self.obj,attrib):
                     Oattrib = getattr(self.obj,attrib)
                     Tattrib = getattr(self,"tree"+attrib)
@@ -166,23 +197,29 @@ class ComponentTaskPanel:
                             Oattrib = [Oattrib]
                         for o in Oattrib:
                             item = QtGui.QTreeWidgetItem()
-                            item.setText(0,o.Label)
+                            item.setText(0,o.Name)
                             item.setIcon(0,self.getIcon(o))
                             Tattrib.addChild(item)
                         self.tree.expandItem(Tattrib)
-                        Tattrib.setHidden(False)
-                    else:
-                        Tattrib.setHidden(True)
+        self.retranslateUi(self.form)
 
     def addElement(self):
-        FreeCAD.Console.PrintWarning("Not implemented yet!\n")
+        it = self.tree.currentItem()
+        if it:
+            mod = None
+            for a in self.attribs:
+                if it == getattr(self,"tree"+a):
+                    mod = a
+            for o in FreeCADGui.Selection.getSelection():
+                addToComponent(self.obj,o,mod)
+        self.update()
 
     def removeElement(self):
         it = self.tree.currentItem()
         if it:
-            comp = FreeCAD.ActiveDocument.getObject(str(it.text()))
+            comp = FreeCAD.ActiveDocument.getObject(str(it.text(0)))
             removeFromComponent(self.obj,comp)
-        self.populate()
+        self.update()
 
     def finish(self):
         FreeCAD.ActiveDocument.recompute()
@@ -199,7 +236,7 @@ class ComponentTaskPanel:
         self.treeAdditions.setText(0,QtGui.QApplication.translate("Arch", "Additions", None, QtGui.QApplication.UnicodeUTF8))
         self.treeSubtractions.setText(0,QtGui.QApplication.translate("Arch", "Subtractions", None, QtGui.QApplication.UnicodeUTF8))
         self.treeObjects.setText(0,QtGui.QApplication.translate("Arch", "Objects", None, QtGui.QApplication.UnicodeUTF8))
-        
+        self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))        
         
 class Component:
     "The default Arch Component object"
@@ -253,7 +290,7 @@ class ViewProviderComponent:
     def setEdit(self,vobj,mode):
         taskd = ComponentTaskPanel()
         taskd.obj = self.Object
-        taskd.populate()
+        taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
     

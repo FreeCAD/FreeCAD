@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft
+import FreeCAD,FreeCADGui,Part,Draft,Component
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -55,7 +55,7 @@ class _CommandCell:
         makeCell(FreeCADGui.Selection.getSelection())
         FreeCAD.ActiveDocument.commitTransaction()
 
-class _Cell:
+class _Cell(Component.Component):
     "The Cell object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLinkList","Components","Base",
@@ -90,9 +90,10 @@ class _Cell:
             obj.Shape = baseShape
             obj.Placement = pl
 
-class _ViewProviderCell:
+class _ViewProviderCell(Component.ViewProviderComponent):
     "A View Provider for the Cell object"
     def __init__(self,vobj):
+        Component.ViewProviderComponent.__init__(self,vobj)
         vobj.Proxy = self
         self.Object = vobj.Object
 
