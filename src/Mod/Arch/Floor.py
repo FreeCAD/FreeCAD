@@ -68,35 +68,6 @@ class _ViewProviderFloor(Cell._ViewProviderCell):
         Cell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
-        return """
-                /* XPM */
-                static char * Arch_Floor_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #171817",
-                "+	c #2E2876",
-                "@	c #545653",
-                "#	c #605C98",
-                "$	c #959794",
-                "%	c #9694BC",
-                "&	c #C8C9CC",
-                "*	c #F9FBFA",
-                "                ",
-                "                ",
-                "............... ",
-                ".&&%&*&%%%%%&*. ",
-                ".&++#*#+++++#*. ",
-                ".&+%****&+*+#*. ",
-                ".&+#%%&*&+*+#*. ",
-                ".&++++&**+*+#*. ",
-                ".&+%***%%**+.$. ",
-                ".&++###*#+#.$@. ",
-                ".&++++#*+++.&.. ",
-                ".&********&..   ",
-                ".$$$$$$$$$@.    ",
-                " ..........     ",
-                "                ",
-                "                "};
-                """
+        return ":/icons/Arch_Floor_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Floor',_CommandFloor())

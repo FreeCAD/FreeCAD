@@ -65,35 +65,6 @@ class _ViewProviderBuilding(Cell._ViewProviderCell):
         Cell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
-        return """
-                /* XPM */
-                static char * Arch_Building_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #160E0A",
-                "+	c #C10007",
-                "@	c #FF0006",
-                "#	c #8F3F00",
-                "$	c #5E5F5D",
-                "%	c #7F817E",
-                "&	c #A0A29F",
-                "*	c #F4F6F3",
-                "                ",
-                "     ........   ",
-                "    ..#@@@@@.   ",
-                "   .&&.+@@@@@.  ",
-                "  .&**%.@@@@@+. ",
-                " .&****..@@@+...",
-                ".%******.##..$$.",
-                ".&******&.$&**%.",
-                ".%*...$**.****% ",
-                ".%*..#.**.****% ",
-                " %*..#.**.****$ ",
-                " $*..#.**.***$. ",
-                " $*..#$**.**..  ",
-                " .$...$**.&.    ",
-                "   .  .$%..     ",
-                "        ..      "};
-                """
+        return ":/icons/Arch_Building_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Building',_CommandBuilding())

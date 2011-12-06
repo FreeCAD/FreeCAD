@@ -151,35 +151,6 @@ class _ViewProviderStructure(Component.ViewProviderComponent):
         Component.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):          
-        return """
-                /* XPM */
-                static char * Arch_Structure_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #2A303B",
-                "+	c #484F58",
-                "@	c #506573",
-                "#	c #617887",
-                "$	c #7A98A6",
-                "%	c #A5A4A8",
-                "&	c #C1C5C5",
-                "*	c #ECEEEB",
-                "......++++@##%%@",
-                "@$@************%",
-                "@$@************%",
-                "@$@********&%#+ ",
-                "@$@****%%@+.%%  ",
-                ".@+%#+.+ @$@*&  ",
-                "   #$+*% @$@*&  ",
-                "   #$@*% @$@*&  ",
-                "   #$@*% @$@*&  ",
-                "   #$@*% @$@*&  ",
-                "   #$@*% @$@*&  ",
-                "   #$@*% @$@*&  ",
-                "   #$@*% .@#%+  ",
-                "   #$@*%   .    ",
-                "   +#@*@        ",
-                "    .++         "};
-		"""
+        return ":/icons/Arch_Structure_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Structure',_CommandStructure())

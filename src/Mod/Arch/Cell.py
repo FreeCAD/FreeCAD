@@ -98,36 +98,7 @@ class _ViewProviderCell(Component.ViewProviderComponent):
         self.Object = vobj.Object
 
     def getIcon(self):
-        return """
-                /* XPM */
-                static char * Arch_Cell_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #0C0A04",
-                "+	c #413F37",
-                "@	c #636057",
-                "#	c #7E7D75",
-                "$	c #9C9B95",
-                "%	c #B7B8B3",
-                "&	c #D2D4D1",
-                "*	c #FCFEFB",
-                "        +++     ",
-                "    ++#++@$+    ",
-                " +@$%**@%#@++++ ",
-                " #&**%*@%%%$@+##",
-                " #&%@@*@%$@+@&*%",
-                " #&% @*@$@@%***%",
-                " #&% @*@+@#****%",
-                " #&%.@*@+@#****%",
-                " #&%$&*@+@#****%",
-                ".@&****@+@#****%",
-                " @&***&@+@#****%",
-                " @&**$  .@#****%",
-                " @&%#    @#****#",
-                " +@      @#**&  ",
-                "         @#*$   ",
-                "         @@#    "};
-                """
+        return ":/icons/Arch_Cell_Tree.svg"
        
     def updateData(self,obj,prop):
         return

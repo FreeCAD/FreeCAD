@@ -72,30 +72,7 @@ class _ViewProviderSectionPlane(Component.ViewProviderComponent):
         self.Object = vobj.Object
 
     def getIcon(self):
-        return """
-            /* XPM */
-            static char * Arch_SectionPlane_xpm[] = {
-            "16 16 3 1",
-            " 	c None",
-            ".	c #000000",
-            "+	c #FFFFFF",
-            "     ......     ",
-            "   ..+++.++..   ",
-            "  .+++++..+++.  ",
-            " .++++++...+++. ",
-            " .++.+++....++. ",
-            ".++.+.++.....++.",
-            ".+.+++.+......+.",
-            ".+.+++.+........",
-            ".+.+++.+........",
-            ".+.....+......+.",
-            ".+.+++.+.....++.",
-            " .++++++....++. ",
-            " .++++++...+++. ",
-            "  .+++++..+++.  ",
-            "   ..+++.++..   ",
-            "     ......     "};
-            """
+        return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):
         return []

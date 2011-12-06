@@ -14,6 +14,14 @@
         <file>icons/Arch_RemoveShape.svg</file>
         <file>icons/Arch_SectionPlane.svg</file>
         <file>icons/Arch_Window.svg</file>
+        <file>icons/Arch_Wall_Tree.svg</file>
+        <file>icons/Arch_Cell_Tree.svg</file>
+        <file>icons/Arch_Building_Tree.svg</file>
+        <file>icons/Arch_Floor_Tree.svg</file>
+        <file>icons/Arch_SectionPlane_Tree.svg</file>
+        <file>icons/Arch_Site_Tree.svg</file>
+        <file>icons/Arch_Structure_Tree.svg</file>
+        <file>icons/Arch_Window_Tree.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>

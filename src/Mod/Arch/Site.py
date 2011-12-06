@@ -69,35 +69,6 @@ class _ViewProviderSite(Cell._ViewProviderCell):
         Cell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
-        return """
-                /* XPM */
-                static char * Arch_Site_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #49370C",
-                "+	c #204F0E",
-                "@	c #535219",
-                "#	c #6F551D",
-                "$	c #127210",
-                "%	c #049512",
-                "&	c #08BD16",
-                "*	c #00EB1B",
-                "        +$++    ",
-                "       $%%%$++++",
-                "      $&&%%$$$+@",
-                "     $&&&%%$$+@.",
-                "     &&&&%%$$+#.",
-                "    $*&&&%%$+##.",
-                "    &*&&&%%$@##.",
-                "   %**&&&%%+###.",
-                "  %***&&&%$@###.",
-                " %****&&&%+##.  ",
-                "+&****&&&$@#.   ",
-                ".#+%&*&&$@#.    ",
-                " ..#@$%$@#.     ",
-                "   ..#@@.       ",
-                "      ..        ",
-                "                "};
-                """
+        return ":/icons/Arch_Site_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Site',_CommandSite())

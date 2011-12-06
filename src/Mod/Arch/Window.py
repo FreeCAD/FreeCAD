@@ -114,31 +114,6 @@ class _ViewProviderWindow(Component.ViewProviderComponent):
         Component.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):          
-        return """
-            /* XPM */
-            static char * Arch_Window_xpm[] = {
-            "16 16 5 1",
-            " 	c None",
-            ".	c #0E0A00",
-            "+	c #9B8A61",
-            "@	c #C6B287",
-            "#	c #FEFFF8",
-            "                ",
-            " ......         ",
-            " ####+......    ",
-            " #+. #####..... ",
-            " #+.  @#@####++ ",
-            " #+.   ##   #++ ",
-            " #.....##   #++ ",
-            " ####+.#....#+@ ",
-            " #+. +###+..++@ ",
-            " #+.  @#+@###+@ ",
-            " #...  ##   #+@ ",
-            " #+....#+   #+@ ",
-            "  ####+#....#+@ ",
-            "     @####..@+@ ",
-            "         @###++ ",
-            "             .  "};
-            """
+        return ":/icons/Arch_Window_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Window',_CommandWindow())
