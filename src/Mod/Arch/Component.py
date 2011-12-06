@@ -67,30 +67,66 @@ def removeFromComponent(compobject,subobject):
             compobject.Objects = l
 
 class ComponentTaskPanel:
+    '''The default TaskPanel for all Arch components'''
     def __init__(self):
+        # the panel has a tree widget that contains categories
+        # for the subcomponents, such as additions, subtractions.
+        # the categories are shown only if they are not empty.
+        
         self.obj = None
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
-        #self.form.resize(210, 260)
-        self.gridLayout = QtGui.QGridLayout(self.form)
-        self.gridLayout.setObjectName("gridLayout")
+        self.grid = QtGui.QGridLayout(self.form)
+        self.grid.setObjectName("grid")
         self.title = QtGui.QLabel(self.form)
-        self.gridLayout.addWidget(self.title, 0, 0, 1, 1)
-        self.listWidget = QtGui.QListWidget(self.form)
-        self.listWidget.setObjectName("listWidget")
-        self.gridLayout.addWidget(self.listWidget, 1, 0, 1, 2)
-        # add button currently disabled because no way to select other objects
-        #self.addButton = QtGui.QPushButton(self.form)
-        #self.addButton.setObjectName("addButton")
-        #self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        #self.gridLayout.addWidget(self.addButton, 2, 0, 1, 1)
+        self.grid.addWidget(self.title, 0, 0, 1, 2)
+
+        # tree
+        self.tree = QtGui.QTreeWidget(self.form)
+        self.grid.addWidget(self.tree, 1, 0, 1, 2)
+        self.tree.setColumnCount(1)
+        self.tree.header().hide()
+        self.treeBase = QtGui.QTreeWidgetItem(self.tree)
+        self.treeBase.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+        self.treeBase.ChildIndicatorPolicy = 2
+        self.treeBase.setHidden(True)
+        self.treeAdditions = QtGui.QTreeWidgetItem(self.tree)
+        self.treeAdditions.setIcon(0,QtGui.QIcon(":/icons/Arch_Add.svg"))
+        self.treeAdditions.ChildIndicatorPolicy = 2
+        self.treeAdditions.setHidden(True)
+        self.treeSubtractions = QtGui.QTreeWidgetItem(self.tree)
+        self.treeSubtractions.setIcon(0,QtGui.QIcon(":/icons/Arch_Remove.svg"))
+        self.treeSubtractions.ChildIndicatorPolicy = 2
+        self.treeSubtractions.setHidden(True)
+        self.treeObjects = QtGui.QTreeWidgetItem(self.tree)
+        self.treeObjects.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+        self.treeObjects.ChildIndicatorPolicy = 2
+        self.treeObjects.setHidden(True)
+        
+        # buttons       
+        self.addButton = QtGui.QPushButton(self.form)
+        self.addButton.setObjectName("addButton")
+        self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
+        self.grid.addWidget(self.addButton, 3, 0, 1, 1)
+        self.addButton.setEnabled(False)
+
         self.delButton = QtGui.QPushButton(self.form)
         self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
-        self.gridLayout.addWidget(self.delButton, 3, 0, 1, 1)
-        #QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
+        self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+        self.delButton.setEnabled(False)
+
+        self.okButton = QtGui.QPushButton(self.form)
+        self.okButton.setObjectName("okButton")
+        self.okButton.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
+        self.grid.addWidget(self.okButton, 4, 0, 1, 2)
+
+        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        QtCore.QObject.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.finish)
+        QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
         self.retranslateUi(self.form)
+        self.populate()
 
     def isAllowedAlterSelection(self):
         return True
@@ -99,62 +135,74 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
-        
-    def addElement(self):
-        sel = FreeCADGui.Selection.getSelection()
-        if sel:
-            for o in sel:
-                addToComponent(self.obj,o)
-        self.fillList()
+        return 0
 
     def removeElement(self):
-        it = self.listWidget.currentItem()
-        if it:
-            ob2 = FreeCAD.ActiveDocument.getObject(str(it.text()))
-            removeFromComponent(self.obj,ob2)
-        else:
-            sel = FreeCADGui.Selection.getSelection()
-            if sel:
-                for o in sel:
-                    if o.Name != self.obj.Name:
-                        removeFromComponent(self.obj,o)
-        self.fillList()
-                    
-    def fillList(self):
-        self.listWidget.clear()
-        if hasattr(self.obj,"Base"):
-            if self.obj.Base:
-                i = QtGui.QListWidgetItem(self.listWidget)
-                i.setText(self.obj.Base.Name)
-                i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
-                self.listWidget.addItem(i)
-        if hasattr(self.obj,"Additions"):
-            for o in self.obj.Additions:
-                i = QtGui.QListWidgetItem(self.listWidget)
-                i.setText(o.Name)
-                i.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-                self.listWidget.addItem(i)
-        if hasattr(self.obj,"Subtractions"):
-            for o in self.obj.Subtractions:
-                i = QtGui.QListWidgetItem(self.listWidget)
-                i.setText(o.Name)
-                i.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
-                self.listWidget.addItem(i)
-        if hasattr(self.obj,"Objects"):
-            for o in self.obj.Objects:
-                i = QtGui.QListWidgetItem(self.listWidget)
-                i.setText(o.Name)
-                i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
+        return
 
+    def check(self,wid,col):
+        if not wid.parent():
+            self.delButton.setEnabled(False)
+        else:
+            self.delButton.setEnabled(True)
+
+    def getIcon(self,obj):
+        if hasattr(obj.ViewObject,"Proxy"):
+            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+        elif obj.isDerivedFrom("Sketcher::SketchObject"):
+            return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
+        else:
+            return QtGui.QIcon(":/icons/Tree_Part.svg")
+
+    def populate(self):
+        'fills the treewidget'
+        if self.obj:
+            for attrib in ["Base","Additions","Subtractions","Objects"]:
+                if hasattr(self.obj,attrib):
+                    Oattrib = getattr(self.obj,attrib)
+                    Tattrib = getattr(self,"tree"+attrib)
+                    if Oattrib:
+                        if attrib == "Base":
+                            Oattrib = [Oattrib]
+                        for o in Oattrib:
+                            item = QtGui.QTreeWidgetItem()
+                            item.setText(0,o.Label)
+                            item.setIcon(0,self.getIcon(o))
+                            Tattrib.addChild(item)
+                        self.tree.expandItem(Tattrib)
+                        Tattrib.setHidden(False)
+                    else:
+                        Tattrib.setHidden(True)
+
+    def addElement(self):
+        FreeCAD.Console.PrintWarning("Not implemented yet!\n")
+
+    def removeElement(self):
+        it = self.tree.currentItem()
+        if it:
+            comp = FreeCAD.ActiveDocument.getObject(str(it.text()))
+            removeFromComponent(self.obj,comp)
+        self.populate()
+
+    def finish(self):
+        FreeCAD.ActiveDocument.recompute()
+        if self.obj:
+            self.obj.ViewObject.finishEditing()
+                    
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
-        #self.addButton.setText(QtGui.QApplication.translate("Arch", "Append selected objects", None, QtGui.QApplication.UnicodeUTF8))
-        self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove child", None, QtGui.QApplication.UnicodeUTF8))
+        self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
+        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
+        self.okButton.setText(QtGui.QApplication.translate("Arch", "Done", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeBase.setText(0,QtGui.QApplication.translate("Arch", "Base component", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeAdditions.setText(0,QtGui.QApplication.translate("Arch", "Additions", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeSubtractions.setText(0,QtGui.QApplication.translate("Arch", "Subtractions", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeObjects.setText(0,QtGui.QApplication.translate("Arch", "Objects", None, QtGui.QApplication.UnicodeUTF8))
+        
         
 class Component:
-    "The Component object"
+    "The default Arch Component object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object this component is built upon")
@@ -169,8 +217,9 @@ class Component:
         self.Object = obj
         self.Subvolume = None
         
+        
 class ViewProviderComponent:
-    "A View Provider for Component objects"
+    "A default View Provider for Component objects"
     def __init__(self,vobj):
         vobj.Proxy = self
         self.Object = vobj.Object
@@ -204,11 +253,11 @@ class ViewProviderComponent:
     def setEdit(self,vobj,mode):
         taskd = ComponentTaskPanel()
         taskd.obj = self.Object
-        taskd.fillList()
+        taskd.populate()
         FreeCADGui.Control.showDialog(taskd)
         return True
     
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
-        return True
+        return
     
