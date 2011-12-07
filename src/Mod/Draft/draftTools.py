@@ -4450,7 +4450,10 @@ class Draft2Sketch():
         for obj in Draft.getSelection():
             nobj = None
             name = obj.Name
+            trans = False
             if obj.isDerivedFrom("Sketcher::SketchObject"):
+                FreeCAD.ActiveDocument.openTransaction("Convert to Draft")
+                trans = True
                 wires = []
                 for w in obj.Shape.Wires:
                     if fcgeo.hasCurves(w):
@@ -4462,6 +4465,8 @@ class Draft2Sketch():
                 if len(wires) > 1:
                     nobj = Draft.makeBlock(wires)
             elif obj.isDerivedFrom("Part::Part2DObjectPython"):
+                FreeCAD.ActiveDocument.openTransaction("Convert to Sketch")
+                trans = True
                 nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",name)
                 for edge in obj.Shape.Edges:
                     nobj.addGeometry(edge.Curve)
@@ -4469,6 +4474,8 @@ class Draft2Sketch():
                 Draft.formatObject(nobj,obj)
                 FreeCAD.ActiveDocument.removeObject(name)
                 FreeCAD.ActiveDocument.recompute()
+            if trans:
+                FreeCAD.ActiveDocument.commitTransaction()
 
             
 #---------------------------------------------------------------------------
