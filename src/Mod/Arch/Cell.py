@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,Component
+import FreeCAD,FreeCADGui,Part,Draft,Component,Commands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -29,14 +29,15 @@ __title__="FreeCAD Cell"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeCell(objectslist,join=True,name="Cell"):
-    '''makeCell(objectslist,[joinmode]): creates a cell including the
+def makeCell(objectslist=None,join=True,name="Cell"):
+    '''makeCell([objectslist],[joinmode]): creates a cell including the
     objects from the given list. If joinmode is False, contents will
     not be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Cell(obj)
     _ViewProviderCell(obj.ViewObject)
-    obj.Components = objectslist
+    if objectslist:
+        obj.Components = objectslist
     for comp in obj.Components:
         comp.ViewObject.hide()
     obj.JoinMode = join
@@ -51,9 +52,25 @@ class _CommandCell:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Cell","Creates a cell object including selected objects")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Cell")
-        makeCell(FreeCADGui.Selection.getSelection())
-        FreeCAD.ActiveDocument.commitTransaction()
+        sel = FreeCADGui.Selection.getSelection()
+        transmode = True
+        if not sel:
+            transmode = False
+        for obj in sel:
+            if not (Draft.getType(obj) in ["Floor","Site","Building"]):
+                transmode = False
+        if transmode:
+            FreeCAD.ActiveDocument.openTransaction("Type conversion")
+            for obj in sel:
+                nobj = makeCell()
+                Commands.copyProperties(obj,nobj)
+                FreeCAD.ActiveDocument.removeObject(obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            FreeCAD.ActiveDocument.openTransaction("Cell")
+            makeCell(sel)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 class _Cell(Component.Component):
     "The Cell object"

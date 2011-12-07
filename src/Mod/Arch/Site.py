@@ -21,20 +21,21 @@
 #*                                                                         *
 #***************************************************************************
 
-import Cell,FreeCAD,FreeCADGui
+import Cell,FreeCAD,FreeCADGui,Draft,Commands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeSite(objectslist,name="Site"):
+def makeSite(objectslist=None,name="Site"):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Site(obj)
     _ViewProviderSite(obj.ViewObject)
-    obj.Components = objectslist
+    if objectslist:
+        obj.Components = objectslist
     obj.JoinMode = False
     return obj
 
@@ -47,9 +48,25 @@ class _CommandSite:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Site","Creates a site object including selected objects.")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Site")
-        makeSite(FreeCADGui.Selection.getSelection())
-        FreeCAD.ActiveDocument.commitTransaction()
+        sel = FreeCADGui.Selection.getSelection()
+        transmode = True
+        if not sel:
+            transmode = False
+        for obj in sel:
+            if not (Draft.getType(obj) in ["Cell","Building","Floor"]):
+                transmode = False
+        if transmode:
+            FreeCAD.ActiveDocument.openTransaction("Type conversion")
+            for obj in sel:
+                nobj = makeSite()
+                Commands.copyProperties(obj,nobj)
+                FreeCAD.ActiveDocument.removeObject(obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            FreeCAD.ActiveDocument.openTransaction("Site")
+            makeSite(sel)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 class _Site(Cell._Cell):
     "The Site object"

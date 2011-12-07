@@ -21,21 +21,22 @@
 #*                                                                         *
 #***************************************************************************
 
-import Cell,FreeCAD,FreeCADGui
+import Cell,FreeCAD,FreeCADGui,Draft,Commands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeFloor(objectslist,join=True,name="Floor"):
+def makeFloor(objectslist=None,join=True,name="Floor"):
     '''makeFloor(objectslist,[joinmode]): creates a floor including the
     objects from the given list. If joinmode is False, components will
     not be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Floor(obj)
     _ViewProviderFloor(obj.ViewObject)
-    obj.Components = objectslist
+    if objectslist:
+        obj.Components = objectslist
     for comp in obj.Components:
         comp.ViewObject.hide()
     obj.JoinMode = join
@@ -50,10 +51,26 @@ class _CommandFloor:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Floor")
-        makeFloor(FreeCADGui.Selection.getSelection())
-        FreeCAD.ActiveDocument.commitTransaction()
-
+        sel = FreeCADGui.Selection.getSelection()
+        transmode = True
+        if not sel:
+            transmode = False
+        for obj in sel:
+            if not (Draft.getType(obj) in ["Cell","Site","Building"]):
+                transmode = False
+        if transmode:
+            FreeCAD.ActiveDocument.openTransaction("Type conversion")
+            for obj in sel:
+                nobj = makeFloor()
+                Commands.copyProperties(obj,nobj)
+                FreeCAD.ActiveDocument.removeObject(obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            FreeCAD.ActiveDocument.openTransaction("Floor")
+            makeFloor(sel)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        
 class _Floor(Cell._Cell):
     "The Cell object"
     def __init__(self,obj):

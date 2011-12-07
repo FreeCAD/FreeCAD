@@ -21,20 +21,21 @@
 #*                                                                         *
 #***************************************************************************
 
-import Cell,FreeCAD,FreeCADGui
+import Cell,FreeCAD,FreeCADGui,Draft,Commands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeBuilding(objectslist,join=False,name="Building"):
+def makeBuilding(objectslist=None,join=False,name="Building"):
     '''makeBuilding(objectslist,[joinmode]): creates a building including the
     objects from the given list. If joinmode is True, components will be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Building(obj)
     _ViewProviderBuilding(obj.ViewObject)
-    obj.Components = objectslist
+    if objectslist:
+        obj.Components = objectslist
     for comp in obj.Components:
         comp.ViewObject.hide()
     obj.JoinMode = join
@@ -49,9 +50,25 @@ class _CommandBuilding:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Building","Creates a building object including selected objects.")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Building")
-        makeBuilding(FreeCADGui.Selection.getSelection())
-        FreeCAD.ActiveDocument.commitTransaction()
+        sel = FreeCADGui.Selection.getSelection()
+        transmode = True
+        if not sel:
+            transmode = False
+        for obj in sel:
+            if not (Draft.getType(obj) in ["Cell","Site","Floor"]):
+                transmode = False
+        if transmode:
+            FreeCAD.ActiveDocument.openTransaction("Type conversion")
+            for obj in sel:
+                nobj = makeBuilding()
+                Commands.copyProperties(obj,nobj)
+                FreeCAD.ActiveDocument.removeObject(obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            FreeCAD.ActiveDocument.openTransaction("Building")
+            makeBuilding(sel)
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 class _Building(Cell._Cell):
     "The Building object"

@@ -102,6 +102,19 @@ def removeComponents(objectsList,host=None):
                        a.remove(o)
                        h.Objects = a
 
+def copyProperties(obj1,obj2):
+    '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
+    when that property exists in both objects'''
+    for prop in obj1.PropertiesList:
+        if prop in obj2.PropertiesList:
+            if not prop in ["Proxy","Shape"]:
+                setattr(obj2,prop,getattr(obj1,prop))
+    if obj1.ViewObject and obj2.ViewObject:
+        for prop in obj1.ViewObject.PropertiesList:
+            if prop in obj2.ViewObject.PropertiesList:
+                if not prop in ["Proxy","Shape"]:
+                    setattr(obj2.ViewObject,prop,getattr(obj1.ViewObject,prop))
+                       
 def splitMesh(obj,mark=True):
     '''splitMesh(object,[mark]): splits the given mesh object into separated components.
     If mark is False, nothing else is done. If True (default), non-manifold components
