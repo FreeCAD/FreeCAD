@@ -418,9 +418,9 @@ short Cone::mustExecute() const
 
 App::DocumentObjectExecReturn *Cone::execute(void)
 {
-    if (Radius1.getValue() < Precision::Confusion())
+    if (Radius1.getValue() < 0)
         return new App::DocumentObjectExecReturn("Radius of cone too small");
-    if (Radius2.getValue() < Precision::Confusion())
+    if (Radius2.getValue() < 0)
         return new App::DocumentObjectExecReturn("Radius of cone too small");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cone too small");
