@@ -297,6 +297,16 @@ void Document::openTransaction(const char* name)
     }
 }
 
+void Document::_checkTransaction(void)
+{
+    // if the undo is active but no transaction open, open one!
+    if (d->iUndoMode) 
+        if (! d->activeUndoTransaction)
+            openTransaction();
+
+}
+
+
 void Document::_clearRedos()
 {
     while (!mRedoTransactions.empty()) {
@@ -410,6 +420,7 @@ void Document::onChanged(const Property* prop)
 
 void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property *What)
 {
+    _checkTransaction();
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
 }
@@ -1221,6 +1232,8 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 
 void Document::recomputeFeature(DocumentObject* Feat)
 {
+    _checkTransaction();
+
      // delete recompute log
     for( std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
         delete *it;
@@ -1287,6 +1300,8 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 {
+    _checkTransaction();
+
     d->objectMap[pObjectName] = pcObject;
     d->objectArray.push_back(pcObject);
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
@@ -1308,6 +1323,8 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 /// Remove an object out of the document
 void Document::remObject(const char* sName)
 {
+    _checkTransaction();
+
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(sName);
 
     // name not found?
@@ -1365,6 +1382,8 @@ void Document::remObject(const char* sName)
 /// Remove an object out of the document (internal)
 void Document::_remObject(DocumentObject* pcObject)
 {
+    _checkTransaction();
+
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
 
     if (d->activeObject == pcObject)

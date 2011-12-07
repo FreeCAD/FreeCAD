@@ -244,6 +244,7 @@ class DocumentRecomputeCases(unittest.TestCase):
 class UndoRedoCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument("UndoTest")
+    self.Doc.UndoMode = 0
     self.Doc.addObject("App::FeatureTest","Base")
     self.Doc.addObject("App::FeatureTest","Del")
     self.Doc.getObject("Del").Integer  = 2
