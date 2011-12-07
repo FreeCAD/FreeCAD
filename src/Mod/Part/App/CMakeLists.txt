@@ -227,6 +227,8 @@ SET(Part_SRCS
     TopoShape.h
     edgecluster.cpp
     edgecluster.h
+    modelRefine.cpp
+    modelRefine.h
 )
 
 SET(Part_Scripts

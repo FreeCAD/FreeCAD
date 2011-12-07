@@ -127,6 +127,7 @@ libPart_la_SOURCES=\
 		Geometry.cpp \
 		ImportIges.cpp \
 		ImportStep.cpp \
+		modelRefine.cpp \
 		CustomFeature.cpp \
 		PartFeature.cpp \
 		PartFeatureReference.cpp \
@@ -179,6 +180,7 @@ include_HEADERS=\
 		Geometry.h \
 		ImportIges.h \
 		ImportStep.h \
+		modelRefine.h \
 		PartFeature.h \
 		PartFeatureReference.h \
 		CustomFeature.h \

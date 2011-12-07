@@ -219,6 +219,7 @@ public:
     void sewShape();
     bool fix(double, double, double);
     bool removeInternalWires(double);
+    void removeSplitter();
     //@}
 
     /** @name Getting basic geometric entities */

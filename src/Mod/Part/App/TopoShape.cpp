@@ -44,6 +44,7 @@
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_NurbsConvert.hxx>
@@ -97,6 +98,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Iterator.hxx>
+# include <TopoDS_Solid.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
@@ -152,6 +154,7 @@
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeVertexPy.h"
 #include "ProgressIndicator.h"
+#include "modelRefine.h"
 
 using namespace Part;
 
@@ -1715,6 +1718,36 @@ bool TopoShape::removeInternalWires(double minArea)
     bool ok = fix.Perform() ? true : false;
     this->_Shape = fix.GetResult();
     return ok;
+}
+
+void TopoShape::removeSplitter()
+{
+    if (_Shape.IsNull())
+        Standard_Failure::Raise("Cannot remove splitter from empty shape");
+
+    if (_Shape.ShapeType() == TopAbs_SOLID) {
+        TopoDS_Solid& solid = TopoDS::Solid(_Shape);
+        ModelRefine::FaceUniter uniter(solid);
+        if (uniter.process()) {
+            TopoDS_Solid solidMod;
+            if (!uniter.getSolid(solidMod))
+                Standard_Failure::Raise("Getting solid failed");
+            _Shape = solidMod;
+        }
+        else {
+            Standard_Failure::Raise("Removing splitter failed");
+        }
+    }
+    else if (_Shape.ShapeType() == TopAbs_SHELL) {
+        TopoDS_Shell& shell = TopoDS::Shell(_Shape);
+        ModelRefine::FaceUniter uniter(shell);
+        if (uniter.process()) {
+            _Shape = uniter.getShell();
+        }
+        else {
+            Standard_Failure::Raise("Removing splitter failed");
+        }
+    }
 }
 
 namespace Part {

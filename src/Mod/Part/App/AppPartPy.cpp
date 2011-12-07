@@ -1237,17 +1237,6 @@ static std::list<TopoDS_Edge> sort_Edges(double tol3d, const std::vector<TopoDS_
         if ((pEI == edge_points.end()) || (last.SquareDistance(first) <= tol3d)) {
             // no adjacent edge found or polyline is closed
             return sorted;
-            /*
-            rclBorders.push_back(std::vector<TopoDS_Edge>(sorted.begin(), sorted.end()));
-            sorted.clear();
-
-            if (!edge_points.empty()) {
-                // new wire
-                first = edge_points.front()->v1;
-                last  = edge_points.front()->v2;
-                sorted.push_back(edge_points.front().edge);
-                edge_points.erase(edge_points.begin());
-            }*/
         }
     }
 

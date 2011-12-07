@@ -1244,6 +1244,23 @@ PyObject*  TopoShapePy::isInside(PyObject *args)
     }
 }
 
+PyObject* TopoShapePy::removeSplitter(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    try {
+        // Remove redundant splitter
+        this->getTopoShapePtr()->removeSplitter();
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return NULL;
+    }
+}
+
 #if 0 // see ComplexGeoDataPy::Matrix which does the same
 Py::Object TopoShapePy::getLocation(void) const
 {
