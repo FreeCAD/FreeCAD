@@ -8,7 +8,14 @@ from PyQt4 import QtGui,QtCore
 App=FreeCAD
 Gui=FreeCADGui
 
-def proceed():    
+def proceed():
+    try:
+        compute()
+    except:
+        hide()
+        QtGui.qApp.restoreOverrideCursor()
+
+def compute():    
     QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
    
     if FreeCAD.ActiveDocument==None:
@@ -47,32 +54,32 @@ def proceed():
 
     #Base circle
     baseCircle=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","BaseCircle")
-    Draft.Circle(baseCircle)
-    Draft.ViewProviderCircle(baseCircle.ViewObject)
+    Draft._Circle(baseCircle)
+    Draft._ViewProviderDraft(baseCircle.ViewObject)
     baseCircle.Radius = db/2
     baseCircle.FirstAngle=0.0
     baseCircle.LastAngle=0.0
     
     #Root circle
     rootCircle=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","RootCircle")
-    Draft.Circle(rootCircle)
-    Draft.ViewProviderCircle(rootCircle.ViewObject)
+    Draft._Circle(rootCircle)
+    Draft._ViewProviderDraft(rootCircle.ViewObject)
     rootCircle.Radius = df/2
     rootCircle.FirstAngle=0.0
     rootCircle.LastAngle=0.0
 
     #Addendum circle
     addendumCircle=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","AddendumCircle")
-    Draft.Circle(addendumCircle)
-    Draft.ViewProviderCircle(addendumCircle.ViewObject)
+    Draft._Circle(addendumCircle)
+    Draft._ViewProviderDraft(addendumCircle.ViewObject)
     addendumCircle.Radius = da/2
     addendumCircle.FirstAngle=0.0
     addendumCircle.LastAngle=0.0
 
     #Pitch circle
     pitchCircle=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PitchCircle")
-    Draft.Circle(pitchCircle)
-    Draft.ViewProviderCircle(pitchCircle.ViewObject)
+    Draft._Circle(pitchCircle)
+    Draft._ViewProviderDraft(pitchCircle.ViewObject)
     pitchCircle.Radius = d/2
     pitchCircle.FirstAngle=0.0
     pitchCircle.LastAngle=0.0
@@ -160,8 +167,8 @@ def proceed():
 #************ Forming teeth
 
     cutCircle=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CutCircle")
-    Draft.Circle(cutCircle)
-    Draft.ViewProviderCircle(cutCircle.ViewObject)
+    Draft._Circle(cutCircle)
+    Draft._ViewProviderDraft(cutCircle.ViewObject)
     cutCircle.Radius = da    # da because must be bigger than addendumCircle and bigger than whole construction da is right for this but it not has to be.       
     cutCircle.FirstAngle=0.0
     cutCircle.LastAngle=0.0
