@@ -101,9 +101,16 @@ Base::Placement Part2DObject::positionBySupport(const TopoDS_Face &face, const B
     gp_Dir dir = Normal.Direction();
     gp_Ax3 SketchPos;
 
-    double cosNX = dir.Dot(gp::DX());
-    double cosNY = dir.Dot(gp::DY());
-    double cosNZ = dir.Dot(gp::DZ());
+    Base::Vector3d dX,dY,dZ;
+    Place.getRotation().multVec(Base::Vector3d(1,0,0),dX);
+    Place.getRotation().multVec(Base::Vector3d(0,1,0),dY);
+    Place.getRotation().multVec(Base::Vector3d(0,0,1),dZ);
+    gp_Dir dirX(dX.x, dX.y, dX.z);
+    gp_Dir dirY(dY.x, dY.y, dY.z);
+    gp_Dir dirZ(dZ.x, dZ.y, dZ.z);
+    double cosNX = dir.Dot(dirX);
+    double cosNY = dir.Dot(dirY);
+    double cosNZ = dir.Dot(dirZ);
     std::vector<double> cosXYZ;
     cosXYZ.push_back(fabs(cosNX));
     cosXYZ.push_back(fabs(cosNY));
@@ -114,20 +121,20 @@ Base::Placement Part2DObject::positionBySupport(const TopoDS_Face &face, const B
     // +X/-X
     if (pos == 0) {
         if (cosNX > 0)
-            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,1,0));
+            SketchPos = gp_Ax3(SketchBasePoint, dir, dirY);
         else
-            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(0,-1,0));
+            SketchPos = gp_Ax3(SketchBasePoint, dir, -dirY);
     }
     // +Y/-Y
     else if (pos == 1) {
         if (cosNY > 0)
-            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(-1,0,0));
+            SketchPos = gp_Ax3(SketchBasePoint, dir, -dirX);
         else
-            SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
+            SketchPos = gp_Ax3(SketchBasePoint, dir, dirX);
     }
     // +Z/-Z
     else {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, gp_Dir(1,0,0));
+        SketchPos = gp_Ax3(SketchBasePoint, dir, dirX);
     }
 
     gp_Trsf Trf;
