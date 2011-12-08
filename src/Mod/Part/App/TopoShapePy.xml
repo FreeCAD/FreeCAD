@@ -283,7 +283,7 @@ The parameter is a list of shapes.</UserDocu>
         <UserDocu>Checks whether a point is inside or outside a given shape</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="removeSplitter" Const="true">
+    <Methode Name="removeSplitter">
       <Documentation>
         <UserDocu>Removes redundant edges from the B-REP model</UserDocu>
       </Documentation>
