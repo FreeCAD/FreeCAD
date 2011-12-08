@@ -4447,35 +4447,32 @@ class Draft2Sketch():
             return False
         
     def Activated(self):
-        for obj in Draft.getSelection():
-            nobj = None
-            name = obj.Name
-            trans = False
+        sel = Draft.getSelection()
+        allSketches = True
+        allDraft = True
+        for obj in sel:
             if obj.isDerivedFrom("Sketcher::SketchObject"):
-                FreeCAD.ActiveDocument.openTransaction("Convert to Draft")
-                trans = True
-                wires = []
-                for w in obj.Shape.Wires:
-                    if fcgeo.hasCurves(w):
-                        nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-                        nobj.Shape = w
-                    else:
-                        nobj = Draft.makeWire(w)
-                    wires.append(nobj)
-                if len(wires) > 1:
-                    nobj = Draft.makeBlock(wires)
+                allDraft = False
             elif obj.isDerivedFrom("Part::Part2DObjectPython"):
-                FreeCAD.ActiveDocument.openTransaction("Convert to Sketch")
-                trans = True
-                nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",name)
-                for edge in obj.Shape.Edges:
-                    nobj.addGeometry(edge.Curve)
-            if nobj:
-                Draft.formatObject(nobj,obj)
-                FreeCAD.ActiveDocument.removeObject(name)
-                FreeCAD.ActiveDocument.recompute()
-            if trans:
-                FreeCAD.ActiveDocument.commitTransaction()
+                allSketches = False
+        if not sel:
+            return
+        elif allDraft:
+            FreeCAD.ActiveDocument.openTransaction("Convert to Sketch")
+            Draft.makeSketch(sel,autoconstraints=True)
+            FreeCAD.ActiveDocument.commitTransaction()
+        elif allSketches:
+            FreeCAD.ActiveDocument.openTransaction("Convert to Draft")
+            Draft.draftify(sel,makeblock=True)
+            FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            FreeCAD.ActiveDocument.openTransaction("Convert")
+            for obj in sel:
+                if obj.isDerivedFrom("Sketcher::SketchObject"):
+                    Draft.makeSketch(sel,autoconstraints=True)
+                elif obj.isDerivedFrom("Part::Part2DObjectPython"):
+                    Draft.draftify(sel,makeblock=True)
+            FreeCAD.ActiveDocument.commitTransaction()
 
             
 #---------------------------------------------------------------------------

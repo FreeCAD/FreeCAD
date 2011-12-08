@@ -145,6 +145,8 @@ def getRealName(name):
 
 def getType(obj):
     "getType(object): returns the Draft type of the given object"
+    if isinstance(obj,Part.Shape):
+        return "Shape"
     if "Proxy" in obj.PropertiesList:
         if hasattr(obj.Proxy,"Type"):
             return obj.Proxy.Type
@@ -876,33 +878,35 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         select(obj)
     return newobj
 
-def draftify(objectslist):
-    '''draftify(objectslist): turns each object of the given list
+def draftify(objectslist,makeblock=False):
+    '''draftify(objectslist,[makeblock]): turns each object of the given list
     (objectslist can also be a single object) into a Draft parametric
-    wire'''
-    if not isinstance(objectslist,list): objectslist = [objectslist]
+    wire. If makeblock is True, multiple objects will be grouped in a block'''
+    if not isinstance(objectslist,list):
+        objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
         if obj.isDerivedFrom('Part::Feature'):
             for w in obj.Shape.Wires:
-                verts = []
-                edges = fcgeo.sortEdges(w.Edges)
-                for e in edges:
-                    verts.append(e.Vertexes[0].Point)
-                if w.isClosed():
-                    verts.append(edges[-1].Vertexes[-1].Point)
-                newobj = makeWire(verts)
-                if obj.Shape.Faces:
-                    newobj.Closed = True
-                    newobj.ViewObject.DisplayMode = "Flat Lines"
+                if fcgeo.hasCurves(w):
+                    nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                    nobj.Shape = w
                 else:
-                    newobj.ViewObject.DisplayMode = "Wireframe"
-                if obj.Shape.Wires[0].isClosed:
-                    newobj.Closed = True
-                newobjlist.append(newobj)
+                    nobj = makeWire(w)
+                if obj.Shape.Faces:
+                    nobj.ViewObject.DisplayMode = "Flat Lines"
+                else:
+                    nobj.ViewObject.DisplayMode = "Wireframe"
+                newobjlist.append(nobj)
+                formatObject(nobj,obj)
             FreeCAD.ActiveDocument.removeObject(obj.Name)
-    if len(newobjlist) == 1: return newobjlist[0]
-    return newobjlist
+    FreeCAD.ActiveDocument.recompute()
+    if makeblock:
+        return makeBlock(newobjlist)
+    else:
+        if len(newobjlist) == 1:
+            return newobjlist[0]
+        return newobjlist
 
 def getrgb(color):
     "getRGB(color): returns a rgb value #000000 from a freecad color"
@@ -1140,6 +1144,104 @@ def makeShape2DView(baseobj,projectionVector=None):
         obj.Projection = projectionVector
     select(obj)
     return obj
+
+def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
+    '''makeSketch(objectslist,[autoconstraints],[addTo],[name]): makes a Sketch
+    objectslist with the given Draft objects. If autoconstraints is True,
+    constraints will be automatically added to wire nodes, rectangles
+    and circles. If addTo is an existing sketch, geometry will be added to it instead of
+    creating a new one.'''
+
+    from Sketcher import Constraint
+
+    StartPoint = 1
+    EndPoint = 2
+    MiddlePoint = 3
+    
+    if not isinstance(objectslist,list):
+        objectslist = [objectslist]
+    if addTo:
+        nobj = addTo
+    else:
+        nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",name)
+    for obj in objectslist:
+        ok = False
+        tp = getType(obj)
+        if tp == "BSpline":
+            pass
+        elif tp == "Circle":
+            if obj.FirstAngle == obj.LastAngle:
+                nobj.addGeometry(obj.Shape.Edges[0].Curve)
+            else:
+                nobj.addGeometry(Part.ArcOfCircle(obj.Shape.Edges[0].Curve,math.radians(obj.FirstAngle),math.radians(obj.LastAngle)))
+            # TODO add Radius constraits
+            ok = True
+        elif tp == "Rectangle":
+            for edge in obj.Shape.Edges:
+                nobj.addGeometry(edge.Curve)
+            if autoconstraints:
+                last = nobj.GeometryCount - 1
+                segs = [last-3,last-2,last-1,last]
+                if obj.Placement.Rotation.Q == (0,0,0,1):
+                    nobj.addConstraint(Constraint("Coincident",last-3,EndPoint,last-2,StartPoint))
+                    nobj.addConstraint(Constraint("Coincident",last-2,EndPoint,last-1,StartPoint))
+                    nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,last,StartPoint))
+                    nobj.addConstraint(Constraint("Coincident",last,EndPoint,last-3,StartPoint))
+                nobj.addConstraint(Constraint("Horizontal",last-3))
+                nobj.addConstraint(Constraint("Vertical",last-2))
+                nobj.addConstraint(Constraint("Horizontal",last-1))
+                nobj.addConstraint(Constraint("Vertical",last))
+            ok = True
+        elif tp in ["Wire","Polygon"]:
+            closed = False
+            if tp == "Polygon":
+                closed = True
+            elif hasattr(obj,"Closed"):
+                closed = obj.Closed
+            for edge in obj.Shape.Edges:
+                nobj.addGeometry(edge.Curve)
+            if autoconstraints:
+                last = nobj.GeometryCount
+                segs = range(last-len(obj.Shape.Edges),last-1)
+                for seg in segs:
+                    nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                    if fcgeo.isAligned(nobj.Geometry[seg],"x"):
+                        nobj.addConstraint(Constraint("Vertical",seg))
+                    elif fcgeo.isAligned(nobj.Geometry[seg],"y"):
+                        nobj.addConstraint(Constraint("Horizontal",seg))
+                if closed:
+                    nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+            ok = True
+        else:
+            if fcgeo.hasOnlyWires(obj.Shape):
+                for w in obj.Shape.Wires:
+                    for edge in w.Edges:
+                        nobj.addGeometry(edge.Curve)
+                    if autoconstraints:
+                        last = nobj.GeometryCount
+                        segs = range(last-len(w.Edges),last-1)
+                        for seg in segs:
+                            nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                            if fcgeo.isAligned(nobj.Geometry[seg],"x"):
+                                nobj.addConstraint(Constraint("Vertical",seg))
+                            elif fcgeo.isAligned(nobj.Geometry[seg],"y"):
+                                nobj.addConstraint(Constraint("Horizontal",seg))
+                        if w.isClosed:
+                            nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+            else:
+                for edge in obj.Shape.Edges:
+                    nobj.addGeometry(edge.Curve)
+                    if autoconstraints:
+                        last = nobj.GeometryCount - 1
+                        if fcgeo.isAligned(nobj.Geometry[last],"x"):
+                            nobj.addConstraint(Constraint("Vertical",last))
+                        elif fcgeo.isAligned(nobj.Geometry[last],"y"):
+                            nobj.addConstraint(Constraint("Horizontal",last))
+            ok = True
+        if ok:
+            FreeCAD.ActiveDocument.removeObject(obj.Name)
+    FreeCAD.ActiveDocument.recompute()
+    return nobj
 			
 #---------------------------------------------------------------------------
 # Python Features definitions

@@ -88,6 +88,11 @@ If color mapping is choosed, you must choose a color mapping file containing a t
             <string>Create parametric objects</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Create Sketches</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

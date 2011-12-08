@@ -121,7 +121,44 @@ def hasCurves(shape):
                 if not isinstance(e.Curve,Part.Line):
                         return True
         return False
-	
+
+def isAligned(edge,axis="x"):
+        "checks if the given edge or line is aligned to the given axis (x, y or z)"
+        if axis == "x":
+                if isinstance(edge,Part.Edge):
+                        if len(edge.Vertexes) == 2:
+                                if edge.Vertexes[0].X == edge.Vertexes[-1].X:
+                                        return True
+                elif isinstance(edge,Part.Line):
+                        if edge.StartPoint.x == edge.EndPoint.x:
+                                        return True
+        elif axis == "y":
+                if isinstance(edge,Part.Edge):
+                        if len(edge.Vertexes) == 2:
+                                if edge.Vertexes[0].Y == edge.Vertexes[-1].Y:
+                                        return True
+                elif isinstance(edge,Part.Line):
+                        if edge.StartPoint.y == edge.EndPoint.y:
+                                        return True
+        elif axis == "z":
+                if isinstance(edge,Part.Edge):
+                        if len(edge.Vertexes) == 2:
+                                if edge.Vertexes[0].Z == edge.Vertexes[-1].Z:
+                                        return True
+                elif isinstance(edge,Part.Line):
+                        if edge.StartPoint.z == edge.EndPoint.z:
+                                        return True
+        return False
+
+def hasOnlyWires(shape):
+        "returns True if all the edges are inside a wire"
+        ne = 0
+        for w in shape.Wires:
+                ne += len(w.Edges)
+        if ne == len(shape.Edges):
+                return True
+        return False
+                        
 # edge functions *****************************************************************
 
 def findEdge(anEdge,aList):

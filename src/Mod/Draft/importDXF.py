@@ -282,7 +282,7 @@ def drawLine(line,shapemode=False):
         v2=vec(line.points[1])
         if not fcvec.equals(v1,v2):
             try:
-                if (fmt.paramstyle == 4) and (not fmt.makeBlocks) and (not shapemode):
+                if (fmt.paramstyle >= 4) and (not fmt.makeBlocks) and (not shapemode):
                     return Draft.makeWire([v1,v2])
                 else:
                     return Part.Line(v1,v2).toShape()
@@ -331,7 +331,7 @@ def drawPolyline(polyline,shapemode=False):
                     except: warn(polyline)
         if edges:
             try:
-                if (fmt.paramstyle == 4) and (not curves) and (not fmt.makeBlocks) and (not shapemode):
+                if (fmt.paramstyle >= 4) and (not curves) and (not fmt.makeBlocks) and (not shapemode):
                     ob = Draft.makeWire(verts)
                     ob.Closed = polyline.closed
                     return ob
@@ -354,7 +354,7 @@ def drawArc(arc,shapemode=False):
     circle.Center=v
     circle.Radius=round(arc.radius,prec())
     try:
-        if (fmt.paramstyle == 4) and (not fmt.makeBlocks) and (not shapemode):
+        if (fmt.paramstyle >= 4) and (not fmt.makeBlocks) and (not shapemode):
             pl = FreeCAD.Placement()
             pl.move(v)
             return Draft.makeCircle(arc.radius,pl,False,firstangle,lastangle)
@@ -371,7 +371,7 @@ def drawCircle(circle,shapemode=False):
     curve.Radius = round(circle.radius,prec())
     curve.Center = v
     try:
-        if (fmt.paramstyle == 4) and (not fmt.makeBlocks) and (not shapemode):
+        if (fmt.paramstyle >= 4) and (not fmt.makeBlocks) and (not shapemode):
             pl = FreeCAD.Placement()
             pl.move(v)
             return Draft.makeCircle(circle.radius,pl)
@@ -659,6 +659,7 @@ def processdxf(document,filename):
     badobjects = []
     global layerBlocks
     layerBlocks = {}
+    sketch = None
     
     # getting config parameters
     
@@ -674,7 +675,16 @@ def processdxf(document,filename):
         if fmt.dxflayout or (not rawValue(line,67)):
             shape = drawLine(line)
             if shape:
-                if fmt.join:
+                if fmt.paramstyle == 5:
+                    if fmt.makeBlocks or fmt.join:
+                        if sketch:
+                            shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)
+                        else:
+                            shape = Draft.makeSketch(shape,autoconstraints=True)
+                            sketch = shape
+                    else:
+                        shape = Draft.makeSketch(shape,autoconstraints=True)
+                elif fmt.join:
                     if isinstance(shape,Part.Shape):
                         shapes.append(shape)
                     else:                                        
@@ -683,7 +693,7 @@ def processdxf(document,filename):
                     if isinstance(shape,Part.Shape):
                         addToBlock(shape,line.layer)
                     else:                                        
-                        addToBlock(shape.Shape,line.layer)       
+                        addToBlock(shape.Shape,line.layer)
                 else:
                     newob = addObject(shape,"Line",line.layer)
                     if gui: fmt.formatObject(newob,line)
@@ -707,7 +717,20 @@ def processdxf(document,filename):
         if fmt.dxflayout or (not rawValue(polyline,67)):
             shape = drawPolyline(polyline)
             if shape:
-                if fmt.join:
+                if fmt.paramstyle == 5:
+                    if isinstance(shape,Part.Shape):
+                        t = FreeCAD.ActiveDocument.addObject("Part::Feature","Shape")
+                        t.Shape = shape
+                        shape = t
+                    if fmt.makeBlocks or fmt.join:
+                        if sketch:
+                            shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)
+                        else:
+                            shape = Draft.makeSketch(shape,autoconstraints=True)
+                            sketch = shape
+                    else:
+                        shape = Draft.makeSketch(shape,autoconstraints=True)
+                elif fmt.join:
                     if isinstance(shape,Part.Shape):
                         shapes.append(shape)
                     else:
@@ -729,7 +752,16 @@ def processdxf(document,filename):
         if fmt.dxflayout or (not rawValue(arc,67)):
             shape = drawArc(arc)
             if shape:
-                if fmt.join:
+                if fmt.paramstyle == 5:
+                    if fmt.makeBlocks or fmt.join:
+                        if sketch:
+                            shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)
+                        else:
+                            shape = Draft.makeSketch(shape,autoconstraints=True)
+                            sketch = shape
+                    else:
+                        shape = Draft.makeSketch(shape,autoconstraints=True)
+                elif fmt.join:
                     if isinstance(shape,Part.Shape):
                         shapes.append(shape)
                     else:
@@ -762,7 +794,16 @@ def processdxf(document,filename):
         if fmt.dxflayout or (not rawValue(circle,67)):
             shape = drawCircle(circle)
             if shape:
-                if fmt.makeBlocks:
+                if fmt.paramstyle == 5:
+                    if fmt.makeBlocks or fmt.join:
+                        if sketch:
+                            shape = Draft.makeSketch(shape,autoconstraints=True,addTo=sketch)
+                        else:
+                            shape = Draft.makeSketch(shape,autoconstraints=True)
+                            sketch = shape
+                    else:
+                        shape = Draft.makeSketch(shape,autoconstraints=True)
+                elif fmt.makeBlocks:
                     if isinstance(shape,Part.Shape):
                         addToBlock(shape,circle.layer)
                     else:                                        
