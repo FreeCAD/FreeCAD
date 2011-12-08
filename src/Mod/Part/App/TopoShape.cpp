@@ -1748,6 +1748,9 @@ void TopoShape::removeSplitter()
             Standard_Failure::Raise("Removing splitter failed");
         }
     }
+    else {
+        Standard_Failure::Raise("Either shell or solid expected");
+    }
 }
 
 namespace Part {
