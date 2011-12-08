@@ -49,25 +49,21 @@ class _CommandSite:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        transmode = True
-        if not sel:
-            transmode = False
-        for obj in sel:
-            if not (Draft.getType(obj) in ["Cell","Building","Floor"]):
-                transmode = False
-        if transmode:
-            FreeCAD.ActiveDocument.openTransaction("Type conversion")
-            for obj in sel:
+        ok = False
+        if (len(sel) == 1):
+            if Draft.getType(sel[0]) in ["Cell","Building","Floor"]:
+                FreeCAD.ActiveDocument.openTransaction("Type conversion")
                 nobj = makeSite()
-                Commands.copyProperties(obj,nobj)
-                FreeCAD.ActiveDocument.removeObject(obj.Name)
-            FreeCAD.ActiveDocument.commitTransaction()
-        else:
+                Commands.copyProperties(sel[0],nobj)
+                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
+                FreeCAD.ActiveDocument.commitTransaction()
+                ok = True
+        if not ok:
             FreeCAD.ActiveDocument.openTransaction("Site")
             makeSite(sel)
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
+            FreeCAD.ActiveDocument.recompute()
+        
 class _Site(Cell._Cell):
     "The Site object"
     def __init__(self,obj):

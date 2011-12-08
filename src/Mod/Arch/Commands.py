@@ -223,7 +223,33 @@ def removeShape(objs,mark=True):
         else:
             if mark:
                 obj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
-        
+
+def mergeCells(objectslist):
+    '''mergeCells(objectslist): merges the objects in the given list
+    into one. All objects must be of the same type and based on the Cell
+    object (cells, floors, buildings, or sites).'''
+    if not objectslist:
+        return None
+    if not isinstance(objectslist,list):
+        return None
+    if len(objectslist) < 2:
+        return None
+    typ = Draft.getType(objectslist[0])
+    if not(typ in ["Cell","Floor","Building","Site"]):
+               return None
+    for o in objectslist:
+        if Draft.getType(o) != typ:
+            return None
+    base = objectslist.pop(0)
+    for o in objectslist:
+        l = base.Components
+        for c in o.Components:
+            if not c in l:
+                l.append(c)
+        base.Components = l
+        FreeCAD.ActiveDocument.removeObject(o.Name)
+    FreeCAD.ActiveDocument.recompute()
+    return base
     
 # command definitions ###############################################
                        
@@ -242,11 +268,11 @@ class _CommandAdd:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        host = sel.pop()
         FreeCAD.ActiveDocument.openTransaction("Grouping")
-        addComponents(sel,host)
+        if not mergeCells(sel):
+            host = sel.pop()
+            addComponents(sel,host)
         FreeCAD.ActiveDocument.commitTransaction()
-
         
 class _CommandRemove:
     "the Arch Add command definition"

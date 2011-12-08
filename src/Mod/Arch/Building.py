@@ -51,25 +51,21 @@ class _CommandBuilding:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        transmode = True
-        if not sel:
-            transmode = False
-        for obj in sel:
-            if not (Draft.getType(obj) in ["Cell","Site","Floor"]):
-                transmode = False
-        if transmode:
-            FreeCAD.ActiveDocument.openTransaction("Type conversion")
-            for obj in sel:
+        ok = False
+        if (len(sel) == 1):
+            if Draft.getType(sel[0]) in ["Cell","Site","Floor"]:
+                FreeCAD.ActiveDocument.openTransaction("Type conversion")
                 nobj = makeBuilding()
-                Commands.copyProperties(obj,nobj)
-                FreeCAD.ActiveDocument.removeObject(obj.Name)
-            FreeCAD.ActiveDocument.commitTransaction()
-        else:
+                Commands.copyProperties(sel[0],nobj)
+                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
+                FreeCAD.ActiveDocument.commitTransaction()
+                ok = True
+        if not ok:
             FreeCAD.ActiveDocument.openTransaction("Building")
             makeBuilding(sel)
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
+            FreeCAD.ActiveDocument.recompute()
+        
 class _Building(Cell._Cell):
     "The Building object"
     def __init__(self,obj):

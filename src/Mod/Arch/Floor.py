@@ -52,24 +52,20 @@ class _CommandFloor:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        transmode = True
-        if not sel:
-            transmode = False
-        for obj in sel:
-            if not (Draft.getType(obj) in ["Cell","Site","Building"]):
-                transmode = False
-        if transmode:
-            FreeCAD.ActiveDocument.openTransaction("Type conversion")
-            for obj in sel:
+        ok = False
+        if (len(sel) == 1):
+            if Draft.getType(sel[0]) in ["Cell","Site","Building"]:
+                FreeCAD.ActiveDocument.openTransaction("Type conversion")
                 nobj = makeFloor()
-                Commands.copyProperties(obj,nobj)
-                FreeCAD.ActiveDocument.removeObject(obj.Name)
-            FreeCAD.ActiveDocument.commitTransaction()
-        else:
+                Commands.copyProperties(sel[0],nobj)
+                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
+                FreeCAD.ActiveDocument.commitTransaction()
+                ok = True
+        if not ok:
             FreeCAD.ActiveDocument.openTransaction("Floor")
             makeFloor(sel)
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.recompute()
         
 class _Floor(Cell._Cell):
     "The Cell object"

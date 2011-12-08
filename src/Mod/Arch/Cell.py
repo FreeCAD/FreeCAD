@@ -53,24 +53,20 @@ class _CommandCell:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        transmode = True
-        if not sel:
-            transmode = False
-        for obj in sel:
-            if not (Draft.getType(obj) in ["Floor","Site","Building"]):
-                transmode = False
-        if transmode:
-            FreeCAD.ActiveDocument.openTransaction("Type conversion")
-            for obj in sel:
+        ok = False
+        if (len(sel) == 1):
+            if Draft.getType(sel[0]) in ["Floor","Site","Building"]:
+                FreeCAD.ActiveDocument.openTransaction("Type conversion")
                 nobj = makeCell()
-                Commands.copyProperties(obj,nobj)
-                FreeCAD.ActiveDocument.removeObject(obj.Name)
-            FreeCAD.ActiveDocument.commitTransaction()
-        else:
+                Commands.copyProperties(sel[0],nobj)
+                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
+                FreeCAD.ActiveDocument.commitTransaction()
+                ok = True
+        if not ok:
             FreeCAD.ActiveDocument.openTransaction("Cell")
             makeCell(sel)
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.recompute()
 
 class _Cell(Component.Component):
     "The Cell object"
