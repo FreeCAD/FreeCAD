@@ -82,6 +82,9 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
             mkFillet.Add(radius, radius, edge);
         }
 
+        if (!mkFillet.IsDone())
+            return new App::DocumentObjectExecReturn("Failed to create fillet");
+
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
