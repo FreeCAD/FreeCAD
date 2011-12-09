@@ -1216,7 +1216,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
             if fcgeo.hasOnlyWires(obj.Shape):
                 for w in obj.Shape.Wires:
                     for edge in w.Edges:
-                        nobj.addGeometry(edge.Curve)
+                        nobj.addGeometry(fcgeo.geom(edge))
                     if autoconstraints:
                         last = nobj.GeometryCount
                         segs = range(last-len(w.Edges),last-1)
@@ -1230,7 +1230,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                             nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             else:
                 for edge in obj.Shape.Edges:
-                    nobj.addGeometry(edge.Curve)
+                    nobj.addGeometry(fcgeo.geom(edge))
                     if autoconstraints:
                         last = nobj.GeometryCount - 1
                         if fcgeo.isAligned(nobj.Geometry[last],"x"):

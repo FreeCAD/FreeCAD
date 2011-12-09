@@ -355,6 +355,22 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 	else :
 		print "fcgeo: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")"
 
+def geom(edge):
+        "returns a Line, ArcOfCircle or Circle geom from the given edge"
+        if isinstance(edge.Curve,Part.Line):
+                return edge.Curve
+        elif isinstance(edge.Curve,Part.Circle):
+                if len(edge.Vertexes) == 1:
+                        return edge.Curve
+                else:
+                        v1 = edge.Vertexes[0].Point
+                        v2 = edge.Vertexes[-1].Point
+                        c = edge.Curve.Center
+                        a1 = -fcvec.angle(v1.sub(c))
+                        a2 = -fcvec.angle(v2.sub(c))
+                        return Part.ArcOfCircle(edge.Curve,a1,a2)
+        else:
+                return edge.Curve
 
 def mirror (point, edge):
 	"finds mirror point relative to an edge"
