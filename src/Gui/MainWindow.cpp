@@ -104,6 +104,8 @@
 #include "ViewProviderExtern.h"
 
 #include "SpaceballEvent.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
 
 #if defined(Q_OS_WIN32)
 #define slots
@@ -595,6 +597,27 @@ bool MainWindow::event(QEvent *e)
         }
         else
             return true;
+    }
+    else if (e->type() == Spaceball::MotionEvent::MotionEventType) {
+        Spaceball::MotionEvent *motionEvent = dynamic_cast<Spaceball::MotionEvent *>(e);
+        if (!motionEvent)
+            return true;
+        motionEvent->setHandled(true);
+        Gui::Document *doc = Application::Instance->activeDocument();
+        if (!doc)
+            return true;
+        View3DInventor *temp = dynamic_cast<View3DInventor *>(doc->getActiveView());
+        if (!temp)
+            return true;
+        View3DInventorViewer *view = temp->getViewer();
+        if (!view)
+            return true;
+        QWidget *viewWidget = view->getGLWidget();
+        if (viewWidget) {
+            Spaceball::MotionEvent anotherEvent(*motionEvent);
+            qApp->sendEvent(viewWidget, &anotherEvent);
+        }
+        return true;
     }
     return QMainWindow::event(e);
 }

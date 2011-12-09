@@ -28,10 +28,22 @@ namespace Spaceball
 {
     enum ButtonStateType {BUTTON_NONE = 0, BUTTON_PRESSED, BUTTON_RELEASED};
 
-    class MotionEvent : public QInputEvent
+    class EventBase : public QInputEvent
+    {
+    public:
+        bool isHandled(){return handled;}
+        void setHandled(bool sig){handled = sig;}
+
+    protected:
+        EventBase(QEvent::Type event);
+        bool handled;
+    };
+
+    class MotionEvent : public EventBase
     {
     public:
         MotionEvent();
+        MotionEvent(const MotionEvent& in);
         void translations(int &xTransOut, int &yTransOut, int &zTransOut);
         void setTranslations(const int &xTransIn, const int &yTransIn, const int &zTransIn);
         int translationX(){return xTrans;}
@@ -53,9 +65,10 @@ namespace Spaceball
         int xRot;
         int yRot;
         int zRot;
+        bool handled;
     };
 
-    class ButtonEvent : public QInputEvent
+    class ButtonEvent : public EventBase
     {
     public:
         ButtonEvent();
@@ -64,15 +77,12 @@ namespace Spaceball
         void setButtonStatus(const ButtonStateType &buttonStatusIn);
         int buttonNumber();
         void setButtonNumber(const int &buttonNumberIn);
-        bool isHandled(){return handled;}
-        void setHandled(bool in){handled = in;}
 
         static int ButtonEventType;
 
     private:
         ButtonStateType buttonState;
         int button;
-        bool handled;
     };
 }
 #endif // SPACEBALLEVENT_H

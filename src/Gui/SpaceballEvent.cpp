@@ -28,9 +28,25 @@ using namespace Spaceball;
 int MotionEvent::MotionEventType = -1;
 int ButtonEvent::ButtonEventType = -1;
 
-MotionEvent::MotionEvent() : QInputEvent(static_cast<QEvent::Type>(MotionEventType)),
+EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>(event)), handled(false)
+{
+
+}
+
+MotionEvent::MotionEvent() : EventBase(static_cast<QEvent::Type>(MotionEventType)),
     xTrans(0), yTrans(0), zTrans(0), xRot(0), yRot(0), zRot(0)
 {
+}
+
+MotionEvent::MotionEvent(const MotionEvent& in) : EventBase(static_cast<QEvent::Type>(MotionEventType))
+{
+    xTrans = in.xTrans;
+    yTrans = in.yTrans;
+    zTrans = in.zTrans;
+    xRot = in.xRot;
+    yRot = in.yRot;
+    zRot = in.zRot;
+    handled = in.handled;
 }
 
 void MotionEvent::translations(int &xTransOut, int &yTransOut, int &zTransOut)
@@ -62,12 +78,12 @@ void MotionEvent::setRotations(const int &xRotIn, const int &yRotIn, const int &
 }
 
 
-ButtonEvent::ButtonEvent() : QInputEvent(static_cast<QEvent::Type>(ButtonEventType)),
-    buttonState(BUTTON_NONE), button(0), handled(false)
+ButtonEvent::ButtonEvent() : EventBase(static_cast<QEvent::Type>(ButtonEventType)),
+    buttonState(BUTTON_NONE), button(0)
 {
 }
 
-ButtonEvent::ButtonEvent(const ButtonEvent& in) : QInputEvent(static_cast<QEvent::Type>(ButtonEventType))
+ButtonEvent::ButtonEvent(const ButtonEvent& in) : EventBase(static_cast<QEvent::Type>(ButtonEventType))
 {
     buttonState = in.buttonState;
     button = in.button;

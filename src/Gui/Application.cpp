@@ -1437,7 +1437,7 @@ public:
                 (int)event->type());
         }
         try {
-            if (event->type() == Spaceball::ButtonEvent::ButtonEventType)
+            if (event->type() == Spaceball::ButtonEvent::ButtonEventType || Spaceball::MotionEvent::MotionEventType)
                 return processSpaceballEvent(receiver, event);
             else
                 return QApplication::notify(receiver, event);

@@ -1059,6 +1059,8 @@ void View3DInventorViewer::processEvent(QEvent * event)
             return;
         }
 
+        motionEvent->setHandled(true);
+
         static float translationConstant(-.001f);
         float xTrans, yTrans, zTrans;
         xTrans = static_cast<float>(motionEvent->translationX());

@@ -80,15 +80,31 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 
 bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object, QEvent *event)
 {
-    Spaceball::ButtonEvent *ballEvent = dynamic_cast<Spaceball::ButtonEvent *>(event);
-    if (!ballEvent)
-        return true;
-    QApplication::notify(object, ballEvent);
-    if (!ballEvent->isHandled())
+    QApplication::notify(object, event);
+    if (event->type() == Spaceball::MotionEvent::MotionEventType)
     {
-        //make a new event and post to parent.
-        Spaceball::ButtonEvent *newEvent = new Spaceball::ButtonEvent(*ballEvent);
-        postEvent(object->parent(), newEvent);
+        Spaceball::MotionEvent *motionEvent = dynamic_cast<Spaceball::MotionEvent*>(event);
+        if (!motionEvent)
+            return true;
+        if (!motionEvent->isHandled())
+        {
+            //make a new event and post to parent.
+            Spaceball::MotionEvent *newEvent = new Spaceball::MotionEvent(*motionEvent);
+            postEvent(object->parent(), newEvent);
+        }
+    }
+
+    if (event->type() == Spaceball::ButtonEvent::ButtonEventType)
+    {
+        Spaceball::ButtonEvent *buttonEvent = dynamic_cast<Spaceball::ButtonEvent*>(event);
+        if (!buttonEvent)
+            return true;
+        if (!buttonEvent->isHandled())
+        {
+            //make a new event and post to parent.
+            Spaceball::ButtonEvent *newEvent = new Spaceball::ButtonEvent(*buttonEvent);
+            postEvent(object->parent(), newEvent);
+        }
     }
     return true;
 }
