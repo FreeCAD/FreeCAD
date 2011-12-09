@@ -44,6 +44,7 @@
 #include <BRepClass_FaceClassifier.hxx>
 
 #include <BRepTools.hxx>
+#include <BRep_Builder.hxx>
 #include "modelRefine.h"
 
 using namespace ModelRefine;
@@ -594,14 +595,33 @@ bool FaceUniter::process()
     if (facesToSew.size() > 0)
     {
         workShell = ModelRefine::removeFaces(workShell, facesToRemove);
+        TopExp_Explorer xp;
+        bool emptyShell = true;
+        for (xp.Init(workShell, TopAbs_FACE); xp.More(); xp.Next())
+        {
+            emptyShell = false;
+            break;
+        }
 
-        BRepBuilderAPI_Sewing sew;
-        sew.Add(workShell);
-        FaceVectorType::iterator sewIt;
-        for(sewIt = facesToSew.begin(); sewIt != facesToSew.end(); ++sewIt)
-            sew.Add(*sewIt);
-        sew.Perform();
-        workShell = TopoDS::Shell(sew.SewedShape());
+        if (!emptyShell || facesToSew.size() > 1)
+        {
+            BRepBuilderAPI_Sewing sew;
+            sew.Add(workShell);
+            FaceVectorType::iterator sewIt;
+            for(sewIt = facesToSew.begin(); sewIt != facesToSew.end(); ++sewIt)
+                sew.Add(*sewIt);
+            sew.Perform();
+            workShell = TopoDS::Shell(sew.SewedShape());
+        }
+        else
+        {
+            // workShell has no more faces and we add exactly one face
+            BRep_Builder builder;
+            builder.MakeShell(workShell);
+            FaceVectorType::iterator sewIt;
+            for(sewIt = facesToSew.begin(); sewIt != facesToSew.end(); ++sewIt)
+                builder.Add(workShell, *sewIt);
+        }
 
         BRepLib_FuseEdges edgeFuse(workShell, true);
         workShell = TopoDS::Shell(edgeFuse.Shape());
