@@ -32,6 +32,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS.hxx>
 #include <TopExp_Explorer.hxx>
+#include <ShapeAnalysis_Edge.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepLib_MakeWire.hxx>
 #include <BRepLib_FuseEdges.hxx>
@@ -39,6 +40,10 @@
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <ShapeBuild_ReShape.hxx>
+#include <ShapeFix_Face.hxx>
+#include <BRepClass_FaceClassifier.hxx>
+
+#include <BRepTools.hxx>
 #include "modelRefine.h"
 
 using namespace ModelRefine;
@@ -51,7 +56,6 @@ struct EdgePoints {
     gp_Pnt v1, v2;
     TopoDS_Edge edge;
 };
-
 static std::list<TopoDS_Edge> sort_Edges(double tol3d, const std::vector<TopoDS_Edge>& edges)
 {
     tol3d = tol3d * tol3d;
@@ -119,14 +123,14 @@ static std::list<TopoDS_Edge> sort_Edges(double tol3d, const std::vector<TopoDS_
 //end stolen freecad.
 
 
-void ModelRefine::getFaceEdges(TopoDS_Shape face, std::vector<TopoDS_Edge> &edges)
+void ModelRefine::getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges)
 {
     TopExp_Explorer it;
     for (it.Init(face, TopAbs_EDGE); it.More(); it.Next())
         edges.push_back(TopoDS::Edge(it.Current()));
 }
 
-bool ModelRefine::hasSharedEdges(const TopoDS_Shape &faceOne, const TopoDS_Shape &faceTwo)
+bool ModelRefine::hasSharedEdges(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo)
 {
     std::vector<TopoDS_Edge> faceOneEdges, faceTwoEdges;
     getFaceEdges(faceOne, faceOneEdges);
@@ -144,15 +148,15 @@ bool ModelRefine::hasSharedEdges(const TopoDS_Shape &faceOne, const TopoDS_Shape
     return false;
 }
 
-TopoDS_Wire ModelRefine::facesBoundary(const FaceVectorType &faces)
+void ModelRefine::boundaryEdges(const FaceVectorType &faces, EdgeVectorType &edgesOut)
 {
-    //this finds the perimeter of equal, adjacent faces.
+    //this finds all the boundary edges. Maybe more than one boundary.
     std::list<TopoDS_Edge> edges;
     FaceVectorType::const_iterator faceIt;
     for (faceIt = faces.begin(); faceIt != faces.end(); ++faceIt)
     {
-        std::vector<TopoDS_Edge> faceEdges;
-        std::vector<TopoDS_Edge>::iterator faceEdgesIt;
+        EdgeVectorType faceEdges;
+        EdgeVectorType::iterator faceEdgesIt;
         getFaceEdges(*faceIt, faceEdges);
         for (faceEdgesIt = faceEdges.begin(); faceEdgesIt != faceEdges.end(); ++faceEdgesIt)
         {
@@ -172,20 +176,8 @@ TopoDS_Wire ModelRefine::facesBoundary(const FaceVectorType &faces)
         }
     }
 
-    //put into vector for stolen function.
-    std::vector<TopoDS_Edge> edgeVector;
-    edgeVector.reserve(edges.size());
-    std::copy(edges.begin(), edges.end(), back_inserter(edgeVector));
-
-    std::list<TopoDS_Edge> edgeSorted;
-    edgeSorted = sort_Edges(Precision::Confusion(), edgeVector);
-
-    BRepLib_MakeWire wireMaker;
-    std::list<TopoDS_Edge>::iterator sortedIt;
-    for (sortedIt = edgeSorted.begin(); sortedIt != edgeSorted.end(); ++sortedIt)
-        wireMaker.Add(*sortedIt);
-
-    return wireMaker.Wire();
+    edgesOut.reserve(edges.size());
+    std::copy(edges.begin(), edges.end(), back_inserter(edgesOut));
 }
 
 TopoDS_Shell ModelRefine::removeFaces(const TopoDS_Shell &shell, const FaceVectorType &faces)
@@ -195,6 +187,66 @@ TopoDS_Shell ModelRefine::removeFaces(const TopoDS_Shell &shell, const FaceVecto
     for (it = faces.begin(); it != faces.end(); ++it)
         rebuilder.Remove(*it);
     return TopoDS::Shell(rebuilder.Apply(shell));
+}
+
+bool ModelRefine::areEdgesConnected(const TopoDS_Edge &edgeOne, const TopoDS_Edge &edgeTwo)
+{
+    TopoDS_Vertex e1v1, e1v2, e2v1, e2v2;
+    ShapeAnalysis_Edge analysis;
+    e1v1 = analysis.FirstVertex(edgeOne);
+    e1v2 = analysis.LastVertex(edgeOne);
+    e2v1 = analysis.FirstVertex(edgeTwo);
+    e2v2 = analysis.LastVertex(edgeTwo);
+
+    return e1v1.IsSame(e2v1) || e1v1.IsSame(e2v2) || e1v2.IsSame(e2v1) || e1v2.IsSame(e2v2);
+}
+
+void BoundaryEdgeSplitter::split(const EdgeVectorType &edgesIn)
+{
+    EdgeVectorType::const_iterator workIt;
+    for (workIt = edgesIn.begin(); workIt != edgesIn.end(); ++workIt)
+    {
+        TopoDS_Edge current = *workIt;
+
+        if (isProcessed(current))
+            continue;
+
+        EdgeVectorType temp;
+        temp.reserve(edgesIn.size() + 1);
+        temp.push_back(current);
+        //recursive call
+        splitRecursive(temp, edgesIn);
+        groupedEdges.push_back(temp);
+    }
+}
+
+void BoundaryEdgeSplitter::splitRecursive(EdgeVectorType &tempEdges, const EdgeVectorType &workEdges)
+{
+    EdgeVectorType::iterator tempIt;
+    EdgeVectorType::const_iterator workIt;
+    for (tempIt = tempEdges.begin(); tempIt != tempEdges.end(); ++tempIt)
+    {
+        for (workIt = workEdges.begin(); workIt != workEdges.end(); ++workIt)
+        {
+            if ((*tempIt).IsSame(*workIt))
+                continue;
+            if (isProcessed(*workIt))
+                continue;
+            if (areEdgesConnected(*tempIt, *workIt))
+            {
+                tempEdges.push_back(*workIt);
+                processed.push_back(*workIt);
+                splitRecursive(tempEdges, workEdges);
+            }
+        }
+    }
+}
+
+bool BoundaryEdgeSplitter::isProcessed(const TopoDS_Edge &edge)
+{
+    if (std::find(processed.begin(), processed.end(), edge) == processed.end())
+        return false;
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,20 +271,22 @@ void FaceTypeSplitter::split()
     TopExp_Explorer shellIt;
     for (shellIt.Init(shell, TopAbs_FACE); shellIt.More(); shellIt.Next())
     {
-        GeomAbs_SurfaceType currentType = FaceTypedBase::getFaceType(shellIt.Current());
+        TopoDS_Face tempFace(TopoDS::Face(shellIt.Current()));
+        GeomAbs_SurfaceType currentType = FaceTypedBase::getFaceType(tempFace);
         SplitMapType::iterator mapIt = typeMap.find(currentType);
         if (mapIt == typeMap.end())
             continue;
-        (*mapIt).second.push_back(TopoDS::Face(shellIt.Current()));
+        (*mapIt).second.push_back(tempFace);
     }
 }
 
-FaceVectorType FaceTypeSplitter::getTypedFaceVector(const GeomAbs_SurfaceType &type) const
+const FaceVectorType& FaceTypeSplitter::getTypedFaceVector(const GeomAbs_SurfaceType &type) const
 {
     if (this->hasType(type))
         return (*(typeMap.find(type))).second;
     //error here.
-    return FaceVectorType();
+    static FaceVectorType error;
+    return error;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -338,9 +392,9 @@ void FaceEqualitySplitter::split(const FaceVectorType &faces, FaceTypedBase *obj
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GeomAbs_SurfaceType FaceTypedBase::getFaceType(TopoDS_Shape faceIn)
+GeomAbs_SurfaceType FaceTypedBase::getFaceType(const TopoDS_Face &faceIn)
 {
-    Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(faceIn));
+    Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
     GeomAdaptor_Surface surfaceTest(surface);
     return surfaceTest.GetType();
 }
@@ -351,10 +405,10 @@ FaceTypedPlane::FaceTypedPlane() : FaceTypedBase(GeomAbs_Plane)
 {
 }
 
-bool FaceTypedPlane::isEqual(const TopoDS_Shape &faceOne, const TopoDS_Shape &faceTwo) const
+bool FaceTypedPlane::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
-    Handle(Geom_Plane) planeSurfaceOne = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(TopoDS::Face(faceOne)));
-    Handle(Geom_Plane) planeSurfaceTwo = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(TopoDS::Face(faceTwo)));
+    Handle(Geom_Plane) planeSurfaceOne = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceOne));
+    Handle(Geom_Plane) planeSurfaceTwo = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceTwo));
     if (planeSurfaceOne.IsNull() || planeSurfaceTwo.IsNull())
         return false;//error?
     gp_Pln planeOne(planeSurfaceOne->Pln());
@@ -370,8 +424,67 @@ GeomAbs_SurfaceType FaceTypedPlane::getType() const
 
 TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
 {
-    TopoDS_Wire newWire = ModelRefine::facesBoundary(faces);
-    return BRepBuilderAPI_MakeFace(newWire);
+    EdgeVectorType bEdges;
+    boundaryEdges(faces, bEdges);
+
+    BoundaryEdgeSplitter bSplitter;
+    bSplitter.split(bEdges);
+
+
+    //parallel vectors. Topo* doesn't have less than. map wouldn't work.
+    FaceVectorType  facesParallel;
+    std::vector<TopoDS_Wire> wiresParallel;
+
+    std::vector<EdgeVectorType> splitEdges = bSplitter.getGroupedEdges();
+    std::vector<EdgeVectorType>::iterator splitIt;
+    for (splitIt = splitEdges.begin(); splitIt != splitEdges.end(); ++splitIt)
+    {
+        std::list<TopoDS_Edge> sortedEdges;
+        sortedEdges = sort_Edges(Precision::Confusion(), *splitIt);
+
+        BRepLib_MakeWire wireMaker;
+        std::list<TopoDS_Edge>::iterator sortedIt;
+        for (sortedIt = sortedEdges.begin(); sortedIt != sortedEdges.end(); ++sortedIt)
+            wireMaker.Add(*sortedIt);
+        TopoDS_Wire currentWire = wireMaker.Wire();
+
+        TopoDS_Face currentFace = BRepBuilderAPI_MakeFace(currentWire, Standard_True);
+
+        facesParallel.push_back(currentFace);
+        wiresParallel.push_back(currentWire);
+    }
+    if (facesParallel.size() < 1)//shouldn't be here.
+        return BRepBuilderAPI_MakeFace();//will cause exception.
+    if (facesParallel.size() == 1)
+        return (facesParallel.front());
+
+    TopoDS_Face current;
+    current = facesParallel.at(0);
+    //now we have more than one wire.
+    //there has to be a better way to determin which face is inside other
+    //without have to build all the faces.
+    for(size_t index(1); index<facesParallel.size(); ++index)
+    {
+        //this algorithm assumes that the boundaries don't intersect.
+        gp_Pnt point;
+        Handle(Geom_Surface) surface = BRep_Tool::Surface(facesParallel.at(index));
+        surface->D0(0.5, 0.5, point);
+        BRepClass_FaceClassifier faceTest(current, point, Precision::Confusion());
+        if (faceTest.State() == TopAbs_EXTERNAL)
+            current = facesParallel.at(index);
+    }
+
+    ShapeFix_Face faceFix(current);
+    for (size_t index(0); index<facesParallel.size(); ++index)
+    {
+        if (current.IsSame(facesParallel.at(index)))
+            continue;
+        faceFix.Add(wiresParallel.at(index));
+    }
+    faceFix.FixOrientation();
+    faceFix.Perform();
+
+    return faceFix.Face();
 }
 
 FaceTypedPlane& ModelRefine::getPlaneObject()
@@ -385,11 +498,11 @@ FaceTypedCylinder::FaceTypedCylinder() : FaceTypedBase(GeomAbs_Cylinder)
 {
 }
 
-bool FaceTypedCylinder::isEqual(const TopoDS_Shape &faceOne, const TopoDS_Shape &faceTwo) const
+bool FaceTypedCylinder::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
     //check if these handles are valid?
-    Handle(Geom_CylindricalSurface) surfaceOne = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(TopoDS::Face(faceOne)));
-    Handle(Geom_CylindricalSurface) surfaceTwo = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(TopoDS::Face(faceTwo)));
+    Handle(Geom_CylindricalSurface) surfaceOne = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faceOne));
+    Handle(Geom_CylindricalSurface) surfaceTwo = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faceTwo));
     if (surfaceOne.IsNull() || surfaceTwo.IsNull())
         return false;//probably need an error
     gp_Cylinder cylinderOne = surfaceOne->Cylinder();

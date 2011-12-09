@@ -27,37 +27,36 @@
 #include <vector>
 #include <map>
 #include <list>
-#include <set>
 #include <GeomAbs_SurfaceType.hxx>
 #include <TopoDS_Shell.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Edge.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
 
 namespace ModelRefine
 {
     typedef std::vector<TopoDS_Face> FaceVectorType;
+    typedef std::vector<TopoDS_Edge> EdgeVectorType;
 
-    void getFaceEdges(TopoDS_Shape face, std::vector<TopoDS_Edge> &edges);
-    bool hasSharedEdges(const TopoDS_Shape &faceOne, const TopoDS_Shape &faceTwo);
-    TopoDS_Wire facesBoundary(const FaceVectorType &faces);
+    void getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges);
+    bool hasSharedEdges(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo);
+    void boundaryEdges(const FaceVectorType &faces, EdgeVectorType &edgesOut);
     TopoDS_Shell removeFaces(const TopoDS_Shell &shell, const FaceVectorType &faces);
+    bool areEdgesConnected(const TopoDS_Edge &edgeOne, const TopoDS_Edge &edgeTwo);
 
     class FaceTypedBase
     {
     private:
         FaceTypedBase(){}
     protected:
-        FaceTypedBase(GeomAbs_SurfaceType typeIn){surfaceType = typeIn;}
+        FaceTypedBase(const GeomAbs_SurfaceType &typeIn){surfaceType = typeIn;}
     public:
-        virtual bool isEqual(const TopoDS_Shape &faceOne, const TopoDS_Shape &faceTwo) const = 0;
+        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const = 0;
         virtual GeomAbs_SurfaceType getType() const = 0;
         virtual TopoDS_Face buildFace(const FaceVectorType &faces) const = 0;
 
-        static GeomAbs_SurfaceType getFaceType(TopoDS_Shape faceIn);
+        static GeomAbs_SurfaceType getFaceType(const TopoDS_Face &faceIn);
 
     protected:
         GeomAbs_SurfaceType surfaceType;
@@ -68,7 +67,7 @@ namespace ModelRefine
     private:
         FaceTypedPlane();
     public:
-        virtual bool isEqual(const TopoDS_Shape &faceOne, const TopoDS_Shape &faceTwo) const;
+        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
         virtual GeomAbs_SurfaceType getType() const;
         virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
         friend FaceTypedPlane& getPlaneObject();
@@ -80,7 +79,7 @@ namespace ModelRefine
     private:
         FaceTypedCylinder();
     public:
-        virtual bool isEqual(const TopoDS_Shape &faceOne, const TopoDS_Shape &faceTwo) const;
+        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
         virtual GeomAbs_SurfaceType getType() const;
         virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
         friend FaceTypedCylinder& getCylinderObject();
@@ -96,7 +95,7 @@ namespace ModelRefine
         void registerType(const GeomAbs_SurfaceType &type);
         bool hasType(const GeomAbs_SurfaceType &type) const;
         void split();
-        FaceVectorType getTypedFaceVector(const GeomAbs_SurfaceType &type) const;
+        const FaceVectorType& getTypedFaceVector(const GeomAbs_SurfaceType &type) const;
     private:
         SplitMapType typeMap;
         TopoDS_Shell shell;
@@ -108,7 +107,7 @@ namespace ModelRefine
         FaceAdjacencySplitter(){}
         void split(const FaceVectorType &facesIn);
         int getGroupCount() const {return adjacencyArray.size();}
-        FaceVectorType getGroup(const std::size_t &index) const {return adjacencyArray[index];}
+        const FaceVectorType& getGroup(const std::size_t &index) const {return adjacencyArray[index];}
 
     private:
         bool hasBeenMapped(const TopoDS_Face &shape);
@@ -122,11 +121,25 @@ namespace ModelRefine
         FaceEqualitySplitter(){}
         void split(const FaceVectorType &faces,  FaceTypedBase *object);
         int getGroupCount() const {return equalityVector.size();}
-        FaceVectorType getGroup(const std::size_t &index) const {return equalityVector[index];}
+        const FaceVectorType& getGroup(const std::size_t &index) const {return equalityVector[index];}
 
     private:
         std::vector<FaceVectorType> equalityVector;
-    };    
+    };
+
+    class BoundaryEdgeSplitter
+    {
+    public:
+        BoundaryEdgeSplitter(){}
+        void split(const EdgeVectorType &edgesIn);
+        const std::vector<EdgeVectorType>& getGroupedEdges(){return groupedEdges;}
+
+    private:
+        void splitRecursive(EdgeVectorType &tempEdges, const EdgeVectorType &workEdges);
+        bool isProcessed(const TopoDS_Edge &edge);
+        EdgeVectorType processed;
+        std::vector<EdgeVectorType> groupedEdges;
+    };
 
     class FaceUniter
     {
