@@ -282,7 +282,7 @@ def drawLine(line,shapemode=False):
         v2=vec(line.points[1])
         if not fcvec.equals(v1,v2):
             try:
-                if (fmt.paramstyle >= 4) and (not fmt.makeBlocks) and (not shapemode):
+                if (fmt.paramstyle >= 4) and (not shapemode):
                     return Draft.makeWire([v1,v2])
                 else:
                     return Part.Line(v1,v2).toShape()
@@ -331,7 +331,7 @@ def drawPolyline(polyline,shapemode=False):
                     except: warn(polyline)
         if edges:
             try:
-                if (fmt.paramstyle >= 4) and (not curves) and (not fmt.makeBlocks) and (not shapemode):
+                if (fmt.paramstyle >= 4) and (not curves) and (not shapemode):
                     ob = Draft.makeWire(verts)
                     ob.Closed = polyline.closed
                     return ob
@@ -354,7 +354,7 @@ def drawArc(arc,shapemode=False):
     circle.Center=v
     circle.Radius=round(arc.radius,prec())
     try:
-        if (fmt.paramstyle >= 4) and (not fmt.makeBlocks) and (not shapemode):
+        if (fmt.paramstyle >= 4) and (not shapemode):
             pl = FreeCAD.Placement()
             pl.move(v)
             return Draft.makeCircle(arc.radius,pl,False,firstangle,lastangle)
@@ -371,7 +371,7 @@ def drawCircle(circle,shapemode=False):
     curve.Radius = round(circle.radius,prec())
     curve.Center = v
     try:
-        if (fmt.paramstyle >= 4) and (not fmt.makeBlocks) and (not shapemode):
+        if (fmt.paramstyle >= 4) and (not shapemode):
             pl = FreeCAD.Placement()
             pl.move(v)
             return Draft.makeCircle(circle.radius,pl)
@@ -489,7 +489,7 @@ def drawSpline(spline,shapemode=False):
         elif dline[0] == 40:
             knots.append(dline[1])
     try:
-        if (fmt.paramstyle == 4) and (not fmt.makeBlocks) and (not shapemode):
+        if (fmt.paramstyle == 4) and (not shapemode):
             ob = Draft.makeSpline(verts)
             ob.Closed = closed
             return ob
@@ -570,14 +570,20 @@ def drawInsert(insert):
         return shape
     return None
 
-def drawLayerBlock(shapeslist):
-    "draws a compound with the given shapes"
-    shape = None
-    try:
-        shape = Part.makeCompound(shapeslist)
-    except:
-        pass
-    return shape
+def drawLayerBlock(objlist):
+    "draws a Draft block with the given shapes or objects"
+    obj = None
+    if fmt.paramstyle >= 4:
+        try:
+            obj = Draft.makeBlock(objlist)
+        except:
+            pass
+    else:
+        try:
+            obj = Part.makeCompound(objlist)
+        except:
+            pass
+    return obj
 
 def attribs(insert):
     "checks if an insert has attributes, and returns the values if yes"
@@ -637,12 +643,12 @@ def addText(text,attrib=False):
             newob.ViewObject.DisplayMode = "World"
             fmt.formatObject(newob,text,textmode=True)
 
-def addToBlock(shape,layer):
+def addToBlock(obj,layer):
     "adds given shape to the layer dict"
     if layer in layerBlocks:
-        layerBlocks[layer].append(shape)
+        layerBlocks[layer].append(obj)
     else:
-        layerBlocks[layer] = [shape]
+        layerBlocks[layer] = [obj]
 
 def processdxf(document,filename):
     "this does the translation of the dxf contents into FreeCAD Part objects"
@@ -690,10 +696,7 @@ def processdxf(document,filename):
                     else:                                        
                         shapes.append(shape.Shape)
                 elif fmt.makeBlocks:
-                    if isinstance(shape,Part.Shape):
-                        addToBlock(shape,line.layer)
-                    else:                                        
-                        addToBlock(shape.Shape,line.layer)
+                    addToBlock(shape,line.layer)                             
                 else:
                     newob = addObject(shape,"Line",line.layer)
                     if gui: fmt.formatObject(newob,line)
@@ -736,10 +739,7 @@ def processdxf(document,filename):
                     else:
                         shapes.append(shape.Shape)
                 elif fmt.makeBlocks:
-                    if isinstance(shape,Part.Shape):
-                        addToBlock(shape,polyline.layer)
-                    else:                                        
-                        addToBlock(shape.Shape,polyline.layer)              
+                    addToBlock(shape,polyline.layer)
                 else:
                     newob = addObject(shape,"Polyline",polyline.layer)
                     if gui: fmt.formatObject(newob,polyline)
@@ -767,10 +767,7 @@ def processdxf(document,filename):
                     else:
                         shapes.append(shape.Shape)
                 elif fmt.makeBlocks:
-                    if isinstance(shape,Part.Shape):
-                        addToBlock(shape,arc.layer)
-                    else:                                        
-                        addToBlock(shape.Shape,arc.layer)              
+                    addToBlock(shape,arc.layer)
                 else:
                     newob = addObject(shape,"Arc",arc.layer)
                     if gui: fmt.formatObject(newob,arc)
@@ -804,10 +801,7 @@ def processdxf(document,filename):
                     else:
                         shape = Draft.makeSketch(shape,autoconstraints=True)
                 elif fmt.makeBlocks:
-                    if isinstance(shape,Part.Shape):
-                        addToBlock(shape,circle.layer)
-                    else:                                        
-                        addToBlock(shape.Shape,circle.layer)
+                    addToBlock(shape,circle.layer)
                 else:
                     newob = addObject(shape,"Circle",circle.layer)
                     if gui: fmt.formatObject(newob,circle)
@@ -822,10 +816,7 @@ def processdxf(document,filename):
             shape = drawSolid(solid)
             if shape:
                 if fmt.makeBlocks:
-                    if isinstance(shape,Part.Shape):
-                        addToBlock(shape,lay)
-                    else:                                        
-                        addToBlock(shape.Shape,lay)
+                    addToBlock(shape,lay)
                 else:
                     newob = addObject(shape,"Solid",lay)
                     if gui: fmt.formatObject(newob,solid)
@@ -840,10 +831,7 @@ def processdxf(document,filename):
             shape = drawSpline(spline)
             if shape:
                 if fmt.makeBlocks:
-                    if isinstance(shape,Part.Shape):
-                        addToBlock(shape,lay)
-                    else:
-                        addToBlock(shape.Shape,lay)
+                    addToBlock(shape,lay)
                 else:
                     newob = addObject(shape,"Spline",lay)
                     if gui: fmt.formatObject(newob,spline)
@@ -949,10 +937,7 @@ def processdxf(document,filename):
             shape = drawInsert(insert)
             if shape:
                 if fmt.makeBlocks:
-                    if isinstance(shape,Part.Shape):
-                        addToBlock(shape,block.layer)
-                    else:                                        
-                        addToBlock(shape.Shape,block.layer)
+                    addToBlock(shape,block.layer)
                 else:
                     newob = addObject(shape,"Block."+insert.block,insert.layer)
                     if gui: fmt.formatObject(newob,insert)
