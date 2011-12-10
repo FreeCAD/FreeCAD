@@ -89,12 +89,23 @@ class _Cell(Component.Component):
         pl = obj.Placement
         if obj.Components:
             if obj.JoinMode:
-                components = obj.Components[:]
-                f = components.pop(0)
-                baseShape = f.Shape
-                for comp in components:
-                    if Draft.getType(comp) in ["Wall","Cell","Shape"]:
-                        baseShape = baseShape.oldFuse(comp.Shape)
+                walls = []
+                structs = []
+                compshapes = []
+                for comp in obj.Components:
+                    if Draft.getType(comp) == "Wall":
+                        walls.append(comp.Shape)
+                    elif Draft.getType(comp) == "Structure":
+                        structs.append(comp.Shape)
+                    else:
+                        compshapes.append(comp.Shape)
+                for gr in [walls,structs]:
+                    if gr:
+                        sh = gr.pop(0)
+                        for csh in gr:
+                            sh = sh.oldFuse(csh)
+                        compshapes.append(sh)
+                baseShape = Part.makeCompound(compshapes)
             else:
                 compshapes = []
                 for o in obj.Components:
