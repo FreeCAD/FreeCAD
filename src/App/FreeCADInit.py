@@ -50,8 +50,8 @@ def InitApplications():
 	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
 	HomeMod = FreeCAD.ConfigGet("UserAppData")+"Mod"
 	HomeMod = os.path.realpath(HomeMod)
-	MacroMod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")+"/Mod"
-	MacroMod = os.path.realpath(MacroMod)
+	MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
+	MacroMod = os.path.realpath(MacroDir+"/Mod")
 	ModPar = FreeCAD.ParamGet("System parameter:Modules")
 
 	#print FreeCAD.getHomePath()
@@ -111,6 +111,8 @@ def InitApplications():
 	Log("System path after init:\n")
 	for i in path:
 		Log("   " + i + "\n")
+	# add MacroDir to path (RFE #0000504)
+	sys.path.append(MacroDir)
 	# add special path for MacOSX (bug #0000307)
 	import platform
 	if len(platform.mac_ver()[0]) > 0:
