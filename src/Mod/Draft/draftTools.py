@@ -4474,6 +4474,25 @@ class Draft2Sketch():
                     Draft.draftify(sel,makeblock=True)
             FreeCAD.ActiveDocument.commitTransaction()
 
+                 
+class Array():
+    "The Shape2DView FreeCAD command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Array',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Array"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Creates a polar or rectangular array from a selected object")}
+
+    def IsActive(self):
+        if len(Draft.getSelection()) == 1:
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        obj = Draft.getSelection()[0]
+        FreeCAD.ActiveDocument.openTransaction("Array")
+        Draft.makeArray(obj)
+        FreeCAD.ActiveDocument.commitTransaction()
             
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -4505,6 +4524,7 @@ FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
+FreeCADGui.addCommand('Draft_Array',Array())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())

@@ -544,6 +544,34 @@ def makeBlock(objectslist):
     select(obj)
     return obj
 
+def makeArray(baseobject,arg1=Vector(0,0,0),arg2=360,arg3=4,arg4=None):
+    '''makeArray(object,xvector,yvector,xnum,ynum) for rectangular array, or
+    makeArray(object,center,totalangle,totalnum) for polar array: Creates an array
+    of the given object
+    with, in case of rectangular array, xnum of iterations in the x direction
+    at xvector distance between iterations, and same for y direction with yvector
+    and ynum. In case of polar array, center is a vector, totalangle is the angle
+    to cover (in degrees) and totalnum is the number of objects, including the original.
+    The result is a parametric Draft Array.'''
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Array")
+    _Array(obj)
+    _ViewProviderArray(obj.ViewObject)
+    obj.Base = baseobject
+    if arg4:
+        org.ArrayType = "ortho"
+        obj.IntervalX = arg1
+        obj.IntervalY = arg2
+        obj.NumberX = arg3
+        obj.NumberY = arg4
+    else:
+        obj.ArrayType = "polar"
+        obj.Center = arg1
+        obj.Angle = arg2
+        obj.NumberPolar = arg3    
+    baseobject.ViewObject.hide()
+    select(obj)
+    return obj
+
 def extrude(obj,vector):
     '''makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
@@ -2181,3 +2209,88 @@ class _Shape2DView:
                     obj.Shape = visibleG0
         if not fcgeo.isNull(pl):
             obj.Placement = pl
+
+class _Array:
+    "The Draft Array object"
+
+    def __init__(self,obj):
+        obj.addProperty("App::PropertyLink","Base","Base",
+                        "The base object that must be duplicated")
+        obj.addProperty("App::PropertyEnumeration","ArrayType","Base",
+                        "The type of array to create")
+        obj.addProperty("App::PropertyInteger","NumberX","Base",
+                        "Number of copies in X direction (ortho arrays)")
+        obj.addProperty("App::PropertyInteger","NumberY","Base",
+                        "Number of copies in Y direction (ortho arrays)")
+        obj.addProperty("App::PropertyInteger","NumberPolar","Base",
+                        "Number of copies (polar arrays)")
+        obj.addProperty("App::PropertyVector","IntervalX","Base",
+                        "Distance and orientation of intervals in X direction (ortho arrays)")
+        obj.addProperty("App::PropertyVector","IntervalY","Base",
+                        "Distance and orientation of intervals in Y direction (ortho arrays)")
+        obj.addProperty("App::PropertyVector","Center","Base",
+                        "Center point (polar arrays)")
+        obj.addProperty("App::PropertyAngle","Angle","Base",
+                        "Angle to cover with copies (polar arrays)")
+        obj.Proxy = self
+        self.Type = "Array"
+        obj.ArrayType = ['ortho','polar']
+        obj.NumberX = 1
+        obj.NumberY = 1
+        obj.NumberPolar = 1
+        obj.IntervalX = Vector(1,0,0)
+        obj.IntervalY = Vector(0,1,0)
+
+    def execute(self,obj):
+        self.createGeometry(obj)
+
+    def onChanged(self,obj,prop):
+        if prop in ["ArrayType","NumberX","NumberY","NumberPolar","IntervalX","IntervalY","Angle","Center"]:
+            self.createGeometry(obj)
+
+    def createGeometry(self,obj):
+        if obj.Base:
+            pl = obj.Placement
+            if obj.ArrayType == "ortho":
+                sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,obj.NumberX,obj.NumberY)
+            else:
+                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle,obj.NumberPolar)
+            obj.Shape = sh
+            if not fcgeo.isNull(pl):
+                obj.Placement = pl
+
+    def rectArray(self,shape,xvector,yvector,xnum,ynum):
+        base = [shape.copy()]
+        for xcount in range(xnum):
+            currentxvector=fcvec.scale(xvector,xcount)
+            if not xcount==0:
+                nshape = shape.copy()
+                nshape.translate(currentxvector)
+                base.append(nshape)
+            for ycount in range(ynum):
+                currentxvector=FreeCAD.Vector(currentxvector)
+                currentyvector=currentxvector.add(fcvec.scale(yvector,ycount))
+                if not ycount==0:
+                    nshape = shape.copy()
+                    nshape.translate(currentyvector)
+                    base.append(nshape)
+        return Part.makeCompound(base)
+
+    def polarArray(self,shape,center,angle,num):
+        fraction = angle/num
+        base = [shape.copy()]
+        for i in range(num):
+            currangle = fraction + (i*fraction)
+            nshape = shape.copy()
+            nshape.rotate(fcvec.tup(center), (0,0,1), currangle)
+            base.append(nshape)
+        return Part.makeCompound(base)
+
+class _ViewProviderArray(_ViewProviderDraft):
+    "A view provider for Array objects"
+    
+    def __init__(self,obj):
+        _ViewProviderDraft.__init__(self,obj)
+
+    def claimChildren(self):
+        return [self.Object.Base]
