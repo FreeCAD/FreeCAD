@@ -66,6 +66,7 @@
 #include <Base/Reader.h>
 #include <Base/MatrixPy.h>
 #include <Base/VectorPy.h>
+#include <Base/AxisPy.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/RotationPy.h>
@@ -157,7 +158,7 @@ PyDoc_STRVAR(Console_doc,
      "FreeCAD Console\n"
     );
 
-Application::Application(ParameterManager * /*pcSysParamMngr*/, 
+Application::Application(ParameterManager * /*pcSysParamMngr*/,
                          ParameterManager * /*pcUserParamMngr*/,
                          std::map<std::string,std::string> &mConfig)
     ://_pcSysParamMngr(pcSysParamMngr),
@@ -202,17 +203,22 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     union PyType_Object pyRotationPyType = {&Base::RotationPy::Type};
     PyModule_AddObject(pAppModule, "Rotation", pyRotationPyType.o);
 
+    if (PyType_Ready(&Base::AxisPy::Type) < 0) return;
+    union PyType_Object pyAxisPyType = {&Base::AxisPy::Type};
+    PyModule_AddObject(pAppModule, "Axis", pyAxisPyType.o);
+
     // Note: Create an own module 'Base' which should provide the python
-    // binding classes from the base module. At a later stage we should 
+    // binding classes from the base module. At a later stage we should
     // remove these types from the FreeCAD module.
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL,
         "The Base module contains the classes for the geometric basics\n"
-        "like vector, matrix, bounding box, placement, rotation, ...");
+        "like vector, matrix, bounding box, placement, rotation, axis, ...");
     Base::Interpreter().addType(&Base::VectorPy     ::Type,pBaseModule,"Vector");
     Base::Interpreter().addType(&Base::MatrixPy     ::Type,pBaseModule,"Matrix");
     Base::Interpreter().addType(&Base::BoundBoxPy   ::Type,pBaseModule,"BoundBox");
     Base::Interpreter().addType(&Base::PlacementPy  ::Type,pBaseModule,"Placement");
     Base::Interpreter().addType(&Base::RotationPy   ::Type,pBaseModule,"Rotation");
+    Base::Interpreter().addType(&Base::AxisPy       ::Type,pBaseModule,"Axis");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
@@ -1285,7 +1291,7 @@ void Application::LoadParameters(void)
 // fix weird error while linking boost (all versions of VC)
 namespace boost { namespace program_options { std::string arg="arg"; } }
 #if (defined (BOOST_VERSION) && (BOOST_VERSION == 104100))
-namespace boost { namespace program_options { 
+namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
 } }
 #endif
@@ -1295,7 +1301,7 @@ namespace boost { namespace program_options {
 // reported for SUSE in issue #0000208
 #if defined(__GNUC__)
 #if BOOST_VERSION == 104400
-namespace boost { namespace filesystem { 
+namespace boost { namespace filesystem {
     bool no_check( const std::string & ) { return true; }
 } }
 #endif
@@ -1597,7 +1603,7 @@ void Application::ExtractUserPath()
         }
         appData += PATHSEP;
     }
-    
+
     appData += mConfig["ExeName"];
     fi.setFile(appData.c_str());
     if (!fi.exists() && !Py_IsInitialized()) {
@@ -1652,7 +1658,7 @@ void Application::ExtractUserPath()
         }
         appData += PATHSEP;
     }
-    
+
     appData += mConfig["ExeName"];
     fi.setFile(appData.c_str());
     if (!fi.exists() && !Py_IsInitialized()) {

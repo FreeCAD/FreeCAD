@@ -61,6 +61,7 @@ generate_from_xml(VectorPy)
 generate_from_xml(MatrixPy)
 generate_from_xml(RotationPy)
 generate_from_xml(PlacementPy)
+generate_from_xml(AxisPy)
 
 if(SWIG_FOUND)
     execute_process(COMMAND ${SWIG_EXECUTABLE} -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.h)
@@ -137,6 +138,7 @@ SET(pycxx_SRCS
 SOURCE_GROUP("pycxx" FILES ${pycxx_SRCS})
 
 SET(FreeCADBase_XML_SRCS
+    AxisPy.xml
     BaseClassPy.xml
     BoundBoxPy.xml
     MatrixPy.xml
@@ -170,6 +172,8 @@ SET(FreeCADBase_UNITAPI_SRCS
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
 SET(FreeCADBase_CPP_SRCS
+    Axis.cpp
+    AxisPyImp.cpp
     Base64.cpp
     BaseClass.cpp
     BaseClassPyImp.cpp
@@ -222,6 +226,7 @@ SET(FreeCADBase_CPP_SRCS
 )
 
 SET(FreeCADBase_HPP_SRCS
+    Axis.h
     Base64.h
     BaseClass.h
     BoundBox.h

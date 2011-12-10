@@ -3,6 +3,7 @@ lib_LTLIBRARIES=libFreeCADBase.la
 
 BUILT_SOURCES=\
 		moc_FutureWatcherProgress.cpp \
+		AxisPy.cpp \
 		BaseClassPy.cpp \
 		BoundBoxPy.cpp \
 		MatrixPy.cpp \
@@ -17,6 +18,7 @@ endif
 
 
 libFreeCADBase_la_BUILT=\
+		AxisPy.h \
 		BaseClassPy.h \
 		BoundBoxPy.h \
 		MatrixPy.h \
@@ -26,6 +28,8 @@ libFreeCADBase_la_BUILT=\
 		VectorPy.h
 
 libFreeCADBase_la_SOURCES=\
+		Axis.cpp \
+		AxisPyImp.cpp \
 		Base64.cpp \
 		BaseClass.cpp \
 		BaseClassPyImp.cpp \
@@ -103,6 +107,7 @@ nodist_include_HEADERS=\
 		$(libFreeCADBase_la_BUILT)
 
 include_HEADERS=\
+		Axis.h \
 		Base64.h \
 		BaseClass.h \
 		BoundBox.h \
@@ -177,6 +182,7 @@ libFreeCADBase_la_CPPFLAGS = -DHAVE_SWIG=$(HAVE_SWIG)
 
 EXTRA_DIST = \
 		CMakeLists.txt \
+		AxisPy.xml \
 		BaseClassPy.xml \
 		BoundBoxPy.xml \
 		MatrixPy.xml \
