@@ -55,7 +55,11 @@
 
 using namespace Gui;
 
-namespace Gui {
+namespace Gui
+{
+
+static size_t promptLength = 4; //< length of prompt string: ">>> " or "... ", in either case 4 characters
+
 struct PythonConsoleP
 {
     enum Output {Error = 20, Message = 21};
@@ -310,6 +314,11 @@ bool InteractiveInterpreter::push(const char* line)
     return false;
 }
 
+bool InteractiveInterpreter::hasPendingInput( void ) const
+{
+    return (!d->buffer.isEmpty());
+}
+
 QStringList InteractiveInterpreter::getBuffer() const
 {
     return d->buffer;
@@ -430,97 +439,125 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
  */
 void PythonConsole::keyPressEvent(QKeyEvent * e)
 {
-    if (e->modifiers() & Qt::ControlModifier) {
-        switch( e->key() ) 
+    bool restartHistory = true;
+    QTextCursor  cursor = this->textCursor();
+
+    // construct reference cursor at begin of input line ...
+    QTextCursor inputLineBegin = cursor;
+    inputLineBegin.movePosition( QTextCursor::End );
+    inputLineBegin.movePosition( QTextCursor::StartOfLine );
+    inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength );
+
+    if (cursor < inputLineBegin)
+    {
+        /**
+         * The cursor is placed not on the input line (or within the prompt string)
+         * So we handle key input as follows:
+         *   - don't allow changing previous lines.
+         *   - allow full movement (no prompt restriction)
+         *   - allow copying content (Ctrl+C)
+         *   - "escape" to end of input line
+         */
+        switch (e->key())
         {
-        case Qt::Key_Up:
-            {
-                // no modification, just history facility
-                if (!d->history.isEmpty()) {
-                    if (d->history.prev()) {
-                        QString cmd = d->history.value();
-                        overrideCursor(cmd);
-                    }   return;
-                }
-            }   break;
-        case Qt::Key_Down:
-            {
-                // no modification, just history facility
-                if (!d->history.isEmpty()) {
-                    if (d->history.next()) {
-                        QString cmd = d->history.value();
-                        overrideCursor(cmd);
-                    }   return;
-                }
-            }   break;
-        default:
-            break;
+          case Qt::Key_Return:
+          case Qt::Key_Enter:
+          case Qt::Key_Escape:
+              this->moveCursor( QTextCursor::End );
+              break;
+
+          default:
+              if (e->text().isEmpty() || e->matches( QKeySequence::Copy ))
+                  { TextEdit::keyPressEvent(e); }
+              break;
         }
     }
-
-    switch (e->key())
+    else
     {
-    // running Python interpreter?
-    case Qt::Key_Return:
-    case Qt::Key_Enter:
-        {
-            // make sure to be at the end
-            QTextCursor cursor = textCursor();
-            cursor.movePosition(QTextCursor::End);
- 
-            // get the last paragraph's text
-            QTextBlock block = cursor.block();
-            QString line = block.text();
+        /**
+         * The cursor sits somewhere on the input line (after the prompt)
+         * Here we handle key input a bit different:
+         *   - restrict cursor movement to input line range (excluding the prompt characters)
+         *   - roam the history by Up/Down keys
+         *   - show call tips on period
+         */
+        QTextBlock inputBlock = inputLineBegin.block();              //< get the last paragraph's text
+        QString    inputLine  = inputBlock.text().mid(promptLength); //< and skip prompt characters
 
-            // and skip the first 4 characters consisting of either ">>> " or "... "
-            line = line.mid(4);
-
-            // put statement to the history
-            d->history.append(line);
-
-            // evaluate and run the command
-            runSource(line);
-        }   break;
-    case Qt::Key_Period:
+        switch (e->key())
         {
-            QTextCursor cursor = textCursor();
-            QTextBlock block = cursor.block();
-            QString text = block.text();
-            int length = cursor.position() - block.position();
-            TextEdit::keyPressEvent(e);
-            d->callTipsList->showTips(text.left(length));
-        }   break;
-    case Qt::Key_Home:
-        {
-            if (e->modifiers() & Qt::ControlModifier) {
-                TextEdit::keyPressEvent(e);
-            } else {
-                QTextCursor::MoveMode mode = e->modifiers() & Qt::ShiftModifier
-                     ? QTextCursor::KeepAnchor
-                     : QTextCursor::MoveAnchor;
-                QTextCursor cursor = textCursor();
-                QTextBlock block = cursor.block();
-                QString text = block.text();
-                int cursorPos = block.position();
-                if (text.startsWith(QLatin1String(">>> ")) ||
-                    text.startsWith(QLatin1String("... ")))
-                    cursorPos += 4;
-                cursor.setPosition(cursorPos, mode);
-                setTextCursor(cursor);
-                ensureCursorVisible();
-            }
-        }   break;
-    default: 
-        {
-            TextEdit::keyPressEvent(e);
+          case Qt::Key_Escape:
+          {
+              // disable current input line - i.e. put it to history but don't execute it.
+              if (!inputLine.isEmpty())
+              {
+                  d->history.append( QLatin1String("# ") + inputLine );  //< put line to history ...
+                  inputLineBegin.insertText( QString::fromAscii("# ") ); //< but comment it on console
+                  setTextCursor( inputLineBegin );
+                  printPrompt( d->interpreter->hasPendingInput() );      //< print adequate prompt
+              }
+          }   break;
 
-            // This can't be done in CallTipsList::eventFilter() because we must first perform
-            // the event and afterwards update the list widget
-            if (d->callTipsList->isVisible()) {
-                d->callTipsList->validateCursor();
-            }
-        }   break;
-    }  
+          case Qt::Key_Return:
+          case Qt::Key_Enter:
+          {
+              runSource( inputLine );         //< commit input line
+              d->history.append( inputLine ); //< put statement to history
+          }   break;
+
+          case Qt::Key_Period:
+          {
+              // analyse context and show available call tips
+              int contextLength = cursor.position() - inputLineBegin.position();
+              TextEdit::keyPressEvent(e);
+              d->callTipsList->showTips( inputLine.left( contextLength ) );
+          }   break;
+
+          case Qt::Key_Home:
+          {
+              QTextCursor::MoveMode mode = (e->modifiers() & Qt::ShiftModifier)? QTextCursor::KeepAnchor
+                                                                    /* else */ : QTextCursor::MoveAnchor;
+              cursor.setPosition( inputBlock.position() + promptLength, mode );
+              setTextCursor( cursor );
+              ensureCursorVisible();
+          }   break;
+
+          case Qt::Key_Up:
+          {
+              // if possible, move back in history
+              if (d->history.prev( inputLine ))
+                  { overrideCursor( d->history.value() ); }
+              restartHistory = false;
+          }   break;
+
+          case Qt::Key_Down:
+          {
+              // if possible, move forward in history
+              if (d->history.next())
+                  { overrideCursor( d->history.value() ); }
+              restartHistory = false;
+          }   break;
+
+          case Qt::Key_Backspace:
+          case Qt::Key_Left:
+          {
+              if (cursor > inputLineBegin)
+                  { TextEdit::keyPressEvent(e); }
+          }   break;
+
+          default: 
+          {
+              TextEdit::keyPressEvent(e);
+          }   break;
+        }
+        // This can't be done in CallTipsList::eventFilter() because we must first perform
+        // the event and afterwards update the list widget
+        if (d->callTipsList->isVisible())
+            { d->callTipsList->validateCursor(); }
+    }
+    // any cursor move resets the history to its latest item.
+    if (restartHistory)
+        { d->history.restart(); }
 }
 
 /**
@@ -844,8 +881,8 @@ QMimeData * PythonConsole::createMimeDataFromSelection () const
                     if ( pos >= s && pos <= e ) {
                         if (b.userState() > -1 && b.userState() < pythonSyntax->maximumUserState()) {
                             QString line = b.text();
-                            // and skip the first 4 characters consisting of either ">>> " or "... "
-                            line = line.mid(4);
+                            // and skip the prompt characters consisting of either ">>> " or "... "
+                            line = line.mid(promptLength);
                             lines << line;
                         }
                     }
@@ -916,7 +953,7 @@ void PythonConsole::runSourceFromMimeData(const QString& source)
             cursor.removeSelectedText();
             last = last + select;
             line = cursor.block().text();
-            line = line.mid(4);
+            line = line.mid(promptLength);
         }
 
         // put statement to the history
@@ -972,7 +1009,7 @@ void PythonConsole::overrideCursor(const QString& txt)
     QTextBlock block = cursor.block();
     cursor.movePosition(QTextCursor::End);
     cursor.movePosition(QTextCursor::StartOfLine);
-    cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, 4);
+    cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, promptLength);
     cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, block.text().length());
     cursor.removeSelectedText();
     cursor.insertText(txt);
@@ -1124,7 +1161,7 @@ void PythonConsoleHighlighter::colorChanged(const QString& type, const QColor& c
 
 ConsoleHistory::ConsoleHistory()
 {
-    it = _history.end();
+    _it = _history.end();
 }
 
 ConsoleHistory::~ConsoleHistory()
@@ -1133,38 +1170,62 @@ ConsoleHistory::~ConsoleHistory()
 
 void ConsoleHistory::first()
 {
-    it = _history.begin();
+    _it = _history.begin();
 }
 
 bool ConsoleHistory::more()
 {
-    return (it != _history.end());
+    return (_it != _history.end());
 }
 
+/**
+ * next switches the history pointer to the next item.
+ * While searching the next item, the routine respects the search prefix set by prev().
+ * @return true if the pointer was switched to a later item, false otherwise.
+ */
 bool ConsoleHistory::next() 
 {
-    if (it != _history.end()) {
-        for (++it; it != _history.end(); ++it) {
-            if (!it->isEmpty())
-                break;
-        }
-        return true;
-    }
+    bool wentNext = false;
 
-    return false;
+    // if we didn't reach history's end ...
+    if (_it != _history.end())
+    {
+      // we go forward until we find an item matching the prefix.
+      for (++_it; _it != _history.end(); ++_it)
+      {
+        if (!_it->isEmpty() && _it->startsWith( _prefix ))
+          { break; }
+      }
+      // we did a step - no matter of a matching prefix.
+      wentNext = true;
+    }
+    return wentNext;
 }
 
-bool ConsoleHistory::prev() 
+/**
+ * prev switches the history pointer to the previous item.
+ * The optional parameter prefix allows to search the history selectively for commands that start
+ *   with a certain character sequence.
+ * @param prefix - prefix string for searching backwards in history, empty string by default
+ * @return true if the pointer was switched to an earlier item, false otherwise.
+ */
+bool ConsoleHistory::prev( const QString &prefix )
 {
-    if (it != _history.begin()) {
-        for (--it; it != _history.begin(); --it) {
-            if (!it->isEmpty())
-                break;
-        }
-        return true;
-    }
+    bool wentPrev = false;
 
-    return false;
+    // store prefix if it's the first history access
+    if (_it == _history.end())
+      { _prefix = prefix; }
+    
+    // while we didn't go back or reach history's begin ...
+    while (!wentPrev && _it != _history.begin())
+    {
+      // go back in history and check if item matches prefix
+      // Skip empty items
+      --_it;
+      wentPrev = (!_it->isEmpty() && _it->startsWith( _prefix ));
+    }
+    return wentPrev;
 }
 
 bool ConsoleHistory::isEmpty() const
@@ -1172,23 +1233,31 @@ bool ConsoleHistory::isEmpty() const
     return _history.isEmpty();
 }
 
-QString ConsoleHistory::value() const
+const QString& ConsoleHistory::value() const
 {
-    if ( it != _history.end() )
-        return *it;
-    else
-        return QString::null;
+    return ((_it != _history.end())? *_it
+                        /* else */ :  _prefix);
 }
 
 void ConsoleHistory::append( const QString& item )
 {
     _history.append( item );
-    it = _history.end();
+    // reset iterator to make the next history
+    //   access begin with the latest item.
+    _it = _history.end();
 }
 
 const QStringList& ConsoleHistory::values() const
 {
     return this->_history;
+}
+
+/**
+ * restart resets the history access to the latest item.
+ */
+void ConsoleHistory::restart( void )
+{
+    _it = _history.end();
 }
 
 // -----------------------------------------------------

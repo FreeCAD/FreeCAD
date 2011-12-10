@@ -46,10 +46,37 @@
 #include <Gui/DocumentPy.h>
 #include "CallTips.h"
 
+Q_DECLARE_METATYPE( Gui::CallTip ); //< allows use of QVariant
+
+namespace Gui
+{
+
+/**
+ * template class Temporary.
+ * Allows variable changes limited to a scope.
+ */
+template <typename TYPE>
+class Temporary
+{
+public:
+    Temporary( TYPE &var, const TYPE tmpVal )
+      : _var(var), _saveVal(var)
+    { var = tmpVal; }
+
+    ~Temporary( void )
+    { _var = _saveVal; }
+
+private:
+    TYPE &_var;
+    TYPE  _saveVal;
+};
+
+} /* namespace Gui */
+
 using namespace Gui;
 
 CallTipsList::CallTipsList(QPlainTextEdit* parent)
-  :  QListWidget(parent), textEdit(parent), cursorPos(0), validObject(true)
+  :  QListWidget(parent), textEdit(parent), cursorPos(0), validObject(true), doCallCompletion(false)
 {
     // make the user assume that the widget is active
     QPalette pal = parent->palette();
@@ -406,7 +433,7 @@ void CallTipsList::showTips(const QString& line)
         addItem(it.key());
         QListWidgetItem *item = this->item(this->count()-1);
         item->setData(Qt::ToolTipRole, QVariant(it.value().description));
-        item->setData(Qt::UserRole, QVariant(it.value().parameter));
+        item->setData(Qt::UserRole, qVariantFromValue( it.value() )); //< store full CallTip data
         switch (it.value().type)
         {
         case CallTip::Module:
@@ -526,8 +553,14 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
                 itemActivated(currentItem());
                 return false;
             }
-            else if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Tab) {
+            else if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
                 itemActivated(currentItem());
+                return true;
+            }
+            else if (ke->key() == Qt::Key_Tab) {
+                // enable call completion for activating items
+                Temporary<bool> tmp( this->doCallCompletion, true ); //< previous state restored on scope exit
+                itemActivated( currentItem() );
                 return true;
             }
             else if (this->compKeys.indexOf(ke->key()) > -1) {
@@ -585,6 +618,29 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
             cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
     }
     cursor.insertText( text );
+
+    // get CallTip from item's UserRole-data
+    const CallTip &callTip = qVariantValue<CallTip>( item->data(Qt::UserRole) );
+
+    // if call completion enabled and we've something callable (method or class constructor) ...
+    if (this->doCallCompletion
+     && (callTip.type == CallTip::Method || callTip.type == CallTip::Class))
+    {
+      cursor.insertText( QLatin1String("()") ); //< just append parenthesis to identifier even inserted.
+
+      /**
+       * Try to find out if call needs arguments.
+       * For this we search the description for appropriate hints ...
+       */
+      QRegExp argumentMatcher( QRegExp::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
+      argumentMatcher.setMinimal( true ); //< set regex non-greedy!
+      if (argumentMatcher.indexIn( callTip.description ) != -1)
+      {
+        // if arguments are needed, we just move the cursor one left, to between the parentheses.
+        cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor, 1 );
+        textEdit->setTextCursor( cursor );
+      }
+    }
     textEdit->ensureCursorVisible();
 
     QRect rect = textEdit->cursorRect(cursor);
@@ -593,7 +649,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 
     QPoint p(posX, posY);
     p = textEdit->mapToGlobal(p);
-    QToolTip::showText(p, item->data(Qt::UserRole).toString());
+    QToolTip::showText( p, callTip.parameter );
 }
 
 QString CallTipsList::stripWhiteSpace(const QString& str) const

@@ -81,6 +81,7 @@ private:
     QPlainTextEdit* textEdit;
     int cursorPos;
     bool validObject;
+    bool doCallCompletion;
     QList<int> hideKeys;
     QList<int> compKeys;
 };

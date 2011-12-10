@@ -45,6 +45,7 @@ public:
 
     bool push(const char*);
     int compileCommand(const char*) const;
+    bool hasPendingInput( void ) const;
     void setBuffer(const QStringList&);
     QStringList getBuffer() const;
     void clearBuffer();
@@ -72,15 +73,17 @@ public:
     void first();
     bool more();
     bool next();
-    bool prev();
+    bool prev(const QString &prefix = QString());
     bool isEmpty() const;
-    QString value() const;
-    void append( const QString& );
+    const QString& value() const;
+    void append(const QString &inputLine);
     const QStringList& values() const;
+    void restart();
 
 private:
-    QStringList _history;
-    QStringList::ConstIterator it;
+    QStringList                _history;
+    QStringList::ConstIterator _it;
+    QString                    _prefix;
 };
 
 /**
