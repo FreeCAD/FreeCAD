@@ -28,7 +28,9 @@
 #include "Mod/Sketcher/App/SketchObject.h"
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
+#include <Base/AxisPy.h>
 #include <App/Document.h>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
@@ -233,6 +235,24 @@ PyObject* SketchObjectPy::movePoint(PyObject *args)
 
 }
 
+PyObject* SketchObjectPy::getPoint(PyObject *args)
+{
+    int GeoId, PointType;
+    if (!PyArg_ParseTuple(args, "ii", &GeoId, &PointType))
+        return 0;
+
+    return new Base::VectorPy(new Base::Vector3d(this->getSketchObjectPtr()->getPoint(GeoId,(Sketcher::PointPos)PointType)));
+}
+
+PyObject* SketchObjectPy::getAxis(PyObject *args)
+{
+    int AxId;
+    if (!PyArg_ParseTuple(args, "i", &AxId))
+        return 0;
+
+    return new Base::AxisPy(new Base::Axis(this->getSketchObjectPtr()->getAxis(AxId)));
+}
+
 PyObject* SketchObjectPy::fillet(PyObject *args)
 {
     PyObject *pcObj1, *pcObj2;
@@ -284,7 +304,7 @@ PyObject* SketchObjectPy::trim(PyObject *args)
         return 0;
     }
 
-    Py_Return; 
+    Py_Return;
 
 }
 
@@ -296,6 +316,11 @@ Py::Int SketchObjectPy::getConstraintCount(void) const
 Py::Int SketchObjectPy::getGeometryCount(void) const
 {
     return Py::Int(this->getSketchObjectPtr()->Geometry.getSize());
+}
+
+Py::Int SketchObjectPy::getAxisCount(void) const
+{
+    return Py::Int(this->getSketchObjectPtr()->getAxisCount());
 }
 
 PyObject *SketchObjectPy::getCustomAttributes(const char* /*attr*/) const

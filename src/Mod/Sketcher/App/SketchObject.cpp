@@ -205,6 +205,41 @@ Base::Vector3d SketchObject::getPoint(int geoIndex, PointPos PosId)
     return Base::Vector3d();
 }
 
+int SketchObject::getAxisCount(void) const
+{
+    const std::vector< Part::Geometry * > &vals = this->Geometry.getValues();
+
+    int count=0;
+    for (std::vector<Part::Geometry *>::const_iterator geo=vals.begin();
+        geo != vals.end(); geo++)
+        if ((*geo) && (*geo)->Construction &&
+            (*geo)->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+            count++;
+
+    return count;
+}
+
+Base::Axis SketchObject::getAxis(int axId) const
+{
+    const std::vector< Part::Geometry * > &vals = this->Geometry.getValues();
+
+    int count=0;
+    for (std::vector<Part::Geometry *>::const_iterator geo=vals.begin();
+        geo != vals.end(); geo++)
+        if ((*geo) && (*geo)->Construction &&
+            (*geo)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (count == axId) {
+                Part::GeomLineSegment *lineSeg = dynamic_cast<Part::GeomLineSegment*>(*geo);
+                Base::Vector3d start = lineSeg->getStartPoint();
+                Base::Vector3d end = lineSeg->getEndPoint();
+                return Base::Axis(start, end-start);
+            }
+            count++;
+        }
+
+    return Base::Axis();
+}
+
 int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList)
 {
     return -1;

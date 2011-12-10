@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef SKETCHER_SKETCHOBJECT_H
 #define SKETCHER_SKETCHOBJECT_H
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
+#include <Base/Axis.h>
 
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PropertyGeometryList.h>
@@ -90,6 +89,10 @@ public:
     int movePoint(int geoIndex1, PointPos Pos1, const Base::Vector3d& toPoint, bool relative=false);
     /// retrieves the coordinates of a point
     Base::Vector3d getPoint(int geoIndex1, PointPos Pos1);
+    /// returns the number of construction lines (to be used as axes)
+    int getAxisCount(void) const;
+    /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
+    Base::Axis getAxis(int axId) const;
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoNbr);

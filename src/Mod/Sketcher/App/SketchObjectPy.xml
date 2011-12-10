@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="Part2DObjectPy"  
-    Name="SketchObjectPy" 
-    Twin="SketchObject" 
-    TwinPointer="SketchObject" 
-    Include="Mod/Sketcher/App/SketchObject.h" 
-    Namespace="Sketcher" 
-    FatherInclude="Mod/Part/App/Part2DObjectPy.h" 
+  <PythonExport
+    Father="Part2DObjectPy"
+    Name="SketchObjectPy"
+    Twin="SketchObject"
+    TwinPointer="SketchObject"
+    Include="Mod/Sketcher/App/SketchObject.h"
+    Namespace="Sketcher"
+    FatherInclude="Mod/Part/App/Part2DObjectPy.h"
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -78,6 +78,20 @@
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getPoint">
+      <Documentation>
+        <UserDocu>
+          getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAxis">
+      <Documentation>
+        <UserDocu>
+          return an axis based on the corresponding construction line
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="fillet">
       <Documentation>
         <UserDocu>create fillet between two edges or at a point</UserDocu>
@@ -99,6 +113,14 @@
         <UserDocu>Number of geometric objects in this sketch</UserDocu>
       </Documentation>
       <Parameter Name="GeometryCount" Type="Int"/>
+    </Attribute>
+    <Attribute Name="AxisCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          return the the number of construction lines in the sketch which can be used as axes
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="AxisCount" Type="Int"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>
