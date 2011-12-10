@@ -82,6 +82,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
             mkFillet.Add(radius, radius, edge);
         }
 
+        mkFillet.Build();
         if (!mkFillet.IsDone())
             return new App::DocumentObjectExecReturn("Failed to create fillet");
 
