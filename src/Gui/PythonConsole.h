@@ -107,6 +107,7 @@ public Q_SLOTS:
     void onInsertFileName();
     void onCopyHistory();
     void onCopyCommand();
+    void onClearConsole();
 
 private Q_SLOTS:
     void visibilityChanged (bool visible);

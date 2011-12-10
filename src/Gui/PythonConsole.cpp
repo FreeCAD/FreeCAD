@@ -69,7 +69,7 @@ struct PythonConsoleP
     InteractiveInterpreter* interpreter;
     CallTipsList* callTipsList;
     ConsoleHistory history;
-    QString output, error;
+    QString output, error, info;
     QStringList statements;
     bool interactive;
     QMap<QString, QColor> colormap; // Color map
@@ -388,9 +388,10 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     const char* version  = PyString_AsString(PySys_GetObject("version"));
     const char* platform = PyString_AsString(PySys_GetObject("platform"));
-    d->output = QString::fromAscii("Python %1 on %2\n"
+    d->info = QString::fromAscii("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromAscii(version)).arg(QString::fromAscii(platform));
+    d->output = d->info;
     printPrompt(false);
 }
 
@@ -467,8 +468,17 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               break;
 
           default:
-              if (e->text().isEmpty() || e->matches( QKeySequence::Copy ))
-                  { TextEdit::keyPressEvent(e); }
+              if (e->text().isEmpty() ||
+                  e->matches(QKeySequence::Copy) ||
+                  e->matches(QKeySequence::SelectAll)) {
+                  TextEdit::keyPressEvent(e);
+              }
+              else if (!e->text().isEmpty() && 
+                  (e->modifiers() == Qt::NoModifier || 
+                   e->modifiers() == Qt::ShiftModifier)) {
+                  this->moveCursor(QTextCursor::End);
+                  TextEdit::keyPressEvent(e);
+              }
               break;
         }
     }
@@ -1022,6 +1032,12 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 {
     QMenu menu(this);
     QAction *a;
+    // construct reference cursor at begin of input line ...
+    QTextCursor  cursor = this->textCursor();
+    QTextCursor inputLineBegin = cursor;
+    inputLineBegin.movePosition(QTextCursor::End);
+    inputLineBegin.movePosition(QTextCursor::StartOfLine);
+    inputLineBegin.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, promptLength);
 
     a = menu.addAction(tr("&Copy"), this, SLOT(copy()), Qt::CTRL+Qt::Key_C);
     a->setEnabled(textCursor().hasSelection());
@@ -1036,11 +1052,15 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     a->setEnabled(!d->history.isEmpty());
 
     menu.addSeparator();
+
     a = menu.addAction(tr("&Paste"), this, SLOT(paste()), Qt::CTRL+Qt::Key_V);
     const QMimeData *md = QApplication::clipboard()->mimeData();
-    a->setEnabled(md && canInsertFromMimeData(md));
+    a->setEnabled(cursor >= inputLineBegin && md && canInsertFromMimeData(md));
 
     a = menu.addAction(tr("Select All"), this, SLOT(selectAll()), Qt::CTRL+Qt::Key_A);
+    a->setEnabled(!document()->isEmpty());
+
+    a = menu.addAction(tr("Clear console"), this, SLOT(onClearConsole()));
     a->setEnabled(!document()->isEmpty());
 
     menu.addSeparator();
@@ -1056,6 +1076,13 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
         this->setWordWrapMode(wrap->isChecked()
             ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap);
     }
+}
+
+void PythonConsole::onClearConsole()
+{
+    clear();
+    d->output = d->info;
+    printPrompt(false);
 }
 
 void PythonConsole::onSaveHistoryAs()
