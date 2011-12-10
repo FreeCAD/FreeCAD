@@ -140,6 +140,21 @@ class _Structure(Component.Component):
             base = Part.makePolygon([v1,v2,v3,v4,v1])
             base = Part.Face(base)
             base = base.extrude(normal)
+        for app in obj.Additions:
+            base = base.oldFuse(app.Shape)
+            app.ViewObject.hide() # to be removed
+        for hole in obj.Subtractions:
+            cut = False
+            if hasattr(hole,"Proxy"):
+                if hasattr(hole.Proxy,"Subvolume"):
+                    if hole.Proxy.Subvolume:
+                        print "cutting subvolume",hole.Proxy.Subvolume
+                        base = base.cut(hole.Proxy.Subvolume)
+                        cut = True
+            if not cut:
+                if hasattr(obj,"Shape"):
+                    base = base.cut(hole.Shape)
+                    hole.ViewObject.hide() # to be removed
         if base:
             obj.Shape = base
             if not fcgeo.isNull(pl): obj.Placement = pl
