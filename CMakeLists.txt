@@ -285,8 +285,14 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 # -------------------------------- OpenGL --------------------------------
 
 		find_package(OpenGL)
-
-
+                include(FindPackageMessage)
+                if(OPENGL_GLU_FOUND)
+                    find_package_message(OPENGL_GLU
+                        "Found OpenGLU: ${OPENGL_glu_LIBRARY}"
+                        "[${OPENGL_glu_LIBRARY}][${OEPNGL_INCLUDE_DIR}]")
+                else(OPENGL_GLU_FOUND)
+                    message(FATAL_ERROR "The GLU library is required. Make sure it is installed.")
+                endif(OPENGL_GLU_FOUND)
 
 # -------------------------------- Coin3D --------------------------------
 
