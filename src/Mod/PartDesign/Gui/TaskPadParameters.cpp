@@ -71,6 +71,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     bool mirrored = pcPad->MirroredExtent.getValue();
     bool reversed = pcPad->Reversed.getValue();
 
+    ui->doubleSpinBox->setMinimum(0);
     ui->doubleSpinBox->setValue(l);
     ui->doubleSpinBox->selectAll();
     ui->checkBoxMirrored->setChecked(mirrored);
@@ -184,6 +185,8 @@ bool TaskDlgPadParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirroredExtent = %i",name.c_str(),parameter->getMirroredExtent()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        if (!PadView->getObject()->isValid())
+            throw Base::Exception(PadView->getObject()->getStatusString());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }

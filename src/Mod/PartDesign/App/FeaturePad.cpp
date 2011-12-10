@@ -38,6 +38,7 @@
 # include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
+# include <Precision.hxx>
 #endif
 
 #include <Base/Placement.h>
@@ -74,6 +75,9 @@ short Pad::mustExecute() const
 
 App::DocumentObjectExecReturn *Pad::execute(void)
 {
+    double L = Length.getValue();
+    if (L < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Length of pad too small");
     App::DocumentObject* link = Sketch.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No sketch linked");
@@ -120,7 +124,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
     // lengthen the vector
-    SketchOrientationVector *= Length.getValue();
+    SketchOrientationVector *= L;
 
     try {
         // extrude the face to a solid
