@@ -42,6 +42,11 @@ public:
 
     App::PropertyLink   Sketch;
 
+    /** calculates and updates the Placement property based on the Sketch
+     *  or its support if it has one
+      */
+    void positionBySketch(void);
+
 protected:
     TopoDS_Face validateFace(const TopoDS_Face&) const;
     TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;

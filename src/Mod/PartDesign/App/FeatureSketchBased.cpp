@@ -49,6 +49,7 @@
 
 
 #include "FeatureSketchBased.h"
+#include <Mod/Part/App/Part2DObject.h>
 
 
 using namespace PartDesign;
@@ -65,7 +66,7 @@ struct Wire_Compare {
 
         BRepBndLib::Add(w2, box2);
         box2.SetGap(0.0);
-        
+
         return box1.SquareExtent() < box2.SquareExtent();
     }
 };
@@ -75,6 +76,18 @@ PROPERTY_SOURCE(PartDesign::SketchBased, PartDesign::Feature)
 SketchBased::SketchBased()
 {
     ADD_PROPERTY(Sketch,(0));
+}
+
+void SketchBased::positionBySketch(void)
+{
+    Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
+    if (sketch && sketch->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        Part::Feature *part = static_cast<Part::Feature*>(sketch->Support.getValue());
+        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+            this->Placement.setValue(part->Placement.getValue());
+        else
+            this->Placement.setValue(sketch->Placement.getValue());
+    }
 }
 
 bool SketchBased::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) const
@@ -180,7 +193,7 @@ TopoDS_Shape SketchBased::makeFace(std::list<TopoDS_Wire>& wires) const
             inner_axis = adapt.Plane().Axis().Direction();
         }
         // It seems that orientation is always 'Forward' and we only have to reverse
-        // if the underlying plane have opposite normals. 
+        // if the underlying plane have opposite normals.
         if (axis.Dot(inner_axis) < 0)
             it->Reverse();
         mkFace.Add(*it);
