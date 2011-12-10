@@ -57,28 +57,11 @@ SketchObject::SketchObject()
 
 App::DocumentObjectExecReturn *SketchObject::execute(void)
 {
-    // recalculate support:
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-    {
-        Base::Placement ObjectPos = part->Placement.getValue();
-        const std::vector<std::string> &sub = Support.getSubValues();
-        assert(sub.size()==1);
-        // get the selected sub shape (a Face)
-        const Part::TopoShape &shape = part->Shape.getShape();
-        if (shape._Shape.IsNull())
-            return new App::DocumentObjectExecReturn("Support shape is empty!");
-        TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
-        const TopoDS_Face &face = TopoDS::Face(sh);
-        assert(!face.IsNull());
-
-        BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() != GeomAbs_Plane)
-            return new App::DocumentObjectExecReturn("Sketch has no planar support!");
-
-        // set sketch position
-        Base::Placement placement = Part2DObject::positionBySupport(face,ObjectPos);
-        Placement.setValue(placement);
+    try {
+        this->positionBySupport();
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
 
     // setup and diagnose the sketch

@@ -35,16 +35,16 @@ namespace Part
 {
 class Geometry;
 
-/** 2D Shape 
-  * This is a specialiced version of the PartShape for use with 
+/** 2D Shape
+  * This is a specialiced version of the PartShape for use with
   * flat (2D) geometry. The Z direction has always to be 0.
   * The position and orientation of the Plane this 2D geometry is
   * referenced is defined by the Placement property. It also
-  * has a link to a supporting Face which defines the position 
+  * has a link to a supporting Face which defines the position
   * in space where it is located. If the support is changed the
-  * static methode positionBySupport() is used to calculate a 
+  * static methode positionBySupport() is used to calculate a
   * new position for the Part2DObject.
-  * This object can be used stand alone or for constraint 
+  * This object can be used stand alone or for constraint
   * geometry as its descend Sketcher::SketchObject .
   */
 
@@ -58,15 +58,15 @@ public:
     /// if the 2DObject lies on the Face of an other object this links to it
     App::PropertyLinkSub        Support;
 
-    /** calculate a position out of a support face
-      * this methode will calculate the position of the 
-      * 2D shape on a supporting Face. The Normal(Orientation) get 
+    /** calculate and update the Placement property based on the Support
+      * this methode will calculate the position of the
+      * 2D shape on a supporting Face. The Normal(Orientation) get
       * extracted from the Face and for the position an educated guess is made,
       * by examining the placement of the support object (not only the face).
-      * If the support is changed this methode is called do determine a new 
+      * If the support is changed this methode is called do determine a new
       * postion of the 2D shape on the supporting Face
       */
-    static Base::Placement positionBySupport(const TopoDS_Face &face, const Base::Placement &Place);
+    void positionBySupport(void);
 
     /** calculate the points where a curve with index GeoId should be trimmed
       * with respect to the rest of the curves contained in the list geomlist

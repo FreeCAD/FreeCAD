@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
- 
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
@@ -63,25 +63,36 @@ Part2DObject::Part2DObject()
 
 App::DocumentObjectExecReturn *Part2DObject::execute(void)
 {
-
     return App::DocumentObject::StdReturn;
 }
 
-Base::Placement Part2DObject::positionBySupport(const TopoDS_Face &face, const Base::Placement &Place)
+void Part2DObject::positionBySupport(void)
 {
-    if (face.IsNull())
-        throw Base::Exception("Null Face in Part2DObject::positionBySupport()!");
+    // recalculate support:
+    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
+    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        return;
 
-    bool Reverse = false;
-    if (face.Orientation() == TopAbs_REVERSED) 
-        Reverse = true;
+    Base::Placement Place = part->Placement.getValue();
+    const std::vector<std::string> &sub = Support.getSubValues();
+    assert(sub.size()==1);
+    // get the selected sub shape (a Face)
+    const Part::TopoShape &shape = part->Shape.getShape();
+    if (shape._Shape.IsNull())
+        throw Base::Exception("Support shape is empty!");
+    TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
+    const TopoDS_Face &face = TopoDS::Face(sh);
+    if (face.IsNull())
+        throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
 
     BRepAdaptor_Surface adapt(face);
-
     if (adapt.GetType() != GeomAbs_Plane)
-        throw Base::Exception("No planar Face in Part2DObject::positionBySupport()!");
+        throw Base::Exception("No planar face in Part2DObject::positionBySupport()!");
 
-    gp_Pnt ObjOrg(Place.getPosition().x,Place.getPosition().y,Place.getPosition().z);
+    bool Reverse = false;
+    if (face.Orientation() == TopAbs_REVERSED)
+        Reverse = true;
+
     gp_Pln plane = adapt.Plane();
     Standard_Boolean ok = plane.Direct();
     if (!ok) {
@@ -93,6 +104,8 @@ Base::Placement Part2DObject::positionBySupport(const TopoDS_Face &face, const B
     gp_Ax1 Normal = plane.Axis();
     if (Reverse)
         Normal.Reverse();
+
+    gp_Pnt ObjOrg(Place.getPosition().x,Place.getPosition().y,Place.getPosition().z);
 
     Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
     GeomAPI_ProjectPointOnSurf projector(ObjOrg,gPlane);
@@ -168,7 +181,7 @@ Base::Placement Part2DObject::positionBySupport(const TopoDS_Face &face, const B
     // check the angle against the Z Axis
     //Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,1)));
 
-    return Base::Placement(mtrx);
+    Placement.setValue(Base::Placement(mtrx));
 }
 
 bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
