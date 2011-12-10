@@ -99,7 +99,8 @@ public:
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const {return true;}
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoPickedPoint*) const;
+    virtual std::string getElement(const SoDetail*) const;
+    virtual SoDetail* getDetail(const char*) const;
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     //@}

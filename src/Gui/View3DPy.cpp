@@ -944,7 +944,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
                 dict.setItem("Object",
                     Py::String(vpd->getObject()->getNameInDocument()));
                 dict.setItem("Component",
-                    Py::String(vpd->getElement(Point)));
+                    Py::String(vpd->getElement(Point->getDetail())));
                 // ok, found the node of interest
                 ret = dict;
             }
@@ -1017,7 +1017,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                     dict.setItem("Object",
                         Py::String(vpd->getObject()->getNameInDocument()));
                     dict.setItem("Component",
-                        Py::String(vpd->getElement(point)));
+                        Py::String(vpd->getElement(point->getDetail())));
                     // ok, found the node of interest
                     list.append(dict);
                 }

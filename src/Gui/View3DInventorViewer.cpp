@@ -2055,7 +2055,7 @@ SoPath * View3DInventorViewer::pickFilterCB(void *viewer, const SoPickedPoint * 
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(pp->getPath());
     if (vp && vp->useNewSelectionModel()) {
-        std::string e = vp->getElement(pp);
+        std::string e = vp->getElement(pp->getDetail());
         vp->getSelectionShape(e.c_str());
         static char buf[513];
         snprintf(buf,512,"Hovered: %s (%f,%f,%f)"

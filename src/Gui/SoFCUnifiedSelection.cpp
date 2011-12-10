@@ -251,14 +251,26 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
                 ViewProvider*vp = Application::Instance->getViewProvider(obj);
                 if (vp && vp->useNewSelectionModel() && vp->isSelectable()) {
+                    SoDetail* detail = vp->getDetail(selaction->SelChange.pSubName);
                     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-                    if (selaction->SelChange.Type == SelectionChanges::AddSelection)
-                        type = SoSelectionElementAction::All;
-                    else
-                        type = SoSelectionElementAction::None;
+                    if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
+                        if (detail)
+                            type = SoSelectionElementAction::Append;
+                        else
+                            type = SoSelectionElementAction::All;
+                    }
+                    else {
+                        if (detail)
+                            type = SoSelectionElementAction::Remove;
+                        else
+                            type = SoSelectionElementAction::None;
+                    }
+
                     SoSelectionElementAction action(type);
                     action.setColor(this->colorSelection.getValue());
+                    action.setElement(detail);
                     action.apply(vp->getRoot());
+                    delete detail;
                 }
             }
         }
@@ -335,7 +347,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             if (vpd && vpd->useNewSelectionModel() && vpd->isSelectable()) {
                 std::string documentName = vpd->getObject()->getDocument()->getName();
                 std::string objectName = vpd->getObject()->getNameInDocument();
-                std::string subElementName = vpd->getElement(pp);
+                std::string subElementName = vpd->getElement(pp ? pp->getDetail() : 0);
 
                 static char buf[513];
                 snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
@@ -378,7 +390,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 SoHighlightElementAction action;
                 action.setHighlighted(highlighted);
                 action.setColor(this->colorHighlight.getValue());
-                action.setElement(pp);
+                action.setElement(pp ? pp->getDetail() : 0);
                 action.apply(currenthighlight);
                 if (!highlighted) {
                     currenthighlight->unref();
@@ -422,7 +434,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 SoSelectionElementAction::Type type = SoSelectionElementAction::None;
                 std::string documentName = vpd->getObject()->getDocument()->getName();
                 std::string objectName = vpd->getObject()->getNameInDocument();
-                std::string subElementName = vpd->getElement(pp);
+                std::string subElementName = vpd->getElement(pp ? pp->getDetail() : 0);
                 if (bCtrl) {
                     if (Gui::Selection().isSelected(documentName.c_str()
                                          ,objectName.c_str()
@@ -495,7 +507,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 if (currenthighlight) {
                     SoSelectionElementAction action(type);
                     action.setColor(this->colorSelection.getValue());
-                    action.setElement(pp);
+                    action.setElement(pp ? pp->getDetail() : 0);
                     action.apply(currenthighlight);
                     this->touch();
                 }
@@ -526,7 +538,7 @@ void SoHighlightElementAction::initClass()
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoHighlightElementAction::SoHighlightElementAction () : _highlight(FALSE), _pp(0)
+SoHighlightElementAction::SoHighlightElementAction () : _highlight(FALSE), _det(0)
 {
     SO_ACTION_CONSTRUCTOR(SoHighlightElementAction);
 }
@@ -565,14 +577,14 @@ const SbColor& SoHighlightElementAction::getColor() const
     return this->_color;
 }
 
-void SoHighlightElementAction::setElement(const SoPickedPoint* pp)
+void SoHighlightElementAction::setElement(const SoDetail* det)
 {
-    this->_pp = pp;
+    this->_det = det;
 }
 
-const SoPickedPoint* SoHighlightElementAction::getElement() const
+const SoDetail* SoHighlightElementAction::getElement() const
 {
-    return this->_pp;
+    return this->_det;
 }
 
 // ---------------------------------------------------------------
@@ -596,7 +608,7 @@ void SoSelectionElementAction::initClass()
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoSelectionElementAction::SoSelectionElementAction (Type t) : _type(t), _select(FALSE), _pp(0)
+SoSelectionElementAction::SoSelectionElementAction (Type t) : _type(t), _select(FALSE), _det(0)
 {
     SO_ACTION_CONSTRUCTOR(SoSelectionElementAction);
 }
@@ -631,12 +643,12 @@ const SbColor& SoSelectionElementAction::getColor() const
     return this->_color;
 }
 
-void SoSelectionElementAction::setElement(const SoPickedPoint* pp)
+void SoSelectionElementAction::setElement(const SoDetail* det)
 {
-    this->_pp = pp;
+    this->_det = det;
 }
 
-const SoPickedPoint* SoSelectionElementAction::getElement() const
+const SoDetail* SoSelectionElementAction::getElement() const
 {
-    return this->_pp;
+    return this->_det;
 }

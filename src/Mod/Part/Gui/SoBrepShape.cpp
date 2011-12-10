@@ -87,9 +87,8 @@ void SoBrepFaceSet::doAction(SoAction* action)
             return;
         }
 
-        const SoPickedPoint* pp = hlaction->getElement();
-        if (pp && pp->getDetail()) {
-            const SoDetail* detail = pp->getDetail();
+        const SoDetail* detail = hlaction->getElement();
+        if (detail) {
             if (detail->isOfType(SoFaceDetail::getClassTypeId())) {
                 int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
                 this->highlightIndex.setValue(index);
@@ -118,10 +117,8 @@ void SoBrepFaceSet::doAction(SoAction* action)
             return;
         }
 
-        const SoPickedPoint* pp = selaction->getElement();
-        if (pp && pp->getDetail()) {
-            const SoDetail* detail = pp->getDetail();
-
+        const SoDetail* detail = selaction->getElement();
+        if (detail) {
             if (!detail->isOfType(SoFaceDetail::getClassTypeId())) {
                 return;
             }
@@ -774,9 +771,8 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             this->hl.clear();
             return;
         }
-        const SoPickedPoint* pp = hlaction->getElement();
-        if (pp && pp->getDetail()) {
-            const SoDetail* detail = pp->getDetail();
+        const SoDetail* detail = hlaction->getElement();
+        if (detail) {
             if (!detail->isOfType(SoLineDetail::getClassTypeId())) {
                 this->highlightIndex = -1;
                 this->hl.clear();
@@ -824,9 +820,8 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             return;
         }
 
-        const SoPickedPoint* pp = selaction->getElement();
-        if (pp && pp->getDetail()) {
-            const SoDetail* detail = pp->getDetail();
+        const SoDetail* detail = selaction->getElement();
+        if (detail) {
             if (!detail->isOfType(SoLineDetail::getClassTypeId())) {
                 return;
             }
@@ -992,9 +987,8 @@ void SoBrepPointSet::doAction(SoAction* action)
             this->highlightIndex = -1;
             return;
         }
-        const SoPickedPoint* pp = hlaction->getElement();
-        if (pp && pp->getDetail()) {
-            const SoDetail* detail = pp->getDetail();
+        const SoDetail* detail = hlaction->getElement();
+        if (detail) {
             if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
                 this->highlightIndex = -1;
                 return;
@@ -1024,9 +1018,8 @@ void SoBrepPointSet::doAction(SoAction* action)
             return;
         }
 
-        const SoPickedPoint* pp = selaction->getElement();
-        if (pp && pp->getDetail()) {
-            const SoDetail* detail = pp->getDetail();
+        const SoDetail* detail = selaction->getElement();
+        if (detail) {
             if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
                 return;
             }

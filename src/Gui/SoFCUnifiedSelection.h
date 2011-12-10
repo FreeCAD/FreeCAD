@@ -43,6 +43,7 @@
 
 class SoFullPath;
 class SoPickedPoint;
+class SoDetail;
 
 
 namespace Gui {
@@ -125,8 +126,8 @@ public:
     SbBool isHighlighted() const;
     void setColor(const SbColor&);
     const SbColor& getColor() const;
-    void setElement(const SoPickedPoint*);
-    const SoPickedPoint* getElement() const;
+    void setElement(const SoDetail*);
+    const SoDetail* getElement() const;
 
     static void initClass();
 
@@ -139,7 +140,7 @@ private:
 private:
     SbBool _highlight;
     SbColor _color;
-    const SoPickedPoint* _pp;
+    const SoDetail* _det;
 };
 
 /**
@@ -158,8 +159,8 @@ public:
     Type getType() const;
     void setColor(const SbColor&);
     const SbColor& getColor() const;
-    void setElement(const SoPickedPoint*);
-    const SoPickedPoint* getElement() const;
+    void setElement(const SoDetail*);
+    const SoDetail* getElement() const;
 
     static void initClass();
 
@@ -173,7 +174,7 @@ private:
     Type _type;
     SbBool _select;
     SbColor _color;
-    const SoPickedPoint* _pp;
+    const SoDetail* _det;
 };
 
 

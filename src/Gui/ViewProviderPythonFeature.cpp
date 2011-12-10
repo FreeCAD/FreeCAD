@@ -281,7 +281,7 @@ std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren() 
     return children;
 }
 
-std::string ViewProviderPythonFeatureImp::getElement(const SoPickedPoint *pp) const
+std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
 {
     return "";
 }

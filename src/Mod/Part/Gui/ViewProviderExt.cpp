@@ -371,10 +371,9 @@ std::vector<std::string> ViewProviderPartExt::getDisplayModes(void) const
     return StrList;
 }
 
-std::string ViewProviderPartExt::getElement(const SoPickedPoint* pp) const
+std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 {
     std::stringstream str;
-    const SoDetail* detail = pp->getDetail();
     if (detail) {
         if (detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
@@ -383,7 +382,7 @@ std::string ViewProviderPartExt::getElement(const SoPickedPoint* pp) const
         }
         else if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getPartIndex() + 1;
+            int edge = line_detail->getLineIndex() + 1;
             str << "Edge" << edge;
         }
         else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
@@ -394,6 +393,35 @@ std::string ViewProviderPartExt::getElement(const SoPickedPoint* pp) const
     }
 
     return str.str();
+}
+
+SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
+{
+    std::string element = subelement;
+    std::string::size_type pos = element.find_first_of("0123456789");
+    int index = -1;
+    if (pos != std::string::npos) {
+        index = std::atoi(element.substr(pos).c_str());
+        element = element.substr(0,pos);
+    }
+
+    SoDetail* detail = 0;
+    if (index < 0)
+        return detail;
+    if (element == "Face") {
+        detail = new SoFaceDetail();
+        static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
+    }
+    else if (element == "Edge") {
+        detail = new SoLineDetail();
+        static_cast<SoLineDetail*>(detail)->setLineIndex(index - 1);
+    }
+    else if (element == "Vertex") {
+        detail = new SoPointDetail();
+        static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
+    }
+
+    return detail;
 }
 
 std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* Element) const

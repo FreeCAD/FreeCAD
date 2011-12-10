@@ -40,6 +40,7 @@ class SoTransform;
 class SbMatrix;
 class SoEventCallback;
 class SoPickedPoint;
+class SoDetail;
 class QString;
 class QMenu;
 class QObject;
@@ -103,7 +104,8 @@ public:
     /// indicates if the ViewProvider can be selected
     virtual bool isSelectable(void) const {return true;}
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoPickedPoint *) const { return std::string(); }
+    virtual std::string getElement(const SoDetail *) const { return std::string(); }
+    virtual SoDetail* getDetail(const char*) const { return 0; }
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const
     { return std::vector<Base::Vector3d>(); };
