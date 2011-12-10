@@ -99,6 +99,9 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             ShapeUpgrade_ShellSewing sewShell;
             shape = sewShell.ApplySewing(shell);
         }
+
+        if (shape.ShapeType() != TopAbs_SHELL)
+            Standard_Failure::Raise("Shape is not a shell");
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
