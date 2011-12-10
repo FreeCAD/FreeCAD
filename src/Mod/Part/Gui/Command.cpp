@@ -258,7 +258,8 @@ void CmdPartCut::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().%s.ShapeColor = Gui.activeDocument().%s.ShapeColor", FeatName.c_str(),BaseName.c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", BaseName.c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", BaseName.c_str());
     updateActive();
     commitCommand();
 }
@@ -310,7 +311,8 @@ void CmdPartCommon::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Shapes = [%s]",FeatName.c_str(),ObjectBuf.c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
-    doCommand(Gui,"Gui.activeDocument().%s.ShapeColor = Gui.activeDocument().%s.ShapeColor", FeatName.c_str(),tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
     updateActive();
     commitCommand();
 }
@@ -362,7 +364,8 @@ void CmdPartFuse::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Shapes = [%s]",FeatName.c_str(),ObjectBuf.c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
-    doCommand(Gui,"Gui.activeDocument().%s.ShapeColor = Gui.activeDocument().%s.ShapeColor", FeatName.c_str(),tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
     updateActive();
     commitCommand();
 }
