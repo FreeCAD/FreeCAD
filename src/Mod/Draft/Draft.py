@@ -544,7 +544,7 @@ def makeBlock(objectslist):
     select(obj)
     return obj
 
-def makeArray(baseobject,arg1=Vector(0,0,0),arg2=360,arg3=4,arg4=None):
+def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
     '''makeArray(object,xvector,yvector,xnum,ynum) for rectangular array, or
     makeArray(object,center,totalangle,totalnum) for polar array: Creates an array
     of the given object
@@ -558,7 +558,7 @@ def makeArray(baseobject,arg1=Vector(0,0,0),arg2=360,arg3=4,arg4=None):
     _ViewProviderArray(obj.ViewObject)
     obj.Base = baseobject
     if arg4:
-        org.ArrayType = "ortho"
+        obj.ArrayType = "ortho"
         obj.IntervalX = arg1
         obj.IntervalY = arg2
         obj.NumberX = arg3

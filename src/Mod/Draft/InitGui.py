@@ -194,7 +194,8 @@ class DraftWorkbench (Workbench):
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup","Draft_SelectGroup"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
-        self.appendToolbar(str(draftTools.translate("draft","Draft tools")),self.cmdList+self.modList)
+        self.appendToolbar(str(draftTools.translate("draft","Draft creation tools")),self.cmdList)
+        self.appendToolbar(str(draftTools.translate("draft","Draft modification tools")),self.modList)
         self.appendMenu(str(draftTools.translate("draft","Draft")),self.cmdList+self.modList)
         self.appendMenu([str(draftTools.translate("draft","Draft")),str(draftTools.translate("draft","Display options"))],self.treecmdList)
         self.appendMenu([str(draftTools.translate("draft","Draft")),str(draftTools.translate("draft","Wire tools"))],self.lineList)

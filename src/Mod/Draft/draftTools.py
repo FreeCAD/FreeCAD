@@ -4491,7 +4491,7 @@ class Array():
     def Activated(self):
         obj = Draft.getSelection()[0]
         FreeCAD.ActiveDocument.openTransaction("Array")
-        Draft.makeArray(obj)
+        Draft.makeArray(obj,Vector(1,0,0),Vector(0,1,0),2,2)
         FreeCAD.ActiveDocument.commitTransaction()
             
 #---------------------------------------------------------------------------
