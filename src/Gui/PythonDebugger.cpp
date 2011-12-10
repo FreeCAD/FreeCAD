@@ -414,7 +414,7 @@ void PythonDebugger::runFile(const QString& fn)
 {
     try {
         RunningState state(d->running);
-        Base::Interpreter().runFile((const char*)fn.toUtf8());
+        Base::Interpreter().runFile((const char*)fn.toUtf8(), true);
     }
     catch (const Base::PyException&) {
     }

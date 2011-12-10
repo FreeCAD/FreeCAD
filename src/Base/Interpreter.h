@@ -147,7 +147,7 @@ public:
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     void runInteractiveString(const char *psCmd);
     /// Run file (script) on the python interpreter
-    void runFile(const char*pxFileName);
+    void runFile(const char*pxFileName, bool local);
     /// Run a statement with arguments on the python interpreter
     void runStringArg(const char * psCom,...);
     /// runs a python object method with no return value and no arguments

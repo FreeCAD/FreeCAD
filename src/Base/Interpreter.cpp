@@ -210,7 +210,7 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
         Py_DECREF(presult);
 }
 
-void InterpreterSingleton::runFile(const char*pxFileName)
+void InterpreterSingleton::runFile(const char*pxFileName, bool local)
 {
 #ifdef FC_OS_WIN32
     FileInfo fi(pxFileName);
@@ -222,11 +222,37 @@ void InterpreterSingleton::runFile(const char*pxFileName)
         PyGILStateLocker locker;
         //std::string encoding = PyUnicode_GetDefaultEncoding();
         //PyUnicode_SetDefaultEncoding("utf-8");
-        int ret = PyRun_SimpleFile(fp, pxFileName);
         //PyUnicode_SetDefaultEncoding(encoding.c_str());
-        fclose(fp);
-        if (ret != 0)
-            throw PyException();
+        if (local) {
+            PyObject *module, *dict;
+            module = PyImport_AddModule("__main__");
+            dict = PyModule_GetDict(module);
+            dict = PyDict_Copy(dict);
+            if (PyDict_GetItemString(dict, "__file__") == NULL) {
+                PyObject *f = PyString_FromString(pxFileName);
+                if (f == NULL)
+                    return;
+                if (PyDict_SetItemString(dict, "__file__", f) < 0) {
+                    Py_DECREF(f);
+                    return;
+                }
+                Py_DECREF(f);
+            }
+
+            PyObject *result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
+            fclose(fp);
+            Py_DECREF(dict);
+            if (!result)
+                throw PyException();
+            Py_DECREF(result);
+        }
+        else {
+            int ret = PyRun_SimpleFile(fp, pxFileName);
+            fclose(fp);
+            if (ret != 0)
+                throw PyException();
+        }
+
     }
     else {
         std::string err = "Unknown file: ";

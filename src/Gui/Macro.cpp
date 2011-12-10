@@ -221,7 +221,7 @@ void MacroManager::run(MacroType eType,const char *sName)
         PythonRedirector std_out("stdout",new OutputStdout);
         PythonRedirector std_err("stderr",new OutputStderr);
         //The given path name is expected to be Utf-8
-        Base::Interpreter().runFile(sName);
+        Base::Interpreter().runFile(sName, true);
     }
     catch (const Base::Exception& e)
     {
