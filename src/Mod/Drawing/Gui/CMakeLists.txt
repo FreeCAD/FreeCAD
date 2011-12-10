@@ -5,6 +5,7 @@ else(MSVC)
 endif(MSVC)
 
 include_directories(
+    ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIR}
@@ -22,15 +23,26 @@ set(DrawingGui_LIBS
     FreeCADGui
 )
 
+
 set(DrawingGui_MOC_HDRS
     DrawingView.h
+    TaskOrthoViews.h
     TaskDialog.h
 )
+
+
+
 
 fc_wrap_cpp(DrawingGui_MOC_SRCS ${DrawingGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${DrawingGui_MOC_SRCS})
 
 qt4_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
+
+set(DrawingGui_UIC_SRCS
+    TaskOrthoViews.ui
+)
+
+qt4_wrap_ui(DrawingGui_UIC_HDRS ${DrawingGui_UIC_SRCS})
 
 SET(DrawingGui_SRCS
     ${DrawingGui_SRCS}
@@ -42,6 +54,9 @@ SET(DrawingGui_SRCS
     PreCompiled.h
     TaskDialog.cpp
     TaskDialog.h
+    TaskOrthoViews.ui
+    TaskOrthoViews.cpp
+    TaskOrthoViews.h
     Workbench.cpp
     Workbench.h
 )
@@ -59,6 +74,11 @@ SET(DrawingGuiViewProvider_SRCS
 SOURCE_GROUP("Mod" FILES ${DrawingGui_SRCS})
 SOURCE_GROUP("SVG-View" FILES ${DrawingGuiView_SRCS})
 SOURCE_GROUP("ViewProvider" FILES ${DrawingGuiViewProvider_SRCS})
+
+SET(DrawingGuiTaskDlgs_SRCS
+    TaskOrthoViews.ui
+)
+SOURCE_GROUP("TaskDialogs" FILES ${DrawingGuiTaskDlgs_SRCS})
 
 if(MSVC)
     add_definitions(-D_PreComp_)

@@ -60,6 +60,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     //*part << "Drawing_NewA3Landscape";
     *part << "Drawing_NewPage";
     *part << "Drawing_NewView";
+    *part << "Drawing_OrthoViews";
     *part << "Drawing_ExportPage";
 
     return root;
@@ -74,6 +75,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     //*part << "Drawing_NewA3Landscape";
     *part << "Drawing_NewPage";
     *part << "Drawing_NewView";
+    *part << "Drawing_OrthoViews";
     *part << "Drawing_ExportPage";
     return root;
 }
@@ -89,6 +91,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     img->setCommand("Drawing types");
   //*img << "Drawing_NewA3Landscape";
     *img << "Drawing_NewPage";
+    *img << "Drawing_OrthoViews";
     img = new Gui::ToolBarItem(root);
     img->setCommand("Views");
     *img << "Drawing_NewView";

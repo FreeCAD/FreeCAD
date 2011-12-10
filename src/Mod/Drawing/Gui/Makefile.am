@@ -4,7 +4,12 @@ lib_LTLIBRARIES=libDrawingGui.la DrawingGui.la
 
 BUILT_SOURCES=\
 		moc_DrawingView.cpp \
+		moc_TaskOrthoViews.h \
+		ui_TaskOrthoViews.h \
 		moc_TaskDialog.cpp
+
+libDrawingGui_la_UI=\
+        TaskOrthoViews.ui
 
 libDrawingGui_la_SOURCES=\
 		AppDrawingGuiPy.cpp \

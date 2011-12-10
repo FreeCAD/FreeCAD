@@ -5,7 +5,7 @@
  *   published by the Free Software Foundation; either version 2 of the    *
  *   License, or (at your option) any later version.                       *
  *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2002                                                    *
+ *   JÃ¼rgen Riegel 2002                                                    *
  *                                                                         *
  ***************************************************************************/
 
@@ -31,6 +31,7 @@
 
 #include "DrawingView.h"
 #include "TaskDialog.h"
+#include "TaskOrthoViews.h"
 
 using namespace DrawingGui;
 using namespace std;
@@ -273,6 +274,44 @@ void CmdDrawingNewView::activated(int iMsg)
 }
 
 //===========================================================================
+// Drawing_OrthoView
+//===========================================================================
+
+DEF_STD_CMD(CmdDrawingOrthoViews);
+
+CmdDrawingOrthoViews::CmdDrawingOrthoViews()
+  : Command("Drawing_OrthoViews")
+{
+    sAppModule      = "Drawing";
+    sGroup          = QT_TR_NOOP("Drawing");
+    sMenuText       = QT_TR_NOOP("Insert orthographic views");
+    sToolTipText    = QT_TR_NOOP("Insert an orthographic projection of a part in the active drawing");
+    sWhatsThis      = "Drawing_OrthoView";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/drawing-orthoviews";
+}
+
+void CmdDrawingOrthoViews::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if (shapes.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select a Part object."));
+        return;
+    }
+
+    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
+            QObject::tr("Create a page to insert views into."));
+        return;
+    }
+ 
+    Gui::Control().showDialog(new TaskDlgOrthoViews());
+}
+
+
+//===========================================================================
 // Drawing_ExportPage
 //===========================================================================
 
@@ -366,6 +405,7 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingNewPage());
     rcCmdMgr.addCommand(new CmdDrawingNewA3Landscape());
     rcCmdMgr.addCommand(new CmdDrawingNewView());
+    rcCmdMgr.addCommand(new CmdDrawingOrthoViews());
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
 }

@@ -18,6 +18,7 @@ EXTRA_DIST = \
 		icons/actions/drawing-landscape-A4.svg \
 		icons/actions/drawing-landscape-new.svg \
 		icons/actions/drawing-portrait-A4.svg \
+		icons/actions/drawing-orthoviews.svg \
 		icons/Page.svg \
 		icons/Pages.svg \
 		icons/View.svg \
