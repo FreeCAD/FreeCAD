@@ -67,6 +67,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(InspectionGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Inspection)
     set_target_properties(InspectionGui PROPERTIES PREFIX "")
+    set_target_properties(InspectionGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS InspectionGui DESTINATION lib)
+INSTALL(TARGETS InspectionGui DESTINATION lib)

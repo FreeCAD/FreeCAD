@@ -69,6 +69,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(ImageGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Image)
     set_target_properties(ImageGui PROPERTIES PREFIX "")
+    set_target_properties(ImageGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS ImageGui DESTINATION lib)
+INSTALL(TARGETS ImageGui DESTINATION lib)

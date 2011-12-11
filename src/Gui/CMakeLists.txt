@@ -835,6 +835,7 @@ elseif(MINGW)
     set_target_properties(FreeCADGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 else(MSVC)
     set_target_properties(FreeCADGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+    set_target_properties(FreeCADGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
 if(WIN32)

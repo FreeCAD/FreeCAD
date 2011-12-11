@@ -197,12 +197,17 @@ ENDIF(MINGW)
 SET(INSTALL_PATH_NAME SMESH-${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK})
 
 IF(UNIX)
-    # Libraries are installed by default in /usr/local/lib/SMESH-5.1.2.7
-    INSTALL(TARGETS SMDS Driver DriverSTL DriverDAT DriverUNV
+        SET_TARGET_PROPERTIES(SMDS Driver DriverSTL DriverDAT DriverUNV
             SMESHDS SMESH StdMeshers
-            DESTINATION lib)
-    # Headers are installed by default in /usr/local/include/SMESH-5.1.2.7
-    INSTALL(DIRECTORY inc/
+            PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+        # Libraries are installed by default in /usr/local/lib/SMESH-5.1.2.7
+        INSTALL(TARGETS SMDS Driver DriverSTL DriverDAT DriverUNV
+            SMESHDS SMESH StdMeshers
+            DESTINATION lib
+        )
+        # Headers are installed by default in /usr/local/include/SMESH-5.1.2.7
+        INSTALL(DIRECTORY inc/
             DESTINATION include
-            FILES_MATCHING PATTERN "*.h*")
+            FILES_MATCHING PATTERN "*.h*"
+        )
 ENDIF(UNIX)

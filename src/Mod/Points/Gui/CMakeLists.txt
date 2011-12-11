@@ -69,6 +69,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(PointsGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Points)
     set_target_properties(PointsGui PROPERTIES PREFIX "")
+    set_target_properties(PointsGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS PointsGui DESTINATION lib)
+INSTALL(TARGETS PointsGui DESTINATION lib)

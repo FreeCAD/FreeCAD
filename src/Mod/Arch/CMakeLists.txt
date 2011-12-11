@@ -30,9 +30,7 @@ ADD_CUSTOM_TARGET(Arch ALL
 
 fc_copy_sources("Mod/Arch" "Arch" ${all_files})
 
-install(
-    FILES
-        ${Arch_SRCS}
-    DESTINATION
-        Mod/Arch
+INSTALL(
+    FILES ${Arch_SRCS}
+    DESTINATION Mod/Arch
 )

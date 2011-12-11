@@ -48,6 +48,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(AssemblyGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Assembly)
     set_target_properties(AssemblyGui PROPERTIES PREFIX "")
+    SET_TARGET_PROPERTIES(AssemblyGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS AssemblyGui DESTINATION lib)
+INSTALL(TARGETS AssemblyGui DESTINATION lib)

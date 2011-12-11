@@ -61,11 +61,12 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 if(WIN32)
     SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 else(WIN32)
-#    SET(CMAKE_INSTALL_PREFIX "/usr/lib/freecad")
+    SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad")
+    SET(INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif(WIN32)
 
-# ================================================================================
-# == Win32 is default behaviour use the LibPack copied in Source tree ============
+# ==============================================================================
+# == Win32 is default behaviour use the LibPack copied in Source tree ==========
 if(MSVC)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
     set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
@@ -74,7 +75,7 @@ else(MSVC)
     set(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
 endif(MSVC)
 
-# ================================================================================
+# ==============================================================================
 # == All the options for the build process    ============
 
 OPTION(FREECAD_BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
@@ -82,10 +83,10 @@ OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3
 OPTION(FREECAD_BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
 OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
 OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
+SET(RESOURCEDIR "${CMAKE_INSTALL_PREFIX}/data" CACHE PATH "Absolute path to the data directory.")
+SET(DOCDIR "" CACHE PATH "Absolute path to the documentation directory.")
 
-
-
-# ================================================================================
+# ==============================================================================
 
 if(FREECAD_LIBPACK_USE)
     # checking for a unique file in LibPack location to make sure the right version of the LibPack is there

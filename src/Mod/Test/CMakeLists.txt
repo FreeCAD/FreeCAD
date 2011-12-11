@@ -20,7 +20,7 @@ ADD_CUSTOM_TARGET(Test ALL
 
 fc_copy_sources("Mod/Test" "Test" ${Test_SRCS})
 
-install(
+INSTALL(
     FILES
         ${Test_SRCS}
     DESTINATION

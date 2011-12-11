@@ -69,6 +69,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(MeshPartGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/MeshPart)
     set_target_properties(MeshPartGui PROPERTIES PREFIX "")
+    set_target_properties(MeshPartGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS MeshPartGui DESTINATION lib)
+INSTALL(TARGETS MeshPartGui DESTINATION lib)

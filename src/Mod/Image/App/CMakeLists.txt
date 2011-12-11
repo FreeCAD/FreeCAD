@@ -44,6 +44,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Image PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Image)
     set_target_properties(Image PROPERTIES PREFIX "")
+    set_target_properties(Image PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS Image DESTINATION lib)
+INSTALL(TARGETS Image DESTINATION lib)

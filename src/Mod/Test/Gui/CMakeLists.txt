@@ -65,6 +65,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(QtUnitGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Test)
     set_target_properties(QtUnitGui PROPERTIES PREFIX "")
+    set_target_properties(QtUnitGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS QtUnitGui DESTINATION lib)
+INSTALL(TARGETS QtUnitGui DESTINATION lib)

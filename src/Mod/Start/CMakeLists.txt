@@ -2,9 +2,10 @@
 add_subdirectory(App)
 if(FREECAD_BUILD_GUI)
     add_subdirectory(Gui)
+    add_subdirectory(StartPage)
 endif(FREECAD_BUILD_GUI)
 
-install(
+INSTALL(
     FILES
         Init.py
         InitGui.py

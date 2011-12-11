@@ -34,14 +34,14 @@ ADD_CUSTOM_TARGET(Draft ALL
 
 fc_copy_sources("Mod/Draft" "Draft" ${all_files})
 
-install(
+
+INSTALL(
     FILES
         ${DraftLibs_SRCS}
     DESTINATION
         Mod/Draft/draftlibs
 )
-
-install(
+INSTALL(
     FILES
         ${Draft_SRCS}
     DESTINATION

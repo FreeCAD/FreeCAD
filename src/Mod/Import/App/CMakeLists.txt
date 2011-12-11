@@ -42,4 +42,8 @@ target_link_libraries(Import ${Import_LIBS})
 
 set_target_properties(Import PROPERTIES SUFFIX ".pyd")
 
+if(UNIX)
+    set_target_properties(Import PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+endif(UNIX)
+
 install(TARGETS Import DESTINATION lib)

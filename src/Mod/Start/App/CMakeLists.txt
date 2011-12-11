@@ -37,6 +37,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Start PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
     set_target_properties(Start PROPERTIES PREFIX "")
+    set_target_properties(Start PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS Start DESTINATION lib)
+INSTALL(TARGETS Start DESTINATION lib)

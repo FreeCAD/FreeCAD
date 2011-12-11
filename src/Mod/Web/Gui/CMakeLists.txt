@@ -52,6 +52,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(WebGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Web)
     set_target_properties(WebGui PROPERTIES PREFIX "")
+    set_target_properties(WebGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS WebGui DESTINATION lib)
+INSTALL(TARGETS WebGui DESTINATION lib)

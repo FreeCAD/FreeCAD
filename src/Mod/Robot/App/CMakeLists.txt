@@ -137,6 +137,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Robot PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Robot)
     set_target_properties(Robot PROPERTIES PREFIX "")
+    set_target_properties(Robot PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS Robot DESTINATION lib)
+INSTALL(TARGETS Robot DESTINATION lib)

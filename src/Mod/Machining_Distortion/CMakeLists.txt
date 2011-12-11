@@ -21,7 +21,8 @@ ADD_CUSTOM_TARGET(MachDistortion ALL
 
 fc_copy_sources("Mod/Machining_Distortion" ${MachDist_SRCS})
 
-install(
+
+INSTALL(
     FILES
         ${MachDist_SRCS}
     DESTINATION

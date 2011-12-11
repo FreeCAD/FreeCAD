@@ -89,6 +89,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(RaytracingGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Raytracing)
     set_target_properties(RaytracingGui PROPERTIES PREFIX "")
+    set_target_properties(RaytracingGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS RaytracingGui DESTINATION lib)
+INSTALL(TARGETS RaytracingGui DESTINATION lib)

@@ -66,6 +66,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(FemGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
     set_target_properties(FemGui PROPERTIES PREFIX "")
+    set_target_properties(FemGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS FemGui DESTINATION lib)
+INSTALL(TARGETS FemGui DESTINATION lib)

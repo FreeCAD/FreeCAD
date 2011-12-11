@@ -124,6 +124,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(MeshGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Mesh)
     set_target_properties(MeshGui PROPERTIES PREFIX "")
+    set_target_properties(MeshGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS MeshGui DESTINATION lib)
+INSTALL(TARGETS MeshGui DESTINATION lib)

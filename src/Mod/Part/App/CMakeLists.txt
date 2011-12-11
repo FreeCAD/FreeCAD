@@ -254,6 +254,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Part PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Part)
     set_target_properties(Part PROPERTIES PREFIX "")
+    set_target_properties(Part PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
-install(TARGETS Part DESTINATION lib)
+INSTALL(TARGETS Part DESTINATION lib)

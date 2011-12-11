@@ -12,7 +12,7 @@ ADD_CUSTOM_TARGET(Example_data ALL
 
 fc_copy_sources("data/examples" "Examples" ${Examples_Files})
 
-install(
+INSTALL(
     FILES
         ${Examples_Files}
     DESTINATION

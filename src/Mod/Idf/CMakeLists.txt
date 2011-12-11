@@ -48,23 +48,21 @@ ADD_CUSTOM_TARGET(Idf ALL
 
 fc_copy_sources("Mod/Idf" "Idf" ${all_files})
 
-install(
+INSTALL(
     FILES
         ${IdfLibs_SRCS}
     DESTINATION
         Mod/Idf/Idflibs
 )
-
-install(
+INSTALL(
     FILES
         ${IdfLang_SRCS}
     DESTINATION
         Mod/Idf/Languages
 )
-
-install(
+INSTALL(
     FILES
         ${Idf_SRCS}
     DESTINATION
         Mod/Idf
- )
+)

@@ -3,6 +3,14 @@ if(WIN32)
     add_definitions(-DBOOST_DYN_LINK)
 endif(WIN32)
 
+IF(RESOURCEDIR)
+    add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
+ENDIF(RESOURCEDIR)
+
+IF(DOCDIR)
+    add_definitions(-DDOCDIR="${DOCDIR}")
+ENDIF(DOCDIR)
+
 include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
@@ -176,6 +184,7 @@ elseif(MINGW)
     set_target_properties(FreeCADApp PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 else(MSVC)
     set_target_properties(FreeCADApp PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+    set_target_properties(FreeCADApp PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
 if(WIN32)
@@ -184,7 +193,7 @@ if(WIN32)
         LIBRARY DESTINATION lib
     )
 else(WIN32)
-    INSTALL(TARGETS  FreeCADApp
+    INSTALL(TARGETS FreeCADApp
         LIBRARY DESTINATION lib
     )
 endif(WIN32)
