@@ -4,7 +4,7 @@ lib_LTLIBRARIES=libDrawingGui.la DrawingGui.la
 
 BUILT_SOURCES=\
 		moc_DrawingView.cpp \
-		moc_TaskOrthoViews.h \
+		moc_TaskOrthoViews.cpp \
 		ui_TaskOrthoViews.h \
 		moc_TaskDialog.cpp
 
