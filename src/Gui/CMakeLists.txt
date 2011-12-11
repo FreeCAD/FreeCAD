@@ -4,10 +4,6 @@ if(WIN32)
 add_definitions(-DFCGui -DQIIS_MAKEDLL)
 endif(WIN32)
 
-IF(SPNAV_FOUND)
-add_definitions(-DSPNAV_FOUND)
-ENDIF(SPNAV_FOUND)
-
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -23,7 +19,6 @@ include_directories(
     ${XERCESC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${SPNAV_INCLUDE_DIR}
 )
 
 if(MSVC)
@@ -47,9 +42,19 @@ else(MSVC)
         ${QT_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
-        ${SPNAV_LIBRARIES}
     )
 endif(MSVC)
+
+IF(SPNAV_FOUND)
+    add_definitions(-DSPNAV_FOUND)
+    include_directories(
+        ${SPNAV_INCLUDE_DIR}
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${SPNAV_LIBRARIES}
+    )
+ENDIF(SPNAV_FOUND)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
