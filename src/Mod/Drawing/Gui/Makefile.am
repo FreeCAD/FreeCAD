@@ -20,6 +20,8 @@ libDrawingGui_la_SOURCES=\
 		PreCompiled.h \
 		TaskDialog.cpp \
 		TaskDialog.h \
+		TaskOrthoViews.cpp \
+		TaskOrthoViews.h \
 		ViewProviderPage.cpp \
 		ViewProviderPage.h \
 		ViewProviderView.cpp \
