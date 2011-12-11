@@ -103,6 +103,16 @@ short PropertyContainer::getPropertyType(const char *name) const
     return getPropertyData().getType(this,name);
 }
 
+void PropertyContainer::setPropertyType(const Property* prop, short attr)
+{
+    getPropertyData().setType(this,prop,attr);
+}
+
+void PropertyContainer::setPropertyType(const char *name, short attr)
+{
+    getPropertyData().setType(this,name,attr);
+}
+
 const char* PropertyContainer::getPropertyGroup(const Property* prop) const
 {
     return getPropertyData().getGroup(this,prop);
@@ -357,6 +367,22 @@ short PropertyData::getType(const PropertyContainer *container,const char* name)
     return Spec->Type;
   else
     return 0;
+}
+
+void PropertyData::setType(const PropertyContainer *container,const Property* prop, short attr) const
+{
+  const PropertyData::PropertySpec* Spec = findProperty(container,prop);
+
+  if (Spec)
+      const_cast< PropertyData::PropertySpec*>(Spec)->Type = attr;
+}
+
+void PropertyData::setType(const PropertyContainer *container,const char* name, short attr) const
+{
+  const PropertyData::PropertySpec* Spec = findProperty(container,name);
+
+  if (Spec)
+    const_cast< PropertyData::PropertySpec*>(Spec)->Type = attr;
 }
 
 const char* PropertyData::getGroup(const PropertyContainer *container,const Property* prop) const

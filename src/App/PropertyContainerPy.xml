@@ -23,7 +23,12 @@
 			  <UserDocu>Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
 		  </Documentation>
 	  </Methode>
-	  <Methode Name="getGroupOfProperty">
+      <Methode Name="setTypeOfProperty">
+            <Documentation>
+                <UserDocu>Set the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
+            </Documentation>
+        </Methode>
+      <Methode Name="getGroupOfProperty">
 		  <Documentation>
 			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in differnt named groups for convenience.</UserDocu>
 		  </Documentation>

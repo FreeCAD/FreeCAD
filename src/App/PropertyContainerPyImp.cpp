@@ -78,6 +78,17 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
     return Py::new_reference_to(ret);
 }
 
+PyObject*  PropertyContainerPy::setTypeOfProperty(PyObject *args)
+{
+    char* name;
+    short type;
+    if (!PyArg_ParseTuple(args, "sh", &name, &type))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    getPropertyContainerPtr()->setPropertyType(name, type);
+    Py_Return;
+}
+
 PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
 {
     char *pstr;

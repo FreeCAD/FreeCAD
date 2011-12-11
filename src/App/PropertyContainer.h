@@ -70,6 +70,8 @@ struct AppExport PropertyData
   short       getType         (const PropertyContainer *container,const char* name)     const;
   const char* getGroup        (const PropertyContainer *container,const char* name)     const;
   const char* getGroup        (const PropertyContainer *container,const Property* prop) const;
+  void        setType         (const PropertyContainer *container,const Property* prop, short) const;
+  void        setType         (const PropertyContainer *container,const char*     name, short) const;
   const char* getDocumentation(const PropertyContainer *container,const char* name)     const;
   const char* getDocumentation(const PropertyContainer *container,const Property* prop) const;
 
@@ -116,6 +118,10 @@ public:
   virtual short getPropertyType(const Property* prop) const;
   /// get the Type of a named Property
   virtual short getPropertyType(const char *name) const;
+  /// set the Type of a Property
+  virtual void setPropertyType(const Property* prop, short);
+  /// set the Type of a named Property
+  virtual void setPropertyType(const char *name, short);
   /// get the Group of a Property
   virtual const char* getPropertyGroup(const Property* prop) const;
   /// get the Group of a named Property
