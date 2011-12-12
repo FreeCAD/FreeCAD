@@ -5,6 +5,8 @@ SET(Draft_SRCS
     Draft.py
     DraftTools.py
     DraftGui.py
+    DraftSnap.py
+    DraftTrackers.py
     WorkingPlane.py
     importDXF.py
     importOCA.py

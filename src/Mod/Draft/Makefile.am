@@ -11,6 +11,8 @@ data_DATA = \
 		Draft.py \
 		DraftTools.py \
 		DraftGui.py \
+		DraftSnap.py \
+		DraftTrackers.py \
 		WorkingPlane.py \
 		importOCA.py \
 		importDXF.py \
