@@ -28,21 +28,22 @@
             <File Id="ArchInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="ArchPy" Name="Arch.py" DiskId="1" />
             <File Id="ArchRcPy" Name="Arch_rc.py" DiskId="1" />
-            <File Id="ArchBuildingPy" Name="Building.py" DiskId="1" />
-            <File Id="ArchCellPy" Name="Cell.py" DiskId="1" />
-            <File Id="ArchCommandsPy" Name="Commands.py" DiskId="1" />
-            <File Id="ArchComponentPy" Name="Component.py" DiskId="1" />
+            <File Id="ArchBuildingPy" Name="ArchBuilding.py" DiskId="1" />
+            <File Id="ArchCellPy" Name="ArchCell.py" DiskId="1" />
+            <File Id="ArchCommandsPy" Name="ArchCommands.py" DiskId="1" />
+            <File Id="ArchComponentPy" Name="ArchComponent.py" DiskId="1" />
             <File Id="ArchIfcSchemaExp" Name="IFC2X3_TC1.exp" DiskId="1" />
             <File Id="ArchIfcReaderPy" Name="ifcReader.py" DiskId="1" />
             <File Id="importDAEPy" Name="importDAE.py" DiskId="1" />
             <File Id="importIFCPy" Name="importIFC.py" DiskId="1" />
             <File Id="importOBJPy" Name="importOBJ.py" DiskId="1" />
-            <File Id="ArchSitePy" Name="Site.py" DiskId="1" />
-            <File Id="ArchStructurePy" Name="Structure.py" DiskId="1" />
-            <File Id="ArchWallPy" Name="Wall.py" DiskId="1" />
-            <File Id="ArchFloorPy" Name="Floor.py" DiskId="1" />
-            <File Id="ArchSectionPlanePy" Name="SectionPlane.py" DiskId="1" />
-            <File Id="ArchWindowPy" Name="Window.py" DiskId="1" />
+            <File Id="ArchSitePy" Name="ArchSite.py" DiskId="1" />
+            <File Id="ArchStructurePy" Name="ArchStructure.py" DiskId="1" />
+            <File Id="ArchWallPy" Name="ArchWall.py" DiskId="1" />
+            <File Id="ArchFloorPy" Name="ArchFloor.py" DiskId="1" />
+            <File Id="ArchSectionPlanePy" Name="ArchSectionPlane.py" DiskId="1" />
+            <File Id="ArchWindowPy" Name="ArchWindow.py" DiskId="1" />
+            <File Id="ArchAxisPy" Name="ArchAxis.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>

@@ -10,10 +10,10 @@ datadir = $(prefix)/Mod/Arch
 data_DATA = \
 		Arch_rc.py \
 		Arch.py \
-		Component.py \
-		Building.py \
-		Cell.py \
-		Floor.py \
+		ArchComponent.py \
+		ArchBuilding.py \
+		ArchCell.py \
+		ArchFloor.py \
         IFC2X3_TC1.exp \
 		ifcReader.py \
 		importDAE.py \
@@ -21,13 +21,13 @@ data_DATA = \
 		importOBJ.py \
 		Init.py \
 		InitGui.py \
-		Site.py \
-		Structure.py \
-		Wall.py \
-		SectionPlane.py \
-		Window.py \
-		Commands.py \
-		Axis.py
+		ArchSite.py \
+		ArchStructure.py \
+		ArchWall.py \
+		ArchSectionPlane.py \
+		ArchWindow.py \
+		ArchCommands.py \
+		ArchAxis.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
@@ -58,5 +58,7 @@ EXTRA_DIST = \
         Resources/icons/Arch_Site_Tree.svg \
         Resources/icons/Arch_Structure_Tree.svg \
         Resources/icons/Arch_Window_Tree.svg \
+		Resources/icons/Arch_Axis.svg \
+		Resources/icons/Arch_Axis_Tree.svg
 		Resources/ui/archprefs-base.ui
 

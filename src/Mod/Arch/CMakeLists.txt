@@ -2,24 +2,24 @@
 SET(Arch_SRCS
     Init.py
     InitGui.py
-    Component.py
-    Cell.py
-    Wall.py
+    ArchComponent.py
+    ArchCell.py
+    ArchWall.py
     importIFC.py
     ifcReader.py
     IFC2X3_TC1.exp
     Arch_rc.py
     Arch.py
-    Building.py
-    Floor.py
-    Site.py
-    Structure.py
-    Commands.py
-    SectionPlane.py
+    ArchBuilding.py
+    ArchFloor.py
+    ArchSite.py
+    ArchStructure.py
+    ArchCommands.py
+    ArchSectionPlane.py
     importDAE.py
     importOBJ.py
-    Window.py
-    Axis.py
+    ArchWindow.py
+    ArchAxis.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 

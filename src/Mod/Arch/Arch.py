@@ -29,13 +29,13 @@ import FreeCADGui
 
 FreeCADGui.updateLocale()
 
-from Wall import *
-from Cell import *
-from Floor import *
-from Site import *
-from Building import *
-from Structure import *
-from Commands import *
-from SectionPlane import *
-from Window import *
-from Axis import *
+from ArchWall import *
+from ArchCell import *
+from ArchFloor import *
+from ArchSite import *
+from ArchBuilding import *
+from ArchStructure import *
+from ArchCommands import *
+from ArchSectionPlane import *
+from ArchWindow import *
+from ArchAxis import *
