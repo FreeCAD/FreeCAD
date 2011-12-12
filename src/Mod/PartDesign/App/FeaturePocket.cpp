@@ -63,7 +63,8 @@ Pocket::Pocket()
 
 short Pocket::mustExecute() const
 {
-    if (Sketch.isTouched() ||
+    if (Placement.isTouched() ||
+        Sketch.isTouched() ||
         Length.isTouched())
         return 1;
     return 0;
@@ -130,9 +131,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     // turn around for pockets
     SketchVector *= -1;
 
+    this->positionBySketch();
+    TopLoc_Location invObjLoc = this->getLocation().Inverted();
+
     // extrude the face to a solid
     gp_Vec vec(SketchVector.x,SketchVector.y,SketchVector.z);
-    BRepPrimAPI_MakePrism PrismMaker(aFace,vec,0,1);
+    BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),vec,0,1);
     if (PrismMaker.IsDone()) {
         // if the sketch has a support fuse them to get one result object (PAD!)
         if (SupportObject) {
@@ -143,15 +147,16 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!xp.More())
                 return new App::DocumentObjectExecReturn("Support shape is not a solid");
             // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Cut mkCut(support, PrismMaker.Shape());
+            BRepAlgoAPI_Cut mkCut(support.Moved(invObjLoc), PrismMaker.Shape());
             // Let's check if the fusion has been successful
-            if (!mkCut.IsDone()) 
+            if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Cut with support failed");
 
             // we have to get the solids (fuse create seldomly compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+
             this->Shape.setValue(solRes);
         }
         else {

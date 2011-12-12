@@ -60,7 +60,8 @@ Pad::Pad()
 
 short Pad::mustExecute() const
 {
-    if (Sketch.isTouched() ||
+    if (Placement.isTouched() ||
+        Sketch.isTouched() ||
         Length.isTouched() ||
         MirroredExtent.isTouched() ||
         Reversed.isTouched())
@@ -118,12 +119,16 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
     // lengthen the vector
-    SketchOrientationVector *= L;
+    SketchOrientationVector *= Length.getValue();
+
+    this->positionBySketch();
+    TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
     try {
         // extrude the face to a solid
         gp_Vec vec(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
-        BRepPrimAPI_MakePrism PrismMaker(aFace,vec,0,1);
+        vec.Transform(invObjLoc.Transformation());
+        BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),vec,0,1);
         if (PrismMaker.IsDone()) {
             // if the sketch has a support fuse them to get one result object (PAD!)
             if (SupportObject) {
@@ -144,9 +149,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 }
                 if (isSolid) {
                     // Let's call algorithm computing a fuse operation:
-                    BRepAlgoAPI_Fuse mkFuse(support, result);
+                    BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
                     // Let's check if the fusion has been successful
-                    if (!mkFuse.IsDone()) 
+                    if (!mkFuse.IsDone())
                         return new App::DocumentObjectExecReturn("Fusion with support failed");
                     result = mkFuse.Shape();
                     // we have to get the solids (fuse create seldomly compounds)
