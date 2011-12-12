@@ -36,7 +36,7 @@ namespace PartDesign
  *   Base class of all PartDesign features.
  *   This kind of features only produce solids or fail.
  */
-class Feature : public Part::Feature
+class PartDesignExport Feature : public Part::Feature
 {
     PROPERTY_HEADER(PartDesign::Feature);
 

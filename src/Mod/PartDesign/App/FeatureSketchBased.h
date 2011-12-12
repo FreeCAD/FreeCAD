@@ -33,7 +33,7 @@ class TopoDS_Wire;
 namespace PartDesign
 {
 
-class SketchBased : public PartDesign::Feature
+class PartDesignExport SketchBased : public PartDesign::Feature
 {
     PROPERTY_HEADER(PartDesign::SketchBased);
 
