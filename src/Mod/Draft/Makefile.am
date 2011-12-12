@@ -9,8 +9,8 @@
 datadir = $(prefix)/Mod/Draft
 data_DATA = \
 		Draft.py \
-		draftTools.py \
-		draftGui.py \
+		DraftTools.py \
+		DraftGui.py \
 		WorkingPlane.py \
 		importOCA.py \
 		importDXF.py \

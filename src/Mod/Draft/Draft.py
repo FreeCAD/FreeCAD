@@ -50,8 +50,8 @@ How it works / how to extend:
 
     - Draft.py: Hosts the functions that are useful for scripting outside of
     the Draft module, it is the "Draft API"
-    - draftGui.py: Creates and manages the special Draft toolbar
-    - draftTools.py: Contains the user tools of the Draft module (the commands
+    - DraftGui.py: Creates and manages the special Draft toolbar
+    - DraftTools.py: Contains the user tools of the Draft module (the commands
     from the Draft menu), and a couple of helpers such as the "Trackers"
     (temporary geometry used while drawing)
     - draftlibs/fcvec.py: a vector math library, contains functions that are not
@@ -59,10 +59,10 @@ How it works / how to extend:
     - draftlibs/fcgeo.py: a library of misc functions to manipulate shapes.
         
     The Draft.py contains everything to create geometry in the scene. You
-    should start there if you intend to modify something. Then, the draftTools
-    are where the FreeCAD commands are defined, while in draftGui.py
-    you have the ui part, ie. the draft command bar. Both draftTools and
-    draftGui are loaded at module init by InitGui.py, which is called directly by FreeCAD.
+    should start there if you intend to modify something. Then, the DraftTools
+    are where the FreeCAD commands are defined, while in DraftGui.py
+    you have the ui part, ie. the draft command bar. Both DraftTools and
+    DraftGui are loaded at module init by InitGui.py, which is called directly by FreeCAD.
     The tools all have an Activated() function, which is called by FreeCAD when the
     corresponding FreeCAD command is invoked. Most tools then create the trackers they
     will need during operation, then place a callback mechanism, which will detect

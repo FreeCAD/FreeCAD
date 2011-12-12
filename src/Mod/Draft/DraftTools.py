@@ -33,7 +33,7 @@ import os, FreeCAD, FreeCADGui, Part, WorkingPlane, math, re, importSVG, Draft, 
 from functools import partial
 from draftlibs import fcvec,fcgeo
 from FreeCAD import Vector
-from draftGui import todo,QtCore,QtGui
+from DraftGui import todo,QtCore,QtGui
 from pivy import coin
 
 # loads a translation engine

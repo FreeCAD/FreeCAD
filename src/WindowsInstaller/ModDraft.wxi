@@ -27,8 +27,8 @@
             <File Id="DraftInitPy" Name="Init.py" DiskId="1" />
             <File Id="DraftInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="DraftPy" Name="Draft.py" DiskId="1" />
-            <File Id="draftToolsPy" Name="draftTools.py" DiskId="1" />
-            <File Id="draftGuiPy" Name="draftGui.py" DiskId="1" />
+            <File Id="DraftToolsPy" Name="DraftTools.py" DiskId="1" />
+            <File Id="DraftGuiPy" Name="DraftGui.py" DiskId="1" />
             <File Id="importDXFPy" Name="importDXF.py" DiskId="1" />
             <File Id="importOCAPy" Name="importOCA.py" DiskId="1" />
             <File Id="importSVGPy" Name="importSVG.py" DiskId="1" />

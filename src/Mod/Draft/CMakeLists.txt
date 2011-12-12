@@ -3,8 +3,8 @@ SET(Draft_SRCS
     Init.py
     InitGui.py
     Draft.py
-    draftTools.py
-    draftGui.py
+    DraftTools.py
+    DraftGui.py
     WorkingPlane.py
     importDXF.py
     importOCA.py
