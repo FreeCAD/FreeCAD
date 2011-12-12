@@ -3,13 +3,14 @@ if(WIN32)
     add_definitions(-DBOOST_DYN_LINK)
 endif(WIN32)
 
-IF(RESOURCEDIR)
-    add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
-ENDIF(RESOURCEDIR)
+# This causes some problems with the resource files to be found, especially with the StartPage
+#IF(RESOURCEDIR)
+#    add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
+#ENDIF(RESOURCEDIR)
 
-IF(DOCDIR)
-    add_definitions(-DDOCDIR="${DOCDIR}")
-ENDIF(DOCDIR)
+#IF(DOCDIR)
+#    add_definitions(-DDOCDIR="${DOCDIR}")
+#ENDIF(DOCDIR)
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src
