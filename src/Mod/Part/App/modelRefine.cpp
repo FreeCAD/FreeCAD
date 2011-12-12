@@ -415,7 +415,7 @@ bool FaceTypedPlane::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &face
     gp_Pln planeOne(planeSurfaceOne->Pln());
     gp_Pln planeTwo(planeSurfaceTwo->Pln());
     return (planeOne.Position().Direction().IsParallel(planeTwo.Position().Direction(), Precision::Confusion()) &&
-            planeOne.Distance(planeTwo) < Precision::Confusion());
+            planeOne.Distance(planeTwo.Position().Location()) < Precision::Confusion());
 }
 
 GeomAbs_SurfaceType FaceTypedPlane::getType() const
