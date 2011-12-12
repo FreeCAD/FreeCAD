@@ -38,3 +38,4 @@ from Structure import *
 from Commands import *
 from SectionPlane import *
 from Window import *
+from Axis import *

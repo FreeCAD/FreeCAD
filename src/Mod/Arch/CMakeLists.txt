@@ -19,6 +19,7 @@ SET(Arch_SRCS
     importDAE.py
     importOBJ.py
     Window.py
+    Axis.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 

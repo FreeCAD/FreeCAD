@@ -22,6 +22,8 @@
         <file>icons/Arch_Site_Tree.svg</file>
         <file>icons/Arch_Structure_Tree.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>
+        <file>icons/Arch_Axis.svg</file>
+        <file>icons/Arch_Axis_Tree.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>

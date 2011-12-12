@@ -26,7 +26,8 @@ data_DATA = \
 		Wall.py \
 		SectionPlane.py \
 		Window.py \
-		Commands.py
+		Commands.py \
+		Axis.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
