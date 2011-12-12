@@ -67,6 +67,4 @@ protected:
 
 } // namespace Base
 
-#endif // BASE_AXIS_H 
-
-
+#endif // BASE_AXIS_H

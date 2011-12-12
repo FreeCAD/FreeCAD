@@ -51,7 +51,7 @@ enum ConstraintType {
 /// define if you want to use the end or start point
 enum PointPos { none, start, end, mid };
 
-class SketcherExport Constraint :public Base::Persistence
+class SketcherExport Constraint : public Base::Persistence
 {
     TYPESYSTEM_HEADER();
 
@@ -59,7 +59,7 @@ public:
     ~Constraint();
     Constraint();
     Constraint(const Constraint&);
-    virtual Constraint *clone(void)const;
+    virtual Constraint *clone(void) const;
 
     static const int GeoUndef;
 
@@ -85,7 +85,7 @@ public:
     float LabelDistance;
 };
 
-} //namespace Part
+} //namespace Sketcher
 
 
 #endif // SKETCHER_CONSTRAINT_H

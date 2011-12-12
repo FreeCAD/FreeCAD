@@ -41,7 +41,7 @@ namespace Sketcher
 {
 class Constraint;
 
-class SketcherExport PropertyConstraintList: public App::PropertyLists
+class SketcherExport PropertyConstraintList : public App::PropertyLists
 {
     TYPESYSTEM_HEADER();
 

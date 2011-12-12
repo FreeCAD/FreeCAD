@@ -49,18 +49,13 @@
 
 using namespace PartDesign;
 
-const char* Pad::SideEnums[]= {"Positive","Negative",NULL};
-
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::Additive)
 
 Pad::Pad()
 {
-    //ADD_PROPERTY(Side,((long)0));
-    //Side.setEnums(SideEnums);
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(MirroredExtent,(0));
-    
 }
 
 short Pad::mustExecute() const
@@ -117,7 +112,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     Part::Feature *SupportObject = 0;
     if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         SupportObject = static_cast<Part::Feature*>(SupportLink);
-
 
     TopoDS_Shape aFace = makeFace(wires);
     if (aFace.IsNull())

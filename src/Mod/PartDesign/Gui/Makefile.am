@@ -16,7 +16,7 @@ BUILT_SOURCES=\
 		ui_TaskPocketParameters.h \
 		ui_TaskFilletParameters.h \
 		ui_TaskHoleParameters.h \
-		ui_TaskRevolutionParameters.h 
+		ui_TaskRevolutionParameters.h
 
 libPartDesignGui_la_UI=\
 		TaskChamfer.ui \
