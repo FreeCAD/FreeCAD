@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+# include <sstream>
 # include <BRep_Tool.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
@@ -461,9 +462,14 @@ void DlgFilletEdges::on_shapeObject_activated(int index)
         for (std::vector<int>::iterator it = edge_ids.begin(); it != edge_ids.end(); ++it) {
             model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(*it)));
             model->setData(model->index(index, 0), QVariant(*it), Qt::UserRole);
-            model->setData(model->index(index, 0), Qt::Unchecked, Qt::CheckStateRole);
             model->setData(model->index(index, 1), QVariant(QLocale::system().toString(1.0,'f',2)));
             model->setData(model->index(index, 2), QVariant(QLocale::system().toString(1.0,'f',2)));
+            std::stringstream element;
+            element << "Edge" << *it;
+            if (Gui::Selection().isSelected(part, element.str().c_str()))
+                model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
+            else
+                model->setData(model->index(index, 0), Qt::Unchecked, Qt::CheckStateRole);
             index++;
         }
     }
