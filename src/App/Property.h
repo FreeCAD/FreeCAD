@@ -107,6 +107,8 @@ public:
      * The bits and their meaning are listed below:
      * 0 - object is marked as 'touched'
      * 1 - object is marked as 'immutable'
+     * 2 - object is marked as 'read-ony' (for property editor)
+     * 3 - object is marked as 'hidden' (for property editor)
      */
     std::bitset<32> StatusBits;
 

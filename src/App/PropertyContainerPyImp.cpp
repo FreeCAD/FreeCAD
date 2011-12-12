@@ -78,14 +78,18 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
     return Py::new_reference_to(ret);
 }
 
-PyObject*  PropertyContainerPy::setTypeOfProperty(PyObject *args)
+PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
 {
     char* name;
     short type;
     if (!PyArg_ParseTuple(args, "sh", &name, &type))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    getPropertyContainerPtr()->setPropertyType(name, type);
+    App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
+    if (prop) {
+        prop->StatusBits.set(2,(type & 1) > 0);
+        prop->StatusBits.set(3,(type & 2) > 0);
+    }
     Py_Return;
 }
 

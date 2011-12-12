@@ -23,9 +23,13 @@
 			  <UserDocu>Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
 		  </Documentation>
 	  </Methode>
-      <Methode Name="setTypeOfProperty">
+      <Methode Name="setEditorMode">
             <Documentation>
-                <UserDocu>Set the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
+                <UserDocu>Set the behaviour of the property in the property editor.
+0 - default behaviour
+1 - item is ready-only
+2 - item is hidden
+                </UserDocu>
             </Documentation>
         </Methode>
       <Methode Name="getGroupOfProperty">
