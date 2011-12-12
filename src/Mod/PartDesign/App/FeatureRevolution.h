@@ -41,6 +41,11 @@ public:
     App::PropertyVector Axis;
     App::PropertyAngle Angle;
 
+    /** if this property is set to a valid link, both Axis and Base properties
+     *  are calculated according to the linked line
+    */
+    App::PropertyLinkSub ReferenceAxis;
+
     /** @name methods override feature */
     //@{
     /// recalculate the feature

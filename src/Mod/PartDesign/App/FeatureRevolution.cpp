@@ -35,6 +35,7 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 #endif
 
+#include <Base/Axis.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -54,11 +55,14 @@ Revolution::Revolution()
     ADD_PROPERTY(Base,(Base::Vector3f(0.0f,0.0f,0.0f)));
     ADD_PROPERTY(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)));
     ADD_PROPERTY(Angle,(360.0));
+    ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::PropertyType)(App::Prop_None),"Reference axis of revolution");
 }
 
 short Revolution::mustExecute() const
 {
-    if (Sketch.isTouched() ||
+    if (Placement.isTouched() ||
+        Sketch.isTouched() ||
+        ReferenceAxis.isTouched() ||
         Axis.isTouched() ||
         Base.isTouched() ||
         Angle.isTouched())
@@ -73,7 +77,10 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         return new App::DocumentObjectExecReturn("No sketch linked");
     if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-    TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape()._Shape;
+
+    Part::Part2DObject* pcSketch=static_cast<Part::Part2DObject*>(link);
+
+    TopoDS_Shape shape = pcSketch->Shape.getShape()._Shape;
     if (shape.IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
@@ -94,40 +101,63 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
     if (wires.empty()) // there can be several wires
         return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
-#if 0
-    App::DocumentObject* support = sketch->Support.getValue();
-    Base::Placement placement = sketch->Placement.getValue();
-    Base::Vector3d axis(0,1,0);
-    placement.getRotation().multVec(axis, axis);
-    Base::BoundBox3d bbox = sketch->Shape.getBoundingBox();
-    bbox.Enlarge(0.1);
-    Base::Vector3d base(bbox.MaxX, bbox.MaxY, bbox.MaxZ);
-#endif
+
     // get the Sketch plane
-    Base::Placement SketchPos = static_cast<Part::Part2DObject*>(link)->Placement.getValue();
-    Base::Rotation SketchOrientation = SketchPos.getRotation();
-    // get rvolve axis
-    Base::Vector3f v = Axis.getValue();
-    Base::Vector3d SketchOrientationVector(v.x,v.y,v.z);
-    SketchOrientation.multVec(SketchOrientationVector,SketchOrientationVector);
+    Base::Placement SketchPlm = pcSketch->Placement.getValue();
 
+    // get reference axis
+    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
+    if (pcReferenceAxis && pcReferenceAxis == pcSketch) {
+        bool hasValidAxis=false;
+        Base::Axis axis;
+        if (subReferenceAxis[0] == "V_Axis") {
+            hasValidAxis = true;
+            axis = pcSketch->getAxis(Part::Part2DObject::V_Axis);
+        }
+        else if (subReferenceAxis[0] == "H_Axis") {
+            hasValidAxis = true;
+            axis = pcSketch->getAxis(Part::Part2DObject::H_Axis);
+        }
+        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
+            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
+            if (AxId >= 0 && AxId < pcSketch->getAxisCount()) {
+                hasValidAxis = true;
+                axis = pcSketch->getAxis(AxId);
+            }
+        }
+        if (hasValidAxis) {
+            axis *= SketchPlm;
+            Base::Vector3d base=axis.getBase();
+            Base::Vector3d dir=axis.getDirection();
+            Base.setValue(base.x,base.y,base.z);
+            Axis.setValue(dir.x,dir.y,dir.z);
+        }
+    }
 
+    // get revolve axis
     Base::Vector3f b = Base.getValue();
     gp_Pnt pnt(b.x,b.y,b.z);
-    gp_Dir dir(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
+    Base::Vector3f v = Axis.getValue();
+    gp_Dir dir(v.x,v.y,v.z);
 
     // get the support of the Sketch if any
-    App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(link)->Support.getValue();
+    App::DocumentObject* pcSupport = pcSketch->Support.getValue();
     Part::Feature *SupportObject = 0;
-    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        SupportObject = static_cast<Part::Feature*>(SupportLink);
+    if (pcSupport && pcSupport->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        SupportObject = static_cast<Part::Feature*>(pcSupport);
 
     TopoDS_Shape aFace = makeFace(wires);
     if (aFace.IsNull())
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
+    this->positionBySketch();
+    TopLoc_Location invObjLoc = this->getLocation().Inverted();
+    pnt.Transform(invObjLoc.Transformation());
+    dir.Transform(invObjLoc.Transformation());
+
     // revolve the face to a solid
-    BRepPrimAPI_MakeRevol RevolMaker(aFace,gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()));
+    BRepPrimAPI_MakeRevol RevolMaker(aFace.Moved(invObjLoc), gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()));
 
     if (RevolMaker.IsDone()) {
         TopoDS_Shape result = RevolMaker.Shape();
@@ -136,9 +166,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             const TopoDS_Shape& support = SupportObject->Shape.getValue();
             if (!support.IsNull() && support.ShapeType() == TopAbs_SOLID) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support, result);
+                BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
                 // Let's check if the fusion has been successful
-                if (!mkFuse.IsDone()) 
+                if (!mkFuse.IsDone())
                     throw Base::Exception("Fusion with support failed");
                 result = mkFuse.Shape();
             }

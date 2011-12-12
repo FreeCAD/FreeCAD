@@ -47,6 +47,9 @@ public:
       */
     void positionBySketch(void);
 
+    /// retrieves the number of axes in the linked sketch (defined as construction lines)
+    int getSketchAxisCount(void) const;
+
 protected:
     TopoDS_Face validateFace(const TopoDS_Face&) const;
     TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;

@@ -26,6 +26,7 @@
 #define PART_PART2DOBJECT_H
 
 #include <App/PropertyStandard.h>
+#include <Base/Axis.h>
 
 #include "PartFeature.h"
 
@@ -68,6 +69,11 @@ public:
       */
     void positionBySupport(void);
 
+    /// returns the number of construction lines (to be used as axes)
+    virtual int getAxisCount(void) const;
+    /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
+    virtual Base::Axis getAxis(int axId) const;
+
     /** calculate the points where a curve with index GeoId should be trimmed
       * with respect to the rest of the curves contained in the list geomlist
       * and a picked point. The outputs intersect1 and intersect2 specify the
@@ -79,6 +85,9 @@ public:
                                int GeoId, const Base::Vector3d &point,
                                int &GeoId1, Base::Vector3d &intersect1,
                                int &GeoId2, Base::Vector3d &intersect2);
+
+    static const int H_Axis;
+    static const int V_Axis;
 
     /** @name methods overide Feature */
     //@{

@@ -222,6 +222,12 @@ int SketchObject::getAxisCount(void) const
 Base::Axis SketchObject::getAxis(int axId) const
 {
     const std::vector< Part::Geometry * > &vals = this->Geometry.getValues();
+    if (axId == H_Axis) {
+        return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(1,0,0));
+    }
+    else if (axId == V_Axis) {
+        return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,1,0));
+    }
 
     int count=0;
     for (std::vector<Part::Geometry *>::const_iterator geo=vals.begin();

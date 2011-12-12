@@ -52,8 +52,8 @@ public:
     TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent = 0);
     ~TaskRevolutionParameters();
 
-    Base::Vector3f getAxis (void) const;
-    double         getAngle(void) const;
+    QString getReferenceAxis(void) const;
+    double  getAngle(void) const;
 
 private Q_SLOTS:
     void onAngleChanged(double);

@@ -48,7 +48,7 @@ using namespace std;
 //DEF_STD_CMD_A(CmdPartDesignNewSketch);
 //
 //CmdPartDesignNewSketch::CmdPartDesignNewSketch()
-//	:Command("PartDesign_NewSketch")
+//  :Command("PartDesign_NewSketch")
 //{
 //    sAppModule      = "PartDesign";
 //    sGroup          = QT_TR_NOOP("PartDesign");
@@ -72,7 +72,7 @@ using namespace std;
 //    doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
 //    doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
 //    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-//    
+//
 //    //getDocument()->recompute();
 //}
 //
@@ -293,7 +293,8 @@ void CmdPartDesignRevolution::activated(int iMsg)
     openCommand("Make Revolution");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Revolution\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.Axis = App.Vector(0,1,0)",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
+                                                                             FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
     updateActive();
     if (isActiveObjectValid()) {

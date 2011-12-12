@@ -89,10 +89,6 @@ public:
     int movePoint(int geoIndex1, PointPos Pos1, const Base::Vector3d& toPoint, bool relative=false);
     /// retrieves the coordinates of a point
     Base::Vector3d getPoint(int geoIndex1, PointPos Pos1);
-    /// returns the number of construction lines (to be used as axes)
-    int getAxisCount(void) const;
-    /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
-    Base::Axis getAxis(int axId) const;
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoNbr);
@@ -125,6 +121,11 @@ public:
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
+
+    /// returns the number of construction lines (to be used as axes)
+    virtual int getAxisCount(void) const;
+    /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
+    virtual Base::Axis getAxis(int axId) const;
 
 protected:
     /// get called by the container when a property has changed

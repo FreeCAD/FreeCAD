@@ -51,6 +51,8 @@
 
 using namespace Part;
 
+const int Part2DObject::H_Axis = -2;
+const int Part2DObject::V_Axis = -3;
 
 PROPERTY_SOURCE(Part::Part2DObject, Part::Feature)
 
@@ -182,6 +184,16 @@ void Part2DObject::positionBySupport(void)
     //Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,1)));
 
     Placement.setValue(Base::Placement(mtrx));
+}
+
+int Part2DObject::getAxisCount(void) const
+{
+    return 0;
+}
+
+Base::Axis Part2DObject::getAxis(int axId) const
+{
+    return Base::Axis();
 }
 
 bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,

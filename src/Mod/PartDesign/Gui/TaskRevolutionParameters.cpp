@@ -65,15 +65,37 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
 
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
     double l = pcRevolution->Angle.getValue();
-    Base::Vector3f Ax = pcRevolution->Axis.getValue();
-
     ui->doubleSpinBox->setValue(l);
-    ui->doubleSpinBox->selectAll();
-    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
-    if (Ax.y > 0)
-        ui->axis->setCurrentIndex(0);        
-    else
-        ui->axis->setCurrentIndex(1);
+
+    int count=pcRevolution->getSketchAxisCount();
+
+    for (int i=ui->axis->count()-1; i >= count+2; i--)
+        ui->axis->removeItem(i);
+    for (int i=ui->axis->count(); i < count+2; i++)
+        ui->axis->addItem(QString::fromAscii("Sketch axis %1").arg(i-2));
+
+    int pos=-1;
+
+    App::DocumentObject *pcReferenceAxis = pcRevolution->ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = pcRevolution->ReferenceAxis.getSubValues();
+    if (pcReferenceAxis && pcReferenceAxis == pcRevolution->Sketch.getValue()) {
+        assert(subReferenceAxis.size()==1);
+        if (subReferenceAxis[0] == "V_Axis")
+            pos = 0;
+        else if (subReferenceAxis[0] == "H_Axis")
+            pos = 1;
+        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis")
+            pos = 2 + std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
+    }
+
+    if (pos < 0 || pos >= ui->axis->count()) {
+        ui->axis->addItem(QString::fromAscii("Undefined"));
+        pos = ui->axis->count()-1;
+    }
+
+    ui->axis->setCurrentIndex(pos);
+
+    setFocus ();
 }
 
 void TaskRevolutionParameters::onAngleChanged(double len)
@@ -86,11 +108,21 @@ void TaskRevolutionParameters::onAngleChanged(double len)
 void TaskRevolutionParameters::onAxisChanged(int num)
 {
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    if(num == 0)
-        pcRevolution->Axis.setValue(Base::Vector3f(0,1,0));
-    else
-        pcRevolution->Axis.setValue(Base::Vector3f(1,0,0));
-
+    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
+    if (pcSketch) {
+        int maxcount = pcSketch->getAxisCount()+2;
+        if (num == 0)
+            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
+        else if (num == 1)
+            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
+        else if (num >= 2 && num < maxcount) {
+            QString buf = QString::fromUtf8("Axis%1").arg(num-2);
+            std::string str = buf.toStdString();
+            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,str));
+        }
+        if (num < maxcount && ui->axis->count() > maxcount)
+            ui->axis->setMaxCount(maxcount);
+    }
     pcRevolution->getDocument()->recomputeFeature(pcRevolution);
 }
 
@@ -100,15 +132,30 @@ double TaskRevolutionParameters::getAngle(void) const
     return ui->doubleSpinBox->value();
 }
 
-Base::Vector3f  TaskRevolutionParameters::getAxis(void) const
+QString TaskRevolutionParameters::getReferenceAxis(void) const
 {
-    if( ui->axis->currentIndex() == 0)
-        return Base::Vector3f(0,1,0);
+    // get the support and Sketch
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
+
+    QString buf;
+    if (pcSketch) {
+        buf = QString::fromUtf8("(App.ActiveDocument.%1,[%2])");
+        buf = buf.arg(QString::fromUtf8(pcSketch->getNameInDocument()));
+        if (ui->axis->currentIndex() == 0)
+            buf = buf.arg(QString::fromUtf8("'V_Axis'"));
+        else if (ui->axis->currentIndex() == 1)
+            buf = buf.arg(QString::fromUtf8("'H_Axis'"));
+        else if (ui->axis->currentIndex() >= 2) {
+            buf = buf.arg(QString::fromUtf8("'Axis%1'"));
+            buf = buf.arg(ui->axis->currentIndex()-2);
+        }
+    }
     else
-        return Base::Vector3f(1,0,0);
+        buf = QString::fromUtf8("''");
 
+    return buf;
 }
-
 
 TaskRevolutionParameters::~TaskRevolutionParameters()
 {
@@ -147,12 +194,12 @@ TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
 
 void TaskDlgRevolutionParameters::open()
 {
-    
+
 }
 
 void TaskDlgRevolutionParameters::clicked(int)
 {
-    
+
 }
 
 bool TaskDlgRevolutionParameters::accept()
@@ -161,8 +208,8 @@ bool TaskDlgRevolutionParameters::accept()
 
     //Gui::Command::openCommand("Revolution changed");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
-    Base::Vector3f axis = parameter->getAxis();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = FreeCAD.Vector(%f,%f,%f)",name.c_str(),axis.x,axis.y,axis.z);
+    std::string axis = parameter->getReferenceAxis().toStdString();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();
@@ -173,18 +220,18 @@ bool TaskDlgRevolutionParameters::accept()
 bool TaskDlgRevolutionParameters::reject()
 {
     // get the support and Sketch
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject()); 
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
     Sketcher::SketchObject *pcSketch;
     App::DocumentObject    *pcSupport;
     if (pcRevolution->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue()); 
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
         pcSupport = pcSketch->Support.getValue();
     }
 
     // role back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    
+
     // if abort command deleted the object the support is visible again
     if (!Gui::Application::Instance->getViewProvider(pcRevolution)) {
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))

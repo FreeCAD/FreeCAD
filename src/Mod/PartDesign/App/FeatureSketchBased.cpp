@@ -51,7 +51,6 @@
 #include "FeatureSketchBased.h"
 #include <Mod/Part/App/Part2DObject.h>
 
-
 using namespace PartDesign;
 
 namespace PartDesign {
@@ -254,6 +253,12 @@ TopoDS_Shape SketchBased::makeFace(const std::vector<TopoDS_Wire>& w) const
     else {
         return TopoDS_Shape(); // error
     }
+}
+
+int SketchBased::getSketchAxisCount(void) const
+{
+    Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
+    return sketch->getAxisCount();
 }
 
 }
