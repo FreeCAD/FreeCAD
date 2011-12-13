@@ -49,7 +49,7 @@ Fillet::Fillet()
 
 short Fillet::mustExecute() const
 {
-    if (Base.isTouched() || Radius.isTouched())
+    if (Placement.isTouched() || Base.isTouched() || Radius.isTouched())
         return 1;
     if (Base.getValue() && Base.getValue()->isTouched())
         return 1;
@@ -74,6 +74,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
     float radius = Radius.getValue();
 
+    this->positionByBase();
     try {
         BRepFilletAPI_MakeFillet mkFillet(base->Shape.getValue());
 
@@ -89,7 +90,10 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
-        this->Shape.setValue(shape);
+
+        Part::TopoShape newShape(shape);
+        newShape.transformGeometry(this->Placement.getValue().inverse().toMatrix());
+        this->Shape.setValue(newShape);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {

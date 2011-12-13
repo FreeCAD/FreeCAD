@@ -41,5 +41,11 @@ DressUp::DressUp()
     ADD_PROPERTY(Base,(0));
 }
 
+void DressUp::positionByBase(void)
+{
+    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
+    if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        this->Placement.setValue(base->Placement.getValue());
+}
 
 }

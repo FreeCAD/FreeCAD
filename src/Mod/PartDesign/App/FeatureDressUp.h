@@ -39,9 +39,11 @@ public:
 
     App::PropertyLinkSub Base;
 
+    /// updates the Placement property from the Placement of Base
+    void positionByBase(void);
  };
 
 } //namespace PartDesign
 
 
-#endif // PART_DressUp_H
+#endif // PARTDESIGN_DressUp_H

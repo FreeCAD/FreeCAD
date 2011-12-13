@@ -45,7 +45,7 @@ Chamfer::Chamfer()
 
 short Chamfer::mustExecute() const
 {
-    if (Base.isTouched() || Size.isTouched())
+    if (Placement.isTouched() || Base.isTouched() || Size.isTouched())
         return 1;
     if (Base.getValue() && Base.getValue()->isTouched())
         return 1;
@@ -68,6 +68,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 
     float radius = Radius.getValue();
 
+    this->positionByBase();
     try {
         BRepChamferAPI_MakeChamfer mkChamfer(base->Shape.getValue());
 
@@ -79,7 +80,10 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
-        this->Shape.setValue(shape);
+
+        Part::TopoShape newShape(shape);
+        newShape.transformGeometry(this->Placement.getValue().inverse().toMatrix());
+        this->Shape.setValue(newShape);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
