@@ -35,7 +35,6 @@
 #include <Gui/FileDialog.h>
 
 #include <Mod/Part/App/Part2DObject.h>
-#include "TaskChamfer.h"
 
 
 using namespace std;
@@ -376,8 +375,8 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
   :Command("PartDesign_Chamfer")
 {
     sAppModule    = "PartDesign";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Chamfer...");
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Chamfer");
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
@@ -386,12 +385,36 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
 
 void CmdPartDesignChamfer::activated(int iMsg)
 {
-    Gui::Control().showDialog(new PartDesignGui::TaskChamfer());
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+        return;
+    }
+
+    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
+            QObject::tr("Chamfer works only on parts"));
+        return;
+    }
+    std::string SelString = selection[0].getAsPropertyLinkSubString();
+    std::string FeatName = getUniqueObjectName("Chamfer");
+
+    openCommand("Make Chamfer");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Chamfer\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
+    doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",selection[0].getFeatName());
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    copyVisual(FeatName.c_str(), "ShapeColor", selection[0].getFeatName());
+    copyVisual(FeatName.c_str(), "LineColor",  selection[0].getFeatName());
+    copyVisual(FeatName.c_str(), "PointColor", selection[0].getFeatName());
 }
 
 bool CmdPartDesignChamfer::isActive(void)
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return hasActiveDocument();
 }
 
 

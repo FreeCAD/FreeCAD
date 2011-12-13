@@ -80,7 +80,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
         for (std::vector<std::string>::const_iterator it= SubVals.begin();it!=SubVals.end();++it) {
             TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(it->c_str()));
-            mkFillet.Add(radius, radius, edge);
+            mkFillet.Add(radius, edge);
         }
 
         mkFillet.Build();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURECHAMFER_H
-#define PARTDESIGN_FEATURECHAMFER_H
+#ifndef PARTGUI_ViewProviderChamfer_H
+#define PARTGUI_ViewProviderChamfer_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include "FeatureDressUp.h"
+#include "ViewProvider.h"
 
-namespace PartDesign
+
+namespace PartDesignGui {
+
+class PartDesignGuiExport ViewProviderChamfer : public ViewProvider
 {
-
-class Chamfer : public DressUp
-{
-    PROPERTY_HEADER(PartDesign::Chamfer);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderChamfer);
 
 public:
-    Chamfer();
+    /// constructor
+    ViewProviderChamfer();
+    /// destructor
+    virtual ~ViewProviderChamfer();
 
-    App::PropertyFloatConstraint Size;
+    /// grouping handling 
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderChamfer";
-    }
-    //@}
+    virtual bool onDelete(const std::vector<std::string> &);
+
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+
 };
 
-} //namespace Part
 
 
-#endif // PARTDESIGN_FEATURECHAMFER_H
+} // namespace PartDesignGui
+
+
+#endif // PARTGUI_ViewProviderChamfer_H

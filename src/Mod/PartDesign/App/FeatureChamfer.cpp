@@ -23,9 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepFilletAPI_MakeChamfer.hxx>
+# include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #endif
 
 #include <Mod/Part/App/TopoShape.h>
@@ -38,9 +42,12 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
+const App::PropertyFloatConstraint::Constraints floatSize = {0.0f,FLT_MAX,0.1f};
+
 Chamfer::Chamfer()
 {
     ADD_PROPERTY(Size,(1.0f));
+    Size.setConstraints(&floatSize);
 }
 
 short Chamfer::mustExecute() const
@@ -54,28 +61,40 @@ short Chamfer::mustExecute() const
 
 App::DocumentObjectExecReturn *Chamfer::execute(void)
 {
- /*   App::DocumentObject* link = Base.getValue();
+    App::DocumentObject* link = Base.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
     const Part::TopoShape& TopShape = base->Shape.getShape();
+    if (TopShape._Shape.IsNull())
+        return new App::DocumentObjectExecReturn("Cannot chamfer invalid shape");
 
     const std::vector<std::string>& SubVals = Base.getSubValuesStartsWith("Edge");
     if (SubVals.size() == 0)
-        return new App::DocumentObjectExecReturn("No Edges specified");
+        return new App::DocumentObjectExecReturn("No edges specified");
 
-    float radius = Radius.getValue();
+    float size = Size.getValue();
 
     this->positionByBase();
     try {
-        BRepChamferAPI_MakeChamfer mkChamfer(base->Shape.getValue());
+        BRepFilletAPI_MakeChamfer mkChamfer(base->Shape.getValue());
+
+        TopTools_IndexedMapOfShape mapOfEdges;
+        TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+        TopExp::MapShapesAndAncestors(base->Shape.getValue(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+        TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, mapOfEdges);
 
         for (std::vector<std::string>::const_iterator it= SubVals.begin();it!=SubVals.end();++it) {
             TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(it->c_str()));
-            mkChamfer.Add(radius, radius, edge);
+            const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+            mkChamfer.Add(size, edge, face);
         }
+
+        mkChamfer.Build();
+        if (!mkChamfer.IsDone())
+            return new App::DocumentObjectExecReturn("Failed to create chamfer");
 
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull())
@@ -89,7 +108,5 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
-    }*/
-
-    return App::DocumentObject::StdReturn;
+    }
 }

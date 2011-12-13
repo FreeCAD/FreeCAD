@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFilletParameters_H
-#define GUI_TASKVIEW_TaskFilletParameters_H
+#ifndef GUI_TASKVIEW_TaskChamferParameters_H
+#define GUI_TASKVIEW_TaskChamferParameters_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include "ViewProviderFillet.h"
+#include "ViewProviderChamfer.h"
 
-class Ui_TaskFilletParameters;
+class Ui_TaskChamferParameters;
 
 namespace App {
 class Property;
@@ -43,13 +43,13 @@ class ViewProvider;
 
 namespace PartDesignGui {
 
-class TaskFilletParameters : public Gui::TaskView::TaskBox
+class TaskChamferParameters : public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    TaskFilletParameters(ViewProviderFillet *FilletView, QWidget *parent=0);
-    ~TaskFilletParameters();
+    TaskChamferParameters(ViewProviderChamfer *ChamferView, QWidget *parent=0);
+    ~TaskChamferParameters();
 
     double getLength(void) const;
 
@@ -63,21 +63,21 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskFilletParameters* ui;
-    ViewProviderFillet *FilletView;
+    Ui_TaskChamferParameters* ui;
+    ViewProviderChamfer *ChamferView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFilletParameters : public Gui::TaskView::TaskDialog
+class TaskDlgChamferParameters : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgFilletParameters(ViewProviderFillet *FilletView);
-    ~TaskDlgFilletParameters();
+    TaskDlgChamferParameters(ViewProviderChamfer *ChamferView);
+    ~TaskDlgChamferParameters();
 
-    ViewProviderFillet* getFilletView() const
-    { return FilletView; }
+    ViewProviderChamfer* getChamferView() const
+    { return ChamferView; }
 
 
 public:
@@ -98,11 +98,11 @@ public:
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderFillet   *FilletView;
+    ViewProviderChamfer   *ChamferView;
 
-    TaskFilletParameters  *parameter;
+    TaskChamferParameters  *parameter;
 };
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif // GUI_TASKVIEW_TaskChamferParameters_H

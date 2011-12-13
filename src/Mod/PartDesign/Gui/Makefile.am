@@ -3,26 +3,26 @@ SUBDIRS=Resources
 lib_LTLIBRARIES=libPartDesignGui.la PartDesignGui.la
 
 BUILT_SOURCES=\
-		moc_TaskChamfer.cpp \
 		moc_TaskPadParameters.cpp \
 		moc_TaskPatternRectangularParameters.cpp \
 		moc_TaskPocketParameters.cpp \
+		moc_TaskChamferParameters.cpp \
 		moc_TaskFilletParameters.cpp \
 		moc_TaskHoleParameters.cpp \
 		moc_TaskRevolutionParameters.cpp \
-		ui_TaskChamfer.h \
 		ui_TaskPadParameters.h \
 		ui_TaskPatternRectangularParameters.h \
 		ui_TaskPocketParameters.h \
+		ui_TaskChamferParameters.h \
 		ui_TaskFilletParameters.h \
 		ui_TaskHoleParameters.h \
 		ui_TaskRevolutionParameters.h
 
 libPartDesignGui_la_UI=\
-		TaskChamfer.ui \
 		TaskPadParameters.ui \
 		TaskPatternRectangularParameters.ui \
 		TaskPocketParameters.ui \
+		TaskChamferParameters.ui \
 		TaskFilletParameters.ui \
 		TaskHoleParameters.ui \
 		TaskRevolutionParameters.ui
@@ -32,14 +32,14 @@ libPartDesignGui_la_SOURCES=\
 		Command.cpp \
 		PreCompiled.cpp \
 		PreCompiled.h \
-		TaskChamfer.cpp \
-		TaskChamfer.h \
 		TaskPadParameters.cpp \
 		TaskPadParameters.h \
 		TaskPatternRectangularParameters.cpp \
 		TaskPatternRectangularParameters.h \
 		TaskPocketParameters.cpp \
 		TaskPocketParameters.h \
+		TaskChamferParameters.cpp \
+		TaskChamferParameters.h \
 		TaskFilletParameters.cpp \
 		TaskFilletParameters.h \
 		TaskRevolutionParameters.cpp \
@@ -54,6 +54,8 @@ libPartDesignGui_la_SOURCES=\
 		ViewProviderPad.h \
 		ViewProviderPocket.cpp \
 		ViewProviderPocket.h \
+		ViewProviderChamfer.cpp \
+		ViewProviderChamfer.h \
 		ViewProviderFillet.cpp \
 		ViewProviderFillet.h \
 		ViewProviderRevolution.cpp \

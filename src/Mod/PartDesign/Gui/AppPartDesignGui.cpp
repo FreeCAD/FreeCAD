@@ -34,9 +34,9 @@
 #include "Workbench.h"
 #include "ViewProviderPocket.h"
 #include "ViewProviderPad.h"
+#include "ViewProviderChamfer.h"
 #include "ViewProviderFillet.h"
 #include "ViewProviderRevolution.h"
-#include "TaskChamfer.h"
 
 //#include "resources/qrc_PartDesign.cpp"
 
