@@ -25,7 +25,7 @@ __title__="FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD, math, Draft,
+import FreeCAD, math, Draft
 from draftlibs import fcvec,fcgeo
 from FreeCAD import Vector
 from pivy import coin

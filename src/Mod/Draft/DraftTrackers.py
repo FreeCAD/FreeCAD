@@ -25,7 +25,8 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-
+import math
+from FreeCAD import Vector
 from pivy import coin
 from DraftGui import todo
 
