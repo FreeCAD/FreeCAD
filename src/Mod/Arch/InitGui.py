@@ -34,7 +34,7 @@ class ArchWorkbench(Workbench):
 	ToolTip = "Architecture workbench"
 	
 	def Initialize(self):
-                import draftTools,draftGui,Arch_rc,Arch
+                import DraftTools,DraftGui,Arch_rc,Arch
                 archtools = ["Arch_Wall","Arch_Structure","Arch_Cell",
                              "Arch_Floor","Arch_Building","Arch_Site",
                              "Arch_Window","Arch_Axis",
@@ -47,11 +47,11 @@ class ArchWorkbench(Workbench):
                               "Draft_Downgrade","Draft_Trimex"]
                 meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                              "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
-                self.appendToolbar(str(draftTools.translate("arch","Arch tools")),archtools)
-                self.appendToolbar(str(draftTools.translate("arch","Draft tools")),drafttools)
-                self.appendMenu([str(draftTools.translate("arch","Architecture")),str(draftTools.translate("arch","Tools"))],meshtools)
-                self.appendMenu(str(draftTools.translate("arch","Architecture")),archtools)
-                self.appendMenu(str(draftTools.translate("arch","Draft")),drafttools)
+                self.appendToolbar(str(DraftTools.translate("arch","Arch tools")),archtools)
+                self.appendToolbar(str(DraftTools.translate("arch","Draft tools")),drafttools)
+                self.appendMenu([str(DraftTools.translate("arch","Architecture")),str(DraftTools.translate("arch","Tools"))],meshtools)
+                self.appendMenu(str(DraftTools.translate("arch","Architecture")),archtools)
+                self.appendMenu(str(DraftTools.translate("arch","Draft")),drafttools)
                 FreeCADGui.addIconPath(":/icons")
                 FreeCADGui.addLanguagePath(":/translations")
                 FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")

@@ -25,100 +25,13 @@ __title__="FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD, FreeCADGui, math, Draft, DraftTrackers
+import FreeCAD, FreeCADGui, math, Draft, DraftTrackers, Part
 from draftlibs import fcvec,fcgeo
 from FreeCAD import Vector
 from pivy import coin
 
 # last snapped objects, for quick intersection calculation
 lastObj = [0,0]
-
-class Snapper:
-    """Snapper(maxedges=0): creates a Snapper object. maxedges is the
-    maximum number of edges an object must have to be considered for snapping.
-    Keep 0 for no limit."""
-
-    def __init__(self,maxedges=0):
-
-        self.lastObj = [None,None]
-        self.maxEdges = maxedges
-        # at module init, still no 3D view available
-        self.tracker = None
-        self.extLine = None
-        
-        # the snapmarker has "point","circle" and "square" available styles
-        self.mk = {'extension':'circle',
-                   'parallel':'circle'}
-
-    def getScreenDist(self,dist,cursor):
-        "returns a 3D distance from a screen pixels distance"
-        if cursor:
-            p1 = FreeCADGui.ActiveDocument.ActiveView.getPoint(cursor)
-            p2 = FreeCADGui.ActiveDocument.ActiveView.getPoint((cursor[0]+dist,cursor[1]))
-            return (p2.sub(p1)).Length
-        else:
-            return dist
-
-    def snap(self,point,screenpos=None,force=False,pointset=[]):
-        """snap(point,screenpos=None,force=False,pointset=[]): point is the current point to snap,
-        screenpos is the position of the mouse cursor, force is to force snapping even if outside of
-        the snapping radius, pointset is an optional list of points you can pass, that 
-        """
-
-        if not self.tracker:
-            self.tracker = DraftTrackers.snapTracker()
-        if not self.extLine:
-            self.extLine = DraftTrackers.lineTracker(dotted=True)
-
-        originalPoint = Vector(point)
-        self.tracker.off()
-        self.extLine.off()
-        
-        # checking if alwaySnap setting is on
-        oldForce = False
-        if Draft.getParam("alwaysSnap"):
-            oldForce = force
-            force = True
-
-        # getting current snap Radius
-        radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
-
-        # checking if parallel to one of the edges of the last objects
-        point = self.snapToExtensions(point,pointset)
-        
-    def snapToExtensions(self,point,pointset):
-        "snaps the given point to extension or parallel line to last object"
-        for o in [self.lastObj[1],self.lastObj[0]]:
-            if o:
-                ob = FreeCAD.ActiveDocument.getObject(o)
-                if ob:
-                    edges = ob.Shape.Edges
-                    if (not self.maxEdges) or (len(edges) < self.maxEdges):
-                        for e in edges:
-                            if isinstance(e.Curve,Part.Line):
-                                np = getPerpendicular(e,point)
-                                if (np.sub(point)).Length < radius:
-                                    self.tracker.setCoords(np)
-                                    self.tracker.setMarker(self.mk['extension'])
-                                    self.tracker.on()
-                                    self.extLine.p1(e.Vertexes[0].Point)
-                                    self.extLine.p2(np)
-                                    self.extLine.on()
-                                    point = np
-                                else:
-                                    if pointset:
-                                        last = pointset[-1]
-                                        de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
-                                        np = getPerpendicular(de,point)
-                                        if (np.sub(point)).Length < radius:
-                                            self.tracker.setCoords(np)
-                                            self.tracker.setMarker(self.mk['parallel'])
-                                            self.tracker.on()
-                                            point = np
-        return point
-        
-        
-# old functions ##################################################################
         
 def snapPoint(target,point,cursor,ctrl=False):
     '''
@@ -356,42 +269,42 @@ def constrainPoint (target,pt,mobile=False,sym=False):
     if len(target.node) > 0:
         last = target.node[-1]
         dvec = point.sub(last)
-        affinity = plane.getClosestAxis(dvec)
+        affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(dvec)
         if ((target.constrain == None) or mobile):
             if affinity == "x":
-                dv = fcvec.project(dvec,plane.u)
+                dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.u)
                 point = last.add(dv)
                 if sym:
                     l = dv.Length
-                    if dv.getAngle(plane.u) > 1:
+                    if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
                         l = -l
-                    point = last.add(plane.getGlobalCoords(Vector(l,l,l)))
+                    point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
                 target.constrain = 0 #x direction
                 target.ui.xValue.setEnabled(True)
                 target.ui.yValue.setEnabled(False)
                 target.ui.zValue.setEnabled(False)
                 target.ui.xValue.setFocus()
             elif affinity == "y":
-                dv = fcvec.project(dvec,plane.v)
+                dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.v)
                 point = last.add(dv)
                 if sym:
                     l = dv.Length
-                    if dv.getAngle(plane.v) > 1:
+                    if dv.getAngle(FreeCAD.DraftWorkingPlane.v) > 1:
                         l = -l
-                    point = last.add(plane.getGlobalCoords(Vector(l,l,l)))
+                    point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
                 target.constrain = 1 #y direction
                 target.ui.xValue.setEnabled(False)
                 target.ui.yValue.setEnabled(True)
                 target.ui.zValue.setEnabled(False)
                 target.ui.yValue.setFocus()
             elif affinity == "z":
-                dv = fcvec.project(dvec,plane.axis)
+                dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.axis)
                 point = last.add(dv)
                 if sym:
                     l = dv.Length
-                    if dv.getAngle(plane.axis) > 1:
+                    if dv.getAngle(FreeCAD.DraftWorkingPlane.axis) > 1:
                         l = -l
-                    point = last.add(plane.getGlobalCoords(Vector(l,l,l)))
+                    point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
                 target.constrain = 2 #z direction
                 target.ui.xValue.setEnabled(False)
                 target.ui.yValue.setEnabled(False)
@@ -399,30 +312,27 @@ def constrainPoint (target,pt,mobile=False,sym=False):
                 target.ui.zValue.setFocus()
             else: target.constrain = 3
         elif (target.constrain == 0):
-            dv = fcvec.project(dvec,plane.u)
+            dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.u)
             point = last.add(dv)
             if sym:
                 l = dv.Length
-                if dv.getAngle(plane.u) > 1:
+                if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
                     l = -l
-                point = last.add(plane.getGlobalCoords(Vector(l,l,l)))
+                point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
         elif (target.constrain == 1):
-            dv = fcvec.project(dvec,plane.v)
+            dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.v)
             point = last.add(dv)
             if sym:
                 l = dv.Length
-                if dv.getAngle(plane.u) > 1:
+                if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
                     l = -l
-                point = last.add(plane.getGlobalCoords(Vector(l,l,l)))
+                point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
         elif (target.constrain == 2):
-            dv = fcvec.project(dvec,plane.axis)
+            dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.axis)
             point = last.add(dv)
             if sym:
                 l = dv.Length
-                if dv.getAngle(plane.u) > 1:
+                if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
                     l = -l
-                point = last.add(plane.getGlobalCoords(Vector(l,l,l)))			
+                point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))			
     return point
-
-if not hasattr(FreeCADGui,"Snapper"):
-    FreeCADGui.Snapper = Snapper()

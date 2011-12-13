@@ -25,8 +25,9 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD,FreeCADGui,math
+import FreeCAD,FreeCADGui,math,Draft,Part
 from FreeCAD import Vector
+from draftlibs import fcvec,fcgeo
 from pivy import coin
 from DraftGui import todo
 
@@ -97,6 +98,8 @@ class snapTracker(Tracker):
     def setMarker(self,style):
         if (style == "point"):
             self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
+        elif (style == "dot"):
+            self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
         elif (style == "square"):
             self.marker.markerIndex = coin.SoMarkerSet.DIAMOND_FILLED_9_9
         elif (style == "circle"):
@@ -143,8 +146,8 @@ class rectangleTracker(Tracker):
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValues(0,50,[[0,0,0],[2,0,0],[2,2,0],[0,2,0],[0,0,0]])
         Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
-        self.u = plane.u
-        self.v = plane.v
+        self.u = FreeCAD.DraftWorkingPlane.u
+        self.v = FreeCAD.DraftWorkingPlane.v
 
     def setorigin(self,point):
         "sets the base point of the rectangle"
@@ -168,7 +171,7 @@ class rectangleTracker(Tracker):
         if v:
             self.v = v
         else:
-            norm = plane.u.cross(plane.v)
+            norm = FreeCAD.DraftWorkingPlane.u.cross(FreeCAD.DraftWorkingPlane.v)
             self.v = self.u.cross(norm)
 
     def p1(self,point=None):
@@ -331,9 +334,9 @@ class arcTracker(Tracker):
         "returns the angle of a given vector"
         c = self.trans.translation.getValue()
         center = Vector(c[0],c[1],c[2])
-        base = plane.u
+        base = FreeCAD.DraftWorkingPlane.u
         rad = pt.sub(center)
-        return(fcvec.angle(rad,base,plane.axis))
+        return(fcvec.angle(rad,base,FreeCAD.DraftWorkingPlane.axis))
 
     def getAngles(self):
         "returns the start and end angles"
@@ -357,9 +360,9 @@ class arcTracker(Tracker):
         if self.circle: self.sep.removeChild(self.circle)
         self.circle = None
         if self.endangle < self.startangle:
-            c = Part.makeCircle(1,Vector(0,0,0),plane.axis,self.endangle,self.startangle)
+            c = Part.makeCircle(1,Vector(0,0,0),FreeCAD.DraftWorkingPlane.axis,self.endangle,self.startangle)
         else:
-            c = Part.makeCircle(1,Vector(0,0,0),plane.axis,self.startangle,self.endangle)
+            c = Part.makeCircle(1,Vector(0,0,0),FreeCAD.DraftWorkingPlane.axis,self.startangle,self.endangle)
         buf=c.writeInventor(2,0.01)
         ivin = coin.SoInput()
         ivin.setBuffer(buf)
@@ -476,9 +479,9 @@ class PlaneTracker(Tracker):
 
     def set(self,pos=None):
         if pos:                        
-            Q = plane.getRotation().Rotation.Q
+            Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
         else:
-            plm = plane.getPlacement()
+            plm = FreeCAD.DraftWorkingPlane.getPlacement()
             Q = plm.Rotation.Q
             pos = plm.Base
         self.trans.translation.setValue([pos.x,pos.y,pos.z])
@@ -590,21 +593,21 @@ class gridTracker(Tracker):
         self.update()
 
     def set(self):
-        Q = plane.getRotation().Rotation.Q
+        Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
         self.trans.rotation.setValue([Q[0],Q[1],Q[2],Q[3]])
         self.on()
 
     def getClosestNode(self,point):
         "returns the closest node from the given point"
         # get the 2D coords.
-        point = plane.projectPoint(point)
-        u = fcvec.project(point,plane.u)
+        point = FreeCAD.DraftWorkingPlane.projectPoint(point)
+        u = fcvec.project(point,FreeCAD.DraftWorkingPlane.u)
         lu = u.Length
-        if u.getAngle(plane.u) > 1.5:
+        if u.getAngle(FreeCAD.DraftWorkingPlane.u) > 1.5:
             lu  = -lu
-        v = fcvec.project(point,plane.v)
+        v = fcvec.project(point,FreeCAD.DraftWorkingPlane.v)
         lv = v.Length
-        if v.getAngle(plane.v) > 1.5:
+        if v.getAngle(FreeCAD.DraftWorkingPlane.v) > 1.5:
             lv = -lv
         # print "u = ",u," v = ",v
         # find nearest grid node
