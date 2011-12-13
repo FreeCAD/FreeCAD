@@ -378,6 +378,8 @@ bool FaceAdjacencySplitter::adjacentTest(const TopoDS_Face &faceOne, const TopoD
                 return true;
         }
     }
+
+    return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
