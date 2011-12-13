@@ -162,6 +162,70 @@ void Vertex::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
+PROPERTY_SOURCE(Part::Edge, Part::Primitive)
+
+Edge::Edge()
+{
+    ADD_PROPERTY_TYPE(X1,(0.0f),"Vertex 1 - Start",App::Prop_None,"X value of the start vertex");
+    ADD_PROPERTY_TYPE(Y1,(0.0f),"Vertex 1 - Start",App::Prop_None,"Y value of the Start vertex");
+    ADD_PROPERTY_TYPE(Z1,(0.0f),"Vertex 1 - Start",App::Prop_None,"Z value of the Start vertex");
+    ADD_PROPERTY_TYPE(X2,(0.0f),"Vertex 2 - Finish",App::Prop_None,"X value of the finish vertex");
+    ADD_PROPERTY_TYPE(Y2,(0.0f),"Vertex 2 - Finish",App::Prop_None,"Y value of the finish vertex");
+    ADD_PROPERTY_TYPE(Z2,(1.0f),"Vertex 2 - Finish",App::Prop_None,"Z value of the finish vertex");
+}
+
+Edge::~Edge()
+{
+}
+
+short Edge::mustExecute() const
+{
+    if (X1.isTouched() ||
+        Y1.isTouched() ||
+        Z1.isTouched() ||
+        X2.isTouched() ||
+        Y2.isTouched() ||
+        Z2.isTouched())
+        return 1;
+    return Part::Feature::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Edge::execute(void)
+{
+    gp_Pnt point1;
+    point1.SetX(this->X1.getValue());
+    point1.SetY(this->Y1.getValue());
+    point1.SetZ(this->Z1.getValue());
+
+    gp_Pnt point2;
+    point2.SetX(this->X2.getValue());
+    point2.SetY(this->Y2.getValue());
+    point2.SetZ(this->Z2.getValue());
+
+    BRepBuilderAPI_MakeEdge mkEdge(point1, point2);
+    if (!mkEdge.IsDone())
+        return new App::DocumentObjectExecReturn("Failed to create edge");
+    const TopoDS_Edge& edge = mkEdge.Edge();
+    this->Shape.setValue(edge);
+
+    return App::DocumentObject::StdReturn;
+}
+
+void Edge::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &X1 || prop == &Y1 || prop == &Z1 || prop == &X2 || prop == &Y2 || prop == &Z2){
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
+}
+
 PROPERTY_SOURCE(Part::Plane, Part::Primitive)
 
 Plane::Plane()

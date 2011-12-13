@@ -70,6 +70,30 @@ public:
     //@}
 };
 
+class PartExport Edge : public Part::Primitive
+{
+    PROPERTY_HEADER(Part::Edge);
+
+public:
+    Edge();
+    virtual ~Edge();
+
+    App::PropertyFloat X1;
+    App::PropertyFloat Y1;
+    App::PropertyFloat Z1;
+    App::PropertyFloat X2;
+    App::PropertyFloat Y2;
+    App::PropertyFloat Z2;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    void onChanged(const App::Property*);
+    //@}
+};
+
 class PartExport Plane : public Primitive
 {
     PROPERTY_HEADER(Part::Plane);

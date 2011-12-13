@@ -108,12 +108,25 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Qt::WFlags fl)
     // circle
     ui.circleRadius->setMaximum(INT_MAX);
     // vertex
-    ui.VertexXAxisValue->setMaximum(INT_MAX);
-    ui.VertexYAxisValue->setMaximum(INT_MAX);
-    ui.VertexZAxisValue->setMaximum(INT_MAX);
-    ui.VertexXAxisValue->setMinimum(-INT_MAX);
-    ui.VertexYAxisValue->setMinimum(-INT_MAX);
-    ui.VertexZAxisValue->setMinimum(-INT_MAX);
+    ui.vertexX->setMaximum(INT_MAX);
+    ui.vertexY->setMaximum(INT_MAX);
+    ui.vertexZ->setMaximum(INT_MAX);
+    ui.vertexX->setMinimum(INT_MIN);
+    ui.vertexY->setMinimum(INT_MIN);
+    ui.vertexZ->setMinimum(INT_MIN);
+    // edge
+    ui.edgeX1->setMaximum(INT_MAX);
+    ui.edgeX1->setMinimum(INT_MIN);
+    ui.edgeY1->setMaximum(INT_MAX);
+    ui.edgeY1->setMinimum(INT_MIN);
+    ui.edgeZ1->setMaximum(INT_MAX);
+    ui.edgeZ1->setMinimum(INT_MIN);
+    ui.edgeX2->setMaximum(INT_MAX);
+    ui.edgeX2->setMinimum(INT_MIN);
+    ui.edgeY2->setMaximum(INT_MAX);
+    ui.edgeY2->setMinimum(INT_MIN);
+    ui.edgeZ2->setMaximum(INT_MAX);
+    ui.edgeZ2->setMinimum(INT_MIN);
 }
 
 /*  
@@ -440,9 +453,29 @@ void DlgPrimitives::accept()
                 "App.ActiveDocument.%1.Z=%4\n"
                 "App.ActiveDocument.%1.Placement=%5\n")
                 .arg(name)
-                .arg(ui.VertexXAxisValue->value(),0,'f',2)
-                .arg(ui.VertexYAxisValue->value(),0,'f',2)
-                .arg(ui.VertexZAxisValue->value(),0,'f',2)
+                .arg(ui.vertexX->value(),0,'f',2)
+                .arg(ui.vertexY->value(),0,'f',2)
+                .arg(ui.vertexZ->value(),0,'f',2)
+                .arg(this->toPlacement());
+        }
+        else if (ui.comboBox1->currentIndex() == 11) {  // edge
+            name = QString::fromAscii(doc->getUniqueObjectName("Edge").c_str());
+            cmd = QString::fromAscii(
+                "App.ActiveDocument.addObject(\"Part::Edge\",\"%1\")\n"
+                "App.ActiveDocument.%1.X1=%2\n"
+                "App.ActiveDocument.%1.Y1=%3\n"
+                "App.ActiveDocument.%1.Z1=%4\n"
+                "App.ActiveDocument.%1.X2=%5\n"
+                "App.ActiveDocument.%1.Y2=%6\n"
+                "App.ActiveDocument.%1.Z2=%7\n"
+                "App.ActiveDocument.%1.Placement=%8\n")
+                .arg(name)
+                .arg(ui.edgeX1->value(),0,'f',2)
+                .arg(ui.edgeY1->value(),0,'f',2)
+                .arg(ui.edgeZ1->value(),0,'f',2)
+                .arg(ui.edgeX2->value(),0,'f',2)
+                .arg(ui.edgeY2->value(),0,'f',2)
+                .arg(ui.edgeZ2->value(),0,'f',2)
                 .arg(this->toPlacement());
         }
 

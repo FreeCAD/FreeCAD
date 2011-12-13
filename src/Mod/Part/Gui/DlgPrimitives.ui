@@ -1171,7 +1171,7 @@
                   <double>0.000000000000000</double>
                  </property>
                  <property name="maximum">
-                  <double>89.99</double>
+                  <double>89.989999999999995</double>
                  </property>
                  <property name="singleStep">
                   <double>1.000000000000000</double>
@@ -1281,46 +1281,183 @@
              </property>
              <layout class="QGridLayout" name="gridLayout_4">
               <item row="0" column="1">
-               <widget class="QDoubleSpinBox" name="VertexXAxisValue"/>
+               <widget class="QDoubleSpinBox" name="vertexX"/>
               </item>
               <item row="1" column="1">
-               <widget class="QDoubleSpinBox" name="VertexYAxisValue"/>
+               <widget class="QDoubleSpinBox" name="vertexY"/>
               </item>
               <item row="2" column="1">
-               <widget class="QDoubleSpinBox" name="VertexZAxisValue"/>
+               <widget class="QDoubleSpinBox" name="vertexZ"/>
               </item>
               <item row="0" column="0">
                <widget class="QLabel" name="label_X_Axis">
                 <property name="text">
-                 <string>X Axis Value:</string>
+                 <string>X Value:</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
                <widget class="QLabel" name="label_Y_Axis">
                 <property name="text">
-                 <string>Y Axis Value:</string>
+                 <string>Y Value:</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                </widget>
               </item>
               <item row="2" column="0">
                <widget class="QLabel" name="label_Z_Axis">
                 <property name="text">
-                 <string>Z Axis Value:</string>
+                 <string>Z Value:</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                </widget>
               </item>
              </layout>
             </widget>
+           </widget>
+           <widget class="QWidget" name="page11_edge">
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="0" column="0">
+              <layout class="QGridLayout" name="gridLayout_5">
+               <item row="1" column="0">
+                <widget class="QLabel" name="X1">
+                 <property name="text">
+                  <string>X</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="Y1">
+                 <property name="text">
+                  <string>Y</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="Z1">
+                 <property name="text">
+                  <string>Z</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="Line" name="line_6">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0">
+                <widget class="QLabel" name="Finish_Vertex">
+                 <property name="text">
+                  <string>Finish Vertex</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="Start_Vertex">
+                 <property name="text">
+                  <string>Start Vertex</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="0">
+                <widget class="QLabel" name="X2">
+                 <property name="text">
+                  <string>X</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="0">
+                <widget class="QLabel" name="Y2">
+                 <property name="text">
+                  <string>Y</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="0">
+                <widget class="QLabel" name="Z2">
+                 <property name="text">
+                  <string>Z</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="edgeX1">
+                 <property name="value">
+                  <double>0.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QDoubleSpinBox" name="edgeY1">
+                 <property name="value">
+                  <double>0.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QDoubleSpinBox" name="edgeZ1">
+                 <property name="suffix">
+                  <string/>
+                 </property>
+                 <property name="value">
+                  <double>0.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
+                <widget class="QDoubleSpinBox" name="edgeX2">
+                 <property name="value">
+                  <double>1.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="1">
+                <widget class="QDoubleSpinBox" name="edgeY2">
+                 <property name="value">
+                  <double>1.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="1">
+                <widget class="QDoubleSpinBox" name="edgeZ2">
+                 <property name="value">
+                  <double>1.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
           </widget>
          </item>
@@ -1342,6 +1479,15 @@
       </item>
       <item row="0" column="0">
        <widget class="QComboBox" name="comboBox1">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maxVisibleItems">
+         <number>14</number>
+        </property>
         <item>
          <property name="text">
           <string>Plane</string>
@@ -1395,6 +1541,11 @@
         <item>
          <property name="text">
           <string>Vertex</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Edge</string>
          </property>
         </item>
        </widget>
