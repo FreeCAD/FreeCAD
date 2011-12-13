@@ -42,7 +42,9 @@
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeFix_Face.hxx>
 #include <BRepClass_FaceClassifier.hxx>
-
+#include <TopTools_ListOfShape.hxx>
+#include <TopTools_MapOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include "modelRefine.h"
@@ -131,24 +133,6 @@ void ModelRefine::getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges)
         edges.push_back(TopoDS::Edge(it.Current()));
 }
 
-bool ModelRefine::hasSharedEdges(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo)
-{
-    std::vector<TopoDS_Edge> faceOneEdges, faceTwoEdges;
-    getFaceEdges(faceOne, faceOneEdges);
-    getFaceEdges(faceTwo, faceTwoEdges);
-
-    std::vector<TopoDS_Edge>::iterator itOne, itTwo;
-    for (itOne = faceOneEdges.begin(); itOne != faceOneEdges.end(); ++itOne)
-    {
-        for (itTwo = faceTwoEdges.begin(); itTwo != faceTwoEdges.end(); ++itTwo)
-        {
-            if ((*itOne).IsSame(*itTwo))
-                return true;
-        }
-    }
-    return false;
-}
-
 void ModelRefine::boundaryEdges(const FaceVectorType &faces, EdgeVectorType &edgesOut)
 {
     //this finds all the boundary edges. Maybe more than one boundary.
@@ -190,26 +174,15 @@ TopoDS_Shell ModelRefine::removeFaces(const TopoDS_Shell &shell, const FaceVecto
     return TopoDS::Shell(rebuilder.Apply(shell));
 }
 
-bool ModelRefine::areEdgesConnected(const TopoDS_Edge &edgeOne, const TopoDS_Edge &edgeTwo)
-{
-    TopoDS_Vertex e1v1, e1v2, e2v1, e2v2;
-    ShapeAnalysis_Edge analysis;
-    e1v1 = analysis.FirstVertex(edgeOne);
-    e1v2 = analysis.LastVertex(edgeOne);
-    e2v1 = analysis.FirstVertex(edgeTwo);
-    e2v2 = analysis.LastVertex(edgeTwo);
-
-    return e1v1.IsSame(e2v1) || e1v1.IsSame(e2v2) || e1v2.IsSame(e2v1) || e1v2.IsSame(e2v2);
-}
-
 void BoundaryEdgeSplitter::split(const EdgeVectorType &edgesIn)
 {
+    buildMap(edgesIn);
     EdgeVectorType::const_iterator workIt;
     for (workIt = edgesIn.begin(); workIt != edgesIn.end(); ++workIt)
     {
         TopoDS_Edge current = *workIt;
 
-        if (isProcessed(current))
+        if (processed.Contains(*workIt))
             continue;
 
         EdgeVectorType temp;
@@ -231,23 +204,47 @@ void BoundaryEdgeSplitter::splitRecursive(EdgeVectorType &tempEdges, const EdgeV
         {
             if ((*tempIt).IsSame(*workIt))
                 continue;
-            if (isProcessed(*workIt))
+            if (processed.Contains(*workIt))
                 continue;
-            if (areEdgesConnected(*tempIt, *workIt))
+            if (edgeTest(*tempIt, *workIt))
             {
                 tempEdges.push_back(*workIt);
-                processed.push_back(*workIt);
+                processed.Add(*workIt);
                 splitRecursive(tempEdges, workEdges);
             }
         }
     }
 }
 
-bool BoundaryEdgeSplitter::isProcessed(const TopoDS_Edge &edge)
+void BoundaryEdgeSplitter::buildMap(const EdgeVectorType &edgesIn)
 {
-    if (std::find(processed.begin(), processed.end(), edge) == processed.end())
-        return false;
-    return true;
+    EdgeVectorType::const_iterator vit;
+    for (vit = edgesIn.begin(); vit != edgesIn.end(); ++vit)
+    {
+        TopTools_ListOfShape shapeList;
+        TopExp_Explorer it;
+        for (it.Init(*vit, TopAbs_VERTEX); it.More(); it.Next())
+            shapeList.Append(it.Current());
+        edgeVertexMap.Bind((*vit), shapeList);
+    }
+}
+
+bool BoundaryEdgeSplitter::edgeTest(const TopoDS_Edge &edgeOne, const TopoDS_Edge &edgeTwo)
+{
+    const TopTools_ListOfShape &verticesOne = edgeVertexMap.Find(edgeOne);
+    const TopTools_ListOfShape &verticesTwo = edgeVertexMap.Find(edgeTwo);
+    TopTools_ListIteratorOfListOfShape itOne;
+    TopTools_ListIteratorOfListOfShape itTwo;
+
+    for (itOne.Initialize(verticesOne); itOne.More(); itOne.Next())
+    {
+        for (itTwo.Initialize(verticesTwo); itTwo.More(); itTwo.Next())
+        {
+            if (itOne.Value().IsSame(itTwo.Value()))
+                return true;
+        }
+    }
+    return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -299,6 +296,7 @@ void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
     //matched set can't be bigger than the set passed in. if we have seg faults, we will
     //want to turn this tempFaces vector back into a std::list ensuring valid iterators
     //at the expense of std::find speed.
+    buildMap(facesIn);
     FaceVectorType tempFaces;
     tempFaces.reserve(facesIn.size() + 1);
 
@@ -306,18 +304,16 @@ void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
     for (it = facesIn.begin(); it != facesIn.end(); ++it)
     {
         //skip already processed shapes.
-        if (hasBeenMapped(*it))
+        if (processedMap.Contains(*it))
             continue;
 
         tempFaces.clear();
         tempFaces.push_back(*it);
+        processedMap.Add(*it);
         recursiveFind(tempFaces, facesIn);
         if (tempFaces.size() > 1)
         {
-            FaceVectorType temp;
-            temp.reserve(tempFaces.size()+10);
-            std::copy(tempFaces.begin(), tempFaces.end(), back_inserter(temp));
-            adjacencyArray.push_back(temp);
+            adjacencyArray.push_back(tempFaces);
         }
     }
 }
@@ -333,11 +329,12 @@ void FaceAdjacencySplitter::recursiveFind(FaceVectorType &tempFaces, const FaceV
         {
             if ((*tempIt).IsSame(*faceIt))
                 continue;
-            if (std::find(tempFaces.begin(), tempFaces.end(), *faceIt) != tempFaces.end())
+            if (processedMap.Contains(*faceIt))
                 continue;
-            if (hasSharedEdges(*tempIt, *faceIt))
+            if (adjacentTest(*tempIt, *faceIt))
             {
                 tempFaces.push_back(*faceIt);
+                processedMap.Add(*faceIt);
                 recursiveFind(tempFaces, facesIn);
             }
         }
@@ -352,6 +349,35 @@ bool FaceAdjacencySplitter::hasBeenMapped(const TopoDS_Face &shape)
             return true;
     }
     return false;
+}
+
+void FaceAdjacencySplitter::buildMap(const FaceVectorType &facesIn)
+{
+    FaceVectorType::const_iterator vit;
+    for (vit = facesIn.begin(); vit != facesIn.end(); ++vit)
+    {
+        TopTools_ListOfShape shapeList;
+        TopExp_Explorer it;
+        for (it.Init(*vit, TopAbs_EDGE); it.More(); it.Next())
+            shapeList.Append(it.Current());
+        faceEdgeMap.Bind((*vit), shapeList);
+    }
+}
+
+bool FaceAdjacencySplitter::adjacentTest(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo)
+{
+    const TopTools_ListOfShape &faceOneEdges = faceEdgeMap.Find(faceOne);
+    const TopTools_ListOfShape &faceTwoEdges = faceEdgeMap.Find(faceTwo);
+    TopTools_ListIteratorOfListOfShape itOne, itTwo;
+
+    for (itOne.Initialize(faceOneEdges); itOne.More(); itOne.Next())
+    {
+        for (itTwo.Initialize(faceTwoEdges); itTwo.More(); itTwo.Next())
+        {
+            if ((itOne.Value()).IsSame(itTwo.Value()))
+                return true;
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

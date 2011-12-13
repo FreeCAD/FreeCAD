@@ -33,6 +33,9 @@
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopTools_DataMapOfShapeListOfShape.hxx>
+#include <TopTools_MapOfShape.hxx>
+
 
 namespace ModelRefine
 {
@@ -40,10 +43,8 @@ namespace ModelRefine
     typedef std::vector<TopoDS_Edge> EdgeVectorType;
 
     void getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges);
-    bool hasSharedEdges(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo);
     void boundaryEdges(const FaceVectorType &faces, EdgeVectorType &edgesOut);
     TopoDS_Shell removeFaces(const TopoDS_Shell &shell, const FaceVectorType &faces);
-    bool areEdgesConnected(const TopoDS_Edge &edgeOne, const TopoDS_Edge &edgeTwo);
 
     class FaceTypedBase
     {
@@ -112,7 +113,12 @@ namespace ModelRefine
     private:
         bool hasBeenMapped(const TopoDS_Face &shape);
         void recursiveFind(FaceVectorType &tempSet, const FaceVectorType &facesIn);
+        void buildMap(const FaceVectorType &facesIn);
+        bool adjacentTest(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo);
         std::vector<FaceVectorType> adjacencyArray;
+        TopTools_DataMapOfShapeListOfShape faceEdgeMap;
+        TopTools_MapOfShape processedMap;
+
     };
 
     class FaceEqualitySplitter
@@ -136,9 +142,11 @@ namespace ModelRefine
 
     private:
         void splitRecursive(EdgeVectorType &tempEdges, const EdgeVectorType &workEdges);
-        bool isProcessed(const TopoDS_Edge &edge);
-        EdgeVectorType processed;
+        void buildMap(const EdgeVectorType &edgesIn);
+        bool edgeTest(const TopoDS_Edge &edgeOne, const TopoDS_Edge &edgeTwo);
+        TopTools_MapOfShape processed;
         std::vector<EdgeVectorType> groupedEdges;
+        TopTools_DataMapOfShapeListOfShape edgeVertexMap;
     };
 
     class FaceUniter
