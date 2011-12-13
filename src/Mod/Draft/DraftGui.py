@@ -30,7 +30,7 @@ This is the GUI part of the Draft module.
 Report to Draft.py for info
 '''
 
-import FreeCAD, FreeCADGui, os, Draft
+import FreeCAD, FreeCADGui, os, Draft, sys
 
 try:
     from PyQt4 import QtCore,QtGui,QtSvg	
@@ -69,7 +69,7 @@ class todo:
                 else:
                     f()
             except:
-                wrn = "[Draft.todo] Unexpected error:" + sys.exc_info()[0]
+                wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0]
                 FreeCAD.Console.PrintWarning (wrn)
         todo.itinerary = []
         if todo.commitlist:
@@ -81,7 +81,7 @@ class todo:
                     func()
                     FreeCAD.ActiveDocument.commitTransaction()
                 except:
-                    wrn = "[Draft.todo] Unexpected error:" + sys.exc_info()[0]
+                    wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0]
                     FreeCAD.Console.PrintWarning (wrn)
         todo.commitlist = []
 

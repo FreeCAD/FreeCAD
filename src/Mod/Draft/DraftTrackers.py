@@ -25,7 +25,7 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import math
+import FreeCAD,FreeCADGui,math
 from FreeCAD import Vector
 from pivy import coin
 from DraftGui import todo
@@ -101,6 +101,9 @@ class snapTracker(Tracker):
             self.marker.markerIndex = coin.SoMarkerSet.DIAMOND_FILLED_9_9
         elif (style == "circle"):
             self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
+
+    def setCoords(self,point):
+        self.coords.point.setValue((point.x,point.y,point.z))
 
 class lineTracker(Tracker):
     "A Line tracker, used by the tools that need to draw temporary lines"

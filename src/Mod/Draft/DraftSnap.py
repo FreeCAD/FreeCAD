@@ -25,7 +25,7 @@ __title__="FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD, math, Draft
+import FreeCAD, FreeCADGui, math, Draft, DraftTrackers
 from draftlibs import fcvec,fcgeo
 from FreeCAD import Vector
 from pivy import coin
@@ -33,6 +33,93 @@ from pivy import coin
 # last snapped objects, for quick intersection calculation
 lastObj = [0,0]
 
+class Snapper:
+    """Snapper(maxedges=0): creates a Snapper object. maxedges is the
+    maximum number of edges an object must have to be considered for snapping.
+    Keep 0 for no limit."""
+
+    def __init__(self,maxedges=0):
+
+        self.lastObj = [None,None]
+        self.maxEdges = maxedges
+        # at module init, still no 3D view available
+        self.tracker = None
+        self.extLine = None
+        
+        # the snapmarker has "point","circle" and "square" available styles
+        self.mk = {'extension':'circle',
+                   'parallel':'circle'}
+
+    def getScreenDist(self,dist,cursor):
+        "returns a 3D distance from a screen pixels distance"
+        if cursor:
+            p1 = FreeCADGui.ActiveDocument.ActiveView.getPoint(cursor)
+            p2 = FreeCADGui.ActiveDocument.ActiveView.getPoint((cursor[0]+dist,cursor[1]))
+            return (p2.sub(p1)).Length
+        else:
+            return dist
+
+    def snap(self,point,screenpos=None,force=False,pointset=[]):
+        """snap(point,screenpos=None,force=False,pointset=[]): point is the current point to snap,
+        screenpos is the position of the mouse cursor, force is to force snapping even if outside of
+        the snapping radius, pointset is an optional list of points you can pass, that 
+        """
+
+        if not self.tracker:
+            self.tracker = DraftTrackers.snapTracker()
+        if not self.extLine:
+            self.extLine = DraftTrackers.lineTracker(dotted=True)
+
+        originalPoint = Vector(point)
+        self.tracker.off()
+        self.extLine.off()
+        
+        # checking if alwaySnap setting is on
+        oldForce = False
+        if Draft.getParam("alwaysSnap"):
+            oldForce = force
+            force = True
+
+        # getting current snap Radius
+        radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
+
+        # checking if parallel to one of the edges of the last objects
+        point = self.snapToExtensions(point,pointset)
+        
+    def snapToExtensions(self,point,pointset):
+        "snaps the given point to extension or parallel line to last object"
+        for o in [self.lastObj[1],self.lastObj[0]]:
+            if o:
+                ob = FreeCAD.ActiveDocument.getObject(o)
+                if ob:
+                    edges = ob.Shape.Edges
+                    if (not self.maxEdges) or (len(edges) < self.maxEdges):
+                        for e in edges:
+                            if isinstance(e.Curve,Part.Line):
+                                np = getPerpendicular(e,point)
+                                if (np.sub(point)).Length < radius:
+                                    self.tracker.setCoords(np)
+                                    self.tracker.setMarker(self.mk['extension'])
+                                    self.tracker.on()
+                                    self.extLine.p1(e.Vertexes[0].Point)
+                                    self.extLine.p2(np)
+                                    self.extLine.on()
+                                    point = np
+                                else:
+                                    if pointset:
+                                        last = pointset[-1]
+                                        de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
+                                        np = getPerpendicular(de,point)
+                                        if (np.sub(point)).Length < radius:
+                                            self.tracker.setCoords(np)
+                                            self.tracker.setMarker(self.mk['parallel'])
+                                            self.tracker.on()
+                                            point = np
+        return point
+        
+        
+# old functions ##################################################################
+        
 def snapPoint(target,point,cursor,ctrl=False):
     '''
     Snap function used by the Draft tools
@@ -336,3 +423,6 @@ def constrainPoint (target,pt,mobile=False,sym=False):
                     l = -l
                 point = last.add(plane.getGlobalCoords(Vector(l,l,l)))			
     return point
+
+if not hasattr(FreeCADGui,"Snapper"):
+    FreeCADGui.Snapper = Snapper()
