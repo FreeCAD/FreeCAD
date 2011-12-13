@@ -136,6 +136,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
     // extrude the face to a solid
     gp_Vec vec(SketchVector.x,SketchVector.y,SketchVector.z);
+    vec.Transform(invObjLoc.Transformation());
     BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),vec,0,1);
     if (PrismMaker.IsDone()) {
         // if the sketch has a support fuse them to get one result object (PAD!)
