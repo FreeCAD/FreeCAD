@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
@@ -76,16 +75,14 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     float radius = Radius.getValue();
 
     this->positionByBase();
+    // create an untransformed copy of the base shape
+    Part::TopoShape baseShape(TopShape);
+    baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepBuilderAPI_Copy copy(base->Shape.getValue());
-        TopoDS_Shape myShape = copy.Shape();
-        TopLoc_Location aLoc;
-        myShape.Location(aLoc);
-        Part::TopoShape myTopShape(myShape);
-        BRepFilletAPI_MakeFillet mkFillet(myShape);
+        BRepFilletAPI_MakeFillet mkFillet(baseShape._Shape);
 
-        for (std::vector<std::string>::const_iterator it= SubVals.begin();it!=SubVals.end();++it) {
-            TopoDS_Edge edge = TopoDS::Edge(myTopShape.getSubShape(it->c_str()));
+        for (std::vector<std::string>::const_iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
+            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             mkFillet.Add(radius, edge);
         }
 
@@ -97,8 +94,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        Part::TopoShape newShape(shape);
-        this->Shape.setValue(newShape);
+        this->Shape.setValue(shape);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {

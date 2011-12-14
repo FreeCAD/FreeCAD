@@ -119,7 +119,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
     // lengthen the vector
-    SketchOrientationVector *= Length.getValue();
+    SketchOrientationVector *= L;
 
     this->positionBySketch();
     TopLoc_Location invObjLoc = this->getLocation().Inverted();

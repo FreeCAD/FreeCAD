@@ -78,16 +78,19 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     float size = Size.getValue();
 
     this->positionByBase();
+    // create an untransformed copy of the base shape
+    Part::TopoShape baseShape(TopShape);
+    baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeChamfer mkChamfer(base->Shape.getValue());
+        BRepFilletAPI_MakeChamfer mkChamfer(baseShape._Shape);
 
         TopTools_IndexedMapOfShape mapOfEdges;
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
-        TopExp::MapShapesAndAncestors(base->Shape.getValue(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
-        TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, mapOfEdges);
+        TopExp::MapShapesAndAncestors(baseShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+        TopExp::MapShapes(baseShape._Shape, TopAbs_EDGE, mapOfEdges);
 
-        for (std::vector<std::string>::const_iterator it= SubVals.begin();it!=SubVals.end();++it) {
-            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(it->c_str()));
+        for (std::vector<std::string>::const_iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
+            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
             mkChamfer.Add(size, edge, face);
         }
@@ -100,9 +103,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        Part::TopoShape newShape(shape);
-        newShape.transformGeometry(this->Placement.getValue().inverse().toMatrix());
-        this->Shape.setValue(newShape);
+        this->Shape.setValue(shape);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
