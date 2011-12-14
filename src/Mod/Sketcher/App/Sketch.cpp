@@ -110,23 +110,16 @@ void Sketch::clear(void)
 int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
                         bool withDiagnose)
 {
+    return setUpSketch(GeoList, std::vector<Part::Geometry *>(0), ConstraintList);
+}
+
+int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &FixedGeoList,
+                        const std::vector<Constraint *> &ConstraintList, bool withDiagnose)
+{
     clear();
 
-    for (std::vector<Part::Geometry *>::const_iterator it = GeoList.begin(); it != GeoList.end(); ++it) {
-        if ((*it)->getTypeId()== GeomLineSegment::getClassTypeId()) { // add a line
-            const GeomLineSegment *lineSeg = dynamic_cast<const GeomLineSegment*>((*it));
-            // create the definition struct for that geom
-            addLineSegment(*lineSeg);
-        } else if ((*it)->getTypeId()== GeomCircle::getClassTypeId()) {
-            const GeomCircle *circle = dynamic_cast<const GeomCircle*>((*it));
-            addCircle(*circle);
-        } else if ((*it)->getTypeId()== GeomArcOfCircle::getClassTypeId()) {
-            const GeomArcOfCircle *aoc = dynamic_cast<const GeomArcOfCircle*>((*it));
-            addArc(*aoc);
-        } else {
-            Base::Exception("Sketch::setUpSketch(): Unknown or unsupported type added to a sketch");
-        }
-    }
+    addGeometry(GeoList);
+    addGeometry(FixedGeoList, true);
 
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty())
@@ -163,34 +156,36 @@ const char* nameByType(Sketch::GeoType type)
 
 // Geometry adding ==========================================================
 
-int Sketch::addGeometry(const Part::Geometry *geo)
+int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
     if (geo->getTypeId()== GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = dynamic_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
-        return addLineSegment(*lineSeg);
+        return addLineSegment(*lineSeg, fixed);
     } else if (geo->getTypeId()== GeomCircle::getClassTypeId()) { // add a circle
         const GeomCircle *circle = dynamic_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
-        return addCircle(*circle);
+        return addCircle(*circle, fixed);
     } else if (geo->getTypeId()== GeomArcOfCircle::getClassTypeId()) { // add an arc
         const GeomArcOfCircle *aoc = dynamic_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
-        return addArc(*aoc);
+        return addArc(*aoc, fixed);
     } else {
         Base::Exception("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
         return 0;
     }
 }
 
-void Sketch::addGeometry(const std::vector<Part::Geometry *> &geo)
+void Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
 {
     for (std::vector<Part::Geometry *>::const_iterator it = geo.begin();it!=geo.end();++it)
-        addGeometry(*it);
+        addGeometry(*it, fixed);
 }
 
-int Sketch::addPoint(const Base::Vector3d &newPoint)
+int Sketch::addPoint(const Base::Vector3d &newPoint, bool fixed)
 {
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+
     // create the definition struct for that geom
     GeoDef def;
     def.geo  = 0;
@@ -198,14 +193,13 @@ int Sketch::addPoint(const Base::Vector3d &newPoint)
     def.construction = false;
 
     // set the parameter for the solver
-    int paramStartIndex = Parameters.size();
-    Parameters.push_back(new double(newPoint.x));
-    Parameters.push_back(new double(newPoint.y));
+    params.push_back(new double(newPoint.x));
+    params.push_back(new double(newPoint.y));
 
     // set the points for later constraints
     GCS::Point p1;
-    p1.x = Parameters[paramStartIndex+0];
-    p1.y = Parameters[paramStartIndex+1];
+    p1.x = params[params.size()-2];
+    p1.y = params[params.size()-1];
     def.startPointId = Points.size();
     Points.push_back(p1);
 
@@ -216,15 +210,17 @@ int Sketch::addPoint(const Base::Vector3d &newPoint)
     return Geoms.size()-1;
 }
 
-int Sketch::addLine(const Part::GeomLineSegment &line)
+int Sketch::addLine(const Part::GeomLineSegment &line, bool fixed)
 {
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
 
-int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment)
+int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed)
 {
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+
     // create our own copy
     GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(lineSegment.clone());
     // create the definition struct for that geom
@@ -240,15 +236,15 @@ int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment)
     // the points for later constraints
     GCS::Point p1, p2;
 
-    Parameters.push_back(new double(start.x));
-    Parameters.push_back(new double(start.y));
-    p1.x = Parameters[Parameters.size()-2];
-    p1.y = Parameters[Parameters.size()-1];
+    params.push_back(new double(start.x));
+    params.push_back(new double(start.y));
+    p1.x = params[params.size()-2];
+    p1.y = params[params.size()-1];
 
-    Parameters.push_back(new double(end.x));
-    Parameters.push_back(new double(end.y));
-    p2.x = Parameters[Parameters.size()-2];
-    p2.y = Parameters[Parameters.size()-1];
+    params.push_back(new double(end.x));
+    params.push_back(new double(end.y));
+    p2.x = params[params.size()-2];
+    p2.y = params[params.size()-1];
 
     // add the points
     def.startPointId = Points.size();
@@ -270,8 +266,10 @@ int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment)
     return Geoms.size()-1;
 }
 
-int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment)
+int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed)
 {
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+
     // create our own copy
     GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(circleSegment.clone());
     // create the definition struct for that geom
@@ -289,20 +287,20 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment)
 
     GCS::Point p1, p2, p3;
 
-    Parameters.push_back(new double(startPnt.x));
-    Parameters.push_back(new double(startPnt.y));
-    p1.x = Parameters[Parameters.size()-2];
-    p1.y = Parameters[Parameters.size()-1];
+    params.push_back(new double(startPnt.x));
+    params.push_back(new double(startPnt.y));
+    p1.x = params[params.size()-2];
+    p1.y = params[params.size()-1];
 
-    Parameters.push_back(new double(endPnt.x));
-    Parameters.push_back(new double(endPnt.y));
-    p2.x = Parameters[Parameters.size()-2];
-    p2.y = Parameters[Parameters.size()-1];
+    params.push_back(new double(endPnt.x));
+    params.push_back(new double(endPnt.y));
+    p2.x = params[params.size()-2];
+    p2.y = params[params.size()-1];
 
-    Parameters.push_back(new double(center.x));
-    Parameters.push_back(new double(center.y));
-    p3.x = Parameters[Parameters.size()-2];
-    p3.y = Parameters[Parameters.size()-1];
+    params.push_back(new double(center.x));
+    params.push_back(new double(center.y));
+    p3.x = params[params.size()-2];
+    p3.y = params[params.size()-1];
 
     def.startPointId = Points.size();
     Points.push_back(p1);
@@ -311,12 +309,12 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment)
     def.midPointId = Points.size();
     Points.push_back(p3);
 
-    Parameters.push_back(new double(radius));
-    double *r = Parameters[Parameters.size()-1];
-    Parameters.push_back(new double(startAngle));
-    double *a1 = Parameters[Parameters.size()-1];
-    Parameters.push_back(new double(endAngle));
-    double *a2 = Parameters[Parameters.size()-1];
+    params.push_back(new double(radius));
+    double *r = params[params.size()-1];
+    params.push_back(new double(startAngle));
+    double *a1 = params[params.size()-1];
+    params.push_back(new double(endAngle));
+    double *a2 = params[params.size()-1];
 
     // set the arc for later constraints
     GCS::Arc a;
@@ -339,8 +337,10 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment)
     return Geoms.size()-1;
 }
 
-int Sketch::addCircle(const Part::GeomCircle &cir)
+int Sketch::addCircle(const Part::GeomCircle &cir, bool fixed)
 {
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+
     // create our own copy
     GeomCircle *circ = static_cast<GeomCircle*>(cir.clone());
     // create the definition struct for that geom
@@ -354,18 +354,18 @@ int Sketch::addCircle(const Part::GeomCircle &cir)
 
     GCS::Point p1;
 
-    Parameters.push_back(new double(center.x));
-    Parameters.push_back(new double(center.y));
-    p1.x = Parameters[Parameters.size()-2];
-    p1.y = Parameters[Parameters.size()-1];
+    params.push_back(new double(center.x));
+    params.push_back(new double(center.y));
+    p1.x = params[params.size()-2];
+    p1.y = params[params.size()-1];
 
-    Parameters.push_back(new double(radius));
+    params.push_back(new double(radius));
 
     def.midPointId = Points.size();
     Points.push_back(p1);
 
     // add the radius parameter
-    double *r = Parameters[Parameters.size()-1];
+    double *r = params[params.size()-1];
 
     // set the circle for later constraints
     GCS::Circle c;
@@ -381,7 +381,7 @@ int Sketch::addCircle(const Part::GeomCircle &cir)
     return Geoms.size()-1;
 }
 
-int Sketch::addEllipse(const Part::GeomEllipse &ellipse)
+int Sketch::addEllipse(const Part::GeomEllipse &ellipse, bool fixed)
 {
     // return the position of the newly added geometry
     return Geoms.size()-1;

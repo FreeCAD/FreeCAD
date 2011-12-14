@@ -54,14 +54,16 @@ public:
     /// delete all geometry and constraints, leave an empty sketch
     void clear(void);
     /// set the sketch up with geoms and constraints
-    int setUpSketch(const std::vector<Part::Geometry *> &GeoList,const std::vector<Constraint *> &ConstraintList,
+    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
                     bool withDiagnose=true);
+    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &FixedGeoList,
+                    const std::vector<Constraint *> &ConstraintList, bool withDiagnose=true);
     /// return the actual geometry of the sketch a TopoShape
     Part::TopoShape toShape(void) const;
     /// add unspecified geometry
-    int addGeometry(const Part::Geometry *geo);
+    int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
-    void addGeometry(const std::vector<Part::Geometry *> &geo);
+    void addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
     /// returns the actual geometry
     std::vector<Part::Geometry *> getGeometry(bool withConstrucionElements = true) const;
     /// get the geometry as python objects
@@ -110,17 +112,17 @@ public:
     /// add dedicated geometry
     //@{
     /// add a point
-    int addPoint(const Base::Vector3d &point);
+    int addPoint(const Base::Vector3d &point, bool fixed=false);
     /// add an infinite line
-    int addLine(const Part::GeomLineSegment &line);
+    int addLine(const Part::GeomLineSegment &line, bool fixed=false);
     /// add a line segment
-    int addLineSegment(const Part::GeomLineSegment &lineSegment);
+    int addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed=false);
     /// add a arc (circle segment)
-    int addArc(const Part::GeomArcOfCircle &circleSegment);
+    int addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed=false);
     /// add a circle
-    int addCircle(const Part::GeomCircle &circle);
+    int addCircle(const Part::GeomCircle &circle, bool fixed=false);
     /// add a ellipse
-    int addEllipse(const Part::GeomEllipse &ellipse);
+    int addEllipse(const Part::GeomEllipse &ellipse, bool fixed=false);
     //@}
 
 
