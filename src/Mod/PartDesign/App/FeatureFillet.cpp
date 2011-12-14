@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
@@ -76,10 +77,15 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
     this->positionByBase();
     try {
-        BRepFilletAPI_MakeFillet mkFillet(base->Shape.getValue());
+        BRepBuilderAPI_Copy copy(base->Shape.getValue());
+        TopoDS_Shape myShape = copy.Shape();
+        TopLoc_Location aLoc;
+        myShape.Location(aLoc);
+        Part::TopoShape myTopShape(myShape);
+        BRepFilletAPI_MakeFillet mkFillet(myShape);
 
         for (std::vector<std::string>::const_iterator it= SubVals.begin();it!=SubVals.end();++it) {
-            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(it->c_str()));
+            TopoDS_Edge edge = TopoDS::Edge(myTopShape.getSubShape(it->c_str()));
             mkFillet.Add(radius, edge);
         }
 
@@ -92,7 +98,6 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         Part::TopoShape newShape(shape);
-        newShape.transformGeometry(this->Placement.getValue().inverse().toMatrix());
         this->Shape.setValue(newShape);
         return App::DocumentObject::StdReturn;
     }
