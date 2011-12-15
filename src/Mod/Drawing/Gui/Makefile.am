@@ -39,6 +39,7 @@ libDrawingGui_la_LIBADD   = \
 		@BOOST_SYSTEM_LIB@ \
 		-l@PYTHON_LIB@ \
 		-lxerces-c \
+		-lTKernel \
 		-lFreeCADBase \
 		-lFreeCADApp \
 		-lFreeCADGui \
