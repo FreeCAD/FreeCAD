@@ -1251,8 +1251,8 @@ PyObject* TopoShapePy::removeSplitter(PyObject *args)
 
     try {
         // Remove redundant splitter
-        this->getTopoShapePtr()->removeSplitter();
-        Py_Return;
+        TopoDS_Shape shape = this->getTopoShapePtr()->removeSplitter();
+        return new TopoShapePy(new TopoShape(shape));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

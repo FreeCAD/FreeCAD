@@ -200,6 +200,49 @@ bool CmdPartSimpleCopy::isActive(void)
     return Gui::Selection().countObjectsOfType(partid) > 0;
 }
 
+//===========================================================================
+// Part_RefineShape
+//===========================================================================
+DEF_STD_CMD_A(CmdPartRefineShape);
+
+CmdPartRefineShape::CmdPartRefineShape()
+  : Command("Part_RefineShape")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Refine shape");
+    sToolTipText  = QT_TR_NOOP("Refine the copy of a shape");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartRefineShape::activated(int iMsg)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
+    openCommand("Refine shape");
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
+        doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
+                      "App.ActiveDocument.%s.Shape.removeSplitter()\n"
+                      "App.ActiveDocument.ActiveObject.Label="
+                      "App.ActiveDocument.%s.Label\n",
+                      (*it)->getNameInDocument(),
+                      (*it)->getNameInDocument(),
+                      (*it)->getNameInDocument());
+        copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
+        copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
+        copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
+    }
+    commitCommand();
+    updateActive();
+}
+
+bool CmdPartRefineShape::isActive(void)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    return Gui::Selection().countObjectsOfType(partid) > 0;
+}
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 void CreateSimplePartCommands(void)
@@ -208,4 +251,5 @@ void CreateSimplePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartSimpleCylinder());
     rcCmdMgr.addCommand(new CmdPartShapeFromMesh());
     rcCmdMgr.addCommand(new CmdPartSimpleCopy());
-} 
+    rcCmdMgr.addCommand(new CmdPartRefineShape());
+}

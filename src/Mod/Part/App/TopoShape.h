@@ -219,7 +219,7 @@ public:
     void sewShape();
     bool fix(double, double, double);
     bool removeInternalWires(double);
-    void removeSplitter();
+    TopoDS_Shape removeSplitter() const;
     //@}
 
     /** @name Getting basic geometric entities */

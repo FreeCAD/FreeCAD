@@ -1719,37 +1719,80 @@ bool TopoShape::removeInternalWires(double minArea)
     return ok;
 }
 
-void TopoShape::removeSplitter()
+TopoDS_Shape TopoShape::removeSplitter() const
 {
     if (_Shape.IsNull())
         Standard_Failure::Raise("Cannot remove splitter from empty shape");
 
     if (_Shape.ShapeType() == TopAbs_SOLID) {
-        TopoDS_Solid& solid = TopoDS::Solid(_Shape);
+        const TopoDS_Solid& solid = TopoDS::Solid(_Shape);
         ModelRefine::FaceUniter uniter(solid);
         if (uniter.process()) {
             TopoDS_Solid solidMod;
             if (!uniter.getSolid(solidMod))
                 Standard_Failure::Raise("Getting solid failed");
-            _Shape = solidMod;
+            return solidMod;
         }
         else {
             Standard_Failure::Raise("Removing splitter failed");
         }
     }
     else if (_Shape.ShapeType() == TopAbs_SHELL) {
-        TopoDS_Shell& shell = TopoDS::Shell(_Shape);
+        const TopoDS_Shell& shell = TopoDS::Shell(_Shape);
         ModelRefine::FaceUniter uniter(shell);
         if (uniter.process()) {
-            _Shape = uniter.getShell();
+            return uniter.getShell();
         }
         else {
             Standard_Failure::Raise("Removing splitter failed");
         }
     }
-    else {
-        Standard_Failure::Raise("Either shell or solid expected");
+    else if (_Shape.ShapeType() == TopAbs_COMPOUND) {
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+
+        TopExp_Explorer xp;
+        // solids
+        for (xp.Init(_Shape, TopAbs_SOLID); xp.More(); xp.Next()) {
+            const TopoDS_Solid& solid = TopoDS::Solid(xp.Current());
+            ModelRefine::FaceUniter uniter(solid);
+            if (uniter.process()) {
+                TopoDS_Solid solidMod;
+                if (uniter.getSolid(solidMod))
+                    builder.Add(comp, solidMod);
+            }
+        }
+        // free shells
+        for (xp.Init(_Shape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+            const TopoDS_Shell& shell = TopoDS::Shell(xp.Current());
+            ModelRefine::FaceUniter uniter(shell);
+            if (uniter.process()) {
+                builder.Add(comp, uniter.getShell());
+            }
+        }
+        // the rest
+        for (xp.Init(_Shape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(_Shape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(_Shape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(_Shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+
+        return comp;
     }
+
+    return _Shape;
 }
 
 namespace Part {
