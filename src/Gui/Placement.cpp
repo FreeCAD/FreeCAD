@@ -147,6 +147,11 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental, bool 
             }
 
             document->commitCommand();
+            try {
+                document->getDocument()->recompute();
+            }
+            catch (...) {
+            }
         }
         // apply transformation only on view matrix not on placement property
         else {
