@@ -59,7 +59,7 @@ private:
 
 private:
     std::string myname;
-	Base::BoundBox3d mybox;
+    Base::BoundBox3d mybox;
     int dir;
     int angle;
     int orientation;
@@ -93,8 +93,12 @@ protected Q_SLOTS:
     void smooth(int);
     void toggle_auto(int);
     void data_entered();
+
+protected:
+    void changeEvent(QEvent *);
     
 private:
+    void pagesize(std::string&);
     void compute();
     void autodims(float, float, float, float);
     void populate_s1();

@@ -321,7 +321,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <widget class="QLineEdit" name="s1">
+            <widget class="QLineEdit" name="spacing1">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -331,7 +331,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="s2">
+            <widget class="QLineEdit" name="spacing2">
              <property name="enabled">
               <bool>false</bool>
              </property>

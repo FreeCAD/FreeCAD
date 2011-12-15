@@ -51,6 +51,7 @@ SOURCE_GROUP("Algorithms" FILES ${DrawingAlgos_SRCS})
 
 SET(Drawing_Templates
     Templates/A3_Landscape.svg
+    Templates/A4_Landscape.svg
     Templates/A4_Simple.svg
 )
 

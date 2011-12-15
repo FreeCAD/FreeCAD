@@ -96,6 +96,12 @@ void CmdDrawingNewPage::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.Template = 'A3_Landscape.svg'",FeatName.c_str());
         commitCommand();
     }
+    else if (iMsg == 4) {
+        openCommand("Drawing create page");
+        doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Template = 'A4_Landscape.svg'",FeatName.c_str());
+        commitCommand();
+    }
     else {
         QMessageBox::critical(Gui::getMainWindow(),
             QLatin1String("No template"),

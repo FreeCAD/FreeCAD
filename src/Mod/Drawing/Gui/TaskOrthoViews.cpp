@@ -22,9 +22,9 @@
  
 #include "PreCompiled.h"
 
-//#ifndef _PreComp_
-//# include <QMessageBox>
-//#endif
+#ifndef _PreComp_
+# include <QMessageBox>
+#endif
 
 #include "TaskOrthoViews.h"
 #include "ui_TaskOrthoViews.h"
@@ -36,27 +36,31 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 
+#include <Base/FileInfo.h>
+#include <iostream>
+#include <sstream>
+
 using namespace Gui;
 using namespace DrawingGui;
 using namespace std;
 
 
-
-int name_to_number(QString nme)
+int name_to_number(const QString& nme)
 {
     char * temp[] = {"","Front","Back","Right","Left","Top","Bottom"};
     for (int j=0; j < 7; j++)
     {
-        if (QString::fromUtf8(temp[j]) == nme)
+        if (QObject::tr(temp[j]) == nme)
             return j;
     }
     return 0;
 }
 
-char * number_to_name(int j)
+QString number_to_name(int j)
 {
     char * temp[] = {"","Front","Back","Right","Left","Top","Bottom"};
-    return temp[j];
+    QString translated = QObject::tr(temp[j]);
+    return translated;
 }
 
 void rotate_coords(float& x, float& y, int i)
@@ -68,13 +72,12 @@ void rotate_coords(float& x, float& y, int i)
         {-x,-y},
         { y,-x}
     };
-    
+
     float t1 = temp[i][0];
     float t2 = temp[i][1];
     x = t1;
     y = t2;
 }
-
 
 
 
@@ -93,7 +96,7 @@ orthoView::orthoView(std::string name, const char * targetpage, const char * sou
     y = 0;
     dir = 0;
     angle = 0;
-    
+
     Command::doCommand(Command::Doc,"App.activeDocument().addObject('Drawing::FeatureViewPart','%s')",myname.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",myname.c_str(), sourcepart);
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",targetpage,myname.c_str());
@@ -138,17 +141,17 @@ void orthoView::setDir(int i)
     int vx = (dir == 3) - (dir == 4);
     int vy = (dir == 1) - (dir == 2);
     int vz = (dir == 5) - (dir == 6);
-    
+
     //drawings default to funny orientations for each view, line below calculates rotation to correct this
     //drawing will then be oriented correctly for it being primary view, setOrientation is used to modify this for secondary views.
     angle = -90*vx - 90*vy + (vz == -1)*180;
-   
+
     calcCentre();
 
     if (active)
     {
         Command::doCommand(Command::Doc,"App.activeDocument().%s.Direction = (%d,%d,%d)",myname.c_str(),vx,vy,vz);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",myname.c_str(),number_to_name(i));
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",myname.c_str(),number_to_name(i).toStdString().c_str());
     }
 }
 
@@ -159,7 +162,7 @@ void orthoView::setPos(float px, float py)
         pageX = px;
         pageY = py;
     }
-        
+
     float ox = pageX + x;
     float oy = pageY + y;
 
@@ -198,7 +201,7 @@ void orthoView::calcCentre()
     float cx = mybox.CalcCenter().x;
     float cy = mybox.CalcCenter().y;
     float cz = mybox.CalcCenter().z;
-    
+
     float coords[7][2] =
     {
         {0, 0},
@@ -209,15 +212,15 @@ void orthoView::calcCentre()
         {-cx, -cy},     //top
         {-cx, cy}       //bottom
     };
-     
+
     x = coords[dir][0] * scale;
     y = coords[dir][1] * scale;
     rotate_coords(x,y,orientation);
-            
+
     float dx = mybox.LengthX();
     float dy = mybox.LengthY();
     float dz = mybox.LengthZ();
-    
+
     float dims[4][2] =
     {
         { 0,  0},      //zero height/width for no direction
@@ -225,7 +228,7 @@ void orthoView::calcCentre()
         {dy, dz},      //right & left
         {dx, dy}       //top & bottom
     };
-     
+
     width = dims[(dir+1)/2][0];
     height = dims[(dir+1)/2][1];
     if (orientation % 2 == 1)
@@ -261,19 +264,22 @@ TaskOrthoViews::TaskOrthoViews(QWidget *parent)
   : ui(new Ui_TaskOrthoViews) 
 {
     ui->setupUi(this);
-    
+
 	std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
 	Base::BoundBox3d bbox;
     std::vector<App::DocumentObject*>::iterator it = obj.begin();
 	bbox.Add(static_cast<Part::Feature*>(*it)->Shape.getBoundingBox());
-     
+
     const char * part = obj.front()->getNameInDocument();
     App::Document* doc = App::GetApplication().getActiveDocument();    
 
     std::vector<App::DocumentObject*> pages = doc->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     std::string PageName = pages.front()->getNameInDocument();
     const char * page = PageName.c_str();
- 
+
+    App::DocumentObject * this_page = doc->getObject(page);
+    std::string template_name = static_cast<Drawing::FeaturePage*>(this_page)->Template.getValue();
+
     std::string name1 = doc->getUniqueObjectName("Ortho").c_str();
     views[0] = new orthoView(name1, page, part, bbox);
     name1 = doc->getUniqueObjectName("Ortho").c_str();
@@ -283,33 +289,31 @@ TaskOrthoViews::TaskOrthoViews(QWidget *parent)
 
     primary = 0;
     secondary_1 = 0;
-    secondary_2 = 0;    
+    secondary_2 = 0;
     rotate = 0;
     proj = 1;
     autoscale = 1;
-    
-    //these need to be calculated depending upon page size
+
     margin = 10;
-    pagewidth = 400;
-    pageh1 = 277;
-    pageh2 = 217;
-    min_space = 15;     
-    
-    //also need to be calculated, as default initial settings in case autoscale is deselected.
-    spacing_1 = 100;
-    spacing_2 = 100;
-    scale = 1;
-    x_pos = 150;
-    y_pos = 150;
-    
- 
+    pagesize(template_name);
+    min_space = 15;
+
+    //below are calculated in case autodims is deselected before these values are initialised.
+    float max_dim = max(max(bbox.LengthX(), bbox.LengthY()), bbox.LengthZ());
+    scale = min(pagewidth, pageh2)/(3*max_dim+4*min_space);
+    spacing_1 = scale*max_dim + min_space;
+    spacing_2 = spacing_1;
+    x_pos = pagewidth/2;
+    y_pos = pageh1/2;
+
+
     connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionChanged(int)));
     connect(ui->rotate, SIGNAL(currentIndexChanged(int)), this, SLOT(setRotate(int)));
     connect(ui->smooth, SIGNAL(stateChanged(int)), this, SLOT(smooth(int)));
     connect(ui->hidden, SIGNAL(stateChanged(int)), this, SLOT(hidden(int)));
     connect(ui->auto_tog, SIGNAL(stateChanged(int)), this, SLOT(toggle_auto(int)));
-    connect(ui->s1, SIGNAL(editingFinished()), this, SLOT(data_entered()));
-    connect(ui->s2, SIGNAL(editingFinished()), this, SLOT(data_entered()));
+    connect(ui->spacing1, SIGNAL(editingFinished()), this, SLOT(data_entered()));
+    connect(ui->spacing2, SIGNAL(editingFinished()), this, SLOT(data_entered()));
     connect(ui->x, SIGNAL(editingFinished()), this, SLOT(data_entered()));
     connect(ui->y, SIGNAL(editingFinished()), this, SLOT(data_entered()));
     connect(ui->scale, SIGNAL(editingFinished()), this, SLOT(data_entered()));
@@ -340,7 +344,6 @@ TaskOrthoViews::TaskOrthoViews(QWidget *parent)
                 transform[i][j][k] = temp[i][j][k];     //in order to avoid compiler warning
 
 //    Command::doCommand(Command::Doc,"#%d", transform[6][3][2]);
-
 } //end of constructor
 
 TaskOrthoViews::~TaskOrthoViews()
@@ -350,6 +353,112 @@ TaskOrthoViews::~TaskOrthoViews()
     delete views[2];
     delete ui;
 }
+
+void TaskOrthoViews::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
+
+
+void TaskOrthoViews::pagesize(std::string& page_template)
+{
+    /********update num_templates when adding extra templates*******************/
+    
+    const int num_templates = 2;
+    std::string templates[num_templates] = {"A3_Landscape.svg", "A4_Landscape.svg"};
+    int dimensions[num_templates][3] = {{420,297,227},{297,210,153}};       //{width, full height, reduced height}  measured from page edge.
+    
+    for (int i=0; i < num_templates; i++)
+    {      
+        if (templates[i] == page_template)
+        {
+            pagewidth = dimensions[i][0] - 2*margin;
+            pageh1 = dimensions[i][1] - 2*margin;
+            pageh2 = dimensions[i][2] - ((dimensions[i][1] == dimensions[i][2]) + 1) * margin;
+            return;
+        }
+    }
+    
+    //matching template not found, read through template file for width & height info.
+    
+    //code below copied from FeaturePage.cpp
+    Base::FileInfo fi(page_template);
+    if (!fi.isReadable()) {
+        fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
+        if (!fi.isReadable())       //if so then really shouldn't have been able to get this far, but just in case...
+        {
+            pagewidth = 277;
+            pageh1 = 190;
+            pageh2 = 190;
+            return;
+        }
+    }
+
+    // open Template file
+    string line;
+    string temp_line;
+    ifstream file (fi.filePath().c_str());
+    size_t found;
+    bool done = false;
+    
+    try
+    {
+        while (!file.eof())
+        {
+            getline (file,line);
+            found = line.find("width=");
+            if (found != string::npos)
+            {
+                temp_line = line.substr(10);
+                found = temp_line.find("\"");
+                temp_line = temp_line.substr(0,found);
+                stringstream num_str(temp_line);
+                num_str >> pagewidth;
+                pagewidth -= 2*margin;
+                if (done)
+                {
+                    file.close();
+                    return;
+                }
+                else
+                    done = true;
+            }
+            
+            found = line.find("height=");
+            if (found != string::npos)
+            {
+                temp_line = line.substr(11);
+                found = temp_line.find("\"");
+                temp_line = temp_line.substr(0,found);
+                stringstream num_str_2(temp_line);
+                num_str_2 >> pageh1;
+                pageh1 -= 2*margin;
+                pageh2 = pageh1;
+                if (done)
+                {
+                    file.close();
+                    return;
+                }
+                else
+                    done = true;
+            }
+            
+            if (line.find("metadata") != string::npos)      //give up if we meet a metadata tag
+                break;
+        }
+    }
+    catch (Standard_Failure) { }
+    
+    file.close();        
+    
+    //width/height not found??  fallback to A4 landscape simple:
+    pagewidth = 277;
+    pageh1 = 190;
+    pageh2 = 190;
+}
+
 
 void TaskOrthoViews::autodims(float s1_x, float s1_y, float s2_x, float s2_y)
 {
@@ -445,8 +554,8 @@ void TaskOrthoViews::autodims(float s1_x, float s1_y, float s2_x, float s2_y)
     ui->scale->setText(QString::number(scale));
     ui->x->setText(QString::number(x_pos));
     ui->y->setText(QString::number(y_pos));
-    ui->s1->setText(QString::number(spacing_1));
-    ui->s2->setText(QString::number(spacing_2));
+    ui->spacing1->setText(QString::number(spacing_1));
+    ui->spacing2->setText(QString::number(spacing_2));
 }
 
 void TaskOrthoViews::compute()
@@ -513,7 +622,7 @@ void TaskOrthoViews::populate_s1()
         if (((j+1)/2 != (primary+1)/2) && (j != secondary_2))
         {
             k += 1;
-            ui->secondary_1->addItem(QString::fromUtf8(number_to_name(j)));
+            ui->secondary_1->addItem(number_to_name(j));
             if (j == secondary_1)
                 i = k;
         }
@@ -532,7 +641,7 @@ void TaskOrthoViews::populate_s2()
         if (((j+1)/2 != (primary+1)/2) && (j != secondary_1))
         {
             k += 1;
-            ui->secondary_2->addItem(QString::fromUtf8(number_to_name(j)));
+            ui->secondary_2->addItem(number_to_name(j));
             if (j == secondary_2)
                 i = k;
         }
@@ -643,8 +752,8 @@ void TaskOrthoViews::toggle_auto(int i)
         ui->scale->setEnabled(false);
         ui->x->setEnabled(false);
         ui->y->setEnabled(false);
-        ui->s1->setEnabled(false);
-        ui->s2->setEnabled(false);
+        ui->spacing1->setEnabled(false);
+        ui->spacing2->setEnabled(false);
         ui->label_4->setEnabled(false);
         ui->label_5->setEnabled(false);
         ui->label_6->setEnabled(false);
@@ -656,8 +765,8 @@ void TaskOrthoViews::toggle_auto(int i)
         ui->scale->setEnabled(true);
         ui->x->setEnabled(true);
         ui->y->setEnabled(true);
-        ui->s1->setEnabled(true);
-        ui->s2->setEnabled(true);        
+        ui->spacing1->setEnabled(true);
+        ui->spacing2->setEnabled(true);        
         ui->label_4->setEnabled(true);        
         ui->label_5->setEnabled(true);        
         ui->label_6->setEnabled(true);        
@@ -666,25 +775,23 @@ void TaskOrthoViews::toggle_auto(int i)
 
 void TaskOrthoViews::data_entered()
 {
-    Command::doCommand(Command::Doc,"#Data entered");
-
     bool ok;
 
-    float value = ui->s1->text().toFloat(&ok);    
+    float value = ui->spacing1->text().toFloat(&ok);    
     if (ok)
        spacing_1 = value;
     else
     {
-        ui->s1->setText(QString::number(spacing_1));
+        ui->spacing1->setText(QString::number(spacing_1));
         return;
     }
     
-    value = ui->s2->text().toFloat(&ok);
+    value = ui->spacing2->text().toFloat(&ok);
     if (ok)
        spacing_2 = value;
     else
     {
-        ui->s2->setText(QString::number(spacing_2));
+        ui->spacing2->setText(QString::number(spacing_2));
         return;
     }
 
@@ -721,12 +828,12 @@ bool TaskOrthoViews::user_input()
 {
     //if user presses return, this is intercepted by FreeCAD which interprets it as activating the 'OK' button
     //if return was pressed in a text box though, we don't want it to do 'OK', so check to see if a text box has been modified.
-    bool modified = (ui->s1->isModified() || ui->s2->isModified() || ui->x->isModified() || ui->y->isModified() || ui->scale->isModified());
+    bool modified = (ui->spacing1->isModified() || ui->spacing2->isModified() || ui->x->isModified() || ui->y->isModified() || ui->scale->isModified());
 
     if (modified)
     {
-        ui->s1->setModified(false);
-        ui->s2->setModified(false);
+        ui->spacing1->setModified(false);
+        ui->spacing2->setModified(false);
         ui->x->setModified(false);
         ui->y->setModified(false);
         ui->scale->setModified(false);
@@ -752,21 +859,6 @@ void TaskOrthoViews::clean_up(bool keep)
         views[2]->deleteme();        
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -821,7 +913,7 @@ bool TaskDlgOrthoViews::reject()
     return true;
 }
 
-   
-   
-    
+
+
+
 #include "moc_TaskOrthoViews.cpp"

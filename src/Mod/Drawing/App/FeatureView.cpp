@@ -50,10 +50,10 @@ PROPERTY_SOURCE(Drawing::FeatureView, App::DocumentObject)
 FeatureView::FeatureView(void) 
 {
     static const char *group = "Drawing view";
-    ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the drawing in modeing units (mm)");
-    ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the drawing in modeing units (mm)");
+    ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the drawing in modelling units (mm)");
+    ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the drawing in modelling units (mm)");
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
-    ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view in degres counterclockwise");
+    ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view in degrees counterclockwise");
 
     App::PropertyType type = (App::PropertyType)(App::Prop_Hidden);
     ADD_PROPERTY_TYPE(ViewResult ,(0),group,type,"Resulting SVG fragment of that view");
