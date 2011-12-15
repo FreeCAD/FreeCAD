@@ -358,7 +358,7 @@ Action * StdCmdToolBarMenu::createAction(void)
 // Std_ViewStatusBar
 //===========================================================================
 
-DEF_STD_CMD_C(StdCmdStatusBar);
+DEF_STD_CMD_AC(StdCmdStatusBar);
 
 StdCmdStatusBar::StdCmdStatusBar()
   : Command("Std_ViewStatusBar")
@@ -383,6 +383,19 @@ Action * StdCmdStatusBar::createAction(void)
 void StdCmdStatusBar::activated(int iMsg)
 {
     getMainWindow()->statusBar()->setShown(iMsg != 0);
+}
+
+bool StdCmdStatusBar::isActive()
+{
+    static bool checked = false;
+    if (!checked) {
+        Action* act = this->getAction();
+        if (act) {
+            act->setChecked(getMainWindow()->statusBar()->isVisible());
+            checked = true;
+        }
+    }
+    return true;
 }
 
 //===========================================================================

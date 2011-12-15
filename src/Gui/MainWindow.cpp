@@ -1233,6 +1233,8 @@ void MainWindow::loadWindowSettings()
 
     bool max = config.value(QString::fromAscii("Maximized"), false).toBool();
     max ? showMaximized() : show();
+
+    statusBar()->setVisible(config.value(QString::fromAscii("StatusBar"), true).toBool());
     config.endGroup();
     config.endGroup();
 
@@ -1256,6 +1258,7 @@ void MainWindow::saveWindowSettings()
     config.setValue(QString::fromAscii("Position"), this->pos());
     config.setValue(QString::fromAscii("Maximized"), this->isMaximized());
     config.setValue(QString::fromAscii("MainWindowState"), this->saveState());
+    config.setValue(QString::fromAscii("StatusBar"), this->statusBar()->isVisible());
     config.endGroup();
     config.endGroup();
 
