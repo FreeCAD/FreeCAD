@@ -348,7 +348,7 @@ const char *View3DInventor::getName(void) const
 
 void View3DInventor::print()
 {
-    QPrinter printer(QPrinter::HighResolution);
+    QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -371,7 +371,7 @@ void View3DInventor::printPdf()
 
 void View3DInventor::printPreview()
 {
-    QPrinter printer(QPrinter::HighResolution);
+    QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
     //printer.setPageSize(QPrinter::A3);
     printer.setOrientation(QPrinter::Landscape);
