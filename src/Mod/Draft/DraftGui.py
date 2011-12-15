@@ -43,9 +43,14 @@ def getMainWindow():
     # widget than the mainwindow is active (e.g. a dialog) the wrong widget is
     # returned
     toplevel = QtGui.qApp.topLevelWidgets()
+    wins = []
     for i in toplevel:
         if i.metaObject().className() == "Gui::MainWindow":
-            return i
+            wins.append(i)
+    if wins:
+        for w in wins:
+            if w.findChildren(QtGui.QWidget,"QtGLArea"):
+                return w
     raise Exception("No main window found")
 
 class todo:
@@ -69,7 +74,7 @@ class todo:
                 else:
                     f()
             except:
-                wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0]
+                wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                 FreeCAD.Console.PrintWarning (wrn)
         todo.itinerary = []
         if todo.commitlist:
@@ -81,7 +86,7 @@ class todo:
                     func()
                     FreeCAD.ActiveDocument.commitTransaction()
                 except:
-                    wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0]
+                    wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                     FreeCAD.Console.PrintWarning (wrn)
         todo.commitlist = []
 
@@ -182,8 +187,7 @@ class DraftToolBar:
             self.mw = getMainWindow()
             self.mw.addDockWidget(QtCore.Qt.TopDockWidgetArea,self.draftWidget)
             self.draftWidget.setVisible(False)
-            self.draftWidget.toggleViewAction().setVisible(False)                
-            self.mw = getMainWindow()                
+            self.draftWidget.toggleViewAction().setVisible(False)                               
             self.baseWidget.setObjectName("draftToolbar")
             self.layout = QtGui.QHBoxLayout(self.baseWidget)
             self.layout.setObjectName("layout")
@@ -973,7 +977,7 @@ class DraftToolBar:
         if on:
             if not self.crossedViews:
                 mw = getMainWindow()
-                self.crossedViews = mw.findChildren(QtGui.QFrame,"SoQtWidgetName")
+                self.crossedViews = mw.findChildren(QtGui.QWidget,"QtGLArea")
             for w in self.crossedViews:
                 w.setCursor(QtCore.Qt.CrossCursor)
         else:

@@ -96,11 +96,11 @@ def getParamType(param):
                  "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
                  "modalt"]:
         return "int"
-    elif param in ["constructiongroupname","textfont","patternFile","template"]:
+    elif param in ["constructiongroupname","textfont","patternFile","template","maxSnapEdges"]:
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit"]:
+    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"

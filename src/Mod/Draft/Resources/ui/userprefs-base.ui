@@ -206,6 +206,19 @@
          </widget>
         </item>
         <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="label_21">
           <property name="text">
            <string>Snap mod</string>
@@ -242,6 +255,19 @@
            </property>
           </item>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="QLabel" name="label_22">
@@ -433,6 +459,68 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_20">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_4">
+          <property name="toolTip">
+           <string>If this is checked, snapping will not occur against objects with more than the indicated number of edges</string>
+          </property>
+          <property name="text">
+           <string>Snap maximum</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>maxSnap</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_23">
+          <property name="toolTip">
+           <string>Maximum number of edges to be considered for snapping</string>
+          </property>
+          <property name="text">
+           <string>Maximum number of edges</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_6">
+          <property name="maximum">
+           <number>999</number>
+          </property>
+          <property name="value">
+           <number>24</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>maxSnapEdges</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
@@ -513,6 +601,19 @@
            <cstring>Mod/Draft</cstring>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="QLabel" name="label_15">
@@ -641,6 +742,19 @@
          </widget>
         </item>
         <item>
+         <spacer name="horizontalSpacer_8">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox">
           <property name="maximumSize">
            <size>
@@ -679,6 +793,19 @@ Values with differences below this value will be treated as same.</string>
            <string>Default text height</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_9">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_2">
@@ -1014,12 +1141,12 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>85</x>
-     <y>320</y>
+     <x>103</x>
+     <y>373</y>
     </hint>
     <hint type="destinationlabel">
-     <x>308</x>
-     <y>321</y>
+     <x>347</x>
+     <y>374</y>
     </hint>
    </hints>
   </connection>
@@ -1030,12 +1157,76 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>61</x>
-     <y>321</y>
+     <x>79</x>
+     <y>373</y>
     </hint>
     <hint type="destinationlabel">
-     <x>506</x>
-     <y>324</y>
+     <x>571</x>
+     <y>374</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_4</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gui::prefspinbox_6</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>550</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_4</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_23</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>405</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_15</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>58</x>
+     <y>365</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>163</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_16</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>367</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>393</x>
+     <y>368</y>
     </hint>
    </hints>
   </connection>

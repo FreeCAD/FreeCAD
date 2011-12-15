@@ -174,6 +174,7 @@ def rounded(v):
 
 def getPlaneRotation(u,v,w=None):
         "returns a rotation matrix defining the (u,v,w) coordinates system"
+        if (not u) or (not v): return None
         if not w: w = u.cross(v)
         typecheck([(u,Vector), (v,Vector), (w,Vector)], "getPlaneRotation")
         m = FreeCAD.Matrix(

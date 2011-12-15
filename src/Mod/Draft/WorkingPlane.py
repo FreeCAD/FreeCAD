@@ -34,7 +34,6 @@ __url__ = "http://free-cad.sourceforge.net"
 This module provides a class called plane to assist in selecting and maintaining a working plane.
 '''
 
-
 class plane:
 	'''A WorkPlane object'''
 
@@ -44,10 +43,10 @@ class plane:
 		# self.weak is true if the plane has been defined by self.setup or has been reset
 		self.weak = True
 		# u, v axes and position define plane, perpendicular axis is handy, though redundant.
-		self.u = None
-		self.v = None
-		self.axis = None
-		self.position = None
+		self.u = Vector(1,0,0)
+		self.v = Vector(0,1,0)
+		self.axis = Vector(0,0,1)
+		self.position = Vector(0,0,0)
                 # a placeholder for a stored state
                 self.stored = None
 
