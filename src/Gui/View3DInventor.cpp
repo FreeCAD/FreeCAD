@@ -362,7 +362,7 @@ void View3DInventor::printPdf()
     QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), tr("PDF file (*.pdf)"));
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
-        QPrinter printer(QPrinter::HighResolution);
+        QPrinter printer(QPrinter::ScreenResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         print(&printer);

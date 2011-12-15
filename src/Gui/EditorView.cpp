@@ -360,7 +360,7 @@ void EditorView::redo(void)
  */
 void EditorView::print()
 {
-    QPrinter printer(QPrinter::HighResolution);
+    QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -370,7 +370,7 @@ void EditorView::print()
 
 void EditorView::printPreview()
 {
-    QPrinter printer(QPrinter::HighResolution);
+    QPrinter printer(QPrinter::ScreenResolution);
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
             this, SLOT(print(QPrinter *)));
@@ -389,7 +389,7 @@ void EditorView::printPdf()
 {
     QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), tr("PDF file (*.pdf)"));
     if (!filename.isEmpty()) {
-        QPrinter printer(QPrinter::HighResolution);
+        QPrinter printer(QPrinter::ScreenResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         d->textEdit->document()->print(&printer);
