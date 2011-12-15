@@ -283,7 +283,7 @@ void ShapeBuilderWidget::createShell()
     cmd = QString::fromAscii(
         "_=Part.Shell(%1)\n"
         "if _.isNull(): raise Exception('Failed to create shell')\n"
-        "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_\n"
+        "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
         "del _\n"
     ).arg(list);
 
@@ -317,7 +317,7 @@ void ShapeBuilderWidget::createSolid()
         "if shell.ShapeType != 'Shell': raise Exception('Part object is not a shell')\n"
         "_=Part.Solid(shell)\n"
         "if _.isNull(): raise Exception('Failed to create solid')\n"
-        "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_\n"
+        "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
         "del _\n"
     ).arg(line);
 

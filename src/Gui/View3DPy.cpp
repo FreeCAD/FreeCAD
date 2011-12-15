@@ -539,6 +539,10 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
+        Base::Console().Log("Try disabling the use of pbuffers, set the environment variables\n"
+                            "COIN_GLXGLUE_NO_PBUFFERS=1\n"
+                            "COIN_GLXGLUE_NO_GLX13_PBUFFERS=1\n"
+                            "and re-run the application.\n");
         throw Py::Exception(e.what());
     }
     catch (const std::exception& e) {
