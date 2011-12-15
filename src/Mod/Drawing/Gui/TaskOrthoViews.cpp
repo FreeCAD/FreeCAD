@@ -45,6 +45,15 @@ using namespace DrawingGui;
 using namespace std;
 
 
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("QObject", "Front");
+    qApp->translate("QObject", "Back");
+    qApp->translate("QObject", "Right");
+    qApp->translate("QObject", "Left");
+    qApp->translate("QObject", "Top");
+    qApp->translate("QObject", "Bottom");
+#endif
+
 int name_to_number(const QString& nme)
 {
     char * temp[] = {"","Front","Back","Right","Left","Top","Bottom"};
