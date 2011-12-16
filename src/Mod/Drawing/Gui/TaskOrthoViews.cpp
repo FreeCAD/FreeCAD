@@ -420,7 +420,7 @@ void TaskOrthoViews::pagesize(std::string& page_template)
             found = line.find("width=");
             if (found != string::npos)
             {
-                temp_line = line.substr(10);
+                temp_line = line.substr(7+found);
                 found = temp_line.find("\"");
                 temp_line = temp_line.substr(0,found);
                 stringstream num_str(temp_line);
@@ -438,7 +438,7 @@ void TaskOrthoViews::pagesize(std::string& page_template)
             found = line.find("height=");
             if (found != string::npos)
             {
-                temp_line = line.substr(11);
+                temp_line = line.substr(8+found);
                 found = temp_line.find("\"");
                 temp_line = temp_line.substr(0,found);
                 stringstream num_str_2(temp_line);
