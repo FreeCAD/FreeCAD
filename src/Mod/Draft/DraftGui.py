@@ -43,14 +43,9 @@ def getMainWindow():
     # widget than the mainwindow is active (e.g. a dialog) the wrong widget is
     # returned
     toplevel = QtGui.qApp.topLevelWidgets()
-    wins = []
     for i in toplevel:
         if i.metaObject().className() == "Gui::MainWindow":
-            wins.append(i)
-    if wins:
-        for w in wins:
-            if w.findChildren(QtGui.QWidget,"QtGLArea"):
-                return w
+            return i
     raise Exception("No main window found")
 
 class todo:
