@@ -45,6 +45,10 @@ class Snapper:
         self.views = []
         self.maxEdges = 0
         self.radius = 0
+        self.constraintAxis = None
+        self.basepoint = None
+        self.affinity = None
+        self.cursorMode = None
         if Draft.getParam("maxSnap"):
             self.maxEdges = Draft.getParam("maxSnapEdges")
 
@@ -52,7 +56,7 @@ class Snapper:
         self.tracker = None
         self.extLine = None
         self.grid = None
-        self.constraintAxis = None
+        self.constrainLine = None
         
         # the snapmarker has "dot","circle" and "square" available styles
         self.mk = {'passive':'circle',
@@ -60,119 +64,36 @@ class Snapper:
                    'parallel':'circle',
                    'grid':'circle',
                    'endpoint':'dot',
-                   'midpoint':'square',
-                   'perpendicular':'square',
-                   'angle':'square',
+                   'midpoint':'dot',
+                   'perpendicular':'dot',
+                   'angle':'dot',
                    'center':'dot',
-                   'ortho':'square',
-                   'intersection':'circle'}
+                   'ortho':'dot',
+                   'intersection':'dot'}
         self.cursors = {'passive':None,
                         'extension':':/icons/Constraint_Parallel.svg',
                         'parallel':':/icons/Constraint_Parallel.svg',
                         'grid':':/icons/Constraint_PointOnPoint.svg',
-                        'endpoint':':/icons/Constraint_PointOnPoint.svg',
+                        'endpoint':':/icons/Constraint_PointOnEnd.svg',
                         'midpoint':':/icons/Constraint_PointOnObject.svg',
                         'perpendicular':':/icons/Constraint_PointToObject.svg',
                         'angle':':/icons/Constraint_ExternalAngle.svg',
                         'center':':/icons/Constraint_Concentric.svg',
                         'ortho':':/icons/Constraint_Perpendicular.svg',
                         'intersection':':/icons/Constraint_Tangent.svg'}
+
+    def activate(self):
+        "create the trackers"
+        # setup trackers if needed
+        if not self.tracker:
+            self.tracker = DraftTrackers.snapTracker()
+        if not self.extLine:
+            self.extLine = DraftTrackers.lineTracker(dotted=True)
+        if (not self.grid) and Draft.getParam("grid"):
+            self.grid = DraftTrackers.gridTracker()
+        if not self.constrainLine:
+            self.constrainLine = DraftTrackers.lineTracker(dotted=True)
         
-    def constrain(self,point,basepoint=None,axis=None):
-        '''constrain(point,basepoint=None,axis=None: Returns a
-        constrained point. Axis can be "x","y" or "z" or a custom vector. If None,
-        the closest working plane axis will be picked.
-        Basepoint is the base point used to figure out from where the point
-        must be constrained. If no basepoint is given, the current point is
-        used as basepoint.'''
-
-        point = Vector(point)        
-        dvec = point.sub(basepoint)
-
-        # setting constraint axis
-        if isinstance(axis,FreeCAD.Vector):
-            self.constraintAxis = axis
-        elif axis == "x":
-            self.constraintAxis = FreeCAD.DraftWorkingPlane.u
-        elif axis == "y":
-            self.constraintAxis = FreeCAD.DraftWorkingPlane.v
-        elif axis == "z":
-            self.constraintAxis = FreeCAD.DraftWorkingPlane.axis
-        else:
-            self.constraintAxis = None
-
-        # setting basepoint
-        if not basepoint:
-            pass
-        
-        affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(dvec)
-        if (not self.constraintAxis) or mobile:
-            if affinity == "x":
-                dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.u)
-                point = last.add(dv)
-                if sym:
-                    l = dv.Length
-                    if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
-                        l = -l
-                    point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
-                target.constrain = 0 #x direction
-                target.ui.xValue.setEnabled(True)
-                target.ui.yValue.setEnabled(False)
-                target.ui.zValue.setEnabled(False)
-                target.ui.xValue.setFocus()
-            elif affinity == "y":
-                dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.v)
-                point = last.add(dv)
-                if sym:
-                    l = dv.Length
-                    if dv.getAngle(FreeCAD.DraftWorkingPlane.v) > 1:
-                        l = -l
-                    point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
-                target.constrain = 1 #y direction
-                target.ui.xValue.setEnabled(False)
-                target.ui.yValue.setEnabled(True)
-                target.ui.zValue.setEnabled(False)
-                target.ui.yValue.setFocus()
-            elif affinity == "z":
-                dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.axis)
-                point = last.add(dv)
-                if sym:
-                    l = dv.Length
-                    if dv.getAngle(FreeCAD.DraftWorkingPlane.axis) > 1:
-                        l = -l
-                    point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
-                target.constrain = 2 #z direction
-                target.ui.xValue.setEnabled(False)
-                target.ui.yValue.setEnabled(False)
-                target.ui.zValue.setEnabled(True)
-                target.ui.zValue.setFocus()
-            else: target.constrain = 3
-        elif (target.constrain == 0):
-            dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.u)
-            point = last.add(dv)
-            if sym:
-                l = dv.Length
-                if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
-                    l = -l
-                point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
-        elif (target.constrain == 1):
-            dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.v)
-            point = last.add(dv)
-            if sym:
-                l = dv.Length
-                if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
-                    l = -l
-                point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))
-        elif (target.constrain == 2):
-            dv = fcvec.project(dvec,FreeCAD.DraftWorkingPlane.axis)
-            point = last.add(dv)
-            if sym:
-                l = dv.Length
-                if dv.getAngle(FreeCAD.DraftWorkingPlane.u) > 1:
-                    l = -l
-                    point = last.add(FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(l,l,l)))			
-        return point        
-
     def snap(self,screenpos,lastpoint=None,active=True,constrain=None):
         """snap(screenpos,lastpoint=None,active=True,constrain=None): returns a snapped
         point from the given (x,y) screenpos (the position of the mouse cursor), active is to
@@ -197,7 +118,7 @@ class Snapper:
             self.radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
 
         # set the grid
-        if Draft.getParam("grid"):
+        if self.grid and Draft.getParam("grid"):
             self.grid.set()
         
         # checking if alwaySnap setting is on
@@ -207,16 +128,19 @@ class Snapper:
             active = True
 
         self.setCursor('passive')
-        self.tracker.off()
+        if self.tracker:
+            self.tracker.off()
+        if self.extLine:
+            self.extLine.off()
 
         point = FreeCADGui.ActiveDocument.ActiveView.getPoint(screenpos[0],screenpos[1])
             
-        # checking if parallel to one of the edges of the last objects
-        point = self.snapToExtensions(point,lastpoint)
-
         # check if we snapped to something
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((screenpos[0],screenpos[1]))
 
+        # checking if parallel to one of the edges of the last objects
+        point = self.snapToExtensions(point,lastpoint)
+        
         if not info:
             
             # nothing has been snapped, check fro grid snap
@@ -239,7 +163,7 @@ class Snapper:
             if not active:
                 
                 # passive snapping
-                snaps = [snapToVertex(info)]
+                snaps = [self.snapToVertex(info)]
 
             else:
                 
@@ -281,11 +205,10 @@ class Snapper:
                     snaps.extend(self.snapToEndpoints(obj.Mesh))
 
             # updating last objects list
-            if not self.lastObj[0]:
-                self.lastObj[0] = obj.Name
+            if not self.lastObj[1]:
                 self.lastObj[1] = obj.Name
-            if (self.lastObj[1] != obj.Name):
-                self.lastObj[0] = lastObj[1]
+            elif self.lastObj[1] != obj.Name:
+                self.lastObj[0] = self.lastObj[1]
                 self.lastObj[1] = obj.Name
 
             # calculating the nearest snap point
@@ -298,15 +221,19 @@ class Snapper:
                 if delta.Length < shortest:
                     shortest = delta.Length
                     winner = snap
-            if self.radius != 0:
+
+            # see if we are out of the max radius, if any
+            if self.radius:
                 dv = point.sub(winner[2])
-                if (not oldActive) and (dv.Length > self.radius):
-                    winner = snapToVertex(info)
+                if (dv.Length > self.radius):
+                    if not oldActive:
+                        winner = self.snapToVertex(info)
 
             # setting the cursors
-            self.tracker.setCoords(winner[2])
-            self.tracker.setMarker(self.mk[winner[1]])
-            self.tracker.on()
+            if self.tracker:
+                self.tracker.setCoords(winner[2])
+                self.tracker.setMarker(self.mk[winner[1]])
+                self.tracker.on()
             self.setCursor(winner[1])
 
             # return the final point
@@ -318,30 +245,35 @@ class Snapper:
             if o:
                 ob = FreeCAD.ActiveDocument.getObject(o)
                 if ob:
-                    edges = ob.Shape.Edges
-                    if (not self.maxEdges) or (len(edges) <= self.maxEdges):
-                        for e in edges:
-                            if isinstance(e.Curve,Part.Line):
-                                np = self.getPerpendicular(e,point)
-                                if (np.sub(point)).Length < self.radius:
-                                    self.tracker.setCoords(np)
-                                    self.tracker.setMarker(self.mk['extension'])
-                                    self.tracker.on()
-                                    self.extLine.p1(e.Vertexes[0].Point)
-                                    self.extLine.p2(np)
-                                    self.extLine.on()
-                                    self.setCursor('extension')
-                                    return np
-                                else:
-                                    if last:
-                                        de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
-                                        np = self.getPerpendicular(de,point)
+                    if ob.isDerivedFrom("Part::Feature"):
+                        edges = ob.Shape.Edges
+                        if (not self.maxEdges) or (len(edges) <= self.maxEdges):
+                            for e in edges:
+                                if isinstance(e.Curve,Part.Line):
+                                    np = self.getPerpendicular(e,point)
+                                    if not fcgeo.isPtOnEdge(np,e):
                                         if (np.sub(point)).Length < self.radius:
-                                            self.tracker.setCoords(np)
-                                            self.tracker.setMarker(self.mk['parallel'])
-                                            self.tracker.on()
+                                            if self.tracker:
+                                                self.tracker.setCoords(np)
+                                                self.tracker.setMarker(self.mk['extension'])
+                                                self.tracker.on()
+                                            if self.extLine:
+                                                self.extLine.p1(e.Vertexes[0].Point)
+                                                self.extLine.p2(np)
+                                                self.extLine.on()
                                             self.setCursor('extension')
                                             return np
+                                        else:
+                                            if last:
+                                                de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
+                                                np = self.getPerpendicular(de,point)
+                                                if (np.sub(point)).Length < self.radius:
+                                                    if self.tracker:
+                                                        self.tracker.setCoords(np)
+                                                        self.tracker.setMarker(self.mk['parallel'])
+                                                        self.tracker.on()
+                                                    self.setCursor('extension')
+                                                    return np
         return point
 
     def snapToGrid(self,point):
@@ -352,9 +284,10 @@ class Snapper:
                 if self.radius != 0:
                     dv = point.sub(np)
                     if dv.Length <= self.radius:
-                        self.tracker.setCoords(np)
-                        self.tracker.setMarker(self.mk['grid'])
-                        self.tracker.on()
+                        if self.tracker:
+                            self.tracker.setCoords(np)
+                            self.tracker.setMarker(self.mk['grid'])
+                            self.tracker.on()
                         self.setCursor('grid')
                         return np
         return point
@@ -442,7 +375,6 @@ class Snapper:
         "returns a list of intersection snap locations"
         snaps = []
         # get the stored objects to calculate intersections
-        intedges = []
         if self.lastObj[0]:
             obj = FreeCAD.ActiveDocument.getObject(self.lastObj[0])
             if obj:
@@ -465,7 +397,6 @@ class Snapper:
         
     def getScreenDist(self,dist,cursor):
         "returns a distance in 3D space from a screen pixels distance"
-        print cursor
         p1 = FreeCADGui.ActiveDocument.ActiveView.getPoint(cursor)
         p2 = FreeCADGui.ActiveDocument.ActiveView.getPoint((cursor[0]+dist,cursor[1]))
         return (p2.sub(p1)).Length
@@ -477,28 +408,32 @@ class Snapper:
         np = (edge.Vertexes[0].Point).add(nv)
         return np
 
-    def setCursor(self,mode=None):        
+    def setCursor(self,mode=None):
+        "setCursor(self,mode=None): sets or resets the cursor to the given mode or resets"
+        
         if not mode:
             for v in self.views:
                 v.unsetCursor()
             self.views = []
         else:
-            if not self.views:
-                mw = DraftGui.getMainWindow()
-                self.views = mw.findChildren(QtGui.QWidget,"QtGLArea")
-            baseicon = QtGui.QPixmap(":/icons/Draft_Cursor.svg")
-            newicon = QtGui.QPixmap(32,24)
-            newicon.fill(QtCore.Qt.transparent)
-            qp = QtGui.QPainter()
-            qp.begin(newicon)
-            qp.drawPixmap(0,0,baseicon)
-            if not (mode == 'passive'):
-                tp = QtGui.QPixmap(self.cursors[mode]).scaledToWidth(16)
-                qp.drawPixmap(QtCore.QPoint(16, 8), tp);
-            qp.end()
-            cur = QtGui.QCursor(newicon,8,8)
-            for v in self.views:
-                v.setCursor(cur)
+            if mode != self.cursorMode:
+                if not self.views:
+                    mw = DraftGui.getMainWindow()
+                    self.views = mw.findChildren(QtGui.QWidget,"QtGLArea")
+                baseicon = QtGui.QPixmap(":/icons/Draft_Cursor.svg")
+                newicon = QtGui.QPixmap(32,24)
+                newicon.fill(QtCore.Qt.transparent)
+                qp = QtGui.QPainter()
+                qp.begin(newicon)
+                qp.drawPixmap(0,0,baseicon)
+                if not (mode == 'passive'):
+                    tp = QtGui.QPixmap(self.cursors[mode]).scaledToWidth(16)
+                    qp.drawPixmap(QtCore.QPoint(16, 8), tp);
+                qp.end()
+                cur = QtGui.QCursor(newicon,8,8)
+                for v in self.views:
+                    v.setCursor(cur)
+                self.cursorMode = mode
     
     def off(self):
         "finishes snapping"
@@ -508,11 +443,67 @@ class Snapper:
             self.extLine.off()
         if self.grid:
             self.grid.off()
+        if self.constrainLine:
+            self.constrainLine.off()
         self.radius = 0
         self.setCursor()
+        self.cursorMode = None
 
-    def constrainOff(self):
-        pass
+    def constrain(self,point,basepoint=None,axis=None):
+        '''constrain(point,basepoint=None,axis=None: Returns a
+        constrained point. Axis can be "x","y" or "z" or a custom vector. If None,
+        the closest working plane axis will be picked.
+        Basepoint is the base point used to figure out from where the point
+        must be constrained. If no basepoint is given, the current point is
+        used as basepoint.'''
+
+        point = Vector(point)
+
+        # setting basepoint
+        if not basepoint:
+            if not self.basepoint:
+                self.basepoint = point
+        else:
+            self.basepoint = basepoint
+        delta = point.sub(basepoint)
+
+        # setting constraint axis
+        self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
+        if isinstance(axis,FreeCAD.Vector):
+            self.constraintAxis = axis
+        elif axis == "x":
+            self.constraintAxis = FreeCAD.DraftWorkingPlane.u
+        elif axis == "y":
+            self.constraintAxis = FreeCAD.DraftWorkingPlane.v
+        elif axis == "z":
+            self.constraintAxis = FreeCAD.DraftWorkingPlane.axis
+        else:
+            if self.affinity == "x":
+                self.constraintAxis = FreeCAD.DraftWorkingPlane.u
+            elif self.affinity == "y":
+                self.constraintAxis = FreeCAD.DraftWorkingPlane.v
+            else:
+                self.constraintAxis = FreeCAD.DraftWorkingPlane.axis
+                
+        # calculating constrained point
+        cdelta = fcvec.project(delta,self.constraintAxis)
+        npoint = self.basepoint.add(cdelta)
+
+        # setting constrain line
+        if point != npoint:
+            self.constrainLine.p1(point)
+            self.constrainLine.p2(npoint)
+            self.constrainLine.on()
+        else:
+            self.constrainLine.off()
+		
+        return npoint       
+
+    def unconstrain(self):
+        self.basepoint = None
+        self.affinity = None
+        if self.constrainLine:
+            self.constrainLine.off()
                
 # deprecated ##################################################################
 
@@ -598,30 +589,31 @@ def snapPoint(target,point,cursor,ctrl=False):
             if o:
                 ob = target.doc.getObject(o)
                 if ob:
-                    edges = ob.Shape.Edges
-                    if len(edges)<10:
-                        for e in edges:
-                            if isinstance(e.Curve,Part.Line):
-                                last = target.node[len(target.node)-1]
-                                de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()
-                                np = getPerpendicular(e,point)
-                                if (np.sub(point)).Length < radius:
-                                    target.snap.coords.point.setValue((np.x,np.y,np.z))
-                                    target.snap.setMarker("circle")
-                                    target.snap.on()
-                                    target.extsnap.p1(e.Vertexes[0].Point)
-                                    target.extsnap.p2(np)
-                                    target.extsnap.on()
-                                    point = np
-                                else:
+                    if ob.isDerivedFrom("Part::Feature"):
+                        edges = ob.Shape.Edges
+                        if len(edges)<10:
+                            for e in edges:
+                                if isinstance(e.Curve,Part.Line):
                                     last = target.node[len(target.node)-1]
-                                    de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
-                                    np = getPerpendicular(de,point)
+                                    de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()
+                                    np = getPerpendicular(e,point)
                                     if (np.sub(point)).Length < radius:
                                         target.snap.coords.point.setValue((np.x,np.y,np.z))
                                         target.snap.setMarker("circle")
                                         target.snap.on()
+                                        target.extsnap.p1(e.Vertexes[0].Point)
+                                        target.extsnap.p2(np)
+                                        target.extsnap.on()
                                         point = np
+                                    else:
+                                        last = target.node[len(target.node)-1]
+                                        de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
+                                        np = getPerpendicular(de,point)
+                                        if (np.sub(point)).Length < radius:
+                                            target.snap.coords.point.setValue((np.x,np.y,np.z))
+                                            target.snap.setMarker("circle")
+                                            target.snap.on()
+                                            point = np
 
     # check if we snapped to something
     snapped=target.view.getObjectInfo((cursor[0],cursor[1]))

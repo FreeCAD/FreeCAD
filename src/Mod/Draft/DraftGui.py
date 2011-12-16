@@ -969,17 +969,9 @@ class DraftToolBar:
             return (r,g,b)
 
     def cross(self,on=True):
-        if on:
-            if not self.crossedViews:
-                mw = getMainWindow()
-                self.crossedViews = mw.findChildren(QtGui.QWidget,"QtGLArea")
-            for w in self.crossedViews:
-                w.setCursor(QtCore.Qt.CrossCursor)
-        else:
-            for w in self.crossedViews:
-                w.unsetCursor()
-            self.crossedViews = []
-
+        "deprecated"
+        pass
+        
     def toggleConstrMode(self,checked):
         self.baseWidget.setStyleSheet("#constrButton:Checked {background-color: "+self.getDefaultColor("constr",rgb=True)+" }")
         self.constrMode = checked

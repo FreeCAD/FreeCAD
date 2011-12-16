@@ -119,8 +119,13 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
     '''
     ui = FreeCADGui.draftToolBar
     view = FreeCADGui.ActiveDocument.ActiveView
-    point = view.getPoint(args["Position"][0],args["Position"][1])
-    point = snapPoint(target,point,args["Position"],hasMod(args,MODSNAP))
+    # point = view.getPoint(args["Position"][0],args["Position"][1])
+    # point = snapPoint(target,point,args["Position"],hasMod(args,MODSNAP))
+    if target.node:
+        last = target.node[-1]
+    else:
+        last = None
+    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=hasMod(args,MODSNAP))
 
     if (not plane.weak) and workingplane:
         # working plane was explicitely selected - project onto it
@@ -137,7 +142,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
             # point = plane.projectPoint(point)
         else:
             point = plane.projectPoint(point, viewDirection)
-    ctrlPoint = Vector(point.x,point.y,point.z)
+    ctrlPoint = Vector(point)
     if (hasMod(args,MODCONSTRAIN)): # constraining
         if mobile and (target.constrain == None):
             target.node.append(point)
@@ -297,7 +302,6 @@ class SelectPlane:
         if self.ui:
             self.ui.offUi()
 
-
 #---------------------------------------------------------------------------
 # Geometry constructors
 #---------------------------------------------------------------------------
@@ -324,7 +328,6 @@ class Creator:
         else:
             FreeCAD.activeDraftCommand = self
             self.ui = FreeCADGui.draftToolBar
-            self.ui.cross(True)
             self.ui.sourceCmd = self
             self.ui.setTitle(name)
             self.ui.show()
@@ -338,11 +341,6 @@ class Creator:
             self.snap = snapTracker()
             self.extsnap = lineTracker(dotted=True)
             self.planetrack = PlaneTracker()
-            if Draft.getParam("grid"):
-                self.grid = gridTracker()
-                self.grid.set()
-            else:
-                self.grid = None
                         
     def IsActive(self):
         if FreeCADGui.ActiveDocument:
@@ -355,12 +353,11 @@ class Creator:
         self.extsnap.finalize()
         self.node=[]
         self.planetrack.finalize()
-        if self.grid: self.grid.finalize()
         if self.support: plane.restore()
+        FreeCADGui.Snapper.off()
         FreeCAD.activeDraftCommand = None
         if self.ui:
             self.ui.offUi()
-            self.ui.cross(False)
             self.ui.sourceCmd = None
         msg("")
         if self.call:
@@ -1671,11 +1668,6 @@ class Modifier:
             self.snap = snapTracker()
             self.extsnap = lineTracker(dotted=True)
             self.planetrack = PlaneTracker()
-            if Draft.getParam("grid"):
-                self.grid = gridTracker()
-                self.grid.set()
-            else:
-                self.grid = None
 
     def IsActive(self):
         if FreeCADGui.ActiveDocument:
@@ -1694,7 +1686,7 @@ class Modifier:
             self.ui.cross(False)
         msg("")
         self.planetrack.finalize()
-        if self.grid: self.grid.finalize()
+        FreeCADGui.Snapper.off()
         if self.call:
             self.view.removeEventCallback("SoEvent",self.call)
             self.call = None

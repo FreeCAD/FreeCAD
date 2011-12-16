@@ -272,9 +272,9 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 		else : # Line isn't on Arc's plane
 			if dirVec.dot(arc.Curve.Axis) != 0 :
 				toPlane  = Vector(arc.Curve.Axis) ; toPlane.normalize()
-				d = vec1.dot(toPlane)
+				d = pt1.dot(toPlane)
 				dToPlane = center.sub(pt1).dot(toPlane)
-				toPlane = Vector(vec1)
+				toPlane = Vector(pt1)
 				toPlane.scale(dToPlane/d,dToPlane/d,dToPlane/d)
 				ptOnPlane = toPlane.add(pt1)
 				if round(ptOnPlane.sub(center).Length - arc.Curve.Radius,precision) == 0 :

@@ -219,7 +219,7 @@ class plane:
                 bx = point.getAngle(fcvec.neg(self.u))
                 by = point.getAngle(fcvec.neg(self.v))
                 bz = point.getAngle(fcvec.neg(self.axis))
-                b = min(ax,ay,az)
+                b = min(ax,ay,az,bx,by,bz)
                 if b in [ax,bx]:
                         return "x"
                 elif b in [ay,by]:

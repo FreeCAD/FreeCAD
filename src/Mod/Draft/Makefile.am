@@ -101,6 +101,7 @@ EXTRA_DIST = \
         Resources/icons/Draft_Construction.svg \
 		Resources/icons/Draft_Draft.svg \
 		Resources/icons/Draft_2DShapeView.svg \
+		Resources/icons/Draft_Cursor.svg \
         Resources/patterns/concrete.svg \
         Resources/patterns/cross.svg \
         Resources/patterns/line.svg \
