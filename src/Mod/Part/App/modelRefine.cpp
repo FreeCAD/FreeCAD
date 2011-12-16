@@ -504,6 +504,7 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
     }
 
     ShapeFix_Face faceFix(current);
+    faceFix.SetContext(new ShapeBuild_ReShape());
     for (size_t index(0); index<facesParallel.size(); ++index)
     {
         if (current.IsSame(facesParallel.at(index)))
