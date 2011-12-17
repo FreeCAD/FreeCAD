@@ -54,6 +54,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Vertex.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 
@@ -255,7 +256,11 @@ App::DocumentObjectExecReturn *Plane::execute(void)
     gp_Pnt pnt(0.0,0.0,0.0);
     gp_Dir dir(0.0,0.0,1.0);
     Handle_Geom_Plane aPlane = new Geom_Plane(pnt, dir);
-    BRepBuilderAPI_MakeFace mkFace(aPlane, 0.0, L, 0.0, W);
+    BRepBuilderAPI_MakeFace mkFace(aPlane, 0.0, L, 0.0, W
+#if OCC_VERSION_HEX >= 0x060502
+      , Precision::Confusion()
+#endif
+    );
 
     const char *error=0;
     switch (mkFace.Error())

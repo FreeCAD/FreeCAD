@@ -66,6 +66,7 @@
 # include <gp_Sphere.hxx>
 # include <gp_Torus.hxx>
 # include <Standard_Real.hxx>
+# include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
@@ -1252,7 +1253,11 @@ TopoDS_Shape GeomSurface::toShape() const
     Handle_Geom_Surface s = Handle_Geom_Surface::DownCast(handle());
     Standard_Real u1,u2,v1,v2;
     s->Bounds(u1,u2,v1,v2);
-    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2);
+    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2
+#if OCC_VERSION_HEX >= 0x060502
+      , Precision::Confusion()
+#endif
+      );
     return mkBuilder.Shape();
 }
 

@@ -48,6 +48,7 @@
 # include <gp_Cone.hxx>
 # include <gp_Sphere.hxx>
 # include <gp_Torus.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <BRepTopAdaptor_FClass2d.hxx>
@@ -135,7 +136,11 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return -1;
             }
 
-            BRepBuilderAPI_MakeFace mkFace(S);
+            BRepBuilderAPI_MakeFace mkFace(S
+#if OCC_VERSION_HEX >= 0x060502
+              , Precision::Confusion()
+#endif
+            );
             if (bound) {
                 Py::List list(bound);
                 for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {

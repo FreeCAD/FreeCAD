@@ -73,6 +73,7 @@
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
 # include <Precision.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <BRepOffsetAPI_ThruSections.hxx>
@@ -492,7 +493,11 @@ static PyObject * makePlane(PyObject *self, PyObject *args)
             d.SetCoord(vec.x, vec.y, vec.z);
         }
         Handle_Geom_Plane aPlane = new Geom_Plane(p, d);
-        BRepBuilderAPI_MakeFace Face(aPlane, 0.0, length, 0.0, width);
+        BRepBuilderAPI_MakeFace Face(aPlane, 0.0, length, 0.0, width
+#if OCC_VERSION_HEX >= 0x060502
+          , Precision::Confusion()
+#endif
+        );
         return new TopoShapeFacePy(new TopoShape((Face.Face()))); 
     }
     catch (Standard_DomainError) {

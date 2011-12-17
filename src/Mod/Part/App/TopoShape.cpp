@@ -133,6 +133,7 @@
 # include <ShapeFix_Solid.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <ShapeUpgrade_RemoveInternalWires.hxx>
+# include <Standard_Version.hxx>
 #endif
 # include <Poly_Polygon3D.hxx>
 # include <Poly_PolygonOnTriangulation.hxx>
@@ -1338,7 +1339,11 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol) const
     double u1,u2,v1,v2;
     surf->Bounds(u1,u2,v1,v2);
 
-    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, v1, v2);
+    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, v1, v2
+#if OCC_VERSION_HEX >= 0x060502
+      , Precision::Confusion()
+#endif
+    );
     return mkBuilder.Face();
 }
 
@@ -1391,7 +1396,11 @@ TopoDS_Shape TopoShape::makeTube() const
 
         Standard_Real u1,u2,v1,v2;
         mySurface->Bounds(u1,u2,v1,v2);
-        BRepBuilderAPI_MakeFace mkBuilder(mySurface, u1, u2, v1, v2);
+        BRepBuilderAPI_MakeFace mkBuilder(mySurface, u1, u2, v1, v2
+#if OCC_VERSION_HEX >= 0x060502
+          , Precision::Confusion()
+#endif
+        );
         return mkBuilder.Shape();
     }
 
@@ -1443,7 +1452,11 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     mkSweep.Perform(tol, Standard_False, GeomAbs_C1, BSplCLib::MaxDegree(), 1000);
 
     const Handle_Geom_Surface& surf = mkSweep.Surface();
-    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, vmin, vmax);
+    BRepBuilderAPI_MakeFace mkBuilder(surf, umin, umax, vmin, vmax
+#if OCC_VERSION_HEX >= 0x060502
+      , Precision::Confusion()
+#endif
+    );
     return mkBuilder.Face();
 }
 
