@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,Component
+import FreeCAD,FreeCADGui,Part,Draft,ArchComponent
 from draftlibs import fcgeo,fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
@@ -67,10 +67,10 @@ class _CommandWall:
         else:
             wall = makeWall()
        
-class _Wall(Component.Component):
+class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
-        Component.Component.__init__(self,obj)
+        ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Width","Base",
                         "The width of this wall. Not used if this wall is based on a face")
         obj.addProperty("App::PropertyLength","Height","Base",
@@ -180,11 +180,11 @@ class _Wall(Component.Component):
         if not fcgeo.isNull(pl):
             obj.Placement = pl
 
-class _ViewProviderWall(Component.ViewProviderComponent):
+class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     "A View Provider for the Wall object"
 
     def __init__(self,vobj):
-        Component.ViewProviderComponent.__init__(self,vobj)
+        ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):          
         return ":/icons/Arch_Wall_Tree.svg"

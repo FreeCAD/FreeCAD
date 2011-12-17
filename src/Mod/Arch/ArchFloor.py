@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import Cell,FreeCAD,FreeCADGui,Draft,Commands
+import ArchCell,FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Arch Floor"
@@ -47,7 +47,7 @@ class _CommandFloor:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Floor',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
-                'Accel': "F, R",
+                'Accel': "F, L",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
         
     def Activated(self):
@@ -67,18 +67,18 @@ class _CommandFloor:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         
-class _Floor(Cell._Cell):
+class _Floor(ArchCell._Cell):
     "The Cell object"
     def __init__(self,obj):
-        Cell._Cell.__init__(self,obj)
+        ArchCell._Cell.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Height","Base",
                         "The height of this floor")
         self.Type = "Floor"
         
-class _ViewProviderFloor(Cell._ViewProviderCell):
+class _ViewProviderFloor(ArchCell._ViewProviderCell):
     "A View Provider for the Cell object"
     def __init__(self,vobj):
-        Cell._ViewProviderCell.__init__(self,vobj)
+        ArchCell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Arch_Floor_Tree.svg"

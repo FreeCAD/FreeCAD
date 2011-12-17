@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,Component,Commands
+import FreeCAD,FreeCADGui,Part,Draft,ArchComponent,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -68,7 +68,7 @@ class _CommandCell:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
-class _Cell(Component.Component):
+class _Cell(ArchComponent.Component):
     "The Cell object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLinkList","Components","Base",
@@ -114,7 +114,7 @@ class _Cell(Component.Component):
             obj.Shape = baseShape
             obj.Placement = pl
 
-class _ViewProviderCell(Component.ViewProviderComponent):
+class _ViewProviderCell(ArchComponent.ViewProviderComponent):
     "A View Provider for the Cell object"
     def __init__(self,vobj):
         Component.ViewProviderComponent.__init__(self,vobj)

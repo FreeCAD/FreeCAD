@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,Component,math
+import FreeCAD,FreeCADGui,Part,Draft,ArchComponent,math
 from draftlibs import fcgeo,fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
@@ -61,7 +61,7 @@ class _CommandAxis:
         makeAxis(5,1)
         FreeCAD.ActiveDocument.commitTransaction()
        
-class _Axis(Component.Component):
+class _Axis(ArchComponent.Component):
     "The Axis object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyFloatList","Distances","Base", "The intervals between axes")
@@ -96,7 +96,7 @@ class _Axis(Component.Component):
             obj.Shape = Part.Compound(geoms)
         obj.Placement = pl
         
-class _ViewProviderAxis(Component.ViewProviderComponent):
+class _ViewProviderAxis(ArchComponent.ViewProviderComponent):
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):

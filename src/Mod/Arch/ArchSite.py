@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import Cell,FreeCAD,FreeCADGui,Draft,Commands
+import ArchCell,FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Site"
@@ -64,10 +64,10 @@ class _CommandSite:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         
-class _Site(Cell._Cell):
+class _Site(ArchCell._Cell):
     "The Site object"
     def __init__(self,obj):
-        Cell._Cell.__init__(self,obj)
+        ArchCell._Cell.__init__(self,obj)
         self.Type = "Site"
         
     def execute(self,obj):
@@ -76,10 +76,10 @@ class _Site(Cell._Cell):
     def onChanged(self,obj,prop):
         pass
     
-class _ViewProviderSite(Cell._ViewProviderCell):
+class _ViewProviderSite(ArchCell._ViewProviderCell):
     "A View Provider for the Site object"
     def __init__(self,vobj):
-        Cell._ViewProviderCell.__init__(self,vobj)
+        ArchCell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Arch_Site_Tree.svg"

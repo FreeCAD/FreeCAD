@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,Component
+import FreeCAD,FreeCADGui,Part,Draft,ArchComponent
 from draftlibs import fcgeo,fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
@@ -51,7 +51,7 @@ class _CommandWindow:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Window"),
-                'Accel': "W, A",
+                'Accel': "W, I",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from scratch or from a selected object (wire, rectangle or sketch)")}
         
     def Activated(self):
@@ -65,10 +65,10 @@ class _CommandWindow:
             makeWindow(rect)
         FreeCAD.ActiveDocument.commitTransaction()
        
-class _Window(Component.Component):
+class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
-        Component.Component.__init__(self,obj)
+        ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyFloat","Thickness","Base",
                         "the thickness to be associated with the wire of the Base object")
         #obj.addProperty("App::PropertyLink","Support","Base",
@@ -107,11 +107,11 @@ class _Window(Component.Component):
             obj.Placement = pl
             self.Subvolume.Placement = pl
 
-class _ViewProviderWindow(Component.ViewProviderComponent):
+class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
 
     def __init__(self,vobj):
-        Component.ViewProviderComponent.__init__(self,vobj)
+        ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):          
         return ":/icons/Arch_Window_Tree.svg"

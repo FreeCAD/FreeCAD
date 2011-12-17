@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import Cell,FreeCAD,FreeCADGui,Draft,Commands
+import ArchCell,FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Building"
@@ -66,16 +66,16 @@ class _CommandBuilding:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         
-class _Building(Cell._Cell):
+class _Building(ArchCell._Cell):
     "The Building object"
     def __init__(self,obj):
-        Cell._Cell.__init__(self,obj)
+        ArchCell._Cell.__init__(self,obj)
         self.Type = "Building"
         
-class _ViewProviderBuilding(Cell._ViewProviderCell):
+class _ViewProviderBuilding(ArchCell._ViewProviderCell):
     "A View Provider for the Building object"
     def __init__(self,vobj):
-        Cell._ViewProviderCell.__init__(self,vobj)
+        ArchCell._ViewProviderCell.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Arch_Building_Tree.svg"

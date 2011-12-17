@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,Component
+import FreeCAD,FreeCADGui,Part,Draft,ArchComponent
 from draftlibs import fcgeo,fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
@@ -74,10 +74,10 @@ class _CommandStructure:
         else:
             makeStructure()
        
-class _Structure(Component.Component):
+class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
-        Component.Component.__init__(self,obj)
+        ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Length","Base",
                         "The length of this element, if not based on a profile")
         obj.addProperty("App::PropertyLength","Width","Base",
@@ -159,11 +159,11 @@ class _Structure(Component.Component):
             obj.Shape = base
             if not fcgeo.isNull(pl): obj.Placement = pl
 
-class _ViewProviderStructure(Component.ViewProviderComponent):
+class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
 
     def __init__(self,vobj):
-        Component.ViewProviderComponent.__init__(self,vobj)
+        ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
     def getIcon(self):          
         return ":/icons/Arch_Structure_Tree.svg"

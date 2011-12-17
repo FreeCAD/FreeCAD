@@ -1,4 +1,4 @@
-import FreeCAD,FreeCADGui,Part,Component,WorkingPlane,Drawing,math
+import FreeCAD,FreeCADGui,Part,ArchComponent,WorkingPlane,Drawing,math
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
@@ -9,6 +9,7 @@ class _CommandSectionPlane:
     "the Arch SectionPlane command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_SectionPlane',
+                'Accel': "S, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Adds a section plane object to the document")}
 
@@ -59,7 +60,7 @@ class _SectionPlane:
     def getNormal(self):
         return self.Object.Shape.Faces[0].normalAt(0,0)
 
-class _ViewProviderSectionPlane(Component.ViewProviderComponent):
+class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","DisplaySize","Base",
