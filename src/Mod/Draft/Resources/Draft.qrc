@@ -37,6 +37,8 @@
         <file>icons/Draft_Draft2Sketch.svg</file>
         <file>icons/Draft_Array.svg</file>
         <file>icons/Draft_Cursor.svg</file>
+        <file>icons/Draft_Dot.svg</file>
+        <file>icons/Draft_Point.svg</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>
         <file>patterns/line.svg</file>
