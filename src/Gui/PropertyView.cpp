@@ -121,7 +121,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
             for(pt = viewMap.begin(); pt != viewMap.end(); ++pt) {
                 std::pair<std::string, int> nameType = std::make_pair
                     <std::string, int>( pt->first, pt->second->getTypeId().getKey());
-                if (!vp->isHidden(pt->second))
+                if (!vp->isHidden(pt->second) && !pt->second->StatusBits.test(3))
                     propViewMap[nameType].push_back(pt->second);
             }
         }
