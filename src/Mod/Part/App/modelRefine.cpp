@@ -512,10 +512,12 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
         faceFix.Add(wiresParallel.at(index));
     }
     faceFix.FixOrientation();
-    if (faceFix.Perform())
-        return faceFix.Face();
-    else
+    Standard_Boolean signal = faceFix.Perform();
+
+    if (signal > ShapeExtend_DONE)
         return TopoDS_Face();
+    else
+        return faceFix.Face();
 }
 
 FaceTypedPlane& ModelRefine::getPlaneObject()
