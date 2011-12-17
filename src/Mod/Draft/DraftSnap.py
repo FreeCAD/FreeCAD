@@ -81,29 +81,23 @@ class Snapper:
                         'center':':/icons/Constraint_Concentric.svg',
                         'ortho':':/icons/Constraint_Perpendicular.svg',
                         'intersection':':/icons/Constraint_Tangent.svg'}
-
-    def activate(self):
-        "create the trackers"
-        # setup trackers if needed
-        if not self.tracker:
-            self.tracker = DraftTrackers.snapTracker()
-        if not self.extLine:
-            self.extLine = DraftTrackers.lineTracker(dotted=True)
-        if (not self.grid) and Draft.getParam("grid"):
-            self.grid = DraftTrackers.gridTracker()
-        if not self.constrainLine:
-            self.constrainLine = DraftTrackers.lineTracker(dotted=True)
         
     def snap(self,screenpos,lastpoint=None,active=True,constrain=None):
         """snap(screenpos,lastpoint=None,active=True,constrain=None): returns a snapped
         point from the given (x,y) screenpos (the position of the mouse cursor), active is to
         activate active point snapping or not (passive), lastpoint is an optional
         other point used to draw an imaginary segment and get additional snap locations. Constrain can
-        be set to 0 (horizontal) or 1 (vertical), for more additional snap locations."""
+        be set to 0 (horizontal) or 1 (vertical), for more additional snap locations.
+        Screenpos can be a list, a tuple or a coin.SbVec2s object."""
 
         # type conversion if needed
-        if not isinstance(screenpos,tuple):
+        if isinstance(screenpos,list):
             screenpos = tuple(screenpos)
+        elif isinstance(screenpos,coin.SbVec2s):
+            screenpos = tuple(screenpos.getValue())
+        elif  not isinstance(screenpos,tuple):
+            print "snap needs valid screen position (list, tuple or sbvec2s)"
+            return None
 
         # setup trackers if needed
         if not self.tracker:
