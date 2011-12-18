@@ -44,7 +44,6 @@ class _SectionPlane:
         obj.addProperty("App::PropertyLinkList","Objects","Base",
                         "The objects that must be considered by this section plane. Empty means all document")
         self.Type = "SectionPlane"
-        self.Object = obj
         
     def execute(self,obj):
         pl = obj.Placement
@@ -52,13 +51,12 @@ class _SectionPlane:
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
         obj.Shape = p
         obj.Placement = pl
-        self.Object = obj
 
     def onChanged(self,obj,prop):
         pass
 
-    def getNormal(self):
-        return self.Object.Shape.Faces[0].normalAt(0,0)
+    def getNormal(self,obj):
+        return obj.Shape.Faces[0].normalAt(0,0)
 
 class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
@@ -133,17 +131,18 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
 class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
+        obj.addProperty("App::PropertyEnumeration","RenderingMode","Base","The rendering mode to use")
+        obj.RenderingMode = ["Z-sorted","Wireframe","Wireframe + shade"]
+        obj.RenderingMode = "Z-sorted"
         obj.Proxy = self
         self.Type = "DrawingView"
 
     def execute(self, obj):
-        print "executing"
         if obj.Source:
             obj.ViewResult = self.updateSVG(obj)
-
+            
     def onChanged(self, obj, prop):
-        print "prop:",prop
-        if prop == "Source":
+        if prop in ["Source","RenderingMode"]:
             obj.ViewResult = self.updateSVG(obj)
 
     def updateSVG(self, obj):
@@ -151,8 +150,13 @@ class _ArchDrawingView:
         if obj.Source:
             if obj.Source.Objects:
                 svg = ''
-                for o in obj.Source.Objects:
-                    svg += self.getSVG(o,obj.Source.Proxy.getNormal())
+                if obj.RenderingMode == "Z-sorted":
+                    svg += self.renderClassicSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
+                elif obj.RenderingMode == "Wireframe":
+                    svg += self.renderWireframeSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
+                elif obj.RenderingMode == "Wireframe + shade":
+                    svg += self.renderOutlineSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
+                    svg += self.renderWireframeSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
@@ -166,18 +170,79 @@ class _ArchDrawingView:
                 return result
         return ''
 
-    def getSVG(self,obj,direction,base=None):
+    def getProj(self,vec,plane):
+        "returns a vector in working plane space from the given vector"
+        if not plane:
+            return vec
+        nx = fcvec.project(vec,plane.u)
+        lx = nx.Length
+        if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
+        ny = fcvec.project(vec,plane.v)
+        ly = ny.Length
+        if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
+        return Vector(lx,ly,0)
+
+    def getPath(self,face,plane):
+        "returns a svg path from a face"
+        svg ='<path '
+        edges = fcgeo.sortEdges(face.Edges)
+        v = self.getProj(edges[0].Vertexes[0].Point,plane)
+        svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
+        for e in edges:
+            if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
+                v = self.getProj(e.Vertexes[-1].Point,plane)
+                svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
+            elif isinstance(e.Curve,Part.Circle):
+                r = e.Curve.Radius
+                v = self.getProj(e.Vertexes[-1].Point,plane)
+                svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
+                svg += str(v.y) + ' '
+        svg += '" '
+        svg += 'stroke="#000000" '
+        svg += 'stroke-width="0.01 px" '
+        svg += 'style="stroke-width:0.01;'
+        svg += 'stroke-miterlimit:1;'
+        svg += 'stroke-dasharray:none;'
+        svg += 'fill:#aaaaaa"'
+        svg += '/>\n'
+        return svg
+
+    def renderWireframeSVG(self,objs,direction):
+        os = objs[:]
+        if os:
+            sh = os.pop().Shape
+            for o in os:
+                sh = sh.fuse(o.Shape)
+        result = Drawing.projectToSVG(sh,fcvec.neg(direction))
+        if result:
+            result = result.replace('stroke-width="0.35"','stroke-width="0.01 px"')
+            return result
+        return ''
+
+    def renderOutlineSVG(self,objs,direction):
+        plane = None
+        plane = WorkingPlane.plane()
+        if direction != Vector(0,0,0):
+            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+        else:
+            direction = Vector(0,0,-1)
+        faces = []
+        for obj in objs:
+            for face in obj.Shape.Faces:
+                normal = face.normalAt(0,0)
+                if normal.getAngle(direction) > math.pi/2:
+                    faces.append(face)
+        print "faces:",faces
+        if faces:
+            base = faces.pop()
+            for face in faces:
+                base = base.oldFuse(face)
+        result = self.getPath(base,plane)
+        return result        
+
+    def renderClassicSVG(self,objs,direction,base=None):
         """returns an svg fragment from a SectionPlane object,
         a direction vector and optionally a base point"""
-
-        print "getting representation of ",obj.Name," at ",direction
-
-        # using Draft WorkingPlane
-        plane = None
-        if direction != Vector(0,0,0):
-            plane = WorkingPlane.plane()
-            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
-        print "plane:",plane
 
         def intersection(p1,p2,p3,p4):
             "returns the intersection of line (p1,p2) with plane (p3,p4)"
@@ -212,46 +277,49 @@ class _ArchDrawingView:
                                 i = i2
             return i
 
-        def getProj(vec):
-            if not plane:
-                return vec
-            nx = fcvec.project(vec,plane.u)
-            lx = nx.Length
-            if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
-            ny = fcvec.project(vec,plane.v)
-            ly = ny.Length
-            if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
-            return Vector(lx,ly,0)
+        def findPrevious(base,dir,faces):
+            "returns the highest index in faces that is crossed by the given line"
+            for i in range(len(faces)-1,-1,-1):
+                print "p1:",base," p2: ",base.add(dir)
+                obb = faces[i].BoundBox
+                print "bo: ",obb
+                op = intersection(base,base.add(dir),faces[i].CenterOfMass,faces[i].normalAt(0,0))
+                print "int:", op
+                if obb.isInside(op):
+                    dv = op.sub(base)
+                    if dv.getAngle(dir) < math.pi/2:
+                        return i
+            return None
+            
+        def findNext(base,dir,faces):
+            "returns the lowest index in faces that is crossed by the given line"
+            for i in range(len(faces)):
+                obb = faces[i].BoundBox
+                op = intersection(base,base.add(dir),faces[i].CenterOfMass,faces[i].normalAt(0,0))
+                if obb.isInside(op):
+                    dv = op.sub(base)
+                    if dv.getAngle(dir) > math.pi/2:
+                        return i
+            return None
+       
+        print "getting representation at ",direction," =======================================>"
 
-        def getPath(face):
-            svg ='<path '
-            edges = fcgeo.sortEdges(face.Edges)
-            v = getProj(edges[0].Vertexes[0].Point)
-            svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
-            for e in edges:
-                if isinstance(e.Curve,Part.Line) or  isinstance(e.Curve,Part.BSplineCurve):
-                    v = getProj(e.Vertexes[-1].Point)
-                    svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-                elif isinstance(e.Curve,Part.Circle):
-                    r = e.Curve.Radius
-                    v = getProj(e.Vertexes[-1].Point)
-                    svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                    svg += str(v.y) + ' '
-            svg += '" '
-            svg += 'stroke="#000000" '
-            svg += 'stroke-width="0.01 px" '
-            svg += 'style="stroke-width:0.01;'
-            svg += 'stroke-miterlimit:1;'
-            svg += 'stroke-dasharray:none;'
-            svg += 'fill:#aaaaaa"'
-            svg += '/>\n'
-            return svg
-
+        # using Draft WorkingPlane
+        plane = None
+        plane = WorkingPlane.plane()
+        if direction != Vector(0,0,0):
+            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+        else:
+            direction = Vector(0,0,-1)
+        print "plane:",plane
+                
         sortedFaces = []
 
         if not base:
             # getting the base point = first point from the bounding box
-            bb = obj.Shape.BoundBox
+            bb = FreeCAD.BoundBox()
+            for o in objs:
+                bb.add(o.Shape.BoundBox)
             rad = bb.DiagonalLength/2
             rv = bb.Center.add(direction)
             rv = fcvec.scaleTo(rv,rad)
@@ -260,95 +328,65 @@ class _ArchDrawingView:
 
         print "base:",base
 
-        # getting faces rays
-        unsortedFaces = obj.Shape.Faces[:]
+        # getting faces
+        unsortedFaces = []
+        notFoundFaces = []
+        for o in objs:
+            unsortedFaces.append(o.Name)
+            unsortedFaces.extend(o.Shape.Faces[:])
+        print "analyzing ",len(unsortedFaces)," faces"
+        
         for face in unsortedFaces:
 
-            # testing if normal
+            if isinstance(face,str):
+                print "OBJECT ",face," =======================================>"
+                continue
+
+            print "testing face ",unsortedFaces.index(face)
+
+            # testing if normal points outwards
             normal = face.normalAt(0,0)
             if normal.getAngle(direction) <= math.pi/2:
                 print "normal pointing outwards"
                 continue
-            
-            bhash = face.hashCode()
-            center = face.CenterOfMass
-            ray = center.sub(base)
-            ray = fcvec.project(ray,direction)
-            z = ray.Length
-            if ray.getAngle(direction) > 1:
-                z = -z
 
-            print "face center:",center," ray:",ray
+            fprev = 0
+            fnext = len(sortedFaces)
+            notFound = True
 
-            tempFaces = [face]
+            print "checking ",len(face.Vertexes)," verts"
 
-            # comparing with other faces crossed by the same ray
-            for of in sortedFaces:
-                obb = of.BoundBox
-                op = intersection(base,ray,of.CenterOfMass,of.normalAt(0,0))
-                if obb.isInside(op):
-                    oray = op.sub(base)
-                    oray = fcvec.project(oray,direction)
-                    oz = oray.Length
-                    if oray.getAngle(direction) > 1:
-                        oz = -oz
-                    if oz > 0:
-                        if oz < z:
-                            tempFaces.insert(0,of)
-                        elif oz > z:
-                            tempFaces.append(of)
+            for v in face.Vertexes:
+                vprev = findPrevious(v.Point,direction,sortedFaces)
+                vnext = findNext(v.Point,direction,sortedFaces)
+                print "temp indexes:",vprev,vnext
+                if (vprev != None):
+                    notfound = False
+                    if (vprev > fprev):
+                        fprev = vprev
+                if (vnext != None):
+                    notfound = False
+                    if (vnext < fnext):
+                        fnext = vnext
 
-            print "tempFaces:",tempFaces
+            print "fprev:",fprev
+            print "fnext:",fnext
+            print "notFound",notFound
 
-            # finding the position of the base face among others
-            findex = 0
-            if len(tempFaces) > 1:
-                for i in range(len(tempFaces)):
-                    if tempFaces[i].hashCode() == bhash:
-                        findex = i
-
-            print "face index in tempfaces:",findex
-
-            # finding the right place to insert in ordered list
-            oindex = 0 
-            if not sortedFaces:
-                sortedFaces.append(face)
-            elif len(tempFaces) == 1:
-                sortedFaces.append(face)
+            if fnext < fprev:
+                raise "Error, impossible index"
+            elif fnext == fprev:
+                sortedFaces.insert(fnext,face)
             else:
-                if findex == 0: # our face is the first item
-                    ni = getFirstIndex(tempFaces[1:],sortedFaces)
-                    if ni == None:
-                        sortedFaces.append(face)
-                    else:
-                        sortedFaces.insert(ni,face)
-                elif findex == len(tempFaces)-1: # our face is the last item
-                    ni = getLastIndex(tempFaces[:-1],sortedFaces)
-                    if ni == None:
-                        sortedFaces.append(face)
-                    else:
-                        sortedFaces.insert(ni+1,face)
-                else: # there are faces before and after
-                    i1 = getLastIndex(tempFaces[:findex],sortedFaces)
-                    i2 = getFirstIndex(tempFaces[findex+1:],sortedFaces)
-                    if i1 == None:
-                        if i2 == None:
-                            sortedFaces.append(face)
-                        else:
-                            sortedFaces.insert(i2,face)
-                    else:
-                            sortedFaces.insert(i1+1,face)
+                sortedFaces.insert(fnext,face)
 
-        print "sorted faces:",len(sortedFaces)
+            print len(sortedFaces)," sorted faces:",sortedFaces
 
-        # building SVG representation
+        # building SVG representation in correct order
         svg = ''
         for f in sortedFaces:
-            svg += getPath(f)
-
-        print "result:",svg
+            svg += self.getPath(f,plane)
             
         return svg
-
 
 FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

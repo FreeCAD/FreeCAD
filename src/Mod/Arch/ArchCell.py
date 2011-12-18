@@ -117,7 +117,7 @@ class _Cell(ArchComponent.Component):
 class _ViewProviderCell(ArchComponent.ViewProviderComponent):
     "A View Provider for the Cell object"
     def __init__(self,vobj):
-        Component.ViewProviderComponent.__init__(self,vobj)
+        ArchComponent.ViewProviderComponent.__init__(self,vobj)
         vobj.Proxy = self
         self.Object = vobj.Object
 
