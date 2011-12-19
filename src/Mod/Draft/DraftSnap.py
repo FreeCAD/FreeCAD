@@ -82,13 +82,21 @@ class Snapper:
                         'ortho':':/icons/Constraint_Perpendicular.svg',
                         'intersection':':/icons/Constraint_Tangent.svg'}
         
-    def snap(self,screenpos,lastpoint=None,active=True,constrain=None):
-        """snap(screenpos,lastpoint=None,active=True,constrain=None): returns a snapped
+    def snap(self,screenpos,lastpoint=None,active=True,constrain=False):
+        """snap(screenpos,lastpoint=None,active=True,constrain=False): returns a snapped
         point from the given (x,y) screenpos (the position of the mouse cursor), active is to
         activate active point snapping or not (passive), lastpoint is an optional
         other point used to draw an imaginary segment and get additional snap locations. Constrain can
-        be set to 0 (horizontal) or 1 (vertical), for more additional snap locations.
+        be True to constrain the point against the closest working plane axis.
         Screenpos can be a list, a tuple or a coin.SbVec2s object."""
+
+        def cstr(point):
+            "constrains if needed"
+            if constrain:
+                return self.constrain(point,lastpoint)
+            else:
+                self.unconstrain()
+                return point
 
         # type conversion if needed
         if isinstance(screenpos,list):
@@ -139,7 +147,7 @@ class Snapper:
             
             # nothing has been snapped, check fro grid snap
             point = self.snapToGrid(point)
-            return point
+            return cstr(point)
 
         else:
 
@@ -148,11 +156,11 @@ class Snapper:
 
             obj = FreeCAD.ActiveDocument.getObject(info['Object'])
             if not obj:
-                return point
+                return cstr(point)
                 
             if hasattr(obj.ViewObject,"Selectable"):
                 if not obj.ViewObject.Selectable:
-                    return point
+                    return cstr(point)
                 
             if not active:
                 
@@ -229,9 +237,9 @@ class Snapper:
                 self.tracker.setMarker(self.mk[winner[1]])
                 self.tracker.on()
             self.setCursor(winner[1])
-
+            
             # return the final point
-            return winner[2]
+            return cstr(winner[2])
         
     def snapToExtensions(self,point,last):
         "returns a point snapped to extension or parallel line to last object, if any"
@@ -453,13 +461,17 @@ class Snapper:
 
         point = Vector(point)
 
+        # setup trackers if needed
+        if not self.constrainLine:
+            self.constrainLine = DraftTrackers.lineTracker(dotted=True)
+
         # setting basepoint
         if not basepoint:
             if not self.basepoint:
                 self.basepoint = point
         else:
             self.basepoint = basepoint
-        delta = point.sub(basepoint)
+        delta = point.sub(self.basepoint)
 
         # setting constraint axis
         self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
@@ -484,12 +496,13 @@ class Snapper:
         npoint = self.basepoint.add(cdelta)
 
         # setting constrain line
-        if point != npoint:
-            self.constrainLine.p1(point)
-            self.constrainLine.p2(npoint)
-            self.constrainLine.on()
-        else:
-            self.constrainLine.off()
+        if self.constrainLine:
+            if point != npoint:
+                self.constrainLine.p1(point)
+                self.constrainLine.p2(npoint)
+                self.constrainLine.on()
+            else:
+                self.constrainLine.off()
 		
         return npoint       
 

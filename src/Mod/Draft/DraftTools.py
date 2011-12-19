@@ -117,16 +117,20 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
     point. If sym=True, x and y values stay always equal. If workingplane=False,
     the point wont be projected on the Working Plane.
     '''
+    
     ui = FreeCADGui.draftToolBar
     view = FreeCADGui.ActiveDocument.ActiveView
-    # point = view.getPoint(args["Position"][0],args["Position"][1])
-    # point = snapPoint(target,point,args["Position"],hasMod(args,MODSNAP))
+
+    # get point
     if target.node:
         last = target.node[-1]
     else:
         last = None
-    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=hasMod(args,MODSNAP))
+    amod = hasMod(args,MODSNAP)
+    cmod = hasMod(args,MODCONSTRAIN)
+    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod)
 
+    # project onto working plane if needed
     if (not plane.weak) and workingplane:
         # working plane was explicitely selected - project onto it
         viewDirection = view.getViewDirection()
@@ -143,21 +147,13 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
         else:
             point = plane.projectPoint(point, viewDirection)
     ctrlPoint = Vector(point)
-    if (hasMod(args,MODCONSTRAIN)): # constraining
-        if mobile and (target.constrain == None):
-            target.node.append(point)
-        point = constrainPoint(target,point,mobile=mobile,sym=sym)
-    else:
-        target.constrain = None
-        ui.xValue.setEnabled(True)
-        ui.yValue.setEnabled(True)
-        ui.zValue.setEnabled(True)
+    mask = FreeCADGui.Snapper.affinity
     if target.node:
         if target.featureName == "Rectangle":
-            ui.displayPoint(point, target.node[0], plane=plane)
+            ui.displayPoint(point, target.node[0], plane=plane, mask=mask)
         else:
-            ui.displayPoint(point, target.node[-1], plane=plane)
-    else: ui.displayPoint(point, plane=plane)
+            ui.displayPoint(point, target.node[-1], plane=plane, mask=mask)
+    else: ui.displayPoint(point, plane=plane, mask=mask)
     return point,ctrlPoint
 
 def getSupport(args):
@@ -383,7 +379,7 @@ class Line(Creator):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Line"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain")}
 
-    def Activated(self,name="Line"):
+    def Activated(self,name=str(translate("draft","Line"))):
         Creator.Activated(self,name)
         if self.doc:
             self.obj = None
@@ -430,20 +426,16 @@ class Line(Creator):
     def action(self,arg):
         "scene event handler"
         if arg["Type"] == "SoKeyboardEvent":
+            # key detection
             if arg["Key"] == "ESCAPE":
                 self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+        elif arg["Type"] == "SoLocation2Event":
+            # mouse movement detection
             point,ctrlPoint = getPoint(self,arg)
             self.ui.cross(True)
             self.linetrack.p2(point)
-            # Draw constraint tracker line.
-            if hasMod(arg,MODCONSTRAIN):
-                self.constraintrack.p1(point)
-                self.constraintrack.p2(ctrlPoint)
-                self.constraintrack.on()
-            else:
-                self.constraintrack.off()
         elif arg["Type"] == "SoMouseButtonEvent":
+            # mouse button detection
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if (arg["Position"] == self.pos):
                     self.finish(False,cont=True)
@@ -457,11 +449,6 @@ class Line(Creator):
                     if (not self.isWire and len(self.node) == 2):
                         self.finish(False,cont=True)
                     if (len(self.node) > 2):
-                        # DNC: allows to close the curve
-                        # by placing ends close to each other
-                        # with tol = Draft tolerance
-                        # old code has been to insensitive
-                        # if fcvec.equals(point,self.node[0]):
                         if ((point-self.node[0]).Length < Draft.tolerance()):
                             self.undolast()
                             self.finish(True,cont=True)

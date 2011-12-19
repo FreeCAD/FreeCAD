@@ -924,24 +924,49 @@ class DraftToolBar:
                 self.textline -= 1
                 self.textValue.setText(self.textbuffer[self.textline])
 
-    def displayPoint(self, point, last=None, plane=None):
+    def displayPoint(self, point, last=None, plane=None, mask=None):
         "this function displays the passed coords in the x, y, and z widgets"
+
+        # get coords to display
         dp = point
         if self.isRelative.isChecked() and (last != None):
             if plane:
                 dp = plane.getLocalCoords(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
             else:
                 dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
+
+        # set widgets
         self.xValue.setText("%.2f" % dp.x)
         self.yValue.setText("%.2f" % dp.y)
-        if self.zValue.isEnabled(): self.zValue.setText("%.2f" % dp.z)
-        if self.xValue.isEnabled():
+        self.zValue.setText("%.2f" % dp.z)
+
+        # set masks
+        if mask == "x":
+            self.xValue.setEnabled(True)
+            self.yValue.setEnabled(False)
+            self.zValue.setEnabled(False)
             self.xValue.setFocus()
             self.xValue.selectAll()
-        else:
+        elif mask == "y":
+            self.xValue.setEnabled(False)
+            self.yValue.setEnabled(True)
+            self.zValue.setEnabled(False)
             self.yValue.setFocus()
             self.yValue.selectAll()
+        elif mask == "z":
+            self.xValue.setEnabled(False)
+            self.yValue.setEnabled(False)
+            self.zValue.setEnabled(True)
+            self.zValue.setFocus()
+            self.zValue.selectAll()        
+        else:
+            self.xValue.setEnabled(True)
+            self.yValue.setEnabled(True)
+            self.zValue.setEnabled(True)
+            self.xValue.setFocus()
+            self.xValue.selectAll()        
 
+            
     def getDefaultColor(self,type,rgb=False):
         "gets color from the preferences or toolbar"
         if type == "snap":
@@ -1045,7 +1070,6 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 	                
     def setWatchers(self):
-        print "adding draft widgets to taskview..."
         class DraftCreateWatcher:
             def __init__(self):
                 self.commands = ["Draft_Line","Draft_Wire",
@@ -1074,7 +1098,6 @@ class DraftToolBar:
             def shouldShow(self):
                 return True
 
-        print "setting tray"
         self.traywidget = QtGui.QWidget()
         self.tray = QtGui.QVBoxLayout(self.traywidget)
         self.tray.setObjectName("traylayout")
