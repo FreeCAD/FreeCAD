@@ -43,7 +43,7 @@
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
 // Doesn't seem to work with VS2010
-# if (defined(_MSC_VER) && (_MSC_VER < 1800))
+# if (defined(_MSC_VER) && (_MSC_VER < 1600))
 # include <Shfolder.h>
 # endif
 #endif
@@ -1287,8 +1287,9 @@ void Application::LoadParameters(void)
 }
 
 
-#if (defined(_MSC_VER) && (_MSC_VER != 1600))
+#if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
+// VS2010: https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 #if (defined (BOOST_VERSION) && (BOOST_VERSION == 104100))
 namespace boost { namespace program_options {
