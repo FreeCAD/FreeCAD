@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #include <algorithm>
+#include <iterator>
 #include <Geom_Surface.hxx>
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Plane.hxx>

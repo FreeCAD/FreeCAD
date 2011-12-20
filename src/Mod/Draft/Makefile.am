@@ -74,8 +74,10 @@ EXTRA_DIST = \
         Resources/icons/Draft_Arc.svg \
         Resources/icons/Draft_BSpline.svg \
         Resources/icons/Draft_Circle.svg \
+        Resources/icons/Draft_Cursor.svg \
         Resources/icons/Draft_DelPoint.svg \
         Resources/icons/Draft_Dimension.svg \
+        Resources/icons/Draft_Dot.svg \
         Resources/icons/Draft_Downgrade.svg \
         Resources/icons/Draft_Drawing.svg \
         Resources/icons/Draft_Edit.svg \
@@ -85,6 +87,7 @@ EXTRA_DIST = \
         Resources/icons/Draft_Macro.svg \
         Resources/icons/Draft_Move.svg \
         Resources/icons/Draft_Offset.svg \
+        Resources/icons/Draft_Point.svg \
         Resources/icons/Draft_Polygon.svg \
         Resources/icons/Draft_Rectangle.svg \
         Resources/icons/Draft_Rotate.svg \

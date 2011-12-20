@@ -406,9 +406,9 @@ void TaskOrthoViews::pagesize(std::string& page_template)
     }
 
     // open Template file
-    string line;
-    string temp_line;
-    ifstream file (fi.filePath().c_str());
+    std::string line;
+    std::string temp_line;
+    std::ifstream file (fi.filePath().c_str());
     size_t found;
     bool done = false;
     
@@ -418,12 +418,12 @@ void TaskOrthoViews::pagesize(std::string& page_template)
         {
             getline (file,line);
             found = line.find("width=");
-            if (found != string::npos)
+            if (found != std::string::npos)
             {
                 temp_line = line.substr(7+found);
                 found = temp_line.find("\"");
                 temp_line = temp_line.substr(0,found);
-                stringstream num_str(temp_line);
+                std::stringstream num_str(temp_line);
                 num_str >> pagewidth;
                 pagewidth -= 2*margin;
                 if (done)
@@ -436,12 +436,12 @@ void TaskOrthoViews::pagesize(std::string& page_template)
             }
             
             found = line.find("height=");
-            if (found != string::npos)
+            if (found != std::string::npos)
             {
                 temp_line = line.substr(8+found);
                 found = temp_line.find("\"");
                 temp_line = temp_line.substr(0,found);
-                stringstream num_str_2(temp_line);
+                std::stringstream num_str_2(temp_line);
                 num_str_2 >> pageh1;
                 pageh1 -= 2*margin;
                 pageh2 = pageh1;
@@ -454,7 +454,7 @@ void TaskOrthoViews::pagesize(std::string& page_template)
                     done = true;
             }
             
-            if (line.find("metadata") != string::npos)      //give up if we meet a metadata tag
+            if (line.find("metadata") != std::string::npos)      //give up if we meet a metadata tag
                 break;
         }
     }
