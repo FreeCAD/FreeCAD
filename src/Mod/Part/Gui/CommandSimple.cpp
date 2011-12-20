@@ -222,16 +222,21 @@ void CmdPartRefineShape::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
     openCommand("Refine shape");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
-                      "App.ActiveDocument.%s.Shape.removeSplitter()\n"
-                      "App.ActiveDocument.ActiveObject.Label="
-                      "App.ActiveDocument.%s.Label\n",
-                      (*it)->getNameInDocument(),
-                      (*it)->getNameInDocument(),
-                      (*it)->getNameInDocument());
-        copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
-        copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
-        copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
+        try {
+            doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
+                          "App.ActiveDocument.%s.Shape.removeSplitter()\n"
+                          "App.ActiveDocument.ActiveObject.Label="
+                          "App.ActiveDocument.%s.Label\n",
+                          (*it)->getNameInDocument(),
+                          (*it)->getNameInDocument(),
+                          (*it)->getNameInDocument());
+            copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
+            copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
+            copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Warning("%s: %s\n", (*it)->Label.getValue(), e.what());
+        }
     }
     commitCommand();
     updateActive();

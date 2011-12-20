@@ -141,12 +141,7 @@ namespace ModelRefine
         const std::vector<EdgeVectorType>& getGroupedEdges(){return groupedEdges;}
 
     private:
-        void splitRecursive(EdgeVectorType &tempEdges, const EdgeVectorType &workEdges);
-        void buildMap(const EdgeVectorType &edgesIn);
-        bool edgeTest(const TopoDS_Edge &edgeOne, const TopoDS_Edge &edgeTwo);
-        TopTools_MapOfShape processed;
         std::vector<EdgeVectorType> groupedEdges;
-        TopTools_DataMapOfShapeListOfShape edgeVertexMap;
     };
 
     class FaceUniter
