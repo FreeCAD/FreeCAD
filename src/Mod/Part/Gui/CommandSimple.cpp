@@ -218,6 +218,7 @@ CmdPartRefineShape::CmdPartRefineShape()
 
 void CmdPartRefineShape::activated(int iMsg)
 {
+    Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
     openCommand("Refine shape");
