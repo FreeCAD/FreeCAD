@@ -187,7 +187,7 @@ class DraftWorkbench (Workbench):
             pass
         self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
-                        "Draft_Dimension", "Draft_BSpline"]
+                        "Draft_Dimension", "Draft_BSpline","Draft_Point"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",

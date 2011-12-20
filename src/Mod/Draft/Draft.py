@@ -1270,6 +1270,29 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
             FreeCAD.ActiveDocument.removeObject(obj.Name)
     FreeCAD.ActiveDocument.recompute()
     return nobj
+
+def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
+    ''' make a point (at coordinates x,y,z ,color(r,g,b),point_size)
+        example usage: 
+        p1 = makePoint()
+        p1.ViewObject.Visibility= False # make it invisible
+        p1.ViewObject.Visibility= True  # make it visible
+        p1 = makePoint(-1,0,0) #make a point at -1,0,0
+        p1 = makePoint(1,0,0,(1,0,0)) # color = red
+        p1.X = 1 #move it in x
+        p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
+    '''
+    obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    _Point(obj,X,Y,Z)
+    _ViewProviderPoint(obj.ViewObject)
+    obj.X = X
+    obj.Y = Y
+    obj.Z = Z
+    obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
+    obj.ViewObject.PointSize = point_size
+    obj.ViewObject.Visibility = True
+    FreeCAD.ActiveDocument.recompute()
+    return obj
 			
 #---------------------------------------------------------------------------
 # Python Features definitions
@@ -2294,3 +2317,42 @@ class _ViewProviderArray(_ViewProviderDraft):
 
     def claimChildren(self):
         return [self.Object.Base]
+
+class _Point:
+    def __init__(self, obj,x,y,z):
+        obj.addProperty("App::PropertyFloat","X","Point","Location").X = x
+        obj.addProperty("App::PropertyFloat","Y","Point","Location").Y = y
+        obj.addProperty("App::PropertyFloat","Z","Point","Location").Z = z
+        mode = 2
+        obj.setEditorMode('Placement',mode)
+        obj.Proxy = self
+        self.Type = "Point"
+
+    def execute(self, fp):
+        self.createGeometry(fp)
+
+    def createGeometry(self,fp):
+        shape = Part.Vertex(Vector(fp.X,fp.Y,fp.Z))
+        fp.Shape = shape
+
+class _ViewProviderPoint:
+    def __init__(self, obj):
+        obj.Proxy = self
+
+    def onChanged(self, vp, prop):
+        mode = 2
+        vp.setEditorMode('LineColor',mode)
+        vp.setEditorMode('LineWidth',mode)
+        vp.setEditorMode('BoundingBox',mode)
+        vp.setEditorMode('ControlPoints',mode)
+        vp.setEditorMode('Deviation',mode)
+        vp.setEditorMode('DiffuseColor',mode)
+        vp.setEditorMode('DisplayMode',mode)
+        vp.setEditorMode('Lighting',mode)
+        vp.setEditorMode('LineMaterial',mode)
+        vp.setEditorMode('ShapeColor',mode)
+        vp.setEditorMode('ShapeMaterial',mode)
+        vp.setEditorMode('Transparency',mode)
+
+    def getIcon(self):
+        return ":/icons/Draft_Dot.svg"

@@ -3585,6 +3585,41 @@ class Array():
         FreeCAD.ActiveDocument.openTransaction("Array")
         Draft.makeArray(obj,Vector(1,0,0),Vector(0,1,0),2,2)
         FreeCAD.ActiveDocument.commitTransaction()
+
+class Point:
+    "this class will create a vertex after the user clicks a point on the screen"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Point',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Point", "Point"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Point", "Creates a point object")}
+    
+    def Activated(self):
+        self.view = FreeCADGui.ActiveDocument.ActiveView
+        self.stack = []
+        self.point = None
+        # adding 2 callback functions
+        self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.click)
+        self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.move)
+
+    def move(self,event_cb):
+        event = event_cb.getEvent()
+        mousepos = event.getPosition().getValue()
+        ctrl = event.wasCtrlDown()
+        self.point = FreeCADGui.Snapper.snap(mousepos,active=ctrl)
+        
+    def click(self,event_cb):
+        event = event_cb.getEvent()
+        if event.getState() == coin.SoMouseButtonEvent.DOWN:
+            if self.point:
+                self.stack.append(self.point)
+                if len(self.stack) == 1:
+                    self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+                    self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+                    FreeCAD.ActiveDocument.openTransaction("Create Point")
+                    Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),0.0)
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    FreeCADGui.Snapper.off()
             
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3601,6 +3636,7 @@ FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
+FreeCADGui.addCommand('Draft_Point',Point())
 
 # modification commands
 FreeCADGui.addCommand('Draft_Move',Move())
