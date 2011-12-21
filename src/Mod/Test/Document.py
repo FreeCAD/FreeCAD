@@ -47,6 +47,15 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.Doc.undo()
 
+  def testAddRemoveUndo(self):
+    # Bug #0000525
+    self.Doc.openTransaction("Add")
+    obj=self.Doc.addObject("App::FeatureTest","Label")
+    self.Doc.commitTransaction()
+    self.Doc.removeObject(obj.Name)
+    self.Doc.undo()
+    self.Doc.undo()
+
   def testRemoval(self):
     # Cannot write a real test case for that but when debugging the
     # C-code there shouldn't be a memory leak (see rev. 1814)
