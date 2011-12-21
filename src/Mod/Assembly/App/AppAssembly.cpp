@@ -44,7 +44,7 @@ void AppAssemblyExport initAssembly()
     // load dependend module
     try {
         Base::Interpreter().loadModule("Part");
-        //Base::Interpreter().loadModule("Mesh");
+        Base::Interpreter().loadModule("PartDesign");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
