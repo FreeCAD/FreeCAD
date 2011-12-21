@@ -39,7 +39,36 @@
 
 namespace Base {
     
+class BaseExport UnitsSignature 
+{
+public:
+    UnitsSignature(
+        double      Value,
+        double      Spread = 1.0,
+        signed char Length = 1,
+        signed char Mass=0,
+        signed char Time=0,
+        signed char ElectricCurrent=0,
+        signed char ThermodynamicTemperature=0,
+        signed char AmountOfSubstance=0,
+        signed char LuminoseIntensity=0,
+        signed char Angle=0
+        );
 
+    UnitsSignature UnitsSignature::operator*(const UnitsSignature& right)const ;
+    UnitsSignature UnitsSignature::operator/(const UnitsSignature& right)const ;
+
+    double      Value;
+    double      Spread;
+    signed char Length;
+    signed char Mass;
+    signed char Time;
+    signed char ElectricCurrent;
+    signed char ThermodynamicTemperature;
+    signed char AmountOfSubstance;
+    signed char LuminoseIntensity;
+    signed char Angle;
+};
 /**
  * The UnitsApi
  */

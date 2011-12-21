@@ -210,7 +210,75 @@ void UnitsApi::setDefaults(void)
   
 }
 
+// === UnitsSignature =======================================================
 
+UnitsSignature::UnitsSignature(
+    double      Value,
+    double      Spread,
+    signed char Length,
+    signed char Mass,
+    signed char Time,
+    signed char ElectricCurrent,
+    signed char ThermodynamicTemperature,
+    signed char AmountOfSubstance,
+    signed char LuminoseIntensity,
+    signed char Angle
+    )
+    :Value(Value),
+    Spread(Spread),
+    Length(Length),
+    Mass(Mass),
+    Time(Time),
+    ElectricCurrent(ElectricCurrent),
+    ThermodynamicTemperature(ThermodynamicTemperature),
+    AmountOfSubstance(AmountOfSubstance),
+    LuminoseIntensity(LuminoseIntensity),
+    Angle(Angle)
+{}
+
+UnitsSignature UnitsSignature::operator*(const UnitsSignature& right)const 
+{
+    UnitsSignature result(0);
+    if(Value==DOUBLE_MAX || right.Value==DOUBLE_MAX)
+        result.Value = DOUBLE_MAX;
+    else
+        result.Value = Value * right.Value;
+
+    result.Spread = Spread * right.Spread;
+    
+    result.Length                   = Length                    + right.Length;
+    result.Mass                     = Mass                      + right.Mass;
+    result.Time                     = Time                      + right.Time;
+    result.ElectricCurrent          = ElectricCurrent           + right.ElectricCurrent;
+    result.ThermodynamicTemperature = ThermodynamicTemperature  + right.ThermodynamicTemperature;
+    result.AmountOfSubstance        = AmountOfSubstance         + right.AmountOfSubstance;
+    result.LuminoseIntensity        = LuminoseIntensity         + right.LuminoseIntensity;
+    result.Angle                    = Angle                     + right.Angle;
+
+    return result;
+}
+
+UnitsSignature UnitsSignature::operator/(const UnitsSignature& right)const 
+{
+    UnitsSignature result(0);
+    if(Value==DOUBLE_MAX || right.Value==DOUBLE_MAX)
+        result.Value = DOUBLE_MAX;
+    else
+        result.Value = Value / right.Value;
+
+    result.Spread = Spread / right.Spread;
+    
+    result.Length                   = Length                    - right.Length;
+    result.Mass                     = Mass                      - right.Mass;
+    result.Time                     = Time                      - right.Time;
+    result.ElectricCurrent          = ElectricCurrent           - right.ElectricCurrent;
+    result.ThermodynamicTemperature = ThermodynamicTemperature  - right.ThermodynamicTemperature;
+    result.AmountOfSubstance        = AmountOfSubstance         - right.AmountOfSubstance;
+    result.LuminoseIntensity        = LuminoseIntensity         - right.LuminoseIntensity;
+    result.Angle                    = Angle                     - right.Angle;
+
+    return result;
+}
 
 
 // === Parser & Scanner stuff ===============================================
@@ -238,11 +306,11 @@ namespace UnitParser {
 int UnitsApilex(void);
 
 // Parser, defined in UnitsApi.y
-#include "UnitsApi.tab.c"
+#include "UnitsApiParser.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in UnitsApi.l
-#include "lex.UnitsApi.c"
+#include "UnitsApiLexer.c"
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 }
 

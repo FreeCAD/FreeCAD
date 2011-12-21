@@ -4,7 +4,7 @@
 
 /* Represents the many different ways we can access our data */
 %{
-       #define YYSTYPE double
+       #define YYSTYPE UnitsSignature
        #define yyparse Unit_yyparse
        #define yyerror Unit_yyerror
 %}
