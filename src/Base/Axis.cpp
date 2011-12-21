@@ -75,6 +75,7 @@ bool Axis::operator !=(const Axis& that) const
 Axis& Axis::operator *=(const Placement &p)
 {
     p.multVec(this->_base, this->_base);
+    p.getRotation().multVec(this->_dir, this->_dir);
     return *this;
 }
 
