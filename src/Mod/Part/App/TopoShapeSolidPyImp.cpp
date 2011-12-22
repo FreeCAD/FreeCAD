@@ -91,6 +91,20 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
+Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
+{
+    GProp_GProps props;
+    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    gp_Mat m = props.MatrixOfInertia();
+    Base::Matrix4D mat;
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            mat[i][j] = m(i+1,j+1);
+        }
+    }
+    return Py::Matrix(mat);
+}
+
 Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
 {
     GProp_GProps props;
