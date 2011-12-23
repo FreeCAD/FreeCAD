@@ -56,6 +56,7 @@ FeaturePage::FeaturePage(void)
 
     ADD_PROPERTY_TYPE(PageResult ,(0),group,App::Prop_Output,"Resulting SVG document of that page");
     ADD_PROPERTY_TYPE(Template   ,(""),group,App::Prop_None  ,"Template for the page");
+    ADD_PROPERTY_TYPE(EditableTexts,(""),group,App::Prop_None,"Substitution values for the editable strings in the template");
 }
 
 FeaturePage::~FeaturePage()
@@ -128,6 +129,38 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
 
     file.close();
     ofile.close();
+
+    // checking for freecad editable texts  
+    boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>",boost::regex_constants::icase);
+
+    // reading file contents
+    ifstream tfile (tempName.c_str());
+    string tline;
+    string fragment;
+
+    while (!tfile.eof()) {
+        getline (tfile,tline);
+        fragment += tline;
+        fragment += "--endOfLine--";
+    }
+
+    tfile.close();
+
+    //printf(fragment.c_str());
+
+    string::const_iterator start, end;
+    start = fragment.begin();
+    end = fragment.end();
+    //boost::smatch what;
+    boost::match_results<std::string::const_iterator> what;
+
+    cout << "Stored strings: " << EditableTexts.getValue();
+
+    while (boost::regex_search(start,end,what,e)) {
+        //cout << "match" << what.str() << endl;
+        cout << "new match:" << what[1] << " = " << what[2] << endl;
+        start = what[0].second;
+    }
 
     PageResult.setValue(tempName.c_str());
 

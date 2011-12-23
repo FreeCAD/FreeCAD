@@ -47,7 +47,7 @@ public:
 
     App::PropertyFileIncluded PageResult;
     App::PropertyFile Template;
-
+    App::PropertyStringList EditableTexts;
 
     /** @name methods overide Feature */
     //@{
