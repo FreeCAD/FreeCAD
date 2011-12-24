@@ -62,17 +62,6 @@ TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 Sketch::Sketch()
 : GCSsys(), ConstraintsCounter(0), isInitMove(false)
 {
-    //// add the root point at 0,0
-    //addPoint(Base::Vector3d());
-    //// add x,y axis
-    //Part::GeomLineSegment axis;
-    //axis.setPoints(Base::Vector3d(0,0,0),Base::Vector3d(100,0,0));
-    //addLineSegment(axis);
-    //axis.setPoints(Base::Vector3d(0,0,0),Base::Vector3d(0,100,0));
-    //addLineSegment(axis);
-
-    // set them to construction elements
-
 }
 
 Sketch::~Sketch()
@@ -113,13 +102,18 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std:
     return setUpSketch(GeoList, std::vector<Part::Geometry *>(0), ConstraintList);
 }
 
-int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &FixedGeoList,
+int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &ExternalGeoList,
                         const std::vector<Constraint *> &ConstraintList, bool withDiagnose)
 {
     clear();
 
     addGeometry(GeoList);
-    addGeometry(FixedGeoList, true);
+    int extStart=Geoms.size();
+    std::vector<Part::Geometry *> reversedExternalGeoList(ExternalGeoList.rbegin(),ExternalGeoList.rend());
+    addGeometry(reversedExternalGeoList, true);
+    int extEnd=Geoms.size()-1;
+    for (int i=extStart; i <= extEnd; i++)
+        Geoms[i].external = true;
 
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty())
@@ -158,15 +152,15 @@ const char* nameByType(Sketch::GeoType type)
 
 int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
-    if (geo->getTypeId()== GeomLineSegment::getClassTypeId()) { // add a line
+    if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = dynamic_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
-    } else if (geo->getTypeId()== GeomCircle::getClassTypeId()) { // add a circle
+    } else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
         const GeomCircle *circle = dynamic_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
-    } else if (geo->getTypeId()== GeomArcOfCircle::getClassTypeId()) { // add an arc
+    } else if (geo->getTypeId() == GeomArcOfCircle::getClassTypeId()) { // add an arc
         const GeomArcOfCircle *aoc = dynamic_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
         return addArc(*aoc, fixed);
@@ -178,7 +172,7 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 
 void Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
 {
-    for (std::vector<Part::Geometry *>::const_iterator it = geo.begin();it!=geo.end();++it)
+    for (std::vector<Part::Geometry *>::const_iterator it=geo.begin(); it != geo.end(); ++it)
         addGeometry(*it, fixed);
 }
 
@@ -190,7 +184,6 @@ int Sketch::addPoint(const Base::Vector3d &newPoint, bool fixed)
     GeoDef def;
     def.geo  = 0;
     def.type = Point;
-    def.construction = false;
 
     // set the parameter for the solver
     params.push_back(new double(newPoint.x));
@@ -227,7 +220,6 @@ int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed)
     GeoDef def;
     def.geo  = lineSeg;
     def.type = Line;
-    def.construction = lineSeg->Construction;
 
     // get the points from the line
     Base::Vector3d start = lineSeg->getStartPoint();
@@ -276,7 +268,6 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed)
     GeoDef def;
     def.geo  = aoc;
     def.type = Arc;
-    def.construction = aoc->Construction;
 
     Base::Vector3d center   = aoc->getCenter();
     Base::Vector3d startPnt = aoc->getStartPoint();
@@ -347,7 +338,6 @@ int Sketch::addCircle(const Part::GeomCircle &cir, bool fixed)
     GeoDef def;
     def.geo  = circ;
     def.type = Circle;
-    def.construction = circ->Construction;
 
     Base::Vector3d center = circ->getCenter();
     double radius         = circ->getRadius();
@@ -387,15 +377,14 @@ int Sketch::addEllipse(const Part::GeomEllipse &ellipse, bool fixed)
     return Geoms.size()-1;
 }
 
-std::vector<Part::Geometry *> Sketch::getGeometry(bool withConstrucionElements) const
+std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstrucionElements,
+                                                      bool withExternalElements) const
 {
-    std::vector<Part::Geometry *> temp(Geoms.size());
-    int i=0;
-    std::vector<GeoDef>::const_iterator it=Geoms.begin();
-
-    for (;it!=Geoms.end();++it,i++)
-        if (!it->construction || withConstrucionElements)
-            temp[i] = it->geo->clone();
+    std::vector<Part::Geometry *> temp;
+    temp.reserve(Geoms.size());
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it)
+        if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstrucionElements))
+            temp.push_back(it->geo->clone());
 
     return temp;
 }
@@ -404,9 +393,7 @@ Py::Tuple Sketch::getPyGeometry(void) const
 {
     Py::Tuple tuple(Geoms.size());
     int i=0;
-    std::vector<GeoDef>::const_iterator it=Geoms.begin();
-
-    for (;it!=Geoms.end();++it,i++) {
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
         if (it->type == Line) {
             GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo->clone());
             tuple[i] = Py::asObject(new LinePy(lineSeg));
@@ -429,18 +416,12 @@ Py::Tuple Sketch::getPyGeometry(void) const
     return tuple;
 }
 
-void Sketch::setConstruction(int geoId, bool isConstruction)
+int Sketch::checkGeoId(int geoId)
 {
-    assert(geoId < int(Geoms.size()));
-
-    Geoms[geoId].construction = isConstruction;
-}
-
-bool Sketch::getConstruction(int geoId) const
-{
-    assert(geoId < int(Geoms.size()));
-
-    return Geoms[geoId].construction;
+    if (geoId < 0)
+        geoId += Geoms.size();
+    assert(geoId >= 0 && geoId < int(Geoms.size()));
+    return geoId;
 }
 
 // constraint adding ==========================================================
@@ -561,6 +542,8 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
 
 int Sketch::addCoordinateXConstraint(int geoId, PointPos pos, double value)
 {
+    geoId = checkGeoId(geoId);
+
     int pointId = getPointId(geoId, pos);
 
     if (pointId >= 0 && pointId < int(Points.size())) {
@@ -576,6 +559,8 @@ int Sketch::addCoordinateXConstraint(int geoId, PointPos pos, double value)
 
 int Sketch::addCoordinateYConstraint(int geoId, PointPos pos, double value)
 {
+    geoId = checkGeoId(geoId);
+
     int pointId = getPointId(geoId, pos);
 
     if (pointId >= 0 && pointId < int(Points.size())) {
@@ -591,7 +576,8 @@ int Sketch::addCoordinateYConstraint(int geoId, PointPos pos, double value)
 
 int Sketch::addDistanceXConstraint(int geoId, double value)
 {
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
+
     if (Geoms[geoId].type != Line)
         return -1;
 
@@ -607,7 +593,8 @@ int Sketch::addDistanceXConstraint(int geoId, double value)
 
 int Sketch::addDistanceYConstraint(int geoId, double value)
 {
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
+
     if (Geoms[geoId].type != Line)
         return -1;
 
@@ -623,6 +610,9 @@ int Sketch::addDistanceYConstraint(int geoId, double value)
 
 int Sketch::addDistanceXConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
 
@@ -643,6 +633,9 @@ int Sketch::addDistanceXConstraint(int geoId1, PointPos pos1, int geoId2, PointP
 
 int Sketch::addDistanceYConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
 
@@ -664,7 +657,8 @@ int Sketch::addDistanceYConstraint(int geoId1, PointPos pos1, int geoId2, PointP
 // horizontal line constraint
 int Sketch::addHorizontalConstraint(int geoId)
 {
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
+
     if (Geoms[geoId].type != Line)
         return -1;
 
@@ -677,6 +671,9 @@ int Sketch::addHorizontalConstraint(int geoId)
 // two points on a horizontal line constraint
 int Sketch::addHorizontalConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
 
@@ -694,7 +691,8 @@ int Sketch::addHorizontalConstraint(int geoId1, PointPos pos1, int geoId2, Point
 // vertical line constraint
 int Sketch::addVerticalConstraint(int geoId)
 {
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
+
     if (Geoms[geoId].type != Line)
         return -1;
 
@@ -707,6 +705,9 @@ int Sketch::addVerticalConstraint(int geoId)
 // two points on a vertical line constraint
 int Sketch::addVerticalConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
 
@@ -723,6 +724,9 @@ int Sketch::addVerticalConstraint(int geoId1, PointPos pos1, int geoId2, PointPo
 
 int Sketch::addPointCoincidentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
 
@@ -742,8 +746,9 @@ int Sketch::addPointCoincidentConstraint(int geoId1, PointPos pos1, int geoId2, 
 
 int Sketch::addParallelConstraint(int geoId1, int geoId2)
 {
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     if (Geoms[geoId1].type != Line ||
         Geoms[geoId2].type != Line)
         return -1;
@@ -757,8 +762,8 @@ int Sketch::addParallelConstraint(int geoId1, int geoId2)
 
 int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
 {
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     if (Geoms[geoId2].type == Line) {
         if (Geoms[geoId1].type == Line) {
@@ -801,8 +806,8 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
     //    Circle1, Circle2/Arc2 (not implemented yet)
     // 3) Arc1, Line2 (converted to case #1)
     //    Arc1, Circle2/Arc2 (not implemented yet)
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     if (Geoms[geoId2].type == Line) {
         if (Geoms[geoId1].type == Line) {
@@ -847,9 +852,10 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2)
     // 4) Arc1, start/end, Line2
     // 5) Arc1, start/end, Circle2 (not implemented yet)
     // 6) Arc1, start/end, Arc2 (not implemented yet)
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     int pointId1 = getPointId(geoId1, pos1);
-    assert(geoId2 < int(Geoms.size()));
 
     if (pointId1 < 0 || pointId1 >= int(Points.size()))
         return addTangentConstraint(geoId1, geoId2);
@@ -912,6 +918,8 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
     // 2) Line1, start/end/mid, Arc2, start/end
     // 3) Arc1, start/end, Line2, start/end/mid (converted to case #2)
     // 4) Arc1, start/end, Arc2, start/end (not implemented yet)
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
@@ -1006,7 +1014,8 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
 // line length constraint
 int Sketch::addDistanceConstraint(int geoId, double value)
 {
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
+
     if (Geoms[geoId].type != Line)
         return -1;
 
@@ -1024,8 +1033,8 @@ int Sketch::addDistanceConstraint(int geoId, double value)
 // line to line distance constraint
 int Sketch::addDistanceConstraint(int geoId1, int geoId2, double value)
 {
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     //assert(Geoms[geoId1].type == Line);
     //assert(Geoms[geoId2].type == Line);
@@ -1038,8 +1047,11 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double value)
 // point to line distance constraint
 int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double value)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
-    assert(geoId2 < int(Geoms.size()));
+
     if (Geoms[geoId2].type != Line)
         return -1;
 
@@ -1061,6 +1073,9 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double 
 // point to point distance constraint
 int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
 
@@ -1082,7 +1097,7 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPo
 
 int Sketch::addRadiusConstraint(int geoId, double value)
 {
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
 
     if (Geoms[geoId].type == Circle) {
         GCS::Circle &c = Circles[Geoms[geoId].index];
@@ -1108,7 +1123,8 @@ int Sketch::addRadiusConstraint(int geoId, double value)
 // line orientation angle constraint
 int Sketch::addAngleConstraint(int geoId, double value)
 {
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
+
     if (Geoms[geoId].type != Line)
         return -1;
 
@@ -1126,8 +1142,8 @@ int Sketch::addAngleConstraint(int geoId, double value)
 // line to line angle constraint
 int Sketch::addAngleConstraint(int geoId1, int geoId2, double value)
 {
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     if (Geoms[geoId1].type != Line ||
         Geoms[geoId2].type != Line)
@@ -1148,8 +1164,8 @@ int Sketch::addAngleConstraint(int geoId1, int geoId2, double value)
 // line to line angle constraint (with explicitly given start points)
 int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value)
 {
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     if (Geoms[geoId1].type != Line ||
         Geoms[geoId2].type != Line)
@@ -1187,8 +1203,8 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
 
 int Sketch::addEqualConstraint(int geoId1, int geoId2)
 {
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
 
     if (Geoms[geoId1].type == Line &&
         Geoms[geoId2].type == Line) {
@@ -1246,8 +1262,10 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
 // point on object constraint
 int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     int pointId1 = getPointId(geoId1, pos1);
-    assert(geoId2 < int(Geoms.size()));
 
     if (pointId1 >= 0 && pointId1 < int(Points.size())) {
         GCS::Point &p1 = Points[pointId1];
@@ -1277,9 +1295,9 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2)
 // symmetric points constraint
 int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3)
 {
-    assert(geoId1 < int(Geoms.size()));
-    assert(geoId2 < int(Geoms.size()));
-    assert(geoId3 < int(Geoms.size()));
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+    geoId3 = checkGeoId(geoId3);
 
     if (Geoms[geoId3].type != Line)
         return -1;
@@ -1302,7 +1320,7 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
 bool Sketch::updateGeometry()
 {
     int i=0;
-    for (std::vector<GeoDef>::const_iterator it=Geoms.begin();it!=Geoms.end();++it,i++) {
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
         try {
             if (it->type == Line) {
                 GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo);
@@ -1432,7 +1450,7 @@ int Sketch::solve()
 
 int Sketch::initMove(int geoId, PointPos pos)
 {
-    assert(geoId >= 0 && geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
 
     GCSsys.clearByTag(-1);
     GCSsys.clearByTag(-2);
@@ -1547,8 +1565,7 @@ int Sketch::initMove(int geoId, PointPos pos)
 
 int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
 {
-    // index out of bounds?
-    assert(geoId < int(Geoms.size()));
+    geoId = checkGeoId(geoId);
 
     // don't try to move sketches that contain conflicting constraints
     if (hasConflicts())
@@ -1558,7 +1575,7 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
         initMove(geoId, pos);
 
     if (relative) {
-        for (int i=0; i < MoveParameters.size()-1; i+=2) {
+        for (int i=0; i < int(MoveParameters.size()-1); i+=2) {
             MoveParameters[i] = InitParameters[i] + toPoint.x;
             MoveParameters[i+1] = InitParameters[i+1] + toPoint.y;
         }
@@ -1596,7 +1613,6 @@ int Sketch::setDatum(int constrId, double value)
 
 int Sketch::getPointId(int geoId, PointPos pos) const
 {
-    assert(geoId < int(Geoms.size()));
     switch (pos) {
     case start:
         return Geoms[geoId].startPointId;
@@ -1612,6 +1628,7 @@ int Sketch::getPointId(int geoId, PointPos pos) const
 
 Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
 {
+    geoId = checkGeoId(geoId);
     int pointId = getPointId(geoId, pos);
     if (pointId != -1)
         return Base::Vector3d(*Points[pointId].x, *Points[pointId].y, 0);
@@ -1642,7 +1659,7 @@ TopoShape Sketch::toShape(void) const
 
     bool first = true;
     for (;it!=Geoms.end();++it) {
-        if (!it->construction) {
+        if (!it->geo->Construction) {
             TopoDS_Shape sh = it->geo->toShape();
             if (first) {
                 first = false;
@@ -1657,9 +1674,9 @@ TopoShape Sketch::toShape(void) const
     std::list<TopoDS_Edge> edge_list;
     std::list<TopoDS_Wire> wires;
 
-    // collecting all (non constructive) edges out of the sketch
+    // collecting all (non constructive and non external) edges out of the sketch
     for (;it!=Geoms.end();++it) {
-        if (!it->construction) {
+        if (!it->external && !it->geo->Construction) {
             edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
         }
     }

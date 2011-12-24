@@ -50,9 +50,9 @@ PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
 SketchObject::SketchObject()
 {
-    ADD_PROPERTY_TYPE(Geometry,           (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch geometry");
-    ADD_PROPERTY_TYPE(Constraints,        (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
-    ADD_PROPERTY_TYPE(ExternalConstraints,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external constraints");
+    ADD_PROPERTY_TYPE(Geometry,        (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch geometry");
+    ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
+    ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
 }
 
 App::DocumentObjectExecReturn *SketchObject::execute(void)
@@ -82,9 +82,9 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     if (sketch.solve() != 0)
         return new App::DocumentObjectExecReturn("Solving the sketch failed",this);
 
-    std::vector<Part::Geometry *> geomlist = sketch.getGeometry();
+    std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
     Geometry.setValues(geomlist);
-    for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
+    for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it)
         if (*it) delete *it;
 
     Shape.setValue(sketch.toShape());
@@ -144,7 +144,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
     if (err == 0) {
         // set the newly solved geometry
-        std::vector<Part::Geometry *> geomlist = sketch.getGeometry();
+        std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
         Geometry.setValues(geomlist);
         for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
             if (*it) delete *it;
@@ -155,7 +155,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     return err;
 }
 
-int SketchObject::movePoint(int geoIndex, PointPos PosId, const Base::Vector3d& toPoint, bool relative)
+int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative)
 {
     Sketch sketch;
     int dofs = sketch.setUpSketch(Geometry.getValues(), Constraints.getValues());
@@ -165,11 +165,11 @@ int SketchObject::movePoint(int geoIndex, PointPos PosId, const Base::Vector3d& 
         return -1;
 
     // move the point and solve
-    int ret = sketch.movePoint(geoIndex, PosId, toPoint, relative);
+    int ret = sketch.movePoint(GeoId, PosId, toPoint, relative);
     if (ret == 0) {
-        std::vector<Part::Geometry *> geomlist = sketch.getGeometry();
+        std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
         Geometry.setValues(geomlist);
-        for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it) {
+        for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it) {
             if (*it) delete *it;
         }
     }
@@ -177,11 +177,11 @@ int SketchObject::movePoint(int geoIndex, PointPos PosId, const Base::Vector3d& 
     return ret;
 }
 
-Base::Vector3d SketchObject::getPoint(int geoIndex, PointPos PosId)
+Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
 {
     const std::vector< Part::Geometry * > &geomlist = this->Geometry.getValues();
-    assert(geoIndex < (int)geomlist.size());
-    Part::Geometry *geo = geomlist[geoIndex];
+    assert(GeoId < (int)geomlist.size());
+    Part::Geometry *geo = geomlist[GeoId];
     if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geo);
         if (PosId == start)
@@ -265,24 +265,24 @@ int SketchObject::addGeometry(const Part::Geometry *geo)
     return Geometry.getSize()-1;
 }
 
-int SketchObject::delGeometry(int GeoNbr)
+int SketchObject::delGeometry(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = this->Geometry.getValues();
-    if (GeoNbr < 0 || GeoNbr >= (int)vals.size())
+    if (GeoId < 0 || GeoId >= (int)vals.size())
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
-    newVals.erase(newVals.begin()+GeoNbr);
+    newVals.erase(newVals.begin()+GeoId);
 
     const std::vector< Constraint * > &constraints = this->Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
-        if ((*it)->First != GeoNbr && (*it)->Second != GeoNbr) {
+        if ((*it)->First != GeoId && (*it)->Second != GeoId) {
             Constraint *copiedConstr = (*it)->clone();
-            if (copiedConstr->First > GeoNbr)
+            if (copiedConstr->First > GeoId)
                 copiedConstr->First -= 1;
-            if (copiedConstr->Second > GeoNbr)
+            if (copiedConstr->Second > GeoId)
                 copiedConstr->Second -= 1;
             newConstraints.push_back(copiedConstr);
         }
@@ -295,17 +295,17 @@ int SketchObject::delGeometry(int GeoNbr)
     return 0;
 }
 
-int SketchObject::toggleConstruction(int GeoNbr)
+int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = this->Geometry.getValues();
-    if (GeoNbr < 0 || GeoNbr >= (int)vals.size())
+    if (GeoId < 0 || GeoId >= (int)vals.size())
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
 
-    Part::Geometry *geoNew = newVals[GeoNbr]->clone();
+    Part::Geometry *geoNew = newVals[GeoId]->clone();
     geoNew->Construction = !geoNew->Construction;
-    newVals[GeoNbr]=geoNew;
+    newVals[GeoId]=geoNew;
 
     this->Geometry.setValues(newVals);
     this->Constraints.acceptGeometry(this->Geometry.getValues());
@@ -594,10 +594,11 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
 int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 {
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+
     const std::vector<Part::Geometry *> &geomlist = this->Geometry.getValues();
     const std::vector<Constraint *> &constraints = this->Constraints.getValues();
-
-    assert(GeoId < int(geomlist.size()));
 
     int GeoId1=Constraint::GeoUndef, GeoId2=Constraint::GeoUndef;
     Base::Vector3d point1, point2;
@@ -994,23 +995,27 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
     // so far only externals to the support of the sketch
-    assert(Support.getValue() == Obj);
+    if (Support.getValue() != Obj)
+        return -1;
 
     // get the actual lists of the externals
-    std::vector<DocumentObject*> Objects     = ExternalConstraints.getValues();
-    std::vector<std::string>     SubElements = ExternalConstraints.getSubValues();
+    std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
+    std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
+
+    std::vector<DocumentObject*> originalObjects = Objects;
+    std::vector<std::string>     originalSubElements = SubElements;
 
     // add the new ones
     Objects.push_back(Obj);
     SubElements.push_back(std::string(SubName));
 
     // set the Link list.
-    ExternalConstraints.setValues(Objects,SubElements);
+    ExternalGeometry.setValues(Objects,SubElements);
 
-    return ExternalConstraints.getValues().size()-1;
+    return ExternalGeometry.getValues().size()-1;
 }
 
-int SketchObject::delExternal(int ConstrId)
+int SketchObject::delExternal(int ExtGeoId)
 {
     // FIXME: still to implement
     return 0;

@@ -56,7 +56,7 @@ public:
     /// set the sketch up with geoms and constraints
     int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
                     bool withDiagnose=true);
-    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &FixedGeoList,
+    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &ExternalGeoList,
                     const std::vector<Constraint *> &ConstraintList, bool withDiagnose=true);
     /// return the actual geometry of the sketch a TopoShape
     Part::TopoShape toShape(void) const;
@@ -65,15 +65,11 @@ public:
     /// add unspecified geometry
     void addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
     /// returns the actual geometry
-    std::vector<Part::Geometry *> getGeometry(bool withConstrucionElements = true) const;
+    std::vector<Part::Geometry *> extractGeometry(bool withConstrucionElements=true,
+                                                  bool withExternalElements=false) const;
     /// get the geometry as python objects
     Py::Tuple getPyGeometry(void) const;
-    /// set a geometric element to a construction element
-    void setConstruction(int geoIndex,bool isConstruction=true);
-    bool getConstruction(int geoIndex) const;
 
-    /// retrieves the index of a point
-    int getPointId(int geoId, PointPos pos) const;
     /// retrieves a point
     Base::Vector3d getPoint(int geoId, PointPos pos);
 
@@ -190,11 +186,11 @@ public:
 protected:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef {
-        GeoDef() : geo(0),type(None),construction(false),index(-1),
+        GeoDef() : geo(0),type(None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
         Part::Geometry  * geo;             // pointer to the geometry
         GeoType           type;            // type of the geometry
-        bool              construction;    // defines if this element is a construction element
+        bool              external;        // flag for external geometries
         int               index;           // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
         int               startPointId;    // index in Points of the start point of this geometry
         int               midPointId;      // index in Points of the start point of this geometry
@@ -218,8 +214,13 @@ protected:
     bool isInitMove;
 
 private:
+    /// retrieves the index of a point
+    int getPointId(int geoId, PointPos pos) const;
+
     bool updateGeometry(void);
 
+    /// checks if the index bounds and converts negative indices to positive
+    int checkGeoId(int geoId);
 };
 
 } //namespace Part

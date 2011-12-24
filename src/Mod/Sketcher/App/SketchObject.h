@@ -45,7 +45,7 @@ public:
     /// Property
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
-    App     ::PropertyLinkSubList    ExternalConstraints;
+    App     ::PropertyLinkSubList    ExternalGeometry;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
@@ -62,7 +62,7 @@ public:
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geoList);
     /// delete geometry
-    int delGeometry(int GeoNbr);
+    int delGeometry(int GeoId);
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
     /// add constraint
@@ -78,7 +78,7 @@ public:
     /// returns a list of projected external geoms
     std::vector<Part::Geometry *> getExternalGeometry(void);
     /// delete external
-    int delExternal(int ConstrId);
+    int delExternal(int ExtGeoId);
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
@@ -86,12 +86,12 @@ public:
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// move this point to a new location and solve
-    int movePoint(int geoIndex1, PointPos Pos1, const Base::Vector3d& toPoint, bool relative=false);
+    int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false);
     /// retrieves the coordinates of a point
-    Base::Vector3d getPoint(int geoIndex1, PointPos Pos1);
+    Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
 
     /// toggle geometry to draft line
-    int toggleConstruction(int GeoNbr);
+    int toggleConstruction(int GeoId);
 
     /// create a fillet
     int fillet(int geoId, PointPos pos, double radius, bool trim=true);
@@ -104,8 +104,8 @@ public:
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId);
-    int getHighestVertexIndex(void) { return VertexId2GeoId.size() - 1; }
-    int getHighestCurveIndex(void) { return Geometry.getSize() - 1; }
+    int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; }
+    int getHighestCurveIndex(void) const { return Geometry.getSize() - 1; }
     void rebuildVertexIndex(void);
 
     /// retrieves for a Vertex number a list with all coincident points
