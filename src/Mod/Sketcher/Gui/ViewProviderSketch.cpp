@@ -364,19 +364,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     float dci = (float) QApplication::doubleClickInterval()/1000.0f;
                     float length = (point - prvClickPoint).length();
 
-                    if (edit->PreselectPoint >= 0) {
+                    if (edit->PreselectPoint != -1) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Point;
                         done = true;
-                    } else if (edit->PreselectCurve >= 0) {
+                    } else if (edit->PreselectCurve != -1) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Edge;
                         done = true;
-                    } else if (edit->PreselectCross >= 0) {
+                    } else if (edit->PreselectCross != -1) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Cross;
                         done = true;
-                    } else if (edit->PreselectConstraint >= 0) {
+                    } else if (edit->PreselectConstraint != -1) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Constraint;
                         done = true;
@@ -435,14 +435,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SELECT_Edge:
                     if (pp) {
                         //Base::Console().Log("Select Point:%d\n",this->DragPoint);
-                        int maxGeoId = getSketchObject()->getHighestCurveIndex();
                         std::stringstream ss;
-                        if (edit->PreselectCurve <= maxGeoId)
+                        if (edit->PreselectCurve >= 0)
                             ss << "Edge" << edit->PreselectCurve;
-                        else { // external geometry
-                            int extGeoCount = getSketchObject()->getExternalGeometryCount();
-                            ss << "ExternalEdge" << extGeoCount - 2 - (edit->PreselectCurve - maxGeoId);
-                        }
+                        else // external geometry
+                            ss << "ExternalEdge" << -edit->PreselectCurve - 3;
 
                         // If edge already selected move from selection
                         if (Gui::Selection().isSelected(getSketchObject()->getDocument()->getName()
@@ -590,11 +587,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_NONE:
                     {
                         // A right click shouldn't change the Edit Mode
-                        if (edit->PreselectPoint >= 0) {
+                        if (edit->PreselectPoint != -1) {
                             return true;
-                        } else if (edit->PreselectCurve >= 0) {
+                        } else if (edit->PreselectCurve != -1) {
                             return true;
-                        } else if (edit->PreselectConstraint >= 0) {
+                        } else if (edit->PreselectConstraint != -1) {
                             return true;
                         } else {
                             //Get Viewer
@@ -665,7 +662,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                         if (edit->PreselectCurve == index)
                                             rightClickOnSelectedLine = true;
                                     } else {
-                                        // The selection is not exclusivly edges
+                                        // The selection is not exclusively edges
                                         rightClickOnSelectedLine = false;
                                     }
                                 } // End of Iteration
@@ -700,16 +697,16 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
 void ViewProviderSketch::editDoubleClicked(void)
 {
-    if (edit->PreselectPoint >= 0) {
+    if (edit->PreselectPoint != -1) {
         Base::Console().Log("double click point:%d\n",edit->PreselectPoint);
     }
-    else if (edit->PreselectCurve >= 0) {
+    else if (edit->PreselectCurve != -1) {
         Base::Console().Log("double click edge:%d\n",edit->PreselectCurve);
     }
-    else if (edit->PreselectCross >= 0) {
+    else if (edit->PreselectCross != -1) {
         Base::Console().Log("double click cross:%d\n",edit->PreselectCross);
     }
-    else if (edit->PreselectConstraint >= 0) {
+    else if (edit->PreselectConstraint != -1) {
         // Find the constraint
         Base::Console().Log("double click constraint:%d\n",edit->PreselectConstraint);
 
@@ -1170,7 +1167,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
     assert(edit);
 
     PtIndex = -1;
-    CurvIndex = -1;
+    CurvIndex = -1; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
     CrossIndex = -1;
     ConstrIndex = -1;
 
@@ -1195,6 +1192,11 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                 if (curve_detail && curve_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
                     // get the index
                     CurvIndex = static_cast<const SoLineDetail *>(curve_detail)->getLineIndex();
+                    int maxGeoId = getSketchObject()->getHighestCurveIndex();
+                    if (CurvIndex > maxGeoId) { // hit on external geometry
+                        int extGeoCount = getSketchObject()->getExternalGeometryCount();
+                        CurvIndex = -extGeoCount + (CurvIndex - maxGeoId - 1);
+                    }
                 }
             // checking for a hit in the cross
             } else if (tail == edit->RootCrossSet) {
@@ -1215,7 +1217,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
             }
         }
 
-        if (PtIndex >= 0 && PtIndex != edit->PreselectPoint) { // if a new point is hit
+        if (PtIndex != -1 && PtIndex != edit->PreselectPoint) { // if a new point is hit
             std::stringstream ss;
             ss << "Vertex" << PtIndex;
             bool accepted =
@@ -1235,15 +1237,12 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if (CurvIndex >= 0 && CurvIndex != edit->PreselectCurve) {  // if a new curve is hit
-            int maxGeoId = getSketchObject()->getHighestCurveIndex();
+        } else if (CurvIndex != -1 && CurvIndex != edit->PreselectCurve) {  // if a new curve is hit
             std::stringstream ss;
-            if (CurvIndex <= maxGeoId)
+            if (CurvIndex >= 0)
                 ss << "Edge" << CurvIndex;
-            else { // external geometry
-                int extGeoCount = getSketchObject()->getExternalGeometryCount();
-                ss << "ExternalEdge" << extGeoCount - 2 - (CurvIndex - maxGeoId);
-            }
+            else // external geometry
+                ss << "ExternalEdge" << -CurvIndex - 3; // convert index start from -3 to 0
             bool accepted =
             Gui::Selection().setPreselect(getSketchObject()->getDocument()->getName()
                                          ,getSketchObject()->getNameInDocument()
@@ -1261,7 +1260,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if (CrossIndex >= 0 && CrossIndex != edit->PreselectCross) {  // if a cross line is hit
+        } else if (CrossIndex != -1 && CrossIndex != edit->PreselectCross) {  // if a cross line is hit
             std::stringstream ss;
             switch(CrossIndex){
                 case 0: ss << "RootPoint" ; break;
@@ -1285,7 +1284,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if (ConstrIndex >= 0 && ConstrIndex != edit->PreselectConstraint) { // if a constraint is hit
+        } else if (ConstrIndex != -1 && ConstrIndex != edit->PreselectConstraint) { // if a constraint is hit
             std::stringstream ss;
             ss << "Constraint" << ConstrIndex;
             bool accepted =
@@ -1305,9 +1304,9 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if ((PtIndex < 0 && CurvIndex < 0 && CrossIndex < 0 && ConstrIndex < 0) &&
-                   (edit->PreselectPoint >= 0 || edit->PreselectCurve >= 0 || edit->PreselectCross >= 0
-                    || edit->PreselectConstraint >= 0 || edit->blockedPreselection)) {
+        } else if ((PtIndex == -1 && CurvIndex == -1 && CrossIndex == -1 && ConstrIndex == -1) &&
+                   (edit->PreselectPoint != -1 || edit->PreselectCurve != -1 || edit->PreselectCross != -1
+                    || edit->PreselectConstraint != -1 || edit->blockedPreselection)) {
             // we have just left a preselection
             resetPreselectPoint();
             edit->PreselectCurve = -1;
@@ -1321,8 +1320,8 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
         Gui::Selection().setPreselectCoord(Point->getPoint()[0]
                                           ,Point->getPoint()[1]
                                           ,Point->getPoint()[2]);
-    } else if (edit->PreselectCurve >= 0 || edit->PreselectPoint >= 0 ||
-               edit->PreselectConstraint >= 0 || edit->PreselectCross >= 0 || edit->blockedPreselection) {
+    } else if (edit->PreselectCurve != -1 || edit->PreselectPoint != -1 ||
+               edit->PreselectConstraint != -1 || edit->PreselectCross != -1 || edit->blockedPreselection) {
         resetPreselectPoint();
         edit->PreselectCurve = -1;
         edit->PreselectCross = -1;
@@ -1366,7 +1365,7 @@ void ViewProviderSketch::updateColor(void)
         int GeoId = (i < intGeoCount) ? i : -(extGeoCount - (i - intGeoCount));
         if (edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end())
             color[i] = SelectColor;
-        else if (edit->PreselectCurve == i)
+        else if (edit->PreselectCurve == GeoId)
             color[i] = PreselectColor;
         else if (GeoId < -2)  // external Geometry
             color[i] = CurveExternalColor;
