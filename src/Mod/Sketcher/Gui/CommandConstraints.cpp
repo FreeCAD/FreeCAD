@@ -220,7 +220,6 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     }
     // undo command open
     openCommand("add horizontal constraint");
-
     for (std::vector<int>::iterator it=ids.begin(); it != ids.end(); it++) {
         // issue the actual commands to create the constraint
         doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d)) "
@@ -277,7 +276,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
      std::vector<int> ids;
 
     // go through the selected subelements
-    for(std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
         // only handle edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
             int index=std::atoi(it->substr(4,4000).c_str());
@@ -693,7 +692,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
     }
 
-    if ((VtId1 >= 0 && GeoId2 >= 0) || (VtId2 >= 0 && GeoId1 >= 0)) {
+    if ((VtId1 >= 0 && GeoId2 != Constraint::GeoUndef) || (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef)) {
         if (VtId2 >= 0 && GeoId1 >= 0) {
             std::swap(VtId1,VtId2);
             std::swap(GeoId1,GeoId2);
@@ -807,7 +806,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if (GeoId1 >= 0 && GeoId2 < 0 && VtId2 < 0)  { // horizontal length of a line
+    else if (GeoId1 >= 0 && GeoId2 == Constraint::GeoUndef && VtId2 < 0)  { // horizontal length of a line
         const Part::Geometry *geom = geo[GeoId1];
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
@@ -942,7 +941,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if (GeoId1 >= 0 && GeoId2 < 0 && VtId2 < 0)  { // horizontal length of a line
+    else if (GeoId1 >= 0 && GeoId2 == Constraint::GeoUndef && VtId2 < 0)  { // horizontal length of a line
         const Part::Geometry *geom = geo[GeoId1];
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
@@ -1031,7 +1030,6 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
     const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
 
 
@@ -1067,16 +1065,11 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 
     // undo command open
     openCommand("add parallel constraint");
-    int i = 0;
-    for (std::vector<int>::iterator it = ids.begin(); it!=ids.end();++it, i++) {
-        if(i == ids.size() - 1)
-            break;
-
+    for (int i=0; i < int(ids.size()-1); i++) {
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
             selection[0].getFeatName(),ids[i],ids[i+1]);
     }
-
     // finish the transaction and update
     commitCommand();
     updateActive();
@@ -1587,10 +1580,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     // undo command open
     openCommand("add equality constraint");
-    int i = 0;
-    for (std::vector<int>::iterator it = ids.begin(); it!=ids.end();it++, i++) {
-        if( i == ids.size() - 1)
-            break;
+    for (int i=0; i < int(ids.size()-1); i++) {
         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
             selection[0].getFeatName(),ids[i],ids[i+1]);
     }

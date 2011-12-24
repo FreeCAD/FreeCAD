@@ -94,8 +94,8 @@ protected:
     // helpers
     void setCursor( const QPixmap &p,int x,int y );
     void unsetCursor(void);
-	void applyCursor(void);
-	void applyCursor(QCursor &newCursor);
+    void applyCursor(void);
+    void applyCursor(QCursor &newCursor);
 
     ViewProviderSketch *sketchgui;
     QCursor oldCursor;
