@@ -225,6 +225,9 @@ class Snapper:
                 self.lastObj[0] = self.lastObj[1]
                 self.lastObj[1] = obj.Name
 
+            if not snaps:
+                return point
+
             # calculating the nearest snap point
             shortest = 1000000000000000000
             origin = Vector(info['x'],info['y'],info['z'])
