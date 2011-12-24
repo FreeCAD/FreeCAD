@@ -97,20 +97,19 @@ void Sketch::clear(void)
 }
 
 int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
-                        bool withDiagnose)
-{
-    return setUpSketch(GeoList, std::vector<Part::Geometry *>(0), ConstraintList);
-}
-
-int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &ExternalGeoList,
-                        const std::vector<Constraint *> &ConstraintList, bool withDiagnose)
+                        bool withDiagnose, int extGeoCount)
 {
     clear();
 
-    addGeometry(GeoList);
+    std::vector<Part::Geometry *> intGeoList, extGeoList;
+    for (int i=0; i < int(GeoList.size())-extGeoCount; i++)
+        intGeoList.push_back(GeoList[i]);
+    for (int i=int(GeoList.size())-extGeoCount; i < GeoList.size(); i++)
+        extGeoList.push_back(GeoList[i]);
+
+    addGeometry(intGeoList);
     int extStart=Geoms.size();
-    std::vector<Part::Geometry *> reversedExternalGeoList(ExternalGeoList.rbegin(),ExternalGeoList.rend());
-    addGeometry(reversedExternalGeoList, true);
+    addGeometry(extGeoList, true);
     int extEnd=Geoms.size()-1;
     for (int i=extStart; i <= extEnd; i++)
         Geoms[i].external = true;

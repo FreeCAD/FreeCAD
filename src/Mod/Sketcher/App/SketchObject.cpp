@@ -92,7 +92,8 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     // setup and diagnose the sketch
     rebuildExternalGeometry();
     Sketch sketch;
-    int dofs = sketch.setUpSketch(getInternalGeometry(), getExternalGeometry(), Constraints.getValues());
+    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                                  true, getExternalGeometryCount());
     if (dofs < 0) { // over-constrained sketch
         std::string msg="Over-constrained sketch\n";
         appendConflictMsg(sketch.getConflicting(), msg);
@@ -122,7 +123,8 @@ int SketchObject::hasConflicts(void) const
 {
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     Sketch sketch;
-    int dofs = sketch.setUpSketch(getInternalGeometry(), getExternalGeometry(), Constraints.getValues());
+    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                                  true, getExternalGeometryCount());
     if (dofs < 0) // over-constrained sketch
         return -2;
     if (sketch.hasConflicts()) // conflicting constraints
@@ -159,7 +161,8 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     Sketch sketch;
-    int dofs = sketch.setUpSketch(getInternalGeometry(), getExternalGeometry(), Constraints.getValues());
+    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                                  true, getExternalGeometryCount());
     int err=0;
     if (dofs < 0) // over-constrained sketch
         err = -3;
@@ -184,7 +187,8 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative)
 {
     Sketch sketch;
-    int dofs = sketch.setUpSketch(getInternalGeometry(), getExternalGeometry(), Constraints.getValues());
+    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                                  true, getExternalGeometryCount());
     if (dofs < 0) // over-constrained sketch
         return -1;
     if (sketch.hasConflicts()) // conflicting constraints
@@ -1176,7 +1180,7 @@ void SketchObject::rebuildExternalGeometry(void)
 
 }
 
-std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void)
+std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void) const
 {
     std::vector<Part::Geometry*> vals=getInternalGeometry();
     vals.insert(vals.end(), ExternalGeo.rbegin(), ExternalGeo.rend()); // in reverse order

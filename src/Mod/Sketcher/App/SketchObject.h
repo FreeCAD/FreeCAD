@@ -96,7 +96,7 @@ public:
     int getExternalGeometryCount(void) const { return ExternalGeo.size(); }
 
     /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
-    std::vector<Part::Geometry*> getCompleteGeometry(void);
+    std::vector<Part::Geometry*> getCompleteGeometry(void) const;
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;

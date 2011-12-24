@@ -55,9 +55,7 @@ public:
     void clear(void);
     /// set the sketch up with geoms and constraints
     int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
-                    bool withDiagnose=true);
-    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &ExternalGeoList,
-                    const std::vector<Constraint *> &ConstraintList, bool withDiagnose=true);
+                    bool withDiagnose=true, int extGeoCount=0);
     /// return the actual geometry of the sketch a TopoShape
     Part::TopoShape toShape(void) const;
     /// add unspecified geometry
