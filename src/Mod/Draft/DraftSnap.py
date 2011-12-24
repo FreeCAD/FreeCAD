@@ -547,7 +547,12 @@ class Snapper:
     def getPoint(self,last=None,callback=None):
         """getPoint([last],[callback]) : gets a 3D point from the screen. You can provide an existing point,
         in that case additional snap options and a tracker are available. You can also passa function as
-        callback, which will get called with the resulting point as argument, when a point is clicked."""
+        callback, which will get called with the resulting point as argument, when a point is clicked:
+
+        def cb(point):
+            print "got a 3D point: ",point
+        FreeCADGui.Snapper.getPoint(callback=cb)
+        """
         self.pt = None
         self.ui = FreeCADGui.draftToolBar
         self.view = FreeCADGui.ActiveDocument.ActiveView
