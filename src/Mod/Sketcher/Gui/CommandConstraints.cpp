@@ -531,12 +531,16 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     if (SubNames.size() >= 1) {
         if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
             GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
+        else if (SubNames[0].size() > 12 && SubNames[0].substr(0,12) == "ExternalEdge")
+            GeoId1 = -3 - std::atoi(SubNames[0].substr(12,4000).c_str());
         else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
             VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
     }
     if (SubNames.size() == 2) {
         if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
             GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
+        else if (SubNames[1].size() > 12 && SubNames[1].substr(0,12) == "ExternalEdge")
+            GeoId2 = -3 - std::atoi(SubNames[1].substr(12,4000).c_str());
         else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
             VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
     }
@@ -678,12 +682,16 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     if (SubNames.size() >= 1) {
         if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
             GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
+        else if (SubNames[0].size() > 12 && SubNames[0].substr(0,12) == "ExternalEdge")
+            GeoId1 = -3 - std::atoi(SubNames[0].substr(12,4000).c_str());
         else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
             VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
     }
     if (SubNames.size() == 2) {
         if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
             GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
+        else if (SubNames[1].size() > 12 && SubNames[1].substr(0,12) == "ExternalEdge")
+            GeoId2 = -3 - std::atoi(SubNames[1].substr(12,4000).c_str());
         else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
             VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
     }
@@ -767,19 +775,30 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     if (SubNames.size() >= 1) {
         if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
             GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
+        else if (SubNames[0].size() == 6 && SubNames[0].substr(0,6) == "V_Axis")
+            GeoId1 = -2;
         else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
             VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
     }
     if (SubNames.size() == 2) {
         if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
             GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
+        else if (SubNames[1].size() == 6 && SubNames[0].substr(0,6) == "V_Axis")
+            GeoId2 = -2;
         else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
             VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
     }
+    if (GeoId2 == -2 && GeoId1 == Constraint::GeoUndef) {
+        std::swap(GeoId1,GeoId2);
+        std::swap(VtId1,VtId2);
+    }
 
-    if (VtId1 >= 0 && VtId2 >= 0) { // point to point horizontal distance
+    if ((GeoId1 == -2 || VtId1 >= 0) && VtId2 >= 0) { // point to point horizontal distance
         Sketcher::PointPos PosId1,PosId2;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+        if (GeoId1 == -2)
+            PosId1 = Sketcher::start;
+        else
+            Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
         Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
@@ -901,19 +920,30 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     if (SubNames.size() >= 1) {
         if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
             GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
+        else if (SubNames[0].size() == 6 && SubNames[0].substr(0,6) == "H_Axis")
+            GeoId1 = -1;
         else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
             VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
     }
     if (SubNames.size() == 2) {
         if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
             GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
+        else if (SubNames[1].size() == 6 && SubNames[0].substr(0,6) == "H_Axis")
+            GeoId2 = -1;
         else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
             VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
     }
+    if (GeoId2 == -1 && GeoId1 == Constraint::GeoUndef) {
+        std::swap(GeoId1,GeoId2);
+        std::swap(VtId1,VtId2);
+    }
 
-    if (VtId1 >= 0 && VtId2 >= 0) { // point to point horizontal distance
+    if ((GeoId1 == -1 || VtId1 >= 0) && VtId2 >= 0) { // point to point horizontal distance
         Sketcher::PointPos PosId1,PosId2;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+        if (GeoId1 == -1)
+            PosId1 = Sketcher::start;
+        else
+            Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
         Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
@@ -1039,6 +1069,8 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         std::string subName = *it;
         if (subName.size() > 4 && subName.substr(0,4) == "Edge")
             index = std::atoi(subName.substr(4,4000).c_str());
+        else if (subName.size() > 12 && subName.substr(0,12) == "ExternalEdge")
+            index = -3 - std::atoi(subName.substr(12,4000).c_str());
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select a valid line"));

@@ -198,7 +198,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     float smlTangDist = 1e15;
 
     // Get geometry list
-    const std::vector<Part::Geometry *> geomlist = sketchgui->getSketchObject()->Geometry.getValues();
+    const std::vector<Part::Geometry *> geomlist = sketchgui->getSketchObject()->getCompleteGeometry();
 
     // Iterate through geometry
     int i = 0;
@@ -254,6 +254,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     }
 
     if (tangId != Constraint::GeoUndef) {
+        if (tangId > getHighestCurveIndex()) // external Geometry
+            tangId = getHighestCurveIndex() - tangId;
         // Suggest vertical constraint
         AutoConstraint tangConstr;
         tangConstr.Index = tangId;
