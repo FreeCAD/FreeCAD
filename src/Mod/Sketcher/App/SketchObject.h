@@ -80,6 +80,12 @@ public:
     /// delete external
     int delExternal(int ExtGeoId);
 
+    /** returns a pointer to a given Geometry index, possible indexes are:
+     *  id>=0 for user defined geometries,
+     *  ...
+     */
+    const Part::Geometry* getGeometry(int GeoId) const;
+
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
 

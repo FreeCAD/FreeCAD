@@ -530,9 +530,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_DragCurve:
                     if (edit->DragCurve != -1 && pp) {
-                        const std::vector<Part::Geometry *> *geomlist;
-                        geomlist = &getSketchObject()->Geometry.getValues();
-                        Part::Geometry *geo = (*geomlist)[edit->DragCurve];
+                        const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                         if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -769,7 +767,7 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 Mode = STATUS_SKETCH_DragCurve;
                 edit->DragCurve = edit->PreselectCurve;
                 edit->ActSketch.initMove(edit->DragCurve, Sketcher::none);
-                Part::Geometry *geo = getSketchObject()->Geometry.getValues()[edit->DragCurve];
+                const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     relative = true;
                     xInit = x;
@@ -1325,7 +1323,7 @@ void ViewProviderSketch::updateColor(void)
             color[i] = SelectColor;
         else if (edit->PreselectCurve == i)
             color[i] = PreselectColor;
-        else if (this->getSketchObject()->Geometry.getValues()[i]->Construction)
+        else if (getSketchObject()->getGeometry(i)->Construction)
             color[i] = CurveDraftColor;
         else if (edit->FullyConstrained)
             color[i] = FullyConstrainedColor;
@@ -1355,7 +1353,7 @@ void ViewProviderSketch::updateColor(void)
         SoMaterial *m = dynamic_cast<SoMaterial *>(s->getChild(0));
 
         // Check Constraint Type
-        ConstraintType type = this->getSketchObject()->Constraints.getValues()[i]->Type;
+        ConstraintType type = getSketchObject()->Constraints.getValues()[i]->Type;
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                               type == Sketcher::Radius ||
                               type == Sketcher::Distance || type == Sketcher::DistanceX || type == Sketcher::DistanceY);
@@ -1424,8 +1422,8 @@ void ViewProviderSketch::drawConstraintIcons()
         case Tangent:
             icoType = QString::fromAscii("small/Constraint_Tangent_sm");
             {   // second icon is available only for colinear line segments
-                Part::Geometry *geo1 = getSketchObject()->Geometry.getValues()[(*it)->First];
-                Part::Geometry *geo2 = getSketchObject()->Geometry.getValues()[(*it)->Second];
+                const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
+                const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
                 if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                     geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     index2 = 4;
@@ -2473,8 +2471,8 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                     sep->addChild(new SoImage());           // 2. constraint icon
 
                     if ((*it)->Type == Tangent) {
-                        Part::Geometry *geo1 = getSketchObject()->Geometry.getValues()[(*it)->First];
-                        Part::Geometry *geo2 = getSketchObject()->Geometry.getValues()[(*it)->Second];
+                        const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
+                        const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
                         if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                             geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             sep->addChild(new SoZoomTranslation());

@@ -185,7 +185,6 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
 
     std::vector<int> ids;
     // go through the selected subelements
@@ -194,7 +193,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
             int index=std::atoi(it->substr(4,4000).c_str());
 
-            Part::Geometry *geo = geomlist[index];
+            const Part::Geometry *geo = Obj->getGeometry(index);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                      QObject::tr("The selected edge is not a line segment"));
@@ -271,7 +270,6 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
 
      std::vector<int> ids;
 
@@ -281,7 +279,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
             int index=std::atoi(it->substr(4,4000).c_str());
 
-            Part::Geometry *geo = geomlist[index];
+            const Part::Geometry *geo = Obj->getGeometry(index);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                      QObject::tr("The selected edge is not a line segment"));
@@ -522,7 +520,6 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geo = Obj->Geometry.getValues();
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -575,7 +572,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         Sketcher::PointPos PosId1;
         Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
         Base::Vector3d pnt = Obj->getPoint(GeoId1,PosId1);
-        const Part::Geometry *geom = geo[GeoId2];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId2);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
             lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
@@ -602,7 +599,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
     }
     else if (GeoId1 >= 0) { // line length
-        const Part::Geometry *geom = geo[GeoId1];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
             lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
@@ -669,7 +666,6 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geo = Obj->Geometry.getValues();
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -701,7 +697,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
         Sketcher::PointPos PosId1;
         Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
 
-        const Part::Geometry *geom = geo[GeoId2];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId2);
 
         // Currently only accepts line segments and circles
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
@@ -760,7 +756,6 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geo = Obj->Geometry.getValues();
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -807,7 +802,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         return;
     }
     else if (GeoId1 >= 0 && GeoId2 == Constraint::GeoUndef && VtId2 < 0)  { // horizontal length of a line
-        const Part::Geometry *geom = geo[GeoId1];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
             lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
@@ -895,7 +890,6 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geo = Obj->Geometry.getValues();
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -942,7 +936,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         return;
     }
     else if (GeoId1 >= 0 && GeoId2 == Constraint::GeoUndef && VtId2 < 0)  { // horizontal length of a line
-        const Part::Geometry *geom = geo[GeoId1];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
             lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
@@ -1030,8 +1024,6 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
-
 
     // go through the selected subelements
 
@@ -1054,7 +1046,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         }
 
         // Check that the curve is a line segment
-        Part::Geometry *geo = geomlist[index];
+        const Part::Geometry *geo = Obj->getGeometry(index);
         if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                 QObject::tr("The selected edge is not a valid line"));
@@ -1115,8 +1107,6 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
 
     if (SubNames.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1141,8 +1131,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         return;
     }
 
-    Part::Geometry *geo1 = geomlist[GeoId1];
-    Part::Geometry *geo2 = geomlist[GeoId2];
+    const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+    const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
 
     if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
         geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
@@ -1303,7 +1293,6 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geo = Obj->Geometry.getValues();
 
     if (SubNames.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1314,7 +1303,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge") {
         int GeoId = std::atoi(SubNames[0].substr(4,4000).c_str());
 
-        const Part::Geometry *geom = geo[GeoId];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId);
         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
             double ActRadius = arc->getRadius();
@@ -1385,7 +1374,6 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geo = Obj->Geometry.getValues();
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1402,8 +1390,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     }
 
     if (GeoId2 >= 0) { // line to line angle
-        const Part::Geometry *geom1 = geo[GeoId1];
-        const Part::Geometry *geom2 = geo[GeoId2];
+        const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
         if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
             geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment*>(geom1);
@@ -1456,7 +1444,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             return;
         }
     } else if (GeoId1 >= 0) { // line angle
-        const Part::Geometry *geom = geo[GeoId1];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
             lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
@@ -1531,8 +1519,6 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    const std::vector<Part::Geometry *> &geomlist = Obj->Geometry.getValues();
 
     // go through the selected subelements
 
@@ -1556,7 +1542,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             return;
         }
 
-        Part::Geometry *geo = geomlist[index];
+        const Part::Geometry *geo = Obj->getGeometry(index);
         if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
             lineSel = true;
         } else if (geo->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()) {
@@ -1619,7 +1605,6 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Part::Geometry *> &geo = Obj->Geometry.getValues();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1668,7 +1653,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         Sketcher::PointPos PosId1,PosId2;
         Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
         Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
-        const Part::Geometry *geom = geo[GeoId3];
+        const Part::Geometry *geom = Obj->getGeometry(GeoId3);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             // undo command open
             openCommand("add symmetric constraint");

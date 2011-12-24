@@ -82,19 +82,14 @@ void DrawSketchHandler::quit(void)
 //**************************************************************************
 // Helpers
 
-Sketcher::SketchObject* DrawSketchHandler::getObject(void)
-{
-    return dynamic_cast<Sketcher::SketchObject*>(sketchgui->getObject());
-}
-
 int DrawSketchHandler::getHighestVertexIndex(void)
 {
-    return getObject()->getHighestVertexIndex();
+    return sketchgui->getSketchObject()->getHighestVertexIndex();
 }
 
 int DrawSketchHandler::getHighestCurveIndex(void)
 {
-    return getObject()->getHighestCurveIndex();
+    return sketchgui->getSketchObject()->getHighestCurveIndex();
 }
 
 void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y)
@@ -199,15 +194,15 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     // FIXME needs to consider when zooming out?
     const float tangDeviation = 2.;
 
-    int tangId = -1;
-    float smlTangDist = 0;
+    int tangId = Constraint::GeoUndef;
+    float smlTangDist = 1e15;
 
     // Get geometry list
-    const std::vector<Part::Geometry *> geomlist = getObject()->Geometry.getValues();
+    const std::vector<Part::Geometry *> geomlist = sketchgui->getSketchObject()->Geometry.getValues();
 
     // Iterate through geometry
     int i = 0;
-    for (std::vector<Part::Geometry *>::const_iterator it = geomlist.begin(); it != geomlist.end(); ++it, i++) {
+    for (std::vector<Part::Geometry *>::const_iterator it=geomlist.begin(); it != geomlist.end(); ++it, i++) {
 
         if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) {
             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>((*it));
@@ -221,11 +216,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             projPnt = projPnt.ProjToLine(center - tmpPos, Base::Vector3d(Dir.fX, Dir.fY));
             float projDist = projPnt.Length();
 
-            if ( (projDist < radius + tangDeviation ) && (projDist > radius - tangDeviation))
-            {
+            if ( (projDist < radius + tangDeviation ) && (projDist > radius - tangDeviation)) {
                 // Find if nearest
-                if (tangId == -1 || projDist< smlTangDist)
-                {
+                if (projDist < smlTangDist) {
                     tangId = i;
                     smlTangDist = projDist;
                 }
@@ -252,7 +245,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
                 // if the pnt is on correct side of arc and find if nearest
                 if ((angle > startAngle && angle < endAngle) &&
-                    (tangId == -1 || projDist < smlTangDist) ) {
+                    (projDist < smlTangDist) ) {
                     tangId = i;
                     smlTangDist = projDist;
                 }
@@ -260,7 +253,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         }
     }
 
-    if (tangId != -1) {
+    if (tangId != Constraint::GeoUndef) {
         // Suggest vertical constraint
         AutoConstraint tangConstr;
         tangConstr.Index = tangId;
@@ -272,7 +265,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 }
 
 void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> &autoConstrs,
-                                              int geoId, Sketcher::PointPos pointPos)
+                                              int geoId1, Sketcher::PointPos posId1)
 {
     if (!sketchgui->Autoconstraints.getValue())
         return; // If Autoconstraints property is not set quit
@@ -287,47 +280,47 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
             switch (it->Type)
             {
             case Sketcher::Coincident: {
-                if (pointPos == Sketcher::none)
+                if (posId1 == Sketcher::none)
                     continue;
                 // If the auto constraint has a point create a coincident otherwise it is an edge on a point
-                Sketcher::PointPos pointPos2;
+                Sketcher::PointPos posId2;
                 int geoId2;
-                sketchgui->getSketchObject()->getGeoVertexIndex(it->Index, geoId2, pointPos2);
+                sketchgui->getSketchObject()->getGeoVertexIndex(it->Index, geoId2, posId2);
 
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) "
                                         ,sketchgui->getObject()->getNameInDocument()
-                                        ,geoId, pointPos, geoId2, pointPos2
+                                        ,geoId1, posId1, geoId2, posId2
                                         );
                 } break;
             case Sketcher::PointOnObject: {
                 int index = it->Index;
-                if (pointPos == Sketcher::none) {
+                if (posId1 == Sketcher::none) {
                     // Auto constraining an edge so swap parameters
-                    index = geoId;
-                    sketchgui->getSketchObject()->getGeoVertexIndex(it->Index, geoId, pointPos);
+                    index = geoId1;
+                    sketchgui->getSketchObject()->getGeoVertexIndex(it->Index, geoId1, posId1);
                 }
 
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%i,%i,%i)) "
                                         ,sketchgui->getObject()->getNameInDocument()
-                                        ,geoId, pointPos, index
+                                        ,geoId1, posId1, index
                                        );
                 } break;
             case Sketcher::Horizontal: {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
                                         ,sketchgui->getObject()->getNameInDocument()
-                                        ,geoId
+                                        ,geoId1
                                        );
                 } break;
             case Sketcher::Vertical: {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
                                         ,sketchgui->getObject()->getNameInDocument()
-                                        ,geoId
+                                        ,geoId1
                                        );
                 } break;
             case Sketcher::Tangent: {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i, %i)) "
                                         ,sketchgui->getObject()->getNameInDocument()
-                                        ,geoId, it->Index
+                                        ,geoId1, it->Index
                                        );
                 } break;
             }

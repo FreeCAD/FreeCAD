@@ -181,7 +181,7 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
 {
     const std::vector< Part::Geometry * > &geomlist = this->Geometry.getValues();
     assert(GeoId < (int)geomlist.size());
-    Part::Geometry *geo = geomlist[GeoId];
+    const Part::Geometry *geo = getGeometry(GeoId);
     if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geo);
         if (PosId == start)
@@ -480,17 +480,18 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
 
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim)
 {
-    const std::vector<Part::Geometry *> &geomlist = this->Geometry.getValues();
-    assert(GeoId < int(geomlist.size()));
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+
     // Find the other geometry Id associated with the coincident point
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
     getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 
-    // only coincident points between two edges can be filleted
-    if (GeoIdList.size() == 2) {
-        Part::Geometry *geo1 = geomlist[GeoIdList[0]];
-        Part::Geometry *geo2 = geomlist[GeoIdList[1]];
+    // only coincident points between two (non-external) edges can be filleted
+    if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
+        const Part::Geometry *geo1 = getGeometry(GeoIdList[0]);
+        const Part::Geometry *geo2 = getGeometry(GeoIdList[1]);
         if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
             geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
             const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment*>(geo1);
@@ -509,11 +510,12 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                          const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
                          double radius, bool trim)
 {
-    const std::vector<Part::Geometry *> &geomlist = this->Geometry.getValues();
-    assert(GeoId1 < int(geomlist.size()));
-    assert(GeoId2 < int(geomlist.size()));
-    Part::Geometry *geo1 = geomlist[GeoId1];
-    Part::Geometry *geo2 = geomlist[GeoId2];
+    if (GeoId1 < 0 || GeoId1 > getHighestCurveIndex() ||
+        GeoId2 < 0 || GeoId2 > getHighestCurveIndex())
+        return -1;
+
+    const Part::Geometry *geo1 = getGeometry(GeoId1);
+    const Part::Geometry *geo2 = getGeometry(GeoId2);
     if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
         geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
         const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment*>(geo1);
@@ -1020,6 +1022,17 @@ int SketchObject::delExternal(int ExtGeoId)
     // FIXME: still to implement
     return 0;
 
+}
+
+const Part::Geometry* SketchObject::getGeometry(int GeoId) const
+{
+    if (GeoId >= 0) {
+        const std::vector<Part::Geometry *> &geomlist = Geometry.getValues();
+        if (GeoId < int(geomlist.size()))
+            return geomlist[GeoId];
+    }
+
+    return 0;
 }
 
 std::vector<Part::Geometry *> getExternalGeometry(void)

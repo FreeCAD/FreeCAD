@@ -75,7 +75,6 @@ public:
 
     friend class ViewProviderSketch;
 
-    Sketcher::SketchObject* getObject(void);
     // get the actual highest vertex index, the next use will be +1
     int getHighestVertexIndex(void);
     // get the actual highest edge index, the next use will be +1
