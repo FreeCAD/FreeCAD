@@ -503,7 +503,10 @@ class wireTracker(Tracker):
 
     def update(self,wire):
         if wire:
-            self.line.numVertices.setValue(len(wire.Vertexes))
+            if self.closed:
+                self.line.numVertices.setValue(len(wire.Vertexes)+1)
+            else:
+                self.line.numVertices.setValue(len(wire.Vertexes))
             for i in range(len(wire.Vertexes)):
                 p=wire.Vertexes[i].Point
                 self.coords.point.set1Value(i,[p.x,p.y,p.z])
