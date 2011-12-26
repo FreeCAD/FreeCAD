@@ -14,6 +14,12 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
       <UserDocu>Create a solid out of the shells of a shape</UserDocu>
     </Documentation>
+    <Attribute Name="Mass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the mass of the current system.</UserDocu>
+      </Documentation>
+      <Parameter Name="Mass" Type="Object"/>
+    </Attribute>
     <Attribute Name="CenterOfMass" ReadOnly="true">
       <Documentation>
         <UserDocu>Returns the center of mass of the current system.
@@ -44,6 +50,28 @@ coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="MatrixOfInertia" Type="Object"/>
     </Attribute>
+    <Attribute Name="StaticMoments" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the 
+ current system; i.e. the moments of inertia about the 
+ three axes of the Cartesian coordinate system.</UserDocu>
+      </Documentation>
+      <Parameter Name="StaticMoments" Type="Object"/>
+    </Attribute>
+    <Attribute Name="PrincipalProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Computes the principal properties of inertia of the current system. 
+ There is always a set of axes for which the products 
+ of inertia of a geometric system are equal to 0; i.e. the 
+ matrix of inertia of the system is diagonal. These axes 
+ are the principal axes of inertia. Their origin is 
+ coincident with the center of mass of the system. The 
+ associated moments are called the principal moments of inertia. 
+ This function computes the eigen values and the 
+ eigen vectors of the matrix of inertia of the system.</UserDocu>
+      </Documentation>
+      <Parameter Name="PrincipalProperties" Type="Dict"/>
+    </Attribute>
     <Attribute Name="OuterShell" ReadOnly="true">
       <Documentation>
         <UserDocu>
@@ -52,5 +80,15 @@ shape if the solid has no shells</UserDocu>
       </Documentation>
       <Parameter Name="OuterShell" Type="Object"/>
     </Attribute>
+    <Methode Name="getMomentOfInertia">
+      <Documentation>
+        <UserDocu>computes the moment of inertia of the material system about the axis A.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getRadiusOfGyration">
+      <Documentation>
+        <UserDocu>Returns the radius of gyration of the current system about the axis A.</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

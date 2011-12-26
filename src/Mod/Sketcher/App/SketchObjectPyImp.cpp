@@ -152,7 +152,7 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
     }
 
     // add the external
-    if (this->getSketchObjectPtr()->addExternal(Obj,SubName)) {
+    if (this->getSketchObjectPtr()->addExternal(Obj,SubName) < 0) {
         std::stringstream str;
         str << "Not able to add external shape element";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());

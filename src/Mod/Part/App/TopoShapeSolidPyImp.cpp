@@ -26,11 +26,16 @@
 #include <BRepGProp.hxx>
 #include <BRepTools.hxx>
 #include <GProp_GProps.hxx>
+#include <GProp_PrincipalProps.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Shell.hxx>
+#include <gp_Ax1.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Dir.hxx>
+#include <Standard_Failure.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -91,6 +96,22 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
+Py::Object TopoShapeSolidPy::getMass(void) const
+{
+    GProp_GProps props;
+    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    double c = props.Mass();
+    return Py::Float(c);
+}
+
+Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
+{
+    GProp_GProps props;
+    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    gp_Pnt c = props.CentreOfMass();
+    return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
+}
+
 Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
 {
     GProp_GProps props;
@@ -105,12 +126,50 @@ Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
     return Py::Matrix(mat);
 }
 
-Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
+Py::Object TopoShapeSolidPy::getStaticMoments(void) const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
-    gp_Pnt c = props.CentreOfMass();
-    return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
+    Standard_Real lx,ly,lz;
+    props.StaticMoments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    return tuple;
+}
+
+Py::Dict TopoShapeSolidPy::getPrincipalProperties(void) const
+{
+    GProp_GProps props;
+    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    GProp_PrincipalProps pprops = props.PrincipalProperties();
+
+    Py::Dict dict;
+    dict.setItem("SymmetryAxis", Py::Boolean(pprops.HasSymmetryAxis() ? true : false));
+    dict.setItem("SymmetryPoint", Py::Boolean(pprops.HasSymmetryPoint() ? true : false));
+    Standard_Real lx,ly,lz;
+    pprops.Moments(lx,ly,lz);
+    Py::Tuple tuple(3);
+    tuple.setItem(0, Py::Float(lx));
+    tuple.setItem(1, Py::Float(ly));
+    tuple.setItem(2, Py::Float(lz));
+    dict.setItem("Moments",tuple);
+    dict.setItem("FirstAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.FirstAxisOfInertia())));
+    dict.setItem("SecondAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.SecondAxisOfInertia())));
+    dict.setItem("ThirdAxisOfInertia",Py::Vector(Base::convertTo
+        <Base::Vector3d>(pprops.ThirdAxisOfInertia())));
+
+    Standard_Real Rxx,Ryy,Rzz;
+    pprops.RadiusOfGyration(Rxx,Ryy,Rzz);
+    Py::Tuple rog(3);
+    rog.setItem(0, Py::Float(Rxx));
+    rog.setItem(1, Py::Float(Ryy));
+    rog.setItem(2, Py::Float(Rzz));
+    dict.setItem("RadiusOfGyration",rog);
+    return dict;
 }
 
 Py::Object TopoShapeSolidPy::getOuterShell(void) const
@@ -120,6 +179,52 @@ Py::Object TopoShapeSolidPy::getOuterShell(void) const
     if (!shape.IsNull() && shape.ShapeType() == TopAbs_SOLID)
         shell = BRepTools::OuterShell(TopoDS::Solid(shape));
     return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);
+}
+
+PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
+{
+    PyObject *p,*d;
+    if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
+                                      ,&Base::VectorPy::Type,&d))
+        return 0;
+    Base::Vector3d pnt = Py::Vector(p,false).toVector();
+    Base::Vector3d dir = Py::Vector(d,false).toVector();
+
+    try {
+        GProp_GProps props;
+        BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+        double r = props.MomentOfInertia(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
+                                                Base::convertTo<gp_Dir>(dir)));
+        return PyFloat_FromDouble(r);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
+{
+    PyObject *p,*d;
+    if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
+                                      ,&Base::VectorPy::Type,&d))
+        return 0;
+    Base::Vector3d pnt = Py::Vector(p,false).toVector();
+    Base::Vector3d dir = Py::Vector(d,false).toVector();
+
+    try {
+        GProp_GProps props;
+        BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+        double r = props.RadiusOfGyration(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
+                                                Base::convertTo<gp_Dir>(dir)));
+        return PyFloat_FromDouble(r);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject *TopoShapeSolidPy::getCustomAttributes(const char* /*attr*/) const

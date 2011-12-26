@@ -389,24 +389,11 @@ class Line(Creator):
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
             # self.obj.ViewObject.Selectable = False
             Draft.formatObject(self.obj)
-            if not Draft.getParam("UiMode"): self.makeDumbTask()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             msg(translate("draft", "Pick first point:\n"))
 
-    def makeDumbTask(self):
-        "create a dumb taskdialog to prevent deleting the temp object"
-        class TaskPanel:
-            def __init__(self):
-                pass
-            def getStandardButtons(self):
-                return 0
-        panel = TaskPanel()
-        FreeCADGui.Control.showDialog(panel)
-
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
-        if not Draft.getParam("UiMode"):
-            FreeCADGui.Control.closeDialog()
         if self.obj:
             old = self.obj.Name
             todo.delay(self.doc.removeObject,old)
@@ -1627,6 +1614,12 @@ class Modifier:
     
     def __init__(self):
         self.commitList = []
+
+    def IsActive(self):
+        if Draft.getSelection():
+            return True
+        else:
+            return False
         
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
@@ -1655,12 +1648,6 @@ class Modifier:
             self.snap = snapTracker()
             self.extsnap = lineTracker(dotted=True)
             self.planetrack = PlaneTracker()
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
 		
     def finish(self):
         self.node = []
