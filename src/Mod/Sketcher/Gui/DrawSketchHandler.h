@@ -75,7 +75,6 @@ public:
 
     friend class ViewProviderSketch;
 
-    Sketcher::SketchObject* getObject(void);
     // get the actual highest vertex index, the next use will be +1
     int getHighestVertexIndex(void);
     // get the actual highest edge index, the next use will be +1
@@ -94,8 +93,8 @@ protected:
     // helpers
     void setCursor( const QPixmap &p,int x,int y );
     void unsetCursor(void);
-	void applyCursor(void);
-	void applyCursor(QCursor &newCursor);
+    void applyCursor(void);
+    void applyCursor(QCursor &newCursor);
 
     ViewProviderSketch *sketchgui;
     QCursor oldCursor;

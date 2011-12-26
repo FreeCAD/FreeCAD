@@ -102,6 +102,7 @@ using namespace Sketcher;
 SbColor ViewProviderSketch::VertexColor           (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::CurveColor            (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
 SbColor ViewProviderSketch::CurveDraftColor       (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
+SbColor ViewProviderSketch::CurveExternalColor    (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
 SbColor ViewProviderSketch::CrossColorV           (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
 SbColor ViewProviderSketch::CrossColorH           (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
 SbColor ViewProviderSketch::FullyConstrainedColor (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
@@ -162,9 +163,8 @@ struct EditData {
     Sketcher::Sketch ActSketch;
     // container to track our own selected parts
     std::set<int> SelPointSet;
-    std::set<int> SelCurvSet;
+    std::set<int> SelCurvSet; // also holds cross axes at -1 and -2
     std::set<int> SelConstraintSet;
-    std::set<int> SelCrossSet;
 
     // helper data structure for the constraint rendering
     std::vector<ConstraintType> vConstrType;
@@ -173,18 +173,15 @@ struct EditData {
     SoSeparator   *EditRoot;
     SoMaterial    *PointsMaterials;
     SoMaterial    *CurvesMaterials;
-    SoMaterial    *RootCrossMaterialsV;
-    SoMaterial    *RootCrossMaterialsH;
+    SoMaterial    *RootCrossMaterials;
     SoMaterial    *EditCurvesMaterials;
     SoCoordinate3 *PointsCoordinate;
     SoCoordinate3 *CurvesCoordinate;
-    SoCoordinate3 *RootCrossCoordinateV;
-    SoCoordinate3 *RootCrossCoordinateH;
+    SoCoordinate3 *RootCrossCoordinate;
     SoCoordinate3 *EditCurvesCoordinate;
     SoLineSet     *CurveSet;
     SoLineSet     *EditCurveSet;
-    SoLineSet     *RootCrossSetV;
-    SoLineSet     *RootCrossSetH;
+    SoLineSet     *RootCrossSet;
     SoMarkerSet   *PointSet;
 
     SoText2       *textX;
@@ -193,6 +190,15 @@ struct EditData {
     SoGroup       *constrGroup;
 };
 
+
+// this function is used to simulate cyclic periodic negative geometry indices (for external geometry)
+const Part::Geometry* GeoById(const std::vector<Part::Geometry*> GeoList, int Id)
+{
+    if (Id >= 0)
+        return GeoList[Id];
+    else
+        return GeoList[GeoList.size()+Id];
+}
 
 //**************************************************************************
 // Construction/Destruction
@@ -358,19 +364,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     float dci = (float) QApplication::doubleClickInterval()/1000.0f;
                     float length = (point - prvClickPoint).length();
 
-                    if (edit->PreselectPoint >=0) {
+                    if (edit->PreselectPoint >= 0) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Point;
                         done = true;
-                    } else if (edit->PreselectCurve >=0) {
+                    } else if (edit->PreselectCurve >= 0) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Edge;
                         done = true;
-                    } else if (edit->PreselectCross >=0) {
+                    } else if (edit->PreselectCross >= 0) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Cross;
                         done = true;
-                    } else if (edit->PreselectConstraint >=0) {
+                    } else if (edit->PreselectConstraint >= 0) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Constraint;
                         done = true;
@@ -429,8 +435,14 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SELECT_Edge:
                     if (pp) {
                         //Base::Console().Log("Select Point:%d\n",this->DragPoint);
+                        int maxGeoId = getSketchObject()->getHighestCurveIndex();
                         std::stringstream ss;
-                        ss << "Edge" << edit->PreselectCurve;
+                        if (edit->PreselectCurve <= maxGeoId)
+                            ss << "Edge" << edit->PreselectCurve;
+                        else { // external geometry
+                            int extGeoCount = getSketchObject()->getExternalGeometryCount();
+                            ss << "ExternalEdge" << extGeoCount - 2 - (edit->PreselectCurve - maxGeoId);
+                        }
 
                         // If edge already selected move from selection
                         if (Gui::Selection().isSelected(getSketchObject()->getDocument()->getName()
@@ -461,7 +473,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             case 1: ss << "H_Axis"    ; break;
                             case 2: ss << "V_Axis"    ; break;
                         }
-
 
                         // If cross already selected move from selection
                         if (Gui::Selection().isSelected(getSketchObject()->getDocument()->getName()
@@ -531,9 +542,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_DragCurve:
                     if (edit->DragCurve != -1 && pp) {
-                        const std::vector<Part::Geometry *> *geomlist;
-                        geomlist = &getSketchObject()->Geometry.getValues();
-                        Part::Geometry *geo = (*geomlist)[edit->DragCurve];
+                        const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                         if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -581,11 +590,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_NONE:
                     {
                         // A right click shouldn't change the Edit Mode
-                        if (edit->PreselectPoint >=0) {
+                        if (edit->PreselectPoint >= 0) {
                             return true;
-                        } else if (edit->PreselectCurve >=0) {
+                        } else if (edit->PreselectCurve >= 0) {
                             return true;
-                        } else if (edit->PreselectConstraint >=0) {
+                        } else if (edit->PreselectConstraint >= 0) {
                             return true;
                         } else {
                             //Get Viewer
@@ -691,18 +700,21 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
 void ViewProviderSketch::editDoubleClicked(void)
 {
-    if (edit->PreselectPoint >=0) {
-         Base::Console().Log("double click point:%d\n",edit->PreselectPoint);
-     } else if (edit->PreselectCurve >=0) {
-         Base::Console().Log("double click edge:%d\n",edit->PreselectCurve);
-     } else if (edit->PreselectCross >=0) {
-         Base::Console().Log("double click cross:%d\n",edit->PreselectCross);
-     } else if (edit->PreselectConstraint >=0) {
+    if (edit->PreselectPoint >= 0) {
+        Base::Console().Log("double click point:%d\n",edit->PreselectPoint);
+    }
+    else if (edit->PreselectCurve >= 0) {
+        Base::Console().Log("double click edge:%d\n",edit->PreselectCurve);
+    }
+    else if (edit->PreselectCross >= 0) {
+        Base::Console().Log("double click cross:%d\n",edit->PreselectCross);
+    }
+    else if (edit->PreselectConstraint >= 0) {
         // Find the constraint
         Base::Console().Log("double click constraint:%d\n",edit->PreselectConstraint);
 
-        const std::vector<Sketcher::Constraint *> &ConStr = getSketchObject()->Constraints.getValues();
-        Constraint *Constr = ConStr[edit->PreselectConstraint];
+        const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
+        Constraint *Constr = constrlist[edit->PreselectConstraint];
 
         // if its the right constraint
         if (Constr->Type == Sketcher::Distance ||
@@ -767,7 +779,7 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 Mode = STATUS_SKETCH_DragCurve;
                 edit->DragCurve = edit->PreselectCurve;
                 edit->ActSketch.initMove(edit->DragCurve, Sketcher::none);
-                Part::Geometry *geo = getSketchObject()->Geometry.getValues()[edit->DragCurve];
+                const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     relative = true;
                     xInit = x;
@@ -847,14 +859,19 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
     if (!edit)
         return;
 
-    const std::vector<Sketcher::Constraint *> &ConStr = getSketchObject()->Constraints.getValues();
-    Constraint *Constr = ConStr[constNum];
+    const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
+    Constraint *Constr = constrlist[constNum];
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
         Constr->Type == Radius) {
 
-        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.getGeometry();
-        assert(Constr->First < int(geomlist.size()));
+        int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
+        int extGeoCount = getSketchObject()->getExternalGeometryCount();
+        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
+
+        assert(int(geomlist.size()) == extGeoCount + intGeoCount);
+        assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
+               || Constr->First != Constraint::GeoUndef);
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -862,7 +879,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
             p2 = edit->ActSketch.getPoint(Constr->Second, Constr->SecondPos);
         } else if (Constr->Second != Constraint::GeoUndef) { // point to line distance
             p1 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry *geo = geomlist[Constr->Second];
+            const Part::Geometry *geo = GeoById(geomlist, Constr->Second);
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
@@ -875,7 +892,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         } else if (Constr->FirstPos != Sketcher::none) {
             p2 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
         } else if (Constr->First != Constraint::GeoUndef) {
-            const Part::Geometry *geo = geomlist[Constr->First];
+            const Part::Geometry *geo = GeoById(geomlist, Constr->First);
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
                 p1 = lineSeg->getStartPoint();
@@ -918,13 +935,18 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         }
     }
     else if (Constr->Type == Angle) {
-        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.getGeometry();
-        assert(Constr->First < int(geomlist.size()));
+        int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
+        int extGeoCount = getSketchObject()->getExternalGeometryCount();
+        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
+
+        assert(int(geomlist.size()) == extGeoCount + intGeoCount);
+        assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
+               || Constr->First != Constraint::GeoUndef);
 
         Base::Vector3d p0(0.,0.,0.);
         if (Constr->Second != Constraint::GeoUndef) { // line to line angle
-            const Part::Geometry *geo1 = geomlist[Constr->First];
-            const Part::Geometry *geo2 = geomlist[Constr->Second];
+            const Part::Geometry *geo1 = GeoById(geomlist, Constr->First);
+            const Part::Geometry *geo2 = GeoById(geomlist, Constr->Second);
             if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                 geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
                 return;
@@ -950,7 +972,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 p0 = Base::Vector3d(x,y,0);
             }
         } else if (Constr->First != Constraint::GeoUndef) { // line angle
-            const Part::Geometry *geo = geomlist[Constr->First];
+            const Part::Geometry *geo = GeoById(geomlist, Constr->First);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
                 return;
             const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
@@ -1027,11 +1049,10 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::string temp;
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
             // if something selected in this object?
-            if (edit->SelPointSet.size() > 0 || edit->SelCurvSet.size() > 0 || edit->SelCrossSet.size() > 0 || edit->SelConstraintSet.size() > 0) {
+            if (edit->SelPointSet.size() > 0 || edit->SelCurvSet.size() > 0 || edit->SelConstraintSet.size() > 0) {
                 // clear our selection and update the color of the viewed edges and points
                 clearSelectPoints();
                 edit->SelCurvSet.clear();
-                edit->SelCrossSet.clear();
                 edit->SelConstraintSet.clear();
                 this->drawConstraintIcons();
                 this->updateColor();
@@ -1048,21 +1069,26 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             edit->SelCurvSet.insert(index);
                             this->updateColor();
                         }
+                        else if (shapetype.size() > 12 && shapetype.substr(0,12) == "ExternalEdge") {
+                            int index=std::atoi(&shapetype[12]);
+                            edit->SelCurvSet.insert(-index-3);
+                            this->updateColor();
+                        }
                         else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
                             int index=std::atoi(&shapetype[6]);
                             addSelectPoint(index);
                             this->updateColor();
                         }
                         else if (shapetype == "RootPoint") {
-                            edit->SelCrossSet.insert(0);
-                            this->updateColor();
-                        }
-                        else if (shapetype == "V_Axis") {
-                            edit->SelCrossSet.insert(2);
+                            addSelectPoint(-1);
                             this->updateColor();
                         }
                         else if (shapetype == "H_Axis") {
-                            edit->SelCrossSet.insert(1);
+                            edit->SelCurvSet.insert(-1);
+                            this->updateColor();
+                        }
+                        else if (shapetype == "V_Axis") {
+                            edit->SelCurvSet.insert(-2);
                             this->updateColor();
                         }
                         else if (shapetype.size() > 10 && shapetype.substr(0,10) == "Constraint") {
@@ -1087,9 +1113,26 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             edit->SelCurvSet.erase(index);
                             this->updateColor();
                         }
+                        else if (shapetype.size() > 12 && shapetype.substr(0,12) == "ExternalEdge") {
+                            int index=std::atoi(&shapetype[12]);
+                            edit->SelCurvSet.erase(-index-3);
+                            this->updateColor();
+                        }
                         else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
                             int index=std::atoi(&shapetype[6]);
                             removeSelectPoint(index);
+                            this->updateColor();
+                        }
+                        else if (shapetype == "RootPoint") {
+                            removeSelectPoint(-1);
+                            this->updateColor();
+                        }
+                        else if (shapetype == "H_Axis") {
+                            edit->SelCurvSet.erase(-1);
+                            this->updateColor();
+                        }
+                        else if (shapetype == "V_Axis") {
+                            edit->SelCurvSet.erase(-2);
                             this->updateColor();
                         }
                         else if (shapetype.size() > 10 && shapetype.substr(0,10) == "Constraint") {
@@ -1128,8 +1171,8 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
 
     PtIndex = -1;
     CurvIndex = -1;
-    ConstrIndex = -1;
     CrossIndex = -1;
+    ConstrIndex = -1;
 
     if (Point) {
         //Base::Console().Log("Point pick\n");
@@ -1146,26 +1189,20 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                 PtIndex = static_cast<const SoPointDetail *>(point_detail)->getCoordinateIndex();
             }
         } else {
-            // checking for a hit in the Curves
+            // checking for a hit in the curves
             if (tail == edit->CurveSet) {
                 const SoDetail *curve_detail = Point->getDetail(edit->CurveSet);
                 if (curve_detail && curve_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
                     // get the index
                     CurvIndex = static_cast<const SoLineDetail *>(curve_detail)->getLineIndex();
                 }
-            // checking for a hit in the Cross
-            } else if (tail == edit->RootCrossSetV) {
-                //const SoDetail *cross_detail = Point->getDetail(edit->RootCrossSet);
-                //if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-                    // get the index
-                    CrossIndex = 1;
-                //}
-           } else if (tail == edit->RootCrossSetH) {
-                //const SoDetail *cross_detail = Point->getDetail(edit->RootCrossSet);
-                //if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-                    // get the index
-                    CrossIndex = 2;
-                //}
+            // checking for a hit in the cross
+            } else if (tail == edit->RootCrossSet) {
+                const SoDetail *cross_detail = Point->getDetail(edit->RootCrossSet);
+                if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+                    // get the index (reserve index 0 for root point)
+                    CrossIndex = 1 + static_cast<const SoLineDetail *>(cross_detail)->getLineIndex();
+                }
             } else {
                 // checking if a constraint is hit
                 if (tailFather2 == edit->constrGroup)
@@ -1199,8 +1236,14 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                 return true;
             }
         } else if (CurvIndex >= 0 && CurvIndex != edit->PreselectCurve) {  // if a new curve is hit
+            int maxGeoId = getSketchObject()->getHighestCurveIndex();
             std::stringstream ss;
-            ss << "Edge" << CurvIndex;
+            if (CurvIndex <= maxGeoId)
+                ss << "Edge" << CurvIndex;
+            else { // external geometry
+                int extGeoCount = getSketchObject()->getExternalGeometryCount();
+                ss << "ExternalEdge" << extGeoCount - 2 - (CurvIndex - maxGeoId);
+            }
             bool accepted =
             Gui::Selection().setPreselect(getSketchObject()->getDocument()->getName()
                                          ,getSketchObject()->getNameInDocument()
@@ -1218,7 +1261,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if (CrossIndex >= 0 && CrossIndex != edit->PreselectCross) {
+        } else if (CrossIndex >= 0 && CrossIndex != edit->PreselectCross) {  // if a cross line is hit
             std::stringstream ss;
             switch(CrossIndex){
                 case 0: ss << "RootPoint" ; break;
@@ -1302,8 +1345,7 @@ void ViewProviderSketch::updateColor(void)
     SbColor *pcolor = edit->PointsMaterials->diffuseColor.startEditing();
     int CurvNum = edit->CurvesMaterials->diffuseColor.getNum();
     SbColor *color = edit->CurvesMaterials->diffuseColor.startEditing();
-    SbColor *ccolorV = edit->RootCrossMaterialsV->diffuseColor.startEditing();
-    SbColor *ccolorH = edit->RootCrossMaterialsH->diffuseColor.startEditing();
+    SbColor *crosscolor = edit->RootCrossMaterials->diffuseColor.startEditing();
 
     // colors of the point set
     for (int  i=0; i < PtNum; i++) {
@@ -1318,12 +1360,17 @@ void ViewProviderSketch::updateColor(void)
     }
 
     // colors of the curves
+    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
+    int extGeoCount = getSketchObject()->getExternalGeometryCount();
     for (int  i=0; i < CurvNum; i++) {
-        if (edit->SelCurvSet.find(i) != edit->SelCurvSet.end())
+        int GeoId = (i < intGeoCount) ? i : -(extGeoCount - (i - intGeoCount));
+        if (edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end())
             color[i] = SelectColor;
         else if (edit->PreselectCurve == i)
             color[i] = PreselectColor;
-        else if (this->getSketchObject()->Geometry.getValues()[i]->Construction)
+        else if (GeoId < -2)  // external Geometry
+            color[i] = CurveExternalColor;
+        else if (getSketchObject()->getGeometry(GeoId)->Construction)
             color[i] = CurveDraftColor;
         else if (edit->FullyConstrained)
             color[i] = FullyConstrainedColor;
@@ -1332,20 +1379,19 @@ void ViewProviderSketch::updateColor(void)
     }
 
     // colors of the cross
-    if (edit->SelCrossSet.find(1) != edit->SelCrossSet.end())
-        ccolorV[0] = SelectColor;
+    if (edit->SelCurvSet.find(-1) != edit->SelCurvSet.end())
+        crosscolor[0] = SelectColor;
     else if (edit->PreselectCross == 1)
-        ccolorV[0] = PreselectColor;
+        crosscolor[0] = PreselectColor;
     else
-        ccolorV[0] = CrossColorV;
+        crosscolor[0] = CrossColorH;
 
-    if (edit->SelCrossSet.find(2) != edit->SelCrossSet.end())
-        ccolorH[0] = SelectColor;
+    if (edit->SelCurvSet.find(-2) != edit->SelCurvSet.end())
+        crosscolor[1] = SelectColor;
     else if (edit->PreselectCross == 2)
-        ccolorH[0] = PreselectColor;
+        crosscolor[1] = PreselectColor;
     else
-        ccolorH[0] = CrossColorH;
-
+        crosscolor[1] = CrossColorV;
 
     // colors of the constraints
     for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
@@ -1353,7 +1399,7 @@ void ViewProviderSketch::updateColor(void)
         SoMaterial *m = dynamic_cast<SoMaterial *>(s->getChild(0));
 
         // Check Constraint Type
-        ConstraintType type = this->getSketchObject()->Constraints.getValues()[i]->Type;
+        ConstraintType type = getSketchObject()->Constraints.getValues()[i]->Type;
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                               type == Sketcher::Radius ||
                               type == Sketcher::Distance || type == Sketcher::DistanceX || type == Sketcher::DistanceY);
@@ -1383,8 +1429,7 @@ void ViewProviderSketch::updateColor(void)
     // end editing
     edit->CurvesMaterials->diffuseColor.finishEditing();
     edit->PointsMaterials->diffuseColor.finishEditing();
-    edit->RootCrossMaterialsV->diffuseColor.finishEditing();
-    edit->RootCrossMaterialsH->diffuseColor.finishEditing();
+    edit->RootCrossMaterials->diffuseColor.finishEditing();
 }
 
 bool ViewProviderSketch::isPointOnSketch(const SoPickedPoint *pp) const
@@ -1422,8 +1467,8 @@ void ViewProviderSketch::drawConstraintIcons()
         case Tangent:
             icoType = QString::fromAscii("small/Constraint_Tangent_sm");
             {   // second icon is available only for colinear line segments
-                Part::Geometry *geo1 = getSketchObject()->Geometry.getValues()[(*it)->First];
-                Part::Geometry *geo2 = getSketchObject()->Geometry.getValues()[(*it)->Second];
+                const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
+                const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
                 if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                     geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     index2 = 4;
@@ -1546,15 +1591,22 @@ void ViewProviderSketch::draw(bool temp)
     std::vector<Base::Vector3d> Points;
     std::vector<unsigned int> Index;
 
+    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
+    int extGeoCount = getSketchObject()->getExternalGeometryCount();
+
     const std::vector<Part::Geometry *> *geomlist;
     std::vector<Part::Geometry *> tempGeo;
-    if (temp) {
-        tempGeo = edit->ActSketch.getGeometry();
-        geomlist = &tempGeo;
-    } else
-        geomlist = &getSketchObject()->Geometry.getValues();
+    if (temp)
+        tempGeo = edit->ActSketch.extractGeometry(true, true); // with memory allocation
+    else
+        tempGeo = getSketchObject()->getCompleteGeometry(); // without memory allocation
+    geomlist = &tempGeo;
 
-    for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end(); ++it) {
+
+    assert(int(geomlist->size()) == extGeoCount + intGeoCount);
+    assert(int(geomlist->size()) >= 2);
+
+    for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end()-2; ++it) {
         if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // add a line
             const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(*it);
             // create the definition struct for that geom
@@ -1659,9 +1711,25 @@ void ViewProviderSketch::draw(bool temp)
     int32_t *index = edit->CurveSet->numVertices.startEditing();
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
 
+    int i=0; // setting up the line set
+    for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
+        verts[i].setValue(it->x,it->y,zLines);
+
+    i=0; // setting up the indexes of the line set
+    for (std::vector<unsigned int>::const_iterator it = Index.begin(); it != Index.end(); ++it,i++)
+        index[i] = *it;
+
+    i=0; // setting up the point set
+    for (std::vector<Base::Vector3d>::const_iterator it = Points.begin(); it != Points.end(); ++it,i++)
+        pverts[i].setValue(it->x,it->y,zPoints);
+
+    edit->CurvesCoordinate->point.finishEditing();
+    edit->CurveSet->numVertices.finishEditing();
+    edit->PointsCoordinate->point.finishEditing();
+
     // set cross coordinates
-    edit->RootCrossSetV->numVertices.set1Value(0,2);
-    edit->RootCrossSetH->numVertices.set1Value(0,2);
+    edit->RootCrossSet->numVertices.set1Value(0,2);
+    edit->RootCrossSet->numVertices.set1Value(1,2);
 
     float MiX = -exp(ceil(log(std::abs(MinX))));
     MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*MaxX)))));
@@ -1672,47 +1740,29 @@ void ViewProviderSketch::draw(bool temp)
     float MaY = exp(ceil(log(std::abs(MaxY))));
     MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*MinY)))));
 
-    edit->RootCrossCoordinateV->point.set1Value(0,SbVec3f(MiX, 0.0f, zCross));
-    edit->RootCrossCoordinateV->point.set1Value(1,SbVec3f(MaX, 0.0f, zCross));
-    edit->RootCrossCoordinateH->point.set1Value(0,SbVec3f(0.0f, MiY, zCross));
-    edit->RootCrossCoordinateH->point.set1Value(1,SbVec3f(0.0f, MaY, zCross));
-
-    int i=0; // setting up the line set
-    for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
-        verts[i].setValue(it->x,it->y,zLines);
-
-    i=0; // setting up the indexes of the line set
-    for (std::vector<unsigned int>::const_iterator it = Index.begin(); it != Index.end(); ++it,i++)
-        index[i] = *it;
-
-
-    i=0; // setting up the point set
-    for (std::vector<Base::Vector3d>::const_iterator it = Points.begin(); it != Points.end(); ++it,i++)
-        pverts[i].setValue(it->x,it->y,zPoints);
-
-
-    edit->CurvesCoordinate->point.finishEditing();
-    edit->CurveSet->numVertices.finishEditing();
-    edit->PointsCoordinate->point.finishEditing();
+    edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(MiX, 0.0f, zCross));
+    edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(MaX, 0.0f, zCross));
+    edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, MiY, zCross));
+    edit->RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, MaY, zCross));
 
     // Render Constraints ===================================================
-    const std::vector<Sketcher::Constraint *> &ConStr = getSketchObject()->Constraints.getValues();
+    const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     // After an undo/redo it can happen that we have an empty geometry list but a non-empty constraint list
     // In this case just ignore the constraints. (See bug #0000421)
-    if (geomlist->empty() && !ConStr.empty()) {
+    if (geomlist->size() <= 2 && !constrlist.empty()) {
         rebuildConstraintsVisual();
         return;
     }
     // reset point if the constraint type has changed
 Restart:
     // check if a new constraint arrived
-    if (ConStr.size() != edit->vConstrType.size())
+    if (constrlist.size() != edit->vConstrType.size())
         rebuildConstraintsVisual();
-    assert(int(ConStr.size()) == edit->constrGroup->getNumChildren());
+    assert(int(constrlist.size()) == edit->constrGroup->getNumChildren());
     assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
     // go through the constraints and update the position
     i = 0;
-    for (std::vector<Sketcher::Constraint *>::const_iterator it = ConStr.begin(); it != ConStr.end(); ++it,i++) {
+    for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it,i++) {
         // check if the type has changed
         if ((*it)->Type != edit->vConstrType[i]) {
             // clearing the type vector will force a rebuild of the visual nodes
@@ -1728,9 +1778,9 @@ Restart:
             case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
             case Vertical: // write the new position of the Vertical constraint
                 {
-                    assert(Constr->First < int(geomlist->size()));
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                     // get the geometry
-                    const Part::Geometry *geo = (*geomlist)[Constr->First];
+                    const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
                     // Vertical can only be a GeomLineSegment
                     assert(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId());
                     const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
@@ -1762,11 +1812,11 @@ Restart:
             case Perpendicular:
             case Equal:
                 {
-                    assert(Constr->First < int(geomlist->size()));
-                    assert(Constr->Second < int(geomlist->size()));
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                    assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
                     // get the geometry
-                    const Part::Geometry *geo1 = (*geomlist)[Constr->First];
-                    const Part::Geometry *geo2 = (*geomlist)[Constr->Second];
+                    const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
+                    const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
 
                     Base::Vector3d midpos1, dir1, norm1;
                     Base::Vector3d midpos2, dir2, norm2;
@@ -1860,7 +1910,7 @@ Restart:
             case DistanceX:
             case DistanceY:
                 {
-                    assert(Constr->First < int(geomlist->size()));
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
                     Base::Vector3d pnt1(0.,0.,0.), pnt2(0.,0.,0.);
                     if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -1877,7 +1927,7 @@ Restart:
                         } else {
                             pnt1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
                         }
-                        const Part::Geometry *geo = (*geomlist)[Constr->Second];
+                        const Part::Geometry *geo = GeoById(*geomlist, Constr->Second);
                         if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
                             Base::Vector3d l2p1 = lineSeg->getStartPoint();
@@ -1894,7 +1944,7 @@ Restart:
                             pnt2 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
                         }
                     } else if (Constr->First != Constraint::GeoUndef) {
-                        const Part::Geometry *geo = (*geomlist)[Constr->First];
+                        const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
                         if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
                             pnt1 = lineSeg->getStartPoint();
@@ -2000,8 +2050,8 @@ Restart:
             case PointOnObject:
             case Tangent:
                 {
-                    assert(Constr->First < int(geomlist->size()));
-                    assert(Constr->Second < int(geomlist->size()));
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                    assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
 
                     Base::Vector3d pos, relPos;
                     if (Constr->Type == PointOnObject) {
@@ -2012,8 +2062,8 @@ Restart:
                     }
                     else if (Constr->Type == Tangent) {
                         // get the geometry
-                        const Part::Geometry *geo1 = (*geomlist)[Constr->First];
-                        const Part::Geometry *geo2 = (*geomlist)[Constr->Second];
+                        const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
+                        const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
 
                         if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                             geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -2113,8 +2163,8 @@ Restart:
                 break;
             case Symmetric:
                 {
-                    assert(Constr->First < int(geomlist->size()));
-                    assert(Constr->Second < int(geomlist->size()));
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                    assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
 
                     Base::Vector3d pnt1 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
                     Base::Vector3d pnt2 = edit->ActSketch.getPoint(Constr->Second, Constr->SecondPos);
@@ -2157,14 +2207,14 @@ Restart:
                 break;
             case Angle:
                 {
-                    assert(Constr->First < int(geomlist->size()));
-                    assert(Constr->Second < int(geomlist->size()));
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                    assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
 
                     SbVec3f p0;
                     double startangle,range,endangle;
                     if (Constr->Second != Constraint::GeoUndef) {
-                        const Part::Geometry *geo1 = (*geomlist)[Constr->First];
-                        const Part::Geometry *geo2 = (*geomlist)[Constr->Second];
+                        const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
+                        const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
                         if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                             geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
                             break;
@@ -2196,7 +2246,7 @@ Restart:
                         endangle = startangle + range;
 
                     } else if (Constr->First != Constraint::GeoUndef) {
-                        const Part::Geometry *geo = (*geomlist)[Constr->First];
+                        const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
                         if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
                             break;
                         const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
@@ -2276,11 +2326,11 @@ Restart:
                 break;
             case Radius:
                 {
-                    assert(Constr->First < int(geomlist->size()));
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
                     Base::Vector3d pnt1(0.,0.,0.), pnt2(0.,0.,0.);
                     if (Constr->First != Constraint::GeoUndef) {
-                        const Part::Geometry *geo = (*geomlist)[Constr->First];
+                        const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
 
                         if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
@@ -2379,8 +2429,9 @@ Restart:
     this->updateColor();
 
     // delete the cloned objects
-    for (std::vector<Part::Geometry *>::iterator it = tempGeo.begin(); it != tempGeo.end(); ++it)
-        if (*it) delete *it;
+    if (temp)
+        for (std::vector<Part::Geometry *>::iterator it=tempGeo.begin(); it != tempGeo.end(); ++it)
+            if (*it) delete *it;
 
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         static_cast<Gui::View3DInventor *>(mdi)->getViewer()->render();
@@ -2389,12 +2440,12 @@ Restart:
 
 void ViewProviderSketch::rebuildConstraintsVisual(void)
 {
-    const std::vector<Sketcher::Constraint *> &ConStr = getSketchObject()->Constraints.getValues();
+    const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     // clean up
     edit->constrGroup->removeAllChildren();
     edit->vConstrType.clear();
 
-    for (std::vector<Sketcher::Constraint *>::const_iterator it = ConStr.begin(); it != ConStr.end(); ++it) {
+    for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it) {
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
         // no caching for fluctuand data structures
@@ -2473,8 +2524,8 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                     sep->addChild(new SoImage());           // 2. constraint icon
 
                     if ((*it)->Type == Tangent) {
-                        Part::Geometry *geo1 = getSketchObject()->Geometry.getValues()[(*it)->First];
-                        Part::Geometry *geo2 = getSketchObject()->Geometry.getValues()[(*it)->Second];
+                        const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
+                        const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
                         if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                             geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             sep->addChild(new SoZoomTranslation());
@@ -2532,8 +2583,9 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 
     if (edit && (prop == &(getSketchObject()->Geometry) || &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
-        int dofs = edit->ActSketch.setUpSketch(getSketchObject()->Geometry.getValues(),
-                                               getSketchObject()->Constraints.getValues());
+        int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
+                                               getSketchObject()->Constraints.getValues(),
+                                               true, getSketchObject()->getExternalGeometryCount());
         std::string msg;
         if (getSketchObject()->Geometry.getSize() == 0) {
             signalSetUp(-1, 0, msg);
@@ -2648,9 +2700,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(FullyConstrainedColor.getPackedValue());
     color = hGrp->GetUnsigned("FullyConstrainedColor", color);
     FullyConstrainedColor.setPackedValue((uint32_t)color, transparency);
-    // constraints dimensions and icons colors are hard coded
+    // constraints dimensions, icons and external geometry colors are hard coded
     // ConstrDimColor;
     // ConstrIcoColor;
+    // CurveExternalColor;
 
     // set the highlight color
     unsigned long highlight = (unsigned long)(PreselectColor.getPackedValue());
@@ -2668,8 +2721,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
         Gui::Control().showDialog(new TaskDlgEditSketch(this));
 
     // set up the sketch and diagnose possible conflicts
-    int dofs = edit->ActSketch.setUpSketch(getSketchObject()->Geometry.getValues(),
-                                           getSketchObject()->Constraints.getValues());
+    int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
+                                           getSketchObject()->Constraints.getValues(),
+                                           true, getSketchObject()->getExternalGeometryCount());
     std::string msg;
     if (getSketchObject()->Geometry.getSize() == 0) {
         signalSetUp(-1, 0, msg);
@@ -2763,28 +2817,18 @@ void ViewProviderSketch::createEditInventorNodes(void)
     DrawStyle->lineWidth = 2;
     edit->EditRoot->addChild(DrawStyle);
 
-    edit->RootCrossMaterialsV = new SoMaterial;
-    edit->RootCrossMaterialsV->diffuseColor.set1Value(0,CrossColorV);
-    edit->EditRoot->addChild(edit->RootCrossMaterialsV);
+    edit->RootCrossMaterials = new SoMaterial;
+    edit->RootCrossMaterials->diffuseColor.set1Value(0,CrossColorH);
+    edit->RootCrossMaterials->diffuseColor.set1Value(1,CrossColorV);
+    edit->EditRoot->addChild(edit->RootCrossMaterials);
 
-    edit->RootCrossCoordinateV = new SoCoordinate3;
-    edit->EditRoot->addChild(edit->RootCrossCoordinateV);
+    edit->RootCrossCoordinate = new SoCoordinate3;
+    edit->EditRoot->addChild(edit->RootCrossCoordinate);
 
-    edit->RootCrossSetV = new SoLineSet;
-    edit->RootCrossSetV->numVertices.set1Value(0,2);
-    edit->EditRoot->addChild(edit->RootCrossSetV);
-
-    edit->RootCrossMaterialsH = new SoMaterial;
-    edit->RootCrossMaterialsH->diffuseColor.set1Value(0,CrossColorH);
-    edit->EditRoot->addChild(edit->RootCrossMaterialsH);
-
-    edit->RootCrossCoordinateH = new SoCoordinate3;
-    edit->EditRoot->addChild(edit->RootCrossCoordinateH);
-
-    edit->RootCrossSetH = new SoLineSet;
-    edit->RootCrossSetH->numVertices.set1Value(0,2);
-    edit->EditRoot->addChild(edit->RootCrossSetH);
-
+    edit->RootCrossSet = new SoLineSet;
+    edit->RootCrossSet->numVertices.set1Value(0,2);
+    edit->RootCrossSet->numVertices.set1Value(1,2);
+    edit->EditRoot->addChild(edit->RootCrossSet);
 
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
     edit->EditCurvesMaterials = new SoMaterial;
@@ -3025,10 +3069,15 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                 Base::Console().Error("%s\n", e.what());
             }
         }
+
         for (rit = edit->SelCurvSet.rbegin(); rit != edit->SelCurvSet.rend(); rit++) {
             try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delGeometry(%i)"
-                                       ,getObject()->getNameInDocument(), *rit);
+                if (*rit >= 0)
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delGeometry(%i)"
+                                           ,getObject()->getNameInDocument(), *rit);
+                else if (*rit < -2) // external geometry
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delExternal(%i)"
+                                           ,getObject()->getNameInDocument(), -3-*rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());

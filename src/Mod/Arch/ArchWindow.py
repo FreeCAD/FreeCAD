@@ -51,7 +51,7 @@ class _CommandWindow:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Window"),
-                'Accel': "W, I",
+                'Accel': "W, N",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from scratch or from a selected object (wire, rectangle or sketch)")}
         
     def Activated(self):

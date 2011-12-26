@@ -41,11 +41,12 @@ class SketcherExport SketchObject : public Part::Part2DObject
 
 public:
     SketchObject();
+    ~SketchObject();
 
     /// Property
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
-    App     ::PropertyLinkSubList    ExternalConstraints;
+    App     ::PropertyLinkSubList    ExternalGeometry;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
@@ -62,7 +63,7 @@ public:
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geoList);
     /// delete geometry
-    int delGeometry(int GeoNbr);
+    int delGeometry(int GeoId);
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
     /// add constraint
@@ -75,10 +76,27 @@ public:
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
     /// add an external geometry reference
     int addExternal(App::DocumentObject *Obj, const char* SubName);
-    /// returns a list of projected external geoms
-    std::vector<Part::Geometry *> getExternalGeometry(void);
     /// delete external
-    int delExternal(int ConstrId);
+    int delExternal(int ExtGeoId);
+
+    /** returns a pointer to a given Geometry index, possible indexes are:
+     *  id>=0 for user defined geometries,
+     *  id==-1 for the horizontal sketch axis,
+     *  id==-2 for the vertical sketch axis
+     *  id<=-3 for projected external geometries,
+     */
+    const Part::Geometry* getGeometry(int GeoId) const;
+    /// returns a list of all internal geometries
+    const std::vector<Part::Geometry *> &getInternalGeometry(void) const { return Geometry.getValues(); }
+    /// returns a list of projected external geometries
+    const std::vector<Part::Geometry *> &getExternalGeometry(void) const { return ExternalGeo; }
+    /// rebuilds external geometry (projection onto the sketch plane)
+    void rebuildExternalGeometry(void);
+    /// returns the number of external Geometry entities
+    int getExternalGeometryCount(void) const { return ExternalGeo.size(); }
+
+    /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
+    std::vector<Part::Geometry*> getCompleteGeometry(void) const;
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
@@ -86,12 +104,12 @@ public:
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// move this point to a new location and solve
-    int movePoint(int geoIndex1, PointPos Pos1, const Base::Vector3d& toPoint, bool relative=false);
+    int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false);
     /// retrieves the coordinates of a point
-    Base::Vector3d getPoint(int geoIndex1, PointPos Pos1);
+    Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
 
     /// toggle geometry to draft line
-    int toggleConstruction(int GeoNbr);
+    int toggleConstruction(int GeoId);
 
     /// create a fillet
     int fillet(int geoId, PointPos pos, double radius, bool trim=true);
@@ -104,8 +122,8 @@ public:
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId);
-    int getHighestVertexIndex(void) { return VertexId2GeoId.size() - 1; }
-    int getHighestCurveIndex(void) { return Geometry.getSize() - 1; }
+    int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; }
+    int getHighestCurveIndex(void) const { return Geometry.getSize() - 1; }
     void rebuildVertexIndex(void);
 
     /// retrieves for a Vertex number a list with all coincident points
@@ -132,6 +150,8 @@ protected:
     virtual void onChanged(const App::Property* /*prop*/);
 
 private:
+    std::vector<Part::Geometry *> ExternalGeo;
+
     std::vector<int> VertexId2GeoId;
     std::vector<PointPos> VertexId2PosId;
 };

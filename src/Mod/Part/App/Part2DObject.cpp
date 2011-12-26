@@ -51,8 +51,8 @@
 
 using namespace Part;
 
-const int Part2DObject::H_Axis = -2;
-const int Part2DObject::V_Axis = -3;
+const int Part2DObject::H_Axis = -1;
+const int Part2DObject::V_Axis = -2;
 
 PROPERTY_SOURCE(Part::Part2DObject, Part::Feature)
 
