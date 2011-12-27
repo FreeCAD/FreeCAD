@@ -1122,7 +1122,14 @@ void SketchObject::rebuildExternalGeometry(void)
         const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
         const Part::TopoShape& refShape=refObj->Shape.getShape();
 
-        TopoDS_Shape refSubShape=refShape.getSubShape(SubElement.c_str());
+        TopoDS_Shape refSubShape;
+        try {
+            refSubShape = refShape.getSubShape(SubElement.c_str());
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            throw Base::Exception(e->GetMessageString());
+        }
 
         switch (refSubShape.ShapeType())
         {

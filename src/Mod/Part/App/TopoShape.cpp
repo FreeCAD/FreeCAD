@@ -355,7 +355,11 @@ void TopoShape::getFacesFromSubelement(const Data::Segment* element,
 
 TopoDS_Shape TopoShape::getSubShape(const char* Type) const
 {
-    if (!Type) return TopoDS_Shape();
+    if (!Type)
+        Standard_Failure::Raise("No sub-shape type given");
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Cannot get sub-shape from empty shape");
+
     std::string shapetype(Type);
     if (shapetype.size() > 4 && shapetype.substr(0,4) == "Face") {
         int index=std::atoi(&shapetype[4]);
@@ -376,7 +380,8 @@ TopoDS_Shape TopoShape::getSubShape(const char* Type) const
         return anIndices.FindKey(index);
     }
 
-    return TopoDS_Shape();
+    Standard_Failure::Raise("Not supported sub-shape type");
+    return TopoDS_Shape(); // avoid compiler warning
 }
 
 unsigned long TopoShape::countSubShapes(const char* Type) const
