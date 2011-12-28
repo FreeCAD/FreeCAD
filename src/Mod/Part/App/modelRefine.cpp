@@ -201,18 +201,38 @@ const FaceVectorType& FaceTypeSplitter::getTypedFaceVector(const GeomAbs_Surface
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+FaceAdjacencySplitter::FaceAdjacencySplitter(const TopoDS_Shell &shell)
+{
+    TopExp_Explorer shellIt;
+    for (shellIt.Init(shell, TopAbs_FACE); shellIt.More(); shellIt.Next())
+    {
+        TopTools_ListOfShape shapeList;
+        TopExp_Explorer it;
+        for (it.Init(shellIt.Current(), TopAbs_EDGE); it.More(); it.Next())
+            shapeList.Append(it.Current());
+        faceToEdgeMap.Add(shellIt.Current(), shapeList);
+    }
+    TopExp::MapShapesAndAncestors(shell, TopAbs_EDGE, TopAbs_FACE, edgeToFaceMap);
+}
+
+
 void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
 {
+    facesInMap.Clear();
+    processedMap.Clear();
+    adjacencyArray.clear();
+
+    FaceVectorType::const_iterator it;
+    for (it = facesIn.begin(); it != facesIn.end(); ++it)
+        facesInMap.Add(*it);
     //the reserve call guarantees the vector will never get "pushed back" in the
     //recursiveFind calls, thus invalidating the iterators. We can be sure of this as any one
     //matched set can't be bigger than the set passed in. if we have seg faults, we will
     //want to turn this tempFaces vector back into a std::list ensuring valid iterators
     //at the expense of std::find speed.
-    buildMap(facesIn);
     FaceVectorType tempFaces;
     tempFaces.reserve(facesIn.size() + 1);
 
-    FaceVectorType::const_iterator it;
     for (it = facesIn.begin(); it != facesIn.end(); ++it)
     {
         //skip already processed shapes.
@@ -220,9 +240,8 @@ void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
             continue;
 
         tempFaces.clear();
-        tempFaces.push_back(*it);
         processedMap.Add(*it);
-        recursiveFind(tempFaces, facesIn);
+        recursiveFind(*it, tempFaces);
         if (tempFaces.size() > 1)
         {
             adjacencyArray.push_back(tempFaces);
@@ -230,68 +249,26 @@ void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
     }
 }
 
-void FaceAdjacencySplitter::recursiveFind(FaceVectorType &tempFaces, const FaceVectorType &facesIn)
+void FaceAdjacencySplitter::recursiveFind(const TopoDS_Face &face, FaceVectorType &outVector)
 {
-    FaceVectorType::iterator tempIt;
-    FaceVectorType::const_iterator faceIt;
+    outVector.push_back(face);
 
-    for (tempIt = tempFaces.begin(); tempIt != tempFaces.end(); ++tempIt)
+    const TopTools_ListOfShape &edges = faceToEdgeMap.FindFromKey(face);
+    TopTools_ListIteratorOfListOfShape edgeIt;
+    for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
     {
-        for(faceIt = facesIn.begin(); faceIt != facesIn.end(); ++faceIt)
+        const TopTools_ListOfShape &faces = edgeToFaceMap.FindFromKey(edgeIt.Value());
+        TopTools_ListIteratorOfListOfShape faceIt;
+        for (faceIt.Initialize(faces); faceIt.More(); faceIt.Next())
         {
-            if ((*tempIt).IsSame(*faceIt))
+            if (!facesInMap.Contains(faceIt.Value()))
                 continue;
-            if (processedMap.Contains(*faceIt))
+            if (processedMap.Contains(faceIt.Value()))
                 continue;
-            if (adjacentTest(*tempIt, *faceIt))
-            {
-                tempFaces.push_back(*faceIt);
-                processedMap.Add(*faceIt);
-                recursiveFind(tempFaces, facesIn);
-            }
+            processedMap.Add(faceIt.Value());
+            recursiveFind(TopoDS::Face(faceIt.Value()), outVector);
         }
     }
-}
-
-bool FaceAdjacencySplitter::hasBeenMapped(const TopoDS_Face &shape)
-{
-    for (std::vector<FaceVectorType>::iterator it(adjacencyArray.begin()); it != adjacencyArray.end(); ++it)
-    {
-        if (std::find((*it).begin(), (*it).end(), shape) != (*it).end())
-            return true;
-    }
-    return false;
-}
-
-void FaceAdjacencySplitter::buildMap(const FaceVectorType &facesIn)
-{
-    FaceVectorType::const_iterator vit;
-    for (vit = facesIn.begin(); vit != facesIn.end(); ++vit)
-    {
-        TopTools_ListOfShape shapeList;
-        TopExp_Explorer it;
-        for (it.Init(*vit, TopAbs_EDGE); it.More(); it.Next())
-            shapeList.Append(it.Current());
-        faceEdgeMap.Bind((*vit), shapeList);
-    }
-}
-
-bool FaceAdjacencySplitter::adjacentTest(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo)
-{
-    const TopTools_ListOfShape &faceOneEdges = faceEdgeMap.Find(faceOne);
-    const TopTools_ListOfShape &faceTwoEdges = faceEdgeMap.Find(faceTwo);
-    TopTools_ListIteratorOfListOfShape itOne, itTwo;
-
-    for (itOne.Initialize(faceOneEdges); itOne.More(); itOne.Next())
-    {
-        for (itTwo.Initialize(faceTwoEdges); itTwo.More(); itTwo.Next())
-        {
-            if ((itOne.Value()).IsSame(itTwo.Value()))
-                return true;
-        }
-    }
-
-    return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -406,8 +383,7 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
         current = faceFix.Face();
     }
 
-    BRepLib_FuseEdges edgeFuse(current, Standard_True);
-    return TopoDS::Face(edgeFuse.Shape());
+    return current;
 }
 
 FaceTypedPlane& ModelRefine::getPlaneObject()
@@ -489,6 +465,8 @@ bool FaceUniter::process()
     ModelRefine::FaceVectorType facesToRemove;
     ModelRefine::FaceVectorType facesToSew;
 
+    ModelRefine::FaceAdjacencySplitter adjacencySplitter(workShell);
+
     for(typeIt = typeObjects.begin(); typeIt != typeObjects.end(); ++typeIt)
     {
         ModelRefine::FaceVectorType typedFaces = splitter.getTypedFaceVector((*typeIt)->getType());
@@ -496,7 +474,6 @@ bool FaceUniter::process()
         equalitySplitter.split(typedFaces, *typeIt);
         for (std::size_t indexEquality(0); indexEquality < equalitySplitter.getGroupCount(); ++indexEquality)
         {
-            ModelRefine::FaceAdjacencySplitter adjacencySplitter;
             adjacencySplitter.split(equalitySplitter.getGroup(indexEquality));
 //            std::cout << "      adjacency group count: " << adjacencySplitter.getGroupCount() << std::endl;
             for (std::size_t adjacentIndex(0); adjacentIndex < adjacencySplitter.getGroupCount(); ++adjacentIndex)
@@ -544,6 +521,9 @@ bool FaceUniter::process()
             for(sewIt = facesToSew.begin(); sewIt != facesToSew.end(); ++sewIt)
                 builder.Add(workShell, *sewIt);
         }
+
+        BRepLib_FuseEdges edgeFuse(workShell, Standard_True);
+        workShell = TopoDS::Shell(edgeFuse.Shape());
     }
     return true;
 }
