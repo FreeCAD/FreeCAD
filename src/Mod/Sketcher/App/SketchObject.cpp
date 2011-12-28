@@ -1300,7 +1300,6 @@ void SketchObject::Restore(XMLReader &reader)
 {
     // read the father classes
     Part::Part2DObject::Restore(reader);
-    rebuildExternalGeometry();
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
 }
@@ -1310,6 +1309,16 @@ void SketchObject::onChanged(const App::Property* prop)
     if (prop == &Geometry || prop == &Constraints)
         Constraints.checkGeometry(getCompleteGeometry());
     Part::Part2DObject::onChanged(prop);
+}
+
+void SketchObject::onDocumentRestored()
+{
+    try {
+        rebuildExternalGeometry();
+        Constraints.acceptGeometry(getCompleteGeometry());
+    }
+    catch (...) {
+    }
 }
 
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId)
