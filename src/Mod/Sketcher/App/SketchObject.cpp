@@ -26,12 +26,16 @@
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
+# include <TopExp_Explorer.hxx>
 # include <gp_Pln.hxx>
 # include <gp_Ax3.hxx>
+# include <gp_Circ.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <BRepOffsetAPI_NormalProjection.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -1096,6 +1100,12 @@ void SketchObject::rebuildExternalGeometry(void)
     Rot.multVec(dX,dX);
 
     Base::Placement invPlm = Plm.inverse();
+    Base::Matrix4D invMat = invPlm.toMatrix();
+    gp_Trsf mov;
+    mov.SetValues(invMat[0][0],invMat[0][1],invMat[0][2],invMat[0][3],
+                  invMat[1][0],invMat[1][1],invMat[1][2],invMat[1][3],
+                  invMat[2][0],invMat[2][1],invMat[2][2],invMat[2][3],
+                  0.00001,0.00001);
 
     gp_Ax3 sketchAx3(gp_Pnt(Pos.x,Pos.y,Pos.z),
                      gp_Dir(dN.x,dN.y,dN.z),
@@ -1103,6 +1113,8 @@ void SketchObject::rebuildExternalGeometry(void)
     gp_Pln sketchPlane(sketchAx3);
 
     Handle(Geom_Plane) gPlane = new Geom_Plane(sketchPlane);
+    BRepBuilderAPI_MakeFace mkFace(sketchPlane);
+    TopoDS_Shape aProjFace = mkFace.Shape();
 
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
         if (*it) delete *it;
@@ -1172,7 +1184,67 @@ void SketchObject::rebuildExternalGeometry(void)
                     ExternalGeo.push_back(line);
                 }
                 else {
-                    throw Base::Exception("Not yet supported geometry for external geometry");
+                    try {
+                        BRepOffsetAPI_NormalProjection mkProj(aProjFace);
+                        mkProj.Add(edge);
+                        mkProj.Build();
+                        const TopoDS_Shape& projShape = mkProj.Projection();
+                        if (!projShape.IsNull()) {
+                            TopExp_Explorer xp;
+                            for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
+                                TopoDS_Edge edge = TopoDS::Edge(xp.Current());
+                                TopLoc_Location loc(mov);
+                                edge.Location(loc);
+                                BRepAdaptor_Curve curve(edge);
+                                if (curve.GetType() == GeomAbs_Line) {
+                                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
+                                    gp_Pnt P2 = curve.Value(curve.LastParameter());
+                                    Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
+                                    Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
+
+                                    if (Base::Distance(p1,p2) < Precision::Confusion()) {
+                                        std::string msg = SubElement + " perpendicular to the sketch plane cannot be used as external geometry";
+                                        throw Base::Exception(msg.c_str());
+                                    }
+
+                                    Part::GeomLineSegment* line = new Part::GeomLineSegment();
+                                    line->setPoints(p1,p2);
+
+                                    line->Construction = true;
+                                    ExternalGeo.push_back(line);
+                                }
+                                else if (curve.GetType() == GeomAbs_Circle) {
+                                    gp_Circ c = curve.Circle();
+                                    gp_Pnt p = c.Location();
+                                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
+                                    gp_Pnt P2 = curve.Value(curve.LastParameter());
+
+                                    if (P1.SquareDistance(P2) < Precision::Confusion()) {
+                                        Part::GeomCircle* circle = new Part::GeomCircle();
+                                        circle->setRadius(c.Radius());
+                                        circle->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
+
+                                        circle->Construction = true;
+                                        ExternalGeo.push_back(circle);
+                                    }
+                                    else {
+                                        Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
+                                        arc->setRadius(c.Radius());
+                                        arc->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
+                                        arc->setRange(curve.FirstParameter(), curve.LastParameter());
+
+                                        arc->Construction = true;
+                                        ExternalGeo.push_back(arc);
+                                    }
+                                }
+                                else {
+                                    throw Base::Exception("Not yet supported geometry for external geometry");
+                                }
+                            }
+                        }
+                    }
+                    catch (...) {
+                    }
                 }
             }
             break;
