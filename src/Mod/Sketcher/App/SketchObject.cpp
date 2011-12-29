@@ -1243,7 +1243,9 @@ void SketchObject::rebuildExternalGeometry(void)
                             }
                         }
                     }
-                    catch (...) {
+                    catch (Standard_Failure) {
+                        Handle_Standard_Failure e = Standard_Failure::Caught();
+                        throw Base::Exception(e->GetMessageString());
                     }
                 }
             }
@@ -1256,7 +1258,6 @@ void SketchObject::rebuildExternalGeometry(void)
             break;
         }
     }
-
 }
 
 std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void) const
