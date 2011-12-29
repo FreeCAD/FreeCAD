@@ -2207,7 +2207,8 @@ Restart:
             case Angle:
                 {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
-                    assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
+                    assert((Constr->Second >= -extGeoCount && Constr->Second < intGeoCount) ||
+                           Constr->Second == Constraint::GeoUndef);
 
                     SbVec3f p0;
                     double startangle,range,endangle;
