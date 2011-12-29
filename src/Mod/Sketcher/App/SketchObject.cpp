@@ -1042,6 +1042,13 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
     std::vector<DocumentObject*> originalObjects = Objects;
     std::vector<std::string>     originalSubElements = SubElements;
 
+    std::vector<std::string>    ::iterator it;
+    it = std::find(originalSubElements.begin(), originalSubElements.end(), SubName);
+
+    // avoid duplicates
+    if (it != originalSubElements.end())
+        return -1;
+
     // add the new ones
     Objects.push_back(Obj);
     SubElements.push_back(std::string(SubName));
