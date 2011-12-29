@@ -75,6 +75,36 @@ void FeaturePage::onChanged(const App::Property* prop)
                 return;
         }
     }
+    if (prop == &Template) {
+        // getting editable texts from "freecad:editable" tags in SVG template
+        if (!this->isRestoring()) {
+            if (Template.getValue() != "") {
+                Base::FileInfo tfi(Template.getValue());
+                if (tfi.isReadable()) {
+                    string tline, tfrag;
+                    ifstream tfile (tfi.filePath().c_str());
+                    while (!tfile.eof()) {
+                        getline (tfile,tline);
+                        tfrag += tline;
+                        tfrag += "--endOfLine--";
+                    }
+                    tfile.close();
+                    boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+                    string::const_iterator tbegin, tend;
+                    tbegin = tfrag.begin();
+                    tend = tfrag.end();
+                    boost::match_results<std::string::const_iterator> twhat;
+                    std::vector<string> eds;
+                    while (boost::regex_search(tbegin, tend, twhat, e)) {
+                        printf(twhat[1].str().c_str());
+                        eds.push_back(twhat[2]);
+                        tbegin = twhat[0].second;
+                    }
+                    EditableTexts.setValues(eds);
+                }
+            }
+        }
+    }
     App::DocumentObjectGroup::onChanged(prop);
 }
 
@@ -104,7 +134,8 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
 
     // make a temp file for FileIncluded Property
     string tempName = PageResult.getExchangeTempFile();
-    ofstream ofile(tempName.c_str());
+    ostringstream ofile;
+    string tempendl = "--endOfLine--";
 
     while (!file.eof())
     {
@@ -112,7 +143,7 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
         // check if the marker in the template is found
         if(line.find("<!-- DrawingContent -->") == string::npos)
             // if not -  write through
-            ofile << line << endl;
+            ofile << line << tempendl;
         else
         {
             // get through the children and collect all the views
@@ -121,46 +152,41 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
                 if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
                     Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
                     ofile << View->ViewResult.getValue();
-                    ofile << endl << endl << endl;
+                    ofile << tempendl << tempendl << tempendl;
                 }
             }
         }
     }
 
     file.close();
-    ofile.close();
 
-    // checking for freecad editable texts  
-    boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>",boost::regex_constants::icase);
+    // checking for freecad editable texts
+    string outfragment(ofile.str());
+    if (EditableTexts.getSize() > 0) {
+        boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        string::const_iterator begin, end;
+        begin = ofile.str().begin();
+        end = ofile.str().end();
+        boost::match_results<std::string::const_iterator> what;
+        int count = 0;
 
-    // reading file contents
-    ifstream tfile (tempName.c_str());
-    string tline;
-    string fragment;
-
-    while (!tfile.eof()) {
-        getline (tfile,tline);
-        fragment += tline;
-        fragment += "--endOfLine--";
+        while (boost::regex_search(begin, end, what, e1)) {
+            if (count < EditableTexts.getSize()) {
+                boost::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
+                outfragment = boost::regex_replace(outfragment, e2, "$1>"+EditableTexts.getValues()[count]+"$3");
+            }
+            count ++;
+            begin = what[0].second;
+        }
     }
 
-    tfile.close();
-
-    //printf(fragment.c_str());
-
-    string::const_iterator start, end;
-    start = fragment.begin();
-    end = fragment.end();
-    //boost::smatch what;
-    boost::match_results<std::string::const_iterator> what;
-
-    cout << "Stored strings: " << EditableTexts.getValue();
-
-    while (boost::regex_search(start,end,what,e)) {
-        //cout << "match" << what.str() << endl;
-        cout << "new match:" << what[1] << " = " << what[2] << endl;
-        start = what[0].second;
-    }
+    // restoring linebreaks and saving the file
+    boost::regex e3 ("--endOfLine--");
+    string fmt = "\\n";
+    outfragment = boost::regex_replace(outfragment, e3, fmt);
+    ofstream outfinal(tempName.c_str());
+    outfinal << outfragment;
+    outfinal.close();
 
     PageResult.setValue(tempName.c_str());
 
