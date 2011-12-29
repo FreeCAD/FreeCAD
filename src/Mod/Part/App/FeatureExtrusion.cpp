@@ -31,6 +31,7 @@
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <Precision.hxx>
+# include <ShapeAnalysis.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
@@ -87,27 +88,36 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
             double distance = std::tan(Base::toRadians(taperAngle)) * vec.Magnitude();
             const TopoDS_Shape& shape = base->Shape.getValue();
             bool isWire = (shape.ShapeType() == TopAbs_WIRE);
-            if (!isWire)
-                return new App::DocumentObjectExecReturn("Only wires supported");
+            bool isFace = (shape.ShapeType() == TopAbs_FACE);
+            if (!isWire && !isFace)
+                return new App::DocumentObjectExecReturn("Only a wire or a face is supported");
 
             std::list<TopoDS_Wire> wire_list;
             BRepOffsetAPI_MakeOffset mkOffset;
+            if (isWire) {
 #if 1 //OCC_HEX_VERSION < 0x060502
-            // The input wire may have erorrs in its topology
-            // and thus may cause a crash in the Perfrom() method
-            // See also:
-            // http://www.opencascade.org/org/forum/thread_17640/
-            // http://www.opencascade.org/org/forum/thread_12012/
-            ShapeFix_Wire aFix;
-            aFix.Load(TopoDS::Wire(shape));
-            aFix.FixReorder();
-            aFix.FixConnected();
-            aFix.FixClosed();
-            mkOffset.AddWire(aFix.Wire());
-            wire_list.push_back(aFix.Wire());
+                // The input wire may have erorrs in its topology
+                // and thus may cause a crash in the Perfrom() method
+                // See also:
+                // http://www.opencascade.org/org/forum/thread_17640/
+                // http://www.opencascade.org/org/forum/thread_12012/
+                ShapeFix_Wire aFix;
+                aFix.Load(TopoDS::Wire(shape));
+                aFix.FixReorder();
+                aFix.FixConnected();
+                aFix.FixClosed();
+                mkOffset.AddWire(aFix.Wire());
+                wire_list.push_back(aFix.Wire());
 #else
-            mkOffset.AddWire(TopoDS::Wire(shape));
+                mkOffset.AddWire(TopoDS::Wire(shape));
 #endif
+            }
+            else if (isFace) {
+                TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+                wire_list.push_back(outerWire);
+                mkOffset.AddWire(outerWire);
+            }
+
             mkOffset.Perform(distance);
 
             gp_Trsf mat;
