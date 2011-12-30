@@ -59,6 +59,7 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "DrawingGui::ViewProviderDrawingPage";
     }
+    virtual std::vector<std::string> getEditableTexts(void) const;
 
 protected:
     void onChanged(const App::Property* prop);
