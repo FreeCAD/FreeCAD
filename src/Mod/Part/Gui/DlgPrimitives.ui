@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>258</width>
-    <height>331</height>
+    <width>285</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,12 +86,12 @@
         </item>
         <item>
          <property name="text">
-          <string>Vertex</string>
+          <string>Point</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Edge</string>
+          <string>Line</string>
          </property>
         </item>
        </widget>
@@ -953,134 +953,179 @@
             </layout>
            </widget>
            <widget class="QWidget" name="page7_wedge">
-            <layout class="QGridLayout" name="gridLayout_2">
+            <layout class="QGridLayout" name="gridLayout_8">
              <item row="0" column="0">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>X min</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QDoubleSpinBox" name="wedgeXmin"/>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="label_15">
-               <property name="text">
-                <string>x max</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QDoubleSpinBox" name="wedgeXmax">
-               <property name="value">
-                <double>10.000000000000000</double>
-               </property>
-              </widget>
+              <layout class="QGridLayout" name="gridLayout_2">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>X min/max:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QDoubleSpinBox" name="wedgeXmin">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QDoubleSpinBox" name="wedgeXmax">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="value">
+                  <double>10.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string>Y min/max:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="wedgeYmin">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QDoubleSpinBox" name="wedgeYmax">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="value">
+                  <double>10.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>Z min/max:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QDoubleSpinBox" name="wedgeZmin">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QDoubleSpinBox" name="wedgeZmax">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="value">
+                  <double>10.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_13">
+                 <property name="text">
+                  <string>X2 min/max:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QDoubleSpinBox" name="wedgeX2min">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="value">
+                  <double>2.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2">
+                <widget class="QDoubleSpinBox" name="wedgeX2max">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="value">
+                  <double>8.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_14">
+                 <property name="text">
+                  <string>Z2 min/max:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QDoubleSpinBox" name="wedgeZ2min">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="value">
+                  <double>2.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="2">
+                <widget class="QDoubleSpinBox" name="wedgeZ2max">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="value">
+                  <double>8.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item row="1" column="0">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Y min</string>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
                </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QDoubleSpinBox" name="wedgeYmin"/>
-             </item>
-             <item row="1" column="2">
-              <widget class="QLabel" name="label_16">
-               <property name="text">
-                <string>Y max</string>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>81</height>
+                </size>
                </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QDoubleSpinBox" name="wedgeYmax">
-               <property name="value">
-                <double>10.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Z min</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QDoubleSpinBox" name="wedgeZmin"/>
-             </item>
-             <item row="2" column="2">
-              <widget class="QLabel" name="label_17">
-               <property name="text">
-                <string>Z max</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="3">
-              <widget class="QDoubleSpinBox" name="wedgeZmax">
-               <property name="value">
-                <double>10.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_13">
-               <property name="text">
-                <string>X2 min</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QDoubleSpinBox" name="wedgeX2min">
-               <property name="value">
-                <double>2.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QLabel" name="label_18">
-               <property name="text">
-                <string>X2 max</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="3">
-              <widget class="QDoubleSpinBox" name="wedgeX2max">
-               <property name="value">
-                <double>8.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_14">
-               <property name="text">
-                <string>Z2 min</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QDoubleSpinBox" name="wedgeZ2min">
-               <property name="value">
-                <double>2.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="QLabel" name="label_19">
-               <property name="text">
-                <string>Z2 max</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="3">
-              <widget class="QDoubleSpinBox" name="wedgeZ2max">
-               <property name="value">
-                <double>8.000000000000000</double>
-               </property>
-              </widget>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -1167,7 +1212,7 @@
                <item row="3" column="0">
                 <widget class="QLabel" name="label_20">
                  <property name="text">
-                  <string>Angle - 0 for cyl</string>
+                  <string>Angle:</string>
                  </property>
                 </widget>
                </item>
@@ -1221,7 +1266,7 @@
                <item row="1" column="0">
                 <widget class="QLabel" name="Angle0">
                  <property name="text">
-                  <string>Angle0</string>
+                  <string>Angle 1:</string>
                  </property>
                 </widget>
                </item>
@@ -1238,7 +1283,7 @@
                <item row="2" column="0">
                 <widget class="QLabel" name="Angle1">
                  <property name="text">
-                  <string>Angle1</string>
+                  <string>Angle 2:</string>
                  </property>
                 </widget>
                </item>
@@ -1276,57 +1321,64 @@
             </layout>
            </widget>
            <widget class="QWidget" name="page10_vertex">
-            <widget class="QWidget" name="gridLayoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>10</y>
-               <width>201</width>
-               <height>76</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_4">
-              <item row="0" column="1">
-               <widget class="QDoubleSpinBox" name="vertexX"/>
-              </item>
-              <item row="1" column="1">
-               <widget class="QDoubleSpinBox" name="vertexY"/>
-              </item>
-              <item row="2" column="1">
-               <widget class="QDoubleSpinBox" name="vertexZ"/>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_X_Axis">
-                <property name="text">
-                 <string>X Value:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_Y_Axis">
-                <property name="text">
-                 <string>Y Value:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_Z_Axis">
-                <property name="text">
-                 <string>Z Value:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
+            <layout class="QGridLayout" name="gridLayout_9">
+             <item row="0" column="0">
+              <layout class="QGridLayout" name="gridLayout_4">
+               <item row="0" column="1">
+                <widget class="QDoubleSpinBox" name="vertexX"/>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="vertexY"/>
+               </item>
+               <item row="2" column="1">
+                <widget class="QDoubleSpinBox" name="vertexZ"/>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_X_Axis">
+                 <property name="text">
+                  <string>X:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_Y_Axis">
+                 <property name="text">
+                  <string>Y:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_Z_Axis">
+                 <property name="text">
+                  <string>Z:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="1" column="0">
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>139</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </widget>
            <widget class="QWidget" name="page11_edge">
             <layout class="QGridLayout" name="gridLayout_6">
@@ -1335,30 +1387,30 @@
                <item row="1" column="0">
                 <widget class="QLabel" name="X1">
                  <property name="text">
-                  <string>X</string>
+                  <string>X:</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
                <item row="2" column="0">
                 <widget class="QLabel" name="Y1">
                  <property name="text">
-                  <string>Y</string>
+                  <string>Y:</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
                <item row="3" column="0">
                 <widget class="QLabel" name="Z1">
                  <property name="text">
-                  <string>Z</string>
+                  <string>Z:</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
@@ -1372,7 +1424,7 @@
                <item row="5" column="0">
                 <widget class="QLabel" name="Finish_Vertex">
                  <property name="text">
-                  <string>Finish Vertex</string>
+                  <string>End point</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1382,37 +1434,37 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="Start_Vertex">
                  <property name="text">
-                  <string>Start Vertex</string>
+                  <string>Start point</string>
                  </property>
                 </widget>
                </item>
                <item row="6" column="0">
                 <widget class="QLabel" name="X2">
                  <property name="text">
-                  <string>X</string>
+                  <string>X:</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
                <item row="7" column="0">
                 <widget class="QLabel" name="Y2">
                  <property name="text">
-                  <string>Y</string>
+                  <string>Y:</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
                <item row="8" column="0">
                 <widget class="QLabel" name="Z2">
                  <property name="text">
-                  <string>Z</string>
+                  <string>Z:</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
@@ -1462,6 +1514,19 @@
                 </widget>
                </item>
               </layout>
+             </item>
+             <item row="1" column="0">
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>

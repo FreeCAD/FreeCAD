@@ -114,7 +114,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.vertexX->setMinimum(INT_MIN);
     ui.vertexY->setMinimum(INT_MIN);
     ui.vertexZ->setMinimum(INT_MIN);
-    // edge
+    // line
     ui.edgeX1->setMaximum(INT_MAX);
     ui.edgeX1->setMinimum(INT_MIN);
     ui.edgeY1->setMaximum(INT_MAX);
@@ -326,10 +326,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.vertexZ->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 11) {  // edge
-            name = QString::fromAscii(doc->getUniqueObjectName("Edge").c_str());
+        else if (ui.comboBox1->currentIndex() == 11) {  // line
+            name = QString::fromAscii(doc->getUniqueObjectName("Line").c_str());
             cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Edge\",\"%1\")\n"
+                "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
                 "App.ActiveDocument.%1.X1=%2\n"
                 "App.ActiveDocument.%1.Y1=%3\n"
                 "App.ActiveDocument.%1.Z1=%4\n"
@@ -506,6 +506,7 @@ TaskPrimitives::TaskPrimitives()
     location = new Location();
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(),true, 0);
     taskbox->groupLayout()->addWidget(location);
+    taskbox->hideGroupBox();
     Content.push_back(taskbox);
 }
 

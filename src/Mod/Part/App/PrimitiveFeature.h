@@ -70,13 +70,13 @@ public:
     //@}
 };
 
-class PartExport Edge : public Part::Primitive
+class PartExport Line : public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Edge);
+    PROPERTY_HEADER(Part::Line);
 
 public:
-    Edge();
-    virtual ~Edge();
+    Line();
+    virtual ~Line();
 
     App::PropertyFloat X1;
     App::PropertyFloat Y1;
