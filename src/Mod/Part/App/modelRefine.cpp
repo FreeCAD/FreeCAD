@@ -45,6 +45,8 @@
 #include <TopTools_ListOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeShape.hxx>
+#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <Bnd_Box.hxx>
@@ -523,6 +525,14 @@ bool FaceUniter::process()
         }
 
         BRepLib_FuseEdges edgeFuse(workShell, Standard_True);
+        TopTools_DataMapOfShapeShape affectedFaces;
+        edgeFuse.Faces(affectedFaces);
+        TopTools_DataMapIteratorOfDataMapOfShapeShape mapIt;
+        for (mapIt.Initialize(affectedFaces); mapIt.More(); mapIt.Next())
+        {
+            ShapeFix_Face faceFixer(TopoDS::Face(mapIt.Value()));
+            faceFixer.Perform();
+        }
         workShell = TopoDS::Shell(edgeFuse.Shape());
     }
     return true;
