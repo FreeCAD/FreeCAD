@@ -77,10 +77,8 @@ void FeaturePage::onChanged(const App::Property* prop)
     }
     if (prop == &Template) {
         if (!this->isRestoring()) {
-            cout << "setting template " << Template.getValue() << endl;
-            EditableTexts.setValues(getEditableTexts());
+            EditableTexts.setValues(getEditableTextsFromTemplate());
         }
-        else cout << "restoring" << endl;
     }
     App::DocumentObjectGroup::onChanged(prop);
 }
@@ -142,13 +140,14 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
     if (EditableTexts.getSize() > 0) {
         boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
-        begin = ofile.str().begin();
-        end = ofile.str().end();
+        begin = outfragment.begin();
+        end = outfragment.end();
         boost::match_results<std::string::const_iterator> what;
         int count = 0;
 
         while (boost::regex_search(begin, end, what, e1)) {
             if (count < EditableTexts.getSize()) {
+                // change values of editable texts
                 boost::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
                 outfragment = boost::regex_replace(outfragment, e2, "$1>"+EditableTexts.getValues()[count]+"$3");
             }
@@ -177,8 +176,8 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-std::vector<std::string> FeaturePage::getEditableTexts(void) const {
-    //getting editable texts from "freecad:editable" tags in SVG template
+std::vector<std::string> FeaturePage::getEditableTextsFromTemplate(void) const {
+    //getting editable texts from "freecad:editable" attributes in SVG template
 
     std::vector<string> eds;
 
@@ -195,9 +194,9 @@ std::vector<std::string> FeaturePage::getEditableTexts(void) const {
         string tline, tfrag;
         ifstream tfile (tfi.filePath().c_str());
         while (!tfile.eof()) {
-          getline (tfile,tline);
-          tfrag += tline;
-          tfrag += "--endOfLine--";
+            getline (tfile,tline);
+            tfrag += tline;
+            tfrag += "--endOfLine--";
         }
         tfile.close();
         boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
@@ -206,9 +205,8 @@ std::vector<std::string> FeaturePage::getEditableTexts(void) const {
         tend = tfrag.end();
         boost::match_results<std::string::const_iterator> twhat;
         while (boost::regex_search(tbegin, tend, twhat, e)) {
-          printf(twhat[1].str().c_str());
-          eds.push_back(twhat[2]);
-          tbegin = twhat[0].second;
+            eds.push_back(twhat[2]);
+            tbegin = twhat[0].second;
         }
     }
     return eds;
