@@ -40,6 +40,7 @@
 #include <Gui/Command.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "DlgPrimitives.h"
 
@@ -142,21 +143,6 @@ DlgPrimitives::~DlgPrimitives()
         viewer->setRedirectToSceneGraph(false);
         viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback,this);
     }
-}
-
-namespace Base {
-// Specialization for gp_XYZ
-template <>
-struct vec_traits<gp_XYZ> {
-    typedef gp_XYZ vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
-private:
-    const vec_type& v;
-};
 }
 
 QString DlgPrimitives::toPlacement() const

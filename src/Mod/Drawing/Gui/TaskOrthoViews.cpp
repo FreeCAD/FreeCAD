@@ -39,6 +39,7 @@
 #include <Base/FileInfo.h>
 #include <iostream>
 #include <sstream>
+#include <Standard_Failure.hxx>
 
 using namespace Gui;
 using namespace DrawingGui;

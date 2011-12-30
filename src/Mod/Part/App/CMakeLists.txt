@@ -230,6 +230,7 @@ SET(Part_SRCS
     edgecluster.h
     modelRefine.cpp
     modelRefine.h
+    Tools.h
 )
 
 SET(Part_Scripts

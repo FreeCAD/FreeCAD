@@ -156,6 +156,7 @@
 #include "TopoShapeVertexPy.h"
 #include "ProgressIndicator.h"
 #include "modelRefine.h"
+#include "Tools.h"
 
 using namespace Part;
 
