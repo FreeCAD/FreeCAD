@@ -76,34 +76,11 @@ void FeaturePage::onChanged(const App::Property* prop)
         }
     }
     if (prop == &Template) {
-        // getting editable texts from "freecad:editable" tags in SVG template
         if (!this->isRestoring()) {
-            if (Template.getValue() != "") {
-                Base::FileInfo tfi(Template.getValue());
-                if (tfi.isReadable()) {
-                    string tline, tfrag;
-                    ifstream tfile (tfi.filePath().c_str());
-                    while (!tfile.eof()) {
-                        getline (tfile,tline);
-                        tfrag += tline;
-                        tfrag += "--endOfLine--";
-                    }
-                    tfile.close();
-                    boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
-                    string::const_iterator tbegin, tend;
-                    tbegin = tfrag.begin();
-                    tend = tfrag.end();
-                    boost::match_results<std::string::const_iterator> twhat;
-                    std::vector<string> eds;
-                    while (boost::regex_search(tbegin, tend, twhat, e)) {
-                        printf(twhat[1].str().c_str());
-                        eds.push_back(twhat[2]);
-                        tbegin = twhat[0].second;
-                    }
-                    EditableTexts.setValues(eds);
-                }
-            }
+            cout << "setting template " << Template.getValue() << endl;
+            EditableTexts.setValues(getEditableTexts());
         }
+        else cout << "restoring" << endl;
     }
     App::DocumentObjectGroup::onChanged(prop);
 }
@@ -198,4 +175,41 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
     //{
     //}
     return App::DocumentObject::StdReturn;
+}
+
+std::vector<std::string> FeaturePage::getEditableTexts(void) const {
+    //getting editable texts from "freecad:editable" tags in SVG template
+
+    std::vector<string> eds;
+
+    if (Template.getValue() != "") {
+        Base::FileInfo tfi(Template.getValue());
+        if (!tfi.isReadable()) {
+            // if there is a old absolute template file set use a redirect
+            tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
+            // try the redirect
+            if (!tfi.isReadable()) {
+                return eds;
+            }
+        }
+        string tline, tfrag;
+        ifstream tfile (tfi.filePath().c_str());
+        while (!tfile.eof()) {
+          getline (tfile,tline);
+          tfrag += tline;
+          tfrag += "--endOfLine--";
+        }
+        tfile.close();
+        boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        string::const_iterator tbegin, tend;
+        tbegin = tfrag.begin();
+        tend = tfrag.end();
+        boost::match_results<std::string::const_iterator> twhat;
+        while (boost::regex_search(tbegin, tend, twhat, e)) {
+          printf(twhat[1].str().c_str());
+          eds.push_back(twhat[2]);
+          tbegin = twhat[0].second;
+        }
+    }
+    return eds;
 }
