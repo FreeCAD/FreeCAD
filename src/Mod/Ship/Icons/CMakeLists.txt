@@ -1,0 +1,29 @@
+INSTALL(
+    FILES
+		AreaCurveIco.png
+		AreaCurveIco.xcf
+		AreaCurveIco.xpm
+		DataIco.png
+		DataIco.xcf
+		DataIco.xpm
+		DiscretizeIco.png
+		DiscretizeIco.xcf
+		DiscretizeIco.xpm
+		HydrostaticsIco.png
+		HydrostaticsIco.xcf
+		HydrostaticsIco.xpm
+		Ico.png
+		Ico.xcf
+		Ico.xpm
+		OutlineDrawIco.png
+		OutlineDrawIco.xcf
+		OutlineDrawIco.xpm
+		ReparametrizeIco.png
+		ReparametrizeIco.xcf
+		ReparametrizeIco.xpm
+		Ship.xcf
+		Ship.xpm
+    DESTINATION
+        Mod/Ship/Icons
+)
+
