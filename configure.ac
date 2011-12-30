@@ -1027,6 +1027,13 @@ src/Mod/TemplatePyMod/Makefile
 src/Mod/Sandbox/Makefile
 src/Mod/Sandbox/App/Makefile
 src/Mod/Sandbox/Gui/Makefile
+src/Mod/Surfaces/Makefile
+src/Mod/Surfaces/Icons/Makefile
+src/Mod/Surfaces/surfBorder/Makefile
+src/Mod/Surfaces/surfConvert/Makefile
+src/Mod/Surfaces/surfISOCurve/Makefile
+src/Mod/Surfaces/surfSlice/Makefile
+src/Mod/Surfaces/surfUtils/Makefile
 src/Tools/Makefile
 src/Tools/_TEMPLATE_/Makefile
 src/Tools/_TEMPLATE_/App/Makefile
