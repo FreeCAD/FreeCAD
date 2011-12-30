@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QComboBox>
+#endif
 
 #include "InputVector.h"
 #include "ui_InputVector.h"
