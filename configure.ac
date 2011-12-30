@@ -1034,6 +1034,11 @@ src/Mod/Surfaces/surfConvert/Makefile
 src/Mod/Surfaces/surfISOCurve/Makefile
 src/Mod/Surfaces/surfSlice/Makefile
 src/Mod/Surfaces/surfUtils/Makefile
+src/Mod/Ship/Makefile
+src/Mod/Ship/Icons/Makefile
+src/Mod/Ship/shipCreateShip/Makefile
+src/Mod/Ship/shipOutlineDraw/Makefile
+src/Mod/Ship/shipUtils/Makefile
 src/Tools/Makefile
 src/Tools/_TEMPLATE_/Makefile
 src/Tools/_TEMPLATE_/App/Makefile
