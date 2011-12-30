@@ -1,0 +1,92 @@
+# ##### BEGIN GPL LICENSE BLOCK #####
+#
+#  Author: Jose Luis Cercos Pita <jlcercos@gmail.com>
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; either version 2
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ##### END GPL LICENSE BLOCK #####
+
+# FreeCAD modules
+import FreeCAD,FreeCADGui
+from FreeCAD import Base, Part, Vector
+# FreeCADShip modules
+from shipUtils import Paths, Translator
+from surfUtils import Geometry
+
+def Plot(scale, sections, shape):
+    """ Creates the outline draw.
+    @param scale Plane scale (format 1:scale)
+    @param sections Sections computed.
+    @param shape Ship surfaces shell
+    @return plotted object (DocumentObject)
+    """
+    msg = Translator.translate('Performing plot (Scale 1:%d)...\n' % (scale))
+    FreeCAD.Console.PrintMessage(msg)
+    scale = 1000.0 / scale
+    # Take positions
+    bounds = [0.0, 0.0, 0.0]
+    bbox = shape.BoundBox
+    bounds[0] = bbox.XLength
+    bounds[1] = bbox.YLength
+    bounds[2] = bbox.ZLength
+    xTot = scale*bounds[1] + 32.0 + scale*bounds[0]
+    yTot = scale*bounds[2] + 32.0 + scale*bounds[1]
+    xMid = 210.0
+    yMid = 185.0
+    x0 = xMid - 0.5*xTot
+    y0 = 297.0 - yMid - 0.5*yTot # 297 = A3_width
+    # Get border
+    edges = Geometry.getEdges([shape])
+    border = edges[0]
+    for i in range(0,len(edges)):
+        border = border.oldFuse(edges[i])   # Only group objects, don't try to build more complex entities
+        border = border.oldFuse(edges[i].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0)))
+    # Fuse sections & borders
+    obj = sections.oldFuse(border)
+    # Send to 3D view
+    Part.show(obj)
+    objs = FreeCAD.ActiveDocument.Objects
+    obj = objs[len(objs)-1]
+    # Create a new plane
+    FreeCAD.ActiveDocument.addObject('Drawing::FeaturePage','OutlineDrawPlot')
+    FreeCAD.ActiveDocument.OutlineDrawPlot.Template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
+    # Side view
+    FreeCAD.ActiveDocument.addObject('Drawing::FeatureViewPart','OutlineDrawSideView')
+    FreeCAD.ActiveDocument.OutlineDrawSideView.Source = obj
+    FreeCAD.ActiveDocument.OutlineDrawSideView.Direction = (1.0,0.0,0.0)
+    FreeCAD.ActiveDocument.OutlineDrawSideView.Rotation = -90.0
+    FreeCAD.ActiveDocument.OutlineDrawSideView.Scale = scale
+    FreeCAD.ActiveDocument.OutlineDrawSideView.X = 420.0 - x0 - 0.5*scale*bounds[1] # 420 = A3_height
+    FreeCAD.ActiveDocument.OutlineDrawSideView.Y = y0 + 0.5*scale*bounds[2]
+    FreeCAD.ActiveDocument.OutlineDrawPlot.addObject(FreeCAD.ActiveDocument.OutlineDrawSideView)
+    # Front view
+    FreeCAD.ActiveDocument.addObject('Drawing::FeatureViewPart','OutlineDrawFrontView')
+    FreeCAD.ActiveDocument.OutlineDrawFrontView.Source = obj
+    FreeCAD.ActiveDocument.OutlineDrawFrontView.Direction = (0.0,1.0,0.0)
+    FreeCAD.ActiveDocument.OutlineDrawFrontView.Rotation = -90.0
+    FreeCAD.ActiveDocument.OutlineDrawFrontView.Scale = scale
+    FreeCAD.ActiveDocument.OutlineDrawFrontView.X = 420.0 - x0 - scale*bounds[1] - 32 - 0.5*scale*bounds[0]
+    FreeCAD.ActiveDocument.OutlineDrawFrontView.Y = y0 + 0.5*scale*bounds[2]
+    FreeCAD.ActiveDocument.OutlineDrawPlot.addObject(FreeCAD.ActiveDocument.OutlineDrawFrontView)
+    # Up view
+    FreeCAD.ActiveDocument.addObject('Drawing::FeatureViewPart','OutlineDrawUpView')
+    FreeCAD.ActiveDocument.OutlineDrawUpView.Source = obj
+    FreeCAD.ActiveDocument.OutlineDrawUpView.Direction = (0.0,0.0,1.0)
+    FreeCAD.ActiveDocument.OutlineDrawUpView.Scale = scale
+    FreeCAD.ActiveDocument.OutlineDrawUpView.X = 420.0 - x0 - scale*bounds[1] - 32 - 0.5*scale*bounds[0]
+    FreeCAD.ActiveDocument.OutlineDrawUpView.Y = y0 + scale*bounds[2] + 32
+    FreeCAD.ActiveDocument.OutlineDrawPlot.addObject(FreeCAD.ActiveDocument.OutlineDrawUpView)
+    FreeCAD.ActiveDocument.recompute()
+    return obj
