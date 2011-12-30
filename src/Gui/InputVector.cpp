@@ -63,6 +63,8 @@ LocationWidget::LocationWidget (QWidget * parent)
     QGridLayout* gridLayout = new QGridLayout(this);
     gridLayout->addLayout(box, 0, 0, 1, 2);
 
+    connect(dValue, SIGNAL(activated(int)),
+            this, SLOT(on_direction_activated(int)));
     retranslateUi();
 }
 
@@ -72,7 +74,7 @@ LocationWidget::~LocationWidget()
 
 QSize LocationWidget::sizeHint() const
 {
-    return QSize(150,190);
+    return QSize(150,100);
 }
 
 void LocationWidget::changeEvent(QEvent* e)
@@ -119,6 +121,13 @@ Base::Vector3f LocationWidget::getPosition() const
     return Base::Vector3f((float)this->xValue->value(),
                           (float)this->yValue->value(),
                           (float)this->zValue->value());
+}
+
+void LocationWidget::setPosition(const Base::Vector3f& v)
+{
+    this->xValue->setValue(v.x);
+    this->yValue->setValue(v.y);
+    this->zValue->setValue(v.z);
 }
 
 void LocationWidget::setDirection(const Base::Vector3f& dir)

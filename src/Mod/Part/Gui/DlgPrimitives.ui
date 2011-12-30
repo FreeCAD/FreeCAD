@@ -1,96 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PartGui::DlgPrimitives</class>
- <widget class="QDialog" name="PartGui::DlgPrimitives">
+ <widget class="QWidget" name="PartGui::DlgPrimitives">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>341</height>
+    <width>258</width>
+    <height>331</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Geometric Primitives</string>
   </property>
-  <property name="sizeGripEnabled">
+  <property name="sizeGripEnabled" stdset="0">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout">
-   <property name="margin">
-    <number>9</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="createSolidButton">
-       <property name="text">
-        <string>&amp;Create</string>
-       </property>
-       <property name="shortcut">
-        <string>Alt+C</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonClose">
-       <property name="text">
-        <string>Cl&amp;ose</string>
-       </property>
-       <property name="shortcut">
-        <string>Alt+O</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
+  <layout class="QGridLayout" name="gridLayout_7">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox1">
      <property name="title">
       <string>Primitive</string>
      </property>
-     <layout class="QGridLayout">
-      <property name="margin">
-       <number>9</number>
-      </property>
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <item row="1" column="1">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QComboBox" name="comboBox1">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maxVisibleItems">
+         <number>14</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Plane</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Box</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cylinder</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cone</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sphere</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ellipsoid</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Torus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Wedge</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Helix</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Vertex</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Edge</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
        <widget class="QGroupBox" name="groupBox_2">
         <property name="title">
          <string>Parameter</string>
@@ -1464,196 +1470,6 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="1">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>221</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="0">
-       <widget class="QComboBox" name="comboBox1">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maxVisibleItems">
-         <number>14</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>Plane</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Box</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Cylinder</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Cone</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Sphere</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Ellipsoid</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Torus</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Wedge</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Helix</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Circle</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Vertex</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Edge</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string>Position</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0" colspan="2">
-          <layout class="QGridLayout">
-           <property name="margin">
-            <number>0</number>
-           </property>
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <item row="2" column="1">
-            <widget class="QDoubleSpinBox" name="zPos">
-             <property name="minimum">
-              <double>-2147480000.000000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>2147480000.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="TextLabel_Z">
-             <property name="text">
-              <string>Z:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="TextLabel_X">
-             <property name="text">
-              <string>X:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="TextLabel_Direction">
-             <property name="text">
-              <string>Direction:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QDoubleSpinBox" name="xPos">
-             <property name="minimum">
-              <double>-2147480000.000000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>2147480000.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="TextLabel_Y">
-             <property name="text">
-              <string>Y:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QComboBox" name="direction">
-             <property name="currentIndex">
-              <number>-1</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QDoubleSpinBox" name="yPos">
-             <property name="minimum">
-              <double>-2147480000.000000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>2147480000.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <widget class="QPushButton" name="viewPositionButton">
-           <property name="text">
-            <string>3D View</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <spacer>
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -1662,10 +1478,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>comboBox1</tabstop>
-  <tabstop>xPos</tabstop>
-  <tabstop>yPos</tabstop>
-  <tabstop>zPos</tabstop>
-  <tabstop>direction</tabstop>
   <tabstop>planeLength</tabstop>
   <tabstop>planeWidth</tabstop>
   <tabstop>boxLength</tabstop>
@@ -1692,8 +1504,6 @@
   <tabstop>torusAngle1</tabstop>
   <tabstop>torusAngle2</tabstop>
   <tabstop>torusAngle3</tabstop>
-  <tabstop>createSolidButton</tabstop>
-  <tabstop>buttonClose</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -1710,38 +1520,6 @@
     <hint type="destinationlabel">
      <x>230</x>
      <y>116</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonClose</sender>
-   <signal>clicked()</signal>
-   <receiver>PartGui::DlgPrimitives</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>254</x>
-     <y>282</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>44</x>
-     <y>268</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>createSolidButton</sender>
-   <signal>clicked()</signal>
-   <receiver>PartGui::DlgPrimitives</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>160</x>
-     <y>276</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>8</x>
-     <y>277</y>
     </hint>
    </hints>
   </connection>

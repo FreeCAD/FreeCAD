@@ -37,7 +37,7 @@ class QComboBox;
 
 namespace Gui {
 
-class LocationWidget : public QWidget
+class GuiExport LocationWidget : public QWidget
 {
     Q_OBJECT
 
@@ -47,6 +47,7 @@ public:
     QSize sizeHint() const;
 
     Base::Vector3f getPosition() const;
+    void setPosition(const Base::Vector3f&);
     void setDirection(const Base::Vector3f& dir);
     Base::Vector3f getDirection() const;
     Base::Vector3f getUserDirection(bool* ok=0) const;
