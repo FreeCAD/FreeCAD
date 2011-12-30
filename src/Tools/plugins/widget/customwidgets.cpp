@@ -71,6 +71,69 @@ void UrlLabel::setUrl(const QString& u)
     setToolTip(this->_url);
 }
 
+LocationWidget::LocationWidget (QWidget * parent)
+  : QWidget(parent)
+{
+    box = new QGridLayout();
+
+    xValue = new QDoubleSpinBox(this);
+    xValue->setMinimum(-2.14748e+09);
+    xValue->setMaximum(2.14748e+09);
+    xLabel = new QLabel(this);
+    box->addWidget(xLabel, 0, 0, 1, 1);
+    box->addWidget(xValue, 0, 1, 1, 1);
+
+    yValue = new QDoubleSpinBox(this);
+    yValue->setMinimum(-2.14748e+09);
+    yValue->setMaximum(2.14748e+09);
+    yLabel = new QLabel(this);
+    box->addWidget(yLabel, 1, 0, 1, 1);
+    box->addWidget(yValue, 1, 1, 1, 1);
+
+    zValue = new QDoubleSpinBox(this);
+    zValue->setMinimum(-2.14748e+09);
+    zValue->setMaximum(2.14748e+09);
+    zLabel = new QLabel(this);
+    box->addWidget(zLabel, 2, 0, 1, 1);
+    box->addWidget(zValue, 2, 1, 1, 1);
+
+    dLabel = new QLabel(this);
+    dValue = new QComboBox(this);
+    dValue->setCurrentIndex(-1);
+    box->addWidget(dLabel, 3, 0, 1, 1);
+    box->addWidget(dValue, 3, 1, 1, 1);
+
+    QGridLayout* gridLayout = new QGridLayout(this);
+    gridLayout->addLayout(box, 0, 0, 1, 2);
+
+    retranslateUi();
+}
+
+LocationWidget::~LocationWidget()
+{
+}
+
+QSize LocationWidget::sizeHint() const
+{
+    return QSize(150,190);
+}
+
+void LocationWidget::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        this->retranslateUi();
+    }
+    QWidget::changeEvent(e);
+}
+
+void LocationWidget::retranslateUi()
+{
+    xLabel->setText(QApplication::translate("Gui::LocationWidget", "X:"));
+    yLabel->setText(QApplication::translate("Gui::LocationWidget", "Y:"));
+    zLabel->setText(QApplication::translate("Gui::LocationWidget", "Z:"));
+    dLabel->setText(QApplication::translate("Gui::LocationWidget", "Direction:"));
+} 
+
 FileChooser::FileChooser( QWidget *parent )
   : QWidget( parent ), md( File ), _filter( QString::null )
 {
