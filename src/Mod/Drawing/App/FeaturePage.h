@@ -47,7 +47,7 @@ public:
 
     App::PropertyFileIncluded PageResult;
     App::PropertyFile Template;
-
+    App::PropertyStringList EditableTexts;
 
     /** @name methods overide Feature */
     //@{
@@ -59,6 +59,7 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "DrawingGui::ViewProviderDrawingPage";
     }
+    virtual std::vector<std::string> getEditableTextsFromTemplate(void) const;
 
 protected:
     void onChanged(const App::Property* prop);
@@ -66,7 +67,6 @@ protected:
 
 
 } //namespace Drawing
-
 
 
 #endif
