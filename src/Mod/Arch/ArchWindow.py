@@ -21,8 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,ArchComponent
-from draftlibs import fcgeo,fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent
+from draftlibs import fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -88,6 +88,8 @@ class _Window(ArchComponent.Component):
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
+        import Part
+        from draftlibs import fcgeo
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):

@@ -1,8 +1,8 @@
-import FreeCAD,FreeCADGui,Part,ArchComponent,WorkingPlane,Drawing,math
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 
 
 class _CommandSectionPlane:
@@ -46,6 +46,7 @@ class _SectionPlane:
         self.Type = "SectionPlane"
         
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         l = obj.ViewObject.DisplaySize
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
@@ -183,6 +184,8 @@ class _ArchDrawingView:
         return Vector(lx,ly,0)
 
     def getPath(self,face,plane):
+        import Part
+        from draftlibs import fcgeo
         "returns a svg path from a face"
         svg ='<path '
         edges = fcgeo.sortEdges(face.Edges)

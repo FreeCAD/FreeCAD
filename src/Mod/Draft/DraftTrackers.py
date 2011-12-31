@@ -25,15 +25,18 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD,FreeCADGui,math,Draft,Part
+import FreeCAD,FreeCADGui,math,Draft
 from FreeCAD import Vector
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 from pivy import coin
 from DraftGui import todo
 
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
     def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False):
+        global Part, fcgeo
+        import Part
+        from draftlibs import fcgeo
         self.ontop = ontop
         color = coin.SoBaseColor()
         color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("ui")
@@ -228,6 +231,7 @@ class dimTracker(Tracker):
         self.calc()
         
     def calc(self):
+        import Part
         if (self.p1 != None) and (self.p2 != None):
             points = [fcvec.tup(self.p1,True),fcvec.tup(self.p2,True),\
                           fcvec.tup(self.p1,True),fcvec.tup(self.p2,True)]

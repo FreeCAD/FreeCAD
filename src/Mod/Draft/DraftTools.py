@@ -29,9 +29,9 @@ __url__ = "http://free-cad.sourceforge.net"
 # Generic stuff
 #---------------------------------------------------------------------------
 
-import os, FreeCAD, FreeCADGui, Part, WorkingPlane, math, re, importSVG, Draft, Draft_rc
+import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, importSVG, Draft, Draft_rc
 from functools import partial
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 from FreeCAD import Vector
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
@@ -311,6 +311,9 @@ class Creator:
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
+        global Part, fcgeo
+        import Part
+        from draftlibs import fcgeo
         self.ui = None
         self.call = None
         self.doc = None
@@ -1624,6 +1627,9 @@ class Modifier:
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
+        global Part, fcgeo
+        import Part
+        from draftlibs import fcgeo
         self.ui = None
         self.call = None
         self.commitList = []
