@@ -605,9 +605,9 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<LinkSubList count=\"" <<  getSize() <<"\">" << endl;
     writer.incInd();
     for(int i = 0;i<getSize(); i++)
-        writer.Stream() << writer.ind() << 
+        writer.Stream() << writer.ind() <<
             "<Link " <<
-            "obj=\"" <<  _lValueList[i]->getNameInDocument()  <<
+            "obj=\"" <<  _lValueList[i]->getNameInDocument() << "\" " <<
             "sub=\"" <<  _lSubList[i] <<
         "\"/>" << endl; ;
     writer.decInd();
@@ -670,7 +670,7 @@ unsigned int PropertyLinkSubList::getMemSize (void) const
 {
    unsigned int size = static_cast<unsigned int>(_lValueList.size() * sizeof(App::DocumentObject *));
    for(int i = 0;i<getSize(); i++)
-       size += _lSubList[i].size(); 
+       size += _lSubList[i].size();
 
    return size;
 }

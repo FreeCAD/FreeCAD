@@ -260,7 +260,7 @@ protected:
     void _remObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
     DocumentObject* _copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-        DocumentObject*>&, bool rcursive=false);
+        DocumentObject*>&, bool recursive=false);
     /// checks if a valid transaction is open
     void _checkTransaction(void);
     void breakDependency(DocumentObject* pcObject, bool clear);

@@ -613,7 +613,7 @@ public:
 
                 // setup for the next line segment
                 // Use updated endPoint as autoconstraints can modify the position
-                Part::Geometry *geom = getObject()->Geometry.getValues()[getHighestCurveIndex()];
+                const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(getHighestCurveIndex());
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geom);
                     EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
@@ -1152,8 +1152,7 @@ namespace SketcherGui {
             if (element.substr(0,4) == "Edge") {
                 int index=std::atoi(element.substr(4,4000).c_str());
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
-                const std::vector<Part::Geometry *> &geo = Sketch->Geometry.getValues();
-                const Part::Geometry *geom = geo[index];
+                const Part::Geometry *geom = Sketch->getGeometry(index);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId())
                     return true;
             }
@@ -1163,10 +1162,9 @@ namespace SketcherGui {
                 std::vector<int> GeoIdList;
                 std::vector<Sketcher::PointPos> PosIdList;
                 Sketch->getCoincidentPoints(index, GeoIdList, PosIdList);
-                if (GeoIdList.size() == 2) {
-                    const std::vector<Part::Geometry *> &geo = Sketch->Geometry.getValues();
-                    const Part::Geometry *geom1 = geo[GeoIdList[0]];
-                    const Part::Geometry *geom2 = geo[GeoIdList[1]];
+                if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
+                    const Part::Geometry *geom1 = Sketch->getGeometry(GeoIdList[0]);
+                    const Part::Geometry *geom2 = Sketch->getGeometry(GeoIdList[1]);
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())
                         return true;
@@ -1252,8 +1250,7 @@ public:
             int GeoId;
             Sketcher::PointPos PosId=Sketcher::none;
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId,PosId);
-            const std::vector<Part::Geometry *> &geo = sketchgui->getSketchObject()->Geometry.getValues();
-            const Part::Geometry *geom = geo[GeoId];
+            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                 (PosId == Sketcher::start || PosId == Sketcher::end)) {
 
@@ -1262,15 +1259,15 @@ public:
                 std::vector<int> GeoIdList;
                 std::vector<Sketcher::PointPos> PosIdList;
                 sketchgui->getSketchObject()->getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
-                if (GeoIdList.size() == 2) {
-                    const Part::Geometry *geom1 = geo[GeoIdList[0]];
-                    const Part::Geometry *geom2 = geo[GeoIdList[1]];
+                if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
+                    const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
+                    const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geom1);
                         const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geom2);
-				        Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
-				        Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
+                        Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
+                        Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
                         if (PosIdList[0] == Sketcher::end)
                             dir1 *= -1;
                         if (PosIdList[1] == Sketcher::end)
@@ -1297,8 +1294,7 @@ public:
 
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
-            const std::vector<Part::Geometry *> &geo = sketchgui->getSketchObject()->Geometry.getValues();
-            const Part::Geometry *geom = geo[GeoId];
+            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 if (Mode==STATUS_SEEK_First) {
                     firstCurve = GeoId;
@@ -1319,8 +1315,10 @@ public:
                     Base::Vector2D secondPos = onSketchPos;
 
                     // guess fillet radius
-                    const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo[firstCurve]);
-                    const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo[secondCurve]);
+                    const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>
+                                                            (sketchgui->getSketchObject()->getGeometry(firstCurve));
+                    const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>
+                                                            (sketchgui->getSketchObject()->getGeometry(secondCurve));
                     Base::Vector3d refPnt1(firstPos.fX, firstPos.fY, 0.f);
                     Base::Vector3d refPnt2(secondPos.fX, secondPos.fY, 0.f);
                     double radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
@@ -1401,8 +1399,7 @@ namespace SketcherGui {
             if (element.substr(0,4) == "Edge") {
                 int index=std::atoi(element.substr(4,4000).c_str());
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
-                const std::vector<Part::Geometry *> &geo = Sketch->Geometry.getValues();
-                const Part::Geometry *geom = geo[index];
+                const Part::Geometry *geom = Sketch->getGeometry(index);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                     geom->getTypeId() == Part::GeomCircle::getClassTypeId()||
                     geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
@@ -1482,8 +1479,7 @@ public:
     {
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
-            const std::vector<Part::Geometry *> &geo = sketchgui->getSketchObject()->Geometry.getValues();
-            const Part::Geometry *geom = geo[GeoId];
+            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                 geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
                 geom->getTypeId() == Part::GeomCircle::getClassTypeId()

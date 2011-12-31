@@ -45,7 +45,7 @@
     </Methode>
     <Methode Name="addExternal">
       <Documentation>
-        <UserDocu>add a link to a external geometry to use them in a constraint</UserDocu>
+        <UserDocu>add a link to an external geometry to use it in a constraint</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="delExternal">

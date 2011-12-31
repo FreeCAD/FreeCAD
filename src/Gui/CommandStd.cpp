@@ -441,42 +441,6 @@ void StdCmdOnlineHelp::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_OnlineHelpPython
-//===========================================================================
-
-DEF_STD_CMD(StdCmdOnlineHelpPython);
-
-StdCmdOnlineHelpPython::StdCmdOnlineHelpPython()
-  :Command("Std_OnlineHelpPython")
-{
-    sGroup        = QT_TR_NOOP("Help");
-    sMenuText     = QT_TR_NOOP("Python Manuals");
-    sToolTipText  = QT_TR_NOOP("Show the Python documentation");
-    sWhatsThis    = "Std_OnlineHelpPython";
-    sStatusTip    = QT_TR_NOOP("Show the Python documentation");
-    sPixmap       = "python";
-    eType         = 0;
-}
-
-void StdCmdOnlineHelpPython::activated(int iMsg)
-{
-    std::string url = App::Application::getHelpDir() + "Python25.chm";
-#if QT_VERSION >= 0x040200
-    bool ok = QDesktopServices::openUrl(QString::fromUtf8(url.c_str()));
-#elif defined(Q_WS_WIN)
-    std::wstring wstr = Base::FileInfo(url).toStdWString();
-    bool ok = (reinterpret_cast<int>(ShellExecuteW(NULL, NULL, wstr.c_str(), NULL,
-                                                   NULL, SW_SHOWNORMAL)) > 32);
-#else
-
-#endif
-    if (!ok) {
-        QMessageBox::critical(getMainWindow(), QObject::tr("File not found"),
-            QObject::tr("Cannot open file %1").arg(QString::fromUtf8(url.c_str())));
-    }
-}
-
-//===========================================================================
 // Std_OnlineHelpWebsite
 //===========================================================================
 
@@ -619,7 +583,6 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdWhatsThis());
     rcCmdMgr.addCommand(new StdCmdPythonHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
-    rcCmdMgr.addCommand(new StdCmdOnlineHelpPython());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());

@@ -303,7 +303,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    Gui::MenuItem* help = new Gui::MenuItem( menuBar );
 //    help->setCommand("&Help");
 //    *help << "Std_OnlineHelp" 
-//          << "Std_OnlineHelpPython" 
 //          << "Std_PythonHelp"
 //          << helpWebsites  
 //          << "Separator" 

@@ -30,7 +30,46 @@
 
 #include <Gui/propertyeditor/PropertyItem.h>
 
+class QGridLayout;
+class QLabel;
+class QDoubleSpinBox;
+class QComboBox;
+
 namespace Gui {
+
+class GuiExport LocationWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    LocationWidget (QWidget * parent = 0);
+    virtual ~LocationWidget();
+    QSize sizeHint() const;
+
+    Base::Vector3f getPosition() const;
+    void setPosition(const Base::Vector3f&);
+    void setDirection(const Base::Vector3f& dir);
+    Base::Vector3f getDirection() const;
+    Base::Vector3f getUserDirection(bool* ok=0) const;
+
+private Q_SLOTS:
+    void on_direction_activated(int);
+
+private:
+    void changeEvent(QEvent*);
+    void retranslateUi();
+
+private:
+    QGridLayout *box;
+    QLabel *xLabel;
+    QLabel *yLabel;
+    QLabel *zLabel;
+    QLabel *dLabel;
+    QDoubleSpinBox *xValue;
+    QDoubleSpinBox *yValue;
+    QDoubleSpinBox *zValue;
+    QComboBox *dValue;
+};
 
 /** This is the base dialog class that defines the interface for
  * specifying a direction vector by the user.

@@ -208,16 +208,13 @@ CmdPartPrimitives::CmdPartPrimitives()
 
 void CmdPartPrimitives::activated(int iMsg)
 {
-    static QPointer<QDialog> dlg = 0;
-    if (!dlg)
-        dlg = new PartGui::DlgPrimitives(Gui::getMainWindow());
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->show();
+    PartGui::TaskPrimitives* dlg = new PartGui::TaskPrimitives();
+    Gui::Control().showDialog(dlg);
 }
 
 bool CmdPartPrimitives::isActive(void)
 {
-    return hasActiveDocument();
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 //===========================================================================

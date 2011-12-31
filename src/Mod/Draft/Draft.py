@@ -1931,6 +1931,10 @@ class _Wire:
                         "The base object is the wire is formed from 2 objects")
         obj.addProperty("App::PropertyLink","Tool","Base",
                         "The tool object is the wire is formed from 2 objects")
+        obj.addProperty("App::PropertyVector","Start","Base",
+                        "The start point of this line")
+        obj.addProperty("App::PropertyVector","End","Base",
+                        "The end point of this line")
         obj.Proxy = self
         obj.Closed = False
         self.Type = "Wire"
@@ -1941,6 +1945,26 @@ class _Wire:
     def onChanged(self, fp, prop):
         if prop in ["Points","Closed","Base","Tool"]:
             self.createGeometry(fp)
+            if prop == "Points":
+                if fp.Start != fp.Points[0]:
+                    fp.Start = fp.Points[0]
+                if fp.End != fp.Points[-1]:
+                    fp.End = fp.Points[-1]
+                if len(fp.Points) > 2:
+                    fp.setEditorMode('Start',2)
+                    fp.setEditorMode('End',2)
+        elif prop == "Start":
+            pts = fp.Points
+            if pts:
+                if pts[0] != fp.Start:
+                    pts[0] = fp.Start
+                    fp.Points = pts
+        elif prop == "End":
+            pts = fp.Points
+            if len(pts) > 1:
+                if pts[-1] != fp.End:
+                    pts[-1] = fp.End
+                    fp.Points = pts
                         
     def createGeometry(self,fp):
         plm = fp.Placement

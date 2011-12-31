@@ -24,21 +24,34 @@
 #define PARTGUI_DLGPRIMITIVES_H
 
 #include <QPointer>
-#include <Gui/InputVector.h>
+#include <Gui/TaskView/TaskDialog.h>
 #include "ui_DlgPrimitives.h"
+#include "ui_Location.h"
 
 class SoEventCallback;
 
 namespace PartGui {
 
-class DlgPrimitives : public Gui::LocationDialogComp<Ui_DlgPrimitives>
+class DlgPrimitives : public QWidget
 {
     Q_OBJECT
 
 public:
-    DlgPrimitives(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgPrimitives(QWidget* parent = 0);
     ~DlgPrimitives();
-    void accept();
+    void createPrimitive(const QString&);
+
+private:
+    Ui_DlgPrimitives ui;
+};
+
+class Location : public QWidget
+{
+    Q_OBJECT
+
+public:
+    Location(QWidget* parent = 0);
+    ~Location();
     QString toPlacement() const;
 
 private Q_SLOTS:
@@ -47,6 +60,27 @@ private Q_SLOTS:
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
     QPointer<QWidget> activeView;
+    Ui_Location ui;
+};
+
+class TaskPrimitives : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskPrimitives();
+    ~TaskPrimitives();
+
+public:
+    bool accept();
+    bool reject();
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    void modifyStandardButtons(QDialogButtonBox*);
+
+private:
+    DlgPrimitives* widget;
+    Location* location;
 };
 
 } // namespace PartGui

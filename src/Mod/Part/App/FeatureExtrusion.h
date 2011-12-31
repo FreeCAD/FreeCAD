@@ -25,6 +25,7 @@
 #define PART_FEATUREEXTRUSION_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include "PartFeature.h"
 
 namespace Part
@@ -39,6 +40,8 @@ public:
 
     App::PropertyLink Base;
     App::PropertyVector Dir;
+    App::PropertyBool Solid;
+    App::PropertyAngle TaperAngle;
 
     /** @name methods override feature */
     //@{

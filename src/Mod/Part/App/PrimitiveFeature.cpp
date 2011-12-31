@@ -163,9 +163,9 @@ void Vertex::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-PROPERTY_SOURCE(Part::Edge, Part::Primitive)
+PROPERTY_SOURCE(Part::Line, Part::Primitive)
 
-Edge::Edge()
+Line::Line()
 {
     ADD_PROPERTY_TYPE(X1,(0.0f),"Vertex 1 - Start",App::Prop_None,"X value of the start vertex");
     ADD_PROPERTY_TYPE(Y1,(0.0f),"Vertex 1 - Start",App::Prop_None,"Y value of the Start vertex");
@@ -175,11 +175,11 @@ Edge::Edge()
     ADD_PROPERTY_TYPE(Z2,(1.0f),"Vertex 2 - Finish",App::Prop_None,"Z value of the finish vertex");
 }
 
-Edge::~Edge()
+Line::~Line()
 {
 }
 
-short Edge::mustExecute() const
+short Line::mustExecute() const
 {
     if (X1.isTouched() ||
         Y1.isTouched() ||
@@ -191,7 +191,7 @@ short Edge::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Edge::execute(void)
+App::DocumentObjectExecReturn *Line::execute(void)
 {
     gp_Pnt point1;
     point1.SetX(this->X1.getValue());
@@ -212,7 +212,7 @@ App::DocumentObjectExecReturn *Edge::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void Edge::onChanged(const App::Property* prop)
+void Line::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if (prop == &X1 || prop == &Y1 || prop == &Z1 || prop == &X2 || prop == &Y2 || prop == &Z2){

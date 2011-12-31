@@ -533,11 +533,10 @@ class DraftToolBar:
         self.radiusValue.selectAll()
 
     def offUi(self):
+        todo.delay(FreeCADGui.Control.closeDialog,None)
         if self.taskmode:
             self.isTaskOn = False
-            todo.delay(FreeCADGui.Control.closeDialog,None)
             self.baseWidget = QtGui.QWidget()
-            # print "UI turned off"
         else:
             self.setTitle(translate("draft", "None"))
             self.labelx.setText(translate("draft", "X"))
@@ -637,6 +636,7 @@ class DraftToolBar:
         if not self.taskmode:
             self.labelx.setText(translate("draft", "Pick Object"))
             self.labelx.show()
+            self.makeDumbTask()
 
     def editUi(self):
         self.taskUi(translate("draft", "Edit"))
@@ -701,6 +701,15 @@ class DraftToolBar:
         else:
             self.layout.setDirection(QtGui.QBoxLayout.LeftToRight)
 
+    def makeDumbTask(self):
+        "create a dumb taskdialog to prevent deleting the temp object"
+        class TaskPanel:
+            def __init__(self):
+                pass
+            def getStandardButtons(self):
+                return 0
+        panel = TaskPanel()
+        FreeCADGui.Control.showDialog(panel)
 
 #---------------------------------------------------------------------------
 # Processing functions
