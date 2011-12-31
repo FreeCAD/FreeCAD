@@ -12,6 +12,7 @@ BUILT_SOURCES=\
 		ui_DlgPartImportIges.h \
 		ui_DlgPartImportStep.h \
 		ui_DlgPrimitives.h \
+		ui_Location.h \
 		ui_DlgSettings3DViewPart.h \
 		ui_DlgSettingsGeneral.h \
 		ui_Mirroring.h \
@@ -220,6 +221,7 @@ EXTRA_DIST = \
 		DlgPartImportIges.ui \
 		DlgPartImportStep.ui \
 		DlgPrimitives.ui \
+		Location.ui \
 		DlgSettings3DViewPart.ui \
 		DlgSettingsGeneral.ui \
 		Mirroring.ui \

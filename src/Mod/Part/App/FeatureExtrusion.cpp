@@ -23,10 +23,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
+# include <gp_Trsf.hxx>
+# include <BRepOffsetAPI_MakeOffset.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
+# include <Precision.hxx>
+# include <ShapeAnalysis.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <TopoDS.hxx>
+# include <TopExp_Explorer.hxx>
 #endif
 
 
 #include "FeatureExtrusion.h"
+#include <Base/Tools.h>
+#include <Base/Exception.h>
 
 
 using namespace Part;
@@ -38,12 +52,16 @@ Extrusion::Extrusion()
 {
     ADD_PROPERTY(Base,(0));
     ADD_PROPERTY(Dir,(Base::Vector3f(0.0f,0.0f,1.0f)));
+    ADD_PROPERTY(Solid,(false));
+    ADD_PROPERTY(TaperAngle,(0.0f));
 }
 
 short Extrusion::mustExecute() const
 {
     if (Base.isTouched() ||
-        Dir.isTouched() )
+        Dir.isTouched() ||
+        Solid.isTouched() ||
+        TaperAngle.isTouched())
         return 1;
     return 0;
 }
@@ -59,13 +77,78 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 
     Base::Vector3f v = Dir.getValue();
     gp_Vec vec(v.x,v.y,v.z);
+    float taperAngle = TaperAngle.getValue();
+    bool makeSolid = Solid.getValue();
 
     try {
-        // Now, let's get the TopoDS_Shape
-        TopoDS_Shape swept = base->Shape.getShape().makePrism(vec);
-        if (swept.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
-        this->Shape.setValue(swept);
+        if (std::fabs(taperAngle) >= Precision::Confusion()) {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+            Base::SignalException se;
+#endif
+            double distance = std::tan(Base::toRadians(taperAngle)) * vec.Magnitude();
+            const TopoDS_Shape& shape = base->Shape.getValue();
+            bool isWire = (shape.ShapeType() == TopAbs_WIRE);
+            bool isFace = (shape.ShapeType() == TopAbs_FACE);
+            if (!isWire && !isFace)
+                return new App::DocumentObjectExecReturn("Only a wire or a face is supported");
+
+            std::list<TopoDS_Wire> wire_list;
+            BRepOffsetAPI_MakeOffset mkOffset;
+            if (isWire) {
+#if 1 //OCC_HEX_VERSION < 0x060502
+                // The input wire may have erorrs in its topology
+                // and thus may cause a crash in the Perfrom() method
+                // See also:
+                // http://www.opencascade.org/org/forum/thread_17640/
+                // http://www.opencascade.org/org/forum/thread_12012/
+                ShapeFix_Wire aFix;
+                aFix.Load(TopoDS::Wire(shape));
+                aFix.FixReorder();
+                aFix.FixConnected();
+                aFix.FixClosed();
+                mkOffset.AddWire(aFix.Wire());
+                wire_list.push_back(aFix.Wire());
+#else
+                mkOffset.AddWire(TopoDS::Wire(shape));
+#endif
+            }
+            else if (isFace) {
+                TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+                wire_list.push_back(outerWire);
+                mkOffset.AddWire(outerWire);
+            }
+
+            mkOffset.Perform(distance);
+
+            gp_Trsf mat;
+            mat.SetTranslation(vec);
+            BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
+            wire_list.push_back(TopoDS::Wire(mkTransform.Shape()));
+
+            BRepOffsetAPI_ThruSections mkGenerator(makeSolid ? Standard_True : Standard_False, Standard_False);
+            for (std::list<TopoDS_Wire>::const_iterator it = wire_list.begin(); it != wire_list.end(); ++it) {
+                const TopoDS_Wire &wire = *it;
+                mkGenerator.AddWire(wire);
+            }
+
+            mkGenerator.Build();
+            this->Shape.setValue(mkGenerator.Shape());
+        }
+        else {
+            // Now, let's get the TopoDS_Shape
+            TopoDS_Shape myShape = base->Shape.getValue();
+            if (myShape.IsNull())
+                Standard_Failure::Raise("Cannot extrude empty shape");
+            if (makeSolid && myShape.ShapeType() == TopAbs_WIRE) {
+                BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(myShape));
+                myShape = mkFace.Face();
+            }
+            BRepPrimAPI_MakePrism mkPrism(myShape, vec);
+            TopoDS_Shape swept = mkPrism.Shape();
+            if (swept.IsNull())
+                return new App::DocumentObjectExecReturn("Resulting shape is null");
+            this->Shape.setValue(swept);
+        }
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {

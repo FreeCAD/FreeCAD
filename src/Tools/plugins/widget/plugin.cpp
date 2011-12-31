@@ -108,6 +108,47 @@ public:
     }
 };
 
+class LocationWidgetPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    LocationWidgetPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::LocationWidget(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Display Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( urllabel_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/InputVector.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Location");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("A widget to define a location.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::LocationWidget");
+    }
+};
+
 static const char *filechooser_pixmap[] = {
     "22 22 8 1",
     "  c Gray100",
@@ -1017,6 +1058,7 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
 {
     QList<QDesignerCustomWidgetInterface *> cw;
     cw.append(new UrlLabelPlugin);
+    cw.append(new LocationWidgetPlugin);
     cw.append(new FileChooserPlugin);
     cw.append(new AccelLineEditPlugin);
     cw.append(new CommandIconViewPlugin);
