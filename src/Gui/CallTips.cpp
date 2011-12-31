@@ -156,6 +156,13 @@ void CallTipsList::validateCursor()
         cursor.setPosition(this->cursorPos);
         cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
         QString word = cursor.selectedText();
+        if (!word.isEmpty()) {
+            // the following text might be an operator, brackets, ...
+            const QChar underscore =  QLatin1Char('_');
+            const QChar ch = word.at(0);
+            if (!ch.isLetterOrNumber() && ch != underscore)
+                word.clear();
+        }
         if (currentPos > this->cursorPos+word.length()) {
             hide();
         }

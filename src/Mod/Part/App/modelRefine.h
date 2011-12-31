@@ -34,6 +34,7 @@
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopTools_DataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 
 
@@ -105,20 +106,20 @@ namespace ModelRefine
     class FaceAdjacencySplitter
     {
     public:
-        FaceAdjacencySplitter(){}
+        FaceAdjacencySplitter(const TopoDS_Shell &shell);
         void split(const FaceVectorType &facesIn);
         int getGroupCount() const {return adjacencyArray.size();}
         const FaceVectorType& getGroup(const std::size_t &index) const {return adjacencyArray[index];}
 
     private:
-        bool hasBeenMapped(const TopoDS_Face &shape);
-        void recursiveFind(FaceVectorType &tempSet, const FaceVectorType &facesIn);
-        void buildMap(const FaceVectorType &facesIn);
-        bool adjacentTest(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo);
+        FaceAdjacencySplitter(){}
+        void recursiveFind(const TopoDS_Face &face, FaceVectorType &outVector);
         std::vector<FaceVectorType> adjacencyArray;
-        TopTools_DataMapOfShapeListOfShape faceEdgeMap;
         TopTools_MapOfShape processedMap;
+        TopTools_MapOfShape facesInMap;
 
+        TopTools_IndexedDataMapOfShapeListOfShape faceToEdgeMap;
+        TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
     };
 
     class FaceEqualitySplitter

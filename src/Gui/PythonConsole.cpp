@@ -548,8 +548,20 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               restartHistory = false;
           }   break;
 
-          case Qt::Key_Backspace:
           case Qt::Key_Left:
+          {
+              if (cursor > inputLineBegin)
+                  { TextEdit::keyPressEvent(e); }
+              restartHistory = false;
+          }   break;
+
+          case Qt::Key_Right:
+          {
+              TextEdit::keyPressEvent(e);
+              restartHistory = false;
+          }   break;
+
+          case Qt::Key_Backspace:
           {
               if (cursor > inputLineBegin)
                   { TextEdit::keyPressEvent(e); }

@@ -75,19 +75,10 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     ui->doubleSpinBox->setValue(l);
     ui->doubleSpinBox->selectAll();
     ui->checkBoxMirrored->setChecked(mirrored);
-
-    // check if the sketch has support
-    Sketcher::SketchObject *pcSketch;
-    if (pcPad->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
-        if (pcSketch->Support.getValue())
-            // in case of sketch with support, reverse makes no sense (goes into the part)
-            ui->checkBoxReversed->setEnabled(0);
-        else
-            ui->checkBoxReversed->setChecked(reversed);
-    }
-
+    // According to bug #0000521 the reversed option
+    // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
+
     // Make sure that the spin box has the focus to get key events
     // Calling setFocus() directly doesn't work because the spin box is not
     // yet visible. 

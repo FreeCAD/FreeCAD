@@ -25,53 +25,14 @@
 #define PART_TOPOSHAPE_H
 
 #include <iostream>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <App/ComplexGeoData.h>
 
+class gp_Ax1;
 class gp_Ax2;
-
-namespace Base {
-// Specialization for gp_Pnt
-template <>
-struct vec_traits<gp_Pnt> {
-    typedef gp_Pnt vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
-private:
-    const vec_type& v;
-};
-// Specialization for gp_Vec
-template <>
-struct vec_traits<gp_Vec> {
-    typedef gp_Vec vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
-private:
-    const vec_type& v;
-};
-// Specialization for gp_Dir
-template <>
-struct vec_traits<gp_Dir> {
-    typedef gp_Dir vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
-private:
-    const vec_type& v;
-};
-}
+class gp_Vec;
 
 namespace Part
 {

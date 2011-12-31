@@ -68,7 +68,7 @@ public:
     void clicked(int);
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
+    { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
 
 private:
     DlgExtrusion* widget;
