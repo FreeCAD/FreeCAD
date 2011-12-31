@@ -312,7 +312,23 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.circleAngle1->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 10) {  // vertex
+        else if (ui.comboBox1->currentIndex() == 10) {  // ellipse
+            name = QString::fromAscii(doc->getUniqueObjectName("Ellipse").c_str());
+            cmd = QString::fromAscii(
+                "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
+                "App.ActiveDocument.%1.MajorRadius=%2\n"
+                "App.ActiveDocument.%1.MinorRadius=%3\n"
+                "App.ActiveDocument.%1.Angle0=%4\n"
+                "App.ActiveDocument.%1.Angle1=%5\n"
+                "App.ActiveDocument.%1.Placement=%6\n")
+                .arg(name)
+                .arg(ui.ellipseMajorRadius->value(),0,'f',2)
+                .arg(ui.ellipseMinorRadius->value(),0,'f',2)
+                .arg(ui.ellipseAngle0->value(),0,'f',2)
+                .arg(ui.ellipseAngle1->value(),0,'f',2)
+                .arg(placement);
+        }
+        else if (ui.comboBox1->currentIndex() == 11) {  // vertex
             name = QString::fromAscii(doc->getUniqueObjectName("Vertex").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
@@ -326,7 +342,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.vertexZ->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 11) {  // line
+        else if (ui.comboBox1->currentIndex() == 12) {  // line
             name = QString::fromAscii(doc->getUniqueObjectName("Line").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
