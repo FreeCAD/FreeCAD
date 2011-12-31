@@ -73,9 +73,9 @@ How it works / how to extend:
 
 # import FreeCAD modules
 
-import FreeCAD, FreeCADGui, Part, math, sys, os, Image, Drawing, WorkingPlane
+import FreeCAD, FreeCADGui, math, sys, os, WorkingPlane
 from FreeCAD import Vector
-from draftlibs import fcvec, fcgeo
+from draftlibs import fcvec
 from pivy import coin
 
 #---------------------------------------------------------------------------
@@ -145,6 +145,7 @@ def getRealName(name):
 
 def getType(obj):
     "getType(object): returns the Draft type of the given object"
+    import Part
     if isinstance(obj,Part.Shape):
         return "Shape"
     if "Proxy" in obj.PropertiesList:
@@ -390,6 +391,7 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
+    from draftlibs import fcgeo
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
@@ -589,6 +591,7 @@ def fuse(object1,object2):
     the union of the 2 given objects. If the objects are
     coplanar, a special Draft Wire is used, otherwise we use
     a standard Part fuse.'''
+    from draftlibs import fcgeo
     if fcgeo.isCoplanar(object1.Shape.fuse(object2.Shape).Faces):
         obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Fusion")
         _Wire(obj)
@@ -704,6 +707,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     omitted, the rotation will be around the vertical Z axis.
     If copy is True, the actual objects are not moved, but copies
     are created instead. The objects (or their copies) are returned.'''
+    import Part
     typecheck([(copy,bool)], "rotate")
     if not isinstance(objectslist,list): objectslist = [objectslist]
     newobjlist = []
@@ -797,6 +801,8 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     and the offsetted wires will be bound by their endpoints, forming a face
     if sym is True, bind must be true too, and the offset is made on both
     sides, the total width being the given delta length.'''
+    import Part
+    from draftlibs import fcgeo
 
     def getRect(p,obj):
         "returns length,heigh,placement"
@@ -910,6 +916,7 @@ def draftify(objectslist,makeblock=False):
     '''draftify(objectslist,[makeblock]): turns each object of the given list
     (objectslist can also be a single object) into a Draft parametric
     wire. If makeblock is True, multiple objects will be grouped in a block'''
+    from draftlibs import fcgeo
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     newobjlist = []
@@ -949,6 +956,8 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
     specifies a scale factor for linewidths in %, and textmodifier specifies
     a scale factor for texts, in % (both default = 100). You can also supply
     an arbitrary projection vector.'''
+    import Part
+    from draftlibs import fcgeo
     svg = ""
     tmod = ((textmodifier-100)/2)+100
     if tmod == 0: tmod = 0.01
@@ -1179,7 +1188,8 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
     constraints will be automatically added to wire nodes, rectangles
     and circles. If addTo is an existing sketch, geometry will be added to it instead of
     creating a new one.'''
-
+    import Part
+    from draftlibs import fcgeo
     from Sketcher import Constraint
 
     StartPoint = 1
@@ -1382,6 +1392,8 @@ class _ViewProviderDimension:
         obj.Override = ''
 
     def calcGeom(self,obj):
+        import Part
+        from draftlibs import fcgeo
         p1 = obj.Start
         p4 = obj.End
         base = Part.Line(p1,p4).toShape()
@@ -1732,6 +1744,8 @@ class _ViewProviderAngularDimension:
         self.onChanged(vobj,"FontName")
 
     def calcGeom(self,obj):
+        import Part
+        from draftlibs import fcgeo
         rad = (obj.Dimline.sub(obj.Center)).Length
         cir = Part.makeCircle(rad,obj.Center,Vector(0,0,1),obj.FirstAngle,obj.LastAngle)
         cp = fcgeo.findMidpoint(cir.Edges[0])
@@ -1856,6 +1870,7 @@ class _Rectangle:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
+        import Part
         plm = fp.Placement
         p1 = Vector(0,0,0)
         p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
@@ -1910,6 +1925,7 @@ class _Circle:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
+        import Part
         plm = fp.Placement
         shape = Part.makeCircle(fp.Radius,Vector(0,0,0),
                                 Vector(0,0,1),fp.FirstAngle,fp.LastAngle)
@@ -1967,6 +1983,8 @@ class _Wire:
                     fp.Points = pts
                         
     def createGeometry(self,fp):
+        import Part
+        from draftlibs import fcgeo
         plm = fp.Placement
         if fp.Base and (not fp.Tool):
             if fp.Base.isDerivedFrom("Sketcher::SketchObject"):
@@ -2065,6 +2083,7 @@ class _Polygon:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
+        import Part
         plm = fp.Placement
         angle = (math.pi*2)/fp.FacesNumber
         if fp.DrawMode == 'inscribed':
@@ -2142,6 +2161,7 @@ class _BSpline:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
+        import Part
         plm = fp.Placement
         if fp.Points:
             if fp.Points[0] == fp.Points[-1]:
@@ -2209,6 +2229,7 @@ class _Block:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
+        import Part
         plm = fp.Placement
         shps = []
         for c in fp.Components:
@@ -2247,6 +2268,8 @@ class _Shape2DView:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
+        import Drawing
+        from draftlibs import fcgeo
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -2296,6 +2319,7 @@ class _Array:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
+        from draftlibs import fcgeo
         if obj.Base:
             pl = obj.Placement
             if obj.ArrayType == "ortho":
@@ -2307,6 +2331,7 @@ class _Array:
                 obj.Placement = pl
 
     def rectArray(self,shape,xvector,yvector,xnum,ynum):
+        import Part
         base = [shape.copy()]
         for xcount in range(xnum):
             currentxvector=fcvec.scale(xvector,xcount)
@@ -2324,6 +2349,7 @@ class _Array:
         return Part.makeCompound(base)
 
     def polarArray(self,shape,center,angle,num):
+        import Part
         fraction = angle/num
         base = [shape.copy()]
         for i in range(num):
@@ -2356,6 +2382,7 @@ class _Point:
         self.createGeometry(fp)
 
     def createGeometry(self,fp):
+        import Part
         shape = Part.Vertex(Vector(fp.X,fp.Y,fp.Z))
         fp.Shape = shape
 

@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,ArchComponent,ArchCommands
+import FreeCAD,FreeCADGui,Draft,ArchComponent,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -58,7 +58,7 @@ class _CommandCell:
             if Draft.getType(sel[0]) in ["Floor","Site","Building"]:
                 FreeCAD.ActiveDocument.openTransaction("Type conversion")
                 nobj = makeCell()
-                Commands.copyProperties(sel[0],nobj)
+                ArchCommands.copyProperties(sel[0],nobj)
                 FreeCAD.ActiveDocument.removeObject(sel[0].Name)
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
@@ -86,6 +86,7 @@ class _Cell(ArchComponent.Component):
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
+        import Part
         pl = obj.Placement
         if obj.Components:
             if obj.JoinMode:

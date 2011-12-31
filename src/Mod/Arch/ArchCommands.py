@@ -21,8 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,MeshPart,ArchComponent
-from draftlibs import fcgeo,fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent
+from draftlibs import fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -138,6 +138,8 @@ def splitMesh(obj,mark=True):
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
+    import Part,MeshPart
+    from draftlibs import fcgeo
     if "Mesh" in obj.PropertiesList:
         faces = []	
         mesh = obj.Mesh
@@ -195,6 +197,7 @@ def meshToShape(obj,mark=True):
 def removeShape(objs,mark=True):
     '''takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters.'''
+    from draftlibs import fcgeo
     if not isinstance(objs,list):
         objs = [objs]
     for obj in objs:

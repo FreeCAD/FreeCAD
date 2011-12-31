@@ -22,7 +22,7 @@
 #***************************************************************************
 
 
-import FreeCAD, FreeCADGui, Part, math
+import FreeCAD, FreeCADGui, math
 from FreeCAD import Vector
 from draftlibs import fcvec
 

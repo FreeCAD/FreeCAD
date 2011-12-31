@@ -54,7 +54,7 @@ class _CommandSite:
             if Draft.getType(sel[0]) in ["Cell","Building","Floor"]:
                 FreeCAD.ActiveDocument.openTransaction("Type conversion")
                 nobj = makeSite()
-                Commands.copyProperties(sel[0],nobj)
+                ArchCommands.copyProperties(sel[0],nobj)
                 FreeCAD.ActiveDocument.removeObject(sel[0].Name)
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
