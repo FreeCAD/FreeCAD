@@ -162,6 +162,8 @@ void DlgExtrusion::apply()
         double dirX = ui->dirX->value();
         double dirY = ui->dirY->value();
         double dirZ = ui->dirZ->value();
+        double angle = ui->taperAngle->value();
+        bool makeSolid = ui->makeSolid->isChecked();
 
         // inspect geometry
         App::DocumentObject* obj = activeDoc->getObject((const char*)shape.toAscii());
@@ -192,12 +194,16 @@ void DlgExtrusion::apply()
             "FreeCAD.getDocument(\"%1\").addObject(\"%2\",\"%3\")\n"
             "FreeCAD.getDocument(\"%1\").%3.Base = FreeCAD.getDocument(\"%1\").%4\n"
             "FreeCAD.getDocument(\"%1\").%3.Dir = (%5,%6,%7)\n"
+            "FreeCAD.getDocument(\"%1\").%3.Solid = (%8)\n"
+            "FreeCAD.getDocument(\"%1\").%3.TaperAngle = (%9)\n"
             "FreeCADGui.getDocument(\"%1\").%4.Visibility = False\n")
             .arg(QString::fromAscii(this->document.c_str()))
             .arg(type).arg(name).arg(shape)
             .arg(dirX*len)
             .arg(dirY*len)
-            .arg(dirZ*len);
+            .arg(dirZ*len)
+            .arg(makeSolid ? QLatin1String("True") : QLatin1String("False"))
+            .arg(angle);
         Gui::Application::Instance->runPythonCode((const char*)code.toAscii());
         QByteArray to = name.toAscii();
         QByteArray from = shape.toAscii();

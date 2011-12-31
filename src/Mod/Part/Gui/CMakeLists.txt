@@ -58,6 +58,7 @@ set(PartGui_UIC_SRCS
     DlgPartImportIges.ui
     DlgPartImportStep.ui
     DlgPrimitives.ui
+    Location.ui
     DlgRevolution.ui
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
@@ -104,6 +105,7 @@ SET(PartGui_SRCS
     DlgPrimitives.cpp
     DlgPrimitives.h
     DlgPrimitives.ui
+    Location.ui
     DlgRevolution.cpp
     DlgRevolution.h
     DlgRevolution.ui

@@ -40,7 +40,8 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
-#include "Mod/Part/App/TopoShape.h"
+#include "TopoShape.h"
+#include "Tools.h"
 
 // inclusion of the generated files (generated out of TopoShapeSolidPy.xml)
 #include "TopoShapeShellPy.h"

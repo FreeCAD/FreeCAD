@@ -23,9 +23,10 @@
 
 #include "PreCompiled.h"
 #include <BRep_Builder.hxx>
+#include <Standard_Failure.hxx>
 #include <TopoDS_CompSolid.hxx>
 
-#include "Mod/Part/App/TopoShape.h"
+#include "TopoShape.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompSolidPy.xml)
 #include "TopoShapeSolidPy.h"

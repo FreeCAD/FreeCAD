@@ -321,7 +321,8 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed)
     Geoms.push_back(def);
 
     // arcs require an ArcRules constraint for the end points
-    GCSsys.addConstraintArcRules(a);
+    if (!fixed)
+        GCSsys.addConstraintArcRules(a);
 
     // return the position of the newly added geometry
     return Geoms.size()-1;

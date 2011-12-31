@@ -755,6 +755,9 @@ int System::solve_DL(SubSystem* subsys)
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
 
+    if (xsize == 0)
+        return Success;
+
     Eigen::VectorXd x(xsize), x_new(xsize);
     Eigen::VectorXd fx(csize), fx_new(csize);
     Eigen::MatrixXd Jx(csize, xsize), Jx_new(csize, xsize);

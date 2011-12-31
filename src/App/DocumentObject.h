@@ -179,6 +179,8 @@ protected:
     virtual void onBeforeChange(const Property* prop);
     /// get called by the container when a property was changed
     virtual void onChanged(const Property* prop);
+    /// get called after a document has been fully restored
+    virtual void onDocumentRestored() {}
 
      /// python object of this class and all descendend
 protected: // attributes
