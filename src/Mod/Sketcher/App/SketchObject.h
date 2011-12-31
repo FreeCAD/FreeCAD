@@ -148,6 +148,7 @@ public:
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
+    virtual void onDocumentRestored();
 
 private:
     std::vector<Part::Geometry *> ExternalGeo;

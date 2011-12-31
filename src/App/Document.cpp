@@ -987,8 +987,10 @@ void Document::restore (void)
     reader.readFiles(zipstream);
     
     // reset all touched
-    for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It)
+    for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
+        It->second->onDocumentRestored();
         It->second->purgeTouched();
+    }
 
     GetApplication().signalRestoreDocument(*this);
 }

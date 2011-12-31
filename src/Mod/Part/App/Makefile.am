@@ -189,6 +189,7 @@ include_HEADERS=\
 		ProgressIndicator.h \
 		PropertyGeometryList.h \
 		PropertyTopoShape.h \
+		Tools.h \
 		TopoShape.h
 
 
