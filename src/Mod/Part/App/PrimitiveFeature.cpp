@@ -38,6 +38,7 @@
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <gp_Circ.hxx>
+# include <gp_Elips.hxx>
 # include <gp_GTrsf.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <Geom_Plane.hxx>
@@ -724,4 +725,62 @@ void Wedge::onChanged(const App::Property* prop)
         }
     }
     Part::Primitive::onChanged(prop);
+}
+
+App::PropertyFloatConstraint::Constraints Ellipse::angleRange = {0.0,360.0,1.0};
+
+PROPERTY_SOURCE(Part::Ellipse, Part::Primitive)
+
+
+Ellipse::Ellipse()
+{
+    ADD_PROPERTY(MajorRadius,(4.0f));
+    ADD_PROPERTY(MinorRadius,(4.0f));
+    ADD_PROPERTY(Angle0,(0.0f));
+    Angle0.setConstraints(&angleRange);
+    ADD_PROPERTY(Angle1,(360.0f));
+    Angle1.setConstraints(&angleRange);
+}
+
+Ellipse::~Ellipse()
+{
+}
+
+short Ellipse::mustExecute() const
+{
+    if (Angle0.isTouched() ||
+        Angle1.isTouched() ||
+        MajorRadius.isTouched() ||
+        MinorRadius.isTouched())
+        return 1;
+    return Part::Feature::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Ellipse::execute(void)
+{
+    gp_Elips ellipse;
+    ellipse.SetMajorRadius(this->MajorRadius.getValue());
+    ellipse.SetMinorRadius(this->MinorRadius.getValue());
+    
+    BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle0.getValue()),
+                                                Base::toRadians<double>(this->Angle1.getValue()));
+    const TopoDS_Edge& edge = clMakeEdge.Edge();
+    this->Shape.setValue(edge);
+
+    return App::DocumentObject::StdReturn;
+}
+
+void Ellipse::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &MajorRadius || prop == &MinorRadius || prop == &Angle0 || prop == &Angle1){
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
 }

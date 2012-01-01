@@ -558,6 +558,7 @@ SET(View3D_CPP_SRCS
     InventorNavigationStyle.cpp
     CADNavigationStyle.cpp
     BlenderNavigationStyle.cpp
+    TouchpadNavigationStyle.cpp
     SplitView3DInventor.cpp
     View.cpp
     View3DInventor.cpp

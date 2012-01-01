@@ -123,6 +123,7 @@ void Gui::SoFCDB::init()
     InventorNavigationStyle         ::init();
     CADNavigationStyle              ::init();
     BlenderNavigationStyle          ::init();
+    TouchpadNavigationStyle         ::init();
 
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");

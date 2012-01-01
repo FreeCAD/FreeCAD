@@ -241,9 +241,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
     state->push();
 
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, srcw);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-
     glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
@@ -282,7 +279,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     glEnd();
 
     // Reset the Mode
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
     glPopAttrib();
     state->pop();
 }
