@@ -265,6 +265,31 @@ protected:
     void onChanged(const App::Property* prop);
 };
 
+class Ellipse : public Part::Primitive
+{
+    PROPERTY_HEADER(Part::Ellipse);
+
+public:
+    Ellipse();
+    virtual ~Ellipse();
+
+    App::PropertyFloat MajorRadius;
+    App::PropertyFloat MinorRadius;
+    App::PropertyAngle Angle0;
+    App::PropertyAngle Angle1;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    void onChanged(const App::Property*);
+    //@}
+
+private:
+    static App::PropertyFloatConstraint::Constraints angleRange;
+};
+
 } //namespace Part
 
 

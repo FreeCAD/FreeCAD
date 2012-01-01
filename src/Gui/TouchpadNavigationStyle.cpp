@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,35 +49,35 @@ using namespace Gui;
 
 // ----------------------------------------------------------------------------------
 
-/* TRANSLATOR Gui::InventorNavigationStyle */
+/* TRANSLATOR Gui::TouchpadNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::InventorNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::TouchpadNavigationStyle, Gui::UserNavigationStyle);
 
-InventorNavigationStyle::InventorNavigationStyle()
+TouchpadNavigationStyle::TouchpadNavigationStyle()
 {
 }
 
-InventorNavigationStyle::~InventorNavigationStyle()
+TouchpadNavigationStyle::~TouchpadNavigationStyle()
 {
 }
 
-const char* InventorNavigationStyle::mouseButtons(ViewerMode mode)
+const char* TouchpadNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
-        return QT_TR_NOOP("Press CTRL and left mouse button");
-    case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press middle mouse button");
-    case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press left mouse button");
+    case NavigationStyle::PANNING:
+        return QT_TR_NOOP("Press SHIFT button");
+    case NavigationStyle::DRAGGING:
+        return QT_TR_NOOP("Press ALT button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button");
+        return QT_TR_NOOP("Press PgUp/PgDown button");
     default:
         return "No description";
     }
 }
 
-SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
+SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
@@ -153,6 +153,20 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (!this->isViewing())
                 this->setViewing(true);
             break;
+        case SoKeyboardEvent::PAGE_UP:
+            if (this->invertZoom)
+                zoom(viewer->getCamera(), 0.05f);
+            else
+                zoom(viewer->getCamera(), -0.05f);
+            processed = TRUE;
+            break;
+        case SoKeyboardEvent::PAGE_DOWN:
+            if (this->invertZoom)
+                zoom(viewer->getCamera(), -0.05f);
+            else
+                zoom(viewer->getCamera(), 0.05f);
+            processed = TRUE;
+            break;
         default:
             break;
         }
@@ -167,47 +181,33 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         // SoDebugError::postInfo("processSoEvent", "button = %d", button);
         switch (button) {
         case SoMouseButtonEvent::BUTTON1:
+            this->lockrecenter = TRUE;
             this->button1down = press;
-            if (press && ev->wasShiftDown() &&
-                (this->currentmode != NavigationStyle::SELECTION)) {
-                this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getCamera()->focalDistance.getValue());
-                this->lockrecenter = FALSE;
-            }
-            else if (!press && ev->wasShiftDown() &&
-                (this->currentmode != NavigationStyle::SELECTION)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                // is it just a left click?
-                if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->lookAtPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
-                    processed = TRUE;
-                }
-            }
-            else if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
+            if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
                 newmode = NavigationStyle::SEEK_MODE;
                 this->seekToPoint(pos); // implicitly calls interactiveCountInc()
                 processed = TRUE;
-                this->lockrecenter = TRUE;
             }
-            else if (press && (this->currentmode == NavigationStyle::IDLE)) {
-                this->setViewing(true);
+            else if (press && (this->currentmode == NavigationStyle::PANNING ||
+                               this->currentmode == NavigationStyle::ZOOMING)) {
+                newmode = NavigationStyle::DRAGGING;
+                this->centerTime = ev->getTime();
                 processed = TRUE;
-                this->lockrecenter = TRUE;
+            }
+            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
+                SbTime tmp = (ev->getTime() - this->centerTime);
+                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
+                if (tmp.getValue() < dci) {
+                    newmode = NavigationStyle::ZOOMING;
+                }
+                processed = TRUE;
             }
             else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
                 this->setViewing(false);
                 processed = TRUE;
-                this->lockrecenter = TRUE;
             }
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = TRUE;
-                this->lockrecenter = TRUE;
             }
             break;
         case SoMouseButtonEvent::BUTTON2:
@@ -218,7 +218,8 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 // If we are in zoom or pan mode ignore RMB events otherwise
                 // the canvas doesn't get any release events 
                 if (this->currentmode != NavigationStyle::ZOOMING && 
-                    this->currentmode != NavigationStyle::PANNING) {
+                    this->currentmode != NavigationStyle::PANNING &&
+                    this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {
                         if (!press) { // release right mouse button
                             this->openPopupMenu(event->getPosition());
@@ -226,43 +227,22 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                     }
                 }
             }
-            this->button2down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON3:
-            if (press) {
+            // Alternative way of rotating & zooming
+            if (press && (this->currentmode == NavigationStyle::PANNING ||
+                          this->currentmode == NavigationStyle::ZOOMING)) {
+                newmode = NavigationStyle::DRAGGING;
                 this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getCamera()->focalDistance.getValue());
-                this->lockrecenter = FALSE;
+                processed = TRUE;
             }
-            else {
+            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
                 SbTime tmp = (ev->getTime() - this->centerTime);
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                // is it just a middle click?
-                if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->lookAtPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
-                    processed = TRUE;
+                if (tmp.getValue() < dci) {
+                    newmode = NavigationStyle::ZOOMING;
                 }
+                processed = TRUE;
             }
-            this->button3down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON4:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), -0.05f);
-            else
-                zoom(viewer->getCamera(), 0.05f);
-            processed = TRUE;
-            break;
-        case SoMouseButtonEvent::BUTTON5:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), 0.05f);
-            else
-                zoom(viewer->getCamera(), -0.05f);
-            processed = TRUE;
+            this->button2down = press;
             break;
         default:
             break;
@@ -293,74 +273,61 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
         SoMotion3Event * const event = (SoMotion3Event *) ev;
         SoCamera * const camera = viewer->getCamera();
-        if (camera) {
-            SbVec3f dir = event->getTranslation();
-            camera->orientation.getValue().multVec(dir,dir);
-            camera->position = camera->position.getValue() + dir;
-            camera->orientation = 
-                event->getRotation() * camera->orientation.getValue();
-            processed = TRUE;
+
+        SbVec3f dir = event->getTranslation();
+        if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())){
+            static float zoomConstant(-.03f);
+            dir[2] = 0.0;//don't move the cam for z translation.
+
+            SoOrthographicCamera *oCam = static_cast<SoOrthographicCamera *>(camera);
+            oCam->scaleHeight(1.0-event->getTranslation()[2] * zoomConstant);
         }
+        camera->orientation.getValue().multVec(dir,dir);
+        camera->position = camera->position.getValue() + dir;
+        camera->orientation = event->getRotation() * camera->orientation.getValue();
+        processed = TRUE;
     }
 
     enum {
         BUTTON1DOWN = 1 << 0,
-        BUTTON3DOWN = 1 << 1,
+        BUTTON2DOWN = 1 << 1,
         CTRLDOWN =    1 << 2,
         SHIFTDOWN =   1 << 3,
-        BUTTON2DOWN = 1 << 4
+        ALTDOWN =     1 << 4
     };
     unsigned int combo =
         (this->button1down ? BUTTON1DOWN : 0) |
         (this->button2down ? BUTTON2DOWN : 0) |
-        (this->button3down ? BUTTON3DOWN : 0) |
         (this->ctrldown ? CTRLDOWN : 0) |
-        (this->shiftdown ? SHIFTDOWN : 0);
+        (this->shiftdown ? SHIFTDOWN : 0) |
+        (this->altdown ? ALTDOWN : 0);
 
     switch (combo) {
     case 0:
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
-
-        if (curmode == NavigationStyle::DRAGGING) {
-            if (doSpin())
-                newmode = NavigationStyle::SPINNING;
-        }
         break;
     case BUTTON1DOWN:
-        newmode = NavigationStyle::DRAGGING;
-        break;
-    case BUTTON3DOWN:
-    case CTRLDOWN|SHIFTDOWN:
-    case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
-        newmode = NavigationStyle::PANNING;
+        // make sure not to change the selection when stopping spinning
+        if (curmode == NavigationStyle::SPINNING)
+            newmode = NavigationStyle::IDLE;
+        else
+            newmode = NavigationStyle::SELECTION;
         break;
     case CTRLDOWN:
-    case CTRLDOWN|BUTTON1DOWN:
-    case SHIFTDOWN:
-    case SHIFTDOWN|BUTTON1DOWN:
-        newmode = NavigationStyle::SELECTION;
+        newmode = NavigationStyle::IDLE;
         break;
-    case BUTTON1DOWN|BUTTON3DOWN:
-    case CTRLDOWN|BUTTON3DOWN:
-    case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
+    case SHIFTDOWN:
+        newmode = NavigationStyle::PANNING;
+        break;
+    case ALTDOWN:
+    case CTRLDOWN|SHIFTDOWN:
+        newmode = NavigationStyle::DRAGGING;
+        break;
+    case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;
-
-        // There are many cases we don't handle that just falls through to
-        // the default case, like SHIFTDOWN, CTRLDOWN, CTRLDOWN|SHIFTDOWN,
-        // SHIFTDOWN|BUTTON3DOWN, SHIFTDOWN|CTRLDOWN|BUTTON3DOWN, etc.
-        // This is a feature, not a bug. :-)
-        //
-        // mortene.
-
     default:
-        // The default will make a spin stop and otherwise not do
-        // anything.
-        if ((curmode != NavigationStyle::SEEK_WAIT_MODE) &&
-            (curmode != NavigationStyle::SEEK_MODE)) {
-            newmode = NavigationStyle::IDLE;
-        }
         break;
     }
 
@@ -370,9 +337,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if ((curmode == NavigationStyle::SELECTION ||
-         newmode == NavigationStyle::SELECTION ||
-         viewer->isEditing()) && !processed)
+    if (!processed)
         processed = inherited::processSoEvent(ev);
     else
         return TRUE;
