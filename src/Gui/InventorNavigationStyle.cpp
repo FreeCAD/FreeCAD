@@ -331,13 +331,14 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON3DOWN:
-    case SHIFTDOWN|BUTTON1DOWN:
+    case CTRLDOWN|SHIFTDOWN:
+    case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
         newmode = NavigationStyle::PANNING;
         break;
     case CTRLDOWN:
     case CTRLDOWN|BUTTON1DOWN:
-    case CTRLDOWN|SHIFTDOWN:
-    case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
+    case SHIFTDOWN:
+    case SHIFTDOWN|BUTTON1DOWN:
         newmode = NavigationStyle::SELECTION;
         break;
     case BUTTON1DOWN|BUTTON3DOWN:
@@ -369,7 +370,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if ((curmode == NavigationStyle::SELECTION || viewer->isEditing()) && !processed)
+    if ((curmode == NavigationStyle::SELECTION ||
+         newmode == NavigationStyle::SELECTION ||
+         viewer->isEditing()) && !processed)
         processed = inherited::processSoEvent(ev);
     else
         return TRUE;
