@@ -596,7 +596,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         } else {
                             //Get Viewer
                             Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                            Gui::View3DInventorViewer *viewer ;
+                            Gui::View3DInventorViewer *viewer;
                             viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
 
                             Gui::MenuItem *geom = new Gui::MenuItem();
@@ -1879,11 +1879,11 @@ Restart:
                     // Get Current Scale Factor
                     float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
 
-                    Base::Vector3d constrPos1 = midpos1 + (norm1 * scale * 2.5 );
+                    Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
                     constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
 
-                    Base::Vector3d constrPos2 = midpos2 + (norm2 * scale * 2.5);
-                    constrPos2 = seekConstraintPosition(constrPos2, dir2, scale * 2.5, edit->constrGroup->getChild(i));
+                    Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
+                    constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
 
                     // Translate the Icon based on calculated position
                     Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1
@@ -2079,11 +2079,11 @@ Restart:
                             // Get Current Scale Factor
                             float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
 
-                            Base::Vector3d constrPos1 = midpos1 + (norm1 * scale * 2.5);
-                            constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
+                            constrPos1 = seekConstraintPosition(constrPos1, dir1, 2.5 * scale, edit->constrGroup->getChild(i));
 
-                            Base::Vector3d constrPos2 = midpos2 + (norm2 * scale * 2.5);
-                            constrPos2 = seekConstraintPosition(constrPos2, dir2, scale * 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
+                            constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
 
                             // Translate the Icon based on calculated position
                             Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1

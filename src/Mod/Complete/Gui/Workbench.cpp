@@ -89,7 +89,7 @@ void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) cons
 
             *DraftContext << "Draft_ApplyStyle" << "Draft_ToggleDisplayMode"
                           << "Draft_AddToGroup";
-            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_TreeSelection" 
+            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Separator" << "Std_Delete" << DraftContext;
             }
     }
@@ -103,7 +103,7 @@ void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) cons
             *DraftContext << "Draft_ApplyStyle" << "Draft_ToggleDisplayMode"
                           << "Draft_AddToGroup";
 
-            *item << "Std_SetAppearance" << "Std_ToggleVisibility" 
+            *item << "Std_SetAppearance" << "Std_ToggleVisibility"
                   << "Std_RandomColor" << "Separator" << "Std_Delete"
                   << DraftContext;
             }
@@ -123,7 +123,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
           << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
           << "Separator" << "Std_Import" << "Std_Export"
-          << "Std_MergeProjects" << "Std_ProjectInfo" 
+          << "Std_MergeProjects" << "Std_ProjectInfo"
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
           << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
 
@@ -140,14 +140,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     stdviews->setCommand("Standard views");
     *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewAxo"
               << "Separator" << "Std_ViewFront" << "Std_ViewRight"
-              << "Std_ViewTop" << "Separator" << "Std_ViewRear" 
+              << "Std_ViewTop" << "Separator" << "Std_ViewRear"
               << "Std_ViewLeft" << "Std_ViewBottom";
 
     // stereo
     Gui::MenuItem* view3d = new Gui::MenuItem;
     view3d->setCommand("&Stereo");
-    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff" 
-            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns" 
+    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff"
+            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns"
             << "Std_ViewIvStereoOff" << "Separator" << "Std_ViewIvIssueCamPos";
 
     // zoom
@@ -165,14 +165,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // View
     Gui::MenuItem* view = new Gui::MenuItem( menuBar );
     view->setCommand("&View");
-    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Separator" 
+    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Separator"
           << stdviews << "Std_FreezeViews" << "Separator" << view3d << "Std_DrawStyle" << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
-          << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-          << "Std_MeasureDistance" << "Separator" 
-          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
+          << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
+          << "Std_MeasureDistance" << "Separator"
+          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
           << "Std_ViewStatusBar";
 
     // Tools
@@ -180,7 +180,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     tool->setCommand("&Tools");
     *tool << "Std_DlgParameter" << "Separator"
           << "Std_DlgMacroRecord" << "Std_MacroStopRecord"
-          << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect" 
+          << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect"
           << "Separator" << "Std_ViewScreenShot" << "Std_SceneInspector"
           << "Std_ProjectUtil" << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
 
@@ -190,44 +190,44 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // submenu analyze
     Gui::MenuItem* analyze = new Gui::MenuItem();
     analyze->setCommand("Analyze");
-    *analyze << "Mesh_Evaluation" 
-             << "Mesh_EvaluateFacet" 
-             << "Mesh_CurvatureInfo" 
-             << "Separator" 
-             << "Mesh_EvaluateSolid" 
+    *analyze << "Mesh_Evaluation"
+             << "Mesh_EvaluateFacet"
+             << "Mesh_CurvatureInfo"
+             << "Separator"
+             << "Mesh_EvaluateSolid"
              << "Mesh_BoundingBox";
 
     // submenu boolean
     Gui::MenuItem* boolean = new Gui::MenuItem();
     boolean->setCommand("Boolean");
-    *boolean << "Mesh_Union" 
-             << "Mesh_Intersection" 
+    *boolean << "Mesh_Union"
+             << "Mesh_Intersection"
              << "Mesh_Difference";
 
     mesh->setCommand("&Meshes");
-    *mesh << "Mesh_Import" 
-          << "Mesh_Export" 
-          << "Mesh_FromGeometry" 
+    *mesh << "Mesh_Import"
+          << "Mesh_Export"
+          << "Mesh_FromGeometry"
           << "MeshPart_Mesher"
           << "Separator"
-          << analyze 
-          << "Mesh_HarmonizeNormals" 
-          << "Mesh_FlipNormals" 
-          << "Separator" 
-          << "Mesh_FillupHoles" 
-          << "Mesh_FillInteractiveHole" 
+          << analyze
+          << "Mesh_HarmonizeNormals"
+          << "Mesh_FlipNormals"
+          << "Separator"
+          << "Mesh_FillupHoles"
+          << "Mesh_FillInteractiveHole"
           << "Mesh_RemoveComponents"
           << "Mesh_RemoveCompByHand"
           << "Mesh_AddFacet"
           << "Mesh_Smoothing"
-          << "Separator" 
-          << "Mesh_BuildRegularSolid" 
-          << boolean << "Separator" 
+          << "Separator"
+          << "Mesh_BuildRegularSolid"
+          << boolean << "Separator"
           << "Mesh_PolySelect"
           << "Mesh_PolyCut"
-          << "Mesh_PolySplit" 
-          << "Mesh_PolySegm" 
-          << "Mesh_ToolMesh" 
+          << "Mesh_PolySplit"
+          << "Mesh_PolySegm"
+          << "Mesh_ToolMesh"
           << "Mesh_VertexCurvature";
 
     // Part ****************************************************************************************************
@@ -252,7 +252,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
                   << "Sketcher_LeaveSketch"
                   << "Sketcher_ViewSketch"
                   << "Sketcher_MapSketch"
-                  << "Separator" 
+                  << "Separator"
                   << "Sketcher_CreateArc"
                   << "Sketcher_CreateCircle"
                   << "Sketcher_CreateLine"
@@ -261,7 +261,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
                   << "Sketcher_CreateFillet"
                   << "Sketcher_Trimming"
                   << "Sketcher_ToggleConstruction"
-                  << "Separator" 
+                  << "Separator"
                   << "Sketcher_ConstrainLock"
                   << "Sketcher_ConstrainCoincident"
                   << "Sketcher_ConstrainPointOnObject"
@@ -277,10 +277,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
                   << "Sketcher_ConstrainTangent"
                   << "Sketcher_ConstrainEqual"
                   << "Sketcher_ConstrainSymmetric"
-                  << "Separator" 
-                  << "PartDesign_Pad" 
+                  << "Separator"
+                  << "PartDesign_Pad"
                   << "PartDesign_Pocket"
-                  << "PartDesign_Revolution" 
+                  << "PartDesign_Revolution"
                   << "PartDesign_Fillet"
                   << "PartDesign_Chamfer";
 
@@ -306,10 +306,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     drawing->setCommand("&Drawing");
     *drawing
-        << "Drawing_Open" 
-        << "Separator" 
-        << "Drawing_NewA3Landscape"  
-        << "Drawing_NewView" 
+        << "Drawing_Open"
+        << "Separator"
+        << "Drawing_NewA3Landscape"
+        << "Drawing_NewView"
         << "Drawing_ExportPage"
         << "Separator"
         << "Drawing_ProjectShape"
@@ -320,14 +320,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* raytracing = new Gui::MenuItem(menuBar);
 
     raytracing->setCommand("&Raytracing");
-    *raytracing 
-        << "Raytracing_WriteView" 
-        << "Raytracing_WriteCamera" 
+    *raytracing
+        << "Raytracing_WriteView"
+        << "Raytracing_WriteCamera"
         << "Raytracing_WritePart"
         << "Separator"
         << "Raytracing_NewPovrayProject"
         << "Raytracing_NewPartSegment"
-        << "Raytracing_ExportProject"; 
+        << "Raytracing_ExportProject";
     ;
 
     // Drafting ****************************************************************************************************
@@ -346,7 +346,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
         *DraftWireTools << "Draft_WireToBSpline" << "Draft_AddPoint" << "Draft_DelPoint";
 
-        *Drafting 
+        *Drafting
             << "Draft_Line"
             << "Draft_Wire"
             << "Draft_Circle"
@@ -356,13 +356,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
             << "Draft_BSpline"
             << "Draft_Text"
             << "Draft_Dimension"
-            << "Separator" 
-            << "Draft_Move" 
-            << "Draft_Rotate" 
-            << "Draft_Offset" 
-            << "Draft_Trimex" 
-            << "Draft_Upgrade" 
-            << "Draft_Downgrade" 
+            << "Separator"
+            << "Draft_Move"
+            << "Draft_Rotate"
+            << "Draft_Offset"
+            << "Draft_Trimex"
+            << "Draft_Upgrade"
+            << "Draft_Downgrade"
             << "Draft_Scale"
             << "Draft_Edit"
             << "Draft_Drawing"
@@ -382,7 +382,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *wnd << "Std_ActivateNextWindow" << "Std_ActivatePrevWindow" << "Separator"
          << "Std_TileWindows" << "Std_CascadeWindows"
          << "Std_ArrangeIcons" << "Separator" << "Std_WindowsMenu" << "Std_Windows";
-    
+
     // help ****************************************************************************************************
     // Separator
     Gui::MenuItem* sep = new Gui::MenuItem( menuBar );
@@ -391,21 +391,21 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // Help
     Gui::MenuItem* helpWebsites = new Gui::MenuItem;
     helpWebsites->setCommand("&Online-help");
-    *helpWebsites << "Std_OnlineHelpWebsite" 
-                  << "Std_FreeCADWebsite" 
+    *helpWebsites << "Std_OnlineHelpWebsite"
+                  << "Std_FreeCADWebsite"
                   << "Std_PythonWebsite";
 
     Gui::MenuItem* help = new Gui::MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" 
+    *help << "Std_OnlineHelp"
           << "Std_PythonHelp"
-          << helpWebsites  
-          << "Separator" 
-          << "Test_Test" 
-          << "Separator" 
+          << helpWebsites
+          << "Separator"
+          << "Test_Test"
+          << "Separator"
           << "Std_About"
-          << "Std_AboutQt" 
-          << "Separator" 
+          << "Std_AboutQt"
+          << "Separator"
           << "Std_WhatsThis" ;
 
     return menuBar;
@@ -419,21 +419,21 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // File
     Gui::ToolBarItem* file = new Gui::ToolBarItem( root );
     file->setCommand("File");
-    *file << "Std_New" 
-          << "Std_Open" 
-          << "Std_Save" 
-          << "Std_Print" 
-          << "Separator" 
-          << "Std_Cut"
-          << "Std_Copy" 
-          << "Std_Paste" 
-          << "Separator" 
-          << "Std_Undo" 
-          << "Std_Redo" 
+    *file << "Std_New"
+          << "Std_Open"
+          << "Std_Save"
+          << "Std_Print"
           << "Separator"
-          << "Std_Refresh" 
-          << "Separator" 
-          //<< "Std_Workbench" 
+          << "Std_Cut"
+          << "Std_Copy"
+          << "Std_Paste"
+          << "Separator"
+          << "Std_Undo"
+          << "Std_Redo"
+          << "Separator"
+          << "Std_Refresh"
+          << "Separator"
+          //<< "Std_Workbench"
           << "Std_WhatsThis";
 
     // Macro
@@ -445,8 +445,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // View
     Gui::ToolBarItem* view = new Gui::ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront" 
-          << "Std_ViewRight" << "Std_ViewTop" << "Separator" << "Std_ViewRear" << "Std_ViewLeft" 
+    *view << "Std_ViewFitAll" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
+          << "Std_ViewRight" << "Std_ViewTop" << "Separator" << "Std_ViewRear" << "Std_ViewLeft"
           << "Std_ViewBottom";
 
     // Part Design
@@ -461,9 +461,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         //<< "Part_Primitives"
         << "Separator"
         << "Part_Boolean"
-        << "Part_Cut" 
-        << "Part_Fuse" 
-        << "Part_Common" 
+        << "Part_Cut"
+        << "Part_Fuse"
+        << "Part_Common"
         << "Part_Section"
         << "Separator"
         << "Part_Extrude"
@@ -479,7 +479,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *sketch_based
               << "Sketcher_NewSketch"
               << "Sketcher_LeaveSketch"
-              << "Separator" 
+              << "Separator"
               << "Sketcher_CreateArc"
               << "Sketcher_CreateCircle"
               << "Sketcher_CreateLine"
@@ -488,7 +488,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "Sketcher_CreateFillet"
               << "Sketcher_Trimming"
               << "Sketcher_ToggleConstruction"
-              << "Separator" 
+              << "Separator"
               << "Sketcher_ConstrainLock"
               << "Sketcher_ConstrainCoincident"
               << "Sketcher_ConstrainPointOnObject"
@@ -504,10 +504,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "Sketcher_ConstrainTangent"
               << "Sketcher_ConstrainEqual"
               << "Sketcher_ConstrainSymmetric"
-              << "Separator" 
-              << "PartDesign_Pad" 
+              << "Separator"
+              << "PartDesign_Pad"
               << "PartDesign_Pocket"
-              << "PartDesign_Revolution" 
+              << "PartDesign_Revolution"
               << "PartDesign_Fillet"
               << "PartDesign_Chamfer";
 
@@ -515,17 +515,17 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // Drawing
     Gui::ToolBarItem* drawing = new Gui::ToolBarItem( root );
     drawing->setCommand("Drawings");
-    *drawing << "Drawing_Open" 
-             << "Separator" 
-             << "Drawing_NewA3Landscape"  
-             << "Drawing_NewView" 
+    *drawing << "Drawing_Open"
+             << "Separator"
+             << "Drawing_NewA3Landscape"
+             << "Drawing_NewView"
              << "Drawing_ExportPage" ;
 
     // Raytracing
     Gui::ToolBarItem* raytracing = new Gui::ToolBarItem( root );
     raytracing->setCommand("Raytracing");
-    *raytracing << "Raytracing_WriteView" 
-                << "Raytracing_WriteCamera" 
+    *raytracing << "Raytracing_WriteView"
+                << "Raytracing_WriteCamera"
                 << "Raytracing_WritePart";
 
     // Drafting ****************************************************************************************************
@@ -543,13 +543,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Draft_BSpline"
             << "Draft_Text"
             << "Draft_Dimension"
-            << "Separator" 
-            << "Draft_Move" 
-            << "Draft_Rotate" 
-            << "Draft_Offset" 
-            << "Draft_Trimex" 
-            << "Draft_Upgrade" 
-            << "Draft_Downgrade" 
+            << "Separator"
+            << "Draft_Move"
+            << "Draft_Rotate"
+            << "Draft_Offset"
+            << "Draft_Trimex"
+            << "Draft_Upgrade"
+            << "Draft_Downgrade"
             << "Draft_Scale"
             << "Draft_Edit"
             << "Draft_Drawing"

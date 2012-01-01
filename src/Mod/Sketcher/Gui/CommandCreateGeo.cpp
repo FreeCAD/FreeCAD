@@ -1512,7 +1512,7 @@ CmdSketcherTrimming::CmdSketcherTrimming()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Trim edge");
-    sToolTipText    = QT_TR_NOOP("Trims an edge with respect to the picked position");
+    sToolTipText    = QT_TR_NOOP("Trim an edge with respect to the picked position");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Trimming";
