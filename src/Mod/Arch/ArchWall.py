@@ -21,8 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,ArchComponent
-from draftlibs import fcgeo,fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent
+from draftlibs import fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -93,6 +93,9 @@ class _Wall(ArchComponent.Component):
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
+
+        import Part
+        from draftlibs import fcgeo
         
         def getbase(wire):
             "returns a full shape from a base wire"

@@ -26,9 +26,9 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 
-import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, Part, SketcherGui
+import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers
 from DraftGui import todo
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 from FreeCAD import Vector
 from pivy import coin
 from PyQt4 import QtCore,QtGui
@@ -101,6 +101,10 @@ class Snapper:
         be True to constrain the point against the closest working plane axis.
         Screenpos can be a list, a tuple or a coin.SbVec2s object."""
 
+        global Part,fcgeo
+        import Part, SketcherGui
+        from draftlibs import fcgeo
+
         def cstr(point):
             "constrains if needed"
             if constrain:
@@ -110,7 +114,7 @@ class Snapper:
                 return point
 
         snaps = []
-
+        
         # type conversion if needed
         if isinstance(screenpos,list):
             screenpos = tuple(screenpos)

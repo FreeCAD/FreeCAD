@@ -31,8 +31,8 @@ paths, lines, arcs and rects.
 Bezier curves are skipped.
 '''
 
-import xml.sax, string, FreeCAD, os, Part, math, re, Draft
-from draftlibs import fcvec, fcgeo
+import xml.sax, string, FreeCAD, os, math, re, Draft
+from draftlibs import fcvec
 from FreeCAD import Vector
 
 try: import FreeCADGui
@@ -241,6 +241,8 @@ class svgHandler(xml.sax.ContentHandler):
                 self.transform = None
                 self.grouptransform = []
                 self.lastdim = None
+
+                import Part
 	
 		if gui and draftui:
 			r = float(draftui.color.red()/255.0)
