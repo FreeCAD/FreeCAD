@@ -21,8 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,ArchComponent,math
-from draftlibs import fcgeo,fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,math
+from draftlibs import fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
@@ -81,6 +81,7 @@ class _Axis(ArchComponent.Component):
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
+        import Part
         pl = obj.Placement
         geoms = []
         dist = 0
@@ -121,6 +122,7 @@ class _ViewProviderAxis(ArchComponent.ViewProviderComponent):
         self.bubbles = None
 
     def makeBubbles(self):
+        import Part
         rn = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
         if self.bubbles:
             rn.removeChild(self.bubbles)
