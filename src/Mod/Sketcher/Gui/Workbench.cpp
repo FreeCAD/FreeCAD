@@ -68,6 +68,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
+          << "Sketcher_External"
           << "Sketcher_ToggleConstruction"
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;
@@ -119,6 +120,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
+          << "Sketcher_External"
           << "Sketcher_ToggleConstruction"
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;
