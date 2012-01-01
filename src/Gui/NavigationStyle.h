@@ -279,6 +279,20 @@ private:
     SbBool lockButton1;
 };
 
+class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    TouchpadNavigationStyle();
+    ~TouchpadNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+};
+
 } // namespace Gui
 
 #endif // GUI_NAVIGATIONSTYLE_H 
