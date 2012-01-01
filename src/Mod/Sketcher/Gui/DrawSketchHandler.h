@@ -26,6 +26,7 @@
 
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/Constraint.h>
+#include <Gui/Selection.h>
 
 class QPixmap;
 
@@ -70,6 +71,7 @@ public:
     virtual void mouseMove(Base::Vector2D onSketchPos)=0;
     virtual bool pressButton(Base::Vector2D onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2D onSketchPos)=0;
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) { return false; };
 
     virtual void quit(void);
 

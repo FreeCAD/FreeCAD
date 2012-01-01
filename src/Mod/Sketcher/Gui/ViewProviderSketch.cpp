@@ -251,9 +251,18 @@ void ViewProviderSketch::purgeHandler(void)
 {
     assert(edit);
     assert(edit->sketchHandler != 0);
+    edit->sketchHandler->unsetCursor();
     delete(edit->sketchHandler);
     edit->sketchHandler = 0;
     Mode = STATUS_NONE;
+
+    // ensure that we are in sketch only selection mode
+    Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    Gui::View3DInventorViewer *viewer;
+    viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+    SoNode* root = viewer->getSceneGraph();
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
 }
 
 // **********************************************************************************
@@ -609,6 +618,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                 << "Sketcher_CreateRectangle"
                                 << "Sketcher_CreateFillet"
                                 << "Sketcher_Trimming"
+                                << "Sketcher_External"
                                 << "Sketcher_ToggleConstruction"
                                 /*<< "Sketcher_CreateText"*/
                                 /*<< "Sketcher_CreateDraftLine"*/;
@@ -1043,6 +1053,13 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // are we in edit?
     if (edit) {
+        bool handled=false;
+        if (Mode == STATUS_SKETCH_UseHandler) {
+            handled = edit->sketchHandler->onSelectionChanged(msg);
+        }
+        if (handled)
+            return;
+
         std::string temp;
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
             // if something selected in this object?
@@ -2894,10 +2911,9 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     edit->EditRoot->removeAllChildren();
     pcRoot->removeChild(edit->EditRoot);
 
-    if (edit->sketchHandler) {
-        edit->sketchHandler->unsetCursor();
+    if (edit->sketchHandler)
         purgeHandler();
-    }
+
     delete edit;
     edit = 0;
 

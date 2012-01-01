@@ -39,6 +39,10 @@
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
 
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/SoFCUnifiedSelection.h>
+
 using namespace std;
 using namespace SketcherGui;
 
@@ -1530,6 +1534,166 @@ bool CmdSketcherTrimming::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+// ======================================================================================
+
+namespace SketcherGui {
+    class ExternalSelection : public Gui::SelectionFilterGate
+    {
+        App::DocumentObject* object;
+    public:
+        ExternalSelection(App::DocumentObject* obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        {}
+
+        bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
+        {
+            Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
+            App::DocumentObject *support = sketch->Support.getValue();
+            // for the moment we allow external constraints only from the support
+            if (pObj != support)
+                return false;
+            if (!sSubName || sSubName[0] == '\0')
+                return false;
+            std::string element(sSubName);
+            // for the moment we allow only edges
+            if (element.substr(0,4) == "Edge") {
+                return true;
+            }
+            return  false;
+        }
+    };
+};
+
+/* XPM */
+static const char *cursor_external[]={
+"32 32 3 1",
+"+ c white",
+"* c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+....***************......",
+".........**...............***...",
+"........**................***...",
+".......**................**.*...",
+"......*.................*...*...",
+"....**................**....*...",
+"...**................**.....*...",
+"..**................**......*...",
+"..******************........*...",
+"..*................*........*...",
+"..*................*........*...",
+"..*................*........*...",
+"..*................*............",
+"..*................*............",
+"..*................*............",
+"..*................*............",
+"..*................*............",
+"..*................*............",
+"................................",
+"................................"};
+
+class DrawSketchHandlerExternal: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerExternal() {}
+    virtual ~DrawSketchHandlerExternal()
+    {
+        Gui::Selection().rmvSelectionGate();
+    }
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        Gui::View3DInventorViewer *viewer;
+        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+        SoNode* root = viewer->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
+        setCursor(QPixmap(cursor_external),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2D onSketchPos)
+    {
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2D onSketchPos)
+    {
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    {
+        sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        return true;
+    }
+
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
+    {
+        if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            std::string subName(msg.pSubName);
+            if (subName.size() > 4 && subName.substr(0,4) == "Edge") {
+                try {
+                    Gui::Command::openCommand("Add external geometry");
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addExternal(\"%s\",\"%s\")",
+                              sketchgui->getObject()->getNameInDocument(),
+                              msg.pObjectName, msg.pSubName);
+                    Gui::Command::commitCommand();
+                    Gui::Command::updateActive();
+                    Gui::Selection().clearSelection();
+                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+DEF_STD_CMD_A(CmdSketcherExternal);
+
+CmdSketcherExternal::CmdSketcherExternal()
+  : Command("Sketcher_External")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("External geometry");
+    sToolTipText    = QT_TR_NOOP("Create an edge linked to an external geometry");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_External";
+    sAccel          = "E";
+    eType           = ForEdit;
+}
+
+void CmdSketcherExternal::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerExternal());
+}
+
+bool CmdSketcherExternal::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
 
 void CreateSketcherCommandsCreateGeo(void)
 {
@@ -1545,4 +1709,5 @@ void CreateSketcherCommandsCreateGeo(void)
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
+    rcCmdMgr.addCommand(new CmdSketcherExternal());
 }
