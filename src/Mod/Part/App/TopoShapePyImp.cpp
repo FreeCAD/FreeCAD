@@ -1030,6 +1030,8 @@ PyObject*  TopoShapePy::isClosed(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     try {
+        if (getTopoShapePtr()->_Shape.IsNull())
+            Standard_Failure::Raise("Cannot determine the 'Closed'' flag of an empty shape");
         return Py_BuildValue("O", (getTopoShapePtr()->isClosed() ? Py_True : Py_False));
     }
     catch (...) {

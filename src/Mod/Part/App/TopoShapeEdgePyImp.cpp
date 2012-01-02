@@ -123,7 +123,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
-        if (shape && shape->_Shape.ShapeType() == TopAbs_EDGE) {
+        if (shape && !shape->_Shape.IsNull() && shape->_Shape.ShapeType() == TopAbs_EDGE) {
             this->getTopoShapePtr()->_Shape = shape->_Shape;
             return 0;
         }
@@ -507,6 +507,8 @@ Py::Object TopoShapeEdgePy::getCenterOfMass(void) const
 
 Py::Boolean TopoShapeEdgePy::getClosed(void) const
 {
+    if (getTopoShapePtr()->_Shape.IsNull())
+        throw Py::Exception("Cannot determine the 'Closed'' flag of an empty shape");
     Standard_Boolean ok = BRep_Tool::IsClosed(getTopoShapePtr()->_Shape);
     return Py::Boolean(ok ? true : false);
 }
