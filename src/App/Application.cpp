@@ -1175,7 +1175,12 @@ void Application::processCmdLineFiles(void)
                 Base::Interpreter().runFile(File.filePath().c_str(), false);
             }
             else if (File.hasExtension("py")) {
-                Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                try{
+                    Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                }catch(PyException){
+                    // if module load not work, just try run the script (run in __main__)
+                    Base::Interpreter().runFile(File.filePath().c_str(),true);
+                }
             }
             else {
                 std::vector<std::string> mods = App::GetApplication().getImportModules(Ext.c_str());
