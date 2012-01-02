@@ -1,0 +1,41 @@
+[CMake]
+Build Directory Count=1
+Current Build Directory Index=0
+ProjectRootRelative=./
+
+[CMake][CMake Build Directory 0]
+Build Directory Path=file:///home/stefan/Projects/FCMasterMerge/build
+Build Type=Debug
+CMake Binary=file:///usr/bin/cmake
+Environment Profile=
+Extra Arguments=
+Install Directory=file:///usr/local
+
+[Defines And Includes][Compiler]
+Name=GCC
+Path=gcc
+Type=GCC
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=FreeCADMain
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x04\x00\x00\x00\x1a\x00F\x00C\x00M\x00a\x00s\x00t\x00e\x00r\x00M\x00e\x00r\x00g\x00e\x00\x00\x00\x06\x00s\x00r\x00c\x00\x00\x00\x08\x00M\x00a\x00i\x00n\x00\x00\x00\x16\x00F\x00r\x00e\x00e\x00C\x00A\x00D\x00M\x00a\x00i\x00n)
+Dependency Action=Nothing
+EnvironmentGroup=
+Executable=file:///home/stefan/Projects/FCMasterMerge/build/bin/FreeCAD
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+Project Target=FCMasterMerge,src,Main,FreeCADMain
+Use External Terminal=false
+Working Directory=
+isExecutable=true
+
+[Project]
+VersionControlSupport=kdevgit

@@ -165,8 +165,13 @@ PyDoc_STRVAR(Console_doc,
      "FreeCAD Console\n"
     );
 
-Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0)
+Application::Application(ParameterManager * /*pcSysParamMngr*/,
+                         ParameterManager * /*pcUserParamMngr*/,
+                         std::map<std::string,std::string> &mConfig)
+    ://_pcSysParamMngr(pcSysParamMngr),
+    //_pcUserParamMngr(pcUserParamMngr),
+    _mConfig(mConfig),
+    _pActiveDoc(0)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -215,13 +220,11 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL,
         "The Base module contains the classes for the geometric basics\n"
         "like vector, matrix, bounding box, placement, rotation, axis, ...");
-
-    // Python exceptions
-    Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, NULL);
+    Base::BaseExceptionFreeCADError = PyErr_NewException(
+            "Base.FreeCADError", PyExc_RuntimeError, NULL);
     Py_INCREF(Base::BaseExceptionFreeCADError);
-    PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
-
-    // Python types
+    PyModule_AddObject(pBaseModule, "FreeCADError",
+            Base::BaseExceptionFreeCADError);
     Base::Interpreter().addType(&Base::VectorPy     ::Type,pBaseModule,"Vector");
     Base::Interpreter().addType(&Base::MatrixPy     ::Type,pBaseModule,"Matrix");
     Base::Interpreter().addType(&Base::BoundBoxPy   ::Type,pBaseModule,"BoundBox");
@@ -443,15 +446,10 @@ Document* Application::openDocument(const char * FileName)
 
     newDoc->FileName.setValue(File.filePath());
 
-    try {
-        // read the document
-        newDoc->restore();
-        return newDoc;
-    }
-    catch (...) {
-        closeDocument(newDoc->getName());
-        throw;
-    }
+    // read the document
+    newDoc->restore();
+
+    return newDoc;
 }
 
 Document* Application::getActiveDocument(void) const
@@ -922,7 +920,6 @@ void Application::destruct(void)
     ScriptFactorySingleton::Destruct();
     InterpreterSingleton::Destruct();
     Base::Type::destruct();
-    ParameterManager::Terminate();
 }
 
 void Application::destructObserver(void)
@@ -1140,8 +1137,6 @@ void Application::initTypes(void)
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
-    App ::BooleanExpression         ::init();
-    App ::RangeExpression           ::init();
 
 }
 
@@ -1280,7 +1275,7 @@ void Application::initApplication(void)
 
     // creating the application
     if (!(mConfig["Verbose"] == "Strict")) Console().Log("Create Application\n");
-    Application::_pcSingleton = new Application(mConfig);
+    Application::_pcSingleton = new Application(0,0,mConfig);
 
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
@@ -1333,9 +1328,15 @@ void Application::processFiles(const std::list<std::string>& files)
             else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
             }
+<<<<<<< d9efca578bac2e53f02f6d1807be05cf950b405f
             else if (file.hasExtension("py")) {
-                try{
+                try {
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
+=======
+            else if (File.hasExtension("py")) {
+                try{
+                    Base::Interpreter().loadModule(File.fileNamePure().c_str());
+>>>>>>> Run arbitrary scripts from Cmd command line
                 }
                 catch(const PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
