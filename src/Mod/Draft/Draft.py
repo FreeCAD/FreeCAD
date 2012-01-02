@@ -2310,6 +2310,7 @@ class _Array:
         obj.NumberPolar = 1
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
+        obj.Angle = 360
 
     def execute(self,obj):
         self.createGeometry(obj)
