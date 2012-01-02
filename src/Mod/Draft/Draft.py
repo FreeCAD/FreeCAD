@@ -557,7 +557,7 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
     The result is a parametric Draft Array.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Array")
     _Array(obj)
-    _ViewProviderArray(obj.ViewObject)
+    _ViewProviderDraft(obj.ViewObject)
     obj.Base = baseobject
     if arg4:
         obj.ArrayType = "ortho"
@@ -736,62 +736,76 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     return newobjlist
 
 
-def scale(objectslist,delta,center=Vector(0,0,0),copy=False):
-    '''scale(objects,vector,[center,copy]): Scales the objects contained
+def scale(objectslist,delta,center=Vector(0,0,0),copy=False,legacy=False):
+    '''scale(objects,vector,[center,copy,legacy]): Scales the objects contained
     in objects (that can be a list of objects or an object) of the given scale
     factors defined by the given vector (in X, Y and Z directions) around
-    given center. If copy is True, the actual objects are not moved, but copies
-    are created instead. The objects (or their copies) are returned.'''
+    given center. If legacy is True, direct (old) mode is used, otherwise
+    a parametric copy is made. If copy is True, the actual objects are not moved,
+    but copies are created instead. The objects (or their copies) are returned.'''
     if not isinstance(objectslist,list): objectslist = [objectslist]
-    newobjlist = []
-    for obj in objectslist:
-        if copy:
-            newobj = makeCopy(obj)
+    if legacy: 
+        newobjlist = []
+        for obj in objectslist:
+            if copy:
+                newobj = makeCopy(obj)
+            else:
+                newobj = obj
+            sh = obj.Shape.copy()
+            m = FreeCAD.Matrix()
+            m.scale(delta)
+            sh = sh.transformGeometry(m)
+            corr = Vector(center.x,center.y,center.z)
+            corr.scale(delta.x,delta.y,delta.z)
+            corr = fcvec.neg(corr.sub(center))
+            sh.translate(corr)
+            if getType(obj) == "Rectangle":
+                p = []
+                for v in sh.Vertexes: p.append(v.Point)
+                pl = obj.Placement.copy()
+                pl.Base = p[0]
+                diag = p[2].sub(p[0])
+                bb = p[1].sub(p[0])
+                bh = p[3].sub(p[0])
+                nb = fcvec.project(diag,bb)
+                nh = fcvec.project(diag,bh)
+                if obj.Length < 0: l = -nb.Length
+                else: l = nb.Length
+                if obj.Height < 0: h = -nh.Length
+                else: h = nh.Length
+                newobj.Length = l
+                newobj.Height = h
+                tr = p[0].sub(obj.Shape.Vertexes[0].Point)
+                newobj.Placement = pl
+            elif getType(obj) == "Wire":
+                p = []
+                for v in sh.Vertexes: p.append(v.Point)
+                newobj.Points = p
+            elif (obj.isDerivedFrom("Part::Feature")):
+                newobj.Shape = sh
+            elif (obj.Type == "App::Annotation"):
+                factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize
+                obj.ViewObject.Fontsize = factor
+            if copy: formatObject(newobj,obj)
+            newobjlist.append(newobj)
+        if copy and getParam("selectBaseObjects"):
+            select(objectslist)
         else:
-            newobj = obj
-        sh = obj.Shape.copy()
-        m = FreeCAD.Matrix()
-        m.scale(delta)
-        sh = sh.transformGeometry(m)
-        corr = Vector(center.x,center.y,center.z)
-        corr.scale(delta.x,delta.y,delta.z)
-        corr = fcvec.neg(corr.sub(center))
-        sh.translate(corr)
-        if getType(obj) == "Rectangle":
-            p = []
-            for v in sh.Vertexes: p.append(v.Point)
-            pl = obj.Placement.copy()
-            pl.Base = p[0]
-            diag = p[2].sub(p[0])
-            bb = p[1].sub(p[0])
-            bh = p[3].sub(p[0])
-            nb = fcvec.project(diag,bb)
-            nh = fcvec.project(diag,bh)
-            if obj.Length < 0: l = -nb.Length
-            else: l = nb.Length
-            if obj.Height < 0: h = -nh.Length
-            else: h = nh.Length
-            newobj.Length = l
-            newobj.Height = h
-            tr = p[0].sub(obj.Shape.Vertexes[0].Point)
-            newobj.Placement = pl
-        elif getType(obj) == "Wire":
-            p = []
-            for v in sh.Vertexes: p.append(v.Point)
-            newobj.Points = p
-        elif (obj.isDerivedFrom("Part::Feature")):
-            newobj.Shape = sh
-        elif (obj.Type == "App::Annotation"):
-            factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize
-            obj.ViewObject.Fontsize = factor
-        if copy: formatObject(newobj,obj)
-        newobjlist.append(newobj)
-    if copy and getParam("selectBaseObjects"):
-        select(objectslist)
+            select(newobjlist)
+        if len(newobjlist) == 1: return newobjlist[0]
+        return newobjlist
     else:
-        select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
-    return newobjlist
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Scale")
+        _Scale(obj)
+        _ViewProviderDraft(obj.ViewObject)
+        obj.Objects = objectslist
+        obj.Scale = delta
+        obj.BasePoint = center
+        for o in objectslist:
+            o.ViewObject.hide()
+        formatObject(obj,objectslist[-1])
+        select(obj)
+        return obj
 
 def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     '''offset(object,Vector,[copymode],[bind]): offsets the given wire by
@@ -1313,7 +1327,8 @@ class _ViewProviderDraft:
         
     def __init__(self, obj):
         obj.Proxy = self
-
+        self.Object = obj.Object
+        
     def attach(self, obj):
         self.Object = obj.Object
         return
@@ -1348,6 +1363,14 @@ class _ViewProviderDraft:
     
     def getIcon(self):
         return(":/icons/Draft_Draft.svg")
+
+    def claimChildren(self):
+        objs = []
+        if hasattr(self.Object,"Base"):
+            objs.append(self.Object.Base)
+        if hasattr(self.Object,"Objects"):
+            objs.extend(self.Object.Objects)
+        return objs
 		
 class _Dimension:
     "The Dimension object"
@@ -2264,7 +2287,6 @@ class _Shape2DView:
 
     def onChanged(self,obj,prop):
         if prop in ["Projection","Base"]:
-            print "changing",prop
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
@@ -2274,7 +2296,6 @@ class _Shape2DView:
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
-                print visibleG0.Edges
                 if visibleG0:
                     obj.Shape = visibleG0
         if not fcgeo.isNull(pl):
@@ -2310,6 +2331,7 @@ class _Array:
         obj.NumberPolar = 1
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
+        obj.Angle = 360
 
     def execute(self,obj):
         self.createGeometry(obj)
@@ -2359,15 +2381,6 @@ class _Array:
             base.append(nshape)
         return Part.makeCompound(base)
 
-class _ViewProviderArray(_ViewProviderDraft):
-    "A view provider for Array objects"
-    
-    def __init__(self,obj):
-        _ViewProviderDraft.__init__(self,obj)
-
-    def claimChildren(self):
-        return [self.Object.Base]
-
 class _Point:
     def __init__(self, obj,x,y,z):
         obj.addProperty("App::PropertyFloat","X","Point","Location").X = x
@@ -2407,3 +2420,47 @@ class _ViewProviderPoint:
 
     def getIcon(self):
         return ":/icons/Draft_Dot.svg"
+
+class _Scale:
+    "The Scale object"
+
+    def __init__(self,obj):
+        obj.addProperty("App::PropertyLinkList","Objects","Base",
+                        "The objects included in this scale object")
+        obj.addProperty("App::PropertyVector","Scale","Base",
+                        "The scale vector of this object")
+        obj.addProperty("App::PropertyVector","BasePoint","Base",
+                        "The base point of this scale object")
+        obj.Scale = Vector(1,1,1)
+        obj.Proxy = self
+        self.Type = "Scale"
+
+    def execute(self,obj):
+        self.createGeometry(obj)
+
+    def onChanged(self,obj,prop):
+        if prop in ["Scale","BasePoint","Objects"]:
+            self.createGeometry(obj)
+
+    def createGeometry(self,obj):
+        import Part
+        from draftlibs import fcgeo
+        pl = obj.Placement
+        shapes = []
+        for o in obj.Objects:
+            if hasattr(o,"Shape"):
+                sh = o.Shape.copy()
+                m = FreeCAD.Matrix()
+                m.scale(obj.Scale)
+                sh = sh.transformGeometry(m)
+                corr = Vector(obj.BasePoint)
+                corr.scale(obj.Scale.x,obj.Scale.y,obj.Scale.z)
+                corr = fcvec.neg(corr.sub(obj.BasePoint))
+                sh.translate(corr)
+                shapes.append(sh)
+        if shapes:
+            obj.Shape = Part.makeCompound(shapes)   
+        if not fcgeo.isNull(pl):
+            obj.Placement = pl
+
+
