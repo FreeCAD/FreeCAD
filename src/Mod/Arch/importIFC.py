@@ -115,13 +115,13 @@ def makeCell(entity,mode="Cell"):
                         if o: fcelts.append(o)
         name = mode+str(entity.id)
         if mode == "Site":
-            cell = Cell.makeSite(fcelts,name=name)
+            cell = Arch.makeSite(fcelts,name=name)
         elif mode == "Floor":
-            cell = Cell.makeFloor(fcelts,join=True,name=name)
+            cell = Arch.makeFloor(fcelts,join=True,name=name)
         elif mode == "Building":
-            cell = Cell.makeBuilding(fcelts,name=name)
+            cell = Arch.makeBuilding(fcelts,name=name)
         else:
-            cell = Cell.makeCell(fcelts,join=True,name=name)
+            cell = Arch.makeCell(fcelts,join=True,name=name)
         cell.CellType = type
     except:
         if DEBUG: print "error: skipping cell",entity.id        
@@ -140,7 +140,7 @@ def makeWall(entity):
                 for r in entity.Representation.Representations:
                     if r.RepresentationIdentifier == "Axis":
                         wire = makeWire(r.Items,placement)
-                        wall = Wall.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
+                        wall = Arch.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
         else:
                 if DEBUG: print "no height or width properties found..."
                 for r in entity.Representation.Representations:
@@ -150,7 +150,7 @@ def makeWall(entity):
                                 norm = getVector(b.ExtrudedDirection)
                                 norm.normalize()
                                 wire = makeWire(b.SweptArea,placement)
-                                wall = Wall.makeWall(wire,width=0,height=b.Depth,name="Wall"+str(entity.id))
+                                wall = Arch.makeWall(wire,width=0,height=b.Depth,name="Wall"+str(entity.id))
                                 wall.Normal = norm
         if wall:
             if DEBUG: print "made wall object  ",entity.id,":",wall
