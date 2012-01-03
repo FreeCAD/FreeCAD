@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,47 +21,37 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-//# include <ode/ode.h>
-#endif
+#ifndef Assembly_ConstraintAxis_H
+#define Assembly_ConstraintAxis_H
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+#include <App/PropertyStandard.h>
+#include "Constraint.h"
 
 
-extern struct PyMethodDef Assembly_methods[];
-
-PyDoc_STRVAR(module_Assembly_doc,
-"This module is the Assembly module.");
-
-
-/* Python entry */
-extern "C" {
-void AssemblyExport initAssembly()
+namespace Assembly
 {
-    // load dependend module
-    try {
-        Base::Interpreter().runString("import Part");
-        //Base::Interpreter().runString("import PartDesign");
-    }
-    catch(const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        return;
-    }
-    Py_InitModule3("Assembly", Assembly_methods, module_Assembly_doc);   /* mod name, table ptr */
-    Base::Console().Log("Loading Assembly module... done\n");
+
+class AssemblyExport ConstraintAxis : public Assembly::Constraint
+{
+    PROPERTY_HEADER(Assembly::ConstraintAxis);
+
+public:
+    ConstraintAxis();
 
 
-	//dWorldID id = dWorldCreate();
-	//dWorldDestroy(id);
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the view provider
+    //const char* getViewProviderName(void) const {
+    //    return "PartDesignGui::ViewProviderConstraintAxis";
+    //}
+    //@}
+};
 
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
- 
-    //Assembly::FeatureViewPart        ::init();
-}
+} //namespace Assembly
 
-} // extern "C"
+
+#endif // Assembly_ConstraintAxis_H
