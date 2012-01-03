@@ -1,6 +1,6 @@
 #! python
 # -*- coding: utf-8 -*-
-# (c) 2010 Werner Mayer GPL
+# (c) 2010 Werner Mayer LGPL
 
 Usage = """updatets - update all .ts files found in the source directories
 
