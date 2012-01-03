@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ifcReader, FreeCAD, Wall, Draft, os, time, Cell, Floor, Building, Site
+import ifcReader, FreeCAD, Arch, Draft, os, time
 from draftlibs import fcvec
 
 __title__="FreeCAD IFC importer"
@@ -51,29 +51,42 @@ def decode(name):
             decodedName = name
     return decodedName
 
-def getSchema(schema):
-    return os.path.join(FreeCAD.ConfigGet("AppHomePath"),"Mod","Arch",schema+".exp")
+def getSchema():
+    default = "IFC2X3_TC1.exp"
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    p = p.GetString("IfcSchema")
+    if p:
+        if os.path.exists(p):
+            return p
+    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),default)
+    if os.path.exists(p):
+        return p
+    return None
     
 def read(filename):
     "processes an ifc file and add its objects to the given document"
     t1 = time.time()
-    if DEBUG: global ifc
-    if DEBUG: print "opening",filename,"..."
-    ifc = ifcReader.IfcDocument(filename,schema=getSchema("IFC2X3_TC1"),debug=DEBUG)
-    t2 = time.time()
-    if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
-    # getting walls
-    for w in ifc.getEnt("IFCWALLSTANDARDCASE"):
-        makeWall(w)
-    # getting floors
-    for f in ifc.getEnt("IFCBUILDINGSTOREY"):
-        makeCell(f,"Floor")
-    # getting buildings
-    for b in ifc.getEnt("IFCBUILDING"):
-        makeCell(b,"Building")
-    FreeCAD.ActiveDocument.recompute()
-    t3 = time.time()
-    if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
+    schema=getSchema()
+    if schema:
+        if DEBUG: global ifc
+        if DEBUG: print "opening",filename,"..."
+        ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
+        t2 = time.time()
+        if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
+        # getting walls
+        for w in ifc.getEnt("IFCWALLSTANDARDCASE"):
+            makeWall(w)
+        # getting floors
+        for f in ifc.getEnt("IFCBUILDINGSTOREY"):
+            makeCell(f,"Floor")
+        # getting buildings
+        for b in ifc.getEnt("IFCBUILDING"):
+            makeCell(b,"Building")
+        FreeCAD.ActiveDocument.recompute()
+        t3 = time.time()
+        if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
+    else:
+        FreeCAD.Console.PrintWarning("IFC Schema not found, IFC import disabled. See Arch Preferences to get a schema")
 
 def makeCell(entity,mode="Cell"):
     "makes a cell in the freecad document"
