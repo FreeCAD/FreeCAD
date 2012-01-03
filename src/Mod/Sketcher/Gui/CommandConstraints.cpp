@@ -68,7 +68,9 @@ void updateDatumDistance(Gui::Document *doc, Constraint *constr)
 
 bool checkBothExternal(int GeoId1, int GeoId2)
 {
-    if (GeoId1 < 0 && GeoId2 < 0) {
+    if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef)
+        return false;
+    else if (GeoId1 < 0 && GeoId2 < 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Cannot add a constraint between two external geometries!"));
         return true;
@@ -76,6 +78,23 @@ bool checkBothExternal(int GeoId1, int GeoId2)
     else
         return false;
 }
+
+void getIdsFromName(const std::string &name, int &GeoId, int &VtId)
+{
+    GeoId = Constraint::GeoUndef;
+    VtId = -1;
+    if (name.size() > 4 && name.substr(0,4) == "Edge")
+        GeoId = std::atoi(name.substr(4,4000).c_str());
+    else if (name.size() == 6 && name.substr(0,6) == "H_Axis")
+        GeoId = -1;
+    else if (name.size() == 6 && name.substr(0,6) == "V_Axis")
+        GeoId = -2;
+    else if (name.size() > 12 && name.substr(0,12) == "ExternalEdge")
+        GeoId = -3 - std::atoi(name.substr(12,4000).c_str());
+    else if (name.size() > 6 && name.substr(0,6) == "Vertex")
+        VtId = std::atoi(name.substr(6,4000).c_str());
+}
+
 
 namespace SketcherGui {
 
@@ -202,9 +221,9 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int index=std::atoi(it->substr(4,4000).c_str());
+            int GeoId=std::atoi(it->substr(4,4000).c_str());
 
-            const Part::Geometry *geo = Obj->getGeometry(index);
+            const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                      QObject::tr("The selected edge is not a line segment"));
@@ -214,18 +233,18 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
             // check if the edge has already a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == index){
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                         QObject::tr("The selected edge has already a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == index) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge has already a vertical constraint!"));
                     return;
                 }
             }
-            ids.push_back(index);
+            ids.push_back(GeoId);
         }
     }
 
@@ -545,33 +564,47 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
     int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
     if (SubNames.size() >= 1) {
-        if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-            GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-        else if (SubNames[0].size() > 12 && SubNames[0].substr(0,12) == "ExternalEdge")
-            GeoId1 = -3 - std::atoi(SubNames[0].substr(12,4000).c_str());
-        else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
-            VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
-    }
-    if (SubNames.size() == 2) {
-        if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-            GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-        else if (SubNames[1].size() > 12 && SubNames[1].substr(0,12) == "ExternalEdge")
-            GeoId2 = -3 - std::atoi(SubNames[1].substr(12,4000).c_str());
-        else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
-            VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
+        getIdsFromName(SubNames[0], GeoId1, VtId1);
+        if (SubNames.size() == 2)
+             getIdsFromName(SubNames[1], GeoId2, VtId2);
     }
 
-    if (VtId1 >= 0 && VtId2 >= 0) { // point to point distance
+    if (checkBothExternal(GeoId1, GeoId2))
+        return;
+    else if ((GeoId2 == -2 || GeoId2 == -1) && GeoId1 == Constraint::GeoUndef) {
+        std::swap(GeoId1,GeoId2);
+        std::swap(VtId1,VtId2);
+    }
+
+    if ((GeoId1 == -2 || GeoId1 == -1 || VtId1 >= 0) && VtId2 >= 0) { // point to point distance
         Sketcher::PointPos PosId1,PosId2;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+        if (GeoId1 == -2 || GeoId1 == -1)
+            PosId1 = Sketcher::start;
+        else
+            Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+
         Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
 
-        openCommand("add point to point distance constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
+        if (GeoId1 == -1) {
+            openCommand("add distance from horizontal axis constraint");
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,pnt2.y);
+        }
+        else if (GeoId1 == -2) {
+            openCommand("add distance from vertical axis constraint");
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,pnt2.x);
+        }
+        else {
+            openCommand("add point to point distance constraint");
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
+        }
         commitCommand();
 
         // Get the latest constraint
@@ -700,23 +733,14 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     }
 
     int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
-
     if (SubNames.size() >= 1) {
-        if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-            GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-        else if (SubNames[0].size() > 12 && SubNames[0].substr(0,12) == "ExternalEdge")
-            GeoId1 = -3 - std::atoi(SubNames[0].substr(12,4000).c_str());
-        else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
-            VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
+        getIdsFromName(SubNames[0], GeoId1, VtId1);
+        if (SubNames.size() == 2)
+            getIdsFromName(SubNames[1], GeoId2, VtId2);
     }
-    if (SubNames.size() == 2) {
-        if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-            GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-        else if (SubNames[1].size() > 12 && SubNames[1].substr(0,12) == "ExternalEdge")
-            GeoId2 = -3 - std::atoi(SubNames[1].substr(12,4000).c_str());
-        else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
-            VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
-    }
+
+    if (checkBothExternal(GeoId1, GeoId2))
+        return;
 
     if ((VtId1 >= 0 && GeoId2 != Constraint::GeoUndef) ||
         (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef)) {
@@ -799,22 +823,19 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
     int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
     if (SubNames.size() >= 1) {
-        if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-            GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-        else if (SubNames[0].size() == 6 && SubNames[0].substr(0,6) == "V_Axis")
-            GeoId1 = -2;
-        else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
-            VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
+        getIdsFromName(SubNames[0], GeoId1, VtId1);
+        if (GeoId1 == -1) // reject horizontal axis from selection
+            GeoId1 = Constraint::GeoUndef;
+        if (SubNames.size() == 2) {
+            getIdsFromName(SubNames[1], GeoId2, VtId2);
+            if (GeoId2 == -1) // reject horizontal axis from selection
+                GeoId2 = Constraint::GeoUndef;
+        }
     }
-    if (SubNames.size() == 2) {
-        if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-            GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-        else if (SubNames[1].size() == 6 && SubNames[0].substr(0,6) == "V_Axis")
-            GeoId2 = -2;
-        else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
-            VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
-    }
-    if (GeoId2 == -2 && GeoId1 == Constraint::GeoUndef) {
+
+    if (checkBothExternal(GeoId1, GeoId2))
+        return;
+    else if (GeoId2 == -2 && GeoId1 == Constraint::GeoUndef) {
         std::swap(GeoId1,GeoId2);
         std::swap(VtId1,VtId2);
     }
@@ -952,22 +973,19 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
     int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
     if (SubNames.size() >= 1) {
-        if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-            GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-        else if (SubNames[0].size() == 6 && SubNames[0].substr(0,6) == "H_Axis")
-            GeoId1 = -1;
-        else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
-            VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
+        getIdsFromName(SubNames[0], GeoId1, VtId1);
+        if (GeoId1 == -2) // reject vertical axis from selection
+            GeoId1 = Constraint::GeoUndef;
+        if (SubNames.size() == 2) {
+            getIdsFromName(SubNames[1], GeoId2, VtId2);
+            if (GeoId2 == -2) // reject vertical axis from selection
+                GeoId2 = Constraint::GeoUndef;
+        }
     }
-    if (SubNames.size() == 2) {
-        if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-            GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-        else if (SubNames[1].size() == 6 && SubNames[0].substr(0,6) == "H_Axis")
-            GeoId2 = -1;
-        else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
-            VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
-    }
-    if (GeoId2 == -1 && GeoId1 == Constraint::GeoUndef) {
+
+    if (checkBothExternal(GeoId1, GeoId2))
+        return;
+    else if (GeoId2 == -1 && GeoId1 == Constraint::GeoUndef) {
         std::swap(GeoId1,GeoId2);
         std::swap(VtId1,VtId2);
     }
@@ -1106,27 +1124,33 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     }
 
     std::vector<int> ids;
+    bool hasAlreadyExternal=false;
     for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
-        int index;
-        std::string subName = *it;
-        if (subName.size() > 4 && subName.substr(0,4) == "Edge")
-            index = std::atoi(subName.substr(4,4000).c_str());
-        else if (subName.size() > 12 && subName.substr(0,12) == "ExternalEdge")
-            index = -3 - std::atoi(subName.substr(12,4000).c_str());
-        else {
+        int GeoId, VtId;
+        getIdsFromName(*it, GeoId, VtId);
+
+        if (GeoId == Constraint::GeoUndef) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select a valid line"));
             return;
         }
+        else if (GeoId < 0) {
+            if (hasAlreadyExternal) {
+                checkBothExternal(-1,-2); // just for printing the error message
+                return;
+            }
+            else
+                hasAlreadyExternal = true;
+        }
 
         // Check that the curve is a line segment
-        const Part::Geometry *geo = Obj->getGeometry(index);
+        const Part::Geometry *geo = Obj->getGeometry(GeoId);
         if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                 QObject::tr("The selected edge is not a valid line"));
             return;
         }
-        ids.push_back(index);
+        ids.push_back(GeoId);
     }
 
     // undo command open
@@ -1188,29 +1212,17 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         return;
     }
 
-    int GeoId1,GeoId2;
-    if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-        GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-    else if (SubNames[0].size() > 12 && SubNames[0].substr(0,12) == "ExternalEdge")
-        GeoId1 = -3 - std::atoi(SubNames[0].substr(12,4000).c_str());
-    else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly two lines from the sketch."));
-        return;
-    }
-
-    if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-        GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-    else if (SubNames[1].size() > 12 && SubNames[1].substr(0,12) == "ExternalEdge")
-        GeoId2 = -3 - std::atoi(SubNames[1].substr(12,4000).c_str());
-    else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly two lines from the sketch."));
-        return;
-    }
+    int GeoId1, VtId1, GeoId2, VtId2;
+    getIdsFromName(SubNames[0], GeoId1, VtId1);
+    getIdsFromName(SubNames[1], GeoId2, VtId2);
 
     if (checkBothExternal(GeoId1, GeoId2))
         return;
+    else if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly two lines from the sketch."));
+        return;
+    }
 
     const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
     const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
@@ -1281,20 +1293,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         return;
     }
 
-    int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
-    if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-        GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-    else if (SubNames[0].size() > 12 && SubNames[0].substr(0,12) == "ExternalEdge")
-        GeoId1 = -3 - std::atoi(SubNames[0].substr(12,4000).c_str());
-    else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
-        VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
-
-    if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-        GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-    else if (SubNames[1].size() > 12 && SubNames[1].substr(0,12) == "ExternalEdge")
-        GeoId2 = -3 - std::atoi(SubNames[1].substr(12,4000).c_str());
-    else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
-        VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
+    int GeoId1, VtId1, GeoId2, VtId2;
+    getIdsFromName(SubNames[0], GeoId1, VtId1);
+    getIdsFromName(SubNames[1], GeoId2, VtId2);
 
     Sketcher::PointPos PosId1,PosId2;
     if (VtId1 >= 0 && VtId2 >= 0) { // tangency at common point
@@ -1475,27 +1476,23 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one or two lines from the sketch."));
+            QObject::tr("Select one or two lines from the sketch."));
         return;
     }
 
-    int GeoId1=Constraint::GeoUndef, GeoId2=Constraint::GeoUndef;
-    if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-        GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-    else if (SubNames[0].size() > 12 && SubNames[0].substr(0,12) == "ExternalEdge")
-        GeoId1 = -3 - std::atoi(SubNames[0].substr(12,4000).c_str());
+    int GeoId1, VtId1, GeoId2=Constraint::GeoUndef, VtId2=-1;
+    getIdsFromName(SubNames[0], GeoId1, VtId1);
+    if (SubNames.size() == 2)
+        getIdsFromName(SubNames[1], GeoId2, VtId2);
 
-    if (SubNames.size() == 2) {
-        if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-            GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-        else if (SubNames[1].size() > 12 && SubNames[1].substr(0,12) == "ExternalEdge")
-            GeoId2 = -3 - std::atoi(SubNames[1].substr(12,4000).c_str());
+    if (checkBothExternal(GeoId1, GeoId2))
+        return;
+    else if (GeoId1 == Constraint::GeoUndef && GeoId2 != Constraint::GeoUndef) {
+        std::swap(GeoId1,GeoId2);
+        std::swap(VtId1,VtId2);
     }
 
     if (GeoId2 != Constraint::GeoUndef) { // line to line angle
-
-        if (checkBothExternal(GeoId1, GeoId2))
-            return;
 
         const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
@@ -1642,38 +1639,51 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     }
 
     std::vector<int> ids;
-    bool lineSel = false, arcSel = false, circSel = false;
+    bool lineSel = false, arcSel = false, circSel = false, hasAlreadyExternal = false;
 
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-        int index;
-        std::string subName = *it;
-        if (subName.size() > 4 && subName.substr(0,4) == "Edge")
-            index = std::atoi(subName.substr(4,4000).c_str());
+
+        int GeoId, VtId;
+        getIdsFromName(*it, GeoId, VtId);
+
+        if (GeoId == Constraint::GeoUndef) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select two or more compatible edges"));
+            return;
+        }
+        else if (GeoId < 0) {
+            if (GeoId == -1 || GeoId == -2) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Sketch axes cannot be used in equality constraints"));
+                return;
+            }
+            else if (hasAlreadyExternal) {
+                checkBothExternal(-1,-2); // just for printing the error message
+                return;
+            }
+            else
+                hasAlreadyExternal = true;
+        }
+
+        const Part::Geometry *geo = Obj->getGeometry(GeoId);
+        if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
+            lineSel = true;
+        else if (geo->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())
+            arcSel = true;
+        else if (geo->getTypeId() != Part::GeomCircle::getClassTypeId())
+            circSel = true;
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select exactly two same geometries"));
+            QObject::tr("Select two or more edges of similar type"));
             return;
         }
 
-        const Part::Geometry *geo = Obj->getGeometry(index);
-        if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-            lineSel = true;
-        } else if (geo->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()) {
-            arcSel = true;
-        } else if (geo->getTypeId() != Part::GeomCircle::getClassTypeId()) {
-            circSel = true;
-        } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select valid geometries"));
-            return;
-        }
-
-        ids.push_back(index);
+        ids.push_back(GeoId);
     }
 
     if (lineSel && (arcSel || circSel)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select geometry of similar type"));
+        QObject::tr("Select two or more edges of similar type"));
         return;
     }
 
@@ -1735,23 +1745,10 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         return;
     }
 
-    int GeoId1=Constraint::GeoUndef, VtId1=-1,
-        GeoId2=Constraint::GeoUndef, VtId2=-1,
-        GeoId3=Constraint::GeoUndef, VtId3=-1;
-    if (SubNames.size() >= 1) {
-        if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-            GeoId1 = std::atoi(SubNames[0].substr(4,4000).c_str());
-        else if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
-            VtId1 = std::atoi(SubNames[0].substr(6,4000).c_str());
-        if (SubNames[1].size() > 4 && SubNames[1].substr(0,4) == "Edge")
-            GeoId2 = std::atoi(SubNames[1].substr(4,4000).c_str());
-        else if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
-            VtId2 = std::atoi(SubNames[1].substr(6,4000).c_str());
-        if (SubNames[2].size() > 4 && SubNames[2].substr(0,4) == "Edge")
-            GeoId3 = std::atoi(SubNames[2].substr(4,4000).c_str());
-        else if (SubNames[2].size() > 6 && SubNames[2].substr(0,6) == "Vertex")
-            VtId3 = std::atoi(SubNames[2].substr(6,4000).c_str());
-    }
+    int GeoId1, VtId1, GeoId2, VtId2, GeoId3, VtId3;
+    getIdsFromName(SubNames[0], GeoId1, VtId1);
+    getIdsFromName(SubNames[1], GeoId2, VtId2);
+    getIdsFromName(SubNames[2], GeoId3, VtId3);
 
     if (GeoId1 != Constraint::GeoUndef && GeoId3 == Constraint::GeoUndef) {
         std::swap(GeoId1,GeoId3);
@@ -1766,6 +1763,13 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         Sketcher::PointPos PosId1,PosId2;
         Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
         Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
+
+        if ((GeoId1 < 0 && GeoId2 < 0) || (GeoId1 < 0 && GeoId3 < 0) || (GeoId2 < 0 && GeoId3 < 0)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Cannot add a constraint between external geometries!"));
+            return;
+        }
+
         const Part::Geometry *geom = Obj->getGeometry(GeoId3);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             // undo command open
