@@ -1,5 +1,5 @@
 #! python
-# (c) 2005 Juergen Riegel
+# (c) 2005 Juergen Riegel LGPL
 
 Usage = """
 WIX file lister
