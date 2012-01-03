@@ -1,6 +1,6 @@
 #! python
 # -*- coding: utf-8 -*-
-# (c) 2007 Juergen Riegel GPL
+# (c) 2007 Juergen Riegel LGPL
 
 Usage = """wiki2chm - connect to a wiki and spider the docu
 
