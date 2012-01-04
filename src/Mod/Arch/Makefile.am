@@ -14,7 +14,6 @@ data_DATA = \
 		ArchBuilding.py \
 		ArchCell.py \
 		ArchFloor.py \
-        IFC2X3_TC1.exp \
 		ifcReader.py \
 		importDAE.py \
 		importIFC.py \
