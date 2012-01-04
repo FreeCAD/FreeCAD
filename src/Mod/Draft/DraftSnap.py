@@ -360,6 +360,8 @@ class Snapper:
                     dv = last.sub(shape.Curve.Center)
                     dv = fcvec.scaleTo(dv,shape.Curve.Radius)
                     np = (shape.Curve.Center).add(dv)
+                else:
+                    return snaps
                 snaps.append([np,'perpendicular',np])
         return snaps
 
