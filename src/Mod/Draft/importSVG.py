@@ -561,8 +561,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                 pole2 = lastvec.add(Vector(point[2],-point[3],0))
 					else:
 						currentvec = Vector(point[4],-point[5],0)
-                                                pole1 = Vector(point[0],point[1],0)
-                                                pole2 = Vector(point[2],point[3],0)
+                                                pole1 = Vector(point[0],-point[1],0)
+                                                pole2 = Vector(point[2],-point[3],0)
 					if not fcvec.equals(currentvec,lastvec):
                                                 mainv = currentvec.sub(lastvec)
                                                 pole1v = lastvec.add(pole1)
