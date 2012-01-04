@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ifcReader, FreeCAD, Wall, Draft, os, time, Cell, Floor, Building, Site
+import ifcReader, FreeCAD, Arch, Draft, os, time
 from draftlibs import fcvec
 
 __title__="FreeCAD IFC importer"
@@ -51,29 +51,42 @@ def decode(name):
             decodedName = name
     return decodedName
 
-def getSchema(schema):
-    return os.path.join(FreeCAD.ConfigGet("AppHomePath"),"Mod","Arch",schema+".exp")
+def getSchema():
+    default = "IFC2X3_TC1.exp"
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    p = p.GetString("IfcSchema")
+    if p:
+        if os.path.exists(p):
+            return p
+    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),default)
+    if os.path.exists(p):
+        return p
+    return None
     
 def read(filename):
     "processes an ifc file and add its objects to the given document"
     t1 = time.time()
-    if DEBUG: global ifc
-    if DEBUG: print "opening",filename,"..."
-    ifc = ifcReader.IfcDocument(filename,schema=getSchema("IFC2X3_TC1"),debug=DEBUG)
-    t2 = time.time()
-    if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
-    # getting walls
-    for w in ifc.getEnt("IFCWALLSTANDARDCASE"):
-        makeWall(w)
-    # getting floors
-    for f in ifc.getEnt("IFCBUILDINGSTOREY"):
-        makeCell(f,"Floor")
-    # getting buildings
-    for b in ifc.getEnt("IFCBUILDING"):
-        makeCell(b,"Building")
-    FreeCAD.ActiveDocument.recompute()
-    t3 = time.time()
-    if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
+    schema=getSchema()
+    if schema:
+        if DEBUG: global ifc
+        if DEBUG: print "opening",filename,"..."
+        ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
+        t2 = time.time()
+        if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
+        # getting walls
+        for w in ifc.getEnt("IFCWALLSTANDARDCASE"):
+            makeWall(w)
+        # getting floors
+        for f in ifc.getEnt("IFCBUILDINGSTOREY"):
+            makeCell(f,"Floor")
+        # getting buildings
+        for b in ifc.getEnt("IFCBUILDING"):
+            makeCell(b,"Building")
+        FreeCAD.ActiveDocument.recompute()
+        t3 = time.time()
+        if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
+    else:
+        FreeCAD.Console.PrintWarning("IFC Schema not found, IFC import disabled. See Arch Preferences to get a schema")
 
 def makeCell(entity,mode="Cell"):
     "makes a cell in the freecad document"
@@ -102,13 +115,13 @@ def makeCell(entity,mode="Cell"):
                         if o: fcelts.append(o)
         name = mode+str(entity.id)
         if mode == "Site":
-            cell = Cell.makeSite(fcelts,name=name)
+            cell = Arch.makeSite(fcelts,name=name)
         elif mode == "Floor":
-            cell = Cell.makeFloor(fcelts,join=True,name=name)
+            cell = Arch.makeFloor(fcelts,join=True,name=name)
         elif mode == "Building":
-            cell = Cell.makeBuilding(fcelts,name=name)
+            cell = Arch.makeBuilding(fcelts,name=name)
         else:
-            cell = Cell.makeCell(fcelts,join=True,name=name)
+            cell = Arch.makeCell(fcelts,join=True,name=name)
         cell.CellType = type
     except:
         if DEBUG: print "error: skipping cell",entity.id        
@@ -127,7 +140,7 @@ def makeWall(entity):
                 for r in entity.Representation.Representations:
                     if r.RepresentationIdentifier == "Axis":
                         wire = makeWire(r.Items,placement)
-                        wall = Wall.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
+                        wall = Arch.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
         else:
                 if DEBUG: print "no height or width properties found..."
                 for r in entity.Representation.Representations:
@@ -137,7 +150,7 @@ def makeWall(entity):
                                 norm = getVector(b.ExtrudedDirection)
                                 norm.normalize()
                                 wire = makeWire(b.SweptArea,placement)
-                                wall = Wall.makeWall(wire,width=0,height=b.Depth,name="Wall"+str(entity.id))
+                                wall = Arch.makeWall(wire,width=0,height=b.Depth,name="Wall"+str(entity.id))
                                 wall.Normal = norm
         if wall:
             if DEBUG: print "made wall object  ",entity.id,":",wall

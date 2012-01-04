@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -24,7 +24,7 @@
 from __future__ import division
 
 __title__="FreeCAD Draft Workbench"
-__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
+__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Daniel Falck"
 __url__ = "http://free-cad.sourceforge.net"
 
 '''
@@ -736,7 +736,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     return newobjlist
 
 
-def scale(objectslist,delta,center=Vector(0,0,0),copy=False,legacy=False):
+def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy=False):
     '''scale(objects,vector,[center,copy,legacy]): Scales the objects contained
     in objects (that can be a list of objects or an object) of the given scale
     factors defined by the given vector (in X, Y and Z directions) around
@@ -801,8 +801,9 @@ def scale(objectslist,delta,center=Vector(0,0,0),copy=False,legacy=False):
         obj.Objects = objectslist
         obj.Scale = delta
         obj.BasePoint = center
-        for o in objectslist:
-            o.ViewObject.hide()
+        if not copy:
+            for o in objectslist:
+                o.ViewObject.hide()
         formatObject(obj,objectslist[-1])
         select(obj)
         return obj
