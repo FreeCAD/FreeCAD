@@ -56,6 +56,43 @@ using namespace PartGui;
 
 namespace PartGui {
 
+const char* gce_ErrorStatusText(gce_ErrorType et)
+{
+    switch (et)
+    {
+    case gce_Done:
+        return "Construction was successful";
+    case gce_ConfusedPoints:
+        return "Two points are coincident";
+    case gce_NegativeRadius:
+        return "Radius value is negative";
+    case gce_ColinearPoints:
+        return "Three points are collinear";
+    case gce_IntersectionError:
+        return "Intersection cannot be computed";
+    case gce_NullAxis:
+        return "Axis is undefined";
+    case gce_NullAngle:
+        return "Angle value is invalid (usually null)";
+    case gce_NullRadius:
+        return "Radius is null";
+    case gce_InvertAxis:
+        return "Axis value is invalid";
+    case gce_BadAngle:
+        return "Angle value is invalid";
+    case gce_InvertRadius:
+        return "Radius value is incorrect (usually with respect to another radius)";
+    case gce_NullFocusLength:
+        return "Focal distance is null";
+    case gce_NullVector:
+        return "Vector is null";
+    case gce_BadEquation:
+        return "Coefficients are incorrect (applies to the equation of a geometric object)";
+    default:
+        return "Creation of geometry failed";
+    }
+}
+
 void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Document* doc)
 {
     try {
@@ -69,7 +106,7 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
-    catch (const Base::PyException& e) {
+    catch (const Base::Exception& e) {
         QMessageBox::warning(widget, descr, QString::fromLatin1(e.what()));
     }
 }
@@ -116,6 +153,8 @@ public:
     QString command(App::Document* doc) const
     {
         GC_MakeArcOfCircle arc(points[0], points[1], points[2]);
+        if (!arc.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(arc.Status()));
         Handle_Geom_TrimmedCurve trim = arc.Value();
         Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
 
