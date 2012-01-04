@@ -7,7 +7,6 @@ SET(Arch_SRCS
     ArchWall.py
     importIFC.py
     ifcReader.py
-    IFC2X3_TC1.exp
     Arch_rc.py
     Arch.py
     ArchBuilding.py
