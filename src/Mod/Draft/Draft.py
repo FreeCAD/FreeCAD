@@ -796,11 +796,16 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
         return newobjlist
     else:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Scale")
-        _Scale(obj)
+        _Clone(obj)
         _ViewProviderDraft(obj.ViewObject)
         obj.Objects = objectslist
         obj.Scale = delta
-        obj.BasePoint = center
+        corr = Vector(center.x,center.y,center.z)
+        corr.scale(delta.x,delta.y,delta.z)
+        corr = fcvec.neg(corr.sub(center))
+        p = obj.Placement
+        p.move(corr)
+        obj.Placement = p
         if not copy:
             for o in objectslist:
                 o.ViewObject.hide()
@@ -2422,25 +2427,23 @@ class _ViewProviderPoint:
     def getIcon(self):
         return ":/icons/Draft_Dot.svg"
 
-class _Scale:
-    "The Scale object"
+class _Clone:
+    "The Clone object"
 
     def __init__(self,obj):
         obj.addProperty("App::PropertyLinkList","Objects","Base",
                         "The objects included in this scale object")
         obj.addProperty("App::PropertyVector","Scale","Base",
                         "The scale vector of this object")
-        obj.addProperty("App::PropertyVector","BasePoint","Base",
-                        "The base point of this scale object")
         obj.Scale = Vector(1,1,1)
         obj.Proxy = self
-        self.Type = "Scale"
+        self.Type = "Clone"
 
     def execute(self,obj):
         self.createGeometry(obj)
 
     def onChanged(self,obj,prop):
-        if prop in ["Scale","BasePoint","Objects"]:
+        if prop in ["Scale","Objects"]:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
@@ -2449,15 +2452,11 @@ class _Scale:
         pl = obj.Placement
         shapes = []
         for o in obj.Objects:
-            if hasattr(o,"Shape"):
+            if o.isDerivedFrom("Part::Feature"):
                 sh = o.Shape.copy()
                 m = FreeCAD.Matrix()
                 m.scale(obj.Scale)
                 sh = sh.transformGeometry(m)
-                corr = Vector(obj.BasePoint)
-                corr.scale(obj.Scale.x,obj.Scale.y,obj.Scale.z)
-                corr = fcvec.neg(corr.sub(obj.BasePoint))
-                sh.translate(corr)
                 shapes.append(sh)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)   
