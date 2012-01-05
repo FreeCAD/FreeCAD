@@ -200,7 +200,6 @@ def shapify(obj):
     non-parametric and returns the new object'''
     if not (obj.isDerivedFrom("Part::Feature")): return None
     if not "Shape" in obj.PropertiesList: return None
-    if obj.Type == "Part::Feature": return obj
     shape = obj.Shape
     name = getRealName(obj.Name)
     FreeCAD.ActiveDocument.removeObject(obj.Name)
@@ -515,7 +514,7 @@ def makeCopy(obj):
         _ViewProviderBSpline(newobj.ViewObject)
     elif getType(obj) == "Block":
         _Block(newobj)
-        _ViewProviderBlock(newobj.ViewObject)
+        _ViewProviderDraftPart(newobj.ViewObject)
     elif getType(obj) == "Structure":
         import Structure
         Structure._Structure(newobj)
@@ -539,7 +538,7 @@ def makeBlock(objectslist):
     '''makeBlock(objectslist): Creates a Draft Block from the given objects'''
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Block")
     _Block(obj)
-    _ViewProviderBlock(obj.ViewObject)
+    _ViewProviderDraftPart(obj.ViewObject)
     obj.Components = objectslist
     for o in objectslist:
         o.ViewObject.Visibility = False
@@ -557,7 +556,7 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
     The result is a parametric Draft Array.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Array")
     _Array(obj)
-    _ViewProviderDraft(obj.ViewObject)
+    _ViewProviderDraftPart(obj.ViewObject)
     obj.Base = baseobject
     if arg4:
         obj.ArrayType = "ortho"
@@ -796,11 +795,16 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
         return newobjlist
     else:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Scale")
-        _Scale(obj)
-        _ViewProviderDraft(obj.ViewObject)
+        _Clone(obj)
+        _ViewProviderDraftPart(obj.ViewObject)
         obj.Objects = objectslist
         obj.Scale = delta
-        obj.BasePoint = center
+        corr = Vector(center.x,center.y,center.z)
+        corr.scale(delta.x,delta.y,delta.z)
+        corr = fcvec.neg(corr.sub(center))
+        p = obj.Placement
+        p.move(corr)
+        obj.Placement = p
         if not copy:
             for o in objectslist:
                 o.ViewObject.hide()
@@ -1318,6 +1322,21 @@ def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
     obj.ViewObject.Visibility = True
     FreeCAD.ActiveDocument.recompute()
     return obj
+
+def clone(obj,delta=None):
+    '''clone(obj,[delta]): makes a clone of the given object(s). The clone is an exact,
+    linked copy of the given object. If the original object changes, the final object
+    changes too. Optionally, you can give a delta Vector to move the clone from the
+    original position.'''
+    if not isinstance(obj,list):
+        obj = [obj]
+    cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
+    _Clone(cl)
+    _ViewProviderDraftPart(cl.ViewObject)
+    cl.Objects = obj
+    if delta:
+        cl.Placement.move(delta)
+    return cl
 			
 #---------------------------------------------------------------------------
 # Python Features definitions
@@ -1371,6 +1390,8 @@ class _ViewProviderDraft:
             objs.append(self.Object.Base)
         if hasattr(self.Object,"Objects"):
             objs.extend(self.Object.Objects)
+        if hasattr(self.Object,"Components"):
+            objs.extend(self.Object.Components)
         return objs
 		
 class _Dimension:
@@ -2263,14 +2284,6 @@ class _Block:
             fp.Shape = shape
         fp.Placement = plm
 
-class _ViewProviderBlock(_ViewProviderDraft):
-    "A View Provider for the Block object"
-    def __init__(self,obj):
-        _ViewProviderDraft.__init__(self,obj)
-
-    def claimChildren(self):
-        return self.Object.Components
-
 class _Shape2DView:
     "The Shape2DView object"
 
@@ -2310,6 +2323,8 @@ class _Array:
                         "The base object that must be duplicated")
         obj.addProperty("App::PropertyEnumeration","ArrayType","Base",
                         "The type of array to create")
+        obj.addProperty("App::PropertyVector","Axis","Base",
+                        "The axis direction for polar arrays")
         obj.addProperty("App::PropertyInteger","NumberX","Base",
                         "Number of copies in X direction (ortho arrays)")
         obj.addProperty("App::PropertyInteger","NumberY","Base",
@@ -2333,6 +2348,7 @@ class _Array:
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
         obj.Angle = 360
+        obj.Axis = Vector(0,0,1)
 
     def execute(self,obj):
         self.createGeometry(obj)
@@ -2348,7 +2364,7 @@ class _Array:
             if obj.ArrayType == "ortho":
                 sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,obj.NumberX,obj.NumberY)
             else:
-                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle,obj.NumberPolar)
+                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle,obj.NumberPolar,obj.Axis)
             obj.Shape = sh
             if not fcgeo.isNull(pl):
                 obj.Placement = pl
@@ -2371,14 +2387,14 @@ class _Array:
                     base.append(nshape)
         return Part.makeCompound(base)
 
-    def polarArray(self,shape,center,angle,num):
+    def polarArray(self,shape,center,angle,num,axis):
         import Part
         fraction = angle/num
         base = [shape.copy()]
         for i in range(num):
             currangle = fraction + (i*fraction)
             nshape = shape.copy()
-            nshape.rotate(fcvec.tup(center), (0,0,1), currangle)
+            nshape.rotate(fcvec.tup(center), fcvec.tup(axis), currangle)
             base.append(nshape)
         return Part.makeCompound(base)
 
@@ -2422,25 +2438,23 @@ class _ViewProviderPoint:
     def getIcon(self):
         return ":/icons/Draft_Dot.svg"
 
-class _Scale:
-    "The Scale object"
+class _Clone:
+    "The Clone object"
 
     def __init__(self,obj):
         obj.addProperty("App::PropertyLinkList","Objects","Base",
                         "The objects included in this scale object")
         obj.addProperty("App::PropertyVector","Scale","Base",
                         "The scale vector of this object")
-        obj.addProperty("App::PropertyVector","BasePoint","Base",
-                        "The base point of this scale object")
         obj.Scale = Vector(1,1,1)
         obj.Proxy = self
-        self.Type = "Scale"
+        self.Type = "Clone"
 
     def execute(self,obj):
         self.createGeometry(obj)
 
     def onChanged(self,obj,prop):
-        if prop in ["Scale","BasePoint","Objects"]:
+        if prop in ["Scale","Objects"]:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
@@ -2449,19 +2463,23 @@ class _Scale:
         pl = obj.Placement
         shapes = []
         for o in obj.Objects:
-            if hasattr(o,"Shape"):
+            if o.isDerivedFrom("Part::Feature"):
                 sh = o.Shape.copy()
                 m = FreeCAD.Matrix()
                 m.scale(obj.Scale)
                 sh = sh.transformGeometry(m)
-                corr = Vector(obj.BasePoint)
-                corr.scale(obj.Scale.x,obj.Scale.y,obj.Scale.z)
-                corr = fcvec.neg(corr.sub(obj.BasePoint))
-                sh.translate(corr)
                 shapes.append(sh)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)   
         if not fcgeo.isNull(pl):
             obj.Placement = pl
 
+class _ViewProviderDraftPart(_ViewProviderDraft):
+    "a view provider that displays a Part icon instead of a Draft icon"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Tree_Part.svg"
 
