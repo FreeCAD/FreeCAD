@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ifcReader, FreeCAD, Arch, Draft, os, time
+import ifcReader, FreeCAD, Arch, Draft, os, sys, time
 from draftlibs import fcvec
 
 __title__="FreeCAD IFC importer"
@@ -52,6 +52,7 @@ def decode(name):
     return decodedName
 
 def getSchema():
+    "retrieves the express schema"
     default = "IFC2X3_TC1.exp"
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     p = p.GetString("IfcSchema")
@@ -61,6 +62,26 @@ def getSchema():
     p = os.path.join(FreeCAD.ConfigGet("UserAppData"),default)
     if os.path.exists(p):
         return p
+    return None
+
+def getIfcOpenShell():
+    "locates and imports ifcopenshell"
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    p = p.GetString("ifcopenshell")
+    if p:
+        try:
+            sys.path.append(os.path.dirname(p))
+            global IfcOpenShell
+            IfcOpenShell = None
+            import IfcImport as IfcOpenShell
+        except:
+            print "Couldn't import IfcOpenShell"
+
+def readOpenShell(filename):
+    getIfcOpenShell()
+    if IfcOpenShell:
+        IfcOpenShell.Init(filename)
+        return IfcOpenShell.Get()
     return None
     
 def read(filename):
