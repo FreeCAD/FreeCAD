@@ -242,6 +242,7 @@ class svgHandler(xml.sax.ContentHandler):
                 self.grouptransform = []
                 self.lastdim = None
 
+                global Part
                 import Part
 	
 		if gui and draftui:
