@@ -273,13 +273,14 @@ def getSelection():
     "getSelection(): returns the current FreeCAD selection"
     return FreeCADGui.Selection.getSelection()
 
-def select(objs):
+def select(objs=None):
     "select(object): deselects everything and selects only the passed object or list"
     FreeCADGui.Selection.clearSelection()
-    if not isinstance(objs,list):
-        objs = [objs]
-    for obj in objs:
-        FreeCADGui.Selection.addSelection(obj)
+    if objs:
+        if not isinstance(objs,list):
+            objs = [objs]
+        for obj in objs:
+            FreeCADGui.Selection.addSelection(obj)
 
 def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None, support=None):
     '''makeCircle(radius,[placement,face,startangle,endangle]): Creates a circle
@@ -2354,9 +2355,9 @@ class _Array:
         self.createGeometry(obj)
 
     def onChanged(self,obj,prop):
-        if prop in ["ArrayType","NumberX","NumberY","NumberPolar","IntervalX","IntervalY","Angle","Center"]:
+        if prop in ["ArrayType","NumberX","NumberY","NumberPolar","IntervalX","IntervalY","Angle","Center","Axis"]:
             self.createGeometry(obj)
-
+            
     def createGeometry(self,obj):
         from draftlibs import fcgeo
         if obj.Base:
