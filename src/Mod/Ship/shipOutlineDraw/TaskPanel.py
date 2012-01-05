@@ -76,7 +76,11 @@ class TaskPanel:
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.sections = form.findChild(QtGui.QTableWidget, "Sections")
-        form.sections.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly)
+        try:
+            form.sections.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly)
+        except:
+            msg = Translator.translate("QtCore.Qt.ImhFormattedNumbersOnly not supported, will not used.\n")
+            App.Console.PrintWarning(msg)
         form.sectionType = form.findChild(QtGui.QComboBox, "SectionType")
         form.deleteButton = form.findChild(QtGui.QPushButton, "DeleteButton")
         form.nSections = form.findChild(QtGui.QSpinBox, "NSections")
@@ -201,10 +205,20 @@ class TaskPanel:
             if(item.text() != ''):
                 self.form.sections.setRowCount(nRow+1)
         # Ensure that new item is a number
+        ID = self.form.sectionType.currentIndex()
+        if ID == 0:
+            SectionList = self.LSections[:]
+        elif ID == 1:
+            SectionList = self.BSections[:]
+        elif ID == 2:
+            SectionList = self.TSections[:]
         item = self.form.sections.item(row,column)
         (number,flag) = item.text().toFloat()
         if not flag:
-            number = 0.0
+            if len(SectionList) > nRow-1:
+                number = SectionList[nRow-1]
+            else:
+                number = 0.0
         string = '%f' % (number)
         item.setText(string)
         # Regenerate the list
