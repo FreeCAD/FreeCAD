@@ -569,8 +569,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                 pole1v = lastvec.add(pole1)
                                                 pole2v = currentvec.add(pole2)
                                                 print "curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
-                                                if (round(mainv.getAngle(pole1v),4) in [0,round(math.pi,4)]) \
-                                                            and (round(mainv.getAngle(pole2v),4) in [0,round(math.pi,4)]):
+                                                if (round(mainv.getAngle(pole1v),Draft.precision()) in [0,round(math.pi,Draft.precision())]) \
+                                                            and (round(mainv.getAngle(pole2v),Draft.precision()) in [0,round(math.pi,Draft.precision())]):
                                                         print "straight segment"
                                                         seg = Part.Line(lastvec,currentvec).toShape()
                                                 else:
