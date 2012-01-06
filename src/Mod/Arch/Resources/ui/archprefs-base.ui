@@ -164,14 +164,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
           <property name="toolTip">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;For the IFC reader to function, you need an IFC Schema Express file (.exp)                    &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;available &lt;a href=&quot;http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;here. &lt;/span&gt;&lt;/a&gt;For licensing reasons we are not allowed to ship that file &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;with FreeCAD, so you must download it yourself. Place that file in some&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;location on your computer, and select the file here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>For the IFC reader to function, you need an IFC Schema Express file (.exp). For licensing reasons we are not allowed to ship that file with FreeCAD, so you must download it yourself. Place that file in some location on your computer, and select the file here.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>IfcSchema</cstring>
@@ -186,9 +179,18 @@ p, li { white-space: pre-wrap; }
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+          <property name="toolTip">
+           <string>If this is checked, ifcopenshell will be used to create meshes instead of Arch objects</string>
+          </property>
           <property name="text">
-           <string>Path to IfcOpenShell</string>
+           <string>Use IfcOpenShell</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>useIfcOpenShell</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
           </property>
          </widget>
         </item>
@@ -206,7 +208,23 @@ p, li { white-space: pre-wrap; }
          </spacer>
         </item>
         <item>
+         <widget class="QLabel" name="label_5">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Path to IfcOpenShell</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="Gui::PrefFileChooser" name="gui::preffilechooser_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If you have ifcopenshell installed, specify here the path to IfcImport.py</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcopenshell</cstring>
           </property>
@@ -258,7 +276,45 @@ p, li { white-space: pre-wrap; }
    <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>gui::prefcheckbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_5</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>79</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>376</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gui::preffilechooser_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>61</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>465</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
