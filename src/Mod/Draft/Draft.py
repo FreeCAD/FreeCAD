@@ -1270,10 +1270,10 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                 if closed:
                     nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             ok = True
-        else:
+        elif obj.isDerivedFrom("Part::Feature"):
             if fcgeo.hasOnlyWires(obj.Shape):
                 for w in obj.Shape.Wires:
-                    for edge in w.Edges:
+                    for edge in fcgeo.sortEdges(w.Edges):
                         nobj.addGeometry(fcgeo.geom(edge))
                     if autoconstraints:
                         last = nobj.GeometryCount
