@@ -37,7 +37,7 @@ class TaskPanel:
     def accept(self):
         self.preview.clean()
         # Create new ship instance
-        obj = App.ActiveDocument.addObject("App::FeaturePython","Ship")
+        obj = App.ActiveDocument.addObject("Part::FeaturePython","Ship")
         ship = Instance.Ship(obj, self.faces)
         Instance.ViewProviderShip(obj.ViewObject)
         # Set main dimensions
