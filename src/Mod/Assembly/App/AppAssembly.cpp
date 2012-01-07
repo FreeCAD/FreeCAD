@@ -30,6 +30,9 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
+#include "Item.h"
+#include "ItemAssembly.h"
+#include "ItemPart.h"
 
 extern struct PyMethodDef Assembly_methods[];
 
@@ -61,7 +64,9 @@ void AssemblyExport initAssembly()
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
-    //Assembly::FeatureViewPart        ::init();
+    Assembly::Item            ::init();
+    Assembly::ItemAssembly    ::init();
+    Assembly::ItemPart        ::init();
 }
 
 } // extern "C"
