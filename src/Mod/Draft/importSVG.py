@@ -723,7 +723,7 @@ class svgHandler(xml.sax.ContentHandler):
 #						else:
 #							pathdata.append(d[0])
 #							pathdata.append(d[1:])
-			lenpoints=len(points):
+			lenpoints=len(points)
 			if lenpoints>=4 and lenpoints % 2 == 0:
 				lastvec = Vector(point[0],-point[1],0)
 				path=[]
