@@ -282,6 +282,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation, false);
+    d->mdiArea->setActivationOrder(QMdiArea::ActivationHistoryOrder);
     QPixmap backgnd((const char**) background);
     d->mdiArea->setBackground(backgnd);
     setCentralWidget(d->mdiArea);
