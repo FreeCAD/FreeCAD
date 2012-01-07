@@ -38,8 +38,9 @@ class AssemblyExport Item : public Part::Feature
 public:
     Item();
 
-    App::PropertyLinkList   Model;
-    App::PropertyLink       Tip;
+    App::PropertyString  Id;
+    App::PropertyString  Name  ;
+    App::PropertyString  Description  ;
 
     /** @name methods override feature */
     //@{
