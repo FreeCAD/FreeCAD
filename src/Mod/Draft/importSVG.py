@@ -601,8 +601,8 @@ class svgHandler(xml.sax.ContentHandler):
 						else:
 							currentvec = Vector(point[2],-point[3],0)
 							pole2 = Vector(point[0],-point[1],0)
-						if lastpole:
-							pole1 = lastvec.sub(lastpole).add(lastvec)
+                                                if lastpole is not None and lastpole[0]=='cubic':
+                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
 						else:
 							pole1 = lastvec
 					else: #not smooth
@@ -630,7 +630,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         seg = b.toShape()
 						print "connect ",lastvec,currentvec
 						lastvec = currentvec
-						lastpole = pole2
+						lastpole = ('cubic',pole2)
 						path.append(seg)
 					point = []
 
@@ -640,8 +640,8 @@ class svgHandler(xml.sax.ContentHandler):
 							currentvec = lastvec.add(Vector(point[0],-point[1],0))
 						else:
 							currentvec = Vector(point[0],-point[1],0)
-						if lastpole:
-							pole1 = lastvec.sub(lastpole).add(lastvec)
+                                                if lastpole is not None and lastpole[0]=='quadratic':
+                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
 						else:
 							pole1 = lastvec
 					else: #not smooth
@@ -663,7 +663,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         seg = b.toShape()
 						print "connect ",lastvec,currentvec
 						lastvec = currentvec
-						lastpole = pole1
+						lastpole = ('quadratic',pole1)
 						path.append(seg)
 					point = []
 
