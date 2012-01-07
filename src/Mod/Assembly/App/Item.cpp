@@ -39,7 +39,9 @@ PROPERTY_SOURCE(Assembly::Item, Part::Feature)
 
 Item::Item()
 {
-    ADD_PROPERTY(Model,(0));
+    ADD_PROPERTY(Id,(0));
+    ADD_PROPERTY(Name,(0));
+    ADD_PROPERTY(Description,(0));
 }
 
 short Item::mustExecute() const

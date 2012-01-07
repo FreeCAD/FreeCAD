@@ -35,6 +35,9 @@
 #include <Base/Writer.h>
 #include <Base/Stream.h>
 
+#include <boost/uuid/string_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #include "PropertyStandard.h"
 #include "MaterialPy.h"
 #define new DEBUG_CLIENTBLOCK
@@ -1125,6 +1128,115 @@ void PropertyString::Paste(const Property &from)
 unsigned int PropertyString::getMemSize (void) const
 {
     return static_cast<unsigned int>(_cValue.size());
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyUUID
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyUUID , App::Property);
+
+PropertyUUID::PropertyUUID()
+{
+
+}
+
+PropertyUUID::~PropertyUUID()
+{
+
+}
+
+void PropertyUUID::setValue(const boost::uuids::uuid &id)
+{
+    aboutToSetValue();
+    _uuid = id;
+    hasSetValue();
+}
+
+void PropertyUUID::setValue(const char* sString)
+{
+    if (sString) {
+        aboutToSetValue();
+        boost::uuids::string_generator gen;
+        _uuid = gen(sString);
+        hasSetValue();
+    }
+}
+
+void PropertyUUID::setValue(const std::string &sString)
+{
+    aboutToSetValue();
+    boost::uuids::string_generator gen;
+    _uuid = gen(sString);
+    hasSetValue();
+}
+
+const char* PropertyUUID::getValueStr(void) const
+{
+    static std::string buf;
+    buf = to_string(_uuid);
+    return buf.c_str();
+}
+
+const boost::uuids::uuid PropertyUUID::getValue(void) const
+{
+    return _uuid;
+}
+
+PyObject *PropertyUUID::getPyObject(void)
+{
+    PyObject *p = PyString_FromString(to_string(_uuid).c_str());
+    return p;
+}
+
+void PropertyUUID::setPyObject(PyObject *value)
+{
+    std::string string;
+    if (PyString_Check(value)) {
+        string = PyString_AsString(value);
+    }
+    else {
+        std::string error = std::string("type must be a str, not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+
+    // assign the string
+    setValue(string);
+}
+
+void PropertyUUID::Save (Base::Writer &writer) const
+{
+    std::string val = getValueStr();
+    writer.Stream() << writer.ind() << "<Uuid value=\"" <<  val <<"\"/>" << std::endl;
+}
+
+void PropertyUUID::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("Uuid");
+    // get the value of my Attribute
+    setValue(reader.getAttribute("value"));
+}
+
+Property *PropertyUUID::Copy(void) const
+{
+    PropertyUUID *p= new PropertyUUID();
+    p->_uuid = _uuid;
+    return p;
+}
+
+void PropertyUUID::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _uuid = dynamic_cast<const PropertyUUID&>(from)._uuid;
+    hasSetValue();
+}
+
+unsigned int PropertyUUID::getMemSize (void) const
+{
+    return static_cast<unsigned int>(sizeof(boost::uuids::uuid));
 }
 
 //**************************************************************************

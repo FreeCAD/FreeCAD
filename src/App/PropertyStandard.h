@@ -31,6 +31,7 @@
 #include <list>
 #include <vector>
 #include <boost/filesystem/path.hpp>
+#include <boost/uuid/uuid.hpp>
 
 #include "Property.h"
 #include "Material.h"
@@ -490,6 +491,50 @@ public:
 private:
     std::string _cValue;
 };
+
+/** UUID properties
+ * This property handles unique identifieers 
+ */
+class AppExport PropertyUUID: public Property
+{
+    TYPESYSTEM_HEADER();
+
+public:
+
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyUUID(void);
+    
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyUUID();
+
+
+    void setValue(const boost::uuids::uuid &);
+    void setValue(const char* sString);
+    void setValue(const std::string &sString);
+    const char* getValueStr(void) const;
+    const boost::uuids::uuid getValue(void) const;
+    
+    //virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyStringItem"; }
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+    
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+    virtual unsigned int getMemSize (void) const;
+
+private:
+    boost::uuids::uuid _uuid;
+};
+
 
 /** Property handling with font names.
  */
