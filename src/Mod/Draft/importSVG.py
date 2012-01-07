@@ -28,6 +28,7 @@ __url__ = ["http://free-cad.sourceforge.net"]
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
 paths, lines, arcs and rects.
+currently unsupported: image, rect(rx,ry)
 '''
 
 import xml.sax, string, FreeCAD, os, math, re, Draft
@@ -287,7 +288,7 @@ class svgHandler(xml.sax.ContentHandler):
 				pair = i.split(':')
 				if len(pair)>1:	data[pair[0]]=pair[1]
 
-		for k in ['x','y','x1','y1','x2','y2','width','height']:
+		for k in ['x','y','x1','y1','x2','y2','rx','ry','cx','cy','width','height']:
 			if k in data:
 				data[k] = getsize(data[k][0])
 
@@ -706,6 +707,59 @@ class svgHandler(xml.sax.ContentHandler):
 			obj = self.doc.addObject("Part::Feature",pathname)
 			obj.Shape = sh
 			self.format(obj)
+
+                # processing polylines and polygons
+
+		if name == "polyline" or name == "polygon":
+			if not pathname: pathname = 'Polyline'
+			points=[]
+			for point in data['points']:
+				f = float(d)
+				points.append(f)
+#					except ValueError:
+#						if d[0].isdigit():
+#							pathdata.append(d[:-1])
+#							pathdata.append(d[-1])
+#						else:
+#							pathdata.append(d[0])
+#							pathdata.append(d[1:])
+			lenpoints=len(points):
+			if lenpoints>=4 and lenpoints % 2 == 0:
+				lastvec = Vector(point[0],-point[1],0)
+				path=[]
+                                if name == 'polygon':
+                                        points=points+points[:2] # emulate closepath
+				for svgx,svgy in zip(points[2::2],points[3::2]):
+					currentvec = Vector(svgx,-svgy,0)
+					if not fcvec.equals(lastvec,currentvec):
+						seg = Part.Line(lastvec,currentvec).toShape()
+						print "polyline seg ",lastvec,currentvec
+						lastvec = currentvec
+						path.append(seg)
+                                if path:
+                                        sh = Part.Wire(path)
+                                        if self.fill: sh = Part.Face(sh)
+                                        sh = self.applyTrans(sh)
+                                        obj = self.doc.addObject("Part::Feature",pathname)
+                                        obj.Shape = sh
+
+                # processing ellipses
+
+                if (name == "ellipse") :
+                        if not pathname: pathname = 'Ellipse'
+                        c = Vector(float(data['cx'][0]),-float(data['cy'][0]),0)
+                        rx = float(data['rx'][0])
+                        ry = float(data['ry'][0])
+                        sh = Part.Ellipse(c,rx,rx)
+                        if self.fill:
+                                sh = Part.Wire([sh])
+                                sh = Part.Face(sh)
+                        sh.translate(c)
+                        sh = self.applyTrans(sh)
+			obj = self.doc.addObject("Part::Feature",pathname)
+			obj.Shape = sh
+			self.format(obj)
+
 
                 # processing circles
 
