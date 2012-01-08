@@ -229,6 +229,43 @@ def getrgb(color):
 	g = str(hex(int(color[1]*255)))[2:].zfill(2)
 	b = str(hex(int(color[2]*255)))[2:].zfill(2)
 	return "#"+r+g+b
+ 
+def splitpathd(pathdstr):
+        whitespacechars = [' ','\t','\r','\n']
+        commandchars = ['m','M','l','L','h','H','v','V','a','A','c','C','q','Q','s','S','t','T','z','Z']
+        numberchars = ['e','E','+','-','.','0','1','2','3','4','5','6','7','8','9']
+        dlist=[]
+        currentnumber=''
+        state='whitespace'
+        for dchar in pathdstr:
+                if dchar in commandchars:
+                        if currentnumber:
+                                dlist.append(float(currentnumber))
+                                currentnumber = ''
+                        dlist.append(dchar)
+                        state='whitespace'
+                elif state == 'whitespace':
+                        if dchar in whitespacechars:
+                                pass #continue
+                        elif dchar in numberchars:
+                                state = 'number'
+                                currentnumber = dchar
+                        else:
+                                print 'unexpected char %s %d %s' % (dchar,ord(dchar),state)
+                elif state == 'number':
+                        if dchar in numberchars:
+                                currentnumber += dchar
+                        elif dchar in whitespacechars:
+                                dlist.append(float(currentnumber))
+                                currentnumber = ''
+                        else:
+                                print 'unexpected char %s %d %s' % (dchar,ord(dchar),state)
+        #End of string/list
+        if currentnumber:
+                dlist.append(float(currentnumber))
+                currentnumber = ''
+        return dlist
+
 
 class svgHandler(xml.sax.ContentHandler):
 	"this handler parses the svg files and creates freecad objects"
@@ -378,22 +415,7 @@ class svgHandler(xml.sax.ContentHandler):
 			relative = False
 			firstvec = None
 
-			pathdata = []
-			for d in data['d']:
-				if (len(d) == 1) and (d in ['m','M','l','L','h','H','v','V','a','A','c','C','q','Q','s','S','t','T']):
-					pathdata.append(d)
-				else:
-					try:
-						f = float(d)
-						pathdata.append(f)
-					except ValueError:
-						if d[0].isdigit():
-							pathdata.append(d[:-1])
-							pathdata.append(d[-1])
-						else:
-							pathdata.append(d[0])
-							pathdata.append(d[1:])
-
+			pathdata = splitpathd(' '.join(data['d']))
                         # print "debug: pathdata:",pathdata
 
                         if "freecad:basepoint1" in data:
@@ -716,13 +738,6 @@ class svgHandler(xml.sax.ContentHandler):
 			for point in data['points']:
 				f = float(d)
 				points.append(f)
-#					except ValueError:
-#						if d[0].isdigit():
-#							pathdata.append(d[:-1])
-#							pathdata.append(d[-1])
-#						else:
-#							pathdata.append(d[0])
-#							pathdata.append(d[1:])
 			lenpoints=len(points)
 			if lenpoints>=4 and lenpoints % 2 == 0:
 				lastvec = Vector(point[0],-point[1],0)
