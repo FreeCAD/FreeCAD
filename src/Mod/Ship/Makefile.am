@@ -1,12 +1,54 @@
-SUBDIRS=Icons shipCreateShip shipOutlineDraw shipUtils
-
 # Change data dir from default ($(prefix)/share) to actual dir
 datadir = $(prefix)/Mod/Ship
 
-data_DATA = InitGui.py ShipGui.py Instance.py
+data_DATA = \
+	InitGui.py \
+	ShipGui.py \
+	Instance.py
+
+nobase_data_DATA = \
+	Icons/AreaCurveIco.png \
+	Icons/AreaCurveIco.xcf \
+	Icons/AreaCurveIco.xpm \
+	Icons/DataIco.png \
+	Icons/DataIco.xcf \
+	Icons/DataIco.xpm \
+	Icons/DiscretizeIco.png \
+	Icons/DiscretizeIco.xcf \
+	Icons/DiscretizeIco.xpm \
+	Icons/HydrostaticsIco.png \
+	Icons/HydrostaticsIco.xcf \
+	Icons/HydrostaticsIco.xpm \
+	Icons/Ico.png \
+	Icons/Ico.xcf \
+	Icons/Ico.xpm \
+	Icons/OutlineDrawIco.png \
+	Icons/OutlineDrawIco.xcf \
+	Icons/OutlineDrawIco.xpm \
+	Icons/ReparametrizeIco.png \
+	Icons/ReparametrizeIco.xcf \
+	Icons/ReparametrizeIco.xpm \
+	Icons/Ship.xcf \
+	Icons/Ship.xpm \
+	shipCreateShip/__init__.py \
+	shipCreateShip/Preview.py \
+	shipCreateShip/TaskPanel.py \
+	shipCreateShip/TaskPanel.ui \
+	shipOutlineDraw/__init__.py \
+	shipOutlineDraw/Plot.py \
+	shipOutlineDraw/Preview.py \
+	shipOutlineDraw/TaskPanel.py \
+	shipOutlineDraw/TaskPanel.ui \
+	shipUtils/__init__.py \
+	shipUtils/Math.py \
+	shipUtils/Paths.py \
+	shipUtils/Translator.py
+
+CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
 		$(data_DATA) \
+		$(nobase_data_DATA) \
 		CMakeLists.txt \
 		README \
 		ship.dox
