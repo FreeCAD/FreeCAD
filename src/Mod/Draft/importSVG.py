@@ -592,35 +592,22 @@ class svgHandler(xml.sax.ContentHandler):
 						path = []
 					point = []
 					command = None
-				#elif (len(point)==6) and (command=="cubic"):
-				elif (command=="cubic") and (((smooth==False) and (len(point)==6)) or (smooth==True and (len(point)==4))) :
-					if smooth:
-						if relative:
-							currentvec = lastvec.add(Vector(point[2],-point[3],0))
-							pole2 = lastvec.add(Vector(point[0],-point[1],0))
-						else:
-							currentvec = Vector(point[2],-point[3],0)
-							pole2 = Vector(point[0],-point[1],0)
-                                                if lastpole is not None and lastpole[0]=='cubic':
-                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
-						else:
-							pole1 = lastvec
-					else: #not smooth
-						if relative:
-							currentvec = lastvec.add(Vector(point[4],-point[5],0))
-							pole1 = lastvec.add(Vector(point[0],-point[1],0))
-							pole2 = lastvec.add(Vector(point[2],-point[3],0))
-						else:
-							currentvec = Vector(point[4],-point[5],0)
-							pole1 = Vector(point[0],-point[1],0)
-							pole2 = Vector(point[2],-point[3],0)
-
+				elif (len(point)==6) and (command=="curve"):
+					if relative:
+						currentvec = lastvec.add(Vector(point[4],-point[5],0))
+                                                pole1 = lastvec.add(Vector(point[0],-point[1],0))
+                                                pole2 = lastvec.add(Vector(point[2],-point[3],0))
+					else:
+						currentvec = Vector(point[4],-point[5],0)
+                                                pole1 = Vector(point[0],-point[1],0)
+                                                pole2 = Vector(point[2],-point[3],0)
 					if not fcvec.equals(currentvec,lastvec):
                                                 mainv = currentvec.sub(lastvec)
                                                 pole1v = lastvec.add(pole1)
                                                 pole2v = currentvec.add(pole2)
-                                                print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
-                                                if pole1.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()) and pole2.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()):
+                                                print "curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
+                                                if (round(mainv.getAngle(pole1v),Draft.precision()) in [0,round(math.pi,Draft.precision())]) \
+                                                            and (round(mainv.getAngle(pole2v),Draft.precision()) in [0,round(math.pi,Draft.precision())]):
                                                         print "straight segment"
                                                         seg = Part.Line(lastvec,currentvec).toShape()
                                                 else:
