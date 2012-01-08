@@ -249,7 +249,7 @@ CmdDrawingNewView::CmdDrawingNewView()
 void CmdDrawingNewView::activated(int iMsg)
 {
     std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (shapes.size() != 1) {
+    if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select a Part object."));
         return;
@@ -262,19 +262,19 @@ void CmdDrawingNewView::activated(int iMsg)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("View");
     std::string PageName = pages.front()->getNameInDocument();
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-
     openCommand("Create view");
-    doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewPart','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),shapes.front()->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.Direction = (0.0,0.0,1.0)",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    for (std::vector<App::DocumentObject*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        std::string FeatName = getUniqueObjectName("View");
+        doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewPart','%s')",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
+        doCommand(Doc,"App.activeDocument().%s.Direction = (0.0,0.0,1.0)",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Scale = 1.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    }
     updateActive();
     commitCommand();
 }

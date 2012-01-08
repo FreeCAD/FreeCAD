@@ -90,7 +90,7 @@ public:
     virtual void deactivated();
 
     /// helper to add TaskWatcher to the TaskView
-    void addTaskWatcher(std::vector<Gui::TaskView::TaskWatcher*> &Watcher);
+    void addTaskWatcher(const std::vector<Gui::TaskView::TaskWatcher*> &Watcher);
     /// remove the added TaskWatcher
     void removeTaskWatcher(void);
 
