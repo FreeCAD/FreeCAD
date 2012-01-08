@@ -22,13 +22,12 @@
 #***************************************************************************
 
 __title__="FreeCAD Draft Workbench - SVG importer/exporter"
-__author__ = "Yorik van Havre <yorik@gmx.fr>"
-__url__ = ["http://yorik.orgfree.com","http://free-cad.sourceforge.net"]
+__author__ = "Yorik van Havre, Sebastian Hoogen"
+__url__ = ["http://free-cad.sourceforge.net"]
 
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
 paths, lines, arcs and rects.
-Bezier curves are skipped.
 '''
 
 import xml.sax, string, FreeCAD, os, math, re, Draft
@@ -373,13 +372,14 @@ class svgHandler(xml.sax.ContentHandler):
 			path = []
 			point = []
 			lastvec = Vector(0,0,0)
+			lastpole = None
 			command = None
 			relative = False
 			firstvec = None
 
 			pathdata = []
 			for d in data['d']:
-				if (len(d) == 1) and (d in ['m','M','l','L','h','H','v','V','a','A','c','C']):
+				if (len(d) == 1) and (d in ['m','M','l','L','h','H','v','V','a','A','c','C','q','Q','s','S','t','T']):
 					pathdata.append(d)
 				else:
 					try:
@@ -453,12 +453,44 @@ class svgHandler(xml.sax.ContentHandler):
 					command = "close"
 					point = []
 				elif (d == "C"):
-					command = "curve"
+					command = "cubic"
 					relative = False
+					smooth = False
 					point = []
 				elif (d == "c"):
-					command = "curve"
+					command = "cubic"
 					relative = True
+					smooth = False
+					point = []
+				elif (d == "Q"):
+					command = "quadratic"
+					relative = False
+					smooth = False
+					point = []
+				elif (d == "q"):
+					command = "quadratic"
+					relative = True
+					smooth = False
+					point = []
+				elif (d == "S"):
+					command = "cubic"
+					relative = False
+					smooth = True
+					point = []
+				elif (d == "s"):
+					command = "cubic"
+					relative = True
+					smooth = True
+					point = []
+				elif (d == "T"):
+					command = "quadratic"
+					relative = False
+					smooth = True
+					point = []
+				elif (d == "t"):
+					command = "quadratic"
+					relative = True
+					smooth = True
 					point = []
 				else:
 					try:
@@ -485,6 +517,7 @@ class svgHandler(xml.sax.ContentHandler):
 					firstvec = lastvec
 					print "move ",lastvec
 					command = "line"
+					lastpole = None
 					point = []
 				elif (len(point)==2) and (command=="line"):
 					if relative:
@@ -496,6 +529,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 print "line ",lastvec,currentvec
                                                 lastvec = currentvec
                                                 path.append(seg)
+					lastpole = None
 					point = []
 				elif (len(point)==1) and (command=="horizontal"):
 					if relative:
@@ -505,6 +539,7 @@ class svgHandler(xml.sax.ContentHandler):
 						currentvec = Vector(point[0],lasty,0)
 					seg = Part.Line(lastvec,currentvec).toShape()
 					lastvec = currentvec
+					lastpole = None
 					path.append(seg)
 					point = []
 				elif (len(point)==1) and (command=="vertical"):
@@ -515,6 +550,7 @@ class svgHandler(xml.sax.ContentHandler):
 						currentvec = Vector(lastx,-point[0],0)
 					seg = Part.Line(lastvec,currentvec).toShape()
 					lastvec = currentvec
+					lastpole = None
 					path.append(seg)
 					point = []
 				elif (len(point)==7) and (command=="arc"):
@@ -539,6 +575,7 @@ class svgHandler(xml.sax.ContentHandler):
 					midpoint = lastvec.add(chord.add(perp))
 					seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
 					lastvec = currentvec
+					lastpole = None
 					path.append(seg)
 					point = []
 				elif (command == "close"):
@@ -574,12 +611,46 @@ class svgHandler(xml.sax.ContentHandler):
                                                         print "straight segment"
                                                         seg = Part.Line(lastvec,currentvec).toShape()
                                                 else:
-                                                        print "bezier segment"
+                                                        print "cubic bezier segment"
                                                         b = Part.BezierCurve()
                                                         b.setPoles([lastvec,pole1,pole2,currentvec])
                                                         seg = b.toShape()
 						print "connect ",lastvec,currentvec
 						lastvec = currentvec
+						lastpole = ('cubic',pole2)
+						path.append(seg)
+					point = []
+
+				elif (command=="quadratic") and (((smooth==False) and (len(point)==4)) or (smooth==True and (len(point)==2))) :
+					if smooth:
+						if relative:
+							currentvec = lastvec.add(Vector(point[0],-point[1],0))
+						else:
+							currentvec = Vector(point[0],-point[1],0)
+                                                if lastpole is not None and lastpole[0]=='quadratic':
+                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
+						else:
+							pole1 = lastvec
+					else: #not smooth
+						if relative:
+							currentvec = lastvec.add(Vector(point[2],-point[3],0))
+							pole1 = lastvec.add(Vector(point[0],-point[1],0))
+						else:
+							currentvec = Vector(point[2],-point[3],0)
+							pole1 = Vector(point[0],-point[1],0)
+
+					if not fcvec.equals(currentvec,lastvec):
+                                                if pole1.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()):
+                                                        print "straight segment"
+                                                        seg = Part.Line(lastvec,currentvec).toShape()
+                                                else:
+                                                        print "quadratic bezier segment"
+                                                        b = Part.BezierCurve()
+                                                        b.setPoles([lastvec,pole1,currentvec])
+                                                        seg = b.toShape()
+						print "connect ",lastvec,currentvec
+						lastvec = currentvec
+						lastpole = ('quadratic',pole1)
 						path.append(seg)
 					point = []
 
@@ -749,7 +820,7 @@ def decodeName(name):
 		try:
 			decodedName = (name.decode("latin1"))
 		except UnicodeDecodeError:
-			print "dxf: error: couldn't determine character encoding"
+			print "svg: error: couldn't determine character encoding"
 			decodedName = name
 	return decodedName
 

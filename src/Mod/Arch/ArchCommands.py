@@ -138,6 +138,7 @@ def splitMesh(obj,mark=True):
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
+    name = obj.Name
     import Part,MeshPart
     from draftlibs import fcgeo
     if "Mesh" in obj.PropertiesList:
@@ -177,21 +178,26 @@ def meshToShape(obj,mark=True):
                     # make sure that the exterior wires comes as first in the list
                     wires.insert(0, ext)
                     print "done sorting", wires
-                faces.append(Part.Face(wires))
+                if wires:
+                    faces.append(Part.Face(wires))
                 print "done facing"
             print "faces",faces
 
-        shell=Part.Compound(faces)
-        solid = Part.Solid(Part.Shell(faces))
-        name = obj.Name
-        if solid.isClosed():
-            FreeCAD.ActiveDocument.removeObject(name)
-        newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-        newobj.Shape = solid
-        newobj.Placement = plac
-        if not solid.isClosed():
-            newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
-        return newobj
+        try:
+            se = Part.makeShell(faces)
+            solid = Part.Solid(se)
+        except:
+            pass
+        else:
+            if solid.isClosed():
+                FreeCAD.ActiveDocument.removeObject(name)
+            else:
+                if mark:
+                    newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+            newobj.Shape = solid
+            newobj.Placement = plac
+            return newobj
     return None
 
 def removeShape(objs,mark=True):
