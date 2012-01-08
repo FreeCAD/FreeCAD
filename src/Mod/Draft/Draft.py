@@ -273,13 +273,14 @@ def getSelection():
     "getSelection(): returns the current FreeCAD selection"
     return FreeCADGui.Selection.getSelection()
 
-def select(objs):
+def select(objs=None):
     "select(object): deselects everything and selects only the passed object or list"
     FreeCADGui.Selection.clearSelection()
-    if not isinstance(objs,list):
-        objs = [objs]
-    for obj in objs:
-        FreeCADGui.Selection.addSelection(obj)
+    if objs:
+        if not isinstance(objs,list):
+            objs = [objs]
+        for obj in objs:
+            FreeCADGui.Selection.addSelection(obj)
 
 def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None, support=None):
     '''makeCircle(radius,[placement,face,startangle,endangle]): Creates a circle
@@ -1269,10 +1270,10 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                 if closed:
                     nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             ok = True
-        else:
+        elif obj.isDerivedFrom("Part::Feature"):
             if fcgeo.hasOnlyWires(obj.Shape):
                 for w in obj.Shape.Wires:
-                    for edge in w.Edges:
+                    for edge in fcgeo.sortEdges(w.Edges):
                         nobj.addGeometry(fcgeo.geom(edge))
                     if autoconstraints:
                         last = nobj.GeometryCount
@@ -2354,9 +2355,9 @@ class _Array:
         self.createGeometry(obj)
 
     def onChanged(self,obj,prop):
-        if prop in ["ArrayType","NumberX","NumberY","NumberPolar","IntervalX","IntervalY","Angle","Center"]:
+        if prop in ["ArrayType","NumberX","NumberY","NumberPolar","IntervalX","IntervalY","Angle","Center","Axis"]:
             self.createGeometry(obj)
-
+            
     def createGeometry(self,obj):
         from draftlibs import fcgeo
         if obj.Base:
