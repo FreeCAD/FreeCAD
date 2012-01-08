@@ -23,14 +23,36 @@
 #ifndef PARTGUI_DLGPRIMITIVES_H
 #define PARTGUI_DLGPRIMITIVES_H
 
+#include <QEventLoop>
 #include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
 #include "ui_DlgPrimitives.h"
 #include "ui_Location.h"
 
+class gp_Ax2;
 class SoEventCallback;
 
+namespace App { class Document; }
+namespace Gui { class Document; }
 namespace PartGui {
+
+class Picker
+{
+public:
+    Picker()
+    {
+    }
+    virtual ~Picker()
+    {
+    }
+
+    virtual bool pickedPoint(const SoPickedPoint * point) = 0;
+    virtual QString command(App::Document*) const = 0;
+    void createPrimitive(QWidget* widget, const QString&, Gui::Document*);
+    QString toPlacement(const gp_Ax2&) const;
+
+    QEventLoop loop;
+};
 
 class DlgPrimitives : public QWidget
 {
@@ -40,6 +62,13 @@ public:
     DlgPrimitives(QWidget* parent = 0);
     ~DlgPrimitives();
     void createPrimitive(const QString&);
+
+private Q_SLOTS:
+    void on_buttonCircleFromThreePoints_clicked();
+
+private:
+    static void pickCallback(void * ud, SoEventCallback * n);
+    void executeCallback(Picker*);
 
 private:
     Ui_DlgPrimitives ui;
