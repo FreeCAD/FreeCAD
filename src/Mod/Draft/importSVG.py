@@ -231,6 +231,7 @@ def getrgb(color):
 	return "#"+r+g+b
  
 def splitpathd(pathdstr):
+        "returns a list with the elements contained in the d attribute of a path"
         whitespacechars = [' ','\t','\r','\n']
         commandchars = ['m','M','l','L','h','H','v','V','a','A','c','C','q','Q','s','S','t','T','z','Z']
         numberchars = ['e','E','+','-','.','0','1','2','3','4','5','6','7','8','9']
@@ -359,38 +360,7 @@ class svgHandler(xml.sax.ContentHandler):
                 else:
                         if name == "g":
                                 self.grouptransform.append(FreeCAD.Matrix())
-                                
-                        '''
-                        print "existing grouptransform: ",self.grouptransform
-                        print "existing transform: ",self.transform
-			if "translate" in tr:
-                                i0 = tr.index("translate")
-                                print "getting translate ",tr
-                                if "translate" in self.transform:
-                                        self.transform['translate'] = self.transform['translate'].add(Vector(float(tr[i0+1]),-float(tr[i0+2]),0))
-                                else:
-                                        self.transform['translate'] = Vector(float(tr[i0+1]),-float(tr[i0+2]),0)
-                                if "translate" in self.grouptransform:
-                                        print "adding to group ",self.grouptransform['translate']
-                                        self.transform['translate'] = self.grouptransform['translate'].add(self.transform['translate'])
-                        else:
-                                if "translate" in self.grouptransform:
-                                        print "adding to group ",self.grouptransform['translate']
-                                        self.transform['translate'] = self.grouptransform['translate']
-                        if "scale" in tr:
-                                i0 = tr.index("scale")
-                                if "scale" in self.transform:
-                                        self.transform['scale'] = self.transform['scale'].add(Vector(float(tr[i0+1]),float(tr[i0+2]),0))
-                                else:
-                                        print tr
-                                        self.transform['scale'] = Vector(float(tr[i0+1]),float(tr[i0+2]),0)
-                                if "scale" in self.grouptransform:
-                                        self.transform['scale'] = self.transform['scale'].add(self.grouptransform['scale'])
-                        else:
-                                if "scale" in self.grouptransform:
-                                        self.transform['scale'] = self.grouptransform['scale']
-                        '''
- 
+
 		if (self.style == 1):
 			self.color = self.col
 			self.width = self.lw
