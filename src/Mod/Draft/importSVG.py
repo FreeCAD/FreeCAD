@@ -27,8 +27,8 @@ __url__ = ["http://free-cad.sourceforge.net"]
 
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
-paths, lines, arcs and rects.
-currently unsupported: image, rect(rx,ry)
+paths, lines, arcs ,rects, circles, ellipses, polygons, polylines.
+currently unsupported: image, rounded rect(rx,ry), transform attribute??
 '''
 
 import xml.sax, string, FreeCAD, os, math, re, Draft
@@ -325,7 +325,7 @@ class svgHandler(xml.sax.ContentHandler):
 				pair = i.split(':')
 				if len(pair)>1:	data[pair[0]]=pair[1]
 
-		for k in ['x','y','x1','y1','x2','y2','rx','ry','cx','cy','width','height']:
+		for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
 			if k in data:
 				data[k] = getsize(data[k][0])
 
@@ -615,7 +615,7 @@ class svgHandler(xml.sax.ContentHandler):
 						path = []
 					point = []
 					command = None
-				#elif (len(point)==6) and (command=="cubic"):
+
 				elif (command=="cubic") and (((smooth==False) and (len(point)==6)) or (smooth==True and (len(point)==4))) :
 					if smooth:
 						if relative:
@@ -734,13 +734,11 @@ class svgHandler(xml.sax.ContentHandler):
 
 		if name == "polyline" or name == "polygon":
 			if not pathname: pathname = 'Polyline'
-			points=[]
-			for point in data['points']:
-				f = float(d)
-				points.append(f)
+			points=[float(d) for d in data['points']]
+                        print points
 			lenpoints=len(points)
 			if lenpoints>=4 and lenpoints % 2 == 0:
-				lastvec = Vector(point[0],-point[1],0)
+				lastvec = Vector(points[0],-points[1],0)
 				path=[]
                                 if name == 'polygon':
                                         points=points+points[:2] # emulate closepath
@@ -762,10 +760,10 @@ class svgHandler(xml.sax.ContentHandler):
 
                 if (name == "ellipse") :
                         if not pathname: pathname = 'Ellipse'
-                        c = Vector(float(data['cx'][0]),-float(data['cy'][0]),0)
-                        rx = float(data['rx'][0])
-                        ry = float(data['ry'][0])
-                        sh = Part.Ellipse(c,rx,rx)
+                        c = Vector(data.get('cx',0),-data.get('cy',0),0)
+                        rx = data['rx']
+                        ry = data['ry']
+                        sh = Part.Ellipse(c,rx,ry).toShape() #needs a proxy object
                         if self.fill:
                                 sh = Part.Wire([sh])
                                 sh = Part.Face(sh)
@@ -780,8 +778,8 @@ class svgHandler(xml.sax.ContentHandler):
 
                 if (name == "circle") and (not ("freecad:skip" in data)) :
                         if not pathname: pathname = 'Circle'
-                        c = Vector(float(data['cx'][0]),-float(data['cy'][0]),0)
-                        r = float(data['r'][0])
+                        c = Vector(data.get('cx',0),-data.get('cy',0),0)
+                        r = data['r']
                         sh = Part.makeCircle(r)
                         if self.fill:
                                 sh = Part.Wire([sh])
