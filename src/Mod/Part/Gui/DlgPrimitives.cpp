@@ -24,15 +24,22 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <Python.h>
+#include <gp_Ax1.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
+#include <GC_MakeArcOfCircle.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_TrimmedCurve.hxx>
+#include <Handle_Geom_Circle.hxx>
+#include <Handle_Geom_TrimmedCurve.hxx>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
 #include <Base/Interpreter.h>
 #include <Base/Rotation.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -46,6 +53,130 @@
 #include "DlgPrimitives.h"
 
 using namespace PartGui;
+
+namespace PartGui {
+
+const char* gce_ErrorStatusText(gce_ErrorType et)
+{
+    switch (et)
+    {
+    case gce_Done:
+        return "Construction was successful";
+    case gce_ConfusedPoints:
+        return "Two points are coincident";
+    case gce_NegativeRadius:
+        return "Radius value is negative";
+    case gce_ColinearPoints:
+        return "Three points are collinear";
+    case gce_IntersectionError:
+        return "Intersection cannot be computed";
+    case gce_NullAxis:
+        return "Axis is undefined";
+    case gce_NullAngle:
+        return "Angle value is invalid (usually null)";
+    case gce_NullRadius:
+        return "Radius is null";
+    case gce_InvertAxis:
+        return "Axis value is invalid";
+    case gce_BadAngle:
+        return "Angle value is invalid";
+    case gce_InvertRadius:
+        return "Radius value is incorrect (usually with respect to another radius)";
+    case gce_NullFocusLength:
+        return "Focal distance is null";
+    case gce_NullVector:
+        return "Vector is null";
+    case gce_BadEquation:
+        return "Coefficients are incorrect (applies to the equation of a geometric object)";
+    default:
+        return "Creation of geometry failed";
+    }
+}
+
+void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Document* doc)
+{
+    try {
+        App::Document* app = doc->getDocument();
+        QString cmd = this->command(app);
+
+        // Execute the Python block
+        doc->openCommand(descr.toUtf8());
+        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toAscii());
+        doc->commitCommand();
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(widget, descr, QString::fromLatin1(e.what()));
+    }
+}
+
+QString Picker::toPlacement(const gp_Ax2& axis) const
+{
+    gp_Dir dir = axis.Direction();
+    gp_Pnt pnt = gp_Pnt(0.0,0.0,0.0);
+    gp_Ax3 ax3(pnt, dir, axis.XDirection());
+
+    gp_Trsf Trf;
+    Trf.SetTransformation(ax3);
+    Trf.Invert();
+
+    gp_XYZ theAxis(0,0,1);
+    Standard_Real theAngle = 0.0;
+    Trf.GetRotation(theAxis,theAngle);
+
+    Base::Rotation rot(Base::convertTo<Base::Vector3d>(theAxis), theAngle);
+    gp_Pnt loc = axis.Location();
+
+    return QString::fromAscii("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
+        .arg(loc.X(),0,'f',2)
+        .arg(loc.Y(),0,'f',2)
+        .arg(loc.Z(),0,'f',2)
+        .arg(rot[0],0,'f',2)
+        .arg(rot[1],0,'f',2)
+        .arg(rot[2],0,'f',2)
+        .arg(rot[3],0,'f',2);
+}
+
+class CircleFromThreePoints : public Picker
+{
+public:
+    CircleFromThreePoints() : Picker()
+    {
+    }
+    bool pickedPoint(const SoPickedPoint * point)
+    {
+        SbVec3f pnt = point->getPoint();
+        points.push_back(gp_Pnt(pnt[0],pnt[1],pnt[2]));
+        return points.size() == 3;
+    }
+    QString command(App::Document* doc) const
+    {
+        GC_MakeArcOfCircle arc(points[0], points[1], points[2]);
+        if (!arc.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(arc.Status()));
+        Handle_Geom_TrimmedCurve trim = arc.Value();
+        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+
+        QString name = QString::fromAscii(doc->getUniqueObjectName("Circle").c_str());
+        return QString::fromAscii(
+            "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
+            "App.ActiveDocument.%1.Radius=%2\n"
+            "App.ActiveDocument.%1.Angle0=%3\n"
+            "App.ActiveDocument.%1.Angle1=%4\n"
+            "App.ActiveDocument.%1.Placement=%5\n")
+            .arg(name)
+            .arg(circle->Radius(),0,'f',2)
+            .arg(Base::toDegrees(trim->FirstParameter()),0,'f',2)
+            .arg(Base::toDegrees(trim->LastParameter ()),0,'f',2)
+            .arg(toPlacement(circle->Position()));
+    }
+
+private:
+    std::vector<gp_Pnt> points;
+};
+
+}
 
 /* TRANSLATOR PartGui::DlgPrimitives */
 
@@ -134,6 +265,66 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
  */
 DlgPrimitives::~DlgPrimitives()
 {
+}
+
+void DlgPrimitives::pickCallback(void * ud, SoEventCallback * n)
+{
+    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
+    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+
+    // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
+    n->setHandled();
+    if (mbe->getButton() == SoMouseButtonEvent::BUTTON1) {
+        if (mbe->getState() == SoButtonEvent::DOWN) {
+            const SoPickedPoint * point = n->getPickedPoint();
+            if (point) {
+                Picker* pick = reinterpret_cast<Picker*>(ud);
+                if (pick->pickedPoint(point)) {
+                    pick->loop.exit(0);
+                }
+            }
+        }
+    }
+    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2) {
+        if (mbe->getState() == SoButtonEvent::UP) {
+            Picker* pick = reinterpret_cast<Picker*>(ud);
+            pick->loop.exit(1);
+        }
+    }
+}
+
+void DlgPrimitives::executeCallback(Picker* p)
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (!doc) {
+        return;
+    }
+
+    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+    if (view) {
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+        if (!viewer->isEditing()) {
+            viewer->setEditing(true);
+            viewer->setRedirectToSceneGraph(true);
+            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback, p);
+            this->setDisabled(true);
+            int ret = p->loop.exec();
+            this->setEnabled(true);
+            viewer->setEditing(false);
+            viewer->setRedirectToSceneGraph(false);
+            viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback, p);
+
+            if (ret == 0) {
+                p->createPrimitive(this, ui.comboBox1->currentText(), doc);
+            }
+        }
+    }
+}
+
+void DlgPrimitives::on_buttonCircleFromThreePoints_clicked()
+{
+    CircleFromThreePoints pp;
+    executeCallback(&pp);
 }
 
 void DlgPrimitives::createPrimitive(const QString& placement)
@@ -384,9 +575,6 @@ void DlgPrimitives::createPrimitive(const QString& placement)
 Location::Location(QWidget* parent)
 {
     ui.setupUi(this);
-
-    connect(ui.viewPositionButton, SIGNAL(clicked()),
-            this, SLOT(on_viewPositionButton_clicked()));
 }
 
 Location::~Location()
