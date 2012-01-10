@@ -1429,7 +1429,7 @@ class _ViewProviderDimension:
         obj.addProperty("App::PropertyLength","LineWidth","Base","Line width")
         obj.addProperty("App::PropertyColor","LineColor","Base","Line color")
         obj.addProperty("App::PropertyLength","ExtLines","Base","Ext lines")
-        obj.addProperty("App::PropertyVector","Position","Base","The position of the text. Leave (0,0,0) for automatic position")
+        obj.addProperty("App::PropertyVector","TextPosition","Base","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Base","Text override. Use 'dim' to insert the dimension length")
         obj.Proxy = self
         obj.FontSize=getParam("textheight")
@@ -1476,10 +1476,10 @@ class _ViewProviderDimension:
             if hasattr(obj.ViewObject,"DisplayMode"):
                 if obj.ViewObject.DisplayMode == "3D":
                     offset = fcvec.neg(offset)
-        if obj.ViewObject.Position == Vector(0,0,0):
+        if obj.ViewObject.TextPosition == Vector(0,0,0):
             tbase = midpoint.add(offset)
         else:
-            tbase = obj.ViewObject.Position
+            tbase = obj.ViewObject.TextPosition
         rot = FreeCAD.Placement(fcvec.getPlaneRotation(u,v,norm)).Rotation.Q
         return p1,p2,p3,p4,tbase,norm,rot
 
@@ -1719,7 +1719,7 @@ class _ViewProviderAngularDimension:
         obj.addProperty("App::PropertyString","FontName","Base","Font name")
         obj.addProperty("App::PropertyLength","LineWidth","Base","Line width")
         obj.addProperty("App::PropertyColor","LineColor","Base","Line color")
-        obj.addProperty("App::PropertyVector","Position","Base","The position of the text. Leave (0,0,0) for automatic position")
+        obj.addProperty("App::PropertyVector","TextPosition","Base","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Base","Text override. Use 'dim' to insert the dimension length")
         obj.Proxy = self
         obj.FontSize=getParam("textheight")
