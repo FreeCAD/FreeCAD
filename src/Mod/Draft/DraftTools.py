@@ -3080,8 +3080,9 @@ class Edit(Modifier):
                 if self.obj:
                     self.obj = self.obj[0]
                     # store selectable state of the object
-                    self.selectstate = self.obj.ViewObject.Selectable
-                    self.obj.ViewObject.Selectable = False
+                    if hasattr(self.obj.ViewObject,"Selectable"):
+                        self.selectstate = self.obj.ViewObject.Selectable
+                        self.obj.ViewObject.Selectable = False
                     if not Draft.getType(self.obj) in ["Wire","BSpline"]:
                         self.ui.setEditButtons(False)
                     else:
@@ -3148,7 +3149,8 @@ class Edit(Modifier):
                     t.finalize()
             if self.constraintrack:
                 self.constraintrack.finalize()
-        self.obj.ViewObject.Selectable = self.selectstate
+        if hasattr(self.obj.ViewObject,"Selectable"):
+            self.obj.ViewObject.Selectable = self.selectstate
         Modifier.finish(self)
         plane.restore()
         self.running = False
@@ -3188,13 +3190,15 @@ class Edit(Modifier):
                                 self.ui.isRelative.show()
                                 self.editing = int(snapped['Component'][8:])
                                 self.trackers[self.editing].off()
-                                self.obj.ViewObject.Selectable = False
+                                if hasattr(self.obj.ViewObject,"Selectable"):
+                                    self.obj.ViewObject.Selectable = False
                                 if "Points" in self.obj.PropertiesList:
                                     self.node.append(self.obj.Points[self.editing])
                 else:
                     print "finishing edit"
                     self.trackers[self.editing].on()
-                    self.obj.ViewObject.Selectable = True
+                    if hasattr(self.obj.ViewObject,"Selectable"):
+                        self.obj.ViewObject.Selectable = True
                     self.numericInput(self.trackers[self.editing].get())
 
     def update(self,v):
