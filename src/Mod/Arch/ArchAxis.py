@@ -66,10 +66,10 @@ class _Axis(ArchComponent.Component):
     def __init__(self,obj):
         obj.addProperty("App::PropertyFloatList","Distances","Base", "The intervals between axes")
         obj.addProperty("App::PropertyFloatList","Angles","Base", "The angles of each axis")
-        obj.addProperty("App::PropertyFloatList","Limits","Base", "The inferior and superior drawing limits")
+        obj.addProperty("App::PropertyFloat","Length","Base", "The length of the axes")
         self.Type = "Axis"
 
-        obj.Limits=[0.0,1.0]
+        obj.Length=1.0
         obj.Proxy = self
         self.Object = obj
         
@@ -90,8 +90,8 @@ class _Axis(ArchComponent.Component):
                 for i in range(len(obj.Distances)):
                     dist += obj.Distances[i]
                     ang = math.radians(obj.Angles[i])
-                    p1 = Vector(dist,obj.Limits[0],0)
-                    p2 = Vector(dist+(obj.Limits[1]/math.cos(ang))*math.sin(ang),obj.Limits[1],0)
+                    p1 = Vector(dist,0,0)
+                    p2 = Vector(dist+(obj.Length/math.cos(ang))*math.sin(ang),obj.Length,0)
                     geoms.append(Part.Line(p1,p2).toShape())
         if geoms:
             obj.Shape = Part.Compound(geoms)
@@ -103,7 +103,7 @@ class _ViewProviderAxis(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","BubbleSize","Base", "The size of the axis bubbles")
         vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", "The numeration style")
-        vobj.NumerationStyle = ["1,2,3","01,02,03","A,B,C","a,b,c","I,II,III"]
+        vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III"]
         vobj.Proxy = self
         self.Object = vobj.Object
         self.ViewObject = vobj
@@ -121,6 +121,43 @@ class _ViewProviderAxis(ArchComponent.ViewProviderComponent):
         self.ViewObject = vobj
         self.bubbles = None
 
+    def getNumber(self,num):
+        chars = "abcdefghijklmnopqrstuvwxyz"
+        roman=(('M',1000),('CM',900),('D',500),('CD',400),
+               ('C',100),('XC',90),('L',50),('XL',40),
+               ('X',10),('IX',9),('V',5),('IV',4),('I',1))
+        if self.ViewObject.NumerationStyle == "1,2,3":
+            return str(num+1)
+        elif self.ViewObject.NumerationStyle == "01,02,03":
+            return str(num+1).zfill(2)
+        elif self.ViewObject.NumerationStyle == "001,002,003":
+            return str(num+1).zfill(3)
+        elif self.ViewObject.NumerationStyle == "A,B,C":
+            result = ""
+            base = num/26
+            if base:
+                result += chars[base].upper()
+            remainder = num % 26
+            result += chars[remainder].upper()
+            return result
+        elif self.ViewObject.NumerationStyle == "a,b,c":
+            result = ""
+            base = num/26
+            if base:
+                result += chars[base]
+            remainder = num % 26
+            result += chars[remainder]
+            return result
+        elif self.ViewObject.NumerationStyle == "I,II,III":
+            result = ""
+            num += 1
+            for numeral, integer in roman:
+                while num >= integer:
+                    result += numeral
+                    num -= integer
+            return result
+        return ''
+        
     def makeBubbles(self):
         import Part
         rn = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
@@ -153,7 +190,7 @@ class _ViewProviderAxis(ArchComponent.ViewProviderComponent):
             fo.size = rad*100
             tx = coin.SoText2()
             tx.justification = coin.SoText2.CENTER
-            tx.string = str(i)
+            tx.string = self.getNumber(i)
             st.addChild(tr)
             st.addChild(fo)
             st.addChild(tx)
