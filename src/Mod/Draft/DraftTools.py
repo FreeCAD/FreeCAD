@@ -455,9 +455,9 @@ class Line(Creator):
                 if len(edges) > 1:
                     edges.pop()
                     newshape = Part.Wire(edges)
+                    self.obj.Shape = newshape
                 else:
-                    newshape = Part.Shape()
-                self.obj.Shape = newshape
+                    self.obj.ViewObject.hide()
                 # DNC: report on removal
                 msg(translate("draft", "Last point has been removed\n"))
 
