@@ -515,7 +515,8 @@ class Snapper:
         delta = point.sub(self.basepoint)
 
         # setting constraint axis
-        self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
+        if not self.affinity:
+            self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
         if isinstance(axis,FreeCAD.Vector):
             self.constraintAxis = axis
         elif axis == "x":
