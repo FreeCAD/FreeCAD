@@ -27,7 +27,8 @@ __url__ = ["http://free-cad.sourceforge.net"]
 
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
-paths, lines, arcs and rects.
+paths, lines, arcs ,rects, circles, ellipses, polygons, polylines.
+currently unsupported: image, rounded rect(rx,ry), transform attribute??
 '''
 
 import xml.sax, string, FreeCAD, os, math, re, Draft
@@ -228,6 +229,44 @@ def getrgb(color):
 	g = str(hex(int(color[1]*255)))[2:].zfill(2)
 	b = str(hex(int(color[2]*255)))[2:].zfill(2)
 	return "#"+r+g+b
+ 
+def splitpathd(pathdstr):
+        "returns a list with the elements contained in the d attribute of a path"
+        whitespacechars = [' ','\t','\r','\n']
+        commandchars = ['m','M','l','L','h','H','v','V','a','A','c','C','q','Q','s','S','t','T','z','Z']
+        numberchars = ['e','E','+','-','.','0','1','2','3','4','5','6','7','8','9']
+        dlist=[]
+        currentnumber=''
+        state='whitespace'
+        for dchar in pathdstr:
+                if dchar in commandchars:
+                        if currentnumber:
+                                dlist.append(float(currentnumber))
+                                currentnumber = ''
+                        dlist.append(dchar)
+                        state='whitespace'
+                elif state == 'whitespace':
+                        if dchar in whitespacechars:
+                                pass #continue
+                        elif dchar in numberchars:
+                                state = 'number'
+                                currentnumber = dchar
+                        else:
+                                print 'unexpected char %s %d %s' % (dchar,ord(dchar),state)
+                elif state == 'number':
+                        if dchar in numberchars:
+                                currentnumber += dchar
+                        elif dchar in whitespacechars:
+                                dlist.append(float(currentnumber))
+                                currentnumber = ''
+                        else:
+                                print 'unexpected char %s %d %s' % (dchar,ord(dchar),state)
+        #End of string/list
+        if currentnumber:
+                dlist.append(float(currentnumber))
+                currentnumber = ''
+        return dlist
+
 
 class svgHandler(xml.sax.ContentHandler):
 	"this handler parses the svg files and creates freecad objects"
@@ -287,7 +326,7 @@ class svgHandler(xml.sax.ContentHandler):
 				pair = i.split(':')
 				if len(pair)>1:	data[pair[0]]=pair[1]
 
-		for k in ['x','y','x1','y1','x2','y2','width','height']:
+		for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
 			if k in data:
 				data[k] = getsize(data[k][0])
 
@@ -321,38 +360,7 @@ class svgHandler(xml.sax.ContentHandler):
                 else:
                         if name == "g":
                                 self.grouptransform.append(FreeCAD.Matrix())
-                                
-                        '''
-                        print "existing grouptransform: ",self.grouptransform
-                        print "existing transform: ",self.transform
-			if "translate" in tr:
-                                i0 = tr.index("translate")
-                                print "getting translate ",tr
-                                if "translate" in self.transform:
-                                        self.transform['translate'] = self.transform['translate'].add(Vector(float(tr[i0+1]),-float(tr[i0+2]),0))
-                                else:
-                                        self.transform['translate'] = Vector(float(tr[i0+1]),-float(tr[i0+2]),0)
-                                if "translate" in self.grouptransform:
-                                        print "adding to group ",self.grouptransform['translate']
-                                        self.transform['translate'] = self.grouptransform['translate'].add(self.transform['translate'])
-                        else:
-                                if "translate" in self.grouptransform:
-                                        print "adding to group ",self.grouptransform['translate']
-                                        self.transform['translate'] = self.grouptransform['translate']
-                        if "scale" in tr:
-                                i0 = tr.index("scale")
-                                if "scale" in self.transform:
-                                        self.transform['scale'] = self.transform['scale'].add(Vector(float(tr[i0+1]),float(tr[i0+2]),0))
-                                else:
-                                        print tr
-                                        self.transform['scale'] = Vector(float(tr[i0+1]),float(tr[i0+2]),0)
-                                if "scale" in self.grouptransform:
-                                        self.transform['scale'] = self.transform['scale'].add(self.grouptransform['scale'])
-                        else:
-                                if "scale" in self.grouptransform:
-                                        self.transform['scale'] = self.grouptransform['scale']
-                        '''
- 
+
 		if (self.style == 1):
 			self.color = self.col
 			self.width = self.lw
@@ -377,22 +385,7 @@ class svgHandler(xml.sax.ContentHandler):
 			relative = False
 			firstvec = None
 
-			pathdata = []
-			for d in data['d']:
-				if (len(d) == 1) and (d in ['m','M','l','L','h','H','v','V','a','A','c','C','q','Q','s','S','t','T']):
-					pathdata.append(d)
-				else:
-					try:
-						f = float(d)
-						pathdata.append(f)
-					except ValueError:
-						if d[0].isdigit():
-							pathdata.append(d[:-1])
-							pathdata.append(d[-1])
-						else:
-							pathdata.append(d[0])
-							pathdata.append(d[1:])
-
+			pathdata = splitpathd(' '.join(data['d']))
                         # print "debug: pathdata:",pathdata
 
                         if "freecad:basepoint1" in data:
@@ -592,22 +585,35 @@ class svgHandler(xml.sax.ContentHandler):
 						path = []
 					point = []
 					command = None
-				elif (len(point)==6) and (command=="curve"):
-					if relative:
-						currentvec = lastvec.add(Vector(point[4],-point[5],0))
-                                                pole1 = lastvec.add(Vector(point[0],-point[1],0))
-                                                pole2 = lastvec.add(Vector(point[2],-point[3],0))
-					else:
-						currentvec = Vector(point[4],-point[5],0)
-                                                pole1 = Vector(point[0],-point[1],0)
-                                                pole2 = Vector(point[2],-point[3],0)
+
+				elif (command=="cubic") and (((smooth==False) and (len(point)==6)) or (smooth==True and (len(point)==4))) :
+					if smooth:
+						if relative:
+							currentvec = lastvec.add(Vector(point[2],-point[3],0))
+							pole2 = lastvec.add(Vector(point[0],-point[1],0))
+						else:
+							currentvec = Vector(point[2],-point[3],0)
+							pole2 = Vector(point[0],-point[1],0)
+                                                if lastpole is not None and lastpole[0]=='cubic':
+                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
+						else:
+							pole1 = lastvec
+					else: #not smooth
+						if relative:
+							currentvec = lastvec.add(Vector(point[4],-point[5],0))
+							pole1 = lastvec.add(Vector(point[0],-point[1],0))
+							pole2 = lastvec.add(Vector(point[2],-point[3],0))
+						else:
+							currentvec = Vector(point[4],-point[5],0)
+							pole1 = Vector(point[0],-point[1],0)
+							pole2 = Vector(point[2],-point[3],0)
+
 					if not fcvec.equals(currentvec,lastvec):
                                                 mainv = currentvec.sub(lastvec)
                                                 pole1v = lastvec.add(pole1)
                                                 pole2v = currentvec.add(pole2)
-                                                print "curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
-                                                if (round(mainv.getAngle(pole1v),Draft.precision()) in [0,round(math.pi,Draft.precision())]) \
-                                                            and (round(mainv.getAngle(pole2v),Draft.precision()) in [0,round(math.pi,Draft.precision())]):
+                                                print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
+                                                if pole1.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()) and pole2.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()):
                                                         print "straight segment"
                                                         seg = Part.Line(lastvec,currentvec).toShape()
                                                 else:
@@ -694,12 +700,56 @@ class svgHandler(xml.sax.ContentHandler):
 			obj.Shape = sh
 			self.format(obj)
 
+                # processing polylines and polygons
+
+		if name == "polyline" or name == "polygon":
+			if not pathname: pathname = 'Polyline'
+			points=[float(d) for d in data['points']]
+                        print points
+			lenpoints=len(points)
+			if lenpoints>=4 and lenpoints % 2 == 0:
+				lastvec = Vector(points[0],-points[1],0)
+				path=[]
+                                if name == 'polygon':
+                                        points=points+points[:2] # emulate closepath
+				for svgx,svgy in zip(points[2::2],points[3::2]):
+					currentvec = Vector(svgx,-svgy,0)
+					if not fcvec.equals(lastvec,currentvec):
+						seg = Part.Line(lastvec,currentvec).toShape()
+						print "polyline seg ",lastvec,currentvec
+						lastvec = currentvec
+						path.append(seg)
+                                if path:
+                                        sh = Part.Wire(path)
+                                        if self.fill: sh = Part.Face(sh)
+                                        sh = self.applyTrans(sh)
+                                        obj = self.doc.addObject("Part::Feature",pathname)
+                                        obj.Shape = sh
+
+                # processing ellipses
+
+                if (name == "ellipse") :
+                        if not pathname: pathname = 'Ellipse'
+                        c = Vector(data.get('cx',0),-data.get('cy',0),0)
+                        rx = data['rx']
+                        ry = data['ry']
+                        sh = Part.Ellipse(c,rx,ry).toShape() #needs a proxy object
+                        if self.fill:
+                                sh = Part.Wire([sh])
+                                sh = Part.Face(sh)
+                        sh.translate(c)
+                        sh = self.applyTrans(sh)
+			obj = self.doc.addObject("Part::Feature",pathname)
+			obj.Shape = sh
+			self.format(obj)
+
+
                 # processing circles
 
                 if (name == "circle") and (not ("freecad:skip" in data)) :
                         if not pathname: pathname = 'Circle'
-                        c = Vector(float(data['cx'][0]),-float(data['cy'][0]),0)
-                        r = float(data['r'][0])
+                        c = Vector(data.get('cx',0),-data.get('cy',0),0)
+                        r = data['r']
                         sh = Part.makeCircle(r)
                         if self.fill:
                                 sh = Part.Wire([sh])
