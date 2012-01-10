@@ -21,10 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,math
+import FreeCAD,FreeCADGui,Draft,math
 from draftlibs import fcvec
 from FreeCAD import Vector
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 from pivy import coin
 
 __title__="FreeCAD Axis System"
@@ -61,7 +61,7 @@ class _CommandAxis:
         makeAxis(5,1)
         FreeCAD.ActiveDocument.commitTransaction()
        
-class _Axis(ArchComponent.Component):
+class _Axis:
     "The Axis object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyFloatList","Distances","Base", "The intervals between axes")
@@ -97,7 +97,7 @@ class _Axis(ArchComponent.Component):
             obj.Shape = Part.Compound(geoms)
         obj.Placement = pl
         
-class _ViewProviderAxis(ArchComponent.ViewProviderComponent):
+class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
@@ -207,6 +207,127 @@ class _ViewProviderAxis(ArchComponent.ViewProviderComponent):
         if prop in ["NumerationStyle","BubbleSize"]:
             self.makeBubbles()
         return
-
+  
+    def setEdit(self,vobj,mode):
+        taskd = _AxisTaskPanel()
+        taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
     
+    def unsetEdit(self,vobj,mode):
+        FreeCADGui.Control.closeDialog()
+        return
+
+            
+class _AxisTaskPanel:
+    '''The editmode TaskPanel for Axis objects'''
+    def __init__(self):
+        # the panel has a tree widget that contains categories
+        # for the subcomponents, such as additions, subtractions.
+        # the categories are shown only if they are not empty.
+        
+        self.obj = None
+        self.form = QtGui.QWidget()
+        self.form.setObjectName("TaskPanel")
+        self.grid = QtGui.QGridLayout(self.form)
+        self.grid.setObjectName("grid")
+        self.title = QtGui.QLabel(self.form)
+        self.grid.addWidget(self.title, 0, 0, 1, 2)
+
+        # tree
+        self.tree = QtGui.QTreeWidget(self.form)
+        self.grid.addWidget(self.tree, 1, 0, 1, 2)
+        self.tree.setColumnCount(3)
+        self.tree.header().resizeSection(0,50)
+        self.tree.header().resizeSection(1,80)
+        self.tree.header().resizeSection(2,60)
+        
+        # buttons       
+        self.addButton = QtGui.QPushButton(self.form)
+        self.addButton.setObjectName("addButton")
+        self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
+        self.grid.addWidget(self.addButton, 3, 0, 1, 1)
+        self.addButton.setEnabled(True)
+
+        self.delButton = QtGui.QPushButton(self.form)
+        self.delButton.setObjectName("delButton")
+        self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
+        self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+        self.delButton.setEnabled(True)
+
+        self.okButton = QtGui.QPushButton(self.form)
+        self.okButton.setObjectName("okButton")
+        self.okButton.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
+        self.grid.addWidget(self.okButton, 4, 0, 1, 2)
+
+        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
+        QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        QtCore.QObject.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.finish)
+        self.update()
+
+    def isAllowedAlterSelection(self):
+        return False
+
+    def isAllowedAlterView(self):
+        return True
+
+    def getStandardButtons(self):
+        return 0
+    
+    def update(self):
+        'fills the treewidget'
+        self.tree.clear()
+        if self.obj:
+            for i in range(len(self.obj.Distances)):
+                item = QtGui.QTreeWidgetItem(self.tree)
+                item.setText(0,str(i+1))
+                item.setText(1,str(self.obj.Distances[i]))
+                item.setText(2,str(self.obj.Angles[i]))
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
+                item.setTextAlignment(0,QtCore.Qt.AlignLeft)
+        self.retranslateUi(self.form)
+                
+    def addElement(self):
+        item = QtGui.QTreeWidgetItem(self.tree)
+        item.setText(0,str(self.tree.topLevelItemCount()))
+        item.setText(1,"1.0")
+        item.setText(2,"0.0")
+        item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
+        self.resetObject()
+
+    def removeElement(self):
+        it = self.tree.currentItem()
+        if it:
+            nr = int(it.text(0))-1
+            self.resetObject(remove=nr)
+            self.update()
+
+    def resetObject(self,remove=None):
+        d = []
+        a = []
+        for i in range(self.tree.topLevelItemCount()):
+            it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
+            if (remove == None) or (remove != i):
+                d.append(float(it.text(1)))
+                a.append(float(it.text(2)))
+        self.obj.Distances = d
+        self.obj.Angles = a
+        FreeCAD.ActiveDocument.recompute()
+    
+    def finish(self):
+        self.resetObject()
+        if self.obj:
+            self.obj.ViewObject.finishEditing()
+                    
+    def retranslateUi(self, TaskPanel):
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
+        self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
+        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
+        self.okButton.setText(QtGui.QApplication.translate("Arch", "Done", None, QtGui.QApplication.UnicodeUTF8))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Distances and angles between axes", None, QtGui.QApplication.UnicodeUTF8))
+        self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None, QtGui.QApplication.UnicodeUTF8),
+                                   QtGui.QApplication.translate("Arch", "Distance", None, QtGui.QApplication.UnicodeUTF8),
+                                   QtGui.QApplication.translate("Arch", "Angle", None, QtGui.QApplication.UnicodeUTF8)])
+          
 FreeCADGui.addCommand('Arch_Axis',_CommandAxis())

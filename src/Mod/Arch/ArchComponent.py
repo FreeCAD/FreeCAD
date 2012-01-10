@@ -150,9 +150,6 @@ class ComponentTaskPanel:
     def getStandardButtons(self):
         return 0
 
-    def removeElement(self):
-        return
-
     def check(self,wid,col):
         if not wid.parent():
             self.delButton.setEnabled(False)
