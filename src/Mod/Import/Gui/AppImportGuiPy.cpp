@@ -127,15 +127,19 @@ private:
         part->Shape.setValue(shape);
         std::map<Standard_Integer, Quantity_Color>::const_iterator jt;
         jt = myColorMap.find(shape.HashCode(INT_MAX));
-        if (jt != myColorMap.end()) {
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
+
+        App::Color partColor(0.8f,0.8f,0.8f);
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
+            if (jt != myColorMap.end()) {
                 App::Color color;
                 color.r = jt->second.Red();
                 color.g = jt->second.Green();
                 color.b = jt->second.Blue();
                 static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.setValue(color);
             }
+
+            partColor = static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue();
         }
 
         // set label name if defined
@@ -158,7 +162,7 @@ private:
 
             bool found_face_color = false;
             std::vector<App::Color> faceColors;
-            faceColors.resize(faces.Extent(), App::Color(0.8f,0.8f,0.8f));
+            faceColors.resize(faces.Extent(), partColor);
             xp.Init(shape,TopAbs_FACE);
             while (xp.More()) {
                 jt = myColorMap.find(xp.Current().HashCode(INT_MAX));
