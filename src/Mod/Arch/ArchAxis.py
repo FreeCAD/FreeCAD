@@ -103,12 +103,16 @@ class _ViewProviderAxis:
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","BubbleSize","Base", "The size of the axis bubbles")
         vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", "The numeration style")
-        vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III"]
+        vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base", "The representation style")
+        vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
+        vobj.DrawStyle = ["solid","dotted","dashed","dashdot"]
         vobj.Proxy = self
         self.Object = vobj.Object
         self.ViewObject = vobj
         vobj.BubbleSize = .1
         vobj.LineWidth = 1
+        vobj.LineColor = (0.13,0.15,0.37)
+        vobj.DrawStyle = "dashdot"
     
     def getIcon(self):          
         return ":/icons/Arch_Axis_Tree.svg"
@@ -156,7 +160,20 @@ class _ViewProviderAxis:
                     result += numeral
                     num -= integer
             return result
-        return ''
+        elif self.ViewObject.NumerationStyle == "L0,L1,L2":
+            return "L"+str(num)
+        return ""
+
+    def setStyle(self):
+        ds = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0).getChild(1)
+        if self.ViewObject.DrawStyle == "solid":
+            ds.linePattern = 0xffff
+        elif self.ViewObject.DrawStyle == "dotted":
+            ds.linePattern = 0x0f0f
+        elif self.ViewObject.DrawStyle == "dashed":
+            ds.linePattern = 0xf00f
+        elif self.ViewObject.DrawStyle == "dashdot":
+            ds.linePattern = 0xff88
         
     def makeBubbles(self):
         import Part
@@ -165,6 +182,10 @@ class _ViewProviderAxis:
             rn.removeChild(self.bubbles)
             self.bubbles = None
         self.bubbles = coin.SoSeparator()
+        isep = coin.SoSeparator()
+        self.bubblestyle = coin.SoDrawStyle()
+        self.bubblestyle.linePattern = 0xffff
+        self.bubbles.addChild(self.bubblestyle)
         for i in range(len(self.Object.Distances)):
             invpl = self.Object.Placement.inverse()
             verts = self.Object.Shape.Edges[i].Vertexes
@@ -194,8 +215,8 @@ class _ViewProviderAxis:
             st.addChild(tr)
             st.addChild(fo)
             st.addChild(tx)
-            self.bubbles.addChild(st)
-            
+            isep.addChild(st)
+        self.bubbles.addChild(isep)
         rn.addChild(self.bubbles)
             
     def updateData(self, obj, prop):
@@ -206,6 +227,11 @@ class _ViewProviderAxis:
     def onChanged(self, vobj, prop):
         if prop in ["NumerationStyle","BubbleSize"]:
             self.makeBubbles()
+        elif prop == "DrawStyle":
+            self.setStyle()
+        elif prop == "LineWidth":
+            if self.bubbles:
+                self.bubblestyle.lineWidth = vobj.LineWidth
         return
   
     def setEdit(self,vobj,mode):
