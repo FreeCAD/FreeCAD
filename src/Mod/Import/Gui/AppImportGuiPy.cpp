@@ -142,7 +142,10 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
     TopLoc_Location part_loc = loc;
     Handle(XCAFDoc_Location) hLoc;
     if (label.FindAttribute(XCAFDoc_Location::GetID(), hLoc)) {
-        part_loc = hLoc->Get();
+        if (isRef)
+            part_loc = part_loc * hLoc->Get();
+        else
+            part_loc = hLoc->Get();
     }
 
 #ifdef FC_DEBUG
@@ -206,7 +209,7 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 {
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
     if (!loc.IsIdentity())
-        part->Shape.setValue(aShape.Located(loc));
+        part->Shape.setValue(aShape.Moved(loc));
     else
         part->Shape.setValue(aShape);
     part->Label.setValue(name);
