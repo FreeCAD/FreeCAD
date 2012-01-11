@@ -283,21 +283,40 @@ def select(objs=None):
             FreeCADGui.Selection.addSelection(obj)
 
 def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None, support=None):
-    '''makeCircle(radius,[placement,face,startangle,endangle]): Creates a circle
-    object with given radius. If placement is given, it is
+    '''makeCircle(radius,[placement,face,startangle,endangle])
+    or makeCircle(edge,[face]):
+    Creates a circle object with given radius. If placement is given, it is
     used. If face is False, the circle is shown as a
     wireframe, otherwise as a face. If startangle AND endangle are given
-    (in degrees), they are used and the object appears as an arc.'''
+    (in degrees), they are used and the object appears as an arc. If an edge
+    is passed, its Curve must be a Part.Circle'''
+    import Part
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Circle")
     _Circle(obj)
     _ViewProviderDraft(obj.ViewObject)
-    obj.Radius = radius
+    if isinstance(radius,Part.Edge):
+        edge = radius
+        if isinstance(edge.Curve,Part.Circle):
+            obj.Radius = edge.Curve.Radius
+            placement = FreeCAD.Placement(edge.Placement)
+            delta = edge.Curve.Center.sub(placement.Base)
+            placement.move(delta)
+            if len(edge.Vertexes) > 1:
+                ref = placement.multVec(FreeCAD.Vector(1,0,0))
+                v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
+                v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
+                a1 = -math.degrees(fcvec.angle(v1,ref))
+                a2 = -math.degrees(fcvec.angle(v2,ref))
+                obj.FirstAngle = a1
+                obj.LastAngle = a2
+    else:    
+        obj.Radius = radius
+        if (startangle != None) and (endangle != None):
+            if startangle == -0: startangle = 0
+            obj.FirstAngle = startangle
+            obj.LastAngle = endangle
     if not face: obj.ViewObject.DisplayMode = "Wireframe"
-    if (startangle != None) and (endangle != None):
-        if startangle == -0: startangle = 0
-        obj.FirstAngle = startangle
-        obj.LastAngle = endangle
     obj.Support = support
     if placement: obj.Placement = placement
     formatObject(obj)
@@ -937,6 +956,7 @@ def draftify(objectslist,makeblock=False):
     (objectslist can also be a single object) into a Draft parametric
     wire. If makeblock is True, multiple objects will be grouped in a block'''
     from draftlibs import fcgeo
+    import Part
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     newobjlist = []
@@ -944,8 +964,11 @@ def draftify(objectslist,makeblock=False):
         if obj.isDerivedFrom('Part::Feature'):
             for w in obj.Shape.Wires:
                 if fcgeo.hasCurves(w):
-                    nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-                    nobj.Shape = w
+                    if (len(w.Edges) == 1) and isinstance(w.Edges[0].Curve,Part.Circle):
+                        nobj = makeCircle(w.Edges[0])
+                    else:
+                        nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",obj.Name)
+                        nobj.Shape = w
                 else:
                     nobj = makeWire(w)
                 if obj.Shape.Faces:
