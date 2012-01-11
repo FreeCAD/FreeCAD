@@ -2114,7 +2114,8 @@ class Offset(Modifier):
                     v2 = fcgeo.getTangent(self.shape.Edges[dist[1]],point)
                     a = -fcvec.angle(v1,v2)
                     self.dvec = fcvec.rotate(d,a,plane.axis)
-                    self.ghost.update(fcgeo.offsetWire(self.shape,self.dvec,occ=self.ui.occOffset.isChecked()))
+                    occmode = self.ui.occOffset.isChecked()
+                    self.ghost.update(fcgeo.offsetWire(self.shape,self.dvec,occ=occmode),forceclosed=occmode)
                 elif self.mode == "Circle":
                     self.dvec = point.sub(self.center).Length
                     self.ghost.setRadius(self.dvec)
