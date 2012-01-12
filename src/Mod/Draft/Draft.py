@@ -536,13 +536,13 @@ def makeCopy(obj):
         _Block(newobj)
         _ViewProviderDraftPart(newobj.ViewObject)
     elif getType(obj) == "Structure":
-        import Structure
-        Structure._Structure(newobj)
-        Structure._ViewProviderStructure(newobj.ViewObject)
+        import Arch
+        Arch._Structure(newobj)
+        Arch._ViewProviderStructure(newobj.ViewObject)
     elif getType(obj) == "Wall":
-        import Wall
-        Wall._Wall(newobj)
-        Wall._ViewProviderWall(newobj.ViewObject)
+        import Arch
+        Arch._Wall(newobj)
+        Arch._ViewProviderWall(newobj.ViewObject)
     elif obj.isDerivedFrom("Part::Feature"):
         newobj.Shape = obj.Shape
     else:
