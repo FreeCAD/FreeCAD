@@ -19,7 +19,12 @@
 			  <UserDocu>Offset the shape by a given ammount</UserDocu>
 		  </Documentation>
 	  </Methode>
-    <Methode Name="makeHomogenousWires">
+		<Methode Name="add">
+			<Documentation>
+				<UserDocu>Add an edge to the wire</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="makeHomogenousWires">
         <Documentation>
             <UserDocu>Make this and the given wire homogenous to have the same number of edges</UserDocu>
         </Documentation>

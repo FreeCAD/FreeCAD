@@ -417,17 +417,6 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args)
     }
 }
 
-PyObject* TopoShapeFacePy::setTolerance(PyObject *args)
-{
-    double tol;
-    if (!PyArg_ParseTuple(args, "d", &tol))
-        return 0;
-    BRep_Builder aBuilder;
-    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
-    aBuilder.UpdateFace(f, tol);
-    Py_Return;
-}
-
 Py::Object TopoShapeFacePy::getSurface() const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
@@ -516,6 +505,30 @@ Py::Object TopoShapeFacePy::getSurface() const
     }
 
     throw Py::TypeError("undefined surface type");
+}
+
+PyObject* TopoShapeFacePy::setTolerance(PyObject *args)
+{
+    double tol;
+    if (!PyArg_ParseTuple(args, "d", &tol))
+        return 0;
+    BRep_Builder aBuilder;
+    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
+    aBuilder.UpdateFace(f, tol);
+    Py_Return;
+}
+
+Py::Float TopoShapeFacePy::getTolerance(void) const
+{
+    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
+    return Py::Float(BRep_Tool::Tolerance(f));
+}
+
+void TopoShapeFacePy::setTolerance(Py::Float tol)
+{
+    BRep_Builder aBuilder;
+    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
+    aBuilder.UpdateFace(f, (double)tol);
 }
 
 Py::Tuple TopoShapeFacePy::getParameterRange(void) const

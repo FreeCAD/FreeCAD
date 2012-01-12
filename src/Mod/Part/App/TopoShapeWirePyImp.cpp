@@ -42,6 +42,7 @@
 #include "BSplineCurvePy.h"
 #include "TopoShape.h"
 #include "TopoShapeShellPy.h"
+#include "TopoShapeEdgePy.h"
 #include "TopoShapeWirePy.h"
 #include "TopoShapeWirePy.cpp"
 
@@ -133,6 +134,39 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_SetString(PyExc_Exception, "edge or wire or list of edges and wires expected");
     return -1;
+}
+
+PyObject* TopoShapeWirePy::add(PyObject *args)
+{
+    PyObject* edge;
+    if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type), &edge))
+        return 0;
+    const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->_Shape);
+    BRepBuilderAPI_MakeWire mkWire(w);
+
+    const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(edge)->getTopoShapePtr()->_Shape;
+    if (sh.IsNull()) {
+        PyErr_SetString(PyExc_TypeError, "given shape is invalid");
+        return 0;
+    }
+    if (sh.ShapeType() == TopAbs_EDGE)
+        mkWire.Add(TopoDS::Edge(sh));
+    else if (sh.ShapeType() == TopAbs_WIRE)
+        mkWire.Add(TopoDS::Wire(sh));
+    else {
+        PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
+        return 0;
+    }
+
+    try {
+        getTopoShapePtr()->_Shape = mkWire.Wire();
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
