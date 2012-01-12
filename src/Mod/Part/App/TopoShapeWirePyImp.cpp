@@ -28,6 +28,8 @@
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
+# include <Precision.hxx>
+# include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <gp_Ax1.hxx>
@@ -42,6 +44,7 @@
 #include "BSplineCurvePy.h"
 #include "TopoShape.h"
 #include "TopoShapeShellPy.h"
+#include "TopoShapeFacePy.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeWirePy.h"
 #include "TopoShapeWirePy.cpp"
@@ -160,6 +163,40 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
 
     try {
         getTopoShapePtr()->_Shape = mkWire.Wire();
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* TopoShapeWirePy::fixWire(PyObject *args)
+{
+    PyObject* face=0;
+    double tol = Precision::Confusion();
+    if (!PyArg_ParseTuple(args, "|O!d",&(TopoShapeFacePy::Type), &face, &tol))
+        return 0;
+
+    try {
+        ShapeFix_Wire aFix;
+        const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->_Shape);
+
+        if (face) {
+            const TopoDS_Face& f = TopoDS::Face(static_cast<TopoShapePy*>(face)->getTopoShapePtr()->_Shape);
+            aFix.Init(w, f, tol);
+        }
+        else {
+            aFix.SetPrecision(tol);
+            aFix.Load(w);
+        }
+
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        getTopoShapePtr()->_Shape = aFix.Wire();
+
         Py_Return;
     }
     catch (Standard_Failure) {
