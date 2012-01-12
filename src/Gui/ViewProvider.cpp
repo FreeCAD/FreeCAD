@@ -61,7 +61,7 @@ using namespace Gui;
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
 
 ViewProvider::ViewProvider() 
-  : pcAnnotation(0), pyViewObject(0), _iActualMode(-1), _iEditMode(-1), _updateData(true)
+    : pcAnnotation(0), pyViewObject(0), _iActualMode(-1), _iEditMode(-1), _updateData(true), viewOverrideMode(-1)
 {
     pcRoot = new SoSeparator();
     pcRoot->ref();
@@ -261,10 +261,10 @@ void ViewProvider::setDisplayMaskMode( const char* type )
 {
     std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find( type );
     if (it != _sDisplayMaskModes.end())
-        pcModeSwitch->whichChild = it->second;
+        _iActualMode = it->second;
     else
-        pcModeSwitch->whichChild = -1;
-    _iActualMode = pcModeSwitch->whichChild.getValue();
+        _iActualMode = -1;
+    setModeSwitch();
 }
 
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
@@ -298,7 +298,7 @@ void ViewProvider::hide(void)
 
 void ViewProvider::show(void)
 {
-    pcModeSwitch->whichChild = _iActualMode;
+    setModeSwitch();
 }
 
 bool ViewProvider::isShow(void) const
@@ -314,6 +314,29 @@ void ViewProvider::setVisible(bool s)
 bool ViewProvider::isVisible() const
 {
     return isShow();
+}
+
+void ViewProvider::setOverrideMode(const std::string &mode)
+{
+    if (mode == "As Is")
+        viewOverrideMode = -1;
+    else {
+        std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(mode);
+        if (it == _sDisplayMaskModes.end())
+            return; //view style not supported
+        viewOverrideMode = (*it).second;
+    }
+    if (pcModeSwitch->whichChild.getValue() != -1)
+        setModeSwitch();
+}
+
+void ViewProvider::setModeSwitch()
+{
+    if (viewOverrideMode == -1)
+        pcModeSwitch->whichChild = _iActualMode;
+    else
+        if (viewOverrideMode < pcModeSwitch->getNumChildren())
+            pcModeSwitch->whichChild = viewOverrideMode;
 }
 
 void ViewProvider::setDefaultMode(int val)

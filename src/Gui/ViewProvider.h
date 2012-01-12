@@ -192,6 +192,8 @@ public:
     virtual bool isShow(void) const;
     void setVisible(bool);
     bool isVisible() const;
+    /// Overrides the display mode with mode.
+    void setOverrideMode(const std::string &mode);
     //@}
 
 
@@ -307,8 +309,10 @@ protected:
     ViewProviderPy* pyViewObject;
 
 private:
+    void setModeSwitch();
     int _iActualMode;
     int _iEditMode;
+    int viewOverrideMode;
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
     bool _updateData;
