@@ -86,36 +86,37 @@ def readOpenShell(filename):
     import Mesh
     getIfcOpenShell()
     if IfcOpenShell:
-        IfcOpenShell.Init(filename)
-        while True:
-            obj = IfcOpenShell.Get()
-            print "parsing ",obj.guid,": ",obj.name," of type ",obj.type
-            meshdata = []
-            n = obj.name
-            if not n: n = "Unnamed"
-            f = obj.mesh.faces
-            v = obj.mesh.verts
-            m = obj.matrix
-            print "verts: ",len(v)," faces: ",len(f)
-            mat = FreeCAD.Matrix(m[0], m[1], m[2], 0,
-                                 m[3], m[4], m[5], 0,
-                                 m[6], m[7], m[8], 0,
-                                 m[9], m[10], m[11], 1)
-            for i in range(0, len(f), 3):
-                print "face ",f[i],f[i+1],f[i+2]
-                face = []
-                print "i:",i
-                for j in range(3):
-                    vi = f[i+j]*3
-                    print "vi:",vi
-                    face.append([v[vi],v[vi+1],v[vi+2]])
-                meshdata.append(face)
-            newmesh = Mesh.Mesh(meshdata)
-            mobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
-            mobj.Mesh = newmesh
-            mobj.Placement = FreeCAD.Placement(mat)
-            if not IfcOpenShell.Next():
-                break
+        if IfcOpenShell.Init(filename):
+            while True:
+                obj = IfcOpenShell.Get()
+                print "parsing ",obj.guid,": ",obj.name," of type ",obj.type
+                meshdata = []
+                n = obj.name
+                if not n: n = "Unnamed"
+                f = obj.mesh.faces
+                v = obj.mesh.verts
+                m = obj.matrix
+                print "verts: ",len(v)," faces: ",len(f)
+                mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
+                                     m[1], m[4], m[7], m[10],
+                                     m[2], m[5], m[8], m[11],
+                                     0, 0, 0, 1)
+                for i in range(0, len(f), 3):
+                    print "face ",f[i],f[i+1],f[i+2]
+                    face = []
+                    print "i:",i
+                    for j in range(3):
+                        vi = f[i+j]*3
+                        print "vi:",vi
+                        face.append([v[vi],v[vi+1],v[vi+2]])
+                    meshdata.append(face)
+                newmesh = Mesh.Mesh(meshdata)
+                mobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
+                mobj.Mesh = newmesh
+                mobj.Placement = FreeCAD.Placement(mat)
+                if not IfcOpenShell.Next():
+                    break
+    IfcOpenShell.CleanUp()
     return None
     
 def read(filename):
