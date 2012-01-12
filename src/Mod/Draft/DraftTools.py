@@ -3545,6 +3545,9 @@ class Draft2Sketch():
                 allDraft = False
             elif obj.isDerivedFrom("Part::Part2DObjectPython"):
                 allSketches = False
+            else:
+                allDraft = False
+                allSketches = False
         if not sel:
             return
         elif allDraft:
@@ -3559,9 +3562,12 @@ class Draft2Sketch():
             FreeCAD.ActiveDocument.openTransaction("Convert")
             for obj in sel:
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
-                    Draft.makeSketch(sel,autoconstraints=True)
+                    Draft.draftify(obj)
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
-                    Draft.draftify(sel,makeblock=True)
+                    Draft.makeSketch(obj,autoconstraints=True)
+                elif obj.isDerivedFrom("Part::Feature"):
+                    if len(obj.Shape.Wires) == 1:
+                        Draft.makeSketch(obj,autoconstraints=False)
             FreeCAD.ActiveDocument.commitTransaction()
 
                  

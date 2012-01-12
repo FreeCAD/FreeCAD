@@ -1245,6 +1245,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
         nobj = addTo
     else:
         nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",name)
+        nobj.ViewObject.Autoconstraints = False
     for obj in objectslist:
         ok = False
         tp = getType(obj)
@@ -1297,7 +1298,9 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
             if fcgeo.hasOnlyWires(obj.Shape):
                 for w in obj.Shape.Wires:
                     for edge in fcgeo.sortEdges(w.Edges):
-                        nobj.addGeometry(fcgeo.geom(edge))
+                        g = fcgeo.geom(edge)
+                        if g:
+                            nobj.addGeometry(g)
                     if autoconstraints:
                         last = nobj.GeometryCount
                         segs = range(last-len(w.Edges),last-1)
