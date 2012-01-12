@@ -68,10 +68,8 @@ class _Axis:
         obj.addProperty("App::PropertyFloatList","Angles","Base", "The angles of each axis")
         obj.addProperty("App::PropertyFloat","Length","Base", "The length of the axes")
         self.Type = "Axis"
-
         obj.Length=1.0
         obj.Proxy = self
-        self.Object = obj
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -121,7 +119,6 @@ class _ViewProviderAxis:
         return []
 
     def attach(self, vobj):
-        self.Object = vobj.Object
         self.ViewObject = vobj
         self.bubbles = None
 
@@ -186,9 +183,9 @@ class _ViewProviderAxis:
         self.bubblestyle = coin.SoDrawStyle()
         self.bubblestyle.linePattern = 0xffff
         self.bubbles.addChild(self.bubblestyle)
-        for i in range(len(self.Object.Distances)):
-            invpl = self.Object.Placement.inverse()
-            verts = self.Object.Shape.Edges[i].Vertexes
+        for i in range(len(self.ViewObject.Object.Distances)):
+            invpl = self.ViewObject.Object.Placement.inverse()
+            verts = self.ViewObject.Object.Shape.Edges[i].Vertexes
             p1 = invpl.multVec(verts[0].Point)
             p2 = invpl.multVec(verts[1].Point)
             dv = p2.sub(p1)
@@ -244,6 +241,13 @@ class _ViewProviderAxis:
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
 
             
 class _AxisTaskPanel:
