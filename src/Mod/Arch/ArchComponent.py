@@ -256,7 +256,6 @@ class Component:
                         "The normal extrusion direction of this wall (keep (0,0,0) for automatic normal)")
         obj.Proxy = self
         self.Type = "Component"
-        self.Object = obj
         self.Subvolume = None
         
         

@@ -99,14 +99,16 @@ class _Structure(ArchComponent.Component):
         "returns the gridpoints of linked axes"
         from draftlibs import fcgeo
         pts = []
-        if len(obj.Axes) >= 2:
+        if len(obj.Axes) == 1:
+            for e in obj.Axes[0].Shape.Edges:
+                pts.append(e.Vertexes[0].Point)
+        elif len(obj.Axes) >= 2:
             set1 = obj.Axes[0].Shape.Edges
             set2 = obj.Axes[1].Shape.Edges
             for e1 in set1:
                 for e2 in set2: 
                     pts.extend(fcgeo.findIntersection(e1,e2))
-            return pts
-        return None
+        return pts
 
     def createGeometry(self,obj):
         import Part
@@ -183,7 +185,7 @@ class _Structure(ArchComponent.Component):
                     obj.Shape = Part.makeCompound(fsh)
             else:
                 obj.Shape = base
-                if not fcgeo.isNull(pl): obj.Placement = pl
+            if not fcgeo.isNull(pl): obj.Placement = pl
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
