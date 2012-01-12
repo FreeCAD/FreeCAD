@@ -409,6 +409,19 @@ PyObject* TopoShapeEdgePy::setTolerance(PyObject *args)
 
 // ====== Attributes ======================================================================
 
+Py::Float TopoShapeEdgePy::getTolerance(void) const
+{
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    return Py::Float(BRep_Tool::Tolerance(e));
+}
+
+void TopoShapeEdgePy::setTolerance(Py::Float tol)
+{
+    BRep_Builder aBuilder;
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    aBuilder.UpdateEdge(e, (double)tol);
+}
+
 Py::Float TopoShapeEdgePy::getLength(void) const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
