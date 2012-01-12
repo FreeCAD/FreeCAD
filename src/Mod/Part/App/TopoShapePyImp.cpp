@@ -208,8 +208,7 @@ PyObject* TopoShapePy::removeShape(PyObject *args)
         Py::List list(l);
         std::vector<TopoDS_Shape> shapes;
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
-            Py::Tuple tuple(*it);
-            Py::TopoShape sh(tuple[0]);
+            Py::TopoShape sh(*it);
             shapes.push_back(
                 sh.extensionObject()->getTopoShapePtr()->_Shape
             );
