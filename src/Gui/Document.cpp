@@ -893,6 +893,19 @@ void Document::createView(const char* sType)
 {
     View3DInventor* view3D = new View3DInventor(this, getMainWindow());
 
+    //get first view override mode and copy
+    std::list<MDIView*> theViews = this->getMDIViews();
+    std::list<MDIView*>::iterator viewIt;
+    for (viewIt = theViews.begin(); viewIt != theViews.end(); ++viewIt)
+    {
+        View3DInventor *tempView = dynamic_cast<View3DInventor *>(*viewIt);
+        if (!tempView)
+            continue;
+        std::string overrideMode = tempView->getViewer()->getOverrideMode();
+        view3D->getViewer()->setOverrideMode(overrideMode);
+        break;
+    }
+
     // attach the viewprovider
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
     for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
