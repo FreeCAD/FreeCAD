@@ -49,6 +49,14 @@ SET(ShipOutlineDraw_SRCS
 )
 SOURCE_GROUP("shipoutlinedraw" FILES ${ShipOutlineDraw_SRCS})
 
+SET(ShipAreasCurve_SRCS
+	shipAreasCurve/__init__.py
+	shipAreasCurve/Preview.py
+	shipAreasCurve/TaskPanel.py
+	shipAreasCurve/TaskPanel.ui
+)
+SOURCE_GROUP("shipareascurve" FILES ${ShipAreasCurve_SRCS})
+
 SET(ShipUtils_SRCS
 	shipUtils/__init__.py
 	shipUtils/Math.py
@@ -57,7 +65,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -82,6 +90,12 @@ INSTALL(
         ${ShipOutlineDraw_SRCS}
     DESTINATION
         Mod/Ship/shipOutlineDraw
+)
+INSTALL(
+    FILES
+        ${ShipAreasCurve_SRCS}
+    DESTINATION
+        Mod/Ship/shipAreasCurve
 )
 INSTALL(
     FILES

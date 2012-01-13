@@ -21,45 +21,16 @@
 #*                                                                         *
 #***************************************************************************
 
-from PyQt4 import QtCore, QtGui
-import FreeCAD, FreeCADGui, os
+# FreeCAD modules
+import FreeCAD
+import FreeCADGui
 
-class CreateShip: 
-    def Activated(self):
-        import shipCreateShip
-        shipCreateShip.load()
+# Qt libraries
+from PyQt4 import QtGui,QtCore
 
-    def GetResources(self):
-        from shipUtils import Paths, Translator
-        IconPath = Paths.iconsPath() + "/Ico.png"
-        MenuText = str(Translator.translate('Create a new ship'))
-        ToolTip  = str(Translator.translate('Create a new ship in order to work with them'))
-        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+# Main object
+import TaskPanel
 
-class OutlineDraw: 
-    def Activated(self):
-        import shipOutlineDraw
-        shipOutlineDraw.load()
-
-    def GetResources(self):
-        from shipUtils import Paths, Translator
-        IconPath = Paths.iconsPath() + "/OutlineDrawIco.png"
-        MenuText = str(Translator.translate('Outline draw'))
-        ToolTip  = str(Translator.translate('Plot ship outline draw'))
-        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
-
-class AreasCurve: 
-    def Activated(self):
-        import shipAreasCurve
-        shipAreasCurve.load()
-
-    def GetResources(self):
-        from shipUtils import Paths, Translator
-        IconPath = Paths.iconsPath() + "/AreaCurveIco.png"
-        MenuText = str(Translator.translate('Areas curve'))
-        ToolTip  = str(Translator.translate('Plot transversal areas curve'))
-        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
-      
-FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
-FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
-FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
+def load():
+    """ Loads the tool """
+    TaskPanel.createTask()
