@@ -68,6 +68,8 @@
         <file>view-zoom-fit.svg</file>
         <file>view-zoom-in.svg</file>
         <file>view-zoom-out.svg</file>
+        <file>view-rotate-left.svg</file>
+        <file>view-rotate-right.svg</file>
         <file>view-measurement.svg</file>
         <file>view-zoom-selection.svg</file>
         <file>Tree_Annotation.svg</file>
