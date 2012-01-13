@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011, 2012                                              *  
-#*   Jose Luis Cercós Pita <jlcercos@gmail.com>                            *  
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *

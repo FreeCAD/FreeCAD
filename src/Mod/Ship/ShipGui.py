@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011, 2012                                              *  
-#*   Jose Luis Cercós Pita <jlcercos@gmail.com>                            *  
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -47,6 +47,19 @@ class OutlineDraw:
         MenuText = str(Translator.translate('Outline draw'))
         ToolTip  = str(Translator.translate('Plot ship outline draw'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class OutlineDraw: 
+    def Activated(self):
+        import shipAreasCurve
+        shipAreasCurve.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/AreaCurveIco.png"
+        MenuText = str(Translator.translate('Areas curve'))
+        ToolTip  = str(Translator.translate('Plot transversal areas curve'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
       
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
+FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
