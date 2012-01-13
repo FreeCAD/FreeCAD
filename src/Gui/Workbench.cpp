@@ -395,7 +395,8 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         StdViews->setCommand( "Standard views" );
 
         *StdViews << "Std_ViewAxo" << "Separator" << "Std_ViewFront" << "Std_ViewTop" << "Std_ViewRight"
-                  << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft";
+                  << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
+                  << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
         *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << StdViews
               << "Separator" << "Std_ViewDockUndockFullscreen";
@@ -447,7 +448,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewAxo"
               << "Separator" << "Std_ViewFront" << "Std_ViewRight"
               << "Std_ViewTop" << "Separator" << "Std_ViewRear" 
-              << "Std_ViewLeft" << "Std_ViewBottom";
+              << "Std_ViewLeft" << "Std_ViewBottom"
+              << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
     // stereo
     MenuItem* view3d = new MenuItem;
