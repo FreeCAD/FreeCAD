@@ -64,6 +64,12 @@
 				<UserDocu>Set the tolerance for the face.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Attribute Name="Tolerance">
+			<Documentation>
+				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
+			</Documentation>
+			<Parameter Name="Tolerance" Type="Float"/>
+		</Attribute>
 		<Attribute Name="ParameterRange" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns a 4 tuple with the parameter range</UserDocu>

@@ -130,6 +130,19 @@ PyObject* TopoShapeVertexPy::setTolerance(PyObject *args)
     Py_Return;
 }
 
+Py::Float TopoShapeVertexPy::getTolerance(void) const
+{
+    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->_Shape);
+    return Py::Float(BRep_Tool::Tolerance(v));
+}
+
+void TopoShapeVertexPy::setTolerance(Py::Float tol)
+{
+    BRep_Builder aBuilder;
+    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->_Shape);
+    aBuilder.UpdateVertex(v, (double)tol);
+}
+
 Py::Float TopoShapeVertexPy::getX(void) const
 {
     const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->_Shape);

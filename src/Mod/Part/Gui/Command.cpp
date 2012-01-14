@@ -47,6 +47,7 @@
 #include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/WaitCursor.h>
 
 #include "../App/PartFeature.h"
 #include "DlgPartImportStepImp.h"
@@ -452,6 +453,7 @@ void CmdPartImport::activated(int iMsg)
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
+        Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
         openCommand("Import Part");

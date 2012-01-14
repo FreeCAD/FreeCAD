@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Fuse.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 
@@ -81,18 +82,24 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
     }
 
     if (s.size() >= 2) {
-        TopoDS_Shape res = s.front();
-        for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
-            // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Fuse mkFuse(res, *it);
-            // Let's check if the fusion has been successful
-            if (!mkFuse.IsDone()) 
-                throw Base::Exception("Fusion failed");
-            res = mkFuse.Shape();
+        try {
+            TopoDS_Shape res = s.front();
+            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                // Let's call algorithm computing a fuse operation:
+                BRepAlgoAPI_Fuse mkFuse(res, *it);
+                // Let's check if the fusion has been successful
+                if (!mkFuse.IsDone()) 
+                    throw Base::Exception("Fusion failed");
+                res = mkFuse.Shape();
+            }
+            if (res.IsNull())
+                throw Base::Exception("Resulting shape is invalid");
+            this->Shape.setValue(res);
         }
-        if (res.IsNull())
-            throw Base::Exception("Resulting shape is invalid");
-        this->Shape.setValue(res);
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
+        }
     }
     else {
         throw Base::Exception("Not enough shape objects linked");

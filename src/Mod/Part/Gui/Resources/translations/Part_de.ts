@@ -1001,7 +1001,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
       <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-      <translation>IGES (*.igs *.IGES); Alle Dateien (*.*)</translation>
+      <translation>IGES (*.igs *.iges);;Alle Dateien (*.*)</translation>
     </message>
   </context>
   <context>
@@ -1782,7 +1782,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-      <translation>Alle CAD-Dateien (*.stp *.step *IGS .IGES *.brp *.brep)</translation>
+      <translation>Alle CAD-Dateien (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
     </message>
     <message>
       <source>STEP (*.stp *.step)</source>
@@ -1790,7 +1790,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>IGES (*.igs *.iges)</source>
-      <translation>IGES (*.igs *.IGES)</translation>
+      <translation>IGES (*.igs *.iges)</translation>
     </message>
     <message>
       <source>BREP (*.brp *.brep)</source>
