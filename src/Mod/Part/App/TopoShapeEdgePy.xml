@@ -59,6 +59,12 @@
 				<UserDocu>Set the tolerance for the edge.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Attribute Name="Tolerance">
+			<Documentation>
+				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
+			</Documentation>
+			<Parameter Name="Tolerance" Type="Float"/>
+		</Attribute>
 		<Attribute Name="Length" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Returns the length of the edge</UserDocu>

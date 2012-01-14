@@ -72,6 +72,7 @@ public:
     };
 
     const char* getFileFormatName(void) const;
+    void write(SoWriteAction * action);
 
     SoSFColor colorHighlight;
     SoSFColor colorSelection;

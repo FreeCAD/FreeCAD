@@ -216,15 +216,18 @@ namespace Gui {
 
 void MacroManager::run(MacroType eType,const char *sName)
 {
-    try
-    {
+    try {
         PythonRedirector std_out("stdout",new OutputStdout);
         PythonRedirector std_err("stderr",new OutputStderr);
         //The given path name is expected to be Utf-8
         Base::Interpreter().runFile(sName, true);
     }
-    catch (const Base::Exception& e)
-    {
+    catch (const Base::SystemExitException&) {
+        Base::PyGILStateLocker lock;
+        PyErr_Clear();
+        Base::Interpreter().systemExit();
+    }
+    catch (const Base::Exception& e) {
         qWarning("%s",e.what());
     }
 }

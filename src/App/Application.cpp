@@ -1190,6 +1190,10 @@ void Application::processCmdLineFiles(void)
                 }
             }
         }
+        catch (const Base::SystemExitException&) {
+            Base::PyGILStateLocker locker;
+            Base::Interpreter().systemExit();
+        }
         catch (const Base::Exception& e) {
             Console().Error("Exception while processing file: %s [%s]\n", File.filePath().c_str(), e.what());
         }

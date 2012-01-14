@@ -141,7 +141,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 {
     // set the changed value for the constraint
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
-    if (ConstrId < 0 || ConstrId >= (int)vals.size())
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
     ConstraintType type = vals[ConstrId]->Type;
     if (type != Distance &&
@@ -303,7 +303,7 @@ int SketchObject::addGeometry(const Part::Geometry *geo)
 int SketchObject::delGeometry(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
-    if (GeoId < 0 || GeoId >= (int)vals.size())
+    if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
@@ -333,7 +333,7 @@ int SketchObject::delGeometry(int GeoId)
 int SketchObject::toggleConstruction(int GeoId)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
-    if (GeoId < 0 || GeoId >= (int)vals.size())
+    if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
@@ -367,7 +367,7 @@ int SketchObject::addConstraint(const Constraint *constraint)
 int SketchObject::delConstraint(int ConstrId)
 {
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
-    if (ConstrId < 0 || ConstrId >= (int)vals.size())
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
 
     std::vector< Constraint * > newVals(vals);
@@ -1039,14 +1039,14 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
 
-    std::vector<DocumentObject*> originalObjects = Objects;
-    std::vector<std::string>     originalSubElements = SubElements;
+    const std::vector<DocumentObject*> originalObjects = Objects;
+    const std::vector<std::string>     originalSubElements = SubElements;
 
-    std::vector<std::string>    ::iterator it;
-    it = std::find(originalSubElements.begin(), originalSubElements.end(), SubName);
+    std::vector<std::string>::iterator it;
+    it = std::find(SubElements.begin(), SubElements.end(), SubName);
 
     // avoid duplicates
-    if (it != originalSubElements.end())
+    if (it != SubElements.end())
         return -1;
 
     // add the new ones
@@ -1055,7 +1055,6 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 
     // set the Link list.
     ExternalGeometry.setValues(Objects,SubElements);
-
     try {
         rebuildExternalGeometry();
     }
@@ -1065,6 +1064,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
         ExternalGeometry.setValues(originalObjects,originalSubElements);
         return -1;
     }
+
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return ExternalGeometry.getValues().size()-1;
@@ -1072,9 +1072,51 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 
 int SketchObject::delExternal(int ExtGeoId)
 {
-    // FIXME: still to implement
-    return 0;
+    // get the actual lists of the externals
+    std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
+    std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
 
+    if (ExtGeoId < 0 || ExtGeoId >= int(SubElements.size()))
+        return -1;
+
+    const std::vector<DocumentObject*> originalObjects = Objects;
+    const std::vector<std::string>     originalSubElements = SubElements;
+
+    Objects.erase(Objects.begin()+ExtGeoId);
+    SubElements.erase(SubElements.begin()+ExtGeoId);
+
+    const std::vector< Constraint * > &constraints = Constraints.getValues();
+    std::vector< Constraint * > newConstraints(0);
+    int GeoId = -3 - ExtGeoId;
+    for (std::vector<Constraint *>::const_iterator it = constraints.begin();
+         it != constraints.end(); ++it) {
+        if ((*it)->First != GeoId && (*it)->Second != GeoId) {
+            Constraint *copiedConstr = (*it)->clone();
+            if (copiedConstr->First < GeoId &&
+                copiedConstr->First != Constraint::GeoUndef)
+                copiedConstr->First += 1;
+            if (copiedConstr->Second < GeoId &&
+                copiedConstr->Second != Constraint::GeoUndef)
+                copiedConstr->Second += 1;
+            newConstraints.push_back(copiedConstr);
+        }
+    }
+
+    ExternalGeometry.setValues(Objects,SubElements);
+    try {
+        rebuildExternalGeometry();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        // revert to original values
+        ExternalGeometry.setValues(originalObjects,originalSubElements);
+        return -1;
+    }
+
+    Constraints.setValues(newConstraints);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    return 0;
 }
 
 const Part::Geometry* SketchObject::getGeometry(int GeoId) const
@@ -1095,8 +1137,6 @@ void SketchObject::rebuildExternalGeometry(void)
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
-    if (Objects.size() == 0)
-        return;
 
     Base::Placement Plm = Placement.getValue();
     Base::Vector3d Pos = Plm.getPosition();
@@ -1403,7 +1443,7 @@ void SketchObject::onDocumentRestored()
 
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId)
 {
-    if (VertexId < 0 || VertexId >= (int)VertexId2GeoId.size()) {
+    if (VertexId < 0 || VertexId >= int(VertexId2GeoId.size())) {
         GeoId = Constraint::GeoUndef;
         PosId = none;
         return;

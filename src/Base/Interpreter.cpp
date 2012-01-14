@@ -242,8 +242,12 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
             PyObject *result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
             fclose(fp);
             Py_DECREF(dict);
-            if (!result)
-                throw PyException();
+            if (!result) {
+                if (PyErr_ExceptionMatches(PyExc_SystemExit))
+                    throw SystemExitException();
+                else
+                    throw PyException();
+            }
             Py_DECREF(result);
         }
         else {
@@ -271,8 +275,12 @@ bool InterpreterSingleton::loadModule(const char* psModName)
     PyGILStateLocker locker;
     module = PP_Load_Module(psModName);
 
-    if (!module)
-        throw PyException();
+    if (!module) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
+    }
 
     return true;
 }

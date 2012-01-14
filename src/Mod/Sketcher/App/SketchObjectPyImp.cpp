@@ -164,8 +164,18 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
 
 PyObject* SketchObjectPy::delExternal(PyObject *args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    int Index;
+    if (!PyArg_ParseTuple(args, "i", &Index))
+        return 0;
+
+    if (this->getSketchObjectPtr()->delExternal(Index)) {
+        std::stringstream str;
+        str << "Not able to delete an external geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
 }
 
 PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)
