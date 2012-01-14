@@ -361,14 +361,17 @@ def geom(edge):
                 return edge.Curve
         elif isinstance(edge.Curve,Part.Circle):
                 if len(edge.Vertexes) == 1:
-                        return edge.Curve
+                        return Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
                 else:
+                        ref = edge.Placement.multVec(Vector(1,0,0))
                         v1 = edge.Vertexes[0].Point
                         v2 = edge.Vertexes[-1].Point
                         c = edge.Curve.Center
-                        a1 = -fcvec.angle(v1.sub(c))
-                        a2 = -fcvec.angle(v2.sub(c))
-                        return Part.ArcOfCircle(edge.Curve,a1,a2)
+                        cu = Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
+                        a1 = -fcvec.angle(v1.sub(c),ref)
+                        a2 = -fcvec.angle(v2.sub(c),ref)
+                        p= Part.ArcOfCircle(cu,a1,a2)
+                        return p
         else:
                 return edge.Curve
 
@@ -764,12 +767,20 @@ def connect(edges,closed=False):
                                 next = None
                 if prev:
                         # print "debug: fcgeo.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point
-                        v1 = findIntersection(curr,prev,True,True)[0]
+                        i = findIntersection(curr,prev,True,True)
+                        if i:
+                                v1 = i[0]
+                        else:
+                                v1 = curr.Vertexes[0].Point
                 else:
                         v1 = curr.Vertexes[0].Point
                 if next:
                         # print "debug: fcgeo.connect next : ",next.Vertexes[0].Point,next.Vertexes[-1].Point
-                        v2 = findIntersection(curr,next,True,True)[0]
+                        i = findIntersection(curr,next,True,True)
+                        if i:
+                                v2 = i[0]
+                        else:
+                                v2 = curr.Vertexes[-1].Point 
                 else:
                         v2 = curr.Vertexes[-1].Point
                 if isinstance(curr.Curve,Part.Line):
@@ -778,7 +789,10 @@ def connect(edges,closed=False):
                 elif isinstance(curr.Curve,Part.Circle):
                         if v1 != v2:
                                 nedges.append(Part.Arc(v1,findMidPoint(curr),v2))
-        return Part.Wire(nedges)
+        try:
+                return Part.Wire(nedges)
+        except:
+                return None
 
 def findDistance(point,edge,strict=False):
 	'''

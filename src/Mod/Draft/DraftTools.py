@@ -455,9 +455,9 @@ class Line(Creator):
                 if len(edges) > 1:
                     edges.pop()
                     newshape = Part.Wire(edges)
+                    self.obj.Shape = newshape
                 else:
-                    newshape = Part.Shape()
-                self.obj.Shape = newshape
+                    self.obj.ViewObject.hide()
                 # DNC: report on removal
                 msg(translate("draft", "Last point has been removed\n"))
 
@@ -2114,7 +2114,8 @@ class Offset(Modifier):
                     v2 = fcgeo.getTangent(self.shape.Edges[dist[1]],point)
                     a = -fcvec.angle(v1,v2)
                     self.dvec = fcvec.rotate(d,a,plane.axis)
-                    self.ghost.update(fcgeo.offsetWire(self.shape,self.dvec,occ=self.ui.occOffset.isChecked()))
+                    occmode = self.ui.occOffset.isChecked()
+                    self.ghost.update(fcgeo.offsetWire(self.shape,self.dvec,occ=occmode),forceclosed=occmode)
                 elif self.mode == "Circle":
                     self.dvec = point.sub(self.center).Length
                     self.ghost.setRadius(self.dvec)
@@ -3080,8 +3081,9 @@ class Edit(Modifier):
                 if self.obj:
                     self.obj = self.obj[0]
                     # store selectable state of the object
-                    self.selectstate = self.obj.ViewObject.Selectable
-                    self.obj.ViewObject.Selectable = False
+                    if hasattr(self.obj.ViewObject,"Selectable"):
+                        self.selectstate = self.obj.ViewObject.Selectable
+                        self.obj.ViewObject.Selectable = False
                     if not Draft.getType(self.obj) in ["Wire","BSpline"]:
                         self.ui.setEditButtons(False)
                     else:
@@ -3148,7 +3150,8 @@ class Edit(Modifier):
                     t.finalize()
             if self.constraintrack:
                 self.constraintrack.finalize()
-        self.obj.ViewObject.Selectable = self.selectstate
+        if hasattr(self.obj.ViewObject,"Selectable"):
+            self.obj.ViewObject.Selectable = self.selectstate
         Modifier.finish(self)
         plane.restore()
         self.running = False
@@ -3188,13 +3191,15 @@ class Edit(Modifier):
                                 self.ui.isRelative.show()
                                 self.editing = int(snapped['Component'][8:])
                                 self.trackers[self.editing].off()
-                                self.obj.ViewObject.Selectable = False
+                                if hasattr(self.obj.ViewObject,"Selectable"):
+                                    self.obj.ViewObject.Selectable = False
                                 if "Points" in self.obj.PropertiesList:
                                     self.node.append(self.obj.Points[self.editing])
                 else:
                     print "finishing edit"
                     self.trackers[self.editing].on()
-                    self.obj.ViewObject.Selectable = True
+                    if hasattr(self.obj.ViewObject,"Selectable"):
+                        self.obj.ViewObject.Selectable = True
                     self.numericInput(self.trackers[self.editing].get())
 
     def update(self,v):
@@ -3540,6 +3545,9 @@ class Draft2Sketch():
                 allDraft = False
             elif obj.isDerivedFrom("Part::Part2DObjectPython"):
                 allSketches = False
+            else:
+                allDraft = False
+                allSketches = False
         if not sel:
             return
         elif allDraft:
@@ -3554,9 +3562,12 @@ class Draft2Sketch():
             FreeCAD.ActiveDocument.openTransaction("Convert")
             for obj in sel:
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
-                    Draft.makeSketch(sel,autoconstraints=True)
+                    Draft.draftify(obj)
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
-                    Draft.draftify(sel,makeblock=True)
+                    Draft.makeSketch(obj,autoconstraints=True)
+                elif obj.isDerivedFrom("Part::Feature"):
+                    if len(obj.Shape.Wires) == 1:
+                        Draft.makeSketch(obj,autoconstraints=False)
             FreeCAD.ActiveDocument.commitTransaction()
 
                  

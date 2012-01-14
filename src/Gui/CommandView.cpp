@@ -1055,6 +1055,54 @@ void StdCmdViewAxo::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_ViewRotateLeft
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewRotateLeft);
+
+StdCmdViewRotateLeft::StdCmdViewRotateLeft()
+  : Command("Std_ViewRotateLeft")
+{
+  sGroup        = QT_TR_NOOP("Standard-View");
+  sMenuText     = QT_TR_NOOP("Rotate Left");
+  sToolTipText  = QT_TR_NOOP("Rotate the view by 90° counter-clockwise");
+  sWhatsThis    = "Std_ViewXX";
+  sStatusTip    = QT_TR_NOOP("Rotate the view by 90° counter-clockwise");
+  sPixmap       = "view-rotate-left";
+  //sAccel        = "Shift Left";
+  eType         = Alter3DView;
+}
+
+void StdCmdViewRotateLeft::activated(int iMsg)
+{
+  doCommand(Command::Gui,"Gui.activeDocument().activeView().viewRotateLeft()");
+}
+
+
+//===========================================================================
+// Std_ViewRotateRight
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewRotateRight);
+
+StdCmdViewRotateRight::StdCmdViewRotateRight()
+  : Command("Std_ViewRotateRight")
+{
+  sGroup        = QT_TR_NOOP("Standard-View");
+  sMenuText     = QT_TR_NOOP("Rotate Right");
+  sToolTipText  = QT_TR_NOOP("Rotate the view by 90° clockwise");
+  sWhatsThis    = "Std_ViewXX";
+  sStatusTip    = QT_TR_NOOP("Rotate the view by 90° clockwise");
+  sPixmap       = "view-rotate-right";
+  //sAccel        = "Shift Right";
+  eType         = Alter3DView;
+}
+
+void StdCmdViewRotateRight::activated(int iMsg)
+{
+  doCommand(Command::Gui,"Gui.activeDocument().activeView().viewRotateRight()");
+}
+
+
+//===========================================================================
 // Std_ViewFitAll
 //===========================================================================
 DEF_STD_CMD_A(StdCmdViewFitAll);
@@ -2030,6 +2078,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdViewAxo());
     rcCmdMgr.addCommand(new StdCmdViewFitAll());
     rcCmdMgr.addCommand(new StdCmdViewFitSelection());
+    rcCmdMgr.addCommand(new StdCmdViewRotateLeft());
+    rcCmdMgr.addCommand(new StdCmdViewRotateRight());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
