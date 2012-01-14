@@ -95,11 +95,16 @@
         <file>Part_Measure_Clear_All.svg</file>
         <file>Part_Measure_Toggle_All.svg</file>
         <file>spaceball_button.svg</file>
-        <file>SpNav-PanLR.svg</file>
-        <file>SpNav-PanUD.svg</file>
-        <file>SpNav-Roll.svg</file>
-        <file>SpNav-Spin.svg</file>
-        <file>SpNav-Tilt.svg</file>
-        <file>SpNav-Zoom.svg</file>
+        <file>SpNav-PanLR.png</file>
+        <file>SpNav-PanUD.png</file>
+        <file>SpNav-Roll.png</file>
+        <file>SpNav-Spin.png</file>
+        <file>SpNav-Tilt.png</file>
+        <file>SpNav-Zoom.png</file>
+        <file>DrawStyleAsIs.svg</file>
+        <file>DrawStyleFlatLines.svg</file>
+        <file>DrawStylePoints.svg</file>
+        <file>DrawStyleShaded.svg</file>
+        <file>DrawStyleWireFrame.svg</file>
     </qresource>
 </RCC>

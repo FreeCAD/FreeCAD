@@ -549,6 +549,7 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     sMenuText     = QT_TR_NOOP("Draw style");
     sToolTipText  = QT_TR_NOOP("Draw style");
     sStatusTip    = QT_TR_NOOP("Draw style");
+    sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
 
     this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, _1));
@@ -562,14 +563,21 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
 
     QAction* a0 = pcAction->addAction(QString());
     a0->setCheckable(true);
+    a0->setIcon(BitmapFactory().pixmap("DrawStyleAsIs"));
+    a0->setChecked(true);
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
+    a1->setIcon(BitmapFactory().pixmap("DrawStyleFlatLines"));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
+    a2->setIcon(BitmapFactory().pixmap("DrawStyleShaded"));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
+    a3->setIcon(BitmapFactory().pixmap("DrawStyleWireFrame"));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
+    a4->setIcon(BitmapFactory().pixmap("DrawStylePoints"));
+    pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
     languageChange();
