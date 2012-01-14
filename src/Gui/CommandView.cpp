@@ -1064,9 +1064,9 @@ StdCmdViewRotateLeft::StdCmdViewRotateLeft()
 {
   sGroup        = QT_TR_NOOP("Standard-View");
   sMenuText     = QT_TR_NOOP("Rotate Left");
-  sToolTipText  = QT_TR_NOOP("Rotate the view by 90° counter-clockwise");
+  sToolTipText  = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 counter-clockwise");
   sWhatsThis    = "Std_ViewXX";
-  sStatusTip    = QT_TR_NOOP("Rotate the view by 90° counter-clockwise");
+  sStatusTip    = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 counter-clockwise");
   sPixmap       = "view-rotate-left";
   //sAccel        = "Shift Left";
   eType         = Alter3DView;
@@ -1088,9 +1088,9 @@ StdCmdViewRotateRight::StdCmdViewRotateRight()
 {
   sGroup        = QT_TR_NOOP("Standard-View");
   sMenuText     = QT_TR_NOOP("Rotate Right");
-  sToolTipText  = QT_TR_NOOP("Rotate the view by 90° clockwise");
+  sToolTipText  = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 clockwise");
   sWhatsThis    = "Std_ViewXX";
-  sStatusTip    = QT_TR_NOOP("Rotate the view by 90° clockwise");
+  sStatusTip    = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 clockwise");
   sPixmap       = "view-rotate-right";
   //sAccel        = "Shift Right";
   eType         = Alter3DView;
