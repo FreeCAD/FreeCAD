@@ -86,6 +86,8 @@ EXTRA_DIST = \
 		view-zoom-in.svg \
 		view-zoom-out.svg \
 		view-zoom-selection.svg \
+		view-rotate-left.svg \
+		view-rotate-right.svg \
 		Tree_Annotation.svg \
 		Tree_Dimension.svg \
 		Tree_Python.svg \

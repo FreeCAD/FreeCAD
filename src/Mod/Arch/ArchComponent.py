@@ -34,6 +34,7 @@ def addToComponent(compobject,addobject,mod=None):
     "Components", the first one that exists in the component. Mod
     can be set to one of those attributes ("Objects", Base", etc...)
     to override the default.'''
+    import Draft
     if compobject == addobject: return
     # first check is already there
     found = False
@@ -51,11 +52,17 @@ def addToComponent(compobject,addobject,mod=None):
             if hasattr(compobject,mod):
                 if mod == "Base":
                     setattr(compobject,mod,addobject)
+                    addobject.ViewObject.hide()
+                elif mod == "Axes":
+                    if Draft.getType(addobject) == "Axis":
+                        l = getattr(compobject,mod)
+                        l.append(addobject)
+                        setattr(compobject,mod,l)                        
                 else:
                     l = getattr(compobject,mod)
                     l.append(addobject)
                     setattr(compobject,mod,l)
-                addobject.ViewObject.hide()
+                    addobject.ViewObject.hide()
         else:
             for a in attribs[:3]:
                 if hasattr(compobject,a):
@@ -103,7 +110,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
         
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes"]
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -149,9 +156,6 @@ class ComponentTaskPanel:
 
     def getStandardButtons(self):
         return 0
-
-    def removeElement(self):
-        return
 
     def check(self,wid,col):
         if not wid.parent():
@@ -236,6 +240,7 @@ class ComponentTaskPanel:
         self.treeAdditions.setText(0,QtGui.QApplication.translate("Arch", "Additions", None, QtGui.QApplication.UnicodeUTF8))
         self.treeSubtractions.setText(0,QtGui.QApplication.translate("Arch", "Subtractions", None, QtGui.QApplication.UnicodeUTF8))
         self.treeObjects.setText(0,QtGui.QApplication.translate("Arch", "Objects", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeAxes.setText(0,QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
         self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))        
         
 class Component:
@@ -251,7 +256,6 @@ class Component:
                         "The normal extrusion direction of this wall (keep (0,0,0) for automatic normal)")
         obj.Proxy = self
         self.Type = "Component"
-        self.Object = obj
         self.Subvolume = None
         
         

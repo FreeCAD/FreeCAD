@@ -152,7 +152,7 @@ class Snapper:
         if self.extLine:
             self.extLine.off()
 
-        point = FreeCADGui.ActiveDocument.ActiveView.getPoint(screenpos[0],screenpos[1])
+        point = self.getApparentPoint(screenpos[0],screenpos[1])
             
         # check if we snapped to something
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((screenpos[0],screenpos[1]))
@@ -259,6 +259,12 @@ class Snapper:
             
             # return the final point
             return cstr(winner[2])
+
+    def getApparentPoint(self,x,y):
+        "returns a 3D point, projected on the current working plane"
+        pt = FreeCADGui.ActiveDocument.ActiveView.getPoint(x,y)
+        dv = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+        return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
         
     def snapToExtensions(self,point,last,constrain):
         "returns a point snapped to extension or parallel line to last object, if any"
@@ -515,7 +521,8 @@ class Snapper:
         delta = point.sub(self.basepoint)
 
         # setting constraint axis
-        self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
+        if not self.affinity:
+            self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
         if isinstance(axis,FreeCAD.Vector):
             self.constraintAxis = axis
         elif axis == "x":
