@@ -76,7 +76,19 @@ PyObject* UnitsApi::sTranslateUnit(PyObject * /*self*/, PyObject *args,PyObject 
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
     try {
-        return Py::new_reference_to(Py::Object(Py::Float(UnitsApi::translateUnit(pstr))));
+        Py::Tuple res(10);
+        UnitsSignature sig = UnitsApi::translateUnit(pstr);
+        res.setItem(0,Py::Float(sig.Value));
+        res.setItem(1,Py::Float(sig.Spread));
+        res.setItem(2,Py::Int(sig.Length));
+        res.setItem(3,Py::Int(sig.Mass));
+        res.setItem(4,Py::Int(sig.Time));
+        res.setItem(5,Py::Int(sig.ElectricCurrent));
+        res.setItem(6,Py::Int(sig.ThermodynamicTemperature));
+        res.setItem(7,Py::Int(sig.AmountOfSubstance));
+        res.setItem(8,Py::Int(sig.LuminoseIntensity));
+        res.setItem(9,Py::Int(sig.Angle));
+        return Py::new_reference_to(res);
     }
     catch (const Base::Exception& e) {
         PyErr_Format(PyExc_IOError, "invalid unit expression %s: %s\n", pstr, e.what());

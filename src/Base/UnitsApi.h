@@ -43,7 +43,7 @@ class BaseExport UnitsSignature
 {
 public:
     UnitsSignature(
-        double      Value,
+        double      Value=0.0,
         double      Spread = 1.0,
         signed char Length = 1,
         signed char Mass=0,
@@ -55,8 +55,14 @@ public:
         signed char Angle=0
         );
 
-    UnitsSignature UnitsSignature::operator*(const UnitsSignature& right)const ;
-    UnitsSignature UnitsSignature::operator/(const UnitsSignature& right)const ;
+    UnitsSignature operator*(const UnitsSignature& right)const ;
+    UnitsSignature operator/(const UnitsSignature& right)const ;
+    UnitsSignature operator-(const UnitsSignature& right)const ;
+    UnitsSignature operator+(const UnitsSignature& right)const ;
+    UnitsSignature pow(double num)const;
+    UnitsSignature pow(UnitsSignature num)const;
+    UnitsSignature neg(void)const;
+
 
     double      Value;
     double      Spread;
@@ -91,8 +97,8 @@ public:
 
 
     /// raw parser interface to calculat units (only from and to internal)
-    static double translateUnit(const char*);
-    static double translateUnit(const QString &);
+    static UnitsSignature translateUnit(const char*);
+    static UnitsSignature translateUnit(const QString &);
 
 
     /** @name Translation from internal to user prefs */
@@ -134,7 +140,7 @@ public:
     static void setDefaults(void);
     //@}
 
-    double Result;
+    UnitsSignature Result;
 
     // Python interface
     static PyMethodDef    Methods[];
@@ -150,7 +156,7 @@ protected:
     static QString  UserPrefUnit   [50] ;
 
     // do the real work
-    static double parse(const char*,bool &UsedUnit);
+    static UnitsSignature parse(const char*);
 
 protected: // the python API wrapper methodes
     static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);

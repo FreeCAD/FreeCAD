@@ -32,6 +32,7 @@
 #include "UnitsSchemaInternal.h"
 #include "UnitsSchemaImperial1.h"
 #include "UnitsSchemaMKS.h"
+#include "Math.h"
 //#include "UnitsApiPy.h"
 
 #ifndef M_PI
@@ -89,13 +90,13 @@ QString  UnitsApi::UserPrefUnit   [50];
 UnitsApi::UnitsApi(const char* filter)
 {
     bool temp;
-    Result = parse(filter,temp);
+    Result = parse(filter);
 }
 
 UnitsApi::UnitsApi(const std::string& filter)
 {
     bool temp;
-    Result = parse(filter.c_str(),temp);
+    Result = parse(filter.c_str());
 }
 
 UnitsApi::~UnitsApi()
@@ -114,16 +115,14 @@ void UnitsApi::setSchema(UnitSystem s)
 }
 
 
-double UnitsApi::translateUnit(const char* str)
+UnitsSignature UnitsApi::translateUnit(const char* str)
 {
-    bool temp;
-    return parse(str,temp );
+    return parse(str);
 }
 
-double UnitsApi::translateUnit(const QString & str)
+UnitsSignature UnitsApi::translateUnit(const QString & str)
 {
-    bool temp;
-    return parse(str.toUtf8() ,temp);
+    return parse(str.toAscii());
 }
 
 
@@ -153,10 +152,9 @@ double UnitsApi::toDblWithUserPrefs(QuantityType t,const QString & Str)
 
 double UnitsApi::toDblWithUserPrefs(QuantityType t,const char* Str)
 {
-    bool UsedUnit;
-    double Value = parse( Str,UsedUnit ); 
+    UnitsSignature Value = parse( Str ); 
 
-    if (UsedUnit)
+    if (Value.UsedUnit())
         return Value;
     else
         return toDblWithUserPrefs(t,Value);
@@ -236,6 +234,27 @@ UnitsSignature::UnitsSignature(
     Angle(Angle)
 {}
 
+UnitsSignature UnitsSignature::pow(double num)const
+{
+    return UnitsSignature(
+        std::pow(Value,num)
+        
+        );
+}
+
+UnitsSignature UnitsSignature::pow(UnitsSignature num)const
+{
+    return UnitsSignature(
+        std::pow(Value,num.Value)
+        
+        );
+}
+
+UnitsSignature UnitsSignature::neg(void)const
+{
+    return UnitsSignature(-Value);
+}
+
 UnitsSignature UnitsSignature::operator*(const UnitsSignature& right)const 
 {
     UnitsSignature result(0);
@@ -280,13 +299,21 @@ UnitsSignature UnitsSignature::operator/(const UnitsSignature& right)const
     return result;
 }
 
+UnitsSignature UnitsSignature::operator-(const UnitsSignature& right)const 
+{
+    return UnitsSignature (Value-right.Value);
+}
+
+UnitsSignature UnitsSignature::operator+(const UnitsSignature& right)const 
+{
+    return UnitsSignature (Value+right.Value);
+}
 
 // === Parser & Scanner stuff ===============================================
 
 // include the Scanner and the Parser for the filter language
 
-double ScanResult=0;
-bool   UU = false;
+UnitsSignature ScanResult;
 
 // error func
 void Unit_yyerror(char *errorinfo)
@@ -314,17 +341,14 @@ int UnitsApilex(void);
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 }
 
-double UnitsApi::parse(const char* buffer,bool &UsedUnit)
+UnitsSignature UnitsApi::parse(const char* buffer)
 {
     // parse from buffer
     UnitParser::YY_BUFFER_STATE my_string_buffer = UnitParser::UnitsApi_scan_string (buffer);
     // set the global return variables
     ScanResult = DOUBLE_MIN;
-    UU = false;
     // run the parser
     UnitParser::Unit_yyparse ();
-    UsedUnit = UU;
-    UU=false;
     // free the scan buffer
     UnitParser::UnitsApi_delete_buffer (my_string_buffer);
 
