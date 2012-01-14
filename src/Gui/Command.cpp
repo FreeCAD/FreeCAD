@@ -504,26 +504,26 @@ void Command::applyCommandData(Action* action)
 {
     action->setText(QCoreApplication::translate(
         this->className(), sMenuText, 0,
-        QCoreApplication::CodecForTr));
+        QCoreApplication::UnicodeUTF8));
     action->setToolTip(QCoreApplication::translate(
         this->className(), sToolTipText, 0,
-        QCoreApplication::CodecForTr));
+        QCoreApplication::UnicodeUTF8));
     if (sStatusTip)
         action->setStatusTip(QCoreApplication::translate(
             this->className(), sStatusTip, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
     else
         action->setStatusTip(QCoreApplication::translate(
             this->className(), sToolTipText, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
     if (sWhatsThis)
         action->setWhatsThis(QCoreApplication::translate(
             this->className(), sWhatsThis, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
     else
         action->setWhatsThis(QCoreApplication::translate(
             this->className(), sToolTipText, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
 }
 
 const char* Command::keySequenceToAccel(int sk) const
