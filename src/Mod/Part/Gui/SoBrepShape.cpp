@@ -391,6 +391,14 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     int matnr = 0;
     int trinr = 0;
     pi = piptr < piendptr ? *piptr++ : -1;
+    while (pi == 0) {
+        // It may happen that a part has no triangles
+        pi = piptr < piendptr ? *piptr++ : -1;
+        if (mbind == PER_PART)
+            matnr++;
+        else if (mbind == PER_PART_INDEXED)
+            matindices++;
+    }
 
     glBegin(GL_TRIANGLES);
     while (viptr + 2 < viendptr) {
@@ -503,6 +511,14 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
         trinr++;
         if (pi == trinr) {
             pi = piptr < piendptr ? *piptr++ : -1;
+            while (pi == 0) {
+                // It may happen that a part has no triangles
+                pi = piptr < piendptr ? *piptr++ : -1;
+                if (mbind == PER_PART)
+                    matnr++;
+                else if (mbind == PER_PART_INDEXED)
+                    matindices++;
+            }
             trinr = 0;
         }
     }
