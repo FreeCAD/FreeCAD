@@ -23,9 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRep_Builder.hxx>
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Exception.h>
 
 #include "ItemAssembly.h"
 
@@ -52,7 +54,33 @@ short ItemAssembly::mustExecute() const
 
 App::DocumentObjectExecReturn *ItemAssembly::execute(void)
 {
- 
+    std::vector<TopoDS_Shape> s;
+    std::vector<App::DocumentObject*> obj = Items.getValues();
+
+    std::vector<App::DocumentObject*>::iterator it;
+    for (it = obj.begin(); it != obj.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(Assembly::Item::getClassTypeId())) {
+            s.push_back(static_cast<Assembly::Item*>(*it)->Shape.getValue());
+        }
+    }
+
+    if (s.size() > 0) {
+        TopoDS_Compound aRes = TopoDS_Compound();
+        BRep_Builder aBuilder = BRep_Builder();
+        aBuilder.MakeCompound(aRes);
+
+        for (std::vector<TopoDS_Shape>::iterator it = s.begin(); it != s.end(); ++it) {
+
+            aBuilder.Add(aRes, *it);
+        }
+        if (aRes.IsNull())
+            throw Base::Exception("Resulting shape is invalid");
+        this->Shape.setValue(aRes);
+    }
+    else {
+        // set empty shape
+        this->Shape.setValue(TopoDS_Shape());
+    }
     return App::DocumentObject::StdReturn;
 }
 

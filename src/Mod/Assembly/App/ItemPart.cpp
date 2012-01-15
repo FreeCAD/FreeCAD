@@ -52,7 +52,12 @@ short ItemPart::mustExecute() const
 
 App::DocumentObjectExecReturn *ItemPart::execute(void)
 {
- 
+    App::DocumentObject* obj = Model.getValue();
+
+    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        this->Shape.setValue(static_cast<Part::Feature*>(obj)->Shape.getValue());
+    }
+
     return App::DocumentObject::StdReturn;
 }
 
