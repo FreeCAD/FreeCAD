@@ -101,6 +101,9 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
     labels << tr("Icon") << tr("Command");
     commandTreeWidget->setHeaderLabels(labels);
     commandTreeWidget->header()->hide();
+    commandTreeWidget->setIconSize(QSize(32, 32));
+    commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+
     assignedTreeWidget->setHeaderLabels(labels);
     assignedTreeWidget->header()->hide();
 }
@@ -177,12 +180,9 @@ void DlgCustomKeyboardImp::on_categoryBox_activated(int index)
         item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
         item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
         item->setSizeHint(0, QSize(32, 32));
-        item->setBackgroundColor(0, Qt::lightGray);
         if ((*it)->getPixmap())
             item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
     }
-
-    commandTreeWidget->resizeColumnToContents(0);
 }
 
 /** Assigns a new accelerator to the selected command. */
