@@ -75,7 +75,8 @@ public:
     PropertyString LastModifiedDate;
     PropertyString Company;
     PropertyString Comment;
-    PropertyUUID   Id;
+    PropertyString Id;
+    PropertyUUID   Uid;
     PropertyString License; 
     PropertyString TransientDir;
     //@}

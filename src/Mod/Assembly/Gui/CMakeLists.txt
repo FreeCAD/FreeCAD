@@ -10,7 +10,9 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${COIN_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${OCC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIR}
     ${SOQT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
@@ -20,21 +22,37 @@ include_directories(
 set(AssemblyGui_LIBS
     #${ODE_LIBRARIES}
     Assembly
+    PartGui
     FreeCADGui
 )
 
 qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
 
-SET(AssemblyGui_SRCS
-    ${AssemblyGui_SRCS}
+
+SET(AssemblyGuiViewProvider_SRCS
+    ViewProvider.cpp
+    ViewProvider.h
+)
+SOURCE_GROUP("ViewProvider" FILES ${AssemblyGuiViewProvider_SRCS})
+
+SET(AssemblyGuiModule_SRCS
     AppAssemblyGui.cpp
     AppAssemblyGuiPy.cpp
     Command.cpp
     Resources/Assembly.qrc
+    qrc_Assembly.cxx
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h
+)
+SOURCE_GROUP("Module" FILES ${AssemblyGuiModule_SRCS})
+
+
+SET(AssemblyGui_SRCS
+    ${AssemblyGui_SRCS}
+    ${AssemblyGuiViewProvider_SRCS}
+    ${AssemblyGuiModule_SRCS}
 )
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS})

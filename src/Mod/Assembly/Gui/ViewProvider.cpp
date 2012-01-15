@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,38 +21,30 @@
  ***************************************************************************/
 
 
-#ifndef ItemAssembly_ItemAssembly_H
-#define ItemAssembly_ItemAssembly_H
+#include "PreCompiled.h"
 
-#include <App/PropertyStandard.h>
-#include "Item.h"
+#ifndef _PreComp_
+#endif
 
+#include "ViewProvider.h"
+#include <Gui/Command.h>
+//#include <Gui/Document.h>
 
-namespace Assembly
+using namespace AssemblyGui;
+
+PROPERTY_SOURCE(AssemblyGui::ViewProvider,PartGui::ViewProviderPart)
+
+ViewProvider::ViewProvider()
 {
+}
 
-class AssemblyExport ItemAssembly : public Assembly::Item
+ViewProvider::~ViewProvider()
 {
-    PROPERTY_HEADER(Assembly::ItemAssembly);
+}
 
-public:
-    ItemAssembly();
-
-    App::PropertyLinkList   Items;
- 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderItemAssembly";
-    }
-    //@}
-};
-
-} //namespace Assembly
+bool ViewProvider::doubleClicked(void)
+{
+    return true;
+}
 
 
-#endif // Assembly_ItemAssembly_H

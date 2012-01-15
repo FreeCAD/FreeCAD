@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,38 +21,31 @@
  ***************************************************************************/
 
 
-#ifndef ItemAssembly_ItemAssembly_H
-#define ItemAssembly_ItemAssembly_H
+#ifndef PARTGUI_ViewProvider_H
+#define PARTGUI_ViewProvider_H
 
-#include <App/PropertyStandard.h>
-#include "Item.h"
+#include <Mod/Part/Gui/ViewProvider.h>
 
 
-namespace Assembly
+namespace AssemblyGui {
+
+class AssemblyGuiExport ViewProvider : public PartGui::ViewProviderPart
 {
-
-class AssemblyExport ItemAssembly : public Assembly::Item
-{
-    PROPERTY_HEADER(Assembly::ItemAssembly);
+    PROPERTY_HEADER(PartGui::ViewProvider);
 
 public:
-    ItemAssembly();
+    /// constructor
+    ViewProvider();
+    /// destructor
+    virtual ~ViewProvider();
 
-    App::PropertyLinkList   Items;
- 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderItemAssembly";
-    }
-    //@}
+    virtual bool doubleClicked(void);
+
 };
 
-} //namespace Assembly
 
 
-#endif // Assembly_ItemAssembly_H
+} // namespace AssemblyGui
+
+
+#endif // PARTGUI_ViewProviderHole_H

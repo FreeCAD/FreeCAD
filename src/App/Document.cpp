@@ -516,7 +516,8 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
     // create the uuid for the document
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Id,(id.UuidStr),0,Prop_None,"UUID of the document");
+    ADD_PROPERTY_TYPE(Id,(""),0,Prop_None,"ID of the document");
+    ADD_PROPERTY_TYPE(Uid,(id.UuidStr),0,Prop_None,"UUID of the document");
 
     // create transient directory
     std::string basePath = Base::FileInfo::getTempPath() + GetApplication().getExecutableName();
@@ -640,7 +641,7 @@ void Document::Restore(Base::XMLReader &reader)
 
     // create new transient directory
     std::string basePath = Base::FileInfo::getTempPath() + GetApplication().getExecutableName();
-    Base::FileInfo TransDirNew(basePath + "_Doc_"  + Id.getValueStr());
+    Base::FileInfo TransDirNew(basePath + "_Doc_"  + Uid.getValueStr());
     if(!TransDirNew.exists())
         TransDirNew.createDirectory();
     TransientDir.setValue(TransDirNew.filePath());

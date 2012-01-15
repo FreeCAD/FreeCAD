@@ -29,9 +29,11 @@
 // Importing of App classes
 #ifdef FC_OS_WIN32
 # define AssemblyAppExport __declspec(dllimport)
+# define PartGuiExport     __declspec(dllimport)
 # define AssemblyGuiExport __declspec(dllexport)
 #else // for Linux
 # define AssemblyAppExport
+# define PartGuiExport
 # define AssemblyGuiExport
 #endif
 
