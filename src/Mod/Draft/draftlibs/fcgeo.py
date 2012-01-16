@@ -842,6 +842,16 @@ def findDistance(point,edge,strict=False):
 					return None
 			else:
 				return dist
+                elif isinstance(edge.Curve,Part.BSplineCurve):
+                        try:
+                                pr = edge.Curve.parameter(point)
+                                np = edge.Curve.value(pr)
+                                dist = np.sub(point)
+                        except:
+                                print "fcgeo: Unable to get curve parameter for point ",point
+                                return None
+                        else:
+                                return dist
 		else:
 			print "fcgeo: Couldn't project point"
 			return None
@@ -933,6 +943,11 @@ def getTangent(edge,frompoint=None):
         '''
         if isinstance(edge.Curve,Part.Line):
                 return vec(edge)
+        elif isinstance(edge.Curve,Part.BSplineCurve):
+                if not frompoint:
+                        return None
+                cp = edge.Curve.parameter(frompoint)
+                return edge.Curve.tangent(cp)[0]
         elif isinstance(edge.Curve,Part.Circle):
                 if not frompoint:
                         v1 = edge.Vertexes[0].Point.sub(edge.Curve.Center)
