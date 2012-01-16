@@ -1367,6 +1367,7 @@ class Dimension(Creator):
                 self.center = None
                 self.arcmode = False
                 self.point2 = None
+                self.force = None
                 self.constraintrack = lineTracker(dotted=True)
                 msg(translate("draft", "Pick first point:\n"))
                 FreeCADGui.draftToolBar.show()
@@ -1501,15 +1502,21 @@ class Dimension(Creator):
                             self.point2 = self.node[1]
                         else:
                             self.node[1] = self.point2
-                        a=abs(point.sub(self.node[0]).getAngle(plane.u))
-                        if (a > math.pi/4) and (a <= 0.75*math.pi):
+                        if not self.force:
+                            a=abs(point.sub(self.node[0]).getAngle(plane.u))
+                            if (a > math.pi/4) and (a <= 0.75*math.pi):
+                                self.force = 1
+                            else:
+                                self.force = 2
+                        if self.force == 1:
                             self.node[1] = Vector(self.node[0].x,self.node[1].y,self.node[0].z)
-                        else:
+                        elif self.force == 2:
                             self.node[1] = Vector(self.node[1].x,self.node[0].y,self.node[0].z)
                     self.constraintrack.p1(point)
                     self.constraintrack.p2(ctrlPoint)
                     self.constraintrack.on()
                 else:
+                    self.force = None
                     if self.point2:
                         self.node[1] = self.point2
                         self.point2 = None
