@@ -215,6 +215,15 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 qApp->translate(className(),"You have to select a single face as support for a sketch!"));
             return;
         }
+
+        std::vector<App::DocumentObject*> input = part->getOutList();
+        if (std::find(input.begin(), input.end(), sel[index]) != input.end()) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate(className(),"Cyclic dependency"),
+                qApp->translate(className(),"You cannot choose a support object depending on the selected sketch!"));
+            return;
+        }
+
         // get the selected sub shape (a Face)
         const Part::TopoShape &shape = part->Shape.getValue();
         TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
