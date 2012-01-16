@@ -109,7 +109,8 @@ def readOpenShell(filename):
                     sh = Part.read(tf)
                     nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
                     nobj.Shape = sh
-     
+                    os.remove(tf)
+                    
                 else:
 
                     # treat as meshes
