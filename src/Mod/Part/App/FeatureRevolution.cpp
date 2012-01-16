@@ -49,6 +49,7 @@ short Revolution::mustExecute() const
 {
     if (Base.isTouched() ||
         Axis.isTouched() ||
+        Angle.isTouched() ||
         Source.isTouched())
         return 1;
     return 0;
