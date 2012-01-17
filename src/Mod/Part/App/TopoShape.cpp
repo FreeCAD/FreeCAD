@@ -609,6 +609,32 @@ void TopoShape::importBrep(const char *FileName)
     }
 }
 
+void TopoShape::importBrep(std::istream& str)
+{
+    try {
+        // read brep-file
+        BRep_Builder aBuilder;
+        TopoDS_Shape aShape;
+#if OCC_HEX_VERSION >= 0x060300
+        Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+        pi->NewScope(100, "Reading BREP file...");
+        pi->Show();
+        BRepTools::Read(aShape,str,aBuilder,pi);
+        pi->EndScope();
+#else
+        BRepTools::Read(aShape,str,aBuilder);
+#endif
+        this->_Shape = aShape;
+    }
+    catch (Standard_Failure) {
+        Handle(Standard_Failure) aFail = Standard_Failure::Caught();
+        throw Base::Exception(aFail->GetMessageString());
+    }
+    catch (const std::exception& e) {
+        throw Base::Exception(e.what());
+    }
+}
+
 void TopoShape::write(const char *FileName) const
 {
     Base::FileInfo File(FileName);
@@ -1679,13 +1705,10 @@ TopoDS_Shape TopoShape::removeShape(const std::vector<TopoDS_Shape>& s) const
 
 void TopoShape::sewShape()
 {
-    //ShapeFix_Shape fixer(this->_Shape);
-    //fixer.Perform();
     BRepBuilderAPI_Sewing sew;
-    sew.Load(this->_Shape/*fixer.Shape()*/);
+    sew.Load(this->_Shape);
     sew.Perform();
 
-    //shape = ShapeUpgrade_ShellSewing().ApplySewing(shape);
     this->_Shape = sew.SewedShape();
 }
 
@@ -1720,6 +1743,10 @@ bool TopoShape::fix(double precision, double mintol, double maxtol)
     else if (type == TopAbs_FACE) {
         fix.FixWireTool()->Perform();
         fix.FixFaceTool()->Perform();
+        this->_Shape = fix.Shape();
+    }
+    else if (type == TopAbs_WIRE) {
+        fix.FixWireTool()->Perform();
         this->_Shape = fix.Shape();
     }
     else {

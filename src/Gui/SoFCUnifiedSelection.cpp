@@ -169,6 +169,20 @@ const char* SoFCUnifiedSelection::getFileFormatName(void) const
     return "Separator";
 }
 
+void SoFCUnifiedSelection::write(SoWriteAction * action)
+{
+    SoOutput * out = action->getOutput();
+    if (out->getStage() == SoOutput::WRITE) {
+        // Do not write out the fields of this class
+        if (this->writeHeader(out, TRUE, FALSE)) return;
+        SoGroup::doAction((SoAction *)action);
+        this->writeFooter(out);
+    }
+    else {
+        inherited::write(action);
+    }
+}
+
 int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();

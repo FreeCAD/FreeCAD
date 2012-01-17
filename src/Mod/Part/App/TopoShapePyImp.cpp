@@ -208,8 +208,7 @@ PyObject* TopoShapePy::removeShape(PyObject *args)
         Py::List list(l);
         std::vector<TopoDS_Shape> shapes;
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
-            Py::Tuple tuple(*it);
-            Py::TopoShape sh(tuple[0]);
+            Py::TopoShape sh(*it);
             shapes.push_back(
                 sh.extensionObject()->getTopoShapePtr()->_Shape
             );
@@ -303,6 +302,30 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
     try {
         // write brep file
         getTopoShapePtr()->exportBrep(filename);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+
+    Py_Return;
+}
+
+PyObject*  TopoShapePy::importBrep(PyObject *args)
+{
+    PyObject* input;
+    if (!PyArg_ParseTuple(args, "O", &input))
+    //char* input;
+    //if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read brep
+        Base::PyStreambuf buf(input);
+        std::istream str(0);
+        str.rdbuf(&buf);
+        //std::stringstream str(input);
+        getTopoShapePtr()->importBrep(str);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception,e.what());
