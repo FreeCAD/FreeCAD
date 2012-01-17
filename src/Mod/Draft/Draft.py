@@ -873,6 +873,8 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
 
     if getType(obj) == "Circle":
         pass
+    elif getType(obj) == "BSpline":
+        pass
     else:
         if sym:
             d1 = delta.multiply(0.5)
@@ -923,7 +925,10 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             newobj.Placement = pl
         elif getType(obj) == "Part":
             newobj = makeWire(p)
-            newobj.Closed = obj.Shape.isClosed()                      
+            newobj.Closed = obj.Shape.isClosed()
+        elif getType(obj) == "BSpline":
+            newobj = makeBSpline(delta)
+            newobj.Closed = obj.Closed
         formatObject(newobj,obj)
     else:
         if sym: return None
@@ -933,6 +938,10 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
                 obj.Base = None
                 obj.Tool = None
             obj.Points = p
+        elif getType(obj) == "BSpline":
+            print delta
+            obj.Points = delta
+            print "done"
         elif getType(obj) == "Rectangle":
             length,height,plac = getRect(p,obj)
             obj.Placement = plac

@@ -27,9 +27,13 @@ __url__ = ["http://free-cad.sourceforge.net"]
 
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
-paths, lines, arcs ,rects, circles, ellipses, polygons, polylines.
-currently unsupported: image, rounded rect(rx,ry), transform attribute??
+paths, lines, circular arcs ,rects, circles, ellipses, polygons, polylines.
+currently unsupported: image, rounded rect(rx,ry), elliptical arcs
 '''
+#ToDo:
+# elliptical arc segments
+# rounded rects (elliptical arcs)
+# ignoring CDATA
 
 import xml.sax, string, FreeCAD, os, math, re, Draft
 from draftlibs import fcvec
@@ -229,44 +233,6 @@ def getrgb(color):
 	g = str(hex(int(color[1]*255)))[2:].zfill(2)
 	b = str(hex(int(color[2]*255)))[2:].zfill(2)
 	return "#"+r+g+b
- 
-def splitpathd(pathdstr):
-        "returns a list with the elements contained in the d attribute of a path"
-        whitespacechars = [' ','\t','\r','\n']
-        commandchars = ['m','M','l','L','h','H','v','V','a','A','c','C','q','Q','s','S','t','T','z','Z']
-        numberchars = ['e','E','+','-','.','0','1','2','3','4','5','6','7','8','9']
-        dlist=[]
-        currentnumber=''
-        state='whitespace'
-        for dchar in pathdstr:
-                if dchar in commandchars:
-                        if currentnumber:
-                                dlist.append(float(currentnumber))
-                                currentnumber = ''
-                        dlist.append(dchar)
-                        state='whitespace'
-                elif state == 'whitespace':
-                        if dchar in whitespacechars:
-                                pass #continue
-                        elif dchar in numberchars:
-                                state = 'number'
-                                currentnumber = dchar
-                        else:
-                                print 'unexpected char %s %d %s' % (dchar,ord(dchar),state)
-                elif state == 'number':
-                        if dchar in numberchars:
-                                currentnumber += dchar
-                        elif dchar in whitespacechars:
-                                dlist.append(float(currentnumber))
-                                currentnumber = ''
-                        else:
-                                print 'unexpected char %s %d %s' % (dchar,ord(dchar),state)
-        #End of string/list
-        if currentnumber:
-                dlist.append(float(currentnumber))
-                currentnumber = ''
-        return dlist
-
 
 class svgHandler(xml.sax.ContentHandler):
 	"this handler parses the svg files and creates freecad objects"
@@ -319,12 +285,15 @@ class svgHandler(xml.sax.ContentHandler):
 			content = content.split()
 			data[keyword]=content
 
-		if 'style' in data:
-			content = data['style'][0].replace(' ','')
-			content = content.split(';')
-			for i in content:
-				pair = i.split(':')
-				if len(pair)>1:	data[pair[0]]=pair[1]
+                if 'style' in data:
+                        if not data['style']:
+                                pass#empty style attribute stops inhertig from parent
+                        else:
+                                content = data['style'][0].replace(' ','')
+                                content = content.split(';')
+                                for i in content:
+                                        pair = i.split(':')
+                                        if len(pair)>1:	data[pair[0]]=pair[1]
 
 		for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
 			if k in data:
@@ -352,7 +321,7 @@ class svgHandler(xml.sax.ContentHandler):
 			if data['stroke-width'] != 'none':
 				self.width = getsize(data['stroke-width'])
 		if 'transform' in data:
-                        m = self.getMatrix(data['transform'])
+                        m = self.getMatrix(attrs.getValue('transform'))
                         if name == "g":
                                 self.grouptransform.append(m)
                         else:
@@ -385,9 +354,6 @@ class svgHandler(xml.sax.ContentHandler):
 			relative = False
 			firstvec = None
 
-			pathdata = splitpathd(' '.join(data['d']))
-                        # print "debug: pathdata:",pathdata
-
                         if "freecad:basepoint1" in data:
                                 p1 = data["freecad:basepoint1"]
                                 p1 = Vector(float(p1[0]),-float(p1[1]),0)
@@ -400,8 +366,9 @@ class svgHandler(xml.sax.ContentHandler):
                                 self.format(obj)
                                 pathdata = []
                                 self.lastdim = obj
-
-			for d in pathdata:
+                        pathcommandsre=re.compile('\s*?([mMlLhHvVaAcCqQsStTzZ])\s*?([^mMlLhHvVaAcCqQsStTzZ]*)\s*?',re.DOTALL)
+                        for d,pointsstr in pathcommandsre.findall(' '.join(data['d'])):
+			#for d in pathdata:
 				if (d == "M"):
 					command = "move"
 					relative = False
@@ -485,215 +452,241 @@ class svgHandler(xml.sax.ContentHandler):
 					relative = True
 					smooth = True
 					point = []
-				else:
-					try:
-						point.append(float(d))
-					except ValueError:
-						pass
+                                pointlist = pointsstr.replace(',',' ').split()
+                                while pointlist:
+                                        if pointlist:
+                                                point.append(float(pointlist.pop(0)))
+                                        print "command: ",command, ' point: ',point
 
-				print "command: ",command, ' point: ',point
-
-				if (len(point)==2) and (command=="move"):
-					if path:
-						sh = Part.Wire(path)
-						if self.fill: sh = Part.Face(sh)
-                                                sh = self.applyTrans(sh)
-						obj = self.doc.addObject("Part::Feature",pathname)
-						obj.Shape = sh
-						self.format(obj)
-						path = []
-					if relative:
-						lastvec = lastvec.add(Vector(point[0],-point[1],0))
-						command="line"
-					else:
-						lastvec = Vector(point[0],-point[1],0)
-					firstvec = lastvec
-					print "move ",lastvec
-					command = "line"
-					lastpole = None
-					point = []
-				elif (len(point)==2) and (command=="line"):
-					if relative:
-						currentvec = lastvec.add(Vector(point[0],-point[1],0))
-					else:
-						currentvec = Vector(point[0],-point[1],0)
-                                        if not fcvec.equals(lastvec,currentvec):
+                                        if (len(point)==2) and (command=="move"):
+                                                if path:
+                                                        sh = Part.Wire(path)
+                                                        if self.fill: sh = Part.Face(sh)
+                                                        sh = self.applyTrans(sh)
+                                                        obj = self.doc.addObject("Part::Feature",pathname)
+                                                        obj.Shape = sh
+                                                        self.format(obj)
+                                                        path = []
+                                                        if firstvec:
+                                                                lastvec = firstvec #Move relative to last move command not last draw command
+                                                if relative:
+                                                        lastvec = lastvec.add(Vector(point[0],-point[1],0))
+                                                        command="line"
+                                                else:
+                                                        lastvec = Vector(point[0],-point[1],0)
+                                                firstvec = lastvec
+                                                print "move ",lastvec
+                                                command = "line"
+                                                lastpole = None
+                                                point = []
+                                        elif (len(point)==2) and (command=="line"):
+                                                if relative:
+                                                        currentvec = lastvec.add(Vector(point[0],-point[1],0))
+                                                else:
+                                                        currentvec = Vector(point[0],-point[1],0)
+                                                if not fcvec.equals(lastvec,currentvec):
+                                                        seg = Part.Line(lastvec,currentvec).toShape()
+                                                        print "line ",lastvec,currentvec
+                                                        lastvec = currentvec
+                                                        path.append(seg)
+                                                lastpole = None
+                                                point = []
+                                        elif (len(point)==1) and (command=="horizontal"):
+                                                if relative:
+                                                        currentvec = lastvec.add(Vector(point[0],0,0))
+                                                else:
+                                                        lasty = path[-1].y
+                                                        currentvec = Vector(point[0],lasty,0)
                                                 seg = Part.Line(lastvec,currentvec).toShape()
-                                                print "line ",lastvec,currentvec
                                                 lastvec = currentvec
+                                                lastpole = None
                                                 path.append(seg)
-					lastpole = None
-					point = []
-				elif (len(point)==1) and (command=="horizontal"):
-					if relative:
-						currentvec = lastvec.add(Vector(point[0],0,0))
-					else:
-						lasty = path[-1].y
-						currentvec = Vector(point[0],lasty,0)
-					seg = Part.Line(lastvec,currentvec).toShape()
-					lastvec = currentvec
-					lastpole = None
-					path.append(seg)
-					point = []
-				elif (len(point)==1) and (command=="vertical"):
-					if relative:
-						currentvec = lastvec.add(Vector(0,-point[0],0))
-					else:
-						lastx = path[-1].x
-						currentvec = Vector(lastx,-point[0],0)
-					seg = Part.Line(lastvec,currentvec).toShape()
-					lastvec = currentvec
-					lastpole = None
-					path.append(seg)
-					point = []
-				elif (len(point)==7) and (command=="arc"):
-					if relative:
-						currentvec = lastvec.add(Vector(point[-2],-point[-1],0))
-					else:
-						currentvec = Vector(point[-2],-point[-1],0)
-					chord = currentvec.sub(lastvec)
-					# perp = chord.cross(Vector(0,0,-1))
-                                        # here is a better way to find the perpendicular
-                                        if point[4] == 1:
-                                                # clockwise
-                                                perp = fcvec.rotate2D(chord,-math.pi/2)
-                                        else:
-                                                # anticlockwise
-                                                perp = fcvec.rotate2D(chord,math.pi/2)
-					chord = fcvec.scale(chord,.5)
-					if chord.Length > point[0]: a = 0
-					else: a = math.sqrt(point[0]**2-chord.Length**2)
-					s = point[0] - a
-					perp = fcvec.scale(perp,s/perp.Length)
-					midpoint = lastvec.add(chord.add(perp))
-					seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
-					lastvec = currentvec
-					lastpole = None
-					path.append(seg)
-					point = []
-				elif (command == "close"):
-					if not fcvec.equals(lastvec,firstvec):
-						seg = Part.Line(lastvec,firstvec).toShape()
-						path.append(seg)
-					if path:
-						sh = Part.Wire(path)
-						if self.fill: sh = Part.Face(sh)
-                                                sh = self.applyTrans(sh)
-						obj = self.doc.addObject("Part::Feature",pathname)
-						obj.Shape = sh
-						self.format(obj)
-						path = []
-					point = []
-					command = None
-
-				elif (command=="cubic") and (((smooth==False) and (len(point)==6)) or (smooth==True and (len(point)==4))) :
-					if smooth:
-						if relative:
-							currentvec = lastvec.add(Vector(point[2],-point[3],0))
-							pole2 = lastvec.add(Vector(point[0],-point[1],0))
-						else:
-							currentvec = Vector(point[2],-point[3],0)
-							pole2 = Vector(point[0],-point[1],0)
-                                                if lastpole is not None and lastpole[0]=='cubic':
-                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
-						else:
-							pole1 = lastvec
-					else: #not smooth
-						if relative:
-							currentvec = lastvec.add(Vector(point[4],-point[5],0))
-							pole1 = lastvec.add(Vector(point[0],-point[1],0))
-							pole2 = lastvec.add(Vector(point[2],-point[3],0))
-						else:
-							currentvec = Vector(point[4],-point[5],0)
-							pole1 = Vector(point[0],-point[1],0)
-							pole2 = Vector(point[2],-point[3],0)
-
-					if not fcvec.equals(currentvec,lastvec):
-                                                mainv = currentvec.sub(lastvec)
-                                                pole1v = lastvec.add(pole1)
-                                                pole2v = currentvec.add(pole2)
-                                                print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
-                                                if pole1.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()) and pole2.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()):
-                                                        print "straight segment"
-                                                        seg = Part.Line(lastvec,currentvec).toShape()
+                                                point = []
+                                        elif (len(point)==1) and (command=="vertical"):
+                                                if relative:
+                                                        currentvec = lastvec.add(Vector(0,-point[0],0))
                                                 else:
-                                                        print "cubic bezier segment"
-                                                        b = Part.BezierCurve()
-                                                        b.setPoles([lastvec,pole1,pole2,currentvec])
-                                                        seg = b.toShape()
-						print "connect ",lastvec,currentvec
-						lastvec = currentvec
-						lastpole = ('cubic',pole2)
-						path.append(seg)
-					point = []
-
-				elif (command=="quadratic") and (((smooth==False) and (len(point)==4)) or (smooth==True and (len(point)==2))) :
-					if smooth:
-						if relative:
-							currentvec = lastvec.add(Vector(point[0],-point[1],0))
-						else:
-							currentvec = Vector(point[0],-point[1],0)
-                                                if lastpole is not None and lastpole[0]=='quadratic':
-                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
-						else:
-							pole1 = lastvec
-					else: #not smooth
-						if relative:
-							currentvec = lastvec.add(Vector(point[2],-point[3],0))
-							pole1 = lastvec.add(Vector(point[0],-point[1],0))
-						else:
-							currentvec = Vector(point[2],-point[3],0)
-							pole1 = Vector(point[0],-point[1],0)
-
-					if not fcvec.equals(currentvec,lastvec):
-                                                if pole1.distanceToLine(lastvec,currentvec) < 10**(-1*Draft.precision()):
-                                                        print "straight segment"
-                                                        seg = Part.Line(lastvec,currentvec).toShape()
+                                                        lastx = path[-1].x
+                                                        currentvec = Vector(lastx,-point[0],0)
+                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                lastvec = currentvec
+                                                lastpole = None
+                                                path.append(seg)
+                                                point = []
+                                        elif (len(point)==7) and (command=="arc"):
+                                                #support for large-arc and x-rotation are missing
+                                                rx,ry,xrotation, largeflag, sweepflag = point[0:5]
+                                                if relative:
+                                                        currentvec = lastvec.add(Vector(point[-2],-point[-1],0))
                                                 else:
-                                                        print "quadratic bezier segment"
-                                                        b = Part.BezierCurve()
-                                                        b.setPoles([lastvec,pole1,currentvec])
-                                                        seg = b.toShape()
-						print "connect ",lastvec,currentvec
-						lastvec = currentvec
-						lastpole = ('quadratic',pole1)
-						path.append(seg)
-					point = []
+                                                        currentvec = Vector(point[-2],-point[-1],0)
+                                                chord = currentvec.sub(lastvec)
+                                                # perp = chord.cross(Vector(0,0,-1))
+                                                # here is a better way to find the perpendicular
+                                                if sweepflag == 1:
+                                                        # clockwise
+                                                        perp = fcvec.rotate2D(chord,-math.pi/2)
+                                                else:
+                                                        # anticlockwise
+                                                        perp = fcvec.rotate2D(chord,math.pi/2)
+                                                chord = fcvec.scale(chord,.5)
+                                                if chord.Length > rx: a = 0
+                                                else: a = math.sqrt(rx**2-chord.Length**2)
+                                                s = rx - a
+                                                perp = fcvec.scale(perp,s/perp.Length)
+                                                midpoint = lastvec.add(chord.add(perp))
+                                                seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
+                                                lastvec = currentvec
+                                                lastpole = None
+                                                path.append(seg)
+                                                point = []
+                                        elif (command=="cubic") and (((smooth==False) and (len(point)==6)) or (smooth==True and (len(point)==4))) :
+                                                if smooth:
+                                                        if relative:
+                                                                currentvec = lastvec.add(Vector(point[2],-point[3],0))
+                                                                pole2 = lastvec.add(Vector(point[0],-point[1],0))
+                                                        else:
+                                                                currentvec = Vector(point[2],-point[3],0)
+                                                                pole2 = Vector(point[0],-point[1],0)
+                                                        if lastpole is not None and lastpole[0]=='cubic':
+                                                                pole1 = lastvec.sub(lastpole[1]).add(lastvec)
+                                                        else:
+                                                                pole1 = lastvec
+                                                else: #not smooth
+                                                        if relative:
+                                                                currentvec = lastvec.add(Vector(point[4],-point[5],0))
+                                                                pole1 = lastvec.add(Vector(point[0],-point[1],0))
+                                                                pole2 = lastvec.add(Vector(point[2],-point[3],0))
+                                                        else:
+                                                                currentvec = Vector(point[4],-point[5],0)
+                                                                pole1 = Vector(point[0],-point[1],0)
+                                                                pole2 = Vector(point[2],-point[3],0)
 
-			if path:
-				sh = Part.Wire(path)
-				if self.fill: sh = Part.Face(sh)
+                                                if not fcvec.equals(currentvec,lastvec):
+                                                        mainv = currentvec.sub(lastvec)
+                                                        pole1v = lastvec.add(pole1)
+                                                        pole2v = currentvec.add(pole2)
+                                                        print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
+                                                        if True and \
+                                                        pole1.distanceToLine(lastvec,currentvec) < 20**(-1*Draft.precision()) and \
+                                                        pole2.distanceToLine(lastvec,currentvec) < 20**(-1*Draft.precision()):
+                                                                print "straight segment"
+                                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                        else:
+                                                                print "cubic bezier segment"
+                                                                b = Part.BezierCurve()
+                                                                b.setPoles([lastvec,pole1,pole2,currentvec])
+                                                                seg = b.toShape()
+                                                        print "connect ",lastvec,currentvec
+                                                        lastvec = currentvec
+                                                        lastpole = ('cubic',pole2)
+                                                        path.append(seg)
+                                                point = []
+
+                                        elif (command=="quadratic") and (((smooth==False) and (len(point)==4)) or (smooth==True and (len(point)==2))) :
+                                                if smooth:
+                                                        if relative:
+                                                                currentvec = lastvec.add(Vector(point[0],-point[1],0))
+                                                        else:
+                                                                currentvec = Vector(point[0],-point[1],0)
+                                                        if lastpole is not None and lastpole[0]=='quadratic':
+                                                                pole1 = lastvec.sub(lastpole[1]).add(lastvec)
+                                                        else:
+                                                                pole1 = lastvec
+                                                else: #not smooth
+                                                        if relative:
+                                                                currentvec = lastvec.add(Vector(point[2],-point[3],0))
+                                                                pole1 = lastvec.add(Vector(point[0],-point[1],0))
+                                                        else:
+                                                                currentvec = Vector(point[2],-point[3],0)
+                                                                pole1 = Vector(point[0],-point[1],0)
+
+                                                if not fcvec.equals(currentvec,lastvec):
+                                                        if True and pole1.distanceToLine(lastvec,currentvec) < 20**(-1*Draft.precision()):
+                                                                print "straight segment"
+                                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                        else:
+                                                                print "quadratic bezier segment"
+                                                                b = Part.BezierCurve()
+                                                                b.setPoles([lastvec,pole1,currentvec])
+                                                                seg = b.toShape()
+                                                        print "connect ",lastvec,currentvec
+                                                        lastvec = currentvec
+                                                        lastpole = ('quadratic',pole1)
+                                                        path.append(seg)
+                                                point = []
+
+                                #while pointlist or command:
+                                else:
+
+                                        if (command == "close"):
+                                                if not fcvec.equals(lastvec,firstvec):
+                                                        seg = Part.Line(lastvec,firstvec).toShape()
+                                                        path.append(seg)
+                                                if path: #the path should be closed by now
+                                                        sh = Part.Wire(path)
+                                                        if not sh.isClosed:
+                                                                #Code from wmayer forum p15549 to fix the tolerance problem
+                                                                comp=Part.Compound(path)
+                                                                sh = comp.connectEdgesToWires(False,10**(-1*Draft.precision())).Wires[0] #original tolerance = 0.00001
+                                                        if self.fill: sh = Part.Face(sh)
+                                                        sh = self.applyTrans(sh)
+                                                        obj = self.doc.addObject("Part::Feature",pathname)
+                                                        obj.Shape = sh
+                                                        self.format(obj)
+                                                        path = []
+                                                        if firstvec:
+                                                                lastvec = firstvec #Move relative to last move command not last draw command
+                                                point = []
+                                                command = None
+                        if path:
+                                sh = Part.Wire(path)
+                                if self.fill: sh = Part.Face(sh)
                                 sh = self.applyTrans(sh)
-				obj = self.doc.addObject("Part::Feature",pathname)
-				obj.Shape = sh
-				self.format(obj)
+                                obj = self.doc.addObject("Part::Feature",pathname)
+                                obj.Shape = sh
+                                self.format(obj)
+
 
 		# processing rects
 
 		if name == "rect":
                         if not pathname: pathname = 'Rectangle'
-			p1 = Vector(data['x'],-data['y'],0)
-			p2 = Vector(data['x']+data['width'],-data['y'],0)
-			p3 = Vector(data['x']+data['width'],-data['y']-data['height'],0)
-			p4 = Vector(data['x'],-data['y']-data['height'],0)
-			edges = []
-			edges.append(Part.Line(p1,p2).toShape())
-			edges.append(Part.Line(p2,p3).toShape())
-			edges.append(Part.Line(p3,p4).toShape())
-			edges.append(Part.Line(p4,p1).toShape())
-			sh = Part.Wire(edges)
-			if self.fill: sh = Part.Face(sh)
+                        edges = []
+#                        if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) and \
+#                           ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())): #negative values are invalid
+                        if True: 
+                                p1 = Vector(data['x'],-data['y'],0)
+                                p2 = Vector(data['x']+data['width'],-data['y'],0)
+                                p3 = Vector(data['x']+data['width'],-data['y']-data['height'],0)
+                                p4 = Vector(data['x'],-data['y']-data['height'],0)
+                                edges.append(Part.Line(p1,p2).toShape())
+                                edges.append(Part.Line(p2,p3).toShape())
+                                edges.append(Part.Line(p3,p4).toShape())
+                                edges.append(Part.Line(p4,p1).toShape())
+                        else: #rounded edges
+                                rx = data.get('rx')
+                                ry = data.get('ry') or rx
+                                rx = rx or ry 
+                                if rx > 2 * data['width']:
+                                        rx = data['width'] / 2.0
+                                if ry > 2 * data['height']:
+                                       ry = data['height'] / 2.0
+                                #TBD
+                                # Part.Ellipse(c,rx,ry).toShape() #needs a proxy object
+                        sh = Part.Wire(edges)
+                        if self.fill: sh = Part.Face(sh)
                         sh = self.applyTrans(sh)
-			obj = self.doc.addObject("Part::Feature",pathname)
-			obj.Shape = sh
-			self.format(obj)
+                        obj = self.doc.addObject("Part::Feature",pathname)
+                        obj.Shape = sh
+                        self.format(obj)
 				     
                 # processing lines
 
 		if name == "line":
                         if not pathname: pathname = 'Line'
-			p1 = Vector(float(data['x1'][0]),-float(data['y1'][0]),0)
-			p2 = Vector(float(data['x2'][0]),-float(data['y2'][0]),0)
+			p1 = Vector(data['x1'],-data['y1'],0)
+			p2 = Vector(data['x2'],-data['y2'],0)
 			sh = Part.Line(p1,p2).toShape()
                         sh = self.applyTrans(sh)
 			obj = self.doc.addObject("Part::Feature",pathname)
@@ -703,6 +696,8 @@ class svgHandler(xml.sax.ContentHandler):
                 # processing polylines and polygons
 
 		if name == "polyline" or name == "polygon":
+			'''a simpler implementation would be sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
+			but there would be more difficlult to search for duplicate points beforehand.'''
 			if not pathname: pathname = 'Polyline'
 			points=[float(d) for d in data['points']]
                         print points
@@ -793,9 +788,9 @@ class svgHandler(xml.sax.ContentHandler):
                         if self.transform:
                                 vec = self.translateVec(vec,self.transform)
                                 print "own transform: ",self.transform, vec
-                        for i in range(len(self.grouptransform)):
-                                #vec = self.translateVec(vec,self.grouptransform[-i-1])
-                                vec = self.grouptransform[-i-1].multiply(vec)
+                        for transform in self.grouptransform[::-1]:
+                                #vec = self.translateVec(vec,transform)
+                                vec = transform.multiply(vec)
                         print "applying vector: ",vec
                         obj.Position = vec
 			if gui:
@@ -816,9 +811,9 @@ class svgHandler(xml.sax.ContentHandler):
                         if self.transform:
                                 print "applying object transform: ",self.transform
                                 sh = sh.transformGeometry(self.transform)
-                        for i in range(len(self.grouptransform)):
-                                print "applying group transform: ",self.grouptransform[-i-1]
-                                sh = sh.transformGeometry(self.grouptransform[-i-1])
+                        for transform in self.grouptransform[::-1]:
+                                print "applying group transform: ", transform
+                                sh = sh.transformGeometry(transform)
                         return sh
                 elif Draft.getType(sh) == "Dimension":
                         pts = []
@@ -827,9 +822,9 @@ class svgHandler(xml.sax.ContentHandler):
                                 if self.transform:
                                         print "applying object transform: ",self.transform
                                         cp = self.transform.multiply(cp)
-                                for i in range(len(self.grouptransform)):
-                                        print "applying group transform: ",self.grouptransform[-i-1]
-                                        cp = self.grouptransform[-i-1].multiply(cp)
+                                for transform in self.grouptransform[::-1]:
+                                        print "applying group transform: ",transform
+                                        cp = transform.multiply(cp)
                                 pts.append(cp)
                         sh.Start = pts[0]
                         sh.End = pts[1]
@@ -841,27 +836,47 @@ class svgHandler(xml.sax.ContentHandler):
 
         def getMatrix(self,tr):
                 "returns a FreeCAD matrix from a svg transform attribute"
-                s = ""
-                for l in tr:
-                        s += l
-                        s += " "
-                s=s.replace("("," ")
-                s=s.replace(")"," ")
-                s = s.strip()
-                tr = s.split()
+		transformre=re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)',re.DOTALL)
                 m = FreeCAD.Matrix()
-                for i in range(len(tr)):
-                        if tr[i] == 'translate':
-                                vec = Vector(float(tr[i+1]),-float(tr[i+2]),0)
-                                m.move(vec)
-                        elif tr[i] == 'scale':
-                                vec = Vector(float(tr[i+1]),float(tr[i+2]),0)
-                                m.scale(vec)
-                        #elif tr[i] == 'rotate':
-                        #        m.rotateZ(float(tr[i+1]))
+                for transformation, arguments in transformre.findall(tr):
+			argsplit=[float(arg) for arg in arguments.replace(',',' ').split()]
+                        #m.multiply(FreeCAD.Matrix (1,0,0,0,0,-1))
+                        print '%s:%s %s %d' % (transformation, arguments,argsplit,len(argsplit))
+			if transformation == 'translate':
+				tx = argsplit[0]
+				ty = argsplit[1] if len(argsplit) > 1 else 0.0
+				m.move(Vector(tx,-ty,0))
+			elif transformation == 'scale':
+				sx = argsplit[0]
+				sy = argsplit[1] if len(argsplit) > 1 else sx
+				m.scale(Vector(sx,sy,1))
+			elif transformation == 'rotate':
+				angle = argsplit[0]
+				if len(argsplit) >= 3:
+					cx = argsplit[1]
+					cy = argsplit[2]
+					m.move(Vector(cx,-cy,0))
+                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotaion
+				if len(argsplit) >= 3:
+					m.move(Vector(-cx,cy,0))
+			elif transformation == 'skewX':
+				m=m.multiply(FreeCAD.Matrix(1,-math.tan(math.radians(argsplit[0]))))
+			elif transformation == 'skewY':
+				m=m.multiply(FreeCAD.Matrix(1,0,0,0,-math.tan(math.radians(argsplit[0]))))
+			elif transformation == 'matrix':
+#                            '''transformation matrix:
+#                                   FreeCAD                 SVG
+#                                (+A -C +0 +E)           (A C 0 E)
+#                                (-B +D -0 -F)  = (-Y) * (B D 0 F) *(-Y)
+#                                (+0 -0 +1 +0)           (0 0 1 0)
+#                                (+0 -0 +0 +1)           (0 0 0 1)'''
+				m=m.multiply(FreeCAD.Matrix(argsplit[0],-argsplit[2],0,argsplit[4],-argsplit[1],argsplit[3],0,-argsplit[5]))
+                        else:
+                                print 'SKIPPED %s' % transformation
+                        print "m= ",m
                 print "generating transformation: ",m
                 return m
-			
+
 def decodeName(name):
 	"decodes encoded strings"
 	try:

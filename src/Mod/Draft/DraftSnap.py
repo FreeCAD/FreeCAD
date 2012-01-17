@@ -366,6 +366,9 @@ class Snapper:
                     dv = last.sub(shape.Curve.Center)
                     dv = fcvec.scaleTo(dv,shape.Curve.Radius)
                     np = (shape.Curve.Center).add(dv)
+                elif isinstance(shape.Curve,Part.BSplineCurve):
+                    pr = shape.Curve.parameter(last)
+                    np = shape.Curve.value(pr)
                 else:
                     return snaps
                 snaps.append([np,'perpendicular',np])
