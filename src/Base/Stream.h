@@ -35,6 +35,7 @@
 class QByteArray;
 class QIODevice;
 class QBuffer;
+typedef struct _object PyObject;
 
 namespace Base {
 
@@ -231,6 +232,21 @@ protected:
     static const int pbSize = 4;        // size of putback area
     static const int bufSize = 1024;    // size of the data buffer
     char buffer[bufSize+pbSize];        // data buffer
+};
+
+class BaseExport PyStreambuf : public std::streambuf
+{
+public:
+    PyStreambuf(PyObject* o);
+
+protected:
+    int underflow();
+
+private:
+    static const int pbSize = 4;
+    static const int bufSize = 1024;
+    char buffer[bufSize+pbSize];
+    PyObject* inp;
 };
 
 class BaseExport Streambuf : public std::streambuf

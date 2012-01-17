@@ -120,6 +120,7 @@ public:
     void importIges(const char *FileName);
     void importStep(const char *FileName);
     void importBrep(const char *FileName);
+    void importBrep(std::istream&);
     void exportIges(const char *FileName) const;
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;

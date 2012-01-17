@@ -147,34 +147,40 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 
 PyObject *PropertyPartShape::getPyObject(void)
 {
+    Base::PyObjectBase* prop;
     const TopoDS_Shape& sh = _Shape._Shape;
-    if (sh.IsNull())
-        return new TopoShapePy(new TopoShape(sh));
-
-    TopAbs_ShapeEnum type = sh.ShapeType();
-    switch (type)
-    {
-    case TopAbs_COMPOUND:
-        return new TopoShapeCompoundPy(new TopoShape(sh));
-    case TopAbs_COMPSOLID:
-        return new TopoShapeCompSolidPy(new TopoShape(sh));
-    case TopAbs_SOLID:
-        return new TopoShapeSolidPy(new TopoShape(sh));
-    case TopAbs_SHELL:
-        return new TopoShapeShellPy(new TopoShape(sh));
-    case TopAbs_FACE:
-        return new TopoShapeFacePy(new TopoShape(sh));
-    case TopAbs_WIRE:
-        return new TopoShapeWirePy(new TopoShape(sh));
-    case TopAbs_EDGE:
-        return new TopoShapeEdgePy(new TopoShape(sh));
-    case TopAbs_VERTEX:
-        return new TopoShapeVertexPy(new TopoShape(sh));
-    case TopAbs_SHAPE:
-    default:
-        return new TopoShapePy(new TopoShape(sh));
-        break;
+    if (sh.IsNull()) {
+        prop = new TopoShapePy(new TopoShape(sh));
     }
+    else {
+        TopAbs_ShapeEnum type = sh.ShapeType();
+        switch (type)
+        {
+        case TopAbs_COMPOUND:
+            prop = new TopoShapeCompoundPy(new TopoShape(sh));
+        case TopAbs_COMPSOLID:
+            prop = new TopoShapeCompSolidPy(new TopoShape(sh));
+        case TopAbs_SOLID:
+            prop = new TopoShapeSolidPy(new TopoShape(sh));
+        case TopAbs_SHELL:
+            prop = new TopoShapeShellPy(new TopoShape(sh));
+        case TopAbs_FACE:
+            prop = new TopoShapeFacePy(new TopoShape(sh));
+        case TopAbs_WIRE:
+            prop = new TopoShapeWirePy(new TopoShape(sh));
+        case TopAbs_EDGE:
+            prop = new TopoShapeEdgePy(new TopoShape(sh));
+        case TopAbs_VERTEX:
+            prop = new TopoShapeVertexPy(new TopoShape(sh));
+        case TopAbs_SHAPE:
+        default:
+            prop = new TopoShapePy(new TopoShape(sh));
+            break;
+        }
+    }
+
+    if (prop) prop->setConst();
+    return prop;
 }
 
 void PropertyPartShape::setPyObject(PyObject *value)
