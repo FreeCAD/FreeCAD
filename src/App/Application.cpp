@@ -308,9 +308,6 @@ bool Application::closeDocument(const char* name)
     if (pos == DocMap.end()) // no such document
         return false;
 
-    if (!pos->second->isClosable())
-        return false;
-
     // Trigger observers before removing the document from the internal map.
     // Some observers might rely on that this document is still there.
     signalDeleteDocument(*pos->second);
