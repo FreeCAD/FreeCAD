@@ -543,6 +543,10 @@ def makeCopy(obj):
         import Arch
         Arch._Wall(newobj)
         Arch._ViewProviderWall(newobj.ViewObject)
+    elif getType(obj) == "Window":
+        import Arch
+        Arch._Window(newobj)
+        Arch._ViewProviderWindow(newobj.ViewObject)
     elif obj.isDerivedFrom("Part::Feature"):
         newobj.Shape = obj.Shape
     else:
