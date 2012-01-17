@@ -36,15 +36,34 @@ def makeWindow(baseobj=None,name="Window"):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Window(obj)
     _ViewProviderWindow(obj.ViewObject)
-    if baseobj: obj.Base = baseobj
-    if obj.Base: obj.Base.ViewObject.hide()
-    #p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    #c = p.GetUnsigned("WindowColor")
-    #r = float((c>>24)&0xFF)/255.0
-    #g = float((c>>16)&0xFF)/255.0
-    #b = float((c>>8)&0xFF)/255.0
-    #obj.ViewObject.ShapeColor = (r,g,b,1.0)
+    if baseobj:
+        obj.Base = baseobj
+        obj.WindowParts = makeDefaultWindowPart(baseobj)
+    if obj.Base:
+        obj.Base.ViewObject.DisplayMode = "Wireframe"
+        obj.Base.ViewObject.hide()
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    c = p.GetUnsigned("WindowColor")
+    r = float((c>>24)&0xFF)/255.0
+    g = float((c>>16)&0xFF)/255.0
+    b = float((c>>8)&0xFF)/255.0
+    obj.ViewObject.ShapeColor = (r,g,b,1.0)
     return obj
+
+def makeDefaultWindowPart(obj):
+    "returns a list of 5 strings defining a default window part from a 2D object"
+    part = []
+    if obj.isDerivedFrom("Part::Feature"):
+        if obj.Shape.Wires:
+            i = 0
+            ws = ''
+            for w in obj.Shape.Wires:
+                if w.isClosed():
+                    if ws: ws += ","
+                    ws += "Wire" + str(i)
+                    i += 1
+            part = ["Default","Panel",ws,"1","0"]
+    return part
 
 class _CommandWindow:
     "the Arch Window command definition"
@@ -69,18 +88,15 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyFloat","Thickness","Base",
-                        "the thickness to be associated with the wire of the Base object")
         obj.addProperty("App::PropertyStringList","WindowParts","Base",
                         "the components of this window")
         self.Type = "Window"
-        obj.Thickness = .1
         
     def execute(self,obj):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
-        if prop in ["Base","Thickness"]:
+        if prop in ["Base","WindowParts"]:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
@@ -89,21 +105,40 @@ class _Window(ArchComponent.Component):
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                if obj.Base.Shape.Wires:
-                    basewire = obj.Base.Shape.Wires[0]
-                    if obj.Thickness:
-                        offwire = basewire.makeOffset(-obj.Thickness)
-                        f1 = Part.Face(basewire)
-                        f2 = Part.Face(offwire)
-                        bf = f1.cut(f2)
-                        sh = bf.extrude(Vector(0,0,obj.Thickness))
-                        obj.Shape = sh
-                        f1.translate(Vector(0,0,-.5))
-                        svol = f1.extrude(Vector(0,0,1))
-                        self.Subvolume = svol
+                if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
+                    shapes = []
+                    for i in range(len(obj.WindowParts)/5):
+                        wires = []
+                        wstr = obj.WindowParts[(i*5)+2].split(',')
+                        for s in wstr:
+                            j = int(s[4:])
+                            if len(obj.Base.Shape.Wires) >= j:
+                                wires.append(obj.Base.Shape.Wires[j])
+                        if wires:
+                            max_length = 0
+                            for w in wires:
+                                if w.BoundBox.DiagonalLength > max_length:
+                                    max_length = w.BoundBox.DiagonalLength
+                                    ext = w
+                            wires.remove(ext)
+                            for w in wires:
+                                w.reverse()
+                            wires.insert(0, ext)
+                            shape = Part.Face(wires)
+                            norm = shape.normalAt(0,0)
+                            thk = float(obj.WindowParts[(i*5)+3])
+                            if thk:
+                                exv = fcvec.scaleTo(norm,thk)
+                                shape = shape.extrude(exv)
+                            if obj.WindowParts[(i*5)+4]:
+                                zof = float(obj.WindowParts[(i*5)+4])
+                                if zof:
+                                    zov = fcvec.scaleTo(norm,zof)
+                                    shape.translate(zov)
+                            shapes.append(shape)
+                    obj.Shape = Part.makeCompound(shapes)
         if not fcgeo.isNull(pl):
             obj.Placement = pl
-            self.Subvolume.Placement = pl
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
@@ -117,11 +152,20 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def setEdit(self,vobj,mode):
         taskd = _ArchWindowTaskPanel()
         taskd.obj = self.Object
+        self.sets = [vobj.DisplayMode,vobj.Transparency]
+        vobj.DisplayMode = "Shaded"
+        vobj.Transparency = 80
+        if self.Object.Base:
+            self.Object.Base.ViewObject.show()
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
     
     def unsetEdit(self,vobj,mode):
+        vobj.DisplayMode = self.sets[0]
+        vobj.Transparency = self.sets[1]
+        if self.Object.Base:
+            self.Object.Base.ViewObject.hide()
         FreeCADGui.Control.closeDialog()
         return
 
@@ -147,6 +191,7 @@ class _ArchWindowTaskPanel:
         self.wiretree = QtGui.QTreeWidget(self.form)
         self.grid.addWidget(self.wiretree, 2, 0, 1, 3)
         self.wiretree.setColumnCount(1)
+        self.wiretree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection) 
 
         self.comptree = QtGui.QTreeWidget(self.form)
         self.grid.addWidget(self.comptree, 2, 4, 1, 3)
@@ -172,11 +217,6 @@ class _ArchWindowTaskPanel:
         self.grid.addWidget(self.delButton, 3, 6, 1, 1)
         self.delButton.setMaximumSize(QtCore.QSize(70,40))
         self.delButton.setEnabled(False)
-
-        self.okButton = QtGui.QPushButton(self.form)
-        self.okButton.setObjectName("okButton")
-        self.okButton.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
-        self.grid.addWidget(self.okButton, 4, 0, 1, 7)
 
         # add new
 
@@ -215,6 +255,7 @@ class _ArchWindowTaskPanel:
         self.field1.setVisible(False)
         self.field2.setVisible(False)
         self.field3.setVisible(False)
+        self.field3.setReadOnly(True)
         self.field4.setVisible(False)
         self.field5.setVisible(False)
         self.createButton.setVisible(False)
@@ -222,10 +263,12 @@ class _ArchWindowTaskPanel:
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editElement)
-        QtCore.QObject.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.finish)
         QtCore.QObject.connect(self.createButton, QtCore.SIGNAL("clicked()"), self.create)
         QtCore.QObject.connect(self.comptree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
+        QtCore.QObject.connect(self.wiretree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.select)
         self.update()
+
+        FreeCADGui.Selection.clearSelection()
 
     def isAllowedAlterSelection(self):
         return True
@@ -234,11 +277,27 @@ class _ArchWindowTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return 0
+        return int(QtGui.QDialogButtonBox.Ok)
 
     def check(self,wid,col):
         self.editButton.setEnabled(True)
         self.delButton.setEnabled(True)
+        
+    def select(self,wid,col):
+        FreeCADGui.Selection.clearSelection()
+        ws = ''
+        for it in self.wiretree.selectedItems():
+            if ws: ws += ","
+            ws += str(it.text(0))
+            w = int(str(it.text(0)[4:]))
+            if self.obj:
+                if self.obj.Base:
+                    edges = self.obj.Base.Shape.Wires[w].Edges
+                    for e in edges:
+                        for i in range(len(self.obj.Base.Shape.Edges)):
+                            if e.hashCode() == self.obj.Base.Shape.Edges[i].hashCode():
+                                FreeCADGui.Selection.addSelection(self.obj.Base,"Edge"+str(i+1))
+        self.field3.setText(ws)
         
     def getIcon(self,obj):
         if hasattr(obj.ViewObject,"Proxy"):
@@ -282,12 +341,12 @@ class _ArchWindowTaskPanel:
         self.field5.setText('')
         self.newtitle.setVisible(True)
         self.new1.setVisible(True)
-        self.new2.setVisible(True)
+        #self.new2.setVisible(True)
         self.new3.setVisible(True)
         self.new4.setVisible(True)
         self.new5.setVisible(True)
         self.field1.setVisible(True)
-        self.field2.setVisible(True)
+        #self.field2.setVisible(True)
         self.field3.setVisible(True)
         self.field4.setVisible(True)
         self.field5.setVisible(True)
@@ -297,8 +356,7 @@ class _ArchWindowTaskPanel:
         self.delButton.setEnabled(False)
 
     def removeElement(self):
-        it = self.comptree.currentItem()
-        if it:
+        for it in self.comptree.selectedItems():
             comp = str(it.text(0))
             if self.obj:
                 p = self.obj.WindowParts
@@ -312,8 +370,7 @@ class _ArchWindowTaskPanel:
                     self.delButton.setEnabled(False)
 
     def editElement(self):
-        it = self.comptree.currentItem()
-        if it:
+        for it in self.comptree.selectedItems():
             self.addElement()
             comp = str(it.text(0))
             if self.obj:
@@ -332,7 +389,8 @@ class _ArchWindowTaskPanel:
         for i in range(5):
             t = str(getattr(self,"field"+str(i+1)).text())
             if t == "":
-                ok = False
+                if not(i in [1,5]):
+                    ok = False
             else:
                 if i > 2:
                     try:
@@ -344,9 +402,19 @@ class _ArchWindowTaskPanel:
         if ok:
             if self.obj:
                 parts = self.obj.WindowParts
-                parts.extend(ar)
+                if ar[0] in parts:
+                    b = parts.index(ar[0])
+                    for i in range(5):
+                        parts[b+i] = ar[i]
+                else:
+                    parts.extend(ar)
                 self.obj.WindowParts = parts
                 self.update()
+        else:
+            FreeCAD.Console.PrintWarning(str(
+                    QtGui.QApplication.translate(
+                        "Arch", "Unable to create component",
+                        None, QtGui.QApplication.UnicodeUTF8)))
         
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)
@@ -362,17 +430,17 @@ class _ArchWindowTaskPanel:
         self.createButton.setVisible(False)
         self.addButton.setEnabled(True)
     
-    def finish(self):
+    def accept(self):
         FreeCAD.ActiveDocument.recompute()
         if self.obj:
             self.obj.ViewObject.finishEditing()
+        return True
                     
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
         self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit", None, QtGui.QApplication.UnicodeUTF8))
-        self.okButton.setText(QtGui.QApplication.translate("Arch", "Done", None, QtGui.QApplication.UnicodeUTF8))
         self.createButton.setText(QtGui.QApplication.translate("Arch", "Create/update component", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Base 2D object", None, QtGui.QApplication.UnicodeUTF8))
         self.wiretree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Wires", None, QtGui.QApplication.UnicodeUTF8)])
