@@ -40,6 +40,7 @@
 #include "Stream.h"
 #include "Swap.h"
 #include "FileInfo.h"
+#include <CXX/Objects.hxx>
 
 using namespace Base;
 
@@ -531,6 +532,58 @@ IODeviceIStreambuf::seekpos(std::streambuf::pos_type pos,
                             std::ios_base::openmode /*mode*/)
 {
     return seekoff(pos, std::ios_base::beg);
+}
+
+// ---------------------------------------------------------
+
+PyStreambuf::PyStreambuf(PyObject* o) : inp(o)
+{
+    setg (buffer+pbSize,
+          buffer+pbSize,
+          buffer+pbSize);
+}
+
+int PyStreambuf::underflow()
+{
+    if (gptr() < egptr()) {
+        return *gptr();
+    }
+
+    int numPutback;
+    numPutback = gptr() - eback();
+    if (numPutback > pbSize) {
+        numPutback = pbSize;
+    }
+
+    memcpy (buffer+(pbSize-numPutback), gptr()-numPutback, numPutback);
+
+    int num=0;
+    for (int i=0; i<bufSize; i++) {
+        char c;
+        Py::Tuple arg(1);
+        arg.setItem(0, Py::Int(1));
+        Py::Callable meth(Py::Object(inp).getAttr("read"));
+        try {
+            Py::Char res(meth.apply(arg));
+            c = static_cast<std::string>(res)[0];
+            num++;
+            buffer[pbSize+i] = c;
+            if (c == '\n')
+                break;
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+            if (num == 0)
+                return EOF;
+            break;
+        }
+    }
+
+    setg (buffer+(pbSize-numPutback),
+          buffer+pbSize,
+          buffer+pbSize+num);
+
+    return *gptr();
 }
 
 // ---------------------------------------------------------

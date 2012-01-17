@@ -311,6 +311,30 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::importBrep(PyObject *args)
+{
+    PyObject* input;
+    if (!PyArg_ParseTuple(args, "O", &input))
+    //char* input;
+    //if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read brep
+        Base::PyStreambuf buf(input);
+        std::istream str(0);
+        str.rdbuf(&buf);
+        //std::stringstream str(input);
+        getTopoShapePtr()->importBrep(str);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+
+    Py_Return;
+}
+
 PyObject*  TopoShapePy::exportStl(PyObject *args)
 {
     char* filename;
