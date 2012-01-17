@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ifcReader, FreeCAD, Arch, Draft, os, sys, time
+import ifcReader, FreeCAD, Arch, Draft, os, sys, time, tempfile
 from draftlibs import fcvec
 
 __title__="FreeCAD IFC importer"
@@ -29,6 +29,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 DEBUG = True
+pyopen = open # because we'll redefine open below
 
 def open(filename):
     "called when freecad opens a file"
@@ -71,52 +72,71 @@ def getSchema():
 
 def getIfcOpenShell():
     "locates and imports ifcopenshell"
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    p = p.GetString("ifcopenshell")
-    if p:
-        try:
-            sys.path.append(os.path.dirname(p))
-            global IfcOpenShell
-            IfcOpenShell = None
-            import IfcImport as IfcOpenShell
-        except:
-            print "Couldn't import IfcOpenShell"
+    try:
+        global IfcImport
+        import IfcImport
+    except:
+        print "Couldn't import IfcOpenShell"
+        return False
+    else:
+        return True
 
 def readOpenShell(filename):
-    import Mesh
-    getIfcOpenShell()
-    if IfcOpenShell:
-        if IfcOpenShell.Init(filename):
+    "Parses an IFC file with IfcOpenShell"
+    
+    if getIfcOpenShell():
+        USESHAPES = False
+        if hasattr(IfcImport,"USE_BREP_DATA"):
+            IfcImport.Settings(IfcImport.USE_BREP_DATA,True)
+            USESHAPES = True
+        if IfcImport.Init(filename):
             while True:
-                obj = IfcOpenShell.Get()
-                print "parsing ",obj.guid,": ",obj.name," of type ",obj.type
+
+                obj = IfcImport.Get()
+                if DEBUG: print "parsing ",obj.guid,": ",obj.name," of type ",obj.type
                 meshdata = []
                 n = obj.name
                 if not n: n = "Unnamed"
-                f = obj.mesh.faces
-                v = obj.mesh.verts
+                
+                if USESHAPES:
+
+                    # treat as Parts
+                    import Part
+                    tf = tempfile.mkstemp(suffix=".brp")[1]
+                    of = pyopen(tf,"wb")
+                    of.write(obj.mesh.brep_data)
+                    of.close()
+                    sh = Part.read(tf)
+                    nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
+                    nobj.Shape = sh
+                    os.remove(tf)
+                    
+                else:
+
+                    # treat as meshes
+                    import Mesh
+                    f = obj.mesh.faces
+                    v = obj.mesh.verts
+                    for i in range(0, len(f), 3):
+                        face = []
+                        for j in range(3):
+                            vi = f[i+j]*3
+                            face.append([v[vi],v[vi+1],v[vi+2]])
+                        meshdata.append(face)
+                    newmesh = Mesh.Mesh(meshdata)
+                    nobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
+                    nobj.Mesh = newmesh
+
+                # apply transformation matrix
                 m = obj.matrix
-                print "verts: ",len(v)," faces: ",len(f)
                 mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
                                      m[1], m[4], m[7], m[10],
                                      m[2], m[5], m[8], m[11],
                                      0, 0, 0, 1)
-                for i in range(0, len(f), 3):
-                    print "face ",f[i],f[i+1],f[i+2]
-                    face = []
-                    print "i:",i
-                    for j in range(3):
-                        vi = f[i+j]*3
-                        print "vi:",vi
-                        face.append([v[vi],v[vi+1],v[vi+2]])
-                    meshdata.append(face)
-                newmesh = Mesh.Mesh(meshdata)
-                mobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
-                mobj.Mesh = newmesh
-                mobj.Placement = FreeCAD.Placement(mat)
-                if not IfcOpenShell.Next():
+                nobj.Placement = FreeCAD.Placement(mat)
+                if not IfcImport.Next():
                     break
-    IfcOpenShell.CleanUp()
+    IfcImport.CleanUp()
     return None
     
 def read(filename):
