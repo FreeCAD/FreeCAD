@@ -1,0 +1,55 @@
+<GCS_AS>
+  <!-- This example constraints 2 bodys to each other by one mate constraint (1 rot and 1 trans constraint)
+	Note that all values left the same as in the first examples but many are not used-->
+  <points>
+    <point id="1" x="1" y="0" z="0"></point>
+    <point id="2" x="2" y="1" z="1"></point>
+    <point id="3" x="3" y="2" z="2"></point>
+    <point id="4" x="7" y="6" z="7"></point>
+    <point id="5" x="8" y="7" z="8"></point>
+    <point id="6" x="9" y="8" z="9"></point>
+    <point id="7" x="3" y="-1" z="7"></point>
+    <point id="8" x="4" y="-2" z="8"></point>
+    <point id="9" x="5" y="-3" z="9"></point>
+  </points>
+  <normals>
+    <!-- norm 1 is perpendicular to norm 2 and 3 perpendicular to both-->
+    <normal id="1" x="1" y="5" z="2"></normal>
+    <normal id="2" x="3" y="1" z="-4"></normal>
+    <normal id="3" x="-22" y="10" z="-14"></normal>
+    <!-- norm 4 is perpendicular to norm 5 and 6 perpendicular to both -->
+    <normal id="4" x="4" y="-2" z="3"></normal>
+    <normal id="5" x="-5" y="-1" z="6"></normal>
+    <normal id="6" x="-9" y="-39" z="-14"></normal>
+    <!-- norm 7 is perpendicular to norm 8 and 9 perpendicular to both -->
+    <normal id="7" x="-3" y="3" z="0"></normal>
+    <normal id="8" x="3" y="3" z="-6"></normal>
+    <normal id="9" x="-18" y="-18" z="-18"></normal>
+  </normals>
+  <quaternions>
+    <quaternion id="1" a="2" b="-3" c="4" d="1"></quaternion>
+    <quaternion id="2" a="0" b="2" c="0" d="1"></quaternion>
+    <quaternion id="3" a="1" b="2" c="3" d="2"></quaternion>
+  </quaternions>
+  <displacements>
+    <displacement id="1" x="12" y="1" z="3"></displacement>
+    <displacement id="2" x="4" y="1" z="-2"></displacement>
+    <displacement id="3" x="-2" y="7" z="5"></displacement>
+  </displacements>
+  <solids>
+    <solid id="1" point="1" normal="1" displacement="1" quaternion="1"></solid>
+    <solid id="2" point="2" normal="2" displacement="1" quaternion="1"></solid>
+    <solid id="3" point="3" normal="3" displacement="1" quaternion="1"></solid>
+    <solid id="4" point="4" normal="4" displacement="2" quaternion="2"></solid>
+    <solid id="5" point="5" normal="5" displacement="2" quaternion="2"></solid>
+    <solid id="6" point="6" normal="6" displacement="2" quaternion="2"></solid>
+    <solid id="7" point="7" normal="7" displacement="3" quaternion="3"></solid>
+    <solid id="8" point="8" normal="8" displacement="3" quaternion="3"></solid>
+    <solid id="9" point="9" normal="9" displacement="3" quaternion="3"></solid>
+  </solids>
+  <constraints>
+    <constraint id="1" kind="Parallel_AS" solid1="1" solid2="4" type="0"></constraint>
+    <constraint id="2" kind="Distance_AS" solid1="1" solid2="4" distance="0"></constraint>
+  </constraints>
+</GCS_AS>
+ 
