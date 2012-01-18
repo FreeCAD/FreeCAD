@@ -68,6 +68,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
+#include <Gui/MainWindow.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
@@ -176,9 +177,9 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
 
         if (aShapeTool->IsSimpleShape(label) && (isRef || aShapeTool->IsFree(label))) {
             if (isRef)
-                createShape( label, loc, defaultname );
+                createShape(label, loc, part_name);
             else
-                createShape( label, part_loc, part_name );
+                createShape(label, part_loc, part_name);
         }
         else {
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
@@ -691,10 +692,15 @@ static PyObject * exporter(PyObject *self, PyObject *args)
 #include <XCAFDoc_LayerTool.hxx>
 #include <XCAFDoc_ShapeMapTool.hxx>
 #include <QApplication>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QPointer>
 #include <QStyle>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QTextStream>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 class OCAFBrowser
 {
@@ -703,8 +709,6 @@ public:
         : pDoc(h)
     {
         myGroupIcon = QApplication::style()->standardIcon(QStyle::SP_DirIcon);
-        myTree = new QTreeWidget();
-        myTree->setHeaderLabel(QString::fromAscii("OCAF Browser"));
 
         TDataStd::IDList(myList);
         myList.Append(TDataStd_TreeNode::GetDefaultTreeID());
@@ -720,7 +724,7 @@ public:
         myList.Append(XCAFDoc_Location::GetID());
     }
 
-    void load();
+    void load(QTreeWidget*);
 
 private:
     void load(const TDF_Label& label, QTreeWidgetItem* item, const QString&);
@@ -735,22 +739,20 @@ private:
 
 private:
     QIcon myGroupIcon;
-    QTreeWidget* myTree;
     TDF_IDList myList;
     Handle_TDocStd_Document pDoc;
 };
 
-void OCAFBrowser::load()
+void OCAFBrowser::load(QTreeWidget* theTree)
 {
-    myTree->clear();
+    theTree->clear();
 
     QTreeWidgetItem* root = new QTreeWidgetItem();
     root->setText(0, QLatin1String("0"));
     root->setIcon(0, myGroupIcon);
-    myTree->addTopLevelItem(root);
+    theTree->addTopLevelItem(root);
 
     load(pDoc->GetData()->Root(), root, QString::fromAscii("0"));
-    myTree->show();
 }
 
 void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QString& s)
@@ -907,8 +909,30 @@ static PyObject * ocaf(PyObject *self, PyObject *args)
             return 0;
         }
 
+        static QPointer<QDialog> dlg = 0;
+        if (!dlg) {
+            dlg = new QDialog(Gui::getMainWindow());
+            QTreeWidget* tree = new QTreeWidget();
+            tree->setHeaderLabel(QString::fromAscii("OCAF Browser"));
+
+            QVBoxLayout *layout = new QVBoxLayout;
+            layout->addWidget(tree);
+            dlg->setLayout(layout);
+
+            QDialogButtonBox* btn = new QDialogButtonBox(dlg);
+            btn->setStandardButtons(QDialogButtonBox::Close);
+            QObject::connect(btn, SIGNAL(rejected()), dlg, SLOT(reject()));
+            QHBoxLayout *boxlayout = new QHBoxLayout;
+            boxlayout->addWidget(btn);
+            layout->addLayout(boxlayout);
+        }
+
+        dlg->setWindowTitle(QString::fromUtf8(file.fileName().c_str()));
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
+        dlg->show();
+
         OCAFBrowser browse(hDoc);
-        browse.load();
+        browse.load(dlg->findChild<QTreeWidget*>());
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
