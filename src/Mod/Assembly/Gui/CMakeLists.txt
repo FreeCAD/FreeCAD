@@ -31,6 +31,10 @@ qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
 SET(AssemblyGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
+    ViewProviderPart.cpp
+    ViewProviderPart.h
+    ViewProviderAssembly.cpp
+    ViewProviderAssembly.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${AssemblyGuiViewProvider_SRCS})
 

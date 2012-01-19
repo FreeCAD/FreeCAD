@@ -26,23 +26,23 @@
 #ifndef _PreComp_
 #endif
 
-#include "ViewProvider.h"
-#include <Gui/Command.h>
+#include "ViewProviderPart.h"
+//#include <Gui/Command.h>
 //#include <Gui/Document.h>
 
 using namespace AssemblyGui;
 
-PROPERTY_SOURCE(AssemblyGui::ViewProviderItem,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderItemPart,AssemblyGui::ViewProviderItem)
 
-ViewProviderItem::ViewProvider()
+ViewProviderItemPart::ViewProviderItemPart()
 {
 }
 
-ViewProviderItem::~ViewProvider()
+ViewProviderItemPart::~ViewProviderItemPart()
 {
 }
 
-bool ViewProviderItem::doubleClicked(void)
+bool ViewProviderItemPart::doubleClicked(void)
 {
     return true;
 }
