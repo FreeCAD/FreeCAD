@@ -63,7 +63,7 @@ class TestWorkbench ( Workbench ):
 		self.appendToolbar("TestTools",list)
 
 		menu = ["Test &Commands","TestToolsGui"]
-		list = ["Std_TestQM","Test_Test","Test_TestAll","Test_TestDoc","Test_TestBase"]
+		list = ["Std_TestQM","Std_TestReloadQM","Test_Test","Test_TestAll","Test_TestDoc","Test_TestBase"]
 		self.appendCommandbar("TestToolsGui",list)
 		self.appendMenu(menu,list)
 
