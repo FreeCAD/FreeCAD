@@ -30,6 +30,11 @@
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
+
+#include "ViewProvider.h"
+#include "ViewProviderPart.h"
+#include "ViewProviderAssembly.h"
+
 //#include "resources/qrc_Assembly.cpp"
 
 // use a different name to CreateCommand()
@@ -61,6 +66,10 @@ void AssemblyGuiExport initAssemblyGui()
     // instanciating the commands
     CreateAssemblyCommands();
     AssemblyGui::Workbench::init();
+
+    AssemblyGui::ViewProviderItem        ::init();
+    AssemblyGui::ViewProviderItemPart    ::init();
+    AssemblyGui::ViewProviderItemAssembly::init();
 
      // add resources and reloads the translators
     loadAssemblyResource();

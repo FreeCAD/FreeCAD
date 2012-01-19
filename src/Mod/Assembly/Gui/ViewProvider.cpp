@@ -32,17 +32,17 @@
 
 using namespace AssemblyGui;
 
-PROPERTY_SOURCE(AssemblyGui::ViewProvider,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderItem,PartGui::ViewProviderPart)
 
-ViewProvider::ViewProvider()
+ViewProviderItem::ViewProviderItem()
 {
 }
 
-ViewProvider::~ViewProvider()
+ViewProviderItem::~ViewProviderItem()
 {
 }
 
-bool ViewProvider::doubleClicked(void)
+bool ViewProviderItem::doubleClicked(void)
 {
     return true;
 }
