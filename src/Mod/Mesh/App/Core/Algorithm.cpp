@@ -626,23 +626,23 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
     unsigned long refPoint0 = *(boundary.begin());
     unsigned long refPoint1 = *(boundary.begin()+1);
     if (pP2FStructure) {
-        const std::set<unsigned long>& ring = (*pP2FStructure)[refPoint0];
-        bool found = false;
-        for (std::set<unsigned long>::const_iterator it = ring.begin(); it != ring.end() && !found; ++it) {
-            for (int i=0; i<3; i++) {
-                if (pP2FStructure->getFacet(*it)->_aulPoints[i] == refPoint1) {
-                    rFace = *pP2FStructure->getFacet(*it);
-                    rTriangle = _rclMesh.GetFacet(rFace);
-                    found = true;
-                    break;
-                }
-            }
-        }
-    } else {
+        const std::set<unsigned long>& ring1 = (*pP2FStructure)[refPoint0];
+        const std::set<unsigned long>& ring2 = (*pP2FStructure)[refPoint1];
+        std::vector<unsigned long> f_int;
+        std::set_intersection(ring1.begin(), ring1.end(), ring2.begin(), ring2.end(),
+            std::back_insert_iterator<std::vector<unsigned long> >(f_int));
+        if (f_int.size() != 1)
+            return false; // error, this must be an open edge!
+
+        rFace = _rclMesh._aclFacetArray[f_int.front()];
+        rTriangle = _rclMesh.GetFacet(rFace);
+    }
+    else {
         bool ready = false;
         for (MeshFacetArray::_TConstIterator it = _rclMesh._aclFacetArray.begin(); it != _rclMesh._aclFacetArray.end(); ++it) {
             for (int i=0; i<3; i++) {
-                if ((it->_aulPoints[i] == refPoint0) && (it->_aulPoints[(i+1)%3] == refPoint1)) {
+                if ((it->_aulPoints[i] == refPoint0) && (it->_aulPoints[(i+1)%3] == refPoint1) ||
+                    (it->_aulPoints[i] == refPoint1) && (it->_aulPoints[(i+1)%3] == refPoint0)) {
                     rFace = *it;
                     rTriangle = _rclMesh.GetFacet(*it);
                     ready = true;
@@ -663,7 +663,9 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
     }
 
     // remove the last added point if it is duplicated
+    std::vector<unsigned long> bounds = boundary;
     if (boundary.front() == boundary.back()) {
+        bounds.pop_back();
         polygon.pop_back();
         rPoints.pop_back();
     }
@@ -672,6 +674,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
     // Afterwards we can compare the normals of the created triangles with the z-direction of our local coordinate system.
     // If the scalar product is positive it was a hole, otherwise not.
     cTria.SetPolygon(polygon);
+    cTria.SetIndices(bounds);
 
     std::vector<Base::Vector3f> surf_pts = cTria.GetPolygon();
     if (pP2FStructure && level > 0) {
@@ -685,7 +688,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
     if (cTria.TriangulatePolygon()) {
         // if we have enough points then we fit a surface through the points and project
         // the added points onto this surface
-        cTria.ProjectOntoSurface(surf_pts);
+        cTria.PostProcessing(surf_pts);
         // get the facets and add the additional points to the array
         rFaces.insert(rFaces.end(), cTria.GetFacets().begin(), cTria.GetFacets().end());
         std::vector<Base::Vector3f> newVertices = cTria.AddedPoints();
@@ -693,7 +696,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
             rPoints.push_back((*pt));
         }
 
-        // Unfortunately, the CDT algorithm does not care about the orientation of the polygon so we cannot rely on the normal
+        // Unfortunately, some algorithms do not care about the orientation of the polygon so we cannot rely on the normal
         // criterion to decide whether it's a hole or not.
         //
         std::vector<MeshFacet> faces = cTria.GetFacets();
@@ -701,11 +704,13 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         // Special case handling for a hole with three edges: the resulting facet might be coincident with the 
         // reference facet
         if (faces.size()==1){
-            MeshFacet first;
-            first._aulPoints[0] = boundary[faces.front()._aulPoints[0]];
-            first._aulPoints[1] = boundary[faces.front()._aulPoints[1]];
-            first._aulPoints[2] = boundary[faces.front()._aulPoints[2]];
-            if ( first.IsEqual(rFace) ) {
+            MeshFacet first = faces.front();
+            if (cTria.NeedsReindexing()) {
+                first._aulPoints[0] = boundary[first._aulPoints[0]];
+                first._aulPoints[1] = boundary[first._aulPoints[1]];
+                first._aulPoints[2] = boundary[first._aulPoints[2]];
+            }
+            if (first.IsEqual(rFace)) {
                 rFaces.clear();
                 rPoints.clear();
                 cTria.Discard();
@@ -717,9 +722,14 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         MeshFacet facet;
         unsigned short ref_side = rFace.Side(refPoint0, refPoint1);
         unsigned short tri_side = USHRT_MAX;
+        if (cTria.NeedsReindexing()) {
+            // the referenced indices of the polyline
+            refPoint0 = 0;
+            refPoint1 = 1;
+        }
         if (ref_side < USHRT_MAX) {
             for (std::vector<MeshFacet>::iterator it = faces.begin(); it != faces.end(); ++it) {
-                tri_side = it->Side(0, 1);
+                tri_side = it->Side(refPoint0, refPoint1);
                 if (tri_side < USHRT_MAX) {
                     facet = *it;
                     break;
@@ -737,10 +747,9 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
             return false;
         }
 
+#if 1
         MeshGeomFacet triangle;
-        triangle._aclPoints[0] = rPoints[facet._aulPoints[0]];
-        triangle._aclPoints[1] = rPoints[facet._aulPoints[1]];
-        triangle._aclPoints[2] = rPoints[facet._aulPoints[2]];
+        triangle = cTria.GetTriangle(rPoints, facet);
 
         // Now we have two adjacent triangles which we check for overlaps.
         // Therefore we build a separation plane that must separate the two diametrically opposed points.
@@ -763,6 +772,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
             for (MeshFacetArray::_TIterator it = rFaces.begin(); it != rFaces.end(); ++it)
                 it->FlipNormal();
         }
+#endif
 
         return true;
     }
@@ -1764,6 +1774,7 @@ void MeshRefPointToFacets::SearchNeighbours(MeshFacetArray::_TConstIterator f_it
     rclNb.push_back(f_it);
     f_it->SetFlag(MeshFacet::VISIT);
 
+    MeshPointArray::_TConstIterator p_beg = _rclMesh.GetPoints().begin();
     MeshFacetArray::_TConstIterator f_beg = _rclMesh.GetFacets().begin();
 
     for (int i = 0; i < 3; i++) {

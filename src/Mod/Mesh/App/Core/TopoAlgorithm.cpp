@@ -1237,55 +1237,20 @@ void MeshTopoAlgorithm::FillupHoles(unsigned long length, int level,
                                     std::list<std::vector<unsigned long> >& aFailed)
 {
     // get the mesh boundaries as an array of point indices
-    std::list<std::vector<unsigned long> > aBorders;
+    std::list<std::vector<unsigned long> > aBorders, aFillBorders;
     MeshAlgorithm cAlgo(_rclMesh);
     cAlgo.GetMeshBorders(aBorders);
 
     // split boundary loops if needed
     cAlgo.SplitBoundaryLoops(aBorders);
 
-    // get the facets to a point
-    MeshRefPointToFacets cPt2Fac(_rclMesh);
-
-    MeshFacetArray newFacets;
-    MeshPointArray newPoints;
-    unsigned long numberOfOldPoints = _rclMesh._aclPointArray.size();
-    for ( std::list<std::vector<unsigned long> >::iterator it = aBorders.begin(); it != aBorders.end(); ++it ) {
-        if ( it->size()-1 > length )
-            continue; // boundary with too many edges
-        MeshFacetArray cFacets;
-        MeshPointArray cPoints;
-        if (cAlgo.FillupHole(*it, cTria, cFacets, cPoints, level, &cPt2Fac)) {
-            if (it->front() == it->back())
-                it->pop_back();
-            // the triangulation may produce additional points which we must take into account when appending to the mesh
-            unsigned long countBoundaryPoints = it->size();
-            unsigned long countDifference = cPoints.size() - countBoundaryPoints;
-            if (countDifference > 0) {
-                MeshPointArray::_TIterator pt = cPoints.begin() + countBoundaryPoints;
-                for (unsigned long i=0; i<countDifference; i++, pt++) {
-                    it->push_back(numberOfOldPoints++);
-                    newPoints.push_back(*pt);
-                }
-            }
-            for (MeshFacetArray::_TIterator kt = cFacets.begin(); kt != cFacets.end(); ++kt ) {
-                kt->_aulPoints[0] = (*it)[kt->_aulPoints[0]];
-                kt->_aulPoints[1] = (*it)[kt->_aulPoints[1]];
-                kt->_aulPoints[2] = (*it)[kt->_aulPoints[2]];
-                newFacets.push_back(*kt);
-            }
-        }
-        else {
-            aFailed.push_back(*it);
-        }
+    for (std::list<std::vector<unsigned long> >::iterator it = aBorders.begin(); it != aBorders.end(); ++it) {
+        if (it->size()-1 <= length) // ignore boundary with too many edges
+            aFillBorders.push_back(*it);
     }
 
-    // insert new points and faces into the mesh structure
-    _rclMesh._aclPointArray.insert(_rclMesh._aclPointArray.end(), newPoints.begin(), newPoints.end());
-    for (MeshPointArray::_TIterator it = newPoints.begin(); it != newPoints.end(); ++it)
-        _rclMesh._clBoundBox &= *it;
-    if (!newFacets.empty())
-        _rclMesh.AddFacets(newFacets);
+    if (!aFillBorders.empty())
+        FillupHoles(level, cTria, aFillBorders, aFailed);
 }
 
 void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTria,
@@ -1307,20 +1272,27 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
             if (bound.front() == bound.back())
                 bound.pop_back();
             // the triangulation may produce additional points which we must take into account when appending to the mesh
-            unsigned long countBoundaryPoints = bound.size();
-            unsigned long countDifference = cPoints.size() - countBoundaryPoints;
-            if (countDifference > 0) {
+            if (cPoints.size() > bound.size()) {
+                unsigned long countBoundaryPoints = bound.size();
+                unsigned long countDifference = cPoints.size() - countBoundaryPoints;
                 MeshPointArray::_TIterator pt = cPoints.begin() + countBoundaryPoints;
                 for (unsigned long i=0; i<countDifference; i++, pt++) {
                     bound.push_back(numberOfOldPoints++);
                     newPoints.push_back(*pt);
                 }
             }
-            for (MeshFacetArray::_TIterator kt = cFacets.begin(); kt != cFacets.end(); ++kt ) {
-                kt->_aulPoints[0] = bound[kt->_aulPoints[0]];
-                kt->_aulPoints[1] = bound[kt->_aulPoints[1]];
-                kt->_aulPoints[2] = bound[kt->_aulPoints[2]];
-                newFacets.push_back(*kt);
+            if (cTria.NeedsReindexing()) {
+                for (MeshFacetArray::_TIterator kt = cFacets.begin(); kt != cFacets.end(); ++kt ) {
+                    kt->_aulPoints[0] = bound[kt->_aulPoints[0]];
+                    kt->_aulPoints[1] = bound[kt->_aulPoints[1]];
+                    kt->_aulPoints[2] = bound[kt->_aulPoints[2]];
+                    newFacets.push_back(*kt);
+                }
+            }
+            else {
+                for (MeshFacetArray::_TIterator kt = cFacets.begin(); kt != cFacets.end(); ++kt ) {
+                    newFacets.push_back(*kt);
+                }
             }
         }
         else {
@@ -1332,8 +1304,24 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
     _rclMesh._aclPointArray.insert(_rclMesh._aclPointArray.end(), newPoints.begin(), newPoints.end());
     for (MeshPointArray::_TIterator it = newPoints.begin(); it != newPoints.end(); ++it)
         _rclMesh._clBoundBox &= *it;
-    if (!newFacets.empty())
-        _rclMesh.AddFacets(newFacets);
+    if (!newFacets.empty()) {
+        // Do some checks for invalid point indices
+        MeshFacetArray addFacets;
+        addFacets.reserve(newFacets.size());
+        unsigned long ctPoints = _rclMesh.CountPoints();
+        for (MeshFacetArray::_TIterator it = newFacets.begin(); it != newFacets.end(); ++it) {
+            if (it->_aulPoints[0] >= ctPoints || 
+                it->_aulPoints[1] >= ctPoints || 
+                it->_aulPoints[2] >= ctPoints) {
+                Base::Console().Log("Ignore invalid face <%d, %d, %d> (%d vertices)\n", 
+                    it->_aulPoints[0], it->_aulPoints[1], it->_aulPoints[2], ctPoints);
+            }
+            else {
+                addFacets.push_back(*it);
+            }
+        }
+        _rclMesh.AddFacets(addFacets);
+    }
 }
 
 void MeshTopoAlgorithm::FindHoles(unsigned long length,
