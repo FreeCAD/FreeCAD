@@ -50,6 +50,17 @@ public:
     App::PropertyString  Description  ;
     //@}
 
+    /** @name base properties of all Assembly Items */
+    //@{
+    /** Base color of the Item
+        If the transparency value is 1.0
+        the color or the next hirachy is used
+        */
+    App::PropertyColor Color;
+    /// Visibility
+    App::PropertyBool  Visibility;
+    //@}
+
     /** @name methods override feature */
     //@{
     /// recalculate the feature

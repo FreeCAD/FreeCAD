@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProvider_H
-#define PARTGUI_ViewProvider_H
+#ifndef ASSEMBLYGUI_ViewProviderPart_H
+#define ASSEMBLYGUI_ViewProviderPart_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
+#include "ViewProvider.h"
 
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderItem : public PartGui::ViewProviderPart
+class AssemblyGuiExport ViewProviderItemPart : public AssemblyGui::ViewProviderItem
 {
-    PROPERTY_HEADER(PartGui::ViewProviderItem);
+    PROPERTY_HEADER(PartGui::ViewProviderItemPart);
 
 public:
     /// constructor
-    ViewProviderItem();
+    ViewProviderItemPart();
     /// destructor
-    virtual ~ViewProviderItem();
+    virtual ~ViewProviderItemPart();
 
     virtual bool doubleClicked(void);
 
@@ -48,4 +48,4 @@ public:
 } // namespace AssemblyGui
 
 
-#endif // PARTGUI_ViewProviderHole_H
+#endif // ASSEMBLYGUI_ViewProviderPart_H

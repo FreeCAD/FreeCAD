@@ -43,6 +43,9 @@ Item::Item()
     ADD_PROPERTY(Uid,(0));
     ADD_PROPERTY(Name,(0));
     ADD_PROPERTY(Description,(0));
+
+    ADD_PROPERTY(Color,(1.0,1.0,1.0,1.0)); // set transparent -> not used
+    ADD_PROPERTY(Visibility,(true));
 }
 
 short Item::mustExecute() const
