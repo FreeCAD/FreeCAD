@@ -93,7 +93,7 @@ def readOpenShell(filename):
             while True:
 
                 obj = IfcImport.Get()
-                if DEBUG: print "parsing ",obj.guid,": ",obj.name," of type ",obj.type
+                if DEBUG: print "parsing ",obj.id,": ",obj.name," of type ",obj.type
                 meshdata = []
                 n = obj.name
                 if not n: n = "Unnamed"

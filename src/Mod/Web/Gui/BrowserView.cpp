@@ -35,6 +35,7 @@
 # include <QPrinter>
 # include <QPrintDialog>
 # include <QScrollBar>
+# include <QMouseEvent>
 # if QT_VERSION >= 0x040400
 # include <QWebFrame>
 # include <QWebView>
@@ -62,6 +63,27 @@
 using namespace WebGui;
 using namespace Gui;
 
+/**
+ *  Constructs a WebView widget which can be zoomed with Ctrl+Mousewheel
+ *  
+ */
+
+WebView::WebView(QWidget *parent)
+    : QWebView(parent)
+{
+}
+
+void WebView::wheelEvent(QWheelEvent *event)
+{
+  if (QApplication::keyboardModifiers() & Qt::ControlModifier)
+  {
+      qreal factor = zoomFactor() + (-event->delta() / 800.0);
+      setZoomFactor(factor);
+      event->accept();
+      return;
+  }
+  QWebView::wheelEvent(event);
+}
 
 /* TRANSLATOR Gui::BrowserView */
 
@@ -75,28 +97,34 @@ BrowserView::BrowserView(QWidget* parent)
       isLoading(false),
       textSizeMultiplier(1.0)
 {
-    WebView = new QWebView(this);
-    setCentralWidget(WebView);
+    view = new WebView(this);
+    setCentralWidget(view);
 
-    WebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-    WebView->page()->setForwardUnsupportedContent(true);
+    view->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    view->page()->setForwardUnsupportedContent(true);
 
-    connect(WebView, SIGNAL(loadStarted()),
+    // setting background to white
+    QPalette palette = view->palette();
+    palette.setBrush(QPalette::Base, Qt::white);
+    view->page()->setPalette(palette);
+    view->setAttribute(Qt::WA_OpaquePaintEvent, true);
+
+    connect(view, SIGNAL(loadStarted()),
             this, SLOT(onLoadStarted()));
-    connect(WebView, SIGNAL(loadProgress(int)),
+    connect(view, SIGNAL(loadProgress(int)),
             this, SLOT(onLoadProgress(int)));
-    connect(WebView, SIGNAL(loadFinished(bool)),
+    connect(view, SIGNAL(loadFinished(bool)),
             this, SLOT(onLoadFinished()));
-    connect(WebView, SIGNAL(linkClicked(const QUrl &)),
+    connect(view, SIGNAL(linkClicked(const QUrl &)),
             this, SLOT(onLinkClicked(const QUrl &)));
-    connect(WebView->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
+    connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
             this, SLOT(onDownloadRequested(const QNetworkRequest &)));
 }
 
 /** Destroys the object and frees any allocated resources */
 BrowserView::~BrowserView()
 {
-    delete WebView;
+    delete view;
 }
 
 void BrowserView::onLinkClicked (const QUrl & url) 
@@ -168,8 +196,8 @@ void BrowserView::load(const QUrl & url)
     if(isLoading)
         stop();
 
-    WebView->load(url);
-    WebView->setUrl(url);
+    view->load(url);
+    view->setUrl(url);
     if (url.scheme().size() < 2) {
         QString path     = url.path();
         QFileInfo fi(path);
@@ -189,14 +217,14 @@ void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QSt
     if (isLoading)
         stop();
 
-    WebView->setHtml(HtmlCode,BaseUrl);
+    view->setHtml(HtmlCode,BaseUrl);
     setWindowTitle(TabName);
     setWindowIcon(QWebSettings::iconForUrl(BaseUrl));
 }
 
 void BrowserView::stop(void)
 {
-    WebView->stop();
+    view->stop();
 }
 
 void BrowserView::onLoadStarted()
@@ -204,7 +232,7 @@ void BrowserView::onLoadStarted()
     QProgressBar* bar = Gui::Sequencer::instance()->getProgressBar();
     bar->setRange(0, 100);
     bar->show();
-    Gui::getMainWindow()->statusBar()->showMessage(tr("Loading %1...").arg(WebView->url().toString()));
+    Gui::getMainWindow()->statusBar()->showMessage(tr("Loading %1...").arg(view->url().toString()));
     isLoading = true;
 }
 
@@ -233,24 +261,24 @@ void BrowserView::OnChange(Base::Subject<const char*> &rCaller,const char* rcRea
 bool BrowserView::onMsg(const char* pMsg,const char** ppReturn)
 {
     if (strcmp(pMsg,"Back")==0){
-        WebView->back();
+        view->back();
         return true;
     } else if (strcmp(pMsg,"Next")==0){
-        WebView->forward();
+        view->forward();
         return true;
     } else if (strcmp(pMsg,"Refresh")==0){
-        WebView->reload();
+        view->reload();
         return true;
     } else if (strcmp(pMsg,"Stop")==0){
         stop();
         return true;
     } else if (strcmp(pMsg,"ZoomIn")==0){
         textSizeMultiplier += 0.2f;
-        WebView->setTextSizeMultiplier(textSizeMultiplier);
+        view->setTextSizeMultiplier(textSizeMultiplier);
         return true;
     } else if (strcmp(pMsg,"ZoomOut")==0){
         textSizeMultiplier -= 0.2f;
-        WebView->setTextSizeMultiplier(textSizeMultiplier);
+        view->setTextSizeMultiplier(textSizeMultiplier);
         return true;
     }
 
