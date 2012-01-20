@@ -26,9 +26,13 @@
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
+# include <gp_Pln.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
+# include <Geom2dAPI_InterCurveCurve.hxx>
+# include <GeomAPI.hxx>
 # include <Geom_Geometry.hxx>
 # include <Geom_Curve.hxx>
+# include <Geom_Plane.hxx>
 # include <Geom_Surface.hxx>
 # include <GeomAdaptor_Curve.hxx>
 # include <GeomFill.hxx>
@@ -48,6 +52,7 @@
 #include "GeometryCurvePy.cpp"
 #include "RectangularTrimmedSurfacePy.h"
 #include "BSplineSurfacePy.h"
+#include "PlanePy.h"
 
 #include "TopoShape.h"
 #include "TopoShapePy.h"
@@ -259,6 +264,41 @@ PyObject* GeometryCurvePy::makeRuledSurface(PyObject *args)
 
     PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
     return 0;
+}
+
+PyObject* GeometryCurvePy::intersect2d(PyObject *args)
+{
+    PyObject *c,*p;
+    if (!PyArg_ParseTuple(args, "O!O!", &(Part::GeometryCurvePy::Type), &c,
+                                        &(Part::PlanePy::Type), &p))
+        return 0;
+
+    try {
+        Handle_Geom_Curve self = Handle_Geom_Curve::DownCast(getGeometryPtr()->handle());
+        Handle_Geom_Curve curv = Handle_Geom_Curve::DownCast(static_cast<GeometryPy*>(c)->
+            getGeometryPtr()->handle());
+        Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast(static_cast<GeometryPy*>(p)->
+            getGeometryPtr()->handle());
+
+        Handle_Geom2d_Curve curv1 = GeomAPI::To2d(self, plane->Pln());
+        Handle_Geom2d_Curve curv2 = GeomAPI::To2d(curv, plane->Pln());
+        Geom2dAPI_InterCurveCurve intCC(curv1, curv2);
+        int nbPoints = intCC.NbPoints();
+        Py::List list;
+        for (int i=1; i<= nbPoints; i++) {
+            gp_Pnt2d pt = intCC.Point(i);
+            Py::Tuple tuple(2);
+            tuple.setItem(0, Py::Float(pt.X()));
+            tuple.setItem(1, Py::Float(pt.Y()));
+            list.append(tuple);
+        }
+        return Py::new_reference_to(list);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 Py::Float GeometryCurvePy::getFirstParameter(void) const

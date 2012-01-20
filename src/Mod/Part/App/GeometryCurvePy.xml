@@ -41,6 +41,11 @@
 				<UserDocu>Make a ruled surface of this and the given curves</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="intersect2d">
+			<Documentation>
+				<UserDocu>Get intersection points with another curve lying on a plane.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="parameter">
 			<Documentation>
 				<UserDocu>Returns the parameter on the curve
