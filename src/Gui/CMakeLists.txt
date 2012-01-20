@@ -148,6 +148,7 @@ set(Gui_MOC_HDRS
     Transform.h
     Tree.h
     TreeView.h
+    ProjectView.h
     View3DInventor.h
     WidgetFactory.h
     Widgets.h
@@ -404,6 +405,7 @@ SET(Dock_Windows_CPP_SRCS
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
+    ProjectView.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     CombiView.h
@@ -416,6 +418,7 @@ SET(Dock_Windows_HPP_SRCS
     ToolBox.h
     Tree.h
     TreeView.h
+    ProjectView.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
