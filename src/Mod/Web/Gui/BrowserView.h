@@ -28,13 +28,24 @@
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
 
+# if QT_VERSION >= 0x040400
+#include <QWebView>
+#endif
+
 class QWebView;
 class QUrl;
 class QNetworkRequest;
 
 namespace WebGui {
 
+class WebGuiExport WebView : public QWebView
+{
+    Q_OBJECT
 
+public:
+    WebView(QWidget *parent = 0);
+    void wheelEvent(QWheelEvent *event);
+};
 
 /**
  * A special view class which sends the messages from the application to
@@ -87,7 +98,7 @@ protected Q_SLOTS:
     void onDownloadRequested(const QNetworkRequest & request);
 
 private:
-    QWebView* WebView;
+    WebView* view;
     bool isLoading;
     float textSizeMultiplier;
 };
