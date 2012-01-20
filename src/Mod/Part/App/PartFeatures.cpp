@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
             if (shape.ShapeType() == TopAbs_WIRE)
                 profiles.Append(shape);
-            else if (shape.ShapeType() == TopAbs_EDGE)
+            else if (shape.ShapeType() == TopAbs_VERTEX)
                 profiles.Append(shape);
             else
                 return new App::DocumentObjectExecReturn("Linked shape is neither a vertex nor a wire.");
