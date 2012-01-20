@@ -146,6 +146,8 @@ class TaskPanel:
             flag = False
         if flag:
             self.form.trim.setValue(self.ship.AreaCurveTrim)
+        # Update GUI
+        self.preview.update(self.form.draft.value(), self.form.trim.value(), self.ship)
         msg = Translator.translate("Ready to work\n")
         App.Console.PrintMessage(msg)
         return False
@@ -162,12 +164,15 @@ class TaskPanel:
         """ Method called when input data is changed.
          @param value Changed value.
         """
-        pass
+        if not self.ship:
+            return
+        self.preview.update(self.form.draft.value(), self.form.trim.value(), self.ship)
 
     def onUpdate(self):
         """ Method called when update data request.
         """
-        pass
+        if not self.ship:
+            return
 
     def save(self):
         """ Saves data into ship instance.
