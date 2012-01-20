@@ -31,6 +31,8 @@ DEBUG = True
 
 def checkCollada():
     "checks if collada if available"
+    global collada
+    COLLADA = None
     try:
         import collada
     except:
