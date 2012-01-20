@@ -39,6 +39,15 @@ public:
 
     /** Sets the polygon to be triangulated. */
     void SetPolygon(const std::vector<Base::Vector3f>& raclPoints);
+    void SetIndices(const std::vector<unsigned long>& d) {_indices = d;}
+    /** Usually the created faces use the indices of the polygon points
+     * from [0, n]. If the faces should be appended to an existing mesh
+     * they may need to be reindexed from the calling instance.
+     * However, there may other algorithms that directly use the indices
+     * of the mesh and thus do not need to be touched afterwards. In this
+     * case the method should be reimplemented to return false.
+     */
+    virtual bool NeedsReindexing() const { return true; }
     /** Get the polygon points to be triangulated. The points may be
      * projected onto its average plane.
      */
@@ -46,7 +55,7 @@ public:
     /** The triangulation algorithm may create new points when
      * calling Triangulate(). This method returns these added
      * points.
-     * @note: Make sure to have called ProjectOntoSurface() before using
+     * @note: Make sure to have called PostProcessing() before using
      * this method if you want the surface points the new points are lying on.
      */
     std::vector<Base::Vector3f> AddedPoints() const;
@@ -65,11 +74,13 @@ public:
     /** If points were added then we get the 3D points by projecting the added
      * 2D points onto a surface which fits into the given points.
      */
-    virtual void ProjectOntoSurface(const std::vector<Base::Vector3f>&);
+    virtual void PostProcessing(const std::vector<Base::Vector3f>&);
     /** Returns the geometric triangles of the polygon. */
     const std::vector<MeshGeomFacet>& GetTriangles() const { return _triangles;}
     /** Returns the topologic facets of the polygon. */
     const std::vector<MeshFacet>& GetFacets() const { return _facets;}
+    /** Returns the the triangle to a given topologic facet. */
+    virtual MeshGeomFacet GetTriangle(const MeshPointArray&, const MeshFacet&) const;
     /** Returns the length of the polygon */
     float GetLength() const;
     /** Get information about the pol<gons that were processed.
@@ -77,7 +88,9 @@ public:
      * polygon.
      */
     std::vector<unsigned long> GetInfo() const;
-    void Discard();
+    virtual void Discard();
+    /** Resets some internals. The default implementation does nothing.*/
+    virtual void Reset();
 
 protected:
     /** Computes the triangulation of a polygon. The resulting facets can
@@ -89,6 +102,7 @@ protected:
 protected:
     bool                        _discard;
     Base::Matrix4D              _inverse;
+    std::vector<unsigned long>  _indices;
     std::vector<Base::Vector3f> _points;
     std::vector<Base::Vector3f> _newpoints;
     std::vector<MeshGeomFacet>  _triangles;
@@ -168,7 +182,7 @@ public:
     FlatTriangulator();
     ~FlatTriangulator();
 
-    void ProjectOntoSurface(const std::vector<Base::Vector3f>&);
+    void PostProcessing(const std::vector<Base::Vector3f>&);
 
 protected:
     bool Triangulate();
@@ -187,17 +201,25 @@ private:
     float fMaxArea;
 };
 
+#if 0
 class MeshExport Triangulator : public AbstractPolygonTriangulator
 {
 public:
-    Triangulator(const MeshKernel&);
+    Triangulator(const MeshKernel&, bool flat);
     ~Triangulator();
+    void Discard();
+    void Reset();
+
+    bool NeedsReindexing() const { return false; }
+    MeshGeomFacet GetTriangle(const MeshPointArray&, const MeshFacet&) const;
+    void PostProcessing(const std::vector<Base::Vector3f>&);
 
 protected:
     bool Triangulate();
 
     const MeshKernel& _kernel;
 };
+#endif
 
 } // namespace MeshCore
 
