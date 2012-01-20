@@ -137,14 +137,8 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
         self.delButton.setEnabled(False)
 
-        self.okButton = QtGui.QPushButton(self.form)
-        self.okButton.setObjectName("okButton")
-        self.okButton.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
-        self.grid.addWidget(self.okButton, 4, 0, 1, 2)
-
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
-        QtCore.QObject.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.finish)
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
         self.update()
 
@@ -155,8 +149,8 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return 0
-
+        return int(QtGui.QDialogButtonBox.Ok)
+    
     def check(self,wid,col):
         if not wid.parent():
             self.delButton.setEnabled(False)
@@ -225,16 +219,16 @@ class ComponentTaskPanel:
             removeFromComponent(self.obj,comp)
         self.update()
 
-    def finish(self):
+    def accept(self):
         FreeCAD.ActiveDocument.recompute()
         if self.obj:
             self.obj.ViewObject.finishEditing()
+        return True
                     
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
-        self.okButton.setText(QtGui.QApplication.translate("Arch", "Done", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None, QtGui.QApplication.UnicodeUTF8))
         self.treeBase.setText(0,QtGui.QApplication.translate("Arch", "Base component", None, QtGui.QApplication.UnicodeUTF8))
         self.treeAdditions.setText(0,QtGui.QApplication.translate("Arch", "Additions", None, QtGui.QApplication.UnicodeUTF8))

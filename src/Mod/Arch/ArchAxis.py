@@ -286,14 +286,8 @@ class _AxisTaskPanel:
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
         self.delButton.setEnabled(True)
 
-        self.okButton = QtGui.QPushButton(self.form)
-        self.okButton.setObjectName("okButton")
-        self.okButton.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
-        self.grid.addWidget(self.okButton, 4, 0, 1, 2)
-
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
-        QtCore.QObject.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.finish)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -303,7 +297,7 @@ class _AxisTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return 0
+        return int(QtGui.QDialogButtonBox.Ok)
     
     def update(self):
         'fills the treewidget'
@@ -354,7 +348,6 @@ class _AxisTaskPanel:
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
-        self.okButton.setText(QtGui.QApplication.translate("Arch", "Done", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Distances and angles between axes", None, QtGui.QApplication.UnicodeUTF8))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None, QtGui.QApplication.UnicodeUTF8),
                                    QtGui.QApplication.translate("Arch", "Distance", None, QtGui.QApplication.UnicodeUTF8),

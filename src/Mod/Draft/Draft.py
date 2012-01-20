@@ -543,6 +543,10 @@ def makeCopy(obj):
         import Arch
         Arch._Wall(newobj)
         Arch._ViewProviderWall(newobj.ViewObject)
+    elif getType(obj) == "Window":
+        import Arch
+        Arch._Window(newobj)
+        Arch._ViewProviderWindow(newobj.ViewObject)
     elif obj.isDerivedFrom("Part::Feature"):
         newobj.Shape = obj.Shape
     else:
@@ -1033,6 +1037,11 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
         return Vector(lx,ly,0)
 
+    def getPattern(pat):
+        if pat in FreeCAD.svgpatterns:
+            return FreeCAD.svgpatterns[pat]
+        return ''
+
     def getPath(edges):
         svg ='<path id="' + name + '" '
         edges = fcgeo.sortEdges(edges)
@@ -1156,7 +1165,8 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
             if fillstyle == "shape color":
                 fill = getrgb(obj.ViewObject.ShapeColor)
             else:
-                fill = 'url(#'+hatch+')'
+                fill = 'url(#'+fillstyle+')'
+                svg += getPattern(fillstyle)
         else:
             fill = 'none'
         # setting linetype
@@ -1174,6 +1184,7 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         else:
             stroke = getrgb(obj.ViewObject.LineColor)
         width = obj.ViewObject.LineWidth/modifier
+        
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
             if obj.Shape.Faces:
@@ -2345,9 +2356,10 @@ class _Shape2DView:
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
-                if visibleG0:
-                    obj.Shape = visibleG0
+                if not fcvec.isNull(obj.Projection):
+                    [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
+                    if visibleG0:
+                        obj.Shape = visibleG0
         if not fcgeo.isNull(pl):
             obj.Placement = pl
 
