@@ -157,8 +157,10 @@ class Snapper:
         # check if we snapped to something
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((screenpos[0],screenpos[1]))
 
-        # checking if parallel to one of the edges of the last objects
-        point = self.snapToExtensions(point,lastpoint,constrain)
+        # checking if parallel to one of the edges of the last objects or to a polar direction
+        eline = None
+        point,eline = self.snapToPolar(point,lastpoint)
+        point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
         
         if not info:
             
@@ -195,8 +197,9 @@ class Snapper:
                             snaps.extend(self.snapToEndpoints(edge))
                             snaps.extend(self.snapToMidpoint(edge))
                             snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                            snaps.extend(self.snapToOrtho(edge,lastpoint,constrain))
+                            #snaps.extend(self.snapToOrtho(edge,lastpoint,constrain)) # now part of snapToPolar
                             snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
 
                             if isinstance (edge.Curve,Part.Circle):
                                 # the edge is an arc, we have extra options
@@ -266,10 +269,10 @@ class Snapper:
         dv = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
         return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
         
-    def snapToExtensions(self,point,last,constrain):
+    def snapToExtensions(self,point,last,constrain,eline):
         "returns a point snapped to extension or parallel line to last object, if any"
 
-        tsnap = self.snapToExtOrtho(last,constrain)
+        tsnap = self.snapToExtOrtho(last,constrain,eline)
         if tsnap:
             if (tsnap[0].sub(point)).Length < self.radius:
                 if self.tracker:
@@ -280,7 +283,7 @@ class Snapper:
                     self.extLine.p2(tsnap[2])
                     self.extLine.on()
                 self.setCursor(tsnap[1])
-                return tsnap[2]
+                return tsnap[2],eline
                 
         for o in [self.lastObj[1],self.lastObj[0]]:
             if o:
@@ -303,7 +306,7 @@ class Snapper:
                                                 self.extLine.p2(np)
                                                 self.extLine.on()
                                             self.setCursor('extension')
-                                            return np
+                                            return np,Part.Line(e.Vertexes[0].Point,np).toShape()
                                         else:
                                             if last:
                                                 de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
@@ -314,8 +317,37 @@ class Snapper:
                                                         self.tracker.setMarker(self.mk['parallel'])
                                                         self.tracker.on()
                                                     self.setCursor('extension')
-                                                    return np
-        return point
+                                                    return np,de
+        return point,eline
+
+    def snapToPolar(self,point,last):
+        "snaps to polar lines from the given point"
+        polarAngles = [90,45]
+        if last:
+            vecs = []
+            ax = [FreeCAD.DraftWorkingPlane.u,
+                   FreeCAD.DraftWorkingPlane.v,
+                   FreeCAD.DraftWorkingPlane.axis]
+            for a in polarAngles:
+                    if a == 90:
+                        vecs.extend([ax[0],fcvec.neg(ax[0])])
+                        vecs.extend([ax[1],fcvec.neg(ax[1])])
+                    else:
+                        v = fcvec.rotate(ax[0],math.radians(a),ax[2])
+                        vecs.extend([v,fcvec.neg(v)])
+                        v = fcvec.rotate(ax[1],math.radians(a),ax[2])
+                        vecs.extend([v,fcvec.neg(v)])
+            for v in vecs:
+                de = Part.Line(last,last.add(v)).toShape()  
+                np = self.getPerpendicular(de,point)
+                if (np.sub(point)).Length < self.radius:
+                    if self.tracker:
+                        self.tracker.setCoords(np)
+                        self.tracker.setMarker(self.mk['parallel'])
+                        self.tracker.on()
+                        self.setCursor('ortho')
+                    return np,de
+        return point,None
 
     def snapToGrid(self,point):
         "returns a grid snap point if available"
@@ -390,7 +422,7 @@ class Snapper:
                                     snaps.append([p,'ortho',p])
         return snaps
 
-    def snapToExtOrtho(self,last,constrain):
+    def snapToExtOrtho(self,last,constrain,eline):
         "returns an ortho X extension snap location"
         if constrain and last and self.constraintAxis and self.extLine:
             tmpEdge1 = Part.Line(last,last.add(self.constraintAxis)).toShape()
@@ -399,7 +431,25 @@ class Snapper:
             pt = fcgeo.findIntersection(tmpEdge1,tmpEdge2,True,True)
             if pt:
                     return [pt[0],'ortho',pt[0]]
+        if eline:
+            tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+            # get the intersection points
+            pt = fcgeo.findIntersection(eline,tmpEdge2,True,True)
+            if pt:
+                    return [pt[0],'ortho',pt[0]]
         return None
+
+    def snapToElines(self,e1,e2):
+        "returns a snap location at the infinite intersection of the given edges"
+        snaps = []
+        if e1 and e2:
+            # get the intersection points
+            pts = fcgeo.findIntersection(e1,e2,True,True)
+            if pts:
+                for p in pts:
+                    snaps.append([p,'intersection',p])
+        return snaps
+            
     
     def snapToAngles(self,shape):
         "returns a list of angle snap locations"
