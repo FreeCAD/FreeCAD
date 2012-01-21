@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import math
 # FreeCAD modules
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -75,6 +76,8 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.draft = form.findChild(QtGui.QDoubleSpinBox, "Draft")
         form.trim = form.findChild(QtGui.QDoubleSpinBox, "Trim")
+        form.output = form.findChild(QtGui.QTextEdit, "OutputData")
+        form.doc = QtGui.QTextDocument(form.output)
         self.form = form
         # Initial values
         if self.initValues():
@@ -148,6 +151,7 @@ class TaskPanel:
             self.form.trim.setValue(self.ship.AreaCurveTrim)
         # Update GUI
         self.preview.update(self.form.draft.value(), self.form.trim.value(), self.ship)
+        self.onUpdate()
         msg = Translator.translate("Ready to work\n")
         App.Console.PrintMessage(msg)
         return False
@@ -173,6 +177,29 @@ class TaskPanel:
         """
         if not self.ship:
             return
+        # Calculate drafts
+        angle = math.radians(self.form.trim.value())
+        L = self.ship.Length
+        draftAP = self.form.trim.value() + 0.5*L*math.tan(angle)
+        if draftAP < 0.0:
+            draftAP = 0.0
+        draftFP = self.form.trim.value() - 0.5*L*math.tan(angle)
+        if draftFP < 0.0:
+            draftFP = 0.0
+        # Calculate hydrostatics involved
+        disp = 0.0
+        xcb  = 0.0
+        # Prepare the string in html format
+        string = 'L = %g [m]<BR>' % (self.ship.Length)
+        string = string + 'B = %g [m]<BR>' % (self.ship.Beam)
+        string = string + 'T = %g [m]<HR>' % (self.form.draft.value())
+        string = string + 'Trim = %g [degrees]<BR>' % (self.form.trim.value())
+        string = string + 'T<sub>AP</sub> = %g [m]<BR>' % (draftAP)
+        string = string + 'T<sub>FP</sub> = %g [m]<HR>' % (draftFP)
+        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (disp)
+        string = string + 'XCB = %g [m]' % (xcb)
+        # Set the document
+        self.form.output.setHtml(string)
 
     def save(self):
         """ Saves data into ship instance.
