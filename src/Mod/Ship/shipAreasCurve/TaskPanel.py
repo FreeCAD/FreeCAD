@@ -32,6 +32,7 @@ import Preview
 import Instance
 from shipUtils import Paths, Translator
 from surfUtils import Geometry
+from shipHydrostatics import Tools as Hydrostatics
 
 class TaskPanel:
     def __init__(self):
@@ -187,8 +188,7 @@ class TaskPanel:
         if draftFP < 0.0:
             draftFP = 0.0
         # Calculate hydrostatics involved
-        disp = 0.0
-        xcb  = 0.0
+        disp = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
         # Prepare the string in html format
         string = 'L = %g [m]<BR>' % (self.ship.Length)
         string = string + 'B = %g [m]<BR>' % (self.ship.Beam)
@@ -196,8 +196,8 @@ class TaskPanel:
         string = string + 'Trim = %g [degrees]<BR>' % (self.form.trim.value())
         string = string + 'T<sub>AP</sub> = %g [m]<BR>' % (draftAP)
         string = string + 'T<sub>FP</sub> = %g [m]<HR>' % (draftFP)
-        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (disp)
-        string = string + 'XCB = %g [m]' % (xcb)
+        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (disp[0])
+        string = string + 'XCB = %g [m]' % (disp[0])
         # Set the document
         self.form.output.setHtml(string)
 
