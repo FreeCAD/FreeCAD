@@ -57,6 +57,12 @@ SET(ShipAreasCurve_SRCS
 )
 SOURCE_GROUP("shipareascurve" FILES ${ShipAreasCurve_SRCS})
 
+SET(ShipHydrostatics_SRCS
+	shipHydrostatics/__init__.py
+	shipHydrostatics/Tools.py
+)
+SOURCE_GROUP("shiphydrostatics" FILES ${ShipHydrostatics_SRCS})
+
 SET(ShipUtils_SRCS
 	shipUtils/__init__.py
 	shipUtils/Math.py
@@ -65,7 +71,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -96,6 +102,12 @@ INSTALL(
         ${ShipAreasCurve_SRCS}
     DESTINATION
         Mod/Ship/shipAreasCurve
+)
+INSTALL(
+    FILES
+        ${ShipHydrostatics_SRCS}
+    DESTINATION
+        Mod/Ship/shipHydrostatics
 )
 INSTALL(
     FILES
