@@ -129,10 +129,10 @@ class TaskPanel:
             msg = Translator.translate("4 connected edges and at least 1 surface must be selected (Less than 5 objects selected)")
             App.Console.PrintError(msg)
             return True
-        # Separate edge objects and face objects.
+        # Separate edge objects and face objects to work with them separately.
         if self.getEdgesFaces():
             return True
-        # Ensure that closed object given
+        # Ensure that closed edges given
         if not self.isClosed():
             return True
         # Sort edges (as connect chain)
@@ -145,7 +145,7 @@ class TaskPanel:
             return True
         # On screen data
         self.preview = Preview.Preview(self.edges[0],self.edges[1])
-        msg = Translator.translate("Ready to work")
+        msg = Translator.translate("Ready to work\n")
         App.Console.PrintMessage(msg)
         return False
 
@@ -251,6 +251,7 @@ class TaskPanel:
         """ Get points that will make the surface.
         @return True if error happens. False otherwise.
         """
+        # Discretize the edges using nU,nV
         if self.divideEdges():
             return True
         if self.samplePoints():
@@ -265,7 +266,8 @@ class TaskPanel:
     
 
     def divideEdges(self):
-        """ Get points along the edges.
+        """ Get points along the edges. This method only divide the
+        edges into nU/nV parametrically equidistant points.
         @return True if error happens. False otherwise.
         """
         # Get curves from edges
@@ -326,7 +328,9 @@ class TaskPanel:
         return False
 
     def samplePoints(self):
-        """ Builds a set of points between the edges points.
+        """ Builds a set of points between the edges points. The points
+        are a smooth interpolation between edges points in order to
+        project it over the surface.
         @return True if error happens. False otherwise.
         """
         # We will advance in V direction, getting point columns, so two
@@ -336,15 +340,15 @@ class TaskPanel:
         endV   = self.EdgePoints[1]
         startV = self.EdgePoints[3]
         self.sample = [startU]
-        # Take two guides froms the starting and end U curves. All
-        # sample points will be reprojects with this guides
+        # Take two guides from the starting and end U curves. All
+        # sample points will be interpolated with this guides
         Guide0  = startU[len(startU)-1] - startU[0]
         Length0 = Guide0.Length
         Guide0.normalize()
         Guide1  = endU[len(endU)-1] - endU[0]
         Length1 = Guide1.Length
         Guide1.normalize()
-        # Loop over columns to get
+        # Loop over columns
         for i in range(1,len(startV)-1):
             # Get the guide
             Guide  = endV[i] - startV[i]
@@ -365,12 +369,15 @@ class TaskPanel:
                 points.append(startV[i]+v)
             points.append(endV[i])
             self.sample.append(points)
-        # Append las points column (end U curve)
+        # Append last points column (end U curve)
         self.sample.append(endU)
         return False
 
     def getSurfacePoints(self):
-        """ Get the points of the surface.
+        """ Get the points of the surface. Here sample points will be
+        projected into the surface, getting another surface with nU,nV
+        knots.
+        @todo Support trimmed surfaces.
         @return True if error happens. False otherwise.
         """
         surf = self.faces[0].Surface
@@ -446,7 +453,6 @@ class TaskPanel:
                         point = surf.value(uv[0], uv[1])
                         self.points[j][k]=point
                         self.surfacesID[j][k] = i
-
         return False
 
     def redistributePointsU(self):
@@ -457,85 +463,138 @@ class TaskPanel:
         for i in range(0,len(self.points)):
             sumdif=0.0
             difs=[]
+            # Compute distances between points
             for j in range(1,len(self.points[i])):
                 vdif=self.points[i][j]-self.points[i][j-1]
                 dif=vdif.Length
                 sumdif=sumdif+dif
                 difs.append(dif)
+            # Loop over point distances
             for k in range(0,len(difs)):
+                # If not the same surface for each point, UV
+                # redistribution is not valid, so 3D points must be
+                # edited (more effort and worst convergency).
                 if self.surfacesID[i][k] != self.surfacesID[i][k+1]:
                     if difs[k]>=(2*sumdif/len(difs)):
-                        self.points[i][k][0]=self.points[i][k][0]+0.33*(self.points[i][k+1][0]-self.points[i][k][0])
-                        self.points[i][k][1]=self.points[i][k][1]+0.33*(self.points[i][k+1][1]-self.points[i][k][1])
-                        self.points[i][k][2]=self.points[i][k][2]+0.33*(self.points[i][k+1][2]-self.points[i][k][2])
-                        self.points[i][k+1][0]=self.points[i][k+1][0]-0.33*(self.points[i][k+1][0]-self.points[i][k][0])
-                        self.points[i][k+1][1]=self.points[i][k+1][1]-0.33*(self.points[i][k+1][1]-self.points[i][k][1])
-                        self.points[i][k+1][2]=self.points[i][k+1][2]-0.33*(self.points[i][k+1][2]-self.points[i][k][2])
-                        surf1 = self.faces[self.surfacesID[i][k]].Surface
-                        surf2 = self.faces[self.surfacesID[i][k+1]].Surface
-                        uv = surf1.parameter(self.points[i][k])
-                        self.uv[i][k] = [uv[0], uv[1]]
-                        uv = surf2.parameter(self.points[i][k+1]) 
-                        self.uv[i][k+1] = [uv[0], uv[1]]
-                        self.points[i][k]=surf1.value(self.uv[i][k][0],self.uv[i][k][1])
-                        self.points[i][k+1]=surf2.value(self.uv[i][k+1][0],self.uv[i][k+1][1])
-                        return True
-                        break
+                        point1 = App.Base.Vector(0.0,0.0,0.0)
+                        point1.x = self.points[i][k][0]+0.33*(self.points[i][k+1][0]-self.points[i][k][0])
+                        point1.y = self.points[i][k][1]+0.33*(self.points[i][k+1][1]-self.points[i][k][1])
+                        point1.z = self.points[i][k][2]+0.33*(self.points[i][k+1][2]-self.points[i][k][2])
+                        point2 = App.Base.Vector(0.0,0.0,0.0)
+                        point2.x = self.points[i][k+1][0]-0.33*(self.points[i][k+1][0]-self.points[i][k][0])
+                        point2.y = self.points[i][k+1][1]-0.33*(self.points[i][k+1][1]-self.points[i][k][1])
+                        point2.z = self.points[i][k+1][2]-0.33*(self.points[i][k+1][2]-self.points[i][k][2])
+                        moved = False
+                        if(k != 0):
+                            self.points[i][k] = point1
+                            surf1 = self.faces[self.surfacesID[i][k]].Surface
+                            uv = surf1.parameter(self.points[i][k])
+                            self.uv[i][k] = [uv[0], uv[1]]
+                            self.points[i][k]=surf1.value(self.uv[i][k][0],self.uv[i][k][1])
+                            moved = True
+                        if(k+1 != len(self.points[i])-1):
+                            self.points[i][k+1] = point2
+                            surf2 = self.faces[self.surfacesID[i][k+1]].Surface
+                            uv = surf2.parameter(self.points[i][k+1]) 
+                            self.uv[i][k+1] = [uv[0], uv[1]]
+                            self.points[i][k+1]=surf2.value(self.uv[i][k+1][0],self.uv[i][k+1][1])
+                            moved = True
+                        if moved:
+                            return True
                     continue
+                # If same surface for each point, UV
+                # redistribution is possible, with better convergency
+                # and less computation effort.
                 if difs[k]>=(2*sumdif/len(difs)):
-                    self.uv[i][k][0]=self.uv[i][k][0]+0.33*(self.uv[i][k+1][0]-self.uv[i][k][0])
-                    self.uv[i][k][1]=self.uv[i][k][1]+0.33*(self.uv[i][k+1][1]-self.uv[i][k][1])
-                    self.uv[i][k+1][0]=self.uv[i][k+1][0]-0.33*(self.uv[i][k+1][0]-self.uv[i][k][0])
-                    self.uv[i][k+1][1]=self.uv[i][k+1][1]-0.33*(self.uv[i][k+1][1]-self.uv[i][k][1])
-                    surf = self.faces[self.surfacesID[i][k]].Surface
-                    self.points[i][k] = surf.value(self.uv[i][k][0], self.uv[i][k][1])
-                    self.points[i][k+1] = surf.value(self.uv[i][k+1][0], self.uv[i][k+1][1])
-                    return True
-                    break
+                    uv1 = [0.0,0.0]
+                    uv1[0] = self.uv[i][k][0]+0.33*(self.uv[i][k+1][0]-self.uv[i][k][0])
+                    uv1[1] = self.uv[i][k][1]+0.33*(self.uv[i][k+1][1]-self.uv[i][k][1])
+                    uv2 = [0.0,0.0]
+                    uv2[0] = self.uv[i][k+1][0]-0.33*(self.uv[i][k+1][0]-self.uv[i][k][0])
+                    uv2[1] = self.uv[i][k+1][1]-0.33*(self.uv[i][k+1][1]-self.uv[i][k][1])
+                    moved = False
+                    if(k != 0):
+                        self.uv[i][k] = uv1[:]
+                        surf = self.faces[self.surfacesID[i][k]].Surface
+                        self.points[i][k] = surf.value(self.uv[i][k][0], self.uv[i][k][1])
+                        moved = True
+                    if(k+1 != len(self.points[i])-1):
+                        self.uv[i][k+1] = uv2[:]
+                        surf = self.faces[self.surfacesID[i][k+1]].Surface
+                        self.points[i][k+1] = surf.value(self.uv[i][k+1][0], self.uv[i][k+1][1])
+                    if moved:
+                        return True
         return False
+
     def redistributePointsV(self):
         """ Redistributes the points of the surface (V direction).
         @return False if all points are right placed. True otherwise.
         """
-        #Redistribute files
+        #Redistribute rows
         for i in range(0,len(self.points[0])):
             sumdif=0
             difs=[]
+            # Compute distances between points
             for j in range(1,len(self.points)):
                 vdif=self.points[j][i]-self.points[j-1][i]
                 dif=vdif.Length
                 sumdif=sumdif+dif
                 difs.append(dif)
+            # Loop over point distances
             for k in range(0,len(difs)):
+                # If not the same surface for each point, UV
+                # redistribution is not valid, so 3D points must be
+                # edited (more effort and worst convergency).
                 if self.surfacesID[k][i] != self.surfacesID[k+1][i]:
                     if difs[k]>=(2*sumdif/len(difs)):
-                        self.points[k][i][0]=self.points[k][i][0]+0.33*(self.points[k+1][i][0]-self.points[k][i][0])
-                        self.points[k][i][1]=self.points[k][i][1]+0.33*(self.points[k+1][i][1]-self.points[k][i][1])
-                        self.points[k][i][2]=self.points[k][i][2]+0.33*(self.points[k+1][k+1][2]-self.points[k][i][2])
-                        self.points[k+1][i][0]=self.points[k+1][i][0]-0.33*(self.points[k+1][i][0]-self.points[k][i][0])
-                        self.points[k+1][i][1]=self.points[k+1][i][1]-0.33*(self.points[k+1][i][1]-self.points[k][i][1])
-                        self.points[k+1][i][2]=self.points[k+1][i][2]-0.33*(self.points[k+1][i][2]-self.points[k][i][2])
-                        surf1 = self.faces[self.surfacesID[k][i]].Surface
-                        surf2 = self.faces[self.surfacesID[k+1][i]].Surface
-                        uv = surf1.parameter(self.points[k][i])
-                        self.uv[k][i] = [uv[0], uv[1]]
-                        uv = surf2.parameter(self.points[k+1][i]) 
-                        self.uv[k+1][i] = [uv[0], uv[1]]
-                        self.points[k][i]=surf1.value(self.uv[k][i][0],self.uv[k][i][1])
-                        self.points[k+1][i]=surf2.value(self.uv[k+1][i][0],self.uv[k+1][i][1])
-                        return True
-                        break
+                        point1 = App.Base.Vector(0.0,0.0,0.0)
+                        point1.x = self.points[k][i][0]+0.33*(self.points[k+1][i][0]-self.points[k][i][0])
+                        point1.y = self.points[k][i][1]+0.33*(self.points[k+1][i][1]-self.points[k][i][1])
+                        point1.z = self.points[k][i][2]+0.33*(self.points[k+1][i][2]-self.points[k][i][2])
+                        point2 = App.Base.Vector(0.0,0.0,0.0)
+                        point2.x = self.points[k+1][i][0]-0.33*(self.points[k+1][i][0]-self.points[k][i][0])
+                        point2.y = self.points[k+1][i][1]-0.33*(self.points[k+1][i][1]-self.points[k][i][1])
+                        point2.z = self.points[k+1][i][2]-0.33*(self.points[k+1][i][2]-self.points[k][i][2])
+                        moved = False
+                        if(k != 0):
+                            self.points[k][i] = point1
+                            surf1 = self.faces[self.surfacesID[k][i]].Surface
+                            uv = surf1.parameter(self.points[k][i])
+                            self.uv[k][i] = [uv[0], uv[1]]
+                            self.points[k][i]=surf1.value(self.uv[k][i][0],self.uv[k][i][1])
+                            moved = True
+                        if(k+1 != len(self.points)-1):
+                            self.points[k+1][i] = point2
+                            surf2 = self.faces[self.surfacesID[k+1][i]].Surface
+                            uv = surf2.parameter(self.points[k+1][i]) 
+                            self.uv[k+1][i] = [uv[0], uv[1]]
+                            self.points[k+1][i]=surf2.value(self.uv[k+1][i][0],self.uv[k+1][i][1])
+                            moved = True
+                        if moved:
+                            return True
                     continue
+                # If same surface for each point, UV
+                # redistribution is possible, with better convergency
+                # and less computation effort.
                 if difs[k]>=(2*sumdif/len(difs)):       
-                    self.uv[k][i][0]=self.uv[k][i][0]+0.33*(self.uv[k+1][i][0]-self.uv[k][i][0])
-                    self.uv[k][i][1]=self.uv[k][i][1]+0.33*(self.uv[k+1][i][1]-self.uv[k][i][1])
-                    self.uv[k+1][i][0]=self.uv[k+1][i][0]-0.33*(self.uv[k+1][i][0]-self.uv[k][i][0])
-                    self.uv[k+1][i][1]=self.uv[k+1][i][1]-0.33*(self.uv[k+1][i][1]-self.uv[k][i][1])
-                    surf = self.faces[self.surfacesID[k][i]].Surface
-                    self.points[k][i] = surf.value(self.uv[k][i][0], self.uv[k][i][1])
-                    self.points[k+1][i] = surf.value(self.uv[k+1][i][0], self.uv[k+1][i][1])
-                    return True
-                    break
+                    uv1 = [0.0,0.0]
+                    uv1[0] = self.uv[k][i][0]+0.33*(self.uv[k+1][i][0]-self.uv[k][i][0])
+                    uv1[1] = self.uv[k][i][1]+0.33*(self.uv[k+1][i][1]-self.uv[k][i][1])
+                    uv2 = [0.0,0.0]
+                    uv2[0] = self.uv[k+1][i][0]-0.33*(self.uv[k+1][i][0]-self.uv[k][i][0])
+                    uv2[1] = self.uv[k+1][i][1]-0.33*(self.uv[k+1][i][1]-self.uv[k][i][1])
+                    moved = False
+                    if(k != 0):
+                        self.uv[i][k] = uv1[:]
+                        surf = self.faces[self.surfacesID[k][i]].Surface
+                        self.points[k][i] = surf.value(self.uv[k][i][0], self.uv[k][i][1])
+                        moved = True
+                    if(k+1 != len(self.points[i])-1):
+                        self.uv[i][k+1] = uv2[:]
+                        surf = self.faces[self.surfacesID[k+1][i]].Surface
+                        self.points[k+1][i] = surf.value(self.uv[k+1][i][0], self.uv[k+1][i][1])
+                    if moved:
+                        return True
         return False
         
     def createSurface(self):
