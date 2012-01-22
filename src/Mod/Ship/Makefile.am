@@ -43,7 +43,7 @@ nobase_data_DATA = \
 	shipAreasCurve/Preview.py \
 	shipAreasCurve/TaskPanel.py \
 	shipAreasCurve/TaskPanel.ui \
-	shipHydrostatics/__init__.ui \
+	shipHydrostatics/__init__.py \
 	shipHydrostatics/Tools.ui \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
