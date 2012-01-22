@@ -44,7 +44,7 @@ nobase_data_DATA = \
 	shipAreasCurve/TaskPanel.py \
 	shipAreasCurve/TaskPanel.ui \
 	shipHydrostatics/__init__.py \
-	shipHydrostatics/Tools.ui \
+	shipHydrostatics/Tools.py \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
 	shipUtils/Paths.py \
