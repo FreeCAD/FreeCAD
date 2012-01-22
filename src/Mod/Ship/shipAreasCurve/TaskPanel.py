@@ -87,7 +87,6 @@ class TaskPanel:
         # Connect Signals and Slots
         QtCore.QObject.connect(form.draft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
         QtCore.QObject.connect(form.trim, QtCore.SIGNAL("valueChanged(double)"), self.onData)
-        QtCore.QObject.connect(form.findChild(QtGui.QPushButton, "UpdateButton"),QtCore.SIGNAL("pressed()"),self.onUpdate)
 
     def getMainWindow(self):
         "returns the main window"
@@ -163,7 +162,6 @@ class TaskPanel:
         self.form.setWindowTitle(Translator.translate("Plot transversal areas curve"))
         self.form.findChild(QtGui.QLabel, "DraftLabel").setText(Translator.translate("Draft"))
         self.form.findChild(QtGui.QLabel, "TrimLabel").setText(Translator.translate("Trim"))
-        self.form.findChild(QtGui.QPushButton, "UpdateButton").setText(Translator.translate("Update Data"))
 
     def onData(self, value):
         """ Method called when input data is changed.
@@ -171,6 +169,7 @@ class TaskPanel:
         """
         if not self.ship:
             return
+        self.onUpdate()
         self.preview.update(self.form.draft.value(), self.form.trim.value(), self.ship)
 
     def onUpdate(self):

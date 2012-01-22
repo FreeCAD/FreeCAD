@@ -91,13 +91,6 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
-    <widget class="QPushButton" name="UpdateButton">
-     <property name="text">
-      <string>Update data</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="QTextEdit" name="OutputData">
      <property name="textInteractionFlags">
