@@ -79,7 +79,7 @@ class Ship:
         nPoint = len(points)
         if nPoint <= nVertex:
             # Any valid point
-            result
+            return result
         for i in range(0,nPoint):
             disp = len(result)
             flag = 0
@@ -98,10 +98,14 @@ class Ship:
         @param nS Number of sections
         @param nP Number of points per section
         """
+        print(nS,nP)
         self.obj.addProperty("App::PropertyInteger","nSections","Ship", str(Translator.translate("Number of sections"))).nSections=nS
         self.obj.addProperty("App::PropertyIntegerList","nPoints","Ship", str(Translator.translate("List of number of points per sections (accumulated histogram)"))).nPoints=[0]
         self.obj.addProperty("App::PropertyFloatList","xSection","Ship", str(Translator.translate("List of sections x coordinate"))).xSection=[]
         self.obj.addProperty("App::PropertyVectorList","mSections","Ship", str(Translator.translate("List of sections points"))).mSections=[]
+        nPoints   = [0]
+        xSection  = []
+        mSections = []
         # Get bounds
         shape = self.obj.Shape
         bbox = shape.BoundBox
@@ -124,7 +128,7 @@ class Ship:
         for i in range(0,nS):
             section = []
             x = x0 + i*dx
-            self.obj.xSection.append(x)
+            xSection.append(x)
             percen = i*100 / (nS-1)
             FreeCAD.Console.PrintMessage('%d%%\n' % (percen));
             # Slice the surface to get curves
@@ -136,7 +140,7 @@ class Ship:
                     FreeCAD.Console.PrintWarning(msg)
                     FreeCAD.Console.PrintWarning('\tThis may happens if a bad defined (or really complex) surface has been provided.\n')
                     FreeCAD.Console.PrintWarning('\tPlease, ensure that this section is correct, or fix surfaces and create a new ship.\n')
-                    self.obj.nPoints.append(0)
+                    nPoints.append(0)
             # Desarrollate wires into edges list
             edges = []
             for j in range(0,len(wires)):
@@ -160,9 +164,13 @@ class Ship:
             for j in range(0,len(points)):
                 section.append(Vector(points[j].x, aux[j], points[j].z))
             # Store points
-            self.obj.nPoints.append(len(points))
-            for j in range(0,len(points)):
-                self.obj.mSections.append(points[j])
+            nPoints.append(len(section))
+            for j in range(0,len(section)):
+                mSections.append(section[j])
+        # Save data
+        self.obj.nPoints   = nPoints[:]
+        self.obj.xSection  = xSection[:]
+        self.obj.mSections = mSections[:]
 
 class ViewProviderShip:
     def __init__(self, obj):
@@ -653,8 +661,10 @@ def sections(obj):
     histogram = obj.nPoints[:]
     points    = obj.mSections[:]
     sections  = []
+    print(histogram)
     for i in range(0, len(histogram) - 1):
         sections.append([])
+        print(histogram[i],histogram[i+1])
         for j in range(histogram[i],histogram[i+1]):
             sections[i].append(points[j])
     return sections
