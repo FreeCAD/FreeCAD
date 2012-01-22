@@ -181,14 +181,14 @@ class TaskPanel:
         # Calculate drafts
         angle = math.radians(self.form.trim.value())
         L = self.ship.Length
-        draftAP = self.form.trim.value() + 0.5*L*math.tan(angle)
+        draftAP = self.form.draft.value() + 0.5*L*math.tan(angle)
         if draftAP < 0.0:
             draftAP = 0.0
-        draftFP = self.form.trim.value() - 0.5*L*math.tan(angle)
+        draftFP = self.form.draft.value() - 0.5*L*math.tan(angle)
         if draftFP < 0.0:
             draftFP = 0.0
         # Calculate hydrostatics involved
-        disp = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
+        data = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
         # Prepare the string in html format
         string = 'L = %g [m]<BR>' % (self.ship.Length)
         string = string + 'B = %g [m]<BR>' % (self.ship.Beam)
@@ -196,8 +196,8 @@ class TaskPanel:
         string = string + 'Trim = %g [degrees]<BR>' % (self.form.trim.value())
         string = string + 'T<sub>AP</sub> = %g [m]<BR>' % (draftAP)
         string = string + 'T<sub>FP</sub> = %g [m]<HR>' % (draftFP)
-        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (disp[0])
-        string = string + 'XCB = %g [m]' % (disp[0])
+        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (data[1])
+        string = string + 'XCB = %g [m]' % (data[2])
         # Set the document
         self.form.output.setHtml(string)
 

@@ -98,7 +98,6 @@ class Ship:
         @param nS Number of sections
         @param nP Number of points per section
         """
-        print(nS,nP)
         self.obj.addProperty("App::PropertyInteger","nSections","Ship", str(Translator.translate("Number of sections"))).nSections=nS
         self.obj.addProperty("App::PropertyIntegerList","nPoints","Ship", str(Translator.translate("List of number of points per sections (accumulated histogram)"))).nPoints=[0]
         self.obj.addProperty("App::PropertyFloatList","xSection","Ship", str(Translator.translate("List of sections x coordinate"))).xSection=[]
@@ -168,6 +167,8 @@ class Ship:
             for j in range(0,len(section)):
                 mSections.append(section[j])
         # Save data
+        for i in range(1,len(nPoints)):
+            nPoints[i] = nPoints[i] + nPoints[i-1]
         self.obj.nPoints   = nPoints[:]
         self.obj.xSection  = xSection[:]
         self.obj.mSections = mSections[:]
@@ -661,10 +662,8 @@ def sections(obj):
     histogram = obj.nPoints[:]
     points    = obj.mSections[:]
     sections  = []
-    print(histogram)
     for i in range(0, len(histogram) - 1):
         sections.append([])
-        print(histogram[i],histogram[i+1])
         for j in range(histogram[i],histogram[i+1]):
             sections[i].append(points[j])
     return sections
