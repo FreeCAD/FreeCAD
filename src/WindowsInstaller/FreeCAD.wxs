@@ -163,7 +163,7 @@
             <Feature Id="FeatModImage" Title="The Image module" Description="Module to handle pictures" Level="1">
                 <ComponentRef Id="CompModImage" />
             </Feature>
-            <Feature Id="FeatModRaytracing" Title="The Raytracing module" Description="Module to work with the Populat PovRay raytracer. (Experimental)" Level="1">
+            <Feature Id="FeatModRaytracing" Title="The Raytracing module" Description="Module to work with the popular PovRay raytracer. (Experimental)" Level="1">
                 <ComponentRef Id="CompModRaytracing" />
             </Feature>
 
