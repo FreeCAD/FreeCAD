@@ -81,10 +81,6 @@ class ArchWorkbench(Workbench):
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
-        FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
-        FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
-        FreeCAD.addImportType("Collada (*.dae)","importDAE")
-        FreeCAD.addExportType("Collada (*.dae)","importDAE")
         Log ('Loading Arch module... done\n')
                 
     def Activated(self):
@@ -102,4 +98,8 @@ class ArchWorkbench(Workbench):
         return "Gui::PythonWorkbench"
 
 FreeCADGui.addWorkbench(ArchWorkbench)
+FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
+FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
+FreeCAD.addImportType("Collada (*.dae)","importDAE")
+FreeCAD.addExportType("Collada (*.dae)","importDAE")
 
