@@ -22,6 +22,7 @@
 #***************************************************************************
 
 import FreeCAD,FreeCADGui,Draft,math
+
 from draftlibs import fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore, QtGui

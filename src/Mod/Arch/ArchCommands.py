@@ -138,6 +138,7 @@ def splitMesh(obj,mark=True):
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
+
     name = obj.Name
     import Part,MeshPart
     from draftlibs import fcgeo
