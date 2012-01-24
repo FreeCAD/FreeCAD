@@ -50,9 +50,10 @@ FreeCAD.svgpatterns = importSVG.getContents(Draft_rc.qt_resource_data,'pattern',
 altpat = Draft.getParam("patternFile")
 if os.path.isdir(altpat):
     for f in os.listdir(altpat):
-        if '.svg' in f:
+        if f[-4:].upper() == ".SVG":
             p = importSVG.getContents(altpat+os.sep+f,'pattern')
-            if p: FreeCAD.svgpatterns[p[0]]=p[1]
+            if p:
+                FreeCAD.svgpatterns.update(p)
 
 # sets the default working plane
 plane = WorkingPlane.plane()
