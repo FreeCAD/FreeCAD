@@ -53,6 +53,7 @@
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
+#include <GCPnts_UniformAbscissa.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -394,6 +395,52 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
         PyErr_SetString(PyExc_Exception, e->GetMessageString());
         return 0;
     }
+}
+
+PyObject* TopoShapeEdgePy::discretize(PyObject *args)
+{
+    PyObject* defl_or_num;
+    if (!PyArg_ParseTuple(args, "O", &defl_or_num))
+        return 0;
+
+    try {
+        BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->_Shape));
+        GCPnts_UniformAbscissa discretizer;
+        if (PyInt_Check(defl_or_num)) {
+            int num = PyInt_AsLong(defl_or_num);
+            discretizer.Initialize (adapt, num);
+        }
+        else if (PyFloat_Check(defl_or_num)) {
+            double defl = PyFloat_AsDouble(defl_or_num);
+            discretizer.Initialize (adapt, defl);
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Either int or float expected");
+            return 0;
+        }
+        if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            Py::List points;
+            int nbPoints = discretizer.NbPoints ();
+            for (int i=1; i<=nbPoints; i++) {
+                gp_Pnt p = adapt.Value (discretizer.Parameter (i));
+                points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+            }
+
+            return Py::new_reference_to(points);
+        }
+        else {
+            PyErr_SetString(PyExc_Exception, "Descretization of curve failed");
+            return 0;
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
 }
 
 PyObject* TopoShapeEdgePy::setTolerance(PyObject *args)
