@@ -108,22 +108,33 @@ PyObject* GeometryCurvePy::toShape(PyObject *args)
 
 PyObject* GeometryCurvePy::discretize(PyObject *args)
 {
-    double d;
-    if (!PyArg_ParseTuple(args, "d", &d))
+    PyObject* defl_or_num;
+    if (!PyArg_ParseTuple(args, "O", &defl_or_num))
         return 0;
 
-    Handle_Geom_Geometry g = getGeometryPtr()->handle();
-    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
     try {
+        Handle_Geom_Geometry g = getGeometryPtr()->handle();
+        Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
         if (!c.IsNull()) {
-            GeomAdaptor_Curve curve_adaptator(c);
+            GeomAdaptor_Curve adapt(c);
             GCPnts_UniformAbscissa discretizer;
-            discretizer.Initialize (curve_adaptator, d);
+            if (PyInt_Check(defl_or_num)) {
+                int num = PyInt_AsLong(defl_or_num);
+                discretizer.Initialize (adapt, num);
+            }
+            else if (PyFloat_Check(defl_or_num)) {
+                double defl = PyFloat_AsDouble(defl_or_num);
+                discretizer.Initialize (adapt, defl);
+            }
+            else {
+                PyErr_SetString(PyExc_TypeError, "Either int or float expected");
+                return 0;
+            }
             if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
                 for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = curve_adaptator.Value (discretizer.Parameter (i));
+                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
                     points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
                 }
 

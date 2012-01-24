@@ -1771,17 +1771,24 @@ TopoDS_Shape TopoShape::removeSplitter() const
         Standard_Failure::Raise("Cannot remove splitter from empty shape");
 
     if (_Shape.ShapeType() == TopAbs_SOLID) {
-        const TopoDS_Solid& solid = TopoDS::Solid(_Shape);
-        ModelRefine::FaceUniter uniter(solid);
-        if (uniter.process()) {
-            TopoDS_Solid solidMod;
-            if (!uniter.getSolid(solidMod))
-                Standard_Failure::Raise("Getting solid failed");
-            return solidMod;
+        const TopoDS_Solid &solid = TopoDS::Solid(_Shape);
+        BRepTools_ReShape reshape;
+        TopExp_Explorer it;
+        for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
+            const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
+            ModelRefine::FaceUniter uniter(currentShell);
+            if (uniter.process()) {
+                if (uniter.isModified()) {
+                    const TopoDS_Shell &newShell = uniter.getShell();
+                    reshape.Replace(currentShell, newShell);
+                }
+            }
+            else {
+                Standard_Failure::Raise("Removing splitter failed");
+                return _Shape;
+            }
         }
-        else {
-            Standard_Failure::Raise("Removing splitter failed");
-        }
+        return reshape.Apply(solid);
     }
     else if (_Shape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(_Shape);
@@ -1801,13 +1808,20 @@ TopoDS_Shape TopoShape::removeSplitter() const
         TopExp_Explorer xp;
         // solids
         for (xp.Init(_Shape, TopAbs_SOLID); xp.More(); xp.Next()) {
-            const TopoDS_Solid& solid = TopoDS::Solid(xp.Current());
-            ModelRefine::FaceUniter uniter(solid);
-            if (uniter.process()) {
-                TopoDS_Solid solidMod;
-                if (uniter.getSolid(solidMod))
-                    builder.Add(comp, solidMod);
+            const TopoDS_Solid &solid = TopoDS::Solid(xp.Current());
+            BRepTools_ReShape reshape;
+            TopExp_Explorer it;
+            for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
+                const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
+                ModelRefine::FaceUniter uniter(currentShell);
+                if (uniter.process()) {
+                    if (uniter.isModified()) {
+                        const TopoDS_Shell &newShell = uniter.getShell();
+                        reshape.Replace(currentShell, newShell);
+                    }
+                }
             }
+            builder.Add(comp, reshape.Apply(solid));
         }
         // free shells
         for (xp.Init(_Shape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {

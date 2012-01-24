@@ -59,6 +59,11 @@
 				<UserDocu>Set the tolerance for the edge.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="discretize">
+			<Documentation>
+				<UserDocu>Discretizes the edge using a given deflection or number of points and returns a list of points</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Tolerance">
 			<Documentation>
 				<UserDocu>Set or get the tolerance of the vertex</UserDocu>

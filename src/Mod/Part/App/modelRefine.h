@@ -151,14 +151,14 @@ namespace ModelRefine
         FaceUniter(){}
     public:
         FaceUniter(const TopoDS_Shell &shellIn);
-        FaceUniter(const TopoDS_Solid &solidIn);//get first shell
         bool process();
         const TopoDS_Shell& getShell() const {return workShell;}
-        bool getSolid(TopoDS_Solid &outSolid) const;//tries to make solid from shell.
+        bool isModified(){return modifiedSignal;}
 
     private:
         TopoDS_Shell workShell;
         std::vector<FaceTypedBase *> typeObjects;
+        bool modifiedSignal;
     };
 }
 
