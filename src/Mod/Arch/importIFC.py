@@ -108,7 +108,10 @@ def readOpenShell(filename,useParser=False):
                     pass
                 
                 elif altifc and (obj.type == "IfcWallStandardCase"):
-                    makeWall(altifc.Entities[obj.id],shape=getShape(obj))
+                    if USESHAPES:
+                        makeWall(altifc.Entities[obj.id],shape=getShape(obj))
+                    else:
+                        makeWall(altifc.Entities[obj.id])
                     
                 elif USESHAPES:
                     # treat as Parts
