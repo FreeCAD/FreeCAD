@@ -154,6 +154,7 @@ class DraftToolBar:
     def __init__(self):
         self.tray = None
         self.sourceCmd = None
+        self.cancel = None
         self.taskmode = Draft.getParam("UiMode")
         self.paramcolor = Draft.getParam("color")>>8
         self.color = QtGui.QColor(self.paramcolor)
@@ -465,14 +466,14 @@ class DraftToolBar:
     def taskUi(self,title):
         if self.taskmode:
             self.isTaskOn = True
-            FreeCADGui.Control.closeDialog()
+            todo.delay(FreeCADGui.Control.closeDialog,None)
             self.baseWidget = QtGui.QWidget()
             self.setTitle(title)
             self.layout = QtGui.QVBoxLayout(self.baseWidget)
             self.setupToolBar(task=True)
             self.retranslateUi(self.baseWidget)
             self.panel = DraftTaskPanel(self.baseWidget)
-            FreeCADGui.Control.showDialog(self.panel)
+            todo.delay(FreeCADGui.Control.showDialog,self.panel)
         else:
             self.setTitle(title)  
                 
@@ -509,7 +510,8 @@ class DraftToolBar:
         self.labelx.setText(translate("draft", "Center X"))
         self.continueCmd.show()
 
-    def pointUi(self,title=translate("draft","Point")):
+    def pointUi(self,title=translate("draft","Point"),cancel=None):
+        if cancel: self.cancel = cancel
         self.taskUi(title)
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
@@ -832,7 +834,11 @@ class DraftToolBar:
 
     def finish(self):
         "finish button action"
-        self.sourceCmd.finish(False)
+        if self.sourceCmd:
+            self.sourceCmd.finish(False)
+        if self.cancel:
+            self.cancel()
+            self.cancel = None
 
     def closeLine(self):
         "close button action"

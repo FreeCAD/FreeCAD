@@ -89,30 +89,28 @@ class _Cell(ArchComponent.Component):
         import Part
         pl = obj.Placement
         if obj.Components:
+            shapes = []
             if obj.JoinMode:
                 walls = []
                 structs = []
-                compshapes = []
-                for comp in obj.Components:
-                    if Draft.getType(comp) == "Wall":
-                        walls.append(comp.Shape)
-                    elif Draft.getType(comp) == "Structure":
-                        structs.append(comp.Shape)
+                for c in obj.Components:
+                    if Draft.getType(c) == "Wall":
+                        walls.append(c.Shape)
+                    elif Draft.getType(c) == "Structure":
+                        structs.append(c.Shape)
                     else:
-                        compshapes.append(comp.Shape)
-                for gr in [walls,structs]:
-                    if gr:
-                        sh = gr.pop(0)
-                        for csh in gr:
-                            sh = sh.oldFuse(csh)
-                        compshapes.append(sh)
-                baseShape = Part.makeCompound(compshapes)
+                        shapes.append(c.Shape)
+                for group in [walls,structs]:
+                    if group:
+                        sh = group.pop(0).copy()
+                        for subsh in group:
+                            sh = sh.oldFuse(subsh)
+                        shapes.append(sh)
             else:
-                compshapes = []
-                for o in obj.Components:
-                    compshapes.append(o.Shape)
-                baseShape = Part.makeCompound(compshapes)
-            obj.Shape = baseShape
+                for c in obj.Components:
+                    shapes.append(c.Shape)
+            if shapes:
+                obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
 
 class _ViewProviderCell(ArchComponent.ViewProviderComponent):

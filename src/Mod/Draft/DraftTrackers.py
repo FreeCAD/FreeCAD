@@ -623,3 +623,66 @@ class gridTracker(Tracker):
         rot = FreeCAD.Rotation()
         rot.Q = self.trans.rotation.getValue().getValue()
         return rot.multVec(Vector(pu,pv,0))
+
+class boxTracker(Tracker):                
+    "A box tracker, can be based on a line object"
+    def __init__(self,line=None,width=0.1,height=1):
+        self.trans = coin.SoTransform()
+        m = coin.SoMaterial()
+        m.transparency.setValue(0.8)
+        m.diffuseColor.setValue([0.4,0.4,0.6])
+        self.cube = coin.SoCube()
+        self.cube.height.setValue(width)
+        self.cube.depth.setValue(height)
+        self.baseline = None
+        if line:
+            self.baseline = line
+            self.update()
+        Tracker.__init__(self,children=[self.trans,m,self.cube])
+
+    def update(self,line=None,normal=None):
+        import WorkingPlane
+        from draftlibs import fcgeo
+        if not normal:
+            normal = FreeCAD.DraftWorkingPlane.axis
+        if line:
+            if isinstance(line,list):
+                bp = line[0]
+                lvec = line[1].sub(line[0])
+            else:
+                lvec = fcgeo.vec(line.Shape.Edges[0])
+                bp = line.Shape.Edges[0].Vertexes[0].Point
+        elif self.baseline:
+            lvec = fcgeo.vec(self.baseline.Shape.Edges[0])
+            bp = self.baseline.Shape.Edges[0].Vertexes[0].Point
+        else:
+            return
+        right = lvec.cross(normal)
+        self.cube.width.setValue(lvec.Length)
+        p = WorkingPlane.getPlacementFromPoints([bp,bp.add(lvec),bp.add(right)])
+        self.trans.rotation.setValue(p.Rotation.Q)
+        bp = bp.add(fcvec.scale(lvec,0.5))
+        bp = bp.add(fcvec.scaleTo(normal,self.cube.depth.getValue()/2))
+        self.pos(bp)
+
+    def pos(self,p):
+        self.trans.translation.setValue(fcvec.tup(p))
+
+    def width(self,w=None):
+        if w:
+            self.cube.height.setValue(w)
+        else:
+            return self.cube.height.getValue()
+
+    def length(self,l=None):
+        if l:
+            self.cube.width.setValue(l)
+        else:
+            return self.cube.width.getValue()
+        
+    def heigth(self,h=None):
+        if h:
+            self.cube.depth.setValue(h)
+            self.update()
+        else:
+            return self.cube.depth.getValue()

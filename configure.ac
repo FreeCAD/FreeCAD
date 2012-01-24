@@ -1027,6 +1027,8 @@ src/Mod/TemplatePyMod/Makefile
 src/Mod/Sandbox/Makefile
 src/Mod/Sandbox/App/Makefile
 src/Mod/Sandbox/Gui/Makefile
+src/Mod/Surfaces/Makefile
+src/Mod/Ship/Makefile
 src/Tools/Makefile
 src/Tools/_TEMPLATE_/Makefile
 src/Tools/_TEMPLATE_/App/Makefile

@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ifcReader, FreeCAD, Arch, Draft, os, sys, time, tempfile
+import ifcReader, FreeCAD, Arch, Draft, os, sys, time, tempfile, Part
 from draftlibs import fcvec
 
 __title__="FreeCAD IFC importer"
@@ -29,6 +29,8 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 DEBUG = True
+SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
+SKIP = ["IfcOpeningElement"]
 pyopen = open # because we'll redefine open below
 
 def open(filename):
@@ -38,9 +40,10 @@ def open(filename):
     doc.Label = decode(docname)
     FreeCAD.ActiveDocument = doc
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    p = p.GetBool("useIfcOpenShell")
-    if p:
-        readOpenShell(filename)
+    op = p.GetBool("useIfcOpenShell")
+    ip = p.GetBool("useIfcParser")
+    if op:
+        readOpenShell(filename,useParser=ip)
     else:
         read(filename)
     return doc
@@ -59,14 +62,13 @@ def decode(name):
 
 def getSchema():
     "retrieves the express schema"
-    default = "IFC2X3_TC1.exp"
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    p = p.GetString("IfcSchema")
-    if p:
-        if os.path.exists(p):
-            return p
-    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),default)
+    p = None
+    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),SCHEMA.split('/')[-1])
     if os.path.exists(p):
+        return p
+    import ArchCommands
+    p = ArchCommands.download(SCHEMA)
+    if p:
         return p
     return None
 
@@ -81,8 +83,12 @@ def getIfcOpenShell():
     else:
         return True
 
-def readOpenShell(filename):
+def readOpenShell(filename,useParser=False):
     "Parses an IFC file with IfcOpenShell"
+
+    altifc = None
+    if useParser:
+        altifc = parseFile(filename)
     
     if getIfcOpenShell():
         USESHAPES = False
@@ -97,72 +103,100 @@ def readOpenShell(filename):
                 meshdata = []
                 n = obj.name
                 if not n: n = "Unnamed"
-                
-                if USESHAPES:
 
+                if obj.type in SKIP:
+                    pass
+                
+                elif altifc and (obj.type == "IfcWallStandardCase"):
+                    if USESHAPES:
+                        makeWall(altifc.Entities[obj.id],shape=getShape(obj))
+                    else:
+                        makeWall(altifc.Entities[obj.id])
+                    
+                elif USESHAPES:
                     # treat as Parts
-                    import Part
-                    tf = tempfile.mkstemp(suffix=".brp")[1]
-                    of = pyopen(tf,"wb")
-                    of.write(obj.mesh.brep_data)
-                    of.close()
-                    sh = Part.read(tf)
+                    sh = getShape(obj)
                     nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
                     nobj.Shape = sh
-                    os.remove(tf)
-                    
                 else:
-
                     # treat as meshes
-                    import Mesh
-                    f = obj.mesh.faces
-                    v = obj.mesh.verts
-                    for i in range(0, len(f), 3):
-                        face = []
-                        for j in range(3):
-                            vi = f[i+j]*3
-                            face.append([v[vi],v[vi+1],v[vi+2]])
-                        meshdata.append(face)
-                    newmesh = Mesh.Mesh(meshdata)
+                    me,pl = getMesh(obj)
                     nobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
-                    nobj.Mesh = newmesh
-
-                # apply transformation matrix
-                m = obj.matrix
-                mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
-                                     m[1], m[4], m[7], m[10],
-                                     m[2], m[5], m[8], m[11],
-                                     0, 0, 0, 1)
-                nobj.Placement = FreeCAD.Placement(mat)
+                    nobj.Mesh = me
+                    nobj.Placement = pl
+                    
                 if not IfcImport.Next():
                     break
     IfcImport.CleanUp()
     return None
+
+def getMesh(obj):
+    "gets mesh and placement from an IfcOpenShell object"
+    import Mesh
+    f = obj.mesh.faces
+    v = obj.mesh.verts
+    for i in range(0, len(f), 3):
+        face = []
+        for j in range(3):
+            vi = f[i+j]*3
+            face.append([v[vi],v[vi+1],v[vi+2]])
+        meshdata.append(face)
+    me = Mesh.Mesh(meshdata)
+    # get transformation matrix
+    m = obj.matrix
+    mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
+                         m[1], m[4], m[7], m[10],
+                         m[2], m[5], m[8], m[11],
+                         0, 0, 0, 1)
+    pl = FreeCAD.Placement(mat)
+    return me,pl
+
+def getShape(obj):
+    "gets a shape from an IfcOpenShell object"
+    tf = tempfile.mkstemp(suffix=".brp")[1]
+    of = pyopen(tf,"wb")
+    of.write(obj.mesh.brep_data)
+    of.close()
+    sh = Part.read(tf)
+    os.remove(tf)
+    m = obj.matrix
+    mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
+                         m[1], m[4], m[7], m[10],
+                         m[2], m[5], m[8], m[11],
+                         0, 0, 0, 1)
+    sh.Placement = FreeCAD.Placement(mat)  
+    return sh
     
 def read(filename):
     "processes an ifc file and add its objects to the given document"
     t1 = time.time()
+    ifc = parseFile(filename)
+    t2 = time.time()
+    if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
+    # getting walls
+    for w in ifc.getEnt("IFCWALLSTANDARDCASE"):
+        makeWall(w)
+    # getting floors
+    for f in ifc.getEnt("IFCBUILDINGSTOREY"):
+        makeCell(f,"Floor")
+    # getting buildings
+    for b in ifc.getEnt("IFCBUILDING"):
+        makeCell(b,"Building")
+    FreeCAD.ActiveDocument.recompute()
+    t3 = time.time()
+    if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
+
+def parseFile(filename):
+    "parses an IFC file"
     schema=getSchema()
     if schema:
         if DEBUG: global ifc
         if DEBUG: print "opening",filename,"..."
         ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
-        t2 = time.time()
-        if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
-        # getting walls
-        for w in ifc.getEnt("IFCWALLSTANDARDCASE"):
-            makeWall(w)
-        # getting floors
-        for f in ifc.getEnt("IFCBUILDINGSTOREY"):
-            makeCell(f,"Floor")
-        # getting buildings
-        for b in ifc.getEnt("IFCBUILDING"):
-            makeCell(b,"Building")
-        FreeCAD.ActiveDocument.recompute()
-        t3 = time.time()
-        if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
+        return ifc
     else:
-        FreeCAD.Console.PrintWarning("IFC Schema not found, IFC import disabled. See Arch Preferences to get a schema")
+        FreeCAD.Console.PrintWarning("IFC Schema not found, IFC import disabled.\n")
+        return None
 
 def makeCell(entity,mode="Cell"):
     "makes a cell in the freecad document"
@@ -202,10 +236,16 @@ def makeCell(entity,mode="Cell"):
     except:
         if DEBUG: print "error: skipping cell",entity.id        
 
-def makeWall(entity):
+def makeWall(entity,shape=None):
     "makes a wall in the freecad document"
     try:
         if DEBUG: print "=====> making wall",entity.id
+        if shape:
+            sh = FreeCAD.ActiveDocument.addObject("Part::Feature","WallBody")
+            sh.Shape = shape
+            wall = Arch.makeWall(sh)
+            if DEBUG: print "made wall object  ",entity.id,":",wall
+            return
         placement = wall = wire = body = width = height = None
         placement = getPlacement(entity.ObjectPlacement)
         if DEBUG: print "got wall placement",entity.id,":",placement
