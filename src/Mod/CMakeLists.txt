@@ -44,3 +44,5 @@ if(FREECAD_BUILD_SANDBOX)
     add_subdirectory(Sandbox)
 endif(FREECAD_BUILD_SANDBOX)
 
+add_subdirectory(Surfaces)
+add_subdirectory(Ship)

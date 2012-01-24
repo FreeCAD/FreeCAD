@@ -970,6 +970,7 @@ def draftify(objectslist,makeblock=False):
     wire. If makeblock is True, multiple objects will be grouped in a block'''
     from draftlibs import fcgeo
     import Part
+
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     newobjlist = []

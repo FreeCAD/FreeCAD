@@ -430,13 +430,16 @@ class Snapper:
             # get the intersection points
             pt = fcgeo.findIntersection(tmpEdge1,tmpEdge2,True,True)
             if pt:
-                    return [pt[0],'ortho',pt[0]]
+                return [pt[0],'ortho',pt[0]]
         if eline:
-            tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
-            # get the intersection points
-            pt = fcgeo.findIntersection(eline,tmpEdge2,True,True)
-            if pt:
+            try:
+                tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+                # get the intersection points
+                pt = fcgeo.findIntersection(eline,tmpEdge2,True,True)
+                if pt:
                     return [pt[0],'ortho',pt[0]]
+            except:
+                return None
         return None
 
     def snapToElines(self,e1,e2):
@@ -613,15 +616,23 @@ class Snapper:
         if self.constrainLine:
             self.constrainLine.off()
 
-    def getPoint(self,last=None,callback=None):
-        """getPoint([last],[callback]) : gets a 3D point from the screen. You can provide an existing point,
-        in that case additional snap options and a tracker are available. You can also passa function as
-        callback, which will get called with the resulting point as argument, when a point is clicked:
+    def getPoint(self,last=None,callback=None,movecallback=None):
+        
+        """getPoint([last],[callback],[movecallback]) : gets a 3D point from the screen. You
+        can provide an existing point, in that case additional snap options and a tracker
+        are available. You can also pass a function as callback, which will get called
+        with the resulting point as argument, when a point is clicked, and optionally
+        another callback which gets called when the mouse is moved.
+
+        If the operation gets cancelled (the user pressed Escape), no point is returned.
+
+        Example:
 
         def cb(point):
-            print "got a 3D point: ",point
-        FreeCADGui.Snapper.getPoint(callback=cb)
-        """
+            if point:
+                print "got a 3D point: ",point
+        FreeCADGui.Snapper.getPoint(callback=cb)"""
+        
         self.pt = None
         self.ui = FreeCADGui.draftToolBar
         self.view = FreeCADGui.ActiveDocument.ActiveView
@@ -642,6 +653,8 @@ class Snapper:
             self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
             if self.trackLine:
                 self.trackLine.p2(self.pt)
+            if movecallback:
+                movecallback(self.pt)
         
         def click(event_cb):
             event = event_cb.getEvent()
@@ -656,10 +669,21 @@ class Snapper:
                     callback(self.pt)
                 self.pt = None
 
+        def cancel():
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            FreeCADGui.Snapper.off()
+            self.ui.offUi()
+            if self.trackLine:
+                self.trackLine.off()
+            if callback:
+                callback(None)
+            
         # adding 2 callback functions
-        self.ui.pointUi()
+        self.ui.pointUi(cancel=cancel)
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
         self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)            
-            
+
+
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
