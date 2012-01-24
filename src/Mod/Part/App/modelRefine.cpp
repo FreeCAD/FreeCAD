@@ -436,17 +436,9 @@ FaceTypedCylinder& ModelRefine::getCylinderObject()
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-FaceUniter::FaceUniter(const TopoDS_Shell &shellIn)
+FaceUniter::FaceUniter(const TopoDS_Shell &shellIn) : modifiedSignal(false)
 {
     workShell = shellIn;
-}
-
-FaceUniter::FaceUniter(const TopoDS_Solid &solidIn)
-{
-    //get first shell
-    TopExp_Explorer it;
-    it.Init(solidIn, TopAbs_SHELL);
-    workShell = TopoDS::Shell(it.Current());
 }
 
 bool FaceUniter::process()
@@ -495,6 +487,7 @@ bool FaceUniter::process()
     }
     if (facesToSew.size() > 0)
     {
+        modifiedSignal = true;
         workShell = ModelRefine::removeFaces(workShell, facesToRemove);
         TopExp_Explorer xp;
         bool emptyShell = true;
@@ -536,12 +529,4 @@ bool FaceUniter::process()
         workShell = TopoDS::Shell(edgeFuse.Shape());
     }
     return true;
-}
-
-bool FaceUniter::getSolid(TopoDS_Solid &outSolid) const
-{
-    BRepBuilderAPI_MakeSolid solidMaker;
-    solidMaker.Add(workShell);
-    outSolid = solidMaker.Solid();
-    return solidMaker.IsDone() ? true : false;
 }
