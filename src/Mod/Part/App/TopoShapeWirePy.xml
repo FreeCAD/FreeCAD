@@ -45,13 +45,18 @@
       </Documentation>
     </Methode>
     <Methode Name="approximate">
-          <Documentation>
-              <UserDocu>Approximate B-Spline-curve from this wire</UserDocu>
-          </Documentation>
-      </Methode>
-      <Attribute Name="CenterOfMass" ReadOnly="true">
       <Documentation>
-        <UserDocu>Returns the center of mass of the current system.
+        <UserDocu>Approximate B-Spline-curve from this wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="discretize">
+      <Documentation>
+        <UserDocu>Discretizes the wire using a given deflection or number of points and returns a list of points</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="CenterOfMass" ReadOnly="true">
+      <Documentation>
+      <UserDocu>Returns the center of mass of the current system.
 If the gravitational field is uniform, it is the center of gravity.
 The coordinates returned for the center of mass are expressed in the
 absolute Cartesian coordinate system.</UserDocu>
