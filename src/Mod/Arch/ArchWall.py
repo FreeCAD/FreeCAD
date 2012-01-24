@@ -59,13 +59,42 @@ class _CommandWall:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
+        done = False
         if sel:
-            FreeCAD.ActiveDocument.openTransaction("Wall")
-            for obj in sel:
-                makeWall(obj)
-            FreeCAD.ActiveDocument.commitTransaction()
-        else:
-            wall = makeWall()
+            import Draft
+            if Draft.getType(sel[0]) != "Wall":
+                FreeCAD.ActiveDocument.openTransaction("Wall")
+                for obj in sel:
+                    makeWall(obj)
+                FreeCAD.ActiveDocument.commitTransaction()
+                done = True
+        if not done:
+            import DraftTrackers
+            self.points = []
+            self.tracker = DraftTrackers.boxTracker()
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint)
+
+    def getPoint(self,point):
+        "this function is called by the snapper when it has a 3D point"
+        if point == None:
+            self.tracker.finalize()
+            return
+        self.points.append(point)
+        if len(self.points) == 1:
+            self.tracker.on()
+            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update)
+        elif len(self.points) == 2:
+            import Draft
+            l = Draft.makeWire(self.points)
+            makeWall(l)
+            self.tracker.finalize()
+
+    def update(self,point):
+        "this function is called by the Snapper when the mouse is moved"
+        self.tracker.update([self.points[0],point])
+            
+            
+        
        
 class _Wall(ArchComponent.Component):
     "The Wall object"
