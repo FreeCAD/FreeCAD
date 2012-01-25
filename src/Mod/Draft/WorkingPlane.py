@@ -232,13 +232,16 @@ class plane:
 def getPlacementFromPoints(points):
         "returns a placement from a list of 3 or 4 vectors"
         pl = plane()
-        pl.position = points[0]
-        pl.u = (points[1].sub(points[0]).normalize())
-        pl.v = (points[2].sub(points[0]).normalize())
-        if len(points) == 4:
-                pl.axis = (points[3].sub(points[0]).normalize())
-        else:
-                pl.axis = ((pl.u).cross(pl.v)).normalize()
+        try:
+                pl.position = points[0]
+                pl.u = (points[1].sub(points[0]).normalize())
+                pl.v = (points[2].sub(points[0]).normalize())
+                if len(points) == 4:
+                        pl.axis = (points[3].sub(points[0]).normalize())
+                else:
+                        pl.axis = ((pl.u).cross(pl.v)).normalize()
+        except:
+                pass
         p = pl.getPlacement()
         del pl
         return p

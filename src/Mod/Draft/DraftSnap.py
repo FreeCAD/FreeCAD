@@ -658,16 +658,17 @@ class Snapper:
         
         def click(event_cb):
             event = event_cb.getEvent()
-            if event.getState() == coin.SoMouseButtonEvent.DOWN:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
-                FreeCADGui.Snapper.off()
-                self.ui.offUi()
-                if self.trackLine:
-                    self.trackLine.off()
-                if callback:
-                    callback(self.pt)
-                self.pt = None
+            if event.getButton() == 1:
+                if event.getState() == coin.SoMouseButtonEvent.DOWN:
+                    self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+                    self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+                    FreeCADGui.Snapper.off()
+                    self.ui.offUi()
+                    if self.trackLine:
+                        self.trackLine.off()
+                    if callback:
+                        callback(self.pt)
+                    self.pt = None
 
         def cancel():
             self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
