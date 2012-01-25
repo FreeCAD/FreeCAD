@@ -264,20 +264,22 @@ def mergeCells(objectslist):
 def download(url):
     '''downloads a file from the given URL and saves it in the
     user directory. Returns the path to the saved file'''
+    import urllib2, os
+    name = url.split('/')[-1]
+    filepath = os.path.join(FreeCAD.ConfigGet("UserAppData"),name)
+    if os.path.exists(filepath):
+        return filepath
     try:
         FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
-        import urllib2, os
         response = urllib2.urlopen(url)
         s = response.read()
-        fp = os.path.join(FreeCAD.ConfigGet("UserAppData"),url.split('/')[-1])
-        if not os.path.exists(fp):
-            f = open(fp,'wb')
-            f.write(s)
-            f.close()
+        f = open(filepath,'wb')
+        f.write(s)
+        f.close()
     except:
         return None
     else:
-        return fp
+        return filepath
     
 # command definitions ###############################################
                        
