@@ -153,12 +153,9 @@ def getMesh(obj):
 
 def getShape(obj):
     "gets a shape from an IfcOpenShell object"
-    tf = tempfile.mkstemp(suffix=".brp")[1]
-    of = pyopen(tf,"wb")
-    of.write(obj.mesh.brep_data)
-    of.close()
-    sh = Part.read(tf)
-    os.remove(tf)
+    import StringIO
+    sh=Part.Shape()
+    sh.importBrep(StringIO.StringIO(obj.mesh.brep_data))
     m = obj.matrix
     mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
                          m[1], m[4], m[7], m[10],
