@@ -189,7 +189,17 @@ class Snapper:
                 
                 # active snapping
                 comp = info['Component']
-                if obj.isDerivedFrom("Part::Feature"):
+
+                if (Draft.getType(obj) == "Wall") and not oldActive:
+                    if obj.Base:
+                        for edge in obj.Base.Shape.Edges:
+                            snaps.extend(self.snapToEndpoints(edge))
+                            snaps.extend(self.snapToMidpoint(edge))
+                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                            snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
+                            
+                elif obj.isDerivedFrom("Part::Feature"):
                     if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
                         if "Edge" in comp:
                             # we are snapping to an edge
@@ -297,16 +307,17 @@ class Snapper:
                                     np = self.getPerpendicular(e,point)
                                     if not fcgeo.isPtOnEdge(np,e):
                                         if (np.sub(point)).Length < self.radius:
-                                            if self.tracker:
-                                                self.tracker.setCoords(np)
-                                                self.tracker.setMarker(self.mk['extension'])
-                                                self.tracker.on()
-                                            if self.extLine:
-                                                self.extLine.p1(e.Vertexes[0].Point)
-                                                self.extLine.p2(np)
-                                                self.extLine.on()
-                                            self.setCursor('extension')
-                                            return np,Part.Line(e.Vertexes[0].Point,np).toShape()
+                                            if np != e.Vertexes[0].Point:
+                                                if self.tracker:
+                                                    self.tracker.setCoords(np)
+                                                    self.tracker.setMarker(self.mk['extension'])
+                                                    self.tracker.on()
+                                                if self.extLine:
+                                                    self.extLine.p1(e.Vertexes[0].Point)
+                                                    self.extLine.p2(np)
+                                                    self.extLine.on()
+                                                self.setCursor('extension')
+                                                return np,Part.Line(e.Vertexes[0].Point,np).toShape()
                                         else:
                                             if last:
                                                 de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
