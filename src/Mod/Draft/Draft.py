@@ -151,6 +151,8 @@ def getType(obj):
     if "Proxy" in obj.PropertiesList:
         if hasattr(obj.Proxy,"Type"):
             return obj.Proxy.Type
+    if obj.isDerivedFrom("Sketcher::SketchObject"):
+        return "Sketch"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
     if (obj.Type == "App::Annotation"):
