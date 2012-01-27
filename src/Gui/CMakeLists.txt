@@ -617,6 +617,7 @@ SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 # The Inventor sources
 SET(Inventor_CPP_SRCS
     Inventor/SoDrawingGrid.cpp
+    Inventor/SoZoomTranslation.cpp
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
@@ -637,6 +638,7 @@ SET(Inventor_CPP_SRCS
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
     Inventor/SoDrawingGrid.h
+    Inventor/SoZoomTranslation.h
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h
