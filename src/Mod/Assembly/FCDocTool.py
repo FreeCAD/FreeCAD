@@ -3,15 +3,16 @@
 # (c) 2007 Juergen Riegel LGPL
 
 import zipfile
+from xml.dom.minidom import parse, parseString
+
 
 class Document:
 	""" Document representation """
 	def __init__(self,DocFile):
 		self.FileName = DocFile 
-		print "Parsing: ",DocFile
 		self.ZFile = zipfile.ZipFile(DocFile,'r')
 		DStr = self.ZFile.read('Document.xml')
-		print DStr
+		self.DDom = parseString(DStr)
 
 	def fileInfo(self):
 		ret = ''
