@@ -1441,6 +1441,13 @@ void SketchObject::onDocumentRestored()
     }
 }
 
+void SketchObject::onFinishDuplicating()
+{
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    onDocumentRestored();
+}
+
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId)
 {
     if (VertexId < 0 || VertexId >= int(VertexId2GeoId.size())) {
