@@ -96,7 +96,7 @@ SoAutoZoomTranslation::SoAutoZoomTranslation()
 
 void SoAutoZoomTranslation::GLRender(SoGLRenderAction * action)
 {
-    Base::Console().Log("Draw\n");
+    //Base::Console().Log("Draw\n");
     SoAutoZoomTranslation::doAction((SoAction *)action);
     inherited::GLRender(action);
 }
@@ -107,7 +107,7 @@ void SoAutoZoomTranslation::doAction(SoAction * action)
     float sf = this->getScaleFactor(action);
     SoModelMatrixElement::scaleBy(action->getState(), this,
                                 SbVec3f(sf,sf,sf));
-    Base::Console().Log("Scale: %f\n",sf);
+    //Base::Console().Log("Scale: %f\n",sf);
 }
 
 // set the auto scale factor.
@@ -123,7 +123,7 @@ void SoAutoZoomTranslation::doAction(SoAction * action)
 
 void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 {
-    Base::Console().Log("Matrix\n");
+    //Base::Console().Log("Matrix\n");
     float sf = this->getScaleFactor(action);
 
     SbVec3f scalevec = SbVec3f(sf,sf,sf);
@@ -138,25 +138,25 @@ void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 
 void SoAutoZoomTranslation::callback(SoCallbackAction * action)
 {
-    Base::Console().Log("callback\n");
+   // Base::Console().Log("callback\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
 void SoAutoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-    Base::Console().Log("getBoundingBox\n");
+    //Base::Console().Log("getBoundingBox\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
 void SoAutoZoomTranslation::pick(SoPickAction * action)
 {
-    Base::Console().Log("pick\n");
+    //Base::Console().Log("pick\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
 // Doc in superclass.
 void SoAutoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-    Base::Console().Log("getPrimitiveCount\n");
+    //Base::Console().Log("getPrimitiveCount\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
