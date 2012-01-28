@@ -62,6 +62,8 @@ public:
     virtual std::string getElement(const SoDetail *) const;
     virtual SoDetail* getDetail(const char*) const;
 
+    static void measureDistanceCallback(void * ud, SoEventCallback * n);
+
 protected:
     void onChanged(const App::Property* prop);
 
