@@ -596,6 +596,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderPythonFeature.cpp
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
+    ViewProviderPlacement.cpp
 )
 SET(Viewprovider_SRCS
     ${Viewprovider_CPP_SRCS}
@@ -611,13 +612,14 @@ SET(Viewprovider_SRCS
     ViewProviderPythonFeature.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
+    ViewProviderPlacement.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 
 # The Inventor sources
 SET(Inventor_CPP_SRCS
     Inventor/SoDrawingGrid.cpp
-    Inventor/SoZoomTranslation.cpp
+    Inventor/SoAutoZoomTranslation.cpp
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
@@ -638,7 +640,7 @@ SET(Inventor_CPP_SRCS
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
     Inventor/SoDrawingGrid.h
-    Inventor/SoZoomTranslation.h
+    Inventor/SoAutoZoomTranslation.h
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOZOOMTRANSLATION_H
-#define GUI_SOZOOMTRANSLATION_H
+#ifndef GUI_SOAUTOZOOMTRANSLATION_H
+#define GUI_SOAUTOZOOMTRANSLATION_H
 
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoSubNode.h>
@@ -29,19 +29,19 @@
 
 namespace Gui {
 
-class GuiExport SoZoomTranslation : public SoTranslation {
-    typedef SoTranslation inherited;
+class GuiExport SoAutoZoomTranslation : public SoTransformation  {
+    typedef SoTransformation  inherited;
 
-    SO_NODE_HEADER(SoZoomTranslation);
+    SO_NODE_HEADER(SoAutoZoomTranslation);
 
 public:
     static void initClass();
-    SoZoomTranslation();
-    SoSFVec3f abPos;
+    SoAutoZoomTranslation();
+    //SoSFVec3f abPos;
     float getScaleFactor();
 
 protected:
-    virtual ~SoZoomTranslation() {};
+    virtual ~SoAutoZoomTranslation() {};
     virtual void doAction(SoAction * action);
     virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
     virtual void getMatrix(SoGetMatrixAction * action);
@@ -52,7 +52,8 @@ protected:
 
 private:
     float scale;
+    //void setAutoScale(void);
 };
 
 }
-#endif // SKETCHERGUI_SOZOOMTRANSLATION_H
+#endif // GUI_SOAUTOZOOMTRANSLATION_H

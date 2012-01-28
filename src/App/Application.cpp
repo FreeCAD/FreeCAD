@@ -91,6 +91,8 @@
 #include "VRMLObject.h"
 #include "Annotation.h"
 #include "MeasureDistance.h"
+#include "Placement.h"
+#include "Plane.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -1019,6 +1021,8 @@ void Application::initTypes(void)
     App ::Annotation                ::init();
     App ::AnnotationLabel           ::init();
     App ::MeasureDistance           ::init();
+    App ::Placement                 ::init();
+    App ::Plane                     ::init();
 }
 
 void Application::initConfig(int argc, char ** argv)

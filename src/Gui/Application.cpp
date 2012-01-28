@@ -89,6 +89,7 @@
 #include "ViewProviderVRMLObject.h"
 #include "ViewProviderAnnotation.h"
 #include "ViewProviderMeasureDistance.h"
+#include "ViewProviderPlacement.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskDialogPython.h"
@@ -1404,6 +1405,7 @@ void Application::initTypes(void)
     Gui::ViewProviderMeasureDistance            ::init();
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
+    Gui::ViewProviderPlacement                  ::init();
 
     // Workbench
     Gui::Workbench                              ::init();

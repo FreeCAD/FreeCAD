@@ -38,6 +38,8 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoCamera.h>
 
+#include <Base/Console.h>
+
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -45,7 +47,7 @@
 #include <Gui/View3DInventorViewer.h>
 
 
-#include "SoZoomTranslation.h"
+#include "SoAutoZoomTranslation.h"
 
 // *************************************************************************
 
@@ -53,102 +55,100 @@ using namespace Gui;
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoZoomTranslation);
+SO_NODE_SOURCE(SoAutoZoomTranslation);
 
-void SoZoomTranslation::initClass()
+void SoAutoZoomTranslation::initClass()
 {
-    SO_NODE_INIT_CLASS(SoZoomTranslation, SoTranslation, "Translation");
+    SO_NODE_INIT_CLASS(SoAutoZoomTranslation, SoTransformation, "AutoZoom");
 }
 
-float SoZoomTranslation::getScaleFactor()
+float SoAutoZoomTranslation::getScaleFactor()
 {
     // Dividing by 5 seems to work well
 
     Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-        this->scale = viewer->getCamera()->getViewVolume(viewer->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 5;
+        float fScale = viewer->getCamera()->getViewVolume(viewer->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 5;
+        if (fScale != this->scale) this->touch();
+        this->scale = fScale;
         return this->scale;
     } else {
         return this->scale;
     }
 }
 
-SoZoomTranslation::SoZoomTranslation()
+SoAutoZoomTranslation::SoAutoZoomTranslation()
 {
-    SO_NODE_CONSTRUCTOR(SoZoomTranslation);
-    SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f,0.f,0.f)));
-    this->scale = -1;
+    SO_NODE_CONSTRUCTOR(SoAutoZoomTranslation);
+    //SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f,0.f,0.f)));
+    //this->scale = -1;
 }
 
-void SoZoomTranslation::GLRender(SoGLRenderAction * action)
+void SoAutoZoomTranslation::GLRender(SoGLRenderAction * action)
 {   
-    SoZoomTranslation::doAction((SoAction *)action);
+  Base::Console().Log("Draw\n");
+  SoAutoZoomTranslation::doAction((SoAction *)action);
+  inherited::GLRender(action);
 }
 
 // Doc in superclass.
-void SoZoomTranslation::doAction(SoAction * action)
+void SoAutoZoomTranslation::doAction(SoAction * action)
 {
-    SbVec3f v;
-    if(this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
-        return;
-    } else {
-        SbVec3f absVtr = this->abPos.getValue();
-        SbVec3f relVtr = this->translation.getValue();
-
-        float sf = this->getScaleFactor();
-        // For Sketcher Keep Z value the same
-        relVtr[0] = (relVtr[0] != 0) ? sf * relVtr[0] : 0;
-        relVtr[1] = (relVtr[1] != 0) ? sf * relVtr[1] : 0;
-
-        v = absVtr + relVtr;
-    }
-    
-    SoModelMatrixElement::translateBy(action->getState(), this, v);
+    float sf = this->getScaleFactor();
+    SoModelMatrixElement::scaleBy(action->getState(), this,
+                                SbVec3f(sf,sf,sf));
+    Base::Console().Log("Scale: %f\n",sf);
 }
 
-void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
+// set the auto scale factor.
+//void SoAutoZoomTranslation::setAutoScale(void)
+//{
+//    float sf = this->getScaleFactor();
+//    //this->enableNotify	(	false );
+//    scaleFactor.setValue(SbVec3f(sf,sf,sf));
+//    //this->enableNotify	(	true );
+//    //scaleFactor.setDirty (true);
+//    
+//}
+
+void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 {
-    SbVec3f v;
-    if(this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
-        return;
-    } else {
-        SbVec3f absVtr = this->abPos.getValue();
-        SbVec3f relVtr = this->translation.getValue();
+   Base::Console().Log("Matrix\n");
+   float sf = this->getScaleFactor();
 
-        float sf = this->getScaleFactor();
-        // For Sketcher Keep Z value the same
-        relVtr[0] = (relVtr[0] != 0) ? sf  * relVtr[0] : 0;
-        relVtr[1] = (relVtr[1] != 0) ? sf  * relVtr[1] : 0;
-
-        v = absVtr + relVtr;
-    }
-    
+    SbVec3f scalevec = SbVec3f(sf,sf,sf);
     SbMatrix m;
-    m.setTranslate(v);
+
+    m.setScale(scalevec);
     action->getMatrix().multLeft(m);
-    m.setTranslate(-v);
+
+    m.setScale(SbVec3f(1.0f / scalevec[0], 1.0f / scalevec[1], 1.0f / scalevec[2]));
     action->getInverse().multRight(m);
   
 }
 
-void SoZoomTranslation::callback(SoCallbackAction * action)
+void SoAutoZoomTranslation::callback(SoCallbackAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+    Base::Console().Log("callback\n");
+   SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
-void SoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
+void SoAutoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+   Base::Console().Log("getBoundingBox\n");
+    SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
-void SoZoomTranslation::pick(SoPickAction * action)
+void SoAutoZoomTranslation::pick(SoPickAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+   Base::Console().Log("pick\n");
+    SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
 // Doc in superclass.
-void SoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+void SoAutoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoZoomTranslation::doAction((SoAction *)action);
+   Base::Console().Log("getPrimitiveCount\n");
+    SoAutoZoomTranslation::doAction((SoAction*)action);
 }
