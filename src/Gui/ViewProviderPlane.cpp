@@ -40,7 +40,7 @@
 # include <Inventor/nodes/SoDrawStyle.h>
 #endif
 
-#include "ViewProviderPlacement.h"
+#include "ViewProviderPlane.h"
 #include "SoFCSelection.h"
 #include "Application.h"
 #include "Document.h"
@@ -56,73 +56,57 @@
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderPlacement, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderGeometryObject)
 
 
-ViewProviderPlacement::ViewProviderPlacement() 
+ViewProviderPlane::ViewProviderPlane() 
 {
  
     pMat = new SoMaterial();
     pMat->ref();
 
-    const float dist = 2;
-    const float size = 6;
-    const float pSize = 4; 
+    const float size = 2;
 
-    static const SbVec3f verts[13] =
+    static const SbVec3f verts[4] =
     {
-        SbVec3f(0,0,0), SbVec3f(size,0,0),
-        SbVec3f(0,size,0), SbVec3f(0,0,size),
-        SbVec3f(dist,dist,0), SbVec3f(dist,pSize,0), SbVec3f(pSize,dist,0),  // XY Plane
-        SbVec3f(dist,0,dist), SbVec3f(dist,0,pSize), SbVec3f(pSize,0,dist),  // XY Plane
-        SbVec3f(0,dist,dist), SbVec3f(0,pSize,dist), SbVec3f(0,dist,pSize)  // XY Plane
+        SbVec3f(size,size,0), SbVec3f(size,-size,0),
+        SbVec3f(-size,-size,0), SbVec3f(-size,size,0),
     };
 
     // indexes used to create the edges
-    static const int32_t lines[21] =
+    static const int32_t lines[6] =
     {
-        0,1,-1,
-        0,2,-1,
-        0,3,-1,
-        5,4,6,-1,
-        8,7,9,-1,
-        11,10,12,-1
+        0,1,2,3,0,-1
     };
 
-    pMat->diffuseColor.setNum(6);
-    pMat->diffuseColor.set1Value(0, SbColor(1.0f, 0.2f, 0.2f));
-    pMat->diffuseColor.set1Value(1, SbColor(0.2f, 1.0f, 0.2f));
-    pMat->diffuseColor.set1Value(2, SbColor(0.2f, 0.2f, 1.0f));
-
-    pMat->diffuseColor.set1Value(3, SbColor(1.0f, 1.0f, 0.8f));
-    pMat->diffuseColor.set1Value(4, SbColor(1.0f, 0.8f, 1.0f));
-    pMat->diffuseColor.set1Value(5, SbColor(0.8f, 1.0f, 1.0f));
+    pMat->diffuseColor.setNum(1);
+    pMat->diffuseColor.set1Value(0, SbColor(1.0f, 1.0f, 1.0f));
 
     pCoords = new SoCoordinate3();
     pCoords->ref();
-    pCoords->point.setNum(13);
-    pCoords->point.setValues(0, 13, verts);
+    pCoords->point.setNum(4);
+    pCoords->point.setValues(0, 4, verts);
 
     pLines  = new SoIndexedLineSet();
     pLines->ref();
-    pLines->coordIndex.setNum(21);
-    pLines->coordIndex.setValues(0, 21, lines);
+    pLines->coordIndex.setNum(6);
+    pLines->coordIndex.setValues(0, 6, lines);
     sPixmap = "view-measurement";
 }
 
-ViewProviderPlacement::~ViewProviderPlacement()
+ViewProviderPlane::~ViewProviderPlane()
 {
     pCoords->unref();
     pLines->unref();
     pMat->unref();
 }
 
-void ViewProviderPlacement::onChanged(const App::Property* prop)
+void ViewProviderPlane::onChanged(const App::Property* prop)
 {
         ViewProviderDocumentObject::onChanged(prop);
 }
 
-std::vector<std::string> ViewProviderPlacement::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPlane::getDisplayModes(void) const
 {
     // add modes
     std::vector<std::string> StrList;
@@ -130,14 +114,14 @@ std::vector<std::string> ViewProviderPlacement::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderPlacement::setDisplayMode(const char* ModeName)
+void ViewProviderPlane::setDisplayMode(const char* ModeName)
 {
     if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
+void ViewProviderPlane::attach(App::DocumentObject* pcObject)
 {
     ViewProviderDocumentObject::attach(pcObject);
 
@@ -147,7 +131,7 @@ void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
     SoAutoZoomTranslation *zoom = new SoAutoZoomTranslation;
 
     SoDrawStyle* style = new SoDrawStyle();
-    style->lineWidth = 2.0f;
+    style->lineWidth = 1.0f;
 
     SoMaterialBinding* matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::PER_FACE;
@@ -162,25 +146,20 @@ void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
     addDisplayMaskMode(lineSep, "Base");
 }
 
-void ViewProviderPlacement::updateData(const App::Property* prop)
+void ViewProviderPlane::updateData(const App::Property* prop)
 {
     ViewProviderDocumentObject::updateData(prop);
 }
 
-std::string ViewProviderPlacement::getElement(const SoDetail* detail) const
+std::string ViewProviderPlane::getElement(const SoDetail* detail) const
 {
     if (detail) {
         if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
             int edge = line_detail->getLineIndex();
-            switch (edge)
+            if (edge == 0)
             {
-            case 0: return std::string("X-Axis");
-            case 1: return std::string("Y-Axis");
-            case 2: return std::string("Z-Axis");
-            case 3: return std::string("XY-Plane");
-            case 4: return std::string("XZ-Plane");
-            case 5: return std::string("YZ-Plane");
+                return std::string("Main");
             }
         }
     }
@@ -188,29 +167,23 @@ std::string ViewProviderPlacement::getElement(const SoDetail* detail) const
     return std::string("");
 }
 
-SoDetail* ViewProviderPlacement::getDetail(const char* subelement) const
+SoDetail* ViewProviderPlane::getDetail(const char* subelement) const
 {
     SoLineDetail* detail = 0;
     std::string subelem(subelement); 
     int edge = -1;
 
-    if(subelem == "X-Axis") edge = 0;
-    else if(subelem == "Y-Axis") edge = 1;
-    else if(subelem == "Z-Axis") edge = 2;
-    else if(subelem == "XY-Plane") edge = 3;
-    else if(subelem == "XZ-Plane") edge = 4;
-    else if(subelem == "YZ-Plane") edge = 5;
+    if(subelem == "Main") edge = 0;
 
     if(edge >= 0) {
          detail = new SoLineDetail();
          detail->setPartIndex(edge);
     }
 
-
     return detail;
 }
 
-bool ViewProviderPlacement::isSelectable(void) const 
+bool ViewProviderPlane::isSelectable(void) const 
 {
     return true;
 }

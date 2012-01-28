@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderPlacement_H
-#define GUI_ViewProviderPlacement_H
+#ifndef GUI_ViewProviderPlane_H
+#define GUI_ViewProviderPlane_H
 
 #include "ViewProviderGeometryObject.h"
 #include <QObject>
@@ -40,14 +40,14 @@ namespace Gui
 {
 
 
-class GuiExport ViewProviderPlacement : public ViewProviderGeometryObject
+class GuiExport ViewProviderPlane : public ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderPlacement);
+    PROPERTY_HEADER(Gui::ViewProviderPlane);
 
 public:
     /// Constructor
-    ViewProviderPlacement(void);
-    virtual ~ViewProviderPlacement();
+    ViewProviderPlane(void);
+    virtual ~ViewProviderPlane();
 
     void attach(App::DocumentObject *);
     void updateData(const App::Property*);
@@ -74,4 +74,4 @@ private:
 } //namespace Gui
 
 
-#endif // GUI_ViewProviderPlacement_H
+#endif // GUI_ViewProviderPlane_H

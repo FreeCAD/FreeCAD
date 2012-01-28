@@ -90,6 +90,7 @@
 #include "ViewProviderAnnotation.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderPlacement.h"
+#include "ViewProviderPlane.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskDialogPython.h"
@@ -1406,6 +1407,7 @@ void Application::initTypes(void)
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
+    Gui::ViewProviderPlane                      ::init();
 
     // Workbench
     Gui::Workbench                              ::init();

@@ -32,7 +32,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE(App::Plane, App::Placement)
+PROPERTY_SOURCE(App::Plane, App::GeoFeature)
 
 
 //===========================================================================

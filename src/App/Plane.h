@@ -27,7 +27,7 @@
 #define _AppPlane_h_
 
 
-#include "Placement.h"
+#include "GeoFeature.h"
 #include "PropertyGeo.h"
 
 
@@ -39,7 +39,7 @@ namespace App
 /** Plane Object
  *  Used to define planar support for all kind of operations in the document space
  */
-class AppExport Plane: public App::Placement
+class AppExport Plane: public App::GeoFeature
 {
     PROPERTY_HEADER(App::Plane);
 

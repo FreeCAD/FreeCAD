@@ -28,7 +28,7 @@
 
 #include <Base/Placement.h>
 
-#include "DocumentObject.h"
+#include "GeoFeature.h"
 #include "PropertyGeo.h"
 
 
@@ -48,13 +48,11 @@ namespace App
 /** Placement Object
  *  Handles the repositioning of data. Also can do grouping
  */
-class AppExport Placement: public App::DocumentObject
+class AppExport Placement: public App::GeoFeature
 {
     PROPERTY_HEADER(App::Placement);
 
 public:
-
-  PropertyPlacement Pos;
 
 
   /// Constructor
