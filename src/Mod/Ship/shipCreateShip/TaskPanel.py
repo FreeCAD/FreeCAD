@@ -138,17 +138,29 @@ class TaskPanel:
         # Get bounds
         bounds = [0.0, 0.0, 0.0]
         bbox = self.faces[0].BoundBox
-        bounds[0] = bbox.XLength
-        bounds[1] = bbox.YLength
-        bounds[2] = bbox.ZLength
+        minX = bbox.XMin
+        maxX = bbox.XMax
+        minY = bbox.YMin
+        maxY = bbox.YMax
+        minZ = bbox.ZMin
+        maxZ = bbox.ZMax
         for i in range(1,len(self.faces)):
             bbox = self.faces[i].BoundBox
-            if bounds[0] < bbox.XLength:
-                bounds[0] = bbox.XLength
-            if bounds[1] < bbox.YLength:
-                bounds[1] = bbox.YLength
-            if bounds[2] < bbox.ZLength:
-                bounds[2] = bbox.ZLength
+            if minX > bbox.XMin:
+                minX = bbox.XMin
+            if maxX < bbox.XMax:
+                maxX = bbox.XMax
+            if minY > bbox.YMin:
+                minY = bbox.YMin
+            if maxY < bbox.YMax:
+                maxY = bbox.YMax
+            if minZ > bbox.ZMin:
+                minZ = bbox.ZMin
+            if maxZ < bbox.ZMax:
+                maxZ = bbox.ZMax
+        bounds[0] = maxX - minX
+        bounds[1] = maxY - minY
+        bounds[2] = maxZ - minZ
         # Set UI fields
         self.form.length.setMaximum(bounds[0])
         self.form.length.setValue(bounds[0])
