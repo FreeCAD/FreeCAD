@@ -21,6 +21,9 @@ SET(ShipIcons_SRCS
 	Icons/Ico.png
 	Icons/Ico.xcf
 	Icons/Ico.xpm
+	Icons/LoadIco.png
+	Icons/LoadIco.xcf
+	Icons/LoadIco.xpm
 	Icons/OutlineDrawIco.png
 	Icons/OutlineDrawIco.xcf
 	Icons/OutlineDrawIco.xpm
