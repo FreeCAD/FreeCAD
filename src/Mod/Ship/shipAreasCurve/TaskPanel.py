@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
-import Preview
+import Preview, Plot
 import Instance
 from shipUtils import Paths, Translator
 from surfUtils import Geometry
@@ -44,6 +44,13 @@ class TaskPanel:
         if not self.ship:
             return False
         self.save()
+        # Plot data
+        data   = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
+        x    = self.ship.xSection[:]
+        y    = data[0]
+        disp = data[1]
+        xcb  = data[2]
+        Plot.Plot(x,y,disp,xcb, self.ship)
         self.preview.clean()
         return True
 

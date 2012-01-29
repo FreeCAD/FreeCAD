@@ -40,6 +40,7 @@ nobase_data_DATA = \
 	shipOutlineDraw/TaskPanel.py \
 	shipOutlineDraw/TaskPanel.ui \
 	shipAreasCurve/__init__.py \
+	shipAreasCurve/Plot.py \
 	shipAreasCurve/Preview.py \
 	shipAreasCurve/TaskPanel.py \
 	shipAreasCurve/TaskPanel.ui \
