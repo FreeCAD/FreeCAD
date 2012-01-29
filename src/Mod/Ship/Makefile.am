@@ -33,6 +33,8 @@ nobase_data_DATA = \
 	Icons/ReparametrizeIco.xpm \
 	Icons/Ship.xcf \
 	Icons/Ship.xpm \
+	Examples/s60.fcstd \
+	Examples/barehull5415.fcstd \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \
