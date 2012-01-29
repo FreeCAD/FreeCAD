@@ -35,6 +35,13 @@ SET(ShipIcons_SRCS
 )
 SOURCE_GROUP("shipicons" FILES ${ShipIcons_SRCS})
 
+SET(ShipLoadExample_SRCS
+	shipLoadExample/__init__.py
+	shipLoadExample/TaskPanel.py
+	shipLoadExample/TaskPanel.ui
+)
+SOURCE_GROUP("shiploadexample" FILES ${ShipLoadExample_SRCS})
+
 SET(ShipCreateShip_SRCS
 	shipCreateShip/__init__.py
 	shipCreateShip/Preview.py
@@ -75,7 +82,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -88,6 +95,12 @@ INSTALL(
         ${ShipIcons_SRCS}
     DESTINATION
         Mod/Ship/Icons
+)
+INSTALL(
+    FILES
+        ${ShipLoadExample_SRCS}
+    DESTINATION
+        Mod/Ship/shipLoadExample
 )
 INSTALL(
     FILES
