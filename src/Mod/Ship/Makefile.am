@@ -33,6 +33,9 @@ nobase_data_DATA = \
 	Icons/ReparametrizeIco.xpm \
 	Icons/Ship.xcf \
 	Icons/Ship.xpm \
+	shipLoadExample/__init__.py \
+	shipLoadExample/TaskPanel.py \
+	shipLoadExample/TaskPanel.ui \
 	shipCreateShip/__init__.py \
 	shipCreateShip/Preview.py \
 	shipCreateShip/TaskPanel.py \
