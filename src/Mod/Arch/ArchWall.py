@@ -49,6 +49,31 @@ def makeWall(baseobj=None,width=None,height=None,align="Center",name="Wall"):
     obj.ViewObject.ShapeColor = (r,g,b,1.0)
     return obj
 
+def joinWalls(walls):
+    "joins the given list of walls into one sketch-based wall"
+    if not walls:
+        return None
+    if not isinstance(walls,list):
+        walls = [walls]
+    base = walls.pop()
+    if base.Base:
+        if base.Base.Shape.Faces:
+            return None
+        if Draft.getType(base.Base) == "Sketch":
+            sk = base.Base
+        else:
+            sk = Draft.makeSketch(base.Base,autoconstraints=True)
+            old = base.Base.name
+            base.Base = sk
+            FreeCAD.ActiveDocument.removeObject(old)
+    for w in walls:
+        if w.Base:
+            if not base.Base.Shape.Faces:
+                for e in base.Base.Shape.Edges:
+                    sk.addGeometry(e)
+    FreeCAD.ActiveDocument.recompute()
+    return base
+
 class _CommandWall:
     "the Arch Wall command definition"
     def GetResources(self):
@@ -60,6 +85,7 @@ class _CommandWall:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         done = False
+        self.existing = []
         if sel:
             import Draft
             if Draft.getType(sel[0]) != "Wall":
@@ -76,6 +102,13 @@ class _CommandWall:
 
     def getPoint(self,point):
         "this function is called by the snapper when it has a 3D point"
+        pos = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
+        exi = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(pos)
+        if exi:
+            exi = FreeCAD.ActiveDocument.getObject(exi['Object'])
+            if Draft.getType(exi) == "Wall":
+                if not exi in self.existing:
+                    self.existing.append(exi)
         if point == None:
             self.tracker.finalize()
             return
@@ -84,18 +117,22 @@ class _CommandWall:
             self.tracker.on()
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update)
         elif len(self.points) == 2:
-            import Draft
-            l = Draft.makeWire(self.points)
-            makeWall(l)
+            import Part
+            l = Part.Line(self.points[0],self.points[1])
+            if not self.existing:
+                s = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
+                s.addGeometry(l)
+                makeWall(s)
+            else:
+                w = joinWalls(self.existing)
+                w.Base.addGeometry(l)
             self.tracker.finalize()
+            FreeCAD.ActiveDocument.recompute()
 
     def update(self,point):
         "this function is called by the Snapper when the mouse is moved"
         self.tracker.update([self.points[0],point])
-            
-            
-        
-       
+                 
 class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):

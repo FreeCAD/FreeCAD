@@ -117,6 +117,9 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     labels << tr("Icon") << tr("Command");
     commandTreeWidget->setHeaderLabels(labels);
     commandTreeWidget->header()->hide();
+    commandTreeWidget->setIconSize(QSize(32, 32));
+    commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+
     labels.clear(); labels << tr("Command");
     toolbarTreeWidget->setHeaderLabels(labels);
     toolbarTreeWidget->header()->hide();
@@ -187,19 +190,15 @@ void DlgCustomToolbars::on_categoryBox_activated(int index)
     sepitem->setText(1, tr("<Separator>"));
     sepitem->setData(1, Qt::UserRole, QByteArray("Separator"));
     sepitem->setSizeHint(0, QSize(32, 32));
-    sepitem->setBackgroundColor(0, Qt::lightGray);
     for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
         QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
         item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
         item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
         item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
         item->setSizeHint(0, QSize(32, 32));
-        item->setBackgroundColor(0, Qt::lightGray);
         if ((*it)->getPixmap())
             item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
     }
-
-    commandTreeWidget->resizeColumnToContents(0);
 }
 
 void DlgCustomToolbars::on_workbenchBox_activated(int index)

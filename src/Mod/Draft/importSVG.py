@@ -896,8 +896,7 @@ def getContents(filename,tag,stringmode=False):
                 contents = filename
         else:
                 f = pythonopen(filename)
-                contents = ''
-                for line in f: contents += line
+                contents = f.read()
                 f.close()
         contents = contents.replace('\n','_linebreak')
         searchpat = '<'+tag+'.*?</'+tag+'>'
