@@ -202,7 +202,7 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
 
     // first check if it's an SVG because Qt's qsvg4 module shouldn't be used therefore
     if (icon.isNull()) {
-        icon = pixmapFromSvg(name, QSize(24,24));
+        icon = pixmapFromSvg(name, QSize(64,64));
     }
 
     // try to find it in the given directories

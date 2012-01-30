@@ -151,6 +151,8 @@ def getType(obj):
     if "Proxy" in obj.PropertiesList:
         if hasattr(obj.Proxy,"Type"):
             return obj.Proxy.Type
+    if obj.isDerivedFrom("Sketcher::SketchObject"):
+        return "Sketch"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
     if (obj.Type == "App::Annotation"):
@@ -516,38 +518,52 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
 
 def makeCopy(obj):
     '''makeCopy(object): returns an exact copy of an object'''
-    newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
     if getType(obj) == "Rectangle":
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Rectangle(newobj)
         _ViewProviderRectangle(newobj.ViewObject)
     elif getType(obj) == "Wire":
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Wire(newobj)
         _ViewProviderWire(newobj.ViewObject)
     elif getType(obj) == "Circle":
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Circle(newobj)
         _ViewProviderCircle(newobj.ViewObject)
     elif getType(obj) == "Polygon":
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Polygon(newobj)
         _ViewProviderPolygon(newobj.ViewObject)
     elif getType(obj) == "BSpline":
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _BSpline(newobj)
         _ViewProviderBSpline(newobj.ViewObject)
     elif getType(obj) == "Block":
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Block(newobj)
         _ViewProviderDraftPart(newobj.ViewObject)
     elif getType(obj) == "Structure":
-        import Arch
-        Arch._Structure(newobj)
-        Arch._ViewProviderStructure(newobj.ViewObject)
+        import ArchStructure
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        ArchStructure._Structure(newobj)
+        ArchStructure._ViewProviderStructure(newobj.ViewObject)
     elif getType(obj) == "Wall":
-        import Arch
-        Arch._Wall(newobj)
-        Arch._ViewProviderWall(newobj.ViewObject)
+        import ArchWall
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        ArchWall._Wall(newobj)
+        ArchWall._ViewProviderWall(newobj.ViewObject)
     elif getType(obj) == "Window":
-        import Arch
-        Arch._Window(newobj)
-        Arch._ViewProviderWindow(newobj.ViewObject)
+        import ArchWindow
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        ArchWindow._Window(newobj)
+        Archwindow._ViewProviderWindow(newobj.ViewObject)
+    elif getType(obj) == "Cell":
+        import ArchCell
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        ArchCell._Cell(newobj)
+        ArchCell._ViewProviderCell(newobj.ViewObject)
     elif obj.isDerivedFrom("Part::Feature"):
+        newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",getRealName(obj.Name))
         newobj.Shape = obj.Shape
     else:
         print "Error: Object type cannot be copied"

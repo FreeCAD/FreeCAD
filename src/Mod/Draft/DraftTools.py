@@ -50,9 +50,10 @@ FreeCAD.svgpatterns = importSVG.getContents(Draft_rc.qt_resource_data,'pattern',
 altpat = Draft.getParam("patternFile")
 if os.path.isdir(altpat):
     for f in os.listdir(altpat):
-        if '.svg' in f:
+        if f[-4:].upper() == ".SVG":
             p = importSVG.getContents(altpat+os.sep+f,'pattern')
-            if p: FreeCAD.svgpatterns[p[0]]=p[1]
+            if p:
+                FreeCAD.svgpatterns.update(p)
 
 # sets the default working plane
 plane = WorkingPlane.plane()
@@ -485,15 +486,12 @@ class Line(Creator):
     def wipe(self):
         "removes all previous segments and starts from last point"
         if len(self.node) > 1:
-            print "nullifying"
             # self.obj.Shape.nullify() - for some reason this fails
             self.obj.ViewObject.Visibility = False
             self.node = [self.node[-1]]
-            print "setting trackers"
             self.linetrack.p1(self.node[0])
             self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
-            print "done"
                         
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
