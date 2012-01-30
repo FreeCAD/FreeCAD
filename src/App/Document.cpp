@@ -1529,6 +1529,7 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
     }
 
      // unmark to be not re-computed later
+    copy->onFinishDuplicating();
     copy->purgeTouched();
     return copy;
 }
