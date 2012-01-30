@@ -21,6 +21,9 @@ SET(ShipIcons_SRCS
 	Icons/Ico.png
 	Icons/Ico.xcf
 	Icons/Ico.xpm
+	Icons/LoadIco.png
+	Icons/LoadIco.xcf
+	Icons/LoadIco.xpm
 	Icons/OutlineDrawIco.png
 	Icons/OutlineDrawIco.xcf
 	Icons/OutlineDrawIco.xpm
@@ -31,6 +34,19 @@ SET(ShipIcons_SRCS
 	Icons/Ship.xpm
 )
 SOURCE_GROUP("shipicons" FILES ${ShipIcons_SRCS})
+
+SET(ShipExamples_SRCS
+	Examples/s60.fcstd
+	Examples/barehull5415.fcstd
+)
+SOURCE_GROUP("shipexamples" FILES ${ShipExamples_SRCS})
+
+SET(ShipLoadExample_SRCS
+	shipLoadExample/__init__.py
+	shipLoadExample/TaskPanel.py
+	shipLoadExample/TaskPanel.ui
+)
+SOURCE_GROUP("shiploadexample" FILES ${ShipLoadExample_SRCS})
 
 SET(ShipCreateShip_SRCS
 	shipCreateShip/__init__.py
@@ -51,6 +67,7 @@ SOURCE_GROUP("shipoutlinedraw" FILES ${ShipOutlineDraw_SRCS})
 
 SET(ShipAreasCurve_SRCS
 	shipAreasCurve/__init__.py
+	shipAreasCurve/Plot.py
 	shipAreasCurve/Preview.py
 	shipAreasCurve/TaskPanel.py
 	shipAreasCurve/TaskPanel.ui
@@ -71,7 +88,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -84,6 +101,18 @@ INSTALL(
         ${ShipIcons_SRCS}
     DESTINATION
         Mod/Ship/Icons
+)
+INSTALL(
+    FILES
+        ${ShipExamples_SRCS}
+    DESTINATION
+        Mod/Ship/Examples
+)
+INSTALL(
+    FILES
+        ${ShipLoadExample_SRCS}
+    DESTINATION
+        Mod/Ship/shipLoadExample
 )
 INSTALL(
     FILES

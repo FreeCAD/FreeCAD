@@ -119,7 +119,9 @@ class TaskPanel:
         self.faces = None
         selObjs  = Geometry.getSelectedObjs()
         if not selObjs:
-            msg = Translator.translate("All ship surfaces must be selected (Any object has been selected)\n")
+            msg = Translator.translate("Ship objects can only be created on top of hull geometry (any object selected).\n")
+            App.Console.PrintError(msg)
+            msg = Translator.translate("Please create or download a ship hull geometry before using this tool\n")
             App.Console.PrintError(msg)
             return True
         self.faces = []
@@ -128,23 +130,37 @@ class TaskPanel:
             for j in range(0, len(faces)):
                 self.faces.append(faces[j])
         if not self.faces:
-            msg = Translator.translate("All ship surfaces must be selected (Any face found into selected objects)\n")
+            msg = Translator.translate("Ship objects can only be created on top of hull geometry (any face object selected).\n")
+            App.Console.PrintError(msg)
+            msg = Translator.translate("Please create or download a ship hull geometry before using this tool\n")
             App.Console.PrintError(msg)
             return True
         # Get bounds
         bounds = [0.0, 0.0, 0.0]
         bbox = self.faces[0].BoundBox
-        bounds[0] = bbox.XLength
-        bounds[1] = bbox.YLength
-        bounds[2] = bbox.ZLength
+        minX = bbox.XMin
+        maxX = bbox.XMax
+        minY = bbox.YMin
+        maxY = bbox.YMax
+        minZ = bbox.ZMin
+        maxZ = bbox.ZMax
         for i in range(1,len(self.faces)):
             bbox = self.faces[i].BoundBox
-            if bounds[0] < bbox.XLength:
-                bounds[0] = bbox.XLength
-            if bounds[1] < bbox.YLength:
-                bounds[1] = bbox.YLength
-            if bounds[2] < bbox.ZLength:
-                bounds[2] = bbox.ZLength
+            if minX > bbox.XMin:
+                minX = bbox.XMin
+            if maxX < bbox.XMax:
+                maxX = bbox.XMax
+            if minY > bbox.YMin:
+                minY = bbox.YMin
+            if maxY < bbox.YMax:
+                maxY = bbox.YMax
+            if minZ > bbox.ZMin:
+                minZ = bbox.ZMin
+            if maxZ < bbox.ZMax:
+                maxZ = bbox.ZMax
+        bounds[0] = maxX - minX
+        bounds[1] = maxY - minY
+        bounds[2] = maxZ - minZ
         # Set UI fields
         self.form.length.setMaximum(bounds[0])
         self.form.length.setValue(bounds[0])
