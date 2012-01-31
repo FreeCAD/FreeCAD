@@ -140,6 +140,7 @@ class Ship:
                     FreeCAD.Console.PrintWarning('\tThis may happens if a bad defined (or really complex) surface has been provided.\n')
                     FreeCAD.Console.PrintWarning('\tPlease, ensure that this section is correct, or fix surfaces and create a new ship.\n')
                     nPoints.append(0)
+                    continue
             # Desarrollate wires into edges list
             edges = []
             for j in range(0,len(wires)):
