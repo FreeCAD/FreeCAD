@@ -152,18 +152,22 @@ class Ship:
             for j in range(0,len(edges)):
                 for k in range(0,nP):
                     aux = self.lineFaceSection(edges[j], planes[k])
-                    if not aux:
+                    if not aux:                     # No section
                         points.append(Vector(x,0,z0 + k*dz))
-                    for l in range(0,len(aux)):
-                        points.append(Vector(aux[l].X, aux[l].Y, aux[l].Z))
-            # Sort section points at Y direction
-            aux = []
-            for j in range(0,len(points)):
-                aux.append(points[j].y)
-            aux.sort()
-            for j in range(0,len(points)):
-                section.append(Vector(points[j].x, aux[j], points[j].z))
+                    if len(aux) == 1:               # Single point section
+                        points.append(Vector(aux[0].X, aux[0].Y, aux[0].Z))
+                    else:                           # Several points, so ship has more than one body
+                        # Get Y coordinates
+                        auxY = []
+                        for l in range(0,len(aux)):
+                            auxY.append(aux[l].Y)
+                        # Sort them
+                        auxY.sort()
+                        # And store
+                        for l in range(0,len(aux)):
+                            points.append(Vector(aux[l].X, auxY[l], aux[l].Z))
             # Store points
+            section = points[:]
             nPoints.append(len(section))
             for j in range(0,len(section)):
                 mSections.append(section[j])
