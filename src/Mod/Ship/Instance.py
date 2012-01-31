@@ -134,7 +134,7 @@ class Ship:
             wires = shape.slice(Vector(1.0,0.0,0.0), x)
             if not wires:
                 if (i != 0) or (i != nS-1):
-                    msg = 'Found empty section at x=%g\n'
+                    msg = 'Found empty section at x=%g\n' % (x)
                     msg = Translator.translate(msg)
                     FreeCAD.Console.PrintWarning(msg)
                     FreeCAD.Console.PrintWarning('\tThis may happens if a bad defined (or really complex) surface has been provided.\n')
