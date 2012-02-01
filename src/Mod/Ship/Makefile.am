@@ -35,6 +35,7 @@ nobase_data_DATA = \
 	Icons/Ship.xpm \
 	Examples/s60.fcstd \
 	Examples/barehull5415.fcstd \
+	Examples/s60_katamaran.fcstd \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \
