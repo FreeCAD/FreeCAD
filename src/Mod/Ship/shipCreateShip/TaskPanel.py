@@ -159,7 +159,7 @@ class TaskPanel:
             if maxZ < bbox.ZMax:
                 maxZ = bbox.ZMax
         bounds[0] = maxX - minX
-        bounds[1] = maxY - minY
+        bounds[1] = max(maxY - minY, abs(maxY), abs(minY))
         bounds[2] = maxZ - minZ
         # Set UI fields
         self.form.length.setMaximum(bounds[0])

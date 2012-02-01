@@ -27,6 +27,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 # Module
 import Instance
+from shipUtils import Math
 
 def Displacement(ship, draft, trim):
     """ Calculate ship displacement.
@@ -75,20 +76,91 @@ def Displacement(ship, draft, trim):
             z0 = section[n-1].z
             y1 = section[n].y
             z1 = section[n].z
-            factor = (Z - z0) / (z1 - z0)
-            y = y0 + factor*(y1 - y0)
-            points.append(App.Base.Vector(x,y,Z))
+            if (Z > z0) and not (Math.isAprox(Z,z0)):
+                factor = (Z - z0) / (z1 - z0)
+                y = y0 + factor*(y1 - y0)
+                points.append(App.Base.Vector(x,y,Z))
+        # Convert into array with n elements (Number of points by sections)
+        # with m elements into them (Number of points with the same height,
+        # typical of multibody)
+        section = []
+        nPoints = 0
+        j = 0
+        while j < len(points)-1:
+            section.append([points[j]])
+            k = j+1
+            while(Math.isAprox(points[j].z, points[k].z)):
+                section[nPoints].append(points[k])
+                k = k+1
+            nPoints = nPoints + 1
+            j = k
         # Integrate area
         area = 0.0
-        for j in range(0, len(points)-1):
-            y0 = abs(points[j].y)
-            z0 = points[j].z
-            y1 = abs(points[j+1].y)
-            z1 = points[j+1].z
-            y  = 0.5 * (y0 + y1)
-            dz = z1 - z0
-            area = area + 2.0*y*dz	# 2x because only half ship is represented
-        areas.append(area)
+        for j in range(0, len(section)-1):
+            for k in range(0, min(len(section[j])-1, len(section[j+1])-1)):
+                # y11,z11 ------- y01,z01
+                #    |               |
+                #    |               |
+                #    |               |
+                # y10,z10 ------- y00,z00
+                y00 = abs(section[j][k].y)
+                z00 = section[j][k].z
+                y10 = abs(section[j][k+1].y)
+                z10 = section[j][k+1].z
+                y01 = abs(section[j+1][k].y)
+                z01 = section[j+1][k].z
+                y11 = abs(section[j+1][k+1].y)
+                z11 = section[j+1][k+1].z
+                dy = 0.5*((y00 - y10) + (y01 - y11))
+                dz = 0.5*((z01 - z00) + (z11 - z10))
+                area = area + dy*dz
+            if(len(section[j]) < len(section[j+1])):
+                # y01,z01 ------- y11,z11
+                #    |        __/
+                #    |     __/
+                #    |    /
+                # y00,z00
+                k = len(section[j])-1
+                y00 = abs(section[j][k].y)
+                z00 = section[j][k].z
+                y01 = abs(section[j+1][k].y)
+                z01 = section[j+1][k].z
+                y11 = abs(section[j+1][k+1].y)
+                z11 = section[j+1][k+1].z
+                dy = y01 - y11
+                dz = z01 - z00
+                area = area + 0.5*dy*dz
+            elif(len(section[j]) > len(section[j+1])):
+                # y01,z01
+                #    |    \__
+                #    |       \__
+                #    |          \
+                # y00,z00 ------- y10,z10
+                k = len(section[j+1])-1
+                y00 = abs(section[j][k].y)
+                z00 = section[j][k].z
+                y10 = abs(section[j][k+1].y)
+                z10 = section[j][k+1].z
+                y01 = abs(section[j+1][k].y)
+                z01 = section[j+1][k].z
+                dy = y00 - y10
+                dz = z01 - z00
+                area = area + 0.5*dy*dz
+            elif(len(section[j]) == 1):
+                # y1,z1 ------- 
+                #    |          
+                #    |          
+                #    |          
+                # y0,z0 ------- 
+                k = 0
+                y0 = abs(section[j][k].y)
+                z0 = section[j][k].z
+                y1 = abs(section[j+1][k].y)
+                z1 = section[j+1][k].z
+                dy = 0.5 * (y0 + y1)
+                dz = z1 - z0
+                area = area + dy*dz
+        areas.append(2.0*area)	                # 2x because only half ship is represented
         # Add volume & moment if proceed
         if i > 0:
             dx     = xCoord[i] - xCoord[i-1]
