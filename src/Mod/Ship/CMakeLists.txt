@@ -38,6 +38,7 @@ SOURCE_GROUP("shipicons" FILES ${ShipIcons_SRCS})
 SET(ShipExamples_SRCS
 	Examples/s60.fcstd
 	Examples/barehull5415.fcstd
+	Examples/s60_katamaran.fcstd
 )
 SOURCE_GROUP("shipexamples" FILES ${ShipExamples_SRCS})
 
