@@ -139,8 +139,38 @@ class BazaarControl(VersionControl):
         print "bazaar"
 
 class GitControl(VersionControl):
+    #http://www.hermanradtke.com/blog/canonical-version-numbers-with-git/
+    #http://blog.marcingil.com/2011/11/creating-build-numbers-using-git-commits/
+    #http://gitref.org/remotes/#fetch
+    #http://cworth.org/hgbook-git/tour/
+    #http://git.or.cz/course/svn.html
+    #git help log
     def extractInfo(self, srcdir):
-        return False
+        # revision number
+        info=os.popen("git rev-list HEAD").read()
+        if len(info) == 0:
+            return False
+        self.rev='%04d (Git)' % (info.count('\n'))
+        self.range='%04d' % (info.count('\n'))
+        # date/time
+        info=os.popen("git log -1 --date=iso").read()
+        info=info.split("\n")
+        for i in info:
+            r = re.match("^Date:\\W+(\\d+-\\d+-\\d+\\W+\\d+:\\d+:\\d+)", i)
+            if r != None:
+                self.date = r.groups()[0].replace('-','/')
+                self.time = self.date
+                break
+        #self.time = time.strftime("%Y/%m/%d %H:%M:%S")
+        self.url = "Unknown"
+        info=os.popen("git remote -v").read()
+        info=info.split("\n")
+        for i in info:
+            r = re.match("origin\\W+(\\S+)",i)
+            if r != None:
+                self.url = r.groups()[0]
+                break
+        return True
 
     def printInfo(self):
         print "git"
