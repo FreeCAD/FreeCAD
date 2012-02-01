@@ -120,7 +120,7 @@ class Ship:
         for j in range(0,nP):
             z = z0 + j*dz
             rX = x1 - x0
-            rY = y1 - y0
+            rY = max(y1 - y0, abs(y1), abs(y0))
             planes.append(Part.makePlane(4*rX,4*rY,Base.Vector(-2*rX,-2*rY,z),Base.Vector(0,0,1)))
         # Division are performed at x axis
         dx = (x1 - x0) / (nS - 1.0)
@@ -149,23 +149,23 @@ class Ship:
                     edges.append(wire[k])
             # Slice curves to get points (Length based)
             points = []
-            for j in range(0,len(edges)):
-                for k in range(0,nP):
+            for k in range(0,nP):
+                planePoints = []
+                for j in range(0,len(edges)):
                     aux = self.lineFaceSection(edges[j], planes[k])
-                    if not aux:                     # No section
-                        points.append(Vector(x,0,z0 + k*dz))
-                    if len(aux) == 1:               # Single point section
-                        points.append(Vector(aux[0].X, aux[0].Y, aux[0].Z))
-                    else:                           # Several points, so ship has more than one body
-                        # Get Y coordinates
-                        auxY = []
-                        for l in range(0,len(aux)):
-                            auxY.append(aux[l].Y)
-                        # Sort them
-                        auxY.sort()
-                        # And store
-                        for l in range(0,len(aux)):
-                            points.append(Vector(aux[l].X, auxY[l], aux[l].Z))
+                    for l in range(0,len(aux)):
+                        planePoints.append(Vector(aux[l].X, aux[l].Y, aux[l].Z))
+                if not planePoints:                             # No section found, symmetry plane point will used
+                    planePoints.append(Vector(x,0,z0 + k*dz))
+                # Get Y coordinates
+                auxY = []
+                for l in range(0,len(planePoints)):
+                    auxY.append(planePoints[l].y)
+                # Sort them
+                auxY.sort()
+                # And store
+                for l in range(0,len(planePoints)):
+                    points.append(Vector(planePoints[l].x, auxY[l], planePoints[l].z))
             # Store points
             section = points[:]
             nPoints.append(len(section))
@@ -177,6 +177,9 @@ class Ship:
         self.obj.nPoints   = nPoints[:]
         self.obj.xSection  = xSection[:]
         self.obj.mSections = mSections[:]
+        msg = '%d Discretization points performed\n' % (len(mSections))
+        msg = Translator.translate(msg)
+        FreeCAD.Console.PrintMessage(msg)
 
 class ViewProviderShip:
     def __init__(self, obj):
