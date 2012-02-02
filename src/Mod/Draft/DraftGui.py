@@ -852,24 +852,24 @@ class DraftToolBar:
                 except ValueError:
                     pass
                 else:
-                    if self.isRelative.isVisible() and self.isRelative.isChecked():
-                        if self.sourceCmd.node:
-                            if self.sourceCmd.featureName == "Rectangle":
-                                last = self.sourceCmd.node[0]
-                            else:
-                                last = self.sourceCmd.node[-1]
-                            numx = last.x + numx
-                            numy = last.y + numy
-                            numz = last.z + numz
-                            if FreeCAD.DraftWorkingPlane:
-                                v = FreeCAD.Vector(numx,numy,numz)
-                                v = FreeCAD.DraftWorkingPlane.getGlobalCoords(v)
-                                numx = v.x
-                                numy = v.y
-                                numz = v.z
                     if self.pointcallback:
-                        self.pointcallback(FreeCAD.Vector(numx,numy,numz),self.isRelative.isChecked())
+                        self.pointcallback(FreeCAD.Vector(numx,numy,numz),(self.isRelative.isVisible() and self.isRelative.isChecked()))
                     else:
+                        if self.isRelative.isVisible() and self.isRelative.isChecked():
+                            if self.sourceCmd.node:
+                                if self.sourceCmd.featureName == "Rectangle":
+                                    last = self.sourceCmd.node[0]
+                                else:
+                                    last = self.sourceCmd.node[-1]
+                                numx = last.x + numx
+                                numy = last.y + numy
+                                numz = last.z + numz
+                                if FreeCAD.DraftWorkingPlane:
+                                    v = FreeCAD.Vector(numx,numy,numz)
+                                    v = FreeCAD.DraftWorkingPlane.getGlobalCoords(v)
+                                    numx = v.x
+                                    numy = v.y
+                                    numz = v.z
                         self.sourceCmd.numericInput(numx,numy,numz)
 
     def finish(self):

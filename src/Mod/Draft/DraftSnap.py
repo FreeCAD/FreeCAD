@@ -678,7 +678,8 @@ class Snapper:
         def getcoords(point,relative=False):
             self.pt = point
             if relative and last:
-                self.pt = last.add(point)
+                v = FreeCAD.DraftWorkingPlane.getGlobalCoords(point)
+                self.pt = last.add(v)
             accept()
 
         def click(event_cb):
