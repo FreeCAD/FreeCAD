@@ -68,6 +68,7 @@ class Snapper:
         self.grid = None
         self.constrainLine = None
         self.trackLine = None
+        self.lastSnappedObject = None
         
         # the snapmarker has "dot","circle" and "square" available styles
         self.mk = {'passive':'circle',
@@ -175,6 +176,8 @@ class Snapper:
             obj = FreeCAD.ActiveDocument.getObject(info['Object'])
             if not obj:
                 return cstr(point)
+
+            self.lastSnappedObject = obj
                 
             if hasattr(obj.ViewObject,"Selectable"):
                 if not obj.ViewObject.Selectable:
@@ -531,6 +534,7 @@ class Snapper:
             for v in self.views:
                 v.unsetCursor()
             self.views = []
+            self.cursorMode = None
         else:
             if mode != self.cursorMode:
                 if not self.views:
@@ -559,11 +563,9 @@ class Snapper:
             self.extLine.off()
         if self.grid:
             self.grid.off()
-        if self.constrainLine:
-            self.constrainLine.off()
+        self.unconstrain()
         self.radius = 0
         self.setCursor()
-        self.cursorMode = None
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
@@ -627,11 +629,12 @@ class Snapper:
         if self.constrainLine:
             self.constrainLine.off()
 
-    def getPoint(self,last=None,callback=None,movecallback=None):
+    def getPoint(self,last=None,callback=None,movecallback=None,extradlg=None):
         
-        """getPoint([last],[callback],[movecallback]) : gets a 3D point from the screen. You
-        can provide an existing point, in that case additional snap options and a tracker
-        are available. You can also pass a function as callback, which will get called
+        """getPoint([last],[callback],[movecallback],[extradlg]) : gets a 3D point
+        from the screen. You can provide an existing point, in that case additional
+        snap options and a tracker are available.
+        You can also pass a function as callback, which will get called
         with the resulting point as argument, when a point is clicked, and optionally
         another callback which gets called when the mouse is moved.
 
@@ -642,7 +645,12 @@ class Snapper:
         def cb(point):
             if point:
                 print "got a 3D point: ",point
-        FreeCADGui.Snapper.getPoint(callback=cb)"""
+        FreeCADGui.Snapper.getPoint(callback=cb)
+
+        If the callback function accepts more than one argument, it will also receive
+        the last snapped object.Finally, a task dialog can be passed as extradlg."""
+
+        import inspect
         
         self.pt = None
         self.ui = FreeCADGui.draftToolBar
@@ -673,12 +681,16 @@ class Snapper:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
                     self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
                     self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+                    obj = FreeCADGui.Snapper.lastSnappedObject
                     FreeCADGui.Snapper.off()
                     self.ui.offUi()
                     if self.trackLine:
                         self.trackLine.off()
                     if callback:
-                        callback(self.pt)
+                        if len(inspect.getargspec(callback).args) > 2:
+                            callback(self.pt,obj)
+                        else:
+                            callback(self.pt)
                     self.pt = None
 
         def cancel():
@@ -692,7 +704,7 @@ class Snapper:
                 callback(None)
             
         # adding 2 callback functions
-        self.ui.pointUi(cancel=cancel)
+        self.ui.pointUi(cancel=cancel,extradlg=extradlg)
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
         self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)            
 

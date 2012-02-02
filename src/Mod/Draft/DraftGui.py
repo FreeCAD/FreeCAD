@@ -136,7 +136,7 @@ class DraftLineEdit(QtGui.QLineEdit):
             QtGui.QLineEdit.keyPressEvent(self, event)
 
 class DraftTaskPanel:
-    def __init__(self,widget):
+    def __init__(self,widget,extradlg=None):
         self.form = widget
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Cancel)
@@ -463,7 +463,7 @@ class DraftToolBar:
 # Interface modes
 #---------------------------------------------------------------------------
 
-    def taskUi(self,title):
+    def taskUi(self,title,extradlg=None):
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
@@ -472,7 +472,7 @@ class DraftToolBar:
             self.layout = QtGui.QVBoxLayout(self.baseWidget)
             self.setupToolBar(task=True)
             self.retranslateUi(self.baseWidget)
-            self.panel = DraftTaskPanel(self.baseWidget)
+            self.panel = DraftTaskPanel(self.baseWidget,extradlg)
             todo.delay(FreeCADGui.Control.showDialog,self.panel)
         else:
             self.setTitle(title)  
@@ -510,9 +510,9 @@ class DraftToolBar:
         self.labelx.setText(translate("draft", "Center X"))
         self.continueCmd.show()
 
-    def pointUi(self,title=translate("draft","Point"),cancel=None):
+    def pointUi(self,title=translate("draft","Point"),cancel=None,extradlg=None):
         if cancel: self.cancel = cancel
-        self.taskUi(title)
+        self.taskUi(title,extradlg)
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.labelx.setText(translate("draft", "X"))
@@ -536,6 +536,7 @@ class DraftToolBar:
 
     def offUi(self):
         todo.delay(FreeCADGui.Control.closeDialog,None)
+        self.cancel = None
         if self.taskmode:
             self.isTaskOn = False
             self.baseWidget = QtGui.QWidget()

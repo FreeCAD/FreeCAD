@@ -98,17 +98,14 @@ class _CommandWall:
             import DraftTrackers
             self.points = []
             self.tracker = DraftTrackers.boxTracker()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint)
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=TaskArchWall())
 
-    def getPoint(self,point):
+    def getPoint(self,point,obj):
         "this function is called by the snapper when it has a 3D point"
-        pos = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
-        exi = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(pos)
-        if exi:
-            exi = FreeCAD.ActiveDocument.getObject(exi['Object'])
-            if Draft.getType(exi) == "Wall":
-                if not exi in self.existing:
-                    self.existing.append(exi)
+        if obj:
+            if Draft.getType(obj) == "Wall":
+                if not obj in self.existing:
+                    self.existing.append(obj)
         if point == None:
             self.tracker.finalize()
             return
@@ -119,6 +116,8 @@ class _CommandWall:
         elif len(self.points) == 2:
             import Part
             l = Part.Line(self.points[0],self.points[1])
+            self.tracker.finalize()
+            FreeCAD.ActiveDocument.openTransaction("Wall")
             if not self.existing:
                 s = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
                 s.addGeometry(l)
@@ -126,7 +125,7 @@ class _CommandWall:
             else:
                 w = joinWalls(self.existing)
                 w.Base.addGeometry(l)
-            self.tracker.finalize()
+            FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
     def update(self,point):
@@ -182,6 +181,8 @@ class _Wall(ArchComponent.Component):
                 dvec = fcvec.neg(dvec)
                 w2 = fcgeo.offsetWire(wire,dvec)
                 sh = fcgeo.bind(w1,w2)
+            # fixing self-intersections
+            sh.fix(0.1,0,1)
             if height:
                 norm = Vector(normal).multiply(height)
                 sh = sh.extrude(norm)
@@ -258,4 +259,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     def getIcon(self):          
         return ":/icons/Arch_Wall_Tree.svg"
 
+class TaskArchWall:
+    def __init__(self):
+        from PyQt4 import QtGui
+        self.form = QtGui.QWidget()
+    
 FreeCADGui.addCommand('Arch_Wall',_CommandWall())
