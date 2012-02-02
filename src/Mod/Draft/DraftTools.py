@@ -476,7 +476,7 @@ class Line(Creator):
             if self.isWire:
                 msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
         else:
-            currentshape = self.obj.Shape
+            currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node)-2]
             newseg = Part.Line(last,point).toShape()
             newshape=currentshape.fuse(newseg)
