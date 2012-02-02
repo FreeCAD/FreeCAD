@@ -675,23 +675,32 @@ class Snapper:
             if movecallback:
                 movecallback(self.pt)
         
+        def getcoords(point,relative=False):
+            self.pt = point
+            if relative and last:
+                self.pt = last.add(point)
+            accept()
+
         def click(event_cb):
             event = event_cb.getEvent()
             if event.getButton() == 1:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
-                    self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
-                    self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
-                    obj = FreeCADGui.Snapper.lastSnappedObject
-                    FreeCADGui.Snapper.off()
-                    self.ui.offUi()
-                    if self.trackLine:
-                        self.trackLine.off()
-                    if callback:
-                        if len(inspect.getargspec(callback).args) > 2:
-                            callback(self.pt,obj)
-                        else:
-                            callback(self.pt)
-                    self.pt = None
+                    accept()
+
+        def accept():
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            obj = FreeCADGui.Snapper.lastSnappedObject
+            FreeCADGui.Snapper.off()
+            self.ui.offUi()
+            if self.trackLine:
+                self.trackLine.off()
+            if callback:
+                if len(inspect.getargspec(callback).args) > 2:
+                    callback(self.pt,obj)
+                else:
+                    callback(self.pt)
+            self.pt = None
 
         def cancel():
             self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
@@ -704,7 +713,7 @@ class Snapper:
                 callback(None)
             
         # adding 2 callback functions
-        self.ui.pointUi(cancel=cancel,extradlg=extradlg)
+        self.ui.pointUi(cancel=cancel,getcoords=getcoords,rel=bool(last))
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
         self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)            
 

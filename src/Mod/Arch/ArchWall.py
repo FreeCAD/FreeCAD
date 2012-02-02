@@ -98,7 +98,7 @@ class _CommandWall:
             import DraftTrackers
             self.points = []
             self.tracker = DraftTrackers.boxTracker()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=TaskArchWall())
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint)
 
     def getPoint(self,point,obj):
         "this function is called by the snapper when it has a 3D point"
