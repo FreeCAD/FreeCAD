@@ -181,6 +181,8 @@ protected:
     virtual void onChanged(const Property* prop);
     /// get called after a document has been fully restored
     virtual void onDocumentRestored() {}
+    /// get called after duplicating an object
+    virtual void onFinishDuplicating() {}
 
      /// python object of this class and all descendend
 protected: // attributes
