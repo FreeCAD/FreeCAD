@@ -84,6 +84,11 @@
              <string>Barehull 5145</string>
             </property>
            </item>
+           <item>
+            <property name="text">
+             <string>Serie 60 (Katamaran)</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item>
