@@ -215,12 +215,12 @@ class TaskPanel:
             props.index("AreaCurveDraft")
         except ValueError:
             self.ship.addProperty("App::PropertyFloat","AreaCurveDraft","Ship", str(Translator.translate("Areas curve draft selected [m]")))
-            self.ship.AreaCurveDraft = self.form.draft.value()
+        self.ship.AreaCurveDraft = self.form.draft.value()
         try:
             props.index("AreaCurveTrim")
         except ValueError:
             self.ship.addProperty("App::PropertyFloat","AreaCurveTrim","Ship", str(Translator.translate("Areas curve trim selected [m]")))
-            self.ship.AreaCurveTrim = self.form.draft.value()
+        self.ship.AreaCurveTrim = self.form.trim.value()
 
 def createTask():
     panel = TaskPanel()
