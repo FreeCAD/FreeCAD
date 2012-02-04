@@ -1,18 +1,10 @@
 
-/// Version Number
+// Version Number
 #define FCVersionMajor "0"
 #define FCVersionMinor "13"
 #define FCVersionName  "Vulcan"
 
 #define FCRevision      "$WCREV$"      //Highest committed revision number
 #define FCRevisionDate  "$WCDATE$"     //Date of highest committed revision
-#define FCRevisionRange "$WCRANGE$"    //Update revision range
 #define FCRepositoryURL "$WCURL$"      //Repository URL of the working copy
-#define FCCurrentDateT  "$WCNOW$"      //Current system date & time
-
-//Placeholders of the form "$WCxxx?TrueText:FalseText$" are replaced with
-//TrueText if the tested condition is true, and FalseText if false.
-
-#define FCScrClean      "$WCMODS?Src modified:Src not modified$"     //True if local modifications found
-#define FCScrMixed      "$WCMIXED?Src mixed:Src not mixed$"          //True if mixed update revisions found
 
