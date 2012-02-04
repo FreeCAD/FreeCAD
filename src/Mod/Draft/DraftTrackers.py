@@ -680,7 +680,7 @@ class boxTracker(Tracker):
         else:
             return self.cube.width.getValue()
         
-    def heigth(self,h=None):
+    def height(self,h=None):
         if h:
             self.cube.depth.setValue(h)
             self.update()
