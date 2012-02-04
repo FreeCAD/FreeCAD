@@ -136,8 +136,14 @@ class DraftLineEdit(QtGui.QLineEdit):
             QtGui.QLineEdit.keyPressEvent(self, event)
 
 class DraftTaskPanel:
-    def __init__(self,widget):
-        self.form = widget
+    def __init__(self,widget,extra=None):
+        if extra:
+            if isinstance(extra,list):
+                self.form = [widget] + extra
+            else:
+                self.form = [widget,extra]
+        else:
+            self.form = widget
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Cancel)
     def accept(self):
@@ -318,21 +324,6 @@ class DraftToolBar:
         self.resetPlaneButton = self._pushbutton("none", self.layout)
         self.isCopy = self._checkbox("isCopy",self.layout,checked=False)
 
-        # options buttons for other workbenches
-        
-        op1 = QtGui.QHBoxLayout()
-        self.layout.addLayout(op1)
-        self.labelop1 = self._label("labelop1", op1)
-        self.valueop1 = self._lineedit("valueop1", op1)
-        op2 = QtGui.QHBoxLayout()
-        self.layout.addLayout(op2)
-        self.labelop2 = self._label("labelop2", op2)
-        self.valueop2 = self._lineedit("valueop2", op2)
-        op3 = QtGui.QHBoxLayout()
-        self.layout.addLayout(op3)
-        self.labelop3 = self._label("labelop3", op3)
-        self.valueop3 = self._combo("valueop3", op3)
-        
         # spacer
         if not self.taskmode:
             spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
@@ -485,19 +476,17 @@ class DraftToolBar:
 # Interface modes
 #---------------------------------------------------------------------------
 
-    def taskUi(self,title,):
+    def taskUi(self,title,extra=None):
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
             self.baseWidget = QtGui.QWidget()
-            self.setTitle(title)
             self.layout = QtGui.QVBoxLayout(self.baseWidget)
             self.setupToolBar(task=True)
             self.retranslateUi(self.baseWidget)
-            self.panel = DraftTaskPanel(self.baseWidget)
+            self.panel = DraftTaskPanel(self.baseWidget,extra)
             todo.delay(FreeCADGui.Control.showDialog,self.panel)
-        else:
-            self.setTitle(title)  
+        self.setTitle(title)  
                 
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
@@ -535,7 +524,7 @@ class DraftToolBar:
     def pointUi(self,title=translate("draft","Point"),cancel=None,extra=None,getcoords=None,rel=False):
         if cancel: self.cancel = cancel
         if getcoords: self.pointcallback = getcoords
-        self.taskUi(title)
+        self.taskUi(title,extra)
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.labelx.setText(translate("draft", "X"))
@@ -546,7 +535,6 @@ class DraftToolBar:
         self.yValue.show()
         self.zValue.show()
         if rel: self.isRelative.show()
-        if extra: self.extraUi(extra)
         self.xValue.setFocus()
         self.xValue.selectAll()
 
@@ -601,12 +589,6 @@ class DraftToolBar:
             self.textValue.hide()
             self.continueCmd.hide()
             self.occOffset.hide()
-            self.labelop1.hide()
-            self.valueop1.hide()
-            self.labelop2.hide()
-            self.valueop2.hide()
-            self.labelop3.hide()
-            self.valueop3.hide()
             
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)

@@ -648,7 +648,7 @@ class Snapper:
         FreeCADGui.Snapper.getPoint(callback=cb)
 
         If the callback function accepts more than one argument, it will also receive
-        the last snapped object.Finally, a task dialog can be passed as extradlg."""
+        the last snapped object. Finally, a pyqt dialog can be passed as extra taskbox."""
 
         import inspect
         
@@ -713,8 +713,8 @@ class Snapper:
             if callback:
                 callback(None)
             
-        # adding 2 callback functions
-        self.ui.pointUi(cancel=cancel,getcoords=getcoords,rel=bool(last))
+        # adding callback functions
+        self.ui.pointUi(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
         self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)            
 
