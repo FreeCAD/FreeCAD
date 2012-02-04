@@ -1028,12 +1028,18 @@ void Application::initConfig(int argc, char ** argv)
     // only for 'BuildVersionMajor'.
     if (App::Application::Config().find("BuildVersionMajor") == App::Application::Config().end()) {
         std::stringstream str; str << FCVersionMajor << "." << FCVersionMinor;
-        App::Application::Config()["ExeVersion"]         = str.str();
-        App::Application::Config()["BuildVersionMajor"]  = FCVersionMajor;
-        App::Application::Config()["BuildVersionMinor"]  = FCVersionMinor;
-        App::Application::Config()["BuildRevision"]      = FCRevision;
-        App::Application::Config()["BuildRepositoryURL"] = FCRepositoryURL;
-        App::Application::Config()["BuildRevisionDate"]  = FCCurrentDateT;
+        App::Application::Config()["ExeVersion"         ] = str.str();
+        App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
+        App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
+        App::Application::Config()["BuildRevision"      ] = FCRevision;
+        App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
+        App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
+#if defined(FCRepositoryHash)
+        App::Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
+#endif
+#if defined(FCRepositoryBranch)
+        App::Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
+#endif
     }
 
     _argc = argc;
