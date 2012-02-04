@@ -255,6 +255,10 @@ class _Wall(ArchComponent.Component):
 
         import Part
         from draftlibs import fcgeo
+
+        flat = False
+        if hasattr(obj.ViewObject,"DisplayMode"):
+            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
         
         def getbase(wire):
             "returns a full shape from a base wire"
@@ -277,7 +281,7 @@ class _Wall(ArchComponent.Component):
                 sh = fcgeo.bind(w1,w2)
             # fixing self-intersections
             sh.fix(0.1,0,1)
-            if height:
+            if height and (not flat):
                 norm = Vector(normal).multiply(height)
                 sh = sh.extrude(norm)
             return sh
@@ -352,5 +356,19 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):          
         return ":/icons/Arch_Wall_Tree.svg"
-    
+
+    def getDisplayModes(self,vobj):
+        return ["Flat 2D"]
+
+    def setDisplayMode(self,mode):
+        self.Object.Proxy.createGeometry(self.Object)
+        if mode == "Flat 2D":
+            return "Flat Lines"
+        else:
+            return mode
+
+    def attach(self,vobj):
+        self.Object = vobj.Object
+        return
+
 FreeCADGui.addCommand('Arch_Wall',_CommandWall())
