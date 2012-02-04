@@ -119,7 +119,7 @@ class TaskPanel:
         self.faces = None
         selObjs  = Geometry.getSelectedObjs()
         if not selObjs:
-            msg = Translator.translate("Ship objects can only be created on top of hull geometry (any object selected).\n")
+            msg = Translator.translate("Ship objects can only be created on top of hull geometry (no object selected).\n")
             App.Console.PrintError(msg)
             msg = Translator.translate("Please create or download a ship hull geometry before using this tool\n")
             App.Console.PrintError(msg)
@@ -130,7 +130,7 @@ class TaskPanel:
             for j in range(0, len(faces)):
                 self.faces.append(faces[j])
         if not self.faces:
-            msg = Translator.translate("Ship objects can only be created on top of hull geometry (any face object selected).\n")
+            msg = Translator.translate("Ship objects can only be created on top of hull geometry (no face object selected).\n")
             App.Console.PrintError(msg)
             msg = Translator.translate("Please create or download a ship hull geometry before using this tool\n")
             App.Console.PrintError(msg)
