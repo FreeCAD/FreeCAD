@@ -125,7 +125,7 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
 {
     ViewProviderDocumentObject::attach(pcObject);
 
-    SoSeparator *lineSep = new SoSeparator();
+    SoAnnotation *lineSep = new SoAnnotation();
 
 
     SoAutoZoomTranslation *zoom = new SoAutoZoomTranslation;
