@@ -50,11 +50,7 @@ class VersionControl:
     def __init__(self):
         self.rev = ""
         self.date = ""
-        self.range = ""
         self.url = ""
-        self.time = ""
-        self.mods = "Src not modified"
-        self.mixed = "Src not mixed"
 
     def extractInfo(self, srcdir):
         return False
@@ -67,11 +63,7 @@ class VersionControl:
         for line in lines:
             line = string.replace(line,'$WCREV$',self.rev)
             line = string.replace(line,'$WCDATE$',self.date)
-            line = string.replace(line,'$WCRANGE$',self.range)
             line = string.replace(line,'$WCURL$',self.url)
-            line = string.replace(line,'$WCNOW$',self.time)
-            line = string.replace(line,'$WCMODS?Src modified:Src not modified$',self.mods)
-            line = string.replace(line,'$WCMIXED?Src mixed:Src not mixed$',self.mixed)
             content.append(line)
         return content
 
@@ -82,9 +74,7 @@ class UnknownControl(VersionControl):
             return False
         self.rev = "Unknown"
         self.date = "Unknown"
-        self.range = "Unknown"
         self.url = "Unknown"
-        self.time = "Unknown"
         return True
 
     def printInfo(self):
@@ -104,13 +94,10 @@ class DebianChangelog(VersionControl):
         r=re.search("bzr(\\d+)",c)
         if r != None:
             self.rev = r.groups()[0] + " (Launchpad)"
-            self.range = self.rev
         
         t = time.localtime()
-        self.url = "https://code.launchpad.net/~vcs-imports/freecad/trunk"
-        #self.time = time.asctime()
         self.date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
-        self.time = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
+        self.url = "https://code.launchpad.net/~vcs-imports/freecad/trunk"
         return True
 
     def printInfo(self):
@@ -121,8 +108,6 @@ class BazaarControl(VersionControl):
         info=os.popen("bzr log -l 1 %s" % (srcdir)).read()
         if len(info) == 0:
             return False
-        #Get the current local date
-        self.time = time.strftime("%Y/%m/%d %H:%M:%S")
         lines=info.split("\n")
         for i in lines:
             r = re.match("^revno: (\\d+)$", i)
@@ -151,7 +136,6 @@ class GitControl(VersionControl):
         if len(info) == 0:
             return False
         self.rev='%04d (Git)' % (info.count('\n'))
-        self.range='%04d' % (info.count('\n'))
         # date/time
         info=os.popen("git log -1 --date=iso").read()
         info=info.split("\n")
@@ -159,9 +143,7 @@ class GitControl(VersionControl):
             r = re.match("^Date:\\W+(\\d+-\\d+-\\d+\\W+\\d+:\\d+:\\d+)", i)
             if r != None:
                 self.date = r.groups()[0].replace('-','/')
-                self.time = self.date
                 break
-        #self.time = time.strftime("%Y/%m/%d %H:%M:%S")
         self.url = "Unknown"
         info=os.popen("git remote -v").read()
         info=info.split("\n")
@@ -170,10 +152,19 @@ class GitControl(VersionControl):
             if r != None:
                 self.url = r.groups()[0]
                 break
+        self.hash=os.popen("git log -1 --pretty=format:%H").read()
+        self.branch=os.popen("git branch").read().split('\n')[0][2:]
         return True
 
     def printInfo(self):
         print "git"
+
+    def writeVersion(self, lines):
+        content = VersionControl.writeVersion(self, lines)
+        content.append('// Git relevant stuff\n')
+        content.append('#define FCRepositoryHash   "%s"\n' % (self.hash))
+        content.append('#define FCRepositoryBranch "%s"\n' % (self.branch))
+        return content
 
 class MercurialControl(VersionControl):
     def extractInfo(self, srcdir):
