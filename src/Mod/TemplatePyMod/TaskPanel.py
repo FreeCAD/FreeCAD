@@ -95,6 +95,14 @@ class TaskCalendar:
     def __init__(self):
         self.form = QtGui.QCalendarWidget()
 
+class TaskManyTaskBoxes:
+    "illustrates how to add several taskboxes"
+    def __init__(self):
+        widget1 = QtGui.QCalendarWidget()
+        widget2 = QtGui.QWidget()
+        widget2.setWindowTitle("My Test Box")
+        text = QtGui.QLabel("testBox",widget2)
+        self.form = [widget1,widget2]
 
 def createTask():
     Gui.Control.addTaskWatcher([TaskWatcher(), TaskLineEdit(), TaskWatcherFilter()])
