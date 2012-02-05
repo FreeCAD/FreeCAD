@@ -33,7 +33,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE_ABSTRACT(App::Placement, App::DocumentObject)
+PROPERTY_SOURCE(App::Placement, App::DocumentObject)
 
 
 //===========================================================================
@@ -43,7 +43,6 @@ PROPERTY_SOURCE_ABSTRACT(App::Placement, App::DocumentObject)
 Placement::Placement(void)
 {
 
-  ADD_PROPERTY(Pos,(Base::Placement()));
 }
 
 Placement::~Placement(void)
