@@ -28,6 +28,8 @@
             <File Id="PartInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="Partpyd" Name="Part.pyd" DiskId="1" />
             <File Id="PartGuipyd" Name="PartGui.pyd" DiskId="1" />
+            <File Id="TestPartAppPy" Name="TestPartApp.py" DiskId="1" />
+            <File Id="TestPartGuiPy" Name="TestPartGui.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>
