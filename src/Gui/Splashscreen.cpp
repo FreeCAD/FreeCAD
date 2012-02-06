@@ -23,8 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
+# include <QClipboard>
 # include <QMutex>
 # include <QSysInfo>
+# include <QTextStream>
 # include <QWaitCondition>
 #endif
 
@@ -315,6 +318,24 @@ void AboutDialog::on_licenseButton_clicked()
 
 void AboutDialog::on_copyButton_clicked()
 {
+    QString data;
+    QTextStream str(&data);
+    std::map<std::string, std::string>& config = App::Application::Config();
+    std::map<std::string,std::string>::iterator it;
+
+    QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
+    QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
+    QString build  = QString::fromAscii(config["BuildRevision"].c_str());
+    str << "Version: " << major << "." << minor << "." << build << endl;
+    it = config.find("BuildRevisionBranch");
+    if (it != config.end())
+        str << "Branch: " << it->second.c_str() << endl;
+    it = config.find("BuildRevisionHash");
+    if (it != config.end())
+        str << "Hash: " << it->second.c_str() << endl;
+
+    QClipboard* cb = QApplication::clipboard();
+    cb->setText(data);
 }
 
 #include "moc_Splashscreen.cpp"
