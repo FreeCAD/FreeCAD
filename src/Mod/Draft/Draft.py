@@ -256,18 +256,11 @@ def formatObject(target,origin=None):
         if "ShapeColor" in obrep.PropertiesList: obrep.ShapeColor = fcol
     else:
         matchrep = origin.ViewObject
-        if ("LineWidth" in obrep.PropertiesList) and \
-                ("LineWidth" in matchrep.PropertiesList):
-            obrep.LineWidth = matchrep.LineWidth
-        if ("PointColor" in obrep.PropertiesList) and \
-                ("PointColor" in matchrep.PropertiesList):
-            obrep.PointColor = matchrep.PointColor
-        if ("LineColor" in obrep.PropertiesList) and \
-                ("LineColor" in matchrep.PropertiesList):
-            obrep.LineColor = matchrep.LineColor
-        if ("ShapeColor" in obrep.PropertiesList) and \
-                ("ShapeColor" in matchrep.PropertiesList):
-            obrep.ShapeColor = matchrep.ShapeColor
+        for p in matchrep.PropertiesList:
+            if not p in ["DisplayMode","BoundingBox","Proxy","RootNode"]:
+                if p in obrep.PropertiesList:
+                    val = getattr(matchrep,p)
+                    setattr(obrep,p,val)
         if matchrep.DisplayMode in obrep.listDisplayModes():
             obrep.DisplayMode = matchrep.DisplayMode
 
@@ -516,48 +509,52 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     select(obj)
     return obj
 
-def makeCopy(obj):
+def makeCopy(obj,force=None,reparent=False):
     '''makeCopy(object): returns an exact copy of an object'''
-    if getType(obj) == "Rectangle":
+    if (getType(obj) == "Rectangle") or (force == "Rectangle"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Rectangle(newobj)
         _ViewProviderRectangle(newobj.ViewObject)
-    elif getType(obj) == "Wire":
+    elif (getType(obj) == "Dimension") or (force == "Dimension"):
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        _Dimension(newobj)
+        _ViewProviderDimension(newobj.ViewObject)
+    elif (getType(obj) == "Wire") or (force == "Wire"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Wire(newobj)
         _ViewProviderWire(newobj.ViewObject)
-    elif getType(obj) == "Circle":
+    elif (getType(obj) == "Circle") or (force == "Circle"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Circle(newobj)
-        _ViewProviderCircle(newobj.ViewObject)
-    elif getType(obj) == "Polygon":
+        _ViewProviderDraft(newobj.ViewObject)
+    elif (getType(obj) == "Polygon") or (force == "Polygon"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Polygon(newobj)
         _ViewProviderPolygon(newobj.ViewObject)
-    elif getType(obj) == "BSpline":
+    elif (getType(obj) == "BSpline") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _BSpline(newobj)
         _ViewProviderBSpline(newobj.ViewObject)
-    elif getType(obj) == "Block":
+    elif (getType(obj) == "Block") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Block(newobj)
         _ViewProviderDraftPart(newobj.ViewObject)
-    elif getType(obj) == "Structure":
+    elif (getType(obj) == "Structure") or (force == "Structure"):
         import ArchStructure
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchStructure._Structure(newobj)
         ArchStructure._ViewProviderStructure(newobj.ViewObject)
-    elif getType(obj) == "Wall":
+    elif (getType(obj) == "Wall") or (force == "Wall"):
         import ArchWall
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchWall._Wall(newobj)
         ArchWall._ViewProviderWall(newobj.ViewObject)
-    elif getType(obj) == "Window":
+    elif (getType(obj) == "Window") or (force == "Window"):
         import ArchWindow
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchWindow._Window(newobj)
         Archwindow._ViewProviderWindow(newobj.ViewObject)
-    elif getType(obj) == "Cell":
+    elif (getType(obj) == "Cell") or (force == "Cell"):
         import ArchCell
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchCell._Cell(newobj)
@@ -569,8 +566,19 @@ def makeCopy(obj):
         print "Error: Object type cannot be copied"
         return None
     for p in obj.PropertiesList:
-        if p in newobj.PropertiesList:
-            setattr(newobj,p,obj.getPropertyByName(p))
+        if not p in ["Proxy"]:
+            if p in newobj.PropertiesList:
+                setattr(newobj,p,obj.getPropertyByName(p))
+    if reparent:
+        parents = obj.InList
+        if parents:
+            for par in parents:
+                if par.Type == "App::DocumentObjectGroup":
+                    par.addObject(newobj)
+                else:
+                    for prop in par.PropertiesList:
+                        if getattr(par,prop) == obj:
+                            setattr(par,prop,newobj)
     formatObject(newobj,obj)
     return newobj
 
@@ -685,7 +693,7 @@ def move(objectslist,vector,copy=False):
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
                 _Dimension(newobj)
-                _DimensionViewProvider(newobj.ViewObject)
+                _ViewProviderDimension(newobj.ViewObject)
             else:
                 newobj = obj
             newobj.Start = obj.Start.add(vector)
@@ -1401,6 +1409,57 @@ def clone(obj,delta=None):
     if delta:
         cl.Placement.move(delta)
     return cl
+
+def heal(objlist=None,delete=True,reparent=True):
+    '''heal([objlist],[delete],[reparent]) - recreates Draft objects that are damaged,
+    for example if created from an earlier version. If delete is True,
+    the damaged objects are deleted (default). If ran without arguments, all the objects
+    in the document will be healed if they are damaged. If reparent is True (default),
+    new objects go at the very same place in the tree than their original.'''
+
+    if not objlist:
+        objlist = FreeCAD.ActiveDocument.Objects
+        print "Healing whole document..."
+
+    if not isinstance(objlist,list):
+        objlist = [objlist]
+
+    dellist = []
+    got = False
+    
+    for obj in objlist:
+        dtype = getType(obj)
+        ftype = obj.Type
+        if ftype in ["Part::FeaturePython","App::FeaturePython"]:
+            if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
+                got = True
+                dellist.append(obj.Name)
+                props = obj.PropertiesList
+                if ("Dimline" in props) and ("Start" in props):
+                    print "Healing " + obj.Name + " of type Dimension"
+                    nobj = makeCopy(obj,force="Dimension",reparent=reparent)
+                elif ("Height" in props) and ("Length" in props):
+                    print "Healing " + obj.Name + " of type Rectangle"
+                    nobj = makeCopy(obj,force="Rectangle",reparent=reparent)
+                elif ("Points" in props) and ("Closed" in props):
+                    print "Healing " + obj.Name + " of type Wire"
+                    nobj = makeCopy(obj,force="Wire",reparent=reparent)
+                elif ("Radius" in props) and ("FirstAngle" in props):
+                    print "Healing " + obj.Name + " of type Circle"
+                    nobj = makeCopy(obj,force="Circle",reparent=reparent)
+                else:
+                    dellist.pop()
+                    print "Object " + obj.Name + " is not healable"
+
+    if not got:
+        print "No object seems to need healing"
+    else:
+        print "Healed ",len(dellist)," objects"
+
+    if dellist and delete:
+        for n in dellist:
+            FreeCAD.ActiveDocument.removeObject(n)
+
 			
 #---------------------------------------------------------------------------
 # Python Features definitions
@@ -1539,10 +1598,13 @@ class _ViewProviderDimension:
             if hasattr(obj.ViewObject,"DisplayMode"):
                 if obj.ViewObject.DisplayMode == "3D":
                     offset = fcvec.neg(offset)
-        if obj.ViewObject.TextPosition == Vector(0,0,0):
-            tbase = midpoint.add(offset)
+        if hasattr(obj.ViewObject,"TextPosition"):
+            if obj.ViewObject.TextPosition == Vector(0,0,0):
+                tbase = midpoint.add(offset)
+            else:
+                tbase = obj.ViewObject.TextPosition
         else:
-            tbase = obj.ViewObject.TextPosition
+            tbase = midpoint.add(offset)
         rot = FreeCAD.Placement(fcvec.getPlaneRotation(u,v,norm)).Rotation.Q
         return p1,p2,p3,p4,tbase,norm,rot
 
