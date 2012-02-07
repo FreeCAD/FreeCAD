@@ -227,6 +227,10 @@ void MacroManager::run(MacroType eType,const char *sName)
         PyErr_Clear();
         Base::Interpreter().systemExit();
     }
+    catch (const Base::PyException& e) {
+        Base::Console().Error("%s%s: %s\n",
+            e.getStackTrace().c_str(), e.getErrorType().c_str(), e.what());
+    }
     catch (const Base::Exception& e) {
         qWarning("%s",e.what());
     }
