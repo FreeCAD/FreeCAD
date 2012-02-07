@@ -5,13 +5,15 @@
 # Python script to make source tarballs.
 #
 
-import sys, os, getopt, tarfile, gzip, time, StringIO
+import sys, os, getopt, tarfile, gzip, time, StringIO, platform
 
 def main():
     srcdir="."
     bindir="."
+    dfsg=False
+    wta=""
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "sb:", ["srcdir=","bindir="])
+        opts, args = getopt.getopt(sys.argv[1:], "sb:", ["srcdir=","bindir=","dfsg"])
     except getopt.GetoptError:
         pass
 
@@ -20,6 +22,16 @@ def main():
             srcdir = a
         if o in ("-b", "--bindir"):
             bindir = a
+        if o in ("--dfsg"):
+            dfsg = True
+            wta = "--worktree-attributes"
+            
+    if dfsg:
+        gitattr = open("src/.gitattributes","w")
+        gitattr.write("zipios++    export-ignore\n")
+        gitattr.write("Pivy-0.5    export-ignore\n")
+        gitattr.write("Pivy    export-ignore\n")
+        gitattr.close()
 
     # revision number
     info=os.popen("git rev-list HEAD").read()
@@ -29,7 +41,10 @@ def main():
     version = "0.13.%s" % (revision)
 
     DIRNAME = "%(p)s-%(v)s" % {'p': PACKAGE_NAME, 'v': version}
-    TARNAME = DIRNAME + '.tar.gz'
+    TARNAME = DIRNAME + '.tar'
+    TGZNAME = DIRNAME + '.tar.gz'
+    if dfsg:
+        TGZNAME = DIRNAME + '-dfsg.tar.gz'
 
     verfile = open("%s/src/Build/Version.h" % (bindir), 'r')
     verstream = StringIO.StringIO(verfile.read())
@@ -39,19 +54,37 @@ def main():
     verinfo.size = len(verstream.getvalue())
     verinfo.mtime = time.time()
 
-    print "git archive --worktree-attributes --prefix=%s/ HEAD" % (DIRNAME)
-    tardata = os.popen("git archive --worktree-attributes --prefix=%s/ HEAD"
-                            % (DIRNAME)).read()
-    tarstream = StringIO.StringIO(tardata)
+    print "git archive %s --prefix=%s/ HEAD" % (wta, DIRNAME)
+    if platform.system() == 'Windows':
+        os.popen("git archive %s --prefix=%s/ --output=%s HEAD"
+                                % (wta, DIRNAME, TARNAME)).read()
 
-    tar = tarfile.TarFile(mode="a", fileobj=tarstream)
-    tar.addfile(verinfo, verstream)
-    tar.close()
+        tar = tarfile.TarFile(mode="a", name=TARNAME)
+        tar.addfile(verinfo, verstream)
+        tar.close()
 
-    out = gzip.open(TARNAME, "wb")
-    out.write(tarstream.getvalue())
-    out.close()
-    print "Created " + TARNAME
+        out = gzip.open(TGZNAME, "wb")
+        tardata = open(TARNAME, 'rb')
+        out.write(tardata.read())
+        out.close()
+        tardata.close()
+        os.remove(TARNAME)
+    else:
+        tardata = os.popen("git archive %s --prefix=%s/ HEAD"
+                                % (wta, DIRNAME)).read()
+        tarstream = StringIO.StringIO(tardata)
+
+        tar = tarfile.TarFile(mode="a", fileobj=tarstream)
+        tar.addfile(verinfo, verstream)
+        tar.close()
+
+        out = gzip.open(TGZNAME, "wb")
+        out.write(tarstream.getvalue())
+        out.close()
+        
+    if dfsg:
+        os.remove("src/.gitattributes")
+    print "Created " + TGZNAME
 
 if __name__ == "__main__":
     main()

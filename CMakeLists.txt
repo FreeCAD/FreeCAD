@@ -472,4 +472,9 @@ endif(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
               --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}
               WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
+    add_custom_target(distdfsg-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --dfsg
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
