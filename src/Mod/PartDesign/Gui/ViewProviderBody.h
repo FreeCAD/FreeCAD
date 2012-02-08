@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,39 +21,31 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+#ifndef PARTGUI_ViewProviderBody_H
+#define PARTGUI_ViewProviderBody_H
 
-#include <Base/Placement.h>
-
-#include "Body.h"
+#include <Mod/Part/Gui/ViewProvider.h>
 
 
-using namespace PartDesign;
+namespace PartDesignGui {
 
-namespace PartDesign {
-
-
-PROPERTY_SOURCE(PartDesign::Body, Part::Body)
-
-Body::Body()
+class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart
 {
+    PROPERTY_HEADER(PartGui::ViewProviderBody);
 
-}
+public:
+    /// constructor
+    ViewProviderBody();
+    /// destructor
+    virtual ~ViewProviderBody();
 
-short Body::mustExecute() const
-{
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
-    return 0;
-}
+    virtual bool doubleClicked(void);
 
-App::DocumentObjectExecReturn *Body::execute(void)
-{
- 
-    return App::DocumentObject::StdReturn;
-}
+};
 
-}
+
+
+} // namespace PartDesignGui
+
+
+#endif // PARTGUI_ViewProviderHole_H

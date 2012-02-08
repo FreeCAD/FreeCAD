@@ -49,6 +49,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand(QT_TR_NOOP("Assembly"));
     *part << "Assembly_ConstraintAxle";
+    *part << "Separator";
+    *part << "Assembly_AddNewPart";
+    *part << "Assembly_AddNewComponent";
+    *part << "Assembly_AddExistingComponent";
      return root;
 }
 

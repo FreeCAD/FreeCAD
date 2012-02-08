@@ -21,39 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+#ifndef PART_Body_H
+#define PART_Body_H
 
-#include <Base/Placement.h>
-
-#include "Body.h"
+#include <App/PropertyStandard.h>
+#include <Mod/Part/App/PartFeature.h>
 
 
-using namespace PartDesign;
-
-namespace PartDesign {
-
-
-PROPERTY_SOURCE(PartDesign::Body, Part::Body)
-
-Body::Body()
+namespace Part
 {
-
-}
-
-short Body::mustExecute() const
+/** Base class of all body objects in FreeCAD
+  * A body is used, e.g. in PartDesign, to agregate
+  * some modeling features to one shape. As long as not
+  * in edit or active on a workbench, the body shows only the
+  * resulting shape to the outside (Tip link).
+  */
+class PartExport Body : public Part::Feature
 {
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
-    return 0;
-}
+    PROPERTY_HEADER(PartDesign::Body);
 
-App::DocumentObjectExecReturn *Body::execute(void)
-{
- 
-    return App::DocumentObject::StdReturn;
-}
+public:
+    Body();
 
-}
+    App::PropertyLinkList   Model;
+    App::PropertyLink       Tip;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the view provider
+    //const char* getViewProviderName(void) const {
+    //    return "PartDesignGui::ViewProviderBody";
+    //}
+    //@}
+};
+
+} //namespace Part
+
+
+#endif // PART_Body_H

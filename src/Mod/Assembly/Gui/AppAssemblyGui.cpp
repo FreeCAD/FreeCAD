@@ -39,6 +39,7 @@
 
 // use a different name to CreateCommand()
 void CreateAssemblyCommands(void);
+void CreateAssemblyConstraintCommands(void);
 
 void loadAssemblyResource()
 {
@@ -65,6 +66,8 @@ void AssemblyGuiExport initAssemblyGui()
 
     // instanciating the commands
     CreateAssemblyCommands();
+    CreateAssemblyConstraintCommands();
+
     AssemblyGui::Workbench::init();
 
     AssemblyGui::ViewProviderItem        ::init();

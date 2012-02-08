@@ -43,6 +43,7 @@ SET(AssemblyGuiModule_SRCS
     AppAssemblyGui.cpp
     AppAssemblyGuiPy.cpp
     Command.cpp
+	CommandConstraints.cpp
     Resources/Assembly.qrc
     qrc_Assembly.cxx
     PreCompiled.cpp

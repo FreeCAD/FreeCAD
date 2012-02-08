@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,38 +22,33 @@
 
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 #endif
 
-#include <Base/Placement.h>
+#include "ViewProviderBody.h"
+#include <Gui/Command.h>
+//#include <Gui/Document.h>
 
-#include "Body.h"
+using namespace PartDesignGui;
 
+PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
 
-using namespace PartDesign;
-
-namespace PartDesign {
-
-
-PROPERTY_SOURCE(PartDesign::Body, Part::Body)
-
-Body::Body()
+ViewProviderBody::ViewProviderBody()
 {
-
 }
 
-short Body::mustExecute() const
+ViewProviderBody::~ViewProviderBody()
 {
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
-    return 0;
 }
 
-App::DocumentObjectExecReturn *Body::execute(void)
+bool ViewProviderBody::doubleClicked(void)
 {
- 
-    return App::DocumentObject::StdReturn;
+    std::string Msg("Change ");
+    Msg += this->pcObject->getNameInDocument();
+    Gui::Command::openCommand(Msg.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
+    return true;
 }
 
-}
+

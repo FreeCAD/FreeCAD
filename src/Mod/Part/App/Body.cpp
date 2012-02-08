@@ -30,16 +30,17 @@
 #include "Body.h"
 
 
-using namespace PartDesign;
+using namespace Part;
 
-namespace PartDesign {
+namespace Part {
 
 
-PROPERTY_SOURCE(PartDesign::Body, Part::Body)
+PROPERTY_SOURCE(Part::Body, Part::Feature)
 
 Body::Body()
 {
-
+    ADD_PROPERTY(Model,(0));
+    ADD_PROPERTY(Tip  ,(0));
 }
 
 short Body::mustExecute() const
