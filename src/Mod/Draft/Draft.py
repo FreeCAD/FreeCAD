@@ -2028,6 +2028,7 @@ class _Rectangle:
     def __init__(self, obj):
         obj.addProperty("App::PropertyDistance","Length","Base","Length of the rectangle")
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the rectange")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
         obj.Proxy = self
         obj.Length=1
         obj.Height=1
@@ -2042,12 +2043,18 @@ class _Rectangle:
                         
     def createGeometry(self,fp):
         import Part
+        from draftlibs import fcgeo
         plm = fp.Placement
         p1 = Vector(0,0,0)
         p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
         p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
         p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
         shape = Part.makePolygon([p1,p2,p3,p4,p1])
+        if "FilletRadius" in fp.PropertiesList:
+            if fp.FilletRadius != 0:
+                w = fcgeo.filletWire(shape,fp.FilletRadius)
+                if w:
+                    shape = w
         shape = Part.Face(shape)
         fp.Shape = shape
         fp.Placement = plm
@@ -2079,9 +2086,9 @@ class _Circle:
     "The Circle object"
         
     def __init__(self, obj):
-        obj.addProperty("App::PropertyAngle","FirstAngle","Arc",
+        obj.addProperty("App::PropertyAngle","FirstAngle","Base",
                         "Start angle of the arc")
-        obj.addProperty("App::PropertyAngle","LastAngle","Arc",
+        obj.addProperty("App::PropertyAngle","LastAngle","Base",
                         "End angle of the arc (for a full circle, give it same value as First Angle)")
         obj.addProperty("App::PropertyDistance","Radius","Base",
                         "Radius of the circle")
@@ -2122,6 +2129,7 @@ class _Wire:
                         "The start point of this line")
         obj.addProperty("App::PropertyVector","End","Base",
                         "The end point of this line")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
         obj.Proxy = self
         obj.Closed = False
         self.Type = "Wire"
@@ -2130,7 +2138,7 @@ class _Wire:
         self.createGeometry(fp)
 
     def onChanged(self, fp, prop):
-        if prop in ["Points","Closed","Base","Tool"]:
+        if prop in ["Points","Closed","Base","Tool","FilletRadius"]:
             self.createGeometry(fp)
             if prop == "Points":
                 if fp.Start != fp.Points[0]:
@@ -2183,6 +2191,11 @@ class _Wire:
                 fp.Points.pop()
             if fp.Closed and (len(fp.Points) > 2):
                 shape = Part.makePolygon(fp.Points+[fp.Points[0]])
+                if "FilletRadius" in fp.PropertiesList:
+                    if fp.FilletRadius != 0:
+                        w = fcgeo.filletWire(shape,fp.FilletRadius)
+                        if w:
+                            shape = w
                 shape = Part.Face(shape)
             else:
                 edges = []
@@ -2192,6 +2205,11 @@ class _Wire:
                     edges.append(Part.Line(lp,p).toShape())
                     lp = p
                 shape = Part.Wire(edges)
+                if "FilletRadius" in fp.PropertiesList:
+                    if fp.FilletRadius != 0:
+                        w = fcgeo.filletWire(shape,fp.FilletRadius)
+                        if w:
+                            shape = w
             fp.Shape = shape
         fp.Placement = plm
 
@@ -2240,6 +2258,7 @@ class _Polygon:
         obj.addProperty("App::PropertyInteger","FacesNumber","Base","Number of faces")
         obj.addProperty("App::PropertyDistance","Radius","Base","Radius of the control circle")
         obj.addProperty("App::PropertyEnumeration","DrawMode","Base","How the polygon must be drawn from the control circle")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 3
         obj.Radius = 1
@@ -2255,6 +2274,7 @@ class _Polygon:
                         
     def createGeometry(self,fp):
         import Part
+        from draftlibs import fcgeo
         plm = fp.Placement
         angle = (math.pi*2)/fp.FacesNumber
         if fp.DrawMode == 'inscribed':
@@ -2267,6 +2287,11 @@ class _Polygon:
             pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
         pts.append(pts[0])
         shape = Part.makePolygon(pts)
+        if "FilletRadius" in fp.PropertiesList:
+            if fp.FilletRadius != 0:
+                w = fcgeo.filletWire(shape,fp.FilletRadius)
+                if w:
+                    shape = w
         shape = Part.Face(shape)
         fp.Shape = shape
         fp.Placement = plm
