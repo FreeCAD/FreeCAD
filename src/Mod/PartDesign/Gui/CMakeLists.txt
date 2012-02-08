@@ -71,6 +71,8 @@ qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
+    ViewProviderBody.cpp
+    ViewProviderBody.h
     ViewProviderPad.cpp
     ViewProviderPad.h
     ViewProviderHole.cpp

@@ -25,21 +25,18 @@
 #define PARTDESIGN_Body_H
 
 #include <App/PropertyStandard.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Body.h>
 
 
 namespace PartDesign
 {
 
-class Body : public Part::Feature
+class Body : public Part::Body
 {
     PROPERTY_HEADER(PartDesign::Body);
 
 public:
     Body();
-
-    App::PropertyLinkList   Model;
-    App::PropertyLink       Tip;
 
     /** @name methods override feature */
     //@{
