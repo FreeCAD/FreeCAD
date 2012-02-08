@@ -5,15 +5,16 @@
 # Python script to make source tarballs.
 #
 
-import sys, os, getopt, tarfile, gzip, time, StringIO, platform
+import sys, os, getopt, tarfile, gzip, time, StringIO, platform, shutil
 
 def main():
     srcdir="."
     bindir="."
     dfsg=False
+    check=False
     wta=""
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "sb:", ["srcdir=","bindir=","dfsg"])
+        opts, args = getopt.getopt(sys.argv[1:], "sb:", ["srcdir=","bindir=","dfsg", "check"])
     except getopt.GetoptError:
         pass
 
@@ -25,6 +26,8 @@ def main():
         if o in ("--dfsg"):
             dfsg = True
             wta = "--worktree-attributes"
+        if o in ("--check"):
+            check = True
             
     if dfsg:
         gitattr = open("src/.gitattributes","w")
@@ -85,6 +88,17 @@ def main():
     if dfsg:
         os.remove("src/.gitattributes")
     print "Created " + TGZNAME
+    # Unpack and build
+    if check:
+        archive=tarfile.open(mode='r:gz',name=TGZNAME)
+        archive.extractall(bindir)
+        builddir = os.path.join(bindir, DIRNAME)
+        cwd = os.getcwd()
+        os.chdir(builddir)
+        os.system("cmake .")
+        os.system("make")
+        os.chdir(cwd)
+        shutil.rmtree(builddir)
 
 if __name__ == "__main__":
     main()
