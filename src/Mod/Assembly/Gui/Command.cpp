@@ -33,33 +33,85 @@
 
 using namespace std;
 
-DEF_STD_CMD(CmdAssemblyConstraintAxle);
 
-CmdAssemblyConstraintAxle::CmdAssemblyConstraintAxle()
-	:Command("Assembly_ConstraintAxle")
+
+//===========================================================================
+
+DEF_STD_CMD(CmdAssemblyAddNewPart);
+
+CmdAssemblyAddNewPart::CmdAssemblyAddNewPart()
+	:Command("Assembly_AddNewPart")
 {
     sAppModule      = "Assembly";
     sGroup          = QT_TR_NOOP("Assembly");
-    sMenuText       = QT_TR_NOOP("Constraint Axle...");
-    sToolTipText    = QT_TR_NOOP("set a axle constraint between two objects");
+    sMenuText       = QT_TR_NOOP("Add new Part");
+    sToolTipText    = QT_TR_NOOP("Add a new Part into the active Assembly");
     sWhatsThis      = "Assembly_ConstraintAxle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/Axle_constraint";
 }
 
 
-void CmdAssemblyConstraintAxle::activated(int iMsg)
+void CmdAssemblyAddNewPart::activated(int iMsg)
 {
     // load the file with the module
     //Command::doCommand(Command::Gui, "import Assembly, AssemblyGui");
       
 }
 
+//===========================================================================
 
+DEF_STD_CMD(CmdAssemblyAddNewComponent);
+
+CmdAssemblyAddNewComponent::CmdAssemblyAddNewComponent()
+	:Command("Assembly_AddNewComponent")
+{
+    sAppModule      = "Assembly";
+    sGroup          = QT_TR_NOOP("Assembly");
+    sMenuText       = QT_TR_NOOP("Add new Component");
+    sToolTipText    = QT_TR_NOOP("Add a new Component into the active Assembly");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/Axle_constraint";
+}
+
+
+void CmdAssemblyAddNewComponent::activated(int iMsg)
+{
+    // load the file with the module
+    //Command::doCommand(Command::Gui, "import Assembly, AssemblyGui");
+      
+}
+
+//===========================================================================
+
+DEF_STD_CMD(CmdAssemblyAddExistingComponent);
+
+CmdAssemblyAddExistingComponent::CmdAssemblyAddExistingComponent()
+	:Command("Assembly_AddExistingComponent")
+{
+    sAppModule      = "Assembly";
+    sGroup          = QT_TR_NOOP("Assembly");
+    sMenuText       = QT_TR_NOOP("Add existing Component...");
+    sToolTipText    = QT_TR_NOOP("Add a existing Component or File into the active Assembly");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/Axle_constraint";
+}
+
+
+void CmdAssemblyAddExistingComponent::activated(int iMsg)
+{
+    // load the file with the module
+    //Command::doCommand(Command::Gui, "import Assembly, AssemblyGui");
+      
+}
 
 void CreateAssemblyCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdAssemblyConstraintAxle());
+    rcCmdMgr.addCommand(new CmdAssemblyAddNewPart());
+    rcCmdMgr.addCommand(new CmdAssemblyAddNewComponent());
+    rcCmdMgr.addCommand(new CmdAssemblyAddExistingComponent());
  }

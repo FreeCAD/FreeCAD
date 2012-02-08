@@ -134,6 +134,8 @@ SET(Features_SRCS
     FeatureGeometrySet.cpp
     CustomFeature.cpp
     CustomFeature.h
+	Body.h
+	Body.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
