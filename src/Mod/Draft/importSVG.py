@@ -961,12 +961,14 @@ def export(exportList,filename):
 	boty = sizey+miny
 
 	# writing header
+        # we specify the svg width and height in FreeCAD's physical units (mm),
+        # and specify the viewBox so that user units maps one-to-one to mm
 	svg = pythonopen(filename,'wb')	
 	svg.write('<?xml version="1.0"?>\n')
 	svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
 	svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
 	svg.write('<svg')
-	svg.write(' width="' + str(sizex) + '" height="' + str(sizey) + '"')
+	svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
 	svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
 	svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
 	svg.write('>\n')
