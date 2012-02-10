@@ -25,6 +25,7 @@
 import FreeCAD, Part, os, FreeCADGui, __builtin__
 from FreeCAD import Base
 from math import *
+import ImportGui
 
 ##########################################################
 # Script version dated 19-Jan-2012                       #
@@ -45,7 +46,7 @@ EmpDisplayMode=2 # 0='Flat Lines', 1='Shaded', 2='Wireframe', 3='Points'; recomm
 
 IDF_sort=0 # 0-sort per refdes [1 - part number (not preffered)/refdes] 2-sort per footprint/refdes
 
-IDF_diag=1 # 0/1=disabled/enabled output (footprint.lst/missing_models.lst) 
+IDF_diag=0 # 0/1=disabled/enabled output (footprint.lst/missing_models.lst) 
 IDF_diag_path="/tmp" # path for output of footprint.lst and missing_models.lst
 
 
@@ -330,7 +331,8 @@ def place_steps(doc,placement,board_thickness):
     model_lines=model_file.readlines()
     model_file.close()   
     model_dict=[]
-    model_file=pythonopen(IDF_diag_path+"/missing_models.lst", "w")
+    if IDF_diag==1:
+        model_file=pythonopen(IDF_diag_path+"/missing_models.lst", "w")
     keys=[]
     #prev_step="*?.*?" #hope nobody will insert this step filename
     step_dict=[]
@@ -342,11 +344,20 @@ def place_steps(doc,placement,board_thickness):
     model_dict=dict(model_dict)
     validkeys=filter(lambda x:x in  [place_item[2] for place_item in placement], model_dict.keys())
     FreeCAD.Console.PrintMessage("Step models to be loaded for footprints: "+str(validkeys)+"\n")
-    grp=doc.addObject("App::DocumentObjectGroup", "Step Models")
+    grp=doc.addObject("App::DocumentObjectGroup", "Step Lib")
     for validkey in validkeys:
-         step_dict.append((validkey,Part.read(step_path+model_dict[validkey])))
+         ImportGui.insert(step_path+model_dict[validkey],FreeCAD.ActiveDocument.Name)
+         #partName=FreeCAD.ActiveDocument.ActiveObject.Name
+         impPart=FreeCAD.ActiveDocument.ActiveObject
+         #impPart.Shape=FreeCAD.ActiveDocument.ActiveObject.Shape
+         #impPart.ViewObject.DiffuseColor=FreeCAD.ActiveDocument.ActiveObject.ViewObject.DiffuseColor
+         impPart.ViewObject.Visibility=0
+         impPart.Label=validkey
+         grp.addObject(impPart)
+         step_dict.append((validkey,impPart))
          FreeCAD.Console.PrintMessage("Reading step file "+str(model_dict[validkey])+" for footprint "+str(validkey)+"\n")
     step_dict=dict(step_dict)
+    grp=doc.addObject("App::DocumentObjectGroup", "Step Models")
     for place_item in placement:
       if step_dict.has_key(place_item[2]):
         step_model=doc.addObject("Part::Feature",place_item[0]+"_s")
@@ -354,7 +365,8 @@ def place_steps(doc,placement,board_thickness):
         #if prev_step!=place_item[2]:
         #   model0=Part.read(step_path+"/"+model_dict[place_item[2]])
         #   prev_step=place_item[2]
-        step_model.Shape=step_dict[place_item[2]]
+        step_model.Shape=step_dict[place_item[2]].Shape
+        step_model.ViewObject.DiffuseColor=step_dict[place_item[2]].ViewObject.DiffuseColor
         z_pos=0
         rotateY=0
         if place_item[6]=='BOTTOM':
@@ -366,7 +378,7 @@ def place_steps(doc,placement,board_thickness):
       else: 
         if IDF_diag==1:
             model_file.writelines(str(place_item[0])+" "+str(place_item[2])+"\n")
-    model_file.close() 
+            model_file.close() 
     
 def toQuaternion(heading, attitude,bank): # rotation heading=arround Y, attitude =arround Z,  bank attitude =arround X
     """toQuaternion(heading, attitude,bank)->FreeCAD.Base.Rotation(Quternion)"""
