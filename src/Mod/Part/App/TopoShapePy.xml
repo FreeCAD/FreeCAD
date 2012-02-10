@@ -53,7 +53,7 @@ Sub-elements such as vertices, edges or faces are accessible as:
         <UserDocu>Import the content to this shape of a string in BREP format.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="extrude">
+    <Methode Name="extrude" Const="true">
       <Documentation>
         <UserDocu>Extrude the shape along a direction.</UserDocu>
       </Documentation>
@@ -71,22 +71,22 @@ Part.revolve(Vector(0,0,0),Vector(0,0,1),360) - revolves the shape around the Z 
 This is a more detailed check as done in isValid().</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="fuse">
+    <Methode Name="fuse" Const="true">
       <Documentation>
         <UserDocu>Union of this and a given topo shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="oldFuse">
+    <Methode Name="oldFuse" Const="true">
       <Documentation>
         <UserDocu>Union of this and a given topo shape (old algorithm).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="common">
+    <Methode Name="common" Const="true">
       <Documentation>
         <UserDocu>Intersection of this and a given topo shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="section">
+    <Methode Name="section" Const="true">
       <Documentation>
         <UserDocu>Section of this with a given topo shape.</UserDocu>
       </Documentation>
@@ -101,7 +101,7 @@ This is a more detailed check as done in isValid().</UserDocu>
         <UserDocu>Make single slice of this shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="cut">
+    <Methode Name="cut" Const="true">
       <Documentation>
         <UserDocu>Difference of this and a given topo shape.</UserDocu>
       </Documentation>
@@ -116,13 +116,13 @@ This is a more detailed check as done in isValid().</UserDocu>
         <UserDocu>Removes internal wires (also holes) from the shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="mirror">
+    <Methode Name="mirror" Const="true">
       <Documentation>
         <UserDocu>Mirror this shape on a given plane.
 The plane is given with its base point and its normal direction.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="transformGeometry">
+    <Methode Name="transformGeometry" Const="true">
       <Documentation>
         <UserDocu>Apply geometric transformation on a copy of the shape.
 The transformation to be applied is defined as a 4x4 matrix.
@@ -177,14 +177,14 @@ the underlying geometry.</UserDocu>
         <UserDocu>Make chamfer.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeThickness">
+    <Methode Name="makeThickness" Const="true">
       <Documentation> 
         <UserDocu>A hollowed solid is built from an initial solid and a set of faces on this solid,
 which are to be removed. The remaining faces of the solid become the walls of
 the hollowed solid, their thickness defined at the time of construction.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeOffsetShape">
+    <Methode Name="makeOffsetShape" Const="true">
       <Documentation> 
         <UserDocu>Offset a given shape</UserDocu>
       </Documentation>
@@ -247,7 +247,7 @@ Orientation is not taken into account.</UserDocu>
         <UserDocu>Tessellate the the shape and return a list of vertices and face indices</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="project">
+    <Methode Name="project" Const="true">
       <Documentation>
         <UserDocu>Project a shape on this shape</UserDocu>
       </Documentation>
