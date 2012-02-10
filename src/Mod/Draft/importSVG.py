@@ -28,12 +28,15 @@ __url__ = ["http://free-cad.sourceforge.net"]
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
 paths, lines, circular arcs ,rects, circles, ellipses, polygons, polylines.
-currently unsupported: image, rounded rect(rx,ry), elliptical arcs
+currently unsupported: use, image
 '''
 #ToDo:
-# elliptical arc segments
-# rounded rects (elliptical arcs)
 # ignoring CDATA
+# handle image element (external references and inline base64)
+# debug Problem with 'Sans' font from Inkscape
+# debug Problem with fill color
+# implement inherting fill style from group
+# handle viewbox and units
 
 import xml.sax, string, FreeCAD, os, math, re, Draft
 from draftlibs import fcvec
@@ -48,154 +51,154 @@ except: draftui = None
 pythonopen = open
 
 svgcolors = {
-	  'Pink': [255, 192, 203], 
-	  'Blue': [0, 0, 255], 
-          'Honeydew': [240, 255, 240],
-          'Purple': [128, 0, 128],
-          'Fuchsia': [255, 0, 255],
-          'LawnGreen': [124, 252, 0],
-          'Amethyst': [153, 102, 204],
-          'Crimson': [220, 20, 60],
-          'White': [255, 255, 255],
-          'NavajoWhite': [255, 222, 173],
-          'Cornsilk': [255, 248, 220],
-          'Bisque': [255, 228, 196],
-          'PaleGreen': [152, 251, 152],
-          'Brown': [165, 42, 42],
-          'DarkTurquoise': [0, 206, 209],
-          'DarkGreen': [0, 100, 0],
-          'MediumOrchid': [186, 85, 211],
-          'Chocolate': [210, 105, 30],
-          'PapayaWhip': [255, 239, 213],
-          'Olive': [128, 128, 0],
-          'Silver': [192, 192, 192],
-          'PeachPuff': [255, 218, 185],
-          'Plum': [221, 160, 221],
-          'DarkGoldenrod': [184, 134, 11],
-          'SlateGrey': [112, 128, 144],
-          'MintCream': [245, 255, 250],
-          'CornflowerBlue': [100, 149, 237],
-          'Gold': [255, 215, 0],
-          'HotPink': [255, 105, 180],
-          'DarkBlue': [0, 0, 139],
-          'LimeGreen': [50, 205, 50],
-          'DeepSkyBlue': [0, 191, 255],
-          'DarkKhaki': [189, 183, 107],
-          'LightGrey': [211, 211, 211],
-          'Yellow': [255, 255, 0],
-          'Gainsboro': [220, 220, 220],
-          'MistyRose': [255, 228, 225],
-          'SandyBrown': [244, 164, 96],
-          'DeepPink': [255, 20, 147],
-          'Magenta': [255, 0, 255],
-          'AliceBlue': [240, 248, 255],
-          'DarkCyan': [0, 139, 139],
-          'DarkSlateGrey': [47, 79, 79],
-          'GreenYellow': [173, 255, 47],
-          'DarkOrchid': [153, 50, 204],
-          'OliveDrab': [107, 142, 35],
-          'Chartreuse': [127, 255, 0],
-          'Peru': [205, 133, 63],
-          'Orange': [255, 165, 0],
-          'Red': [255, 0, 0],
-          'Wheat': [245, 222, 179],
-          'LightCyan': [224, 255, 255],
-          'LightSeaGreen': [32, 178, 170],
-          'BlueViolet': [138, 43, 226],
-          'LightSlateGrey': [119, 136, 153],
-          'Cyan': [0, 255, 255],
-          'MediumPurple': [147, 112, 219],
-          'MidnightBlue': [25, 25, 112],
-          'FireBrick': [178, 34, 34],
-          'PaleTurquoise': [175, 238, 238],
-          'PaleGoldenrod': [238, 232, 170],
-          'Gray': [128, 128, 128],
-          'MediumSeaGreen': [60, 179, 113],
-          'Moccasin': [255, 228, 181],
-          'Ivory': [255, 255, 240],
-          'DarkSlateBlue': [72, 61, 139],
-          'Beige': [245, 245, 220],
-          'Green': [0, 128, 0],
-          'SlateBlue': [106, 90, 205],
-          'Teal': [0, 128, 128],
-          'Azure': [240, 255, 255],
-          'LightSteelBlue': [176, 196, 222],
-          'DimGrey': [105, 105, 105],
-          'Tan': [210, 180, 140],
-          'AntiqueWhite': [250, 235, 215],
-          'SkyBlue': [135, 206, 235],
-          'GhostWhite': [248, 248, 255],
-          'MediumTurquoise': [72, 209, 204],
-          'FloralWhite': [255, 250, 240],
-          'LavenderBlush': [255, 240, 245],
-          'SeaGreen': [46, 139, 87],
-          'Lavender': [230, 230, 250],
-          'BlanchedAlmond': [255, 235, 205],
-          'DarkOliveGreen': [85, 107, 47],
-          'DarkSeaGreen': [143, 188, 143],
-          'SpringGreen': [0, 255, 127],
-          'Navy': [0, 0, 128],
-          'Orchid': [218, 112, 214],
-          'SaddleBrown': [139, 69, 19],
-          'IndianRed': [205, 92, 92],
-          'Snow': [255, 250, 250],
-          'SteelBlue': [70, 130, 180],
-          'MediumSlateBlue': [123, 104, 238],
-          'Black': [0, 0, 0],
-          'LightBlue': [173, 216, 230],
-          'Turquoise': [64, 224, 208],
-          'MediumVioletRed': [199, 21, 133],
-          'DarkViolet': [148, 0, 211],
-          'DarkGray': [169, 169, 169],
-          'Salmon': [250, 128, 114],
-          'DarkMagenta': [139, 0, 139],
-          'Tomato': [255, 99, 71],
-          'WhiteSmoke': [245, 245, 245],
-          'Goldenrod': [218, 165, 32],
-          'MediumSpringGreen': [0, 250, 154],
-          'DodgerBlue': [30, 144, 255],
-          'Aqua': [0, 255, 255],
-          'ForestGreen': [34, 139, 34],
-          'LemonChiffon': [255, 250, 205],
-          'LightSlateGray': [119, 136, 153],
-          'SlateGray': [112, 128, 144],
-          'LightGray': [211, 211, 211],
-          'Indigo': [75, 0, 130],
-          'CadetBlue': [95, 158, 160],
-          'LightYellow': [255, 255, 224],
-          'DarkOrange': [255, 140, 0],
-          'PowderBlue': [176, 224, 230],
-          'RoyalBlue': [65, 105, 225],
-          'Sienna': [160, 82, 45],
-          'Thistle': [216, 191, 216],
-          'Lime': [0, 255, 0],
-          'Seashell': [255, 245, 238],
-          'DarkRed': [139, 0, 0],
-          'LightSkyBlue': [135, 206, 250],
-          'YellowGreen': [154, 205, 50],
-          'Aquamarine': [127, 255, 212],
-          'LightCoral': [240, 128, 128],
-          'DarkSlateGray': [47, 79, 79],
-          'Khaki': [240, 230, 140],
-          'DarkGrey': [169, 169, 169],
-          'BurlyWood': [222, 184, 135],
-          'LightGoldenrodYellow': [250, 250, 210],
-          'MediumBlue': [0, 0, 205],
-          'DarkSalmon': [233, 150, 122],
-          'RosyBrown': [188, 143, 143],
-          'LightSalmon': [255, 160, 122],
-          'PaleVioletRed': [219, 112, 147],
-          'Coral': [255, 127, 80],
-          'Violet': [238, 130, 238],
-          'Grey': [128, 128, 128],
-          'LightGreen': [144, 238, 144],
-          'Linen': [250, 240, 230],
-          'OrangeRed': [255, 69, 0],
-          'DimGray': [105, 105, 105],
-          'Maroon': [128, 0, 0],
-          'LightPink': [255, 182, 193],
-          'MediumAquamarine': [102, 205, 170],
-          'OldLace': [253, 245, 230]
+	  'Pink': (255, 192, 203), 
+	  'Blue': (0, 0, 255), 
+          'Honeydew': (240, 255, 240),
+          'Purple': (128, 0, 128),
+          'Fuchsia': (255, 0, 255),
+          'LawnGreen': (124, 252, 0),
+          'Amethyst': (153, 102, 204),
+          'Crimson': (220, 20, 60),
+          'White': (255, 255, 255),
+          'NavajoWhite': (255, 222, 173),
+          'Cornsilk': (255, 248, 220),
+          'Bisque': (255, 228, 196),
+          'PaleGreen': (152, 251, 152),
+          'Brown': (165, 42, 42),
+          'DarkTurquoise': (0, 206, 209),
+          'DarkGreen': (0, 100, 0),
+          'MediumOrchid': (186, 85, 211),
+          'Chocolate': (210, 105, 30),
+          'PapayaWhip': (255, 239, 213),
+          'Olive': (128, 128, 0),
+          'Silver': (192, 192, 192),
+          'PeachPuff': (255, 218, 185),
+          'Plum': (221, 160, 221),
+          'DarkGoldenrod': (184, 134, 11),
+          'SlateGrey': (112, 128, 144),
+          'MintCream': (245, 255, 250),
+          'CornflowerBlue': (100, 149, 237),
+          'Gold': (255, 215, 0),
+          'HotPink': (255, 105, 180),
+          'DarkBlue': (0, 0, 139),
+          'LimeGreen': (50, 205, 50),
+          'DeepSkyBlue': (0, 191, 255),
+          'DarkKhaki': (189, 183, 107),
+          'LightGrey': (211, 211, 211),
+          'Yellow': (255, 255, 0),
+          'Gainsboro': (220, 220, 220),
+          'MistyRose': (255, 228, 225),
+          'SandyBrown': (244, 164, 96),
+          'DeepPink': (255, 20, 147),
+          'Magenta': (255, 0, 255),
+          'AliceBlue': (240, 248, 255),
+          'DarkCyan': (0, 139, 139),
+          'DarkSlateGrey': (47, 79, 79),
+          'GreenYellow': (173, 255, 47),
+          'DarkOrchid': (153, 50, 204),
+          'OliveDrab': (107, 142, 35),
+          'Chartreuse': (127, 255, 0),
+          'Peru': (205, 133, 63),
+          'Orange': (255, 165, 0),
+          'Red': (255, 0, 0),
+          'Wheat': (245, 222, 179),
+          'LightCyan': (224, 255, 255),
+          'LightSeaGreen': (32, 178, 170),
+          'BlueViolet': (138, 43, 226),
+          'LightSlateGrey': (119, 136, 153),
+          'Cyan': (0, 255, 255),
+          'MediumPurple': (147, 112, 219),
+          'MidnightBlue': (25, 25, 112),
+          'FireBrick': (178, 34, 34),
+          'PaleTurquoise': (175, 238, 238),
+          'PaleGoldenrod': (238, 232, 170),
+          'Gray': (128, 128, 128),
+          'MediumSeaGreen': (60, 179, 113),
+          'Moccasin': (255, 228, 181),
+          'Ivory': (255, 255, 240),
+          'DarkSlateBlue': (72, 61, 139),
+          'Beige': (245, 245, 220),
+          'Green': (0, 128, 0),
+          'SlateBlue': (106, 90, 205),
+          'Teal': (0, 128, 128),
+          'Azure': (240, 255, 255),
+          'LightSteelBlue': (176, 196, 222),
+          'DimGrey': (105, 105, 105),
+          'Tan': (210, 180, 140),
+          'AntiqueWhite': (250, 235, 215),
+          'SkyBlue': (135, 206, 235),
+          'GhostWhite': (248, 248, 255),
+          'MediumTurquoise': (72, 209, 204),
+          'FloralWhite': (255, 250, 240),
+          'LavenderBlush': (255, 240, 245),
+          'SeaGreen': (46, 139, 87),
+          'Lavender': (230, 230, 250),
+          'BlanchedAlmond': (255, 235, 205),
+          'DarkOliveGreen': (85, 107, 47),
+          'DarkSeaGreen': (143, 188, 143),
+          'SpringGreen': (0, 255, 127),
+          'Navy': (0, 0, 128),
+          'Orchid': (218, 112, 214),
+          'SaddleBrown': (139, 69, 19),
+          'IndianRed': (205, 92, 92),
+          'Snow': (255, 250, 250),
+          'SteelBlue': (70, 130, 180),
+          'MediumSlateBlue': (123, 104, 238),
+          'Black': (0, 0, 0),
+          'LightBlue': (173, 216, 230),
+          'Turquoise': (64, 224, 208),
+          'MediumVioletRed': (199, 21, 133),
+          'DarkViolet': (148, 0, 211),
+          'DarkGray': (169, 169, 169),
+          'Salmon': (250, 128, 114),
+          'DarkMagenta': (139, 0, 139),
+          'Tomato': (255, 99, 71),
+          'WhiteSmoke': (245, 245, 245),
+          'Goldenrod': (218, 165, 32),
+          'MediumSpringGreen': (0, 250, 154),
+          'DodgerBlue': (30, 144, 255),
+          'Aqua': (0, 255, 255),
+          'ForestGreen': (34, 139, 34),
+          'LemonChiffon': (255, 250, 205),
+          'LightSlateGray': (119, 136, 153),
+          'SlateGray': (112, 128, 144),
+          'LightGray': (211, 211, 211),
+          'Indigo': (75, 0, 130),
+          'CadetBlue': (95, 158, 160),
+          'LightYellow': (255, 255, 224),
+          'DarkOrange': (255, 140, 0),
+          'PowderBlue': (176, 224, 230),
+          'RoyalBlue': (65, 105, 225),
+          'Sienna': (160, 82, 45),
+          'Thistle': (216, 191, 216),
+          'Lime': (0, 255, 0),
+          'Seashell': (255, 245, 238),
+          'DarkRed': (139, 0, 0),
+          'LightSkyBlue': (135, 206, 250),
+          'YellowGreen': (154, 205, 50),
+          'Aquamarine': (127, 255, 212),
+          'LightCoral': (240, 128, 128),
+          'DarkSlateGray': (47, 79, 79),
+          'Khaki': (240, 230, 140),
+          'DarkGrey': (169, 169, 169),
+          'BurlyWood': (222, 184, 135),
+          'LightGoldenrodYellow': (250, 250, 210),
+          'MediumBlue': (0, 0, 205),
+          'DarkSalmon': (233, 150, 122),
+          'RosyBrown': (188, 143, 143),
+          'LightSalmon': (255, 160, 122),
+          'PaleVioletRed': (219, 112, 147),
+          'Coral': (255, 127, 80),
+          'Violet': (238, 130, 238),
+          'Grey': (128, 128, 128),
+          'LightGreen': (144, 238, 144),
+          'Linen': (250, 240, 230),
+          'OrangeRed': (255, 69, 0),
+          'DimGray': (105, 105, 105),
+          'Maroon': (128, 0, 0),
+          'LightPink': (255, 182, 193),
+          'MediumAquamarine': (102, 205, 170),
+          'OldLace': (253, 245, 230)
           }
 
 def getcolor(color):
@@ -226,6 +229,85 @@ def getsize(width):
 		return s
 	except ValueError:
 		return width
+
+def makewire(path,checkclosed=False,donttry=False):
+        '''try to make a wire out of the list of edges. If the 'Wire' functions fails or the wire is not
+        closed if required the 'connectEdgesToWires' function is used'''
+        #ToDo Do not catch all exceptions
+        if not donttry:
+                try:
+                        sh = Part.Wire(path)
+                        isok = (not checkclosed) or sh.isClosed()
+                except:# BRep_API:command not done
+                        isok = False
+        if donttry or not isok:
+                        #Code from wmayer forum p15549 to fix the tolerance problem
+                        #original tolerance = 0.00001
+                        comp=Part.Compound(path)
+                        sh = comp.connectEdgesToWires(False,10**(-1*(Draft.precision()-2))).Wires[0]
+        return sh
+
+def arccenter2end(center,rx,ry,angle1,angledelta,xrotation=0.0):
+        '''calculate start and end vector and flags of an arc given in center parametrization
+        see http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+        returns (v1,v2,largerc,sweep)'''
+        vr1=Vector(rx*math.cos(angle1),ry*math.sin(angle1),0)
+        vr2=Vector(rx*math.cos(angle1+angledelta),ry*math.sin(angle1+angledelta),0)
+        mxrot=FreeCAD.Matrix()
+        mxrot.rotateZ(xrotation)
+        v1 = mxrot.multiply(vr1).add(center)
+        v2 = mxrot.multiply(vr2).add(center)
+        fa = ((abs(angledelta) / math.pi) % 2) > 1 # <180deg
+        fs = angledelta < 0
+        return v1,v2,fa,fs
+
+def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
+        '''calculate (positive and negative) possible centers for an arc in endpoint parameterization
+        see http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+        rotation or x-axis has to be specified in radians (CCW)
+        the sweepflag is interpreted as: sweepflag <==>  arc is travelled clockwise 
+        returns [(vcenter+,angle1+,angledelta+),(...-)]'''
+        #scalefacsign = 1 if (largeflag != sweepflag) else -1
+        rx = float(rx)
+        ry = float(ry)
+        v0 = lastvec.sub(currentvec)
+        v0 = v0.multiply(0.5)
+        m1=FreeCAD.Matrix()
+        m1.rotateZ(-xrotation) #Formular 6.5.1
+        v1=m1.multiply(v0)
+        if correction:
+                eparam = v1.x**2 / rx**2 + v1.y**2 / ry**2
+                if eparam > 1:
+                        eproot = math.sqrt(eparam)
+                        rx = eproot * rx
+                        ry = eproot * ry
+        denom = rx**2 * v1.y**2+ ry**2 * v1.x**2
+        numer = rx**2 * ry**2 -denom
+        results=[]
+        if abs(numer/denom) < 10**(-1*(Draft.precision())):
+                scalefacpos = 0
+	else:
+	        try:
+	                scalefacpos = math.sqrt(numer/denom)
+	        except ValueError:
+                        print 'sqrt(%f/%f)' % (numer,denom)
+			scalefacpos = 0
+        for scalefacsign in (1,-1):
+            scalefac = scalefacpos * scalefacsign
+            vcx1 = Vector(v1.y*rx/ry,-v1.x*ry/rx,0).multiply(scalefac)  # Step2 F.6.5.2
+            m2=FreeCAD.Matrix()
+            m2.rotateZ(xrotation)
+            centeroff = currentvec.add(lastvec)
+            centeroff = fcvec.scale(centeroff,.5)
+            vcenter = m2.multiply(vcx1).add(centeroff) # Step3 F.6.5.3
+            #angle1 = Vector(1,0,0).getAngle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
+            #angledelta = Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0).getAngle(Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
+            #we need the right sign for the angle 
+            angle1 = fcvec.angle(Vector(1,0,0),Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
+            angledelta = fcvec.angle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0),Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
+            results.append((vcenter,angle1,angledelta))
+        return results,(rx,ry)
+
 
 def getrgb(color):
 	"returns a rgb value #000000 from a freecad color"
@@ -364,203 +446,159 @@ class svgHandler(xml.sax.ContentHandler):
                                 obj = Draft.makeDimension(p1,p2,p3)
                                 self.applyTrans(obj)
                                 self.format(obj)
-                                pathdata = []
                                 self.lastdim = obj
+                                data['d']=[]
                         pathcommandsre=re.compile('\s*?([mMlLhHvVaAcCqQsStTzZ])\s*?([^mMlLhHvVaAcCqQsStTzZ]*)\s*?',re.DOTALL)
                         for d,pointsstr in pathcommandsre.findall(' '.join(data['d'])):
-			#for d in pathdata:
-				if (d == "M"):
-					command = "move"
-					relative = False
-					point = []
-				elif (d == "m"):
-					command = "move"
-					relative = True
-					point = []
-				elif (d == "L"):
-					command = "line"
-					relative = False
-					point = []
-				elif (d == "l"):
-					command = "line"
-					relative = True
-					point = []
-				elif (d == "H"):
-					command = "horizontal"
-					relative = False
-					point = []
-				elif (d == "h"):
-					command = "horizontal"
-					relative = True
-					point = []
-				elif (d == "V"):
-					command = "vertical"
-					relative = False
-					point = []
-				elif (d == "v"):
-					command = "vertical"
-					relative = True
-					point = []
-				elif (d == "A"):
-					command = "arc"
-					relative = False
-					point = []
-				elif (d == "a"):
-					command = "arc"
-					relative = True
-					point = []
-				elif (d == "Z") or (d == "z"):
-					command = "close"
-					point = []
-				elif (d == "C"):
-					command = "cubic"
-					relative = False
-					smooth = False
-					point = []
-				elif (d == "c"):
-					command = "cubic"
-					relative = True
-					smooth = False
-					point = []
-				elif (d == "Q"):
-					command = "quadratic"
-					relative = False
-					smooth = False
-					point = []
-				elif (d == "q"):
-					command = "quadratic"
-					relative = True
-					smooth = False
-					point = []
-				elif (d == "S"):
-					command = "cubic"
-					relative = False
-					smooth = True
-					point = []
-				elif (d == "s"):
-					command = "cubic"
-					relative = True
-					smooth = True
-					point = []
-				elif (d == "T"):
-					command = "quadratic"
-					relative = False
-					smooth = True
-					point = []
-				elif (d == "t"):
-					command = "quadratic"
-					relative = True
-					smooth = True
-					point = []
-                                pointlist = pointsstr.replace(',',' ').split()
-                                while pointlist:
-                                        if pointlist:
-                                                point.append(float(pointlist.pop(0)))
-                                        print "command: ",command, ' point: ',point
-
-                                        if (len(point)==2) and (command=="move"):
-                                                if path:
-                                                        sh = Part.Wire(path)
-                                                        if self.fill: sh = Part.Face(sh)
-                                                        sh = self.applyTrans(sh)
-                                                        obj = self.doc.addObject("Part::Feature",pathname)
-                                                        obj.Shape = sh
-                                                        self.format(obj)
-                                                        path = []
-                                                        if firstvec:
-                                                                lastvec = firstvec #Move relative to last move command not last draw command
+                                relative = d.islower()
+                                pointlist = [float(str1) for str1 in pointsstr.replace(',',' ').split()]
+                                if (d == "M" or d == "m"):
+                                        x = pointlist.pop(0)
+                                        y = pointlist.pop(0)
+                                        if path:
+                                                #sh = Part.Wire(path)
+                                                sh = makewire(path)
+                                                if self.fill: sh = Part.Face(sh)
+                                                sh = self.applyTrans(sh)
+                                                obj = self.doc.addObject("Part::Feature",pathname)
+                                                obj.Shape = sh
+                                                self.format(obj)
+                                                path = []
+                                                #if firstvec:
+                                                #        lastvec = firstvec #Move relative to last move command not last draw command
+                                        if relative:
+                                                lastvec = lastvec.add(Vector(x,-y,0))
+                                        else:
+                                                lastvec = Vector(x,-y,0)
+                                        firstvec = lastvec
+                                        print "move ",lastvec
+                                        lastpole = None
+                                if (d == "L" or d == "l") or \
+                                        ((d == 'm' or d == 'M') and pointlist) :
+                                        for x,y in zip(pointlist[0::2],pointlist[1::2]):
                                                 if relative:
-                                                        lastvec = lastvec.add(Vector(point[0],-point[1],0))
-                                                        command="line"
+                                                        currentvec = lastvec.add(Vector(x,-y,0))
                                                 else:
-                                                        lastvec = Vector(point[0],-point[1],0)
-                                                firstvec = lastvec
-                                                print "move ",lastvec
-                                                command = "line"
-                                                lastpole = None
-                                                point = []
-                                        elif (len(point)==2) and (command=="line"):
-                                                if relative:
-                                                        currentvec = lastvec.add(Vector(point[0],-point[1],0))
-                                                else:
-                                                        currentvec = Vector(point[0],-point[1],0)
+                                                        currentvec = Vector(x,-y,0)
                                                 if not fcvec.equals(lastvec,currentvec):
                                                         seg = Part.Line(lastvec,currentvec).toShape()
                                                         print "line ",lastvec,currentvec
                                                         lastvec = currentvec
                                                         path.append(seg)
                                                 lastpole = None
-                                                point = []
-                                        elif (len(point)==1) and (command=="horizontal"):
+                                elif (d == "H" or d == "h"):
+                                        for x in pointlist:
                                                 if relative:
-                                                        currentvec = lastvec.add(Vector(point[0],0,0))
+                                                        currentvec = lastvec.add(Vector(x,0,0))
                                                 else:
                                                         lasty = path[-1].y
-                                                        currentvec = Vector(point[0],lasty,0)
+                                                        currentvec = Vector(x,lasty,0)
                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                 lastvec = currentvec
                                                 lastpole = None
                                                 path.append(seg)
-                                                point = []
-                                        elif (len(point)==1) and (command=="vertical"):
+                                elif (d == "V" or d == "v"):
+                                        for y in pointlist:
                                                 if relative:
-                                                        currentvec = lastvec.add(Vector(0,-point[0],0))
+                                                        currentvec = lastvec.add(Vector(0,-y,0))
                                                 else:
                                                         lastx = path[-1].x
-                                                        currentvec = Vector(lastx,-point[0],0)
+                                                        currentvec = Vector(lastx,-y,0)
                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                 lastvec = currentvec
                                                 lastpole = None
                                                 path.append(seg)
-                                                point = []
-                                        elif (len(point)==7) and (command=="arc"):
+                                elif (d == "A" or d == "a"):
+                                        for rx,ry,xrotation, largeflag, sweepflag,x,y in \
+                                                zip(pointlist[0::7],pointlist[1::7],pointlist[2::7],pointlist[3::7],pointlist[4::7],pointlist[5::7],pointlist[6::7]):
+
                                                 #support for large-arc and x-rotation are missing
-                                                rx,ry,xrotation, largeflag, sweepflag = point[0:5]
                                                 if relative:
-                                                        currentvec = lastvec.add(Vector(point[-2],-point[-1],0))
+                                                        currentvec = lastvec.add(Vector(x,-y,0))
                                                 else:
-                                                        currentvec = Vector(point[-2],-point[-1],0)
+                                                        currentvec = Vector(x,-y,0)
                                                 chord = currentvec.sub(lastvec)
-                                                # perp = chord.cross(Vector(0,0,-1))
-                                                # here is a better way to find the perpendicular
-                                                if sweepflag == 1:
-                                                        # clockwise
-                                                        perp = fcvec.rotate2D(chord,-math.pi/2)
-                                                else:
-                                                        # anticlockwise
-                                                        perp = fcvec.rotate2D(chord,math.pi/2)
-                                                chord = fcvec.scale(chord,.5)
-                                                if chord.Length > rx: a = 0
-                                                else: a = math.sqrt(rx**2-chord.Length**2)
-                                                s = rx - a
-                                                perp = fcvec.scale(perp,s/perp.Length)
-                                                midpoint = lastvec.add(chord.add(perp))
-                                                seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
+                                                if (not largeflag) and abs(rx-ry) < 10**(-1*Draft.precision()): # small circular arc
+                                                        # perp = chord.cross(Vector(0,0,-1))
+                                                        # here is a better way to find the perpendicular
+                                                        if sweepflag == 1:
+                                                                # clockwise
+                                                                perp = fcvec.rotate2D(chord,-math.pi/2)
+                                                        else:
+                                                                # anticlockwise
+                                                                perp = fcvec.rotate2D(chord,math.pi/2)
+                                                        chord = fcvec.scale(chord,.5)
+                                                        if chord.Length > rx: a = 0
+                                                        else: a = math.sqrt(rx**2-chord.Length**2)
+                                                        s = rx - a
+                                                        perp = fcvec.scale(perp,s/perp.Length)
+                                                        midpoint = lastvec.add(chord.add(perp))
+                                                        seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
+                                                else:# big arc or elliptical arc
+                                                        solution,(rx,ry) = arcend2center(lastvec,currentvec,rx,ry,math.radians(-xrotation),True) 
+                                                        negsol = (largeflag != sweepflag)
+                                                        vcenter,angle1,angledelta = solution[negsol]
+                                                        print angle1
+                                                        print angledelta
+                                                        if ry > rx:
+                                                                rx,ry=ry,rx
+                                                                swapaxis = True
+                                                        else:
+                                                                swapaxis = False
+                                                        print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
+                                                        e1 = Part.Ellipse(vcenter,rx,ry)
+                                                        if sweepflag:
+                                                                #angledelta=-(-angledelta % (math.pi *2)) # Step4
+                                                                #angledelta=(-angledelta % (math.pi *2)) # Step4
+                                                                angle1  = angle1-angledelta
+                                                                #angle1 = math.pi - angle1 
+
+                                                        e1a = Part.Arc(e1,angle1-swapaxis*math.radians(90),\
+                                                                angle1+angledelta-swapaxis*math.radians(90))
+                                                        #e1a = Part.Arc(e1,angle1-0*swapaxis*math.radians(90),angle1+angledelta-0*swapaxis*math.radians(90))
+                                                        if swapaxis or xrotation >  10**(-1*Draft.precision()):
+                                                                m3=FreeCAD.Matrix()
+                                                                m3.move(vcenter)
+                                                                rot90=FreeCAD.Matrix(0,-1,0,0,1,0) #90
+                                                                #swapaxism=FreeCAD.Matrix(0,1,0,0,1,0) 
+                                                                if swapaxis:
+                                                                        m3=m3.multiply(rot90)
+                                                                m3.rotateZ(math.radians(-xrotation))
+                                                                m3.move(vcenter.multiply(-1))
+                                                                e1a.transform(m3)
+                                                        seg = e1a.toShape()
+                                                        if sweepflag:
+                                                                seg.reverse()
+                                                                #obj = self.doc.addObject("Part::Feature",'DEBUG %s'%pathname) #DEBUG
+                                                                #obj.Shape = seg #DEBUG
+                                                                #seg = Part.Line(lastvec,currentvec).toShape() #DEBUG
                                                 lastvec = currentvec
                                                 lastpole = None
                                                 path.append(seg)
-                                                point = []
-                                        elif (command=="cubic") and (((smooth==False) and (len(point)==6)) or (smooth==True and (len(point)==4))) :
+                                elif (d == "C" or d == "c") or\
+                                        (d =="S" or d == "s"):
+                                        smooth = (d == 'S'  or d == 's')
+                                        if smooth:
+                                            piter = zip(pointlist[2::4],pointlist[3::4],pointlist[0::4],pointlist[1::4],pointlist[2::4],pointlist[3::4])
+                                        else:
+                                            piter = zip(pointlist[0::6],pointlist[1::6],pointlist[2::6],pointlist[3::6],pointlist[4::6],pointlist[5::6])
+                                        for p1x,p1y,p2x,p2y,x,y in piter:
                                                 if smooth:
-                                                        if relative:
-                                                                currentvec = lastvec.add(Vector(point[2],-point[3],0))
-                                                                pole2 = lastvec.add(Vector(point[0],-point[1],0))
-                                                        else:
-                                                                currentvec = Vector(point[2],-point[3],0)
-                                                                pole2 = Vector(point[0],-point[1],0)
                                                         if lastpole is not None and lastpole[0]=='cubic':
                                                                 pole1 = lastvec.sub(lastpole[1]).add(lastvec)
                                                         else:
                                                                 pole1 = lastvec
-                                                else: #not smooth
+                                                else:
                                                         if relative:
-                                                                currentvec = lastvec.add(Vector(point[4],-point[5],0))
-                                                                pole1 = lastvec.add(Vector(point[0],-point[1],0))
-                                                                pole2 = lastvec.add(Vector(point[2],-point[3],0))
+                                                                pole1 = lastvec.add(Vector(p1x,-p1y,0))
                                                         else:
-                                                                currentvec = Vector(point[4],-point[5],0)
-                                                                pole1 = Vector(point[0],-point[1],0)
-                                                                pole2 = Vector(point[2],-point[3],0)
+                                                                pole1 = Vector(p1x,-p1y,0)
+                                                if relative:
+                                                        currentvec = lastvec.add(Vector(x,-y,0))
+                                                        pole2 = lastvec.add(Vector(p2x,-p2y,0))
+                                                else:
+                                                        currentvec = Vector(x,-y,0)
+                                                        pole2 = Vector(p2x,-p2y,0)
 
                                                 if not fcvec.equals(currentvec,lastvec):
                                                         mainv = currentvec.sub(lastvec)
@@ -568,8 +606,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                         pole2v = currentvec.add(pole2)
                                                         print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
                                                         if True and \
-                                                        pole1.distanceToLine(lastvec,currentvec) < 20**(-1*Draft.precision()) and \
-                                                        pole2.distanceToLine(lastvec,currentvec) < 20**(-1*Draft.precision()):
+                                                        pole1.distanceToLine(lastvec,currentvec) < 10**(-1*(2+Draft.precision())) and \
+                                                        pole2.distanceToLine(lastvec,currentvec) < 10**(-1*(2+Draft.precision())):
                                                                 print "straight segment"
                                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                         else:
@@ -581,66 +619,63 @@ class svgHandler(xml.sax.ContentHandler):
                                                         lastvec = currentvec
                                                         lastpole = ('cubic',pole2)
                                                         path.append(seg)
-                                                point = []
-
-                                        elif (command=="quadratic") and (((smooth==False) and (len(point)==4)) or (smooth==True and (len(point)==2))) :
+                                elif (d == "Q" or d == "q") or\
+                                        (d =="T" or d == "t"):
+                                        smooth = (d == 'T'  or d == 't')
+                                        if smooth:
+                                            piter = zip(pointlist[1::2],pointlist[1::2],pointlist[0::2],pointlist[1::2])
+                                        else:
+                                            piter = zip(pointlist[0::4],pointlist[1::4],pointlist[2::4],pointlist[3::4])
+                                        for px,py,x,y in piter:
                                                 if smooth:
-                                                        if relative:
-                                                                currentvec = lastvec.add(Vector(point[0],-point[1],0))
-                                                        else:
-                                                                currentvec = Vector(point[0],-point[1],0)
                                                         if lastpole is not None and lastpole[0]=='quadratic':
-                                                                pole1 = lastvec.sub(lastpole[1]).add(lastvec)
+                                                                pole = lastvec.sub(lastpole[1]).add(lastvec)
                                                         else:
-                                                                pole1 = lastvec
-                                                else: #not smooth
+                                                                pole = lastvec
+                                                else:
                                                         if relative:
-                                                                currentvec = lastvec.add(Vector(point[2],-point[3],0))
-                                                                pole1 = lastvec.add(Vector(point[0],-point[1],0))
+                                                                pole = lastvec.add(Vector(px,-py,0))
                                                         else:
-                                                                currentvec = Vector(point[2],-point[3],0)
-                                                                pole1 = Vector(point[0],-point[1],0)
+                                                                pole = Vector(px,-py,0)
+                                                if relative:
+                                                        currentvec = lastvec.add(Vector(x,-y,0))
+                                                else:
+                                                        currentvec = Vector(x,-y,0)
 
                                                 if not fcvec.equals(currentvec,lastvec):
-                                                        if True and pole1.distanceToLine(lastvec,currentvec) < 20**(-1*Draft.precision()):
+                                                        if True and \
+                                                        pole.distanceToLine(lastvec,currentvec) < 20**(-1*(2+Draft.precision())):
                                                                 print "straight segment"
                                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                         else:
                                                                 print "quadratic bezier segment"
                                                                 b = Part.BezierCurve()
-                                                                b.setPoles([lastvec,pole1,currentvec])
+                                                                b.setPoles([lastvec,pole,currentvec])
                                                                 seg = b.toShape()
                                                         print "connect ",lastvec,currentvec
                                                         lastvec = currentvec
-                                                        lastpole = ('quadratic',pole1)
+                                                        lastpole = ('quadratic',pole)
                                                         path.append(seg)
-                                                point = []
-
-                                #while pointlist or command:
-                                else:
-
-                                        if (command == "close"):
-                                                if not fcvec.equals(lastvec,firstvec):
-                                                        seg = Part.Line(lastvec,firstvec).toShape()
-                                                        path.append(seg)
-                                                if path: #the path should be closed by now
-                                                        sh = Part.Wire(path)
-                                                        if not sh.isClosed:
-                                                                #Code from wmayer forum p15549 to fix the tolerance problem
-                                                                comp=Part.Compound(path)
-                                                                sh = comp.connectEdgesToWires(False,10**(-1*Draft.precision())).Wires[0] #original tolerance = 0.00001
-                                                        if self.fill: sh = Part.Face(sh)
-                                                        sh = self.applyTrans(sh)
-                                                        obj = self.doc.addObject("Part::Feature",pathname)
-                                                        obj.Shape = sh
-                                                        self.format(obj)
-                                                        path = []
-                                                        if firstvec:
-                                                                lastvec = firstvec #Move relative to last move command not last draw command
+                                elif (d == "Z") or (d == "z"):
+                                        if not fcvec.equals(lastvec,firstvec):
+                                                seg = Part.Line(lastvec,firstvec).toShape()
+                                                path.append(seg)
+                                        if path: #the path should be closed by now
+                                                #sh=makewire(path,True)
+                                                sh=makewire(path,donttry=True)
+                                                if self.fill: sh = Part.Face(sh)
+                                                sh = self.applyTrans(sh)
+                                                obj = self.doc.addObject("Part::Feature",pathname)
+                                                obj.Shape = sh
+                                                self.format(obj)
+                                                path = []
+                                                if firstvec:
+                                                        lastvec = firstvec #Move relative to recent draw command
                                                 point = []
                                                 command = None
                         if path:
-                                sh = Part.Wire(path)
+                                sh=makewire(path,checkclosed=False)
+                                #sh = Part.Wire(path)
                                 if self.fill: sh = Part.Face(sh)
                                 sh = self.applyTrans(sh)
                                 obj = self.doc.addObject("Part::Feature",pathname)
@@ -653,9 +688,9 @@ class svgHandler(xml.sax.ContentHandler):
 		if name == "rect":
                         if not pathname: pathname = 'Rectangle'
                         edges = []
-#                        if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) and \
-#                           ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())): #negative values are invalid
-                        if True: 
+                        if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) and \
+                           ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())): #negative values are invalid
+#                        if True: 
                                 p1 = Vector(data['x'],-data['y'],0)
                                 p2 = Vector(data['x']+data['width'],-data['y'],0)
                                 p3 = Vector(data['x']+data['width'],-data['y']-data['height'],0)
@@ -665,6 +700,7 @@ class svgHandler(xml.sax.ContentHandler):
                                 edges.append(Part.Line(p3,p4).toShape())
                                 edges.append(Part.Line(p4,p1).toShape())
                         else: #rounded edges
+                                #ToTo: check for ry>rx !!!!
                                 rx = data.get('rx')
                                 ry = data.get('ry') or rx
                                 rx = rx or ry 
@@ -672,8 +708,46 @@ class svgHandler(xml.sax.ContentHandler):
                                         rx = data['width'] / 2.0
                                 if ry > 2 * data['height']:
                                        ry = data['height'] / 2.0
-                                #TBD
-                                # Part.Ellipse(c,rx,ry).toShape() #needs a proxy object
+                                if rx > ry:
+                                    mj = rx
+                                    mi = ry
+                                else:
+                                    mj = ry
+                                    mi = rx
+                                p1=Vector(data['x']+rx,-data['y']-data['height']+ry,0)
+                                e1=Part.Ellipse(p1,mj,mi)
+                                p2=Vector(data['x']+data['width']-rx,-data['y']-data['height']+ry,0)
+                                e2=Part.Ellipse(p2,mj,mi)
+                                p3=Vector(data['x']+data['width']-rx,-data['y']-ry,0)
+                                e3=Part.Ellipse(p3,mj,mi)
+                                p4=Vector(data['x']+rx,-data['y']-ry,0)
+                                e4=Part.Ellipse(p4,mj,mi)
+                                if rx > ry:
+                                        e1a=Part.Arc(e1,math.radians(180),math.radians(270))
+                                        e2a=Part.Arc(e2,math.radians(270),math.radians(360))
+                                        e3a=Part.Arc(e3,math.radians(0),math.radians(90))
+                                        e4a=Part.Arc(e4,math.radians(90),math.radians(180))
+                                        esh=[e1a.toShape(),e2a.toShape(),e3a.toShape(),e4a.toShape()]
+                                else:
+                                        e1a=Part.Arc(e1,math.radians(90),math.radians(180))
+                                        e2a=Part.Arc(e2,math.radians(180),math.radians(270))
+                                        e3a=Part.Arc(e3,math.radians(270),math.radians(360))
+                                        e4a=Part.Arc(e4,math.radians(0),math.radians(90))
+                                        rot90=FreeCAD.Matrix(0,-1,0,0,1,0)
+                                        esh=[]
+                                        for arc,point in ((e1a,p1),(e2a,p2),(e3a,p3),(e4a,p4)):
+                                                m1=FreeCAD.Matrix()
+                                                m1.move(point.multiply(1))
+                                                m1=m1.multiply(rot90)
+                                                m1.move(point.multiply(-1))
+                                                #m1.move(point)
+                                                arc.transform(m1)
+                                                esh.append(arc.toShape())
+                                for esh1,esh2 in zip(esh[-1:]+esh[:-1],esh):
+                                        p1,p2 = esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point
+                                        if not fcvec.equals(p1,p2):
+                                            edges.append(Part.Line(esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point).toShape()) #straight segments
+                                        edges.append(esh2) # elliptical segments
                         sh = Part.Wire(edges)
                         if self.fill: sh = Part.Face(sh)
                         sh = self.applyTrans(sh)
@@ -938,6 +1012,11 @@ def insert(filename,docname):
 def export(exportList,filename):
 	"called when freecad exports a file"
 
+        svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
+        if svg_export_style != 0 and svg_export_style != 1:
+            print "unknown svg export style, switching to Translated"
+            svg_export_style = 0
+
 	# finding sheet size
 	minx = 10000
 	miny = 10000
@@ -950,7 +1029,13 @@ def export(exportList,filename):
 				if v.Point.x > maxx: maxx = v.Point.x
 				if v.Point.y < miny: miny = v.Point.y
 				if v.Point.y > maxy: maxy = v.Point.y
-	margin = (maxx-minx)*.01
+        if svg_export_style == 0:
+            # translated-style exports get a bit of a margin
+            margin = (maxx-minx)*.01
+        else:
+            # raw-style exports get no margin
+            margin = 0
+
 	minx -= margin 
 	maxx += margin
 	miny -= margin
@@ -958,26 +1043,38 @@ def export(exportList,filename):
 	sizex = maxx-minx
 	sizey = maxy-miny
 	miny += margin
-	boty = sizey+miny
 
 	# writing header
+        # we specify the svg width and height in FreeCAD's physical units (mm),
+        # and specify the viewBox so that user units maps one-to-one to mm
 	svg = pythonopen(filename,'wb')	
 	svg.write('<?xml version="1.0"?>\n')
 	svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
 	svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
 	svg.write('<svg')
-	svg.write(' width="' + str(sizex) + '" height="' + str(sizey) + '"')
-	svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
+	svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
+        if svg_export_style == 0:
+            # translated-style exports have the viewbox starting at X=0, Y=0
+            svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
+        else:
+            # raw-style exports have the viewbox starting at X=0, Y=-height
+            # we need the funny Y here because SVG is upside down, and we
+            # flip the sketch right-way up with a scale later
+            svg.write(' viewBox="0 ' + str(sizey * -1.0) + ' ' + str(sizex) + ' ' + str(sizey) + '"')
 	svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
 	svg.write('>\n')
 
 	# writing paths
 	for ob in exportList:
-                svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
+                if svg_export_style == 0:
+                    # translated-style exports have the entire sketch translated to fit in the X>0, Y>0 quadrant
+                    svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
+                else:
+                    # raw-style exports do not translate the sketch
+                    svg.write('<g transform="scale(1,-1)">\n')
                 svg.write(Draft.getSVG(ob))
                 svg.write('</g>\n')
                 
 	# closing
 	svg.write('</svg>')
 	svg.close()
-	FreeCAD.Console.PrintMessage("successfully exported "+filename)
