@@ -969,7 +969,6 @@ def export(exportList,filename):
 	sizex = maxx-minx
 	sizey = maxy-miny
 	miny += margin
-	boty = sizey+miny
 
 	# writing header
         # we specify the svg width and height in FreeCAD's physical units (mm),
@@ -1005,4 +1004,3 @@ def export(exportList,filename):
 	# closing
 	svg.write('</svg>')
 	svg.close()
-	FreeCAD.Console.PrintMessage("successfully exported "+filename)
