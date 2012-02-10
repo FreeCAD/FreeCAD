@@ -28,7 +28,7 @@
             <File Id="SketcherInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="Sketcherpyd" Name="Sketcher.pyd" DiskId="1" />
             <File Id="SketcherGuipyd" Name="SketcherGui.pyd" DiskId="1" />
-            <File Id="SketcherTestsAppPy" Name="SketcherTestsApp.py" DiskId="1" />
+            <File Id="TestSketcherAppPy" Name="TestSketcherApp.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>
