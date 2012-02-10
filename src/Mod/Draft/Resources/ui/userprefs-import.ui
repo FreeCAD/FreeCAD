@@ -356,6 +356,43 @@ If color mapping is choosed, you must choose a color mapping file containing a t
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Export Style</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="svg_export_style_combobox">
+          <property name="toolTip">
+           <string>Style of SVG file to write when exporting a Sketch.</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svg_export_style</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Translated (for print &amp; display)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Raw (for CAM)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
