@@ -938,6 +938,11 @@ def insert(filename,docname):
 def export(exportList,filename):
 	"called when freecad exports a file"
 
+        svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
+        if svg_export_style != 0 and svg_export_style != 1:
+            print "unknown svg export style, switching to Translated"
+            svg_export_style = 0
+
 	# finding sheet size
 	minx = 10000
 	miny = 10000
@@ -950,7 +955,13 @@ def export(exportList,filename):
 				if v.Point.x > maxx: maxx = v.Point.x
 				if v.Point.y < miny: miny = v.Point.y
 				if v.Point.y > maxy: maxy = v.Point.y
-	margin = (maxx-minx)*.01
+        if svg_export_style == 0:
+            # translated-style exports get a bit of a margin
+            margin = (maxx-minx)*.01
+        else:
+            # raw-style exports get no margin
+            margin = 0
+
 	minx -= margin 
 	maxx += margin
 	miny -= margin
@@ -969,13 +980,25 @@ def export(exportList,filename):
 	svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
 	svg.write('<svg')
 	svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
-	svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
+        if svg_export_style == 0:
+            # translated-style exports have the viewbox starting at X=0, Y=0
+            svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
+        else:
+            # raw-style exports have the viewbox starting at X=0, Y=-height
+            # we need the funny Y here because SVG is upside down, and we
+            # flip the sketch right-way up with a scale later
+            svg.write(' viewBox="0 ' + str(sizey * -1.0) + ' ' + str(sizex) + ' ' + str(sizey) + '"')
 	svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
 	svg.write('>\n')
 
 	# writing paths
 	for ob in exportList:
-                svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
+                if svg_export_style == 0:
+                    # translated-style exports have the entire sketch translated to fit in the X>0, Y>0 quadrant
+                    svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
+                else:
+                    # raw-style exports do not translate the sketch
+                    svg.write('<g transform="scale(1,-1)">\n')
                 svg.write(Draft.getSVG(ob))
                 svg.write('</g>\n')
                 
