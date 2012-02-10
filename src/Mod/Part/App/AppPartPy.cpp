@@ -596,8 +596,9 @@ static PyObject * makeWedge(PyObject *self, PyObject *args)
             d.SetCoord(vec.x, vec.y, vec.z);
         }
         BRepPrim_Wedge mkWedge(gp_Ax2(p,d), xmin, ymin, zmin, z2min, x2min, xmax, ymax, zmax, z2max, x2max);
-        TopoDS_Shape resultShape = mkWedge.Shell();
-        return new TopoShapeShellPy(new TopoShape(resultShape)); 
+        BRepBuilderAPI_MakeSolid mkSolid;
+        mkSolid.Add(mkWedge.Shell());
+        return new TopoShapeSolidPy(new TopoShape(mkSolid.Solid())); 
     }
     catch (Standard_DomainError) {
         PyErr_SetString(PyExc_Exception, "creation of wedge failed");

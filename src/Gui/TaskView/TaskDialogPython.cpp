@@ -278,21 +278,30 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
         }
     }
     else if (dlg.hasAttr(std::string("form"))) {
-        Py::Object widget(dlg.getAttr(std::string("form")));
-        Py::Module mainmod(PyImport_AddModule((char*)"sip"));
-        Py::Callable func = mainmod.getDict().getItem("unwrapinstance");
-        Py::Tuple arguments(1);
-        arguments[0] = widget; //PyQt pointer
-        Py::Object result = func.apply(arguments);
-        void* ptr = PyLong_AsVoidPtr(result.ptr());
-        QObject* object = reinterpret_cast<QObject*>(ptr);
-        if (object) {
-            QWidget* form = qobject_cast<QWidget*>(object);
-            if (form) {
-                Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                    form->windowIcon().pixmap(32), form->windowTitle(), true, 0);
-                taskbox->groupLayout()->addWidget(form);
-                Content.push_back(taskbox);
+        Py::Object f(dlg.getAttr(std::string("form"))); 
+        Py::List widgets;
+        if (f.isList()) {
+            widgets = f;
+        }
+        else {
+            widgets.append(f);
+        }
+        for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
+            Py::Module mainmod(PyImport_AddModule((char*)"sip"));
+            Py::Callable func = mainmod.getDict().getItem("unwrapinstance");
+            Py::Tuple arguments(1);
+            arguments[0] = *it; //PyQt pointer
+            Py::Object result = func.apply(arguments);
+            void* ptr = PyLong_AsVoidPtr(result.ptr());
+            QObject* object = reinterpret_cast<QObject*>(ptr);
+            if (object) {
+                QWidget* form = qobject_cast<QWidget*>(object);
+                if (form) {
+                    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
+                        form->windowIcon().pixmap(32), form->windowTitle(), true, 0);
+                    taskbox->groupLayout()->addWidget(form);
+                    Content.push_back(taskbox);
+                }
             }
         }
     }

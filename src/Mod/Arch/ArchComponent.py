@@ -140,6 +140,7 @@ class ComponentTaskPanel:
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
+        QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *,int)"), self.editObject)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -224,7 +225,21 @@ class ComponentTaskPanel:
         if self.obj:
             self.obj.ViewObject.finishEditing()
         return True
-                    
+
+    def editObject(self,wid,col):
+        if wid.parent():
+            obj = FreeCAD.ActiveDocument.getObject(str(wid.text(0)))
+            if obj:
+                self.obj.ViewObject.Transparency = 80
+                self.obj.ViewObject.Selectable = False
+                obj.ViewObject.show()
+                self.accept()
+                if obj.isDerivedFrom("Sketcher::SketchObject"):
+                    FreeCADGui.activateWorkbench("SketcherWorkbench")
+                FreeCAD.ArchObserver = ArchSelectionObserver(self.obj,obj)
+                FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+                FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
+
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
@@ -251,8 +266,7 @@ class Component:
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
-        
-        
+              
 class ViewProviderComponent:
     "A default View Provider for Component objects"
     def __init__(self,vobj):
@@ -295,4 +309,18 @@ class ViewProviderComponent:
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return
-    
+
+class ArchSelectionObserver:
+    def __init__(self,origin,watched):
+        self.origin = origin
+        self.watched = watched
+    def addSelection(self,document, object, element, position):
+        if object == self.watched.Name:
+            if not element:
+                print "closing Sketch edit"
+                self.origin.ViewObject.Transparency = 0
+                self.origin.ViewObject.Selectable = True
+                self.watched.ViewObject.hide()
+                FreeCADGui.activateWorkbench("ArchWorkbench")
+                FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                del FreeCAD.ArchObserver

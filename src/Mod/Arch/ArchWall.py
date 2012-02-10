@@ -32,7 +32,8 @@ __url__ = "http://free-cad.sourceforge.net"
 
 def makeWall(baseobj=None,width=None,height=None,align="Center",name="Wall"):
     '''makeWall(obj,[width],[height],[align],[name]): creates a wall based on the
-    given object'''
+    given object, which can be a sketch, a draft object, a face or a solid. align
+    can be "Center","Left" or "Right"'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Wall(obj)
     _ViewProviderWall(obj.ViewObject)
@@ -55,6 +56,8 @@ def joinWalls(walls):
         return None
     if not isinstance(walls,list):
         walls = [walls]
+    if not areSameWallTypes(walls):
+        return None
     base = walls.pop()
     if base.Base:
         if base.Base.Shape.Faces:
@@ -63,9 +66,8 @@ def joinWalls(walls):
             sk = base.Base
         else:
             sk = Draft.makeSketch(base.Base,autoconstraints=True)
-            old = base.Base.name
-            base.Base = sk
-            FreeCAD.ActiveDocument.removeObject(old)
+            if sk:
+                base.Base = sk
     for w in walls:
         if w.Base:
             if not base.Base.Shape.Faces:
@@ -73,6 +75,24 @@ def joinWalls(walls):
                     sk.addGeometry(e)
     FreeCAD.ActiveDocument.recompute()
     return base
+
+def areSameWallTypes(walls):
+    "returns True is all the walls in the given list have same height, width, and alignment"
+    for att in ["Width","Height","Align"]:
+        value = None
+        for w in walls:
+            if not hasattr(w,att):
+                return False
+            if not value:
+                value = getattr(w,att)
+            else:
+                if type(value) == float:
+                    if round(value,Draft.precision()) != round(getattr(w,att),Draft.precision()):
+                        return False
+                else:
+                    if value != getattr(w,att):
+                        return False
+    return True
 
 class _CommandWall:
     "the Arch Wall command definition"
@@ -83,6 +103,14 @@ class _CommandWall:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
         
     def Activated(self):
+
+        global QtGui, QtCore
+        from PyQt4 import QtGui, QtCore
+
+        self.Width = 0.1
+        self.Height = 1
+        self.Align = "Center"
+        
         sel = FreeCADGui.Selection.getSelection()
         done = False
         self.existing = []
@@ -98,41 +126,106 @@ class _CommandWall:
             import DraftTrackers
             self.points = []
             self.tracker = DraftTrackers.boxTracker()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint)
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox())
 
-    def getPoint(self,point):
+    def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
-        pos = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
-        exi = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(pos)
-        if exi:
-            exi = FreeCAD.ActiveDocument.getObject(exi['Object'])
-            if Draft.getType(exi) == "Wall":
-                if not exi in self.existing:
-                    self.existing.append(exi)
+        if obj:
+            if Draft.getType(obj) == "Wall":
+                if not obj in self.existing:
+                    self.existing.append(obj)
         if point == None:
             self.tracker.finalize()
             return
         self.points.append(point)
         if len(self.points) == 1:
             self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update)
+            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         elif len(self.points) == 2:
             import Part
             l = Part.Line(self.points[0],self.points[1])
+            self.tracker.finalize()
+            FreeCAD.ActiveDocument.openTransaction("Wall")
             if not self.existing:
-                s = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
-                s.addGeometry(l)
-                makeWall(s)
+                self.addDefault(l)
             else:
                 w = joinWalls(self.existing)
-                w.Base.addGeometry(l)
-            self.tracker.finalize()
+                if w:
+                    if areSameWallTypes([w,self]):
+                        w.Base.addGeometry(l)
+                    else:
+                        self.addDefault(l)
+                else:
+                    self.addDefault(l)
+            FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+
+    def addDefault(self,l):
+        s = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
+        s.addGeometry(l)
+        makeWall(s,width=self.Width,height=self.Height,align=self.Align)
 
     def update(self,point):
         "this function is called by the Snapper when the mouse is moved"
-        self.tracker.update([self.points[0],point])
-                 
+        b = self.points[0]
+        n = FreeCAD.DraftWorkingPlane.axis
+        bv = point.sub(b)
+        dv = bv.cross(n)
+        dv = fcvec.scaleTo(dv,self.Width/2)
+        if self.Align == "Center":
+            self.tracker.update([b,point])
+        elif self.Align == "Left":
+            self.tracker.update([b.add(dv),point.add(dv)])
+        else:
+            dv = fcvec.neg(dv)
+            self.tracker.update([b.add(dv),point.add(dv)])
+
+    def taskbox(self):
+        "sets up a taskbox widget"
+        w = QtGui.QWidget()
+        w.setWindowTitle("Wall options")
+        lay0 = QtGui.QVBoxLayout(w)
+        lay1 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay1)
+        label1 = QtGui.QLabel("Width")
+        lay1.addWidget(label1)
+        value1 = QtGui.QDoubleSpinBox()
+        value1.setDecimals(2)
+        value1.setValue(self.Width)
+        lay1.addWidget(value1)
+        lay2 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay2)
+        label2 = QtGui.QLabel("Height")
+        lay2.addWidget(label2)
+        value2 = QtGui.QDoubleSpinBox()
+        value2.setDecimals(2)
+        value2.setValue(self.Height)
+        lay2.addWidget(value2)
+        lay3 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay3)
+        label3 = QtGui.QLabel("Alignment")
+        lay3.addWidget(label3)
+        value3 = QtGui.QComboBox()
+        items = ["Center","Left","Right"]
+        value3.addItems(items)
+        value3.setCurrentIndex(items.index(self.Align))
+        lay3.addWidget(value3)
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
+        QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
+        QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
+        return w
+        
+    def setWidth(self,d):
+        self.Width = d
+        self.tracker.width(d)
+
+    def setHeight(self,d):
+        self.Height = d
+        self.tracker.height(d)
+
+    def setAlign(self,i):
+        self.Align = ["Center","Left","Right"][i]
+        
 class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
@@ -162,6 +255,10 @@ class _Wall(ArchComponent.Component):
 
         import Part
         from draftlibs import fcgeo
+
+        flat = False
+        if hasattr(obj.ViewObject,"DisplayMode"):
+            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
         
         def getbase(wire):
             "returns a full shape from a base wire"
@@ -182,7 +279,9 @@ class _Wall(ArchComponent.Component):
                 dvec = fcvec.neg(dvec)
                 w2 = fcgeo.offsetWire(wire,dvec)
                 sh = fcgeo.bind(w1,w2)
-            if height:
+            # fixing self-intersections
+            sh.fix(0.1,0,1)
+            if height and (not flat):
                 norm = Vector(normal).multiply(height)
                 sh = sh.extrude(norm)
             return sh
@@ -257,5 +356,19 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):          
         return ":/icons/Arch_Wall_Tree.svg"
+
+    def getDisplayModes(self,vobj):
+        return ["Flat 2D"]
+
+    def setDisplayMode(self,mode):
+        self.Object.Proxy.createGeometry(self.Object)
+        if mode == "Flat 2D":
+            return "Flat Lines"
+        else:
+            return mode
+
+    def attach(self,vobj):
+        self.Object = vobj.Object
+        return
 
 FreeCADGui.addCommand('Arch_Wall',_CommandWall())
