@@ -467,3 +467,26 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 	#ADD_CUSTOM_TARGET(DIST make package_source)
 
 endif(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
+    add_custom_target(dist-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    add_custom_target(distdfsg-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --dfsg
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+if(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+    add_custom_target(distcheck-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --check
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    add_custom_target(distcheckdfsg-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --dfsg --check
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+
