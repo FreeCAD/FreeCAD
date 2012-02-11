@@ -256,18 +256,11 @@ def formatObject(target,origin=None):
         if "ShapeColor" in obrep.PropertiesList: obrep.ShapeColor = fcol
     else:
         matchrep = origin.ViewObject
-        if ("LineWidth" in obrep.PropertiesList) and \
-                ("LineWidth" in matchrep.PropertiesList):
-            obrep.LineWidth = matchrep.LineWidth
-        if ("PointColor" in obrep.PropertiesList) and \
-                ("PointColor" in matchrep.PropertiesList):
-            obrep.PointColor = matchrep.PointColor
-        if ("LineColor" in obrep.PropertiesList) and \
-                ("LineColor" in matchrep.PropertiesList):
-            obrep.LineColor = matchrep.LineColor
-        if ("ShapeColor" in obrep.PropertiesList) and \
-                ("ShapeColor" in matchrep.PropertiesList):
-            obrep.ShapeColor = matchrep.ShapeColor
+        for p in matchrep.PropertiesList:
+            if not p in ["DisplayMode","BoundingBox","Proxy","RootNode"]:
+                if p in obrep.PropertiesList:
+                    val = getattr(matchrep,p)
+                    setattr(obrep,p,val)
         if matchrep.DisplayMode in obrep.listDisplayModes():
             obrep.DisplayMode = matchrep.DisplayMode
 
@@ -516,48 +509,52 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     select(obj)
     return obj
 
-def makeCopy(obj):
+def makeCopy(obj,force=None,reparent=False):
     '''makeCopy(object): returns an exact copy of an object'''
-    if getType(obj) == "Rectangle":
+    if (getType(obj) == "Rectangle") or (force == "Rectangle"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Rectangle(newobj)
         _ViewProviderRectangle(newobj.ViewObject)
-    elif getType(obj) == "Wire":
+    elif (getType(obj) == "Dimension") or (force == "Dimension"):
+        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        _Dimension(newobj)
+        _ViewProviderDimension(newobj.ViewObject)
+    elif (getType(obj) == "Wire") or (force == "Wire"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Wire(newobj)
         _ViewProviderWire(newobj.ViewObject)
-    elif getType(obj) == "Circle":
+    elif (getType(obj) == "Circle") or (force == "Circle"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Circle(newobj)
-        _ViewProviderCircle(newobj.ViewObject)
-    elif getType(obj) == "Polygon":
+        _ViewProviderDraft(newobj.ViewObject)
+    elif (getType(obj) == "Polygon") or (force == "Polygon"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Polygon(newobj)
         _ViewProviderPolygon(newobj.ViewObject)
-    elif getType(obj) == "BSpline":
+    elif (getType(obj) == "BSpline") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _BSpline(newobj)
         _ViewProviderBSpline(newobj.ViewObject)
-    elif getType(obj) == "Block":
+    elif (getType(obj) == "Block") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Block(newobj)
         _ViewProviderDraftPart(newobj.ViewObject)
-    elif getType(obj) == "Structure":
+    elif (getType(obj) == "Structure") or (force == "Structure"):
         import ArchStructure
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchStructure._Structure(newobj)
         ArchStructure._ViewProviderStructure(newobj.ViewObject)
-    elif getType(obj) == "Wall":
+    elif (getType(obj) == "Wall") or (force == "Wall"):
         import ArchWall
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchWall._Wall(newobj)
         ArchWall._ViewProviderWall(newobj.ViewObject)
-    elif getType(obj) == "Window":
+    elif (getType(obj) == "Window") or (force == "Window"):
         import ArchWindow
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchWindow._Window(newobj)
         Archwindow._ViewProviderWindow(newobj.ViewObject)
-    elif getType(obj) == "Cell":
+    elif (getType(obj) == "Cell") or (force == "Cell"):
         import ArchCell
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         ArchCell._Cell(newobj)
@@ -569,8 +566,19 @@ def makeCopy(obj):
         print "Error: Object type cannot be copied"
         return None
     for p in obj.PropertiesList:
-        if p in newobj.PropertiesList:
-            setattr(newobj,p,obj.getPropertyByName(p))
+        if not p in ["Proxy"]:
+            if p in newobj.PropertiesList:
+                setattr(newobj,p,obj.getPropertyByName(p))
+    if reparent:
+        parents = obj.InList
+        if parents:
+            for par in parents:
+                if par.Type == "App::DocumentObjectGroup":
+                    par.addObject(newobj)
+                else:
+                    for prop in par.PropertiesList:
+                        if getattr(par,prop) == obj:
+                            setattr(par,prop,newobj)
     formatObject(newobj,obj)
     return newobj
 
@@ -685,7 +693,7 @@ def move(objectslist,vector,copy=False):
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
                 _Dimension(newobj)
-                _DimensionViewProvider(newobj.ViewObject)
+                _ViewProviderDimension(newobj.ViewObject)
             else:
                 newobj = obj
             newobj.Start = obj.Start.add(vector)
@@ -1401,6 +1409,57 @@ def clone(obj,delta=None):
     if delta:
         cl.Placement.move(delta)
     return cl
+
+def heal(objlist=None,delete=True,reparent=True):
+    '''heal([objlist],[delete],[reparent]) - recreates Draft objects that are damaged,
+    for example if created from an earlier version. If delete is True,
+    the damaged objects are deleted (default). If ran without arguments, all the objects
+    in the document will be healed if they are damaged. If reparent is True (default),
+    new objects go at the very same place in the tree than their original.'''
+
+    if not objlist:
+        objlist = FreeCAD.ActiveDocument.Objects
+        print "Healing whole document..."
+
+    if not isinstance(objlist,list):
+        objlist = [objlist]
+
+    dellist = []
+    got = False
+    
+    for obj in objlist:
+        dtype = getType(obj)
+        ftype = obj.Type
+        if ftype in ["Part::FeaturePython","App::FeaturePython"]:
+            if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
+                got = True
+                dellist.append(obj.Name)
+                props = obj.PropertiesList
+                if ("Dimline" in props) and ("Start" in props):
+                    print "Healing " + obj.Name + " of type Dimension"
+                    nobj = makeCopy(obj,force="Dimension",reparent=reparent)
+                elif ("Height" in props) and ("Length" in props):
+                    print "Healing " + obj.Name + " of type Rectangle"
+                    nobj = makeCopy(obj,force="Rectangle",reparent=reparent)
+                elif ("Points" in props) and ("Closed" in props):
+                    print "Healing " + obj.Name + " of type Wire"
+                    nobj = makeCopy(obj,force="Wire",reparent=reparent)
+                elif ("Radius" in props) and ("FirstAngle" in props):
+                    print "Healing " + obj.Name + " of type Circle"
+                    nobj = makeCopy(obj,force="Circle",reparent=reparent)
+                else:
+                    dellist.pop()
+                    print "Object " + obj.Name + " is not healable"
+
+    if not got:
+        print "No object seems to need healing"
+    else:
+        print "Healed ",len(dellist)," objects"
+
+    if dellist and delete:
+        for n in dellist:
+            FreeCAD.ActiveDocument.removeObject(n)
+
 			
 #---------------------------------------------------------------------------
 # Python Features definitions
@@ -1539,10 +1598,13 @@ class _ViewProviderDimension:
             if hasattr(obj.ViewObject,"DisplayMode"):
                 if obj.ViewObject.DisplayMode == "3D":
                     offset = fcvec.neg(offset)
-        if obj.ViewObject.TextPosition == Vector(0,0,0):
-            tbase = midpoint.add(offset)
+        if hasattr(obj.ViewObject,"TextPosition"):
+            if obj.ViewObject.TextPosition == Vector(0,0,0):
+                tbase = midpoint.add(offset)
+            else:
+                tbase = obj.ViewObject.TextPosition
         else:
-            tbase = obj.ViewObject.TextPosition
+            tbase = midpoint.add(offset)
         rot = FreeCAD.Placement(fcvec.getPlaneRotation(u,v,norm)).Rotation.Q
         return p1,p2,p3,p4,tbase,norm,rot
 
@@ -1966,6 +2028,7 @@ class _Rectangle:
     def __init__(self, obj):
         obj.addProperty("App::PropertyDistance","Length","Base","Length of the rectangle")
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the rectange")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
         obj.Proxy = self
         obj.Length=1
         obj.Height=1
@@ -1980,12 +2043,18 @@ class _Rectangle:
                         
     def createGeometry(self,fp):
         import Part
+        from draftlibs import fcgeo
         plm = fp.Placement
         p1 = Vector(0,0,0)
         p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
         p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
         p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
         shape = Part.makePolygon([p1,p2,p3,p4,p1])
+        if "FilletRadius" in fp.PropertiesList:
+            if fp.FilletRadius != 0:
+                w = fcgeo.filletWire(shape,fp.FilletRadius)
+                if w:
+                    shape = w
         shape = Part.Face(shape)
         fp.Shape = shape
         fp.Placement = plm
@@ -2017,9 +2086,9 @@ class _Circle:
     "The Circle object"
         
     def __init__(self, obj):
-        obj.addProperty("App::PropertyAngle","FirstAngle","Arc",
+        obj.addProperty("App::PropertyAngle","FirstAngle","Base",
                         "Start angle of the arc")
-        obj.addProperty("App::PropertyAngle","LastAngle","Arc",
+        obj.addProperty("App::PropertyAngle","LastAngle","Base",
                         "End angle of the arc (for a full circle, give it same value as First Angle)")
         obj.addProperty("App::PropertyDistance","Radius","Base",
                         "Radius of the circle")
@@ -2060,6 +2129,7 @@ class _Wire:
                         "The start point of this line")
         obj.addProperty("App::PropertyVector","End","Base",
                         "The end point of this line")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
         obj.Proxy = self
         obj.Closed = False
         self.Type = "Wire"
@@ -2068,7 +2138,7 @@ class _Wire:
         self.createGeometry(fp)
 
     def onChanged(self, fp, prop):
-        if prop in ["Points","Closed","Base","Tool"]:
+        if prop in ["Points","Closed","Base","Tool","FilletRadius"]:
             self.createGeometry(fp)
             if prop == "Points":
                 if fp.Start != fp.Points[0]:
@@ -2121,6 +2191,11 @@ class _Wire:
                 fp.Points.pop()
             if fp.Closed and (len(fp.Points) > 2):
                 shape = Part.makePolygon(fp.Points+[fp.Points[0]])
+                if "FilletRadius" in fp.PropertiesList:
+                    if fp.FilletRadius != 0:
+                        w = fcgeo.filletWire(shape,fp.FilletRadius)
+                        if w:
+                            shape = w
                 shape = Part.Face(shape)
             else:
                 edges = []
@@ -2130,6 +2205,11 @@ class _Wire:
                     edges.append(Part.Line(lp,p).toShape())
                     lp = p
                 shape = Part.Wire(edges)
+                if "FilletRadius" in fp.PropertiesList:
+                    if fp.FilletRadius != 0:
+                        w = fcgeo.filletWire(shape,fp.FilletRadius)
+                        if w:
+                            shape = w
             fp.Shape = shape
         fp.Placement = plm
 
@@ -2178,6 +2258,7 @@ class _Polygon:
         obj.addProperty("App::PropertyInteger","FacesNumber","Base","Number of faces")
         obj.addProperty("App::PropertyDistance","Radius","Base","Radius of the control circle")
         obj.addProperty("App::PropertyEnumeration","DrawMode","Base","How the polygon must be drawn from the control circle")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 3
         obj.Radius = 1
@@ -2193,6 +2274,7 @@ class _Polygon:
                         
     def createGeometry(self,fp):
         import Part
+        from draftlibs import fcgeo
         plm = fp.Placement
         angle = (math.pi*2)/fp.FacesNumber
         if fp.DrawMode == 'inscribed':
@@ -2205,6 +2287,11 @@ class _Polygon:
             pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
         pts.append(pts[0])
         shape = Part.makePolygon(pts)
+        if "FilletRadius" in fp.PropertiesList:
+            if fp.FilletRadius != 0:
+                w = fcgeo.filletWire(shape,fp.FilletRadius)
+                if w:
+                    shape = w
         shape = Part.Face(shape)
         fp.Shape = shape
         fp.Placement = plm
