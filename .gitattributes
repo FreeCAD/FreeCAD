@@ -11,5 +11,6 @@ mkinstalldirs    export-ignore
 package    export-ignore
 fc.sh    export-ignore
 UpdateResources.bat    export-ignore
+BuildVersion.bat    export-ignore
 *.sln    export-ignore
 WindowsInstaller    export-ignore
