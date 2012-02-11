@@ -23,8 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
+# include <QClipboard>
 # include <QMutex>
 # include <QSysInfo>
+# include <QTextStream>
 # include <QWaitCondition>
 #endif
 
@@ -248,18 +251,18 @@ static QString getPlatform()
 
 void AboutDialog::setupLabels()
 {
-    QString exeName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-    std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::iterator it = cfg.find("WindowTitle");
-    if (it != cfg.end())
+    std::map<std::string, std::string>& config = App::Application::Config();
+    QString exeName = QString::fromAscii(config["ExeName"].c_str());
+    std::map<std::string,std::string>::iterator it = config.find("WindowTitle");
+    if (it != config.end())
         exeName = QString::fromUtf8(it->second.c_str());
-    QString banner  = QString::fromUtf8(App::Application::Config()["ConsoleBanner"].c_str());
+    QString banner  = QString::fromUtf8(config["ConsoleBanner"].c_str());
     banner = banner.left( banner.indexOf(QLatin1Char('\n')) );
-    QString major  = QString::fromAscii(App::Application::Config()["BuildVersionMajor"].c_str());
-    QString minor  = QString::fromAscii(App::Application::Config()["BuildVersionMinor"].c_str());
-    QString build  = QString::fromAscii(App::Application::Config()["BuildRevision"].c_str());
-    QString disda  = QString::fromAscii(App::Application::Config()["BuildRevisionDate"].c_str());
-    QString mturl  = QString::fromAscii(App::Application::Config()["MaintainerUrl"].c_str());
+    QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
+    QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
+    QString build  = QString::fromAscii(config["BuildRevision"].c_str());
+    QString disda  = QString::fromAscii(config["BuildRevisionDate"].c_str());
+    QString mturl  = QString::fromAscii(config["MaintainerUrl"].c_str());
 
     QString author = ui->labelAuthor->text();
     author.replace(QString::fromAscii("Unknown Application"), exeName);
@@ -283,10 +286,56 @@ void AboutDialog::setupLabels()
     platform.replace(QString::fromAscii("Unknown"),
         QString::fromAscii("%1 (%2-bit)").arg(getPlatform()).arg(QSysInfo::WordSize));
     ui->labelBuildPlatform->setText(platform);
+
+    // branch name
+    it = config.find("BuildRevisionBranch");
+    if (it != config.end()) {
+        QString branch = ui->labelBuildBranch->text();
+        branch.replace(QString::fromAscii("Unknown"), QString::fromAscii(it->second.c_str()));
+        ui->labelBuildBranch->setText(branch);
+    }
+    else {
+        ui->labelBranch->hide();
+        ui->labelBuildBranch->hide();
+    }
+
+    // hash id
+    it = config.find("BuildRevisionHash");
+    if (it != config.end()) {
+        QString hash = ui->labelBuildHash->text();
+        hash.replace(QString::fromAscii("Unknown"), QString::fromAscii(it->second.c_str()));
+        ui->labelBuildHash->setText(hash);
+    }
+    else {
+        ui->labelHash->hide();
+        ui->labelBuildHash->hide();
+    }
 }
 
 void AboutDialog::on_licenseButton_clicked()
 {
+}
+
+void AboutDialog::on_copyButton_clicked()
+{
+    QString data;
+    QTextStream str(&data);
+    std::map<std::string, std::string>& config = App::Application::Config();
+    std::map<std::string,std::string>::iterator it;
+
+    QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
+    QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
+    QString build  = QString::fromAscii(config["BuildRevision"].c_str());
+    str << "Version: " << major << "." << minor << "." << build << endl;
+    it = config.find("BuildRevisionBranch");
+    if (it != config.end())
+        str << "Branch: " << it->second.c_str() << endl;
+    it = config.find("BuildRevisionHash");
+    if (it != config.end())
+        str << "Hash: " << it->second.c_str() << endl;
+
+    QClipboard* cb = QApplication::clipboard();
+    cb->setText(data);
 }
 
 #include "moc_Splashscreen.cpp"
