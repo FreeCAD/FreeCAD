@@ -638,6 +638,23 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
+void TreeWidget::markItem(const App::DocumentObject* Obj,bool mark)
+{
+    // never call without Object! 
+    assert(Obj);
+    Gui::Document* Doc = Gui::Application::Instance->getDocument(Obj->getDocument());
+
+    std::map<const Gui::Document*, DocumentItem*>::iterator jt = DocumentMap.find(Doc);
+    for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
+         it != DocumentMap.end(); ++it)
+    {
+        it->second->markItem(Obj,mark);
+
+        QFont f = it->second->font(0);
+        f.setBold(it == jt);
+        it->second->setFont(0,f);
+    }
+}
 
 void TreeWidget::onTestStatus(void)
 {
@@ -1069,6 +1086,21 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
 const Gui::Document* DocumentItem::document() const
 {
     return this->pDocument;
+}
+
+void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
+{
+    // never call without Object! 
+    assert(Obj);
+
+
+    std::map<std::string,DocumentObjectItem*>::iterator pos;
+    pos = ObjectMap.find(Obj->getNameInDocument());
+    if (pos != ObjectMap.end()) {
+        QFont f = pos->second->font(0);
+        f.setUnderline(mark);
+        pos->second->setFont(0,f);
+    }
 }
 
 //void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)

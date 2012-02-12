@@ -48,7 +48,7 @@ CmdAssemblyAddNewPart::CmdAssemblyAddNewPart()
     sToolTipText    = QT_TR_NOOP("Add a new Part into the active Assembly");
     sWhatsThis      = "Assembly_ConstraintAxle";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/Axle_constraint";
+    sPixmap         = "Part_Box";
 }
 
 
@@ -72,7 +72,7 @@ CmdAssemblyAddNewComponent::CmdAssemblyAddNewComponent()
     sToolTipText    = QT_TR_NOOP("Add a new Component into the active Assembly");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/Axle_constraint";
+    sPixmap         = "Part_Box";
 }
 
 
@@ -96,7 +96,7 @@ CmdAssemblyAddExistingComponent::CmdAssemblyAddExistingComponent()
     sToolTipText    = QT_TR_NOOP("Add a existing Component or File into the active Assembly");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/Axle_constraint";
+    sPixmap         = "Part_Box";
 }
 
 
