@@ -216,19 +216,10 @@ def getcolor(color):
 				b = float(v[2]/255.0)
 				return (r,g,b,0.0)
 
-def getsize(width):
-	"extracts a number from the given string (removes suffixes)"
-	if width[-1] == "%":
-		return float(width[:-1])
-	elif len(width) > 1:
-		for s in ['pt','pc','mm','cm','in','px']:
-			if width[-2:] == s:
-				return float(width[:-2])
-	try:
-		s = float(width)
-		return s
-	except ValueError:
-		return width
+def getsize(length):
+        """extracts a number from the given string (removes unit suffixes)"""
+        number, exponent, unit=re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?',length)[0]
+        return float(number)
 
 def makewire(path,checkclosed=False,donttry=False):
         '''try to make a wire out of the list of edges. If the 'Wire' functions fails or the wire is not
