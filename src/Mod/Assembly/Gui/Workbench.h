@@ -36,12 +36,19 @@ class AssemblyGuiExport Workbench : public Gui::StdWorkbench
     TYPESYSTEM_HEADER();
 
 public:
-  Workbench();
-  virtual ~Workbench();
+    Workbench();
+    virtual ~Workbench();
+
+    /** Run some actions when the workbench gets activated. */
+    virtual void activated();
+    /** Run some actions when the workbench gets deactivated. */
+    virtual void deactivated();
 
 protected:
   Gui::ToolBarItem* setupToolBars() const;
   Gui::ToolBarItem* setupCommandBars() const;
+  Gui::MenuItem*    setupMenuBar() const;
+
 };
 
 } // namespace AssemblyGui

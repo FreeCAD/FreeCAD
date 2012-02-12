@@ -28,7 +28,11 @@
 #endif
 
 #include "Workbench.h"
+#include <App/Application.h>
+#include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+#include <Gui/Control.h>
+#include <Gui/Command.h>
 
 using namespace AssemblyGui;
 
@@ -56,10 +60,75 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      return root;
 }
 
+Gui::MenuItem* Workbench::setupMenuBar() const
+{
+    Gui::MenuItem* root = StdWorkbench::setupMenuBar();
+    Gui::MenuItem* item = root->findItem("&Windows");
+
+
+    Gui::MenuItem* asmCmd = new Gui::MenuItem();
+    root->insertItem(item, asmCmd);
+    asmCmd->setCommand("&Assembly");
+    *asmCmd << "Assembly_ConstraintAxle"
+            << "Separator"
+            << "Assembly_AddNewPart"
+            << "Assembly_AddNewComponent"
+            << "Assembly_AddExistingComponent";
+
+
+    return root;
+}
+
 Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
     // Part tools
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     return root;
+}
+
+void Workbench::activated()
+{
+    Gui::Workbench::activated();
+
+    std::vector<Gui::TaskView::TaskWatcher*> Watcher;
+
+    const char* Asm[] = {
+        "Assembly_AddNewPart",
+        "PartDesign_Fillet",
+        "PartDesign_Chamfer",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Assembly::Item COUNT 1",
+        Asm,
+        "Assembly tools",
+        "Part_Box"
+    ));
+
+    addTaskWatcher(Watcher);
+    Gui::Control().showTaskView();
+
+    App::Document *doc = App::GetApplication().getActiveDocument();
+    if(!doc){
+        // create a new document
+
+        Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument()");
+        doc = App::GetApplication().getActiveDocument();
+
+    }
+    // now we should have a document! 
+    assert(doc);
+
+    if(doc->countObjects()==0){
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Product')");
+    }
+
+
+}
+
+void Workbench::deactivated()
+{
+    Gui::Workbench::deactivated();
+    removeTaskWatcher();
+
 }
 

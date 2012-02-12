@@ -26,8 +26,45 @@
 # include <Python.h>
 #endif
 
+#include <Base/PyObjectBase.h>
+#include <Base/Console.h>
+
+#include <Gui/Application.h>
+
+#include <Mod/Assembly/App/ItemPy.h>
+
+// pointer to the active assembly object
+Assembly::Item *ActiveAsmObject =0;
+
+
+/* module functions */
+static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
+{
+    PyObject *object;
+    if (PyArg_ParseTuple(args,"O!",&(Assembly::ItemPy::Type), &object)) {
+        Assembly::Item* Item = static_cast<Assembly::ItemPy*>(object)->getItemPtr();
+        // Should be set!
+        assert(Item);    
+
+        if(ActiveAsmObject){
+            
+            ActiveAsmObject = 0;
+
+        }
+        ActiveAsmObject = Item;
+        Gui::ViewProvider* vp = Gui::Application::Instance -> getViewProvider(ActiveAsmObject);
+        //PyErr_SetString(PyExc_Exception, "empty shape");
+        
+    }
+
+    return 0;
+}
+
 
 /* registration table  */
 struct PyMethodDef AssemblyGui_Import_methods[] = {
+    {"setActiveAssembly"       ,setActiveAssembly      ,METH_VARARGS,
+     "setActiveAssembly(AssemblyObject) -- Set the Assembly object in work."},
+
     {NULL, NULL}                   /* end of table marker */
 };
