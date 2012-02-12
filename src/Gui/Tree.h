@@ -149,6 +149,7 @@ public:
     void selectItems(void);
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
+    void markItem(const App::DocumentObject* Obj,bool mark);
 
 protected:
     /** Adds a view provider to the document item.

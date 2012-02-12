@@ -35,6 +35,8 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderAssembly.h"
 
+#include <Mod/Assembly/App/ItemAssembly.h>
+
 //#include "resources/qrc_Assembly.cpp"
 
 // use a different name to CreateCommand()
@@ -50,6 +52,7 @@ void loadAssemblyResource()
 
 /* registration table  */
 extern struct PyMethodDef AssemblyGui_Import_methods[];
+
 
 
 /* Python entry */
