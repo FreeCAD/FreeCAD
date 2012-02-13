@@ -1078,9 +1078,14 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                 svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
             elif isinstance(e.Curve,Part.Circle):
                 r = e.Curve.Radius
+                drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+                if plane: drawing_plane_normal = plane.axis
+                flag_large_arc = (((e.ParameterRange[1] - e.ParameterRange[0]) / math.pi) % 2) > 1
+                flag_sweep = e.Curve.Axis * drawing_plane_normal >= 0
                 v = getProj(e.Vertexes[-1].Point)
-                svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                svg += str(v.y) + ' '
+                svg += 'A ' + str(r) + ' ' + str(r) + ' '
+                svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
+                svg += str(v.x) + ' ' + str(v.y) + ' '
         if fill != 'none': svg += 'Z'
         svg += '" '
         svg += 'stroke="' + stroke + '" '
