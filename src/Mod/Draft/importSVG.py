@@ -36,7 +36,7 @@ currently unsupported: use, image
 # debug Problem with 'Sans' font from Inkscape
 # debug Problem with fill color
 # implement inherting fill style from group
-# handle viewbox and units
+# handle relative units
 
 import xml.sax, string, FreeCAD, os, math, re, Draft
 from draftlibs import fcvec
@@ -216,10 +216,50 @@ def getcolor(color):
 				b = float(v[2]/255.0)
 				return (r,g,b,0.0)
 
-def getsize(length):
-        """extracts a number from the given string (removes unit suffixes)"""
+def getsize(length,mode='discard',base=None):
+        """parses length values containing number and unit
+        with mode 'discard': extracts a number from the given string (removes unit suffixes)
+        with mode 'tuple': return number and unit as a tuple
+        with mode 'css': convert the unit to px assuming 90dpi
+        with mode 'mm': convert the unit to millimeter assuming 90dpi"""
+        tomm={
+                '' : 25.4/90, #default
+                'px' : 25.4/90,
+                'pt' : 1.25*25.4/90,
+                'pc' : 15*25.4/90,
+                'mm' : 1.0,
+                'cm' : 10.0,
+                'in' : 25.4,
+                'em':  15*2.54/90, #arbitrarily chosen; has to depend on font size
+                'ex': 10*2.54/90, #arbitrarily chosen; has to depend on font size
+
+                '%': 100 #arbitrarily chosen; has to depend on vieport size or (for filling patterns) on bounding box
+                }
+        topx={
+                '' : 1.0, #default
+                'px' : 1.0,
+                'pt' : 1.25,
+                'pc' : 15,
+                'mm' : 90.0/25.4,
+                'cm' : 90.0/254.0,
+                'in' : 90,
+                'em':  15, #arbitrarily chosen; has to depend on font size
+                'ex':  10, #arbitrarily chosen; has to depend on font size
+
+                '%': 100 #arbitrarily chosen; has to depend on vieport size or (for filling patterns) on bounding box
+                }
         number, exponent, unit=re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?',length)[0]
-        return float(number)
+        if mode =='discard':
+                return float(number)
+        elif mode == 'tuple':
+                return float(number),unit
+        elif mode == 'mm':
+                return float(number)*tomm[unit]
+        elif mode == 'css':
+                if unit != '%':
+                        return float(number)*topx[unit]
+                else:
+                        return float(number)*(base or 1)
 
 def makewire(path,checkclosed=False,donttry=False):
         '''try to make a wire out of the list of edges. If the 'Wire' functions fails or the wire is not
@@ -281,7 +321,7 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
 	        try:
 	                scalefacpos = math.sqrt(numer/denom)
 	        except ValueError:
-                        print 'sqrt(%f/%f)' % (numer,denom)
+                        FreeCAD.Console.PrintMessage('sqrt(%f/%f)\n' % (numer,denom))
 			scalefacpos = 0
         for scalefacsign in (1,-1):
             scalefac = scalefacpos * scalefacsign
@@ -318,6 +358,7 @@ class svgHandler(xml.sax.ContentHandler):
                 self.transform = None
                 self.grouptransform = []
                 self.lastdim = None
+                self.viewbox = None
 
                 global Part
                 import Part
@@ -349,8 +390,8 @@ class svgHandler(xml.sax.ContentHandler):
 
                 self.count += 1
 
-                print "processing element ",self.count,": ",name
-                print "existing group transform: ", self.grouptransform
+                FreeCAD.Console.PrintMessage('processing element %d: %s\n'%(self.count,name))
+                FreeCAD.Console.PrintMessage('existing group transform: %s\n'%(str(self.grouptransform)))
 		
 		data = {}
 		for (keyword,content) in attrs.items():
@@ -370,7 +411,7 @@ class svgHandler(xml.sax.ContentHandler):
 
 		for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
 			if k in data:
-				data[k] = getsize(data[k][0])
+				data[k] = getsize(data[k][0],'css')
 
 		for k in ['fill','stroke','stroke-width','font-size']:
 			if k in data:
@@ -384,6 +425,29 @@ class svgHandler(xml.sax.ContentHandler):
 		self.width = None
 		self.text = None
 		
+                if name == 'svg':
+                        m=FreeCAD.Matrix()
+                        if 'width' in data and 'height' in data and \
+                                'viewBox' in data:
+                                x0,y0,x1,y1=[float(n) for n in data['viewBox']]
+                                vbw = x1-x0
+                                vbh = y1-y0
+                                self.viewbox=(vbw,vbh)
+                                abw = getsize(attrs.getValue('width'),'mm')
+                                abh = getsize(attrs.getValue('height'),'mm')
+                                sx=abw/vbw
+                                sy=abh/vbh
+                                m.scale(Vector(sx,sy,1))
+                                if round(sx/sy,5) != 1:
+                                        FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
+
+                                #FreeCAD.Console.PrintMessage('attrs: %s %s\n'%(attrs.getValue('width'),attrs.getValue('height')))
+                                #FreeCAD.Console.PrintMessage('vb: %f %f %f %f\n'%(x0,y0,x1,y1))
+                                #FreeCAD.Console.PrintMessage('absolute: %f %f\n'%(abw,abh))
+                        else:
+                                #fallback to 90 dpi
+                                m.scale(Vector(25.4/90.0,25.4/90.0,1))
+                        self.grouptransform.append(m) 
 		if 'fill' in data:
 			if data['fill'][0] != 'none':
 				self.fill = getcolor(data['fill'])
@@ -392,7 +456,7 @@ class svgHandler(xml.sax.ContentHandler):
 				self.color = getcolor(data['stroke'])
 		if 'stroke-width' in data:
 			if data['stroke-width'] != 'none':
-				self.width = getsize(data['stroke-width'])
+				self.width = getsize(data['stroke-width'],'css')
 		if 'transform' in data:
                         m = self.getMatrix(attrs.getValue('transform'))
                         if name == "g":
@@ -410,12 +474,12 @@ class svgHandler(xml.sax.ContentHandler):
                 pathname = None
                 if 'id' in data:
                         pathname = data['id'][0]
-                        print "name: ",pathname
+                        FreeCAD.Console.PrintMessage('name: %s\n'%pathname)
                         
 		# processing paths
                         
 		if name == "path":
-                        print data
+                        FreeCAD.Console.PrintMessage('data: %s\n'%str(data))
                         
                         if not pathname: pathname = 'Path'
 
@@ -462,7 +526,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         else:
                                                 lastvec = Vector(x,-y,0)
                                         firstvec = lastvec
-                                        print "move ",lastvec
+                                        FreeCAD.Console.PrintMessage('move %s\n'%str(lastvec))
                                         lastpole = None
                                 if (d == "L" or d == "l") or \
                                         ((d == 'm' or d == 'M') and pointlist) :
@@ -473,7 +537,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = Vector(x,-y,0)
                                                 if not fcvec.equals(lastvec,currentvec):
                                                         seg = Part.Line(lastvec,currentvec).toShape()
-                                                        print "line ",lastvec,currentvec
+                                                        FreeCAD.Console.PrintMessage("line %s %s\n" %(lastvec,currentvec))
                                                         lastvec = currentvec
                                                         path.append(seg)
                                                 lastpole = None
@@ -482,8 +546,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 if relative:
                                                         currentvec = lastvec.add(Vector(x,0,0))
                                                 else:
-                                                        lasty = path[-1].y
-                                                        currentvec = Vector(x,lasty,0)
+                                                        currentvec = Vector(x,lastvec.y,0)
                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                 lastvec = currentvec
                                                 lastpole = None
@@ -493,8 +556,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 if relative:
                                                         currentvec = lastvec.add(Vector(0,-y,0))
                                                 else:
-                                                        lastx = path[-1].x
-                                                        currentvec = Vector(lastx,-y,0)
+                                                        currentvec = Vector(lastvec.x,-y,0)
                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                 lastvec = currentvec
                                                 lastpole = None
@@ -529,14 +591,14 @@ class svgHandler(xml.sax.ContentHandler):
                                                         solution,(rx,ry) = arcend2center(lastvec,currentvec,rx,ry,math.radians(-xrotation),True) 
                                                         negsol = (largeflag != sweepflag)
                                                         vcenter,angle1,angledelta = solution[negsol]
-                                                        print angle1
-                                                        print angledelta
+                                                        #print angle1
+                                                        #print angledelta
                                                         if ry > rx:
                                                                 rx,ry=ry,rx
                                                                 swapaxis = True
                                                         else:
                                                                 swapaxis = False
-                                                        print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
+                                                         #print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
                                                         e1 = Part.Ellipse(vcenter,rx,ry)
                                                         if sweepflag:
                                                                 #angledelta=-(-angledelta % (math.pi *2)) # Step4
@@ -595,18 +657,18 @@ class svgHandler(xml.sax.ContentHandler):
                                                         mainv = currentvec.sub(lastvec)
                                                         pole1v = lastvec.add(pole1)
                                                         pole2v = currentvec.add(pole2)
-                                                        print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
+                                                        #print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
                                                         if True and \
                                                         pole1.distanceToLine(lastvec,currentvec) < 10**(-1*(2+Draft.precision())) and \
                                                         pole2.distanceToLine(lastvec,currentvec) < 10**(-1*(2+Draft.precision())):
-                                                                print "straight segment"
+                                                                #print "straight segment"
                                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                         else:
-                                                                print "cubic bezier segment"
+                                                                #print "cubic bezier segment"
                                                                 b = Part.BezierCurve()
                                                                 b.setPoles([lastvec,pole1,pole2,currentvec])
                                                                 seg = b.toShape()
-                                                        print "connect ",lastvec,currentvec
+                                                        #print "connect ",lastvec,currentvec
                                                         lastvec = currentvec
                                                         lastpole = ('cubic',pole2)
                                                         path.append(seg)
@@ -636,14 +698,14 @@ class svgHandler(xml.sax.ContentHandler):
                                                 if not fcvec.equals(currentvec,lastvec):
                                                         if True and \
                                                         pole.distanceToLine(lastvec,currentvec) < 20**(-1*(2+Draft.precision())):
-                                                                print "straight segment"
+                                                                #print "straight segment"
                                                                 seg = Part.Line(lastvec,currentvec).toShape()
                                                         else:
-                                                                print "quadratic bezier segment"
+                                                                #print "quadratic bezier segment"
                                                                 b = Part.BezierCurve()
                                                                 b.setPoles([lastvec,pole,currentvec])
                                                                 seg = b.toShape()
-                                                        print "connect ",lastvec,currentvec
+                                                        #print "connect ",lastvec,currentvec
                                                         lastvec = currentvec
                                                         lastpole = ('quadratic',pole)
                                                         path.append(seg)
@@ -765,7 +827,7 @@ class svgHandler(xml.sax.ContentHandler):
 			but there would be more difficlult to search for duplicate points beforehand.'''
 			if not pathname: pathname = 'Polyline'
 			points=[float(d) for d in data['points']]
-                        print points
+                        FreeCAD.Console.PrintMessage('points %s\n'%str(points))
 			lenpoints=len(points)
 			if lenpoints>=4 and lenpoints % 2 == 0:
 				lastvec = Vector(points[0],-points[1],0)
@@ -776,7 +838,7 @@ class svgHandler(xml.sax.ContentHandler):
 					currentvec = Vector(svgx,-svgy,0)
 					if not fcvec.equals(lastvec,currentvec):
 						seg = Part.Line(lastvec,currentvec).toShape()
-						print "polyline seg ",lastvec,currentvec
+						#print "polyline seg ",lastvec,currentvec
 						lastvec = currentvec
 						path.append(seg)
                                 if path:
@@ -824,7 +886,7 @@ class svgHandler(xml.sax.ContentHandler):
 
 		if name in ["text","tspan"]:
                         if not("freecad:skip" in data):
-                                print "processing a text"
+                                FreeCAD.Console.PrintMessage("processing a text\n")
                                 if 'x' in data:
                                         self.x = data['x']
                                 else:
@@ -835,28 +897,28 @@ class svgHandler(xml.sax.ContentHandler):
                                         self.y = 0
                                 if 'font-size' in data:
                                         if data['font-size'] != 'none':
-                                                self.text = getsize(data['font-size'])
+                                                self.text = getsize(data['font-size'],'css')
                                 else:
                                         self.text = 1
                         else:
                                 if self.lastdim:
                                         self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
 
-                print "done processing element ",self.count
+                FreeCAD.Console.PrintMessage("done processing element %d\n"%self.count)
                 
 	def characters(self,content):
 		if self.text:
-                        print "reading characters", str(content)
+                        FreeCAD.Console.PrintMessage("reading characters %s\n" % str(content))
 			obj=self.doc.addObject("App::Annotation",'Text')
 			obj.LabelText = content.encode('latin1')
 			vec = Vector(self.x,-self.y,0)
                         if self.transform:
                                 vec = self.translateVec(vec,self.transform)
-                                print "own transform: ",self.transform, vec
+                                #print "own transform: ",self.transform, vec
                         for transform in self.grouptransform[::-1]:
                                 #vec = self.translateVec(vec,transform)
                                 vec = transform.multiply(vec)
-                        print "applying vector: ",vec
+                        #print "applying vector: ",vec
                         obj.Position = vec
 			if gui:
 				obj.ViewObject.FontSize = int(self.text)
@@ -867,17 +929,17 @@ class svgHandler(xml.sax.ContentHandler):
                 if not name in ["tspan"]:
                         self.transform = None
                         self.text = None
-                if name == "g":
-                        print "closing group"
+                if name == "g" or name == "svg":
+                        FreeCAD.Console.PrintMessage("closing group\n")
                         self.grouptransform.pop()
 
         def applyTrans(self,sh):
                 if isinstance(sh,Part.Shape):
                         if self.transform:
-                                print "applying object transform: ",self.transform
+                                FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
                                 sh = sh.transformGeometry(self.transform)
                         for transform in self.grouptransform[::-1]:
-                                print "applying group transform: ", transform
+                                FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
                                 sh = sh.transformGeometry(transform)
                         return sh
                 elif Draft.getType(sh) == "Dimension":
@@ -885,10 +947,10 @@ class svgHandler(xml.sax.ContentHandler):
                         for p in [sh.Start,sh.End,sh.Dimline]:
                                 cp = Vector(p)
                                 if self.transform:
-                                        print "applying object transform: ",self.transform
+                                        FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
                                         cp = self.transform.multiply(cp)
                                 for transform in self.grouptransform[::-1]:
-                                        print "applying group transform: ",transform
+                                        FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
                                         cp = transform.multiply(cp)
                                 pts.append(cp)
                         sh.Start = pts[0]
@@ -906,7 +968,7 @@ class svgHandler(xml.sax.ContentHandler):
                 for transformation, arguments in transformre.findall(tr):
 			argsplit=[float(arg) for arg in arguments.replace(',',' ').split()]
                         #m.multiply(FreeCAD.Matrix (1,0,0,0,0,-1))
-                        print '%s:%s %s %d' % (transformation, arguments,argsplit,len(argsplit))
+                        #print '%s:%s %s %d' % (transformation, arguments,argsplit,len(argsplit))
 			if transformation == 'translate':
 				tx = argsplit[0]
 				ty = argsplit[1] if len(argsplit) > 1 else 0.0
@@ -936,10 +998,10 @@ class svgHandler(xml.sax.ContentHandler):
 #                                (+0 -0 +1 +0)           (0 0 1 0)
 #                                (+0 -0 +0 +1)           (0 0 0 1)'''
 				m=m.multiply(FreeCAD.Matrix(argsplit[0],-argsplit[2],0,argsplit[4],-argsplit[1],argsplit[3],0,-argsplit[5]))
-                        else:
-                                print 'SKIPPED %s' % transformation
-                        print "m= ",m
-                print "generating transformation: ",m
+                        #else:
+                                #print 'SKIPPED %s' % transformation
+                        #print "m= ",m
+                #print "generating transformation: ",m
                 return m
 
 def decodeName(name):
@@ -950,7 +1012,8 @@ def decodeName(name):
 		try:
 			decodedName = (name.decode("latin1"))
 		except UnicodeDecodeError:
-			print "svg: error: couldn't determine character encoding"
+			FreeCAD.Console.PrintError("svg: error: couldn't determine character encoding\n")
+
 			decodedName = name
 	return decodedName
 
@@ -1005,7 +1068,7 @@ def export(exportList,filename):
 
         svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
         if svg_export_style != 0 and svg_export_style != 1:
-            print "unknown svg export style, switching to Translated"
+            FreeCAD.Console.PrintMessage("unknown svg export style, switching to Translated\n")
             svg_export_style = 0
 
 	# finding sheet size
