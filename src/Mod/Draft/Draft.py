@@ -100,7 +100,7 @@ def getParamType(param):
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap"]:
+    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap","SvgLinesBlack"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -1029,7 +1029,12 @@ def getrgb(color):
     r = str(hex(int(color[0]*255)))[2:].zfill(2)
     g = str(hex(int(color[1]*255)))[2:].zfill(2)
     b = str(hex(int(color[2]*255)))[2:].zfill(2)
-    return "#"+r+g+b
+    col = "#"+r+g+b
+    if col == "#ffffff":
+        print getParam('SvgLinesBlack')
+        if getParam('SvgLinesBlack'):
+            col = "#000000"
+    return col
 
 def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="shape color",direction=None):
     '''getSVG(object,[modifier],[textmodifier],[linestyle],[fillstyle],[direction]):
