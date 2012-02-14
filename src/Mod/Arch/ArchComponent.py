@@ -222,8 +222,7 @@ class ComponentTaskPanel:
 
     def accept(self):
         FreeCAD.ActiveDocument.recompute()
-        if self.obj:
-            self.obj.ViewObject.finishEditing()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def editObject(self,wid,col):
@@ -308,7 +307,7 @@ class ViewProviderComponent:
     
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
-        return
+        return False
 
 class ArchSelectionObserver:
     def __init__(self,origin,watched):
