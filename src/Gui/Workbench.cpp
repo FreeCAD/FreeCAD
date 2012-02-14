@@ -440,7 +440,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
           << "Std_Refresh" << "Std_SelectAll" << "Std_Delete" << "Std_Placement"
-          << "Separator" << "Std_DlgPreferences";
+          << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 
     // Standard views
     MenuItem* stdviews = new MenuItem;

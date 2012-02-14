@@ -147,12 +147,10 @@ class DraftTaskPanel:
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Cancel)
     def accept(self):
-        if FreeCAD.activeDraftCommand:
-            FreeCAD.activeDraftCommand.finish()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
     def reject(self):
-        if FreeCAD.activeDraftCommand:
-            FreeCAD.activeDraftCommand.finish()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
   
 class DraftToolBar:
