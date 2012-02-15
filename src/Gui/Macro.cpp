@@ -197,15 +197,19 @@ namespace Gui {
     public:
         PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj)
         {
-            Base::PyGILStateLocker lock;
-            old = PySys_GetObject(const_cast<char*>(std_out));
-            PySys_SetObject(const_cast<char*>(std_out), obj);
+            if (out) {
+                Base::PyGILStateLocker lock;
+                old = PySys_GetObject(const_cast<char*>(std_out));
+                PySys_SetObject(const_cast<char*>(std_out), out);
+            }
         }
         ~PythonRedirector()
         {
-            Base::PyGILStateLocker lock;
-            PySys_SetObject(const_cast<char*>(std_out), old);
-            Py_XDECREF(out);
+            if (out) {
+                Base::PyGILStateLocker lock;
+                PySys_SetObject(const_cast<char*>(std_out), old);
+                Py_DECREF(out);
+            }
         }
     private:
         const char* std_out;
@@ -217,8 +221,12 @@ namespace Gui {
 void MacroManager::run(MacroType eType,const char *sName)
 {
     try {
-        PythonRedirector std_out("stdout",new OutputStdout);
-        PythonRedirector std_err("stderr",new OutputStderr);
+        ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput") ? new OutputStdout : 0;
+        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors") ? new OutputStderr : 0;
+        PythonRedirector std_out("stdout",pyout);
+        PythonRedirector std_err("stderr",pyerr);
         //The given path name is expected to be Utf-8
         Base::Interpreter().runFile(sName, true);
     }
