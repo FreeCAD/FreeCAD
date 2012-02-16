@@ -8,6 +8,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        RaytracingExample.py
     DESTINATION
         Mod/Raytracing
 )
