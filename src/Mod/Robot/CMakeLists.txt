@@ -8,6 +8,10 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        KukaExporter.py
+        MovieTool.py
+        RobotExample.py
+        RobotExampleTrajectoryOutOfShapes.py
     DESTINATION
         Mod/Robot
 )

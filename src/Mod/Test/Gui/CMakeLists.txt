@@ -44,6 +44,9 @@ SET(TestGui_SRCS
     PreCompiled.cpp
     PreCompiled.h
 )
+SET(TestGuiPy_SRCS
+    qtunittest.py
+)
 
 add_library(QtUnitGui SHARED ${TestGui_SRCS})
 
@@ -69,3 +72,5 @@ else(MSVC)
 endif(MSVC)
 
 INSTALL(TARGETS QtUnitGui DESTINATION lib)
+INSTALL(FILES ${TestGuiPy_SRCS} DESTINATION Mod/Test)
+
