@@ -871,18 +871,6 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     import Part
     from draftlibs import fcgeo
 
-    def getrgb(color):
-        "getRGB(color): returns a rgb value #000000 from a freecad color"
-        r = str(hex(int(color[0]*255)))[2:].zfill(2)
-        g = str(hex(int(color[1]*255)))[2:].zfill(2)
-        b = str(hex(int(color[2]*255)))[2:].zfill(2)
-        col = "#"+r+g+b
-        if col == "#ffffff":
-            print getParam('SvgLinesBlack')
-            if getParam('SvgLinesBlack'):
-                col = "#000000"
-        return col
-
     def getRect(p,obj):
         "returns length,heigh,placement"
         pl = obj.Placement.copy()
@@ -1056,6 +1044,18 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         if direction != Vector(0,0,0):
             plane = WorkingPlane.plane()
             plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+
+    def getrgb(color):
+        "getRGB(color): returns a rgb value #000000 from a freecad color"
+        r = str(hex(int(color[0]*255)))[2:].zfill(2)
+        g = str(hex(int(color[1]*255)))[2:].zfill(2)
+        b = str(hex(int(color[2]*255)))[2:].zfill(2)
+        col = "#"+r+g+b
+        if col == "#ffffff":
+            print getParam('SvgLinesBlack')
+            if getParam('SvgLinesBlack'):
+                col = "#000000"
+        return col
 
     def getProj(vec):
         if not plane: return vec
