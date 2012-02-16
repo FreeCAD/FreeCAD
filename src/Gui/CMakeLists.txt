@@ -848,4 +848,8 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION lib
     )
+    INSTALL(FILES Icons/freecad.xpm Icons/freecad-doc.png
+        DESTINATION ${CMAKE_INSTALL_DATADIR}
+    )
 endif(WIN32)
+

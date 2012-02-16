@@ -19,3 +19,8 @@ endif(FREECAD_BUILD_GUI)
 if(FREECAD_MAINTAINERS_BUILD AND WIN32)
 	#add_subdirectory(WindowsInstaller)
 endif(FREECAD_MAINTAINERS_BUILD AND WIN32)
+
+INSTALL(FILES Doc/Start_Page.html Doc/freecad.qhc Doc/freecad.qch
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
+
