@@ -15,3 +15,13 @@ INSTALL(
     DESTINATION
         Mod/Robot
 )
+
+INSTALL(
+    DIRECTORY
+        Lib
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/Robot
+    PATTERN "Makefile*" EXCLUDE
+    PATTERN "*.pdf" EXCLUDE
+)
+

@@ -12,3 +12,12 @@ INSTALL(
     DESTINATION
         Mod/Raytracing
 )
+
+INSTALL(
+    DIRECTORY
+        Templates
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/Raytracing
+    FILES_MATCHING PATTERN "*.pov*"
+)
+

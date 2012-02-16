@@ -2,6 +2,7 @@
 SET(Examples_Files 
     Schenkel.stp
     DrawingExample.FCStd
+    EngineBlock.FCStd
     PartDesignExample.FCStd
     RobotExample.FCStd
 )
@@ -16,6 +17,6 @@ INSTALL(
     FILES
         ${Examples_Files}
     DESTINATION
-        data/examples
+        ${CMAKE_INSTALL_DATADIR}/examples
 )
 

@@ -27,6 +27,6 @@ SET(StartPage_DATA
 )
 
 INSTALL(FILES ${StartPage_SRCS} ${StartPage_DATA}
-    DESTINATION Mod/Start/StartPage
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Start/StartPage
 )
 
