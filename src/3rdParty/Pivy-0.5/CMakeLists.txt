@@ -123,4 +123,4 @@ fc_copy_sources(soqt "${CMAKE_BINARY_DIR}/bin/pivy"
 )
 
 install(TARGETS soqt DESTINATION bin/pivy/gui)
-install(FILES __init__.py soqt.py DESTINATION bin/pivy/gui)
+install(FILES gui/__init__.py soqt.py DESTINATION bin/pivy/gui)
