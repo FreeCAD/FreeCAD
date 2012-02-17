@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
-# import Plot
+import Plot
 import Instance
 from shipUtils import Paths, Translator
 from surfUtils import Geometry
@@ -43,6 +43,13 @@ class TaskPanel:
         if not self.ship:
             return False
         self.save()
+        draft  = self.form.minDraft.value()
+        drafts = [draft]
+        dDraft = (self.form.maxDraft.value() - self.form.minDraft.value())/self.form.nDraft.value()
+        for i in range(1,self.form.nDraft.value()):
+            draft = draft + dDraft
+            drafts.append(draft)
+        Plot.Plot(self.ship, self.form.trim.value(), drafts)
         return True
 
     def reject(self):
