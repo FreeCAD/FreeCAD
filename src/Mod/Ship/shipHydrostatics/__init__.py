@@ -21,3 +21,17 @@
 #*                                                                         *
 #***************************************************************************
 
+
+# FreeCAD modules
+import FreeCAD
+import FreeCADGui
+
+# Qt libraries
+from PyQt4 import QtGui,QtCore
+
+# Main object
+import TaskPanel
+
+def load():
+    """ Loads the tool """
+    TaskPanel.createTask()

@@ -77,6 +77,8 @@ SOURCE_GROUP("shipareascurve" FILES ${ShipAreasCurve_SRCS})
 
 SET(ShipHydrostatics_SRCS
 	shipHydrostatics/__init__.py
+	shipHydrostatics/TaskPanel.py
+	shipHydrostatics/TaskPanel.ui
 	shipHydrostatics/Tools.py
 )
 SOURCE_GROUP("shiphydrostatics" FILES ${ShipHydrostatics_SRCS})

@@ -32,11 +32,11 @@ class ShipWorkbench ( Workbench ):
 
     def Initialize(self):
         # ToolBar
-        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve"]
+        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
         self.appendToolbar("Ship design",list)
         
         # Menu
-        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve"]
+        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
         self.appendMenu("Ship design",list)
 
 Gui.addWorkbench(ShipWorkbench())
