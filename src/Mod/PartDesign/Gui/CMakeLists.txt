@@ -136,7 +136,9 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(PartDesignGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
     set_target_properties(PartDesignGui PROPERTIES PREFIX "")
-    set_target_properties(PartDesignGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(PartDesignGui PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/Mod/PartDesign)
 endif(MSVC)
 
-INSTALL(TARGETS PartDesignGui DESTINATION lib)
+# The PartDesign module must go to where the __init__.py file is
+INSTALL(TARGETS PartDesignGui DESTINATION Mod/PartDesign)
+

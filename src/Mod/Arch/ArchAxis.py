@@ -340,10 +340,9 @@ class _AxisTaskPanel:
         self.obj.Angles = a
         FreeCAD.ActiveDocument.recompute()
     
-    def finish(self):
+    def accept(self):
         self.resetObject()
-        if self.obj:
-            self.obj.ViewObject.finishEditing()
+        FreeCADGui.ActiveDocument.resetEdit()
                     
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))

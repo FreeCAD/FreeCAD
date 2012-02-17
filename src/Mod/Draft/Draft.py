@@ -100,7 +100,7 @@ def getParamType(param):
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap"]:
+    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap","SvgLinesBlack"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -1024,13 +1024,6 @@ def draftify(objectslist,makeblock=False):
             return newobjlist[0]
         return newobjlist
 
-def getrgb(color):
-    "getRGB(color): returns a rgb value #000000 from a freecad color"
-    r = str(hex(int(color[0]*255)))[2:].zfill(2)
-    g = str(hex(int(color[1]*255)))[2:].zfill(2)
-    b = str(hex(int(color[2]*255)))[2:].zfill(2)
-    return "#"+r+g+b
-
 def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="shape color",direction=None):
     '''getSVG(object,[modifier],[textmodifier],[linestyle],[fillstyle],[direction]):
     returns a string containing a SVG representation of the given object. the modifier attribute
@@ -1051,6 +1044,18 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         if direction != Vector(0,0,0):
             plane = WorkingPlane.plane()
             plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+
+    def getrgb(color):
+        "getRGB(color): returns a rgb value #000000 from a freecad color"
+        r = str(hex(int(color[0]*255)))[2:].zfill(2)
+        g = str(hex(int(color[1]*255)))[2:].zfill(2)
+        b = str(hex(int(color[2]*255)))[2:].zfill(2)
+        col = "#"+r+g+b
+        if col == "#ffffff":
+            print getParam('SvgLinesBlack')
+            if getParam('SvgLinesBlack'):
+                col = "#000000"
+        return col
 
     def getProj(vec):
         if not plane: return vec
@@ -1077,12 +1082,36 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                 v = getProj(e.Vertexes[-1].Point)
                 svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
             elif isinstance(e.Curve,Part.Circle):
+                if len(e.Vertexes) == 1:
+                    # complete circle
+                    svg = getCircle(e)
+                    return svg
                 r = e.Curve.Radius
+                drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+                if plane: drawing_plane_normal = plane.axis
+                flag_large_arc = (((e.ParameterRange[1] - e.ParameterRange[0]) / math.pi) % 2) > 1
+                flag_sweep = e.Curve.Axis * drawing_plane_normal >= 0
                 v = getProj(e.Vertexes[-1].Point)
-                svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                svg += str(v.y) + ' '
+                svg += 'A ' + str(r) + ' ' + str(r) + ' '
+                svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
+                svg += str(v.x) + ' ' + str(v.y) + ' '
         if fill != 'none': svg += 'Z'
         svg += '" '
+        svg += 'stroke="' + stroke + '" '
+        svg += 'stroke-width="' + str(width) + ' px" '
+        svg += 'style="stroke-width:'+ str(width)
+        svg += ';stroke-miterlimit:4'
+        svg += ';stroke-dasharray:' + lstyle
+        svg += ';fill:' + fill + '"'
+        svg += '/>\n'
+        return svg
+
+    def getCircle(edge):
+        cen = getProj(edge.Curve.Center)
+        rad = edge.Curve.Radius
+        svg = '<circle cx="' + str(cen.x)
+        svg += '" cy="' + str(cen.y)
+        svg += '" r="' + str(rad)+'" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(width) + ' px" '
         svg += 'style="stroke-width:'+ str(width)
@@ -1225,18 +1254,7 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                     if (fcgeo.findEdge(e,wiredEdges) == None):
                         svg += getPath([e])
         else:
-            cen = getProj(obj.Shape.Edges[0].Curve.Center)
-            rad = obj.Shape.Edges[0].Curve.Radius
-            svg = '<circle cx="' + str(cen.x)
-            svg += '" cy="' + str(cen.y)
-            svg += '" r="' + str(rad)+'" '
-            svg += 'stroke="' + stroke + '" '
-            svg += 'stroke-width="' + str(width) + ' px" '
-            svg += 'style="stroke-width:'+ str(width)
-            svg += ';stroke-miterlimit:4'
-            svg += ';stroke-dasharray:' + lstyle
-            svg += ';fill:' + fill + '"'
-            svg += '/>\n'                
+            svg = getCircle(obj.Shape.Edges[0])
     return svg
 
 def makeDrawingView(obj,page,lwmod=None,tmod=None):
