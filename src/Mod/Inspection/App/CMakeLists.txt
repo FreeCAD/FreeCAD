@@ -35,7 +35,12 @@ SET(Inspection_SRCS
 
 add_library(Inspection SHARED ${Inspection_SRCS})
 target_link_libraries(Inspection ${Inspection_LIBS})
-fc_copy_script("Mod/Inspection" "Inspection" Init.py)
+
+
+fc_target_copy_resource(Inspection 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Inspection
+    ${CMAKE_BINARY_DIR}/Mod/Inspection
+    Init.py)
 
 if(MSVC)
     set_target_properties(Inspection PROPERTIES SUFFIX ".pyd")

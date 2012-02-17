@@ -54,7 +54,12 @@ SET(ImageGui_SRCS
 
 add_library(ImageGui SHARED ${ImageGui_SRCS})
 target_link_libraries(ImageGui ${ImageGui_LIBS})
-fc_copy_script("Mod/Image" "ImageGui" InitGui.py)
+
+
+fc_target_copy_resource(ImageGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Image
+    ${CMAKE_BINARY_DIR}/Mod/Image
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(ImageGui PROPERTIES SUFFIX ".pyd")

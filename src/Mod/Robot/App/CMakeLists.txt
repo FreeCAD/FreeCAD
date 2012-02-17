@@ -101,6 +101,13 @@ SOURCE_GROUP("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS} )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
+SET(Robot_Scripts
+    Init.py
+    KukaExporter.py
+    RobotExample.py
+    RobotExampleTrajectoryOutOfShapes.py
+)
+
 SET(Robot_Resources
     Lib/Kuka/kr500_1.wrl
     Lib/Kuka/kr500_1.csv
@@ -114,15 +121,21 @@ SET(Robot_Resources
     Lib/Kuka/kr125_3.wrl
     Lib/Kuka/kr_125.csv
     Lib/Kuka/kr125_2.pdf
-    KukaExporter.py
-    RobotExample.py
-    RobotExampleTrajectoryOutOfShapes.py
 )
 
 add_library(Robot SHARED ${Robot_SRCS})
 target_link_libraries(Robot ${Robot_LIBS})
-fc_copy_script("Mod/Robot" "Robot" Init.py)
-fc_copy_script("Mod/Robot" "Robot" ${Robot_Resources})
+
+fc_target_copy_resource(Robot 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Robot
+    ${CMAKE_BINARY_DIR}/Mod/Robot
+    ${Robot_Scripts})
+
+fc_target_copy_resource(Robot 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Robot
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot
+    ${Robot_Resources})
+
 
 if(MSVC)
     set_target_properties(Robot PROPERTIES SUFFIX ".pyd")

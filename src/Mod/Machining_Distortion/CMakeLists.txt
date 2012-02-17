@@ -15,11 +15,11 @@ SET(MachDist_SRCS
 SOURCE_GROUP("" FILES ${MachDist_SRCS})
 
 
-ADD_CUSTOM_TARGET(MachDistortion ALL
+ADD_CUSTOM_TARGET( ALL
     SOURCES ${MachDist_SRCS}
 )
 
-fc_copy_sources("Mod/Machining_Distortion" ${MachDist_SRCS})
+fc_copy_sources(MachDistortion "${CMAKE_BINARY_DIR}/Mod/Machining_Distortion" ${MachDist_SRCS})
 
 
 INSTALL(

@@ -165,7 +165,12 @@ SET(PartGui_Scripts
 
 add_library(PartGui SHARED ${PartGui_SRCS})
 target_link_libraries(PartGui ${PartGui_LIBS})
-fc_copy_script("Mod/Part" "PartGui" ${PartGui_Scripts})
+
+
+fc_target_copy_resource(PartGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Part
+    ${CMAKE_BINARY_DIR}/Mod/Part
+    ${PartGui_Scripts})
 
 if(MSVC)
     set_target_properties(PartGui PROPERTIES SUFFIX ".pyd")
