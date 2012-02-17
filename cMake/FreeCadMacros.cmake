@@ -38,37 +38,9 @@ ENDFOREACH(SRC ${FILES})
 SET(${TARGETS} ${AddTargets})
 ENDMACRO(COPY_IF_DIFFERENT FROM_DIR TO_DIR FILES TARGETS TAGS)
 
-MACRO (fc_copy_to_mod_path mod_name )
-
-	FOREACH (it ${ARGN})
-		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${it}" NATIVE_SOURCE)
-		file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/Mod/${mod_name}/" NATIVE_DEST)
-		message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEST}")
-		if (WIN32)
-		else (WIN32)
-			execute_process( COMMAND ${PLATFORM_MK} ${NATIVE_DEST} )
-		endif (WIN32)
-		execute_process( COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEST} )
-	ENDFOREACH(it)
-ENDMACRO(fc_copy_to_mod_path)
-
-MACRO (fc_copy_to_path path_name)
-
-	FOREACH (it ${ARGN})
-		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${it}" NATIVE_SOURCE)
-		file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/${path_name}/" NATIVE_DEST)
-		message(STATUS "${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEST}")
-		if (WIN32)
-		else (WIN32)
-			execute_process( COMMAND ${PLATFORM_MK} ${NATIVE_DEST} )
-		endif (WIN32)
-		execute_process( COMMAND ${PLATFORM_CP} ${NATIVE_SOURCE} ${NATIVE_DEST} )
-	ENDFOREACH(it)
-ENDMACRO(fc_copy_to_path)
-
-MACRO (fc_copy_sources path_name mod_name)
+MACRO (fc_copy_sources target_name outpath)
 	foreach(it ${ARGN})
-		file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/${path_name}/${it}" outfile)
+		file(TO_NATIVE_PATH "${outpath}/${it}" outfile)
 		get_filename_component(infile ${it} ABSOLUTE)
 		get_filename_component(outfile ${outfile} ABSOLUTE)
 		add_file_dependencies(${infile} ${outfile})
@@ -76,42 +48,21 @@ MACRO (fc_copy_sources path_name mod_name)
 			SOURCE    ${infile}
 			COMMAND   ${CMAKE_COMMAND}
 			ARGS      -E copy ${infile} ${outfile}
-			TARGET    ${mod_name}
+			TARGET    ${target_name}
 			OUTPUTS   ${outfile}
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
-		SOURCE    ${mod_name}
-		TARGET    ${mod_name}
+		SOURCE    ${target_name}
+		TARGET    ${target_name}
 		DEPENDS   ${ARGN}
 	)
 ENDMACRO(fc_copy_sources)
 
-MACRO (fc_copy_sources_outpath out_path mod_name)
+MACRO (fc_target_copy_resource target_name inpath outpath)
 	foreach(it ${ARGN})
-		file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/${out_path}/${it}" outfile)
-		get_filename_component(infile ${it} ABSOLUTE)
-		get_filename_component(outfile ${outfile} ABSOLUTE)
-		add_file_dependencies(${infile} ${outfile})
-		ADD_CUSTOM_COMMAND(
-			SOURCE    ${infile}
-			COMMAND   ${CMAKE_COMMAND}
-			ARGS      -E copy ${infile} ${outfile}
-			TARGET    ${mod_name}
-			OUTPUTS   ${outfile}
-		)
-	endforeach(it)
-	ADD_CUSTOM_COMMAND(
-		SOURCE    ${mod_name}
-		TARGET    ${mod_name}
-		DEPENDS   ${ARGN}
-	)
-ENDMACRO(fc_copy_sources_outpath)
-
-MACRO (fc_copy_script path_name mod_name)
-	foreach(it ${ARGN})
-		file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}/src/${path_name}/${it}" infile)
-		file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/${path_name}/${it}" outfile)
+		file(TO_NATIVE_PATH "${inpath}/${it}" infile)
+		file(TO_NATIVE_PATH "${outpath}/${it}" outfile)
 		get_filename_component(infile ${infile} ABSOLUTE)
 		get_filename_component(outfile ${outfile} ABSOLUTE)
 		add_file_dependencies(${infile} ${outfile})
@@ -119,16 +70,16 @@ MACRO (fc_copy_script path_name mod_name)
 			SOURCE    ${infile}
 			COMMAND   ${CMAKE_COMMAND}
 			ARGS      -E copy ${infile} ${outfile}
-			TARGET    ${mod_name}
+			TARGET    ${target_name}
 			OUTPUTS   ${outfile}
 		)
 	endforeach(it)
 	ADD_CUSTOM_COMMAND(
-		SOURCE    ${mod_name}
-		TARGET    ${mod_name}
+		SOURCE    ${target_name}
+		TARGET    ${target_name}
 		DEPENDS   ${ARGN}
 	)
-ENDMACRO(fc_copy_script)
+ENDMACRO(fc_target_copy_resource)
 
 macro(copy_to_local_output_paths SOURCE_PATHS)
 		 if(CMAKE_CFG_INTDIR STREQUAL .)

@@ -51,7 +51,12 @@ SET(FemGui_SRCS
 
 add_library(FemGui SHARED ${FemGui_SRCS})
 target_link_libraries(FemGui ${FemGui_LIBS})
-fc_copy_script("Mod/Fem" "FemGui" InitGui.py)
+
+
+fc_target_copy_resource(FemGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Fem
+    ${CMAKE_BINARY_DIR}/Mod/Fem
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(FemGui PROPERTIES SUFFIX ".pyd")

@@ -29,7 +29,12 @@ SET(CompleteGui_SRCS
 
 add_library(CompleteGui SHARED ${CompleteGui_SRCS})
 target_link_libraries(CompleteGui ${CompleteGui_LIBS})
-fc_copy_script("Mod/Complete" "CompleteGui" InitGui.py)
+
+
+fc_target_copy_resource(CompleteGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Complete
+    ${CMAKE_BINARY_DIR}/Mod/Complete
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(CompleteGui PROPERTIES SUFFIX ".pyd")

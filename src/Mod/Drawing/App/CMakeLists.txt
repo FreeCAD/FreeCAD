@@ -69,9 +69,21 @@ ENDIF(MSVC)
 
 add_library(Drawing SHARED ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
 target_link_libraries(Drawing ${Drawing_LIBS})
-fc_copy_script("Mod/Drawing" "Drawing" Init.py)
-fc_copy_script("Mod/Drawing" "Drawing" DrawingAlgos.py)
-fc_copy_script("Mod/Drawing" "Drawing" ${Drawing_Templates})
+
+SET(Drawing_Scripts
+    Init.py
+    DrawingAlgos.py
+)
+
+fc_target_copy_resource(Drawing 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Drawing
+    ${CMAKE_BINARY_DIR}/Mod/Drawing
+    ${Drawing_Scripts})
+
+fc_target_copy_resource(Drawing 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Drawing
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing
+    ${Drawing_Templates})
 
 if(MSVC)
     set_target_properties(Drawing PROPERTIES SUFFIX ".pyd")

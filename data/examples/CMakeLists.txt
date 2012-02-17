@@ -11,7 +11,7 @@ ADD_CUSTOM_TARGET(Example_data ALL
     SOURCES ${Examples_Files}
 )
 
-fc_copy_sources("data/examples" "Examples" ${Examples_Files})
+fc_copy_sources(Examples "${CMAKE_BINARY_DIR}/data/examples" ${Examples_Files})
 
 INSTALL(
     FILES

@@ -102,6 +102,7 @@
 #include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
+#include <QDir>
 
 using namespace App;
 using namespace std;
@@ -481,8 +482,14 @@ std::string Application::getUserAppDataDir()
 
 std::string Application::getResourceDir()
 {
-# ifdef RESOURCEDIR
-    return std::string(RESOURCEDIR) + "/";
+#ifdef RESOURCEDIR
+    std::string path(RESOURCEDIR);
+    path.append("/");
+    QDir dir(QString::fromUtf8(RESOURCEDIR));
+    if (dir.isAbsolute())
+        return path;
+    else
+        return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"];
 #endif
@@ -490,8 +497,14 @@ std::string Application::getResourceDir()
 
 std::string Application::getHelpDir()
 {
-# ifdef DOCDIR
-    return std::string(DOCDIR) + "/";
+#ifdef DOCDIR
+    std::string path(DOCDIR);
+    path.append("/");
+    QDir dir(QString::fromUtf8(DOCDIR));
+    if (dir.isAbsolute())
+        return path;
+    else
+        return mConfig["AppHomePath"] + path;
 #else
     return mConfig["DocPath"];
 #endif

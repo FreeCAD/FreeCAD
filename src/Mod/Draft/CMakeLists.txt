@@ -34,7 +34,7 @@ ADD_CUSTOM_TARGET(Draft ALL
     SOURCES ${all_files}
 )
 
-fc_copy_sources("Mod/Draft" "Draft" ${all_files})
+fc_copy_sources(Draft "${CMAKE_BINARY_DIR}/Mod/Draft" ${all_files})
 
 
 INSTALL(

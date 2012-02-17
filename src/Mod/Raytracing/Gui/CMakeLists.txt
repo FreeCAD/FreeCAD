@@ -74,7 +74,12 @@ SET(RaytracingGui_SRCS
 
 add_library(RaytracingGui SHARED ${RaytracingGui_SRCS})
 target_link_libraries(RaytracingGui ${RaytracingGui_LIBS})
-fc_copy_script("Mod/Raytracing" "RaytracingGui" InitGui.py)
+
+
+fc_target_copy_resource(RaytracingGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Raytracing
+    ${CMAKE_BINARY_DIR}/Mod/Raytracing
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(RaytracingGui PROPERTIES SUFFIX ".pyd")
