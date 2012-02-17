@@ -56,14 +56,20 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
 # ================================================================================
-
+# Output directories for install target
 
 if(WIN32)
     SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 else(WIN32)
-    SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad")
+    SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad" CACHE PATH "Installation root directory")
     SET(INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif(WIN32)
+
+
+SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
+SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
+SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
+
 
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
