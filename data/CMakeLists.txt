@@ -4,6 +4,6 @@ INSTALL(
     FILES
         License.txt
     DESTINATION
-        data
+        ${CMAKE_INSTALL_DATADIR}
 )
 
