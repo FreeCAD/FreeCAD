@@ -855,11 +855,19 @@ class svgHandler(xml.sax.ContentHandler):
                         c = Vector(data.get('cx',0),-data.get('cy',0),0)
                         rx = data['rx']
                         ry = data['ry']
-                        sh = Part.Ellipse(c,rx,ry).toShape() #needs a proxy object
+                        if rx > ry:
+                                sh = Part.Ellipse(c,rx,ry).toShape()
+                        else:
+                                sh = Part.Ellipse(c,ry,rx).toShape()
+                                m3=FreeCAD.Matrix()
+                                m3.move(c)
+                                rot90=FreeCAD.Matrix(0,-1,0,0,1,0) #90
+                                m3=m3.multiply(rot90)
+                                m3.move(c.multiply(-1))
+                                sh.transform(m3)
                         if self.fill:
                                 sh = Part.Wire([sh])
                                 sh = Part.Face(sh)
-                        sh.translate(c)
                         sh = self.applyTrans(sh)
 			obj = self.doc.addObject("Part::Feature",pathname)
 			obj.Shape = sh
