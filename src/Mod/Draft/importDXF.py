@@ -70,6 +70,27 @@ def decodeName(name):
                 decodedName = name
     return decodedName
 
+def deformat(text):
+    "removes weird formats in texts and wipes UTF characters"
+    # remove ACAD string formatation
+    t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
+    t = re.sub("\\\.*?;","",t)
+    # replace non-UTF chars
+    t = re.sub("ã","a",t)
+    t = re.sub("ç","c",t)
+    t = re.sub("õ","o",t)
+    t = re.sub("à","a",t)
+    t = re.sub("á","a",t)
+    t = re.sub("â","a",t)
+    t = re.sub("é","e",t)
+    t = re.sub("è","e",t)
+    t = re.sub("ê","e",t)
+    t = re.sub("í","i",t)
+    # replace degrees, diameters chars
+    t = re.sub('%%d','°',t) 
+    t = re.sub('%%c','Ø',t)
+    return t
+
 def locateLayer(wantedLayer):
     "returns layer group and creates it if needed"
     wantedLayerName = decodeName(wantedLayer)
@@ -137,6 +158,7 @@ class fcformat:
         self.paramstyle = params.GetInt("dxfstyle")
         self.join = params.GetBool("joingeometry")
         self.makeBlocks = params.GetBool("groupLayers")
+        self.stdSize = params.GetBool("dxfStdSize")
         bparams = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
 
         if self.paramstyle > 1:
@@ -223,16 +245,19 @@ class fcformat:
         print table
         return table
 		
-    def formatObject(self,obj,dxfobj,textmode=False):
+    def formatObject(self,obj,dxfobj=None):
         "applies color and linetype to objects"
-        if self.paramstyle == 1:
-            if textmode:
+        if self.paramstyle == 0:
+            if hasattr(obj.ViewObject,"TextColor"):
                 obj.ViewObject.TextColor = (0.0,0.0,0.0)
+        elif self.paramstyle == 1:
+            if hasattr(obj.ViewObject,"TextColor"):
+                obj.ViewObject.TextColor = self.col
             else:
                 obj.ViewObject.LineColor = self.col
                 obj.ViewObject.LineWidth = self.lw	
-        elif self.paramstyle == 2:
-            if textmode:
+        elif (self.paramstyle == 2) and dxfobj:
+            if hasattr(obj.ViewObject,"TextColor"):
                 if dxfobj.color_index == 256: cm = self.getGroupColor(dxfobj)[:3]
                 else: cm = dxfColorMap.color_map[dxfobj.color_index]
                 obj.ViewObject.TextColor = (cm[0],cm[1],cm[2])
@@ -242,8 +267,8 @@ class fcformat:
                 else: cm = dxfColorMap.color_map[dxfobj.color_index]
                 obj.ViewObject.LineColor = (cm[0],cm[1],cm[2],0.0)
                 obj.ViewObject.LineWidth = self.lw
-        elif self.paramstyle == 3:
-            if textmode:
+        elif (self.paramstyle == 3) and dxfobj:
+            if hasattr(obj.ViewObject,"TextColor"):
                 cm = table[dxfobj.color_index][0]
                 wm = table[dxfobj.color_index][1]
                 obj.ViewObject.TextColor = (cm[0],cm[1],cm[2])
@@ -512,6 +537,9 @@ def drawSpline(spline,shapemode=False):
     
 def drawBlock(blockref,num=None):
     "returns a shape from a dxf block reference"
+    if not fmt.paramstarblocks:
+        if blockref.name[0] == '*':
+            return None
     shapes = []
     for line in blockref.entities.get_type('line'):
         s = drawLine(line,shapemode=True)
@@ -529,8 +557,10 @@ def drawBlock(blockref,num=None):
         s = drawCircle(circle,shapemode=True)
         if s: shapes.append(s)
     for insert in blockref.entities.get_type('insert'):
-        s = drawInsert(insert)
-        if s: shapes.append(s)
+        print "insert ",insert," in block ",insert.block[0]
+        if fmt.paramstarblocks or insert.block[0] != '*':
+            s = drawInsert(insert)
+            if s: shapes.append(s)
     for solid in blockref.entities.get_type('solid'):
         s = drawSolid(solid)
         if s: shapes.append(s)
@@ -544,6 +574,7 @@ def drawBlock(blockref,num=None):
     for text in blockref.entities.get_type('mtext'):
         if fmt.paramtext:
              if fmt.dxflayout or (not rawValue(text,67)):
+                print "adding block text",text.value, " from ",blockref
                 addText(text)
     try: shape = Part.makeCompound(shapes)
     except: warn(blockref)
@@ -604,7 +635,6 @@ def attribs(insert):
     j = index+1
     while True:
         ent = drawing.entities.data[j]
-        print str(ent)
         if str(ent) == 'seqend':
             return atts
         elif str(ent) == 'attrib':
@@ -621,11 +651,11 @@ def addObject(shape,name="Shape",layer=None):
     if layer:
         lay=locateLayer(layer)
         lay.addObject(newob)
+    fmt.formatObject(newob)
     return newob
 
 def addText(text,attrib=False):
     "adds a new text to the document"
-    print "adding text ",text,attrib
     if attrib:
         lay = locateLayer(rawValue(text,8))
         val = rawValue(text,1)
@@ -637,18 +667,22 @@ def addText(text,attrib=False):
         pos = FreeCAD.Vector(text.loc[0],text.loc[1],text.loc[2])
         hgt = text.height
     if val:
-        newob=doc.addObject("App::Annotation","Text")
+        if attrib:
+            newob = doc.addObject("App::Annotation","Attribute")
+        else:
+            newob = doc.addObject("App::Annotation","Text")
         lay.addObject(newob)
-        val = re.sub('{([^!}]([^}]|\n)*)}', '', val)
-        val = re.sub('%%d','°',val)
-        val = re.sub('%%c','Ø',val)
-        val = val.decode("Latin1").encode("Latin1")
+        val = deformat(val)
+        #val = val.decode("Latin1").encode("Latin1")
         newob.LabelText = val
         newob.Position = pos
         if gui:
-            newob.ViewObject.FontSize=float(hgt)
+            if fmt.stdSize:
+                newob.ViewObject.FontSize = FreeCADGui.draftToolBar.fontsize
+            else:    
+                newob.ViewObject.FontSize = float(hgt)
             newob.ViewObject.DisplayMode = "World"
-            fmt.formatObject(newob,text,textmode=True)
+            fmt.formatObject(newob,text)
 
 def addToBlock(obj,layer):
     "adds given shape to the layer dict"
