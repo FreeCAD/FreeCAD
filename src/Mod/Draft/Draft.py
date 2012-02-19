@@ -100,7 +100,8 @@ def getParamType(param):
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap","SvgLinesBlack"]:
+    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
+                   "SvgLinesBlack","dxfStdSize"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
