@@ -290,7 +290,7 @@ def drawLine(line,shapemode=False):
                 warn(line)
     return None
 
-def drawPolyline(polyline,shapemode=False):
+def drawPolyline(polyline,shapemode=False,num=None):
     "returns a Part shape from a dxf polyline"
     if (len(polyline.points) > 1):
         edges = []
@@ -308,13 +308,13 @@ def drawPolyline(polyline,shapemode=False):
                     cv = calcBulge(v1,polyline.points[p].bulge,v2)
                     if fcvec.isColinear([v1,cv,v2]):
                         try: edges.append(Part.Line(v1,v2).toShape())
-                        except: warn(polyline)
+                        except: warn(polyline,num)
                     else:
                         try: edges.append(Part.Arc(v1,cv,v2).toShape())
-                        except: warn(polyline)
+                        except: warn(polyline,num)
                 else:
                     try: edges.append(Part.Line(v1,v2).toShape())
-                    except: warn(polyline)
+                    except: warn(polyline,num)
         verts.append(v2)
         if polyline.closed:
             p1 = polyline.points[len(polyline.points)-1]
@@ -324,11 +324,15 @@ def drawPolyline(polyline,shapemode=False):
             cv = calcBulge(v1,polyline.points[-1].bulge,v2)
             if not fcvec.equals(v1,v2):
                 if fcvec.isColinear([v1,cv,v2]):
-                    try: edges.append(Part.Line(v1,v2).toShape())
-                    except: warn(polyline)
+                    try:
+                        edges.append(Part.Line(v1,v2).toShape())
+                    except:
+                        warn(polyline,num)
                 else:
-                    try: edges.append(Part.Arc(v1,cv,v2).toShape())
-                    except: warn(polyline)
+                    try:
+                        edges.append(Part.Arc(v1,cv,v2).toShape())
+                    except:
+                        warn(polyline,num)
         if edges:
             try:
                 if (fmt.paramstyle >= 4) and (not curves) and (not shapemode):
@@ -342,7 +346,7 @@ def drawPolyline(polyline,shapemode=False):
                     else:
                         return Part.Wire(edges)                          
             except:
-                warn(polyline)
+                warn(polyline,num)
     return None
 
 def drawArc(arc,shapemode=False):
@@ -495,7 +499,7 @@ def drawSpline(spline,shapemode=False):
             return ob
         else:
             sp = Part.BSplineCurve()
-            print knots
+            # print knots
             sp.interpolate(verts)
             sh = Part.Wire(sp.toShape())
             if closed:
@@ -506,7 +510,7 @@ def drawSpline(spline,shapemode=False):
         warn(spline)
     return None
     
-def drawBlock(blockref):
+def drawBlock(blockref,num=None):
     "returns a shape from a dxf block reference"
     shapes = []
     for line in blockref.entities.get_type('line'):
@@ -534,11 +538,13 @@ def drawBlock(blockref):
         s = drawSpline(spline,shapemode=True)
         if s: shapes.append(s)
     for text in blockref.entities.get_type('text'):
-        if fmt.dxflayout or (not rawValue(text,67)):
-            addText(text)
+        if fmt.paramtext:
+             if fmt.dxflayout or (not rawValue(text,67)):
+                addText(text)
     for text in blockref.entities.get_type('mtext'):
-        if fmt.dxflayout or (not rawValue(text,67)):
-            addText(text)
+        if fmt.paramtext:
+             if fmt.dxflayout or (not rawValue(text,67)):
+                addText(text)
     try: shape = Part.makeCompound(shapes)
     except: warn(blockref)
     if shape:
@@ -546,14 +552,14 @@ def drawBlock(blockref):
         return shape
     return None
 
-def drawInsert(insert):
+def drawInsert(insert,num=None):
     if blockshapes.has_key(insert):
         shape = blockshapes[insert.block]
     else:
         shape = None
         for b in drawing.blocks.data:
             if b.name == insert.block:
-                shape = drawBlock(b)
+                shape = drawBlock(b,num)
     if fmt.paramtext:
         attrs = attribs(insert)
         for a in attrs:
@@ -619,6 +625,7 @@ def addObject(shape,name="Shape",layer=None):
 
 def addText(text,attrib=False):
     "adds a new text to the document"
+    print "adding text ",text,attrib
     if attrib:
         lay = locateLayer(rawValue(text,8))
         val = rawValue(text,1)
@@ -715,10 +722,12 @@ def processdxf(document,filename):
                 polylines.append(p)
         else:
             polylines.append(p)
-    if polylines: FreeCAD.Console.PrintMessage("drawing "+str(len(polylines))+" polylines...\n")
+    if polylines:
+        FreeCAD.Console.PrintMessage("drawing "+str(len(polylines))+" polylines...\n")
+    num = 0
     for polyline in polylines:
         if fmt.dxflayout or (not rawValue(polyline,67)):
-            shape = drawPolyline(polyline)
+            shape = drawPolyline(polyline,num)
             if shape:
                 if fmt.paramstyle == 5:
                     if isinstance(shape,Part.Shape):
@@ -743,6 +752,7 @@ def processdxf(document,filename):
                 else:
                     newob = addObject(shape,"Polyline",polyline.layer)
                     if gui: fmt.formatObject(newob,polyline)
+            num += 1
 				
     # drawing arcs
 
@@ -841,7 +851,8 @@ def processdxf(document,filename):
     if fmt.paramtext:
         texts = drawing.entities.get_type("mtext")
         texts.extend(drawing.entities.get_type("text"))
-        if texts: FreeCAD.Console.PrintMessage("drawing "+str(len(texts))+" texts...\n")
+        if texts: 
+            FreeCAD.Console.PrintMessage("drawing "+str(len(texts))+" texts...\n")
         for text in texts:
             if fmt.dxflayout or (not rawValue(text,67)):
                 addText(text)
@@ -918,7 +929,7 @@ def processdxf(document,filename):
     else: FreeCAD.Console.PrintMessage("skipping dimensions...\n")
 
     # drawing blocks
-
+    
     inserts = drawing.entities.get_type("insert")
     if not fmt.paramstarblocks:
         FreeCAD.Console.PrintMessage("skipping *blocks...\n")
@@ -933,18 +944,21 @@ def processdxf(document,filename):
         blockrefs = drawing.blocks.data
         for ref in blockrefs:
             drawBlock(ref)
+        num = 0
         for insert in inserts:
-            shape = drawInsert(insert)
+            shape = drawInsert(insert,num)
             if shape:
                 if fmt.makeBlocks:
-                    addToBlock(shape,block.layer)
+                    addToBlock(shape,insert.layer)
                 else:
                     newob = addObject(shape,"Block."+insert.block,insert.layer)
                     if gui: fmt.formatObject(newob,insert)
+            num += 1
 
     # make blocks, if any
 
     if fmt.makeBlocks:
+        print "creating layerblocks..."
         for k,l in layerBlocks.iteritems():
             shape = drawLayerBlock(l)
             if shape:
@@ -953,6 +967,8 @@ def processdxf(document,filename):
                                         
     # finishing
 
+    print "done processing"
+
     doc.recompute()
     FreeCAD.Console.PrintMessage("successfully imported "+filename+"\n")
     if badobjects: print "dxf: ",len(badobjects)," objects were not imported"
@@ -960,9 +976,9 @@ def processdxf(document,filename):
     del doc
     del blockshapes
 
-def warn(dxfobject):
+def warn(dxfobject,num=None):
     "outputs a warning if a dxf object couldn't be imported"
-    print "dxf: couldn't import ", dxfobject
+    print "dxf: couldn't import ", dxfobject, " (",num,")"
     badobjects.append(dxfobject)
 
 def open(filename):

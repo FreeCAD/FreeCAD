@@ -782,7 +782,6 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
 
-
 def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy=False):
     '''scale(objects,vector,[center,copy,legacy]): Scales the objects contained
     in objects (that can be a list of objects or an object) of the given scale
@@ -1390,7 +1389,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
     FreeCAD.ActiveDocument.recompute()
     return nobj
 
-def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
+def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
     ''' make a point (at coordinates x,y,z ,color(r,g,b),point_size)
         example usage: 
         p1 = makePoint()
@@ -1401,6 +1400,8 @@ def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
         p1.X = 1 #move it in x
         p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
     '''
+    if not color:
+        color = FreeCADGui.draftToolBar.getDefaultColor('ui')
     obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Point(obj,X,Y,Z)
     _ViewProviderPoint(obj.ViewObject)
