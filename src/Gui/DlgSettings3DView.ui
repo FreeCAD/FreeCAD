@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>477</width>
-    <height>442</height>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
      <property name="title">
       <string>3D View settings</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
         <property name="text">
@@ -130,6 +130,65 @@
        </layout>
       </item>
       <item row="4" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
+          <property name="text">
+           <string>Zoom at cursor</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ZoomAtCursor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Zoom step</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxZoomStep">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.050000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.050000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ZoomStep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
         <property name="text">
          <string>Invert zoom</string>
@@ -142,7 +201,7 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxAntiAliasing">
         <property name="text">
          <string>Enable anti-aliasing (slower)</string>
@@ -155,7 +214,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="Line" name="line1">
         <property name="frameShape">
          <enum>QFrame::HLine</enum>
@@ -168,7 +227,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <layout class="QHBoxLayout" name="eyedistanceLayout">
         <property name="spacing">
          <number>6</number>
@@ -210,7 +269,7 @@
         </item>
        </layout>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <layout class="QGridLayout" name="backlightLayout">
         <property name="margin">
          <number>11</number>
@@ -399,6 +458,8 @@
   <tabstop>comboNavigationStyle</tabstop>
   <tabstop>mouseButton</tabstop>
   <tabstop>comboOrbitStyle</tabstop>
+  <tabstop>checkBoxZoomAtCursor</tabstop>
+  <tabstop>spinBoxZoomStep</tabstop>
   <tabstop>checkBoxInvertZoom</tabstop>
   <tabstop>checkBoxAntiAliasing</tabstop>
   <tabstop>FloatSpinBox_EyeDistance</tabstop>
