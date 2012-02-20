@@ -86,8 +86,7 @@ public:
 protected Q_SLOTS:
     void setPrimary(int);
     void setRotate(int);
-    void setSecondary_1(int);
-    void setSecondary_2(int);
+    void cb_toggled(bool);
     void projectionChanged(int);
     void hidden(int);
     void smooth(int);
@@ -99,25 +98,37 @@ protected:
     
 private:
     void pagesize(std::string&);
+    void autodims();
     void compute();
-    void autodims(float, float, float, float);
-    void populate_s1();
-    void populate_s2();
+    void validate_cbs();
+    void view_data(int, int, int &, int &);
+    void updateSecondaries();
     
 private:
     class Private;
     Ui_TaskOrthoViews * ui;
-    orthoView * views[3];
-    int transform[7][7][3];         //matrix containing relative positions and rotations of secondary views depending upon primary view
+    orthoView * views[4];
+    QCheckBox * c_boxes[5][5];      //matrix of pointers to gui checkboxes
+    QLineEdit * inputs[5];          //pointers to manual position/scale boxes
+    float * data[5];                //pointers to scale, x_pos, y_pos, horiz, vert
+    
+    int map1[4][3][2];              //contains view directions and rotations for vertical secondary positions, for primaries 1,2,3,4
+    int map2[4][3][2];              //contains view directions and rotations for H and V secondary positions, primaries 5,6
+    
+    int view_status[4][4];          //matrix containing status of four orthoView objects (in use, axo, rel x, rel y)
+    int view_count;                 //number of active views
+
     int primary;                    //view direction of primary view
-    int secondary_1, secondary_2;   //view direction of secondary views
-    int spacing_1, spacing_2;       //spacings of secondary view centre from primary view centre
     float x_pos, y_pos;             //x and y coords for primary view
     int rotate;                     //rotate primary view clockwise by rotate*90
     int proj;                       //first (=-1) or third (=1) angle projection
     float scale;                    //scale of drawing
     bool autoscale;                 //whether or not to run autodims
-    float pagewidth, pageh1, pageh2;  //these are actually the available width and height, calculated in constructor.
+
+    float horiz, vert;              //centre-centre distances
+
+    float pagewidth, pageheight;      //these are actually the available width and height, calculated in constructor.
+    float pageh1, pageh2;             //h1 - total usable page height, h2 - total height allowing for info box.
     int margin;
     int min_space;                  //minimum space between views, and page edge
 };
