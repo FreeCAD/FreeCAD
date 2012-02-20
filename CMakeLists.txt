@@ -455,7 +455,6 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 	  "Makefile$"
 	  "\\\\.sh$"
 	  "_CPack_"
-	  "71"
 	  "config.h$"
 	  "config.log$"
 	  "config.status$"
