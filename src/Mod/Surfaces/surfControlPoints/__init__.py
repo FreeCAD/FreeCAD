@@ -21,21 +21,42 @@
 #*                                                                         *
 #***************************************************************************
 
-class SurfWorkbench ( Workbench ):
-    """ @brief Workbench of Ship design module. Here toolbars & icons are append. """
-    from surfUtils import Paths, Translator
-    import SurfGui
+# FreeCAD modules
+import FreeCAD
+import FreeCADGui
+from FreeCAD import Base
+from FreeCAD import Part
 
-    Icon     = Paths.iconsPath() + "/Ico.png"
-    MenuText = str(Translator.translate("Surface tools"))
-    ToolTip  = str(Translator.translate("Surface tools"))
+# Qt libraries
+from PyQt4 import QtGui,QtCore
 
-    def Initialize(self):
-        # ToolBar
-        list = ["Surf_IsoCurve", "Surf_SliceCurve", "Surf_Border", "Surf_ControlPoints", "Surf_Convert"]
-        self.appendToolbar("Surface tools",list)
-        
-        # Menu
-        list = ["Surf_IsoCurve", "Surf_SliceCurve", "Surf_Border", "Surf_ControlPoints", "Surf_Convert"]
-        self.appendMenu("Surface tools",list)
-Gui.addWorkbench(SurfWorkbench())
+# Main object
+from surfUtils import Geometry, Translator
+import Instance
+
+def isValidObject(obj):
+    """ Check if object can use control points.
+    @param obj Object to test
+    @return True if control points can be performed, False otherwise
+    """
+    # Ensure that right object has been provided
+    if not obj.isDerivedFrom('Part::Feature'):
+        return False
+    faces = Geometry.getFaces(obj)
+    if not faces:
+        return False
+    return True
+
+def load():
+    """ Show control points over selected geometry. """
+    # Get selected objects
+    objs = FreeCADGui.Selection.getSelection()
+    # Perform control points over valid objects
+    for i in range(0,len(objs)):
+        obj = objs[i]
+        if not isValidObject(obj):
+            continue
+        # Create control points object
+        ctrl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", obj.Name + "ControlPoints")
+        inst = Instance.ControlPoints(ctrl, obj)
+        Instance.ViewProviderShip(ctrl.ViewObject)

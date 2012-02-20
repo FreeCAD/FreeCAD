@@ -60,6 +60,18 @@ class Border:
         ToolTip  = str(Translator.translate('Get edges from objects'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
+class ControlPoints: 
+    def Activated(self):
+        import surfControlPoints
+        surfControlPoints.load()
+
+    def GetResources(self):
+        from surfUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/ControlPointsIco.png"
+        MenuText = str(Translator.translate('Show surface control points'))
+        ToolTip  = str(Translator.translate('Shown control points on top of selected geometry.'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+      
 class Convert: 
     def Activated(self):
         import surfConvert
@@ -75,4 +87,5 @@ class Convert:
 FreeCADGui.addCommand('Surf_IsoCurve', IsoCurve())
 FreeCADGui.addCommand('Surf_SliceCurve', SliceCurve())
 FreeCADGui.addCommand('Surf_Border', Border())
+FreeCADGui.addCommand('Surf_ControlPoints', ControlPoints())
 FreeCADGui.addCommand('Surf_Convert', Convert())

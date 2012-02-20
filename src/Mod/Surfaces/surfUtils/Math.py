@@ -44,7 +44,7 @@ def isSamePoint(a,b,tol=0.0001):
         return True
     return False
 
-def isSameVertex(a,b,tol=0.0001):
+def isSameVertex(a,b,tol=0.000001):
     """returns if two points are the same with a provided tolerance
     @param a Point to compare.
     @param b Reference point.

@@ -54,6 +54,12 @@ SET(SurfSlice_SRCS
 )
 SOURCE_GROUP("surfslice" FILES ${SurfSlice_SRCS})
 
+SET(SurfControlPoints_SRCS
+	surfControlPoints/__init__.py
+	surfControlPoints/Instance.py
+)
+SOURCE_GROUP("surfcontrolpoints" FILES ${SurfControlPoints_SRCS})
+
 SET(SurfUtils_SRCS
 	surfUtils/__init__.py
 	surfUtils/Geometry.py
@@ -63,13 +69,13 @@ SET(SurfUtils_SRCS
 )
 SOURCE_GROUP("surfutils" FILES ${SurfUtils_SRCS})
 
-SET(all_files ${SurfMain_SRCS} ${SurfIcons_SRCS} ${SurfBorder_SRCS} ${SurfConvert_SRCS} ${SurfISOCurve_SRCS} ${SurfSlice_SRCS} ${SurfUtils_SRCS})
+SET(all_files ${SurfMain_SRCS} ${SurfIcons_SRCS} ${SurfBorder_SRCS} ${SurfConvert_SRCS} ${SurfISOCurve_SRCS} ${SurfSlice_SRCS} ${SurfControlPoints_SRCS} ${SurfUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Surfaces ALL
     SOURCES ${all_files}
 )
 
-fc_copy_sources(Surfaces "${CMAKE_BINARY_DIR}/Mod/Surfaces" ${all_files})
+fc_copy_sources("Mod/Surfaces" "Surfaces" ${all_files})
 
 INSTALL(
     FILES
@@ -100,6 +106,12 @@ INSTALL(
         ${SurfSlice_SRCS}
     DESTINATION
         Mod/Surfaces/surfSlice
+)
+INSTALL(
+    FILES
+        ${SurfControlPoints_SRCS}
+    DESTINATION
+        Mod/Surfaces/surfControlPoints
 )
 INSTALL(
     FILES
