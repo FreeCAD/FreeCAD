@@ -72,7 +72,9 @@ void DlgSettings3DViewImp::saveSettings()
     int index = comboOrbitStyle->currentIndex();
     hGrp->SetInt("OrbitStyle", index);
 
+    checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
+    spinBoxZoomStep->onSave();
     checkBoxAntiAliasing->onSave();
     CheckBox_CornerCoordSystem->onSave();
     CheckBox_ShowFPS->onSave();
@@ -87,7 +89,9 @@ void DlgSettings3DViewImp::saveSettings()
 
 void DlgSettings3DViewImp::loadSettings()
 {
+    checkBoxZoomAtCursor->onRestore();
     checkBoxInvertZoom->onRestore();
+    spinBoxZoomStep->onRestore();
     checkBoxAntiAliasing->onRestore();
     CheckBox_CornerCoordSystem->onRestore();
     CheckBox_ShowFPS->onRestore();

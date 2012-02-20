@@ -215,6 +215,10 @@ void NavigationStyle::initialize()
     this->altdown = FALSE;
     this->invertZoom = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetBool("InvertZoom",false);
+    this->zoomAtCursor = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetBool("ZoomAtCursor",false);
+    this->zoomStep = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomSetp",0.05f);
 }
 
 void NavigationStyle::finalize()
@@ -709,6 +713,33 @@ void NavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prev
     zoom(viewer->getCamera(), (thispos[1] - prevpos[1]) * 10.0f/*20.0f*/);
 }
 
+void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& pos)
+{
+    SbBool zoomAtCur = this->zoomAtCursor;
+    if (zoomAtCur) {
+        const SbViewportRegion & vp = viewer->getViewportRegion();
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+        panCamera(viewer->getCamera(), ratio, panplane, SbVec2f(0.5,0.5), pos);
+    }
+
+    float value = this->zoomStep;
+    if (!forward)
+        value = -value;
+    if (this->invertZoom)
+        value = -value;
+    zoom(camera, value);
+
+    if (zoomAtCur) {
+        const SbViewportRegion & vp = viewer->getViewportRegion();
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+        panCamera(viewer->getCamera(), ratio, panplane, pos, SbVec2f(0.5,0.5));
+    }
+}
+
 /** Uses the sphere sheet projector to map the mouseposition onto
  * a 3D point and find a rotation from this and the last calculated point.
  */
@@ -882,6 +913,21 @@ void NavigationStyle::setZoomInverted(SbBool on)
 SbBool NavigationStyle::isZoomInverted() const
 {
     return this->invertZoom;
+}
+
+void NavigationStyle::setZoomStep(float val)
+{
+    this->zoomStep = val;
+}
+
+void NavigationStyle::setZoomAtCursor(SbBool on)
+{
+    this->zoomAtCursor = on;
+}
+
+SbBool NavigationStyle::isZoomAtCursor() const
+{
+    return this->zoomAtCursor;
 }
 
 void NavigationStyle::startSelection(AbstractMouseSelection* mouse)
