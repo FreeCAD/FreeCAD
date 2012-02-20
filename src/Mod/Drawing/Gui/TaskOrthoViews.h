@@ -117,7 +117,7 @@ private:
     int proj;                       //first (=-1) or third (=1) angle projection
     float scale;                    //scale of drawing
     bool autoscale;                 //whether or not to run autodims
-    int pagewidth, pageh1, pageh2;  //these are actually the available width and height, calculated in constructor.
+    float pagewidth, pageh1, pageh2;  //these are actually the available width and height, calculated in constructor.
     int margin;
     int min_space;                  //minimum space between views, and page edge
 };

@@ -38,7 +38,6 @@
 
 #include <Base/FileInfo.h>
 #include <iostream>
-#include <sstream>
 #include <Standard_Failure.hxx>
 
 using namespace Gui;
@@ -422,11 +421,9 @@ void TaskOrthoViews::pagesize(std::string& page_template)
             if (found != std::string::npos)
             {
                 temp_line = line.substr(7+found);
-                found = temp_line.find("\"");
-                temp_line = temp_line.substr(0,found);
-                std::stringstream num_str(temp_line);
-                num_str >> pagewidth;
+                sscanf (temp_line.c_str(), "%f", &pagewidth);
                 pagewidth -= 2*margin;
+                
                 if (done)
                 {
                     file.close();
@@ -435,17 +432,15 @@ void TaskOrthoViews::pagesize(std::string& page_template)
                 else
                     done = true;
             }
-            
+
             found = line.find("height=");
             if (found != std::string::npos)
             {
                 temp_line = line.substr(8+found);
-                found = temp_line.find("\"");
-                temp_line = temp_line.substr(0,found);
-                std::stringstream num_str_2(temp_line);
-                num_str_2 >> pageh1;
+                sscanf (temp_line.c_str(), "%f", &pageh1);
                 pageh1 -= 2*margin;
                 pageh2 = pageh1;
+                
                 if (done)
                 {
                     file.close();
@@ -454,7 +449,7 @@ void TaskOrthoViews::pagesize(std::string& page_template)
                 else
                     done = true;
             }
-            
+
             if (line.find("metadata") != std::string::npos)      //give up if we meet a metadata tag
                 break;
         }
@@ -483,7 +478,7 @@ void TaskOrthoViews::autodims(float s1_x, float s1_y, float s2_x, float s2_y)
     width += (s2_x != 0) * views[2]->width;
     height += (s2_y != 0) * views[2]->height;
 
-    int pageheight;                                 //allow extra page height if view arrangement avoids the information box on the bottom right
+    float pageheight;                                 //allow extra page height if view arrangement avoids the information box on the bottom right
     if (((s1_x + s1_y + s2_x + s2_y) == 2) && (views[0]->width <= width/2))
         pageheight = pageh1;
     else
