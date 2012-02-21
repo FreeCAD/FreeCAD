@@ -71,9 +71,11 @@ def decodeName(name):
     return decodedName
 
 def deformat(text):
+    print text
     "removes weird formats in texts and wipes UTF characters"
     # remove ACAD string formatation
-    t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
+    #t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
+    t = text.strip("{}")
     t = re.sub("\\\.*?;","",t)
     # replace non-UTF chars
     t = re.sub("ã","a",t)
@@ -681,6 +683,11 @@ def addText(text,attrib=False):
                 newob.ViewObject.FontSize = FreeCADGui.draftToolBar.fontsize
             else:    
                 newob.ViewObject.FontSize = float(hgt)
+            if hasattr(text,"alignment"):
+                if text.alignment in [2,5,8]:
+                    newob.ViewObject.Justification = "Center"
+                elif text.alignment in [3,6,9]:
+                    newob.ViewObject.Justification = "Right"
             newob.ViewObject.DisplayMode = "World"
             fmt.formatObject(newob,text)
 
@@ -961,6 +968,53 @@ def processdxf(document,filename):
                         fmt.formatObject (newob,dim)
 						
     else: FreeCAD.Console.PrintMessage("skipping dimensions...\n")
+
+    # drawing points
+
+    points = drawing.entities.get_type("point")
+    if points: FreeCAD.Console.PrintMessage("drawing "+str(len(points))+" points...\n")
+    for point in points:
+            x = rawValue(point,10)
+            y = rawValue(point,20)
+            z = rawValue(point,30)
+            lay = rawValue(point,8)
+            if fmt.dxflayout or (not rawValue(point,67)):
+                if fmt.makeBlocks:
+                    shape = Part.Vertex(x,y,z)
+                    addToBlock(shape,lay)
+                else:
+                    newob = Draft.makePoint(x,y,z)
+                    lay = locateLayer(lay)
+                    lay.addObject(newob)
+                    if gui: 
+                        fmt.formatObject(newob,point)
+
+    # drawing leaders
+
+    if fmt.paramtext:
+        leaders = drawing.entities.get_type("leader")
+        if leaders: 
+            FreeCAD.Console.PrintMessage("drawing "+str(len(leaders))+" leaders...\n")
+        for leader in leaders:
+            if fmt.dxflayout or (not rawValue(leader,67)):
+                pts = []
+                for d in leader.data:
+                    if d[0] == 10:
+                        pts.append([d[1]])
+                    elif d[0] in [20,30]:
+                        pts[-1].append(d[1])
+                pts.reverse()
+                points = []
+                for p in pts:
+                    points.append(Vector(p[0],p[1],p[2]))
+                newob = Draft.makeWire(points)
+                lay = locateLayer(rawValue(leader,8))
+                lay.addObject(newob)
+                if gui: 
+                    newob.ViewObject.EndArrow = True
+                    fmt.formatObject(newob,leader)
+    else: 
+        FreeCAD.Console.PrintMessage("skipping leaders...\n")
 
     # drawing blocks
     
