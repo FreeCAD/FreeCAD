@@ -547,9 +547,9 @@ void TaskOrthoViews::autodims()
         max_x = max(max_x, view_status[i][2]);
         max_y = max(max_y, view_status[i][3]);
 
-        if (abs(view_status[i][2]) == 1 and abs(view_status[i][3]) == 0)
+        if (abs(view_status[i][2]) == 1 && abs(view_status[i][3]) == 0)
             w2 = views[i]->width;
-        else if (abs(view_status[i][2]) == 0 and abs(view_status[i][3]) == 1)
+        else if (abs(view_status[i][2]) == 0 && abs(view_status[i][3]) == 1)
             h2 = views[i]->height;
     }
 
@@ -558,7 +558,7 @@ void TaskOrthoViews::autodims()
     int wide = max_x - min_x + 1;                           //how many views wide / high?
     int high = max_y - min_y + 1;
 
-    if (max_y > 0 and !c_boxes[3][3]->isChecked() and min_x == 0 and ((max_x == 1)*w2 > w1 or max_x == 2))
+    if (max_y > 0 && !c_boxes[3][3]->isChecked() && min_x == 0 && ((max_x == 1)*w2 > w1 || max_x == 2))
         pageheight = pageh1;
     else
         pageheight = pageh2;
@@ -701,12 +701,12 @@ void TaskOrthoViews::cb_toggled(bool toggle)
     }
     else
     {
-        if (abs(dx) == 1 or abs(dy == 1))
+        if (abs(dx) == 1 || abs(dy == 1))
             c_boxes[dx*2+2][dy*2+2]->setChecked(false);
             
         for (i = 0; i < 4; i++)
         {
-            if (view_status[i][2] == dx and view_status[i][3] == dy)
+            if (view_status[i][2] == dx && view_status[i][3] == dy)
                 break;
         }
         views[i]->activate(false);
