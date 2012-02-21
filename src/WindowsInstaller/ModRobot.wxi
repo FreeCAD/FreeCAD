@@ -32,19 +32,5 @@
             <File Id="Robotpyd" Name="Robot.pyd" DiskId="1" />
             <File Id="RobotGuipyd" Name="RobotGui.pyd" DiskId="1" />
         </Component>
-		<Directory Id="ModRobotLib" Name="Lib" FileSource="../../Mod/Robot/Lib" >
-			<Directory Id="ModRobotLibKuka" Name="Kuka" FileSource="../../Mod/Robot/Lib/Kuka" >
-				<Component Id="CompModRobotLibKuka"  Guid="753d2cc0-02af-11df-8a39-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="Kuka1" Name="kr16.wrl"   />
-					<File Id="Kuka2" Name="kr210.WRL"   />
-					<File Id="Kuka3" Name="kr500_1.csv"   />
-					<File Id="Kuka4" Name="kr500_1.wrl"   />
-					<File Id="Kuka5" Name="kr_16.csv"   />
-					<File Id="Kuka6" Name="kr_210_2.csv"   />
-					<File Id="Kuka7" Name="kr_125.csv"   />
-					<File Id="Kuka8" Name="kr125_3.wrl"   />
-				</Component>			
-			</Directory>
-		</Directory>
     </Directory>
 </Include>
