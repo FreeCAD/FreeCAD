@@ -23,7 +23,7 @@
    Juergen Riegel 2011                                                 
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Fragment Id="FreeCADData">
+	<Fragment Id="FreeCADData">
 		<!-- Add the 64-bit registry component to the 64-bit MSI, and add the 32-bit registry        -->
 		<!-- component to the 32-bit MSI.                                                            -->
 		<?if $(var.ProcessorArchitecture)=x64 ?>
@@ -31,16 +31,63 @@
 		<?else ?>
 		<?define Win_64 = "no" ?>
 		<?endif ?>
-        <DirectoryRef Id="DataDir">
+		<DirectoryRef Id="DataDir">
+			<!-- Data file -->
 			<Directory Id="ExamplesDir" Name="examples" FileSource="../../data/examples">
-            	<Component Id="CompExampleData"  Guid="63150a20-864a-11e0-9d78-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
-                    <File Id="ExampleFile1" Name="DrawingExample.FCStd"   />
-                    <File Id="ExampleFile2" Name="PartDesignExample.FCStd"   />
-                    <File Id="ExampleFile3" Name="RobotExample.FCStd"   />
-                    <File Id="ExampleFile4" Name="Schenkel.stp"   />
-                </Component>			
-
-            </Directory>
-        </DirectoryRef>
-    </Fragment>
+				<Component Id="CompExampleData"  Guid="63150a20-864a-11e0-9d78-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="ExampleFile1" Name="DrawingExample.FCStd"   />
+					<File Id="ExampleFile2" Name="PartDesignExample.FCStd"   />
+					<File Id="ExampleFile3" Name="RobotExample.FCStd"   />
+					<File Id="ExampleFile4" Name="Schenkel.stp"   />
+				</Component>
+			</Directory>
+			<!-- Robot resource files  -->
+			<Directory Id="ModRobotLib" Name="Lib" FileSource="../../data/Mod/Robot/Lib" >
+				<Directory Id="ModRobotLibKuka" Name="Kuka" FileSource="../../data/Mod/Robot/Lib/Kuka" >
+					<Component Id="CompModRobotLibKuka"  Guid="753d2cc0-02af-11df-8a39-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
+						<File Id="Kuka1" Name="kr16.wrl"   />
+						<File Id="Kuka2" Name="kr210.WRL"   />
+						<File Id="Kuka3" Name="kr500_1.csv"   />
+						<File Id="Kuka4" Name="kr500_1.wrl"   />
+						<File Id="Kuka5" Name="kr_16.csv"   />
+						<File Id="Kuka6" Name="kr_210_2.csv"   />
+						<File Id="Kuka7" Name="kr_125.csv"   />
+						<File Id="Kuka8" Name="kr125_3.wrl"   />
+					</Component>
+				</Directory>
+			</Directory>
+			<!-- Drawing resource files  -->
+			<Directory Id="ModDrawingTemplates" Name="Templates" FileSource="../../data/Mod/Drawing/Templates">
+				<Component Id="CompModDrawingTemplates" Guid="f879f473-3a2a-4808-8fa0-021b4a7db30b" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="DrawingTemplateA3" Name="A3_Landscape.svg"  />
+				</Component>
+			</Directory>
+			<!-- StartPage resource files  -->
+			<Directory Id="ModStartDataStartPage" Name="StartPageData" FileSource="../../data/Mod/Start/StartPage" >
+				<Component Id="CompModStartDataStartPage"  Guid="aa63eb2a-9355-4d6e-872c-e2fdf9c697da" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="StartPage2" Name="PartDesign.py"   />
+					<File Id="StartPage3" Name="Mesh.py"   />
+					<File Id="StartPage4" Name="LoadSchenkel.py"   />
+					<File Id="StartPage5" Name="LoadRobotExample.py"   />
+					<File Id="StartPage6" Name="LoadPartDesignExample.py"   />
+					<File Id="StartPage7" Name="LoadDrawingExample.py"   />
+					<!--<File Id="StartPage8" Name="Banner.jpeg"   />-->
+					<File Id="StartPage9" Name="Background.jpg"   />
+					<File Id="StartPage10" Name="Complete.png"   />
+					<File Id="StartPage11" Name="FreeCAD.png"   />
+					<File Id="StartPage12" Name="Mesh.png"   />
+					<File Id="StartPage13" Name="PartDesign.png"   />
+					<File Id="StartPage14" Name="PartDesignExample.png"   />
+					<File Id="StartPage15" Name="web.png"   />
+					<File Id="StartPage17" Name="ArchDesign.png"   />
+					<File Id="StartPage18" Name="ArchDesign.py"   />
+					<File Id="StartPage19" Name="DefaultWorkbench.py"   />
+					<File Id="StartPage20" Name="LoadMRU0.py"   />
+					<File Id="StartPage21" Name="LoadMRU1.py"   />
+					<File Id="StartPage22" Name="LoadMRU2.py"   />
+					<File Id="StartPage23" Name="ArchExample.png"   />
+				</Component>
+			</Directory>
+		</DirectoryRef>
+	</Fragment>
 </Wix>
