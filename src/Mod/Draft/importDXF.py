@@ -104,6 +104,17 @@ def locateLayer(wantedLayer):
     layers.append(newLayer)
     return newLayer
 
+def getdimheight(style):
+    "returns the dimension text height from the given dimstyle"
+    for t in drawing.tables.data:
+        if t.name == 'dimstyle':
+            for a in t.data:
+                if hasattr(a,"type"):
+                    if a.type == "dimstyle":
+                        if rawValue(a,2) == style:
+                            return rawValue(a,140)
+    return None
+    
 def calcBulge(v1,bulge,v2):
     '''
     calculates intermediary vertex for curved segments.
@@ -966,6 +977,11 @@ def processdxf(document,filename):
                         dim.layer = layer
                         dim.color_index = 256
                         fmt.formatObject (newob,dim)
+                        if fmt.stdSize:
+                            newob.ViewObject.FontSize = FreeCADGui.draftToolBar.fontsize
+                        else:
+                            st = rawValue(dim,3)
+                            newob.ViewObject.FontSize = float(getdimheight(st))
 						
     else: FreeCAD.Console.PrintMessage("skipping dimensions...\n")
 
