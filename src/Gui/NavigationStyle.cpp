@@ -218,7 +218,7 @@ void NavigationStyle::initialize()
     this->zoomAtCursor = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetBool("ZoomAtCursor",false);
     this->zoomStep = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomSetp",0.05f);
+        ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep",0.05f);
 }
 
 void NavigationStyle::finalize()
