@@ -276,6 +276,7 @@ int main( int argc, char ** argv )
     //App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment" ] = "Bottom|Left";
     App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
+    App::Application::Config()["SplashExeColor"  ] = "#c8c8c8"; // light grey
 
     try {
         // Init phase ===========================================================
