@@ -219,6 +219,28 @@ _Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBa
 }
 
 template <class _Precision>
+Vector3<_Precision> Vector3<_Precision>::DistanceToLineSegment (const Vector3& rclP1,
+                                                                const Vector3& rclP2) const
+{
+    Vector3<_Precision> dir = rclP2-rclP1;
+    Vector3<_Precision> beg = *this-rclP1;
+    Vector3<_Precision> end = beg+dir;
+
+    Vector3<_Precision> proj, len;
+    proj.ProjToLine(beg, dir);
+    len = proj + beg;
+    if (len * dir < 0 || len.Length() > dir.Length()) {
+        if (beg.Length() < end.Length())
+            return beg;
+        else
+            return end;
+    }
+    else {
+        return proj;
+    }
+}
+
+template <class _Precision>
 Vector3<_Precision>& Vector3<_Precision>::ProjToLine (const Vector3<_Precision> &rclPoint,
                                                       const Vector3<_Precision> &rclLine)
 {
