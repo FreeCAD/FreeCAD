@@ -119,6 +119,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0f,64.0f,1.0f};
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.0001f,100.0f,0.01f};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
+const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
 
 ViewProviderPartExt::ViewProviderPartExt() 
 {
@@ -145,6 +146,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(ControlPoints,(false));
     ADD_PROPERTY(Lighting,(1));
     Lighting.setEnums(LightingEnums);
+    ADD_PROPERTY(DrawStyle,((long int)0));
+    DrawStyle.setEnums(DrawStyleEnums);
 
     coords = new SoCoordinate3();
     coords->ref();
@@ -185,6 +188,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     pShapeHints->ref();
     Lighting.touch();
+    DrawStyle.touch();
 
     sPixmap = "Tree_Part";
     loadParameter();
@@ -277,6 +281,16 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             pShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
         else
             pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    }
+    else if (prop == &DrawStyle) {
+        if (DrawStyle.getValue() == 0)
+        pcLineStyle->linePattern = 0xffff;
+        else if (DrawStyle.getValue() == 1)
+        pcLineStyle->linePattern = 0xf00f;
+        else if (DrawStyle.getValue() == 2)
+        pcLineStyle->linePattern = 0x0f0f;
+        else
+        pcLineStyle->linePattern = 0xff88;
     }
     else {
         // if the object was invisible and has been changed, recreate the visual

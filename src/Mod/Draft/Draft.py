@@ -1510,8 +1510,6 @@ class _ViewProviderDraft:
         return mode
 
     def onChanged(self, vp, prop):
-        if prop == "DrawStyle":
-            self.setStyle(vp)
         return
 
     def setStyle(self,vobj):
@@ -2116,8 +2114,6 @@ class _ViewProviderRectangle(_ViewProviderDraft):
                 if self.texture:
                     r.removeChild(self.texture)
                     self.texture = None
-        elif prop == "DrawStyle":
-            self.setStyle(vp)
         return
         
 class _Circle:
@@ -2284,8 +2280,6 @@ class _ViewProviderWire(_ViewProviderDraft):
                 rn.addChild(self.pt)
             else:
                 rn.removeChild(self.pt)
-        elif prop == "DrawStyle":
-            self.setStyle(vp)
         return
 
     def claimChildren(self):
@@ -2446,8 +2440,6 @@ class _ViewProviderBSpline(_ViewProviderDraft):
                 rn.addChild(self.pt)
             else:
                 rn.removeChild(self.pt)
-        elif prop == "DrawStyle":
-            self.setStyle(vp)
         return
 
 class _Block:
