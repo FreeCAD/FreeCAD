@@ -27,8 +27,13 @@ SET(StartGui_SRCS
     Workbench.h
 )
 
-SET(StartPage_Resources
+SET(StartPage_Scripts
+    InitGui.py
     StartPage/StartPage.py
+    StartPage/__init__.py
+)
+
+SET(StartPage_Resources
     StartPage/PartDesign.py
     StartPage/ArchDesign.py
     StartPage/DefaultWorkbench.py
@@ -38,7 +43,6 @@ SET(StartPage_Resources
     StartPage/LoadDrawingExample.py
     StartPage/LoadRobotExample.py
     StartPage/Background.jpg
-    StartPage/__init__.py
     StartPage/FreeCAD.png
     StartPage/ArchDesign.png
     StartPage/PartDesign.png
@@ -54,8 +58,16 @@ SET(StartPage_Resources
 
 add_library(StartGui SHARED ${StartGui_SRCS})
 target_link_libraries(StartGui ${StartGui_LIBS})
-fc_copy_script("Mod/Start" "StartGui" InitGui.py)
-fc_copy_script("Mod/Start" "StartGui" ${StartPage_Resources})
+
+fc_target_copy_resource(StartGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Start
+    ${CMAKE_BINARY_DIR}/Mod/Start
+    ${StartPage_Scripts})
+
+fc_target_copy_resource(StartGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Start
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start
+    ${StartPage_Resources})
 
 if(MSVC)
     set_target_properties(StartGui PROPERTIES SUFFIX ".pyd")

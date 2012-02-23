@@ -52,7 +52,12 @@ SET(InspectionGui_SRCS
 
 add_library(InspectionGui SHARED ${InspectionGui_SRCS})
 target_link_libraries(InspectionGui ${InspectionGui_LIBS})
-fc_copy_script("Mod/Inspection" "InspectionGui" InitGui.py)
+
+
+fc_target_copy_resource(InspectionGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Inspection
+    ${CMAKE_BINARY_DIR}/Mod/Inspection
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(InspectionGui PROPERTIES SUFFIX ".pyd")

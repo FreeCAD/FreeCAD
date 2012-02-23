@@ -29,7 +29,12 @@ set(Image_SRCS
 
 add_library(Image SHARED ${Image_SRCS})
 target_link_libraries(Image ${Image_LIBS})
-fc_copy_script("Mod/Image" "Image" Init.py)
+
+
+fc_target_copy_resource(Image 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Image
+    ${CMAKE_BINARY_DIR}/Mod/Image
+    Init.py)
 
 if(MSVC)
     set_target_properties(Image PROPERTIES SUFFIX ".pyd")

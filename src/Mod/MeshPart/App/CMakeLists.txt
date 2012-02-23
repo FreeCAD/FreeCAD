@@ -51,7 +51,12 @@ SET(MeshPart_SRCS
 
 add_library(MeshPart SHARED ${MeshPart_SRCS})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
-fc_copy_script("Mod/MeshPart" "MeshPart" Init.py)
+
+
+fc_target_copy_resource(MeshPart 
+    ${CMAKE_SOURCE_DIR}/src/Mod/MeshPart
+    ${CMAKE_BINARY_DIR}/Mod/MeshPart
+    Init.py)
 
 if(MSVC)
     set_target_properties(MeshPart PROPERTIES SUFFIX ".pyd")

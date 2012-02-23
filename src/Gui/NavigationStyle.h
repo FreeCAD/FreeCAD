@@ -111,6 +111,9 @@ public:
 
     void setZoomInverted(SbBool);
     SbBool isZoomInverted() const;
+    void setZoomStep(float);
+    void setZoomAtCursor(SbBool);
+    SbBool isZoomAtCursor() const;
 
     void updateAnimation();
     void redraw();
@@ -162,6 +165,7 @@ protected:
     void panToCenter(const SbPlane & pplane, const SbVec2f & currpos);
     void zoom(SoCamera * camera, float diffvalue);
     void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
+    void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
     SbBool doSpin();
 
@@ -191,6 +195,8 @@ protected:
     SbBool ctrldown, shiftdown, altdown;
     SbBool button1down, button2down, button3down;
     SbBool invertZoom;
+    SbBool zoomAtCursor;
+    float zoomStep;
 
     /** @name Mouse model */
     //@{

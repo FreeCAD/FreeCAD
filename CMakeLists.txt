@@ -56,14 +56,27 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
 # ================================================================================
-
+# Output directories for install target
 
 if(WIN32)
-    SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+    SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Installation root directory")
 else(WIN32)
-    SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad")
+    SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad" CACHE PATH "Installation root directory")
     SET(INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif(WIN32)
+
+SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
+SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
+SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
+
+# used as compiler defines
+SET(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")
+SET(DOCDIR "${CMAKE_INSTALL_DOCDIR}")
+
+MESSAGE("prefix: ${CMAKE_INSTALL_PREFIX}")
+MESSAGE("datadir: ${CMAKE_INSTALL_DATADIR}")
+MESSAGE("docdir: ${CMAKE_INSTALL_DOCDIR}")
+MESSAGE("includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
 
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
@@ -83,8 +96,7 @@ OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3
 OPTION(FREECAD_BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
 OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
 OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
-SET(RESOURCEDIR "${CMAKE_INSTALL_PREFIX}/data" CACHE PATH "Absolute path to the data directory.")
-SET(DOCDIR "" CACHE PATH "Absolute path to the documentation directory.")
+OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
 # ==============================================================================
 
@@ -443,7 +455,6 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 	  "Makefile$"
 	  "\\\\.sh$"
 	  "_CPack_"
-	  "71"
 	  "config.h$"
 	  "config.log$"
 	  "config.status$"
@@ -467,6 +478,7 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 	#ADD_CUSTOM_TARGET(DIST make package_source)
 
 endif(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
+    #add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
     add_custom_target(dist-git
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
               --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}

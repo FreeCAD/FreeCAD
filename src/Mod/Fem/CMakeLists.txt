@@ -8,6 +8,8 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        convert2TetGen.py
+        FemExample.py
     DESTINATION
         Mod/Fem
 )

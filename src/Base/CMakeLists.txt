@@ -68,7 +68,7 @@ if(SWIG_FOUND)
     add_definitions(-DHAVE_SWIG=1)
 endif(SWIG_FOUND)
 
-if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++)
+if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_BUILD_DEBIAN)
 SET(zipios_SRCS
     ../zipios++/backbuffer.h
     ../zipios++/basicentry.cpp
@@ -122,12 +122,12 @@ SET(zipios_SRCS
     ../zipios++/zipoutputstream.h
 )
 SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
-else (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++)
+else (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_BUILD_DEBIAN)
     set(FreeCADBase_LIBS
         ${FreeCADBase_LIBS}
         -lzipios
     )
-endif (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++)
+endif (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_BUILD_DEBIAN)
 
 SET(pycxx_SRCS
     ../CXX/Config.hxx
