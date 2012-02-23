@@ -71,7 +71,9 @@ class ControlPoints:
         vObj.LineWidth = 1.0
         vObj.PointColor = (0.0,0.0,1.0)
         vObj.PointSize = 4.0
-
+        # Add control points data
+        obj.addProperty("App::PropertyBool","ValidCtrlPoints","Instance", str(Translator.translate("True if is a valid control points instance"))).ValidCtrlPoints=True
+        
     def onChanged(self, fp, prop):
         ''' Print the name of the property that has changed '''
         if prop == "Face":

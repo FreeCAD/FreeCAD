@@ -68,8 +68,8 @@ class ControlPoints:
     def GetResources(self):
         from surfUtils import Paths, Translator
         IconPath = Paths.iconsPath() + "/ControlPointsIco.png"
-        MenuText = str(Translator.translate('Show surface control points'))
-        ToolTip  = str(Translator.translate('Shown control points on top of selected geometry.'))
+        MenuText = str(Translator.translate('Show/hide surface control points'))
+        ToolTip  = str(Translator.translate('Show control points on top of selected geometry, or hide selected control points.'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
       
 class Convert: 

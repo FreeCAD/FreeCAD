@@ -52,11 +52,37 @@ def load():
     # Get selected objects
     objs = FreeCADGui.Selection.getSelection()
     # Perform control points over valid objects
+    flag = False
     for i in range(0,len(objs)):
         obj = objs[i]
         if not isValidObject(obj):
             continue
+        flag = True
         # Create control points object
         ctrl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", obj.Name + "ControlPoints")
         inst = Instance.ControlPoints(ctrl, obj)
         Instance.ViewProviderShip(ctrl.ViewObject)
+    if flag:
+        return
+    # Destroy control points
+    for i in range(0,len(objs)):
+        obj = objs[i]
+        props = obj.PropertiesList
+        try:
+            props.index("ValidCtrlPoints")
+        except ValueError:
+            continue
+        if not obj.ValidCtrlPoints:
+            continue
+        flag = True
+        # restore face object properties
+        face = obj.Object
+        FreeCADGui.ActiveDocument.getObject(face).Selectable = True
+        FreeCADGui.ActiveDocument.getObject(face).Transparency = 0
+        # remove control points object
+        FreeCAD.ActiveDocument.removeObject(obj.Name)
+    # Show errors
+    if not flag:
+        msg = Translator.translate("Control points must be generated on top of Part::Feature object.\n")
+        FreeCAD.Console.PrintError(msg)
+
