@@ -715,6 +715,8 @@ void NavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prev
 
 void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& pos)
 {
+    if (this->button3down)
+        return;
     SbBool zoomAtCur = this->zoomAtCursor;
     if (zoomAtCur) {
         const SbViewportRegion & vp = viewer->getViewportRegion();
