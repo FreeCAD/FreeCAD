@@ -29,9 +29,9 @@
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart
-{
-    PROPERTY_HEADER(PartGui::ViewProvider);
+class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart {
+    typedef PartGui::ViewProviderPart inherited;
+    PROPERTY_HEADER(PartDesignGui::ViewProvider);
 
 public:
     /// constructor
@@ -40,7 +40,7 @@ public:
     virtual ~ViewProvider();
 
     virtual bool doubleClicked(void);
-
+    void updateData(const App::Property*);
 };
 
 
