@@ -22,17 +22,12 @@
    Juergen Riegel 2008                                                  
 -->
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Directory Id="ModDrawing" Name="Drawing" FileSource="../../Mod/drawing">
+    <Directory Id="ModDrawing" Name="Drawing" FileSource="../../Mod/Drawing">
         <Component Id="CompModDrawing" Guid="9cde5801-febf-4b05-8c72-97378dfb81a5" Win64='$(var.Win_64)' KeyPath="yes">
             <File Id="DrawingInitPy" Name="Init.py" DiskId="1" />
             <File Id="DrawingInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="DrawingApp" Name="Drawing.pyd" DiskId="1" />
             <File Id="DrawingGui" Name="DrawingGui.pyd" DiskId="1" />
         </Component>
-	    <Directory Id="ModDrawingTemplates" Name="Templates" FileSource="../../Mod/drawing/Templates">
-			<Component Id="CompModDrawingTemplates" Guid="f879f473-3a2a-4808-8fa0-021b4a7db30b" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="DrawingTemplateA3" Name="A3_Landscape.svg"  />
-			</Component>
-		</Directory>
     </Directory>
 </Include>

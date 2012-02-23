@@ -121,7 +121,12 @@ SET(PartDesignGui_SRCS
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS})
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
-fc_copy_script("Mod/PartDesign" "PartDesignGui" ${PartDesignGui_Scripts})
+
+
+fc_target_copy_resource(PartDesignGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/PartDesign
+    ${CMAKE_BINARY_DIR}/Mod/PartDesign
+    ${PartDesignGui_Scripts})
 
 if(MSVC)
     set_target_properties(PartDesignGui PROPERTIES SUFFIX ".pyd")
@@ -136,7 +141,9 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(PartDesignGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
     set_target_properties(PartDesignGui PROPERTIES PREFIX "")
-    set_target_properties(PartDesignGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(PartDesignGui PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/Mod/PartDesign)
 endif(MSVC)
 
-INSTALL(TARGETS PartDesignGui DESTINATION lib)
+# The PartDesign module must go to where the __init__.py file is
+INSTALL(TARGETS PartDesignGui DESTINATION Mod/PartDesign)
+

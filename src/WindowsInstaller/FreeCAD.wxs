@@ -151,12 +151,13 @@
 			<!-- No CAM at the moment 
             <ComponentRef Id="CompModCam" />
 			-->
-	        <ComponentRef Id="CompModDrawingTemplates" />
+            <ComponentRef Id="CompModDrawingTemplates" />
             <ComponentRef Id="CompModDrawing" />
             <ComponentRef Id="CompModRobot" />
             <ComponentRef Id="CompModRobotLibKuka" />
             <ComponentRef Id="CompModStart" />
             <ComponentRef Id="CompModStartLibStartPage" />
+            <ComponentRef Id="CompModStartDataStartPage" />
             <ComponentRef Id="CompModWeb" />
             <ComponentRef Id="CompExampleData" />
 		

@@ -180,6 +180,12 @@ public:
     _Precision DistanceToPlane (const Vector3 &rclBase, const Vector3 &rclNorm) const;
     /// Computes the distance from this point to the line given by \a rclBase and \a rclDirect.
     _Precision DistanceToLine (const Vector3 &rclBase, const Vector3 &rclDirect) const;
+    /** Computes the vector from this point to the point on the line segment with the shortest
+     * distance. The line segment is defined by \a rclP1 and \a rclP2.
+     * Note: If the projection of this point is outside the segment then the shortest distance
+     * to \a rclP1 or \a rclP2 is computed.
+     */
+    Vector3 DistanceToLineSegment (const Vector3& rclP1, const Vector3& rclP2) const;
     //@}
 };
 

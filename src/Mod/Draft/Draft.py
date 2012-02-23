@@ -100,7 +100,8 @@ def getParamType(param):
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap"]:
+    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
+                   "SvgLinesBlack","dxfStdSize"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -782,7 +783,6 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
 
-
 def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy=False):
     '''scale(objects,vector,[center,copy,legacy]): Scales the objects contained
     in objects (that can be a list of objects or an object) of the given scale
@@ -1024,13 +1024,6 @@ def draftify(objectslist,makeblock=False):
             return newobjlist[0]
         return newobjlist
 
-def getrgb(color):
-    "getRGB(color): returns a rgb value #000000 from a freecad color"
-    r = str(hex(int(color[0]*255)))[2:].zfill(2)
-    g = str(hex(int(color[1]*255)))[2:].zfill(2)
-    b = str(hex(int(color[2]*255)))[2:].zfill(2)
-    return "#"+r+g+b
-
 def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="shape color",direction=None):
     '''getSVG(object,[modifier],[textmodifier],[linestyle],[fillstyle],[direction]):
     returns a string containing a SVG representation of the given object. the modifier attribute
@@ -1051,6 +1044,18 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         if direction != Vector(0,0,0):
             plane = WorkingPlane.plane()
             plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+
+    def getrgb(color):
+        "getRGB(color): returns a rgb value #000000 from a freecad color"
+        r = str(hex(int(color[0]*255)))[2:].zfill(2)
+        g = str(hex(int(color[1]*255)))[2:].zfill(2)
+        b = str(hex(int(color[2]*255)))[2:].zfill(2)
+        col = "#"+r+g+b
+        if col == "#ffffff":
+            print getParam('SvgLinesBlack')
+            if getParam('SvgLinesBlack'):
+                col = "#000000"
+        return col
 
     def getProj(vec):
         if not plane: return vec
@@ -1077,12 +1082,36 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                 v = getProj(e.Vertexes[-1].Point)
                 svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
             elif isinstance(e.Curve,Part.Circle):
+                if len(e.Vertexes) == 1:
+                    # complete circle
+                    svg = getCircle(e)
+                    return svg
                 r = e.Curve.Radius
+                drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+                if plane: drawing_plane_normal = plane.axis
+                flag_large_arc = (((e.ParameterRange[1] - e.ParameterRange[0]) / math.pi) % 2) > 1
+                flag_sweep = e.Curve.Axis * drawing_plane_normal >= 0
                 v = getProj(e.Vertexes[-1].Point)
-                svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                svg += str(v.y) + ' '
+                svg += 'A ' + str(r) + ' ' + str(r) + ' '
+                svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
+                svg += str(v.x) + ' ' + str(v.y) + ' '
         if fill != 'none': svg += 'Z'
         svg += '" '
+        svg += 'stroke="' + stroke + '" '
+        svg += 'stroke-width="' + str(width) + ' px" '
+        svg += 'style="stroke-width:'+ str(width)
+        svg += ';stroke-miterlimit:4'
+        svg += ';stroke-dasharray:' + lstyle
+        svg += ';fill:' + fill + '"'
+        svg += '/>\n'
+        return svg
+
+    def getCircle(edge):
+        cen = getProj(edge.Curve.Center)
+        rad = edge.Curve.Radius
+        svg = '<circle cx="' + str(cen.x)
+        svg += '" cy="' + str(cen.y)
+        svg += '" r="' + str(rad)+'" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(width) + ' px" '
         svg += 'style="stroke-width:'+ str(width)
@@ -1225,18 +1254,7 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                     if (fcgeo.findEdge(e,wiredEdges) == None):
                         svg += getPath([e])
         else:
-            cen = getProj(obj.Shape.Edges[0].Curve.Center)
-            rad = obj.Shape.Edges[0].Curve.Radius
-            svg = '<circle cx="' + str(cen.x)
-            svg += '" cy="' + str(cen.y)
-            svg += '" r="' + str(rad)+'" '
-            svg += 'stroke="' + stroke + '" '
-            svg += 'stroke-width="' + str(width) + ' px" '
-            svg += 'style="stroke-width:'+ str(width)
-            svg += ';stroke-miterlimit:4'
-            svg += ';stroke-dasharray:' + lstyle
-            svg += ';fill:' + fill + '"'
-            svg += '/>\n'                
+            svg = getCircle(obj.Shape.Edges[0])
     return svg
 
 def makeDrawingView(obj,page,lwmod=None,tmod=None):
@@ -1372,7 +1390,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
     FreeCAD.ActiveDocument.recompute()
     return nobj
 
-def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
+def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
     ''' make a point (at coordinates x,y,z ,color(r,g,b),point_size)
         example usage: 
         p1 = makePoint()
@@ -1383,6 +1401,8 @@ def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
         p1.X = 1 #move it in x
         p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
     '''
+    if not color:
+        color = FreeCADGui.draftToolBar.getDefaultColor('ui')
     obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Point(obj,X,Y,Z)
     _ViewProviderPoint(obj.ViewObject)
@@ -1470,7 +1490,10 @@ class _ViewProviderDraft:
         
     def __init__(self, obj):
         obj.Proxy = self
+        obj.addProperty("App::PropertyEnumeration","DrawStyle","Base",
+                        "The line style of this object")
         self.Object = obj.Object
+        obj.DrawStyle = ["solid","dashed","dotted","dashdot"]
         
     def attach(self, obj):
         self.Object = obj.Object
@@ -1487,7 +1510,20 @@ class _ViewProviderDraft:
         return mode
 
     def onChanged(self, vp, prop):
+        if prop == "DrawStyle":
+            self.setStyle(vp)
         return
+
+    def setStyle(self,vobj):
+        ds = vobj.RootNode.getChild(2).getChild(0).getChild(0).getChild(1)
+        if vobj.DrawStyle == "solid":
+            ds.linePattern = 0xffff
+        elif vobj.DrawStyle == "dotted":
+            ds.linePattern = 0x0f0f
+        elif vobj.DrawStyle == "dashed":
+            ds.linePattern = 0xf00f
+        elif vobj.DrawStyle == "dashdot":
+            ds.linePattern = 0xff88
 
     def __getstate__(self):
         return None
@@ -2080,6 +2116,8 @@ class _ViewProviderRectangle(_ViewProviderDraft):
                 if self.texture:
                     r.removeChild(self.texture)
                     self.texture = None
+        elif prop == "DrawStyle":
+            self.setStyle(vp)
         return
         
 class _Circle:
@@ -2246,6 +2284,8 @@ class _ViewProviderWire(_ViewProviderDraft):
                 rn.addChild(self.pt)
             else:
                 rn.removeChild(self.pt)
+        elif prop == "DrawStyle":
+            self.setStyle(vp)
         return
 
     def claimChildren(self):
@@ -2406,6 +2446,8 @@ class _ViewProviderBSpline(_ViewProviderDraft):
                 rn.addChild(self.pt)
             else:
                 rn.removeChild(self.pt)
+        elif prop == "DrawStyle":
+            self.setStyle(vp)
         return
 
 class _Block:

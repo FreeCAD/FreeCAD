@@ -8,6 +8,10 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        SketcherExample.py
+        TestSketcherApp.py
+        TestSketcherGui.py
     DESTINATION
         Mod/Sketcher
 )
+

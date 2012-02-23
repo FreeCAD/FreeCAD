@@ -52,6 +52,8 @@
 #include "Placement.h"
 #include "WaitCursor.h"
 #include "ViewProvider.h"
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include "MergeDocuments.h"
 
 using namespace Gui;
@@ -1022,6 +1024,46 @@ bool StdCmdPlacement::isActive(void)
     return (Gui::Control().activeDialog()==0);
 }
 
+//===========================================================================
+// Std_Edit
+//===========================================================================
+DEF_STD_CMD_A(StdCmdEdit);
+
+StdCmdEdit::StdCmdEdit()
+  :Command("Std_Edit")
+{
+  sGroup        = QT_TR_NOOP("Edit");
+  sMenuText     = QT_TR_NOOP("Toggle &Editmode");
+  sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
+  sWhatsThis    = "Std_Edit";
+  sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
+#if QT_VERSION >= 0x040200
+  sPixmap       = "edit-edit";
+#endif
+  eType         = ForEdit;
+}
+
+void StdCmdEdit::activated(int iMsg)
+{
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        if (viewer->isEditingViewProvider()) {
+            doCommand(Command::Gui,"Gui.activeDocument().resetEdit()");
+        } else {
+            if (Selection().getCompleteSelection().size() > 0) {
+                SelectionSingleton::SelObj obj = Selection().getCompleteSelection()[0];
+                doCommand(Command::Gui,"Gui.activeDocument().setEdit(\"%s\",0)",obj.FeatName);
+            }
+        }
+    }
+}
+
+bool StdCmdEdit::isActive(void)
+{
+    return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != 0);
+}
+
 
 namespace Gui {
 
@@ -1054,6 +1096,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdRefresh());
     rcCmdMgr.addCommand(new StdCmdTransform());
     rcCmdMgr.addCommand(new StdCmdPlacement());
+    rcCmdMgr.addCommand(new StdCmdEdit());
 }
 
 } // namespace Gui

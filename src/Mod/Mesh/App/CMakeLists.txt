@@ -331,8 +331,16 @@ endif(MSVC)
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
 
-fc_copy_script ("Mod/Mesh" "Mesh" Init.py BuildRegularGeoms.py)
-fc_copy_sources("Mod/Mesh" "Mesh" MeshTestsApp.py)
+
+fc_target_copy_resource(Mesh 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
+    ${CMAKE_BINARY_DIR}/Mod/Mesh
+    Init.py BuildRegularGeoms.py)
+
+fc_target_copy_resource(Mesh 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Mesh
+    MeshTestsApp.py)
 
 if(MSVC)
     set_target_properties(Mesh PROPERTIES SUFFIX ".pyd")

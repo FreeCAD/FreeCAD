@@ -146,8 +146,12 @@ SET(RobotGui_SRCS
 
 add_library(RobotGui SHARED ${RobotGui_SRCS})
 target_link_libraries(RobotGui ${RobotGui_LIBS})
-fc_copy_script("Mod/Robot" "RobotGui" InitGui.py)
-fc_copy_script("Mod/Robot" "RobotGui" MovieTool.py)
+
+
+fc_target_copy_resource(RobotGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Robot
+    ${CMAKE_BINARY_DIR}/Mod/Robot
+    InitGui.py MovieTool.py)
 
 if(MSVC)
     set_target_properties(RobotGui PROPERTIES SUFFIX ".pyd")

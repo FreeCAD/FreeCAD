@@ -39,7 +39,12 @@ SET(ReenGui_SRCS
 
 add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS})
 target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
-fc_copy_script("Mod/ReverseEngineering" "ReverseEngineeringGui" InitGui.py)
+
+
+fc_target_copy_resource(ReverseEngineeringGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/ReverseEngineering
+    ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(ReverseEngineeringGui PROPERTIES SUFFIX ".pyd")

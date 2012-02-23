@@ -44,13 +44,16 @@ SET(TestGui_SRCS
     PreCompiled.cpp
     PreCompiled.h
 )
+SET(TestGuiPy_SRCS
+    qtunittest.py
+)
 
 add_library(QtUnitGui SHARED ${TestGui_SRCS})
 
 target_link_libraries(QtUnitGui ${TestGui_LIBS})
 add_dependencies(QtUnitGui Test)
 
-fc_copy_sources_outpath("Mod/Test" "QtUnitGui" qtunittest.py)
+fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/Mod/Test" qtunittest.py)
 
 if(MSVC)
     set_target_properties(QtUnitGui PROPERTIES SUFFIX ".pyd")
@@ -69,3 +72,5 @@ else(MSVC)
 endif(MSVC)
 
 INSTALL(TARGETS QtUnitGui DESTINATION lib)
+INSTALL(FILES ${TestGuiPy_SRCS} DESTINATION Mod/Test)
+

@@ -26,7 +26,11 @@ SET(StartPage_DATA
     web.png
 )
 
-INSTALL(FILES ${StartPage_SRCS} ${StartPage_DATA}
+INSTALL(FILES ${StartPage_SRCS}
     DESTINATION Mod/Start/StartPage
+)
+
+INSTALL(FILES ${StartPage_DATA}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Start/StartPage
 )
 
