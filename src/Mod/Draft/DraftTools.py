@@ -3631,6 +3631,18 @@ class Point:
                     Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),0.0)
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCADGui.Snapper.off()
+
+class ToggleSnap():
+    "The ToggleSnap FreeCAD command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Snap',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleSnap", "Toggle snap"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleSnap", "Toggles Draft snap on or off")}
+
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.active = not FreeCADGui.Snapper.active
             
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3676,6 +3688,7 @@ FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
 FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
 FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
+FreeCADGui.addCommand('Draft_ToggleSnap',ToggleSnap())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None
