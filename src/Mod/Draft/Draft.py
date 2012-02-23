@@ -1493,7 +1493,6 @@ class _ViewProviderDraft:
         obj.addProperty("App::PropertyEnumeration","DrawStyle","Base",
                         "The line style of this object")
         self.Object = obj.Object
-        obj.DrawStyle = ["solid","dashed","dotted","dashdot"]
         
     def attach(self, obj):
         self.Object = obj.Object
@@ -1511,17 +1510,6 @@ class _ViewProviderDraft:
 
     def onChanged(self, vp, prop):
         return
-
-    def setStyle(self,vobj):
-        ds = vobj.RootNode.getChild(2).getChild(0).getChild(0).getChild(1)
-        if vobj.DrawStyle == "solid":
-            ds.linePattern = 0xffff
-        elif vobj.DrawStyle == "dotted":
-            ds.linePattern = 0x0f0f
-        elif vobj.DrawStyle == "dashed":
-            ds.linePattern = 0xf00f
-        elif vobj.DrawStyle == "dashdot":
-            ds.linePattern = 0xff88
 
     def __getstate__(self):
         return None
