@@ -74,6 +74,7 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
 # include <QKeyEvent>
+# include <QWheelEvent>
 # include <QMessageBox>
 # include <QTimer>
 # include <QStatusBar>
@@ -1033,6 +1034,14 @@ void View3DInventorViewer::selectAll()
  */
 void View3DInventorViewer::processEvent(QEvent * event)
 {
+    // Bug #0000607: Some mices also support horizontal scrolling which however might
+    // lead to some unwanted zooming when pressing the MMB for panning.
+    // Thus, we filter out horizontal scrolling.
+    if (event->type() == QEvent::Wheel) {
+        QWheelEvent* we = static_cast<QWheelEvent*>(event);
+        if (we->orientation() == Qt::Horizontal)
+            return;
+    }
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent* ke = static_cast<QKeyEvent*>(event);
         if (ke->matches(QKeySequence::SelectAll)) {
