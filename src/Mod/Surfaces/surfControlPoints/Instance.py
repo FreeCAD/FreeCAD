@@ -75,7 +75,7 @@ class ControlPoints:
         obj.addProperty("App::PropertyBool","ValidCtrlPoints","Instance", str(Translator.translate("True if is a valid control points instance"))).ValidCtrlPoints=True
         
     def onChanged(self, fp, prop):
-        ''' Print the name of the property that has changed '''
+        """ Method called when property changes """
         if prop == "Face":
             # Get object
             obj = FreeCAD.ActiveDocument.getObject(fp.Face)
@@ -91,7 +91,7 @@ class ControlPoints:
             fp.Shape = self.buildEdges(fp)
 
     def execute(self, fp):
-        ''' Print a short message when doing a recomputation, this method is mandatory '''
+        """ Method called when entity recomputation is needed """
         # Append edges list to the vertexes array
         vList = fp.Shape.Vertexes
         eList = fp.Shape.Edges
@@ -210,6 +210,15 @@ class ViewProviderShip:
 
     def onChanged(self, vp, prop):
         ''' Print the name of the property that has changed '''
+        if prop == "Visibility":
+            obj  = vp.Object
+            face = obj.Object
+            if vp.Visibility:
+                FreeCADGui.ActiveDocument.getObject(face).Selectable = False
+                FreeCADGui.ActiveDocument.getObject(face).Transparency = 50
+            else:
+                FreeCADGui.ActiveDocument.getObject(face).Selectable = True
+                FreeCADGui.ActiveDocument.getObject(face).Transparency = 0
 
     def __getstate__(self):
         ''' When saving the document this object gets stored using Python's cPickle module.

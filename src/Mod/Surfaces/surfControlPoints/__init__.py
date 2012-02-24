@@ -59,7 +59,7 @@ def load():
             continue
         flag = True
         # Create control points object
-        ctrl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", obj.Name + "ControlPoints")
+        ctrl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", obj.Label + "ControlPoints")
         inst = Instance.ControlPoints(ctrl, obj)
         Instance.ViewProviderShip(ctrl.ViewObject)
     if flag:
