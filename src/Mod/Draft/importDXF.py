@@ -691,6 +691,17 @@ def addText(text,attrib=False):
         lay.addObject(newob)
         val = deformat(val)
         #val = val.decode("Latin1").encode("Latin1")
+        rx = rawValue(text,11)
+        ry = rawValue(text,21)
+        rz = rawValue(text,31)
+        if rx or ry or rz:
+            xv = Vector(rx,ry,rz)
+            if not fcvec.isNull(xv):
+                ax = fcvec.neg(xv.cross(Vector(1,0,0)))
+                if fcvec.isNull(ax):
+                    ax = Vector(0,0,1)
+                ang = -math.degrees(fcvec.angle(xv,Vector(1,0,0),ax))
+                Draft.rotate(newob,ang,axis=ax)
         newob.LabelText = val.split("\n")
         newob.Position = pos
         if gui:

@@ -768,6 +768,22 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             shape = obj.Shape.copy()
             shape.rotate(fcvec.tup(center), fcvec.tup(axis), angle)
             newobj.Shape = shape
+        elif (obj.isDerivedFrom("App::Annotation")):
+            if axis.normalize() == Vector(1,0,0):
+                newobj.ViewObject.RotationAxis = "X"
+                newobj.ViewObject.Rotation = angle
+            elif axis.normalize() == Vector(0,1,0):
+                newobj.ViewObject.RotationAxis = "Y"
+                newobj.ViewObject.Rotation = angle
+            elif axis.normalize() == Vector(0,-1,0):
+                newobj.ViewObject.RotationAxis = "Y"
+                newobj.ViewObject.Rotation = -angle
+            elif axis.normalize() == Vector(0,0,1):
+                newobj.ViewObject.RotationAxis = "Z"
+                newobj.ViewObject.Rotation = angle
+            elif axis.normalize() == Vector(0,0,-1):
+                newobj.ViewObject.RotationAxis = "Z"
+                newobj.ViewObject.Rotation = -angle
         elif hasattr(obj,"Placement"):
             shape = Part.Shape()
             shape.Placement = obj.Placement
