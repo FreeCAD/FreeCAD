@@ -426,6 +426,17 @@ void InventorBuilder::endPoints(void)
     result << Base::blanks(indent) << "]" << std::endl;
     indent -= 2;
     result << Base::blanks(indent) << "}" << std::endl;
+}
+
+/**
+ * Adds an SoPointSet node after creating an SoCordinate3 node with
+ * beginPoints() and endPoints().
+ * @see startPoints()
+ * @see beginPoints()
+ * @see endPoints()
+ */
+void InventorBuilder::addPointSet(void)
+{
     result << Base::blanks(indent) << "PointSet { } " << std::endl;
 }
 
