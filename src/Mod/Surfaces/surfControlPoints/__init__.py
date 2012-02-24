@@ -31,6 +31,7 @@ from FreeCAD import Part
 from PyQt4 import QtGui,QtCore
 
 # Main object
+import TaskPanel
 from surfUtils import Geometry, Translator
 import Instance
 
@@ -63,6 +64,7 @@ def load():
         inst = Instance.ControlPoints(ctrl, obj)
         Instance.ViewProviderShip(ctrl.ViewObject)
     if flag:
+        TaskPanel.createTask()
         return
     # Destroy control points
     for i in range(0,len(objs)):
@@ -83,6 +85,5 @@ def load():
         FreeCAD.ActiveDocument.removeObject(obj.Name)
     # Show errors
     if not flag:
-        msg = Translator.translate("Control points must be generated on top of Part::Feature object.\n")
-        FreeCAD.Console.PrintError(msg)
+        TaskPanel.createTask()
 

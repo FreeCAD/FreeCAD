@@ -57,6 +57,9 @@ SOURCE_GROUP("surfslice" FILES ${SurfSlice_SRCS})
 SET(SurfControlPoints_SRCS
 	surfControlPoints/__init__.py
 	surfControlPoints/Instance.py
+	surfControlPoints/PointTracker.py
+	surfControlPoints/TaskPanel.py
+	surfControlPoints/TaskPanel.ui
 )
 SOURCE_GROUP("surfcontrolpoints" FILES ${SurfControlPoints_SRCS})
 

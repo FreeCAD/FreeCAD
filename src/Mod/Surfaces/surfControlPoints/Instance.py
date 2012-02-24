@@ -179,6 +179,23 @@ class ControlPoints:
         shape = Part.Compound(vList)
         return shape
 
+    def movedVertexes(self,obj,vertexes,perform=False):
+        """ Renew object with modified vertexes
+        @param obj Part::FeaturePython built object that contains control points data.
+        @param vertexes New vertexes list.
+        @param perform True if all object must be renewed, building new edges and modifying surface.
+        """
+        nU = obj.nU
+        nV = obj.nV
+        n = nU*nV
+        if n != len(vertexes):
+            msg = Translator.translate("Number of vertexes don't match.\n")
+            App.Console.PrintError(msg)
+            return
+        obj.Shape = Part.Compound(vertexes)
+        if perform:
+            obj.Shape = self.buildEdges(obj)
+
 class ViewProviderShip:
     def __init__(self, obj):
         "Set this object to the proxy object of the actual view provider"

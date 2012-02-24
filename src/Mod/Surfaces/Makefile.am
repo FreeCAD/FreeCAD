@@ -37,6 +37,9 @@ nobase_data_DATA = \
 	surfSlice/TaskPanel.ui \
 	surfControlPoints/__init__.py \
 	surfControlPoints/Instance.py \
+	surfControlPoints/PointTracker.py \
+	surfControlPoints/TaskPanel.py \
+	surfControlPoints/TaskPanel.ui \
 	surfUtils/Geometry.py \
 	surfUtils/__init__.py \
 	surfUtils/Math.py \
