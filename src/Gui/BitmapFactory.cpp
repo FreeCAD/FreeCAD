@@ -77,6 +77,10 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
     if (_pcSingleton == NULL)
     {
         _pcSingleton = new BitmapFactoryInst;
+        std::map<std::string,std::string>::const_iterator it;
+        it = App::GetApplication().Config().find("ProgramIcons");
+        if (it != App::GetApplication().Config().end())
+            _pcSingleton->addPath(QString::fromUtf8(it->second.c_str()));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));
         _pcSingleton->addPath(QString::fromUtf8(App::GetApplication().GetHomePath()));

@@ -79,7 +79,7 @@ int main( int argc, char ** argv )
     App::Application::Config()["AppDataSkipVendor"] = "true";
 
     // set the banner (for logging and console)
-    App::Application::Config()["ConsoleBanner"] = sBanner;
+    App::Application::Config()["CopyrightInfo"] = sBanner;
 
     try {
         // Init phase ===========================================================

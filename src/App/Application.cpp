@@ -1095,7 +1095,7 @@ void Application::initConfig(int argc, char ** argv)
                           mConfig["BuildVersionMajor"].c_str(),
                           mConfig["BuildVersionMinor"].c_str(),
                           mConfig["BuildRevision"].c_str(),
-                          mConfig["ConsoleBanner"].c_str());
+                          mConfig["CopyrightInfo"].c_str());
     else
         Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
                           mConfig["ExeVersion"].c_str(),

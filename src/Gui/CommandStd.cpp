@@ -193,7 +193,7 @@ Action * StdCmdAbout::createAction(void)
 
     QString exe;
     std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::iterator it = cfg.find("WindowTitle");
+    std::map<std::string,std::string>::iterator it = cfg.find("Application");
     if (it != cfg.end())
         exe = QString::fromUtf8(it->second.c_str());
     else
@@ -235,7 +235,7 @@ void StdCmdAbout::languageChange()
     if (_pcAction) {
         QString exe;
         std::map<std::string,std::string>& cfg = App::Application::Config();
-        std::map<std::string,std::string>::iterator it = cfg.find("WindowTitle");
+        std::map<std::string,std::string>::iterator it = cfg.find("Application");
         if (it != cfg.end())
             exe = QString::fromUtf8(it->second.c_str());
         else

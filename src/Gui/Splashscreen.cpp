@@ -256,7 +256,7 @@ void AboutDialog::setupLabels()
     std::map<std::string,std::string>::iterator it = config.find("WindowTitle");
     if (it != config.end())
         exeName = QString::fromUtf8(it->second.c_str());
-    QString banner  = QString::fromUtf8(config["ConsoleBanner"].c_str());
+    QString banner  = QString::fromUtf8(config["CopyrightInfo"].c_str());
     banner = banner.left( banner.indexOf(QLatin1Char('\n')) );
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
@@ -266,7 +266,7 @@ void AboutDialog::setupLabels()
 
     QString author = ui->labelAuthor->text();
     author.replace(QString::fromAscii("Unknown Application"), exeName);
-    author.replace(QString::fromAscii("Unknown Author"), banner);
+    author.replace(QString::fromAscii("(c) Unknown Author"), banner);
     ui->labelAuthor->setText(author);
     ui->labelAuthor->setUrl(mturl);
 

@@ -35,6 +35,10 @@
 #   include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <map>
+#include <vector>
+#include <algorithm>
+
 #include <cstdio>
 #include <QApplication>
 #include <QFile>
@@ -74,16 +78,31 @@ const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2
 class Branding
 {
 public:
-    struct UserDefines
-    {
-        std::string windowTitle;
-        std::string windowIcon;
-        std::string programLogo;
-        std::string splashScreen;
-    };
-
+    typedef std::map<std::string, std::string> XmlConfig;
     Branding()
     {
+        filter.push_back("Application");
+        filter.push_back("WindowTitle");
+        filter.push_back("CopyrightInfo");
+        filter.push_back("MaintainerUrl");
+        filter.push_back("WindowIcon");
+        filter.push_back("ProgramLogo");
+        filter.push_back("ProgramIcons");
+
+        filter.push_back("BuildVersionMajor");
+        filter.push_back("BuildVersionMinor");
+        filter.push_back("BuildRevision");
+        filter.push_back("BuildRevisionDate");
+
+        filter.push_back("SplashScreen");
+        filter.push_back("SplashAlignment");
+        filter.push_back("SplashTextColor");
+        filter.push_back("SplashInfoColor");
+
+        filter.push_back("StartWorkbench");
+
+        filter.push_back("ExeName");
+        filter.push_back("ExeVendor");
     }
 
     bool readFile(const QString& fn)
@@ -96,29 +115,26 @@ public:
         file.close();
         return true;
     }
-    UserDefines getUserDefines() const
+    XmlConfig getUserDefines() const
     {
-        UserDefines ud;
+        XmlConfig cfg;
         QDomElement root = domDocument.documentElement();
         QDomElement child;
         if (!root.isNull()) {
-            child = root.firstChildElement(QLatin1String("WindowTitle"));
-            if (!child.isNull())
-                ud.windowTitle = (const char*)child.text().toUtf8();
-            child = root.firstChildElement(QLatin1String("WindowIcon"));
-            if (!child.isNull())
-                ud.windowIcon = (const char*)child.text().toUtf8();
-            child = root.firstChildElement(QLatin1String("ProgramLogo"));
-            if (!child.isNull())
-                ud.programLogo = (const char*)child.text().toUtf8();
-            child = root.firstChildElement(QLatin1String("SplashScreen"));
-            if (!child.isNull())
-                ud.splashScreen = (const char*)child.text().toUtf8();
+            child = root.firstChildElement();
+            while (!child.isNull()) {
+                std::string name = (const char*)child.localName().toAscii();
+                std::string value = (const char*)child.text().toUtf8();
+                if (std::find(filter.begin(), filter.end(), name) != filter.end())
+                    cfg[name] = value;
+                child = child.nextSiblingElement();
+            }
         }
-        return ud;
+        return cfg;
     }
 
 private:
+    std::vector<std::string> filter;
     bool evaluateXML(QIODevice *device, QDomDocument& xmlDocument)
     {
         QString errorStr;
@@ -269,14 +285,14 @@ int main( int argc, char ** argv )
     App::Application::Config()["MaintainerUrl"] = "http://apps.sourceforge.net/mediawiki/free-cad/index.php?title=Main_Page";
 
     // set the banner (for logging and console)
-    App::Application::Config()["ConsoleBanner"] = sBanner;
+    App::Application::Config()["CopyrightInfo"] = sBanner;
     App::Application::Config()["AppIcon"] = "freecad";
-    App::Application::Config()["SplashPicture"] = "freecadsplash";
+    App::Application::Config()["SplashScreen"] = "freecadsplash";
     App::Application::Config()["StartWorkbench"] = "StartWorkbench";
     //App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment" ] = "Bottom|Left";
     App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
-    App::Application::Config()["SplashExeColor"  ] = "#c8c8c8"; // light grey
+    App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
 
     try {
         // Init phase ===========================================================
@@ -326,15 +342,10 @@ int main( int argc, char ** argv )
     QString path = QString::fromUtf8(App::GetApplication().GetHomePath());
     QFileInfo fi(path, QString::fromAscii("branding.xml"));
     if (brand.readFile(fi.absoluteFilePath())) {
-        Branding::UserDefines ud = brand.getUserDefines();
-        if (!ud.windowTitle.empty())
-            App::Application::Config()["WindowTitle"] = ud.windowTitle;
-        if (!ud.windowIcon.empty())
-            App::Application::Config()["WindowIcon"] = ud.windowIcon;
-        if (!ud.programLogo.empty())
-            App::Application::Config()["ProgramLogo"] = ud.programLogo;
-        if (!ud.splashScreen.empty())
-            App::Application::Config()["SplashPicture"] = ud.splashScreen;
+        Branding::XmlConfig cfg = brand.getUserDefines();
+        for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
+            App::Application::Config()[it->first] = it->second;
+        }
     }
 
     // Run phase ===========================================================

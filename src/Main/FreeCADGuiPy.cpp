@@ -303,8 +303,8 @@ PyMODINIT_FUNC initFreeCADGui()
     try {
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
-        App::Application::Config()["SplashPicture"] = "freecadsplash";
-        App::Application::Config()["ConsoleBanner"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2011\n";
+        App::Application::Config()["SplashScreen"] = "freecadsplash";
+        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2011\n";
         Gui::Application::initApplication();
         Py_InitModule("FreeCADGui", FreeCADGui_methods);
     }
