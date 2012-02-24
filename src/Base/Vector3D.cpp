@@ -194,7 +194,7 @@ Vector3<_Precision>& Vector3<_Precision>::ProjToPlane (const Vector3<_Precision>
                                                        const Vector3<_Precision> &rclNorm)
 {
     Vector3<_Precision> clTemp(rclNorm);
-    *this = *this - (clTemp *=  ((*this - rclBase) * clTemp));
+    *this = *this - (clTemp *= ((*this - rclBase) * clTemp) / clTemp.Sqr());
     return *this;
 }
 
@@ -202,7 +202,7 @@ template <class _Precision>
 _Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclBase, 
                                                  const Vector3<_Precision> &rclNorm) const
 {
-    return (*this - rclBase) * rclNorm;
+    return ((*this - rclBase) * rclNorm) / rclNorm.Length();
 }
 
 template <class _Precision>
@@ -361,7 +361,7 @@ template <class _Precision>
 Vector3<_Precision> & Vector3<_Precision>::Normalize (void)
 {
     _Precision fLen = Length ();
-    if (fLen != 0.0f) {
+    if (fLen != (_Precision)0.0 && fLen != (_Precision)1.0) {
         x /= fLen;
         y /= fLen;
         z /= fLen;
