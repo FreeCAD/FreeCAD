@@ -88,6 +88,10 @@ def deformat(text):
     t = re.sub("è","e",t)
     t = re.sub("ê","e",t)
     t = re.sub("í","i",t)
+    t = re.sub("Á","A",t)
+    t = re.sub("À","A",t)
+    t = re.sub("É","E",t)
+    t = re.sub("È","E",t)
     # replace degrees, diameters chars
     t = re.sub('%%d','°',t) 
     t = re.sub('%%c','Ø',t)
@@ -687,7 +691,7 @@ def addText(text,attrib=False):
         lay.addObject(newob)
         val = deformat(val)
         #val = val.decode("Latin1").encode("Latin1")
-        newob.LabelText = val
+        newob.LabelText = val.split("\n")
         newob.Position = pos
         if gui:
             if fmt.stdSize:
