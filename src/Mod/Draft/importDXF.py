@@ -71,12 +71,19 @@ def decodeName(name):
     return decodedName
 
 def deformat(text):
-    print text
     "removes weird formats in texts and wipes UTF characters"
     # remove ACAD string formatation
     #t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
     t = text.strip("{}")
     t = re.sub("\\\.*?;","",t)
+    # replace UTF codes
+    t = re.sub("\\\\U\+00e9","e",t)
+    t = re.sub("\\\\U\+00e1","a",t)
+    t = re.sub("\\\\U\+00e7","c",t)
+    t = re.sub("\\\\U\+00e3","a",t)
+    t = re.sub("\\\\U\+00e0","a",t)
+    t = re.sub("\\\\U\+00c1","A",t)
+    t = re.sub("\\\\U\+00ea","e",t)
     # replace non-UTF chars
     t = re.sub("ã","a",t)
     t = re.sub("ç","c",t)
@@ -977,9 +984,9 @@ def processdxf(document,filename):
                     p1 = FreeCAD.Vector(x2,y2,z2)
                     p2 = FreeCAD.Vector(x3,y3,z3)
                     if align == 0:
-                        if angle == 0:
+                        if angle in [0,180]:
                             p2 = FreeCAD.Vector(x3,y2,z2)
-                        else:
+                        elif angle in [90,270]:
                             p2 = FreeCAD.Vector(x2,y3,z2)
                     newob = doc.addObject("App::FeaturePython","Dimension")
                     lay.addObject(newob)
@@ -1029,7 +1036,9 @@ def processdxf(document,filename):
         for leader in leaders:
             if fmt.dxflayout or (not rawValue(leader,67)):
                 pts = []
+                print leader.data
                 for d in leader.data:
+                    print d
                     if d[0] == 10:
                         pts.append([d[1]])
                     elif d[0] in [20,30]:
@@ -1037,7 +1046,10 @@ def processdxf(document,filename):
                 pts.reverse()
                 points = []
                 for p in pts:
-                    points.append(Vector(p[0],p[1],p[2]))
+                    if len(p) == 3:
+                        points.append(Vector(p[0],p[1],p[2]))
+                    else:
+                        points.append(Vector(p[0],p[1],0))
                 newob = Draft.makeWire(points)
                 lay = locateLayer(rawValue(leader,8))
                 lay.addObject(newob)
