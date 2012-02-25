@@ -120,6 +120,7 @@ PyObject* PointsPy::writeInventor(PyObject * args)
     for (Points::PointKernel::const_iterator it = kernel->begin(); it != kernel->end(); ++it)
         builder.addPoint((float)it->x,(float)it->y,(float)it->z);
     builder.endPoints();
+    builder.addPointSet();
     builder.close();
 
     return Py::new_reference_to(Py::String(result.str()));

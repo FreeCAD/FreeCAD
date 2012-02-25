@@ -23,9 +23,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QPixmap>
 # include <QDialog>
 #endif
 
+#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
 #include <Base/Tools.h>
 
@@ -34,9 +36,16 @@
 
 using namespace SketcherGui;
 
-SketchOrientationDialog::SketchOrientationDialog(void) 
+SketchOrientationDialog::SketchOrientationDialog(void)
+  : QDialog(Gui::getMainWindow()), ui(new Ui_SketchOrientationDialog)
 {
+    ui->setupUi(this);
+    onPreview();
 
+    connect(ui->Reverse_checkBox, SIGNAL(clicked(bool)), this, SLOT(onPreview()));
+    connect(ui->XY_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
+    connect(ui->XZ_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
+    connect(ui->YZ_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
 }
 
 SketchOrientationDialog::~SketchOrientationDialog()
@@ -44,51 +53,70 @@ SketchOrientationDialog::~SketchOrientationDialog()
 
 }
 
-int SketchOrientationDialog::exec()
+void SketchOrientationDialog::accept()
 {
-    //Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    //Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-    QDialog dlg(Gui::getMainWindow());
-
-    Ui::SketchOrientationDialog ui_SketchOrientationDialog;
-    ui_SketchOrientationDialog.setupUi(&dlg);
-
-    int res;
-    if (res=dlg.exec()) {
-        double offset = ui_SketchOrientationDialog.Offset_doubleSpinBox->value();
-        bool reverse = ui_SketchOrientationDialog.Reverse_checkBox->isChecked();
-        if (ui_SketchOrientationDialog.XY_radioButton->isChecked()) {
-            if (reverse) {
-                Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation(-1.0,0.0,0.0,0.0));
-                DirType = 1;
-            }
-            else {
-                Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation());
-                DirType = 0;
-            }
+    double offset = ui->Offset_doubleSpinBox->value();
+    bool reverse = ui->Reverse_checkBox->isChecked();
+    if (ui->XY_radioButton->isChecked()) {
+        if (reverse) {
+            Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation(-1.0,0.0,0.0,0.0));
+            DirType = 1;
         }
-        else if (ui_SketchOrientationDialog.XZ_radioButton->isChecked()) {
-            if (reverse) {
-                Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(0,sqrt(2.0)/2.0,sqrt(2.0)/2.0),M_PI));
-                DirType = 3;
-            }
-            else {
-                Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(-1,0,0),1.5*M_PI));
-                DirType = 2;
-            }
+        else {
+            Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation());
+            DirType = 0;
         }
-        else if (ui_SketchOrientationDialog.YZ_radioButton->isChecked()) {
-            if (reverse) {
-                Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(-0.5,0.5,0.5,-0.5));
-                DirType = 5;
-            }
-            else {
-                Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(0.5,0.5,0.5,0.5));
-                DirType = 4;
-            }
+    }
+    else if (ui->XZ_radioButton->isChecked()) {
+        if (reverse) {
+            Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(0,sqrt(2.0)/2.0,sqrt(2.0)/2.0),M_PI));
+            DirType = 3;
+        }
+        else {
+            Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(-1,0,0),1.5*M_PI));
+            DirType = 2;
+        }
+    }
+    else if (ui->YZ_radioButton->isChecked()) {
+        if (reverse) {
+            Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(-0.5,0.5,0.5,-0.5));
+            DirType = 5;
+        }
+        else {
+            Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(0.5,0.5,0.5,0.5));
+            DirType = 4;
         }
     }
 
-    return res;
+    QDialog::accept();
 }
+
+void SketchOrientationDialog::onPreview()
+{
+    std::string icon;
+    bool reverse = ui->Reverse_checkBox->isChecked();
+    if (ui->XY_radioButton->isChecked()) {
+        if (reverse)
+            icon = "view-bottom";
+        else
+            icon = "view-top";
+    }
+    else if (ui->XZ_radioButton->isChecked()) {
+        if (reverse)
+            icon = "view-rear";
+        else
+            icon = "view-front";
+    }
+    else if (ui->YZ_radioButton->isChecked()) {
+        if (reverse)
+            icon = "view-left";
+        else
+            icon = "view-right";
+    }
+
+    ui->previewLabel->setPixmap(
+        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(),
+        ui->previewLabel->size()));
+}
+
+#include "moc_SketchOrientationDialog.cpp"
