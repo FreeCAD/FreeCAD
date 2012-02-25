@@ -73,6 +73,11 @@
 				<UserDocu>Deliver the distance of the point to a given line</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="distanceToLineSegment" Const="true">
+			<Documentation>
+				<UserDocu>Deliver the distance of the point to a given line segment</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="distanceToPlane" Const="true">
 			<Documentation>
 				<UserDocu>Deliver the distance of the point to a given plane</UserDocu>

@@ -401,6 +401,31 @@ PyObject*  VectorPy::distanceToLine(PyObject *args)
     return Py::new_reference_to(dist);
 }
 
+PyObject*  VectorPy::distanceToLineSegment(PyObject *args)
+{
+    PyObject *base, *line;
+    if (!PyArg_ParseTuple(args, "OO",&base, &line))
+        return 0;
+    if (!PyObject_TypeCheck(base, &(VectorPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Vector");
+        return 0;
+    }
+    if (!PyObject_TypeCheck(line, &(VectorPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Second arg must be Vector");
+        return 0;
+    }
+
+    VectorPy* base_vec = static_cast<VectorPy*>(base);
+    VectorPy* line_vec = static_cast<VectorPy*>(line);
+
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
+    VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
+
+    Vector3d v = this_ptr->DistanceToLineSegment(*base_ptr, *line_ptr);
+    return new VectorPy(v);
+}
+
 PyObject*  VectorPy::distanceToPlane(PyObject *args)
 {
     PyObject *base, *line;

@@ -24,20 +24,31 @@
 #define SKETCHERGUI_SketchOrientationDialog_H
 
 #include <Base/Placement.h>
+#include <QDialog>
 
 namespace SketcherGui {
 
-class SketchOrientationDialog {
+class Ui_SketchOrientationDialog;
+class SketchOrientationDialog : public QDialog
+{
+    Q_OBJECT
+
 public:
     SketchOrientationDialog(void);
     ~SketchOrientationDialog();
 
-    int exec();
-
     Base::Placement Pos;
     int             DirType;
-   
+
+    void accept();
+
+protected Q_SLOTS:
+    void onPreview();
+
+private:
+    Ui_SketchOrientationDialog* ui;
 };
 
 }
+
 #endif // SKETCHERGUI_SketchOrientationDialog_H

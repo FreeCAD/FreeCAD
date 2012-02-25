@@ -61,6 +61,7 @@ namespace ModelRefine
         static GeomAbs_SurfaceType getFaceType(const TopoDS_Face &faceIn);
 
     protected:
+        virtual void boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const;
         GeomAbs_SurfaceType surfaceType;
     };
 
@@ -85,6 +86,9 @@ namespace ModelRefine
         virtual GeomAbs_SurfaceType getType() const;
         virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
         friend FaceTypedCylinder& getCylinderObject();
+
+    protected:
+        virtual void boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const;
     };
     FaceTypedCylinder& getCylinderObject();
 
@@ -132,17 +136,6 @@ namespace ModelRefine
 
     private:
         std::vector<FaceVectorType> equalityVector;
-    };
-
-    class BoundaryEdgeSplitter
-    {
-    public:
-        BoundaryEdgeSplitter(){}
-        void split(const EdgeVectorType &edgesIn);
-        const std::vector<EdgeVectorType>& getGroupedEdges(){return groupedEdges;}
-
-    private:
-        std::vector<EdgeVectorType> groupedEdges;
     };
 
     class FaceUniter
