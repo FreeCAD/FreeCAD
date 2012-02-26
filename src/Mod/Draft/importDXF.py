@@ -609,7 +609,7 @@ def drawBlock(blockref,num=None):
 
 def drawInsert(insert,num=None):
     if blockshapes.has_key(insert):
-        shape = blockshapes[insert.block]
+        shape = blockshapes[insert.block].copy()
     else:
         shape = None
         for b in drawing.blocks.data:
@@ -624,7 +624,7 @@ def drawInsert(insert,num=None):
         rot = math.radians(insert.rotation)
         scale = insert.scale
         tsf = FreeCAD.Matrix()
-        tsf.scale(vec(scale))
+        tsf.scale(scale[0],scale[1],0) # for some reason z must be 0 to work
         tsf.rotateZ(rot)
         shape = shape.transformGeometry(tsf)
         shape.translate(pos)
@@ -709,6 +709,9 @@ def addText(text,attrib=False):
                     ax = Vector(0,0,1)
                 ang = -math.degrees(fcvec.angle(xv,Vector(1,0,0),ax))
                 Draft.rotate(newob,ang,axis=ax)
+        elif hasattr(text,"rotation"):
+            if text.rotation:
+                Draft.rotate(newob,text.rotation)
         newob.LabelText = val.split("\n")
         newob.Position = pos
         if gui:
