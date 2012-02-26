@@ -928,7 +928,7 @@ bool Application::activateWorkbench(const char* name)
             Py::Tuple args;
             Py::String result(method.apply(args));
             type = result.as_std_string();
-            if (type == "Gui::PythonWorkbench") {
+            if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
                 Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
             }
@@ -1411,6 +1411,8 @@ void Application::initTypes(void)
     Gui::BlankWorkbench                         ::init();
     Gui::NoneWorkbench                          ::init();
     Gui::TestWorkbench                          ::init();
+    Gui::PythonBaseWorkbench                    ::init();
+    Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
 }
 

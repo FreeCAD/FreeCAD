@@ -3,8 +3,8 @@
   <PythonExport 
     Father="WorkbenchPy" 
     Name="PythonWorkbenchPy" 
-    Twin="PythonWorkbench" 
-    TwinPointer="PythonWorkbench" 
+    Twin="PythonBaseWorkbench" 
+    TwinPointer="PythonBaseWorkbench" 
     Include="Gui/Workbench.h" 
     Namespace="Gui" 
     FatherInclude="Gui/WorkbenchPy.h" 
