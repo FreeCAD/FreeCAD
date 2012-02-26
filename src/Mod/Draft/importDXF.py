@@ -171,6 +171,23 @@ def rawValue(entity,code):
             value = pair[1]
     return value
 
+def getMultiplePoints(entity):
+    "scans the given entity for multiple points (paths, leaders, etc)"
+    pts = []
+    for d in entity.data:
+        if d[0] == 10:
+            pts.append([d[1]])
+        elif d[0] in [20,30]:
+            pts[-1].append(d[1])
+    pts.reverse()
+    points = []
+    for p in pts:
+        if len(p) == 3:
+            points.append(Vector(p[0],p[1],p[2]))
+        else:
+            points.append(Vector(p[0],p[1],0))
+    return points
+
 class fcformat:
     "this contains everything related to color/lineweight formatting"
     def __init__(self,drawing):
@@ -183,6 +200,7 @@ class fcformat:
         self.join = params.GetBool("joingeometry")
         self.makeBlocks = params.GetBool("groupLayers")
         self.stdSize = params.GetBool("dxfStdSize")
+        self.importDxfHatches = params.GetBool("importDxfHatches")
         bparams = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
 
         if self.paramstyle > 1:
@@ -1038,21 +1056,7 @@ def processdxf(document,filename):
             FreeCAD.Console.PrintMessage("drawing "+str(len(leaders))+" leaders...\n")
         for leader in leaders:
             if fmt.dxflayout or (not rawValue(leader,67)):
-                pts = []
-                print leader.data
-                for d in leader.data:
-                    print d
-                    if d[0] == 10:
-                        pts.append([d[1]])
-                    elif d[0] in [20,30]:
-                        pts[-1].append(d[1])
-                pts.reverse()
-                points = []
-                for p in pts:
-                    if len(p) == 3:
-                        points.append(Vector(p[0],p[1],p[2]))
-                    else:
-                        points.append(Vector(p[0],p[1],0))
+                points = getMultiplePoints(leader)
                 newob = Draft.makeWire(points)
                 lay = locateLayer(rawValue(leader,8))
                 lay.addObject(newob)
@@ -1061,6 +1065,36 @@ def processdxf(document,filename):
                     fmt.formatObject(newob,leader)
     else: 
         FreeCAD.Console.PrintMessage("skipping leaders...\n")
+
+    # drawing hatches
+
+    if fmt.importDxfHatches:
+        hatches = drawing.entities.get_type("hatch")
+        if hatches:
+            FreeCAD.Console.PrintMessage("drawing "+str(len(hatches))+" hatches...\n")
+        for hatch in hatches:
+            if fmt.dxflayout or (not rawValue(hatch,67)):
+                points = getMultiplePoints(hatch)
+                if len(points) > 1:
+                    lay = rawValue(hatch,8)
+                    points = points[:-1]
+                    newob = None
+                    if (fmt.paramstyle == 0) or fmt.makeBlocks:
+                        points.append(points[0])
+                        s = Part.makePolygon(points)
+                        if fmt.makeBlocks:
+                            addToBlock(s,lay)
+                        else:
+                            newob = doc.addObject("Part::Feature","Hatch")
+                            newob.Shape = s
+                    else:
+                        newob = Draft.makeWire(points)
+                    if newob:
+                        locateLayer(lay).addObject(newob)
+                        if gui: 
+                            fmt.formatObject(newob,hatch)
+    else: 
+        FreeCAD.Console.PrintMessage("skipping hatches...\n")
 
     # drawing blocks
     

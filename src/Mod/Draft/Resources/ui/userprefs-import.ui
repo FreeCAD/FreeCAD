@@ -300,6 +300,26 @@ If color mapping is choosed, you must choose a color mapping file containing a t
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
+          <property name="toolTip">
+           <string>If this is checked, hatches will be converted into simple wires</string>
+          </property>
+          <property name="text">
+           <string>Import hatch boundaries as wires</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>importDxfHatches</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
