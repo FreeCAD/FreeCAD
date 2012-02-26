@@ -96,7 +96,7 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
             return NULL;                             // NULL triggers exception 
         }
 
-        getPythonWorkbenchPtr()->appendMenu( path, items );
+        getPythonBaseWorkbenchPtr()->appendMenu( path, items );
 
         Py_Return; 
     } PY_CATCH;
@@ -110,7 +110,7 @@ PyObject*  PythonWorkbenchPy::removeMenu(PyObject *args)
         if (!PyArg_ParseTuple(args, "s", &psMenu))     // convert args: Python->C 
             return NULL;                             // NULL triggers exception 
     
-        getPythonWorkbenchPtr()->removeMenu( psMenu );
+        getPythonBaseWorkbenchPtr()->removeMenu( psMenu );
         Py_Return; 
     } PY_CATCH;
 }
@@ -119,7 +119,7 @@ PyObject*  PythonWorkbenchPy::removeMenu(PyObject *args)
 PyObject*  PythonWorkbenchPy::listMenus(PyObject *args)
 {
     PY_TRY {
-        std::list<std::string> menus = getPythonWorkbenchPtr()->listMenus();
+        std::list<std::string> menus = getPythonBaseWorkbenchPtr()->listMenus();
 
         PyObject* pyList = PyList_New(menus.size());
         int i=0;
@@ -180,7 +180,7 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
             return NULL;                             // NULL triggers exception 
         }
 
-        getPythonWorkbenchPtr()->appendContextMenu( path, items );
+        getPythonBaseWorkbenchPtr()->appendContextMenu( path, items );
 
         Py_Return; 
     } PY_CATCH;
@@ -194,7 +194,7 @@ PyObject*  PythonWorkbenchPy::removeContextMenu(PyObject *args)
         if (!PyArg_ParseTuple(args, "s", &psMenu))     // convert args: Python->C 
             return NULL;                             // NULL triggers exception 
     
-        getPythonWorkbenchPtr()->removeContextMenu( psMenu );
+        getPythonBaseWorkbenchPtr()->removeContextMenu( psMenu );
         Py_Return; 
     } PY_CATCH;
 }
@@ -222,7 +222,7 @@ PyObject*  PythonWorkbenchPy::appendToolbar(PyObject *args)
             items.push_back(pItem);
         }
 
-        getPythonWorkbenchPtr()->appendToolbar( psToolBar, items );
+        getPythonBaseWorkbenchPtr()->appendToolbar( psToolBar, items );
 
         Py_Return; 
     } PY_CATCH;
@@ -236,7 +236,7 @@ PyObject*  PythonWorkbenchPy::removeToolbar(PyObject *args)
         if (!PyArg_ParseTuple(args, "s", &psToolBar))     // convert args: Python->C 
             return NULL;                             // NULL triggers exception 
     
-        getPythonWorkbenchPtr()->removeToolbar( psToolBar );
+        getPythonBaseWorkbenchPtr()->removeToolbar( psToolBar );
         Py_Return; 
     } PY_CATCH;
 }
@@ -245,7 +245,7 @@ PyObject*  PythonWorkbenchPy::removeToolbar(PyObject *args)
 PyObject*  PythonWorkbenchPy::listToolbars(PyObject *args)
 {
     PY_TRY {
-        std::list<std::string> bars = getPythonWorkbenchPtr()->listToolbars();
+        std::list<std::string> bars = getPythonBaseWorkbenchPtr()->listToolbars();
 
         PyObject* pyList = PyList_New(bars.size());
         int i=0;
@@ -280,7 +280,7 @@ PyObject*  PythonWorkbenchPy::appendCommandbar(PyObject *args)
             items.push_back(pItem);
         }
 
-        getPythonWorkbenchPtr()->appendCommandbar( psToolBar, items );
+        getPythonBaseWorkbenchPtr()->appendCommandbar( psToolBar, items );
 
         Py_Return; 
     } PY_CATCH;
@@ -294,7 +294,7 @@ PyObject*  PythonWorkbenchPy::removeCommandbar(PyObject *args)
         if (!PyArg_ParseTuple(args, "s", &psToolBar))     // convert args: Python->C 
             return NULL;                             // NULL triggers exception 
     
-        getPythonWorkbenchPtr()->removeCommandbar( psToolBar );
+        getPythonBaseWorkbenchPtr()->removeCommandbar( psToolBar );
         Py_Return; 
     } PY_CATCH;
 }
@@ -303,7 +303,7 @@ PyObject*  PythonWorkbenchPy::removeCommandbar(PyObject *args)
 PyObject*  PythonWorkbenchPy::listCommandbars(PyObject *args)
 {
     PY_TRY {
-        std::list<std::string> bars = getPythonWorkbenchPtr()->listCommandbars();
+        std::list<std::string> bars = getPythonBaseWorkbenchPtr()->listCommandbars();
 
         PyObject* pyList = PyList_New(bars.size());
         int i=0;

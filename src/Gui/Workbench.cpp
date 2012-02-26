@@ -173,6 +173,7 @@ using namespace Gui;
  * \section moredetails More details and limitations
  * One of the key concepts of the workbench framework is to load a module at runtime when the user needs some function that it
  * provides. So, if the user doesn't need a module it never gets loaded into RAM. This speeds up the startup procedure of
+
  * FreeCAD and saves memory.
  * At startup FreeCAD scans all module directories and invokes InitGui.py. So an item for a workbench gets created. If the user
  * clicks on such an item the matching module gets loaded, the C++ workbench gets registered and activated.
@@ -750,30 +751,26 @@ ToolBarItem* TestWorkbench::setupCommandBars() const
 
 // -----------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Gui::PythonWorkbench, Gui::Workbench)
+TYPESYSTEM_SOURCE(Gui::PythonBaseWorkbench, Gui::Workbench)
 
-PythonWorkbench::PythonWorkbench() : _workbenchPy(0)
+PythonBaseWorkbench::PythonBaseWorkbench()
+  : _menuBar(0), _contextMenu(0), _toolBar(0), _commandBar(0), _workbenchPy(0)
 {
-    _menuBar = StdWorkbench::setupMenuBar();
-    _contextMenu = new MenuItem;
-    _toolBar = StdWorkbench::setupToolBars();
-    _commandBar = new ToolBarItem;
 }
 
-PythonWorkbench::~PythonWorkbench()
+PythonBaseWorkbench::~PythonBaseWorkbench()
 {
     delete _menuBar;
     delete _contextMenu;
     delete _toolBar;
     delete _commandBar;
-    if (_workbenchPy)
-    {
+    if (_workbenchPy) {
         _workbenchPy->setInvalid();
         _workbenchPy->DecRef();
     }
 }
 
-PyObject* PythonWorkbench::getPyObject()
+PyObject* PythonBaseWorkbench::getPyObject()
 {
     if (!_workbenchPy)
     {
@@ -786,31 +783,35 @@ PyObject* PythonWorkbench::getPyObject()
     return _workbenchPy;
 }
 
-MenuItem* PythonWorkbench::setupMenuBar() const
+MenuItem* PythonBaseWorkbench::setupMenuBar() const
 {
     return _menuBar->copy();
 }
 
-ToolBarItem* PythonWorkbench::setupToolBars() const
+ToolBarItem* PythonBaseWorkbench::setupToolBars() const
 {
     return _toolBar->copy();
 }
 
-ToolBarItem* PythonWorkbench::setupCommandBars() const
+ToolBarItem* PythonBaseWorkbench::setupCommandBars() const
 {
     return _commandBar->copy();
 }
 
-void PythonWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
+DockWindowItems* PythonBaseWorkbench::setupDockWindows() const
 {
-    StdWorkbench::setupContextMenu(recipient, item);
+    return new DockWindowItems();
+}
+
+void PythonBaseWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
+{
     QList<MenuItem*> items = _contextMenu->getItems();
     for (QList<MenuItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
         item->appendItem((*it)->copy());
     }
 }
 
-void PythonWorkbench::appendMenu(const std::list<std::string>& menu, const std::list<std::string>& items) const
+void PythonBaseWorkbench::appendMenu(const std::list<std::string>& menu, const std::list<std::string>& items) const
 {
     if ( menu.empty() || items.empty() )
         return;
@@ -841,7 +842,7 @@ void PythonWorkbench::appendMenu(const std::list<std::string>& menu, const std::
         *item << *it;
 }
 
-void PythonWorkbench::removeMenu(const std::string& menu) const
+void PythonBaseWorkbench::removeMenu(const std::string& menu) const
 {
     MenuItem* item = _menuBar->findItem(menu);
     if ( item ) {
@@ -850,7 +851,7 @@ void PythonWorkbench::removeMenu(const std::string& menu) const
     }
 }
 
-std::list<std::string> PythonWorkbench::listMenus() const
+std::list<std::string> PythonBaseWorkbench::listMenus() const
 {
     std::list<std::string> menus;
     QList<MenuItem*> items = _menuBar->getItems();
@@ -859,7 +860,7 @@ std::list<std::string> PythonWorkbench::listMenus() const
     return menus;
 }
 
-void PythonWorkbench::appendContextMenu(const std::list<std::string>& menu, const std::list<std::string>& items) const
+void PythonBaseWorkbench::appendContextMenu(const std::list<std::string>& menu, const std::list<std::string>& items) const
 {
     MenuItem* item = _contextMenu;
     for (std::list<std::string>::const_iterator jt=menu.begin();jt!=menu.end();++jt) {
@@ -875,7 +876,7 @@ void PythonWorkbench::appendContextMenu(const std::list<std::string>& menu, cons
         *item << *it;
 }
 
-void PythonWorkbench::removeContextMenu(const std::string& menu) const
+void PythonBaseWorkbench::removeContextMenu(const std::string& menu) const
 {
     MenuItem* item = _contextMenu->findItem(menu);
     if (item) {
@@ -884,12 +885,12 @@ void PythonWorkbench::removeContextMenu(const std::string& menu) const
     }
 }
 
-void PythonWorkbench::clearContextMenu()
+void PythonBaseWorkbench::clearContextMenu()
 {
     _contextMenu->clear();
 }
 
-void PythonWorkbench::appendToolbar(const std::string& bar, const std::list<std::string>& items) const
+void PythonBaseWorkbench::appendToolbar(const std::string& bar, const std::list<std::string>& items) const
 {
     ToolBarItem* item = _toolBar->findItem(bar);
     if (!item)
@@ -902,7 +903,7 @@ void PythonWorkbench::appendToolbar(const std::string& bar, const std::list<std:
         *item << *it;
 }
 
-void PythonWorkbench::removeToolbar(const std::string& bar) const
+void PythonBaseWorkbench::removeToolbar(const std::string& bar) const
 {
     ToolBarItem* item = _toolBar->findItem(bar);
     if (item) {
@@ -911,7 +912,7 @@ void PythonWorkbench::removeToolbar(const std::string& bar) const
     }
 }
 
-std::list<std::string> PythonWorkbench::listToolbars() const
+std::list<std::string> PythonBaseWorkbench::listToolbars() const
 {
     std::list<std::string> bars;
     QList<ToolBarItem*> items = _toolBar->getItems();
@@ -920,7 +921,7 @@ std::list<std::string> PythonWorkbench::listToolbars() const
     return bars;
 }
 
-void PythonWorkbench::appendCommandbar(const std::string& bar, const std::list<std::string>& items) const
+void PythonBaseWorkbench::appendCommandbar(const std::string& bar, const std::list<std::string>& items) const
 {
     ToolBarItem* item = _commandBar->findItem( bar );
     if ( !item )
@@ -933,7 +934,7 @@ void PythonWorkbench::appendCommandbar(const std::string& bar, const std::list<s
         *item << *it;
 }
 
-void PythonWorkbench::removeCommandbar(const std::string& bar) const
+void PythonBaseWorkbench::removeCommandbar(const std::string& bar) const
 {
     ToolBarItem* item = _commandBar->findItem(bar);
     if ( item ) {
@@ -942,7 +943,7 @@ void PythonWorkbench::removeCommandbar(const std::string& bar) const
     }
 }
 
-std::list<std::string> PythonWorkbench::listCommandbars() const
+std::list<std::string> PythonBaseWorkbench::listCommandbars() const
 {
     std::list<std::string> bars;
     QList<ToolBarItem*> items = _commandBar->getItems();
@@ -951,3 +952,69 @@ std::list<std::string> PythonWorkbench::listCommandbars() const
     return bars;
 }
 
+// -----------------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Gui::PythonBlankWorkbench, Gui::PythonBaseWorkbench)
+
+PythonBlankWorkbench::PythonBlankWorkbench()
+{
+    _menuBar = new MenuItem;
+    _contextMenu = new MenuItem;
+    _toolBar = new ToolBarItem;
+    _commandBar = new ToolBarItem;
+}
+
+PythonBlankWorkbench::~PythonBlankWorkbench()
+{
+}
+
+// -----------------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Gui::PythonWorkbench, Gui::PythonBaseWorkbench)
+
+PythonWorkbench::PythonWorkbench()
+{
+    StdWorkbench wb;
+    _menuBar = wb.setupMenuBar();
+    _contextMenu = new MenuItem;
+    _toolBar = wb.setupToolBars();
+    _commandBar = new ToolBarItem;
+}
+
+PythonWorkbench::~PythonWorkbench()
+{
+}
+
+MenuItem* PythonWorkbench::setupMenuBar() const
+{
+    return _menuBar->copy();
+}
+
+ToolBarItem* PythonWorkbench::setupToolBars() const
+{
+    return _toolBar->copy();
+}
+
+ToolBarItem* PythonWorkbench::setupCommandBars() const
+{
+    return _commandBar->copy();
+}
+
+DockWindowItems* PythonWorkbench::setupDockWindows() const
+{
+    StdWorkbench wb;
+    return wb.setupDockWindows();
+}
+
+void PythonWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
+{
+    StdWorkbench wb;
+    wb.setupContextMenu(recipient, item);
+    PythonBaseWorkbench::setupContextMenu(recipient, item);
+}
+
+void PythonWorkbench::createMainWindowPopupMenu(MenuItem* item) const
+{
+    StdWorkbench wb;
+    wb.createMainWindowPopupMenu(item);
+}
