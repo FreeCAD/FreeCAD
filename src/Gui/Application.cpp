@@ -30,6 +30,8 @@
 # include <sstream>
 # include <stdexcept>
 # include <QCloseEvent>
+# include <QDir>
+# include <QFileInfo>
 # include <QLocale>
 # include <QMessageBox>
 # include <QPointer>
@@ -1569,6 +1571,8 @@ void Application::runApplication(void)
     SoQt::init(&mw);
     SoFCDB::init();
 
+    QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+
     const std::map<std::string,std::string>& cfg = App::Application::Config();
     std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("WindowTitle");
@@ -1579,11 +1583,17 @@ void Application::runApplication(void)
     it = cfg.find("WindowIcon");
     if (it != cfg.end()) {
         QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
         QApplication::setWindowIcon(QIcon(path));
     }
     it = cfg.find("ProgramLogo");
     if (it != cfg.end()) {
         QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
         QPixmap px(path);
         if (!px.isNull()) {
             QLabel* logo = new QLabel();
