@@ -403,15 +403,16 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
               << "Separator" << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
-            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_TreeSelection" 
+            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
+                  << "Std_ToggleSelectability" << "Std_TreeSelection" 
                   << "Std_RandomColor" << "Separator" << "Std_Delete";
     }
     else if (strcmp(recipient,"Tree") == 0)
     {
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
             *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
-                  << "Separator" << "Std_SetAppearance" << "Std_RandomColor"
-                  << "Separator" << "Std_Delete";
+                  << "Std_ToggleSelectability" << "Separator" << "Std_SetAppearance"
+                  << "Std_RandomColor" << "Separator" << "Std_Delete";
     }
 }
 
