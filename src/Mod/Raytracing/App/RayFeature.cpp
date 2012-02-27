@@ -46,6 +46,7 @@ PROPERTY_SOURCE(Raytracing::RayFeature, Raytracing::RaySegment)
 RayFeature::RayFeature(void)
 {
     ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
 }
 
 App::DocumentObjectExecReturn *RayFeature::execute(void)
@@ -64,6 +65,16 @@ App::DocumentObjectExecReturn *RayFeature::execute(void)
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
     PovTools::writeShape(result,Name.c_str(),shape);
+
+    // This must not be done in PovTools::writeShape!
+    const App::Color& c = Color.getValue();
+    result << "// instance to render" << endl
+           << "object {" << Name << endl
+           << "  texture {" << endl
+           << "      pigment {color rgb <"<<c.r<<","<<c.g<<","<<c.b<<">}" << endl
+           << "      finish {StdFinish } //definition on top of the project" << endl
+           << "  }" << endl
+           << "}" << endl   ;
 
     // Apply the resulting fragment
     Result.setValue(result.str().c_str());
