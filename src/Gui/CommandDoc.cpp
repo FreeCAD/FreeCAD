@@ -220,24 +220,15 @@ StdCmdExport::StdCmdExport()
 
 void StdCmdExport::activated(int iMsg)
 {
-    // fill the list of registered endings
-    QString formatList;
-    const char* supported = QT_TR_NOOP("Supported formats");
-    formatList = QObject::tr(supported);
-    formatList += QLatin1String(" (");
-
-    std::vector<std::string> filetypes = App::GetApplication().getExportTypes();
-    std::vector<std::string>::const_iterator it;
-    for (it=filetypes.begin();it != filetypes.end();++it) {
-        if (*it != "FCStd") {
-            // ignore the project file format
-            formatList += QLatin1String(" *.");
-            formatList += QLatin1String(it->c_str());
-        }
+    if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) == 0) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QString::fromUtf8(QT_TR_NOOP("No selection")),
+            QString::fromUtf8(QT_TR_NOOP("Please select first the objects you want to export.")));
+        return;
     }
 
-    formatList += QLatin1String(");;");
-
+    // fill the list of registered endings
+    QString formatList;
     std::map<std::string, std::string> FilterList = App::GetApplication().getExportFilters();
     std::map<std::string, std::string>::const_iterator jt;
     for (jt=FilterList.begin();jt != FilterList.end();++jt) {
@@ -264,9 +255,7 @@ void StdCmdExport::activated(int iMsg)
 
 bool StdCmdExport::isActive(void)
 {
-    // at least one object should be selected otherwise it might be confusing to the user
-    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0;
-    //return (getActiveGuiDocument() ? true : false);
+    return (getActiveGuiDocument() ? true : false);
 }
 
 //===========================================================================
