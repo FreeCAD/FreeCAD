@@ -38,6 +38,7 @@
 
 // forward declarations
 class SoEvent;
+class SoMotion3Event;
 class SoQtViewer;
 class SoCamera;
 class SoSensor;
@@ -126,6 +127,7 @@ public:
     void setViewingMode(const ViewerMode newmode);
     int getViewingMode() const;
     virtual SbBool processEvent(const SoEvent * const ev);
+    virtual SbBool processMotionEvent(const SoMotion3Event * const ev);
 
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled(void) const;
