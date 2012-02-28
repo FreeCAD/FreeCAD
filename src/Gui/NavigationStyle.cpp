@@ -113,8 +113,14 @@ public:
         else {
             SbVec3f zaxis(0,0,1);
             this->worldToScreen.multDirMatrix(zaxis, zaxis);
-            if (dif[0] > 0)
-                angle = -angle;
+            if (zaxis[1] < 0) {
+                if (dif[0] < 0)
+                    angle = -angle;
+            }
+            else {
+                if (dif[0] > 0)
+                    angle = -angle;
+            }
             rot.setValue(zaxis, angle);
         }
 
@@ -176,6 +182,8 @@ NavigationStyle& NavigationStyle::operator = (const NavigationStyle& ns)
     this->panningplane = ns.panningplane;
     this->menuenabled = ns.menuenabled;
     this->spinanimatingallowed = ns.spinanimatingallowed;
+    static_cast<FCSphereSheetProjector*>(this->spinprojector)->setOrbitStyle
+        (static_cast<FCSphereSheetProjector*>(ns.spinprojector)->getOrbitStyle());
     return *this;
 }
 
