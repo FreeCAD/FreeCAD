@@ -818,6 +818,33 @@ bool CmdPartFillet::isActive(void)
 }
 
 //===========================================================================
+// Part_Chamfer
+//===========================================================================
+DEF_STD_CMD_A(CmdPartChamfer);
+
+CmdPartChamfer::CmdPartChamfer()
+  :Command("Part_Chamfer")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Chamfer...");
+    sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Chamfer";
+}
+
+void CmdPartChamfer::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskChamferEdges(0));
+}
+
+bool CmdPartChamfer::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//===========================================================================
 // Part_Mirror
 //===========================================================================
 DEF_STD_CMD_A(CmdPartMirror);
@@ -1152,6 +1179,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRevolve());
     rcCmdMgr.addCommand(new CmdPartCrossSections());
     rcCmdMgr.addCommand(new CmdPartFillet());
+    rcCmdMgr.addCommand(new CmdPartChamfer());
     rcCmdMgr.addCommand(new CmdPartCommon());
     rcCmdMgr.addCommand(new CmdPartCut());
     rcCmdMgr.addCommand(new CmdPartFuse());
