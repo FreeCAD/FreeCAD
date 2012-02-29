@@ -93,8 +93,10 @@ EXTRA_DIST = \
 		Resources/icons/preferences-raytracing.svg \
 		Resources/icons/Raytrace_Camera.svg \
 		Resources/icons/Raytrace_Export.svg \
+		Resources/icons/Raytrace_ExportProject.svg \
 		Resources/icons/Raytrace_New.svg \
 		Resources/icons/Raytrace_Part.svg \
+		Resources/icons/Raytrace_NewPartSegment.svg \
 		DlgSettingsRay.ui \
 		FreeCADpov \
 		Resources/Raytracing.qrc \

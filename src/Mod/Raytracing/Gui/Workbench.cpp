@@ -56,35 +56,30 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* ray = new Gui::MenuItem;
     root->insertItem(item, ray);
     ray->setCommand("&Raytracing");
-    *ray	
-			<< "Raytracing_WriteView" 
-			<< "Raytracing_WriteCamera" 
-			<< "Raytracing_WritePart" 
-			<< "Separator"
-			<< "Raytracing_NewPovrayProject" 
-			<< "Raytracing_NewPartSegment" 
-			<< "Raytracing_ExportProject"; 
- 
+    *ray
+        << "Raytracing_WriteView" 
+        << "Raytracing_WriteCamera" 
+        << "Raytracing_WritePart" 
+        << "Separator"
+        << "Raytracing_NewPovrayProject" 
+        << "Raytracing_NewPartSegment" 
+        << "Raytracing_ExportProject"; 
+
     return root;
 }
 
-
-//Gui::ToolBarItem* Workbench::setupToolBars() const
-//{
-//    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-//    Gui::ToolBarItem* ray = new Gui::ToolBarItem(root);
-//    ray->setCommand("Raytracing tools");
-//    *ray << "Raytracing_NewProject" << "Raytracing_WriteCamera" << "Raytracing_WritePart";
-//    return root;
-//}
-//
-//Gui::ToolBarItem* Workbench::setupCommandBars() const
-//{
-//    // Part tools
-//    Gui::ToolBarItem* root = new Gui::ToolBarItem;
-//    Gui::ToolBarItem* ray = new Gui::ToolBarItem( root );
-//    ray->setCommand("Raytracing tools");
-//    *ray << "Raytracing_NewProject" << "Raytracing_WriteCamera" << "Raytracing_WritePart";
-//    return root;
-//}
-
+Gui::ToolBarItem* Workbench::setupToolBars() const
+{
+    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
+    Gui::ToolBarItem* ray = new Gui::ToolBarItem(root);
+    ray->setCommand("Raytracing tools");
+    *ray
+        << "Raytracing_WriteView" 
+        << "Raytracing_WriteCamera" 
+        << "Raytracing_WritePart" 
+        << "Separator"
+        << "Raytracing_NewPovrayProject" 
+        << "Raytracing_NewPartSegment" 
+        << "Raytracing_ExportProject"; 
+    return root;
+}

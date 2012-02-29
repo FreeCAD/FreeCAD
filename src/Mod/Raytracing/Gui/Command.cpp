@@ -349,7 +349,7 @@ bool CmdRaytracingNewPovrayProject::isActive(void)
 // Raytracing_NewPartView
 //===========================================================================
 
-DEF_STD_CMD(CmdRaytracingNewPartSegment);
+DEF_STD_CMD_A(CmdRaytracingNewPartSegment);
 
 CmdRaytracingNewPartSegment::CmdRaytracingNewPartSegment()
   : Command("Raytracing_NewPartSegment")
@@ -360,7 +360,7 @@ CmdRaytracingNewPartSegment::CmdRaytracingNewPartSegment()
     sToolTipText    = QT_TR_NOOP("Insert a new part object into a Povray project");
     sWhatsThis      = "Raytracing_NewPartSegment";
     sStatusTip      = sToolTipText;
-    sPixmap         = 0;
+    sPixmap         = "Raytrace_NewPartSegment";
 }
 
 void CmdRaytracingNewPartSegment::activated(int iMsg)
@@ -406,6 +406,14 @@ void CmdRaytracingNewPartSegment::activated(int iMsg)
     commitCommand();
 }
 
+bool CmdRaytracingNewPartSegment::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
 //===========================================================================
 // Raytracing_ExportProject
 //===========================================================================
@@ -421,7 +429,7 @@ CmdRaytracingExportProject::CmdRaytracingExportProject()
     sToolTipText  = QT_TR_NOOP("Export the Povray project file");
     sWhatsThis    = "Raytracing_ExportProject";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Raytrace_Export";
+    sPixmap       = "Raytrace_ExportProject";
 }
 
 void CmdRaytracingExportProject::activated(int iMsg)
