@@ -39,20 +39,10 @@
 using namespace Part;
 
 
-PROPERTY_SOURCE(Part::Fillet, Part::Feature)
+PROPERTY_SOURCE(Part::Fillet, Part::FilletBase)
 
 Fillet::Fillet()
 {
-    ADD_PROPERTY(Base,(0));
-    ADD_PROPERTY(Edges,(0,0,0));
-    Edges.setSize(0);
-}
-
-short Fillet::mustExecute() const
-{
-    if (Base.isTouched() || Edges.isTouched())
-        return 1;
-    return 0;
 }
 
 App::DocumentObjectExecReturn *Fillet::execute(void)

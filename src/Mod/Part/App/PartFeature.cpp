@@ -132,6 +132,24 @@ const char* Feature::getViewProviderName(void) const {
 
 // ---------------------------------------------------------
 
+PROPERTY_SOURCE(Part::FilletBase, Part::Feature)
+
+FilletBase::FilletBase()
+{
+    ADD_PROPERTY(Base,(0));
+    ADD_PROPERTY(Edges,(0,0,0));
+    Edges.setSize(0);
+}
+
+short FilletBase::mustExecute() const
+{
+    if (Base.isTouched() || Edges.isTouched())
+        return 1;
+    return 0;
+}
+
+// ---------------------------------------------------------
+
 PROPERTY_SOURCE(Part::FeatureExt, Part::Feature)
 
 

@@ -68,6 +68,19 @@ protected:
     TopLoc_Location getLocation() const;
 };
 
+class FilletBase : public Part::Feature
+{
+    PROPERTY_HEADER(Part::FilletBase);
+
+public:
+    FilletBase();
+
+    App::PropertyLink   Base;
+    PropertyFilletEdges Edges;
+
+    short mustExecute() const;
+};
+
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
 
