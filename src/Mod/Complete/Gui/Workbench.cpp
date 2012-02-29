@@ -528,7 +528,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     raytracing->setCommand("Raytracing");
     *raytracing << "Raytracing_WriteView"
                 << "Raytracing_WriteCamera"
-                << "Raytracing_WritePart";
+                << "Raytracing_WritePart"
+                << "Separator"
+                << "Raytracing_NewPovrayProject" 
+                << "Raytracing_NewPartSegment" 
+                << "Raytracing_ExportProject"; 
 
     // Drafting ****************************************************************************************************
 #   ifdef COMPLETE_USE_DRAFTING
