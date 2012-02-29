@@ -215,7 +215,8 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
     // no object selected in the combobox or no sub-element was selected
     if (!d->object || !msg.pSubName)
         return;
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (msg.Type == Gui::SelectionChanges::AddSelection ||
+        msg.Type == Gui::SelectionChanges::RmvSelection) {
         // when adding a sub-element to the selection check
         // whether this is the currently handled object
         App::Document* doc = d->object->getDocument();
@@ -229,7 +230,9 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
                 QString name = QString::fromAscii("Edge%1").arg(id);
                 if (name == subelement) {
                     // ok, check the selected sub-element
-                    Qt::CheckState checkState = Qt::Checked;
+                    Qt::CheckState checkState =
+                        (msg.Type == Gui::SelectionChanges::AddSelection
+                        ? Qt::Checked : Qt::Unchecked);
                     QVariant value(static_cast<int>(checkState));
                     QModelIndex index = model->index(i,0);
                     model->setData(index, value, Qt::CheckStateRole);
@@ -237,6 +240,7 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->treeView->selectionModel()->setCurrentIndex(index,QItemSelectionModel::NoUpdate);
                     QItemSelection selection(index, model->index(i,1));
                     ui->treeView->selectionModel()->select(selection, QItemSelectionModel::ClearAndSelect);
+                    ui->treeView->update();
                     break;
                 }
             }
