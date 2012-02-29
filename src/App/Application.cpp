@@ -1191,7 +1191,10 @@ void Application::processCmdLineFiles(void)
                 Base::Interpreter().runFile(File.filePath().c_str(), false);
             }
             else if (File.hasExtension("py")) {
-                Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                //FIXME: Does this make any sense? I think we should do the ame as for
+                // fcmacro or fcscript.
+                //Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                Base::Interpreter().runFile(File.filePath().c_str(), false);
             }
             else {
                 std::vector<std::string> mods = App::GetApplication().getImportModules(Ext.c_str());
