@@ -1756,7 +1756,7 @@ void PropertyMaterial::setSpecularColor(const Color& col)
     hasSetValue();
 }
 
-void PropertyMaterial::setEmmisiveColor(const Color& col)
+void PropertyMaterial::setEmissiveColor(const Color& col)
 {
     aboutToSetValue();
     _cMat.emissiveColor = col;
