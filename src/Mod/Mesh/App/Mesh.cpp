@@ -34,6 +34,7 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>
+#include <Base/Sequencer.h>
 
 #include "Core/Builder.h"
 #include "Core/MeshKernel.h"
@@ -1181,6 +1182,7 @@ MeshObject* MeshObject::createMeshFromList(Py::List& list)
         }
     }
 
+    Base::EmptySequencer seq;
     std::auto_ptr<MeshObject> mesh(new MeshObject);
     //mesh->addFacets(facets);
     mesh->getKernel() = facets;
