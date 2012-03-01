@@ -643,8 +643,10 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
     {
     case PythonConsole::Incomplete:
         cursor.insertText(QString::fromAscii("... "));
+        break;
     case PythonConsole::Complete:
         cursor.insertText(QString::fromAscii(">>> "));
+        break;
     default:
         break;
     }
