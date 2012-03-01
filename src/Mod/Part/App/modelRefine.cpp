@@ -452,6 +452,9 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
     }
     if (faceFixer.Perform() > ShapeExtend_DONE5)
         return TopoDS_Face();
+    faceFixer.FixOrientation();
+    if (faceFixer.Perform() > ShapeExtend_DONE5)
+        return TopoDS_Face();
     return faceFixer.Face();
 }
 
