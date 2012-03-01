@@ -35,6 +35,7 @@
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
+# include <sstream>
 #endif
 
 #include <Handle_XSControl_WorkSession.hxx>
@@ -89,9 +90,10 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     TopoDS_Shape aShape;
     Base::FileInfo fi(Name);
 
-    if (!fi.isReadable()) {
-        Base::Console().Log("ImportStep() not able to open %s!\n",Name);
-        throw Base::Exception("Cannot open STEP file");
+    if (!fi.exists()) {
+        std::stringstream str;
+        str << "File '" << Name << "' does not exist!";
+        throw Base::Exception(str.str().c_str());
     }
 
     if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
