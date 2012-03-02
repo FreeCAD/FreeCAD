@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <algorithm>
 
 #include "Trim.h"
 #include "Grid.h"
@@ -83,8 +84,8 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
         Base::SequencerLauncher seq("Check facets for intersection...", aulAllElements.size());
 
         for (it = aulAllElements.begin(); it != aulAllElements.end(); it++) {
-            MeshGeomFacet &rclFacet = myMesh.GetFacet(*it);
-            if (HasIntersection(rclFacet))
+            MeshGeomFacet clFacet = myMesh.GetFacet(*it);
+            if (HasIntersection(clFacet))
                 raulFacets.push_back(*it);
             seq.next();
         }
