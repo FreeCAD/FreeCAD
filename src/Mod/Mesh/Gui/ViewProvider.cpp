@@ -77,6 +77,8 @@
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/Core/MeshIO.h>
 #include <Mod/Mesh/App/Core/Triangulation.h>
+#include <Mod/Mesh/App/Core/Trim.h>
+#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 #include <Mod/Mesh/App/Core/Visitor.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -616,6 +618,41 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     }
 }
 
+void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
+{
+    // show the wait cursor because this could take quite some time
+    Gui::WaitCursor wc;
+
+    // When this callback function is invoked we must in either case leave the edit mode
+    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    view->setEditing(false);
+    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), trimMeshCallback,ud);
+    n->setHandled();
+
+    SbBool clip_inner;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    if (clPoly.size() < 3)
+        return;
+    if (clPoly.front() != clPoly.back())
+        clPoly.push_back(clPoly.front());
+
+    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    if (!views.empty()) {
+        Gui::Application::Instance->activeDocument()->openCommand("Cut");
+        for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
+            ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
+            if (that->getEditingMode() > -1) {
+                that->finishEditing();
+                that->trimMesh(clPoly, *view, clip_inner);
+            }
+        }
+
+        Gui::Application::Instance->activeDocument()->commitCommand();
+
+        view->render();
+    }
+}
+
 void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
 {
     // show the wait cursor because this could take quite some time
@@ -1014,6 +1051,65 @@ void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked,
 
     //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
     meshProp.deleteFacetIndices(indices);
+    pcObject->purgeTouched();
+}
+
+void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon, 
+                               Gui::View3DInventorViewer& viewer, SbBool inner)
+{
+    // get the drawing plane
+    SbViewVolume vol = viewer.getCamera()->getViewVolume();
+    SbPlane drawPlane = vol.getPlane(viewer.getCamera()->focalDistance.getValue());
+
+    std::vector<unsigned long> indices;
+    Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.startEditing();
+    MeshCore::MeshFacetGrid meshGrid(mesh->getKernel());
+    MeshCore::MeshAlgorithm meshAlg(mesh->getKernel());
+
+#if 0
+    for (std::vector<SbVec2f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it) {
+        // the following element
+        std::vector<SbVec2f>::const_iterator nt = it + 1;
+        if (nt == polygon.end())
+            break;
+        else if (*it == *nt)
+            continue; // two adjacent vertices are equal
+
+        SbVec3f p1,p2;
+        SbLine l1, l2;
+        vol.projectPointToLine(*it, l1);
+        drawPlane.intersect(l1, p1);
+        vol.projectPointToLine(*nt, l2);
+        drawPlane.intersect(l2, p2);
+
+        SbPlane plane(l1.getPosition(), l2.getPosition(),
+                      l1.getPosition()+l1.getDirection());
+        const SbVec3f& n = plane.getNormal();
+        float d = plane.getDistanceFromOrigin();
+        meshAlg.GetFacetsFromPlane(meshGrid,
+            Base::Vector3f(n[0],n[1],n[2]), d, 
+            Base::Vector3f(p1[0],p1[1],p1[2]),
+            Base::Vector3f(p2[0],p2[1],p2[2]), indices);
+    }
+#endif
+
+    Gui::ViewVolumeProjection proj(vol);
+    Base::Polygon2D polygon2d;
+    for (std::vector<SbVec2f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
+        polygon2d.Add(Base::Vector2D((*it)[0],(*it)[1]));
+    MeshCore::MeshTrimming trim(mesh->getKernel(), &proj, polygon2d);
+    std::vector<unsigned long> check;
+    std::vector<MeshCore::MeshGeomFacet> triangle;
+    trim.SetInnerOrOuter(inner ? MeshCore::MeshTrimming::INNER : MeshCore::MeshTrimming::OUTER);
+    trim.CheckFacets(meshGrid, check);
+    trim.TrimFacets(check, triangle);
+    mesh->deleteFacets(check);
+    if (!triangle.empty()) {
+        mesh->getKernel().AddFacets(triangle);
+    }
+    //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
+    //mesh->deleteFacets(indices);
+    static_cast<Mesh::Feature*>(pcObject)->Mesh.finishEditing();
     pcObject->purgeTouched();
 }
 
