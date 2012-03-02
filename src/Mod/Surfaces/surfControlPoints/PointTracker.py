@@ -66,7 +66,7 @@ class PointTracker:
                     if not point:
                         point = self.view.getPoint(screen[0],screen[1])
                     # Translate points
-                    self.movePoints(point - self.point, True)
+                    self.movePoints(point - self.point)
                 self.isMouseDown=False
                 Gui.Snapper.off()
                 return
@@ -99,7 +99,7 @@ class PointTracker:
             if not point:
                 point = self.view.getPoint(screen[0],screen[1])
             # Translate points
-            self.movePoints(point - self.point, True)
+            self.movePoints(point - self.point)
             return
 
     def isOnDrag(self, screen):
@@ -159,7 +159,7 @@ class PointTracker:
                     return True
         return False
 
-    def movePoints(self,vec,perform=False):
+    def movePoints(self,vec):
         """ Move selected control points.
         @param vec Translation vector (App.Base.Vector type expected).
         @param perform True if objects must be completely renewed, building new edges and modifying surface.
@@ -198,7 +198,7 @@ class PointTracker:
                         vList[i].translate(vec - App.Base.Vector(dX,dY,dZ))
                         break
             # Call to modify the object
-            obj.Proxy.movedVertexes(obj,vList,perform)
+            obj.Proxy.movedVertexes(obj,vList)
 
     def close(self):
         # Switch off snapping
