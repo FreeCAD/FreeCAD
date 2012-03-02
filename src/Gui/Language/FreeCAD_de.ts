@@ -71,7 +71,7 @@
     </message>
     <message>
         <source>Press SHIFT and middle mouse button</source>
-        <translation>Press SHIFT and middle mouse button</translation>
+        <translation>Drücke die Umschalttaste und die mittlere Maustaste</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
@@ -154,7 +154,7 @@
     </message>
     <message>
         <source>Platform</source>
-        <translation>Platform</translation>
+        <translation>Plattform</translation>
     </message>
     <message>
         <source>License...</source>
@@ -165,7 +165,7 @@
     <name>Gui::Dialog::ButtonModel</name>
     <message>
         <source>Button %1</source>
-        <translation>Button %1</translation>
+        <translation>Schaltfläche %1</translation>
     </message>
     <message>
         <source>Out Of Range</source>
@@ -660,7 +660,7 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     </message>
     <message>
         <source>Buttons</source>
-        <translation>Knöpfe</translation>
+        <translation>Schaltflächen</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -860,7 +860,7 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     </message>
     <message>
         <source>Extra large (%1 x %1)</source>
-        <translation>Extra large (%1 x %1)</translation>
+        <translation>Extra groß (%1 x %1)</translation>
     </message>
 </context>
 <context>
@@ -1063,7 +1063,7 @@ Diese Datei ist bereits vorhanden.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Emissive color:</source>
@@ -1190,7 +1190,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1252,7 +1252,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1271,7 +1271,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
-        <translation>Projekt-Datei (*.fcstd)</translation>
+        <translation>Projektdatei (*.fcstd)</translation>
     </message>
     <message>
         <source>Destination</source>
@@ -1279,7 +1279,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Extract</source>
-        <translation>Extrahieren</translation>
+        <translation>Entpacken</translation>
     </message>
     <message>
         <source>Create project</source>
@@ -1358,7 +1358,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Redirect internal Python errors to report view</source>
@@ -1452,7 +1452,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>3D Navigation</source>
@@ -1590,7 +1590,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Color-gradient settings</source>
@@ -1658,11 +1658,11 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Maximum Undo/Redo steps</source>
-        <translation>Maximale Undo/Redo-Schritte</translation>
+        <translation>Maximale Rückgängigmachen/Wiederholen-Schritte</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
-        <translation>Undo/Redo für Dokumente verwenden</translation>
+        <translation>Rückgängigmachen/Wiederholen in Dokumenten verwenden</translation>
     </message>
 </context>
 <context>
@@ -2049,23 +2049,23 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Fully constrained geometry</source>
-        <translation>Komplett gebundene Geometrien</translation>
+        <translation>Komplett festgelegte Geometrien</translation>
     </message>
     <message>
         <source>The color of construction geometry in editmode</source>
-        <translation>Die Farbe von Konstruktionsgeometrien im Editier-Modus</translation>
+        <translation>Die Farbe der Konstruktionsgeometrien im Editier-Modus</translation>
     </message>
     <message>
         <source>The color of fully constrained geometry in editmode</source>
-        <translation>Die Farbe von komplett gebundenen Geometrien im Editier-Modus</translation>
+        <translation>Die Farbe der komplett festgelegten Geometrien im Editier-Modus</translation>
     </message>
     <message>
         <source>The color of vertices being edited</source>
-        <translation>Die Farbe von zu bearbeitenden Vertexe</translation>
+        <translation>Die Farbe der zu bearbeitenden Vertexe</translation>
     </message>
     <message>
         <source>The color of edges being edited</source>
-        <translation>Die Farbe von zu bearbeitenden Kanten</translation>
+        <translation>Die Farbe der zu bearbeitenden Kanten</translation>
     </message>
 </context>
 <context>
@@ -2104,7 +2104,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2138,7 +2138,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <name>Gui::Dialog::IconDialog</name>
     <message>
         <source>Add icon</source>
-        <translation type="unfinished">Symbol hinzufügen</translation>
+        <translation>Symbol hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -2192,7 +2192,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Zooming:</source>
-        <translation type="unfinished">Zoomen:</translation>
+        <translation>Zoomen:</translation>
     </message>
 </context>
 <context>
@@ -2392,7 +2392,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <name>Gui::Dialog::PrintModel</name>
     <message>
         <source>Button</source>
-        <translation type="unfinished">Knopf</translation>
+        <translation>Schaltfläche</translation>
     </message>
     <message>
         <source>Command</source>
@@ -2495,7 +2495,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2599,7 +2599,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Redirect Python output</source>
-        <translation type="unfinished">Python-Ausgabe umleiten</translation>
+        <translation>Python-Ausgabe umleiten</translation>
     </message>
     <message>
         <source>Redirect Python errors</source>
@@ -3270,15 +3270,15 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
         <source>Finish editing object</source>
-        <translation type="unfinished">Berabeitungs des Objekts beenden</translation>
+        <translation>Berabeitungs des Objekts beenden</translation>
     </message>
     <message>
         <source>Activate document</source>
-        <translation type="unfinished">Dokument aktivieren</translation>
+        <translation>Dokument aktivieren</translation>
     </message>
     <message>
         <source>Activate document %1</source>
-        <translation type="unfinished">Dokument %1 aktivieren</translation>
+        <translation>Dokument %1 aktivieren</translation>
     </message>
 </context>
 <context>
@@ -3375,7 +3375,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
         <source>Grid Snap in</source>
-        <translation type="unfinished">Gitter einrasten</translation>
+        <translation>Am Gitter ausrichten</translation>
     </message>
 </context>
 <context>
@@ -3875,7 +3875,7 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
     </message>
     <message>
         <source>Toggle axis cross</source>
-        <translation>Achsenkreuz ein/ausschalten</translation>
+        <translation>Achsenkreuz ein/ausblenden</translation>
     </message>
 </context>
 <context>
@@ -4536,7 +4536,7 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
     </message>
     <message>
         <source>Utility to extract or create project files</source>
-        <translation>Hilfsprogramm zum Entpacker oder Erstellen von Projekt-Dateien</translation>
+        <translation>Hilfsprogramm zum Entpacken oder Erstellen von Projektdateien</translation>
     </message>
 </context>
 <context>
@@ -5378,7 +5378,7 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
     </message>
     <message>
         <source>Normal mode</source>
-        <translation>Normal-Modus</translation>
+        <translation>Normalmodus</translation>
     </message>
     <message>
         <source>Wireframe</source>
