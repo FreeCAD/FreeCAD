@@ -8,11 +8,16 @@ import threading
 import Mesh, MeshGui
 from FreeCAD import Base
 
+# Create a global mesh and make copies of them
+# This makes the algorithm faster by ~60%.
+box = Mesh.createBox(1,1,1)
+
 # Create a Box and Place it a coords (x,y,z)
 def PlaceBox(x,y,z):
-   box = Mesh.createBox(1,1,1)
-   box.translate(x,y,z)
-   return box
+   global box
+   mbox=box.copy()
+   mbox.translate(x,y,z)
+   return mbox
 
 def Sierpinski(level,x0,y0,z0):
    #print threading.current_thread().name
