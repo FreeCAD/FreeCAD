@@ -36,6 +36,7 @@
 #include "MeshProperties.h"
 #include "Core/Algorithm.h"
 #include "Core/Iterator.h"
+#include "Core/Degeneration.h"
 #include "Core/Elements.h"
 #include "Core/Grid.h"
 #include "Core/MeshKernel.h"
@@ -578,6 +579,35 @@ PyObject* MeshPy::removeFacets(PyObject *args)
     }
 
     getMeshObjectPtr()->deleteFacets(indices);
+    Py_Return;
+}
+
+PyObject* MeshPy::getInternalFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshEvalInternalFacets eval(kernel);
+    eval.Evaluate();
+
+    const std::vector<unsigned long>& indices = eval.GetIndices();
+    Py::List ary(indices.size());
+    Py::List::size_type pos=0;
+    for (std::vector<unsigned long>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
+        ary[pos++] = Py::Long(*it);
+    }
+
+    return Py::new_reference_to(ary);
+}
+
+PyObject* MeshPy::rebuildNeighbourHood(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    kernel.RebuildNeighbours();
     Py_Return;
 }
 
