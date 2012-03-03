@@ -33,6 +33,7 @@
 # include <QFutureWatcher>
 # include <QtConcurrentMap>
 # include <QLabel>
+# include <QInputDialog>
 # include <QMessageBox>
 # include <QTimer>
 # include <QImage>
@@ -1331,16 +1332,8 @@ MeshObjectRef runSierpinski(const Param& p)
     return Sierpinski(p.level,p.x,p.y,p.z);
 }
 
-void CmdMengerSponge::activated(int iMsg)
+MeshObjectRef makeParallelMengerSponge(int level, float x0, float y0, float z0)
 {
-    int level = QInputDialog::getInteger(Gui::getMainWindow(),
-        QString::fromAscii("Menger sponge"),
-        QString::fromAscii("Recursion depth:"),
-        3, 1, 5);
-    float x0=0,y0=0,z0=0;
-
-    globalBox = Mesh::MeshObject::createCube(1,1,1);
-
     float boxnums = std::pow(3.0f,level);
     float thirds = boxnums / 3;
     float twothirds = thirds * 2;
@@ -1377,15 +1370,39 @@ void CmdMengerSponge::activated(int iMsg)
     QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    Mesh::MeshObject mesh;
-    App::Document* doc = App::GetApplication().newDocument();
+    MeshObjectRef mesh = new Mesh::MeshObject();
     for (QFuture<MeshObjectRef>::const_iterator it = future.begin(); it != future.end(); ++it) {
-        mesh.addMesh(**it);
+        mesh->addMesh(**it);
         (*it)->clear();
     }
 
+    return mesh;
+}
 
-    MeshCore::MeshKernel& kernel = mesh.getKernel();
+void CmdMengerSponge::activated(int iMsg)
+{
+    bool ok;
+    int level = QInputDialog::getInteger(Gui::getMainWindow(),
+        QString::fromAscii("Menger sponge"),
+        QString::fromAscii("Recursion depth:"),
+        3, 1, 5, 1, &ok);
+    if (!ok) return;
+    int ret = QMessageBox::question(Gui::getMainWindow(),
+        QString::fromAscii("Parallel"),
+        QString::fromAscii("Do you want to run this in a thread pool?"),
+        QMessageBox::Yes|QMessageBox::No);
+    bool parallel=(ret == QMessageBox::Yes);
+    float x0=0,y0=0,z0=0;
+
+    globalBox = Mesh::MeshObject::createCube(1,1,1);
+
+    MeshObjectRef mesh;
+    if (parallel)
+        mesh = makeParallelMengerSponge(level,x0,y0,z0);
+    else
+        mesh = Sierpinski(level,x0,y0,z0);
+
+    MeshCore::MeshKernel& kernel = mesh->getKernel();
 
     // remove duplicated points
     MeshCore::MeshFixDuplicatePoints(kernel).Fixup();
@@ -1398,8 +1415,9 @@ void CmdMengerSponge::activated(int iMsg)
     // repair neighbourhood
     kernel.RebuildNeighbours();
 
+    App::Document* doc = App::GetApplication().newDocument();
     Mesh::Feature* feature = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","MengerSponge"));
-    feature->Mesh.setValue(mesh);
+    feature->Mesh.setValue(*mesh);
     feature->purgeTouched();
 }
 
