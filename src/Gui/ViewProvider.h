@@ -178,6 +178,7 @@ public:
     bool isVisible() const;
     //@}
 
+
     /** @name Edit methods
      * if the Viewprovider goes in edit mode
      * you can handle most of the events in the viewer by yourself

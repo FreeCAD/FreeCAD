@@ -44,6 +44,7 @@ class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
+enum  HiglightMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping
@@ -78,10 +79,10 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalNewObject;
     /// signal on deleted Object
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalDeletedObject;
-    /// signal on changed Object, the 2nd argument is the changed property
-    /// of the referenced document object, not of the view provider
+    /** signal on changed Object, the 2nd argument is the changed property
+        of the referenced document object, not of the view provider */
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
-                                const App::Property&)> signalChangedObject;
+                                const App::Property&)>                   signalChangedObject;
     /// signal on renamed Object
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalRenamedObject;
     /// signal on activated Object
@@ -90,6 +91,10 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
    /// signal on leave edit mode
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    /// signal on changed Object, the 2nd argument is the highlite mode to use
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
+                                const Gui::HiglightMode&)>               signalHighlightObject;
+
     //@}
 
     /** @name I/O of the document */

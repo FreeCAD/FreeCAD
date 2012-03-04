@@ -139,6 +139,12 @@ void ViewProvider::setUpdatesEnabled (bool enable)
     _updateData = enable;
 }
 
+void highlight(const HiglightMode& high)
+{
+    
+
+}
+
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 {
     const SoEvent * ev = node->getEvent();

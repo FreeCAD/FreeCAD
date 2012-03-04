@@ -38,6 +38,15 @@ class ViewProviderDocumentObject;
 class DocumentObjectItem;
 class DocumentItem;
 
+/// highlight modes for the tree items
+enum HiglightMode { None       = 0,
+                    Underlined = 1,
+                    Italic     = 2,
+                    Overlined  = 4,
+                    Bold       = 8,
+                    Blue       = 16
+};
+
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer
  */
@@ -133,12 +142,13 @@ protected:
     /** Removes a view provider from the document item.
      * If this view provider is not added nothing happens.
      */
-    void slotDeleteObject(const Gui::ViewProviderDocumentObject&);
-    void slotChangeObject(const Gui::ViewProviderDocumentObject&);
-    void slotRenameObject(const Gui::ViewProviderDocumentObject&);
-    void slotActiveObject(const Gui::ViewProviderDocumentObject&);
-    void slotInEdit      (const Gui::ViewProviderDocumentObject&);
-    void slotResetEdit   (const Gui::ViewProviderDocumentObject&);
+    void slotDeleteObject    (const Gui::ViewProviderDocumentObject&);
+    void slotChangeObject    (const Gui::ViewProviderDocumentObject&);
+    void slotRenameObject    (const Gui::ViewProviderDocumentObject&);
+    void slotActiveObject    (const Gui::ViewProviderDocumentObject&);
+    void slotInEdit          (const Gui::ViewProviderDocumentObject&);
+    void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
+    void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HiglightMode&);
 
 private:
     const Gui::Document* pDocument;

@@ -926,6 +926,32 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
     }
 }
 
+void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,const Gui::HiglightMode& high)
+{
+
+    std::string objectName = obj.getObject()->getNameInDocument();
+    std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
+    if (jt == ObjectMap.end())
+        return; // signal is emitted before the item gets created
+    for (std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.begin();
+         it != ObjectMap.end(); ++it)
+    {
+        QFont f = it->second->font(0);
+        f.setBold      (high && Gui::HiglightMode::Bold);
+        f.setItalic    (high && Gui::HiglightMode::Italic);
+        f.setUnderline (high && Gui::HiglightMode::Underlined);
+        f.setUnderline (high && Gui::HiglightMode::Overlined);
+        if(high && Gui::HiglightMode::Blue)
+            it->second->setBackgroundColor(0,Qt::blue);
+        else
+            it->second->setData(0, Qt::BackgroundColorRole,QVariant());
+        it->second->setFont(0,f);
+    }
+
+
+}
+
+
 const Gui::Document* DocumentItem::document() const
 {
     return this->pDocument;

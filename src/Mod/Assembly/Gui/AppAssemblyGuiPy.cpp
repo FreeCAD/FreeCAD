@@ -30,29 +30,39 @@
 #include <Base/Console.h>
 
 #include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/Tree.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/Assembly/App/ItemPy.h>
 
 // pointer to the active assembly object
-Assembly::Item *ActiveAsmObject =0;
+Assembly::Item                  *ActiveAsmObject =0;
+Gui::Document                   *ActiveGuiDoc    =0;
+Gui::ViewProviderDocumentObject *ActiveVp        =0;
+
 
 
 /* module functions */
 static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
 {
-    PyObject *object;
-    if (PyArg_ParseTuple(args,"O!",&(Assembly::ItemPy::Type), &object)) {
+    PyObject *object=0;
+    if (PyArg_ParseTuple(args,"|O",&(Assembly::ItemPy::Type), &object)) {
         Assembly::Item* Item = static_cast<Assembly::ItemPy*>(object)->getItemPtr();
         // Should be set!
         assert(Item);    
 
+        // get the gui document of the Assembly Item 
+        Gui::Document* GuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
+        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*> (GuiDoc->getViewProvider(Item)) ;
         if(ActiveAsmObject){
-            
+
+            GuiDoc->signalHighlightObject(*vp,Gui::HiglightMode::None);
             ActiveAsmObject = 0;
 
         }
         ActiveAsmObject = Item;
-        Gui::ViewProvider* vp = Gui::Application::Instance -> getViewProvider(ActiveAsmObject);
+        //Gui::ViewProvider* vp = Gui::Application::Instance -> getViewProvider(ActiveAsmObject);
         //PyErr_SetString(PyExc_Exception, "empty shape");
         
     }
