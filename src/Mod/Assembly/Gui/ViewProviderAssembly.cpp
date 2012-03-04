@@ -27,8 +27,8 @@
 #endif
 
 #include "ViewProviderAssembly.h"
-//#include <Gui/Command.h>
-//#include <Gui/Document.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
 
 using namespace AssemblyGui;
 
@@ -44,6 +44,7 @@ ViewProviderItemAssembly::~ViewProviderItemAssembly()
 
 bool ViewProviderItemAssembly::doubleClicked(void)
 {
+    Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().%s)",this->getObject()->getNameInDocument());
     return true;
 }
 

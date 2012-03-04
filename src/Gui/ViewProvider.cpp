@@ -60,7 +60,7 @@ using namespace Gui;
 
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
 
-ViewProvider::ViewProvider() 
+ViewProvider::ViewProvider()
     : pcAnnotation(0)
     , pyViewObject(0)
     , _iActualMode(-1)
@@ -142,6 +142,12 @@ bool ViewProvider::isUpdatesEnabled () const
 void ViewProvider::setUpdatesEnabled (bool enable)
 {
     _updateData = enable;
+}
+
+void highlight(const HighlightMode& high)
+{
+
+
 }
 
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)

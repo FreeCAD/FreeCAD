@@ -44,7 +44,7 @@ enum HighlightMode {    Underlined,
                         Italic    ,
                         Overlined ,
                         Bold      ,
-                        Blue      
+                        Blue
 };
 
 /// highlight modes for the tree items
@@ -131,7 +131,7 @@ private:
 };
 
 /** The link between the tree and a document.
- * Every document in the application gets its associated DocumentItem which controls 
+ * Every document in the application gets its associated DocumentItem which controls
  * the visibility and the functions of the document.
  * \author Jürgen Riegel
  */
@@ -186,7 +186,7 @@ private:
 };
 
 /** The link between the tree and a document object.
- * Every object in the document gets its associated DocumentObjectItem which controls 
+ * Every object in the document gets its associated DocumentObjectItem which controls
  * the visibility and the functions of the object.
  * @author Werner Mayer
  */
