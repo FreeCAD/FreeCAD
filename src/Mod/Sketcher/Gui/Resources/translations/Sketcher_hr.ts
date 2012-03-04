@@ -54,8 +54,8 @@
       <translation>Skica</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Ograniči horizontalnu udaljenost</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Ograniči vertikalnu udaljenost</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

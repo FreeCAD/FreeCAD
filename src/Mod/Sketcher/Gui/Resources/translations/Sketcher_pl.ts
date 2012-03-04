@@ -54,8 +54,8 @@
       <translation>Szkicownik</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Ograniczyć pionową odległość</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
