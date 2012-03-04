@@ -54,8 +54,8 @@
       <translation>草绘</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>水平距离约束</translation>
+      <source>Constrain vertical distance</source>
+      <translation>限制的垂直距离</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

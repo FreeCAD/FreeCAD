@@ -54,8 +54,8 @@
       <translation>Sketcher</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>水平変位を拘束</translation>
+      <source>Constrain vertical distance</source>
+      <translation>垂直方向の距離を制約する</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
