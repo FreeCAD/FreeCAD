@@ -113,7 +113,7 @@ TreeWidget::TreeWidget(QWidget* parent)
 
     this->statusTimer = new QTimer(this);
 
-    connect(this->statusTimer, SIGNAL(timeout()), 
+    connect(this->statusTimer, SIGNAL(timeout()),
             this, SLOT(onTestStatus()));
     connect(this, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
             this, SLOT(onItemEntered(QTreeWidgetItem*)));
@@ -506,7 +506,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     // one of the source items is also the destination item, that's not allowed
     if (this->isItemSelected(targetitem))
         return;
-    
+
     // filter out the selected items we cannot handle
     QList<QTreeWidgetItem*> items;
     QList<QModelIndex> idxs = selectedIndexes();
@@ -640,7 +640,7 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
 
 void TreeWidget::markItem(const App::DocumentObject* Obj,bool mark)
 {
-    // never call without Object! 
+    // never call without Object!
     assert(Obj);
     Gui::Document* Doc = Gui::Application::Instance->getDocument(Obj->getDocument());
 
@@ -819,7 +819,7 @@ void TreeWidget::setItemsSelected (const QList<QTreeWidgetItem *> items, bool se
     QItemSelection range;
     for (QList<QTreeWidgetItem*>::const_iterator it = items.begin(); it != items.end(); ++it)
         range.select(this->indexFromItem(*it),this->indexFromItem(*it));
-    selectionModel()->select(range, select ? 
+    selectionModel()->select(range, select ?
         QItemSelectionModel::Select :
         QItemSelectionModel::Deselect);
 }
@@ -836,7 +836,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
 
-    QGridLayout* pLayout = new QGridLayout(this); 
+    QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
     pLayout->addWidget(this->treeWidget, 0, 0 );
@@ -882,7 +882,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
     std::string name (v.getObject()->getNameInDocument());
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(name);
-    if (it != ObjectMap.end()) 
+    if (it != ObjectMap.end())
         it->second->setBackgroundColor(0,Qt::yellow);
 }
 
@@ -1090,7 +1090,7 @@ const Gui::Document* DocumentItem::document() const
 
 void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
 {
-    // never call without Object! 
+    // never call without Object!
     assert(Obj);
 
 
@@ -1105,7 +1105,7 @@ void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
 
 //void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
 //{
-//    // never call without Object! 
+//    // never call without Object!
 //    assert(Obj);
 //
 //
@@ -1299,7 +1299,7 @@ void DocumentObjectItem::testStatus()
     App::DocumentObject* pObject = viewObject->getObject();
 
     // if status has changed then continue
-    int currentStatus = 
+    int currentStatus =
         ((pObject->isError()          ? 1 : 0) << 2) |
         ((pObject->mustExecute() == 1 ? 1 : 0) << 1) |
         (viewObject->isShow()         ? 1 : 0);
