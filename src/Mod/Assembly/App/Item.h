@@ -71,9 +71,11 @@ public:
         return "AssemblyGui::ViewProviderItem";
     }
     //@}
+
+    PyObject *getPyObject(void);
 };
 
-} //namespace PartDesign
+} //namespace Assembly
 
 
-#endif // PART_Item_H
+#endif // ASSEMBLY_Item_H
