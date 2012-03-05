@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
@@ -66,6 +67,9 @@ void AssemblyGuiExport initAssemblyGui()
 
     (void) Py_InitModule("AssemblyGui", AssemblyGui_Import_methods);   /* mod name, table ptr */
     Base::Console().Log("Loading GUI of Assembly module... done\n");
+
+    // directly load the module for usage in commands
+    Base::Interpreter().runString("import AssemblyGui");
 
     // instanciating the commands
     CreateAssemblyCommands();

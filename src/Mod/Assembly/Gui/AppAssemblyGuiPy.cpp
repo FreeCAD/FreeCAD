@@ -47,27 +47,29 @@ Gui::ViewProviderDocumentObject *ActiveVp        =0;
 static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
 {
     PyObject *object=0;
-    if (PyArg_ParseTuple(args,"|O",&(Assembly::ItemPy::Type), &object)) {
+    if (PyArg_ParseTuple(args,"|O!",&(Assembly::ItemPy::Type), &object)&& object) {
         Assembly::Item* Item = static_cast<Assembly::ItemPy*>(object)->getItemPtr();
         // Should be set!
         assert(Item);    
 
         // get the gui document of the Assembly Item 
-        Gui::Document* GuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
-        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*> (GuiDoc->getViewProvider(Item)) ;
         if(ActiveAsmObject){
 
-            GuiDoc->signalHighlightObject(*vp,Gui::HiglightMode::None);
+            ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::None);
             ActiveAsmObject = 0;
 
         }
         ActiveAsmObject = Item;
-        //Gui::ViewProvider* vp = Gui::Application::Instance -> getViewProvider(ActiveAsmObject);
-        //PyErr_SetString(PyExc_Exception, "empty shape");
-        
+        ActiveGuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
+        ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue);
+       
+    }else{
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::None);
+        ActiveAsmObject = 0;
     }
 
-    return 0;
+    Py_Return;
 }
 
 

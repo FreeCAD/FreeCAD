@@ -741,6 +741,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
     doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
+    doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
@@ -937,18 +938,16 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
          it != ObjectMap.end(); ++it)
     {
         QFont f = it->second->font(0);
-        f.setBold      (high && Gui::HiglightMode::Bold);
-        f.setItalic    (high && Gui::HiglightMode::Italic);
-        f.setUnderline (high && Gui::HiglightMode::Underlined);
-        f.setUnderline (high && Gui::HiglightMode::Overlined);
-        if(high && Gui::HiglightMode::Blue)
-            it->second->setBackgroundColor(0,Qt::blue);
+        f.setBold      (high & Gui::Bold);
+        f.setItalic    (high & Gui::Italic);
+        f.setUnderline (high & Gui::Underlined);
+        f.setUnderline (high & Gui::Overlined);
+        if(high && Gui::Blue)
+            it->second->setBackgroundColor(0,QColor(200,200,255));
         else
             it->second->setData(0, Qt::BackgroundColorRole,QVariant());
         it->second->setFont(0,f);
     }
-
-
 }
 
 
