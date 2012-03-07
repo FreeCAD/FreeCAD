@@ -83,7 +83,7 @@ class plane:
                           = (cp . axis) / (direction . axis)
 		'''
 		if direction == None: direction = self.axis
-		return self.axis.dot(self.position.sub(p))/self.axis.dot(direction)
+		return direction.dot(self.position.sub(p))
 
 	def projectPoint(self, p, direction=None):
 		'''project point onto plane, default direction is orthogonal'''
