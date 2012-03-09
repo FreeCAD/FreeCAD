@@ -64,6 +64,7 @@ def Displacement(ship, draft, trim):
             if z > Z:
                 break
             n = n+1
+        print('orig-> ', section[n-2:n], Z)
         # Discard invalid sections
         if n == 0:
             areas.append(0.0)
@@ -80,6 +81,7 @@ def Displacement(ship, draft, trim):
                 factor = (Z - z0) / (z1 - z0)
                 y = y0 + factor*(y1 - y0)
                 points.append(App.Base.Vector(x,y,Z))
+        print('dest-> ', points[-3:])
         # Convert into array with n elements (Number of points by sections)
         # with m elements into them (Number of points with the same height,
         # typical of multibody)
@@ -89,11 +91,18 @@ def Displacement(ship, draft, trim):
         while j < len(points)-1:
             section.append([points[j]])
             k = j+1
-            while(Math.isAprox(points[j].z, points[k].z)):
+            last=False  # In order to identify if last point has been append
+            while(k < len(points)):
+                if not Math.isAprox(points[j].z, points[k].z):
+                    break
                 section[nPoints].append(points[k])
+                last=True
                 k = k+1
             nPoints = nPoints + 1
             j = k
+        if not last:    # Last point has not been added
+            section.append([points[len(points)-1]])
+        print('Zeq-> ', section[-3:])
         # Integrate area
         area = 0.0
         for j in range(0, len(section)-1):
