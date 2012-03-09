@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Branding>
+<!-- This is a full list of all elements for the branding. They are all optional.-->
+<!-- This file must be put into the directory where the application is installed -->
+    <Application>Application</Application>
+    <BuildVersionMajor>1</BuildVersionMajor>
+    <BuildVersionMinor>0</BuildVersionMinor>
+    <BuildRevision>2000</BuildRevision>
+    <WindowTitle>My Application with some text</WindowTitle>
+    <CopyrightInfo>My copyright notice</CopyrightInfo>
+    <MaintainerUrl>http://www.something.com</MaintainerUrl>
+    <StartWorkbench>PartWorkbench</StartWorkbench>
+<!--
+    <WindowIcon>Path to icon file</WindowIcon>
+    <ProgramLogo>Path to logo (appears in bottom right corner)</ProgramLogo>
+    <SplashScreen>Path to splash screen</SplashScreen>
+    <SplashAlignment>Bottom|Left</SplashAlignment>
+    <SplashTextColor>#ffffff</SplashTextColor>
+    <SplashInfoColor>#c8c8c8</SplashInfoColor>
+    <BuildRevisionDate>01/01/2012</BuildRevisionDate>
+    <ProgramIcons>Path to program icons</ProgramIcons>
+-->
+</Branding>

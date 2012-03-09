@@ -22,7 +22,12 @@ SET(Start_SRCS
 
 add_library(Start SHARED ${Start_SRCS})
 target_link_libraries(Start ${Start_LIBS})
-fc_copy_script("Mod/Start" "Start" Init.py)
+
+
+fc_target_copy_resource(Start 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Start
+    ${CMAKE_BINARY_DIR}/Mod/Start
+    Init.py)
 
 if(MSVC)
     set_target_properties(Start PROPERTIES SUFFIX ".pyd")

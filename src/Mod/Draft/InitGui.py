@@ -191,7 +191,8 @@ class DraftWorkbench (Workbench):
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array"]
-        self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup","Draft_SelectGroup","Draft_SelectPlane"]
+        self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
+                            "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
         self.appendToolbar(str(DraftTools.translate("draft","Draft creation tools")),self.cmdList)
         self.appendToolbar(str(DraftTools.translate("draft","Draft modification tools")),self.modList)

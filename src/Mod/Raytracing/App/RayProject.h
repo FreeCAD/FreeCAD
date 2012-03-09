@@ -48,6 +48,7 @@ public:
 
     App::PropertyFileIncluded PageResult;
     App::PropertyFile Template;
+    App::PropertyString Camera;
 
 
     /** @name methods overide Feature */

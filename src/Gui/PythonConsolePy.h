@@ -26,6 +26,8 @@
 
 #include <CXX/Extensions.hxx>
 
+class QTimer;
+
 namespace Gui {
 class PythonConsole;
 class PythonInputField;
@@ -140,6 +142,8 @@ public:
 
 private:
     PythonInputField* editField;
+    PythonConsole* console;
+    QTimer* timer;
 };
 
 } // namespace Gui

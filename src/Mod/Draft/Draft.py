@@ -100,7 +100,8 @@ def getParamType(param):
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap","SvgLinesBlack"]:
+    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
+                   "SvgLinesBlack","dxfStdSize"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -767,6 +768,22 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             shape = obj.Shape.copy()
             shape.rotate(fcvec.tup(center), fcvec.tup(axis), angle)
             newobj.Shape = shape
+        elif (obj.isDerivedFrom("App::Annotation")):
+            if axis.normalize() == Vector(1,0,0):
+                newobj.ViewObject.RotationAxis = "X"
+                newobj.ViewObject.Rotation = angle
+            elif axis.normalize() == Vector(0,1,0):
+                newobj.ViewObject.RotationAxis = "Y"
+                newobj.ViewObject.Rotation = angle
+            elif axis.normalize() == Vector(0,-1,0):
+                newobj.ViewObject.RotationAxis = "Y"
+                newobj.ViewObject.Rotation = -angle
+            elif axis.normalize() == Vector(0,0,1):
+                newobj.ViewObject.RotationAxis = "Z"
+                newobj.ViewObject.Rotation = angle
+            elif axis.normalize() == Vector(0,0,-1):
+                newobj.ViewObject.RotationAxis = "Z"
+                newobj.ViewObject.Rotation = -angle
         elif hasattr(obj,"Placement"):
             shape = Part.Shape()
             shape.Placement = obj.Placement
@@ -781,7 +798,6 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
         select(newobjlist)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
-
 
 def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy=False):
     '''scale(objects,vector,[center,copy,legacy]): Scales the objects contained
@@ -1390,7 +1406,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
     FreeCAD.ActiveDocument.recompute()
     return nobj
 
-def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
+def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
     ''' make a point (at coordinates x,y,z ,color(r,g,b),point_size)
         example usage: 
         p1 = makePoint()
@@ -1401,6 +1417,8 @@ def makePoint(X=0, Y=0, Z=0,color=(0,1,0),name = "Point", point_size= 5):
         p1.X = 1 #move it in x
         p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
     '''
+    if not color:
+        color = FreeCADGui.draftToolBar.getDefaultColor('ui')
     obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Point(obj,X,Y,Z)
     _ViewProviderPoint(obj.ViewObject)
@@ -1488,6 +1506,8 @@ class _ViewProviderDraft:
         
     def __init__(self, obj):
         obj.Proxy = self
+        obj.addProperty("App::PropertyEnumeration","DrawStyle","Base",
+                        "The line style of this object")
         self.Object = obj.Object
         
     def attach(self, obj):

@@ -54,8 +54,8 @@
       <translation>Vázlatkészítõ</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Vízszintes távolság zárolása</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Vízszintes függőleges zárolása</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

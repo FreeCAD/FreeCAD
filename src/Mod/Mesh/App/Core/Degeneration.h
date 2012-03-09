@@ -189,6 +189,35 @@ public:
 };
 
 /**
+ * The MeshEvalInternalFacets class identifies internal facets of a volume mesh.
+ * @author Werner Mayer
+ */
+class MeshExport MeshEvalInternalFacets : public MeshEvaluation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshEvalInternalFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  /** 
+   * Destruction.
+   */
+  ~MeshEvalInternalFacets () { }
+  /** 
+   * Identifiy internal facets.
+   */
+  bool Evaluate ();
+  /**
+   * Return the indices.
+   */
+  const std::vector<unsigned long>& GetIndices() const
+  { return _indices; }
+
+private:
+    std::vector<unsigned long> _indices;
+};
+
+/**
  * The MeshEvalDegeneratedFacets class searches for degenerated facets. A facet is degenerated either if its points
  * are collinear, i.e. they lie on a line or two points are coincident. In the latter case these points are duplicated.
  * If a facet refers to at least two equal point indices then the facet is also regarded is 'corrupt'.

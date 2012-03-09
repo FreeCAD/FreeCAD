@@ -380,6 +380,30 @@ bool MeshFixDuplicateFacets::Fixup()
 
 // ----------------------------------------------------------------------
 
+bool MeshEvalInternalFacets::Evaluate()
+{
+    _indices.clear();
+    unsigned long uIndex=0;
+    const MeshFacetArray& rFaces = _rclMesh.GetFacets();
+
+    // get all facets
+    std::set<FaceIterator, MeshFacet_Less > aFaceSet;
+    MeshFacetArray::_TConstIterator first = rFaces.begin();
+    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, uIndex++) {
+        std::pair<std::set<FaceIterator, MeshFacet_Less>::iterator, bool>
+        pI = aFaceSet.insert(it);
+        if (!pI.second) {
+            // collect both elements
+            _indices.push_back(*pI.first - first);
+            _indices.push_back(uIndex);
+        }
+    }
+
+    return _indices.empty();
+}
+
+// ----------------------------------------------------------------------
+
 bool MeshEvalDegeneratedFacets::Evaluate()
 {
   MeshFacetIterator it(_rclMesh);

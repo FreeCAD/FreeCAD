@@ -440,6 +440,7 @@ protected:
     friend class MeshFixDegeneratedFacets;
     friend class MeshFixDuplicatePoints;
     friend class MeshBuilder;
+    friend class MeshTrimming;
 };
 
 inline MeshPoint MeshKernel::GetPoint (unsigned long ulIndex) const

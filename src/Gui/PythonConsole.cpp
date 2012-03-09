@@ -392,7 +392,7 @@ PythonConsole::PythonConsole(QWidget *parent)
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromAscii(version)).arg(QString::fromAscii(platform));
     d->output = d->info;
-    printPrompt(false);
+    printPrompt(PythonConsole::Complete);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -504,7 +504,9 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
                   d->history.append( QLatin1String("# ") + inputLine );  //< put line to history ...
                   inputLineBegin.insertText( QString::fromAscii("# ") ); //< but comment it on console
                   setTextCursor( inputLineBegin );
-                  printPrompt( d->interpreter->hasPendingInput() );      //< print adequate prompt
+                  printPrompt(d->interpreter->hasPendingInput()      //< print adequate prompt
+                      ? PythonConsole::Incomplete
+                      : PythonConsole::Complete);
               }
           }   break;
 
@@ -600,10 +602,15 @@ void PythonConsole::insertPythonError ( const QString& err )
     d->error += err;
 }
 
+void PythonConsole::onFlush()
+{
+    printPrompt(PythonConsole::Flush);
+}
+
 /** Prints the ps1 prompt (>>> ) for complete and ps2 prompt (... ) for
  * incomplete commands to the console window. 
  */ 
-void PythonConsole::printPrompt(bool incomplete)
+void PythonConsole::printPrompt(PythonConsole::Prompt mode)
 {
     // write normal messages
     if (!d->output.isEmpty()) {
@@ -632,8 +639,17 @@ void PythonConsole::printPrompt(bool incomplete)
     else
         block.setUserState(0);
 
-    incomplete ? cursor.insertText(QString::fromAscii("... "))
-               : cursor.insertText(QString::fromAscii(">>> "));
+    switch (mode)
+    {
+    case PythonConsole::Incomplete:
+        cursor.insertText(QString::fromAscii("... "));
+        break;
+    case PythonConsole::Complete:
+        cursor.insertText(QString::fromAscii(">>> "));
+        break;
+    default:
+        break;
+    }
     cursor.endEditBlock();
 
     // move cursor to the end
@@ -706,9 +722,10 @@ void PythonConsole::runSource(const QString& line)
         QMessageBox::critical(this, tr("Python console"), tr("Unhandled unknown C++ exception."));
     }
 
+    printPrompt(incomplete ? PythonConsole::Incomplete
+                           : PythonConsole::Complete);
     PySys_SetObject("stdout", default_stdout);
     PySys_SetObject("stderr", default_stderr);
-    printPrompt(incomplete);
     d->interactive = false;
     for (QStringList::Iterator it = d->statements.begin(); it != d->statements.end(); ++it)
         printStatement(*it);
@@ -751,7 +768,7 @@ void PythonConsole::printStatement( const QString& cmd )
         cursor.movePosition(QTextCursor::End);
         cursor.insertText( *it );
         d->history.append( *it );
-        printPrompt(false);
+        printPrompt(PythonConsole::Complete);
     }
 }
 
@@ -984,7 +1001,7 @@ void PythonConsole::runSourceFromMimeData(const QString& source)
         buffer.append(line);
         int ret = d->interpreter->compileCommand(buffer.join(QLatin1String("\n")).toUtf8());
         if (ret == 1) { // incomplete
-            printPrompt(true);
+            printPrompt(PythonConsole::Incomplete);
         }
         else if (ret == 0) { // complete
             // check if the following lines belong to the previous block
@@ -1001,7 +1018,7 @@ void PythonConsole::runSourceFromMimeData(const QString& source)
             // is finished
             if (ret == -1) {
                 // the command is not finished yet
-                printPrompt(true);
+                printPrompt(PythonConsole::Incomplete);
             }
             else {
                 runSource(buffer.join(QLatin1String("\n")));
@@ -1094,7 +1111,7 @@ void PythonConsole::onClearConsole()
 {
     clear();
     d->output = d->info;
-    printPrompt(false);
+    printPrompt(PythonConsole::Complete);
 }
 
 void PythonConsole::onSaveHistoryAs()
@@ -1312,6 +1329,7 @@ PythonInputField::PythonInputField(QWidget* parent)
 
     editField = new PythonEditor(this);
     gridLayout->addWidget(editField, 0, 0, 1, 1);
+    setFocusProxy(editField);
 
     QHBoxLayout* hboxLayout = new QHBoxLayout();
     hboxLayout->setSpacing(6);

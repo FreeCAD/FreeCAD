@@ -145,9 +145,10 @@ void PartExport initPart()
     Part::Fuse                  ::init();
     Part::MultiFuse             ::init();
     Part::Section               ::init();
+    Part::FilletBase            ::init();
+    Part::Fillet                ::init();
     Part::Chamfer               ::init();
     Part::Extrusion             ::init();
-    Part::Fillet                ::init();
     Part::Revolution            ::init();
     Part::Mirroring             ::init();
     Part::ImportStep            ::init();

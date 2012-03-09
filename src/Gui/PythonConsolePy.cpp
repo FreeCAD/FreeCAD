@@ -26,6 +26,7 @@
 # include <QByteArray>
 # include <QInputDialog>
 # include <QEventLoop>
+# include <QTimer>
 #endif
 
 #include "PythonConsolePy.h"
@@ -292,12 +293,18 @@ PythonStdin::PythonStdin(PythonConsole *pc)
   : pyConsole(pc)
 {
     editField = new PythonInputField(/*getMainWindow()*/);
+    timer = new QTimer();
+    timer->setInterval(250);
+    QObject::connect(timer, SIGNAL(timeout()),
+                     editField, SLOT(hide()));
+    console = getMainWindow()->findChild<PythonConsole*>();
 }
 
 PythonStdin::~PythonStdin()
 {
     // call deleteLater() because deleting immediately causes problems
     editField->deleteLater();
+    timer->deleteLater();
 }
 
 Py::Object PythonStdin::repr()
@@ -310,14 +317,16 @@ Py::Object PythonStdin::repr()
 
 Py::Object PythonStdin::readline(const Py::Tuple& args)
 {
+    if (console)
+        console->onFlush();
+    timer->stop();
     QEventLoop loop;
     QObject::connect(editField, SIGNAL(textEntered()), &loop, SLOT(quit()));
     editField->clear();
     editField->show();
+    editField->setFocus();
     loop.exec();
     QString txt = editField->getText();
-    if (txt.isEmpty())
-        editField->hide();
-
+    timer->start();
     return Py::String((const char*)txt.toAscii());
 }

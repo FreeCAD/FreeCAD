@@ -98,7 +98,7 @@ ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
 )
 
-fc_copy_sources("Mod/Ship" "Ship" ${all_files})
+fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
 
 INSTALL(
     FILES

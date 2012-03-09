@@ -54,8 +54,8 @@
       <translation>Schetsen</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Beperk horizontale afstand</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Beperk verticale afstand</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

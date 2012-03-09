@@ -39,18 +39,15 @@
 #include <BRepLib_FuseEdges.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeFix_Face.hxx>
 #include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeShape.hxx>
 #include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include <ShapeAnalysis_Edge.hxx>
 #include "modelRefine.h"
 
 using namespace ModelRefine;
@@ -116,49 +113,6 @@ namespace ModelRefine
             return box2.SquareExtent() < box1.SquareExtent();
         }
     };
-}
-
-void BoundaryEdgeSplitter::split(const EdgeVectorType &edgesIn)
-{
-    std::list<TopoDS_Edge> edges;
-    std::copy(edgesIn.begin(), edgesIn.end(), back_inserter(edges));
-    while(!edges.empty())
-    {
-        TopoDS_Vertex destination = TopExp::FirstVertex(edges.front(), Standard_True);
-        TopoDS_Vertex lastVertex = TopExp::LastVertex(edges.front(), Standard_True);
-        EdgeVectorType boundary;
-        boundary.push_back(edges.front());
-        edges.pop_front();
-        //single edge closed check.
-        if (destination.IsSame(lastVertex))
-        {
-            groupedEdges.push_back(boundary);
-            continue;
-        }
-
-        bool closedSignal(false);
-        std::list<TopoDS_Edge>::iterator it;
-        for (it = edges.begin(); it != edges.end();)
-        {
-            TopoDS_Vertex currentVertex = TopExp::FirstVertex(*it, Standard_True);
-            if (lastVertex.IsSame(currentVertex))
-            {
-                boundary.push_back(*it);
-                lastVertex = TopExp::LastVertex(*it, Standard_True);
-                edges.erase(it);
-                it = edges.begin();
-                if (lastVertex.IsSame(destination))
-                {
-                    closedSignal = true;
-                    break;
-                }
-                continue;
-            }
-            ++it;
-        }
-        if (closedSignal)
-            groupedEdges.push_back(boundary);
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,6 +273,53 @@ GeomAbs_SurfaceType FaceTypedBase::getFaceType(const TopoDS_Face &faceIn)
     return surfaceTest.GetType();
 }
 
+void FaceTypedBase::boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const
+{
+    EdgeVectorType bEdges;
+    boundaryEdges(facesIn, bEdges);
+
+    std::list<TopoDS_Edge> edges;
+    std::copy(bEdges.begin(), bEdges.end(), back_inserter(edges));
+    while(!edges.empty())
+    {
+        TopoDS_Vertex destination = TopExp::FirstVertex(edges.front(), Standard_True);
+        TopoDS_Vertex lastVertex = TopExp::LastVertex(edges.front(), Standard_True);
+        EdgeVectorType boundary;
+        boundary.push_back(edges.front());
+        edges.pop_front();
+        //single edge closed check.
+        if (destination.IsSame(lastVertex))
+        {
+            boundariesOut.push_back(boundary);
+            continue;
+        }
+
+        bool closedSignal(false);
+        std::list<TopoDS_Edge>::iterator it;
+        for (it = edges.begin(); it != edges.end();)
+        {
+            TopoDS_Vertex currentVertex = TopExp::FirstVertex(*it, Standard_True);
+            if (lastVertex.IsSame(currentVertex))
+            {
+                boundary.push_back(*it);
+                lastVertex = TopExp::LastVertex(*it, Standard_True);
+                edges.erase(it);
+                it = edges.begin();
+                if (lastVertex.IsSame(destination))
+                {
+                    closedSignal = true;
+                    break;
+                }
+                continue;
+            }
+            ++it;
+        }
+        if (closedSignal)
+            boundariesOut.push_back(boundary);
+    }
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 FaceTypedPlane::FaceTypedPlane() : FaceTypedBase(GeomAbs_Plane)
@@ -344,15 +345,10 @@ GeomAbs_SurfaceType FaceTypedPlane::getType() const
 
 TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
 {
-    EdgeVectorType bEdges;
-    boundaryEdges(faces, bEdges);
-
-    BoundaryEdgeSplitter bSplitter;
-    bSplitter.split(bEdges);
-
     std::vector<TopoDS_Wire> wires;
 
-    std::vector<EdgeVectorType> splitEdges = bSplitter.getGroupedEdges();
+    std::vector<EdgeVectorType> splitEdges;
+    this->boundarySplit(faces, splitEdges);
     if (splitEdges.empty())
         return TopoDS_Face();
     std::vector<EdgeVectorType>::iterator splitIt;
@@ -424,8 +420,114 @@ GeomAbs_SurfaceType FaceTypedCylinder::getType() const
 
 TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
 {
-    //to do.
-    return TopoDS_Face();
+    std::vector<EdgeVectorType> boundaries;
+    boundarySplit(faces, boundaries);
+    static TopoDS_Face dummy;
+    if (boundaries.size() < 1)
+        return dummy;
+
+    //take one face and remove all the wires.
+    TopoDS_Face workFace = faces.at(0);
+    ShapeBuild_ReShape reshaper;
+    TopExp_Explorer it;
+    for (it.Init(workFace, TopAbs_WIRE); it.More(); it.Next())
+        reshaper.Remove(it.Current());
+    workFace = TopoDS::Face(reshaper.Apply(workFace));
+    if (workFace.IsNull())
+        return TopoDS_Face();
+
+    ShapeFix_Face faceFixer(workFace);
+
+    //makes wires
+    std::vector<EdgeVectorType>::iterator boundaryIt;
+    for (boundaryIt = boundaries.begin(); boundaryIt != boundaries.end(); ++boundaryIt)
+    {
+        BRepLib_MakeWire wireMaker;
+        EdgeVectorType::iterator it;
+        for (it = (*boundaryIt).begin(); it != (*boundaryIt).end(); ++it)
+            wireMaker.Add(*it);
+        if (wireMaker.Error() != BRepLib_WireDone)
+            continue;
+        faceFixer.Add(wireMaker.Wire());
+    }
+    if (faceFixer.Perform() > ShapeExtend_DONE5)
+        return TopoDS_Face();
+    faceFixer.FixOrientation();
+    if (faceFixer.Perform() > ShapeExtend_DONE5)
+        return TopoDS_Face();
+    return faceFixer.Face();
+}
+
+void FaceTypedCylinder::boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const
+{
+    //get all the seam edges
+    EdgeVectorType seamEdges;
+    FaceVectorType::const_iterator faceIt;
+    for (faceIt = facesIn.begin(); faceIt != facesIn.end(); ++faceIt)
+    {
+        TopExp_Explorer explorer;
+        for (explorer.Init(*faceIt, TopAbs_EDGE); explorer.More(); explorer.Next())
+        {
+            ShapeAnalysis_Edge edgeCheck;
+            if(edgeCheck.IsSeam(TopoDS::Edge(explorer.Current()), *faceIt))
+                seamEdges.push_back(TopoDS::Edge(explorer.Current()));
+        }
+    }
+
+    //normal edges.
+    EdgeVectorType normalEdges;
+    ModelRefine::boundaryEdges(facesIn, normalEdges);
+
+    //put seam edges in front.the idea is that we always want to traverse along a seam edge if possible.
+    std::list<TopoDS_Edge> sortedEdges;
+    std::copy(normalEdges.begin(), normalEdges.end(), back_inserter(sortedEdges));
+    std::copy(seamEdges.begin(), seamEdges.end(), front_inserter(sortedEdges));
+
+    while (!sortedEdges.empty())
+    {
+        //detecting closed boundary works best if we start off of the seam edges.
+        TopoDS_Vertex destination = TopExp::FirstVertex(sortedEdges.back(), Standard_True);
+        TopoDS_Vertex lastVertex = TopExp::LastVertex(sortedEdges.back(), Standard_True);
+        bool closedSignal(false);
+        std::list<TopoDS_Edge> boundary;
+        boundary.push_back(sortedEdges.back());
+        sortedEdges.pop_back();
+
+        std::list<TopoDS_Edge>::iterator sortedIt;
+        for (sortedIt = sortedEdges.begin(); sortedIt != sortedEdges.end();)
+        {
+            TopoDS_Vertex currentVertex = TopExp::FirstVertex(*sortedIt, Standard_True);
+
+            //Seam edges lie on top of each other. i.e. same. and we remove every match from the list
+            //so we don't actually ever compare the same edge.
+            if ((*sortedIt).IsSame(boundary.back()))
+            {
+                ++sortedIt;
+                continue;
+            }
+            if (lastVertex.IsSame(currentVertex))
+            {
+                boundary.push_back(*sortedIt);
+                lastVertex = TopExp::LastVertex(*sortedIt, Standard_True);
+                if (lastVertex.IsSame(destination))
+                {
+                    closedSignal = true;
+                    sortedEdges.erase(sortedIt);
+                    break;
+                }
+                sortedEdges.erase(sortedIt);
+                sortedIt = sortedEdges.begin();
+                continue;
+            }
+            ++sortedIt;
+        }
+        if (closedSignal)
+        {
+            EdgeVectorType temp;
+            std::copy(boundary.begin(), boundary.end(), std::back_inserter(temp));
+            boundariesOut.push_back(temp);
+        }
+    }
 }
 
 FaceTypedCylinder& ModelRefine::getCylinderObject()
@@ -446,7 +548,7 @@ bool FaceUniter::process()
     if (workShell.IsNull())
         return false;
     typeObjects.push_back(&getPlaneObject());
-//    typeObjects.push_back(&getCylinderObject());
+    typeObjects.push_back(&getCylinderObject());
     //add more face types.
 
     ModelRefine::FaceTypeSplitter splitter;
