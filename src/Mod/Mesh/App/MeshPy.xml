@@ -127,6 +127,16 @@ Example:
 				<UserDocu>Remove a list of facet indices from the mesh</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getInternalFacets" Const="true">
+			<Documentation>
+				<UserDocu>Builds a list of facet indices with triangles that are inside a volume mesh</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="rebuildNeighbourHood">
+			<Documentation>
+				<UserDocu>Repairs the neighbourhood which might be broken</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="addMesh">
 			<Documentation>
 				<UserDocu>Combine this mesh with another mesh.</UserDocu>

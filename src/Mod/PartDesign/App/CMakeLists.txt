@@ -90,7 +90,12 @@ SET(PartDesign_Scripts
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
-fc_copy_script("Mod/PartDesign" "PartDesign" ${PartDesign_Scripts})
+
+
+fc_target_copy_resource(PartDesign 
+    ${CMAKE_SOURCE_DIR}/src/Mod/PartDesign
+    ${CMAKE_BINARY_DIR}/Mod/PartDesign
+    ${PartDesign_Scripts})
 
 if(MSVC)
     set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")

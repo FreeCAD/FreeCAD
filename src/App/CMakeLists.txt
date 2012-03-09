@@ -4,13 +4,13 @@ if(WIN32)
 endif(WIN32)
 
 # This causes some problems with the resource files to be found, especially with the StartPage
-#IF(RESOURCEDIR)
-#    add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
-#ENDIF(RESOURCEDIR)
+IF(RESOURCEDIR)
+    add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
+ENDIF(RESOURCEDIR)
 
-#IF(DOCDIR)
-#    add_definitions(-DDOCDIR="${DOCDIR}")
-#ENDIF(DOCDIR)
+IF(DOCDIR)
+    add_definitions(-DDOCDIR="${DOCDIR}")
+ENDIF(DOCDIR)
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src

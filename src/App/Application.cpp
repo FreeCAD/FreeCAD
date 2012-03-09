@@ -102,6 +102,7 @@
 #include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
+#include <QDir>
 
 using namespace App;
 using namespace std;
@@ -481,8 +482,14 @@ std::string Application::getUserAppDataDir()
 
 std::string Application::getResourceDir()
 {
-# ifdef RESOURCEDIR
-    return std::string(RESOURCEDIR) + "/";
+#ifdef RESOURCEDIR
+    std::string path(RESOURCEDIR);
+    path.append("/");
+    QDir dir(QString::fromUtf8(RESOURCEDIR));
+    if (dir.isAbsolute())
+        return path;
+    else
+        return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"];
 #endif
@@ -490,8 +497,14 @@ std::string Application::getResourceDir()
 
 std::string Application::getHelpDir()
 {
-# ifdef DOCDIR
-    return std::string(DOCDIR) + "/";
+#ifdef DOCDIR
+    std::string path(DOCDIR);
+    path.append("/");
+    QDir dir(QString::fromUtf8(DOCDIR));
+    if (dir.isAbsolute())
+        return path;
+    else
+        return mConfig["AppHomePath"] + path;
 #else
     return mConfig["DocPath"];
 #endif
@@ -1082,7 +1095,7 @@ void Application::initConfig(int argc, char ** argv)
                           mConfig["BuildVersionMajor"].c_str(),
                           mConfig["BuildVersionMinor"].c_str(),
                           mConfig["BuildRevision"].c_str(),
-                          mConfig["ConsoleBanner"].c_str());
+                          mConfig["CopyrightInfo"].c_str());
     else
         Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
                           mConfig["ExeVersion"].c_str(),
@@ -1178,7 +1191,10 @@ void Application::processCmdLineFiles(void)
                 Base::Interpreter().runFile(File.filePath().c_str(), false);
             }
             else if (File.hasExtension("py")) {
-                Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                //FIXME: Does this make any sense? I think we should do the ame as for
+                // fcmacro or fcscript.
+                //Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                Base::Interpreter().runFile(File.filePath().c_str(), false);
             }
             else {
                 std::vector<std::string> mods = App::GetApplication().getImportModules(Ext.c_str());

@@ -1603,40 +1603,36 @@ bool MeshAlgorithm::ConnectPolygons(std::list<std::vector<Base::Vector3f> > &clP
 void MeshAlgorithm::GetFacetsFromPlane (const MeshFacetGrid &rclGrid, const Base::Vector3f& clNormal, float d, const Base::Vector3f &rclLeft,
                                         const Base::Vector3f &rclRight, std::vector<unsigned long> &rclRes) const
 {
-  std::vector<unsigned long> aulFacets;
+    std::vector<unsigned long> aulFacets;
 
-  Base::Vector3f clBase = d * clNormal;
+    Base::Vector3f clBase = d * clNormal;
 
-  Base::Vector3f clPtNormal(rclLeft - rclRight);
-  clPtNormal.Normalize();
+    Base::Vector3f clPtNormal(rclLeft - rclRight);
+    clPtNormal.Normalize();
 
-  // search grid 
-  MeshGridIterator clGridIter(rclGrid);
-  for (clGridIter.Init(); clGridIter.More(); clGridIter.Next())
-  {  
-    // add facets from grid if the plane if cut the grid-voxel
-    if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal) == true)
-      clGridIter.GetElements(aulFacets);
-  }
-
-  // testing facet against planes
-  for (std::vector<unsigned long>::iterator pI = aulFacets.begin(); pI != aulFacets.end(); pI++)
-  {
-    MeshGeomFacet clSFacet = _rclMesh.GetFacet(*pI);
-    if (clSFacet.IntersectWithPlane(clBase, clNormal) == true)
-    {
-      bool bInner = false;
-      for (int i = 0; (i < 3) && (bInner == false); i++)
-      {
-        Base::Vector3f clPt = clSFacet._aclPoints[i];
-        if ((clPt.DistanceToPlane(rclLeft, clPtNormal) <= 0.0f) && (clPt.DistanceToPlane(rclRight, clPtNormal) >= 0.0f))
-          bInner = true;
-      }
-
-      if (bInner == true)
-        rclRes.push_back(*pI);
+    // search grid 
+    MeshGridIterator clGridIter(rclGrid);
+    for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
+        // add facets from grid if the plane if cut the grid-voxel
+        if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal) == true)
+            clGridIter.GetElements(aulFacets);
     }
-  }
+
+    // testing facet against planes
+    for (std::vector<unsigned long>::iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI) {
+        MeshGeomFacet clSFacet = _rclMesh.GetFacet(*pI);
+        if (clSFacet.IntersectWithPlane(clBase, clNormal) == true) {
+            bool bInner = false;
+            for (int i = 0; (i < 3) && (bInner == false); i++) {
+                Base::Vector3f clPt = clSFacet._aclPoints[i];
+                if ((clPt.DistanceToPlane(rclLeft, clPtNormal) <= 0.0f) && (clPt.DistanceToPlane(rclRight, clPtNormal) >= 0.0f))
+                    bInner = true;
+            }
+
+            if (bInner == true)
+                rclRes.push_back(*pI);
+        }
+    }
 }
 
 void MeshAlgorithm::PointsFromFacetsIndices (const std::vector<unsigned long> &rvecIndices, std::vector<Base::Vector3f> &rvecPoints) const

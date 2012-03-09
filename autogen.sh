@@ -30,7 +30,7 @@ fi
 if which glibtoolize > /dev/null 2>&1; then
 	echo "calling glibtoolize"
 	glibtoolize --force --copy
-elif which libtoolize > /dev/null 2>71; then
+elif which libtoolize > /dev/null 2>&1; then
 	echo "calling libtoolize"
 	libtoolize --force --copy
 else

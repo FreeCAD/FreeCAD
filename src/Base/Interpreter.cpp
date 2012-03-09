@@ -508,7 +508,7 @@ int getSWIGVersionFromModule(const std::string& module)
             // file can have the extension .py or .pyc
             filename = filename.substr(0, filename.rfind("."));
             filename += ".py";
-            boost::regex rx("^# Version ([1-9])\\.([1-9])\\.([1-9][0-9])");
+            boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
             boost::cmatch what;
 
             std::string line;
@@ -552,21 +552,21 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
     PyObject* proxy=0;
     PyGILStateLocker locker;
     int version = getSWIGVersionFromModule(Module);
-    switch (version&0xff)
+    switch (version)
     {
-    case 25:
+    case 66329:
         result = Swig_1_3_25::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 33:
+    case 66337:
         result = Swig_1_3_33::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 36:
+    case 66340:
         result = Swig_1_3_36::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 38:
+    case 66342:
         result = Swig_1_3_38::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 40:
+    case 66344:
         result = Swig_1_3_40::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
     default:

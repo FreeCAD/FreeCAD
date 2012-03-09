@@ -54,8 +54,8 @@
       <translation>Skissare</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Begränsa horisontellt avstånd</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Begränsa vertikala avstånd</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

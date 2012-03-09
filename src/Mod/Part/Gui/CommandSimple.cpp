@@ -227,7 +227,9 @@ void CmdPartRefineShape::activated(int iMsg)
             doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
                           "App.ActiveDocument.%s.Shape.removeSplitter()\n"
                           "App.ActiveDocument.ActiveObject.Label="
-                          "App.ActiveDocument.%s.Label\n",
+                          "App.ActiveDocument.%s.Label\n"
+                          "Gui.ActiveDocument.%s.hide()\n",
+                          (*it)->getNameInDocument(),
                           (*it)->getNameInDocument(),
                           (*it)->getNameInDocument(),
                           (*it)->getNameInDocument());

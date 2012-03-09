@@ -36,8 +36,12 @@ SOURCE_GROUP("Moc" FILES ${SketcherGui_MOC_SRCS})
 
 add_library(WebGui SHARED ${WebGui_SRCS})
 target_link_libraries(WebGui ${WebGui_LIBS})
-fc_copy_script("Mod/Web" "WebGui" InitGui.py)
-fc_copy_script("Mod/Web" "WebGui" Init.py)
+
+
+fc_target_copy_resource(WebGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Web
+    ${CMAKE_BINARY_DIR}/Mod/Web
+    Init.py InitGui.py)
 
 if(MSVC)
     set_target_properties(WebGui PROPERTIES SUFFIX ".pyd")

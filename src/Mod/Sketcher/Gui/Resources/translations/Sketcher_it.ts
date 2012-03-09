@@ -54,8 +54,8 @@
       <translation>Sketcher</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Vincolo di distanza orizzontale</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Vincolo di distanza verticale</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

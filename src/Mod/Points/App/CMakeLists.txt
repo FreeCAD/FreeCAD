@@ -44,7 +44,11 @@ add_library(Points SHARED ${Points_SRCS})
 
 target_link_libraries(Points ${Points_LIBS})
 
-fc_copy_script("Mod/Points" "Points" Init.py)
+
+fc_target_copy_resource(Points 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Points
+    ${CMAKE_BINARY_DIR}/Mod/Points
+    Init.py)
 
 if(MSVC)
     set_target_properties(Points PROPERTIES SUFFIX ".pyd")

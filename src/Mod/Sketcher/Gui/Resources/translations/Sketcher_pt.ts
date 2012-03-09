@@ -54,8 +54,8 @@
       <translation>Esboço</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Restrição de distância horizontal</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Restrição de distância vertical</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

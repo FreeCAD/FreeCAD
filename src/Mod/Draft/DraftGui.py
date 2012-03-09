@@ -906,6 +906,8 @@ class DraftToolBar:
             spec = True
         elif txt.endsWith("w"):
             self.wipeLine()
+        elif txt.endsWith("s"):
+            self.togglesnap()
         elif txt.endsWith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
@@ -1098,6 +1100,10 @@ class DraftToolBar:
         p.save(b,"XPM")
         b.close()
         return str(a)
+
+    def togglesnap(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.active = not FreeCADGui.Snapper.active
 
 
 #---------------------------------------------------------------------------

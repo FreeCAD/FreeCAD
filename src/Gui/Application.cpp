@@ -30,6 +30,8 @@
 # include <sstream>
 # include <stdexcept>
 # include <QCloseEvent>
+# include <QDir>
+# include <QFileInfo>
 # include <QLocale>
 # include <QMessageBox>
 # include <QPointer>
@@ -928,7 +930,7 @@ bool Application::activateWorkbench(const char* name)
             Py::Tuple args;
             Py::String result(method.apply(args));
             type = result.as_std_string();
-            if (type == "Gui::PythonWorkbench") {
+            if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
                 Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
             }
@@ -1411,6 +1413,8 @@ void Application::initTypes(void)
     Gui::BlankWorkbench                         ::init();
     Gui::NoneWorkbench                          ::init();
     Gui::TestWorkbench                          ::init();
+    Gui::PythonBaseWorkbench                    ::init();
+    Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
 }
 
@@ -1567,6 +1571,8 @@ void Application::runApplication(void)
     SoQt::init(&mw);
     SoFCDB::init();
 
+    QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+
     const std::map<std::string,std::string>& cfg = App::Application::Config();
     std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("WindowTitle");
@@ -1577,11 +1583,17 @@ void Application::runApplication(void)
     it = cfg.find("WindowIcon");
     if (it != cfg.end()) {
         QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
         QApplication::setWindowIcon(QIcon(path));
     }
     it = cfg.find("ProgramLogo");
     if (it != cfg.end()) {
         QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
         QPixmap px(path);
         if (!px.isNull()) {
             QLabel* logo = new QLabel();

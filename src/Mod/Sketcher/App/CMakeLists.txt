@@ -106,7 +106,12 @@ SET(Sketcher_Scripts
 
 add_library(Sketcher SHARED ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
-fc_copy_script("Mod/Sketcher" "Sketcher" ${Sketcher_Scripts})
+
+
+fc_target_copy_resource(Sketcher 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher
+    ${CMAKE_BINARY_DIR}/Mod/Sketcher
+    ${Sketcher_Scripts})
 
 if(MSVC)
     set_target_properties(Sketcher PROPERTIES SUFFIX ".pyd")

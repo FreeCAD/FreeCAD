@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
 
 #ifndef _RayFeature_h_
 #define _RayFeature_h_
@@ -29,6 +27,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyStandard.h>
 
 #include "RaySegment.h"
 
@@ -45,27 +44,24 @@ class AppRaytracingExport RayFeature: public Raytracing::RaySegment
 {
     PROPERTY_HEADER(Raytracing::RayFeature);
 public:
-	/// Constructor
-	RayFeature(void);
+    /// Constructor
+    RayFeature(void);
 
-	App::PropertyLink         Source;
+    App::PropertyLink       Source;
+    App::PropertyColor      Color;
 
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
 
-	/// returns the type name of the ViewProvider
+    /// returns the type name of the ViewProvider
     const char* getViewProviderName(void) const { 
         return "Gui::ViewProviderDocumentObject"; 
     }
     //@}
-
 };
 
-
 } //namespace Raytracing
-
-
 
 #endif //_RayFeature_h_

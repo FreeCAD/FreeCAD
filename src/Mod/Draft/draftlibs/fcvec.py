@@ -161,9 +161,10 @@ def isColinear(vlist):
 	'''isColinear(list_of_vectors): checks if vectors in given list are colinear'''
 	typecheck ([(vlist,list)], "isColinear");
 	if len(vlist) < 3: return True
+        p = precision()
 	first = vlist[1].sub(vlist[0])
 	for i in range(2,len(vlist)):
-		if angle(vlist[i].sub(vlist[0]),first) != 0:
+		if round(angle(vlist[i].sub(vlist[0]),first),p) != 0:
 			return False
 	return True
 

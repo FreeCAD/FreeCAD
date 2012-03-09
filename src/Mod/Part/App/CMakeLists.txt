@@ -241,7 +241,12 @@ SET(Part_Scripts
 
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})
-fc_copy_script("Mod/Part" "Part" ${Part_Scripts})
+
+
+fc_target_copy_resource(Part 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Part
+    ${CMAKE_BINARY_DIR}/Mod/Part
+    ${Part_Scripts})
 
 if(MSVC)
     set_target_properties(Part PROPERTIES SUFFIX ".pyd")

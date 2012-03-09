@@ -69,6 +69,7 @@ class Snapper:
         self.constrainLine = None
         self.trackLine = None
         self.lastSnappedObject = None
+        self.active = True
         
         # the snapmarker has "dot","circle" and "square" available styles
         self.mk = {'passive':'circle',
@@ -141,11 +142,13 @@ class Snapper:
         if self.grid and Draft.getParam("grid"):
             self.grid.set()
         
-        # checking if alwaySnap setting is on
+        # activate snap
         oldActive = False
         if Draft.getParam("alwaysSnap"):
             oldActive = active
             active = True
+        if not self.active:
+            active = False
 
         self.setCursor('passive')
         if self.tracker:
@@ -159,14 +162,17 @@ class Snapper:
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((screenpos[0],screenpos[1]))
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
-        eline = None
-        point,eline = self.snapToPolar(point,lastpoint)
-        point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
+
+        if active:
+            eline = None
+            point,eline = self.snapToPolar(point,lastpoint)
+            point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
         
         if not info:
             
             # nothing has been snapped, check fro grid snap
-            point = self.snapToGrid(point)
+            if active:
+                point = self.snapToGrid(point)
             return cstr(point)
 
         else:

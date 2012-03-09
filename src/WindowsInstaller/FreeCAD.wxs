@@ -27,9 +27,9 @@
 	<?define RTMProductVersion="$(var.FCVersionMajor).$(var.FCVersionMinor)" ?>
 	<?define ProductVersion="$(var.FCVersionMajor).$(var.FCVersionMinor).$(var.FCVersionRevision)" ?>
 	<!-- this is the product UID and have to change for every x.y Version  -->
-	<?define ProductCode="{81abc4a0-de63-11de-8a39-0800200c9a66}"?>
+	<?define ProductCode="{2b2b5d2b-0f01-410b-843b-8f437fd75fbf}"?>
 	<!-- this is the product upgrade UID and have to change for every x.y Version  -->
-	<?define UpgradeCode="{b921eb30-de63-11de-8a39-0800200c9a66}"?>
+	<?define UpgradeCode="{2b2b5d2b-0f01-410b-843b-8f437fd75fbf}"?>
 	<?define PackageCode="{????????-????-????-????-????????????}"?>
 
 
@@ -151,12 +151,13 @@
 			<!-- No CAM at the moment 
             <ComponentRef Id="CompModCam" />
 			-->
-	        <ComponentRef Id="CompModDrawingTemplates" />
+            <ComponentRef Id="CompModDrawingTemplates" />
             <ComponentRef Id="CompModDrawing" />
             <ComponentRef Id="CompModRobot" />
             <ComponentRef Id="CompModRobotLibKuka" />
             <ComponentRef Id="CompModStart" />
             <ComponentRef Id="CompModStartLibStartPage" />
+            <ComponentRef Id="CompModStartDataStartPage" />
             <ComponentRef Id="CompModWeb" />
             <ComponentRef Id="CompExampleData" />
 		

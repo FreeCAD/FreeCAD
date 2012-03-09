@@ -31,7 +31,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
 #include "RayProject.h"
-#include "RaySegment.h"
+#include "RayFeature.h"
 
 using namespace Raytracing;
 using namespace std;
@@ -45,7 +45,8 @@ PROPERTY_SOURCE(Raytracing::RayProject, App::DocumentObjectGroup)
 RayProject::RayProject(void)
 {
     ADD_PROPERTY_TYPE(PageResult ,(0),0,App::Prop_Output,"Resulting povray Project file");
-    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_None  ,"Template for the Povray project");
+    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_None ,"Template for the Povray project");
+    ADD_PROPERTY_TYPE(Camera     ,(""),0,App::Prop_None ,"Camera settings");
 }
 
 App::DocumentObjectExecReturn *RayProject::execute(void)
@@ -67,20 +68,21 @@ App::DocumentObjectExecReturn *RayProject::execute(void)
     string tempName = PageResult.getExchangeTempFile();
     ofstream ofile(tempName.c_str());
 
+    // copy the input of the resource file
     while (!file.eof()) {
         getline (file,line);
-        if (line != "<!- ProjectContent -->")
-            ofile << line << endl;
-        else {
-            // get through the children and collect all the views
-            const std::vector<App::DocumentObject*> &Grp = Group.getValues();
-            for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
-                if ((*It)->getTypeId().isDerivedFrom(Raytracing::RaySegment::getClassTypeId())) {
-                    Raytracing::RaySegment *View = dynamic_cast<Raytracing::RaySegment *>(*It);
-                    ofile << View->Result.getValue();
-                    ofile << endl << endl << endl;
-                }
-            }
+        ofile << line << endl;
+    }
+
+    ofile << Camera.getValue();
+
+    // get through the children and collect all the views
+    const std::vector<App::DocumentObject*> &Grp = Group.getValues();
+    for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
+        if ((*It)->getTypeId().isDerivedFrom(Raytracing::RayFeature::getClassTypeId())) {
+            Raytracing::RayFeature *View = dynamic_cast<Raytracing::RayFeature *>(*It);
+            ofile << View->Result.getValue();
+            ofile << endl << endl << endl;
         }
     }
 

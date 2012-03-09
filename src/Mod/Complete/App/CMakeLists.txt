@@ -23,7 +23,12 @@ SET(Complete_SRCS
 
 add_library(Complete SHARED ${Complete_SRCS})
 target_link_libraries(Complete ${Complete_LIBS})
-fc_copy_script("Mod/Complete" "Complete" Init.py)
+
+
+fc_target_copy_resource(Complete 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Complete
+    ${CMAKE_BINARY_DIR}/Mod/Complete
+    Init.py)
 
 if(MSVC)
     set_target_properties(Complete PROPERTIES SUFFIX ".pyd")

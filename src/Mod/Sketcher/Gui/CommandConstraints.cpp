@@ -795,7 +795,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_HorizontalDistance";
-    sAccel          = "D";
+    sAccel          = "SHIFT+H";
     eType           = ForEdit;
 }
 
@@ -940,12 +940,12 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Constrain horizontal distance");
+    sMenuText       = QT_TR_NOOP("Constrain vertical distance");
     sToolTipText    = QT_TR_NOOP("Fix the vertical distance between two points or line ends");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_VerticalDistance";
-    sAccel          = "D";
+    sAccel          = "SHIFT+V";
     eType           = ForEdit;
 }
 

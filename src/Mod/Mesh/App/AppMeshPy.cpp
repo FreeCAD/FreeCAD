@@ -165,10 +165,12 @@ static PyObject * exporter(PyObject *self, PyObject *args)
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
                     const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
+                    MeshCore::MeshKernel kernel = mesh.getKernel();
+                    kernel.Transform(mesh.getTransform());
                     if (global_mesh.countFacets() == 0)
-                        global_mesh = mesh;
+                        global_mesh.setKernel(kernel);
                     else
-                        global_mesh.addMesh(mesh);
+                        global_mesh.addMesh(kernel);
                 }
                 else if (obj->getTypeId().isDerivedFrom(partId)) {
                     App::Property* shape = obj->getPropertyByName("Shape");

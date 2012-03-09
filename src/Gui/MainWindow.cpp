@@ -36,6 +36,7 @@
 # include <QLabel>
 # include <QMdiSubWindow>
 # include <QMessageBox>
+# include <QPainter>
 # include <QSettings>
 # include <QSignalMapper>
 # include <QStatusBar>
@@ -1302,7 +1303,45 @@ QPixmap MainWindow::splashImage() const
     if (fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
     if (splash_image.isNull())
-        splash_image = Gui::BitmapFactory().pixmap(App::Application::Config()["SplashPicture"].c_str());
+        splash_image = Gui::BitmapFactory().pixmap(App::Application::Config()["SplashScreen"].c_str());
+
+    // include application name and version number
+    std::map<std::string,std::string>::const_iterator tc = App::Application::Config().find("SplashInfoColor");
+    if (tc != App::Application::Config().end()) {
+        QString title   = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        std::map<std::string,std::string>::iterator it = App::Application::Config().find("Application");
+        if (it != App::Application::Config().end())
+            title = QString::fromUtf8(it->second.c_str());
+        QString major   = QString::fromAscii(App::Application::Config()["BuildVersionMajor"].c_str());
+        QString minor   = QString::fromAscii(App::Application::Config()["BuildVersionMinor"].c_str());
+        QString version = QString::fromAscii("%1.%2").arg(major).arg(minor);
+
+        QPainter painter;
+        painter.begin(&splash_image);
+        QFont fontExe = painter.font();
+        fontExe.setPointSize(20);
+        QFontMetrics metricExe(fontExe);
+        int l = metricExe.width(title);
+        int w = splash_image.width();
+        int h = splash_image.height();
+
+        QFont fontVer = painter.font();
+        fontVer.setPointSize(12);
+        QFontMetrics metricVer(fontVer);
+        int v = metricVer.width(version);
+
+        QColor color;
+        color.setNamedColor(QString::fromAscii(tc->second.c_str()));
+        if (color.isValid()) {
+            painter.setPen(color);
+            painter.setFont(fontExe);
+            painter.drawText(w-(l+v+10),h-20, title);
+            painter.setFont(fontVer);
+            painter.drawText(w-(v+5),h-20, version);
+            painter.end();
+        }
+    }
+
     return splash_image;
 }
 

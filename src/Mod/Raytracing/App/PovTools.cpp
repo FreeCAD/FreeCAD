@@ -54,7 +54,7 @@ using namespace std;
 //  location  CamPos
 //  look_at   LookAt
 //  sky       Up
-//  angle     50
+//  angle     45
 //}
 
 std::string PovTools::getCamera(const CamDef& Cam)
@@ -73,7 +73,7 @@ std::string PovTools::getCamera(const CamDef& Cam)
         << "#declare cam_sky      = <" << Cam.Up.X()  <<"," << Cam.Up.Z()    <<"," << Cam.Up.Y()    <<">;"<< endl
 
         // array of zoom factors
-        << "#declare cam_angle    = 50; " << endl
+        << "#declare cam_angle    = 45; " << endl
         // instance of the camera
         << "camera {" << endl
         << "  location  cam_location" << endl
@@ -139,7 +139,7 @@ void PovTools::writeCameraVec(const char* FileName, const std::vector<CamDef>& C
         << "#declare  CamZoom = array[" << CamVec.size() << "] {\n";
 
     for (It = CamVec.begin(); It != CamVec.end(); It++)
-        out << "   50,\n";
+        out << "   45,\n";
     out << "};\n";
 
 

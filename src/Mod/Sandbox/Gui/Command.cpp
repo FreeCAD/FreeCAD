@@ -33,6 +33,7 @@
 # include <QFutureWatcher>
 # include <QtConcurrentMap>
 # include <QLabel>
+# include <QInputDialog>
 # include <QMessageBox>
 # include <QTimer>
 # include <QImage>
@@ -45,6 +46,7 @@
 # include <Inventor/Qt/viewers/SoQtPlaneViewer.h>
 # include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 # include <Inventor/Qt/viewers/SoQtFlyViewer.h>
+# include <cmath>
 # include <boost/thread/thread.hpp>
 # include <boost/thread/mutex.hpp>
 # include <boost/thread/condition_variable.hpp>
@@ -71,6 +73,7 @@
 #include <Mod/Sandbox/App/DocumentThread.h>
 #include <Mod/Sandbox/App/DocumentProtector.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Degeneration.h>
 #include "Workbench.h"
 
 
@@ -1247,6 +1250,177 @@ void CmdSandboxFlyViewer::activated(int iMsg)
     viewer->setSceneGraph(new SoCone);
 }
 
+// -------------------------------------------------------------------------------
+
+DEF_STD_CMD(CmdMengerSponge);
+
+CmdMengerSponge::CmdMengerSponge()
+  :Command("Sandbox_MengerSponge")
+{
+    sAppModule    = "Sandbox";
+    sGroup        = QT_TR_NOOP("Sandbox");
+    sMenuText     = QT_TR_NOOP("Menger sponge");
+    sToolTipText  = QT_TR_NOOP("Menger sponge");
+    sWhatsThis    = QT_TR_NOOP("Menger sponge");
+    sStatusTip    = QT_TR_NOOP("Menger sponge");
+}
+
+struct Param {
+    int level;
+    float x,y,z;
+    Param(int l, float x, float y, float z)
+        : level(l), x(x), y(y), z(z)
+    {
+    }
+};
+
+typedef Base::Reference<Mesh::MeshObject> MeshObjectRef;
+
+MeshObjectRef globalBox;
+
+// Create a Box and Place it a coords (x,y,z)
+MeshObjectRef PlaceBox(float x, float y, float z)
+{
+    MeshObjectRef mesh = new Mesh::MeshObject(*globalBox);
+    Base::Matrix4D m;
+    m.move(x,y,z);
+    mesh->getKernel().Transform(m);
+    return mesh;
+}
+
+MeshObjectRef Sierpinski(int level, float x0, float y0, float z0)
+{
+    float boxnums = std::pow(3.0f,level);
+    float thirds = boxnums / 3;
+    float twothirds = thirds * 2;
+
+    QList<float> rangerx, rangery, rangerz;
+    if (level == 0) {
+        rangerx << x0;
+        rangery << y0;
+        rangerz << z0;
+    }
+    else {
+        rangerx << x0 << (x0 + thirds) << (x0 + twothirds);
+        rangery << y0 << (y0 + thirds) << (y0 + twothirds);
+        rangerz << z0 << (z0 + thirds) << (z0 + twothirds);
+    }
+
+    int block = 1;
+    QList<int> skip; skip << 5 << 11 << 13 << 14 << 15 << 17 << 23;
+    MeshObjectRef mesh = new Mesh::MeshObject();
+
+    for (QList<float>::iterator i = rangerx.begin(); i != rangerx.end(); ++i) {
+        for (QList<float>::iterator j = rangery.begin(); j != rangery.end(); ++j) {
+            for (QList<float>::iterator k = rangerz.begin(); k != rangerz.end(); ++k) {
+                if (!skip.contains(block)) {
+                    if (level > 0)
+                        mesh->addMesh(*Sierpinski(level-1,*i,*j,*k));
+                    else
+                        mesh->addMesh(*PlaceBox(*i,*j,*k));
+                }
+                block++;
+            }
+        }
+    }
+
+    return mesh;
+}
+
+MeshObjectRef runSierpinski(const Param& p)
+{
+    return Sierpinski(p.level,p.x,p.y,p.z);
+}
+
+MeshObjectRef makeParallelMengerSponge(int level, float x0, float y0, float z0)
+{
+    float boxnums = std::pow(3.0f,level);
+    float thirds = boxnums / 3;
+    float twothirds = thirds * 2;
+
+    QList<float> rangerx, rangery, rangerz;
+    rangerx << x0 << (x0 + thirds) << (x0 + twothirds);
+    rangery << y0 << (y0 + thirds) << (y0 + twothirds);
+    rangerz << z0 << (z0 + thirds) << (z0 + twothirds);
+
+    int block = 1;
+    QList<int> skip; skip << 5 << 11 << 13 << 14 << 15 << 17 << 23;
+
+    // collect the arguments for the algorithm in a list
+    QList<Param> args;
+
+    for (QList<float>::iterator i = rangerx.begin(); i != rangerx.end(); ++i) {
+        for (QList<float>::iterator j = rangery.begin(); j != rangery.end(); ++j) {
+            for (QList<float>::iterator k = rangerz.begin(); k != rangerz.end(); ++k) {
+                if (!skip.contains(block)) {
+                    args << Param(level-1, *i, *j, *k);
+                }
+                block++;
+            }
+        }
+    }
+
+    QFuture<MeshObjectRef> future = QtConcurrent::mapped(args, runSierpinski);
+
+    QFutureWatcher<MeshObjectRef> watcher;
+    watcher.setFuture(future);
+
+    // keep it responsive during computation
+    QEventLoop loop;
+    QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    MeshObjectRef mesh = new Mesh::MeshObject();
+    for (QFuture<MeshObjectRef>::const_iterator it = future.begin(); it != future.end(); ++it) {
+        mesh->addMesh(**it);
+        (*it)->clear();
+    }
+
+    return mesh;
+}
+
+void CmdMengerSponge::activated(int iMsg)
+{
+    bool ok;
+    int level = QInputDialog::getInteger(Gui::getMainWindow(),
+        QString::fromAscii("Menger sponge"),
+        QString::fromAscii("Recursion depth:"),
+        3, 1, 5, 1, &ok);
+    if (!ok) return;
+    int ret = QMessageBox::question(Gui::getMainWindow(),
+        QString::fromAscii("Parallel"),
+        QString::fromAscii("Do you want to run this in a thread pool?"),
+        QMessageBox::Yes|QMessageBox::No);
+    bool parallel=(ret == QMessageBox::Yes);
+    float x0=0,y0=0,z0=0;
+
+    globalBox = Mesh::MeshObject::createCube(1,1,1);
+
+    MeshObjectRef mesh;
+    if (parallel)
+        mesh = makeParallelMengerSponge(level,x0,y0,z0);
+    else
+        mesh = Sierpinski(level,x0,y0,z0);
+
+    MeshCore::MeshKernel& kernel = mesh->getKernel();
+
+    // remove duplicated points
+    MeshCore::MeshFixDuplicatePoints(kernel).Fixup();
+
+    // remove internal facets
+    MeshCore::MeshEvalInternalFacets eval(kernel);
+    eval.Evaluate();
+    kernel.DeleteFacets(eval.GetIndices());
+
+    // repair neighbourhood
+    kernel.RebuildNeighbours();
+
+    App::Document* doc = App::GetApplication().newDocument();
+    Mesh::Feature* feature = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","MengerSponge"));
+    feature->Mesh.setValue(*mesh);
+    feature->purgeTouched();
+}
+
 
 void CreateSandboxCommands(void)
 {
@@ -1279,4 +1453,5 @@ void CreateSandboxCommands(void)
     rcCmdMgr.addCommand(new CmdSandboxPlaneViewer());
     rcCmdMgr.addCommand(new CmdSandboxExaminerViewer());
     rcCmdMgr.addCommand(new CmdSandboxFlyViewer());
+    rcCmdMgr.addCommand(new CmdMengerSponge());
 }

@@ -88,7 +88,12 @@ endif(MSVC)
 
 add_library(DrawingGui SHARED ${DrawingGui_SRCS} ${DrawingGuiView_SRCS} ${DrawingGuiViewProvider_SRCS})
 target_link_libraries(DrawingGui ${DrawingGui_LIBS})
-fc_copy_script("Mod/Drawing" "DrawingGui" InitGui.py)
+
+
+fc_target_copy_resource(DrawingGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Drawing
+    ${CMAKE_BINARY_DIR}/Mod/Drawing
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(DrawingGui PROPERTIES SUFFIX ".pyd")
