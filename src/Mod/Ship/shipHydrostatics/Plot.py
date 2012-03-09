@@ -59,6 +59,7 @@ class Plot(object):
         if self.execute():
             return
         ImageGui.open(self.path + 'volume.png')
+        ImageGui.open(self.path + 'stability.png')
 
     def createDirectory(self):
         """ Create needed folder to write data and scripts.
@@ -97,13 +98,16 @@ class Plot(object):
         Output.write(" # 3: Wetted surface [m2]\n")
         Output.write(" # 4: 1cm triming ship moment [ton m]\n")
         Output.write(" # 5: Bouyance center x coordinate\n")
+        Output.write(" # 6: Floating area\n")
+        Output.write(" # 7: KBt\n")
+        Output.write(" # 8: BMt\n")
         Output.write(" #\n")
         Output.write(" #################################################################\n")
         # Print data
         for i in range(0,len(drafts)):
             draft = drafts[i]
             point = Tools.Point(ship,draft,trim)
-            string = "%f %f %f %f %f\n" % (point.disp, point.draft, point.wet, point.mom, point.xcb)
+            string = "%f %f %f %f %f %f %f %f\n" % (point.disp, point.draft, point.wet, point.mom, point.xcb, point.farea, point.KBt, point.BMt)
             Output.write(string)
         # Close file
         Output.close()
@@ -160,13 +164,28 @@ class Plot(object):
         Output.write("set style 1 line linetype 1 linewidth 1 colour rgb (0):(0):(0)\n")
         Output.write("set style 2 line linetype 1 linewidth 1 colour rgb (1):(0):(0)\n")        
         Output.write("set style 3 line linetype 1 linewidth 1 colour rgb (0):(0):(1)\n")        
-        Output.write("set style 4 line linetype 1 linewidth 1 colour rgb (1):(0):(1)\n")        
+        Output.write("set style 4 line linetype 1 linewidth 1 colour rgb (0.1):(0.5):(0.1)\n")        
         # Write plot call
         Output.write("# Plot\n")        
-        Output.write("plot '%s' using 2:1 title '$\\bigtriangleup$' axes x1y1 with lines style 1, \\\n" % (self.dataFile))        
+        Output.write("plot '%s' using 2:1 title 'Draft' axes x1y1 with lines style 1, \\\n" % (self.dataFile))        
         Output.write("     '' using 3:1 title 'Wetted area' axes x2y1 with lines style 2, \\\n")        
         Output.write("     '' using 4:1 title '1cm trim moment' axes x3y1 with lines style 3, \\\n")        
         Output.write("     '' using 5:1 title 'XCB' axes x4y1 with lines style 4\n")        
+        # Prepare second plot
+        Output.write("set output '%s'\n" % (self.path + 'stability.eps'))
+        Output.write("# X axis\n")
+        Output.write("set x2label '\\textit{Floating area} / $\\mathrm{m}^2$'\n")
+        Output.write("set x2tic\n")
+        Output.write("set x3label '$KB_{T}$ / $\\mathrm{m}$'\n")
+        Output.write("set x3tic\n")
+        Output.write("set x4label '$BM_{T}$ / $\\mathrm{m}$'\n")
+        Output.write("set x4tic\n")
+        # Write plot call
+        Output.write("# Plot\n")        
+        Output.write("plot '%s' using 2:1 title 'Draft' axes x1y1 with lines style 1, \\\n" % (self.dataFile))        
+        Output.write("     '' using 6:1 title 'Floating area' axes x2y1 with lines style 2, \\\n")        
+        Output.write("     '' using 7:1 title '$KB_{T}$' axes x3y1 with lines style 3, \\\n")        
+        Output.write("     '' using 8:1 title '$BM_{T}$' axes x4y1 with lines style 4\n")        
         # Close file
         self.layoutFile = filename
         Output.close()
@@ -176,6 +195,7 @@ class Plot(object):
         """ Calls pyxplot in order to plot an save an image.
         @return True if error happens.
         """
+        # Plot
         filename = self.path + 'volume'
         comm = "pyxplot %s" % (self.layoutFile)
         if os.system(comm):
@@ -184,6 +204,16 @@ class Plot(object):
             msg = Translator.translate("Plot will not generated\n")
             FreeCAD.Console.PrintError(msg)
             return True
+        # Convert volume
+        comm = "gs -r300 -dEPSCrop -dTextAlphaBits=4 -sDEVICE=png16m -sOutputFile=%s.png -dBATCH -dNOPAUSE %s.eps" % (filename,filename)
+        if os.system(comm):
+            msg = Translator.translate("Can't execute ghostscript. Maybe is not installed?\n")
+            FreeCAD.Console.PrintError(msg)
+            msg = Translator.translate("Generated image will not converted to png\n")
+            FreeCAD.Console.PrintError(msg)
+            return True
+        # Convert stability
+        filename = self.path + 'stability'
         comm = "gs -r300 -dEPSCrop -dTextAlphaBits=4 -sDEVICE=png16m -sOutputFile=%s.png -dBATCH -dNOPAUSE %s.eps" % (filename,filename)
         if os.system(comm):
             msg = Translator.translate("Can't execute ghostscript. Maybe is not installed?\n")
