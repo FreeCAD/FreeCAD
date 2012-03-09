@@ -29,6 +29,88 @@ import FreeCADGui as Gui
 import Instance
 from shipUtils import Math
 
+def convertSection(section, x, z):
+    """ Transform linear points distribution of full section 
+    into double list, where points are gropued by height, and 
+    reachs z maximum height.
+    @param section Ship section.
+    @param x Ship section x coordinate.
+    @param z Maximum section height.
+    @return Converted section, None if no valid section (i.e.- All section are over z)
+    """
+    # Convert into array with n elements (Number of points by sections)
+    # with m elements into them (Number of points with the same height,
+    # that is typical of multibody)
+    points = []
+    nPoints = 0
+    j = 0
+    while j < len(section)-1:
+        points.append([section[j]])
+        k = j+1
+        last=False  # In order to identify if last point has been append
+        while(k < len(section)):
+            if not Math.isAprox(section[j].z, section[k].z):
+                break
+            points[nPoints].append(section[k])
+            last=True
+            k = k+1
+        nPoints = nPoints + 1
+        j = k
+    if not last:    # Last point has not been added
+        points.append([section[len(section)-1]])
+    # Count the number of valid points
+    n = 0
+    for j in range(0,len(points)):
+        Z = points[j][0].z
+        if Z > z:
+            break
+        n = n+1
+    # Discard invalid sections
+    if n == 0:
+        return None
+    # Truncate only valid points
+    l = points[0:n]
+    # Study if additional point is needed
+    if n < len(points):
+        # Get last sections
+        pts1 = points[n]
+        pts0 = points[n-1]
+        if len(pts1) == len(pts0):
+            # Simple interpolation between points
+            #    \----\-----|--------|
+            #     \    |    |       /
+            #      \    \   |      |
+            #       \----|--|-----/
+            pts = []
+            for i in range(0,len(pts1)):
+                y0 = pts0[i].y
+                z0 = pts0[i].z
+                y1 = pts1[i].y
+                z1 = pts1[i].z
+                factor = (z - z0) / (z1 - z0)
+                y = y0 + factor*(y1 - y0)
+                pts.append(App.Base.Vector(x,y,z))
+            l.append(pts)
+        if len(pts1) > len(pts0):
+            # pts0 has been multiplied
+            #    \---|---|
+            #     \  |   |
+            #      \ |   |
+            #       \|---|
+            # @todo Only katamaran are involved, multiple points multiplication must be study
+            pts = []
+            for i in range(0,len(pts1)):
+                y0 = pts0[min(len(pts0)-1,i)].y
+                z0 = pts0[min(len(pts0)-1,i)].z
+                y1 = pts1[i].y
+                z1 = pts1[i].z
+                factor = (z - z0) / (z1 - z0)
+                y = y0 + factor*(y1 - y0)
+                pts.append(App.Base.Vector(x,y,z))
+            l.append(pts)
+        # @todo Only katamaran are involved, multiple points creation/destruction must be study
+    return l
+
 def Displacement(ship, draft, trim):
     """ Calculate ship displacement.
     @param ship Selected ship instance
@@ -57,52 +139,11 @@ def Displacement(ship, draft, trim):
         x = xCoord[i]
         # Get the maximum Z value
         Z = draft - x*math.tan(angle)
-        # Count the number of valid points
-        n = 0
-        for j in range(0,len(section)):
-            z = section[j].z
-            if z > Z:
-                break
-            n = n+1
-        print('orig-> ', section[n-2:n], Z)
-        # Discard invalid sections
-        if n == 0:
+        # Format section
+        section = convertSection(section, x, Z)
+        if not section:
             areas.append(0.0)
-            continue
-        # Truncate only valid points
-        points = section[0:n]
-        # Study if additional point is needed
-        if n < len(section):
-            y0 = section[n-1].y
-            z0 = section[n-1].z
-            y1 = section[n].y
-            z1 = section[n].z
-            if (Z > z0) and not (Math.isAprox(Z,z0)):
-                factor = (Z - z0) / (z1 - z0)
-                y = y0 + factor*(y1 - y0)
-                points.append(App.Base.Vector(x,y,Z))
-        print('dest-> ', points[-3:])
-        # Convert into array with n elements (Number of points by sections)
-        # with m elements into them (Number of points with the same height,
-        # typical of multibody)
-        section = []
-        nPoints = 0
-        j = 0
-        while j < len(points)-1:
-            section.append([points[j]])
-            k = j+1
-            last=False  # In order to identify if last point has been append
-            while(k < len(points)):
-                if not Math.isAprox(points[j].z, points[k].z):
-                    break
-                section[nPoints].append(points[k])
-                last=True
-                k = k+1
-            nPoints = nPoints + 1
-            j = k
-        if not last:    # Last point has not been added
-            section.append([points[len(points)-1]])
-        print('Zeq-> ', section[-3:])
+            continue            
         # Integrate area
         area = 0.0
         for j in range(0, len(section)-1):
@@ -208,43 +249,11 @@ def WettedArea(ship, draft, trim):
         x = xCoord[i]
         # Get the maximum Z value
         Z = draft - x*math.tan(angle)
-        # Count the number of valid points
-        n = 0
-        for j in range(0,len(section)):
-            z = section[j].z
-            if z > Z:
-                break
-            n = n+1
-        # Discard invalid sections
-        if n == 0:
+        # Format section
+        section = convertSection(section, x, Z)
+        if not section:
             lines.append(0.0)
-            continue
-        # Truncate only valid points
-        points = section[0:n]
-        # Study if additional point is needed
-        if n < len(section):
-            y0 = section[n-1].y
-            z0 = section[n-1].z
-            y1 = section[n].y
-            z1 = section[n].z
-            if (Z > z0) and not (Math.isAprox(Z,z0)):
-                factor = (Z - z0) / (z1 - z0)
-                y = y0 + factor*(y1 - y0)
-                points.append(App.Base.Vector(x,y,Z))
-        # Convert into array with n elements (Number of points by sections)
-        # with m elements into them (Number of points with the same height,
-        # typical of multibody)
-        section = []
-        nPoints = 0
-        j = 0
-        while j < len(points)-1:
-            section.append([points[j]])
-            k = j+1
-            while(Math.isAprox(points[j].z, points[k].z)):
-                section[nPoints].append(points[k])
-                k = k+1
-            nPoints = nPoints + 1
-            j = k
+            continue            
         # Integrate line area
         line = 0.0
         for j in range(0, len(section)-1):
