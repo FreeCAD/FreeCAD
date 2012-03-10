@@ -60,6 +60,7 @@ class Plot(object):
             return
         ImageGui.open(self.path + 'volume.png')
         ImageGui.open(self.path + 'stability.png')
+        ImageGui.open(self.path + 'coeffs.png')
 
     def createDirectory(self):
         """ Create needed folder to write data and scripts.
@@ -93,21 +94,24 @@ class Plot(object):
         Output.write(" #\n")
         Output.write(" # File automatically exported by FreeCAD-Ship\n")
         Output.write(" # This file contains transversal areas data, filled with following columns:\n")
-        Output.write(" # 1: Ship displacement [ton]\n")
-        Output.write(" # 2: Draft [m]\n")
-        Output.write(" # 3: Wetted surface [m2]\n")
-        Output.write(" # 4: 1cm triming ship moment [ton m]\n")
-        Output.write(" # 5: Bouyance center x coordinate\n")
-        Output.write(" # 6: Floating area\n")
-        Output.write(" # 7: KBt\n")
-        Output.write(" # 8: BMt\n")
+        Output.write(" #  1: Ship displacement [ton]\n")
+        Output.write(" #  2: Draft [m]\n")
+        Output.write(" #  3: Wetted surface [m2]\n")
+        Output.write(" #  4: 1cm triming ship moment [ton m]\n")
+        Output.write(" #  5: Bouyance center x coordinate\n")
+        Output.write(" #  6: Floating area\n")
+        Output.write(" #  7: KBt\n")
+        Output.write(" #  8: BMt\n")
+        Output.write(" #  9: Cb (block coefficient)\n")
+        Output.write(" # 10: Cf (Floating coefficient)\n")
+        Output.write(" # 11: Cm (Main frame coefficient)\n")
         Output.write(" #\n")
         Output.write(" #################################################################\n")
         # Print data
         for i in range(0,len(drafts)):
             draft = drafts[i]
             point = Tools.Point(ship,draft,trim)
-            string = "%f %f %f %f %f %f %f %f\n" % (point.disp, point.draft, point.wet, point.mom, point.xcb, point.farea, point.KBt, point.BMt)
+            string = "%f %f %f %f %f %f %f %f %f %f %f\n" % (point.disp, point.draft, point.wet, point.mom, point.xcb, point.farea, point.KBt, point.BMt, point.Cb, point.Cf, point.Cm)
             Output.write(string)
         # Close file
         Output.close()
@@ -186,6 +190,21 @@ class Plot(object):
         Output.write("     '' using 6:1 title 'Floating area' axes x2y1 with lines style 2, \\\n")        
         Output.write("     '' using 7:1 title '$KB_{T}$' axes x3y1 with lines style 3, \\\n")        
         Output.write("     '' using 8:1 title '$BM_{T}$' axes x4y1 with lines style 4\n")        
+        # Prepare third plot
+        Output.write("set output '%s'\n" % (self.path + 'coeffs.eps'))
+        Output.write("# X axis\n")
+        Output.write("set x2label '$C_{B}$'\n")
+        Output.write("set x2tic\n")
+        Output.write("set x3label '$C_{F}$'\n")
+        Output.write("set x3tic\n")
+        Output.write("set x4label '$C_{M}$'\n")
+        Output.write("set x4tic\n")
+        # Write plot call
+        Output.write("# Plot\n")        
+        Output.write("plot '%s' using 2:1 title 'Draft' axes x1y1 with lines style 1, \\\n" % (self.dataFile))        
+        Output.write("     '' using 9:1 title '$C_{B}$' axes x2y1 with lines style 2, \\\n")        
+        Output.write("     '' using 10:1 title '$C_{F}$' axes x3y1 with lines style 3, \\\n")        
+        Output.write("     '' using 11:1 title '$C_{M}$' axes x4y1 with lines style 4\n")        
         # Close file
         self.layoutFile = filename
         Output.close()
@@ -204,7 +223,7 @@ class Plot(object):
             msg = Translator.translate("Plot will not generated\n")
             FreeCAD.Console.PrintError(msg)
             return True
-        # Convert volume
+        # Convert volume image
         comm = "gs -r300 -dEPSCrop -dTextAlphaBits=4 -sDEVICE=png16m -sOutputFile=%s.png -dBATCH -dNOPAUSE %s.eps" % (filename,filename)
         if os.system(comm):
             msg = Translator.translate("Can't execute ghostscript. Maybe is not installed?\n")
@@ -212,8 +231,17 @@ class Plot(object):
             msg = Translator.translate("Generated image will not converted to png\n")
             FreeCAD.Console.PrintError(msg)
             return True
-        # Convert stability
+        # Convert stability image
         filename = self.path + 'stability'
+        comm = "gs -r300 -dEPSCrop -dTextAlphaBits=4 -sDEVICE=png16m -sOutputFile=%s.png -dBATCH -dNOPAUSE %s.eps" % (filename,filename)
+        if os.system(comm):
+            msg = Translator.translate("Can't execute ghostscript. Maybe is not installed?\n")
+            FreeCAD.Console.PrintError(msg)
+            msg = Translator.translate("Generated image will not converted to png\n")
+            FreeCAD.Console.PrintError(msg)
+            return True
+        # Convert coefficients image
+        filename = self.path + 'coeffs'
         comm = "gs -r300 -dEPSCrop -dTextAlphaBits=4 -sDEVICE=png16m -sOutputFile=%s.png -dBATCH -dNOPAUSE %s.eps" % (filename,filename)
         if os.system(comm):
             msg = Translator.translate("Can't execute ghostscript. Maybe is not installed?\n")
