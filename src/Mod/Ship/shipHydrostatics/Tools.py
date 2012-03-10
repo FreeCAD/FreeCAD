@@ -120,15 +120,19 @@ def Displacement(ship, draft, trim):
     areas : Area of each section \n
     disp: Ship displacement \n
     xcb: X bouyance center coordinate
+    Cb: Block coefficient
     """
     angle    = math.radians(trim)
     sections = Instance.sections(ship)
     xCoord   = ship.xSection[:]
+    minX     = None
+    maxX     = None
+    maxY     = 0.0
     areas    = []
     vol      = 0.0
     moment   = 0.0
     if not sections:
-        return [[],0.0,0.0]
+        return [[],0.0,0.0,0.0]
     for i in range(0, len(sections)):
         # Get the section
         section = sections[i]
@@ -143,7 +147,10 @@ def Displacement(ship, draft, trim):
         section = convertSection(section, x, Z)
         if not section:
             areas.append(0.0)
-            continue            
+            continue
+        maxX = x
+        if not minX:
+            minX = x
         # Integrate area
         area = 0.0
         for j in range(0, len(section)-1):
@@ -164,6 +171,7 @@ def Displacement(ship, draft, trim):
                 dy = 0.5*((y00 - y10) + (y01 - y11))
                 dz = 0.5*((z01 - z00) + (z11 - z10))
                 area = area + dy*dz
+                maxY = max([maxY,y00,y10,y01,y11])
             if(len(section[j]) < len(section[j+1])):
                 # y01,z01 ------- y11,z11
                 #    |        __/
@@ -180,6 +188,7 @@ def Displacement(ship, draft, trim):
                 dy = y01 - y11
                 dz = z01 - z00
                 area = area + 0.5*dy*dz
+                maxY = max([maxY,y00,y01,y11])                
             elif(len(section[j]) > len(section[j+1])):
                 # y01,z01
                 #    |    \__
@@ -196,6 +205,7 @@ def Displacement(ship, draft, trim):
                 dy = y00 - y10
                 dz = z01 - z00
                 area = area + 0.5*dy*dz
+                maxY = max([maxY,y00,y10,y01])
             elif(len(section[j]) == 1):
                 # y1,z1 ------- 
                 #    |          
@@ -210,6 +220,7 @@ def Displacement(ship, draft, trim):
                 dy = 0.5 * (y0 + y1)
                 dz = z1 - z0
                 area = area + dy*dz
+                maxY = max([maxY,y0,y1])
         areas.append(2.0*area)	                # 2x because only half ship is represented
         # Add volume & moment if proceed
         if i > 0:
@@ -219,11 +230,14 @@ def Displacement(ship, draft, trim):
             vol    = vol + area*dx
             moment = moment + area*dx*x
     # Compute displacement and xcb
-    disp = vol / 1.025  # rho = 1.025 ton/m3 (salt water density)
-    xcb  = 0.0
+    disp  = vol / 1.025  # rho = 1.025 ton/m3 (salt water density)
+    xcb   = 0.0
+    cb    = 0.0
     if vol > 0.0:
         xcb  = moment / vol
-    return [areas,disp,xcb]
+        block = (maxX-minX)*2.0*maxY*draft
+        cb    = vol / block
+    return [areas,disp,xcb,cb]
 
 def WettedArea(ship, draft, trim):
     """ Calculate wetted ship area.
@@ -360,15 +374,19 @@ def FloatingArea(ship, draft, trim):
     @param ship Selected ship instance
     @param draft Draft.
     @param trim Trim in degrees.
-    @return Ship floating area.
+    @return Ship floating area, and floating coefficient.
     """
     angle    = math.radians(trim)
     sections = Instance.sections(ship)
     xCoord   = ship.xSection[:]
     lines    = []
     area     = 0.0
+    minX     = None
+    maxX     = None
+    maxY     = 0.0
+    cf       = 0.0
     if not sections:
-        return 0.0
+        return [0.0, 0.0]
     for i in range(0, len(sections)):
         # Get the section
         section = sections[i]
@@ -384,6 +402,9 @@ def FloatingArea(ship, draft, trim):
         if not section:
             lines.append(0.0)
             continue            
+        maxX = x
+        if not minX:
+            minX = x
         # Get floating line length
         line = 0.0
         flag = True  # Even lines compute for floating areas, odd no
@@ -395,10 +416,12 @@ def FloatingArea(ship, draft, trim):
                 y0 = abs(section[j][k-1].y)
                 y1 = abs(section[j][k].y)
                 line = line + (y1 - y0)
+                maxY = max([maxY,y1,y0])
             flag = not flag
         if flag:    # Central body computation lefts
             y = abs(section[j][0].y)
             line = line + y
+            maxY = max([maxY,y])
         lines.append(2.0*line)	                # 2x because only half ship is represented
         # Add area if proceed
         if i > 0:
@@ -406,7 +429,9 @@ def FloatingArea(ship, draft, trim):
             x      = 0.5*(xCoord[i] + xCoord[i-1])
             line   = 0.5*(lines[i] + lines[i-1])
             area   = area + line*dx
-    return area
+    if area:
+        cf = area / ( (maxX-minX) * 2.0*maxY )
+    return [area, cf]
 
 def KBT(ship, draft, trim, roll=0.0):
     """ Calculate ship Keel to Bouyance center transversal distance.
@@ -699,6 +724,112 @@ def BMT(ship, draft, trim):
         BM = BM + 0.5*BB/math.tan(math.radians(0.5*roll)) / nRoll   # nRoll is the weight function
     return BM
 
+def MainFrameCoeff(ship, draft):
+    """ Calculate main frame coefficient.
+    @param ship Selected ship instance
+    @param draft Draft.
+    @return Main frame coefficient
+    """
+    sections = Instance.sections(ship)
+    xCoord   = ship.xSection[:]
+    cm       = 0.0
+    if not sections:
+        return 0.0
+    # Look for nearest to main frame section
+    sectionID = 0
+    X = xCoord[0]
+    for i in range(1, len(sections)):
+        # Get the position of the section
+        x = xCoord[i]
+        if abs(x) < abs(X):
+            sectionID = i
+            X = x
+    # Get the section
+    section = sections[sectionID]
+    if len(section) < 2:    # Empty section
+        return 0.0
+    x = X
+    # Get the maximum Z value
+    Z = draft
+    # Format section
+    section = convertSection(section, x, Z)
+    if not section:
+        return 0.0
+    # Integrate area
+    area = 0.0
+    maxY     = 0.0
+    for j in range(0, len(section)-1):
+        for k in range(0, min(len(section[j])-1, len(section[j+1])-1)):
+            # y11,z11 ------- y01,z01
+            #    |               |
+            #    |               |
+            #    |               |
+            # y10,z10 ------- y00,z00
+            y00 = abs(section[j][k].y)
+            z00 = section[j][k].z
+            y10 = abs(section[j][k+1].y)
+            z10 = section[j][k+1].z
+            y01 = abs(section[j+1][k].y)
+            z01 = section[j+1][k].z
+            y11 = abs(section[j+1][k+1].y)
+            z11 = section[j+1][k+1].z
+            dy = 0.5*((y00 - y10) + (y01 - y11))
+            dz = 0.5*((z01 - z00) + (z11 - z10))
+            area = area + dy*dz
+            maxY = max([maxY,y00,y10,y01,y11])
+        if(len(section[j]) < len(section[j+1])):
+            # y01,z01 ------- y11,z11
+            #    |        __/
+            #    |     __/
+            #    |    /
+            # y00,z00
+            k = len(section[j])-1
+            y00 = abs(section[j][k].y)
+            z00 = section[j][k].z
+            y01 = abs(section[j+1][k].y)
+            z01 = section[j+1][k].z
+            y11 = abs(section[j+1][k+1].y)
+            z11 = section[j+1][k+1].z
+            dy = y01 - y11
+            dz = z01 - z00
+            area = area + 0.5*dy*dz
+            maxY = max([maxY,y00,y01,y11])                
+        elif(len(section[j]) > len(section[j+1])):
+            # y01,z01
+            #    |    \__
+            #    |       \__
+            #    |          \
+            # y00,z00 ------- y10,z10
+            k = len(section[j+1])-1
+            y00 = abs(section[j][k].y)
+            z00 = section[j][k].z
+            y10 = abs(section[j][k+1].y)
+            z10 = section[j][k+1].z
+            y01 = abs(section[j+1][k].y)
+            z01 = section[j+1][k].z
+            dy = y00 - y10
+            dz = z01 - z00
+            area = area + 0.5*dy*dz
+            maxY = max([maxY,y00,y10,y01])
+        elif(len(section[j]) == 1):
+            # y1,z1 ------- 
+            #    |          
+            #    |          
+            #    |          
+            # y0,z0 ------- 
+            k = 0
+            y0 = abs(section[j][k].y)
+            z0 = section[j][k].z
+            y1 = abs(section[j+1][k].y)
+            z1 = section[j+1][k].z
+            dy = 0.5 * (y0 + y1)
+            dz = z1 - z0
+            area = area + dy*dz
+            maxY = max([maxY,y0,y1])
+    if maxY*draft > 0.0:
+        cm = area / (maxY*draft)
+    return cm
+
 class Point:
     """ Hydrostatics point, that conatins: \n
     draft Ship draft [m]. \n
@@ -710,6 +841,9 @@ class Point:
     farea Floating area [m2].
     KBt Transversal KB height [m].
     BMt Transversal BM height [m].
+    Cb Block coefficient.
+    Cf Floating coefficient.
+    Cm Main frame coefficient.
     @note Moment is positive when produce positive trim.
     """
     def __init__(self, ship, draft, trim):
@@ -726,13 +860,17 @@ class Point:
         farea      = FloatingArea(ship,draft,trim)
         kb         = KBT(ship,draft,trim)
         bm         = BMT(ship,draft,trim)
+        cm         = MainFrameCoeff(ship,draft)
         # Store final data
         self.draft = draft
         self.trim  = trim
         self.disp  = areasData[1]
         self.xcb   = areasData[2]
         self.wet   = wettedArea
-        self.farea = farea
+        self.farea = farea[0]
         self.mom   = moment
         self.KBt   = kb[1]
         self.BMt   = bm
+        self.Cb   = areasData[3]
+        self.Cf   = farea[1]
+        self.Cm   = cm
