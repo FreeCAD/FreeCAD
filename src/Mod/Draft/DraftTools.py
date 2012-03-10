@@ -3604,6 +3604,12 @@ class Point:
         return {'Pixmap'  : 'Draft_Point',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Point", "Point"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Point", "Creates a point object")}
+
+    def IsActive(self):
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
     
     def Activated(self):
         self.view = FreeCADGui.ActiveDocument.ActiveView

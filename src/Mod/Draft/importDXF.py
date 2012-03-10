@@ -1085,11 +1085,11 @@ def processdxf(document,filename):
                         if fmt.makeBlocks:
                             addToBlock(s,lay)
                         else:
-                            newob = doc.addObject("Part::Feature","Hatch")
-                            newob.Shape = s
+                            newob = addObject(s,"Hatch",lay)
+                            if gui: 
+                                fmt.formatObject(newob,hatch)
                     else:
                         newob = Draft.makeWire(points)
-                    if newob:
                         locateLayer(lay).addObject(newob)
                         if gui: 
                             fmt.formatObject(newob,hatch)
