@@ -91,6 +91,20 @@ protected:
     //@}
 };
 
+class ViewProviderRevolution : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderRevolution);
+
+public:
+    /// constructor
+    ViewProviderRevolution();
+    /// destructor
+    virtual ~ViewProviderRevolution();
+
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+};
+
 } // namespace PartGui
 
 
