@@ -62,7 +62,7 @@ static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
         ActiveAsmObject = Item;
         ActiveGuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
         ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue);
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Underlined);
        
     }else{
         ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::None);
