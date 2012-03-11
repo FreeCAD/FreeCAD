@@ -33,6 +33,8 @@
 #endif
 #endif
 
+#include <boost/scoped_ptr.hpp>
+
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -210,7 +212,7 @@ Action * StdCmdAbout::createAction(void)
         QCoreApplication::CodecForTr).arg(exe));
     pcAction->setWhatsThis(QLatin1String(sWhatsThis));
     pcAction->setIcon(QApplication::windowIcon());
-      pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromAscii(sAccel));
 
     return pcAction;
 }
@@ -226,7 +228,7 @@ bool StdCmdAbout::isActive()
 void StdCmdAbout::activated(int iMsg)
 {
     const Gui::Dialog::AboutDialogFactory* f = Gui::Dialog::AboutDialogFactory::defaultFactory();
-    QSharedPointer <QDialog> dlg(f->create(getMainWindow()));
+    boost::scoped_ptr<QDialog> dlg(f->create(getMainWindow()));
     dlg->exec();
 }
 
