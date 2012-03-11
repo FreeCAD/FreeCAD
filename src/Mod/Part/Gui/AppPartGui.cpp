@@ -102,6 +102,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderMirror         ::init();
     PartGui::ViewProviderFillet         ::init();
     PartGui::ViewProviderChamfer        ::init();
+    PartGui::ViewProviderRevolution     ::init();
     PartGui::ViewProviderCustom         ::init();
     PartGui::ViewProviderCustomPython   ::init();
     PartGui::ViewProviderBoolean        ::init();

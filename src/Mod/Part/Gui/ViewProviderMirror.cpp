@@ -39,6 +39,7 @@
 #include <Mod/Part/App/FeatureMirroring.h>
 #include <Mod/Part/App/FeatureFillet.h>
 #include <Mod/Part/App/FeatureChamfer.h>
+#include <Mod/Part/App/FeatureRevolution.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -292,5 +293,25 @@ std::vector<App::DocumentObject*> ViewProviderChamfer::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Part::Chamfer*>(getObject())->Base.getValue());
+    return temp;
+}
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderRevolution, PartGui::ViewProviderPart)
+
+ViewProviderRevolution::ViewProviderRevolution()
+{
+    sPixmap = "Part_Revolve";
+}
+
+ViewProviderRevolution::~ViewProviderRevolution()
+{
+}
+
+std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
+{
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(static_cast<Part::Revolution*>(getObject())->Source.getValue());
     return temp;
 }
