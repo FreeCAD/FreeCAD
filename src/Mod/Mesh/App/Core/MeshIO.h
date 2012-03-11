@@ -89,6 +89,8 @@ public:
     bool LoadBinarySTL (std::istream &rstrIn);
     /** Loads an OBJ Mesh file. */
     bool LoadOBJ (std::istream &rstrIn);
+    /** Loads an OFF Mesh file. */
+    bool LoadOFF (std::istream &rstrIn);
     /** Loads a PLY Mesh file. */
     bool LoadPLY (std::istream &rstrIn);
     /** Loads the mesh object from an XML file. */

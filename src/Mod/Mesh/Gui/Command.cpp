@@ -289,11 +289,12 @@ void CmdMeshImport::activated(int iMsg)
 {
     // use current path as default
     QStringList filter;
-    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.ply)");
+    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)");
     filter << QObject::tr("Binary STL (*.stl)");
     filter << QObject::tr("ASCII STL (*.ast)");
     filter << QObject::tr("Binary Mesh (*.bms)");
     filter << QObject::tr("Alias Mesh (*.obj)");
+    filter << QObject::tr("Object File Format (*.off)");
     filter << QObject::tr("Inventor V2.1 ascii (*.iv)");
     filter << QObject::tr("Stanford Polygon (*.ply)");
     //filter << "Nastran (*.nas *.bdf)";

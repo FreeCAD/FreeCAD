@@ -42,6 +42,7 @@
 #include <sstream>
 #include <iomanip>
 #include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 
 
 using namespace MeshCore;
@@ -330,6 +331,9 @@ bool MeshInput::LoadAny(const char* FileName)
         else if (fi.hasExtension("obj")) {
             ok = LoadOBJ( str );
         }
+        else if (fi.hasExtension("off")) {
+            ok = LoadOFF( str );
+        }
         else if (fi.hasExtension("ply")) {
             ok = LoadPLY( str );
         }
@@ -481,6 +485,124 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             item.SetVertices(i3-1,i4-1,i1-1);
             item.SetProperty(segment);
             meshFacets.push_back(item);
+        }
+    }
+
+    this->_rclMesh.Clear(); // remove all data before
+    // Don't use Assign() because Merge() checks which points are really needed.
+    // This method sets already the correct neighbourhood
+    unsigned long ct = meshPoints.size();
+    std::list<unsigned long> removeFaces;
+    for (MeshFacetArray::_TConstIterator it = meshFacets.begin(); it != meshFacets.end(); ++it) {
+        bool ok = true;
+        for (int i=0;i<3;i++) {
+            if (it->_aulPoints[i] >= ct) {
+                Base::Console().Warning("Face index %ld out of range\n", it->_aulPoints[i]);
+                ok = false;
+            }
+        }
+
+        if (!ok)
+            removeFaces.push_front(it-meshFacets.begin());
+    }
+
+    for (std::list<unsigned long>::iterator it = removeFaces.begin(); it != removeFaces.end(); ++it)
+        meshFacets.erase(meshFacets.begin() + *it);
+
+    MeshKernel tmp;
+    tmp.Adopt(meshPoints,meshFacets);
+    this->_rclMesh.Merge(tmp);
+
+    return true;
+}
+
+/** Loads an OFF file. */
+bool MeshInput::LoadOFF (std::istream &rstrIn)
+{
+    boost::regex rx_n("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    boost::regex rx_p("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+    boost::regex rx_f3("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    boost::regex rx_f4("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+
+    boost::cmatch what;
+
+    MeshPointArray meshPoints;
+    MeshFacetArray meshFacets;
+
+    std::string line;
+    float fX, fY, fZ;
+    unsigned int  i1=1,i2=1,i3=1,i4=1;
+    MeshGeomFacet clFacet;
+    MeshFacet item;
+
+    if (!rstrIn || rstrIn.bad() == true)
+        return false;
+
+    std::streambuf* buf = rstrIn.rdbuf();
+    if (!buf)
+        return false;
+
+    bool readvertices=false;
+    std::getline(rstrIn, line);
+    boost::algorithm::to_lower(line);
+    if (line.find("off") == std::string::npos)
+        return false; // not an OFF file
+
+    // get number of vertices and faces
+    int numPoints=0, numFaces=0;
+    std::getline(rstrIn, line);
+    boost::algorithm::to_lower(line);
+    if (boost::regex_match(line.c_str(), what, rx_n)) {
+        numPoints = std::atoi(what[1].first);
+        numFaces = std::atoi(what[2].first);
+    }
+    else {
+        // Cannot read number of elements
+        return false;
+    }
+
+    meshPoints.reserve(numPoints);
+    meshFacets.reserve(numFaces);
+
+    for (int i=0; i<numPoints; i++) {
+        if (!std::getline(rstrIn, line))
+            break;
+        if (boost::regex_match(line.c_str(), what, rx_p)) {
+            fX = (float)std::atof(what[1].first);
+            fY = (float)std::atof(what[4].first);
+            fZ = (float)std::atof(what[7].first);
+            meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+        }
+    }
+    for (int i=0; i<numFaces; i++) {
+        if (!std::getline(rstrIn, line))
+            break;
+        if (boost::regex_match(line.c_str(), what, rx_f3)) {
+            // 3-vertex face
+            if (std::atoi(what[1].first) == 3) {
+                i1 = std::atoi(what[2].first);
+                i2 = std::atoi(what[3].first);
+                i3 = std::atoi(what[4].first);
+                item.SetVertices(i1,i2,i3);
+                meshFacets.push_back(item);
+            }
+        }
+        else if (boost::regex_match(line.c_str(), what, rx_f4)) {
+            // 4-vertex face
+            if (std::atoi(what[1].first) == 4) {
+                i1 = std::atoi(what[2].first);
+                i2 = std::atoi(what[3].first);
+                i3 = std::atoi(what[4].first);
+                i4 = std::atoi(what[5].first);
+
+                item.SetVertices(i1,i2,i3);
+                meshFacets.push_back(item);
+
+                item.SetVertices(i3,i4,i1);
+                meshFacets.push_back(item);
+            }
         }
     }
 
