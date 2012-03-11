@@ -57,7 +57,8 @@ def Plot(scale, sections, shape):
         border = border.oldFuse(edges[i])   # Only group objects, don't try to build more complex entities
         border = border.oldFuse(edges[i].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0)))
     # Fuse sections & borders
-    obj = sections.oldFuse(border)
+    # obj = sections.oldFuse(border)
+    obj = border.oldFuse(sections)
     # Send to 3D view
     Part.show(obj)
     objs = FreeCAD.ActiveDocument.Objects

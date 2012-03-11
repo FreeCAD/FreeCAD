@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-def isAprox(a,b,tol=0.0001):
+def isAprox(a,b,tol=0.000001):
     """returns if a value is into (b-tol,b+tol)
     @param a Value to compare.
     @param b Center of valid interval
@@ -32,7 +32,7 @@ def isAprox(a,b,tol=0.0001):
         return True
     return False
 
-def isSamePoint(a,b,tol=0.0001):
+def isSamePoint(a,b,tol=0.000001):
     """returns if two points are the same with a provided tolerance
     @param a Point to compare.
     @param b Reference point.
