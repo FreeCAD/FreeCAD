@@ -395,15 +395,19 @@ PyObject* MatrixPy::submatrix(PyObject * args)
     {
     case 1:
         sub[0][0] = mat[0][0];
+        break;
     case 2:
         sub[0][0] = mat[0][0]; sub[0][1] = mat[0][1];
         sub[1][0] = mat[1][0]; sub[1][1] = mat[1][1];
+        break;
     case 3:
         sub[0][0] = mat[0][0]; sub[0][1] = mat[0][1]; sub[0][2] = mat[0][2];
         sub[1][0] = mat[1][0]; sub[1][1] = mat[1][1]; sub[1][2] = mat[1][2];
         sub[2][0] = mat[2][0]; sub[2][1] = mat[2][1]; sub[2][2] = mat[2][2];
+        break;
     default:
         sub = mat;
+        break;
     }
 
     return new MatrixPy(sub);
