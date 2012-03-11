@@ -2,11 +2,12 @@
 datadir = $(prefix)/Mod/PartDesign/Scripts
 data_DATA = \
 		__init__.py \
-		Gear.py \
 		DistanceBolt.py \
 		Epitrochoid.py \
-		RadialCopy.py \
+		FilletArc.py \
+		Gear.py \
 		Parallelepiped.py \
+		RadialCopy.py \
 		Spring.py
 
 EXTRA_DIST = \

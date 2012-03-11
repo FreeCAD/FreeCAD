@@ -18,11 +18,12 @@ INSTALL(
 INSTALL(
     FILES
         Scripts/__init__.py
-        Scripts/Gear.py
         Scripts/DistanceBolt.py
         Scripts/Epitrochoid.py
-        Scripts/RadialCopy.py
+        Scripts/FilletArc.py
+        Scripts/Gear.py
         Scripts/Parallelepiped.py
+        Scripts/RadialCopy.py
         Scripts/Spring.py
     DESTINATION
         Mod/PartDesign/Scripts
