@@ -30,6 +30,8 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 
+#include <Mod/Assembly/App/ItemAssembly.h>
+
 using namespace AssemblyGui;
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderItemAssembly,AssemblyGui::ViewProviderItem)
@@ -49,3 +51,9 @@ bool ViewProviderItemAssembly::doubleClicked(void)
 }
 
 
+std::vector<App::DocumentObject*> ViewProviderItemAssembly::claimChildren(void)const
+{
+
+    return static_cast<Assembly::ItemAssembly*>(getObject())->Items.getValues();
+
+}
