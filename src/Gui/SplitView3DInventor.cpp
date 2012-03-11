@@ -41,8 +41,10 @@
 
 using namespace Gui;
 
-SplitView3DInventor::SplitView3DInventor( int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags )
-  : MDIView( pcDocument,parent, wflags)
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor,Gui::MDIView);
+
+SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+  : MDIView(pcDocument,parent, wflags)
 {
     // important for highlighting 
     setMouseTracking(true);

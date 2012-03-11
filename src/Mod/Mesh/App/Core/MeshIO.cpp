@@ -786,7 +786,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
         if (line.find("ENDFACET") != std::string::npos)
             ulFacetCt++;
         // prevent from reading EOF (as I don't know how to reread the file then)
-        else if (rstrIn.tellg() > ulSize)
+        if (rstrIn.tellg() > ulSize)
             break;
         else if (line.find("ENDSOLID") != std::string::npos)
             break;
