@@ -90,6 +90,8 @@ public:
   double determinant() const;
   //@}
 
+  void getMatrix  (double dMtrx[16]) const;
+  void setMatrix  (const double dMtrx[16]);
   /// get the matrix in OpenGL style
   void getGLMatrix  (double dMtrx[16]) const;
   /// set the matrix in OpenGL style
