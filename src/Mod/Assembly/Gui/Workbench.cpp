@@ -107,20 +107,20 @@ void Workbench::activated()
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
 
-    App::Document *doc = App::GetApplication().getActiveDocument();
-    if(!doc){
-        // create a new document
+    //App::Document *doc = App::GetApplication().getActiveDocument();
+    //if(!doc){
+    //    // create a new document
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument()");
-        doc = App::GetApplication().getActiveDocument();
+    //    Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument()");
+    //    doc = App::GetApplication().getActiveDocument();
 
-    }
-    // now we should have a document! 
-    assert(doc);
+    //}
+    //// now we should have a document! 
+    //assert(doc);
 
-    if(doc->countObjects()==0){
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Product')");
-    }
+    //if(doc->countObjects()==0){
+    //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Product')");
+    //}
 
 
 }

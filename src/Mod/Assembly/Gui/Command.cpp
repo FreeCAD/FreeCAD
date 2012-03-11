@@ -23,16 +23,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
+#include <Gui/Selection.h>
+
+#include <Mod/Assembly/App/ItemAssembly.h>
 
 
 using namespace std;
 
+extern Assembly::Item *ActiveAsmObject;
 
 
 //===========================================================================
@@ -78,9 +83,23 @@ CmdAssemblyAddNewComponent::CmdAssemblyAddNewComponent()
 
 void CmdAssemblyAddNewComponent::activated(int iMsg)
 {
-    // load the file with the module
-    //Command::doCommand(Command::Gui, "import Assembly, AssemblyGui");
-      
+    Assembly::ItemAssembly *dest = 0;
+
+    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    if (n >= 1) {
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+    }
+
+    openCommand("Insert Component");
+    std::string CompName = getUniqueObjectName("Product");
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','%s')",CompName.c_str());
+    if(dest){
+        std::string fatherName = dest->getNameInDocument();
+        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),CompName.c_str());
+    }
 }
 
 //===========================================================================

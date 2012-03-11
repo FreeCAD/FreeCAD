@@ -41,6 +41,8 @@ public:
 
     virtual bool doubleClicked(void);
 
+    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+
 };
 
 
