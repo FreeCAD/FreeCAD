@@ -22,6 +22,9 @@ nobase_data_DATA = \
 	Icons/Ico.png \
 	Icons/Ico.xcf \
 	Icons/Ico.xpm \
+	Icons/LoadIco.png \
+	Icons/LoadIco.xcf \
+	Icons/LoadIco.xpm \
 	Icons/OutlineDrawIco.png \
 	Icons/OutlineDrawIco.xcf \
 	Icons/OutlineDrawIco.xpm \
@@ -30,6 +33,12 @@ nobase_data_DATA = \
 	Icons/ReparametrizeIco.xpm \
 	Icons/Ship.xcf \
 	Icons/Ship.xpm \
+	Examples/s60.fcstd \
+	Examples/barehull5415.fcstd \
+	Examples/s60_katamaran.fcstd \
+	shipLoadExample/__init__.py \
+	shipLoadExample/TaskPanel.py \
+	shipLoadExample/TaskPanel.ui \
 	shipCreateShip/__init__.py \
 	shipCreateShip/Preview.py \
 	shipCreateShip/TaskPanel.py \
@@ -40,10 +49,14 @@ nobase_data_DATA = \
 	shipOutlineDraw/TaskPanel.py \
 	shipOutlineDraw/TaskPanel.ui \
 	shipAreasCurve/__init__.py \
+	shipAreasCurve/Plot.py \
 	shipAreasCurve/Preview.py \
 	shipAreasCurve/TaskPanel.py \
 	shipAreasCurve/TaskPanel.ui \
 	shipHydrostatics/__init__.py \
+	shipHydrostatics/Plot.py \
+	shipHydrostatics/TaskPanel.py \
+	shipHydrostatics/TaskPanel.ui \
 	shipHydrostatics/Tools.py \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \

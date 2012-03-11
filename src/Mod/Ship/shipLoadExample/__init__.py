@@ -21,7 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-
 # FreeCAD modules
 import FreeCAD
 import FreeCADGui

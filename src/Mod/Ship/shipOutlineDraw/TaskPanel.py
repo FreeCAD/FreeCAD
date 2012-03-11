@@ -118,7 +118,7 @@ class TaskPanel:
         # Get selected objects
         selObjs  = Geometry.getSelectedObjs()
         if not selObjs:
-            msg = Translator.translate("Ship instance must be selected (any object selected)\n")
+            msg = Translator.translate("Ship instance must be selected (no object selected)\n")
             App.Console.PrintError(msg)
             return True
         for i in range(0,len(selObjs)):
@@ -138,7 +138,7 @@ class TaskPanel:
                 self.ship = obj
         # Test if any valid ship was selected
         if not self.ship:
-            msg = Translator.translate("Ship instance must be selected (any valid ship found at selected objects)\n")
+            msg = Translator.translate("Ship instance must be selected (no valid ship found at selected objects)\n")
             App.Console.PrintError(msg)
             return True
         # Load sections (if exist)

@@ -28,34 +28,31 @@ import FreeCADGui as Gui
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
-import Preview, Plot
+import Plot
 import Instance
 from shipUtils import Paths, Translator
 from surfUtils import Geometry
-from shipHydrostatics import Tools as Hydrostatics
+import Tools
 
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/shipAreasCurve/TaskPanel.ui"
-        self.preview = Preview.Preview()
+        self.ui = Paths.modulePath() + "/shipHydrostatics/TaskPanel.ui"
         self.ship = None
 
     def accept(self):
         if not self.ship:
             return False
         self.save()
-        # Plot data
-        data   = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
-        x    = self.ship.xSection[:]
-        y    = data[0]
-        disp = data[1]
-        xcb  = data[2]
-        Plot.Plot(x,y,disp,xcb, self.ship)
-        self.preview.clean()
+        draft  = self.form.minDraft.value()
+        drafts = [draft]
+        dDraft = (self.form.maxDraft.value() - self.form.minDraft.value())/self.form.nDraft.value()
+        for i in range(1,self.form.nDraft.value()):
+            draft = draft + dDraft
+            drafts.append(draft)
+        Plot.Plot(self.ship, self.form.trim.value(), drafts)
         return True
 
     def reject(self):
-        self.preview.clean()
         return True
 
     def clicked(self, index):
@@ -82,18 +79,19 @@ class TaskPanel:
     def setupUi(self):
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.draft = form.findChild(QtGui.QDoubleSpinBox, "Draft")
         form.trim = form.findChild(QtGui.QDoubleSpinBox, "Trim")
-        form.output = form.findChild(QtGui.QTextEdit, "OutputData")
-        form.doc = QtGui.QTextDocument(form.output)
+        form.minDraft = form.findChild(QtGui.QDoubleSpinBox, "MinDraft")
+        form.maxDraft = form.findChild(QtGui.QDoubleSpinBox, "MaxDraft")
+        form.nDraft = form.findChild(QtGui.QSpinBox, "NDraft")
         self.form = form
         # Initial values
         if self.initValues():
             return True
         self.retranslateUi()
         # Connect Signals and Slots
-        QtCore.QObject.connect(form.draft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
         QtCore.QObject.connect(form.trim, QtCore.SIGNAL("valueChanged(double)"), self.onData)
+        QtCore.QObject.connect(form.minDraft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
+        QtCore.QObject.connect(form.maxDraft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
 
     def getMainWindow(self):
         "returns the main window"
@@ -137,28 +135,45 @@ class TaskPanel:
             return True
         # Get bounds
         bbox = self.ship.Shape.BoundBox
-        self.form.draft.setMaximum(bbox.ZMax)
-        self.form.draft.setMinimum(bbox.ZMin)
-        self.form.draft.setValue(self.ship.Draft)
+        # Set trim
+        flag = True
+        try:
+            props.index("HydrostaticsTrim")
+        except ValueError:
+            flag = False
+        if flag:
+            self.form.trim.setValue(self.ship.HydrostaticsTrim)
+        # Set drafts
+        self.form.maxDraft.setValue(1.1*self.ship.Draft)
+        self.form.minDraft.setValue(0.9*self.ship.Draft)
         # Try to use saved values
         props = self.ship.PropertiesList
         flag = True
         try:
-            props.index("AreaCurveDraft")
+            props.index("HydrostaticsMinDraft")
         except ValueError:
             flag = False
         if flag:
-            self.form.draft.setValue(self.ship.AreaCurveDraft)
+            self.form.minDraft.setValue(self.ship.HydrostaticsMinDraft)
         flag = True
         try:
-            props.index("AreaCurveTrim")
+            props.index("HydrostaticsMaxDraft")
         except ValueError:
             flag = False
         if flag:
-            self.form.trim.setValue(self.ship.AreaCurveTrim)
+            self.form.maxDraft.setValue(self.ship.HydrostaticsMaxDraft)
+        self.form.maxDraft.setMaximum(bbox.ZMax)
+        self.form.minDraft.setMinimum(bbox.ZMin)
+        self.form.maxDraft.setMinimum(self.form.minDraft.value())
+        self.form.minDraft.setMaximum(self.form.maxDraft.value())        
+        flag = True
+        try:
+            props.index("HydrostaticsNDraft")
+        except ValueError:
+            flag = False
+        if flag:
+            self.form.nDraft.setValue(self.ship.HydrostaticsNDraft)
         # Update GUI
-        self.preview.update(self.form.draft.value(), self.form.trim.value(), self.ship)
-        self.onUpdate()
         msg = Translator.translate("Ready to work\n")
         App.Console.PrintMessage(msg)
         return False
@@ -166,9 +181,11 @@ class TaskPanel:
     def retranslateUi(self):
         """ Set user interface locale strings. 
         """
-        self.form.setWindowTitle(Translator.translate("Plot transversal areas curve"))
-        self.form.findChild(QtGui.QLabel, "DraftLabel").setText(Translator.translate("Draft"))
+        self.form.setWindowTitle(Translator.translate("Plot hydrostatics"))
         self.form.findChild(QtGui.QLabel, "TrimLabel").setText(Translator.translate("Trim"))
+        self.form.findChild(QtGui.QLabel, "MinDraftLabel").setText(Translator.translate("Minimum draft"))
+        self.form.findChild(QtGui.QLabel, "MaxDraftLabel").setText(Translator.translate("Maximum draft"))
+        self.form.findChild(QtGui.QLabel, "NDraftLabel").setText(Translator.translate("Number of points"))
 
     def onData(self, value):
         """ Method called when input data is changed.
@@ -176,51 +193,33 @@ class TaskPanel:
         """
         if not self.ship:
             return
-        self.onUpdate()
-        self.preview.update(self.form.draft.value(), self.form.trim.value(), self.ship)
-
-    def onUpdate(self):
-        """ Method called when update data request.
-        """
-        if not self.ship:
-            return
-        # Calculate drafts
-        angle = math.radians(self.form.trim.value())
-        L = self.ship.Length
-        draftAP = self.form.draft.value() + 0.5*L*math.tan(angle)
-        if draftAP < 0.0:
-            draftAP = 0.0
-        draftFP = self.form.draft.value() - 0.5*L*math.tan(angle)
-        if draftFP < 0.0:
-            draftFP = 0.0
-        # Calculate hydrostatics involved
-        data = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
-        # Prepare the string in html format
-        string = 'L = %g [m]<BR>' % (self.ship.Length)
-        string = string + 'B = %g [m]<BR>' % (self.ship.Beam)
-        string = string + 'T = %g [m]<HR>' % (self.form.draft.value())
-        string = string + 'Trim = %g [degrees]<BR>' % (self.form.trim.value())
-        string = string + 'T<sub>AP</sub> = %g [m]<BR>' % (draftAP)
-        string = string + 'T<sub>FP</sub> = %g [m]<HR>' % (draftFP)
-        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (data[1])
-        string = string + 'XCB = %g [m]' % (data[2])
-        # Set the document
-        self.form.output.setHtml(string)
+        self.form.maxDraft.setMinimum(self.form.minDraft.value())
+        self.form.minDraft.setMaximum(self.form.maxDraft.value())        
 
     def save(self):
         """ Saves data into ship instance.
         """
         props = self.ship.PropertiesList
         try:
-            props.index("AreaCurveDraft")
+            props.index("HydrostaticsTrim")
         except ValueError:
-            self.ship.addProperty("App::PropertyFloat","AreaCurveDraft","Ship", str(Translator.translate("Areas curve draft selected [m]")))
-        self.ship.AreaCurveDraft = self.form.draft.value()
+            self.ship.addProperty("App::PropertyFloat","HydrostaticsTrim","Ship", str(Translator.translate("Hydrostatics trim selected [m]")))
+        self.ship.HydrostaticsTrim = self.form.trim.value()
         try:
-            props.index("AreaCurveTrim")
+            props.index("HydrostaticsMinDraft")
         except ValueError:
-            self.ship.addProperty("App::PropertyFloat","AreaCurveTrim","Ship", str(Translator.translate("Areas curve trim selected [m]")))
-        self.ship.AreaCurveTrim = self.form.trim.value()
+            self.ship.addProperty("App::PropertyFloat","HydrostaticsMinDraft","Ship", str(Translator.translate("Hydrostatics minimum draft selected [m]")))
+        self.ship.HydrostaticsMinDraft = self.form.minDraft.value()
+        try:
+            props.index("HydrostaticsMaxDraft")
+        except ValueError:
+            self.ship.addProperty("App::PropertyFloat","HydrostaticsMaxDraft","Ship", str(Translator.translate("Hydrostatics maximum draft selected [m]")))
+        self.ship.HydrostaticsMaxDraft = self.form.maxDraft.value()
+        try:
+            props.index("HydrostaticsNDraft")
+        except ValueError:
+            self.ship.addProperty("App::PropertyInteger","HydrostaticsNDraft","Ship", str(Translator.translate("Hydrostatics number of points selected [m]")))
+        self.ship.HydrostaticsNDraft = self.form.nDraft.value()
 
 def createTask():
     panel = TaskPanel()
