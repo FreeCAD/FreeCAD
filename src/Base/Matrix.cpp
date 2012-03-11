@@ -455,6 +455,7 @@ void Matrix4D::transform (const Vector3f& rclVct, const Matrix4D& rclMtrx)
   (*this) *= rclMtrx;
   move(rclVct);
 }
+
 void Matrix4D::transform (const Vector3d& rclVct, const Matrix4D& rclMtrx)
 {
   move(-rclVct);
@@ -599,6 +600,24 @@ void Matrix4D::inverseGauss (void)
   Matrix_gauss(matrix,inversematrix);
 
   setGLMatrix(inversematrix);
+}
+
+void Matrix4D::getMatrix  (double dMtrx[16]) const
+{
+  short iz, is;
+
+  for (iz = 0; iz < 4; iz++)
+    for (is = 0; is < 4; is++)
+      dMtrx[ 4*iz + is ] = dMtrx4D[iz][is];
+}
+
+void Matrix4D::setMatrix  (const double dMtrx[16])
+{
+  short iz, is;
+
+  for (iz = 0; iz < 4; iz++)
+    for (is = 0; is < 4; is++)
+      dMtrx4D[iz][is] = dMtrx[ 4*iz + is ];
 }
 
 void Matrix4D::getGLMatrix (double dMtrx[16]) const

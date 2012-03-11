@@ -133,6 +133,36 @@ PyObject* MatrixPy::number_multiply_handler(PyObject *self, PyObject *other)
     return new MatrixPy(a*b);
 }
 
+PyObject* MatrixPy::richCompare(PyObject *v, PyObject *w, int op)
+{
+    if (PyObject_TypeCheck(v, &(MatrixPy::Type)) &&
+        PyObject_TypeCheck(w, &(MatrixPy::Type))) {
+        Matrix4D m1 = static_cast<MatrixPy*>(v)->value();
+        Matrix4D m2 = static_cast<MatrixPy*>(w)->value();
+
+        PyObject *res=0;
+        if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError,
+            "no ordering relation is defined for Matrix");
+            return 0;
+        }
+        else if (op == Py_EQ) {
+            res = (m1 == m2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else {
+            res = (m1 != m2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "Cannot compare Matrix with other type");
+        return 0;
+    }
+}
+
 PyObject* MatrixPy::move(PyObject * args)
 {
     double x,y,z;
@@ -349,6 +379,93 @@ PyObject* MatrixPy::determinant(PyObject * args)
     return PyFloat_FromDouble(getMatrixPtr()->determinant());
 }
 
+PyObject* MatrixPy::submatrix(PyObject * args)
+{
+    int dim;
+    if (!PyArg_ParseTuple(args, "i", &dim))
+        return NULL;
+    if (dim < 1 || dim > 4) {
+        PyErr_SetString(PyExc_IndexError, "Dimension out of range");
+        return NULL;
+    }
+
+    const Base::Matrix4D& mat = *getMatrixPtr();
+    Base::Matrix4D sub;
+    switch (dim)
+    {
+    case 1:
+        sub[0][0] = mat[0][0];
+    case 2:
+        sub[0][0] = mat[0][0]; sub[0][1] = mat[0][1];
+        sub[1][0] = mat[1][0]; sub[1][1] = mat[1][1];
+    case 3:
+        sub[0][0] = mat[0][0]; sub[0][1] = mat[0][1]; sub[0][2] = mat[0][2];
+        sub[1][0] = mat[1][0]; sub[1][1] = mat[1][1]; sub[1][2] = mat[1][2];
+        sub[2][0] = mat[2][0]; sub[2][1] = mat[2][1]; sub[2][2] = mat[2][2];
+    default:
+        sub = mat;
+    }
+
+    return new MatrixPy(sub);
+}
+
+PyObject* MatrixPy::isOrthogonal(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    const Base::Matrix4D& mat = *getMatrixPtr();
+    Base::Matrix4D trp = mat;
+    trp.transpose();
+    trp = trp * mat;
+
+    double mult = trp[0][0];
+    for (int i=0; (i<4) && (mult!=0.0); i++) {
+        for (int j=0; (j<4) && (mult!=0.0); j++) {
+            if (i != j) {
+                if (trp[i][j] != 0.0) {
+                    mult = 0.0;
+                    break;
+                }
+            }
+            else { // the diagonal
+                if (trp[i][j] != mult) {
+                    mult = 0.0;
+                    break;
+                }
+            }
+        }
+    }
+
+    return Py::new_reference_to(Py::Float(mult));
+}
+
+PyObject* MatrixPy::transposed(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        Base::Matrix4D m = *getMatrixPtr();
+        m.transpose();
+        return new MatrixPy(m);
+    }
+    PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* MatrixPy::transpose(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        getMatrixPtr()->transpose();
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
 Py::Float MatrixPy::getA11(void) const
 {
     double val = (*this->getMatrixPtr())[0][0];
@@ -527,12 +644,26 @@ void  MatrixPy::setA44(Py::Float arg)
 
 Py::List MatrixPy::getA(void) const
 {
-    return Py::List();
+    double mat[16];
+    this->getMatrixPtr()->getMatrix(mat);
+    Py::List list(16);
+    for (int i=0; i<16; i++) {
+        list[i] = Py::Float(mat[i]);
+    }
+    return list;
 }
 
-void MatrixPy::setA(Py::List /*arg*/)
+void MatrixPy::setA(Py::List arg)
 {
+    double mat[16];
+    this->getMatrixPtr()->getMatrix(mat);
 
+    int index=0;
+    for (Py::List::iterator it = arg.begin(); it != arg.end() && index < 16; ++it) {
+        mat[index++] = (double)Py::Float(*it);
+    }
+
+    this->getMatrixPtr()->setMatrix(mat);
 }
 
 PyObject *MatrixPy::getCustomAttributes(const char* /*attr*/) const
