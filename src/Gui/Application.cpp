@@ -80,6 +80,7 @@
 #include "DlgOnlineHelpImp.h"
 #include "SpaceballEvent.h"
 
+#include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
 #include "ViewProviderExtern.h"
@@ -708,6 +709,14 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
 {
     if (d->activeDocument == pcDocument)
         return; // nothing needs to be done
+    if (pcDocument) {
+        // This happens if a document with more than one view is about being
+        // closed and a second view is activated. The document is still not
+        // removed from the map.
+        App::Document* doc = pcDocument->getDocument();
+        if (d->documents.find(doc) == d->documents.end())
+            return;
+    }
     d->activeDocument = pcDocument;
     std::string name;
  
@@ -1391,6 +1400,7 @@ void Application::initTypes(void)
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
     Gui::View3DInventor                         ::init();
+    Gui::SplitView3DInventor                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtern                     ::init();

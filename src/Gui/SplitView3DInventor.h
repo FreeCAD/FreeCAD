@@ -38,6 +38,8 @@ class View3DInventorViewer;
  */
 class GuiExport SplitView3DInventor : public MDIView,public ParameterGrp::ObserverType
 {
+    TYPESYSTEM_HEADER();
+
 public:
     SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
     ~SplitView3DInventor();

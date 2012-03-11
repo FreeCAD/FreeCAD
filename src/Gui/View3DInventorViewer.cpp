@@ -1636,6 +1636,16 @@ void View3DInventorViewer::stopAnimating(void)
     navigation->stopAnimating();
 }
 
+void View3DInventorViewer::setPopupMenuEnabled(const SbBool on)
+{
+    navigation->setPopupMenuEnabled(on);
+}
+
+SbBool View3DInventorViewer::isPopupMenuEnabled(void) const
+{
+    return navigation->isPopupMenuEnabled();
+}
+
 /*!
   Set the flag deciding whether or not to show the axis cross.
 */

@@ -93,7 +93,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent* ev)
 
 /* TRANSLATOR Gui::View3DInventor */
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::BaseView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
