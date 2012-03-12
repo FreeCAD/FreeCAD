@@ -52,7 +52,8 @@ else: gui = True
 try: draftui = FreeCADGui.draftToolBar
 except: draftui = None
 
-pythonopen = open # to distinguish python built-in open function from the one declared here
+if open.__module__ == '__builtin__':
+    pythonopen = open # to distinguish python built-in open function from the one declared here
 
 def prec():
     "returns the current Draft precision level"
