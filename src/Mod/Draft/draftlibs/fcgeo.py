@@ -719,7 +719,9 @@ def offsetWire(wire,dvec,bind=False,occ=False):
         if occ:
                 l=abs(dvec.Length)
                 if not l: return None
-                if not wire.Wires:
+                if wire.Wires:
+                		wire = wire.Wires[0]
+                else:
                         wire = Part.Wire(edges)
                 try:
                         off = wire.makeOffset(l)
