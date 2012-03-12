@@ -110,9 +110,10 @@ Compute the determinant of the matrix
     <Methode Name="isOrthogonal">
       <Documentation>
         <UserDocu>
-isOrthogonal() -> Float
+isOrthogonal([Float]) -> Float
 Checks if the matrix is orthogonal, i.e. M * M^T = k*I and returns
 the multiple of the identity matrix. If it's not orthogonal 0 is returned.
+As argument you can set a tolerance which by default is 1.0e-6.
         </UserDocu>
       </Documentation>
     </Methode>
