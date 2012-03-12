@@ -3642,13 +3642,25 @@ class ToggleSnap():
     "The ToggleSnap FreeCAD command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_Snap',
+        return {'Pixmap'  : 'Snap_Lock',
+                'Accel' : "Shift+S",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleSnap", "Toggle snap"),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleSnap", "Toggles Draft snap on or off")}
 
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.active = not FreeCADGui.Snapper.active
+            FreeCADGui.Snapper.toggle()
+
+class ShowSnapBar():
+    "The ShowSnapBar FreeCAD command definition"
+
+    def GetResources(self):
+        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Show Snap Bar"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Shows Draft snap toolbar")}
+
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.show()
             
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3695,6 +3707,7 @@ FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
 FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
 FreeCADGui.addCommand('Draft_ToggleSnap',ToggleSnap())
+FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None

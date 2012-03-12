@@ -1103,7 +1103,7 @@ class DraftToolBar:
 
     def togglesnap(self):
         if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.active = not FreeCADGui.Snapper.active
+            FreeCADGui.Snapper.toggle()
 
 
 #---------------------------------------------------------------------------

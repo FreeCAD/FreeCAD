@@ -40,6 +40,17 @@
         <file>icons/Draft_Dot.svg</file>
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_Snap.svg</file>
+        <file>icons/Snap_Lock.svg</file>
+        <file>icons/Snap_Endpoint.svg</file>
+        <file>icons/Snap_Midpoint.svg</file>
+        <file>icons/Snap_Perpendicular.svg</file>
+        <file>icons/Snap_Grid.svg</file>
+        <file>icons/Snap_Intersection.svg</file>
+        <file>icons/Snap_Parallel.svg</file>
+        <file>icons/Snap_Angle.svg</file>
+        <file>icons/Snap_Center.svg</file>
+        <file>icons/Snap_Extension.svg</file>
+        <file>icons/Snap_Ortho.svg</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>
         <file>patterns/line.svg</file>
