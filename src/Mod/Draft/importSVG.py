@@ -48,7 +48,8 @@ else: gui = True
 try: draftui = FreeCADGui.draftToolBar
 except: draftui = None
 
-pythonopen = open
+if open.__module__ == '__builtin__':
+  pythonopen = open
 
 svgcolors = {
 	  'Pink': (255, 192, 203), 
