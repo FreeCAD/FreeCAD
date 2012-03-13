@@ -102,16 +102,14 @@ class _ViewProviderAxis:
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","BubbleSize","Base", "The size of the axis bubbles")
         vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", "The numeration style")
-        vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base", "The representation style")
         vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
-        vobj.DrawStyle = ["solid","dotted","dashed","dashdot"]
         vobj.Proxy = self
         self.Object = vobj.Object
         self.ViewObject = vobj
         vobj.BubbleSize = .1
         vobj.LineWidth = 1
         vobj.LineColor = (0.13,0.15,0.37)
-        vobj.DrawStyle = "dashdot"
+        vobj.DrawStyle = "Dashdot"
     
     def getIcon(self):          
         return ":/icons/Arch_Axis_Tree.svg"
@@ -203,7 +201,7 @@ class _ViewProviderAxis:
             self.bubbles.addChild(li)
             st = coin.SoSeparator()
             tr = coin.SoTransform()
-            tr.translation.setValue((center.x,center.y,center.z))
+            tr.translation.setValue((center.x,center.y-rad/4,center.z))
             fo = coin.SoFont()
             fo.name = "Arial,Sans"
             fo.size = rad*100
