@@ -153,8 +153,10 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
 {
     std::stringstream result;
     SVGOutput output;
+    float hfactor = 0.15f / 0.35f;
+
     if (!H.IsNull() && (type & WithHidden)) {
-        float width = 0.15f/scale;
+        float width = hfactor * scale;
         BRepMesh::Mesh(H,0.1);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -162,14 +164,14 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"5 3\"" << endl
+                << "   stroke-dasharray=\"0.2,0.1\"" << endl
                 << "   fill=\"none\"" << endl
                 << "  >" << endl
                 << output.exportEdges(H)
                 << "</g>" << endl;
     }
     if (!HO.IsNull() && (type & WithHidden)) {
-        float width = 0.15f/scale;
+        float width = hfactor * scale;
         BRepMesh::Mesh(HO,0.1);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -177,14 +179,14 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"5 3\"" << endl
+                << "   stroke-dasharray=\"0.02,0.1\"" << endl
                 << "   fill=\"none\"" << endl
                 << "  >" << endl
                 << output.exportEdges(HO)
                 << "</g>" << endl;
     }
     if (!VO.IsNull()) {
-        float width = 0.35f/scale;
+        float width = scale;
         BRepMesh::Mesh(VO,0.1);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -198,7 +200,7 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
                 << "</g>" << endl;
     }
     if (!V.IsNull()) {
-        float width = 0.35f/scale;
+        float width = scale;
         BRepMesh::Mesh(V,0.1);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -212,7 +214,7 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
                 << "</g>" << endl;
     }
     if (!V1.IsNull() && (type & WithSmooth)) {
-        float width = 0.35f/scale;
+        float width = scale;
         BRepMesh::Mesh(V1,0.1);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -226,7 +228,7 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
                 << "</g>" << endl;
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
-        float width = 0.15f/scale;
+        float width = hfactor * scale;
         BRepMesh::Mesh(H1,0.1);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -234,7 +236,7 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"5 3\"" << endl
+                << "   stroke-dasharray=\"0.09,0.05\"" << endl
                 << "   fill=\"none\"" << endl
                 << "  >" << endl
                 << output.exportEdges(H1)
