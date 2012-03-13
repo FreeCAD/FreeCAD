@@ -15,7 +15,7 @@
    id="svg2726"
    sodipodi:version="0.32"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="Snap_Angle.svg"
+   sodipodi:docname="Snap_Extension.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
@@ -240,9 +240,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.8890873"
-     inkscape:cx="28.117126"
-     inkscape:cy="53.665776"
+     inkscape:zoom="5.5"
+     inkscape:cx="28.502359"
+     inkscape:cy="27.32422"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
@@ -260,7 +260,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -272,43 +272,35 @@
        id="g4289"
        transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)">
       <path
-         style="opacity:0.55833333;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.23936605;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="m 298.61617,594.85066 c -2.89233,-0.0179 -5.91874,0.36995 -8.86644,0.96375 -23.58164,4.75043 -38.79213,27.89036 -34.11652,51.8494 4.6756,23.95904 27.49677,39.63795 51.0784,34.88751 23.58164,-4.75043 38.98488,-28.08311 34.30927,-52.04215 -4.09115,-20.96415 -22.15838,-35.53285 -42.40471,-35.65851 z m -322.275827,25.25008 0,49.15092 182.533017,0 0,-49.15092 -182.533017,0 z"
-         id="path3162-9"
-         inkscape:connector-curvature="0" />
-      <g
-         inkscape:export-ydpi="7.0721951"
-         inkscape:export-xdpi="7.0721951"
-         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/line.png"
-         transform="matrix(-0.87908326,0.17708809,-0.17429861,-0.89315209,589.16511,1157.7854)"
-         id="g3160">
-        <path
-           sodipodi:type="arc"
-           style="fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.80000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-           id="path3162"
-           sodipodi:cx="197.14285"
-           sodipodi:cy="655.2193"
-           sodipodi:rx="48.57143"
-           sodipodi:ry="48.57143"
-           d="m 245.71428,655.2193 c 0,26.82526 -21.74617,48.57143 -48.57143,48.57143 -26.82526,0 -48.57143,-21.74617 -48.57143,-48.57143 0,-26.82526 21.74617,-48.57143 48.57143,-48.57143 26.82526,0 48.57143,21.74617 48.57143,48.57143 z" />
-        <path
-           sodipodi:type="arc"
-           style="fill:url(#radialGradient3850);fill-opacity:1;stroke:none"
-           id="path3164"
-           sodipodi:cx="225.26402"
-           sodipodi:cy="672.79736"
-           sodipodi:rx="34.345188"
-           sodipodi:ry="23.991123"
-           d="m 259.60921,672.79736 c 0,13.24993 -15.37686,23.99113 -34.34519,23.99113 -18.96832,0 -34.34519,-10.7412 -34.34519,-23.99113 0,-13.24993 15.37687,-23.99112 34.34519,-23.99112 18.96833,0 34.34519,10.74119 34.34519,23.99112 z"
-           transform="matrix(0.8513023,-0.5246754,0.5246754,0.8513023,-338.69692,214.19328)" />
-      </g>
-      <rect
-         style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.57242346;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         id="rect4771"
-         width="182.38605"
-         height="49.164917"
-         x="-20.200315"
-         y="588.40039" />
+         d="m 245.71428,655.2193 a 48.57143,48.57143 0 1 1 -97.14286,0 48.57143,48.57143 0 1 1 97.14286,0 z"
+         sodipodi:ry="48.57143"
+         sodipodi:rx="48.57143"
+         sodipodi:cy="655.2193"
+         sodipodi:cx="197.14285"
+         id="path3162"
+         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:23.1889267;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc"
+         transform="matrix(-0.78922717,-0.47204736,0.48386925,-0.79797851,131.3483,1222.7997)" />
+      <path
+         d="m 245.71428,655.2193 a 48.57143,48.57143 0 1 1 -97.14286,0 48.57143,48.57143 0 1 1 97.14286,0 z"
+         sodipodi:ry="48.57143"
+         sodipodi:rx="48.57143"
+         sodipodi:cy="655.2193"
+         sodipodi:cx="197.14285"
+         id="path3162-3"
+         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:23.1889267;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc"
+         transform="matrix(-0.78922715,-0.47204735,0.48386927,-0.7979785,-2.6129169,1223.9211)" />
+      <path
+         d="m 245.71428,655.2193 a 48.57143,48.57143 0 1 1 -97.14286,0 48.57143,48.57143 0 1 1 97.14286,0 z"
+         sodipodi:ry="48.57143"
+         sodipodi:rx="48.57143"
+         sodipodi:cy="655.2193"
+         sodipodi:cx="197.14285"
+         id="path3162-3-8"
+         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:23.1889267;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc"
+         transform="matrix(-0.78922715,-0.47204735,0.48386927,-0.7979785,-133.20979,1227.2854)" />
     </g>
   </g>
 </svg>

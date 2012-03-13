@@ -78,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -90,51 +90,10 @@
        id="g4289"
        transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)">
       <path
-         style="opacity:0.53333297;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.80000162;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="m 161.66621,476.77814 0,205.08462 c -13.8336,5.08664 -24.81604,16.36991 -29.49055,30.45429 l -114.685478,0 0,34.88752 116.420218,0 c 7.38753,16.66398 23.74504,28.47085 43.1757,28.9123 20.17696,0.45841 37.75833,-11.5629 45.4887,-28.9123 l 110.445,0 0,-34.88752 -108.71026,0 c -4.45814,-13.46902 -14.68168,-24.31759 -27.75582,-29.6833 l 0,-205.85561 -34.88751,0 z"
-         id="rect3942-47"
-         inkscape:connector-curvature="0" />
-      <rect
-         style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.80000162;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:29.87757301;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="m 126.31496,439.55224 0,254.71983 -137.088541,0 0,69.15728 340.250461,0 0,-69.15728 -132.51282,0 0,-254.71983 -70.6491,0 z"
          id="rect3942"
-         width="315.60715"
-         height="34.891251"
-         x="-8.7467575"
-         y="691.4881" />
-      <rect
-         style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.80000162;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         id="rect3942-4"
-         width="247.41063"
-         height="34.891251"
-         x="-703.38287"
-         y="135.5761"
-         transform="matrix(0,-1,1,0,0,0)" />
-      <g
-         inkscape:export-ydpi="7.0721951"
-         inkscape:export-xdpi="7.0721951"
-         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/line.png"
-         transform="matrix(-0.999742,-0.02271351,0.02271351,-0.999742,334.26768,1366.2692)"
-         id="g3160">
-        <path
-           sodipodi:type="arc"
-           style="fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:5.80000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-           id="path3162"
-           sodipodi:cx="197.14285"
-           sodipodi:cy="655.2193"
-           sodipodi:rx="48.57143"
-           sodipodi:ry="48.57143"
-           d="m 245.71428,655.2193 c 0,26.82526 -21.74617,48.57143 -48.57143,48.57143 -26.82526,0 -48.57143,-21.74617 -48.57143,-48.57143 0,-26.82526 21.74617,-48.57143 48.57143,-48.57143 26.82526,0 48.57143,21.74617 48.57143,48.57143 z" />
-        <path
-           sodipodi:type="arc"
-           style="fill:url(#radialGradient3850);fill-opacity:1;stroke:none"
-           id="path3164"
-           sodipodi:cx="225.26402"
-           sodipodi:cy="672.79736"
-           sodipodi:rx="34.345188"
-           sodipodi:ry="23.991123"
-           d="m 259.60921,672.79736 c 0,13.24993 -15.37686,23.99113 -34.34519,23.99113 -18.96832,0 -34.34519,-10.7412 -34.34519,-23.99113 0,-13.24993 15.37687,-23.99112 34.34519,-23.99112 18.96833,0 34.34519,10.74119 34.34519,23.99112 z"
-           transform="matrix(0.8513023,-0.5246754,0.5246754,0.8513023,-338.69692,214.19328)" />
-      </g>
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>
