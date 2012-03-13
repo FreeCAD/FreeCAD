@@ -237,8 +237,9 @@ PyObject* VectorPy::richCompare(PyObject *v, PyObject *w, int op)
         }
     }
     else {
-        PyErr_SetString(PyExc_TypeError, "Cannot compare Matrix with other type");
-        return 0;
+        // This always returns False
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
     }
 }
 
