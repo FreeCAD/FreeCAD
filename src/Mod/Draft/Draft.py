@@ -1040,8 +1040,8 @@ def draftify(objectslist,makeblock=False):
             return newobjlist[0]
         return newobjlist
 
-def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="shape color",direction=None):
-    '''getSVG(object,[modifier],[textmodifier],[linestyle],[fillstyle],[direction]):
+def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=None):
+    '''getSVG(object,[modifier],[textmodifier],[fillstyle],[direction]):
     returns a string containing a SVG representation of the given object. the modifier attribute
     specifies a scale factor for linewidths in %, and textmodifier specifies
     a scale factor for texts, in % (both default = 100). You can also supply
@@ -1060,6 +1060,19 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
         if direction != Vector(0,0,0):
             plane = WorkingPlane.plane()
             plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+
+    def getLineStyle(obj):
+        "returns a linestyle pattern for a given object"
+        if obj.ViewObject:
+            if hasattr(obj.ViewObject,"DrawStyle"):
+                ds = obj.ViewObject.DrawStyle
+                if ds == "Dashed":
+                    return "0.09,0.05"
+                elif ds == "Dashdot":
+                    return "0.09,0.05,0.02,0.05"
+                elif ds == "Dotted":
+                    return "0.02,0.02"
+        return "none"
 
     def getrgb(color):
         "getRGB(color): returns a rgb value #000000 from a freecad color"
@@ -1230,15 +1243,7 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
         color = getrgb(obj.ViewObject.LineColor)
-        # setting linetype
-        if linestyle == "dashed":
-            lorig = "0.09,0.05"
-        elif linestyle == "dashdotted":
-            lorig = "0.09,0.05,0.02,0.05"
-        elif linestyle == "dotted":
-            lorig = "0.02,0.02"
-        else:
-            lorig = "none"
+        lorig = getLineStyle(obj)
         name = obj.Name
         stroke = getrgb(obj.ViewObject.LineColor)
         width = obj.ViewObject.LineWidth/modifier
@@ -1279,15 +1284,7 @@ def getSVG(obj,modifier=100,textmodifier=100,linestyle="continuous",fillstyle="s
                 svg += getPattern(fillstyle)
         else:
             fill = 'none'
-        # setting linetype
-        if linestyle == "dashed":
-            lstyle = "0.09,0.05"
-        elif linestyle == "dashdotted":
-            lstyle = "0.09,0.05,0.02,0.05"
-        elif linestyle == "dotted":
-            lstyle = "0.02,0.02"
-        else:
-            lstyle = "none"
+        lstyle = getLineStyle(obj)
         name = obj.Name
         if obj.ViewObject.DisplayMode == "Shaded":
             stroke = "none"
@@ -2380,9 +2377,7 @@ class _DrawingView:
         obj.addProperty("App::PropertyFloat","LinewidthModifier","Drawing view","Modifies the linewidth of the lines inside this object")
         obj.addProperty("App::PropertyFloat","TextModifier","Drawing view","Modifies the size of the texts inside this object")
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","LineStyle","Drawing view","Line Style")
         obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing view","Shape Fill Style")
-        obj.LineStyle = ['continuous','dashed','dashdotted','dotted']
         fills = ['shape color']
         for f in FreeCAD.svgpatterns.keys():
             fills.append(f)
@@ -2398,12 +2393,12 @@ class _DrawingView:
             obj.ViewResult = self.updateSVG(obj)
 
     def onChanged(self, obj, prop):
-        if prop in ["X","Y","Scale","LinewidthModifier","TextModifier","LineStyle","FillStyle","Direction"]:
+        if prop in ["X","Y","Scale","LinewidthModifier","TextModifier","FillStyle","Direction"]:
             obj.ViewResult = self.updateSVG(obj)
 
     def updateSVG(self, obj):
         "encapsulates a svg fragment into a transformation node"
-        svg = getSVG(obj.Source,obj.LinewidthModifier,obj.TextModifier,obj.LineStyle,obj.FillStyle,obj.Direction)
+        svg = getSVG(obj.Source,obj.LinewidthModifier,obj.TextModifier,obj.FillStyle,obj.Direction)
         result = ''
         result += '<g id="' + obj.Name + '"'
         result += ' transform="'

@@ -160,17 +160,6 @@ class _ViewProviderAxis:
             return "L"+str(num)
         return ""
 
-    def setStyle(self):
-        ds = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0).getChild(1)
-        if self.ViewObject.DrawStyle == "solid":
-            ds.linePattern = 0xffff
-        elif self.ViewObject.DrawStyle == "dotted":
-            ds.linePattern = 0x0f0f
-        elif self.ViewObject.DrawStyle == "dashed":
-            ds.linePattern = 0xf00f
-        elif self.ViewObject.DrawStyle == "dashdot":
-            ds.linePattern = 0xff88
-        
     def makeBubbles(self):
         import Part
         rn = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
@@ -223,8 +212,6 @@ class _ViewProviderAxis:
     def onChanged(self, vobj, prop):
         if prop in ["NumerationStyle","BubbleSize"]:
             self.makeBubbles()
-        elif prop == "DrawStyle":
-            self.setStyle()
         elif prop == "LineWidth":
             if self.bubbles:
                 self.bubblestyle.lineWidth = vobj.LineWidth
