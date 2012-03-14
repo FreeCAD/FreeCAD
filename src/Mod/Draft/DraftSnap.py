@@ -47,6 +47,9 @@ class Snapper:
     the form [real_point,marker_type,visual_point], and are not
     meant to be used directly, they are all called when necessary by
     the general snap() function.
+
+    The Snapper lives inside FreeCADGui once the Draft module has been
+    loaded.
     
     """
 
@@ -661,7 +664,8 @@ class Snapper:
 
     def getPoint(self,last=None,callback=None,movecallback=None,extradlg=None):
         
-        """getPoint([last],[callback],[movecallback],[extradlg]) : gets a 3D point
+        """
+        getPoint([last],[callback],[movecallback],[extradlg]) : gets a 3D point
         from the screen. You can provide an existing point, in that case additional
         snap options and a tracker are available.
         You can also pass a function as callback, which will get called
@@ -675,10 +679,13 @@ class Snapper:
         def cb(point):
             if point:
                 print "got a 3D point: ",point
+                
         FreeCADGui.Snapper.getPoint(callback=cb)
 
         If the callback function accepts more than one argument, it will also receive
-        the last snapped object. Finally, a pyqt dialog can be passed as extra taskbox."""
+        the last snapped object. Finally, a pyqt dialog can be passed as extra taskbox.
+
+        """
 
         import inspect
         

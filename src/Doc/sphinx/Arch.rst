@@ -1,7 +1,7 @@
 The Arch module
 ===============
 
-The Arch module is a metamodule that imports useful methods from several of the Arch submodules.
+The Arch module is a metamodule that imports useful methods from several of the Arch submodules. You can invoke the following methods either from their specific submodule (ArchWall.areSameWallTypes()) or from the Arch module itself (Arch.areSameWallTypes()).
 
 .. toctree::
    :maxdepth: 4
@@ -9,29 +9,32 @@ The Arch module is a metamodule that imports useful methods from several of the 
 .. automodule:: Arch
    :members:
 
-.. automodule:: Wall
+.. automodule:: ArchWall
    :members:
 
-.. automodule:: Cell
+.. automodule:: ArchCell
    :members:
 
-.. automodule:: Floor
+.. automodule:: ArchFloor
    :members:
 
-.. automodule:: Site
+.. automodule:: ArchSite
    :members:
 
-.. automodule:: Structure
+.. automodule:: ArchStructure
    :members:
 
-.. automodule:: Window
+.. automodule:: ArchWindow
    :members:
 
-.. automodule:: SectionPlane
+.. automodule:: ArchSectionPlane
    :members:
 
-.. automodule:: Building
+.. automodule:: ArchBuilding
    :members:
 
-.. automodule:: Commands
+.. automodule:: ArchCommands
+   :members:
+
+.. automodule:: ArchAxis
    :members:
