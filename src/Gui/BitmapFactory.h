@@ -124,6 +124,7 @@ public:
     void convert(const SoSFImage& img, QImage& out) const;
 
 private:
+    bool loadPixmap(const QString& path, QPixmap&) const;
     void restoreCustomPaths();
 
     static BitmapFactoryInst* _pcSingleton;
