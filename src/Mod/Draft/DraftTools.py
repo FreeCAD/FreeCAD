@@ -2368,21 +2368,26 @@ class Upgrade(Modifier):
                         Draft.formatObject(newob,lastob)
                         
         elif (len(openwires) == 1) and (not faces) and (not wires):
-            # special case, we have only one open wire. We close it!"
+            # special case, we have only one open wire. We close it, unless it has only 1 edge!"
             p0 = openwires[0].Vertexes[0].Point
             p1 = openwires[0].Vertexes[-1].Point
             edges = openwires[0].Edges
-            edges.append(Part.Line(p1,p0).toShape())
+            if len(edges) > 1:
+                edges.append(Part.Line(p1,p0).toShape())
             w = Part.Wire(fcgeo.sortEdges(edges))
-            msg(translate("draft", "Found 1 open wire: closing it\n"))
-            if not curves:
-                newob = Draft.makeWire(w,closed=True)
+            if len(edges) == 1:
+                msg(translate("draft", "Found 1 open edge: making a line\n"))
+                newob = Draft.makeWire(w,closed=False)
             else:
-                # if not possible, we do a non-parametric union
-                newob = self.doc.addObject("Part::Feature","Wire")
-                newob.Shape = w
-                Draft.formatObject(newob,lastob)
-                
+                msg(translate("draft", "Found 1 open wire: closing it\n"))
+                if not curves:
+                    newob = Draft.makeWire(w,closed=True)
+                else:
+                    # if not possible, we do a non-parametric union
+                    newob = self.doc.addObject("Part::Feature","Wire")
+                    newob.Shape = w
+                    Draft.formatObject(newob,lastob)
+
         elif openwires and (not wires) and (not faces):
             # only open wires and edges: we try to join their edges
             for ob in self.sel:
