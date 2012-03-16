@@ -73,6 +73,8 @@ class Snapper:
         self.trackLine = None
         self.lastSnappedObject = None
         self.active = True
+
+        self.polarAngles = [90,45]
         
         # the snapmarker has "dot","circle" and "square" available styles
         self.mk = {'passive':'circle',
@@ -86,7 +88,7 @@ class Snapper:
                    'center':'dot',
                    'ortho':'dot',
                    'intersection':'dot'}
-        self.cursors = {'passive':None,
+        self.cursors = {'passive':':/icons/Snap_Near.svg',
                         'extension':':/icons/Snap_Extension.svg',
                         'parallel':':/icons/Snap_Parallel.svg',
                         'grid':':/icons/Snap_Grid.svg',
@@ -282,7 +284,7 @@ class Snapper:
             if self.radius:
                 dv = point.sub(winner[2])
                 if (dv.Length > self.radius):
-                    if not oldActive:
+                    if (not oldActive) and self.isEnabled("passive"):
                         winner = self.snapToVertex(info)
 
             # setting the cursors
@@ -304,18 +306,19 @@ class Snapper:
     def snapToExtensions(self,point,last,constrain,eline):
         "returns a point snapped to extension or parallel line to last object, if any"
 
-        tsnap = self.snapToExtOrtho(last,constrain,eline)
-        if tsnap:
-            if (tsnap[0].sub(point)).Length < self.radius:
-                if self.tracker:
-                    self.tracker.setCoords(tsnap[2])
-                    self.tracker.setMarker(self.mk[tsnap[1]])
-                    self.tracker.on()
-                if self.extLine:
-                    self.extLine.p2(tsnap[2])
-                    self.extLine.on()
-                self.setCursor(tsnap[1])
-                return tsnap[2],eline
+        if self.isEnabled("extension"):
+            tsnap = self.snapToExtOrtho(last,constrain,eline)
+            if tsnap:
+                if (tsnap[0].sub(point)).Length < self.radius:
+                    if self.tracker:
+                        self.tracker.setCoords(tsnap[2])
+                        self.tracker.setMarker(self.mk[tsnap[1]])
+                        self.tracker.on()
+                    if self.extLine:
+                        self.extLine.p2(tsnap[2])
+                        self.extLine.on()
+                    self.setCursor(tsnap[1])
+                    return tsnap[2],eline
                 
         for o in [self.lastObj[1],self.lastObj[0]]:
             if o:
@@ -329,40 +332,41 @@ class Snapper:
                                     np = self.getPerpendicular(e,point)
                                     if not fcgeo.isPtOnEdge(np,e):
                                         if (np.sub(point)).Length < self.radius:
-                                            if np != e.Vertexes[0].Point:
-                                                if self.tracker:
-                                                    self.tracker.setCoords(np)
-                                                    self.tracker.setMarker(self.mk['extension'])
-                                                    self.tracker.on()
-                                                if self.extLine:
-                                                    self.extLine.p1(e.Vertexes[0].Point)
-                                                    self.extLine.p2(np)
-                                                    self.extLine.on()
-                                                self.setCursor('extension')
-                                                return np,Part.Line(e.Vertexes[0].Point,np).toShape()
-                                        else:
-                                            if last:
-                                                de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
-                                                np = self.getPerpendicular(de,point)
-                                                if (np.sub(point)).Length < self.radius:
+                                            if self.isEnabled('extension'):
+                                                if np != e.Vertexes[0].Point:
                                                     if self.tracker:
                                                         self.tracker.setCoords(np)
-                                                        self.tracker.setMarker(self.mk['parallel'])
+                                                        self.tracker.setMarker(self.mk['extension'])
                                                         self.tracker.on()
+                                                    if self.extLine:
+                                                        self.extLine.p1(e.Vertexes[0].Point)
+                                                        self.extLine.p2(np)
+                                                        self.extLine.on()
                                                     self.setCursor('extension')
-                                                    return np,de
+                                                    return np,Part.Line(e.Vertexes[0].Point,np).toShape()
+                                        else:
+                                            if self.isEnabled('parallel'):
+                                                if last:
+                                                    de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
+                                                    np = self.getPerpendicular(de,point)
+                                                    if (np.sub(point)).Length < self.radius:
+                                                        if self.tracker:
+                                                            self.tracker.setCoords(np)
+                                                            self.tracker.setMarker(self.mk['parallel'])
+                                                            self.tracker.on()
+                                                        self.setCursor('parallel')
+                                                        return np,de
         return point,eline
 
     def snapToPolar(self,point,last):
         "snaps to polar lines from the given point"
-        if self.isEnabled('ortho'):
-            polarAngles = [90,45]
+        if self.isEnabled('ortho'): 
             if last:
                 vecs = []
                 ax = [FreeCAD.DraftWorkingPlane.u,
                        FreeCAD.DraftWorkingPlane.v,
                        FreeCAD.DraftWorkingPlane.axis]
-                for a in polarAngles:
+                for a in self.polarAngles:
                         if a == 90:
                             vecs.extend([ax[0],fcvec.neg(ax[0])])
                             vecs.extend([ax[1],fcvec.neg(ax[1])])
@@ -544,8 +548,10 @@ class Snapper:
                 return [p,'endpoint',p]
             else:
                 return []
-        else:
+        elif self.isEnabled("passive"):
             return [p,'passive',p]
+        else:
+            return []
         
     def getScreenDist(self,dist,cursor):
         "returns a distance in 3D space from a screen pixels distance"
@@ -787,7 +793,6 @@ class Snapper:
             self.toolbar.hide()
 
     def toggle(self,checked=None):
-        print "checked",checked
         if hasattr(self,"toolbarButtons"):
             if checked == None:
                 self.masterbutton.toggle()
@@ -811,11 +816,13 @@ class Snapper:
 
     def show(self):
         "shows the toolbar"
-        if hasattr(self,"toolbar"):
-            self.toolbar.show()
-        else:
+        if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
-            self.toolbar.show()
+        mw = getMainWindow()
+        bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
+        if not bt:
+            mw.addToolBar(self.toolbar)
+        self.toolbar.show()
 
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
