@@ -521,7 +521,7 @@ StdCmdMeasurementSimple::StdCmdMeasurementSimple()
   :Command("Std_MeasurementSimple")
 {
     sGroup        = QT_TR_NOOP("Tools");
-    sMenuText     = QT_TR_NOOP("Mesure distance");
+    sMenuText     = QT_TR_NOOP("Measure distance");
     sToolTipText  = QT_TR_NOOP("Measures distance between two selected objects");
     sWhatsThis    = QT_TR_NOOP("Measures distance between two selected objects");
     sStatusTip    = QT_TR_NOOP("Measures distance between two selected objects");
