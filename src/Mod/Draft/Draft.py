@@ -448,13 +448,18 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
     from draftlibs import fcgeo
+    import Part
     if not isinstance(pointslist,list):
+        e = pointslist.Wires[0].Edges
+        pointslist = Part.Wire(fcgeo.sortEdges(e))
         nlist = []
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
         if fcgeo.isReallyClosed(pointslist):
-            nlist.append(pointslist.Vertexes[0].Point)
+            closed = True
         pointslist = nlist
+    print pointslist
+    print closed
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "Wire"
