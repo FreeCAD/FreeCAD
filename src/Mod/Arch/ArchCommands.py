@@ -192,12 +192,12 @@ def meshToShape(obj,mark=True):
         else:
             if solid.isClosed():
                 FreeCAD.ActiveDocument.removeObject(name)
-            else:
-                if mark:
-                    newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             newobj.Shape = solid
             newobj.Placement = plac
+            if not solid.isClosed():
+                if mark:
+                    newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
             return newobj
     return None
 
