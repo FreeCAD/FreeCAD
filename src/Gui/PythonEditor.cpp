@@ -61,7 +61,7 @@ struct PythonEditorP
         colormap[QLatin1String("Operator")] = QColor(160, 160, 164);
         colormap[QLatin1String("Python output")] = QColor(170, 170, 127);
         colormap[QLatin1String("Python error")] = Qt::red;
-        colormap[QLatin1String("Line")] = QColor(224,224,224);
+        colormap[QLatin1String("Current line highlight")] = QColor(224,224,224);
     }
 };
 } // namespace Gui
