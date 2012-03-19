@@ -128,7 +128,7 @@ def setParam(param,value):
     elif t == "float": p.SetFloat(param,value)
     elif t == "bool": p.SetBool(param,value)
     elif t == "unsigned": p.SetUnsigned(param,value)
-                
+              
 def precision():
     "precision(): returns the precision value from Draft user settings"
     return getParam("precision")
@@ -250,10 +250,12 @@ def formatObject(target,origin=None):
     if ui.isConstructionMode():
         col = fcol = ui.getDefaultColor("constr")
         gname = getParam("constructiongroupname")
-        if gname:
-            grp = doc.getObject(gname)
-            if not grp: grp = doc.addObject("App::DocumentObjectGroup",gname) 
-            grp.addObject(target)
+        if not gname:
+            gname = "Construction"
+        grp = doc.getObject(gname)
+        if not grp:
+            grp = doc.addObject("App::DocumentObjectGroup",gname) 
+        grp.addObject(target)
         obrep.Transparency = 80
     else:
         col = ui.getDefaultColor("ui")

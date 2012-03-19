@@ -72,6 +72,15 @@ MODCONSTRAIN = MODS[Draft.getParam("modconstrain")]
 MODSNAP = MODS[Draft.getParam("modsnap")]
 MODALT = MODS[Draft.getParam("modalt")]
 
+# sets defaults on first load
+
+if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Draft"):
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    p.SetBool("copymode",1)
+    p.SetBool("alwaysSnap",1)
+    p.SetBool("showSnapBar",1)
+    p.SetUnsigned("constructioncolor",746455039)
+
 #---------------------------------------------------------------------------
 # General functions
 #---------------------------------------------------------------------------
