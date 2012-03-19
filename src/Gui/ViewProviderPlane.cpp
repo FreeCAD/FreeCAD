@@ -40,12 +40,15 @@
 # include <Inventor/nodes/SoDrawStyle.h>
 #endif
 
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/details/SoLineDetail.h>
 #include "ViewProviderPlane.h"
 #include "SoFCSelection.h"
 #include "Application.h"
 #include "Document.h"
 #include "View3DInventorViewer.h"
-#include "inventor/SoAutoZoomTranslation.h"
+#include "Inventor/SoAutoZoomTranslation.h"
 #include "SoAxisCrossKit.h"
 //#include <SoDepthBuffer.h>
 

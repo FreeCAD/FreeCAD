@@ -53,7 +53,7 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderBody.cpp
-    ViewProviderbody.h
+    ViewProviderBody.h
     ViewProviderPad.cpp
     ViewProviderPad.h
     ViewProviderHole.cpp
