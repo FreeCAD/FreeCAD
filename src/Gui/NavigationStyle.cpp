@@ -1140,6 +1140,37 @@ SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
     return viewer->processSoEventBase(ev);
 }
 
+SbBool NavigationStyle::processMotionEvent(const SoMotion3Event * const ev)
+{
+    SoCamera * const camera = viewer->getCamera();
+    if (!camera)
+        return FALSE;
+
+    SbViewVolume volume(camera->getViewVolume());
+    SbVec3f center(volume.getSightPoint(camera->focalDistance.getValue()));
+    float scale(volume.getWorldToScreenScale(center, 1.0));
+    float translationFactor = scale * .0001;
+
+    SbVec3f dir = ev->getTranslation();
+
+    if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())){
+        SoOrthographicCamera *oCam = static_cast<SoOrthographicCamera *>(camera);
+        oCam->scaleHeight(1.0 + (dir[2] * 0.0001));
+        dir[2] = 0.0;//don't move the cam for z translation.
+    }
+
+    SbRotation newRotation(ev->getRotation() * camera->orientation.getValue());
+    SbVec3f newPosition, newDirection;
+    newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
+    newPosition = center - (newDirection * camera->focalDistance.getValue());
+
+    camera->orientation.setValue(newRotation);
+    camera->orientation.getValue().multVec(dir,dir);
+    camera->position = newPosition + (dir * translationFactor);
+
+    return TRUE;
+}
+
 void NavigationStyle::setPopupMenuEnabled(const SbBool on)
 {
     this->menuenabled = on;
