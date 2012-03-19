@@ -204,7 +204,21 @@ def shapify(obj):
     if not (obj.isDerivedFrom("Part::Feature")): return None
     if not "Shape" in obj.PropertiesList: return None
     shape = obj.Shape
-    name = getRealName(obj.Name)
+    if len(shape.Faces) == 1:
+        name = "Face"
+    elif len(shape.Solids) > 0:
+        name = "Solid"
+    elif len(shape.Faces) > 1:
+        name = "Shell"
+    elif len(shape.Wires) == 1:
+        name = "Wire"
+    elif len(shape.Edges) == 1:
+        if isinstance(shape.Edges[0].Curve,Part.Line):
+            name = "Line"
+        else:
+            name = "Circle"
+    else:
+        name = getRealName(obj.Name)
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
     newobj.Shape = shape
