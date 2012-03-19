@@ -197,9 +197,9 @@ class DraftWorkbench (Workbench):
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
         self.appendToolbar(str(DraftTools.translate("draft","Draft creation tools")),self.cmdList)
         self.appendToolbar(str(DraftTools.translate("draft","Draft modification tools")),self.modList)
-        self.appendMenu(str(DraftTools.translate("draft","Draft")),self.cmdList+self.modList)
-        self.appendMenu([str(DraftTools.translate("draft","Draft")),str(DraftTools.translate("draft","Display options"))],self.treecmdList)
-        self.appendMenu([str(DraftTools.translate("draft","Draft")),str(DraftTools.translate("draft","Wire tools"))],self.lineList)
+        self.appendMenu(str(DraftTools.translate("draft","&Draft")),self.cmdList+self.modList)
+        self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Display options"))],self.treecmdList)
+        self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Wire tools"))],self.lineList)
                                         
     def Activated(self):
         FreeCADGui.draftToolBar.Activated()
