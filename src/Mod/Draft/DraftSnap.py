@@ -609,6 +609,8 @@ class Snapper:
         self.unconstrain()
         self.radius = 0
         self.setCursor()
+        if Draft.getParam("hideSnapBar"):
+            self.toolbar.hide()
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>590</width>
-    <height>629</height>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -535,6 +535,19 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>showSnapBar</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
+          <property name="text">
+           <string>Hide Draft snap toolbar after use</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>hideSnapBar</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -1164,12 +1177,12 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>103</x>
-     <y>373</y>
+     <x>92</x>
+     <y>379</y>
     </hint>
     <hint type="destinationlabel">
-     <x>347</x>
-     <y>374</y>
+     <x>417</x>
+     <y>381</y>
     </hint>
    </hints>
   </connection>
@@ -1196,12 +1209,12 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>49</x>
-     <y>275</y>
+     <x>67</x>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
-     <x>550</x>
-     <y>277</y>
+     <x>571</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
@@ -1212,12 +1225,12 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>44</x>
-     <y>275</y>
+     <x>62</x>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
-     <x>405</x>
-     <y>283</y>
+     <x>516</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
@@ -1232,8 +1245,8 @@ such as &quot;Arial:Bold&quot;</string>
      <y>365</y>
     </hint>
     <hint type="destinationlabel">
-     <x>163</x>
-     <y>369</y>
+     <x>354</x>
+     <y>381</y>
     </hint>
    </hints>
   </connection>
@@ -1248,8 +1261,24 @@ such as &quot;Arial:Bold&quot;</string>
      <y>367</y>
     </hint>
     <hint type="destinationlabel">
-     <x>393</x>
-     <y>368</y>
+     <x>516</x>
+     <y>381</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_7</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gui::prefcheckbox_9</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>293</y>
     </hint>
    </hints>
   </connection>
