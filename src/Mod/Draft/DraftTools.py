@@ -2297,7 +2297,7 @@ class Upgrade(Modifier):
                 newob = Draft.fuse(self.sel[0],self.sel[1])
                 self.nodelete = True
                                 
-            elif (len(self.sel) > 2) and (len(faces) > 10):
+            elif (len(self.sel) > 2) and (len(faces) > 6):
                 # we have many separate faces: we try to make a shell
                 sh = Part.makeShell(faces)
                 newob = self.doc.addObject("Part::Feature","Shell")
@@ -2316,6 +2316,7 @@ class Upgrade(Modifier):
                         f = True
                     u = fcgeo.concatenate(u)
                     if not curves:
+                        # several coplanar and non-curved faces: they can becoem a Draft wire
                         msg(translate("draft", "Found several objects or faces: making a parametric face\n"))
                         newob = Draft.makeWire(u.Wires[0],closed=True,face=f)
                         Draft.formatObject(newob,lastob)
@@ -2340,6 +2341,8 @@ class Upgrade(Modifier):
                 if (not curves) and (Draft.getType(self.sel[0]) == "Part"):
                     msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
                     Draft.draftify(self.sel[0])
+            else:
+                msg(translate("draft", "Couldn't upgrade these objects\n"))
                                         
         elif wires and (not faces) and (not openwires):
             # we have only wires, no faces
@@ -2473,7 +2476,7 @@ class Downgrade(Modifier):
         self.doc.openTransaction("Downgrade")
         
         if (len(self.sel) == 1) and (Draft.getType(self.sel[0]) == "Block"):
-            # a block, we explode it
+            # we have a block, we explode it
             pl = self.sel[0].Placement
             newob = []
             for ob in self.sel[0].Components:
