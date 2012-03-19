@@ -1070,18 +1070,16 @@ void View3DInventorViewer::processEvent(QEvent * event)
 
         motionEvent->setHandled(true);
 
-        static float translationConstant(-.001f);
         float xTrans, yTrans, zTrans;
         xTrans = static_cast<float>(motionEvent->translationX());
         yTrans = static_cast<float>(motionEvent->translationY());
         zTrans = static_cast<float>(motionEvent->translationZ());
-        SbVec3f translationVector(xTrans, yTrans, zTrans * -1.0);
-        translationVector *= translationConstant;
+        SbVec3f translationVector(xTrans, yTrans, zTrans);
 
         static float rotationConstant(.0001f);
         SbRotation xRot, yRot, zRot;
-        xRot.setValue(SbVec3f(-1.0, 0.0, 0.0), static_cast<float>(motionEvent->rotationX()) * rotationConstant);
-        yRot.setValue(SbVec3f(0.0, -1.0, 0.0), static_cast<float>(motionEvent->rotationY()) * rotationConstant);
+        xRot.setValue(SbVec3f(1.0, 0.0, 0.0), static_cast<float>(motionEvent->rotationX()) * rotationConstant);
+        yRot.setValue(SbVec3f(0.0, 1.0, 0.0), static_cast<float>(motionEvent->rotationY()) * rotationConstant);
         zRot.setValue(SbVec3f(0.0, 0.0, 1.0), static_cast<float>(motionEvent->rotationZ()) * rotationConstant);
 
         SoMotion3Event motion3Event;
