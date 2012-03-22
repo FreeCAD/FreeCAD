@@ -407,9 +407,9 @@ int System::addConstraintTangentCircle2Arc(Circle &c, Arc &a, int tagId)
     double dx = *(a.start.x) - *(c.center.x);
     double dy = *(a.start.y) - *(c.center.y);
     if (dx * cos(*(a.startAngle)) + dy * sin(*(a.startAngle)) > 0)
-        addConstraintP2PAngle(c.center, a.start, a.startAngle, 0, tagId);
+        return addConstraintP2PAngle(c.center, a.start, a.startAngle, 0, tagId);
     else
-        addConstraintP2PAngle(c.center, a.start, a.startAngle, M_PI, tagId);
+        return addConstraintP2PAngle(c.center, a.start, a.startAngle, M_PI, tagId);
 }
 
 int System::addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId)
@@ -418,9 +418,9 @@ int System::addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId)
     double dx = *(a.end.x) - *(c.center.x);
     double dy = *(a.end.y) - *(c.center.y);
     if (dx * cos(*(a.endAngle)) + dy * sin(*(a.endAngle)) > 0)
-        addConstraintP2PAngle(c.center, a.end, a.endAngle, 0, tagId);
+        return addConstraintP2PAngle(c.center, a.end, a.endAngle, 0, tagId);
     else
-        addConstraintP2PAngle(c.center, a.end, a.endAngle, M_PI, tagId);
+        return addConstraintP2PAngle(c.center, a.end, a.endAngle, M_PI, tagId);
 }
 
 int System::addConstraintTangentArc2Arc(Arc &a1, bool reverse1, Arc &a2, bool reverse2,
@@ -433,9 +433,9 @@ int System::addConstraintTangentArc2Arc(Arc &a1, bool reverse1, Arc &a2, bool re
     double *angle1 = reverse1 ? a1.startAngle : a1.endAngle;
     double *angle2 = reverse2 ? a2.endAngle : a2.startAngle;
     if (cos(*angle1) * cos(*angle2) + sin(*angle1) * sin(*angle2) > 0)
-        addConstraintEqual(angle1, angle2, tagId);
+        return addConstraintEqual(angle1, angle2, tagId);
     else
-        addConstraintP2PAngle(p2, a2.center, angle1, 0, tagId);
+        return addConstraintP2PAngle(p2, a2.center, angle1, 0, tagId);
 }
 
 int System::addConstraintCircleRadius(Circle &c, double *radius, int tagId)

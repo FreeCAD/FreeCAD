@@ -101,7 +101,7 @@ namespace GCS
         int addConstraintMidpointOnLine(Line &l1, Line &l2, int tagId=0);
         int addConstraintMidpointOnLine(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2,
                                         int tagId=0);
-        int addConstraintTangentCircumf(Point &p1, Point &p2, double *rad1, double *rad2,
+        int addConstraintTangentCircumf(Point &p1, Point &p2, double *rd1, double *rd2,
                                         bool internal=false, int tagId=0);
 
         // derived constraints
