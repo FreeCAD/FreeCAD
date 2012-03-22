@@ -771,4 +771,64 @@ double ConstraintMidpointOnLine::grad(double *param)
     return scale * deriv;
 }
 
+// TangentCircumf
+ConstraintTangentCircumf::ConstraintTangentCircumf(Point &p1, Point &p2,
+                                                   double *rad1, double *rad2, bool internal_)
+{
+    internal = internal_;
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(rad1);
+    pvec.push_back(rad2);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintTangentCircumf::getTypeId()
+{
+    return TangentCircumf;
+}
+
+void ConstraintTangentCircumf::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+double ConstraintTangentCircumf::error()
+{
+    double dx = (*c1x() - *c2x());
+    double dy = (*c1y() - *c2y());
+    if (internal)
+        return scale * (sqrt(dx*dx + dy*dy) - std::abs(*r1() - *r2()));
+    else
+        return scale * (sqrt(dx*dx + dy*dy) - (*r1() + *r2()));
+}
+
+double ConstraintTangentCircumf::grad(double *param)
+{
+    double deriv=0.;
+    if (param == c1x() || param == c1y() ||
+        param == c2x() || param == c2y()||
+        param == r1() || param == r2()) {
+        double dx = (*c1x() - *c2x());
+        double dy = (*c1y() - *c2y());
+        double d = sqrt(dx*dx + dy*dy);
+        if (param == c1x()) deriv += dx/d;
+        if (param == c1y()) deriv += dy/d;
+        if (param == c2x()) deriv += -dx/d;
+        if (param == c2y()) deriv += -dy/d;
+        if (internal) {
+            if (param == r1()) deriv += (*r1() > *r2()) ? -1 : 1;
+            if (param == r2()) deriv += (*r1() > *r2()) ? 1 : -1;
+        }
+        else {
+            if (param == r1()) deriv += -1;
+            if (param == r2()) deriv += -1;
+        }
+    }
+    return scale * deriv;
+}
+
 } //namespace GCS

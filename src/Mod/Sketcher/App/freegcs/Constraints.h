@@ -44,7 +44,8 @@ namespace GCS
         Parallel = 7,
         Perpendicular = 8,
         L2LAngle = 9,
-        MidpointOnLine = 10
+        MidpointOnLine = 10,
+        TangentCircumf = 11
     };
 
     class Constraint
@@ -256,6 +257,26 @@ namespace GCS
     public:
         ConstraintMidpointOnLine(Line &l1, Line &l2);
         ConstraintMidpointOnLine(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2);
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
+    // TangentCircumf
+    class ConstraintTangentCircumf : public Constraint
+    {
+    private:
+        inline double* c1x() { return pvec[0]; }
+        inline double* c1y() { return pvec[1]; }
+        inline double* c2x() { return pvec[2]; }
+        inline double* c2y() { return pvec[3]; }
+        inline double* r1() { return pvec[4]; }
+        inline double* r2() { return pvec[5]; }
+        bool internal;
+    public:
+        ConstraintTangentCircumf(Point &p1, Point &p2,
+                                 double *rad1, double *rad2, bool internal_=false);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();

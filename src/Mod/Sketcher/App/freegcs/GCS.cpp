@@ -286,6 +286,14 @@ int System::addConstraintMidpointOnLine(Point &l1p1, Point &l1p2,
     return addConstraint(constr);
 }
 
+int System::addConstraintTangentCircumf(Point &p1, Point &p2, double *rad1, double *rad2,
+                                        bool internal, int tagId)
+{
+    Constraint *constr = new ConstraintTangentCircumf(p1, p2, rad1, rad2, internal);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
 // derived constraints
 
 int System::addConstraintP2PCoincident(Point &p1, Point &p2, int tagId)
@@ -352,6 +360,33 @@ int System::addConstraintTangent(Line &l, Arc &a, int tagId)
     return addConstraintP2LDistance(a.center, l, a.rad, tagId);
 }
 
+int System::addConstraintTangent(Circle &c1, Circle &c2, int tagId)
+{
+    double dx = *(c2.center.x) - *(c1.center.x);
+    double dy = *(c2.center.y) - *(c1.center.y);
+    double d = sqrt(dx*dx + dy*dy);
+    return addConstraintTangentCircumf(c1.center, c2.center, c1.rad, c2.rad,
+                                       (d < *c1.rad || d < *c2.rad), tagId);
+}
+
+int System::addConstraintTangent(Arc &a1, Arc &a2, int tagId)
+{
+    double dx = *(a2.center.x) - *(a1.center.x);
+    double dy = *(a2.center.y) - *(a1.center.y);
+    double d = sqrt(dx*dx + dy*dy);
+    return addConstraintTangentCircumf(a1.center, a2.center, a1.rad, a2.rad,
+                                       (d < *a1.rad || d < *a2.rad), tagId);
+}
+
+int System::addConstraintTangent(Circle &c, Arc &a, int tagId)
+{
+    double dx = *(a.center.x) - *(c.center.x);
+    double dy = *(a.center.y) - *(c.center.y);
+    double d = sqrt(dx*dx + dy*dy);
+    return addConstraintTangentCircumf(c.center, a.center, c.rad, a.rad,
+                                       (d < *c.rad || d < *a.rad), tagId);
+}
+
 int System::addConstraintTangentLine2Arc(Point &p1, Point &p2, Arc &a, int tagId)
 {
     addConstraintP2PCoincident(p2, a.start, tagId);
@@ -364,6 +399,43 @@ int System::addConstraintTangentArc2Line(Arc &a, Point &p1, Point &p2, int tagId
     addConstraintP2PCoincident(p1, a.end, tagId);
     double incr_angle = *(a.startAngle) < *(a.endAngle) ? M_PI/2 : -M_PI/2;
     return addConstraintP2PAngle(p1, p2, a.endAngle, incr_angle, tagId);
+}
+
+int System::addConstraintTangentCircle2Arc(Circle &c, Arc &a, int tagId)
+{
+    addConstraintPointOnCircle(a.start, c, tagId);
+    double dx = *(a.start.x) - *(c.center.x);
+    double dy = *(a.start.y) - *(c.center.y);
+    if (dx * cos(*(a.startAngle)) + dy * sin(*(a.startAngle)) > 0)
+        addConstraintP2PAngle(c.center, a.start, a.startAngle, 0, tagId);
+    else
+        addConstraintP2PAngle(c.center, a.start, a.startAngle, M_PI, tagId);
+}
+
+int System::addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId)
+{
+    addConstraintPointOnCircle(a.end, c, tagId);
+    double dx = *(a.end.x) - *(c.center.x);
+    double dy = *(a.end.y) - *(c.center.y);
+    if (dx * cos(*(a.endAngle)) + dy * sin(*(a.endAngle)) > 0)
+        addConstraintP2PAngle(c.center, a.end, a.endAngle, 0, tagId);
+    else
+        addConstraintP2PAngle(c.center, a.end, a.endAngle, M_PI, tagId);
+}
+
+int System::addConstraintTangentArc2Arc(Arc &a1, bool reverse1, Arc &a2, bool reverse2,
+                                        int tagId)
+{
+    Point &p1 = reverse1 ? a1.start : a1.end;
+    Point &p2 = reverse2 ? a2.end : a2.start;
+    addConstraintP2PCoincident(p1, p2, tagId);
+
+    double *angle1 = reverse1 ? a1.startAngle : a1.endAngle;
+    double *angle2 = reverse2 ? a2.endAngle : a2.startAngle;
+    if (cos(*angle1) * cos(*angle2) + sin(*angle1) * sin(*angle2) > 0)
+        addConstraintEqual(angle1, angle2, tagId);
+    else
+        addConstraintP2PAngle(p2, a2.center, angle1, 0, tagId);
 }
 
 int System::addConstraintCircleRadius(Circle &c, double *radius, int tagId)

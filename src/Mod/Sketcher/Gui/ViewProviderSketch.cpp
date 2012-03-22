@@ -2153,24 +2153,31 @@ Restart:
                             const Part::GeomCircle *circle1 = dynamic_cast<const Part::GeomCircle *>(geo1);
                             const Part::GeomCircle *circle2 = dynamic_cast<const Part::GeomCircle *>(geo2);
                             // tangency between two cicles
+                            Base::Vector3d dir = (circle2->getCenter() - circle1->getCenter()).Normalize();
+                            pos =  circle1->getCenter() + dir *  circle1->getRadius();
+                            relPos = dir * 1;
                         }
                         else if (geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) {
                             std::swap(geo1,geo2);
                         }
 
-                        if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId()) {
+                        if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId() &&
+                            geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
-                            if (geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
-                                // tangency between a circle and an arc
-                            }
+                            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                            // tangency between a circle and an arc
+                            Base::Vector3d dir = (arc->getCenter() - circle->getCenter()).Normalize();
+                            pos =  circle->getCenter() + dir *  circle->getRadius();
+                            relPos = dir * 1;
                         }
-
-                        if (geo1->getTypeId()== Part::GeomArcOfCircle::getClassTypeId() &&
-                            geo1->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
+                        else if (geo1->getTypeId()== Part::GeomArcOfCircle::getClassTypeId() &&
+                                 geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomArcOfCircle *arc1 = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
                             const Part::GeomArcOfCircle *arc2 = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
                             // tangency between two arcs
+                            Base::Vector3d dir = (arc2->getCenter() - arc1->getCenter()).Normalize();
+                            pos =  arc1->getCenter() + dir *  arc1->getRadius();
+                            relPos = dir * 1;
                         }
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos.x, relPos.y, 0);
