@@ -101,6 +101,8 @@ namespace GCS
         int addConstraintMidpointOnLine(Line &l1, Line &l2, int tagId=0);
         int addConstraintMidpointOnLine(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2,
                                         int tagId=0);
+        int addConstraintTangentCircumf(Point &p1, Point &p2, double *rad1, double *rad2,
+                                        bool internal=false, int tagId=0);
 
         // derived constraints
         int addConstraintP2PCoincident(Point &p1, Point &p2, int tagId=0);
@@ -115,8 +117,15 @@ namespace GCS
         int addConstraintPointOnArc(Point &p, Arc &a, int tagId=0);
         int addConstraintTangent(Line &l, Circle &c, int tagId=0);
         int addConstraintTangent(Line &l, Arc &a, int tagId=0);
+        int addConstraintTangent(Circle &c1, Circle &c2, int tagId=0);
+        int addConstraintTangent(Arc &a1, Arc &a2, int tagId=0);
+        int addConstraintTangent(Circle &c, Arc &a, int tagId=0);
         int addConstraintTangentLine2Arc(Point &p1, Point &p2, Arc &a, int tagId=0);
         int addConstraintTangentArc2Line(Arc &a, Point &p1, Point &p2, int tagId=0);
+        int addConstraintTangentCircle2Arc(Circle &c, Arc &a, int tagId=0);
+        int addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId=0);
+        int addConstraintTangentArc2Arc(Arc &a1, bool reverse1, Arc &a2, bool reverse2,
+                                        int tagId=0);
         int addConstraintCircleRadius(Circle &c, double *radius, int tagId=0);
         int addConstraintArcRadius(Arc &a, double *radius, int tagId=0);
         int addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId=0);
