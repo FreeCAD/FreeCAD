@@ -276,7 +276,7 @@ namespace GCS
         bool internal;
     public:
         ConstraintTangentCircumf(Point &p1, Point &p2,
-                                 double *rad1, double *rad2, bool internal_=false);
+                                 double *rd1, double *rd2, bool internal_=false);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();

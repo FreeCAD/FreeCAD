@@ -947,6 +947,13 @@ bool Application::activateWorkbench(const char* name)
             // import the matching module first
             Py::Callable activate(handler.getAttr(std::string("Initialize")));
             activate.apply(args);
+
+            // Dependent on the implementation of a workbench handler the type
+            // can be defined after the call of Initialize()
+            if (type.empty()) {
+                Py::String result(method.apply(args));
+                type = result.as_std_string();
+            }
         }
 
         // does the Python workbench handler have changed the workbench?
