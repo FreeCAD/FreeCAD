@@ -27,7 +27,7 @@ __url__ = ["http://free-cad.sourceforge.net"]
 
 "this file contains generic geometry functions for manipulating Part shapes"
 
-import FreeCAD, Part, fcvec, math, cmath, FreeCADGui
+import FreeCAD, Part, fcvec, math, cmath
 from FreeCAD import Vector
 
 NORM = Vector(0,0,1) # provisory normal direction for all geometry ops.
@@ -364,12 +364,14 @@ def geom(edge):
                         return Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
                 else:
                         ref = edge.Placement.multVec(Vector(1,0,0))
+                        ref = ref.sub(edge.Placement.Base) # we only want the orientation
                         v1 = edge.Vertexes[0].Point
                         v2 = edge.Vertexes[-1].Point
                         c = edge.Curve.Center
                         cu = Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
-                        a1 = -fcvec.angle(v1.sub(c),ref)
-                        a2 = -fcvec.angle(v2.sub(c),ref)
+                        a1 = -fcvec.angle(v1.sub(c),ref,edge.Curve.Axis)
+                        a2 = -fcvec.angle(v2.sub(c),ref,edge.Curve.Axis)
+                        print "creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)"
                         p= Part.ArcOfCircle(cu,a1,a2)
                         return p
         else:
@@ -701,8 +703,10 @@ def getNormal(shape):
                                 if 0.1 < abs(e1.getAngle(e2)) < 1.56:
                                         n = e1.cross(e2).normalize()
                                         break
-        vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
-        if n.getAngle(vdir) < 0.78: n = fcvec.neg(n)
+        if FreeCAD.GuiUp:
+    		import FreeCADGui
+	        vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+	        if n.getAngle(vdir) < 0.78: n = fcvec.neg(n)
         return n
 
 def offsetWire(wire,dvec,bind=False,occ=False):
