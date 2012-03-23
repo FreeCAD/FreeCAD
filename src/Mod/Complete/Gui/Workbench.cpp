@@ -89,25 +89,25 @@ void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) cons
 
             *DraftContext << "Draft_ApplyStyle" << "Draft_ToggleDisplayMode"
                           << "Draft_AddToGroup";
-            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_TreeSelection"
+            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
+                  << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Separator" << "Std_Delete" << DraftContext;
             }
     }
     else if (strcmp(recipient,"Tree") == 0)
     {
-        if ( Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
-            {
+        if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 ) {
             Gui::MenuItem* DraftContext = new Gui::MenuItem();
             DraftContext->setCommand("Display options");
 
             *DraftContext << "Draft_ApplyStyle" << "Draft_ToggleDisplayMode"
                           << "Draft_AddToGroup";
 
-            *item << "Std_SetAppearance" << "Std_ToggleVisibility"
-                  << "Std_RandomColor" << "Separator" << "Std_Delete"
+            *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
+                  << "Std_ToggleSelectability" << "Separator" << "Std_SetAppearance"
+                  << "Std_ToggleVisibility" << "Std_RandomColor" << "Separator" << "Std_Delete"
                   << DraftContext;
-            }
-
+        }
     }
 }
 
@@ -528,7 +528,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     raytracing->setCommand("Raytracing");
     *raytracing << "Raytracing_WriteView"
                 << "Raytracing_WriteCamera"
-                << "Raytracing_WritePart";
+                << "Raytracing_WritePart"
+                << "Separator"
+                << "Raytracing_NewPovrayProject" 
+                << "Raytracing_NewPartSegment" 
+                << "Raytracing_ExportProject"; 
 
     // Drafting ****************************************************************************************************
 #   ifdef COMPLETE_USE_DRAFTING

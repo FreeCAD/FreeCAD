@@ -71,6 +71,8 @@ SET(Core_SRCS
     Core/TopoAlgorithm.h
     Core/Triangulation.cpp
     Core/Triangulation.h
+    Core/Trim.cpp
+    Core/Trim.h
     Core/tritritest.h
     Core/Visitor.cpp
     Core/Visitor.h

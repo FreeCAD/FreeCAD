@@ -31,7 +31,9 @@ __url__ = "http://free-cad.sourceforge.net"
 DEBUG = True
 SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
 SKIP = ["IfcOpeningElement"]
-pyopen = open # because we'll redefine open below
+
+if open.__module__ == '__builtin__':
+    pyopen = open # because we'll redefine open below
 
 def open(filename):
     "called when freecad opens a file"

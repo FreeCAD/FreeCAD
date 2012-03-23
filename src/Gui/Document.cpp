@@ -55,7 +55,6 @@
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 #include "Selection.h"
-#include "SoFCSelection.h"
 #include "WaitCursor.h"
 #include "Thumbnail.h"
 
@@ -406,17 +405,18 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
   
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-        View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-        if (activeView && viewProvider) {
-            if (d->_pcInEdit == viewProvider)
-                resetEdit();
-            activeView->getViewer()->removeViewProvider(viewProvider);
+    if (viewProvider && viewProvider->getTypeId().isDerivedFrom
+        (ViewProviderDocumentObject::getClassTypeId())) {
+        // go through the views
+        for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+            if (activeView) {
+                if (d->_pcInEdit == viewProvider)
+                    resetEdit();
+                activeView->getViewer()->removeViewProvider(viewProvider);
+            }
         }
-    }
 
-    if (viewProvider && viewProvider->getTypeId().isDerivedFrom(
-        ViewProviderDocumentObject::getClassTypeId())) {
         // removing from tree
         signalDeletedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
 

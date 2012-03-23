@@ -143,6 +143,7 @@ class _CommandWall:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         elif len(self.points) == 2:
             import Part
+            add = False
             l = Part.Line(self.points[0],self.points[1])
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction("Wall")
@@ -154,16 +155,21 @@ class _CommandWall:
                     if areSameWallTypes([w,self]):
                         w.Base.addGeometry(l)
                     else:
-                        self.addDefault(l)
+                        nw = self.addDefault(l)
+                        add = True
                 else:
                     self.addDefault(l)
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+            if add:
+                import ArchCommands
+                ArchCommands.addComponents(nw,w)
 
     def addDefault(self,l):
         s = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
         s.addGeometry(l)
-        makeWall(s,width=self.Width,height=self.Height,align=self.Align)
+        w = makeWall(s,width=self.Width,height=self.Height,align=self.Align)
+        return w
 
     def update(self,point):
         "this function is called by the Snapper when the mouse is moved"

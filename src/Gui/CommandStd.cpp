@@ -33,6 +33,8 @@
 #endif
 #endif
 
+#include <boost/scoped_ptr.hpp>
+
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -193,7 +195,7 @@ Action * StdCmdAbout::createAction(void)
 
     QString exe;
     std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::iterator it = cfg.find("WindowTitle");
+    std::map<std::string,std::string>::iterator it = cfg.find("Application");
     if (it != cfg.end())
         exe = QString::fromUtf8(it->second.c_str());
     else
@@ -210,7 +212,7 @@ Action * StdCmdAbout::createAction(void)
         QCoreApplication::CodecForTr).arg(exe));
     pcAction->setWhatsThis(QLatin1String(sWhatsThis));
     pcAction->setIcon(QApplication::windowIcon());
-      pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromAscii(sAccel));
 
     return pcAction;
 }
@@ -226,7 +228,7 @@ bool StdCmdAbout::isActive()
 void StdCmdAbout::activated(int iMsg)
 {
     const Gui::Dialog::AboutDialogFactory* f = Gui::Dialog::AboutDialogFactory::defaultFactory();
-    QSharedPointer <QDialog> dlg(f->create(getMainWindow()));
+    boost::scoped_ptr<QDialog> dlg(f->create(getMainWindow()));
     dlg->exec();
 }
 
@@ -235,7 +237,7 @@ void StdCmdAbout::languageChange()
     if (_pcAction) {
         QString exe;
         std::map<std::string,std::string>& cfg = App::Application::Config();
-        std::map<std::string,std::string>::iterator it = cfg.find("WindowTitle");
+        std::map<std::string,std::string>::iterator it = cfg.find("Application");
         if (it != cfg.end())
             exe = QString::fromUtf8(it->second.c_str());
         else
@@ -519,7 +521,7 @@ StdCmdMeasurementSimple::StdCmdMeasurementSimple()
   :Command("Std_MeasurementSimple")
 {
     sGroup        = QT_TR_NOOP("Tools");
-    sMenuText     = QT_TR_NOOP("Mesure distance");
+    sMenuText     = QT_TR_NOOP("Measure distance");
     sToolTipText  = QT_TR_NOOP("Measures distance between two selected objects");
     sWhatsThis    = QT_TR_NOOP("Measures distance between two selected objects");
     sStatusTip    = QT_TR_NOOP("Measures distance between two selected objects");

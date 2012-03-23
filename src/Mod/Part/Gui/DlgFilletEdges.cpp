@@ -49,6 +49,7 @@
 
 #include "../App/PartFeature.h"
 #include "../App/FeatureFillet.h"
+#include "../App/FeatureChamfer.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -155,7 +156,7 @@ namespace PartGui {
     public:
         App::DocumentObject* object;
         EdgeSelection* selection;
-        Part::Fillet* fillet;
+        Part::FilletBase* fillet;
         typedef boost::signals::connection Connection;
         Connection connectApplicationDeletedObject;
         Connection connectApplicationDeletedDocument;
@@ -164,7 +165,7 @@ namespace PartGui {
 
 /* TRANSLATOR PartGui::DlgFilletEdges */
 
-DlgFilletEdges::DlgFilletEdges(Part::Fillet* fillet, QWidget* parent, Qt::WFlags fl)
+DlgFilletEdges::DlgFilletEdges(Part::FilletBase* fillet, QWidget* parent, Qt::WFlags fl)
   : QWidget(parent, fl), ui(new Ui_DlgFilletEdges()), d(new DlgFilletEdgesP())
 {
     ui->setupUi(this);
@@ -214,7 +215,8 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
     // no object selected in the combobox or no sub-element was selected
     if (!d->object || !msg.pSubName)
         return;
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (msg.Type == Gui::SelectionChanges::AddSelection ||
+        msg.Type == Gui::SelectionChanges::RmvSelection) {
         // when adding a sub-element to the selection check
         // whether this is the currently handled object
         App::Document* doc = d->object->getDocument();
@@ -228,7 +230,9 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
                 QString name = QString::fromAscii("Edge%1").arg(id);
                 if (name == subelement) {
                     // ok, check the selected sub-element
-                    Qt::CheckState checkState = Qt::Checked;
+                    Qt::CheckState checkState =
+                        (msg.Type == Gui::SelectionChanges::AddSelection
+                        ? Qt::Checked : Qt::Unchecked);
                     QVariant value(static_cast<int>(checkState));
                     QModelIndex index = model->index(i,0);
                     model->setData(index, value, Qt::CheckStateRole);
@@ -236,6 +240,7 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->treeView->selectionModel()->setCurrentIndex(index,QItemSelectionModel::NoUpdate);
                     QItemSelection selection(index, model->index(i,1));
                     ui->treeView->selectionModel()->select(selection, QItemSelectionModel::ClearAndSelect);
+                    ui->treeView->update();
                     break;
                 }
             }
@@ -544,6 +549,11 @@ void DlgFilletEdges::on_filletEndRadius_valueChanged(double radius)
     }
 }
 
+const char* DlgFilletEdges::getFilletType() const
+{
+    return "Fillet";
+}
+
 bool DlgFilletEdges::accept()
 {
     if (!d->object) {
@@ -558,16 +568,17 @@ bool DlgFilletEdges::accept()
     bool todo = false;
 
     QString shape, type, name;
+    std::string fillet = getFilletType();
     int index = ui->shapeObject->currentIndex();
     shape = ui->shapeObject->itemData(index).toString();
-    type = QString::fromAscii("Part::Fillet");
+    type = QString::fromAscii("Part::%1").arg(QString::fromAscii(fillet.c_str()));
 
     if (d->fillet)
         name = QString::fromAscii(d->fillet->getNameInDocument());
     else
-        name = QString::fromAscii(activeDoc->getUniqueObjectName("Fillet").c_str());
+        name = QString::fromAscii(activeDoc->getUniqueObjectName(fillet.c_str()).c_str());
 
-    activeDoc->openTransaction("Fillet");
+    activeDoc->openTransaction(fillet.c_str());
     QString code;
     if (!d->fillet) {
         code = QString::fromAscii(
@@ -627,7 +638,7 @@ bool DlgFilletEdges::accept()
 
 // ---------------------------------------
 
-FilletEdgesDialog::FilletEdgesDialog(Part::Fillet* fillet, QWidget* parent, Qt::WFlags fl)
+FilletEdgesDialog::FilletEdgesDialog(Part::FilletBase* fillet, QWidget* parent, Qt::WFlags fl)
   : QDialog(parent, fl)
 {
     widget = new DlgFilletEdges(fillet, this);
@@ -688,6 +699,65 @@ bool TaskFilletEdges::accept()
 }
 
 bool TaskFilletEdges::reject()
+{
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    return true;
+}
+
+// --------------------------------------------------------------
+
+/* TRANSLATOR PartGui::DlgChamferEdges */
+
+DlgChamferEdges::DlgChamferEdges(Part::FilletBase* chamfer, QWidget* parent, Qt::WFlags fl)
+  : DlgFilletEdges(chamfer, parent, fl)
+{
+    this->setWindowTitle(tr("Chamfer Edges"));
+}
+
+/*  
+ *  Destroys the object and frees any allocated resources
+ */
+DlgChamferEdges::~DlgChamferEdges()
+{
+}
+
+const char* DlgChamferEdges::getFilletType() const
+{
+    return "Chamfer";
+}
+
+TaskChamferEdges::TaskChamferEdges(Part::Chamfer* chamfer)
+{
+    widget = new DlgChamferEdges(chamfer);
+    taskbox = new Gui::TaskView::TaskBox(
+        Gui::BitmapFactory().pixmap("Part_Chamfer"),
+        widget->windowTitle(), true, 0);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+}
+
+TaskChamferEdges::~TaskChamferEdges()
+{
+    // automatically deleted in the sub-class
+}
+
+void TaskChamferEdges::open()
+{
+}
+
+void TaskChamferEdges::clicked(int)
+{
+}
+
+bool TaskChamferEdges::accept()
+{
+    bool ok = widget->accept();
+    if (ok)
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    return ok;
+}
+
+bool TaskChamferEdges::reject()
 {
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     return true;

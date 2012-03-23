@@ -80,6 +80,29 @@ public:
     ViewProviderChamfer();
     /// destructor
     virtual ~ViewProviderChamfer();
+    /** @name Edit methods */
+    //@{
+    void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren() const;
+
+protected:
+    bool setEdit(int ModNum);
+    void unsetEdit(int ModNum);
+    //@}
+};
+
+class ViewProviderRevolution : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderRevolution);
+
+public:
+    /// constructor
+    ViewProviderRevolution();
+    /// destructor
+    virtual ~ViewProviderRevolution();
+
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
 };
 
 } // namespace PartGui

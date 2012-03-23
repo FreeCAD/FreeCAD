@@ -3,6 +3,7 @@ SUBDIRS=Resources
 lib_LTLIBRARIES=libSketcherGui.la SketcherGui.la
 
 BUILT_SOURCES=\
+		moc_SketchOrientationDialog.cpp \
 		moc_TaskSketcherConstrains.cpp \
 		moc_TaskSketcherCreateCommands.cpp \
 		moc_TaskSketcherGeneral.cpp \

@@ -56,15 +56,17 @@ MDIView::~MDIView()
     //the application crashes when accessing this deleted view.
     //This effect only occurs if this widget is not in Child mode, because otherwise
     //the focus stuff is done correctly.
-    QWidget* foc = getMainWindow()->focusWidget();
-    if (foc) {
-        QWidget* par = foc;
-        while (par) {
-            if (par == this) {
-                getMainWindow()->setFocus();
-                break;
+    if (getMainWindow()) {
+        QWidget* foc = getMainWindow()->focusWidget();
+        if (foc) {
+            QWidget* par = foc;
+            while (par) {
+                if (par == this) {
+                    getMainWindow()->setFocus();
+                    break;
+                }
+                par = par->parentWidget();
             }
-            par = par->parentWidget();
         }
     }
 }

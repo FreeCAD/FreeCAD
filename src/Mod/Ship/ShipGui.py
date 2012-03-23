@@ -24,6 +24,18 @@
 from PyQt4 import QtCore, QtGui
 import FreeCAD, FreeCADGui, os
 
+class LoadExample: 
+    def Activated(self):
+        import shipLoadExample
+        shipLoadExample.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/LoadIco.png"
+        MenuText = str(Translator.translate('Load an example ship geometry'))
+        ToolTip  = str(Translator.translate('Load an example ship geometry able to be converted into a ship.'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
 class CreateShip: 
     def Activated(self):
         import shipCreateShip
@@ -59,7 +71,21 @@ class AreasCurve:
         MenuText = str(Translator.translate('Areas curve'))
         ToolTip  = str(Translator.translate('Plot transversal areas curve'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class Hydrostatics: 
+    def Activated(self):
+        import shipHydrostatics
+        shipHydrostatics.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/HydrostaticsIco.png"
+        MenuText = str(Translator.translate('Hydrostatics'))
+        ToolTip  = str(Translator.translate('Plot ship hydrostatics'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
       
+FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
+FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())

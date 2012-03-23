@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
-import Preview
+import Preview, Plot
 import Instance
 from shipUtils import Paths, Translator
 from surfUtils import Geometry
@@ -44,6 +44,13 @@ class TaskPanel:
         if not self.ship:
             return False
         self.save()
+        # Plot data
+        data   = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
+        x    = self.ship.xSection[:]
+        y    = data[0]
+        disp = data[1]
+        xcb  = data[2]
+        Plot.Plot(x,y,disp,xcb, self.ship)
         self.preview.clean()
         return True
 
@@ -105,7 +112,7 @@ class TaskPanel:
         # Get objects
         selObjs  = Geometry.getSelectedObjs()
         if not selObjs:
-            msg = Translator.translate("Ship instance must be selected (any object selected)\n")
+            msg = Translator.translate("Ship instance must be selected (no object selected)\n")
             App.Console.PrintError(msg)
             return True
         for i in range(0,len(selObjs)):
@@ -125,7 +132,7 @@ class TaskPanel:
                 self.ship = obj
         # Test if any valid ship was selected
         if not self.ship:
-            msg = Translator.translate("Ship instance must be selected (any valid ship found at selected objects)\n")
+            msg = Translator.translate("Ship instance must be selected (no valid ship found at selected objects)\n")
             App.Console.PrintError(msg)
             return True
         # Get bounds
@@ -208,12 +215,12 @@ class TaskPanel:
             props.index("AreaCurveDraft")
         except ValueError:
             self.ship.addProperty("App::PropertyFloat","AreaCurveDraft","Ship", str(Translator.translate("Areas curve draft selected [m]")))
-            self.ship.AreaCurveDraft = self.form.draft.value()
+        self.ship.AreaCurveDraft = self.form.draft.value()
         try:
             props.index("AreaCurveTrim")
         except ValueError:
             self.ship.addProperty("App::PropertyFloat","AreaCurveTrim","Ship", str(Translator.translate("Areas curve trim selected [m]")))
-            self.ship.AreaCurveTrim = self.form.draft.value()
+        self.ship.AreaCurveTrim = self.form.trim.value()
 
 def createTask():
     panel = TaskPanel()

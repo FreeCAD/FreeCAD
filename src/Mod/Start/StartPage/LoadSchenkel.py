@@ -1,4 +1,4 @@
 import FreeCAD,FreeCADGui,Part
-Part.open(FreeCAD.getResourceDir()+"data/examples/Schenkel.stp")
+Part.open(FreeCAD.getResourceDir()+"examples/Schenkel.stp")
 FreeCADGui.SendMsgToActiveView("ViewFit")
 Gui.activeDocument().activeView().viewAxometric()

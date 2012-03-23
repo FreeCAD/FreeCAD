@@ -93,7 +93,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent* ev)
 
 /* TRANSLATOR Gui::View3DInventor */
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::BaseView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
@@ -275,6 +275,14 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"InvertZoom") == 0) {
         bool on = rGrp.GetBool("InvertZoom", false);
         _viewer->navigationStyle()->setZoomInverted(on);
+    }
+    else if (strcmp(Reason,"ZoomAtCursor") == 0) {
+        bool on = rGrp.GetBool("ZoomAtCursor", false);
+        _viewer->navigationStyle()->setZoomAtCursor(on);
+    }
+    else if (strcmp(Reason,"ZoomSetp") == 0) {
+        float val = rGrp.GetFloat("ZoomSetp", 0.0f);
+        _viewer->navigationStyle()->setZoomStep(val);
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->setStereoOffset(rGrp.GetFloat("EyeDistance",65.0));

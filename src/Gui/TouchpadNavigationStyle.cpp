@@ -154,17 +154,11 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->setViewing(true);
             break;
         case SoKeyboardEvent::PAGE_UP:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), 0.05f);
-            else
-                zoom(viewer->getCamera(), -0.05f);
+            doZoom(viewer->getCamera(), TRUE, posn);
             processed = TRUE;
             break;
         case SoKeyboardEvent::PAGE_DOWN:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), -0.05f);
-            else
-                zoom(viewer->getCamera(), 0.05f);
+            doZoom(viewer->getCamera(), FALSE, posn);
             processed = TRUE;
             break;
         default:
@@ -271,20 +265,9 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        SoMotion3Event * const event = (SoMotion3Event *) ev;
-        SoCamera * const camera = viewer->getCamera();
-
-        SbVec3f dir = event->getTranslation();
-        if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())){
-            static float zoomConstant(-.03f);
-            dir[2] = 0.0;//don't move the cam for z translation.
-
-            SoOrthographicCamera *oCam = static_cast<SoOrthographicCamera *>(camera);
-            oCam->scaleHeight(1.0-event->getTranslation()[2] * zoomConstant);
-        }
-        camera->orientation.getValue().multVec(dir,dir);
-        camera->position = camera->position.getValue() + dir;
-        camera->orientation = event->getRotation() * camera->orientation.getValue();
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        if (event)
+            this->processMotionEvent(event);
         processed = TRUE;
     }
 

@@ -40,20 +40,10 @@
 using namespace Part;
 
 
-PROPERTY_SOURCE(Part::Chamfer, Part::Feature)
+PROPERTY_SOURCE(Part::Chamfer, Part::FilletBase)
 
 Chamfer::Chamfer()
 {
-    ADD_PROPERTY(Base,(0));
-    ADD_PROPERTY(Edges,(0,0,0));
-    Edges.setSize(0);
-}
-
-short Chamfer::mustExecute() const
-{
-    if (Base.isTouched() || Edges.isTouched())
-        return 1;
-    return 0;
 }
 
 App::DocumentObjectExecReturn *Chamfer::execute(void)

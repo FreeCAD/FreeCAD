@@ -836,8 +836,33 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintTangent(l, c, tag);
             return ConstraintsCounter;
         }
-    } else
-        Base::Console().Warning("Tangency constraints between circles and arcs are not implemented yet.\n");
+    } else if (Geoms[geoId1].type == Circle) {
+        GCS::Circle &c = Circles[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == Circle) {
+            GCS::Circle &c2 = Circles[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintTangent(c, c2, tag);
+            return ConstraintsCounter;
+        } else if (Geoms[geoId2].type == Arc) {
+            GCS::Arc &a = Arcs[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintTangent(c, a, tag);
+            return ConstraintsCounter;
+        }
+    } else if (Geoms[geoId1].type == Arc) {
+        GCS::Arc &a = Arcs[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == Circle) {
+            GCS::Circle &c = Circles[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintTangent(c, a, tag);
+            return ConstraintsCounter;
+        } else if (Geoms[geoId2].type == Arc) {
+            GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintTangent(a, a2, tag);
+            return ConstraintsCounter;
+        }
+    }
 
     return -1;
 }
@@ -850,8 +875,8 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2)
     // 2) Line1, start/end/mid, Circle2
     // 3) Line1, start/end/mid, Arc2
     // 4) Arc1, start/end, Line2
-    // 5) Arc1, start/end, Circle2 (not implemented yet)
-    // 6) Arc1, start/end, Arc2 (not implemented yet)
+    // 5) Arc1, start/end, Circle2
+    // 6) Arc1, start/end, Arc2
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
@@ -895,16 +920,24 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Arc) {
-            //GCS::Arcs &a2 = Arcs[Geoms[geoId2].index];
-            //GCSsys.addConstraintPointOnArc(p1, a2);
-            //GCSsys.addConstraintTangent(a1, a2);
-            Base::Console().Warning("Tangency constraints between circles and arcs are not implemented yet.\n");
+            GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnArc(p1, a2, tag);
+            GCSsys.addConstraintTangent(a1, a2, tag);
+            return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Circle) {
-            //GCS::Circle &c2 = Circles[Geoms[geoId2].index];
-            //GCSsys.addConstraintPointOnCircle(p1, c2);
-            //GCSsys.addConstraintTangent(a1, c2);
-            Base::Console().Warning("Tangency constraints between circles and arcs are not implemented yet.\n");
+            GCS::Circle &c2 = Circles[Geoms[geoId2].index];
+            if (pos1 == start) {
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangentCircle2Arc(c2, a1, tag);
+                return ConstraintsCounter;
+            }
+            else if (pos1 == end) {
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangentArc2Circle(a1, c2, tag);
+                return ConstraintsCounter;
+            }
         }
     }
     return -1;
@@ -917,7 +950,7 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
     // 1) Line1, start/end/mid, Line2, start/end/mid
     // 2) Line1, start/end/mid, Arc2, start/end
     // 3) Arc1, start/end, Line2, start/end/mid (converted to case #2)
-    // 4) Arc1, start/end, Arc2, start/end (not implemented yet)
+    // 4) Arc1, start/end, Arc2, start/end
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
@@ -970,7 +1003,7 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
                     GCSsys.addConstraintTangentLine2Arc(l1.p1, l1.p2, a2, tag);
                     return ConstraintsCounter;
                 }
-                else if (pos1 == mid) {
+                else if (pos1 == mid) { // FIXME: coincidence with midpoint of line??
                     int tag = ++ConstraintsCounter;
                     GCSsys.addConstraintP2PCoincident(p1, p2, tag);
                     GCSsys.addConstraintTangent(l1, a2, tag);
@@ -988,7 +1021,7 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
                     GCSsys.addConstraintTangentArc2Line(a2, l1.p2, l1.p1, tag);
                     return ConstraintsCounter;
                 }
-                else if (pos1 == mid) {
+                else if (pos1 == mid) { // FIXME: coincidence with midpoint of line??
                     int tag = ++ConstraintsCounter;
                     GCSsys.addConstraintP2PCoincident(p1, p2, tag);
                     GCSsys.addConstraintTangent(l1, a2, tag);
@@ -1000,12 +1033,26 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
         }
     }
     else if (Geoms[geoId1].type == Arc) {
-        //GCS::Arc &a1 = Arcs[Geoms[geoId1].index];
+        GCS::Arc &a1 = Arcs[Geoms[geoId1].index];
         if (Geoms[geoId2].type == Arc) {
-            //GCS::Arcs &a2 = Arcs[Geoms[geoId2].index];
-            //GCSsys.addConstraintPointOnArc(p1, a2);
-            //GCSsys.addConstraintTangent(a1, a2);
-            Base::Console().Warning("Tangency constraints between arcs are not implemented yet.\n");
+            GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+            if (pos1 == start && (pos2 == start || pos2 == end)) {
+                int tag = ++ConstraintsCounter;
+                if (pos2 == start)
+                    GCSsys.addConstraintTangentArc2Arc(a1, true, a2, false, tag);
+                else // if (pos2 == end)
+                    GCSsys.addConstraintTangentArc2Arc(a1, true, a2, true, tag);
+                    // GCSsys.addConstraintTangentArc2Arc(a2, false, a1, false, tag);
+                return ConstraintsCounter;
+            }
+            else if (pos1 == end && (pos2 == start || pos2 == end)) {
+                int tag = ++ConstraintsCounter;
+                if (pos2 == start)
+                    GCSsys.addConstraintTangentArc2Arc(a1, false, a2, false, tag);
+                else // if (pos2 == end)
+                    GCSsys.addConstraintTangentArc2Arc(a1, false, a2, true, tag);
+                return ConstraintsCounter;
+            }
         }
     }
     return -1;

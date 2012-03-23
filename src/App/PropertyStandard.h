@@ -723,7 +723,7 @@ public:
     void setAmbientColor(const Color& col);
     void setDiffuseColor(const Color& col);
     void setSpecularColor(const Color& col);
-    void setEmmisiveColor(const Color& col);
+    void setEmissiveColor(const Color& col);
     void setShininess(float);
     void setTransparency(float);
     

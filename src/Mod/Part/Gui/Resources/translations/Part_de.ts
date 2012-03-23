@@ -1816,7 +1816,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Umwandeln</translation>
+      <translation>Transformieren</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="+121"/>
@@ -1840,7 +1840,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="+462"/>
       <source>Set colors...</source>
-      <translation>Set colors...</translation>
+      <translation>Farben setzen...</translation>
     </message>
   </context>
   <context>

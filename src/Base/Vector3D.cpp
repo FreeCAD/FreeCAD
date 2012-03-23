@@ -194,7 +194,7 @@ Vector3<_Precision>& Vector3<_Precision>::ProjToPlane (const Vector3<_Precision>
                                                        const Vector3<_Precision> &rclNorm)
 {
     Vector3<_Precision> clTemp(rclNorm);
-    *this = *this - (clTemp *=  ((*this - rclBase) * clTemp));
+    *this = *this - (clTemp *= ((*this - rclBase) * clTemp) / clTemp.Sqr());
     return *this;
 }
 
@@ -202,7 +202,7 @@ template <class _Precision>
 _Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclBase, 
                                                  const Vector3<_Precision> &rclNorm) const
 {
-    return (*this - rclBase) * rclNorm;
+    return ((*this - rclBase) * rclNorm) / rclNorm.Length();
 }
 
 template <class _Precision>
@@ -216,6 +216,28 @@ _Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBa
                                                 const Vector3<_Precision> &rclDirect) const
 {
     return (_Precision) fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length());
+}
+
+template <class _Precision>
+Vector3<_Precision> Vector3<_Precision>::DistanceToLineSegment (const Vector3& rclP1,
+                                                                const Vector3& rclP2) const
+{
+    Vector3<_Precision> dir = rclP2-rclP1;
+    Vector3<_Precision> beg = *this-rclP1;
+    Vector3<_Precision> end = beg+dir;
+
+    Vector3<_Precision> proj, len;
+    proj.ProjToLine(beg, dir);
+    len = proj + beg;
+    if (len * dir < 0 || len.Length() > dir.Length()) {
+        if (beg.Length() < end.Length())
+            return beg;
+        else
+            return end;
+    }
+    else {
+        return proj;
+    }
 }
 
 template <class _Precision>
@@ -339,7 +361,7 @@ template <class _Precision>
 Vector3<_Precision> & Vector3<_Precision>::Normalize (void)
 {
     _Precision fLen = Length ();
-    if (fLen != 0.0f) {
+    if (fLen != (_Precision)0.0 && fLen != (_Precision)1.0) {
         x /= fLen;
         y /= fLen;
         z /= fLen;

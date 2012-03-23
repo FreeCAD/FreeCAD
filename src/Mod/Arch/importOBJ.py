@@ -24,7 +24,8 @@
 import FreeCAD
 from draftlibs import fcgeo
 
-pythonopen = open
+if open.__module__ == '__builtin__':
+    pythonopen = open
 
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"

@@ -113,8 +113,14 @@ public:
         else {
             SbVec3f zaxis(0,0,1);
             this->worldToScreen.multDirMatrix(zaxis, zaxis);
-            if (dif[0] > 0)
-                angle = -angle;
+            if (zaxis[1] < 0) {
+                if (dif[0] < 0)
+                    angle = -angle;
+            }
+            else {
+                if (dif[0] > 0)
+                    angle = -angle;
+            }
             rot.setValue(zaxis, angle);
         }
 
@@ -176,6 +182,8 @@ NavigationStyle& NavigationStyle::operator = (const NavigationStyle& ns)
     this->panningplane = ns.panningplane;
     this->menuenabled = ns.menuenabled;
     this->spinanimatingallowed = ns.spinanimatingallowed;
+    static_cast<FCSphereSheetProjector*>(this->spinprojector)->setOrbitStyle
+        (static_cast<FCSphereSheetProjector*>(ns.spinprojector)->getOrbitStyle());
     return *this;
 }
 
@@ -215,6 +223,10 @@ void NavigationStyle::initialize()
     this->altdown = FALSE;
     this->invertZoom = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetBool("InvertZoom",false);
+    this->zoomAtCursor = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetBool("ZoomAtCursor",false);
+    this->zoomStep = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep",0.05f);
 }
 
 void NavigationStyle::finalize()
@@ -709,6 +721,33 @@ void NavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prev
     zoom(viewer->getCamera(), (thispos[1] - prevpos[1]) * 10.0f/*20.0f*/);
 }
 
+void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& pos)
+{
+    SbBool zoomAtCur = this->zoomAtCursor;
+    if (zoomAtCur) {
+        const SbViewportRegion & vp = viewer->getViewportRegion();
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+        panCamera(viewer->getCamera(), ratio, panplane, SbVec2f(0.5,0.5), pos);
+    }
+
+    float value = this->zoomStep;
+    if (!forward)
+        value = -value;
+    if (this->invertZoom)
+        value = -value;
+    zoom(camera, value);
+
+    if (zoomAtCur) {
+        const SbViewportRegion & vp = viewer->getViewportRegion();
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+        panCamera(viewer->getCamera(), ratio, panplane, pos, SbVec2f(0.5,0.5));
+    }
+}
+
 /** Uses the sphere sheet projector to map the mouseposition onto
  * a 3D point and find a rotation from this and the last calculated point.
  */
@@ -882,6 +921,21 @@ void NavigationStyle::setZoomInverted(SbBool on)
 SbBool NavigationStyle::isZoomInverted() const
 {
     return this->invertZoom;
+}
+
+void NavigationStyle::setZoomStep(float val)
+{
+    this->zoomStep = val;
+}
+
+void NavigationStyle::setZoomAtCursor(SbBool on)
+{
+    this->zoomAtCursor = on;
+}
+
+SbBool NavigationStyle::isZoomAtCursor() const
+{
+    return this->zoomAtCursor;
 }
 
 void NavigationStyle::startSelection(AbstractMouseSelection* mouse)
@@ -1084,6 +1138,37 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     return viewer->processSoEventBase(ev);
+}
+
+SbBool NavigationStyle::processMotionEvent(const SoMotion3Event * const ev)
+{
+    SoCamera * const camera = viewer->getCamera();
+    if (!camera)
+        return FALSE;
+
+    SbViewVolume volume(camera->getViewVolume());
+    SbVec3f center(volume.getSightPoint(camera->focalDistance.getValue()));
+    float scale(volume.getWorldToScreenScale(center, 1.0));
+    float translationFactor = scale * .0001;
+
+    SbVec3f dir = ev->getTranslation();
+
+    if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())){
+        SoOrthographicCamera *oCam = static_cast<SoOrthographicCamera *>(camera);
+        oCam->scaleHeight(1.0 + (dir[2] * 0.0001));
+        dir[2] = 0.0;//don't move the cam for z translation.
+    }
+
+    SbRotation newRotation(ev->getRotation() * camera->orientation.getValue());
+    SbVec3f newPosition, newDirection;
+    newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
+    newPosition = center - (newDirection * camera->focalDistance.getValue());
+
+    camera->orientation.setValue(newRotation);
+    camera->orientation.getValue().multVec(dir,dir);
+    camera->position = newPosition + (dir * translationFactor);
+
+    return TRUE;
 }
 
 void NavigationStyle::setPopupMenuEnabled(const SbBool on)

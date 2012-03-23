@@ -37,7 +37,9 @@ try: import FreeCADGui
 except ValueError: gui = False
 else: gui = True
 
-pythonopen = open
+if open.__module__ == '__builtin__':
+    pythonopen = open
+    
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def getpoint(data):

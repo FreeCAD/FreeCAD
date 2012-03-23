@@ -30,6 +30,8 @@
 # include <sstream>
 # include <stdexcept>
 # include <QCloseEvent>
+# include <QDir>
+# include <QFileInfo>
 # include <QLocale>
 # include <QMessageBox>
 # include <QPointer>
@@ -78,6 +80,7 @@
 #include "DlgOnlineHelpImp.h"
 #include "SpaceballEvent.h"
 
+#include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
 #include "ViewProviderExtern.h"
@@ -706,6 +709,14 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
 {
     if (d->activeDocument == pcDocument)
         return; // nothing needs to be done
+    if (pcDocument) {
+        // This happens if a document with more than one view is about being
+        // closed and a second view is activated. The document is still not
+        // removed from the map.
+        App::Document* doc = pcDocument->getDocument();
+        if (d->documents.find(doc) == d->documents.end())
+            return;
+    }
     d->activeDocument = pcDocument;
     std::string name;
  
@@ -928,7 +939,7 @@ bool Application::activateWorkbench(const char* name)
             Py::Tuple args;
             Py::String result(method.apply(args));
             type = result.as_std_string();
-            if (type == "Gui::PythonWorkbench") {
+            if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
                 Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
             }
@@ -936,6 +947,13 @@ bool Application::activateWorkbench(const char* name)
             // import the matching module first
             Py::Callable activate(handler.getAttr(std::string("Initialize")));
             activate.apply(args);
+
+            // Dependent on the implementation of a workbench handler the type
+            // can be defined after the call of Initialize()
+            if (type.empty()) {
+                Py::String result(method.apply(args));
+                type = result.as_std_string();
+            }
         }
 
         // does the Python workbench handler have changed the workbench?
@@ -1389,6 +1407,7 @@ void Application::initTypes(void)
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
     Gui::View3DInventor                         ::init();
+    Gui::SplitView3DInventor                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtern                     ::init();
@@ -1411,6 +1430,8 @@ void Application::initTypes(void)
     Gui::BlankWorkbench                         ::init();
     Gui::NoneWorkbench                          ::init();
     Gui::TestWorkbench                          ::init();
+    Gui::PythonBaseWorkbench                    ::init();
+    Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
 }
 
@@ -1567,6 +1588,8 @@ void Application::runApplication(void)
     SoQt::init(&mw);
     SoFCDB::init();
 
+    QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+
     const std::map<std::string,std::string>& cfg = App::Application::Config();
     std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("WindowTitle");
@@ -1577,11 +1600,17 @@ void Application::runApplication(void)
     it = cfg.find("WindowIcon");
     if (it != cfg.end()) {
         QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
         QApplication::setWindowIcon(QIcon(path));
     }
     it = cfg.find("ProgramLogo");
     if (it != cfg.end()) {
         QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
         QPixmap px(path);
         if (!px.isNull()) {
             QLabel* logo = new QLabel();

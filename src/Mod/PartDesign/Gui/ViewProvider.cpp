@@ -27,6 +27,7 @@
 #endif
 
 #include "ViewProvider.h"
+#include <Mod/Part/App/PropertyTopoShape.h>
 #include <Gui/Command.h>
 //#include <Gui/Document.h>
 
@@ -51,4 +52,11 @@ bool ViewProvider::doubleClicked(void)
     return true;
 }
 
-
+void ViewProvider::updateData(const App::Property* prop)
+{
+    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && 
+        strcmp(prop->getName(),"AddShape") == 0) {
+        return;
+    }
+    inherited::updateData(prop);
+}

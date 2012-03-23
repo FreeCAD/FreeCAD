@@ -70,14 +70,14 @@ class ArchWorkbench(Workbench):
                       "Draft_Downgrade","Draft_Trimex"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode",
                              "Draft_AddToGroup","Draft_SelectGroup",
-                             "Draft_SelectPlane"]
+                             "Draft_SelectPlane","Draft_ToggleSnap"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
         self.appendToolbar(str(DraftTools.translate("arch","Arch tools")),self.archtools)
         self.appendToolbar(str(DraftTools.translate("arch","Draft tools")),self.drafttools)
-        self.appendMenu([str(DraftTools.translate("arch","Architecture")),str(DraftTools.translate("arch","Tools"))],self.meshtools)
-        self.appendMenu(str(DraftTools.translate("arch","Architecture")),self.archtools)
-        self.appendMenu(str(DraftTools.translate("arch","Draft")),self.drafttools+self.draftcontexttools)
+        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Tools"))],self.meshtools)
+        self.appendMenu(str(DraftTools.translate("arch","&Architecture")),self.archtools)
+        self.appendMenu(str(DraftTools.translate("arch","&Draft")),self.drafttools+self.draftcontexttools)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")

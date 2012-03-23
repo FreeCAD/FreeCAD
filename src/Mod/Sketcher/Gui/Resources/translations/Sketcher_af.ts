@@ -54,8 +54,8 @@
       <translation>Sketser</translation>
     </message>
     <message>
-      <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>

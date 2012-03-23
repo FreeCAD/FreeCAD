@@ -22,6 +22,9 @@
      <property name="text">
       <string/>
      </property>
+     <property name="pixmap">
+      <pixmap resource="Icons/resource.qrc">:/icons/freecadsplash.png</pixmap>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -280,7 +283,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../FreeCAD/src/Gui/Icons/resource.qrc"/>
+  <include location="Icons/resource.qrc"/>
  </resources>
  <connections>
   <connection>
