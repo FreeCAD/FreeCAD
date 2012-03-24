@@ -170,6 +170,15 @@ def getType(obj):
         return "Group"
     return "Unknown"
 
+def isClone(obj,objtype):
+    """isClone(obj,objtype): returns True if the given object is 
+    a clone of an object of the given type"""
+    if getType(obj) == "Clone":
+        if len(obj.Objects) == 1:
+            if getType(obj.Objects[0]) == objtype:
+                return True
+    return False
+
 def getGroupNames():
     "returns a list of existing groups in the document"
     glist = []
