@@ -257,6 +257,25 @@ class _Wall(ArchComponent.Component):
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
 
+    def getSubVolume(self,base,width,delta=None):
+        "returns a subvolume from a base object"
+        import Part
+        max_length = 0
+        for w in base.Shape.Wires:
+            if w.BoundBox.DiagonalLength > max_length:
+                max_length = w.BoundBox.DiagonalLength
+                f = w
+        f = Part.Face(f)
+        n = f.normalAt(0,0)
+        v1 = fcvec.scaleTo(n,width)
+        f.translate(v1)
+        v2 = fcvec.neg(v1)
+        v2 = fcvec.scale(v1,-2)
+        f = f.extrude(v2)
+        if delta:
+            f.translate(delta)
+        return f
+
     def createGeometry(self,obj):
 
         import Part
@@ -342,20 +361,12 @@ class _Wall(ArchComponent.Component):
             if Draft.getType(hole) == "Window":
                 # window
                 if hole.Base and obj.Width:
-                    max_length = 0
-                    for w in hole.Base.Shape.Wires:
-                        if w.BoundBox.DiagonalLength > max_length:
-                            max_length = w.BoundBox.DiagonalLength
-                            ext = w
-                    f = Part.Face(ext)
-                    l = obj.Width
-                    n = f.normalAt(0,0)
-                    v1 = fcvec.scaleTo(n,l)
-                    f.translate(v1)
-                    v2 = fcvec.neg(v1)
-                    v2 = fcvec.scale(v1,-2)
-                    f = f.extrude(v2)
+                    f = self.getSubVolume(hole.Base,obj.Width)
                     base = base.cut(f)
+            elif Draft.isClone(hole,"Window"):
+                if hole.Objects[0].Base and obj.Width:
+                    f = self.getSubVolume(hole.Objects[0].Base,obj.Width,hole.Placement.Base)
+                    base = base.cut(f)                   
             elif hasattr(obj,"Shape"):
                 base = base.cut(hole.Shape)
                 hole.ViewObject.hide() # to be removed
