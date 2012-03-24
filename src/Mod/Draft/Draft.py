@@ -1581,8 +1581,11 @@ def clone(obj,delta=None):
     if not isinstance(obj,list):
         obj = [obj]
     cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
+    cl.Label = "Clone of " + obj[0].Label
     _Clone(cl)
-    _ViewProviderDraftPart(cl.ViewObject)
+    if gui:
+        _ViewProviderDraftPart(cl.ViewObject)
+        formatObject(cl,obj[0])
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
@@ -2812,4 +2815,7 @@ class _ViewProviderDraftPart(_ViewProviderDraft):
 
     def getIcon(self):
         return ":/icons/Tree_Part.svg"
+
+    def claimChildren(self):
+        return []
 
