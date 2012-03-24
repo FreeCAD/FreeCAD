@@ -339,17 +339,26 @@ class _Wall(ArchComponent.Component):
             base = base.oldFuse(app.Shape)
             app.ViewObject.hide() #to be removed
         for hole in obj.Subtractions:
-            cut = False
-            if hasattr(hole,"Proxy"):
-                if hasattr(hole.Proxy,"Subvolume"):
-                    if hole.Proxy.Subvolume:
-                        print "cutting subvolume",hole.Proxy.Subvolume
-                        base = base.cut(hole.Proxy.Subvolume)
-                        cut = True
-            if not cut:
-                if hasattr(obj,"Shape"):
-                    base = base.cut(hole.Shape)
-                    hole.ViewObject.hide() # to be removed
+            if Draft.getType(hole) == "Window":
+                # window
+                if hole.Base and obj.Width:
+                    max_length = 0
+                    for w in hole.Base.Shape.Wires:
+                        if w.BoundBox.DiagonalLength > max_length:
+                            max_length = w.BoundBox.DiagonalLength
+                            ext = w
+                    f = Part.Face(ext)
+                    l = obj.Width
+                    n = f.normalAt(0,0)
+                    v1 = fcvec.scaleTo(n,l)
+                    f.translate(v1)
+                    v2 = fcvec.neg(v1)
+                    v2 = fcvec.scale(v1,-2)
+                    f = f.extrude(v2)
+                    base = base.cut(f)
+            elif hasattr(obj,"Shape"):
+                base = base.cut(hole.Shape)
+                hole.ViewObject.hide() # to be removed
         obj.Shape = base
         if not fcgeo.isNull(pl):
             obj.Placement = pl
