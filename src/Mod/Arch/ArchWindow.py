@@ -33,6 +33,10 @@ __url__ = "http://free-cad.sourceforge.net"
 def makeWindow(baseobj=None,name="Window"):
     '''makeWindow(obj,[name]): creates a window based on the
     given object'''
+    if baseobj:
+        if Draft.getType(baseobj) == "Window":
+            obj = Draft.clone(baseobj)
+            return obj
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Window(obj)
     _ViewProviderWindow(obj.ViewObject)
