@@ -66,7 +66,7 @@ libMeshGui_la_CPPFLAGS = -DMeshExport= -DMeshGuiExport=
 
 libMeshGui_la_LIBADD   = \
 		@BOOST_SIGNALS_LIB@ @BOOST_SYSTEM_LIB@ \
-		@GL_LIBS@ \
+		@GL_LIBS@ @ZIPIOS_LIB@ \
 		-lFreeCADBase \
 		-lFreeCADApp \
 		-lFreeCADGui \
