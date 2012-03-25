@@ -247,6 +247,8 @@ EXTRA_DIST = \
 		Resources/translations/Part_nl.ts \
 		Resources/translations/Part_no.qm \
 		Resources/translations/Part_no.ts \
+		Resources/translations/Part_pl.qm \
+		Resources/translations/Part_pl.ts \
 		Resources/translations/Part_pt.qm \
 		Resources/translations/Part_pt.ts \
 		Resources/translations/Part_ru.qm \

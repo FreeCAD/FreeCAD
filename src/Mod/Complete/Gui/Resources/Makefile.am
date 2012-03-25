@@ -16,6 +16,7 @@ EXTRA_DIST = \
 		translations/Complete_it.qm \
 		translations/Complete_nl.qm \
 		translations/Complete_no.qm \
+		translations/Complete_pl.qm \
 		translations/Complete_pt.qm \
 		translations/Complete_ru.qm \
 		translations/Complete_se.qm \
@@ -30,6 +31,7 @@ EXTRA_DIST = \
 		translations/Complete_it.ts \
 		translations/Complete_nl.ts \
 		translations/Complete_no.ts \
+		translations/Complete_pl.ts \
 		translations/Complete_pt.ts \
 		translations/Complete_ru.ts \
 		translations/Complete_se.ts \
