@@ -60,6 +60,7 @@ namespace Gui {
 
 namespace MeshCore {
   class MeshKernel;
+  struct Material;
 }
 
 
@@ -122,6 +123,7 @@ public:
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
+    bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary=false) const;
 
     /** @name Editing */
     //@{
@@ -141,6 +143,7 @@ public:
     std::vector<unsigned long> getFacetsOfRegion(const SbViewportRegion&, const SbViewportRegion&, SoCamera*) const;
     std::vector<unsigned long> getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
     std::vector<unsigned long> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
+    virtual void removeFacets(const std::vector<unsigned long>&);
     //@}
 
 protected:
