@@ -132,7 +132,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_SelectAll" << "Std_Delete" << "Std_Placement"
+          << "Std_Refresh" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Placement" << "Std_Alignment"
           << "Separator" << "Std_DlgPreferences";
 
     // Standard views
