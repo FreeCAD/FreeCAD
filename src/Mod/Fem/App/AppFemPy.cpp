@@ -149,7 +149,82 @@ static PyObject * SMESH_PCA(PyObject *self, PyObject *args)
 		Base::Matrix4D Trafo = pca.Transform();
 		/*Let´s transform the input mesh with the PCA Matrix*/
 		inputMesh->getFemMeshPtr()->transformGeometry(Trafo);
-		//inputMesh->getFemMeshPtr()->getSMesh()->ExportUNV("C:/PCA_alignment.unv");
+		//inputMesh->getFemMeshPtr()->getSMesh()->ExportUNV("C:/Temp/PCA_alignment.unv");
+		//Now lets check if the smallest dimension of the BBox is oriented towards the Z-Axis. If not, lets rotate it around the X or Y axis
+		//Use the SMESH structure for that
+	//	aMesh.Transform(Trafo);
+
+		//Base::Rotation rotatex,rotatey,rotatez;
+		//const Base::Vector3d rotate_axis_x(1.0,0.0,0.0),rotate_axis_y(0.0,1.0,0.0),rotate_axis_z(0.0,0.0,1.0);
+		//double bbox_length_x,bbox_length_y,bbox_length_z;
+		////Rotate around the each axes and choose the settings for the min bbox
+		//Base::Matrix4D final_trafo;
+		//Base::BoundBox3f aBBox;
+		////Get the current BBOX and look for the size
+		//aBBox = aMesh.GetBoundBox();
+		//bbox_length_x = aBBox.LengthX();bbox_length_y = aBBox.LengthY();bbox_length_z = aBBox.LengthZ();
+		////Now do the rotation stuff
+		//if (bbox_length_z < bbox_length_x && bbox_length_z < bbox_length_y) 
+		//	Py_Return;
+		//else if (
+
+
+		//MeshCore::MeshKernel atempkernel;
+
+		//float it_steps=10.0;
+		//double step_size;
+		//double alpha_x=0.0,alpha_y=0.0,alpha_z=0.0;
+		//double perfect_ax=0.0,perfect_ay=0.0,perfect_az=0.0;
+
+		////Do a Monte Carlo approach and start from the Principal Axis System
+		////and rotate +/- 60° around each axis in a first iteration
+		//double	angle_range_min_x=-PI/3.0,angle_range_max_x=PI/3.0,
+		//	angle_range_min_y=-PI/3.0,angle_range_max_y=PI/3.0,
+		//	angle_range_min_z=-PI/3.0,angle_range_max_z=PI/3.0;
+
+		////We rotate until we are 0.1° sure to be in the right position
+		//for (step_size = (2.0*PI/it_steps);step_size>(2.0*PI/3600.0);step_size=(2.0*PI/it_steps))
+		//{
+		//	for(alpha_x=angle_range_min_x;alpha_x<angle_range_max_x;alpha_x=alpha_x+step_size)
+		//	{
+		//		rotatex.setValue(rotate_axis_x,alpha_x);
+		//		for(alpha_y=angle_range_min_y;alpha_y<angle_range_max_y;alpha_y=alpha_y+step_size)
+		//		{
+		//			rotatey.setValue(rotate_axis_y,alpha_y);
+		//			for(alpha_z=angle_range_min_z;alpha_z<angle_range_max_z;alpha_z=alpha_z+step_size)
+		//			{
+		//				rotatez.setValue(rotate_axis_z,alpha_z);
+		//				(rotatex*rotatey*rotatez).getValue(final_trafo);
+		//				atempkernel = aMesh;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	} PY_CATCH;
 
 	Py_Return;
@@ -316,7 +391,7 @@ static PyObject * checkBB(PyObject *self, PyObject *args)
 			const SMDS_MeshNode* aNode = aNodeIter->next();
 			current_node.Set(float(aNode->X()),float(aNode->Y()),float(aNode->Z()));
             current_node = matrix * current_node;
-			if(current_node.z > billet_thickness || current_node.z < 0.0)
+			if(current_node.z > billet_thickness || current_node.z < -0.1)
 			{
 				//lets jump out of the function as soon as we find a 
 				//Node that is higher or lower than billet thickness
@@ -563,7 +638,7 @@ static PyObject * minBoundingBox(PyObject *self, PyObject *args)
 			float(0.0),float(0.0),float(0.0),float(1.0));
 		inputMesh->getFemMeshPtr()->transformGeometry(trans_matrix);
 		
-		//inputMesh->getFemMeshPtr()->getSMesh()->ExportUNV("C:/fine_tuning.unv");
+		//inputMesh->getFemMeshPtr()->getSMesh()->ExportUNV("C:/temp/fine_tuning.unv");
 
 	} PY_CATCH;
 
