@@ -58,9 +58,13 @@
 #include <StdMeshers_Quadrangle_2D.hxx>
 #include <StdMeshers_QuadraticMesh.hxx>
 
+//to simplify parsing input files we use the boost lib
+#include <boost/tokenizer.hpp>
+
 
 using namespace Fem;
 using namespace Base;
+using namespace boost;
 
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
@@ -374,23 +378,32 @@ void FemMesh::readNastran(const std::string &Filename)
 	inputfile.open(Filename.c_str());
 	inputfile.seekg(std::ifstream::beg);
 	std::string line1,line2,temp;
+	std::vector<string> token_results;
+	token_results.clear();
 	Base::Vector3d current_node;
 	std::vector<Base::Vector3d> vertices;
 	vertices.clear();
+	std::vector<unsigned int> nodal_id;
+	nodal_id.clear();
 	std::vector<unsigned int> tetra_element;
 	std::vector<std::vector<unsigned int> > all_elements;
 	std::vector<unsigned int> element_id;
 	element_id.clear();
+	bool nastran_free_format = false;
 	do
 	{
 		std::getline(inputfile,line1);
 		if (line1.size() == 0) continue;
-		if (line1.find("GRID*")!= std::string::npos) //We found a Grid line
+		if (!nastran_free_format && line1.find(",")!= std::string::npos)
+			nastran_free_format = true;
+		if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
 		{
 			//Now lets extract the GRID Points = Nodes
 			//As each GRID Line consists of two subsequent lines we have to
 			//take care of that as well
 			std::getline(inputfile,line2);
+			//Get the Nodal ID
+			nodal_id.push_back(atoi(line1.substr(8,24).c_str()));
 			//Extract X Value
 			current_node.x = atof(line1.substr(40,56).c_str());
 			//Extract Y Value
@@ -400,7 +413,7 @@ void FemMesh::readNastran(const std::string &Filename)
 
 			vertices.push_back(current_node);
 		}
-		else if (line1.find("CTETRA")!= std::string::npos)
+		else if (!nastran_free_format && line1.find("CTETRA")!= std::string::npos)
 		{
 			tetra_element.clear();
 			//Lets extract the elements
@@ -422,6 +435,46 @@ void FemMesh::readNastran(const std::string &Filename)
 
 			all_elements.push_back(tetra_element);
 		}
+		else if (nastran_free_format && line1.find("GRID")!= std::string::npos ) //We found a Grid line
+		{
+			char_separator<char> sep(",");
+			tokenizer<char_separator<char> > tokens(line1, sep);
+			token_results.assign(tokens.begin(),tokens.end());
+			if (token_results.size() < 3)
+				continue;//Line does not include Nodal coordinates
+			nodal_id.push_back(atoi(token_results[1].c_str()));
+			current_node.x = atof(token_results[3].c_str());
+			current_node.y = atof(token_results[4].c_str());		
+			current_node.z = atof(token_results[5].c_str());
+			vertices.push_back(current_node);
+		}
+		else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
+		{
+			tetra_element.clear();
+			//Lets extract the elements
+			//As each Element Line consists of two subsequent lines as well 
+			//we have to take care of that
+			//At a first step we only extract Quadratic Tetrahedral Elements
+			std::getline(inputfile,line2);
+			char_separator<char> sep(",");
+			tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
+			token_results.assign(tokens.begin(),tokens.end());
+			if (token_results.size() < 11)
+				continue;//Line does not include enough nodal IDs
+			element_id.push_back(atoi(token_results[1].c_str()));
+			tetra_element.push_back(atoi(token_results[3].c_str()));
+			tetra_element.push_back(atoi(token_results[4].c_str()));
+			tetra_element.push_back(atoi(token_results[5].c_str()));
+			tetra_element.push_back(atoi(token_results[6].c_str()));
+			tetra_element.push_back(atoi(token_results[7].c_str()));
+			tetra_element.push_back(atoi(token_results[8].c_str()));
+			tetra_element.push_back(atoi(token_results[10].c_str()));
+			tetra_element.push_back(atoi(token_results[11].c_str()));
+			tetra_element.push_back(atoi(token_results[12].c_str()));
+			tetra_element.push_back(atoi(token_results[13].c_str()));
+
+			all_elements.push_back(tetra_element);
+		}
 
 	}
 	while (inputfile.good());
@@ -431,10 +484,10 @@ void FemMesh::readNastran(const std::string &Filename)
 	std::vector<Base::Vector3d>::const_iterator anodeiterator;
 	SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 	meshds->ClearMesh();
-	int j=1;
+	unsigned int j=0;
 	for(anodeiterator=vertices.begin(); anodeiterator!=vertices.end(); anodeiterator++)
 	{
-		meshds->AddNodeWithID((*anodeiterator).x,(*anodeiterator).y,(*anodeiterator).z,j);
+		meshds->AddNodeWithID((*anodeiterator).x,(*anodeiterator).y,(*anodeiterator).z,nodal_id[j]);
 		j++;
 	}
 
@@ -442,7 +495,8 @@ void FemMesh::readNastran(const std::string &Filename)
 	{
 		//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
 		//Ansonsten ist eine konsistente Datenstruktur nicht möglich
-		meshds->AddVolumeWithID(
+		meshds->AddVolumeWithID
+		(
 			meshds->FindNode(all_elements[i][0]),
 			meshds->FindNode(all_elements[i][2]),
 			meshds->FindNode(all_elements[i][1]),
@@ -457,6 +511,7 @@ void FemMesh::readNastran(const std::string &Filename)
 		);
 	}
 }
+
 
 void FemMesh::read(const char *FileName)
 {
