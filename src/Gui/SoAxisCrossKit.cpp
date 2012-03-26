@@ -24,20 +24,34 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
+# ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+# else
+# include <GL/gl.h>
+# endif
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/bundles/SoMaterialBundle.h>
+# include <Inventor/bundles/SoTextureCoordinateBundle.h>
+# include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/elements/SoViewVolumeElement.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoShape.h>
 # include <Inventor/nodes/SoScale.h>
 # include <Inventor/nodes/SoCone.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoFontStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodekits/SoShapeKit.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-# include <Inventor/elements/SoViewVolumeElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
 #endif
 
 
@@ -216,4 +230,130 @@ SoAxisCrossKit::createAxes()
    set("yHead.pickStyle", "style UNPICKABLE");
    set("zAxis.pickStyle", "style UNPICKABLE");
    set("zHead.pickStyle", "style UNPICKABLE");
+}
+
+// --------------------------------------------------------------
+
+SO_NODE_SOURCE(SoRegPoint);
+
+void SoRegPoint::initClass()
+{
+    SO_NODE_INIT_CLASS(SoRegPoint, SoShape, "Shape");
+}
+
+SoRegPoint::SoRegPoint()
+{
+    SO_NODE_CONSTRUCTOR(SoRegPoint);
+
+    SO_NODE_ADD_FIELD(base, (SbVec3f(0,0,0)));
+    SO_NODE_ADD_FIELD(normal, (SbVec3f(1,1,1)));
+    SO_NODE_ADD_FIELD(length, (3.0));
+    SO_NODE_ADD_FIELD(color, (1.0f, 0.447059f, 0.337255f));
+    SO_NODE_ADD_FIELD(text, (""));
+
+    root = new SoSeparator();
+    root->ref();
+
+    // translation
+    SoTranslation* move = new SoTranslation();
+    move->translation.setValue(base.getValue() + normal.getValue() * length.getValue());
+    root->addChild(move);
+
+    // sub-group
+    SoBaseColor* col = new SoBaseColor();
+    col->rgb.setValue(this->color.getValue());
+
+    SoFontStyle* font = new SoFontStyle;
+    font->size = 14;
+
+    SoSeparator* sub = new SoSeparator();
+    sub->addChild(col);
+    sub->addChild(font);
+    sub->addChild(new SoText2());
+    root->addChild(sub);
+}
+
+SoRegPoint::~SoRegPoint()
+{
+    root->unref();
+}
+
+/**
+ * Renders the probe with text label and a bullet at the base point.
+ */
+void SoRegPoint::GLRender(SoGLRenderAction *action)
+{
+    if (shouldGLRender(action))
+    {
+        SoState*  state = action->getState();
+        state->push();
+        SoMaterialBundle mb(action);
+        SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+        mb.sendFirst();  // make sure we have the correct material
+
+        SbVec3f p1 = base.getValue();
+        SbVec3f p2 = p1 + normal.getValue() * length.getValue();
+        
+        glLineWidth(1.0f);
+        glColor3fv(color.getValue().getValue());
+        glBegin(GL_LINE_STRIP);
+            glVertex3d(p1[0], p1[1], p1[2]);
+            glVertex3d(p2[0], p2[1], p2[2]);
+        glEnd();
+        glPointSize(5.0f);
+        glBegin(GL_POINTS);
+            glVertex3fv(p1.getValue());
+        glEnd();
+        glPointSize(2.0f);
+        glBegin(GL_POINTS);
+            glVertex3fv(p2.getValue());
+        glEnd();
+
+        root->GLRender(action);
+        state->pop();
+    }
+}
+
+void SoRegPoint::generatePrimitives(SoAction* action)
+{
+}
+
+/**
+ * Sets the bounding box of the probe to \a box and its center to \a center.
+ */
+void SoRegPoint::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
+{
+    root->doAction(action);
+    if (action->getTypeId().isDerivedFrom(SoGetBoundingBoxAction::getClassTypeId()))
+        static_cast<SoGetBoundingBoxAction*>(action)->resetCenter();
+
+    SbVec3f p1 = base.getValue();
+    SbVec3f p2 = p1 + normal.getValue() * length.getValue();
+
+    box.extendBy(p1);
+    box.extendBy(p2);
+
+    center = box.getCenter();
+}
+
+void SoRegPoint::notify(SoNotList * node)
+{
+    SoField * f = node->getLastField();
+    if (f == &this->base || f == &this->normal || f == &this->length) {
+        SoTranslation* move = static_cast<SoTranslation*>(root->getChild(0));
+        move->translation.setValue(base.getValue() + normal.getValue() * length.getValue());
+    }
+    else if (f == &this->color) {
+        SoSeparator* sub = static_cast<SoSeparator*>(root->getChild(1));
+        SoBaseColor* col = static_cast<SoBaseColor*>(sub->getChild(0));
+        col->rgb = this->color.getValue();
+    }
+    else if (f == &this->text) {
+        SoSeparator* sub = static_cast<SoSeparator*>(root->getChild(1));
+        SoText2* label = static_cast<SoText2*>(sub->getChild(2));
+        label->string = this->text.getValue();
+    }
+
+    SoShape::notify(node);
 }
