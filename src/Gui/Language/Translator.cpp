@@ -146,6 +146,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian" )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"   )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"  )] = "hr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish"    )] = "pl";
     d->activatedLanguage = "English";
 
     d->paths = directories();
