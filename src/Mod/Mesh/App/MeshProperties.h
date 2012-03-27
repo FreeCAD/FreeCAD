@@ -179,27 +179,7 @@ public:
     void finishEditing();
     /// Transform the real mesh data
     void transformGeometry(const Base::Matrix4D &rclMat);
-    void deletePointIndices ( const std::vector<unsigned long>& );
-    void deleteFacetIndices ( const std::vector<unsigned long>& );
     void setPointIndices( const std::vector<std::pair<unsigned long, Base::Vector3f> >& );
-    void append(const std::vector<MeshCore::MeshFacet>& rFaces,
-                const std::vector<Base::Vector3f>& rPoints);
-    void createSegment(const std::vector<unsigned long>& segm);
-    void smooth(int iter, float d_max);
-    void clear();
-    //@}
-
-    /** @name Mesh validation */
-    //@{
-    void harmonizeNormals();
-    void validateIndices();
-    void validateDeformations(float fMaxAngle);
-    void validateDegenerations();
-    void removeDuplicatedPoints();
-    void removeDuplicatedFacets();
-    void removeNonManifolds();
-    void removeSelfIntersections();
-    void removeFoldsOnSurface();
     //@}
 
     /** @name Python interface */

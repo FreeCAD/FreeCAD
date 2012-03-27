@@ -118,6 +118,8 @@ EXTRA_DIST = \
 		Resources/translations/Raytracing_nl.ts \
 		Resources/translations/Raytracing_no.qm \
 		Resources/translations/Raytracing_no.ts \
+		Resources/translations/Raytracing_pl.qm \
+		Resources/translations/Raytracing_pl.ts \
 		Resources/translations/Raytracing_pt.qm \
 		Resources/translations/Raytracing_pt.ts \
 		Resources/translations/Raytracing_ru.qm \

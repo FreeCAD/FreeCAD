@@ -100,6 +100,8 @@ EXTRA_DIST = \
 		Resources/translations/Points_nl.ts \
 		Resources/translations/Points_no.qm \
 		Resources/translations/Points_no.ts \
+		Resources/translations/Points_pl.qm \
+		Resources/translations/Points_pl.ts \
 		Resources/translations/Points_pt.qm \
 		Resources/translations/Points_pt.ts \
 		Resources/translations/Points_ru.qm \

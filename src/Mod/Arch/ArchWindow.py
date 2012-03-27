@@ -33,6 +33,10 @@ __url__ = "http://free-cad.sourceforge.net"
 def makeWindow(baseobj=None,name="Window"):
     '''makeWindow(obj,[name]): creates a window based on the
     given object'''
+    if baseobj:
+        if Draft.getType(baseobj) == "Window":
+            obj = Draft.clone(baseobj)
+            return obj
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Window(obj)
     _ViewProviderWindow(obj.ViewObject)
@@ -121,15 +125,16 @@ class _Window(ArchComponent.Component):
                                     max_length = w.BoundBox.DiagonalLength
                                     ext = w
                             wires.remove(ext)
-                            for w in wires:
-                                w.reverse()
-                            wires.insert(0, ext)
-                            shape = Part.Face(wires)
+                            shape = Part.Face(ext)
                             norm = shape.normalAt(0,0)
                             thk = float(obj.WindowParts[(i*5)+3])
                             if thk:
                                 exv = fcvec.scaleTo(norm,thk)
                                 shape = shape.extrude(exv)
+                                for w in wires:
+                                    f = Part.Face(w)
+                                    f = f.extrude(exv)
+                                    shape = shape.cut(f)
                             if obj.WindowParts[(i*5)+4]:
                                 zof = float(obj.WindowParts[(i*5)+4])
                                 if zof:

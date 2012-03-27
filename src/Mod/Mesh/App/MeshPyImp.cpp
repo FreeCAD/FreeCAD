@@ -165,6 +165,7 @@ PyObject*  MeshPy::write(PyObject *args)
         ext["NAS" ] = MeshCore::MeshIO::NAS;
         ext["BDF" ] = MeshCore::MeshIO::NAS;
         ext["PLY" ] = MeshCore::MeshIO::PLY;
+        ext["APLY"] = MeshCore::MeshIO::APLY;
         ext["PY"  ] = MeshCore::MeshIO::PY;
         if (ext.find(Ext) != ext.end())
             format = ext[Ext];

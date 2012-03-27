@@ -311,10 +311,10 @@ void MeshObject::save(std::ostream& out) const
     _kernel.Write(out);
 }
 
-bool MeshObject::load(const char* file)
+bool MeshObject::load(const char* file, MeshCore::Material* mat)
 {
     MeshCore::MeshKernel kernel;
-    MeshCore::MeshInput aReader(kernel);
+    MeshCore::MeshInput aReader(kernel, mat);
     if (!aReader.LoadAny(file))
         return false;
 
@@ -629,6 +629,32 @@ void MeshObject::removeComponents(unsigned long count)
     MeshCore::MeshTopoAlgorithm(_kernel).FindComponents(count, removeIndices);
     _kernel.DeleteFacets(removeIndices);
     deletedFacets(removeIndices);
+}
+
+unsigned long MeshObject::getPointDegree(const std::vector<unsigned long>& indices,
+                                         std::vector<unsigned long>& point_degree) const
+{
+    const MeshCore::MeshFacetArray& faces = _kernel.GetFacets();
+    std::vector<unsigned long> pointDeg(_kernel.CountPoints());
+
+    for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
+        pointDeg[it->_aulPoints[0]]++;
+        pointDeg[it->_aulPoints[1]]++;
+        pointDeg[it->_aulPoints[2]]++;
+    }
+
+    for (std::vector<unsigned long>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
+        const MeshCore::MeshFacet& face = faces[*it];
+        pointDeg[face._aulPoints[0]]--;
+        pointDeg[face._aulPoints[1]]--;
+        pointDeg[face._aulPoints[2]]--;
+    }
+
+    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(),
+        std::bind2nd(std::equal_to<unsigned long>(), 0));
+
+    point_degree = pointDeg;
+    return countInvalids;
 }
 
 void MeshObject::fillupHoles(unsigned long length, int level,
