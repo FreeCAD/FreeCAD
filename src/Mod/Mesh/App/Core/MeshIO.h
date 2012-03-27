@@ -51,6 +51,7 @@ namespace MeshIO {
         WRZ,
         NAS,
         PLY,
+        APLY,
         PY
     };
     enum Binding {
@@ -74,7 +75,10 @@ struct MeshExport Material
 class MeshExport MeshInput
 {
 public:
-    MeshInput (MeshKernel &rclM): _rclMesh(rclM){};
+    MeshInput (MeshKernel &rclM)
+        : _rclMesh(rclM), _material(0){}
+    MeshInput (MeshKernel &rclM, Material* m)
+        : _rclMesh(rclM), _material(m){}
     virtual ~MeshInput (void) { }
 
     /// Loads the file, decided by extension
@@ -106,6 +110,7 @@ public:
 
 protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */
+    Material* _material;
 };
 
 /**
@@ -138,8 +143,10 @@ public:
     bool SaveOBJ (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OFF file. */
     bool SaveOFF (std::ostream &rstrOut) const;
-    /** Saves the mesh object into a PLY file. */
-    bool SavePLY (std::ostream &rstrOut) const;
+    /** Saves the mesh object into a binary PLY file. */
+    bool SaveBinaryPLY (std::ostream &rstrOut) const;
+    /** Saves the mesh object into an ASCII PLY file. */
+    bool SaveAsciiPLY (std::ostream &rstrOut) const;
     /** Saves the mesh object into an XML file. */
     void SaveXML (Base::Writer &writer) const;
     /** Saves a node to an OpenInventor file. */

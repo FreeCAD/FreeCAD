@@ -36,13 +36,13 @@ class View3DInventorViewer;
 /** The SplitView3DInventor class allows to create a window with two or more Inventor views.
  *  \author Werner Mayer
  */
-class GuiExport SplitView3DInventor : public MDIView,public ParameterGrp::ObserverType
+class GuiExport AbstractSplitView : public MDIView, public ParameterGrp::ObserverType
 {
     TYPESYSTEM_HEADER();
 
 public:
-    SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
-    ~SplitView3DInventor();
+    AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
+    ~AbstractSplitView();
 
     virtual const char *getName(void) const;
 
@@ -57,11 +57,24 @@ public:
     void setCursor(const QCursor&);
 
 protected:
+    void setupSettings();
+
+protected:
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
-
-private:
     std::vector<View3DInventorViewer*> _viewer;
+};
+
+/** The SplitView3DInventor class allows to create a window with two or more Inventor views.
+ *  \author Werner Mayer
+ */
+class GuiExport SplitView3DInventor : public AbstractSplitView
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
+    ~SplitView3DInventor();
 };
 
 } // namespace Gui

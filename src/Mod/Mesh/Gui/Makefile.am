@@ -66,7 +66,7 @@ libMeshGui_la_CPPFLAGS = -DMeshExport= -DMeshGuiExport=
 
 libMeshGui_la_LIBADD   = \
 		@BOOST_SIGNALS_LIB@ @BOOST_SYSTEM_LIB@ \
-		@GL_LIBS@ \
+		@GL_LIBS@ @ZIPIOS_LIB@ \
 		-lFreeCADBase \
 		-lFreeCADApp \
 		-lFreeCADGui \
@@ -146,6 +146,8 @@ EXTRA_DIST = \
 		Resources/translations/Mesh_nl.ts \
 		Resources/translations/Mesh_no.qm \
 		Resources/translations/Mesh_no.ts \
+		Resources/translations/Mesh_pl.qm \
+		Resources/translations/Mesh_pl.ts \
 		Resources/translations/Mesh_pt.qm \
 		Resources/translations/Mesh_pt.ts \
 		Resources/translations/Mesh_ru.qm \

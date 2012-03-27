@@ -661,7 +661,8 @@ bool MeshInput::LoadPLY (std::istream &inp)
         return false; // wrong header
 
     std::string line, element;
-    bool xyz_float=false,xyz_double=false,rgb_value=false;
+    bool xyz_float=false,xyz_double=false;
+    MeshIO::Binding rgb_value = MeshIO::OVERALL;
     while (std::getline(inp, line)) {
         std::istringstream str(line);
         str.unsetf(std::ios_base::skipws);
@@ -738,7 +739,11 @@ bool MeshInput::LoadPLY (std::istream &inp)
                         xyz_double = true;
                 }
                 else if (name == "red") {
-                    rgb_value = true;
+                    rgb_value = MeshIO::PER_VERTEX;
+                    if (_material) {
+                        _material->binding = MeshIO::PER_VERTEX;
+                        _material->diffuseColor.reserve(v_count);
+                    }
                 }
             }
             else if (element == "face") {
@@ -753,9 +758,38 @@ bool MeshInput::LoadPLY (std::istream &inp)
         boost::regex rx_p("^([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                           "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                           "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+        boost::regex rx_c("^([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                          "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                          "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                          "\\s+([0-9]{1,3})\\s+([0-9]{1,3})\\s+([0-9]{1,3})\\s*$");
         boost::regex rx_f("^\\s*3\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
         boost::cmatch what;
         Base::Vector3f pt;
+
+        if (rgb_value == MeshIO::PER_VERTEX) {
+            int r,g,b;
+            for (std::size_t i = 0; i < v_count && std::getline(inp, line); i++) {
+                if (boost::regex_match(line.c_str(), what, rx_c)) {
+                    pt.x = (float)std::atof(what[1].first);
+                    pt.y = (float)std::atof(what[4].first);
+                    pt.z = (float)std::atof(what[7].first);
+                    meshPoints.push_back(pt);
+                    if (_material) {
+                        r = std::min<int>(std::atoi(what[10].first),255);
+                        g = std::min<int>(std::atoi(what[11].first),255);
+                        b = std::min<int>(std::atoi(what[12].first),255);
+                        float fr = (float)r/255.0f;
+                        float fg = (float)g/255.0f;
+                        float fb = (float)b/255.0f;
+                        _material->diffuseColor.push_back(App::Color(fr, fg, fb));
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        else {
         for (std::size_t i = 0; i < v_count && std::getline(inp, line); i++) {
             if (boost::regex_match(line.c_str(), what, rx_p)) {
                 pt.x = (float)std::atof(what[1].first);
@@ -767,6 +801,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 return false;
             }
         }
+        }
         int f1, f2, f3;
         for (std::size_t i = 0; i < f_count && std::getline(inp, line); i++) {
             if (boost::regex_match(line.c_str(), what, rx_f)) {
@@ -777,6 +812,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
             }
         }
     }
+    // binary
     else {
         Base::InputStream is(inp);
         if (format == binary_little_endian)
@@ -789,16 +825,31 @@ bool MeshInput::LoadPLY (std::istream &inp)
             for (std::size_t i = 0; i < v_count; i++) {
                 is >> pt.x >> pt.y >> pt.z;
                 meshPoints.push_back(pt);
-                if (rgb_value)
+                if (rgb_value == MeshIO::PER_VERTEX) {
                     is >> r >> g >> b;
+                    if (_material) {
+                        float fr = (float)r/255.0f;
+                        float fg = (float)g/255.0f;
+                        float fb = (float)b/255.0f;
+                        _material->diffuseColor.push_back(App::Color(fr, fg, fb));
+                    }
+                }
             }
         }
         else if (xyz_double) {
             Base::Vector3d pt;
             for (std::size_t i = 0; i < v_count; i++) {
                 is >> pt.x >> pt.y >> pt.z;
-                is >> r >> g >> b;
                 meshPoints.push_back(Base::Vector3f((float)pt.x,(float)pt.y,(float)pt.z));
+                if (rgb_value == MeshIO::PER_VERTEX) {
+                    is >> r >> g >> b;
+                    if (_material) {
+                        float fr = (float)r/255.0f;
+                        float fg = (float)g/255.0f;
+                        float fb = (float)b/255.0f;
+                        _material->diffuseColor.push_back(App::Color(fr, fg, fb));
+                    }
+                }
             }
         }
         unsigned char n;
@@ -1428,7 +1479,12 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     }
     else if (fileformat == MeshIO::PLY) {
         // write file
-        if (!SavePLY(str)) 
+        if (!SaveBinaryPLY(str)) 
+            throw Base::FileException("Export of PLY mesh failed",FileName);
+    }
+    else if (fileformat == MeshIO::APLY) {
+        // write file
+        if (!SaveAsciiPLY(str)) 
             throw Base::FileException("Export of PLY mesh failed",FileName);
     }
     else if (fileformat == MeshIO::IV) {
@@ -1646,7 +1702,7 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
     return true;
 }
 
-bool MeshOutput::SavePLY (std::ostream &out) const
+bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
 {
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
@@ -1701,6 +1757,81 @@ bool MeshOutput::SavePLY (std::ostream &out) const
         f3 = (int)f._aulPoints[2];
         os << n;
         os << f1 << f2 << f3;
+    }
+
+    return true;
+}
+
+bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
+{
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
+    const MeshFacetArray& rFacets = _rclMesh.GetFacets();
+    std::size_t v_count = rPoints.size();
+    std::size_t f_count = rFacets.size();
+    if (!out || out.bad() == true)
+        return false;
+
+    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
+        && _material->diffuseColor.size() == rPoints.size());
+    out << "ply" << std::endl
+        << "format ascii 1.0" << std::endl
+        << "comment Created by FreeCAD <http://free-cad.sourceforge.net>" << std::endl
+        << "element vertex " << v_count << std::endl
+        << "property float32 x" << std::endl
+        << "property float32 y" << std::endl
+        << "property float32 z" << std::endl;
+    if (saveVertexColor) {
+        out << "property uchar red" << std::endl
+            << "property uchar green" << std::endl
+            << "property uchar blue" << std::endl;
+    }
+    out << "element face " << f_count << std::endl
+        << "property list uchar int vertex_index" << std::endl
+        << "end_header" << std::endl;
+
+    Base::Vector3f pt;
+
+    out.precision(6);
+    out.setf(std::ios::fixed | std::ios::showpoint);
+    if (saveVertexColor) {
+        for (std::size_t i = 0; i < v_count; i++) {
+            const MeshPoint& p = rPoints[i];
+            if (this->apply_transform) {
+                Base::Vector3f pt = this->_transform * p;
+                out << pt.x << " " << pt.y << " " << pt.z;
+            }
+            else {
+                out << p.x << " " << p.y << " " << p.z;
+            }
+
+            const App::Color& c = _material->diffuseColor[i];
+            int r = (int)(255.0f * c.r);
+            int g = (int)(255.0f * c.g);
+            int b = (int)(255.0f * c.b);
+            out << " " << r << " " << g << " " << b << std::endl;
+        }
+    }
+    else {
+        for (std::size_t i = 0; i < v_count; i++) {
+            const MeshPoint& p = rPoints[i];
+            if (this->apply_transform) {
+                Base::Vector3f pt = this->_transform * p;
+                out << pt.x << " " << pt.y << " " << pt.z << std::endl;
+            }
+            else {
+                out << p.x << " " << p.y << " " << p.z << std::endl;
+            }
+        }
+    }
+
+    unsigned int n = 3;
+    int f1, f2, f3;
+    for (std::size_t i = 0; i < f_count; i++) {
+        const MeshFacet& f = rFacets[i];
+        f1 = (int)f._aulPoints[0];
+        f2 = (int)f._aulPoints[1];
+        f3 = (int)f._aulPoints[2];
+        out << n << " " << f1 << " " << f2 << " " << f3 << std::endl;
     }
 
     return true;

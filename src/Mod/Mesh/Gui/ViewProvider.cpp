@@ -27,6 +27,8 @@
 # include <QMenu>
 # include <Inventor/SbBox2s.h>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoToVRML2Action.h>
+# include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoBaseColor.h>
@@ -44,6 +46,7 @@
 # include <Inventor/nodes/SoPolygonOffset.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -63,6 +66,7 @@
 #include <Gui/SoFCOffscreenRenderer.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <Gui/SoFCDB.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/Utilities.h>
@@ -82,6 +86,7 @@
 #include <Mod/Mesh/App/Core/Visitor.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <zipios++/gzipoutputstream.h>
 
 #include "ViewProvider.h"
 #include "SoFCIndexedFaceSet.h"
@@ -482,6 +487,69 @@ std::vector<std::string> ViewProviderMesh::getDisplayModes(void) const
     StrList.push_back("Points");
 
     return StrList;
+}
+
+bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Material& mat, bool binary) const
+{
+    SoCoordinate3* coords = new SoCoordinate3();
+    SoIndexedFaceSet* faces = new SoIndexedFaceSet();
+    ViewProviderMeshBuilder builder;
+    builder.createMesh(&static_cast<Mesh::Feature*>(pcObject)->Mesh, coords, faces);
+
+    SoMaterialBinding* binding = new SoMaterialBinding;
+    SoMaterial* material = new SoMaterial;
+
+    if (mat.diffuseColor.size() == coords->point.getNum()) {
+        binding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+    }
+    else if (mat.diffuseColor.size() == faces->coordIndex.getNum()/4) {
+        binding->value = SoMaterialBinding::PER_FACE_INDEXED;
+    }
+
+    if (mat.diffuseColor.size() > 1) {
+        material->diffuseColor.setNum(mat.diffuseColor.size());
+        SbColor* colors = material->diffuseColor.startEditing();
+        for (unsigned int i=0; i<mat.diffuseColor.size(); i++)
+            colors[i].setValue(mat.diffuseColor[i].r,mat.diffuseColor[i].g,mat.diffuseColor[i].b);
+        material->diffuseColor.finishEditing();
+    }
+
+    SoGroup* group = new SoGroup();
+    group->addChild(material);
+    group->addChild(binding);
+    group->addChild(new SoTransform());
+    group->addChild(coords);
+    group->addChild(faces);
+
+    SoToVRML2Action tovrml2;
+    group->ref();
+    tovrml2.apply(group);
+    group->unref();
+    SoVRMLGroup *vrmlRoot = tovrml2.getVRML2SceneGraph();
+    vrmlRoot->ref();
+    std::string buffer = Gui::SoFCDB::writeNodesToString(vrmlRoot);
+    vrmlRoot->unref(); // release the memory as soon as possible
+
+    Base::FileInfo fi(filename);
+    if (binary) {
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
+        zipios::GZIPOutputStream gzip(str);
+        if (gzip) {
+            gzip << buffer;
+            gzip.close();
+            return true;
+        }
+    }
+    else {
+        Base::ofstream str(fi, std::ios::out);
+        if (str) {
+            str << buffer;
+            str.close();
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -1045,13 +1113,7 @@ void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked,
     // Get the facet indices inside the tool mesh
     std::vector<unsigned long> indices;
     getFacetsFromPolygon(picked, Viewer, inner, indices);
-
-    // Get the attached mesh property
-    Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
-
-    //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
-    meshProp.deleteFacetIndices(indices);
-    pcObject->purgeTouched();
+    removeFacets(indices);
 }
 
 void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon, 
@@ -1137,7 +1199,7 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh, const Bas
 
     // Remove the facets from the mesh and create a new one
     Mesh::MeshObject* kernel = meshProp.getValue().meshFromSegment(indices);
-    meshProp.deleteFacetIndices(indices);
+    removeFacets(indices);
     Mesh::Feature* splitMesh = static_cast<Mesh::Feature*>(App::GetApplication().getActiveDocument()
         ->addObject("Mesh::Feature",pcObject->getNameInDocument()));
     // Note: deletes also kernel
@@ -1167,7 +1229,9 @@ void ViewProviderMesh::segmentMesh(const MeshCore::MeshKernel& toolMesh, const B
         indices = complementary;
     }
 
-    meshProp.createSegment(indices);
+    Mesh::MeshObject* kernel = meshProp.startEditing();
+    kernel->addSegment(indices);
+    meshProp.finishEditing();
     static_cast<Mesh::Feature*>(pcObject)->purgeTouched();
 }
 
@@ -1401,8 +1465,21 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
  
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
-    fea->Mesh.append(newFacets, newPoints);
+    Mesh::MeshObject* kernel = fea->Mesh.startEditing();
+    kernel->addFacets(newFacets, newPoints);
+    fea->Mesh.finishEditing();
     Gui::Application::Instance->activeDocument()->commitCommand();
+}
+
+void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
+{
+    // Get the attached mesh property
+    Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+    Mesh::MeshObject* kernel = meshProp.startEditing();
+    //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
+    kernel->deleteFacets(facets);
+    meshProp.finishEditing();
+    pcObject->purgeTouched();
 }
 
 void ViewProviderMesh::selectFacet(unsigned long facet)
