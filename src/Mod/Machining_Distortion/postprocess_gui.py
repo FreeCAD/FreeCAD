@@ -42,7 +42,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         ltc_coeff = []
         sigini = True
         for root, dirs, files in os.walk(str(self.dirname)):
-           if 'final_fe_input.frd' in files:
+           if 'geometry_fe_input.frd' in files:
                 bbox_orig,\
                 bbox_distorted,\
                 relationship,\
@@ -51,7 +51,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                 max_disp_y,\
                 min_disp_y,\
                 max_disp_z,\
-                min_disp_z = calculix_postprocess(os.path.join(root,'final_fe_input.frd'))
+                min_disp_z = calculix_postprocess(os.path.join(root,'geometry_fe_input.frd'))
                 if sigini:
                     sigini = False
                     lc_coeff,ltc_coeff = get_sigini_values(os.path.join(root,'sigini_input.txt'))
@@ -113,12 +113,13 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                                     "set view 80,05,1.3,1.0\n"+
                                     "set title \"Abs Displacement in Z vs. Z-Level Offset and Rotation around Z-Axis\" 0,-2\n"+
                                     "show title\n"+
-                                    "set label \"L Coefficients used for the calculation:" + lc_coeff[0] + "," + lc_coeff[1] + "," + lc_coeff[2] + "," + lc_coeff[3] + "," + lc_coeff[4] + "," + lc_coeff[5][:-1] + "\" at screen 0.1, screen 0.95 left font \"Arial,8\"\n"+ 
-                                    "set label \"LT Coefficients used for the calculation:" + ltc_coeff[0] + "," + ltc_coeff[1] + "," + ltc_coeff[2] + "," + ltc_coeff[3] + "," + ltc_coeff[4] + "," + ltc_coeff[5][:-1] + "\" at screen 0.1, screen 0.93 left font \"Arial,8\"\n"+
+				    "set pm3d\n"+
+                                    "set label \"L Coefficients used for the calculation:" + lc_coeff[0] + "," + lc_coeff[1] + "," + lc_coeff[2] + "," + lc_coeff[3] + "," + lc_coeff[4] + "," + lc_coeff[5][:-1] + "\" at screen 0.1, screen 0.95 left\n"+ 
+                                    "set label \"LT Coefficients used for the calculation:" + ltc_coeff[0] + "," + ltc_coeff[1] + "," + ltc_coeff[2] + "," + ltc_coeff[3] + "," + ltc_coeff[4] + "," + ltc_coeff[5][:-1] + "\" at screen 0.1, screen 0.93 left\n"+
                                     "set label \"Z-Offset\\nin [mm]\" at screen 0.5, screen 0.1 center rotate by 0\n"+ 
                                     "set label \"Rotation around Z-Axis\\nin [" + str(chr(248)) +"]\" at screen 0.91, screen 0.2 center rotate by 50\n"+ 
                                     "set label \"Max Displacement Z direction\\nin [mm]\" at screen 0.03, screen 0.5 center rotate by 90\n"+ 
-                                    "set xtics in nomirror offset character 0,-0.5\n"+
+                                    "set xtics nomirror\n"+
                                     "splot \"postprocessing_input.txt\" u 1:4:14 with pm3d title \"\"\n" + 
                                     "exit" )
                                     
@@ -127,7 +128,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         gnu_plot_input_file.close()
         os.chdir(str(self.dirname))
         fnull = open(os.devnull, 'w')
-        commandline = FreeCAD.getHomePath() + "bin/gnuplot/gnuplot gnu_plot_input.txt"
+        commandline = "gnuplot gnu_plot_input.txt"
         result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
         fnull.close()
 
