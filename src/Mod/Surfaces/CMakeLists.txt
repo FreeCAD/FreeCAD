@@ -78,7 +78,7 @@ ADD_CUSTOM_TARGET(Surfaces ALL
     SOURCES ${all_files}
 )
 
-fc_copy_sources("Mod/Surfaces" "Surfaces" ${all_files})
+fc_copy_sources("Mod/Surfaces" "${CMAKE_BINARY_DIR}/Mod/Surfaces" ${all_files})
 
 INSTALL(
     FILES
