@@ -8,6 +8,9 @@ nobase_data_DATA = \
 	Icons/BorderIco.png \
 	Icons/BorderIco.xcf \
 	Icons/BorderIco.xpm \
+	Icons/ControlPointsIco.png \
+	Icons/ControlPointsIco.xcf \
+	Icons/ControlPointsIco.xpm \
 	Icons/ConvertIco.png \
 	Icons/ConvertIco.xcf \
 	Icons/ConvertTo4SidesIco.xpm \
