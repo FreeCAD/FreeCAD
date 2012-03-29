@@ -9,6 +9,8 @@ SET(SurfIcons_SRCS
 	Icons/BorderIco.xpm
 	Icons/ConvertIco.png
 	Icons/ConvertTo4SidesIco.xpm
+	Icons/ControlPointsIco.png
+	Icons/ControlPointsIco.xpm
 	Icons/Ico.xcf
 	Icons/IsoCurveIco.png
 	Icons/IsoCurveIco.xpm
