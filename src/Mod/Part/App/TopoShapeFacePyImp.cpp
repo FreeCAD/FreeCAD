@@ -550,14 +550,16 @@ Py::Tuple TopoShapeFacePy::getParameterRange(void) const
 
 Py::Object TopoShapeFacePy::getWire(void) const
 {
-    TopoDS_Shape clSh = getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& clSh = getTopoShapePtr()->_Shape;
+    if (clSh.IsNull())
+        throw Py::Exception("Null shape");
     if (clSh.ShapeType() == TopAbs_FACE) {
         TopoDS_Face clFace = (TopoDS_Face&)clSh;
         TopoDS_Wire clWire = ShapeAnalysis::OuterWire(clFace);
         return Py::Object(new TopoShapeWirePy(new TopoShape(clWire)),true);
     }
     else
-        throw "Internal error, TopoDS_Shape is not a face!";
+        throw Py::Exception("Internal error, TopoDS_Shape is not a face!");
 
     return Py::Object();
 }

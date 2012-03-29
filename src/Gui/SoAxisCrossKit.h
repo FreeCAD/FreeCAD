@@ -27,6 +27,8 @@
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFString.h>
 
 class SbViewport;
 class SoState;
@@ -82,6 +84,33 @@ private:
     // Constructor calls to build and set up parts.
     void createAxes();
     virtual ~SoAxisCrossKit();
+};
+
+class GuiExport SoRegPoint : public SoShape {
+    typedef SoShape inherited;
+
+    SO_NODE_HEADER(SoRegPoint);
+
+public:
+    static void initClass();
+    SoRegPoint();
+
+    void notify(SoNotList * node);
+
+    SoSFVec3f base;
+    SoSFVec3f normal;
+    SoSFFloat length;
+    SoSFColor color;
+    SoSFString text;
+
+protected:
+    virtual ~SoRegPoint();
+    virtual void GLRender(SoGLRenderAction *action);
+    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
+    virtual void generatePrimitives(SoAction *action);
+
+private:
+    SoSeparator* root;
 };
 
 } // namespace Gui

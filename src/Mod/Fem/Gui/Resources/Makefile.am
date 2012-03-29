@@ -26,6 +26,8 @@ EXTRA_DIST = \
 		translations/Fem_nl.ts \
 		translations/Fem_no.qm \
 		translations/Fem_no.ts \
+		translations/Fem_pl.qm \
+		translations/Fem_pl.ts \
 		translations/Fem_pt.qm \
 		translations/Fem_pt.ts \
 		translations/Fem_ru.qm \

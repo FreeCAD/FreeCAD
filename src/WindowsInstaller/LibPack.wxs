@@ -71,6 +71,10 @@
 				<File Id="LibPack11" Name="boost_system-vc90-mt-1_39.dll"  />
 				<?endif ?>
 				<File Id="LibPack10" Name="sip.pyd"  />
+                <File Id="LibPack15" Name="pyexpat.pyd"  />
+                <File Id="LibPack16" Name="select.pyd"   />
+                <File Id="LibPack17" Name="unicodedata.pyd"   />
+                <File Id="LibPack18" Name="winsound.pyd"   />
 				<!-- No libs for CAM at the moment 
 				<File Id="LibPack11" Name="atlas.dll"  />
 				<File Id="LibPack12" Name="ANN.dll"  />

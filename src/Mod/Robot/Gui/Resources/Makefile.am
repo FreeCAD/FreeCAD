@@ -38,6 +38,8 @@ EXTRA_DIST = \
 		translations/Robot_nl.ts \
 		translations/Robot_no.qm \
 		translations/Robot_no.ts \
+		translations/Robot_pl.qm \
+		translations/Robot_pl.ts \
 		translations/Robot_pt.qm \
 		translations/Robot_pt.ts \
 		translations/Robot_ru.qm \
