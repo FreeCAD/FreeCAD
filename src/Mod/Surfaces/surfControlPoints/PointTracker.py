@@ -178,7 +178,10 @@ class PointTracker:
             if not obj.ValidCtrlPoints:
                 continue
             # Get selected vertexes
-            subs  = selobj.SubObjects
+            try:
+                subs  = selobj.SubObjects
+            except:
+                continue
             selList = []
             for j in range(0,len(subs)):
                 sub = subs[j]

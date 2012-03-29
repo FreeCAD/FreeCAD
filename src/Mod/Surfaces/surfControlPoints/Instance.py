@@ -59,7 +59,7 @@ class ControlPoints:
         obj.addProperty("App::PropertyInteger","nV","Face", str(Translator.translate("Number of V knots"))).nV=nUV[1]
         # Set object as unselectable
         FreeCADGui.ActiveDocument.getObject(aim.Name).Selectable = False
-        FreeCADGui.ActiveDocument.getObject(aim.Name).Transparency = 50
+        FreeCADGui.ActiveDocument.getObject(aim.Name).Visibility = False
         # Perform shape
         obj.Shape = self.buildVertexes(self.getPoles(face))
         obj.Shape = self.buildEdges(obj)
@@ -152,22 +152,24 @@ class ControlPoints:
         shape = Part.Compound(vList)
         return shape
 
-    def buildEdges(self, fp):
+    def buildEdges(self, fp, face=None):
         """ Builds the edges array.
         @param fp Part::FeaturePython built object that contains control points data.
+        @param face Selected surface (shape object), None if must be autoselected.
         @return Shape filled with the vertexes and the array of control points.
         """
-        obj = FreeCAD.ActiveDocument.getObject(fp.Object)
-        if not obj:
-            msg = Translator.translate("Can't find refered face object. Maybe you delete it?\n")
-            App.Console.PrintError(msg)
-            return None
-        faces = obj.Shape.Faces
-        if not faces:
-            msg = Translator.translate("Can't find surface into refered object. Maybe you modify it?\n")
-            App.Console.PrintError(msg)
-            return None
-        face  = faces[0]
+        if not face:
+            obj = FreeCAD.ActiveDocument.getObject(fp.Object)
+            if not obj:
+                msg = Translator.translate("Can't find refered face object. Maybe you delete it?\n")
+                App.Console.PrintError(msg)
+                return None
+            faces = obj.Shape.Faces
+            if not faces:
+                msg = Translator.translate("Can't find surface into refered object. Maybe you modify it?\n")
+                App.Console.PrintError(msg)
+                return None
+            face  = faces[0]
         surf  = face.Surface
         poles = surf.getPoles()
         # Get Poles UV map positions
@@ -193,6 +195,9 @@ class ControlPoints:
         vList = fp.Shape.Vertexes[0:fp.nU*fp.nV]
         for i in range(0,len(eList)):
             vList.append(eList[i])
+        # Append selected surface
+        vList.append(face)
+        # Create compound object
         shape = Part.Compound(vList)
         return shape
 
@@ -208,25 +213,33 @@ class ControlPoints:
             msg = Translator.translate("Number of vertexes don't match.\n")
             App.Console.PrintError(msg)
             return
-        self.setSurface(obj, vertexes)
+        face = self.setSurface(obj, vertexes)
+        if not face:
+            return
+        # Recover generated object face, and destroy it
+        # obj = FreeCAD.ActiveDocument.Objects[-1]
+        # face = obj.Shape.Faces[0]
+        # FreeCAD.ActiveDocument.removeObject(obj.Name)
+        # Build the new shape
         obj.Shape = Part.Compound(vertexes)
-        obj.Shape = self.buildEdges(obj)
+        obj.Shape = self.buildEdges(obj, face)
 
     def setSurface(self,fp,vertexes):
         """ Transform surface with modified vertexes
         @param fp Part::FeaturePython built object that contains control points data.
         @param vertexes New vertexes list.
+        @return Resultant surface object (as shape object).
         """
         obj = FreeCAD.ActiveDocument.getObject(fp.Object)
         if not obj:
             msg = Translator.translate("Can't find refered face object. Maybe you delete it?\n")
             App.Console.PrintError(msg)
-            return
+            return None
         faces = obj.Shape.Faces
         if not faces:
             msg = Translator.translate("Can't find surface into refered object. Maybe you modify it?\n")
             App.Console.PrintError(msg)
-            return
+            return None
         face = faces[0]
         surf = face.Surface
         poles = surf.getPoles()
@@ -238,7 +251,7 @@ class ControlPoints:
         if fp.nU != nU or fp.nV != nV:
             msg = Translator.translate("Surface UV coordinates don't match. Maybe you modify it?\n")
             App.Console.PrintError(msg)
-            return
+            return None
         for i in range(0,nU):
             for j in range(0,nV):
                 vID  = vertexes[i*nV + j]
@@ -246,7 +259,13 @@ class ControlPoints:
                 orig = poles[i][j]
                 if not Math.isSamePoint(orig,dest):
                     uv = surf.parameter(orig)
-                    surf.movePoint(uv[0],uv[1],dest,i,i,j,j)
+                    surf.movePoint(uv[0],uv[1],dest,i+1,i+1,j+1,j+1)
+        return surf.toShape()
+        # For some reason I can't return surf.toShape(), because i don't
+        # receive modified surface, so I create it with Part, recover it
+        # later in order to extract new face, and remove generated
+        # object
+        # Part.show(surf.toShape())
 
 class ViewProviderShip:
     def __init__(self, obj):
