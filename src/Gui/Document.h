@@ -33,6 +33,8 @@
 #include <Base/Persistence.h>
 #include <App/Document.h>
 
+#include "Tree.h"
+
 namespace Base
 {
   class Matrix4D;
@@ -44,7 +46,6 @@ class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
-enum  HiglightMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping
