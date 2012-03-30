@@ -70,6 +70,7 @@ void AssemblyGuiExport initAssemblyGui()
 
     // directly load the module for usage in commands
     Base::Interpreter().runString("import AssemblyGui");
+    Base::Interpreter().runString("import PartGui");
 
     // instanciating the commands
     CreateAssemblyCommands();
