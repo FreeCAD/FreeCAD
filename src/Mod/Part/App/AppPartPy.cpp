@@ -596,8 +596,9 @@ static PyObject * makeWedge(PyObject *self, PyObject *args)
             d.SetCoord(vec.x, vec.y, vec.z);
         }
         BRepPrim_Wedge mkWedge(gp_Ax2(p,d), xmin, ymin, zmin, z2min, x2min, xmax, ymax, zmax, z2max, x2max);
-        TopoDS_Shape resultShape = mkWedge.Shell();
-        return new TopoShapeShellPy(new TopoShape(resultShape)); 
+        BRepBuilderAPI_MakeSolid mkSolid;
+        mkSolid.Add(mkWedge.Shell());
+        return new TopoShapeSolidPy(new TopoShape(mkSolid.Solid())); 
     }
     catch (Standard_DomainError) {
         PyErr_SetString(PyExc_Exception, "creation of wedge failed");
@@ -1320,14 +1321,21 @@ static PyObject * sortEdges(PyObject *self, PyObject *args)
         }
     }
 
-    std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
+    try {
+        std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
 
-    Py::List sorted_list;
-    for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-        sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+        Py::List sorted_list;
+        for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
+            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+        }
+
+        return Py::new_reference_to(sorted_list);
     }
-
-    return Py::new_reference_to(sorted_list);
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 static PyObject * cast_to_shape(PyObject *self, PyObject *args)

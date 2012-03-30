@@ -76,14 +76,17 @@ public:
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
     /// add an external geometry reference
     int addExternal(App::DocumentObject *Obj, const char* SubName);
-    /// delete external
+    /** delete external
+     *  ExtGeoId >= 0 with 0 corresponding to the first user defined
+     *  external geometry
+     */
     int delExternal(int ExtGeoId);
 
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
      *  id==-1 for the horizontal sketch axis,
      *  id==-2 for the vertical sketch axis
-     *  id<=-3 for projected external geometries,
+     *  id<=-3 for user defined projected external geometries,
      */
     const Part::Geometry* getGeometry(int GeoId) const;
     /// returns a list of all internal geometries
@@ -149,6 +152,7 @@ protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
     virtual void onDocumentRestored();
+    virtual void onFinishDuplicating();
 
 private:
     std::vector<Part::Geometry *> ExternalGeo;

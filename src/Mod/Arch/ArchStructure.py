@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -21,8 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,ArchComponent
-from draftlibs import fcgeo,fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent
+from draftlibs import fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -84,16 +84,35 @@ class _Structure(ArchComponent.Component):
                         "The width of this element, if not based on a profile")
         obj.addProperty("App::PropertyLength","Height","Base",
                         "The height or extrusion depth of this element. Keep 0 for automatic")
+        obj.addProperty("App::PropertyLinkList","Axes","Base",
+                        "Axes systems this structure is built on")
         self.Type = "Structure"
         
     def execute(self,obj):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
-        if prop in ["Base","Length","Width","Height","Normal","Additions","Subtractions"]:
+        if prop in ["Base","Length","Width","Height","Normal","Additions","Subtractions","Axes"]:
             self.createGeometry(obj)
 
+    def getAxisPoints(self,obj):
+        "returns the gridpoints of linked axes"
+        from draftlibs import fcgeo
+        pts = []
+        if len(obj.Axes) == 1:
+            for e in obj.Axes[0].Shape.Edges:
+                pts.append(e.Vertexes[0].Point)
+        elif len(obj.Axes) >= 2:
+            set1 = obj.Axes[0].Shape.Edges
+            set2 = obj.Axes[1].Shape.Edges
+            for e1 in set1:
+                for e2 in set2: 
+                    pts.extend(fcgeo.findIntersection(e1,e2))
+        return pts
+
     def createGeometry(self,obj):
+        import Part
+        from draftlibs import fcgeo
         # getting default values
         height = normal = None
         if obj.Length:
@@ -156,7 +175,16 @@ class _Structure(ArchComponent.Component):
                     base = base.cut(hole.Shape)
                     hole.ViewObject.hide() # to be removed
         if base:
-            obj.Shape = base
+            pts = self.getAxisPoints(obj)
+            if pts:
+                fsh = []
+                for p in pts:
+                    sh = base.copy()
+                    sh.translate(p)
+                    fsh.append(sh)
+                    obj.Shape = Part.makeCompound(fsh)
+            else:
+                obj.Shape = base
             if not fcgeo.isNull(pl): obj.Placement = pl
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):

@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -25,15 +25,18 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD,FreeCADGui,math,Draft,Part
+import FreeCAD,FreeCADGui,math,Draft
 from FreeCAD import Vector
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 from pivy import coin
 from DraftGui import todo
 
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
     def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False):
+        global Part, fcgeo
+        import Part
+        from draftlibs import fcgeo
         self.ontop = ontop
         color = coin.SoBaseColor()
         color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("ui")
@@ -228,6 +231,7 @@ class dimTracker(Tracker):
         self.calc()
         
     def calc(self):
+        import Part
         if (self.p1 != None) and (self.p2 != None):
             points = [fcvec.tup(self.p1,True),fcvec.tup(self.p2,True),\
                           fcvec.tup(self.p1,True),fcvec.tup(self.p2,True)]
@@ -501,16 +505,16 @@ class wireTracker(Tracker):
         self.update(wire)
         Tracker.__init__(self,children=[self.coords,self.line])
 
-    def update(self,wire):
+    def update(self,wire,forceclosed=False):
         if wire:
-            if self.closed:
+            if self.closed or forceclosed:
                 self.line.numVertices.setValue(len(wire.Vertexes)+1)
             else:
                 self.line.numVertices.setValue(len(wire.Vertexes))
             for i in range(len(wire.Vertexes)):
                 p=wire.Vertexes[i].Point
                 self.coords.point.set1Value(i,[p.x,p.y,p.z])
-            if self.closed:
+            if self.closed or forceclosed:
                 t = len(wire.Vertexes)
                 p = wire.Vertexes[0].Point
                 self.coords.point.set1Value(t,[p.x,p.y,p.z])
@@ -619,3 +623,66 @@ class gridTracker(Tracker):
         rot = FreeCAD.Rotation()
         rot.Q = self.trans.rotation.getValue().getValue()
         return rot.multVec(Vector(pu,pv,0))
+
+class boxTracker(Tracker):                
+    "A box tracker, can be based on a line object"
+    def __init__(self,line=None,width=0.1,height=1):
+        self.trans = coin.SoTransform()
+        m = coin.SoMaterial()
+        m.transparency.setValue(0.8)
+        m.diffuseColor.setValue([0.4,0.4,0.6])
+        self.cube = coin.SoCube()
+        self.cube.height.setValue(width)
+        self.cube.depth.setValue(height)
+        self.baseline = None
+        if line:
+            self.baseline = line
+            self.update()
+        Tracker.__init__(self,children=[self.trans,m,self.cube])
+
+    def update(self,line=None,normal=None):
+        import WorkingPlane
+        from draftlibs import fcgeo
+        if not normal:
+            normal = FreeCAD.DraftWorkingPlane.axis
+        if line:
+            if isinstance(line,list):
+                bp = line[0]
+                lvec = line[1].sub(line[0])
+            else:
+                lvec = fcgeo.vec(line.Shape.Edges[0])
+                bp = line.Shape.Edges[0].Vertexes[0].Point
+        elif self.baseline:
+            lvec = fcgeo.vec(self.baseline.Shape.Edges[0])
+            bp = self.baseline.Shape.Edges[0].Vertexes[0].Point
+        else:
+            return
+        right = lvec.cross(normal)
+        self.cube.width.setValue(lvec.Length)
+        p = WorkingPlane.getPlacementFromPoints([bp,bp.add(lvec),bp.add(right)])
+        self.trans.rotation.setValue(p.Rotation.Q)
+        bp = bp.add(fcvec.scale(lvec,0.5))
+        bp = bp.add(fcvec.scaleTo(normal,self.cube.depth.getValue()/2))
+        self.pos(bp)
+
+    def pos(self,p):
+        self.trans.translation.setValue(fcvec.tup(p))
+
+    def width(self,w=None):
+        if w:
+            self.cube.height.setValue(w)
+        else:
+            return self.cube.height.getValue()
+
+    def length(self,l=None):
+        if l:
+            self.cube.width.setValue(l)
+        else:
+            return self.cube.width.getValue()
+        
+    def height(self,h=None):
+        if h:
+            self.cube.depth.setValue(h)
+            self.update()
+        else:
+            return self.cube.depth.getValue()

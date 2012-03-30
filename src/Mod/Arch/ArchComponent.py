@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -34,6 +34,7 @@ def addToComponent(compobject,addobject,mod=None):
     "Components", the first one that exists in the component. Mod
     can be set to one of those attributes ("Objects", Base", etc...)
     to override the default.'''
+    import Draft
     if compobject == addobject: return
     # first check is already there
     found = False
@@ -51,11 +52,17 @@ def addToComponent(compobject,addobject,mod=None):
             if hasattr(compobject,mod):
                 if mod == "Base":
                     setattr(compobject,mod,addobject)
+                    addobject.ViewObject.hide()
+                elif mod == "Axes":
+                    if Draft.getType(addobject) == "Axis":
+                        l = getattr(compobject,mod)
+                        l.append(addobject)
+                        setattr(compobject,mod,l)                        
                 else:
                     l = getattr(compobject,mod)
                     l.append(addobject)
                     setattr(compobject,mod,l)
-                addobject.ViewObject.hide()
+                    addobject.ViewObject.hide()
         else:
             for a in attribs[:3]:
                 if hasattr(compobject,a):
@@ -103,7 +110,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
         
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes"]
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -130,14 +137,8 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
         self.delButton.setEnabled(False)
 
-        self.okButton = QtGui.QPushButton(self.form)
-        self.okButton.setObjectName("okButton")
-        self.okButton.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
-        self.grid.addWidget(self.okButton, 4, 0, 1, 2)
-
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
-        QtCore.QObject.connect(self.okButton, QtCore.SIGNAL("clicked()"), self.finish)
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
         self.update()
 
@@ -148,11 +149,8 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return 0
-
-    def removeElement(self):
-        return
-
+        return int(QtGui.QDialogButtonBox.Ok)
+    
     def check(self,wid,col):
         if not wid.parent():
             self.delButton.setEnabled(False)
@@ -221,21 +219,22 @@ class ComponentTaskPanel:
             removeFromComponent(self.obj,comp)
         self.update()
 
-    def finish(self):
+    def accept(self):
         FreeCAD.ActiveDocument.recompute()
         if self.obj:
             self.obj.ViewObject.finishEditing()
+        return True
                     
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
-        self.okButton.setText(QtGui.QApplication.translate("Arch", "Done", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None, QtGui.QApplication.UnicodeUTF8))
         self.treeBase.setText(0,QtGui.QApplication.translate("Arch", "Base component", None, QtGui.QApplication.UnicodeUTF8))
         self.treeAdditions.setText(0,QtGui.QApplication.translate("Arch", "Additions", None, QtGui.QApplication.UnicodeUTF8))
         self.treeSubtractions.setText(0,QtGui.QApplication.translate("Arch", "Subtractions", None, QtGui.QApplication.UnicodeUTF8))
         self.treeObjects.setText(0,QtGui.QApplication.translate("Arch", "Objects", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeAxes.setText(0,QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
         self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))        
         
 class Component:
@@ -251,7 +250,6 @@ class Component:
                         "The normal extrusion direction of this wall (keep (0,0,0) for automatic normal)")
         obj.Proxy = self
         self.Type = "Component"
-        self.Object = obj
         self.Subvolume = None
         
         

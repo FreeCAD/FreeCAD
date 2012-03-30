@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -26,9 +26,9 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 
-import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, Part, SketcherGui
+import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers
 from DraftGui import todo
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 from FreeCAD import Vector
 from pivy import coin
 from PyQt4 import QtCore,QtGui
@@ -68,6 +68,7 @@ class Snapper:
         self.grid = None
         self.constrainLine = None
         self.trackLine = None
+        self.lastSnappedObject = None
         
         # the snapmarker has "dot","circle" and "square" available styles
         self.mk = {'passive':'circle',
@@ -101,6 +102,10 @@ class Snapper:
         be True to constrain the point against the closest working plane axis.
         Screenpos can be a list, a tuple or a coin.SbVec2s object."""
 
+        global Part,fcgeo
+        import Part, SketcherGui
+        from draftlibs import fcgeo
+
         def cstr(point):
             "constrains if needed"
             if constrain:
@@ -110,7 +115,7 @@ class Snapper:
                 return point
 
         snaps = []
-
+        
         # type conversion if needed
         if isinstance(screenpos,list):
             screenpos = tuple(screenpos)
@@ -148,13 +153,15 @@ class Snapper:
         if self.extLine:
             self.extLine.off()
 
-        point = FreeCADGui.ActiveDocument.ActiveView.getPoint(screenpos[0],screenpos[1])
+        point = self.getApparentPoint(screenpos[0],screenpos[1])
             
         # check if we snapped to something
         info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((screenpos[0],screenpos[1]))
 
-        # checking if parallel to one of the edges of the last objects
-        point = self.snapToExtensions(point,lastpoint,constrain)
+        # checking if parallel to one of the edges of the last objects or to a polar direction
+        eline = None
+        point,eline = self.snapToPolar(point,lastpoint)
+        point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
         
         if not info:
             
@@ -169,6 +176,8 @@ class Snapper:
             obj = FreeCAD.ActiveDocument.getObject(info['Object'])
             if not obj:
                 return cstr(point)
+
+            self.lastSnappedObject = obj
                 
             if hasattr(obj.ViewObject,"Selectable"):
                 if not obj.ViewObject.Selectable:
@@ -183,7 +192,17 @@ class Snapper:
                 
                 # active snapping
                 comp = info['Component']
-                if obj.isDerivedFrom("Part::Feature"):
+
+                if (Draft.getType(obj) == "Wall") and not oldActive:
+                    if obj.Base:
+                        for edge in obj.Base.Shape.Edges:
+                            snaps.extend(self.snapToEndpoints(edge))
+                            snaps.extend(self.snapToMidpoint(edge))
+                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                            snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
+                            
+                elif obj.isDerivedFrom("Part::Feature"):
                     if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
                         if "Edge" in comp:
                             # we are snapping to an edge
@@ -191,8 +210,9 @@ class Snapper:
                             snaps.extend(self.snapToEndpoints(edge))
                             snaps.extend(self.snapToMidpoint(edge))
                             snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                            snaps.extend(self.snapToOrtho(edge,lastpoint,constrain))
+                            #snaps.extend(self.snapToOrtho(edge,lastpoint,constrain)) # now part of snapToPolar
                             snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
 
                             if isinstance (edge.Curve,Part.Circle):
                                 # the edge is an arc, we have extra options
@@ -255,11 +275,17 @@ class Snapper:
             
             # return the final point
             return cstr(winner[2])
+
+    def getApparentPoint(self,x,y):
+        "returns a 3D point, projected on the current working plane"
+        pt = FreeCADGui.ActiveDocument.ActiveView.getPoint(x,y)
+        dv = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+        return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
         
-    def snapToExtensions(self,point,last,constrain):
+    def snapToExtensions(self,point,last,constrain,eline):
         "returns a point snapped to extension or parallel line to last object, if any"
 
-        tsnap = self.snapToExtOrtho(last,constrain)
+        tsnap = self.snapToExtOrtho(last,constrain,eline)
         if tsnap:
             if (tsnap[0].sub(point)).Length < self.radius:
                 if self.tracker:
@@ -270,7 +296,7 @@ class Snapper:
                     self.extLine.p2(tsnap[2])
                     self.extLine.on()
                 self.setCursor(tsnap[1])
-                return tsnap[2]
+                return tsnap[2],eline
                 
         for o in [self.lastObj[1],self.lastObj[0]]:
             if o:
@@ -284,16 +310,17 @@ class Snapper:
                                     np = self.getPerpendicular(e,point)
                                     if not fcgeo.isPtOnEdge(np,e):
                                         if (np.sub(point)).Length < self.radius:
-                                            if self.tracker:
-                                                self.tracker.setCoords(np)
-                                                self.tracker.setMarker(self.mk['extension'])
-                                                self.tracker.on()
-                                            if self.extLine:
-                                                self.extLine.p1(e.Vertexes[0].Point)
-                                                self.extLine.p2(np)
-                                                self.extLine.on()
-                                            self.setCursor('extension')
-                                            return np
+                                            if np != e.Vertexes[0].Point:
+                                                if self.tracker:
+                                                    self.tracker.setCoords(np)
+                                                    self.tracker.setMarker(self.mk['extension'])
+                                                    self.tracker.on()
+                                                if self.extLine:
+                                                    self.extLine.p1(e.Vertexes[0].Point)
+                                                    self.extLine.p2(np)
+                                                    self.extLine.on()
+                                                self.setCursor('extension')
+                                                return np,Part.Line(e.Vertexes[0].Point,np).toShape()
                                         else:
                                             if last:
                                                 de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
@@ -304,8 +331,37 @@ class Snapper:
                                                         self.tracker.setMarker(self.mk['parallel'])
                                                         self.tracker.on()
                                                     self.setCursor('extension')
-                                                    return np
-        return point
+                                                    return np,de
+        return point,eline
+
+    def snapToPolar(self,point,last):
+        "snaps to polar lines from the given point"
+        polarAngles = [90,45]
+        if last:
+            vecs = []
+            ax = [FreeCAD.DraftWorkingPlane.u,
+                   FreeCAD.DraftWorkingPlane.v,
+                   FreeCAD.DraftWorkingPlane.axis]
+            for a in polarAngles:
+                    if a == 90:
+                        vecs.extend([ax[0],fcvec.neg(ax[0])])
+                        vecs.extend([ax[1],fcvec.neg(ax[1])])
+                    else:
+                        v = fcvec.rotate(ax[0],math.radians(a),ax[2])
+                        vecs.extend([v,fcvec.neg(v)])
+                        v = fcvec.rotate(ax[1],math.radians(a),ax[2])
+                        vecs.extend([v,fcvec.neg(v)])
+            for v in vecs:
+                de = Part.Line(last,last.add(v)).toShape()  
+                np = self.getPerpendicular(de,point)
+                if (np.sub(point)).Length < self.radius:
+                    if self.tracker:
+                        self.tracker.setCoords(np)
+                        self.tracker.setMarker(self.mk['parallel'])
+                        self.tracker.on()
+                        self.setCursor('ortho')
+                    return np,de
+        return point,None
 
     def snapToGrid(self,point):
         "returns a grid snap point if available"
@@ -356,6 +412,11 @@ class Snapper:
                     dv = last.sub(shape.Curve.Center)
                     dv = fcvec.scaleTo(dv,shape.Curve.Radius)
                     np = (shape.Curve.Center).add(dv)
+                elif isinstance(shape.Curve,Part.BSplineCurve):
+                    pr = shape.Curve.parameter(last)
+                    np = shape.Curve.value(pr)
+                else:
+                    return snaps
                 snaps.append([np,'perpendicular',np])
         return snaps
 
@@ -375,7 +436,7 @@ class Snapper:
                                     snaps.append([p,'ortho',p])
         return snaps
 
-    def snapToExtOrtho(self,last,constrain):
+    def snapToExtOrtho(self,last,constrain,eline):
         "returns an ortho X extension snap location"
         if constrain and last and self.constraintAxis and self.extLine:
             tmpEdge1 = Part.Line(last,last.add(self.constraintAxis)).toShape()
@@ -383,8 +444,29 @@ class Snapper:
             # get the intersection points
             pt = fcgeo.findIntersection(tmpEdge1,tmpEdge2,True,True)
             if pt:
+                return [pt[0],'ortho',pt[0]]
+        if eline:
+            try:
+                tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+                # get the intersection points
+                pt = fcgeo.findIntersection(eline,tmpEdge2,True,True)
+                if pt:
                     return [pt[0],'ortho',pt[0]]
+            except:
+                return None
         return None
+
+    def snapToElines(self,e1,e2):
+        "returns a snap location at the infinite intersection of the given edges"
+        snaps = []
+        if e1 and e2:
+            # get the intersection points
+            pts = fcgeo.findIntersection(e1,e2,True,True)
+            if pts:
+                for p in pts:
+                    snaps.append([p,'intersection',p])
+        return snaps
+            
     
     def snapToAngles(self,shape):
         "returns a list of angle snap locations"
@@ -452,6 +534,7 @@ class Snapper:
             for v in self.views:
                 v.unsetCursor()
             self.views = []
+            self.cursorMode = None
         else:
             if mode != self.cursorMode:
                 if not self.views:
@@ -480,11 +563,9 @@ class Snapper:
             self.extLine.off()
         if self.grid:
             self.grid.off()
-        if self.constrainLine:
-            self.constrainLine.off()
+        self.unconstrain()
         self.radius = 0
         self.setCursor()
-        self.cursorMode = None
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
@@ -509,7 +590,8 @@ class Snapper:
         delta = point.sub(self.basepoint)
 
         # setting constraint axis
-        self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
+        if not self.affinity:
+            self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
         if isinstance(axis,FreeCAD.Vector):
             self.constraintAxis = axis
         elif axis == "x":
@@ -547,15 +629,29 @@ class Snapper:
         if self.constrainLine:
             self.constrainLine.off()
 
-    def getPoint(self,last=None,callback=None):
-        """getPoint([last],[callback]) : gets a 3D point from the screen. You can provide an existing point,
-        in that case additional snap options and a tracker are available. You can also passa function as
-        callback, which will get called with the resulting point as argument, when a point is clicked:
+    def getPoint(self,last=None,callback=None,movecallback=None,extradlg=None):
+        
+        """getPoint([last],[callback],[movecallback],[extradlg]) : gets a 3D point
+        from the screen. You can provide an existing point, in that case additional
+        snap options and a tracker are available.
+        You can also pass a function as callback, which will get called
+        with the resulting point as argument, when a point is clicked, and optionally
+        another callback which gets called when the mouse is moved.
+
+        If the operation gets cancelled (the user pressed Escape), no point is returned.
+
+        Example:
 
         def cb(point):
-            print "got a 3D point: ",point
+            if point:
+                print "got a 3D point: ",point
         FreeCADGui.Snapper.getPoint(callback=cb)
-        """
+
+        If the callback function accepts more than one argument, it will also receive
+        the last snapped object. Finally, a pyqt dialog can be passed as extra taskbox."""
+
+        import inspect
+        
         self.pt = None
         self.ui = FreeCADGui.draftToolBar
         self.view = FreeCADGui.ActiveDocument.ActiveView
@@ -576,24 +672,52 @@ class Snapper:
             self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
             if self.trackLine:
                 self.trackLine.p2(self.pt)
+            if movecallback:
+                movecallback(self.pt)
         
+        def getcoords(point,relative=False):
+            self.pt = point
+            if relative and last:
+                v = FreeCAD.DraftWorkingPlane.getGlobalCoords(point)
+                self.pt = last.add(v)
+            accept()
+
         def click(event_cb):
             event = event_cb.getEvent()
-            if event.getState() == coin.SoMouseButtonEvent.DOWN:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
-                FreeCADGui.Snapper.off()
-                self.ui.offUi()
-                if self.trackLine:
-                    self.trackLine.off()
-                if callback:
-                    callback(self.pt)
-                self.pt = None
+            if event.getButton() == 1:
+                if event.getState() == coin.SoMouseButtonEvent.DOWN:
+                    accept()
 
-        # adding 2 callback functions
-        self.ui.pointUi()
+        def accept():
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            obj = FreeCADGui.Snapper.lastSnappedObject
+            FreeCADGui.Snapper.off()
+            self.ui.offUi()
+            if self.trackLine:
+                self.trackLine.off()
+            if callback:
+                if len(inspect.getargspec(callback).args) > 2:
+                    callback(self.pt,obj)
+                else:
+                    callback(self.pt)
+            self.pt = None
+
+        def cancel():
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            FreeCADGui.Snapper.off()
+            self.ui.offUi()
+            if self.trackLine:
+                self.trackLine.off()
+            if callback:
+                callback(None)
+            
+        # adding callback functions
+        self.ui.pointUi(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
         self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)            
-            
+
+
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()

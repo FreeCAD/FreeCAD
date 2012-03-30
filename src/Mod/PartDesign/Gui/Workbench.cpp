@@ -105,7 +105,7 @@ void Workbench::activated()
         "Part_Box"
     ));
 
-    
+
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
 }
@@ -132,6 +132,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
+          << "Sketcher_External"
           << "Sketcher_ToggleConstruction"
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;
@@ -158,16 +159,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
-    *part << "Sketcher_NewSketch" 
+    *part << "Sketcher_NewSketch"
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
           << geom
           << cons
-          << "Separator" 
-          << "PartDesign_Pad" 
+          << "Separator"
+          << "PartDesign_Pad"
           << "PartDesign_Pocket"
-          << "PartDesign_Revolution" 
+          << "PartDesign_Revolution"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer";
 
@@ -179,28 +180,29 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design");
-    *part << "Sketcher_NewSketch" 
+    *part << "Sketcher_NewSketch"
           << "Sketcher_LeaveSketch"
-          << "Separator" 
-          << "PartDesign_Pad" 
-          << "PartDesign_Pocket" 
-          << "PartDesign_Revolution" 
+          << "Separator"
+          << "PartDesign_Pad"
+          << "PartDesign_Pocket"
+          << "PartDesign_Revolution"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer";
-       
+
     part = new Gui::ToolBarItem(root);
     part->setCommand("Sketcher geometries");
     *part /*<< "Sketcher_CreatePoint" */
-		  << "Sketcher_CreateArc"
-		  << "Sketcher_CreateCircle"
-		  << "Sketcher_CreateLine"
-		  << "Sketcher_CreatePolyline"
-		  << "Sketcher_CreateRectangle"
+          << "Sketcher_CreateArc"
+          << "Sketcher_CreateCircle"
+          << "Sketcher_CreateLine"
+          << "Sketcher_CreatePolyline"
+          << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
-		  << "Sketcher_ToggleConstruction"
-		  /*<< "Sketcher_CreateText"*/
-		  /*<< "Sketcher_CreateDraftLine"*/;
+          << "Sketcher_External"
+          << "Sketcher_ToggleConstruction"
+          /*<< "Sketcher_CreateText"*/
+          /*<< "Sketcher_CreateDraftLine"*/;
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Sketcher constraints");

@@ -249,7 +249,7 @@ CmdDrawingNewView::CmdDrawingNewView()
 void CmdDrawingNewView::activated(int iMsg)
 {
     std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (shapes.size() != 1) {
+    if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select a Part object."));
         return;
@@ -262,19 +262,19 @@ void CmdDrawingNewView::activated(int iMsg)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("View");
     std::string PageName = pages.front()->getNameInDocument();
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-
     openCommand("Create view");
-    doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewPart','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),shapes.front()->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.Direction = (0.0,0.0,1.0)",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = 1.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    for (std::vector<App::DocumentObject*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        std::string FeatName = getUniqueObjectName("View");
+        doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewPart','%s')",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
+        doCommand(Doc,"App.activeDocument().%s.Direction = (0.0,0.0,1.0)",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Scale = 1.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    }
     updateActive();
     commitCommand();
 }
@@ -314,6 +314,44 @@ void CmdDrawingOrthoViews::activated(int iMsg)
     }
  
     Gui::Control().showDialog(new TaskDlgOrthoViews());
+}
+
+
+//===========================================================================
+// Drawing_OpenBrowserView
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingOpenBrowserView);
+
+CmdDrawingOpenBrowserView::CmdDrawingOpenBrowserView()
+  : Command("Drawing_OpenBrowserView")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("Open &browser view");
+    sToolTipText  = QT_TR_NOOP("Opens the selected page in a browser view");
+    sWhatsThis    = "Drawing_OpenBrowserView";
+    sStatusTip    = QT_TR_NOOP("Opens the selected page in a browser view");
+    sPixmap       = "actions/drawing-openbrowser";
+}
+
+void CmdDrawingOpenBrowserView::activated(int iMsg)
+{
+    unsigned int n = getSelection().countObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (n != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one Page object."));
+        return;
+    }
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    doCommand(Doc,"PageName = App.activeDocument().%s.PageResult",Sel[0].FeatName);
+    doCommand(Doc,"import WebGui");
+    doCommand(Doc,"WebGui.openBrowser(PageName)");
+}
+
+bool CmdDrawingOpenBrowserView::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
 }
 
 
@@ -412,6 +450,7 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingNewA3Landscape());
     rcCmdMgr.addCommand(new CmdDrawingNewView());
     rcCmdMgr.addCommand(new CmdDrawingOrthoViews());
+    rcCmdMgr.addCommand(new CmdDrawingOpenBrowserView());
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
 }

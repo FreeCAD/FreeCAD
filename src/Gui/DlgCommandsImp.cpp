@@ -112,6 +112,8 @@ DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
     labels << tr("Icon") << tr("Command");
     commandTreeWidget->setHeaderLabels(labels);
     commandTreeWidget->header()->hide();
+    commandTreeWidget->setIconSize(QSize(32, 32));
+    commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
 
     categoryTreeWidget->setCurrentItem(categoryTreeWidget->topLevelItem(0));
 }
@@ -148,13 +150,11 @@ void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
         item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
         item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
         item->setSizeHint(0, QSize(32, 32));
-        item->setBackgroundColor(0, Qt::lightGray);
         if ((*it)->getPixmap())
             item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
     }
 
     textLabel->setText(QString());
-    commandTreeWidget->resizeColumnToContents(0);
 }
 
 void DlgCustomCommandsImp::onAddMacroAction(const QByteArray& macro)

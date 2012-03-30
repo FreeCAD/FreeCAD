@@ -226,6 +226,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                     }
                 }
             }
+            this->button2down = press;
             break;
         case SoMouseButtonEvent::BUTTON3:
             if (press) {
@@ -306,10 +307,12 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         BUTTON1DOWN = 1 << 0,
         BUTTON3DOWN = 1 << 1,
         CTRLDOWN =    1 << 2,
-        SHIFTDOWN =   1 << 3
+        SHIFTDOWN =   1 << 3,
+        BUTTON2DOWN = 1 << 4
     };
     unsigned int combo =
         (this->button1down ? BUTTON1DOWN : 0) |
+        (this->button2down ? BUTTON2DOWN : 0) |
         (this->button3down ? BUTTON3DOWN : 0) |
         (this->ctrldown ? CTRLDOWN : 0) |
         (this->shiftdown ? SHIFTDOWN : 0);
@@ -328,17 +331,19 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON3DOWN:
-    case SHIFTDOWN|BUTTON1DOWN:
+    case CTRLDOWN|SHIFTDOWN:
+    case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
         newmode = NavigationStyle::PANNING;
         break;
     case CTRLDOWN:
     case CTRLDOWN|BUTTON1DOWN:
-    case CTRLDOWN|SHIFTDOWN:
-    case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
+    case SHIFTDOWN:
+    case SHIFTDOWN|BUTTON1DOWN:
         newmode = NavigationStyle::SELECTION;
         break;
     case BUTTON1DOWN|BUTTON3DOWN:
     case CTRLDOWN|BUTTON3DOWN:
+    case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;
 
@@ -365,7 +370,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if ((curmode == NavigationStyle::SELECTION || viewer->isEditing()) && !processed)
+    if ((curmode == NavigationStyle::SELECTION ||
+         newmode == NavigationStyle::SELECTION ||
+         viewer->isEditing()) && !processed)
         processed = inherited::processSoEvent(ev);
     else
         return TRUE;

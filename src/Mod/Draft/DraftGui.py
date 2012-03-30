@@ -4,7 +4,7 @@
 #*   Copyright (c) 2009 Yorik van Havre <yorik@gmx.fr>                     *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -136,8 +136,14 @@ class DraftLineEdit(QtGui.QLineEdit):
             QtGui.QLineEdit.keyPressEvent(self, event)
 
 class DraftTaskPanel:
-    def __init__(self,widget):
-        self.form = widget
+    def __init__(self,widget,extra=None):
+        if extra:
+            if isinstance(extra,list):
+                self.form = [widget] + extra
+            else:
+                self.form = [widget,extra]
+        else:
+            self.form = widget
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Cancel)
     def accept(self):
@@ -154,6 +160,8 @@ class DraftToolBar:
     def __init__(self):
         self.tray = None
         self.sourceCmd = None
+        self.cancel = None
+        self.pointcallback = None
         self.taskmode = Draft.getParam("UiMode")
         self.paramcolor = Draft.getParam("color")>>8
         self.color = QtGui.QColor(self.paramcolor)
@@ -170,7 +178,7 @@ class DraftToolBar:
         self.fillmode = Draft.getParam("fillmode")
         
         if self.taskmode:
-            # only a dummy widget, since widgets are created on demand
+            # add only a dummy widget, since widgets are created on demand
             self.baseWidget = QtGui.QWidget()
         else:
             # create the draft Toolbar                
@@ -249,6 +257,12 @@ class DraftToolBar:
         if hide: chk.hide()
         layout.addWidget(chk)
         return chk
+
+    def _combo (self,name,layout,hide=True):
+        cb = QtGui.QComboBox(self.baseWidget)
+        cb.setObjectName(name)
+        if hide: cb.hide()
+        layout.addWidget(cb)
                         
     def setupToolBar(self,task=False):
         "sets the draft toolbar up"
@@ -462,19 +476,17 @@ class DraftToolBar:
 # Interface modes
 #---------------------------------------------------------------------------
 
-    def taskUi(self,title):
+    def taskUi(self,title,extra=None):
         if self.taskmode:
             self.isTaskOn = True
-            FreeCADGui.Control.closeDialog()
+            todo.delay(FreeCADGui.Control.closeDialog,None)
             self.baseWidget = QtGui.QWidget()
-            self.setTitle(title)
             self.layout = QtGui.QVBoxLayout(self.baseWidget)
             self.setupToolBar(task=True)
             self.retranslateUi(self.baseWidget)
-            self.panel = DraftTaskPanel(self.baseWidget)
-            FreeCADGui.Control.showDialog(self.panel)
-        else:
-            self.setTitle(title)  
+            self.panel = DraftTaskPanel(self.baseWidget,extra)
+            todo.delay(FreeCADGui.Control.showDialog,self.panel)
+        self.setTitle(title)  
                 
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
@@ -509,8 +521,10 @@ class DraftToolBar:
         self.labelx.setText(translate("draft", "Center X"))
         self.continueCmd.show()
 
-    def pointUi(self,title=translate("draft","Point")):
-        self.taskUi(title)
+    def pointUi(self,title=translate("draft","Point"),cancel=None,extra=None,getcoords=None,rel=False):
+        if cancel: self.cancel = cancel
+        if getcoords: self.pointcallback = getcoords
+        self.taskUi(title,extra)
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.labelx.setText(translate("draft", "X"))
@@ -520,8 +534,12 @@ class DraftToolBar:
         self.xValue.show()
         self.yValue.show()
         self.zValue.show()
+        if rel: self.isRelative.show()
         self.xValue.setFocus()
         self.xValue.selectAll()
+
+    def extraUi(self):
+        pass
 
     def offsetUi(self):
         self.taskUi(translate("draft","Offset"))
@@ -534,6 +552,9 @@ class DraftToolBar:
 
     def offUi(self):
         todo.delay(FreeCADGui.Control.closeDialog,None)
+        self.cancel = None
+        self.sourceCmd = None
+        self.pointcallback = None
         if self.taskmode:
             self.isTaskOn = False
             self.baseWidget = QtGui.QWidget()
@@ -568,7 +589,7 @@ class DraftToolBar:
             self.textValue.hide()
             self.continueCmd.hide()
             self.occOffset.hide()
-
+            
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
         self.radiusUi()
@@ -790,7 +811,7 @@ class DraftToolBar:
 
     def validatePoint(self):
         "function for checking and sending numbers entered manually"
-        if self.sourceCmd != None:
+        if self.sourceCmd or self.pointcallback:
             if (self.labelRadius.isVisible()):
                 try:
                     rad=float(self.radiusValue.text())
@@ -813,26 +834,33 @@ class DraftToolBar:
                 except ValueError:
                     pass
                 else:
-                    if self.isRelative.isVisible() and self.isRelative.isChecked():
-                        if self.sourceCmd.node:
-                            if self.sourceCmd.featureName == "Rectangle":
-                                last = self.sourceCmd.node[0]
-                            else:
-                                last = self.sourceCmd.node[-1]
-                            numx = last.x + numx
-                            numy = last.y + numy
-                            numz = last.z + numz
-                            if FreeCAD.DraftWorkingPlane:
-                                v = FreeCAD.Vector(numx,numy,numz)
-                                v = FreeCAD.DraftWorkingPlane.getGlobalCoords(v)
-                                numx = v.x
-                                numy = v.y
-                                numz = v.z
-                    self.sourceCmd.numericInput(numx,numy,numz)
+                    if self.pointcallback:
+                        self.pointcallback(FreeCAD.Vector(numx,numy,numz),(self.isRelative.isVisible() and self.isRelative.isChecked()))
+                    else:
+                        if self.isRelative.isVisible() and self.isRelative.isChecked():
+                            if self.sourceCmd.node:
+                                if self.sourceCmd.featureName == "Rectangle":
+                                    last = self.sourceCmd.node[0]
+                                else:
+                                    last = self.sourceCmd.node[-1]
+                                numx = last.x + numx
+                                numy = last.y + numy
+                                numz = last.z + numz
+                                if FreeCAD.DraftWorkingPlane:
+                                    v = FreeCAD.Vector(numx,numy,numz)
+                                    v = FreeCAD.DraftWorkingPlane.getGlobalCoords(v)
+                                    numx = v.x
+                                    numy = v.y
+                                    numz = v.z
+                        self.sourceCmd.numericInput(numx,numy,numz)
 
     def finish(self):
         "finish button action"
-        self.sourceCmd.finish(False)
+        if self.sourceCmd:
+            self.sourceCmd.finish(False)
+        if self.cancel:
+            self.cancel()
+            self.cancel = None
 
     def closeLine(self):
         "close button action"

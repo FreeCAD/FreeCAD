@@ -68,6 +68,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
+          << "Sketcher_External"
           << "Sketcher_ToggleConstruction"
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;
@@ -88,14 +89,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_ConstrainTangent"
           << "Sketcher_ConstrainEqual"
           << "Sketcher_ConstrainSymmetric";
-    *sketch 
+    *sketch
         << "Sketcher_NewSketch"
         << "Sketcher_LeaveSketch"
         << "Sketcher_ViewSketch"
         << "Sketcher_MapSketch"
         << geom
         << cons
-        << "Separator" 
+        << "Separator"
     ;
 
     return root;
@@ -119,6 +120,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
+          << "Sketcher_External"
           << "Sketcher_ToggleConstruction"
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;

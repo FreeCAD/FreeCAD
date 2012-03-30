@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
 # include <QString>
 # include <QDir>
 # include <QFileInfo>
@@ -46,6 +47,7 @@
 #include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/WaitCursor.h>
 
 #include "../App/PartFeature.h"
 #include "DlgPartImportStepImp.h"
@@ -295,17 +297,18 @@ void CmdPartCommon::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Common");
 
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    std::string ObjectBuf;
+    std::stringstream str;
     std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        ObjectBuf += std::string("App.activeDocument().") + it->FeatName + ",";
+        str << "App.activeDocument()." << it->FeatName << ",";
         tempSelNames.push_back(it->FeatName);
     }
-    ObjectBuf.erase(--ObjectBuf.end());
+    str << "]";
 
     openCommand("Common");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiCommon\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Shapes = [%s]",FeatName.c_str(),ObjectBuf.c_str());
+    runCommand(Doc,str.str().c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -348,17 +351,18 @@ void CmdPartFuse::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Fusion");
 
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    std::string ObjectBuf;
+    std::stringstream str;
     std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        ObjectBuf += std::string("App.activeDocument().") + it->FeatName + ",";
+        str << "App.activeDocument()." << it->FeatName << ",";
         tempSelNames.push_back(it->FeatName);
     }
-    ObjectBuf.erase(--ObjectBuf.end());
+    str << "]";
 
     openCommand("Fusion");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiFuse\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Shapes = [%s]",FeatName.c_str(),ObjectBuf.c_str());
+    runCommand(Doc,str.str().c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -449,6 +453,7 @@ void CmdPartImport::activated(int iMsg)
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
+        Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
         openCommand("Import Part");

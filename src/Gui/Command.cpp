@@ -424,6 +424,16 @@ void Command::doCommand(DoCmd_Type eType,const char* sCmd,...)
     free (format);
 }
 
+/// Run a App level Action
+void Command::runCommand(DoCmd_Type eType,const char* sCmd)
+{
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,sCmd);
+    Base::Interpreter().runString(sCmd);
+}
+
 void Command::copyVisual(const char* to, const char* attr, const char* from)
 {
     doCommand(Gui,"Gui.ActiveDocument.%s.%s=Gui.ActiveDocument.%s.%s", to, attr, from, attr);
@@ -494,26 +504,26 @@ void Command::applyCommandData(Action* action)
 {
     action->setText(QCoreApplication::translate(
         this->className(), sMenuText, 0,
-        QCoreApplication::CodecForTr));
+        QCoreApplication::UnicodeUTF8));
     action->setToolTip(QCoreApplication::translate(
         this->className(), sToolTipText, 0,
-        QCoreApplication::CodecForTr));
+        QCoreApplication::UnicodeUTF8));
     if (sStatusTip)
         action->setStatusTip(QCoreApplication::translate(
             this->className(), sStatusTip, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
     else
         action->setStatusTip(QCoreApplication::translate(
             this->className(), sToolTipText, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
     if (sWhatsThis)
         action->setWhatsThis(QCoreApplication::translate(
             this->className(), sWhatsThis, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
     else
         action->setWhatsThis(QCoreApplication::translate(
             this->className(), sToolTipText, 0,
-            QCoreApplication::CodecForTr));
+            QCoreApplication::UnicodeUTF8));
 }
 
 const char* Command::keySequenceToAccel(int sk) const

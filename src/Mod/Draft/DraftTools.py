@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -29,9 +29,9 @@ __url__ = "http://free-cad.sourceforge.net"
 # Generic stuff
 #---------------------------------------------------------------------------
 
-import os, FreeCAD, FreeCADGui, Part, WorkingPlane, math, re, importSVG, Draft, Draft_rc
+import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, importSVG, Draft, Draft_rc
 from functools import partial
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 from FreeCAD import Vector
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
@@ -50,9 +50,10 @@ FreeCAD.svgpatterns = importSVG.getContents(Draft_rc.qt_resource_data,'pattern',
 altpat = Draft.getParam("patternFile")
 if os.path.isdir(altpat):
     for f in os.listdir(altpat):
-        if '.svg' in f:
+        if f[-4:].upper() == ".SVG":
             p = importSVG.getContents(altpat+os.sep+f,'pattern')
-            if p: FreeCAD.svgpatterns[p[0]]=p[1]
+            if p:
+                FreeCAD.svgpatterns.update(p)
 
 # sets the default working plane
 plane = WorkingPlane.plane()
@@ -311,6 +312,9 @@ class Creator:
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
+        global Part, fcgeo
+        import Part
+        from draftlibs import fcgeo
         self.ui = None
         self.call = None
         self.doc = None
@@ -452,9 +456,9 @@ class Line(Creator):
                 if len(edges) > 1:
                     edges.pop()
                     newshape = Part.Wire(edges)
+                    self.obj.Shape = newshape
                 else:
-                    newshape = Part.Shape()
-                self.obj.Shape = newshape
+                    self.obj.ViewObject.hide()
                 # DNC: report on removal
                 msg(translate("draft", "Last point has been removed\n"))
 
@@ -472,7 +476,7 @@ class Line(Creator):
             if self.isWire:
                 msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
         else:
-            currentshape = self.obj.Shape
+            currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node)-2]
             newseg = Part.Line(last,point).toShape()
             newshape=currentshape.fuse(newseg)
@@ -482,15 +486,12 @@ class Line(Creator):
     def wipe(self):
         "removes all previous segments and starts from last point"
         if len(self.node) > 1:
-            print "nullifying"
             # self.obj.Shape.nullify() - for some reason this fails
             self.obj.ViewObject.Visibility = False
             self.node = [self.node[-1]]
-            print "setting trackers"
             self.linetrack.p1(self.node[0])
             self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
-            print "done"
                         
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
@@ -1364,6 +1365,7 @@ class Dimension(Creator):
                 self.center = None
                 self.arcmode = False
                 self.point2 = None
+                self.force = None
                 self.constraintrack = lineTracker(dotted=True)
                 msg(translate("draft", "Pick first point:\n"))
                 FreeCADGui.draftToolBar.show()
@@ -1498,15 +1500,21 @@ class Dimension(Creator):
                             self.point2 = self.node[1]
                         else:
                             self.node[1] = self.point2
-                        a=abs(point.sub(self.node[0]).getAngle(plane.u))
-                        if (a > math.pi/4) and (a <= 0.75*math.pi):
+                        if not self.force:
+                            a=abs(point.sub(self.node[0]).getAngle(plane.u))
+                            if (a > math.pi/4) and (a <= 0.75*math.pi):
+                                self.force = 1
+                            else:
+                                self.force = 2
+                        if self.force == 1:
                             self.node[1] = Vector(self.node[0].x,self.node[1].y,self.node[0].z)
-                        else:
+                        elif self.force == 2:
                             self.node[1] = Vector(self.node[1].x,self.node[0].y,self.node[0].z)
                     self.constraintrack.p1(point)
                     self.constraintrack.p2(ctrlPoint)
                     self.constraintrack.on()
                 else:
+                    self.force = None
                     if self.point2:
                         self.node[1] = self.point2
                         self.point2 = None
@@ -1624,6 +1632,9 @@ class Modifier:
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
+        global Part, fcgeo
+        import Part
+        from draftlibs import fcgeo
         self.ui = None
         self.call = None
         self.commitList = []
@@ -1645,14 +1656,14 @@ class Modifier:
             self.extendedCopy = False
             self.ui.setTitle(name)
             self.featureName = name
-            self.snap = snapTracker()
-            self.extsnap = lineTracker(dotted=True)
+            #self.snap = snapTracker()
+            #self.extsnap = lineTracker(dotted=True)
             self.planetrack = PlaneTracker()
 		
     def finish(self):
         self.node = []
-        self.snap.finalize()
-        self.extsnap.finalize()
+        #self.snap.finalize()
+        #self.extsnap.finalize()
         FreeCAD.activeDraftCommand = None
         if self.ui:
             self.ui.offUi()
@@ -2060,6 +2071,7 @@ class Offset(Modifier):
         else:
             self.step = 0
             self.dvec = None
+            self.npts = None
             self.constrainSeg = None
             self.ui.offsetUi()
             self.linetrack = lineTracker()
@@ -2074,6 +2086,9 @@ class Offset(Modifier):
                 self.ghost.setCenter(self.center)
                 self.ghost.setStartAngle(math.radians(self.sel.FirstAngle))
                 self.ghost.setEndAngle(math.radians(self.sel.LastAngle))
+            elif Draft.getType(self.sel) == "BSpline":
+                self.ghost = bsplineTracker(points=self.sel.Points)
+                self.mode = "BSpline"
             else:
                 self.ghost = wireTracker(self.shape)
                 self.mode = "Wire"
@@ -2108,7 +2123,19 @@ class Offset(Modifier):
                     v2 = fcgeo.getTangent(self.shape.Edges[dist[1]],point)
                     a = -fcvec.angle(v1,v2)
                     self.dvec = fcvec.rotate(d,a,plane.axis)
-                    self.ghost.update(fcgeo.offsetWire(self.shape,self.dvec,occ=self.ui.occOffset.isChecked()))
+                    occmode = self.ui.occOffset.isChecked()
+                    self.ghost.update(fcgeo.offsetWire(self.shape,self.dvec,occ=occmode),forceclosed=occmode)
+                elif self.mode == "BSpline":
+                    d = fcvec.neg(dist[0])
+                    e = self.shape.Edges[0]
+                    basetan = fcgeo.getTangent(e,point)
+                    self.npts = []
+                    for p in self.sel.Points:
+                        currtan = fcgeo.getTangent(e,p)
+                        a = -fcvec.angle(currtan,basetan)
+                        self.dvec = fcvec.rotate(d,a,plane.axis)
+                        self.npts.append(p.add(self.dvec))
+                    self.ghost.update(self.npts)
                 elif self.mode == "Circle":
                     self.dvec = point.sub(self.center).Length
                     self.ghost.setRadius(self.dvec)
@@ -2133,7 +2160,11 @@ class Offset(Modifier):
                 copymode = False
                 occmode = self.ui.occOffset.isChecked()
                 if hasMod(arg,MODALT) or self.ui.isCopy.isChecked(): copymode = True
-                if self.dvec:
+                if self.npts:
+                    self.commit(translate("draft","Offset"),
+                                partial(Draft.offset,self.sel,
+                                        self.npts,copymode,occ=False))
+                elif self.dvec:
                     self.commit(translate("draft","Offset"),
                                 partial(Draft.offset,self.sel,
                                         self.dvec,copymode,occ=occmode))
@@ -2143,11 +2174,11 @@ class Offset(Modifier):
                     self.finish()
                                         
     def finish(self,closed=False):
-        Modifier.finish(self)
         if self.ui and self.running:
             self.linetrack.finalize()
             self.constraintrack.finalize()
             self.ghost.finalize()
+        Modifier.finish(self)
 
     def numericRadius(self,rad):
         '''this function gets called by the toolbar when
@@ -2981,29 +3012,12 @@ class Drawing(Modifier):
                 self.page = self.createDefaultPage()
             sel.reverse() 
             for obj in sel:
-                self.insertPattern(obj)
                 if obj.ViewObject.isVisible():
                     name = 'View'+obj.Name
                     oldobj = self.page.getObject(name)
                     if oldobj: self.doc.removeObject(oldobj.Name)
                     Draft.makeDrawingView(obj,self.page)
             self.doc.recompute()
-
-    def insertPattern(self,obj):
-        "inserts a pattern object on the page"
-        if 'FillStyle' in obj.ViewObject.PropertiesList:
-            if obj.ViewObject.FillStyle != 'shape color':
-                hatch = obj.ViewObject.FillStyle
-                vobj = self.page.getObject('Pattern'+hatch)
-                if not vobj:
-                    if hatch in FreeCAD.svgpatterns:
-                        view = self.doc.addObject('Drawing::FeatureView','Pattern'+hatch)
-                        svg = FreeCAD.svgpatterns[hatch]
-                        view.ViewResult = svg
-                        view.X = 0
-                        view.Y = 0
-                        view.Scale = 1
-                        self.page.addObject(view)
 
     def createDefaultPage(self):
         "created a default page"
@@ -3074,8 +3088,9 @@ class Edit(Modifier):
                 if self.obj:
                     self.obj = self.obj[0]
                     # store selectable state of the object
-                    self.selectstate = self.obj.ViewObject.Selectable
-                    self.obj.ViewObject.Selectable = False
+                    if hasattr(self.obj.ViewObject,"Selectable"):
+                        self.selectstate = self.obj.ViewObject.Selectable
+                        self.obj.ViewObject.Selectable = False
                     if not Draft.getType(self.obj) in ["Wire","BSpline"]:
                         self.ui.setEditButtons(False)
                     else:
@@ -3142,7 +3157,8 @@ class Edit(Modifier):
                     t.finalize()
             if self.constraintrack:
                 self.constraintrack.finalize()
-        self.obj.ViewObject.Selectable = self.selectstate
+        if hasattr(self.obj.ViewObject,"Selectable"):
+            self.obj.ViewObject.Selectable = self.selectstate
         Modifier.finish(self)
         plane.restore()
         self.running = False
@@ -3182,13 +3198,15 @@ class Edit(Modifier):
                                 self.ui.isRelative.show()
                                 self.editing = int(snapped['Component'][8:])
                                 self.trackers[self.editing].off()
-                                self.obj.ViewObject.Selectable = False
+                                if hasattr(self.obj.ViewObject,"Selectable"):
+                                    self.obj.ViewObject.Selectable = False
                                 if "Points" in self.obj.PropertiesList:
                                     self.node.append(self.obj.Points[self.editing])
                 else:
                     print "finishing edit"
                     self.trackers[self.editing].on()
-                    self.obj.ViewObject.Selectable = True
+                    if hasattr(self.obj.ViewObject,"Selectable"):
+                        self.obj.ViewObject.Selectable = True
                     self.numericInput(self.trackers[self.editing].get())
 
     def update(self,v):
@@ -3534,6 +3552,9 @@ class Draft2Sketch():
                 allDraft = False
             elif obj.isDerivedFrom("Part::Part2DObjectPython"):
                 allSketches = False
+            else:
+                allDraft = False
+                allSketches = False
         if not sel:
             return
         elif allDraft:
@@ -3548,9 +3569,12 @@ class Draft2Sketch():
             FreeCAD.ActiveDocument.openTransaction("Convert")
             for obj in sel:
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
-                    Draft.makeSketch(sel,autoconstraints=True)
+                    Draft.draftify(obj)
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
-                    Draft.draftify(sel,makeblock=True)
+                    Draft.makeSketch(obj,autoconstraints=True)
+                elif obj.isDerivedFrom("Part::Feature"):
+                    if len(obj.Shape.Wires) == 1:
+                        Draft.makeSketch(obj,autoconstraints=False)
             FreeCAD.ActiveDocument.commitTransaction()
 
                  

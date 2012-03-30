@@ -346,6 +346,7 @@ libFreeCADGui_la_SOURCES=\
 		ToolBarManager.cpp \
 		ToolBox.cpp \
 		ToolBoxManager.cpp \
+		TouchpadNavigationStyle.cpp \
 		Transform.cpp \
 		Transform.h \
 		Tree.cpp \

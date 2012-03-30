@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -21,8 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,MeshPart,ArchComponent
-from draftlibs import fcgeo,fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent
+from draftlibs import fcvec
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -138,6 +138,10 @@ def splitMesh(obj,mark=True):
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
+
+    name = obj.Name
+    import Part,MeshPart
+    from draftlibs import fcgeo
     if "Mesh" in obj.PropertiesList:
         faces = []	
         mesh = obj.Mesh
@@ -175,26 +179,32 @@ def meshToShape(obj,mark=True):
                     # make sure that the exterior wires comes as first in the list
                     wires.insert(0, ext)
                     print "done sorting", wires
-                faces.append(Part.Face(wires))
+                if wires:
+                    faces.append(Part.Face(wires))
                 print "done facing"
             print "faces",faces
 
-        shell=Part.Compound(faces)
-        solid = Part.Solid(Part.Shell(faces))
-        name = obj.Name
-        if solid.isClosed():
-            FreeCAD.ActiveDocument.removeObject(name)
-        newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-        newobj.Shape = solid
-        newobj.Placement = plac
-        if not solid.isClosed():
-            newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
-        return newobj
+        try:
+            se = Part.makeShell(faces)
+            solid = Part.Solid(se)
+        except:
+            pass
+        else:
+            if solid.isClosed():
+                FreeCAD.ActiveDocument.removeObject(name)
+            else:
+                if mark:
+                    newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+            newobj.Shape = solid
+            newobj.Placement = plac
+            return newobj
     return None
 
 def removeShape(objs,mark=True):
     '''takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters.'''
+    from draftlibs import fcgeo
     if not isinstance(objs,list):
         objs = [objs]
     for obj in objs:
@@ -206,12 +216,12 @@ def removeShape(objs,mark=True):
                 print tp
                 if tp == "Structure":
                     FreeCAD.ActiveDocument.removeObject(name)
-                    import Structure
-                    str = Structure.makeStructure(length=dims[1],width=dims[2],height=dims[3],name=name)
+                    import ArchStructure
+                    str = ArchStructure.makeStructure(length=dims[1],width=dims[2],height=dims[3],name=name)
                     str.Placement = dims[0]
                 elif tp == "Wall":
                     FreeCAD.ActiveDocument.removeObject(name)
-                    import Wall
+                    import ArchWall
                     length = dims[1]
                     width = dims[2]
                     v1 = Vector(length/2,0,0)
@@ -219,7 +229,7 @@ def removeShape(objs,mark=True):
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)
-                    wal = Wall.makeWall(line,width=width,height=dims[3],name=name)
+                    wal = ArchWall.makeWall(line,width=width,height=dims[3],name=name)
         else:
             if mark:
                 obj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
@@ -250,6 +260,26 @@ def mergeCells(objectslist):
         FreeCAD.ActiveDocument.removeObject(o.Name)
     FreeCAD.ActiveDocument.recompute()
     return base
+
+def download(url):
+    '''downloads a file from the given URL and saves it in the
+    user directory. Returns the path to the saved file'''
+    import urllib2, os
+    name = url.split('/')[-1]
+    filepath = os.path.join(FreeCAD.ConfigGet("UserAppData"),name)
+    if os.path.exists(filepath):
+        return filepath
+    try:
+        FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
+        response = urllib2.urlopen(url)
+        s = response.read()
+        f = open(filepath,'wb')
+        f.write(s)
+        f.close()
+    except:
+        return None
+    else:
+        return filepath
     
 # command definitions ###############################################
                        

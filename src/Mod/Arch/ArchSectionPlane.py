@@ -1,8 +1,31 @@
-import FreeCAD,FreeCADGui,Part,ArchComponent,WorkingPlane,Drawing,math
+#***************************************************************************
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *  
+#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#*                                                                         *
+#***************************************************************************
+
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
-from draftlibs import fcvec,fcgeo
+from draftlibs import fcvec
 
 
 class _CommandSectionPlane:
@@ -46,6 +69,7 @@ class _SectionPlane:
         self.Type = "SectionPlane"
         
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         l = obj.ViewObject.DisplaySize
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
@@ -183,6 +207,8 @@ class _ArchDrawingView:
         return Vector(lx,ly,0)
 
     def getPath(self,face,plane):
+        import Part
+        from draftlibs import fcgeo
         "returns a svg path from a face"
         svg ='<path '
         edges = fcgeo.sortEdges(face.Edges)

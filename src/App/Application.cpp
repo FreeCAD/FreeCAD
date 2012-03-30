@@ -310,9 +310,6 @@ bool Application::closeDocument(const char* name)
     if (pos == DocMap.end()) // no such document
         return false;
 
-    if (!pos->second->isClosable())
-        return false;
-
     // Trigger observers before removing the document from the internal map.
     // Some observers might rely on that this document is still there.
     signalDeleteDocument(*pos->second);
@@ -1035,12 +1032,18 @@ void Application::initConfig(int argc, char ** argv)
     // only for 'BuildVersionMajor'.
     if (App::Application::Config().find("BuildVersionMajor") == App::Application::Config().end()) {
         std::stringstream str; str << FCVersionMajor << "." << FCVersionMinor;
-        App::Application::Config()["ExeVersion"]         = str.str();
-        App::Application::Config()["BuildVersionMajor"]  = FCVersionMajor;
-        App::Application::Config()["BuildVersionMinor"]  = FCVersionMinor;
-        App::Application::Config()["BuildRevision"]      = FCRevision;
-        App::Application::Config()["BuildRepositoryURL"] = FCRepositoryURL;
-        App::Application::Config()["BuildRevisionDate"]  = FCCurrentDateT;
+        App::Application::Config()["ExeVersion"         ] = str.str();
+        App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
+        App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
+        App::Application::Config()["BuildRevision"      ] = FCRevision;
+        App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
+        App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
+#if defined(FCRepositoryHash)
+        App::Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
+#endif
+#if defined(FCRepositoryBranch)
+        App::Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
+#endif
     }
 
     _argc = argc;
@@ -1198,6 +1201,10 @@ void Application::processCmdLineFiles(void)
                     Console().Warning("File format not supported: %s \n", File.filePath().c_str());
                 }
             }
+        }
+        catch (const Base::SystemExitException&) {
+            Base::PyGILStateLocker locker;
+            Base::Interpreter().systemExit();
         }
         catch (const Base::Exception& e) {
             Console().Error("Exception while processing file: %s [%s]\n", File.filePath().c_str(), e.what());

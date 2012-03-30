@@ -30,6 +30,7 @@
 #include <Base/Exception.h>
 #include "Triangulation.h"
 #include "Approximation.h"
+#include "Algorithm.h"
 #include "MeshKernel.h"
 
 #include <Mod/Mesh/App/WildMagic4/Wm4Delaunay2.h>
@@ -121,7 +122,7 @@ std::vector<Base::Vector3f> AbstractPolygonTriangulator::ProjectToFitPlane()
     return proj;
 }
 
-void AbstractPolygonTriangulator::ProjectOntoSurface(const std::vector<Base::Vector3f>& points)
+void AbstractPolygonTriangulator::PostProcessing(const std::vector<Base::Vector3f>& points)
 {
     // For a good approximation we should have enough points, i.e. for 9 parameters
     // for the fit function we should have at least 50 points.
@@ -144,9 +145,23 @@ void AbstractPolygonTriangulator::ProjectOntoSurface(const std::vector<Base::Vec
     }
 }
 
+MeshGeomFacet AbstractPolygonTriangulator::GetTriangle(const MeshPointArray& points,
+                                                       const MeshFacet& facet) const
+{
+    MeshGeomFacet triangle;
+    triangle._aclPoints[0] = points[facet._aulPoints[0]];
+    triangle._aclPoints[1] = points[facet._aulPoints[1]];
+    triangle._aclPoints[2] = points[facet._aulPoints[2]];
+    return triangle;
+}
+
 bool AbstractPolygonTriangulator::TriangulatePolygon()
 {
     try {
+        if (this->_points.size() != this->_indices.size()) {
+            Base::Console().Log("Triangulation: %d points <> %d indices\n", _points.size(), _indices.size());
+            return false;
+        }
         bool ok = Triangulate();
         if (ok) Done();
         return ok;
@@ -175,6 +190,10 @@ void AbstractPolygonTriangulator::Discard()
         _discard = true;
         _info.pop_back();
     }
+}
+
+void AbstractPolygonTriangulator::Reset()
+{
 }
 
 void AbstractPolygonTriangulator::Done()
@@ -625,7 +644,7 @@ bool FlatTriangulator::Triangulate()
     return succeeded;
 }
 
-void FlatTriangulator::ProjectOntoSurface(const std::vector<Base::Vector3f>&)
+void FlatTriangulator::PostProcessing(const std::vector<Base::Vector3f>&)
 {
 }
 
@@ -669,7 +688,8 @@ bool ConstraintDelaunayTriangulator::Triangulate()
 
 // -------------------------------------------------------------
 
-Triangulator::Triangulator(const MeshKernel& k) : _kernel(k)
+#if 0
+Triangulator::Triangulator(const MeshKernel& k, bool flat) : _kernel(k)
 {
 }
 
@@ -681,3 +701,23 @@ bool Triangulator::Triangulate()
 {
     return false;
 }
+
+MeshGeomFacet Triangulator::GetTriangle(const MeshPointArray&,
+                                        const MeshFacet& facet) const
+{
+    return MeshGeomFacet();
+}
+
+void Triangulator::PostProcessing(const std::vector<Base::Vector3f>&)
+{
+}
+
+void Triangulator::Discard()
+{
+    AbstractPolygonTriangulator::Discard();
+}
+
+void Triangulator::Reset()
+{
+}
+#endif

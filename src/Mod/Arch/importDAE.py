@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, collada, Mesh, os, numpy
+import FreeCAD, Mesh, os, numpy
 
 __title__="FreeCAD Collada importer"
 __author__ = "Yorik van Havre"
@@ -29,8 +29,21 @@ __url__ = "http://free-cad.sourceforge.net"
 
 DEBUG = True
 
+def checkCollada():
+    "checks if collada if available"
+    global collada
+    COLLADA = None
+    try:
+        import collada
+    except:
+        FreeCAD.Console.PrintError("pycollada not found, no collada support.\n")
+        return False
+    else:
+        return True
+    
 def open(filename):
     "called when freecad wants to open a file"
+    if not checkCollada(): return
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = decode(docname)
@@ -76,6 +89,7 @@ def read(filename):
 
 def export(exportList,filename):
     "called when freecad exports a file"
+    if not checkCollada(): return
     colmesh = collada.Collada()
     effect = collada.material.Effect("effect0", [], "phong", diffuse=(.7,.7,.7), specular=(1,1,1))
     mat = collada.material.Material("material0", "mymaterial", effect)

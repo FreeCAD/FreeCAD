@@ -1,10 +1,10 @@
 noinst_LTLIBRARIES=libResources.la
 
 BUILT_SOURCES=\
-		qrc_Sketcher.cpp 
+		qrc_Sketcher.cpp
 
 nodist_libResources_la_SOURCES=\
-		qrc_Sketcher.cpp 
+		qrc_Sketcher.cpp
 
 EXTRA_DIST = \
 icons/Constraint_PointOnObject.svg \
@@ -70,6 +70,7 @@ icons/Constraint_PointOnObject.svg \
 		icons/Sketcher_CreateText.svg \
 		icons/Sketcher_DraftLine.svg \
 		icons/Sketcher_Trimming.svg \
+		icons/Sketcher_External.svg \
 		icons/Sketcher_LeaveSketch.svg \
 		icons/Sketcher_NewSketch.svg \
 		icons/Sketcher_Sketch.svg \

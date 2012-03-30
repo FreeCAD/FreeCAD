@@ -1,5 +1,5 @@
 #SUBDIRS=Part Mesh Points Raytracing Image Drawing Complete Draft Test TemplatePyMod
-SUBDIRS=Points Complete Draft Test TemplatePyMod Web Start Idf Arch
+SUBDIRS=Points Complete Draft Test TemplatePyMod Web Start Idf Arch Surfaces Ship
 
 #if HAVE_OPENCV
 SUBDIRS += Image

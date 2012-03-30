@@ -4,7 +4,7 @@
 #*   Ken Cline <cline@frii.com>                                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -22,7 +22,7 @@
 #***************************************************************************
 
 
-import FreeCAD, FreeCADGui, Part, math
+import FreeCAD, FreeCADGui, math
 from FreeCAD import Vector
 from draftlibs import fcvec
 
@@ -232,13 +232,16 @@ class plane:
 def getPlacementFromPoints(points):
         "returns a placement from a list of 3 or 4 vectors"
         pl = plane()
-        pl.position = points[0]
-        pl.u = (points[1].sub(points[0]).normalize())
-        pl.v = (points[2].sub(points[0]).normalize())
-        if len(points) == 4:
-                pl.axis = (points[3].sub(points[0]).normalize())
-        else:
-                pl.axis = ((pl.u).cross(pl.v)).normalize()
+        try:
+                pl.position = points[0]
+                pl.u = (points[1].sub(points[0]).normalize())
+                pl.v = (points[2].sub(points[0]).normalize())
+                if len(points) == 4:
+                        pl.axis = (points[3].sub(points[0]).normalize())
+                else:
+                        pl.axis = ((pl.u).cross(pl.v)).normalize()
+        except:
+                pass
         p = pl.getPlacement()
         del pl
         return p
