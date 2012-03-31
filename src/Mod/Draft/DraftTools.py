@@ -2368,8 +2368,12 @@ class Upgrade(Modifier):
             else:
                 # only closed wires
                 for w in wires:
-                    f = Part.Face(w)
-                    faces.append(f)
+                    if fcgeo.isPlanar(w):
+                        f = Part.Face(w)
+                        faces.append(f)
+                    else:
+                        msg(translate("draft", "One wire is not planar, upgrade not done\n"))
+                        self.nodelete = True
                 for f in faces:
                     if not curves: 
                         msg(translate("draft", "Found a closed wire: making a Draft wire\n"))
@@ -2390,8 +2394,16 @@ class Upgrade(Modifier):
                 edges.append(Part.Line(p1,p0).toShape())
             w = Part.Wire(fcgeo.sortEdges(edges))
             if len(edges) == 1:
-                msg(translate("draft", "Found 1 open edge: making a line\n"))
-                newob = Draft.makeWire(w,closed=False)
+                if len(w.Vertexes) == 2:
+                    msg(translate("draft", "Found 1 open edge: making a line\n"))
+                    newob = Draft.makeWire(w,closed=False)
+                elif len(w.Vertexes) == 1:
+                    msg(translate("draft", "Found 1 circular edge: making a circle\n"))
+                    c = w.Edges[0].Curve.Center
+                    r = w.Edges[0].Curve.Radius
+                    p = FreeCAD.Placement()
+                    p.move(c)
+                    newob = Draft.makeCircle(r,p)
             else:
                 msg(translate("draft", "Found 1 open wire: closing it\n"))
                 if not curves:
