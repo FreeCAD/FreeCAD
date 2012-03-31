@@ -200,8 +200,8 @@ void SvgView::wheelEvent(QWheelEvent *event)
 
 /* TRANSLATOR DrawingGui::DrawingView */
 
-DrawingView::DrawingView(QWidget* parent)
-  : Gui::MDIView(0, parent), m_view(new SvgView)
+DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
+  : Gui::MDIView(doc, parent), m_view(new SvgView)
 {
     m_backgroundAction = new QAction(tr("&Background"), this);
     m_backgroundAction->setEnabled(false);

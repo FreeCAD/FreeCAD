@@ -1006,9 +1006,9 @@ MDIView* Document::getActiveView(void) const
         }
     }
 
-    // the active view is not part of this document, just use the first view
+    // the active view is not part of this document, just use the last view
     if (!ok && !mdis.empty())
-        active = mdis.front();
+        active = mdis.back();
 
     return active;
 }
