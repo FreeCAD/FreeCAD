@@ -29,6 +29,7 @@
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
+#include <iostream>
 #endif
 
 
@@ -168,22 +169,24 @@ void MDIView::windowStateChanged( MDIView* )
 {
 }
 
+void MDIView::print(QPrinter* printer)
+{
+    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
+}
+
 void MDIView::print()
 {
-    // print command specified but print method not overriden!
-    assert(0);
+    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
 }
 
 void MDIView::printPdf()
 {
-    // print command specified but print method not overriden!
-    assert(0);
+    std::cerr << "Printing PDF not implemented for " << this->metaObject()->className() << std::endl;
 }
 
 void MDIView::printPreview()
 {
-    // print command specified but print method not overriden!
-    assert(0);
+    std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
 }
 
 QSize MDIView::minimumSizeHint () const

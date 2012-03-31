@@ -1620,9 +1620,15 @@ void Application::runApplication(void)
             logo->setFrameShape(QFrame::NoFrame);
         }
     }
+    bool hidden = false;
+    it = cfg.find("StartHidden");
+    if (it != cfg.end()) {
+        hidden = true;
+    }
 
     // show splasher while initializing the GUI
-    mw.startSplasher();
+    if (!hidden)
+        mw.startSplasher();
 
     // running the GUI init script
     try {
@@ -1656,8 +1662,10 @@ void Application::runApplication(void)
     app.activateWorkbench(start.c_str());
 
     // show the main window
-    Base::Console().Log("Init: Showing main window\n");
-    mw.loadWindowSettings();
+    if (!hidden) {
+        Base::Console().Log("Init: Showing main window\n");
+        mw.loadWindowSettings();
+    }
 
     //initialize spaceball.
     mainApp.initSpaceball(&mw);

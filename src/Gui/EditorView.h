@@ -74,6 +74,7 @@ public:
     void print  ();
     void printPdf();
     void printPreview();
+    void print(QPrinter*);
     //@}
 
     QStringList undoActions() const;
@@ -88,7 +89,6 @@ private Q_SLOTS:
     void contentsChange(int position, int charsRemoved, int charsAdded);
     void undoAvailable(bool);
     void redoAvailable(bool);
-    void print(QPrinter*);
 
 private:
     void setCurrentFileName(const QString &fileName);

@@ -74,10 +74,18 @@ public:
     virtual bool canClose(void);
     /// delete itself
     virtual void deleteSelf();
-    /// print function of the view
+    /** @name Printing */
+    //@{
+public Q_SLOTS:
+    virtual void print(QPrinter* printer);
+public:
+    /** Print content of view */
     virtual void print();
+    /** Print to PDF file */
     virtual void printPdf();
+    /** Show a preview dialog */
     virtual void printPreview();
+    //@}
 
     QSize minimumSizeHint () const;
 
