@@ -284,6 +284,8 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
         # get include dirs
         QT4_GET_MOC_FLAGS(moc_flags)
         QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+        # fixes bug 0000585: bug with boost 1.48
+        SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
         foreach(it ${moc_files})
             get_filename_component(it ${it} ABSOLUTE)
