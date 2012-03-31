@@ -248,21 +248,21 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 # -------------------------------- ODE ----------------------------------
 
     find_package(ODE)
-	
+
 # -------------------------------- Qt --------------------------------
 
 # sets ${QT_LIBRARIES}
 
-    SET(QT_MIN_VERSION 4.1.4)
+    SET(QT_MIN_VERSION 4.5.0)
     set(QT_USE_QTNETWORK TRUE)
     set(QT_USE_QTXML TRUE)
-	if(FREECAD_BUILD_GUI)
-		set(QT_USE_QTOPENGL TRUE)
-		set(QT_USE_QTSVG TRUE)
-		set(QT_USE_QTUITOOLS TRUE)
-		set(QT_USE_QTWEBKIT TRUE)
-	endif(FREECAD_BUILD_GUI)
-    find_package(Qt4)
+    if(FREECAD_BUILD_GUI)
+        set(QT_USE_QTOPENGL TRUE)
+        set(QT_USE_QTSVG TRUE)
+        set(QT_USE_QTUITOOLS TRUE)
+        set(QT_USE_QTWEBKIT TRUE)
+    endif(FREECAD_BUILD_GUI)
+    find_package(Qt4 REQUIRED)
 
     include(${QT_USE_FILE})
 
@@ -271,7 +271,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("QT Webkit not found, will not build browser integration!")
+        MESSAGE("Qt Webkit not found, will not build browser integration!")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 
@@ -282,22 +282,22 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     # There is probably a cleaner solution than this
     macro(fc_wrap_cpp outfiles )
         # get include dirs
-        QT4_GET_MOC_FLAGS(moc_includes)
+        QT4_GET_MOC_FLAGS(moc_flags)
         QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
 
         foreach(it ${moc_files})
             get_filename_component(it ${it} ABSOLUTE)
             QT4_MAKE_OUTPUT_FILE(${it} moc_ cpp outfile)
-            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_includes}" "${moc_options}")
+            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}")
             set(${outfiles} ${${outfiles}} ${outfile})
             add_file_dependencies(${it} ${outfile})
         endforeach(it)
     endmacro(fc_wrap_cpp)
-	
+
     if(FREECAD_BUILD_GUI)	
 # -------------------------------- OpenGL --------------------------------
 
-		find_package(OpenGL)
+        find_package(OpenGL)
                 include(FindPackageMessage)
                 if(OPENGL_GLU_FOUND)
                     find_package_message(OPENGL_GLU
@@ -309,16 +309,16 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- Coin3D --------------------------------
 
-		find_package(Coin3D REQUIRED)
-		find_package(SoQt REQUIRED)
+        find_package(Coin3D REQUIRED)
+        find_package(SoQt REQUIRED)
 
 # ------------------------------ Spaceball -------------------------------
 
-                if (WIN32)
-                    #future
-                else(WIN32)
-                    find_package(Spnav)
-                endif(WIN32)
+        if (WIN32)
+            #future
+        else(WIN32)
+            find_package(Spnav)
+        endif(WIN32)
 
 # ------------------------------------------------------------------------
 
