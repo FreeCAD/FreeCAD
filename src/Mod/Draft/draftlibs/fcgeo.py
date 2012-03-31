@@ -911,6 +911,20 @@ def isCoplanar(faces):
                         return False
         return True
 
+def isPlanar(shape):
+	"checks if the given shape is planar"
+	if len(shape.Vertexes) <= 3:
+		return True
+	pts = [v.Point for v in shape.Vertexes[0:3]]
+	bt = Part.Face(Part.makePolygon(pts+[pts[0]]))
+	n = bt.normalAt(0,0)
+	for p in shape.Vertexes[3:]:
+		pv = p.Point.sub(pts[0])
+		rv = fcvec.project(pv,n)
+		if not fcvec.isNull(rv):
+			return False
+	return True
+
 def findWires(edges):
         '''finds connected edges in the list, and returns a list of lists containing edges
         that can be connected'''
