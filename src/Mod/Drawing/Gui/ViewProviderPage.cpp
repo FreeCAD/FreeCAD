@@ -40,6 +40,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
@@ -131,9 +132,11 @@ bool ViewProviderDrawingPage::doubleClicked(void)
 DrawingView* ViewProviderDrawingPage::showDrawingView()
 {
     if (!view){
-        view = new DrawingView(Gui::getMainWindow());
+        Gui::Document* doc = Gui::Application::Instance->getDocument
+            (this->pcObject->getDocument());
+        view = new DrawingView(doc, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
-        view->setWindowTitle(QObject::tr("Drawing viewer"));
+        view->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromAscii("[*]"));
         Gui::getMainWindow()->addWindow(view);
     }
 

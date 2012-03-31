@@ -79,7 +79,7 @@ class DrawingGuiExport DrawingView : public Gui::MDIView
     Q_OBJECT
 
 public:
-    DrawingView(QWidget* parent = 0);
+    DrawingView(Gui::Document* doc, QWidget* parent = 0);
 
 public Q_SLOTS:
     void load(const QString &path = QString());
