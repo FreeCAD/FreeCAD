@@ -1220,6 +1220,32 @@ void Application::processCmdLineFiles(void)
             Console().Error("Unknown exception while processing file: %s \n", File.filePath().c_str());
         }
     }
+
+    const std::map<std::string,std::string>& cfg = Application::Config();
+    std::map<std::string,std::string>::const_iterator it = cfg.find("SaveFile");
+    if (it != cfg.end()) {
+        std::string output = it->second;
+        Base::FileInfo fi(output);
+        std::string ext = fi.extension();
+        try {
+            std::vector<std::string> mods = App::GetApplication().getExportModules(ext.c_str());
+            if (!mods.empty()) {
+                Base::Interpreter().loadModule(mods.front().c_str());
+                Base::Interpreter().runStringArg("import %s",mods.front().c_str());
+                Base::Interpreter().runStringArg("%s.export(App.ActiveDocument.Objects, '%s')"
+                    ,mods.front().c_str(),output.c_str());
+            }
+            else {
+                Console().Warning("File format not supported: %s \n", output.c_str());
+            }
+        }
+        catch (const Base::Exception& e) {
+            Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+        }
+        catch (...) {
+            Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
+        }
+    }
 }
 
 void Application::runApplication()
@@ -1419,7 +1445,9 @@ void Application::ParseOptions(int ac, char ** av)
     // in config file, but will not be shown to the user.
     boost::program_options::options_description hidden("Hidden options");
     hidden.add_options()
-    ("input-file",  boost::program_options::value< vector<string> >(), "input file")
+    ("input-file", boost::program_options::value< vector<string> >(), "input file")
+    ("output",     boost::program_options::value<string>(),"output file")
+    ("hidden",                                             "don't show the main window")
     // this are to ignore for the window system (QApplication)
     ("style",      boost::program_options::value< string >(), "set the application GUI style")
     ("display",    boost::program_options::value< string >(), "set the X-Server")
@@ -1546,6 +1574,15 @@ void Application::ParseOptions(int ac, char ** av)
         std::ostringstream buffer;
         buffer << OpenFileCount;
         mConfig["OpenFileCount"] = buffer.str();
+    }
+
+    if (vm.count("output")) {
+        string file = vm["output"].as<string>();
+        mConfig["SaveFile"] = file;
+    }
+
+    if (vm.count("hidden")) {
+        mConfig["StartHidden"] = "1";
     }
 
     if (vm.count("write-log")) {

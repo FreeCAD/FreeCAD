@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <qfileinfo.h>
 # include <qdir.h>
+# include <QPrinter>
 #endif
 
 
@@ -36,6 +37,7 @@
 #include "MainWindow.h"
 #include "EditorView.h"
 #include "PythonEditor.h"
+#include "View3DInventor.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -361,6 +363,21 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
                     "Gui.getDocument(\"%1\").ActiveView.dump(\"%2\")"
                     ).arg(QLatin1String(doc->getName())).arg(fi.absoluteFilePath());
                 Base::Interpreter().runString(cmd.toUtf8());
+            }
+            else if (ext == QLatin1String("pdf")) {
+                Gui::Document* gui_doc = Application::Instance->getDocument(doc);
+                if (gui_doc) {
+                    Gui::MDIView* view = gui_doc->getActiveView();
+                    if (view) {
+                        View3DInventor* view3d = qobject_cast<View3DInventor*>(view);
+                        if (view3d)
+                            view3d->viewAll();
+                        QPrinter printer(QPrinter::ScreenResolution);
+                        printer.setOutputFormat(QPrinter::PdfFormat);
+                        printer.setOutputFileName(fileName);
+                        view->print(&printer);
+                    }
+                }
             }
         }
     } PY_CATCH;

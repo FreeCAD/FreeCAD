@@ -1151,6 +1151,13 @@ void MainWindow::delayedStartup()
     // processing all command line files
     App::Application::processCmdLineFiles();
 
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it = cfg.find("StartHidden");
+    if (it != cfg.end()) {
+        QApplication::quit();
+        return;
+    }
+
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {

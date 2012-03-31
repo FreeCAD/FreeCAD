@@ -92,8 +92,6 @@ public:
     void print();
     void printPdf();
     void printPreview();
-
-protected Q_SLOTS:
     void print(QPrinter* printer);
 
 protected:
