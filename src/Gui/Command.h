@@ -252,8 +252,6 @@ public:
     static void copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from);
     /// Get Python tuple from object and sub-elements 
     static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
-    /// import an external module only once 
-    //static void addModule(const char* sModuleName);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
     const std::string strToPython(const char* Str);
     const std::string strToPython(const std::string &Str){return strToPython(Str.c_str());};

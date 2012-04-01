@@ -26,6 +26,7 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 
+class SoGroup;
 
 namespace AssemblyGui {
 
@@ -39,7 +40,13 @@ public:
     /// destructor
     virtual ~ViewProviderItem();
 
+    // returns the root node where the children gets collected(3D)
+    virtual SoGroup* getChildRoot(void) const {return pcChildren;}
+
+
     virtual bool doubleClicked(void);
+private:
+    SoGroup *pcChildren;
 
 };
 
