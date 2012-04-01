@@ -152,6 +152,8 @@ public:
     int addParallelConstraint(int geoIndex1, int geoIndex2);
     /// add a perpendicular constraint between two lines
     int addPerpendicularConstraint(int geoIndex1, int geoIndex2);
+    int addPerpendicularConstraint(int geoIndex1, PointPos pos1, int geoIndex2);
+    int addPerpendicularConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
     /// add a tangency constraint between two geometries
     int addTangentConstraint(int geoIndex1, int geoIndex2);
     int addTangentConstraint(int geoIndex1, PointPos pos1, int geoIndex2);
