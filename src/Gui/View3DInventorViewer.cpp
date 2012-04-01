@@ -642,6 +642,7 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     _ViewProviderSet.erase(pcProvider);
 }
 
+
 SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
 {
     if (this->editViewProvider)

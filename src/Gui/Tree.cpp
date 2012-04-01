@@ -638,23 +638,6 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
-//void TreeWidget::markItem(const App::DocumentObject* Obj,bool mark)
-//{
-//    // never call without Object!
-//    assert(Obj);
-//    Gui::Document* Doc = Gui::Application::Instance->getDocument(Obj->getDocument());
-//
-//    std::map<const Gui::Document*, DocumentItem*>::iterator jt = DocumentMap.find(Doc);
-//    for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
-//         it != DocumentMap.end(); ++it)
-//    {
-//        it->second->markItem(Obj,mark);
-//
-//        QFont f = it->second->font(0);
-//        f.setBold(it == jt);
-//        it->second->setFont(0,f);
-//    }
-//}
 
 void TreeWidget::onTestStatus(void)
 {
@@ -672,7 +655,7 @@ void TreeWidget::onTestStatus(void)
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
     // object item selected
-    if (item && item->type() == TreeWidget::ObjectType) {
+    if ( item && item->type() == TreeWidget::ObjectType ) {
         DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
         obj->displayStatusInfo();
     }

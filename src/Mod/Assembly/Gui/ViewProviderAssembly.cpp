@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoGroup.h>
 #endif
 
 #include "ViewProviderAssembly.h"
@@ -50,8 +51,44 @@ bool ViewProviderItemAssembly::doubleClicked(void)
     return true;
 }
 
+void ViewProviderItemAssembly::attach(App::DocumentObject *pcFeat)
+{
+    // call parent attach method
+    ViewProviderGeometryObject::attach(pcFeat);
+
+
+    // putting all together with the switch
+    addDisplayMaskMode(getChildRoot(), "Main");
+}
+
+void ViewProviderItemAssembly::setDisplayMode(const char* ModeName)
+{
+    if ( strcmp("Main",ModeName)==0 )
+        setDisplayMaskMode("Main");
+
+    ViewProviderGeometryObject::setDisplayMode( ModeName );
+}
+
+std::vector<std::string> ViewProviderItemAssembly::getDisplayModes(void) const
+{
+    // get the modes of the father
+    std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
+
+    // add your own modes
+    StrList.push_back("Main");
+
+    return StrList;
+}
+
 
 std::vector<App::DocumentObject*> ViewProviderItemAssembly::claimChildren(void)const
+{
+
+    return static_cast<Assembly::ItemAssembly*>(getObject())->Items.getValues();
+
+}
+
+std::vector<App::DocumentObject*> ViewProviderItemAssembly::claimChildren3D(void)const
 {
 
     return static_cast<Assembly::ItemAssembly*>(getObject())->Items.getValues();

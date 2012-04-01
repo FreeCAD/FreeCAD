@@ -59,9 +59,29 @@ CmdAssemblyAddNewPart::CmdAssemblyAddNewPart()
 
 void CmdAssemblyAddNewPart::activated(int iMsg)
 {
-    // load the file with the module
-    //Command::doCommand(Command::Gui, "import Assembly, AssemblyGui");
-      
+    Assembly::ItemAssembly *dest = 0;
+
+    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    if (n >= 1) {
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+    }
+
+    openCommand("Insert Part");
+    std::string PartName = getUniqueObjectName("Part.0");
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",PartName.c_str());
+    if(dest){
+        std::string fatherName = dest->getNameInDocument();
+        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),PartName.c_str());
+    }
+    Command::addModule(App,"PartDesign");
+    Command::addModule(Gui,"PartDesignGui");
+    std::string BodyName = getUniqueObjectName("Body");
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",BodyName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Items = App.activeDocument().%s ",BodyName.c_str(),BodyName.c_str(),BodyName.c_str());
+     
 }
 
 //===========================================================================
@@ -94,7 +114,7 @@ void CmdAssemblyAddNewComponent::activated(int iMsg)
     }
 
     openCommand("Insert Component");
-    std::string CompName = getUniqueObjectName("Product");
+    std::string CompName = getUniqueObjectName("Product.0");
     doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','%s')",CompName.c_str());
     if(dest){
         std::string fatherName = dest->getNameInDocument();
