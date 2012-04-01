@@ -118,6 +118,9 @@ using namespace Gui::DockWnd;
  * @see Gui::Command, Gui::CommandManager
  */
 
+// list of modules already loaded by a command (not issue again for macro cleanness)
+std::set<std::string> alreadyLoadedModule;
+
 CommandBase::CommandBase( const char* sMenu, const char* sToolTip, const char* sWhat,
                           const char* sStatus, const char* sPixmap, const char* sAcc)
         : sMenuText(sMenu), sToolTipText(sToolTip), sWhatsThis(sWhat?sWhat:sToolTip),
@@ -432,6 +435,19 @@ void Command::runCommand(DoCmd_Type eType,const char* sCmd)
     else
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,sCmd);
     Base::Interpreter().runString(sCmd);
+}
+void Command::addModule(DoCmd_Type eType,const char* sModuleName)
+{
+    if(alreadyLoadedModule.find(sModuleName) != alreadyLoadedModule.end()) {
+        std::string sCmd("import ");
+        sCmd += sModuleName;
+        if (eType == Gui)
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.c_str());
+        else
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,sCmd.c_str());
+        Base::Interpreter().runString(sCmd.c_str());
+        alreadyLoadedModule.insert(sModuleName);
+    }
 }
 
 void Command::copyVisual(const char* to, const char* attr, const char* from)

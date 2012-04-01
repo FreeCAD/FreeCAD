@@ -382,6 +382,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
         }
 #endif
+
         std::list<Gui::BaseView*>::iterator vIt;
         // cycling to all views of the document
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
@@ -438,6 +439,36 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             e.ReportException();
         } catch (...) {
             Base::Console().Error("Cannot update representation for '%s'.\n", Obj.getNameInDocument());
+        }
+
+        // check for children 
+        if(viewProvider->getChildRoot()) {
+            std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
+            SoGroup* childGroup =  viewProvider->getChildRoot();
+
+            // size not the same -> build up the list new
+            if(childGroup->getNumChildren() != children.size()){
+
+                childGroup->removeAllChildren();
+            
+                for(std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it){
+                    ViewProvider* ChildViewProvider = getViewProvider(*it);
+                    if(ChildViewProvider) {
+                        SoSeparator* childRootNode =  ChildViewProvider->getRoot();
+                        childGroup->addChild(childRootNode);
+
+                        // cycling to all views of the document to remove the viewprovider from the viewer itself
+                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+                            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+                            if (activeView && viewProvider) {
+                                if (d->_pcInEdit == ChildViewProvider)
+                                    resetEdit();
+                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         if (viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))

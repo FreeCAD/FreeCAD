@@ -24,11 +24,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoGroup.h>
 #endif
 
 #include "ViewProvider.h"
 #include <Gui/Command.h>
 //#include <Gui/Document.h>
+
 
 using namespace AssemblyGui;
 
@@ -36,10 +38,15 @@ PROPERTY_SOURCE(AssemblyGui::ViewProviderItem,PartGui::ViewProviderPart)
 
 ViewProviderItem::ViewProviderItem()
 {
+    pcChildren = new SoGroup();
+    pcChildren->ref();
+
 }
 
 ViewProviderItem::~ViewProviderItem()
 {
+    pcChildren->unref();
+    pcChildren = 0;
 }
 
 bool ViewProviderItem::doubleClicked(void)

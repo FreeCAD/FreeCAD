@@ -40,8 +40,14 @@ public:
     virtual ~ViewProviderItemAssembly();
 
     virtual bool doubleClicked(void);
+    virtual void attach(App::DocumentObject *);
+    virtual void setDisplayMode(const char* ModeName);
+    /// returns a list of all possible modes
+    virtual std::vector<std::string> getDisplayModes(void) const;
 
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
 };
 
