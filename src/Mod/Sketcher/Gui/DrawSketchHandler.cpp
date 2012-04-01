@@ -236,6 +236,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
     int tangId = Constraint::GeoUndef;
 
+    float smlTangDist = 1e15f;
     // Do not consider if distance is more than that.
     // Decrease this value when a candidate is found.
     double tangDeviation = 0.1 * sketchgui->getScaleFactor();
