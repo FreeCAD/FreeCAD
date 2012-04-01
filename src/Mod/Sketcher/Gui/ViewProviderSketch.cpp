@@ -1497,7 +1497,9 @@ void ViewProviderSketch::drawConstraintIcons()
             break;
         case Perpendicular:
             icoType = QString::fromAscii("small/Constraint_Perpendicular_sm");
-            index2 = 4;
+            // second icon is available only when there is no common point
+            if ((*it)->FirstPos == Sketcher::none)
+                index2 = 4;
             break;
         case Equal:
             icoType = QString::fromAscii("small/Constraint_EqualLength_sm");
@@ -1824,8 +1826,93 @@ Restart:
 
                 }
                 break;
-            case Parallel:
             case Perpendicular:
+                {
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                    assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
+                    // get the geometry
+                    const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
+                    const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
+
+                    Base::Vector3d midpos1, dir1, norm1;
+                    Base::Vector3d midpos2, dir2, norm2;
+
+                    if (Constr->FirstPos == Sketcher::none) {
+                        if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
+                            midpos1 = ((lineSeg1->getEndPoint()+lineSeg1->getStartPoint())/2);
+                            dir1 = (lineSeg1->getEndPoint()-lineSeg1->getStartPoint()).Normalize();
+                            norm1 = Base::Vector3d(-dir1.y,dir1.x,0.);
+                        } else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
+                            double startangle, endangle, midangle;
+                            arc->getRange(startangle, endangle);
+                            midangle = (startangle + endangle)/2;
+                            norm1 = Base::Vector3d(cos(midangle),sin(midangle),0);
+                            dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
+                            midpos1 = arc->getCenter() + arc->getRadius() * norm1;
+                        } else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
+                            norm1 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
+                            dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
+                            midpos1 = circle->getCenter() + circle->getRadius() * norm1;
+                        } else
+                            break;
+
+                        if (geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                            midpos2 = ((lineSeg2->getEndPoint()+lineSeg2->getStartPoint())/2);
+                            dir2 = (lineSeg2->getEndPoint()-lineSeg2->getStartPoint()).Normalize();
+                            norm2 = Base::Vector3d(-dir2.y,dir2.x,0.);
+                        } else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                            double startangle, endangle, midangle;
+                            arc->getRange(startangle, endangle);
+                            midangle = (startangle + endangle)/2;
+                            norm2 = Base::Vector3d(cos(midangle),sin(midangle),0);
+                            dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
+                            midpos2 = arc->getCenter() + arc->getRadius() * norm2;
+                        } else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
+                            norm2 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
+                            dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
+                            midpos2 = circle->getCenter() + circle->getRadius() * norm2;
+                        } else
+                            break;
+
+                    } else {
+                        if (temp)
+                            midpos1 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
+                        else
+                            midpos1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
+                        norm1 = Base::Vector3d(0,1,0);
+                        dir1 = Base::Vector3d(1,0,0);
+                    }
+
+                    // Get Current Scale Factor
+                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
+
+                    Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
+                    constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
+
+                    // Translate the Icon based on calculated position
+                    Base::Vector3d relPos1 = (constrPos1 - midpos1) / scale ; // Relative Position of Icons to Midpoint1
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+
+                    if (Constr->FirstPos == Sketcher::none) {
+                        Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
+                        constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
+
+                        Base::Vector3d relPos2 = (constrPos2 - midpos2) / scale ; // Relative Position of Icons to Midpoint2
+                        Base::Vector3d secondPos = midpos2 - midpos1;
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                    }
+
+                }
+                break;
+            case Parallel:
             case Equal:
                 {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
@@ -1877,7 +1964,7 @@ Restart:
                             norm2 = Base::Vector3d(cos(angle2),sin(angle2),0);
                             dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
                             midpos2 += r2*norm2;
-                        } else // Parallel or Perpendicular can only apply to a GeomLineSegment
+                        } else // Parallel can only apply to a GeomLineSegment
                             break;
                     } else {
                         const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);

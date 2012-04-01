@@ -474,7 +474,16 @@ int Sketch::addConstraint(const Constraint *constraint)
         rtn = addParallelConstraint(constraint->First,constraint->Second);
         break;
     case Perpendicular:
-        rtn = addPerpendicularConstraint(constraint->First,constraint->Second);
+        if (constraint->SecondPos != none) // perpendicularity at common point
+            rtn = addPerpendicularConstraint(constraint->First,constraint->FirstPos,
+                                             constraint->Second,constraint->SecondPos);
+        else if (constraint->Second != Constraint::GeoUndef) {
+            if (constraint->FirstPos != none) // "First" is a connecting point
+                rtn = addPerpendicularConstraint(constraint->First,constraint->FirstPos,
+                                                 constraint->Second);
+            else // simple perpendicularity
+                rtn = addPerpendicularConstraint(constraint->First,constraint->Second);
+        }
         break;
     case Tangent:
         if (constraint->SecondPos != none) // tangency at common point
@@ -760,8 +769,13 @@ int Sketch::addParallelConstraint(int geoId1, int geoId2)
     return ConstraintsCounter;
 }
 
+// simple perpendicularity constraint
 int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
 {
+    // accepts the following combinations:
+    // 1) Line1, Line2/Circle2/Arc2
+    // 2) Circle1, Line2 (converted to case #1)
+    // 3) Arc1, Line2 (converted to case #1)
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
@@ -778,22 +792,184 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
     }
 
     if (Geoms[geoId1].type == Line) {
-        GCS::Line &l = Lines[Geoms[geoId1].index];
-        if (Geoms[geoId2].type == Arc) {
-            GCS::Arc &a = Arcs[Geoms[geoId2].index];
-            //GCSsys.addConstraintPerpendicular(l, a);
-            Base::Console().Warning("Perpendicular constraints between lines and arcs are not implemented yet.\n");
-            return -1;
-        } else if (Geoms[geoId2].type == Circle) {
-            GCS::Circle &c = Circles[Geoms[geoId2].index];
-            //GCSsys.addConstraintPerpendicular(l, c);
-            Base::Console().Warning("Perpendicular constraints between lines and circles are not implemented yet.\n");
-            return -1;
+        GCS::Line &l1 = Lines[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == Arc || Geoms[geoId2].type == Circle) {
+            GCS::Point &p2 = Points[Geoms[geoId2].midPointId];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnLine(p2, l1, tag);
+            return ConstraintsCounter;
         }
     }
 
     Base::Console().Warning("Perpendicular constraints between %s and %s are not supported.\n",
                             nameByType(Geoms[geoId1].type), nameByType(Geoms[geoId2].type));
+    return -1;
+}
+
+// perpendicularity at specific point constraint
+int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2)
+{
+    // accepts the following combinations:
+    // 1) Line1, start/end, Line2/Circle2/Arc2
+    // 2) Arc1, start/end, Line2/Circle2/Arc2
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    int pointId1 = getPointId(geoId1, pos1);
+
+    if (pointId1 < 0 || pointId1 >= int(Points.size()))
+        return addPerpendicularConstraint(geoId1, geoId2);
+
+    GCS::Point &p1 = Points[pointId1];
+    if (Geoms[geoId1].type == Line) {
+        GCS::Line &l1 = Lines[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == Line) {
+            GCS::Line &l2 = Lines[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnLine(p1, l2, tag);
+            GCSsys.addConstraintPerpendicular(l1, l2, tag);
+            return ConstraintsCounter;
+        }
+        else if (Geoms[geoId2].type == Arc) {
+            GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+            GCS::Point &p2 = Points[Geoms[geoId2].midPointId];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnArc(p1, a2, tag);
+            GCSsys.addConstraintPointOnLine(p2, l1, tag);
+            return ConstraintsCounter;
+        }
+        else if (Geoms[geoId2].type == Circle) {
+            GCS::Circle &c2 = Circles[Geoms[geoId2].index];
+            GCS::Point &p2 = Points[Geoms[geoId2].midPointId];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnCircle(p1, c2, tag);
+            GCSsys.addConstraintPointOnLine(p2, l1, tag);
+            return ConstraintsCounter;
+        }
+    }
+    else if (Geoms[geoId1].type == Arc) {
+        GCS::Arc &a1 = Arcs[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == Line) {
+            GCS::Line &l2 = Lines[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnLine(p1, l2, tag);
+            GCSsys.addConstraintPointOnLine(a1.center, l2, tag);
+            return ConstraintsCounter;
+        }
+        else if (Geoms[geoId2].type == Arc || Geoms[geoId2].type == Circle) {
+            int tag = ++ConstraintsCounter;
+            GCS::Point &center = Points[Geoms[geoId2].midPointId];
+            double *radius;
+            if (Geoms[geoId2].type == Arc) {
+                GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+                radius = a2.rad;
+            }
+            else {
+                GCS::Circle &c2 = Circles[Geoms[geoId2].index];
+                radius = c2.rad;
+            }
+            if (pos1 == start)
+                GCSsys.addConstraintPerpendicularCircle2Arc(center, radius, a1, tag);
+            else if (pos1 == end)
+                GCSsys.addConstraintPerpendicularArc2Circle(a1, center, radius, tag);
+            return ConstraintsCounter;
+        }
+    }
+    return -1;
+}
+
+// perpendicularity at common point constraint
+int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2)
+{
+    // accepts the following combinations:
+    // 1) Line1, start/end, Line2/Arc2, start/end
+    // 2) Arc1, start/end, Line2, start/end (converted to case #1)
+    // 3) Arc1, start/end, Arc2, start/end
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    int pointId1 = getPointId(geoId1, pos1);
+    int pointId2 = getPointId(geoId2, pos2);
+
+    if (pointId1 < 0 || pointId1 >= int(Points.size()) ||
+        pointId2 < 0 || pointId2 >= int(Points.size()))
+        return -1;
+
+    GCS::Point &p1 = Points[pointId1];
+    GCS::Point &p2 = Points[pointId2];
+    if (Geoms[geoId2].type == Line) {
+        if (Geoms[geoId1].type == Line) {
+            GCS::Line &l1 = Lines[Geoms[geoId1].index];
+            GCS::Line &l2 = Lines[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintP2PCoincident(p1, p2, tag);
+            GCSsys.addConstraintPerpendicular(l1, l2, tag);
+            return ConstraintsCounter;
+        }
+        else {
+            std::swap(geoId1, geoId2);
+            std::swap(pos1, pos2);
+            std::swap(pointId1, pointId2);
+            p1 = Points[pointId1];
+            p2 = Points[pointId2];
+        }
+    }
+
+    if (Geoms[geoId1].type == Line) {
+        GCS::Line &l1 = Lines[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == Arc) {
+            GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+            if (pos2 == start) {
+                if (pos1 == start) {
+                    int tag = ++ConstraintsCounter;
+                    GCSsys.addConstraintPerpendicularLine2Arc(l1.p2, l1.p1, a2, tag);
+                    return ConstraintsCounter;
+                }
+                else if (pos1 == end) {
+                    int tag = ++ConstraintsCounter;
+                    GCSsys.addConstraintPerpendicularLine2Arc(l1.p1, l1.p2, a2, tag);
+                    return ConstraintsCounter;
+                }
+            }
+            else if (pos2 == end) {
+                if (pos1 == start) {
+                    int tag = ++ConstraintsCounter;
+                    GCSsys.addConstraintPerpendicularArc2Line(a2, l1.p1, l1.p2, tag);
+                    return ConstraintsCounter;
+                }
+                else if (pos1 == end) {
+                    int tag = ++ConstraintsCounter;
+                    GCSsys.addConstraintPerpendicularArc2Line(a2, l1.p2, l1.p1, tag);
+                    return ConstraintsCounter;
+                }
+            }
+            else
+                return -1;
+        }
+    }
+    else if (Geoms[geoId1].type == Arc) {
+        GCS::Arc &a1 = Arcs[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == Arc) {
+            GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+            if (pos1 == start && (pos2 == start || pos2 == end)) {
+                int tag = ++ConstraintsCounter;
+                if (pos2 == start)
+                    GCSsys.addConstraintPerpendicularArc2Arc(a1, true, a2, false, tag);
+                else // if (pos2 == end)
+                    GCSsys.addConstraintPerpendicularArc2Arc(a1, true, a2, true, tag);
+                    // GCSsys.addConstraintTangentArc2Arc(a2, false, a1, false, tag);
+                return ConstraintsCounter;
+            }
+            else if (pos1 == end && (pos2 == start || pos2 == end)) {
+                int tag = ++ConstraintsCounter;
+                if (pos2 == start)
+                    GCSsys.addConstraintPerpendicularArc2Arc(a1, false, a2, false, tag);
+                else // if (pos2 == end)
+                    GCSsys.addConstraintPerpendicularArc2Arc(a1, false, a2, true, tag);
+                return ConstraintsCounter;
+            }
+        }
+    }
     return -1;
 }
 
@@ -803,9 +979,9 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
     // accepts the following combinations:
     // 1) Line1, Line2/Circle2/Arc2
     // 2) Circle1, Line2 (converted to case #1)
-    //    Circle1, Circle2/Arc2 (not implemented yet)
+    //    Circle1, Circle2/Arc2
     // 3) Arc1, Line2 (converted to case #1)
-    //    Arc1, Circle2/Arc2 (not implemented yet)
+    //    Arc1, Circle2/Arc2
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
@@ -871,12 +1047,8 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
 int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2)
 {
     // accepts the following combinations:
-    // 1) Line1, start/end/mid, Line2
-    // 2) Line1, start/end/mid, Circle2
-    // 3) Line1, start/end/mid, Arc2
-    // 4) Arc1, start/end, Line2
-    // 5) Arc1, start/end, Circle2
-    // 6) Arc1, start/end, Arc2
+    // 1) Line1, start/end, Line2/Circle2/Arc2
+    // 2) Arc1, start/end, Line2/Circle2/Arc2
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
@@ -947,10 +1119,9 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2)
 int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2)
 {
     // accepts the following combinations:
-    // 1) Line1, start/end/mid, Line2, start/end/mid
-    // 2) Line1, start/end/mid, Arc2, start/end
-    // 3) Arc1, start/end, Line2, start/end/mid (converted to case #2)
-    // 4) Arc1, start/end, Arc2, start/end
+    // 1) Line1, start/end, Line2/Arc2, start/end
+    // 2) Arc1, start/end, Line2, start/end (converted to case #1)
+    // 3) Arc1, start/end, Arc2, start/end
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
@@ -983,14 +1154,7 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
 
     if (Geoms[geoId1].type == Line) {
         GCS::Line &l1 = Lines[Geoms[geoId1].index];
-        if (Geoms[geoId2].type == Line) {
-            GCS::Line &l2 = Lines[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintP2PCoincident(p1, p2, tag);
-            GCSsys.addConstraintParallel(l1, l2, tag);
-            return ConstraintsCounter;
-        }
-        else if (Geoms[geoId2].type == Arc) {
+        if (Geoms[geoId2].type == Arc) {
             GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
             if (pos2 == start) {
                 if (pos1 == start) {
@@ -1003,12 +1167,6 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
                     GCSsys.addConstraintTangentLine2Arc(l1.p1, l1.p2, a2, tag);
                     return ConstraintsCounter;
                 }
-                else if (pos1 == mid) { // FIXME: coincidence with midpoint of line??
-                    int tag = ++ConstraintsCounter;
-                    GCSsys.addConstraintP2PCoincident(p1, p2, tag);
-                    GCSsys.addConstraintTangent(l1, a2, tag);
-                    return ConstraintsCounter;
-                }
             }
             else if (pos2 == end) {
                 if (pos1 == start) {
@@ -1019,12 +1177,6 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos
                 else if (pos1 == end) {
                     int tag = ++ConstraintsCounter;
                     GCSsys.addConstraintTangentArc2Line(a2, l1.p2, l1.p1, tag);
-                    return ConstraintsCounter;
-                }
-                else if (pos1 == mid) { // FIXME: coincidence with midpoint of line??
-                    int tag = ++ConstraintsCounter;
-                    GCSsys.addConstraintP2PCoincident(p1, p2, tag);
-                    GCSsys.addConstraintTangent(l1, a2, tag);
                     return ConstraintsCounter;
                 }
             }

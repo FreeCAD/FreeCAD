@@ -138,15 +138,20 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (PyInt_Check(index_or_value)) {
             FirstPos = any_index;
             SecondIndex = PyInt_AsLong(index_or_value);
-            if (strcmp("Tangent", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
-                this->getConstraintPtr()->First    = FirstIndex;
-                this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
-                this->getConstraintPtr()->Second   = SecondIndex;
-                return 0;
+            bool valid = false;
+            if (strcmp("Perpendicular", ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Perpendicular;
+                valid = true;
             }
-            if (strcmp("PointOnObject", ConstraintType) == 0) {
+            else if (strcmp("Tangent", ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Tangent;
+                valid = true;
+            }
+            else if (strcmp("PointOnObject", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = PointOnObject;
+                valid = true;
+            }
+            if (valid) {
                 this->getConstraintPtr()->First    = FirstIndex;
                 this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
                 this->getConstraintPtr()->Second   = SecondIndex;
@@ -210,6 +215,10 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strcmp("Vertical", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Vertical;
+                valid = true;
+            }
+            else if (strcmp("Perpendicular", ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Perpendicular;
                 valid = true;
             }
             else if (strcmp("Tangent", ConstraintType) == 0) {
