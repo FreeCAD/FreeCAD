@@ -139,7 +139,7 @@ void ViewProvider::setUpdatesEnabled (bool enable)
     _updateData = enable;
 }
 
-void highlight(const HiglightMode& high)
+void highlight(const HighlightMode& high)
 {
     
 

@@ -32,6 +32,7 @@
 #include <Gui/DockWindow.h>
 #include <Gui/Selection.h>
 
+
 namespace Gui {
 
 class ViewProviderDocumentObject;
@@ -39,13 +40,13 @@ class DocumentObjectItem;
 class DocumentItem;
 
 /// highlight modes for the tree items
-enum HiglightMode { None       = 0,
-                    Underlined = 1,
-                    Italic     = 2,
-                    Overlined  = 4,
-                    Bold       = 8,
-                    Blue       = 16
+enum HighlightMode {    Underlined,
+                        Italic    ,
+                        Overlined ,
+                        Bold      ,
+                        Blue      
 };
+
 
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer
@@ -132,7 +133,7 @@ public:
     void selectItems(void);
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
-    void markItem(const App::DocumentObject* Obj,bool mark);
+//    void markItem(const App::DocumentObject* Obj,bool mark);
 
 protected:
     /** Adds a view provider to the document item.
@@ -148,7 +149,7 @@ protected:
     void slotActiveObject    (const Gui::ViewProviderDocumentObject&);
     void slotInEdit          (const Gui::ViewProviderDocumentObject&);
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
-    void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HiglightMode&);
+    void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
 
 private:
     const Gui::Document* pDocument;

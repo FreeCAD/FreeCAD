@@ -94,7 +94,8 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
-                                const Gui::HiglightMode&)>               signalHighlightObject;
+                                const Gui::HighlightMode&,
+                                bool)>                                   signalHighlightObject;
 
     //@}
 

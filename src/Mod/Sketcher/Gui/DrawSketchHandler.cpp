@@ -195,7 +195,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     const float tangDeviation = 2.;
 
     int tangId = Constraint::GeoUndef;
-    float smlTangDist = 1e15;
+    float smlTangDist = 1e15f;
 
     // Get geometry list
     const std::vector<Part::Geometry *> geomlist = sketchgui->getSketchObject()->getCompleteGeometry();

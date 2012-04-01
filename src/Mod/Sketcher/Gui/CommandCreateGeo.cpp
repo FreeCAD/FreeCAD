@@ -583,7 +583,7 @@ public:
                 if (sugConstr2.size() > 0) {
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
-                    for (int i=0; i < sugConstr2.size(); i++) {
+                    for (unsigned int i=0; i < sugConstr2.size(); i++) {
                         if (sugConstr2[i].Type != Sketcher::Coincident)
                             sugConstr.push_back(sugConstr2[i]);
                     }

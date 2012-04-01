@@ -540,23 +540,23 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
-void TreeWidget::markItem(const App::DocumentObject* Obj,bool mark)
-{
-    // never call without Object! 
-    assert(Obj);
-    Gui::Document* Doc = Gui::Application::Instance->getDocument(Obj->getDocument());
-
-    std::map<const Gui::Document*, DocumentItem*>::iterator jt = DocumentMap.find(Doc);
-    for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
-         it != DocumentMap.end(); ++it)
-    {
-        it->second->markItem(Obj,mark);
-
-        QFont f = it->second->font(0);
-        f.setBold(it == jt);
-        it->second->setFont(0,f);
-    }
-}
+//void TreeWidget::markItem(const App::DocumentObject* Obj,bool mark)
+//{
+//    // never call without Object! 
+//    assert(Obj);
+//    Gui::Document* Doc = Gui::Application::Instance->getDocument(Obj->getDocument());
+//
+//    std::map<const Gui::Document*, DocumentItem*>::iterator jt = DocumentMap.find(Doc);
+//    for (std::map<const Gui::Document*, DocumentItem*>::iterator it = DocumentMap.begin();
+//         it != DocumentMap.end(); ++it)
+//    {
+//        it->second->markItem(Obj,mark);
+//
+//        QFont f = it->second->font(0);
+//        f.setBold(it == jt);
+//        it->second->setFont(0,f);
+//    }
+//}
 
 void TreeWidget::onTestStatus(void)
 {
@@ -741,7 +741,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
     doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
-    doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2));
+    doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
@@ -927,27 +927,32 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
     }
 }
 
-void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,const Gui::HiglightMode& high)
+void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,const Gui::HighlightMode& high,bool set)
 {
 
     std::string objectName = obj.getObject()->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
     if (jt == ObjectMap.end())
         return; // signal is emitted before the item gets created
-    for (std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.begin();
-         it != ObjectMap.end(); ++it)
-    {
-        QFont f = it->second->font(0);
-        f.setBold      (high & Gui::Bold);
-        f.setItalic    (high & Gui::Italic);
-        f.setUnderline (high & Gui::Underlined);
-        f.setUnderline (high & Gui::Overlined);
-        if(high && Gui::Blue)
-            it->second->setBackgroundColor(0,QColor(200,200,255));
+
+    QFont f = jt->second->font(0);
+    switch (high) {
+    case Gui::Bold: f.setBold(set);             break;
+    case Gui::Italic: f.setItalic(set);         break;
+    case Gui::Underlined: f.setUnderline(set);  break;
+    case Gui::Overlined: f.setOverline(set);    break;
+    case Gui::Blue:
+        if(set)
+            jt->second->setBackgroundColor(0,QColor(200,200,255));
         else
-            it->second->setData(0, Qt::BackgroundColorRole,QVariant());
-        it->second->setFont(0,f);
+            jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
+        break;
+    default:
+        // not defined enum
+        assert(0);
     }
+    jt->second->setFont(0,f);
+        
 }
 
 
@@ -956,20 +961,20 @@ const Gui::Document* DocumentItem::document() const
     return this->pDocument;
 }
 
-void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
-{
-    // never call without Object! 
-    assert(Obj);
-
-
-    std::map<std::string,DocumentObjectItem*>::iterator pos;
-    pos = ObjectMap.find(Obj->getNameInDocument());
-    if (pos != ObjectMap.end()) {
-        QFont f = pos->second->font(0);
-        f.setUnderline(mark);
-        pos->second->setFont(0,f);
-    }
-}
+//void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
+//{
+//    // never call without Object! 
+//    assert(Obj);
+//
+//
+//    std::map<std::string,DocumentObjectItem*>::iterator pos;
+//    pos = ObjectMap.find(Obj->getNameInDocument());
+//    if (pos != ObjectMap.end()) {
+//        QFont f = pos->second->font(0);
+//        f.setUnderline(mark);
+//        pos->second->setFont(0,f);
+//    }
+//}
 
 void DocumentItem::testStatus(void)
 {

@@ -55,17 +55,17 @@ static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
         // get the gui document of the Assembly Item 
         if(ActiveAsmObject){
 
-            ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::None);
+            ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
             ActiveAsmObject = 0;
 
         }
         ActiveAsmObject = Item;
         ActiveGuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
         ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Underlined);
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,true);
        
     }else{
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::None);
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
         ActiveAsmObject = 0;
     }
 
