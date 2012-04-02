@@ -94,14 +94,14 @@ public:
     /** initializes a point (or curve) drag by setting the current
       * sketch status as a reference
       */
-    int initMove(int geoIndex, PointPos pos);
+    int initMove(int geoId, PointPos pos);
 
     /** move this point (or curve) to a new location and solve.
       * This will introduce some additional weak constraints expressing
       * a condition for satisfying the new point location!
       * The relative flag permits moving relatively to the current position
       */
-    int movePoint(int geoIndex, PointPos pos, Base::Vector3d toPoint, bool relative=false);
+    int movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false);
 
     /// add dedicated geometry
     //@{
@@ -127,8 +127,8 @@ public:
     /// add one constraint to the sketch
     int addConstraint(const Constraint *constraint);
     /// add a fixed coordinate constraint to a point
-    int addCoordinateXConstraint(int geoIndex, PointPos pos, double value);
-    int addCoordinateYConstraint(int geoIndex, PointPos pos, double value);
+    int addCoordinateXConstraint(int geoId, PointPos pos, double value);
+    int addCoordinateYConstraint(int geoId, PointPos pos, double value);
     /// add a horizontal distance constraint to two points or line ends
     int addDistanceXConstraint(int geoId, double value);
     int addDistanceXConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
@@ -136,34 +136,36 @@ public:
     int addDistanceYConstraint(int geoId, double value);
     int addDistanceYConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
     /// add a horizontal constraint to a geometry
-    int addHorizontalConstraint(int geoIndex);
-    int addHorizontalConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addHorizontalConstraint(int geoId);
+    int addHorizontalConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a vertical constraint to a geometry
-    int addVerticalConstraint(int geoIndex);
-    int addVerticalConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addVerticalConstraint(int geoId);
+    int addVerticalConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a coincident constraint to two points of two geometries
-    int addPointCoincidentConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addPointCoincidentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a length or distance constraint
-    int addDistanceConstraint(int geoIndex1, double value);
-    int addDistanceConstraint(int geoIndex1, int geoIndex2, double value);
-    int addDistanceConstraint(int geoIndex1, PointPos pos1, int geoIndex2, double value);
-    int addDistanceConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2, double value);
+    int addDistanceConstraint(int geoId1, double value);
+    int addDistanceConstraint(int geoId1, int geoId2, double value);
+    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double value);
+    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
     /// add a parallel constraint between two lines
-    int addParallelConstraint(int geoIndex1, int geoIndex2);
+    int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
-    int addPerpendicularConstraint(int geoIndex1, int geoIndex2);
+    int addPerpendicularConstraint(int geoId1, int geoId2);
+    int addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2);
+    int addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a tangency constraint between two geometries
-    int addTangentConstraint(int geoIndex1, int geoIndex2);
-    int addTangentConstraint(int geoIndex1, PointPos pos1, int geoIndex2);
-    int addTangentConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addTangentConstraint(int geoId1, int geoId2);
+    int addTangentConstraint(int geoId1, PointPos pos1, int geoId2);
+    int addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a radius constraint on a circle or an arc
-    int addRadiusConstraint(int geoIndex, double value);
+    int addRadiusConstraint(int geoId, double value);
     /// add an angle constraint on a line or between two lines
-    int addAngleConstraint(int geoIndex, double value);
-    int addAngleConstraint(int geoIndex1, int geoIndex2, double value);
-    int addAngleConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2, double value);
+    int addAngleConstraint(int geoId, double value);
+    int addAngleConstraint(int geoId1, int geoId2, double value);
+    int addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
     /// add an equal length or radius constraints between two lines or between circles and arcs
-    int addEqualConstraint(int geoIndex1, int geoIndex2);
+    int addEqualConstraint(int geoId1, int geoId2);
     /// add a point on line constraint
     int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2);
     /// add a symmetric constraint between two points with respect to a line

@@ -110,6 +110,7 @@ class _CommandWall:
         self.Width = 0.1
         self.Height = 1
         self.Align = "Center"
+        self.continueCmd = False
         
         sel = FreeCADGui.Selection.getSelection()
         done = False
@@ -164,6 +165,8 @@ class _CommandWall:
             if add:
                 import ArchCommands
                 ArchCommands.addComponents(nw,w)
+            if self.continueCmd:
+                self.Activated()
 
     def addDefault(self,l):
         s = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
@@ -216,9 +219,12 @@ class _CommandWall:
         value3.addItems(items)
         value3.setCurrentIndex(items.index(self.Align))
         lay3.addWidget(value3)
+        value4 = QtGui.QCheckBox("Continue")
+        lay0.addWidget(value4)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
+        QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
         return w
         
     def setWidth(self,d):
@@ -231,6 +237,9 @@ class _CommandWall:
 
     def setAlign(self,i):
         self.Align = ["Center","Left","Right"][i]
+
+    def setContinue(self,i):
+        self.continueCmd = bool(i)
         
 class _Wall(ArchComponent.Component):
     "The Wall object"
@@ -277,6 +286,7 @@ class _Wall(ArchComponent.Component):
         return f
 
     def createGeometry(self,obj):
+        "builds the wall shape"
 
         import Part
         from draftlibs import fcgeo
