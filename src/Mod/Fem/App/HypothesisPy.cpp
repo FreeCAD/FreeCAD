@@ -579,6 +579,8 @@ void StdMeshers_Deflection1DPy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_Deflection1D");
     behaviors().doc("StdMeshers_Deflection1D");
+
+    add_varargs_method("setDeflection", &StdMeshers_Deflection1DPy::setDeflection, "setDeflection()");
     SMESH_HypothesisPyBase::init_type(module);
 }
 
@@ -589,6 +591,13 @@ StdMeshers_Deflection1DPy::StdMeshers_Deflection1DPy(int hypId, int studyId, SME
 
 StdMeshers_Deflection1DPy::~StdMeshers_Deflection1DPy()
 {
+}
+
+Py::Object StdMeshers_Deflection1DPy::setDeflection(const Py::Tuple& args)
+{
+    double fine = (double)Py::Float(args[0]);
+    hypothesis<StdMeshers_Deflection1D>()->SetDeflection(fine);
+    return Py::None();
 }
 
 // ----------------------------------------------------------------------------
