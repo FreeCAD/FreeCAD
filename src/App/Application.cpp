@@ -1473,10 +1473,12 @@ void Application::ParseOptions(int ac, char ** av)
     //    ("display",  boost::program_options::value< string >(), "set the X-Server")
     //    ;
 
-    options_description cmdline_options;
+    // 0000659: SIGABRT on startup in boost::program_options (Boost 1.49)
+    // Add some text to the constructor
+    options_description cmdline_options("Command-line options");
     cmdline_options.add(generic).add(config).add(hidden);
 
-    boost::program_options::options_description config_file_options;
+    boost::program_options::options_description config_file_options("Config");
     config_file_options.add(config).add(hidden);
 
     boost::program_options::options_description visible("Allowed options");
@@ -1491,7 +1493,8 @@ void Application::ParseOptions(int ac, char ** av)
                options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
 
         std::ifstream ifs("FreeCAD.cfg");
-        store(parse_config_file(ifs, config_file_options), vm);
+        if (ifs)
+            store(parse_config_file(ifs, config_file_options), vm);
         notify(vm);
     }
     catch (const std::exception& e) {
