@@ -350,6 +350,67 @@ int System::addConstraintPointOnArc(Point &p, Arc &a, int tagId)
     return addConstraintP2PDistance(p, a.center, a.rad, tagId);
 }
 
+int System::addConstraintPerpendicularLine2Arc(Point &p1, Point &p2, Arc &a,
+                                               int tagId)
+{
+    addConstraintP2PCoincident(p2, a.start, tagId);
+    double dx = *(p2.x) - *(p1.x);
+    double dy = *(p2.y) - *(p1.y);
+    if (dx * cos(*(a.startAngle)) + dy * sin(*(a.startAngle)) > 0)
+        return addConstraintP2PAngle(p1, p2, a.startAngle, 0, tagId);
+    else
+        return addConstraintP2PAngle(p1, p2, a.startAngle, M_PI, tagId);
+}
+
+int System::addConstraintPerpendicularArc2Line(Arc &a, Point &p1, Point &p2,
+                                               int tagId)
+{
+    addConstraintP2PCoincident(p1, a.end, tagId);
+    double dx = *(p2.x) - *(p1.x);
+    double dy = *(p2.y) - *(p1.y);
+    if (dx * cos(*(a.endAngle)) + dy * sin(*(a.endAngle)) > 0)
+        return addConstraintP2PAngle(p1, p2, a.endAngle, 0, tagId);
+    else
+        return addConstraintP2PAngle(p1, p2, a.endAngle, M_PI, tagId);
+}
+
+int System::addConstraintPerpendicularCircle2Arc(Point &center, double *radius,
+                                                 Arc &a, int tagId)
+{
+    addConstraintP2PDistance(a.start, center, radius, tagId);
+    double incr_angle = *(a.startAngle) < *(a.endAngle) ? M_PI/2 : -M_PI/2;
+    double tang_angle = *a.startAngle + incr_angle;
+    double dx = *(a.start.x) - *(center.x);
+    double dy = *(a.start.y) - *(center.y);
+    if (dx * cos(tang_angle) + dy * sin(tang_angle) > 0)
+        return addConstraintP2PAngle(center, a.start, a.startAngle, incr_angle, tagId);
+    else
+        return addConstraintP2PAngle(center, a.start, a.startAngle, -incr_angle, tagId);
+}
+
+int System::addConstraintPerpendicularArc2Circle(Arc &a, Point &center,
+                                                 double *radius, int tagId)
+{
+    addConstraintP2PDistance(a.end, center, radius, tagId);
+    double incr_angle = *(a.startAngle) < *(a.endAngle) ? -M_PI/2 : M_PI/2;
+    double tang_angle = *a.endAngle + incr_angle;
+    double dx = *(a.end.x) - *(center.x);
+    double dy = *(a.end.y) - *(center.y);
+    if (dx * cos(tang_angle) + dy * sin(tang_angle) > 0)
+        return addConstraintP2PAngle(center, a.end, a.endAngle, incr_angle, tagId);
+    else
+        return addConstraintP2PAngle(center, a.end, a.endAngle, -incr_angle, tagId);
+}
+
+int System::addConstraintPerpendicularArc2Arc(Arc &a1, bool reverse1,
+                                              Arc &a2, bool reverse2, int tagId)
+{
+    Point &p1 = reverse1 ? a1.start : a1.end;
+    Point &p2 = reverse2 ? a2.end : a2.start;
+    addConstraintP2PCoincident(p1, p2, tagId);
+    return addConstraintPerpendicular(a1.center, p1, a2.center, p2, tagId);
+}
+
 int System::addConstraintTangent(Line &l, Circle &c, int tagId)
 {
     return addConstraintP2LDistance(c.center, l, c.rad, tagId);
