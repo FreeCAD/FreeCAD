@@ -385,6 +385,10 @@ IF(MINGW)
 	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
 	LINK_LIBRARIES(-lgdi32)
 ENDIF(MINGW)
+# 0000661: cmake build on Mac OS: dealing with dylib versus so
+IF(APPLE)
+	SET(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+ENDIF(APPLE)
 
 add_subdirectory(src)
 add_subdirectory(data)
