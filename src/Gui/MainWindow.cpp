@@ -272,9 +272,12 @@ MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
     d->mdiArea->setTabPosition(QTabWidget::South);
     d->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = d->mdiArea->findChild<QTabBar*>();
-    if (tab) { 
+    if (tab) {
+        // 0000636: Two documents close
+#if QT_VERSION < 0x040800
         connect(tab, SIGNAL(tabCloseRequested(int)),
                 this, SLOT(tabCloseRequested(int)));
+#endif
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
