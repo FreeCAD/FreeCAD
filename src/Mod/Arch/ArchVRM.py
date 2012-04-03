@@ -91,9 +91,19 @@ class Renderer:
         r += "sorted: " + str(self.sorted) + "\n"
         r += "contains " + str(len(self.faces)) + " faces\n"
         for i in range(len(self.faces)):
-            r += "  face " + str(i) + " : normal " + str(self.faces[i].normalAt(0,0))
+            r += "  face " + str(i) + " : center " + str(self.faces[i].CenterOfMass)
+            r += " : normal " + str(self.faces[i].normalAt(0,0))
             r += ", " + str(len(self.faces[i].Vertexes)) + " verts\n"
         return r
+
+    def addLabels(self):
+        "Add labels on the model to identify faces"
+        c = 0
+        for f in self.faces:
+            l = FreeCAD.ActiveDocument.addObject("App::AnnotationLabel","facelabel")
+            l.BasePosition = f.CenterOfMass
+            l.LabelText = str(c)
+            c += 1
 
     def isVisible(self,face):
         "returns True if the given face points in the view direction"
@@ -126,6 +136,7 @@ class Renderer:
         "projects a single face on the WP"
         verts = []
         edges = fcgeo.sortEdges(face.Edges)
+        norm = face.normalAt(0,0)
         for e in edges:
             v = e.Vertexes[0].Point
             v = self.wp.getLocalCoords(v)
@@ -138,6 +149,10 @@ class Renderer:
             if DEBUG: print "Error: Unable to project face on the WP"
             return None
         else:
+            # restoring flipped normals
+            vnorm = self.wp.getLocalCoords(norm)
+            if vnorm.getAngle(sh.normalAt(0,0)) > 1:
+                sh.reverse()
             return sh
 
     def flattenFace(self,face):
@@ -180,7 +195,7 @@ class Renderer:
 
         return False
 
-    def sortFaces(self,face1,face2):
+    def compare(self,face1,face2):
         "zsorts two faces. Returns 1 if face1 is closer, 2 if face2 is closer, 0 otherwise"
 
         # theory from
@@ -189,8 +204,6 @@ class Renderer:
 
         b1 = face1.BoundBox
         b2 = face2.BoundBox
-
-        if DEBUG: print "comparing face1: normal ", face1.normalAt(0,0), " with face2: normal ", face2.normalAt(0,0)
 
         # test 1: if faces don't overlap, no comparison possible
         if DEBUG: print "doing test 1"
@@ -202,7 +215,7 @@ class Renderer:
             return 0
         if b1.YMin > b2.YMax:
             return 0
-        if DEBUG: print "passed, faces are overlapping"
+        if DEBUG: print "failed, faces bboxes are not distinct"
 
         # test 2: if Z bounds dont overlap, it's easy to know the closest
         if DEBUG: print "doing test 2"
@@ -210,35 +223,53 @@ class Renderer:
             return 2
         if b2.ZMax < b1.ZMin:
             return 1
-        if DEBUG: print "passed, faces Z are crossed"
+        if DEBUG: print "failed, faces Z are not distinct"
 
-        # test 3: all verts of face1 are behind the plane of face2
+        # test 3: all verts of face1 are in front or behind the plane of face2
         if DEBUG: print "doing test 3"
         norm = face2.normalAt(0,0)
         behind = 0
+        front = 0
         for v in face1.Vertexes:
             dv = v.Point.sub(face2.Vertexes[0].Point)
             dv = fcvec.project(dv,norm)
-            if dv.Length:
-                if dv.getAngle(norm) > 0.1:
+            if fcvec.isNull(dv):
+                behind += 1
+                front += 1
+            else:
+                if dv.getAngle(norm) > 1:
                     behind += 1
+                else:
+                    front += 1
+        if DEBUG: print "front: ",front," behind: ",behind
         if behind == len(face1.Vertexes):
             return 2
-        if DEBUG: print "passed, face 1 is not behind"
+        elif front == len(face1.Vertexes):
+            return 1
+        if DEBUG: print "failed, cannot say if face 1 is in front or behind"
 
-        # test 4: all verts of face2 are in front of the plane of face1
+        # test 4: all verts of face2 are in front or behind the plane of face1
         if DEBUG: print "doing test 4"
         norm = face1.normalAt(0,0)
+        behind = 0
         front = 0
         for v in face2.Vertexes:
             dv = v.Point.sub(face1.Vertexes[0].Point)
             dv = fcvec.project(dv,norm)
-            if dv.Length:
-                if dv.getAngle(norm) < 0.1:
+            if fcvec.isNull(dv):
+                behind += 1
+                front += 1
+            else:
+                if dv.getAngle(norm) > 1:
+                    behind += 1
+                else:
                     front += 1
-        if front == len(face2.Vertexes):
+        if DEBUG: print "front: ",front," behind: ",behind
+        if behind == len(face2.Vertexes):
+            return 1
+        elif front == len(face2.Vertexes):
             return 2
-        if DEBUG: print "passed, face 2 is not in front"
+        if DEBUG: print "failed, cannot say if face 2 is in front or behind"
 
         # test 5: see if faces projections don't overlap, vertexwise
         if DEBUG: print "doing test 5"
@@ -246,7 +277,7 @@ class Renderer:
             return 0
         elif not self.zOverlaps(face2,face1):
             return 0
-        if DEBUG: print "passed, faces are overlapping" 
+        if DEBUG: print "failed, faces are overlapping" 
 
         if DEBUG: print "Houston, all tests passed, and still no results" 
         return 0
@@ -256,7 +287,8 @@ class Renderer:
         l = None
         h = None
         for f2 in faces:
-            r = self.sortFaces(f1,f2)
+            if DEBUG: print "comparing face",str(self.faces.index(f1))," with face",str(self.faces.index(f2))
+            r = self.compare(f1,f2)
             if r == 1:
                 l = faces.index(f2)
             elif r == 2:
@@ -281,7 +313,7 @@ class Renderer:
         if not self.oriented:
             self.reorient()
         faces = self.faces[:]
-        if DEBUG: print "sorting faces: ", faces
+        if DEBUG: print "sorting ",len(self.faces)," faces"
         sfaces = []
         loopcount = 0
         notfoundstack = 0
@@ -289,6 +321,7 @@ class Renderer:
             if DEBUG: print "loop ", loopcount
             f1 = faces[0]
             if sfaces and (notfoundstack < len(faces)):
+                if DEBUG: print "using ordered stack, notfound = ",notfoundstack
                 p = self.findPosition(f1,sfaces)
                 if p == None:
                     # no position found, we move the face to the end of the pile
@@ -303,8 +336,10 @@ class Renderer:
             else:
                 # either there is no stack, or no more face can be compared
                 # find a root, 2 faces that can be compared
+                if DEBUG: print "using unordered stack, notfound = ",notfoundstack
                 for f2 in faces[1:]:
-                    r = self.sortFaces(f1,f2)
+                    if DEBUG: print "comparing face",str(self.faces.index(f1))," with face",str(self.faces.index(f2))
+                    r = self.compare(f1,f2)
                     if r == 1:
                         faces.remove(f2)
                         sfaces.append(f2)
@@ -328,7 +363,7 @@ class Renderer:
                 if DEBUG: print "Too many loops, aborting."
                 break
 
-        if DEBUG: print "done Z sorting. ", len(faces), " faces retained, ", len(self.faces)-len(faces), " faces lost."
+        if DEBUG: print "done Z sorting. ", len(sfaces), " faces retained, ", len(self.faces)-len(sfaces), " faces lost."
         self.faces = sfaces
         self.sorted = True
 
