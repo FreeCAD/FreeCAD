@@ -32,6 +32,7 @@ MAXLOOP = 10 # the max number of loop before abort
 class Renderer:
     "A renderer object"
     def __init__(self,wp=None):
+
         """
         Creates a renderer with a default Draft WorkingPlane
         Use like this:
@@ -42,6 +43,7 @@ class Renderer:
         p.sort()
         p.buildDummy()
         """
+
         self.wp = wp
         self.faces = []
         self.oriented = False
@@ -80,6 +82,18 @@ class Renderer:
         self.oriented = False
         self.trimmed = False
         self.sorted = False
+
+    def info(self):
+        "Prints info about the contents of this renderer"
+        r = str(self)+"\n"
+        r += "oriented: " + str(self.oriented) + "\n"
+        r += "trimmed: " + str(self.trimmed) + "\n"
+        r += "sorted: " + str(self.sorted) + "\n"
+        r += "contains " + str(len(self.faces)) + " faces\n"
+        for i in range(len(self.faces)):
+            r += "  face " + str(i) + " : normal " + str(self.faces[i].normalAt(0,0))
+            r += ", " + str(len(self.faces[i].Vertexes)) + " verts\n"
+        return r
 
     def isVisible(self,face):
         "returns True if the given face points in the view direction"
@@ -237,6 +251,27 @@ class Renderer:
         if DEBUG: print "Houston, all tests passed, and still no results" 
         return 0
 
+    def findPosition(self,f1,faces):
+        "Finds the position of a face in a list of faces"
+        l = None
+        h = None
+        for f2 in faces:
+            r = self.sortFaces(f1,f2)
+            if r == 1:
+                l = faces.index(f2)
+            elif r == 2:
+                if h == None:
+                    h = faces.index(f2)
+                else:
+                    if faces.index(f2) < h:
+                        h = faces.index(f2)
+        if l != None:
+            return l + 1
+        elif h != None:
+            return h
+        else:
+            return None
+
     def sort(self):
         "projects a shape on the WP"
         if not self.faces: 
@@ -248,26 +283,53 @@ class Renderer:
         faces = self.faces[:]
         if DEBUG: print "sorting faces: ", faces
         sfaces = []
-        safecount = 0
+        loopcount = 0
+        notfoundstack = 0
         while faces:
+            if DEBUG: print "loop ", loopcount
             f1 = faces[0]
-            for f2 in faces[1:]:
-                if DEBUG: print "Scanning %d faces" % len(faces)
-                z = self.sortFaces(f1,f2)
-                if z == 1:
-                    faces.remove(f2)
-                    sfaces.insert(0,f2)
-                elif z == 2:
+            if sfaces and (notfoundstack < len(faces)):
+                p = self.findPosition(f1,sfaces)
+                if p == None:
+                    # no position found, we move the face to the end of the pile
                     faces.remove(f1)
-                    sfaces.append(f2)
-                    break
-            safecount += 1
-            if DEBUG: print "iteration ",safecount
-            if safecount > (10 * len(faces)):
-                if DEBUG: print "too long loop, aborting"
+                    faces.append(f1)
+                    notfoundstack += 1
+                else:
+                    # position found, we insert it
+                    faces.remove(f1)
+                    sfaces.insert(p,f1)
+                    notfoundstack = 0
+            else:
+                # either there is no stack, or no more face can be compared
+                # find a root, 2 faces that can be compared
+                for f2 in faces[1:]:
+                    r = self.sortFaces(f1,f2)
+                    if r == 1:
+                        faces.remove(f2)
+                        sfaces.append(f2)
+                        faces.remove(f1)
+                        sfaces.append(f1)
+                        notfoundstack = 0
+                        break
+                    elif r == 2:
+                        faces.remove(f1)
+                        sfaces.append(f1)
+                        faces.remove(f2)
+                        sfaces.append(f2)
+                        notfoundstack = 0
+                        break
+                else:
+                    # nothing found, move the face to the end of the pile
+                    faces.remove(f1)
+                    faces.append(f1)
+            loopcount += 1
+            if loopcount == MAXLOOP * len(self.faces):
+                if DEBUG: print "Too many loops, aborting."
                 break
+
         if DEBUG: print "done Z sorting. ", len(faces), " faces retained, ", len(self.faces)-len(faces), " faces lost."
-        self.faces = faces
+        self.faces = sfaces
         self.sorted = True
 
     def buildDummy(self):
