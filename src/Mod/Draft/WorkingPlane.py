@@ -174,6 +174,13 @@ class plane:
                         0.0,0.0,0.0,1.0)
                 return FreeCAD.Placement(m)
 
+        def setFromPlacement(self,pl):
+                "sets the working plane from a placement (rotaton ONLY)"
+                rot= pl.Rotation
+                self.u = rot.multVec(FreeCAD.Vector(1,0,0))
+                self.v = rot.multVec(FreeCAD.Vector(0,1,0))
+                self.axis = rot.multVec(FreeCAD.Vector(0,0,1))
+
         def save(self):
                 "stores the current plane state"
                 self.stored = [self.u,self.v,self.axis,self.position,self.weak]

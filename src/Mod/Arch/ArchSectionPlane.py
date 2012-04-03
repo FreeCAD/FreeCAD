@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math,Draft
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
@@ -49,7 +49,9 @@ class _CommandSectionPlane:
                 g.append(o)
         obj.Objects = g
         page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage","Page")
-        template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
+        template = Draft.getParam("template")
+        if not template:
+            template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
         page.ViewObject.HintOffsetX = 200
         page.ViewObject.HintOffsetY = 100
         page.ViewObject.HintScale = 20
@@ -156,8 +158,8 @@ class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","RenderingMode","Base","The rendering mode to use")
-        obj.RenderingMode = ["Z-sorted","Wireframe","Wireframe + shade"]
-        obj.RenderingMode = "Z-sorted"
+        obj.RenderingMode = ["Solid","Wireframe"]
+        obj.RenderingMode = "Solid"
         obj.Proxy = self
         self.Type = "DrawingView"
 
@@ -174,13 +176,10 @@ class _ArchDrawingView:
         if obj.Source:
             if obj.Source.Objects:
                 svg = ''
-                if obj.RenderingMode == "Z-sorted":
-                    svg += self.renderClassicSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
-                elif obj.RenderingMode == "Wireframe":
-                    svg += self.renderWireframeSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
-                elif obj.RenderingMode == "Wireframe + shade":
-                    svg += self.renderOutlineSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
-                    svg += self.renderWireframeSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
+                if obj.RenderingMode == "Solid":
+                    svg += self.renderVRM(obj.Source.Objects,obj.Source.Placement)
+                else:
+                    svg += self.renderOCC(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
@@ -194,46 +193,8 @@ class _ArchDrawingView:
                 return result
         return ''
 
-    def getProj(self,vec,plane):
-        "returns a vector in working plane space from the given vector"
-        if not plane:
-            return vec
-        nx = fcvec.project(vec,plane.u)
-        lx = nx.Length
-        if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
-        ny = fcvec.project(vec,plane.v)
-        ly = ny.Length
-        if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
-        return Vector(lx,ly,0)
-
-    def getPath(self,face,plane):
-        import Part
-        from draftlibs import fcgeo
-        "returns a svg path from a face"
-        svg ='<path '
-        edges = fcgeo.sortEdges(face.Edges)
-        v = self.getProj(edges[0].Vertexes[0].Point,plane)
-        svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
-        for e in edges:
-            if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
-                v = self.getProj(e.Vertexes[-1].Point,plane)
-                svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            elif isinstance(e.Curve,Part.Circle):
-                r = e.Curve.Radius
-                v = self.getProj(e.Vertexes[-1].Point,plane)
-                svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                svg += str(v.y) + ' '
-        svg += '" '
-        svg += 'stroke="#000000" '
-        svg += 'stroke-width="0.01 px" '
-        svg += 'style="stroke-width:0.01;'
-        svg += 'stroke-miterlimit:1;'
-        svg += 'stroke-dasharray:none;'
-        svg += 'fill:#aaaaaa"'
-        svg += '/>\n'
-        return svg
-
-    def renderWireframeSVG(self,objs,direction):
+    def renderOCC(self,objs,direction):
+        "renders an SVG fragment with the OCC method"
         os = objs[:]
         if os:
             sh = os.pop().Shape
@@ -245,174 +206,14 @@ class _ArchDrawingView:
             return result
         return ''
 
-    def renderOutlineSVG(self,objs,direction):
-        plane = None
-        plane = WorkingPlane.plane()
-        if direction != Vector(0,0,0):
-            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
-        else:
-            direction = Vector(0,0,-1)
-        faces = []
-        for obj in objs:
-            for face in obj.Shape.Faces:
-                normal = face.normalAt(0,0)
-                if normal.getAngle(direction) > math.pi/2:
-                    faces.append(face)
-        print "faces:",faces
-        if faces:
-            base = faces.pop()
-            for face in faces:
-                base = base.oldFuse(face)
-        result = self.getPath(base,plane)
-        return result        
-
-    def renderClassicSVG(self,objs,direction,base=None):
-        """returns an svg fragment from a SectionPlane object,
-        a direction vector and optionally a base point"""
-
-        def intersection(p1,p2,p3,p4):
-            "returns the intersection of line (p1,p2) with plane (p3,p4)"
-            # http://paulbourke.net/geometry/planeline/
-            dn = p4.dot(p2.sub(p1))
-            if dn != 0:
-                u = (p4.dot(p3.sub(p1))) / dn 
-                p = p1.add((p2.sub(p1)).scale(u,u,u))
-                return p
-            else:
-                # line is parallel to normal
-                vp = fcvec.project(p3.sub(p1),p2.sub(p1))
-                l = vp.Length
-                if vp.getAngle(p2.sub(p1)) > 1:
-                    l = -l
-                return fcvec.scaleTo(p2.sub(p1),l)
-
-        def getFirstIndex(list1,list2):
-            "returns the first index from list2 where there is an item of list1"
-            for i1 in range(len(list1)):
-                for i2 in range(len(list2)):
-                            if list1[i1].hashCode() == list2[i2].hashCode():
-                                return i2
-            return None
-
-        def getLastIndex(list1,list2):
-            "returns the last index from list2 where there is an item of list1"
-            i = None
-            for i1 in range(len(list1)):
-                for i2 in range(len(list2)):
-                            if list1[i1].hashCode() == list2[i2].hashCode():
-                                i = i2
-            return i
-
-        def findPrevious(base,dir,faces):
-            "returns the highest index in faces that is crossed by the given line"
-            for i in range(len(faces)-1,-1,-1):
-                print "p1:",base," p2: ",base.add(dir)
-                obb = faces[i].BoundBox
-                print "bo: ",obb
-                op = intersection(base,base.add(dir),faces[i].CenterOfMass,faces[i].normalAt(0,0))
-                print "int:", op
-                if obb.isInside(op):
-                    dv = op.sub(base)
-                    if dv.getAngle(dir) < math.pi/2:
-                        return i
-            return None
-            
-        def findNext(base,dir,faces):
-            "returns the lowest index in faces that is crossed by the given line"
-            for i in range(len(faces)):
-                obb = faces[i].BoundBox
-                op = intersection(base,base.add(dir),faces[i].CenterOfMass,faces[i].normalAt(0,0))
-                if obb.isInside(op):
-                    dv = op.sub(base)
-                    if dv.getAngle(dir) > math.pi/2:
-                        return i
-            return None
-       
-        print "getting representation at ",direction," =======================================>"
-
-        # using Draft WorkingPlane
-        plane = None
-        plane = WorkingPlane.plane()
-        if direction != Vector(0,0,0):
-            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
-        else:
-            direction = Vector(0,0,-1)
-        print "plane:",plane
-                
-        sortedFaces = []
-
-        if not base:
-            # getting the base point = first point from the bounding box
-            bb = FreeCAD.BoundBox()
-            for o in objs:
-                bb.add(o.Shape.BoundBox)
-            rad = bb.DiagonalLength/2
-            rv = bb.Center.add(direction)
-            rv = fcvec.scaleTo(rv,rad)
-            rv = fcvec.neg(rv)
-            base = bb.Center.add(rv)
-
-        print "base:",base
-
-        # getting faces
-        unsortedFaces = []
-        notFoundFaces = []
+    def renderVRM(self,objs,placement):
+        "renders an SVG fragment with the ArchVRM method"
+        import ArchVRM
+        render = ArchVRM.Renderer()
+        render.setWorkingPlane(FreeCAD.Placement(placement))
         for o in objs:
-            unsortedFaces.append(o.Name)
-            unsortedFaces.extend(o.Shape.Faces[:])
-        print "analyzing ",len(unsortedFaces)," faces"
-        
-        for face in unsortedFaces:
-
-            if isinstance(face,str):
-                print "OBJECT ",face," =======================================>"
-                continue
-
-            print "testing face ",unsortedFaces.index(face)
-
-            # testing if normal points outwards
-            normal = face.normalAt(0,0)
-            if normal.getAngle(direction) <= math.pi/2:
-                print "normal pointing outwards"
-                continue
-
-            fprev = 0
-            fnext = len(sortedFaces)
-            notFound = True
-
-            print "checking ",len(face.Vertexes)," verts"
-
-            for v in face.Vertexes:
-                vprev = findPrevious(v.Point,direction,sortedFaces)
-                vnext = findNext(v.Point,direction,sortedFaces)
-                print "temp indexes:",vprev,vnext
-                if (vprev != None):
-                    notfound = False
-                    if (vprev > fprev):
-                        fprev = vprev
-                if (vnext != None):
-                    notfound = False
-                    if (vnext < fnext):
-                        fnext = vnext
-
-            print "fprev:",fprev
-            print "fnext:",fnext
-            print "notFound",notFound
-
-            if fnext < fprev:
-                raise "Error, impossible index"
-            elif fnext == fprev:
-                sortedFaces.insert(fnext,face)
-            else:
-                sortedFaces.insert(fnext,face)
-
-            print len(sortedFaces)," sorted faces:",sortedFaces
-
-        # building SVG representation in correct order
-        svg = ''
-        for f in sortedFaces:
-            svg += self.getPath(f,plane)
-            
+            render.add(o)
+        svg = render.getSVG()
         return svg
 
 FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

@@ -58,8 +58,11 @@ class Renderer:
         return "Arch Renderer: " + str(len(self.faces)) + " faces projected on " + str(self.wp)
 
     def setWorkingPlane(self,wp):
-        "sets a Draft WorkingPlane for this renderer"
-        self.wp = wp
+        "sets a Draft WorkingPlane or Placement for this renderer"
+        if isinstance(wp,FreeCAD.Placement):
+            self.wp.setFromPlacement(wp)
+        else:
+            self.wp = wp
         if DEBUG: print "Renderer set on " + str(self.wp)
 
     def add(self,faces):
@@ -307,6 +310,8 @@ class Renderer:
     def sort(self):
         "projects a shape on the WP"
         if not self.faces: 
+            return
+        if len(self.faces) == 1:
             return
         if not self.trimmed:
             self.removeHidden()
