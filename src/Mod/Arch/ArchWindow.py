@@ -30,7 +30,7 @@ __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeWindow(baseobj=None,name="Window"):
+def makeWindow(baseobj=None,width=None,name="Window"):
     '''makeWindow(obj,[name]): creates a window based on the
     given object'''
     if baseobj:
@@ -42,7 +42,10 @@ def makeWindow(baseobj=None,name="Window"):
     _ViewProviderWindow(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
-        obj.WindowParts = makeDefaultWindowPart(baseobj)
+        if width:
+            obj.WindowParts = ["Default","Panel","Wire0",str(width),"0"]
+        else:
+            obj.WindowParts = makeDefaultWindowPart(baseobj)
     if obj.Base:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
