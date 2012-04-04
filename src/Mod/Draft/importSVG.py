@@ -433,25 +433,39 @@ class svgHandler(xml.sax.ContentHandler):
                 if name == 'svg':
                         m=FreeCAD.Matrix()
                         if 'width' in data and 'height' in data and \
-                                'viewBox' in data and\
-                                getsize(attrs.getValue('width'),'isabsolute') and\
-				getsize(attrs.getValue('height'),'isabsolute'):
-                                x0,y0,x1,y1=[float(n) for n in data['viewBox']]
-                                vbw = x1-x0
-                                vbh = y1-y0
+                            'viewBox' in data and\
+                            (getsize(attrs.getValue('width'),'isabsolute') and\
+                            getsize(attrs.getValue('height'),'isabsolute') or\
+                            len(self.grouptransform)!=0):
+                                vbw=float(data['viewBox'][2])
+                                vbh=float(data['viewBox'][3])
+                                w=attrs.getValue('width')
+                                h=attrs.getValue('height')
                                 self.viewbox=(vbw,vbh)
-                                abw = getsize(attrs.getValue('width'),'mm')
-                                abh = getsize(attrs.getValue('height'),'mm')
+                                if len(self.grouptransform)==0:
+                                    unitmode='mm'
+                                else: #nested svg element
+                                    unitmode='css'
+                                abw = getsize(w,unitmode)
+                                abh = getsize(h,unitmode)
                                 sx=abw/vbw
                                 sy=abh/vbh
-                                m.scale(Vector(sx,sy,1))
-                                if round(sx/sy,5) != 1:
-                                        FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
-
-                                #FreeCAD.Console.PrintMessage('attrs: %s %s\n'%(attrs.getValue('width'),attrs.getValue('height')))
-                                #FreeCAD.Console.PrintMessage('vb: %f %f %f %f\n'%(x0,y0,x1,y1))
-                                #FreeCAD.Console.PrintMessage('absolute: %f %f\n'%(abw,abh))
-                        else:
+                                preservearstr=data.get('preserveAspectRatio',\
+                                        '').lower()
+                                uniformscaling = round(sx/sy,5) == 1
+                                if uniformscaling:
+                                    m.scale(Vector(sx,sy,1))
+                                else:
+                                    FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
+                                    if preservearstr.startswith('none'):
+                                        m.scale(Vector(sx,sy,1))
+                                    else: #preserve the aspect ratio
+                                        if preservearstr.endswith('slice'):
+                                            sxy=max(sx,sy)
+                                        else:
+                                            sxy=min(sx,sy)
+                                        m.scale(Vector(sxy,sxy,1))
+                        elif len(self.grouptransform)==0:
                                 #fallback to 90 dpi
                                 m.scale(Vector(25.4/90.0,25.4/90.0,1))
                         self.grouptransform.append(m) 
