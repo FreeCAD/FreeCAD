@@ -860,8 +860,13 @@ void Application::tryClose(QCloseEvent * e)
         // ask all documents if closable
         std::map<const App::Document*, Gui::Document*>::iterator It;
         for (It = d->documents.begin();It!=d->documents.end();It++) {
+            // a document may have several views attached, so ask it directly
+#if 0
             MDIView* active = It->second->getActiveView();
             e->setAccepted(active->canClose());
+#else
+            e->setAccepted(It->second->canClose());
+#endif
             if (!e->isAccepted())
                 return;
         }
