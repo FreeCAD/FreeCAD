@@ -73,6 +73,17 @@ def removeComponents(objectsList,host=None):
             for o in objectsList:
                 if not o in s:
                     s.append(o)
+                    if Draft.getType(o) == "Window":
+                        # fix for sketch-based windows
+                        if o.Base:
+                            if o.Base.Support:
+                                if isinstance(o.Base.Support,tuple):
+                                   if o.Base.Support[0].Name == host.Name:
+                                       print "removing sketch support to avoid cross-referencing"
+                                       o.Base.Support = None
+                                elif o.Base.Support.Name == host.Name:
+                                    print "removing sketch support to avoid cross-referencing"
+                                    o.Base.Support = None
             host.Subtractions = s
     else:
         for o in objectsList:
