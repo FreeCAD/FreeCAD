@@ -826,6 +826,7 @@ void Document::createView(const char* sType)
         .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
 
     view3D->setWindowTitle(title);
+    view3D->setWindowModified(this->isModified());
     view3D->setWindowIcon(QApplication::windowIcon());
     view3D->resize(400, 300);
     getMainWindow()->addWindow(view3D);
