@@ -23,7 +23,7 @@
 
 "The FreeCAD Arch Vector Rendering Module"
 
-import FreeCAD,math,Part
+import FreeCAD,math,Part,ArchCommands
 from draftlibs import fcvec,fcgeo
 
 DEBUG = True # if we want debug messages
@@ -137,17 +137,19 @@ class Renderer:
 
     def projectFace(self,face):
         "projects a single face on the WP"
-        verts = []
-        edges = fcgeo.sortEdges(face.Edges)
+        wires = []
         norm = face.normalAt(0,0)
-        for e in edges:
-            v = e.Vertexes[0].Point
-            v = self.wp.getLocalCoords(v)
-            verts.append(v)
-        verts.append(verts[0])
+        for w in face.Wires:
+            verts = []
+            edges = fcgeo.sortEdges(w.Edges)
+            for e in edges:
+                v = e.Vertexes[0].Point
+                v = self.wp.getLocalCoords(v)
+                verts.append(v)
+            verts.append(verts[0])
+            wires.append(Part.makePolygon(verts))
         try:
-            sh = Part.makePolygon(verts)
-            sh = Part.Face(sh)
+            sh = ArchCommands.makeFace(wires)
         except:
             if DEBUG: print "Error: Unable to project face on the WP"
             return None
@@ -160,15 +162,17 @@ class Renderer:
 
     def flattenFace(self,face):
         "Returns a face where all vertices have Z = 0"
-        verts = []
-        edges = fcgeo.sortEdges(face.Edges)
-        for e in edges:
-            v = e.Vertexes[0].Point
-            verts.append(FreeCAD.Vector(v.x,v.y,0))
-        verts.append(verts[0])
+        wires = []
+        for w in face.Wires:
+            verts = []
+            edges = fcgeo.sortEdges(w.Edges)
+            for e in edges:
+                v = e.Vertexes[0].Point
+                verts.append(FreeCAD.Vector(v.x,v.y,0))
+            verts.append(verts[0])
+            wires.append(Part.makePolygon(verts))
         try:
-            sh = Part.makePolygon(verts)
-            sh = Part.Face(sh)
+            sh = Part.Face(wires)
         except:
             if DEBUG: print "Error: Unable to flatten face"
             return None
@@ -394,24 +398,29 @@ class Renderer:
         svg = ''
         for f in self.faces:
             svg +='<path '
-            edges = fcgeo.sortEdges(f.Edges)
-            v = edges[0].Vertexes[0].Point
-            svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
-            for e in edges:
-                if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
-                    v = e.Vertexes[-1].Point
-                    svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-                elif isinstance(e.Curve,Part.Circle):
-                    r = e.Curve.Radius
-                    v = e.Vertexes[-1].Point
-                    svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                    svg += str(v.y) + ' '
+            svg += 'd="'
+            for w in f.Wires:
+                edges = fcgeo.sortEdges(w.Edges)
+                v = edges[0].Vertexes[0].Point
+                svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
+                for e in edges:
+                    if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
+                        v = e.Vertexes[-1].Point
+                        svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
+                    elif isinstance(e.Curve,Part.Circle):
+                        r = e.Curve.Radius
+                        v = e.Vertexes[-1].Point
+                        svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
+                        svg += str(v.y) + ' '
+                svg += 'z '
             svg += '" '
             svg += 'stroke="#000000" '
             svg += 'stroke-width="0.01 px" '
             svg += 'style="stroke-width:0.01;'
             svg += 'stroke-miterlimit:1;'
+            svg += 'stroke-linejoin:round;'
             svg += 'stroke-dasharray:none;'
-            svg += 'fill:#aaaaaa"'
-            svg += '/>\n'
+            svg += 'fill:#aaaaaa;'
+            svg += 'fill-rule: evenodd'
+            svg += '"/>\n'
         return svg
