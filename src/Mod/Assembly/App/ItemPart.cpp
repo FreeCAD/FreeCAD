@@ -39,7 +39,8 @@ PROPERTY_SOURCE(Assembly::ItemPart, Assembly::Item)
 
 ItemPart::ItemPart()
 {
-    ADD_PROPERTY(Model,(0));
+    ADD_PROPERTY(Model,     (0));
+    ADD_PROPERTY(Annotation,(0));
 }
 
 short ItemPart::mustExecute() const
