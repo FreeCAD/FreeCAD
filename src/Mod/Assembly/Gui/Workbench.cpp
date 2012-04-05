@@ -110,8 +110,8 @@ void Workbench::activated()
     App::Document *doc = App::GetApplication().getActiveDocument();
     if(!doc){
         // create a new document
-
-        Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument()");
+        std::string uniqueName = App::GetApplication().getUniqueDocumentName("Assembly1");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument('%s')",uniqueName.c_str());
         doc = App::GetApplication().getActiveDocument();
 
     }
@@ -120,9 +120,10 @@ void Workbench::activated()
 
     if(doc->countObjects()==0){
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Product')");
+        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().Product)");
     }
 
-
+    Gui::Control().showModelView();
 }
 
 void Workbench::deactivated()

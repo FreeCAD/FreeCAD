@@ -67,10 +67,13 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
         dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
     }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
         dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+    }else {
+
+
     }
 
     openCommand("Insert Part");
-    std::string PartName = getUniqueObjectName("Part.0");
+    std::string PartName = getUniqueObjectName("Part");
     doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",PartName.c_str());
     if(dest){
         std::string fatherName = dest->getNameInDocument();
@@ -80,7 +83,7 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
     Command::addModule(Gui,"PartDesignGui");
     std::string BodyName = getUniqueObjectName("Body");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",BodyName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Items = App.activeDocument().%s ",BodyName.c_str(),BodyName.c_str(),BodyName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str(),BodyName.c_str());
      
 }
 

@@ -71,7 +71,10 @@ public:
      */
     //@{
     Gui::TaskView::TaskView* taskPanel() const;
+    /// reises the task view pane 
     void showTaskView();
+    /// reisin the model view
+    void showModelView();
     //@}
 
     bool isAllowedAlterDocument(void) const;
