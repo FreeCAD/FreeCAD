@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoGroup.h>
 #endif
 
 #include "ViewProviderPart.h"
@@ -48,14 +49,42 @@ bool ViewProviderItemPart::doubleClicked(void)
     return true;
 }
 
+void ViewProviderItemPart::attach(App::DocumentObject *pcFeat)
+{
+    // call parent attach method
+    ViewProviderGeometryObject::attach(pcFeat);
+
+
+    // putting all together with the switch
+    addDisplayMaskMode(getChildRoot(), "Main");
+}
+
+void ViewProviderItemPart::setDisplayMode(const char* ModeName)
+{
+    if ( strcmp("Main",ModeName)==0 )
+        setDisplayMaskMode("Main");
+
+    ViewProviderGeometryObject::setDisplayMode( ModeName );
+}
+
+std::vector<std::string> ViewProviderItemPart::getDisplayModes(void) const
+{
+    // get the modes of the father
+    std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
+
+    // add your own modes
+    StrList.push_back("Main");
+
+    return StrList;
+}
 
 std::vector<App::DocumentObject*> ViewProviderItemPart::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> res;
 
+    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
     if(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue())
         res.push_back( static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
-    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
 
     return res;
 
@@ -65,9 +94,9 @@ std::vector<App::DocumentObject*> ViewProviderItemPart::claimChildren3D(void)con
 {
     std::vector<App::DocumentObject*> res;
 
+    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
     if(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue())
         res.push_back( static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
-    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
 
     return res;
 

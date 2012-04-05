@@ -69,7 +69,7 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
         dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
     }else {
 
-
+        return;
     }
 
     openCommand("Insert Part");
@@ -81,10 +81,29 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
     }
     Command::addModule(App,"PartDesign");
     Command::addModule(Gui,"PartDesignGui");
+
+#if 1  // test code for children nesting 
+    Command::addModule(App,"Part");
+    std::string BodyName = getUniqueObjectName("Box");
+    doCommand(Doc,"App.activeDocument().addObject('Part::Box','%s')",BodyName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str(),BodyName.c_str());
+#else
+
     std::string BodyName = getUniqueObjectName("Body");
+    // add the standard planes 
+    std::string Plane1Name = BodyName + "_PlaneXY";
+    std::string Plane2Name = BodyName + "_PlaneYZ";
+    std::string Plane3Name = BodyName + "_PlaneXZ";
+    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane1Name.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane2Name.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(0.000000,0.000000,0.000000),App.Rotation(-0.707107,0.000000,0.000000,-0.707107))",Plane2Name.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane3Name.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Annotation = [App.activeDocument().%s,App.activeDocument().%s,App.activeDocument().%s] ",PartName.c_str(),Plane1Name.c_str(),Plane2Name.c_str(),Plane3Name.c_str());
+    // add the main body
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",BodyName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str(),BodyName.c_str());
-     
+#endif #
+    this->updateActive();
 }
 
 //===========================================================================
@@ -144,8 +163,31 @@ CmdAssemblyAddExistingComponent::CmdAssemblyAddExistingComponent()
 
 void CmdAssemblyAddExistingComponent::activated(int iMsg)
 {
-    // load the file with the module
-    //Command::doCommand(Command::Gui, "import Assembly, AssemblyGui");
+    Assembly::ItemAssembly *dest = 0;
+
+    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    if (n >= 1) {
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+    }else {
+
+        return;
+    }
+
+    openCommand("Insert TestPart");
+    std::string PartName = getUniqueObjectName("Part");
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",PartName.c_str());
+    if(dest){
+        std::string fatherName = dest->getNameInDocument();
+        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),PartName.c_str());
+    }
+    Command::addModule(App,"PartDesign");
+    Command::addModule(Gui,"PartDesignGui");
+    std::string BodyName = getUniqueObjectName("Body");
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",BodyName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str(),BodyName.c_str());
       
 }
 
