@@ -38,7 +38,8 @@ class AssemblyExport ItemPart : public Assembly::Item
 public:
     ItemPart();
 
-    App::PropertyLink   Model;
+    App::PropertyLink       Model;
+    App::PropertyLinkList   Annotation;
 
     /** @name methods override feature */
     //@{

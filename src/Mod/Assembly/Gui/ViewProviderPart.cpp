@@ -29,6 +29,7 @@
 #include "ViewProviderPart.h"
 //#include <Gui/Command.h>
 //#include <Gui/Document.h>
+#include <Mod/Assembly/App/ItemPart.h>
 
 using namespace AssemblyGui;
 
@@ -48,3 +49,26 @@ bool ViewProviderItemPart::doubleClicked(void)
 }
 
 
+std::vector<App::DocumentObject*> ViewProviderItemPart::claimChildren(void)const
+{
+    std::vector<App::DocumentObject*> res;
+
+    if(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue())
+        res.push_back( static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
+    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
+
+    return res;
+
+}
+
+std::vector<App::DocumentObject*> ViewProviderItemPart::claimChildren3D(void)const
+{
+    std::vector<App::DocumentObject*> res;
+
+    if(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue())
+        res.push_back( static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
+    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
+
+    return res;
+
+}
