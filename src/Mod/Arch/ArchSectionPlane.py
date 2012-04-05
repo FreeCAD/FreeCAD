@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math,Draft
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math,Draft,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
@@ -173,13 +173,34 @@ class _ArchDrawingView:
 
     def updateSVG(self, obj):
         "encapsulates a svg fragment into a transformation node"
+        import Part
+        from draftlibs import fcgeo
         if obj.Source:
             if obj.Source.Objects:
                 svg = ''
+                cp = ArchCommands.getCutVolume(obj.Source.Objects,obj.Source.Placement)
+                print "cp:",cp
+                sections = []
+                if cp:
+                    cutvolume = cp[0].extrude(cp[1])
+                shapes = []
+                for o in obj.Source.Objects:
+                    if cp:
+                        shapes.append(o.Shape.cut(cutvolume))
+                        sec = o.Shape.section(cp[0])
+                        if sec.Edges:
+                            sec = Part.Wire(fcgeo.sortEdges(sec.Edges))
+                            sec = Part.Face(sec)
+                            sections.append(sec)
+                    else:
+                        shapes.append(o.Shape)
                 if obj.RenderingMode == "Solid":
-                    svg += self.renderVRM(obj.Source.Objects,obj.Source.Placement)
+                    svg += self.renderVRM(shapes,obj.Source.Placement)
                 else:
-                    svg += self.renderOCC(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
+                    svg += self.renderOCC(shapes,obj.Source.Proxy.getNormal(obj.Source))
+                print "sections:",sections
+                for s in sections:
+                    svg += self.renderSection(s,obj.Source.Placement)
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
@@ -193,27 +214,64 @@ class _ArchDrawingView:
                 return result
         return ''
 
-    def renderOCC(self,objs,direction):
+    def renderOCC(self,shapes,direction):
         "renders an SVG fragment with the OCC method"
-        os = objs[:]
-        if os:
-            sh = os.pop().Shape
-            for o in os:
-                sh = sh.fuse(o.Shape)
-        result = Drawing.projectToSVG(sh,fcvec.neg(direction))
+        shapes = shapes[:]
+        if shapes:
+            base = shape.pop()
+            for sh in shapes:
+                base = base.fuse(sh)
+        result = Drawing.projectToSVG(base,fcvec.neg(direction))
         if result:
             result = result.replace('stroke-width="0.35"','stroke-width="0.01 px"')
             return result
         return ''
 
-    def renderVRM(self,objs,placement):
+    def renderVRM(self,shapes,placement):
         "renders an SVG fragment with the ArchVRM method"
         import ArchVRM
         render = ArchVRM.Renderer()
         render.setWorkingPlane(FreeCAD.Placement(placement))
-        for o in objs:
-            render.add(o)
+        for s in shapes:
+            render.add(s)
         svg = render.getSVG()
         return svg
 
+    def renderSection(self,shape,placement):
+        "renders a plane parallel to the section plane"
+        placement = FreeCAD.Placement(placement)
+        u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+        v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+        pts  = []
+        for vt in shape.Vertexes:
+            vu = fcvec.project(vt.Point,u)
+            if vu.getAngle(u) > 1:
+                x = -vu.Length
+            else:
+                x = vu.Length
+            vv = fcvec.project(vt.Point,v)
+            if vv.getAngle(v) > 1:
+                y = -vv.Length
+            else:
+                y = vv.Length
+            pts.append([x,y])
+        svg ='<path '
+        svg += 'd="M '+ str(pts[0][0]) +' '+ str(pts[0][1]) + ' '
+        for p in pts[1:]:
+            svg += 'L '+ str(p[0]) +' '+ str(p[1]) + ' '
+        svg += 'z '
+        svg += '" '
+        svg += 'stroke="#000000" '
+        svg += 'stroke-width="0.02 px" '
+        svg += 'style="stroke-width:0.01;'
+        svg += 'stroke-miterlimit:1;'
+        svg += 'stroke-linejoin:round;'
+        svg += 'stroke-dasharray:none;'
+        svg += 'fill:#ffffff;'
+        svg += 'fill-rule: evenodd'
+        svg += '"/>\n'
+        return svg
+            
+        
+                
 FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

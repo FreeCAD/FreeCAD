@@ -205,6 +205,7 @@ def getCutVolume(objects,placement):
     in the list fits into it, and an extrusion vector, that can be used to extrude the
     plane so it includes all objects in the list.'''
     import Part
+    placement = FreeCAD.Placement(placement)
     if not objects:
         return None
     bb = objects[0].Shape.BoundBox 
