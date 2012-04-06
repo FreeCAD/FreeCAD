@@ -40,6 +40,8 @@ public:
     /// destructor
     virtual ~ViewProviderItem();
 
+    virtual bool useNewSelectionModel(void) const {return false;}
+
     // returns the root node where the children gets collected(3D)
     virtual SoGroup* getChildRoot(void) const {return pcChildren;}
 
