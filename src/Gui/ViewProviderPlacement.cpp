@@ -122,7 +122,7 @@ ViewProviderPlacement::~ViewProviderPlacement()
 
 void ViewProviderPlacement::onChanged(const App::Property* prop)
 {
-        ViewProviderDocumentObject::onChanged(prop);
+        ViewProviderGeometryObject::onChanged(prop);
 }
 
 std::vector<std::string> ViewProviderPlacement::getDisplayModes(void) const
@@ -137,12 +137,12 @@ void ViewProviderPlacement::setDisplayMode(const char* ModeName)
 {
     if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
 {
-    ViewProviderDocumentObject::attach(pcObject);
+    ViewProviderGeometryObject::attach(pcObject);
 
     SoAnnotation *lineSep = new SoAnnotation();
 
@@ -167,7 +167,7 @@ void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
 
 void ViewProviderPlacement::updateData(const App::Property* prop)
 {
-    ViewProviderDocumentObject::updateData(prop);
+    ViewProviderGeometryObject::updateData(prop);
 }
 
 std::string ViewProviderPlacement::getElement(const SoDetail* detail) const
