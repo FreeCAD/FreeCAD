@@ -60,7 +60,9 @@ App::DocumentObjectExecReturn *ItemAssembly::execute(void)
     std::vector<App::DocumentObject*>::iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(Assembly::Item::getClassTypeId())) {
-            s.push_back(static_cast<Assembly::Item*>(*it)->Shape.getValue());
+            TopoDS_Shape aShape = static_cast<Assembly::Item*>(*it)->Shape.getValue();
+            if (!aShape.IsNull())
+                s.push_back(aShape);
         }
     }
 

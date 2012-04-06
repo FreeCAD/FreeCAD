@@ -82,7 +82,7 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
     Command::addModule(App,"PartDesign");
     Command::addModule(Gui,"PartDesignGui");
 
-#if 1  // test code for children nesting 
+#if 0  // test code for children nesting 
     Command::addModule(App,"Part");
     std::string BodyName = getUniqueObjectName("Box");
     doCommand(Doc,"App.activeDocument().addObject('Part::Box','%s')",BodyName.c_str());
