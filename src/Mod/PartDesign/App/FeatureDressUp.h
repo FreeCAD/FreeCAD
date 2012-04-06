@@ -41,7 +41,10 @@ public:
 
     /// updates the Placement property from the Placement of Base
     void positionByBase(void);
- };
+
+protected:
+    void onChanged(const App::Property* prop);
+};
 
 } //namespace PartDesign
 
