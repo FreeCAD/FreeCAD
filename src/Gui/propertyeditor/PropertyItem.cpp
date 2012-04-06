@@ -121,6 +121,8 @@ int PropertyItem::columnCount() const
 void PropertyItem::setReadOnly(bool ro)
 {
     readonly = ro;
+    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
+        (*it)->setReadOnly(ro);
 }
 
 bool PropertyItem::isReadOnly() const
