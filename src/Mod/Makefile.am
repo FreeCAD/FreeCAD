@@ -31,8 +31,16 @@ SUBDIRS += ReverseEngineering MeshPart Fem Inspection
 endif
 #endif
 
+if BUILD_ASSEMBLY
+SUBDIRS += Assembly
+endif
+
 if BUILD_SANDBOX
 SUBDIRS += Sandbox
+endif
+
+if BUILD_CAM
+SUBDIRS += Cam
 endif
 
 EXTRA_DIST = \
