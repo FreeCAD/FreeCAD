@@ -28,6 +28,7 @@
 # include <boost/bind.hpp>
 # include <QActionEvent>
 # include <QApplication>
+# include <QDesktopWidget>
 # include <QEvent>
 # include <QMessageBox>
 # include <QToolBar>
@@ -343,6 +344,18 @@ WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent) : QCom
 
 WorkbenchComboBox::~WorkbenchComboBox()
 {
+}
+
+void WorkbenchComboBox::showPopup()
+{
+    int rows = count();
+    if (rows > 0) {
+        int height = view()->sizeHintForRow(0);
+        int maxHeight = QApplication::desktop()->height();
+        view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
+    }
+
+    QComboBox::showPopup();
 }
 
 void WorkbenchComboBox::actionEvent ( QActionEvent* e )
