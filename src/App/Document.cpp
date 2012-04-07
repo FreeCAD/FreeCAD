@@ -52,6 +52,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <sstream>
 # include <climits>
 #endif
@@ -1449,6 +1450,31 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
                             link->setValues(linked);
                             break;
                         }
+                    }
+                }
+            }
+            else if (pt->second->getTypeId().isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
+                PropertyLinkSubList* link = static_cast<PropertyLinkSubList*>(pt->second);
+                if (link->getContainer() == pcObject && clear) {
+                    link->setValues(std::vector<DocumentObject*>(), std::vector<std::string>());
+                }
+                else {
+                    const std::vector<DocumentObject*>& links = link->getValues();
+                    const std::vector<std::string>& sub = link->getSubValues();
+                    std::vector<DocumentObject*> newLinks;
+                    std::vector<std::string> newSub;
+
+                    if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
+                        std::vector<DocumentObject*>::const_iterator jt;
+                        std::vector<std::string>::const_iterator kt;
+                        for (jt = links.begin(),kt = sub.begin(); jt != links.end() && kt != sub.end(); ++jt, ++kt) {
+                            if (*jt != pcObject) {
+                                newLinks.push_back(*jt);
+                                newSub.push_back(*kt);
+                            }
+                        }
+
+                        link->setValues(newLinks, newSub);
                     }
                 }
             }
