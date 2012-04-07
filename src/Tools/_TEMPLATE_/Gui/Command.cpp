@@ -48,7 +48,7 @@ Cmd_TEMPLATE_Test::Cmd_TEMPLATE_Test()
     sWhatsThis    = QT_TR_NOOP("_TEMPLATE_ Test function");
     sStatusTip    = QT_TR_NOOP("_TEMPLATE_ Test function");
     sPixmap       = "Test1";
-    iAccel        = Qt::CTRL+Qt::Key_H;
+    sAccel        = "CTRL+H";
 }
 
 void Cmd_TEMPLATE_Test::activated(int iMsg)

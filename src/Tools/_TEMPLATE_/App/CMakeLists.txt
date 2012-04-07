@@ -20,7 +20,12 @@ SET(_TEMPLATE__SRCS
 
 add_library(_TEMPLATE_ SHARED ${_TEMPLATE__SRCS})
 target_link_libraries(_TEMPLATE_ ${_TEMPLATE__LIBS})
-fc_copy_script("Mod/_TEMPLATE_" "_TEMPLATE_" Init.py)
+
+
+fc_target_copy_resource(_TEMPLATE_ 
+    ${CMAKE_SOURCE_DIR}/src/Tools/_TEMPLATE_
+    ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_
+    Init.py)
 
 if(MSVC)
     set_target_properties(_TEMPLATE_ PROPERTIES SUFFIX ".pyd")
@@ -35,6 +40,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(_TEMPLATE_ PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
     set_target_properties(_TEMPLATE_ PROPERTIES PREFIX "")
+    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
 install(TARGETS _TEMPLATE_ DESTINATION lib)
