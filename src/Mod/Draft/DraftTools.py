@@ -301,6 +301,7 @@ class SelectPlane:
         elif type(arg).__name__ == 'Vector':
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
+        FreeCADGui.Snapper.setGrid()
 
     def finish(self):
         if self.call:
@@ -1538,6 +1539,7 @@ class Dimension(Creator):
                 if not self.node: self.support = getSupport(arg)
                 if hasMod(arg,MODALT) and (len(self.node)<3):
                     snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
+                    print "snapped: ",snapped
                     if snapped:
                         ob = self.doc.getObject(snapped['Object'])
                         if 'Edge' in snapped['Component']:
@@ -1587,6 +1589,7 @@ class Dimension(Creator):
                     if self.dir:
                         point = self.node[0].add(fcvec.project(point.sub(self.node[0]),self.dir))
                     self.node.append(point)
+                print "node",self.node
                 self.dimtrack.update(self.node)
                 if (len(self.node) == 2):
                     self.point2 = self.node[1]

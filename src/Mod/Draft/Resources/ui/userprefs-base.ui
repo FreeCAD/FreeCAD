@@ -658,6 +658,25 @@
          </spacer>
         </item>
         <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
+          </property>
+          <property name="text">
+           <string>Always show</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>alwaysShowGrid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_15">
           <property name="enabled">
            <bool>false</bool>
@@ -1297,6 +1316,22 @@ such as &quot;Arial:Bold&quot;</string>
     <hint type="destinationlabel">
      <x>400</x>
      <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gui::prefcheckbox_10</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>373</y>
     </hint>
    </hints>
   </connection>

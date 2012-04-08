@@ -605,7 +605,8 @@ class Snapper:
         if self.extLine:
             self.extLine.off()
         if self.grid:
-            self.grid.off()
+            if not Draft.getParam("alwaysShowGrid"):
+                self.grid.off()
         self.unconstrain()
         self.radius = 0
         self.setCursor()
@@ -829,6 +830,12 @@ class Snapper:
         if not bt:
             mw.addToolBar(self.toolbar)
         self.toolbar.show()
+
+    def setGrid(self):
+        "sets the grid, if visible"
+        if self.grid:
+            if self.grid.Visible:
+                self.grid.set()
 
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
