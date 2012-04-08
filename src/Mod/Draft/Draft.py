@@ -102,7 +102,8 @@ def getParamType(param):
                  "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
                  "modalt"]:
         return "int"
-    elif param in ["constructiongroupname","textfont","patternFile","template","maxSnapEdges"]:
+    elif param in ["constructiongroupname","textfont","patternFile","template","maxSnapEdges",
+                   "snapModes"]:
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
