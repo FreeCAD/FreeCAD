@@ -796,10 +796,27 @@ class Snapper:
                 b.setChecked(True)
                 self.toolbar.addWidget(b)
                 self.toolbarButtons.append(b)
+                QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
+        # restoring states 
+        t = Draft.getParam("snapModes")
+        if t:
+            c = 0
+            for b in [self.masterbutton]+self.toolbarButtons:
+                if len(t) > c:
+                    b.setChecked(bool(int(t[c])))
+                    c += 1
         if not Draft.getParam("showSnapBar"):
             self.toolbar.hide()
 
+    def saveSnapModes(self):
+        "saves the snap modes for next sessions"
+        t = ''
+        for b in [self.masterbutton]+self.toolbarButtons:
+            t += str(int(b.isChecked()))
+        Draft.setParam("snapModes",t)
+
     def toggle(self,checked=None):
+        "toggles the snap mode"
         if hasattr(self,"toolbarButtons"):
             if checked == None:
                 self.masterbutton.toggle()
@@ -813,6 +830,7 @@ class Snapper:
                 for i in range(len(self.toolbarButtons)):
                     self.savedButtonStates.append(self.toolbarButtons[i].isChecked())
                     self.toolbarButtons[i].setEnabled(False)
+        self.saveSnapModes()
 
     def isEnabled(self,but):
         "returns true if the given button is turned on"
