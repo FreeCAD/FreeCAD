@@ -100,6 +100,9 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
+    catch (...) {
+        return new App::DocumentObjectExecReturn("General error in RuledSurface::execute()");
+    }
 }
 
 // ----------------------------------------------------------------------------
