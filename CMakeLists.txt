@@ -98,6 +98,7 @@ OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished cod
 OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+OPTION(USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 
 # ==============================================================================
 

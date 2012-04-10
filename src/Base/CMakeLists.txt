@@ -281,7 +281,6 @@ SET(FreeCADBase_HPP_SRCS
 )
 
 SET(FreeCADBase_SRCS
-    ${zipios_SRCS}
     ${pycxx_SRCS}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
@@ -292,6 +291,27 @@ SET(FreeCADBase_SRCS
     PreCompiled.cpp
     PreCompiled.h
 )
+
+# Use external zipios++ if specified.
+if(USE_EXTERNAL_ZIPIOS)
+    find_library(ZIPIOS_LIBRARY zipios)
+    find_path(ZIPIOS_INCLUDES zipios++/zipios-config.h)
+    if(ZIPIOS_LIBRARY)
+        message(STATUS "Found zipios++: ${ZIPIOS}")
+    endif()
+    if(ZIPIOS_INCLUDES)
+        message(STATUS "Found zipios++ headers.")
+    endif()
+    if(ZIPIOS_LIBRARY AND ZIPIOS_INCLUDES)
+        list(APPEND FreeCADBase_LIBS ${ZIPIOS_LIBRARY})
+        include_directories(${ZIPIOS_INCLUDES})
+    else()
+        message(FATAL_ERROR "Using external zipios++ was specified but was not found.")
+    endif()
+else(USE_EXTERNAL_ZIPIOS)
+    list(APPEND FreeCADBase_SRCS ${zipios_SRCS})
+endif(USE_EXTERNAL_ZIPIOS)
+
 
 if(MSVC)
 add_definitions(-D_PreComp_)
