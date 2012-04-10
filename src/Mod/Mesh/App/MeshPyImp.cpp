@@ -491,29 +491,36 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                 Py::Sequence seq(*it);
                 if (seq.size() == 3) {
                     if (PyFloat_Check(seq[0].ptr())) {
-                        // always three triple build a triangle
+                        // every three triples build a triangle
                         facet._aclPoints[0] = Base::getVectorFromTuple<float>((*it).ptr());
                         ++it;
                         facet._aclPoints[1] = Base::getVectorFromTuple<float>((*it).ptr());
                         ++it;
                         facet._aclPoints[2] = Base::getVectorFromTuple<float>((*it).ptr());
                     }
-                    else {
+                    else if (seq[0].isSequence()) {
+                        // a sequence of sequence of flots
                         for (int i=0; i<3; i++) {
-                            if (PyObject_TypeCheck(seq[i].ptr(), &(Base::VectorPy::Type))) {
-                                Base::Vector3d p = Py::Vector(seq[i]).toVector();
-                                facet._aclPoints[i].Set((float)p.x,(float)p.y,(float)p.z);
-                            }
-                            else if (seq[i].isSequence()){
-                                facet._aclPoints[i] = Base::getVectorFromTuple<float>(seq[i].ptr());
-                            }
+                            facet._aclPoints[i] = Base::getVectorFromTuple<float>(seq[i].ptr());
                         }
+                    }
+                    else if (PyObject_TypeCheck(seq[0].ptr(), &(Base::VectorPy::Type))) {
+                        // a sequence of vectors
+                        for (int i=0; i<3; i++) {
+                            Base::Vector3d p = Py::Vector(seq[i]).toVector();
+                            facet._aclPoints[i].Set((float)p.x,(float)p.y,(float)p.z);
+                        }
+                    }
+                    else {
+                        PyErr_SetString(PyExc_Exception, "expect a sequence of floats or Vector");
+                        return NULL;
                     }
 
                     facet.CalcNormal();
                     facets.push_back(facet);
                 }
                 else {
+                    // 9 consecutive floats expected
                     int index=0;
                     for (int i=0; i<3; i++) {
                         facet._aclPoints[i].x = (float)(double)Py::Float(seq[index++]);
@@ -523,7 +530,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                     facet.CalcNormal();
                     facets.push_back(facet);
                 }
-            }
+            } // sequence
         }
 
         getMeshObjectPtr()->addFacets(facets);
