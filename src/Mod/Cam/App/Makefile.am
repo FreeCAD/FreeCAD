@@ -14,8 +14,12 @@ libCam_la_SOURCES=\
 		ConvertDyna.h \
 		cutting_tools.cpp \
 		cutting_tools.h \
+		deviation.cpp \
+		deviation.h \
 		edgesort.cpp \
 		edgesort.h \
+		mergedata.cpp \
+		mergedata.h \
 		path_simulate.cpp \
 		path_simulate.h \
 		PreCompiled.cpp \
@@ -31,16 +35,18 @@ libCam_la_SOURCES=\
 		WireExplorer.h
 
 # the library search path.
-libCam_la_LDFLAGS = -L../../../3rdParty/OCCAdaptMesh -L../../../Base -L../../../App \
-		-L../../../Mod/Part/App -L../../../Mod/Mesh/App -L/usr/X11R6/lib -L$(OCC_LIB) \
+libCam_la_LDFLAGS = -L../../../Base -L../../../App \
+                $(sim_ac_coin_ldflags) $(sim_ac_coin_libs) \
+                -L../../../Mod/Part/App -L../../../Mod/Mesh/App -L/usr/X11R6/lib -L$(OCC_LIB) -L/usr/lib/atlas \
 		$(GTS_LIBS) $(all_libraries) -version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
-libCam_la_CPPFLAGS = -DAppCamExport=
+libCam_la_CPPFLAGS = $(sim_ac_coin_cppflags) -DAppCamExport=
+
+#Binary file ./atlas/libclapack.so matches
 
 libCam_la_LIBADD   = \
 		-lxerces-c \
 		-lboost_filesystem \
 		-l@PYTHON_LIB@ \
-		-lOCCAdaptMesh \
 		-lFreeCADBase \
 		-lFreeCADApp \
 		-lPart \
@@ -65,7 +71,14 @@ libCam_la_LIBADD   = \
 		-lTKMesh \
 		-lblas \
 		-lumfpack \
-		-lamd
+		-lamd \
+		-lcblas \
+		-lANN \
+		-lSMDS \
+		-lSMESHDS \
+		-lSMESH \
+		-lclapack
+		
 
 %.cpp: %.xml $(top_srcdir)/src/Tools/generateTemplates/templateClassPyExport.py
 	$(PYTHON) $(top_srcdir)/src/Tools/generate.py --outputPath $(@D) $<
@@ -90,8 +103,8 @@ Cam_la_DEPENDENCIES = libCam.la
 
 # set the include path found by configure
 AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes) -I$(OCC_INC) $(GTS_CFLAGS) \
-		  -I$(top_srcdir)/src/3rdParty -I$(top_srcdir)/src/3rdParty/OCCAdaptMesh/Include
-
+		  -I$(top_srcdir)/src/3rdParty $(QT4_CORE_CXXFLAGS) \
+		  -I$(top_srcdir)/src/3rdParty/salomesmesh/inc -I$(top_srcdir)/src/3rdParty/ANN/include
 
 libdir = $(prefix)/Mod/Cam
 
