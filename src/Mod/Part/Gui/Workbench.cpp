@@ -58,11 +58,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    Gui::MenuItem* prim = new Gui::MenuItem;
+    prim->setCommand("Primitives");
+    *prim << "Part_Box" << "Part_Cylinder" << "Part_Sphere"
+          << "Part_Cone" << "Part_Torus";
+
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part");
     *part << "Part_Import" << "Part_Export" << "Separator";
-    *part << "Part_Primitives" << "Part_ShapeFromMesh"
+    *part << prim << "Part_Primitives" << "Separator" << "Part_ShapeFromMesh"
           << "Part_MakeSolid" << "Part_ReverseShape" << "Part_SimpleCopy"
           << "Part_RefineShape" << "Separator"
           << "Part_Boolean" << "Part_CrossSections" << "Part_Extrude"
@@ -70,16 +75,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_RuledSurface" << "Part_Loft"
           << "Part_Builder";
 
-    Gui::MenuItem* partSimple = new Gui::MenuItem;
-    root->insertItem(item, partSimple);
-    partSimple->setCommand("&Simple");
-    *partSimple << "Part_SimpleCylinder";
-
-    Gui::MenuItem* solids = new Gui::MenuItem;
-    root->insertItem(item, solids);
-    solids->setCommand("&Parametric");
-    *solids << "Part_Box" << "Part_Cylinder" << "Part_Sphere" << "Part_Cone"
-            << "Part_Torus" << "Separator" << "Part_Primitives";
+    //Gui::MenuItem* partSimple = new Gui::MenuItem;
+    //root->insertItem(item, partSimple);
+    //partSimple->setCommand("&Simple");
+    //*partSimple << "Part_SimpleCylinder";
 
     return root;
 }
