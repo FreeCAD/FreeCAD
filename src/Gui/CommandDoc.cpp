@@ -1081,7 +1081,7 @@ StdCmdEdit::StdCmdEdit()
   :Command("Std_Edit")
 {
   sGroup        = QT_TR_NOOP("Edit");
-  sMenuText     = QT_TR_NOOP("Toggle &Editmode");
+  sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
   sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
   sWhatsThis    = "Std_Edit";
   sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
