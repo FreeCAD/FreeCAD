@@ -66,6 +66,7 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 
 #include "SoFCUnifiedSelection.h"
@@ -290,7 +291,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         }
         else if (selaction->SelChange.Type == SelectionChanges::ClrSelection ||
                  selaction->SelChange.Type == SelectionChanges::SetSelection) {
-            std::vector<ViewProvider*> vps = this->viewer->getViewProvidersOfType
+            std::vector<ViewProvider*> vps = this->pcDocument->getViewProvidersOfType
                 (ViewProviderDocumentObject::getClassTypeId());
             for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
@@ -352,7 +353,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             ViewProvider *vp = 0;
             ViewProviderDocumentObject* vpd = 0;
             if (pPath && pPath->containsPath(action->getCurPath()))
-                vp = viewer->getViewProviderByPathFromTail(pPath);
+                vp = pcDocument->getViewProviderByPathFromTail(pPath);
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
                 vpd = static_cast<ViewProviderDocumentObject*>(vp);
 
@@ -441,7 +442,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             ViewProvider *vp = 0;
             ViewProviderDocumentObject* vpd = 0;
             if (pPath && pPath->containsPath(action->getCurPath()))
-                vp = viewer->getViewProviderByPathFromTail(pPath);
+                vp = pcDocument->getViewProviderByPathFromTail(pPath);
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
                 vpd = static_cast<ViewProviderDocumentObject*>(vp);
             if (vpd && vpd->useNewSelectionModel() && vpd->isSelectable()) {

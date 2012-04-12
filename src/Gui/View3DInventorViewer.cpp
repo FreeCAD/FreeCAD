@@ -213,7 +213,7 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
-    Gui::SoFCUnifiedSelection* selectionRoot = new Gui::SoFCUnifiedSelection();
+    selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
     selectionRoot->viewer = this;
 #endif
@@ -288,6 +288,12 @@ View3DInventorViewer::~View3DInventorViewer()
     if (getMainWindow())
         getMainWindow()->setPaneText(2, QLatin1String(""));
     Gui::Selection().Detach(this);
+}
+
+void View3DInventorViewer::setDocument(Gui::Document *pcDocument)
+{
+    // write the document the viewer belongs to to the selection node
+    selectionRoot->pcDocument = pcDocument;
 }
 
 void View3DInventorViewer::initialize()

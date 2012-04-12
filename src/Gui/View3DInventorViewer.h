@@ -52,6 +52,8 @@ class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
 class SoFCUnifiedSelection;
+class Document;
+class SoFCUnifiedSelection;
 
 /** The Inventor viewer
  *
@@ -263,6 +265,8 @@ public:
     void setNavigationType(Base::Type);
     NavigationStyle* navigationStyle() const;
 
+    void setDocument(Gui::Document *pcDocument);
+
 protected:
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
@@ -298,6 +302,7 @@ private:
     SoSeparator * pcViewProviderRoot;
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
+    SoFCUnifiedSelection* selectionRoot;
 
     void initialize();
     SbBool axiscrossEnabled;
