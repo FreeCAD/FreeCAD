@@ -78,6 +78,8 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         if (!shape1._Shape.IsNull()) {
             if (shape1._Shape.ShapeType() == TopAbs_EDGE)
                 curve1 = shape1._Shape;
+            else if (shape1._Shape.ShapeType() == TopAbs_WIRE)
+                curve1 = shape1._Shape;
             else
                 curve1 = shape1.getSubShape(element1[0].c_str());
         }
@@ -86,6 +88,8 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         const Part::TopoShape& shape2 = static_cast<Part::Feature*>(c2)->Shape.getValue();
         if (!shape2._Shape.IsNull()) {
             if (shape2._Shape.ShapeType() == TopAbs_EDGE)
+                curve2 = shape2._Shape;
+            else if (shape2._Shape.ShapeType() == TopAbs_WIRE)
                 curve2 = shape2._Shape;
             else
                 curve2 = shape2.getSubShape(element2[0].c_str());
