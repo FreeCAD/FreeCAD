@@ -383,6 +383,10 @@ void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
                     args.setItem(0, Py::Object(object->getPyObject(), true));
                     method.apply(args);
                 }
+
+                // #0000415: Now simulate a property change event to call
+                // claimChildren if implemented.
+                pcObject->Label.touch();
             }
         }
     }
