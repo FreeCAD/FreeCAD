@@ -119,10 +119,10 @@ class _Structure(ArchComponent.Component):
             length = obj.Length
         else:
             length = 1
-        if obj.Width:
-            width = obj.Width
-        else:
-            width = 1
+        width = 1
+        if hasattr(obj,"Width"):
+            if obj.Width:
+                width = obj.Width
         if obj.Height:
             height = obj.Height
         else:

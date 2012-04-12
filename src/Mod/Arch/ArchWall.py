@@ -294,22 +294,27 @@ class _Wall(ArchComponent.Component):
         flat = False
         if hasattr(obj.ViewObject,"DisplayMode"):
             flat = (obj.ViewObject.DisplayMode == "Flat 2D")
+
+        width = 1.0
+        if hasattr(obj,"Width"):
+            if obj.Width:
+                width = obj.Width
         
         def getbase(wire):
             "returns a full shape from a base wire"
             dvec = fcgeo.vec(wire.Edges[0]).cross(normal)
             dvec.normalize()
             if obj.Align == "Left":
-                dvec = dvec.multiply(obj.Width)
+                dvec = dvec.multiply(width)
                 w2 = fcgeo.offsetWire(wire,dvec)
                 sh = fcgeo.bind(wire,w2)
             elif obj.Align == "Right":
-                dvec = dvec.multiply(obj.Width)
+                dvec = dvec.multiply(width)
                 dvec = fcvec.neg(dvec)
                 w2 = fcgeo.offsetWire(wire,dvec)
                 sh = fcgeo.bind(wire,w2)
             elif obj.Align == "Center":
-                dvec = dvec.multiply(obj.Width/2)
+                dvec = dvec.multiply(width/2)
                 w1 = fcgeo.offsetWire(wire,dvec)
                 dvec = fcvec.neg(dvec)
                 w2 = fcgeo.offsetWire(wire,dvec)
@@ -338,32 +343,37 @@ class _Wall(ArchComponent.Component):
             normal = Vector(obj.Normal)
 
         # computing shape
+        base = None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                base = obj.Base.Shape.copy()
-                if base.Solids:
-                    pass
-                elif base.Faces:
-                    if height:
-                        norm = normal.multiply(height)
-                        base = base.extrude(norm)
-                elif base.Wires:
-                    temp = None
-                    for wire in obj.Base.Shape.Wires:
-                        sh = getbase(wire)
-                        if temp:
-                            temp = temp.oldFuse(sh)
-                        else:
-                            temp = sh
-                    base = temp
-        else:
+                if not obj.Base.Shape.isNull():
+                    base = obj.Base.Shape.copy()
+                    if base.Solids:
+                        pass
+                    elif base.Faces:
+                        if height:
+                            norm = normal.multiply(height)
+                            base = base.extrude(norm)
+                    elif base.Wires:
+                        temp = None
+                        for wire in obj.Base.Shape.Wires:
+                            sh = getbase(wire)
+                            if temp:
+                                temp = temp.oldFuse(sh)
+                            else:
+                                temp = sh
+                        base = temp
+        if not base:
             if obj.Length == 0:
                 return
+            length = obj.Length
+            if not length:
+                length = 1
             v1 = Vector(0,0,0)
-            v2 = Vector(obj.Length,0,0)
+            v2 = Vector(length,0,0)
             w = Part.Wire(Part.Line(v1,v2).toShape())
             base = getbase(w)
-            
+
         for app in obj.Additions:
             base = base.oldFuse(app.Shape)
             app.ViewObject.hide() #to be removed
@@ -371,15 +381,17 @@ class _Wall(ArchComponent.Component):
             if Draft.getType(hole) == "Window":
                 # window
                 if hole.Base and obj.Width:
-                    f = self.getSubVolume(hole.Base,obj.Width)
+                    f = self.getSubVolume(hole.Base,width)
                     base = base.cut(f)
             elif Draft.isClone(hole,"Window"):
-                if hole.Objects[0].Base and obj.Width:
-                    f = self.getSubVolume(hole.Objects[0].Base,obj.Width,hole.Placement.Base)
+                if hole.Objects[0].Base and width:
+                    f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement.Base)
                     base = base.cut(f)                   
-            elif hasattr(obj,"Shape"):
-                base = base.cut(hole.Shape)
-                hole.ViewObject.hide() # to be removed
+            elif hasattr(hole,"Shape"):
+                if not hole.Shape.isNull():
+                    base = base.cut(hole.Shape)
+                    hole.ViewObject.hide() # to be removed
+                
         obj.Shape = base
         if not fcgeo.isNull(pl):
             obj.Placement = pl

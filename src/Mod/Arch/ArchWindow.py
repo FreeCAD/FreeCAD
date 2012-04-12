@@ -119,8 +119,9 @@ class _Window(ArchComponent.Component):
                         wstr = obj.WindowParts[(i*5)+2].split(',')
                         for s in wstr:
                             j = int(s[4:])
-                            if len(obj.Base.Shape.Wires) >= j:
-                                wires.append(obj.Base.Shape.Wires[j])
+                            if obj.Base.Shape.Wires:
+                                if len(obj.Base.Shape.Wires) >= j:
+                                    wires.append(obj.Base.Shape.Wires[j])
                         if wires:
                             max_length = 0
                             for w in wires:
@@ -143,6 +144,7 @@ class _Window(ArchComponent.Component):
                                 if zof:
                                     zov = fcvec.scaleTo(norm,zof)
                                     shape.translate(zov)
+                            print shape
                             shapes.append(shape)
                     obj.Shape = Part.makeCompound(shapes)
         if not fcgeo.isNull(pl):
