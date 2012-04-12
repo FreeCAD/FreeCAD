@@ -168,7 +168,7 @@ public:
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
+    void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
     /// helper for selection
     ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
     /// call update on all attached views
