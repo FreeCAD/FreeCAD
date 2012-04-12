@@ -535,22 +535,30 @@ class gridTracker(Tracker):
         bound = (self.numlines/2)*self.space
         pts = []
         mpts = []
+        apts = []
         for i in range(self.numlines+1):
             curr = -bound + i*self.space
             z = 0
             if i/float(self.mainlines) == i/self.mainlines:
-                mpts.extend([[-bound,curr,z],[bound,curr,z]])
-                mpts.extend([[curr,-bound,z],[curr,bound,z]])
+                if round(curr,4) == 0:
+                    apts.extend([[-bound,curr,z],[bound,curr,z]])
+                    apts.extend([[curr,-bound,z],[curr,bound,z]])
+                else:
+                    mpts.extend([[-bound,curr,z],[bound,curr,z]])
+                    mpts.extend([[curr,-bound,z],[curr,bound,z]])
             else:
                 pts.extend([[-bound,curr,z],[bound,curr,z]])
                 pts.extend([[curr,-bound,z],[curr,bound,z]])
         idx = []
         midx = []
+        aidx = []
         for p in range(0,len(pts),2):
             idx.append(2)
         for mp in range(0,len(mpts),2):
             midx.append(2)
-
+        for ap in range(0,len(apts),2):
+            aidx.append(2)
+            
         mat1 = coin.SoMaterial()
         mat1.transparency.setValue(0.7)
         mat1.diffuseColor.setValue(col)
@@ -565,6 +573,13 @@ class gridTracker(Tracker):
         self.coords2.point.setValues(mpts)
         lines2 = coin.SoLineSet()
         lines2.numVertices.setValues(midx)
+        mat3 = coin.SoMaterial()
+        mat3.transparency.setValue(0)
+        mat3.diffuseColor.setValue(col)
+        self.coords3 = coin.SoCoordinate3()
+        self.coords3.point.setValues(apts)
+        lines3 = coin.SoLineSet()
+        lines3.numVertices.setValues(aidx)
         s = coin.SoSeparator()
         s.addChild(self.trans)
         s.addChild(mat1)
@@ -573,6 +588,9 @@ class gridTracker(Tracker):
         s.addChild(mat2)
         s.addChild(self.coords2)
         s.addChild(lines2)
+        s.addChild(mat3)
+        s.addChild(self.coords3)
+        s.addChild(lines3)
         Tracker.__init__(self,children=[s])
         self.update()
 
