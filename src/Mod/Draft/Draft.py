@@ -666,6 +666,12 @@ def makeCopy(obj,force=None,reparent=False):
         ArchCell._Cell(newobj)
         if gui:
             ArchCell._ViewProviderCell(newobj.ViewObject)
+    elif (getType(obj) == "Sketch") or (force == "Sketch"):
+        newobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",getRealName(obj.Name))
+        for geo in obj.Geometries:
+            newobj.addGeometry(geo)
+        for con in obj.constraints:
+            newobj.addConstraint(con)
     elif obj.isDerivedFrom("Part::Feature"):
         newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",getRealName(obj.Name))
         newobj.Shape = obj.Shape
