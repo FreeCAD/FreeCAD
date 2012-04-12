@@ -59,28 +59,42 @@ void RuledSurface::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *RuledSurface::execute(void)
 {
-    App::DocumentObject* c1 = Curve1.getValue();
-    if (!(c1 && c1->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-        return new App::DocumentObjectExecReturn("No shape linked.");
-    const std::vector<std::string>& element1 = Curve1.getSubValues();
-    if (element1.size() != 1)
-        return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
-    App::DocumentObject* c2 = Curve2.getValue();
-    if (!(c2 && c2->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-        return new App::DocumentObjectExecReturn("No shape linked.");
-    const std::vector<std::string>& element2 = Curve2.getSubValues();
-    if (element2.size() != 1)
-        return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
-
-    const Part::TopoShape& shape1 = static_cast<Part::Feature*>(c1)->Shape.getValue();
-    TopoDS_Shape curve1 = shape1.getSubShape(element1[0].c_str());
-    if (curve1.IsNull()) curve1 = shape1._Shape;
-
-    const Part::TopoShape& shape2 = static_cast<Part::Feature*>(c2)->Shape.getValue();
-    TopoDS_Shape curve2 = shape2.getSubShape(element2[0].c_str());
-    if (curve2.IsNull()) curve2 = shape2._Shape;
-
     try {
+        App::DocumentObject* c1 = Curve1.getValue();
+        if (!(c1 && c1->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+            return new App::DocumentObjectExecReturn("No shape linked.");
+        const std::vector<std::string>& element1 = Curve1.getSubValues();
+        if (element1.size() != 1)
+            return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
+        App::DocumentObject* c2 = Curve2.getValue();
+        if (!(c2 && c2->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+            return new App::DocumentObjectExecReturn("No shape linked.");
+        const std::vector<std::string>& element2 = Curve2.getSubValues();
+        if (element2.size() != 1)
+            return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
+
+        TopoDS_Shape curve1;
+        const Part::TopoShape& shape1 = static_cast<Part::Feature*>(c1)->Shape.getValue();
+        if (!shape1._Shape.IsNull()) {
+            if (shape1._Shape.ShapeType() == TopAbs_EDGE)
+                curve1 = shape1._Shape;
+            else if (shape1._Shape.ShapeType() == TopAbs_WIRE)
+                curve1 = shape1._Shape;
+            else
+                curve1 = shape1.getSubShape(element1[0].c_str());
+        }
+
+        TopoDS_Shape curve2;
+        const Part::TopoShape& shape2 = static_cast<Part::Feature*>(c2)->Shape.getValue();
+        if (!shape2._Shape.IsNull()) {
+            if (shape2._Shape.ShapeType() == TopAbs_EDGE)
+                curve2 = shape2._Shape;
+            else if (shape2._Shape.ShapeType() == TopAbs_WIRE)
+                curve2 = shape2._Shape;
+            else
+                curve2 = shape2.getSubShape(element2[0].c_str());
+        }
+
         if (curve1.IsNull() || curve2.IsNull())
             return new App::DocumentObjectExecReturn("Linked shapes are empty.");
         if (curve1.ShapeType() == TopAbs_EDGE && curve2.ShapeType() == TopAbs_EDGE) {
