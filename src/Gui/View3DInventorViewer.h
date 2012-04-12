@@ -341,7 +341,7 @@ public:
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);
-    
+
     virtual PyObject *getPyObject(void);
 
 protected:
