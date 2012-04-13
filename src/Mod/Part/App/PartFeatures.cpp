@@ -76,23 +76,29 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         TopoDS_Shape curve1;
         const Part::TopoShape& shape1 = static_cast<Part::Feature*>(c1)->Shape.getValue();
         if (!shape1._Shape.IsNull()) {
-            if (shape1._Shape.ShapeType() == TopAbs_EDGE)
-                curve1 = shape1._Shape;
-            else if (shape1._Shape.ShapeType() == TopAbs_WIRE)
-                curve1 = shape1._Shape;
-            else
+            if (!element1[0].empty()) {
                 curve1 = shape1.getSubShape(element1[0].c_str());
+            }
+            else {
+                if (shape1._Shape.ShapeType() == TopAbs_EDGE)
+                    curve1 = shape1._Shape;
+                else if (shape1._Shape.ShapeType() == TopAbs_WIRE)
+                    curve1 = shape1._Shape;
+            }
         }
 
         TopoDS_Shape curve2;
         const Part::TopoShape& shape2 = static_cast<Part::Feature*>(c2)->Shape.getValue();
         if (!shape2._Shape.IsNull()) {
-            if (shape2._Shape.ShapeType() == TopAbs_EDGE)
-                curve2 = shape2._Shape;
-            else if (shape2._Shape.ShapeType() == TopAbs_WIRE)
-                curve2 = shape2._Shape;
-            else
+            if (!element2[0].empty()) {
                 curve2 = shape2.getSubShape(element2[0].c_str());
+            }
+            else {
+                if (shape2._Shape.ShapeType() == TopAbs_EDGE)
+                    curve2 = shape2._Shape;
+                else if (shape2._Shape.ShapeType() == TopAbs_WIRE)
+                    curve2 = shape2._Shape;
+            }
         }
 
         if (curve1.IsNull() || curve2.IsNull())
