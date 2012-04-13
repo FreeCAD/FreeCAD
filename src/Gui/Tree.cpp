@@ -253,6 +253,8 @@ void TreeWidget::onStartEditing()
             App::DocumentObject* obj = objitem->object()->getObject();
             if (!obj) return;
             Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
+            MDIView *view = doc->getActiveView();
+            if (view) getMainWindow()->setActiveWindow(view);
             doc->setEdit(objitem->object(), edit);
         }
     }
@@ -306,7 +308,12 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         getMainWindow()->setActiveWindow(view);
     }
     else if (item->type() == TreeWidget::ObjectType) {
-        if (!(static_cast<DocumentObjectItem*>(item)->object())->doubleClicked())
+        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
+        App::DocumentObject* obj = objitem->object()->getObject();
+        Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
+        MDIView *view = doc->getActiveView();
+        if (view) getMainWindow()->setActiveWindow(view);
+        if (!objitem->object()->doubleClicked())
             QTreeWidget::mouseDoubleClickEvent(event);
     }
 }
