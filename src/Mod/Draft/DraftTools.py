@@ -81,7 +81,7 @@ if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Dra
     p.SetBool("showSnapBar",1)
     p.SetUnsigned("constructioncolor",746455039)
     p.SetFloat("textheight",0.2)
-    p.setInt("precision",4)
+    p.SetInt("precision",4)
 
 #---------------------------------------------------------------------------
 # General functions
