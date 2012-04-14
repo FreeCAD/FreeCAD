@@ -27,8 +27,13 @@
 #include "qp_eq.h"
 #include <Eigen/QR>
 
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/connected_components.hpp>
+
 namespace GCS
 {
+
+typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Graph;
 
 ///////////////////////////////////////
 // Solver
@@ -38,9 +43,7 @@ namespace GCS
 System::System()
 : clist(0),
   c2p(), p2c(),
-  subsys0(0),
-  subsys1(0),
-  subsys2(0),
+  subsyslist(0),
   reference(),
   init(false)
 {
@@ -48,9 +51,7 @@ System::System()
 
 System::System(std::vector<Constraint *> clist_)
 : c2p(), p2c(),
-  subsys0(0),
-  subsys1(0),
-  subsys2(0),
+  subsyslist(0),
   reference(),
   init(false)
 {
@@ -553,6 +554,28 @@ void System::initSolution(VEC_pD &params)
     // - Organizes the rest of constraints into two subsystems for
     //   tag ids >=0 and < 0 respectively and applies the
     //   system reduction specified in the previous step
+    MAP_pD_I params_index;
+    for (int i=0; i < int(params.size()); ++i)
+        params_index[params[i]] = i;
+
+    Graph g;
+    for (int i=0; i < int(params.size() + clist.size()); i++)
+        boost::add_vertex(g);
+
+    int cvtid = int(params.size());
+    for (std::vector<Constraint *>::const_iterator constr=clist.begin();
+         constr != clist.end(); ++constr, cvtid++) {
+        VEC_pD &cparams = c2p[*constr];
+        for (VEC_pD::const_iterator param=cparams.begin();
+             param != cparams.end(); ++param) {
+            MAP_pD_I::const_iterator it = params_index.find(*param);
+            if (it != params_index.end())
+                boost::add_edge(cvtid, it->second, g);
+        }
+    }
+
+    VEC_I components(boost::num_vertices(g));
+    int components_size = boost::connected_components(g, &components[0]);
 
     clearReference();
     for (VEC_pD::const_iterator param=params.begin();
@@ -564,9 +587,6 @@ void System::initSolution(VEC_pD &params)
     reductionmap.clear();
     {
         VEC_pD reduced_params=params;
-        MAP_pD_I params_index;
-        for (int i=0; i < int(params.size()); ++i)
-            params_index[params[i]] = i;
 
         for (std::vector<Constraint *>::const_iterator constr=clist.begin();
             constr != clist.end(); ++constr) {
@@ -589,27 +609,39 @@ void System::initSolution(VEC_pD &params)
                 reductionmap[params[i]] = reduced_params[i];
     }
 
-    int i=0;
-    std::vector<Constraint *> clist0, clist1, clist2;
+    std::vector< std::vector<Constraint *> > clists0(components_size),
+                                             clists1(components_size),
+                                             clists2(components_size);
+    int i = int(params.size());
     for (std::vector<Constraint *>::const_iterator constr=clist.begin();
          constr != clist.end(); ++constr, i++) {
         if (eliminated.count(*constr) == 0) {
+            int id = components[i];
             if ((*constr)->getTag() >= 0)
-                clist0.push_back(*constr);
+                clists0[id].push_back(*constr);
             else if ((*constr)->getTag() == -1) // move constraints
-                clist1.push_back(*constr);
+                clists1[id].push_back(*constr);
             else // distance from reference constraints
-                clist2.push_back(*constr);
+                clists2[id].push_back(*constr);
         }
     }
 
+    std::vector< std::vector<double *> > plists(components_size);
+    for (int i=0; i < int(params.size()); ++i) {
+        int id = components[i];
+        plists[id].push_back(params[i]);
+    }
+
     clearSubSystems();
-    if (clist0.size() > 0)
-        subsys0 = new SubSystem(clist0, params, reductionmap);
-    if (clist1.size() > 0)
-        subsys1 = new SubSystem(clist1, params, reductionmap);
-    if (clist2.size() > 0)
-        subsys2 = new SubSystem(clist2, params, reductionmap);
+    for (int cid=0; cid < components_size; cid++) {
+        subsyslist.push_back(std::vector<SubSystem *>(0));
+        if (clists0[cid].size() > 0)
+            subsyslist[cid].push_back(new SubSystem(clists0[cid], plists[cid], reductionmap));
+        if (clists1[cid].size() > 0)
+            subsyslist[cid].push_back(new SubSystem(clists1[cid], plists[cid], reductionmap));
+        if (clists2[cid].size() > 0)
+            subsyslist[cid].push_back(new SubSystem(clists2[cid], plists[cid], reductionmap));
+    }
     init = true;
 }
 
@@ -634,31 +666,26 @@ int System::solve(VEC_pD &params, bool isFine, Algorithm alg)
 
 int System::solve(bool isFine, Algorithm alg)
 {
-    if (subsys0) {
-        resetToReference();
-        if (subsys2) {
-            int ret = solve(subsys0, subsys2, isFine);
-            if (subsys1) // give subsys1 higher priority than subsys2
-                         // in this case subsys2 acts like a preconditioner
-                return solve(subsys0, subsys1, isFine);
-            else
-                return ret;
+    bool isReset = false;
+    // return success by default in order to permit coincidence constraints to be applied
+    // even if no other system has to be solved
+    int res = Success;
+    for (int cid=0; cid < int(subsyslist.size()); cid++) {
+        if (subsyslist[cid].size() > 0 && !isReset) {
+             resetToReference();
+             isReset = true;
         }
-        else if (subsys1)
-            return solve(subsys0, subsys1, isFine);
-        else
-            return solve(subsys0, isFine, alg);
+        if (subsyslist[cid].size() == 1)
+             res = std::max(res, solve(subsyslist[cid][0], isFine, alg));
+        else if (subsyslist[cid].size() == 2)
+             res = std::max(res, solve(subsyslist[cid][0], subsyslist[cid][1], isFine));
+        else if (subsyslist[cid].size() > 2)
+            // subsystem 1 has higher priority than subsystems 2,3,...
+            // these subsystems act like a preconditioner
+            for (int i=subsyslist[cid].size()-1; i > 0; i--)
+                res = std::max(res, solve(subsyslist[cid][0], subsyslist[cid][i], isFine));
     }
-    else if (subsys1) {
-        resetToReference();
-        if (subsys2)
-            return solve(subsys1, subsys2, isFine);
-        else
-            return solve(subsys1, isFine, alg);
-    }
-    else
-        // return success in order to permit coincidence constraints to be applied
-        return Success;
+    return res;
 }
 
 int System::solve(SubSystem *subsys, bool isFine, Algorithm alg)
@@ -1193,25 +1220,11 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 
 }
 
-void System::getSubSystems(std::vector<SubSystem *> &subsysvec)
-{
-    subsysvec.clear();
-    if (subsys0)
-        subsysvec.push_back(subsys0);
-    if (subsys1)
-        subsysvec.push_back(subsys1);
-    if (subsys2)
-        subsysvec.push_back(subsys2);
-}
-
 void System::applySolution()
 {
-    if (subsys2)
-        subsys2->applySolution();
-    if (subsys1)
-        subsys1->applySolution();
-    if (subsys0)
-        subsys0->applySolution();
+    for (int cid=0; cid < int(subsyslist.size()); cid++)
+        for (int i=subsyslist[cid].size()-1; i >= 0; i--)
+            subsyslist[cid][i]->applySolution();
 
     for (MAP_pD_pD::const_iterator it=reductionmap.begin();
          it != reductionmap.end(); ++it)
@@ -1303,12 +1316,9 @@ int System::diagnose(VEC_pD &params, VEC_I &conflicting)
 void System::clearSubSystems()
 {
     init = false;
-    std::vector<SubSystem *> subsystems;
-    getSubSystems(subsystems);
-    free(subsystems);
-    subsys0 = NULL;
-    subsys1 = NULL;
-    subsys2 = NULL;
+    for (int i=0; i < int(subsyslist.size()); i++)
+        free(subsyslist[i]);
+    subsyslist.clear();
 }
 
 double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)

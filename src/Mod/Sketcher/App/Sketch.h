@@ -94,7 +94,7 @@ public:
     /** initializes a point (or curve) drag by setting the current
       * sketch status as a reference
       */
-    int initMove(int geoId, PointPos pos);
+    int initMove(int geoId, PointPos pos, bool fine=true);
 
     /** move this point (or curve) to a new location and solve.
       * This will introduce some additional weak constraints expressing
@@ -212,6 +212,7 @@ protected:
     std::vector<GCS::Circle> Circles;
 
     bool isInitMove;
+    bool isFine;
 
 private:
     /// retrieves the index of a point
