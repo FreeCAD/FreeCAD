@@ -1563,13 +1563,14 @@ bool Sketch::updateGeometry()
 
 // solving ==========================================================
 
-int Sketch::solve()
+int Sketch::solve(void)
 {
 
     Base::TimeInfo start_time;
     if (!isInitMove) { // make sure we are in single subsystem mode
         GCSsys.clearByTag(-1);
         GCSsys.clearByTag(-2);
+        isFine = true;
     }
 
     int ret;
@@ -1580,15 +1581,15 @@ int Sketch::solve()
         case 0: // solving with the default DogLeg solver
                 // (or with SQP if we are in moving mode)
             solvername = isInitMove ? "SQP" : "DogLeg";
-            ret = GCSsys.solve(true, GCS::DogLeg);
+            ret = GCSsys.solve(isFine, GCS::DogLeg);
             break;
         case 1: // solving with the LevenbergMarquardt solver
             solvername = "LevenbergMarquardt";
-            ret = GCSsys.solve(true, GCS::LevenbergMarquardt);
+            ret = GCSsys.solve(isFine, GCS::LevenbergMarquardt);
             break;
         case 2: // solving with the BFGS solver
             solvername = "BFGS";
-            ret = GCSsys.solve(true, GCS::BFGS);
+            ret = GCSsys.solve(isFine, GCS::BFGS);
             break;
         case 3: // last resort: augment the system with a second subsystem and use the SQP solver
             solvername = "SQP(augmented system)";
@@ -1601,7 +1602,7 @@ int Sketch::solve()
                 GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
             }
             GCSsys.initSolution(Parameters);
-            ret = GCSsys.solve(true);
+            ret = GCSsys.solve(isFine);
             break;
         }
 
@@ -1647,8 +1648,10 @@ int Sketch::solve()
     return ret;
 }
 
-int Sketch::initMove(int geoId, PointPos pos)
+int Sketch::initMove(int geoId, PointPos pos, bool fine)
 {
+    isFine = fine;
+
     geoId = checkGeoId(geoId);
 
     GCSsys.clearByTag(-1);
