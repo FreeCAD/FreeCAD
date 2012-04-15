@@ -364,7 +364,7 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
 
     std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
 
-    TopoDS_Face current = BRepLib_MakeFace(wires.at(0));
+    TopoDS_Face current = BRepLib_MakeFace(wires.at(0), Standard_True);
     if (wires.size() > 1)
     {
         ShapeFix_Face faceFix(current);
