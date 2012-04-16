@@ -100,6 +100,9 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             shape = sewShell.ApplySewing(shell);
         }
 
+        if (shape.IsNull())
+            Standard_Failure::Raise("Shape is null");
+
         if (shape.ShapeType() != TopAbs_SHELL)
             Standard_Failure::Raise("Shape is not a shell");
     }
