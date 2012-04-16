@@ -704,8 +704,8 @@ def getNormal(shape):
                                         n = e1.cross(e2).normalize()
                                         break
         if FreeCAD.GuiUp:
-    		import FreeCADGui
-	        vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+    		import Draft
+	        vdir = Draft.get3DView().getViewDirection()
 	        if n.getAngle(vdir) < 0.78: n = fcvec.neg(n)
         return n
 

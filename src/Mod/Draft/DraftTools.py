@@ -103,9 +103,6 @@ def msg(text=None,mode=None):
         else:
             FreeCAD.Console.PrintMessage(text)
 
-def get3DView():
-    return FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")[0]
-
 def selectObject(arg):
     '''this is a scene even handler, to be called from the Draft tools
     when they need to select an object'''
@@ -116,7 +113,7 @@ def selectObject(arg):
         if (arg["Type"] == "SoMouseButtonEvent"):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 cursor = arg["Position"]
-                snapped = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((cursor[0],cursor[1]))
+                snapped = Draft.get3DView().getObjectInfo((cursor[0],cursor[1]))
                 if snapped:
                     obj = FreeCAD.ActiveDocument.getObject(snapped['Object'])
                     FreeCADGui.Selection.addSelection(obj)
@@ -134,7 +131,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
     '''
     
     ui = FreeCADGui.draftToolBar
-    view = FreeCADGui.ActiveDocument.ActiveView
+    view = Draft.get3DView()
 
     # get point
     if target.node:
@@ -149,8 +146,8 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
     if (not plane.weak) and workingplane:
         # working plane was explicitely selected - project onto it
         viewDirection = view.getViewDirection()
-        if FreeCADGui.ActiveDocument.ActiveView.getCameraType() == "Perspective":
-            camera = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+        if view.getCameraType() == "Perspective":
+            camera = view.getCameraNode()
             p = camera.getField("position").getValue()
             # view is from camera to point:
             viewDirection = point.sub(Vector(p[0],p[1],p[2]))
@@ -173,7 +170,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
 
 def getSupport(args):
     "returns the supporting object and sets the working plane"
-    snapped = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((args["Position"][0],args["Position"][1]))
+    snapped = Draft.get3DView().getObjectInfo((args["Position"][0],args["Position"][1]))
     if not snapped: return None
     obj = None
     plane.save()
@@ -234,7 +231,7 @@ class SelectPlane:
         self.doc = FreeCAD.ActiveDocument
         if self.doc:
             FreeCAD.activeDraftCommand = self
-            self.view = FreeCADGui.ActiveDocument.ActiveView
+            self.view = Draft.get3DView()
             self.ui = FreeCADGui.draftToolBar
             self.ui.selectPlaneUi()
             msg(translate("draft", "Pick a face to define the drawing plane\n"))
@@ -253,7 +250,7 @@ class SelectPlane:
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 cursor = arg["Position"]
                 doc = FreeCADGui.ActiveDocument
-                info = doc.ActiveView.getObjectInfo((cursor[0],cursor[1]))
+                info = Draft.get3DView().getObjectInfo((cursor[0],cursor[1]))
                 if info:
                     try:
                         shape = doc.getObject(info["Object"]).Object.Shape
@@ -336,7 +333,7 @@ class Creator:
         self.support = None
         self.commitList = []
         self.doc = FreeCAD.ActiveDocument
-        self.view = FreeCADGui.ActiveDocument.ActiveView
+        self.view = Draft.get3DView()
         self.featureName = name
         if not self.doc:
             self.finish()
@@ -1660,7 +1657,7 @@ class Modifier:
             self.finish()
         else:
             FreeCAD.activeDraftCommand = self
-            self.view = get3DView()
+            self.view = Draft.get3DView()
             self.ui = FreeCADGui.draftToolBar
             FreeCADGui.draftToolBar.show()
             rot = self.view.getCameraNode().getField("orientation").getValue()
@@ -3650,7 +3647,7 @@ class Point:
             return False
     
     def Activated(self):
-        self.view = FreeCADGui.ActiveDocument.ActiveView
+        self.view = Draft.get3DView()
         self.stack = []
         self.point = None
         # adding 2 callback functions

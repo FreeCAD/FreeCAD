@@ -174,7 +174,7 @@ class Snapper:
         point = self.getApparentPoint(screenpos[0],screenpos[1])
             
         # check if we snapped to something
-        info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo((screenpos[0],screenpos[1]))
+        info = Draft.get3DView().getObjectInfo((screenpos[0],screenpos[1]))
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
 
@@ -303,8 +303,9 @@ class Snapper:
 
     def getApparentPoint(self,x,y):
         "returns a 3D point, projected on the current working plane"
-        pt = FreeCADGui.ActiveDocument.ActiveView.getPoint(x,y)
-        dv = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+        view = Draft.get3DView()
+        pt = view.getPoint(x,y)
+        dv = view.getViewDirection()
         return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
         
     def snapToExtensions(self,point,last,constrain,eline):
@@ -559,8 +560,9 @@ class Snapper:
         
     def getScreenDist(self,dist,cursor):
         "returns a distance in 3D space from a screen pixels distance"
-        p1 = FreeCADGui.ActiveDocument.ActiveView.getPoint(cursor)
-        p2 = FreeCADGui.ActiveDocument.ActiveView.getPoint((cursor[0]+dist,cursor[1]))
+        view = Draft.get3DView()
+        p1 = view.getPoint(cursor)
+        p2 = view.getPoint((cursor[0]+dist,cursor[1]))
         return (p2.sub(p1)).Length
 
     def getPerpendicular(self,edge,pt):
@@ -704,7 +706,7 @@ class Snapper:
         
         self.pt = None
         self.ui = FreeCADGui.draftToolBar
-        self.view = FreeCADGui.ActiveDocument.ActiveView
+        self.view = Draft.get3DView()
 
         # setting a track line if we got an existing point
         if last:
