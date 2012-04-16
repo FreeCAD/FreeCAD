@@ -201,6 +201,39 @@ PyObject*  DocumentPy::activeView(PyObject *args)
     } PY_CATCH;
 }
 
+PyObject*  DocumentPy::mdiViewsOfType(PyObject *args)
+{
+    char* sType;
+    if (!PyArg_ParseTuple(args, "s", &sType))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+
+    Base::Type type = Base::Type::fromName(sType);
+    if (type == Base::Type::badType()) {
+        PyErr_Format(PyExc_Exception, "'%s' is not a valid type", sType);
+        return NULL;
+    }
+
+    PY_TRY {
+        std::list<Gui::MDIView*> views = getDocumentPtr()->getMDIViewsOfType(type);
+        Py::List list;
+        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it)
+            list.append(Py::asObject((*it)->getPyObject()));
+        return Py::new_reference_to(list);
+    } PY_CATCH;
+}
+
+PyObject*  DocumentPy::sendMsgToViews(PyObject *args)
+{
+    char* msg;
+    if (!PyArg_ParseTuple(args, "s", &msg))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        getDocumentPtr()->sendMsgToViews(msg);
+        Py_Return;
+    } PY_CATCH;
+}
+
 Py::Object DocumentPy::getActiveObject(void) const
 {
     App::DocumentObject *object = getDocumentPtr()->getDocument()->getActiveObject();
