@@ -91,7 +91,7 @@ if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Dra
 def translate(context,text):
     "convenience function for Qt translator"
     return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8()
-		
+
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
     if not text: FreeCAD.Console.PrintMessage("")
@@ -102,6 +102,9 @@ def msg(text=None,mode=None):
             FreeCAD.Console.PrintError(text)
         else:
             FreeCAD.Console.PrintMessage(text)
+
+def get3DView():
+    return FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")[0]
 
 def selectObject(arg):
     '''this is a scene even handler, to be called from the Draft tools
@@ -1642,7 +1645,7 @@ class Modifier:
             return True
         else:
             return False
-        
+
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
@@ -1657,7 +1660,7 @@ class Modifier:
             self.finish()
         else:
             FreeCAD.activeDraftCommand = self
-            self.view = FreeCADGui.ActiveDocument.ActiveView
+            self.view = get3DView()
             self.ui = FreeCADGui.draftToolBar
             FreeCADGui.draftToolBar.show()
             rot = self.view.getCameraNode().getField("orientation").getValue()
