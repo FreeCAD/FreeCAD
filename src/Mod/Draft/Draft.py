@@ -171,6 +171,16 @@ def getType(obj):
         return "Group"
     return "Unknown"
 
+def get3DView():
+    "get3DView(): returns the current view if it is 3D, or the first 3D view found, or None"
+    v = FreeCADGui.ActiveDocument.ActiveView
+    if str(type(v)) == "<type 'View3DInventorPy'>":
+        return v
+    v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
+    if v:
+        return v[0]
+    return None
+
 def isClone(obj,objtype):
     """isClone(obj,objtype): returns True if the given object is 
     a clone of an object of the given type"""
@@ -1794,12 +1804,12 @@ class _ViewProviderDimension:
         if not proj: norm = Vector(0,0,1)
         else: norm = fcvec.neg(p3.sub(p2).cross(proj))
         norm.normalize()
-        va = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+        va = get3DView.getViewDirection()
         if va.getAngle(norm) < math.pi/2:
             norm = fcvec.neg(norm)
         u = p3.sub(p2)
         u.normalize()
-        c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+        c = get3DView.getCameraNode()
         r = c.orientation.getValue()
         ru = Vector(r.multVec(coin.SbVec3f(1,0,0)).getValue())
         if ru.getAngle(u) > math.pi/2: u = fcvec.neg(u)
