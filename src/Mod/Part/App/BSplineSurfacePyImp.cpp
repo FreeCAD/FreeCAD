@@ -392,7 +392,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
 
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertUKnots(k,m,tol,(add==Py_True));
+        surf->InsertVKnots(k,m,tol,(add==Py_True));
         Py_Return;
     }
     catch (Standard_Failure) {
