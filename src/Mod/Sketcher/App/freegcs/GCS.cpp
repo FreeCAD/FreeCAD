@@ -1285,7 +1285,7 @@ int System::diagnose(VEC_pD &params, VEC_I &conflicting)
             conflictingIndex.resize(constr_num-rank);
             for (int j=rank; j < constr_num; j++) {
                 for (int row=0; row < rank; row++) {
-                    if (R(row,j) != 0) {
+                    if (fabs(R(row,j)) > 1e-10) {
                         int orig_col = qrJT.colsPermutation().indices()[row];
                         conflictingIndex[j-rank].push_back(orig_col);
                     }
