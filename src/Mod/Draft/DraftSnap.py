@@ -73,6 +73,7 @@ class Snapper:
         self.trackLine = None
         self.lastSnappedObject = None
         self.active = True
+        self.trackers = [[],[],[],[]] # view, grid, snap, extline
 
         self.polarAngles = [90,45]
         
@@ -142,12 +143,20 @@ class Snapper:
             return None
 
         # setup trackers if needed
-        if not self.tracker:
-            self.tracker = DraftTrackers.snapTracker()
-        if not self.extLine:
-            self.extLine = DraftTrackers.lineTracker(dotted=True)
-        if (not self.grid) and Draft.getParam("grid"):
+        v = Draft.get3DView()
+        if v in self.trackers[0]:
+            i = self.trackers[0].index(v)
+            self.grid = self.trackers[1][i]
+            self.tracker = self.trackers[2][i]
+            self.extLine = self.trackers[3][i]
+        else:
             self.grid = DraftTrackers.gridTracker()
+            self.tracker = DraftTrackers.snapTracker()
+            self.extLine = DraftTrackers.lineTracker(dotted=True)
+            self.trackers[0].append(v)
+            self.trackers[1].append(self.grid)
+            self.trackers[2].append(self.tracker)
+            self.trackers[3].append(self.extLine)
 
         # getting current snap Radius
         if not self.radius:
@@ -599,7 +608,7 @@ class Snapper:
                 for v in self.views:
                     v.setCursor(cur)
                 self.cursorMode = mode
-    
+
     def off(self):
         "finishes snapping"
         if self.tracker:
