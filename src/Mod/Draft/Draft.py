@@ -1182,21 +1182,17 @@ def draftify(objectslist,makeblock=False):
             return newobjlist[0]
         return newobjlist
 
-def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=None):
-    '''getSVG(object,[modifier],[textmodifier],[fillstyle],[direction]):
-    returns a string containing a SVG representation of the given object. the modifier attribute
-    specifies a scale factor for linewidths in %, and textmodifier specifies
-    a scale factor for texts, in % (both default = 100). You can also supply
-    an arbitrary projection vector.'''
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None):
+    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction]):
+    returns a string containing a SVG representation of the given object,
+    with the given linewidth and fontsize (used if the given object contains
+    any text). You can also supply an arbitrary projection vector. the
+    scale parameter allows to scale linewidths down, so they are resolution-independant.'''
     import Part
     from draftlibs import fcgeo
     svg = ""
-    tmod = ((textmodifier-100)/2)+100
-    if tmod == 0: tmod = 0.01
-    modifier = 200-modifier
-    if modifier == 0: modifier = 0.01
-    pmod = (200-textmodifier)/20
-    if pmod == 0: pmod = 0.01
+    linewidth = linewidth/scale
+    fontsize = (fontsize/scale)/2
     plane = None
     if direction:
         if direction != Vector(0,0,0):
@@ -1269,8 +1265,8 @@ def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=N
         if fill != 'none': svg += 'Z'
         svg += '" '
         svg += 'stroke="' + stroke + '" '
-        svg += 'stroke-width="' + str(width) + ' px" '
-        svg += 'style="stroke-width:'+ str(width)
+        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'style="stroke-width:'+ str(linewidth)
         svg += ';stroke-miterlimit:4'
         svg += ';stroke-dasharray:' + lstyle
         svg += ';fill:' + fill + '"'
@@ -1284,8 +1280,8 @@ def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=N
         svg += '" cy="' + str(cen.y)
         svg += '" r="' + str(rad)+'" '
         svg += 'stroke="' + stroke + '" '
-        svg += 'stroke-width="' + str(width) + ' px" '
-        svg += 'style="stroke-width:'+ str(width)
+        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'style="stroke-width:'+ str(linewidth)
         svg += ';stroke-miterlimit:4'
         svg += ';stroke-dasharray:' + lstyle
         svg += ';fill:' + fill + '"'
@@ -1329,35 +1325,36 @@ def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=N
             svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '                        
         svg += 'fill="none" stroke="'
         svg += getrgb(obj.ViewObject.LineColor) + '" '
-        svg += 'stroke-width="' + str(obj.ViewObject.LineWidth/modifier) + ' px" '
-        svg += 'style="stroke-width:'+ str(obj.ViewObject.LineWidth/modifier)
+        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'style="stroke-width:'+ str(linewidth)
         svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
         svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
         svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
         svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
         svg += '/>\n'
         svg += '<circle cx="'+str(p2.x)+'" cy="'+str(p2.y)
-        svg += '" r="'+str(obj.ViewObject.FontSize/(pmod))+'" '
+        svg += '" r="'+str(fontsize)+'" '
         svg += 'fill="'+ getrgb(obj.ViewObject.LineColor) +'" stroke="none" '
         svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
         svg += 'freecad:skip="1"'
         svg += '/>\n'
         svg += '<circle cx="'+str(p3.x)+'" cy="'+str(p3.y)
-        svg += '" r="'+str(obj.ViewObject.FontSize/(pmod))+'" '
+        svg += '" r="'+str(fontsize)+'" '
         svg += 'fill="#000000" stroke="none" '
         svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
         svg += 'freecad:skip="1"'
         svg += '/>\n'
         svg += '<text id="' + obj.Name + '" fill="'
         svg += getrgb(obj.ViewObject.LineColor) +'" font-size="'
-        svg += str(obj.ViewObject.FontSize*(tmod/5))+'" '
+        svg += str(fontsize)+'" '
         svg += 'style="text-anchor:middle;text-align:center;'
         svg += 'font-family:'+obj.ViewObject.FontName+'" '
         svg += 'transform="rotate('+str(math.degrees(angle))
         svg += ','+ str(tbase.x) + ',' + str(tbase.y) + ') '
         svg += 'translate(' + str(tbase.x) + ',' + str(tbase.y) + ') '
-        svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+')" '
-        svg += 'freecad:skip="1"'
+        #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
+        svg += 'scale(1,-1) '
+        svg += '" freecad:skip="1"'
         svg += '>\n'
         svg += dimText % p3.sub(p2).Length
         svg += '</text>\n</g>\n'
@@ -1368,7 +1365,7 @@ def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=N
         svg = '<text id="' + obj.Name + '" fill="'
         svg += getrgb(obj.ViewObject.TextColor)
         svg += '" font-size="'
-        svg += str(obj.ViewObject.FontSize*(tmod/5))+'" '
+        svg += str(fontsize)+'" '
         svg += 'style="text-anchor:middle;text-align:center;'
         svg += 'font-family:'+obj.ViewObject.FontName+'" '
         svg += 'transform="'
@@ -1377,7 +1374,9 @@ def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=N
                 svg += 'rotate('+str(obj.ViewObject.Rotation)
                 svg += ','+ str(p.x) + ',' + str(p.y) + ') '
         svg += 'translate(' + str(p.x) + ',' + str(p.y) + ') '
-        svg +='scale('+str(tmod/2000)+','+str(-tmod/2000)+')">\n'
+        #svg +='scale('+str(tmod/2000)+','+str(-tmod/2000)+')'
+        svg += 'scale(1,-1) '
+        svg += '">\n'
         for l in obj.LabelText:
             svg += '<tspan>'+l+'</tspan>\n'
         svg += '</text>\n'
@@ -1388,7 +1387,6 @@ def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=N
         lorig = getLineStyle(obj)
         name = obj.Name
         stroke = getrgb(obj.ViewObject.LineColor)
-        width = obj.ViewObject.LineWidth/modifier
         fill = 'none'
         invpl = obj.Placement.inverse()
         n = 0
@@ -1432,7 +1430,6 @@ def getSVG(obj,modifier=100,textmodifier=100,fillstyle="shape color",direction=N
             stroke = "none"
         else:
             stroke = getrgb(obj.ViewObject.LineColor)
-        width = obj.ViewObject.LineWidth/modifier
         
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
@@ -2521,19 +2518,18 @@ class _Polygon:
 
 class _DrawingView:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyVector","Direction","Shape view","Projection direction")
-        obj.addProperty("App::PropertyFloat","LinewidthModifier","Drawing view","Modifies the linewidth of the lines inside this object")
-        obj.addProperty("App::PropertyFloat","TextModifier","Drawing view","Modifies the size of the texts inside this object")
+        obj.addProperty("App::PropertyVector","Direction","Shape View","Projection direction")
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The width of the lines inside this object")
+        obj.addProperty("App::PropertyFloat","FontSize","Drawing View","The size of the texts inside this object")
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing view","Shape Fill Style")
+        obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing View","Shape Fill Style")
         fills = ['shape color']
         for f in FreeCAD.svgpatterns.keys():
             fills.append(f)
         obj.FillStyle = fills
-
         obj.Proxy = self
-        obj.LinewidthModifier = 100
-        obj.TextModifier = 100
+        obj.LineWidth = 0.35
+        obj.FontSize = 12
         self.Type = "DrawingView"
 
     def execute(self, obj):
@@ -2541,12 +2537,12 @@ class _DrawingView:
             obj.ViewResult = self.updateSVG(obj)
 
     def onChanged(self, obj, prop):
-        if prop in ["X","Y","Scale","LinewidthModifier","TextModifier","FillStyle","Direction"]:
+        if prop in ["X","Y","Scale","LineWidth","FontSize","FillStyle","Direction"]:
             obj.ViewResult = self.updateSVG(obj)
 
     def updateSVG(self, obj):
         "encapsulates a svg fragment into a transformation node"
-        svg = getSVG(obj.Source,obj.LinewidthModifier,obj.TextModifier,obj.FillStyle,obj.Direction)
+        svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction)
         result = ''
         result += '<g id="' + obj.Name + '"'
         result += ' transform="'
