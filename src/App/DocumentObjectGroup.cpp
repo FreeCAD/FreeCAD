@@ -185,7 +185,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
 template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {
-    return "Gui::ViewProviderDocumentObjectGroup";
+    return "Gui::ViewProviderDocumentObjectGroupPython";
 }
 /// @endcond
 
