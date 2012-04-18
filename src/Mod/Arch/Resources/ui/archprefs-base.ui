@@ -165,20 +165,17 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
           <property name="toolTip">
-           <string>if this is checked, the internal Arch IFC parser will be use to build Arch objects from known IFC types.</string>
+           <string>If this is checked, the IFCOpenShell importer will be used, allowing to import more IFC types</string>
           </property>
           <property name="text">
-           <string>use internal IFC parser</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>Use IFCOpenShell if available</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>useIfcParser</cstring>
+           <cstring>useIfcOpenShell</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -188,17 +185,34 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
           <property name="toolTip">
-           <string>If this is checked, the IFCOpenShell importer will be used for objects not handled by the internal parser</string>
+           <string>Creates groups for each Arch object type</string>
           </property>
           <property name="text">
-           <string>Use IFCOpenShell</string>
+           <string>Group components by types</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>useIfcOpenShell</cstring>
+           <cstring>createIfcGroups</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
+          <property name="text">
+           <string>Import furniture (can make the model heavy)</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>importIfcFurniture</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
