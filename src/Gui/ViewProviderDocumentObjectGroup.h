@@ -26,6 +26,7 @@
 
 
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderPythonFeature.h"
 
 namespace Gui {
 
@@ -63,6 +64,7 @@ private:
     std::vector<ViewProvider*> nodes;
 };
 
+typedef ViewProviderPythonFeatureT<ViewProviderDocumentObjectGroup> ViewProviderDocumentObjectGroupPython;
 
 } // namespace Gui
 
