@@ -153,7 +153,7 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale)
 {
     std::stringstream result;
     SVGOutput output;
-    float hfactor = 0.15f / 0.35f;
+    float hfactor = 0.5f; // hidden line size factor, was 0.15f / 0.35f;
 
     if (!H.IsNull() && (type & WithHidden)) {
         float width = hfactor * scale;
