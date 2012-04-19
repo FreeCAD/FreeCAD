@@ -968,6 +968,19 @@ std::list<MDIView*> Document::getMDIViews() const
     return views;
 }
 
+std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId) const
+{
+    std::list<MDIView*> views;
+    for (std::list<BaseView*>::const_iterator it = d->baseViews.begin();
+         it != d->baseViews.end(); ++it) {
+        MDIView* view = dynamic_cast<MDIView*>(*it);
+        if (view && view->isDerivedFrom(typeId))
+            views.push_back(view);
+    }
+
+    return views;
+}
+
 /// send messages to the active view
 bool Document::sendMsgToViews(const char* pMsg)
 {

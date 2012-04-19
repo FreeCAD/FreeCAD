@@ -221,3 +221,15 @@ QIcon ViewProviderDocumentObjectGroup::getIcon() const
                         QIcon::Normal, QIcon::On);
     return groupIcon;
 }
+
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderDocumentObjectGroupPython, Gui::ViewProviderDocumentObjectGroup)
+/// @endcond
+
+// explicit template instantiation
+template class GuiExport ViewProviderPythonFeatureT<ViewProviderDocumentObjectGroup>;
+}

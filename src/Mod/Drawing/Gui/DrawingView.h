@@ -93,6 +93,7 @@ public:
     void printPdf();
     void printPreview();
     void print(QPrinter* printer);
+    PyObject* getPyObject();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);

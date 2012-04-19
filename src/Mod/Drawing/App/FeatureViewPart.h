@@ -52,6 +52,7 @@ public:
     App::PropertyVector Direction;
     App::PropertyBool   ShowHiddenLines;
     App::PropertyBool   ShowSmoothLines;
+    App::PropertyFloat  LineWidth;
  
 
     /** @name methods overide Feature */
