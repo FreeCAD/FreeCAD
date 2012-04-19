@@ -157,9 +157,11 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
 class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","RenderingMode","Base","The rendering mode to use")
+        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing View","The rendering mode to use")
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The line width of the rendered objects")
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Solid"
+        obj.LineWidth = 0.35
         obj.Proxy = self
         self.Type = "DrawingView"
 
@@ -179,14 +181,18 @@ class _ArchDrawingView:
             if obj.Source.Objects:
                 svg = ''
                 cp = ArchCommands.getCutVolume(obj.Source.Objects,obj.Source.Placement)
-                print "cp:",cp
                 sections = []
                 if cp:
                     cutvolume = cp[0].extrude(cp[1])
                 shapes = []
+                colors = []
                 for o in obj.Source.Objects:
+                    color = o.ViewObject.DiffuseColor[0]
+                    print "adding ",o.Name," with color ",color
                     if cp:
-                        shapes.append(o.Shape.cut(cutvolume))
+                        for s in o.Shape.Solids:
+                            shapes.append(s.cut(cutvolume))
+                            colors.append(color)
                         sec = o.Shape.section(cp[0])
                         if sec.Edges:
                             sec = Part.Wire(fcgeo.sortEdges(sec.Edges))
@@ -194,13 +200,14 @@ class _ArchDrawingView:
                             sections.append(sec)
                     else:
                         shapes.append(o.Shape)
+                        colors.append(color)
+                linewidth = obj.LineWidth/obj.Scale        
                 if obj.RenderingMode == "Solid":
-                    svg += self.renderVRM(shapes,obj.Source.Placement)
+                    svg += self.renderVRM(shapes,obj.Source.Placement,colors,linewidth)
                 else:
-                    svg += self.renderOCC(shapes,obj.Source.Proxy.getNormal(obj.Source))
-                print "sections:",sections
+                    svg += self.renderOCC(shapes,obj.Source.Proxy.getNormal(obj.Source),linewidth)
                 for s in sections:
-                    svg += self.renderSection(s,obj.Source.Placement)
+                    svg += self.renderSection(s,obj.Source.Placement,linewidth*2)
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
@@ -214,7 +221,7 @@ class _ArchDrawingView:
                 return result
         return ''
 
-    def renderOCC(self,shapes,direction):
+    def renderOCC(self,shapes,direction,linewidth):
         "renders an SVG fragment with the OCC method"
         shapes = shapes[:]
         if shapes:
@@ -223,21 +230,25 @@ class _ArchDrawingView:
                 base = base.fuse(sh)
         result = Drawing.projectToSVG(base,fcvec.neg(direction))
         if result:
-            result = result.replace('stroke-width="0.35"','stroke-width="0.01 px"')
+            result = result.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
             return result
         return ''
 
-    def renderVRM(self,shapes,placement):
+    def renderVRM(self,shapes,placement,colors,linewidth):
         "renders an SVG fragment with the ArchVRM method"
         import ArchVRM
-        render = ArchVRM.Renderer()
+        render = ArchVRM.Renderer(debug=False)
         render.setWorkingPlane(FreeCAD.Placement(placement))
-        for s in shapes:
-            render.add(s)
-        svg = render.getSVG()
+        for i in range(len(shapes)):
+            if colors:
+                render.add(shapes[i],colors[i])
+            else:
+                render.add(shapes[i])
+        svg = render.getSVG(linewidth=linewidth)
+        print render.info()
         return svg
 
-    def renderSection(self,shape,placement):
+    def renderSection(self,shape,placement,linewidth):
         "renders a plane parallel to the section plane"
         placement = FreeCAD.Placement(placement)
         u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
@@ -262,8 +273,8 @@ class _ArchDrawingView:
         svg += 'z '
         svg += '" '
         svg += 'stroke="#000000" '
-        svg += 'stroke-width="0.02 px" '
-        svg += 'style="stroke-width:0.01;'
+        svg += 'stroke-width="' + str(linewidth) + 'px" '
+        svg += 'style="stroke-width:' + str(linewidth) + ';'
         svg += 'stroke-miterlimit:1;'
         svg += 'stroke-linejoin:round;'
         svg += 'stroke-dasharray:none;'
