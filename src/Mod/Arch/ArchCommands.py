@@ -39,12 +39,18 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     tp = Draft.getType(host)
-    if tp in ["Cell","Floor","Building","Site"]:
+    if tp in ["Cell"]:
         c = host.Components
         for o in objectsList:
             if not o in c:
                 c.append(o)
         host.Components = c
+    elif tp in ["Floor","Building","Site"]:
+        c = host.Group
+        for o in objectsList:
+            if not o in c:
+                c.append(o)
+        host.Group = c
     elif tp in ["Wall","Structure"]:
         a = host.Additions
         for o in objectsList:

@@ -63,7 +63,7 @@ class Tracker:
     def _insertSwitch(self, switch):
         '''insert self.switch into the scene graph.  Must not be called
         from an event handler (or other scene graph traversal).'''
-        sg=FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg=Draft.get3DView().getSceneGraph()
         if self.ontop:
             sg.insertChild(switch,0)
         else:
@@ -72,7 +72,7 @@ class Tracker:
     def _removeSwitch(self, switch):
         '''remove self.switch from the scene graph.  As with _insertSwitch,
         must not be called during scene graph traversal).'''
-        sg=FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg=Draft.get3DView().getSceneGraph()
         sg.removeChild(switch)
 
     def on(self):
@@ -82,7 +82,7 @@ class Tracker:
     def off(self):
         self.switch.whichChild = -1
         self.Visible = False
-				
+
 class snapTracker(Tracker):
     "A Snap Mark tracker, used by tools that support snapping"
     def __init__(self):
@@ -451,8 +451,8 @@ class PlaneTracker(Tracker):
     "A working plane tracker"
     def __init__(self):
         # getting screen distance
-        p1 = FreeCADGui.ActiveDocument.ActiveView.getPoint((100,100))
-        p2 = FreeCADGui.ActiveDocument.ActiveView.getPoint((110,100))
+        p1 = Draft.get3DView().getPoint((100,100))
+        p2 = Draft.get3DView().getPoint((110,100))
         bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange")/2)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])

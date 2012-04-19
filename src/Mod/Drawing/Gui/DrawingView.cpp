@@ -57,6 +57,7 @@
 #include "DrawingView.h"
 #include <Base/Stream.h>
 #include <Base/gzstream.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/FileDialog.h>
 #include <Gui/WaitCursor.h>
 
@@ -432,6 +433,11 @@ void DrawingView::print(QPrinter* printer)
 void DrawingView::viewAll()
 {
     m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
+}
+
+PyObject* DrawingView::getPyObject()
+{
+    Py_Return;
 }
 
 #include "moc_DrawingView.cpp"
