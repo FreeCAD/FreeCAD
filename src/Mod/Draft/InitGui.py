@@ -24,8 +24,6 @@ __title__="FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://free-cad.sourceforge.net"]
 
-import os,DraftTools
-
 class DraftWorkbench (Workbench):
     "the Draft Workbench"
     Icon = """
@@ -179,9 +177,9 @@ class DraftWorkbench (Workbench):
         else:
             return
         try:
-            import macros,DraftTools,DraftGui
+            import os,macros,DraftTools,DraftGui
             self.appendMenu(["&Macro",str(DraftTools.translate("draft","Installed Macros"))],macros.macrosList)
-            Log ('Loading Draft GUI...done\n')
+            Log ('Loading Draft module...done\n')
         except:
             pass
         self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
