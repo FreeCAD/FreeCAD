@@ -99,7 +99,6 @@
 				<File Id="LibPack55" Name="QtHelp4.dll"   />
 				<File Id="LibPack56" Name="QtCLucene4.dll"   />
 				<File Id="LibPack52" Name="phonon4.dll"   />
-				<File Id="LibPack53" Name="sketchflat.exe"   />
 				<File Id="LibPack54" Name="assistant.exe"   />
 				<File Id="LibPack61" Name="TKBO.dll"   />
 				<File Id="LibPack62" Name="TKBool.dll"   />
