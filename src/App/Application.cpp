@@ -1022,7 +1022,6 @@ void Application::initTypes(void)
     App ::GeometryPython            ::init();
     App ::Document                  ::init();
     App ::DocumentObjectGroup       ::init();
-    App ::DocumentObjectGroupPython ::init();
     App ::DocumentObjectFileIncluded::init();
     App ::InventorObject            ::init();
     App ::VRMLObject                ::init();

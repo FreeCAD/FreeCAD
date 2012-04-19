@@ -179,16 +179,4 @@ PyObject *DocumentObjectGroup::getPyObject()
     return Py::new_reference_to(PythonObject); 
 }
 
-// Python Sketcher feature ---------------------------------------------------------
 
-namespace App {
-/// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
-template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {
-    return "Gui::ViewProviderDocumentObjectGroup";
-}
-/// @endcond
-
-// explicit template instantiation
-template class AppExport FeaturePythonT<App::DocumentObjectGroup>;
-}
