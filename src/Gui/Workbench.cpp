@@ -403,7 +403,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 	measure->setCommand("Measure");
 	*measure << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << StdViews  << measure
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << StdViews << measure
               << "Separator" << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
@@ -482,7 +482,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     MenuItem* view = new MenuItem( menuBar );
     view->setCommand("&View");
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Separator" 
-          << stdviews << "Std_FreezeViews" << "Separator" << view3d << zoom
+          << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Separator" << view3d << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
@@ -549,10 +549,9 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
+    *view << "Std_ViewFitAll" << "Std_DrawStyle" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
-
     return root;
 }
 
