@@ -31,7 +31,7 @@ MAXLOOP = 10 # the max number of loop before abort
 
 class Renderer:
     "A renderer object"
-    def __init__(self,wp=None,debug=None):
+    def __init__(self,wp=None):
 
         """
         Creates a renderer with a default Draft WorkingPlane
@@ -44,7 +44,6 @@ class Renderer:
         p.buildDummy()
         """
 
-        if debug != None: DEBUG = debug
         self.defaultFill = (0.9,0.9,0.9,1.0) # the default fill color
         self.wp = wp
         self.faces = []
