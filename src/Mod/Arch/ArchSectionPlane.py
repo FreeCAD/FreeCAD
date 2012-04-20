@@ -195,9 +195,10 @@ class _ArchDrawingView:
                             colors.append(color)
                         sec = o.Shape.section(cp[0])
                         if sec.Edges:
-                            sec = Part.Wire(fcgeo.sortEdges(sec.Edges))
-                            sec = Part.Face(sec)
-                            sections.append(sec)
+                            wires = fcgeo.findWires(sec.Edges)
+                            for w in wires:
+                                sec = Part.Face(fcgeo.sortEdges(w))
+                                sections.append(sec)
                     else:
                         shapes.append(o.Shape)
                         colors.append(color)
@@ -237,7 +238,7 @@ class _ArchDrawingView:
     def renderVRM(self,shapes,placement,colors,linewidth):
         "renders an SVG fragment with the ArchVRM method"
         import ArchVRM
-        render = ArchVRM.Renderer(debug=False)
+        render = ArchVRM.Renderer()
         render.setWorkingPlane(FreeCAD.Placement(placement))
         for i in range(len(shapes)):
             if colors:

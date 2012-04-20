@@ -513,6 +513,49 @@ def sortEdges(lEdges, aVertex=None):
 		else :
 			return []
 
+
+def findWires(edgeslist):
+        '''finds connected wires in the given list of edges'''
+
+        def touches(e1,e2):
+                if len(e1.Vertexes) < 2:
+                        return False
+                if len(e2.Vertexes) < 2:
+                        return False
+                if fcvec.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point):
+                        return True
+                if fcvec.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point):
+                        return True
+                if fcvec.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point):
+                        return True
+                if fcvec.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point):
+                        return True
+                return False
+        
+        edges = edgeslist[:]
+        wires = []
+        while edges:
+                e = edges[0]
+                if not wires:
+                        # create first group
+                        edges.remove(e)
+                        wires.append([e])
+                else:
+                        found = False
+                        for w in wires:
+                                if found:
+                                        break
+                                for we in w:
+                                        if touches(e,we):
+                                                edges.remove(e)
+                                                w.append(e)
+                                                found = True
+                                                break
+                        else:
+                                # edge doesn't connect with any existing group
+                                edges.remove(e)
+                                wires.append([e])
+        return wires
                 
 def superWire(edgeslist,closed=False):
         '''superWire(edges,[closed]): forces a wire between edges that don't necessarily
