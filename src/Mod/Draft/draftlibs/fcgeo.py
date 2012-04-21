@@ -435,6 +435,15 @@ def getBoundary(shape):
 		if lut[e.hashCode()] == 1: bound.append(e)
 	return bound
 
+def isLine(bsp):
+        "returns True if the given BSpline curve is a straight line"
+        step = bsp.LastParameter/10
+        b = bsp.tangent(0)
+        for i in range(10):
+                if bsp.tangent(i*step) != b:
+                        return False
+        return True
+
 def sortEdges(lEdges, aVertex=None):
         "an alternative, more accurate version of Part.__sortEdges__"
 
@@ -479,6 +488,11 @@ def sortEdges(lEdges, aVertex=None):
                                         elif isinstance(result[3].Curve,Part.Circle):
                                                 mp = findMidpoint(result[3])
                                                 return [Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()]
+                                        elif isinstance(result[3].Curve,Part.BSplineCurve):
+                                                if isLine(result[3].Curve):
+                                                        return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
+                                                else:
+                                                        return lEdges
                                         else:
                                                 return lEdges
                                         
@@ -491,15 +505,20 @@ def sortEdges(lEdges, aVertex=None):
 					olEdges = sortEdges(lEdges, result[3].Vertexes[result[2]])
 					return olEdges
 		# if the wire is closed there is no end so choose 1st Vertex
+                #print "closed wire, starting from ",lEdges[0].Vertexes[0].Point
 		return sortEdges(lEdges, lEdges[0].Vertexes[0]) 
 	else :
+                #print "looking ",aVertex.Point
 		result = lookfor(aVertex,lEdges)
 		if result[0] != 0 :
 			del lEdges[result[1]]
 			next = sortEdges(lEdges, result[3].Vertexes[-((-result[2])^1)])
+                        #print "result ",result[3].Vertexes[0].Point,"    ",result[3].Vertexes[1].Point, " compared to ",aVertex.Point
                         if isSameVertex(aVertex,result[3].Vertexes[0]):
+                                #print "keeping"
                                 olEdges += [result[3]] + next
                         else:
+                                #print "inverting", result[3].Curve
                                 if isinstance(result[3].Curve,Part.Line):
                                         newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
                                         olEdges += [newedge] + next
@@ -507,6 +526,12 @@ def sortEdges(lEdges, aVertex=None):
                                         mp = findMidpoint(result[3])
                                         newedge = Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()
                                         olEdges += [newedge] + next
+                                elif isinstance(result[3].Curve,Part.BSplineCurve):
+                                        if isLine(result[3].Curve):
+                                                newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
+                                                olEdges += [newedge] + next
+                                        else:
+                                                olEdges += [result[3]] + next
                                 else:
                                         olEdges += [result[3]] + next                                        
 			return olEdges
