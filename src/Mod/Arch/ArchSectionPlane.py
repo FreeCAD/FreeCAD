@@ -181,7 +181,7 @@ class _ArchDrawingView:
             if obj.Source.Objects:
                 svg = ''
                 cp = ArchCommands.getCutVolume(obj.Source.Objects,obj.Source.Placement)
-                sections = []
+                self.sections = []
                 if cp:
                     cutvolume = cp[0].extrude(cp[1])
                 shapes = []
@@ -197,8 +197,9 @@ class _ArchDrawingView:
                         if sec.Edges:
                             wires = fcgeo.findWires(sec.Edges)
                             for w in wires:
-                                sec = Part.Face(fcgeo.sortEdges(w))
-                                sections.append(sec)
+                                sec = Part.Wire(fcgeo.sortEdges(w.Edges))
+                                sec = Part.Face(sec)
+                                self.sections.append(sec)
                     else:
                         shapes.append(o.Shape)
                         colors.append(color)
@@ -207,7 +208,7 @@ class _ArchDrawingView:
                     svg += self.renderVRM(shapes,obj.Source.Placement,colors,linewidth)
                 else:
                     svg += self.renderOCC(shapes,obj.Source.Proxy.getNormal(obj.Source),linewidth)
-                for s in sections:
+                for s in self.sections:
                     svg += self.renderSection(s,obj.Source.Placement,linewidth*2)
                 result = ''
                 result += '<g id="' + obj.Name + '"'
@@ -218,7 +219,7 @@ class _ArchDrawingView:
                 result += '">\n'
                 result += svg
                 result += '</g>\n'
-                print "complete node:",result
+                #print "complete node:",result
                 return result
         return ''
 
