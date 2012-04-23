@@ -284,7 +284,7 @@
       <translation>创建圆角</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
+      <source>Create a fillet between two lines or at a coincident point</source>
       <translation>两直线或重合点处创建圆角</translation>
     </message>
   </context>

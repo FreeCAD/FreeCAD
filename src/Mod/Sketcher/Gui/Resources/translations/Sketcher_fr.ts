@@ -284,7 +284,7 @@
       <translation>Créer un congé</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
+      <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Créer un congé entre deux lignes ou sur un point coïncident</translation>
     </message>
   </context>
