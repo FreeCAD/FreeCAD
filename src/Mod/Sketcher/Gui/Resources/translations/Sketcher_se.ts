@@ -284,7 +284,7 @@
       <translation>Skapa avrundning</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
+      <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Skapa en avrundning mellan två linjer eller vid en sammanfallande punkt</translation>
     </message>
   </context>
