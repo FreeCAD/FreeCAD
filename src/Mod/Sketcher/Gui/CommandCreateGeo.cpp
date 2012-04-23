@@ -1365,7 +1365,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create fillet");
-    sToolTipText    = QT_TR_NOOP("Create a fillet between to lines or at a coincident point");
+    sToolTipText    = QT_TR_NOOP("Create a fillet between two lines or at a coincidental point");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateFillet";

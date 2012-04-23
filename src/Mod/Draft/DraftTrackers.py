@@ -60,13 +60,10 @@ class Tracker:
         todo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
-    def get3DView(self):
-        return FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")[0]
-
     def _insertSwitch(self, switch):
         '''insert self.switch into the scene graph.  Must not be called
         from an event handler (or other scene graph traversal).'''
-        sg=self.get3DView().getSceneGraph()
+        sg=Draft.get3DView().getSceneGraph()
         if self.ontop:
             sg.insertChild(switch,0)
         else:
@@ -75,7 +72,7 @@ class Tracker:
     def _removeSwitch(self, switch):
         '''remove self.switch from the scene graph.  As with _insertSwitch,
         must not be called during scene graph traversal).'''
-        sg=self.get3DView().getSceneGraph()
+        sg=Draft.get3DView().getSceneGraph()
         sg.removeChild(switch)
 
     def on(self):
@@ -454,8 +451,8 @@ class PlaneTracker(Tracker):
     "A working plane tracker"
     def __init__(self):
         # getting screen distance
-        p1 = self.get3DView().getPoint((100,100))
-        p2 = self.get3DView().getPoint((110,100))
+        p1 = Draft.get3DView().getPoint((100,100))
+        p2 = Draft.get3DView().getPoint((110,100))
         bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange")/2)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
