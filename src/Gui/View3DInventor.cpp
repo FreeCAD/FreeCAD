@@ -937,7 +937,12 @@ void View3DInventor::customEvent(QEvent * e)
 {
     if (e->type() == QEvent::User) {
         NavigationStyleEvent* se = static_cast<NavigationStyleEvent*>(e);
-        _viewer->setNavigationType(se->style());
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        if (hGrp->GetBool("SameStyleForAllViews", true))
+            hGrp->SetASCII("NavigationStyle", se->style().getName());
+        else
+            _viewer->setNavigationType(se->style());
     }
 }
 
