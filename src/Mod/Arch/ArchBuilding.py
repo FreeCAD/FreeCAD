@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ArchCell,FreeCAD,FreeCADGui,Draft,ArchCommands
+import FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Building"
@@ -31,14 +31,11 @@ __url__ = "http://free-cad.sourceforge.net"
 def makeBuilding(objectslist=None,join=False,name="Building"):
     '''makeBuilding(objectslist,[joinmode]): creates a building including the
     objects from the given list. If joinmode is True, components will be joined.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Building(obj)
     _ViewProviderBuilding(obj.ViewObject)
     if objectslist:
-        obj.Components = objectslist
-    for comp in obj.Components:
-        comp.ViewObject.hide()
-    obj.JoinMode = join
+        obj.Group = objectslist
     return obj
 
 class _CommandBuilding:
@@ -66,18 +63,32 @@ class _CommandBuilding:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         
-class _Building(ArchCell._Cell):
+class _Building:
     "The Building object"
     def __init__(self,obj):
-        ArchCell._Cell.__init__(self,obj)
         self.Type = "Building"
+        obj.Proxy = self
+
+    def execute(self,obj):
+        pass
         
-class _ViewProviderBuilding(ArchCell._ViewProviderCell):
+    def onChanged(self,obj,prop):
+        pass
+        
+class _ViewProviderBuilding:
     "A View Provider for the Building object"
     def __init__(self,vobj):
-        ArchCell._ViewProviderCell.__init__(self,vobj)
+        vobj.Proxy = self
 
     def getIcon(self):
         return ":/icons/Arch_Building_Tree.svg"
 
+    def attach(self,vobj):
+        self.Object = vobj.Object
+        return    
+    
+    def claimChildren(self):
+        return self.Object.Group
+    
+    
 FreeCADGui.addCommand('Arch_Building',_CommandBuilding())

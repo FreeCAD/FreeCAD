@@ -44,8 +44,10 @@ class Renderer:
         p.buildDummy()
         """
 
+        self.defaultFill = (0.9,0.9,0.9,1.0) # the default fill color
         self.wp = wp
         self.faces = []
+        self.fills = []
         self.oriented = False
         self.trimmed = False
         self.sorted = False
@@ -65,14 +67,39 @@ class Renderer:
             self.wp = wp
         if DEBUG: print "Renderer set on " + str(self.wp)
 
-    def add(self,faces):
-        "add faces, shape or object to this renderer"
+    def add(self,faces,colors=None):
+        "add faces, shape or object to this renderer, optionally with face colors"
+
+        def setcolors(colors,n):
+            if colors:
+                if isinstance(colors,tuple) and len(colors) == 4:
+                    for i in range(n):
+                        self.fills.append(colors)
+                elif len(colors) == n:
+                    self.fills.extend(colors)
+                else:
+                    c = []
+                    for i in range(n):
+                        c.append(colors[0])
+                    self.fills.extend(c)
+            else:
+                c = []
+                for i in range(n):
+                    c.append(self.defaultFill)
+                self.fills.extend(c)
+            
         if isinstance(faces,list):
             f = faces
+            setcolors(colors,len(f))
         elif hasattr(faces,"Faces"):
             f = faces.Faces
+            setcolors(colors,len(f))
         elif hasattr(faces,"Shape"):
             f = faces.Shape.Faces
+            if hasattr(faces,"ViewObject") and not colors:
+                colors = faces.ViewObject.DiffuseColor
+            setcolors(colors,len(f))
+                    
         if DEBUG: print "adding ", len(f), " faces"
         self.faces.extend(f)
         self.oriented = False
@@ -82,6 +109,7 @@ class Renderer:
     def clean(self):
         "removes all faces from this renderer"
         self.faces = []
+        self.fills = []
         self.oriented = False
         self.trimmed = False
         self.sorted = False
@@ -96,7 +124,8 @@ class Renderer:
         for i in range(len(self.faces)):
             r += "  face " + str(i) + " : center " + str(self.faces[i].CenterOfMass)
             r += " : normal " + str(self.faces[i].normalAt(0,0))
-            r += ", " + str(len(self.faces[i].Vertexes)) + " verts\n"
+            r += ", " + str(len(self.faces[i].Vertexes)) + " verts"
+            r += ", color: " + self.getFill(self.fills[i]) + "\n"
         return r
 
     def addLabels(self):
@@ -128,11 +157,14 @@ class Renderer:
         if not self.faces: 
             return
         faces = []
-        for f in (self.faces):
-            if self.isVisible(f):
-                faces.append(f)
+        fills = []
+        for i in range(len(self.faces)):
+            if self.isVisible(self.faces[i]):
+                faces.append(self.faces[i])
+                fills.append(self.fills[i])
         if DEBUG: print len(self.faces)-len(faces) , " faces removed, ", len(faces), " faces retained"
         self.faces = faces
+        self.fills = fills
         self.trimmed = True
 
     def projectFace(self,face):
@@ -324,11 +356,13 @@ class Renderer:
         faces = self.faces[:]
         if DEBUG: print "sorting ",len(self.faces)," faces"
         sfaces = []
+        sfills = []
         loopcount = 0
         notfoundstack = 0
         while faces:
             if DEBUG: print "loop ", loopcount
             f1 = faces[0]
+            fi1 = self.fills[self.faces.index(f1)]
             if sfaces and (notfoundstack < len(faces)):
                 if DEBUG: print "using ordered stack, notfound = ",notfoundstack
                 p = self.findPosition(f1,sfaces)
@@ -341,26 +375,32 @@ class Renderer:
                     # position found, we insert it
                     faces.remove(f1)
                     sfaces.insert(p,f1)
+                    sfills.insert(p,fi1)
                     notfoundstack = 0
             else:
                 # either there is no stack, or no more face can be compared
                 # find a root, 2 faces that can be compared
                 if DEBUG: print "using unordered stack, notfound = ",notfoundstack
                 for f2 in faces[1:]:
+                    fi2 = self.fills[self.faces.index(f2)]
                     if DEBUG: print "comparing face",str(self.faces.index(f1))," with face",str(self.faces.index(f2))
                     r = self.compare(f1,f2)
                     if r == 1:
                         faces.remove(f2)
                         sfaces.append(f2)
+                        sfills.append(fi2)
                         faces.remove(f1)
                         sfaces.append(f1)
+                        sfills.append(fi1)
                         notfoundstack = 0
                         break
                     elif r == 2:
                         faces.remove(f1)
                         sfaces.append(f1)
+                        sfills.append(fi1)
                         faces.remove(f2)
                         sfaces.append(f2)
+                        sfills.append(fi2)
                         notfoundstack = 0
                         break
                 else:
@@ -374,6 +414,7 @@ class Renderer:
 
         if DEBUG: print "done Z sorting. ", len(sfaces), " faces retained, ", len(self.faces)-len(sfaces), " faces lost."
         self.faces = sfaces
+        self.fills = sfills
         self.sorted = True
 
     def buildDummy(self):
@@ -391,15 +432,25 @@ class Renderer:
             c = Part.makeCompound(faces)
             Part.show(c)
 
-    def getSVG(self):
+    def getFill(self,fill):
+        "Returns a SVG fill value"
+        r = str(hex(int(fill[0]*255)))[2:].zfill(2)
+        g = str(hex(int(fill[1]*255)))[2:].zfill(2)
+        b = str(hex(int(fill[2]*255)))[2:].zfill(2)
+        col = "#"+r+g+b
+        return col
+
+    def getSVG(self,linewidth=0.01):
         "Returns a SVG fragment"
+        if DEBUG: print len(self.faces), " faces and ", len(self.fills), " fills."
         if not self.sorted:
             self.sort()
         svg = ''
-        for f in self.faces:
+        for i in range(len(self.faces)):
+            fill = self.getFill(self.fills[i])
             svg +='<path '
             svg += 'd="'
-            for w in f.Wires:
+            for w in self.faces[i].Wires:
                 edges = fcgeo.sortEdges(w.Edges)
                 v = edges[0].Vertexes[0].Point
                 svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
@@ -415,12 +466,12 @@ class Renderer:
                 svg += 'z '
             svg += '" '
             svg += 'stroke="#000000" '
-            svg += 'stroke-width="0.01 px" '
+            svg += 'stroke-width="' + str(linewidth) + '" '
             svg += 'style="stroke-width:0.01;'
             svg += 'stroke-miterlimit:1;'
             svg += 'stroke-linejoin:round;'
             svg += 'stroke-dasharray:none;'
-            svg += 'fill:#aaaaaa;'
+            svg += 'fill:' + fill + ';'
             svg += 'fill-rule: evenodd'
             svg += '"/>\n'
         return svg

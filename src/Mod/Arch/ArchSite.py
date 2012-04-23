@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ArchCell,FreeCAD,FreeCADGui,Draft,ArchCommands
+import FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
 
 __title__="FreeCAD Site"
@@ -31,12 +31,11 @@ __url__ = "http://free-cad.sourceforge.net"
 def makeSite(objectslist=None,name="Site"):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Site(obj)
     _ViewProviderSite(obj.ViewObject)
     if objectslist:
-        obj.Components = objectslist
-    obj.JoinMode = False
+        obj.Group = objectslist
     return obj
 
 class _CommandSite:
@@ -64,11 +63,11 @@ class _CommandSite:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         
-class _Site(ArchCell._Cell):
+class _Site:
     "The Site object"
     def __init__(self,obj):
-        ArchCell._Cell.__init__(self,obj)
         self.Type = "Site"
+        obj.Proxy = self
         
     def execute(self,obj):
         pass
@@ -76,12 +75,19 @@ class _Site(ArchCell._Cell):
     def onChanged(self,obj,prop):
         pass
     
-class _ViewProviderSite(ArchCell._ViewProviderCell):
+class _ViewProviderSite:
     "A View Provider for the Site object"
     def __init__(self,vobj):
-        ArchCell._ViewProviderCell.__init__(self,vobj)
+        vobj.Proxy = self
 
     def getIcon(self):
         return ":/icons/Arch_Site_Tree.svg"
 
+    def attach(self,vobj):
+        self.Object = vobj.Object
+        return    
+    
+    def claimChildren(self):
+        return self.Object.Group
+    
 FreeCADGui.addCommand('Arch_Site',_CommandSite())
