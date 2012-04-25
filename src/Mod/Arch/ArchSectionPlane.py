@@ -122,7 +122,6 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         self.setVerts()
 
     def setColor(self):
-        print self.Object.ViewObject.LineColor
         self.col.rgb.setValue(self.Object.ViewObject.LineColor[0],
                               self.Object.ViewObject.LineColor[1],
                               self.Object.ViewObject.LineColor[2])
@@ -173,54 +172,97 @@ class _ArchDrawingView:
         if prop in ["Source","RenderingMode"]:
             obj.ViewResult = self.updateSVG(obj)
 
-    def updateSVG(self, obj):
+    def updateSVG(self, obj,join=False):
         "encapsulates a svg fragment into a transformation node"
         import Part
         from draftlibs import fcgeo
-        if obj.Source:
-            if obj.Source.Objects:
-                svg = ''
-                cp = ArchCommands.getCutVolume(obj.Source.Objects,obj.Source.Placement)
-                self.sections = []
-                if cp:
-                    cutvolume = cp[0].extrude(cp[1])
-                shapes = []
-                colors = []
-                for o in obj.Source.Objects:
-                    color = o.ViewObject.DiffuseColor[0]
-                    print "adding ",o.Name," with color ",color
+        if hasattr(obj,"Source"):
+            if obj.Source:
+                if obj.Source.Objects:
+                    svg = ''
+
+                    # getting section plane
+                    cp = ArchCommands.getCutVolume(obj.Source.Objects,obj.Source.Placement)
+                    self.sections = []
                     if cp:
-                        for s in o.Shape.Solids:
-                            shapes.append(s.cut(cutvolume))
-                            colors.append(color)
-                        sec = o.Shape.section(cp[0])
-                        if sec.Edges:
-                            wires = fcgeo.findWires(sec.Edges)
-                            for w in wires:
-                                sec = Part.Wire(fcgeo.sortEdges(w.Edges))
-                                sec = Part.Face(sec)
-                                self.sections.append(sec)
+                        cutvolume = cp[0].extrude(cp[1])
+                    shapes = []
+                    colors = []
+
+                    # sorting
+                    if join:
+                        walls = []
+                        structs = []
+                        objs = []
+                        for o in obj.Source.Objects:
+                            t = Draft.getType(o)
+                            if t == "Wall":
+                                walls.append(o)
+                            elif t == "Structure":
+                                structs.append(o)
+                            else:
+                                objs.append(o)
+                        for g in [walls,structs]:
+                            if g:
+                                print "group:",g
+                                col = g[0].ViewObject.DiffuseColor[0]
+                                s = g[0].Shape
+                                for o in g[1:]:
+                                    try:
+                                        fs = s.fuse(o.Shape)
+                                        fs = fs.removeSplitter()
+                                    except:
+                                        print "shape fusion failed"
+                                        objs.append([o.Shape,o.ViewObject.DiffuseColor[0]])
+                                    else:
+                                        s = fs
+                                objs.append([s,col])
                     else:
-                        shapes.append(o.Shape)
-                        colors.append(color)
-                linewidth = obj.LineWidth/obj.Scale        
-                if obj.RenderingMode == "Solid":
-                    svg += self.renderVRM(shapes,obj.Source.Placement,colors,linewidth)
-                else:
-                    svg += self.renderOCC(shapes,obj.Source.Proxy.getNormal(obj.Source),linewidth)
-                for s in self.sections:
-                    svg += self.renderSection(s,obj.Source.Placement,linewidth*2)
-                result = ''
-                result += '<g id="' + obj.Name + '"'
-                result += ' transform="'
-                result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
-                result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
-                result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
-                result += '">\n'
-                result += svg
-                result += '</g>\n'
-                #print "complete node:",result
-                return result
+                        objs = obj.Source.Objects
+
+                    # shapes extraction    
+                    for o in objs:
+                        print "object:",o
+                        if isinstance(o,list):
+                            shape = o[0]
+                            color = o[1]
+                        else:
+                            shape = o.Shape
+                            color = o.ViewObject.DiffuseColor[0]
+                        if cp:
+                            for s in shape.Solids:
+                                shapes.append(s.cut(cutvolume))
+                                colors.append(color)
+                            sec = shape.section(cp[0])
+                            if sec.Edges:
+                                wires = fcgeo.findWires(sec.Edges)
+                                for w in wires:
+                                    sec = Part.Wire(fcgeo.sortEdges(w.Edges))
+                                    sec = Part.Face(sec)
+                                    self.sections.append(sec)
+                        else:
+                            shapes.append(shape)
+                            colors.append(color)
+
+                    # generating SVG
+                    linewidth = obj.LineWidth/obj.Scale        
+                    if obj.RenderingMode == "Solid":
+                        svg += self.renderVRM(shapes,obj.Source.Placement,colors,linewidth)
+                    else:
+                        svg += self.renderOCC(shapes,obj.Source.Proxy.getNormal(obj.Source),linewidth)
+                    for s in self.sections:
+                        svg += self.renderSection(s,obj.Source.Placement,linewidth*2)
+                    result = ''
+                    result += '<g id="' + obj.Name + '"'
+                    result += ' transform="'
+                    result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
+                    result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
+                    result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
+                    result += '">\n'
+                    result += svg
+                    result += '</g>\n'
+                    #print "complete node:",result
+                    return result
         return ''
 
     def renderOCC(self,shapes,direction,linewidth):
@@ -247,7 +289,7 @@ class _ArchDrawingView:
             else:
                 render.add(shapes[i])
         svg = render.getSVG(linewidth=linewidth)
-        print render.info()
+        #print render.info()
         return svg
 
     def renderSection(self,shape,placement,linewidth):
