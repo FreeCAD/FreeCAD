@@ -1170,6 +1170,7 @@ class DraftToolBar:
 
     def Deactivated(self):
         if (FreeCAD.activeDraftCommand != None):
+            self.continueMode = False
             FreeCAD.activeDraftCommand.finish()
         if self.taskmode:
             FreeCADGui.Control.clearTaskWatcher()
