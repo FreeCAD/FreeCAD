@@ -422,7 +422,7 @@ class Line(Creator):
             self.linetrack.finalize()
             self.constraintrack.finalize()
         Creator.finish(self)
-        if cont and self.ui:
+        if self.ui:
             if self.ui.continueMode:
                 self.Activated()
 
@@ -618,7 +618,7 @@ class BSpline(Line):
 			self.bsplinetrack.finalize()
 			self.constraintrack.finalize()
         Creator.finish(self)
-        if cont and self.ui:
+        if self.ui:
             if self.ui.continueMode:
                 self.Activated()
 
@@ -706,7 +706,7 @@ class Rectangle(Creator):
         if self.ui:
             self.rect.off()
             self.rect.finalize()
-        if cont and self.ui:
+        if self.ui:
             if self.ui.continueMode:
                 self.Activated()
 
@@ -807,7 +807,7 @@ class Arc(Creator):
             self.constraintrack.finalize()
             self.arctrack.finalize()
             self.doc.recompute()
-        if cont and self.ui:
+        if self.ui:
             if self.ui.continueMode:
                 self.Activated()
 
@@ -1121,7 +1121,6 @@ class Polygon(Creator):
             self.constraintrack.finalize()
             self.arctrack.finalize()
             self.doc.recompute()
-        if cont and self.ui:
             if self.ui.continueMode:
                 self.Activated()
 
@@ -1301,7 +1300,6 @@ class Text(Creator):
         Creator.finish(self)
         if self.ui:
             del self.dialog
-        if cont and self.ui:
             if self.ui.continueMode:
                 self.Activated()
 

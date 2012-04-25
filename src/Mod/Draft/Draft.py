@@ -1774,6 +1774,7 @@ class _ViewProviderDimension:
         obj.Proxy = self
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
+        obj.DisplayModes = ["2D","3D"]
         obj.ExtLines=0.3
         obj.Override = ''
 
@@ -1827,6 +1828,7 @@ class _ViewProviderDimension:
         return p1,p2,p3,p4,tbase,norm,rot
 
     def attach(self, obj):
+        obj.DisplayMode = ["2D","3D"]
         self.Object = obj.Object
         p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj.Object)
         self.color = coin.SoBaseColor()
@@ -1922,29 +1924,30 @@ class _ViewProviderDimension:
             text = text.replace("dim",dtext)
         else:
             text = dtext
-        self.text.string = self.text3d.string = text
-        self.textpos.rotation = coin.SbRotation(rot[0],rot[1],rot[2],rot[3])
-        self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-        if obj.ViewObject.DisplayMode == "2D":
-            self.coords.point.setValues([[p1.x,p1.y,p1.z],
-                                         [p2.x,p2.y,p2.z],
-                                         [p3.x,p3.y,p3.z],
-                                         [p4.x,p4.y,p4.z]])
-            self.line.numVertices.setValues([4])
-        else:
-            ts = (len(text)*obj.ViewObject.FontSize)/4
-            rm = ((p3.sub(p2)).Length/2)-ts
-            p2a = p2.add(fcvec.scaleTo(p3.sub(p2),rm))
-            p2b = p3.add(fcvec.scaleTo(p2.sub(p3),rm))
-            self.coords.point.setValues([[p1.x,p1.y,p1.z],
-                                         [p2.x,p2.y,p2.z],
-                                         [p2a.x,p2a.y,p2a.z],
-                                         [p2b.x,p2b.y,p2b.z],
-                                         [p3.x,p3.y,p3.z],
-                                         [p4.x,p4.y,p4.z]])
-            self.line.numVertices.setValues([3,3])
-        self.coord1.point.setValue((p2.x,p2.y,p2.z))
-        self.coord2.point.setValue((p3.x,p3.y,p3.z))
+        if hasattr(self,"text"):
+            self.text.string = self.text3d.string = text
+            self.textpos.rotation = coin.SbRotation(rot[0],rot[1],rot[2],rot[3])
+            self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
+            if obj.ViewObject.DisplayMode == "2D":
+                self.coords.point.setValues([[p1.x,p1.y,p1.z],
+                                             [p2.x,p2.y,p2.z],
+                                             [p3.x,p3.y,p3.z],
+                                             [p4.x,p4.y,p4.z]])
+                self.line.numVertices.setValues([4])
+            else:
+                ts = (len(text)*obj.ViewObject.FontSize)/4
+                rm = ((p3.sub(p2)).Length/2)-ts
+                p2a = p2.add(fcvec.scaleTo(p3.sub(p2),rm))
+                p2b = p3.add(fcvec.scaleTo(p2.sub(p3),rm))
+                self.coords.point.setValues([[p1.x,p1.y,p1.z],
+                                             [p2.x,p2.y,p2.z],
+                                             [p2a.x,p2a.y,p2a.z],
+                                             [p2b.x,p2b.y,p2b.z],
+                                             [p3.x,p3.y,p3.z],
+                                             [p4.x,p4.y,p4.z]])
+                self.line.numVertices.setValues([3,3])
+            self.coord1.point.setValue((p2.x,p2.y,p2.z))
+            self.coord2.point.setValue((p3.x,p3.y,p3.z))
 
     def onChanged(self, vp, prop):
         if prop == "FontSize":
@@ -1961,9 +1964,7 @@ class _ViewProviderDimension:
             self.updateData(vp.Object, None)
 
     def getDisplayModes(self,obj):
-        modes=[]
-        modes.extend(["2D","3D"])
-        return modes
+        return ["2D","3D"]
 
     def getDefaultDisplayMode(self):
         return "2D"
@@ -2279,13 +2280,14 @@ class _Rectangle:
 
 class _ViewProviderRectangle(_ViewProviderDraft):
     "A View Provider for the Rectangle object"
-    def __init__(self, obj):
-        _ViewProviderDraft.__init__(self,obj)
+    def __init__(self, vobj):
+        _ViewProviderDraft.__init__(self,vobj)
         obj.addProperty("App::PropertyFile","TextureImage",
                         "Base","Uses an image as a texture map")
 
-    def attach(self,obj):
+    def attach(self,vobj):
         self.texture = None
+        self.Object = vobj.Object
 
     def onChanged(self, vp, prop):
         if prop == "TextureImage":
@@ -2613,7 +2615,8 @@ class _ViewProviderBSpline(_ViewProviderDraft):
         if prop == "Points":
             if obj.Points:
                 p = obj.Points[-1]
-                self.coords.point.setValue((p.x,p.y,p.z))
+                if hasattr(self,"coords"):
+                    self.coords.point.setValue((p.x,p.y,p.z))
         return
 
     def onChanged(self, vp, prop):
