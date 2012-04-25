@@ -309,7 +309,7 @@ class DraftToolBar:
         self.radiusValue.setText("0.00")
         self.isRelative = self._checkbox("isRelative",self.layout,checked=True)
         self.hasFill = self._checkbox("hasFill",self.layout,checked=self.fillmode)
-        self.continueCmd = self._checkbox("continueCmd",self.layout,checked=False)
+        self.continueCmd = self._checkbox("continueCmd",self.layout,checked=self.continueMode)
         self.occOffset = self._checkbox("occOffset",self.layout,checked=False)
         self.undoButton = self._pushbutton("undoButton", self.layout, icon='Draft_Rotate')
         self.finishButton = self._pushbutton("finishButton", self.layout, icon='Draft_Finish')
@@ -341,7 +341,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged(QString)"),self.storeCurrentText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("returnPressed()"),self.sendText)
-        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.finish)
+        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("down()"),self.sendText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("up()"),self.lineUp)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.xValue.setFocus)
@@ -361,13 +361,13 @@ class DraftToolBar:
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill) 
         QtCore.QObject.connect(self.currentViewButton,QtCore.SIGNAL("clicked()"),self.selectCurrentView)
         QtCore.QObject.connect(self.resetPlaneButton,QtCore.SIGNAL("clicked()"),self.selectResetPlane)
-        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("escaped()"),self.finish)
+        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("undo()"),self.undoSegment)
-        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("escaped()"),self.finish)
+        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("undo()"),self.undoSegment)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("escaped()"),self.finish)
+        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("undo()"),self.undoSegment)
-        QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("escaped()"),self.finish)
+        QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
 
@@ -859,6 +859,11 @@ class DraftToolBar:
         if self.cancel:
             self.cancel()
             self.cancel = None
+
+    def escape(self):
+        "escapes the current command"
+        self.continueMode = False
+        self.finish()
 
     def closeLine(self):
         "close button action"
