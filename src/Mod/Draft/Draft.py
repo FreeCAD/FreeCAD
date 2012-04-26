@@ -1195,9 +1195,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     fontsize = (fontsize/scale)/2
     plane = None
     if direction:
-        if direction != Vector(0,0,0):
-            plane = WorkingPlane.plane()
-            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+        if isinstance(direction,FreeCAD.Vector):
+            if direction != Vector(0,0,0):
+                plane = WorkingPlane.plane()
+                plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+        elif isinstance(direction,WorkingPlane.plane):
+            plane = direction
 
     def getLineStyle(obj):
         "returns a linestyle pattern for a given object"
