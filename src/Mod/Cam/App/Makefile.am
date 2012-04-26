@@ -39,9 +39,7 @@ libCam_la_LDFLAGS = -L../../../Base -L../../../App \
                 $(sim_ac_coin_ldflags) $(sim_ac_coin_libs) \
                 -L../../../Mod/Part/App -L../../../Mod/Mesh/App -L/usr/X11R6/lib -L$(OCC_LIB) -L/usr/lib/atlas \
 		$(GTS_LIBS) $(all_libraries) -version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
-libCam_la_CPPFLAGS = $(sim_ac_coin_cppflags) -DAppCamExport=
-
-#Binary file ./atlas/libclapack.so matches
+libCam_la_CPPFLAGS = $(sim_ac_coin_cppflags) $(sim_ac_soqt_cppflags) -DAppCamExport=
 
 libCam_la_LIBADD   = \
 		-lxerces-c \
