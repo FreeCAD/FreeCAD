@@ -93,7 +93,9 @@ void LoftWidget::findShapes()
         const TopoDS_Shape& shape = (*it)->Shape.getValue();
         if (shape.IsNull()) continue;
 
-        if (shape.ShapeType() == TopAbs_WIRE || shape.ShapeType() == TopAbs_VERTEX) {
+        if (shape.ShapeType() == TopAbs_WIRE ||
+            shape.ShapeType() == TopAbs_EDGE ||
+            shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromAscii((*it)->getNameInDocument());
             
@@ -125,7 +127,7 @@ bool LoftWidget::accept()
 
     int count = d->ui.treeWidgetLoft->topLevelItemCount();
     if (count < 2) {
-        QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices or wires are required."));
+        QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices, edges or wires are required."));
         return false;
     }
     for (int i=0; i<count; i++) {

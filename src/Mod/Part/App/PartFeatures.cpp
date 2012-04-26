@@ -27,6 +27,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shell.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 #endif
 
 
@@ -168,12 +169,19 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
-            if (shape.ShapeType() == TopAbs_WIRE)
+            if (shape.ShapeType() == TopAbs_WIRE) {
                 profiles.Append(shape);
-            else if (shape.ShapeType() == TopAbs_VERTEX)
+            }
+            else if (shape.ShapeType() == TopAbs_EDGE) {
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
+                profiles.Append(mkWire.Wire());
+            }
+            else if (shape.ShapeType() == TopAbs_VERTEX) {
                 profiles.Append(shape);
-            else
-                return new App::DocumentObjectExecReturn("Linked shape is neither a vertex nor a wire.");
+            }
+            else {
+                return new App::DocumentObjectExecReturn("Linked shape is not a vertex, edge nor wire.");
+            }
         }
 
         Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
