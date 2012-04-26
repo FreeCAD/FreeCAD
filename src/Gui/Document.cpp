@@ -642,8 +642,13 @@ void Document::RestoreDocFile(Base::Reader &reader)
         std::string sMsg = "SetCamera ";
         sMsg += ppReturn;
         if (strcmp(ppReturn, "") != 0) { // non-empty attribute
-            if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
-                d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            try {
+                if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
+                    d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+            }
         }
     }
 
