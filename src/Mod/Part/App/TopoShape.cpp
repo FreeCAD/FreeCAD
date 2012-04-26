@@ -1546,6 +1546,11 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
             aGenerator.AddVertex(TopoDS::Vertex (item));
             countShapes++;
         }
+        else if (!item.IsNull() && item.ShapeType() == TopAbs_EDGE) {
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(item));
+            aGenerator.AddWire(mkWire.Wire());
+            countShapes++;
+        }
         else if (!item.IsNull() && item.ShapeType() == TopAbs_WIRE) {
             aGenerator.AddWire(TopoDS::Wire (item));
             countShapes++;
@@ -1553,7 +1558,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     }
 
     if (countShapes < 2)
-        Standard_Failure::Raise("Need at least two vertexes or wires to create loft face");
+        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face");
 
     Standard_Boolean anIsCheck = Standard_True;
     aGenerator.CheckCompatibility (anIsCheck);
