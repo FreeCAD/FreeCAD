@@ -157,6 +157,7 @@ namespace PartGui {
         App::DocumentObject* object;
         EdgeSelection* selection;
         Part::FilletBase* fillet;
+        std::vector<int> edge_ids;
         typedef boost::signals::connection Connection;
         Connection connectApplicationDeletedObject;
         Connection connectApplicationDeletedDocument;
@@ -374,10 +375,13 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         ui->shapeObject->setEnabled(false);
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         for (std::vector<Part::FilletElement>::const_iterator et = e.begin(); et != e.end(); ++et) {
-            int index = et->edgeid-1;
-            model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
-            model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',2)));
-            model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',2)));
+            std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et->edgeid);
+            if (it != d->edge_ids.end()) {
+                int index = it - d->edge_ids.begin();
+                model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
+                model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',2)));
+                model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',2)));
+            }
         }
     }
 }
@@ -438,33 +442,30 @@ void DlgFilletEdges::on_shapeObject_activated(int index)
         TopExp::MapShapes(myShape, TopAbs_EDGE, mapOfShape);
 
         // populate the model
-        std::vector<int> edge_ids;
+        d->edge_ids.clear();
         for (int i=1; i<= edge2Face.Extent(); ++i) {
             // set the index value as user data to use it in accept()
             const TopTools_ListOfShape& los = edge2Face.FindFromIndex(i);
             if (los.Extent() == 2) {
                 // set the index value as user data to use it in accept()
                 const TopoDS_Shape& edge = edge2Face.FindKey(i);
-                const TopTools_ListOfShape& los = edge2Face.FindFromIndex(i);
-                if (los.Extent() == 2) {
-                    // Now check also the continuity to only allow C0-continious
-                    // faces
-                    const TopoDS_Shape& face1 = los.First();
-                    const TopoDS_Shape& face2 = los.Last();
-                    GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(edge),
-                                                               TopoDS::Face(face1),
-                                                               TopoDS::Face(face2));
-                    if (cont == GeomAbs_C0) {
-                        int id = mapOfShape.FindIndex(edge);
-                        edge_ids.push_back(id);
-                    }
+                // Now check also the continuity to only allow C0-continious
+                // faces
+                const TopoDS_Shape& face1 = los.First();
+                const TopoDS_Shape& face2 = los.Last();
+                GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(edge),
+                                                           TopoDS::Face(face1),
+                                                           TopoDS::Face(face2));
+                if (cont == GeomAbs_C0) {
+                    int id = mapOfShape.FindIndex(edge);
+                    d->edge_ids.push_back(id);
                 }
             }
         }
 
-        model->insertRows(0, edge_ids.size());
+        model->insertRows(0, d->edge_ids.size());
         int index = 0;
-        for (std::vector<int>::iterator it = edge_ids.begin(); it != edge_ids.end(); ++it) {
+        for (std::vector<int>::iterator it = d->edge_ids.begin(); it != d->edge_ids.end(); ++it) {
             model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(*it)));
             model->setData(model->index(index, 0), QVariant(*it), Qt::UserRole);
             model->setData(model->index(index, 1), QVariant(QLocale::system().toString(1.0,'f',2)));
