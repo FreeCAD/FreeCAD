@@ -1123,6 +1123,12 @@ void MeshObject::removeFullBoundaryFacets()
     }
 }
 
+void MeshObject::removeInvalidPoints()
+{
+    MeshCore::MeshEvalNaNPoints nan(_kernel);
+    deletePoints(nan.GetIndices());
+}
+
 void MeshObject::validateIndices()
 {
     unsigned long count = _kernel.CountFacets();
