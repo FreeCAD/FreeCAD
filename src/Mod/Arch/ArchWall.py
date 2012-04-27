@@ -307,12 +307,14 @@ class _Wall(ArchComponent.Component):
             if obj.Align == "Left":
                 dvec = dvec.multiply(width)
                 w2 = fcgeo.offsetWire(wire,dvec)
-                sh = fcgeo.bind(wire,w2)
+                w1 = Part.Wire(fcgeo.sortEdges(wire.Edges))
+                sh = fcgeo.bind(w1,w2)
             elif obj.Align == "Right":
                 dvec = dvec.multiply(width)
                 dvec = fcvec.neg(dvec)
                 w2 = fcgeo.offsetWire(wire,dvec)
-                sh = fcgeo.bind(wire,w2)
+                w1 = Part.Wire(fcgeo.sortEdges(wire.Edges))
+                sh = fcgeo.bind(w1,w2)
             elif obj.Align == "Center":
                 dvec = dvec.multiply(width/2)
                 w1 = fcgeo.offsetWire(wire,dvec)
@@ -359,10 +361,11 @@ class _Wall(ArchComponent.Component):
                         for wire in obj.Base.Shape.Wires:
                             sh = getbase(wire)
                             if temp:
-                                temp = temp.oldFuse(sh)
+                                temp = temp.fuse(sh)
                             else:
                                 temp = sh
                         base = temp
+                        base = base.removeSplitter()
         if not base:
             if obj.Length == 0:
                 return
