@@ -2863,3 +2863,5 @@ class _ViewProviderDraftPart(_ViewProviderDraft):
     def claimChildren(self):
         return []
 
+if not hasattr(FreeCADGui,"Snapper"):
+    import DraftSnap
