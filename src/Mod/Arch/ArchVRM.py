@@ -29,6 +29,9 @@ from draftlibs import fcvec,fcgeo
 DEBUG = True # if we want debug messages
 MAXLOOP = 10 # the max number of loop before abort
 
+# WARNING: in this module, faces are lists whose first item is the actual OCC face, the
+# other items being additional information such as color, etc.
+
 class Renderer:
     "A renderer object"
     def __init__(self,wp=None):
@@ -43,21 +46,34 @@ class Renderer:
         p.sort()
         p.buildDummy()
         """
-
-        self.defaultFill = (0.9,0.9,0.9,1.0) # the default fill color
-        self.wp = wp
-        self.faces = []
-        self.fills = []
-        self.oriented = False
-        self.trimmed = False
-        self.sorted = False
-        if not self.wp:
+        
+        self.reset()
+        if wp:
+            self.wp = wp
+        else:
             import WorkingPlane
             self.wp = WorkingPlane.plane()
+            
         if DEBUG: print "Renderer initialized on " + str(self.wp)
 
     def __str__(self):
         return "Arch Renderer: " + str(len(self.faces)) + " faces projected on " + str(self.wp)
+
+    def reset(self):
+        "removes all faces from this renderer"
+        self.objects = []
+        self.shapes = []
+        self.faces = []
+        self.resetFlags()
+
+    def resetFlags(self):
+        "resets all flags of this renderer"
+        self.oriented = False
+        self.trimmed = False
+        self.sorted = False
+        self.iscut = False
+        self.joined = False
+        self.sections = []
 
     def setWorkingPlane(self,wp):
         "sets a Draft WorkingPlane or Placement for this renderer"
@@ -67,52 +83,35 @@ class Renderer:
             self.wp = wp
         if DEBUG: print "Renderer set on " + str(self.wp)
 
-    def add(self,faces,colors=None):
-        "add faces, shape or object to this renderer, optionally with face colors"
+    def addFaces(self,faces,color=(0.9,0.9,0.9,1.0)):
+        "add individual faces to this renderer, optionally with a color"
+        if DEBUG: print "adding ", len(faces), " faces. Warning, these will get lost if using cut() or join()"
+        for f in faces:
+            self.faces.append([f,color])
+        self.resetFlags()
 
-        def setcolors(colors,n):
-            if colors:
-                if isinstance(colors,tuple) and len(colors) == 4:
-                    for i in range(n):
-                        self.fills.append(colors)
-                elif len(colors) == n:
-                    self.fills.extend(colors)
-                else:
-                    c = []
-                    for i in range(n):
-                        c.append(colors[0])
-                    self.fills.extend(c)
-            else:
-                c = []
-                for i in range(n):
-                    c.append(self.defaultFill)
-                self.fills.extend(c)
-            
-        if isinstance(faces,list):
-            f = faces
-            setcolors(colors,len(f))
-        elif hasattr(faces,"Faces"):
-            f = faces.Faces
-            setcolors(colors,len(f))
-        elif hasattr(faces,"Shape"):
-            f = faces.Shape.Faces
-            if hasattr(faces,"ViewObject") and not colors:
-                colors = faces.ViewObject.DiffuseColor
-            setcolors(colors,len(f))
-                    
-        if DEBUG: print "adding ", len(f), " faces"
-        self.faces.extend(f)
-        self.oriented = False
-        self.trimmed = False
-        self.sorted = False
-            
-    def clean(self):
-        "removes all faces from this renderer"
-        self.faces = []
-        self.fills = []
-        self.oriented = False
-        self.trimmed = False
-        self.sorted = False
+    def addObjects(self,objs):
+        "add objects to this renderer"
+        for o in objs:
+            if o.isDerivedFrom("Part::Feature"):
+                self.objects.append(o)
+                color = o.ViewObject.ShapeColor
+                if o.Shape.Faces:
+                    self.shapes.append([o.Shape,color])
+                    for f in o.Shape.Faces:
+                        self.faces.append([f,color])
+        self.resetFlags()
+        if DEBUG: print "adding ", len(self.objects), " objects, ", len(self.faces), " faces"
+
+    def addShapes(self,shapes,color=(0.9,0.9,0.9,1.0)):
+        "add shapes to this renderer, optionally with a color. Warning, these will get lost if using join()"
+        if DEBUG: print "adding ", len(shapes), " shapes"
+        for s in shapes:
+            if s.Faces:
+                self.shapes.append([s,color])
+                for f in s.Faces:
+                    self.faces.append([f,color])
+        self.resetFlags()
 
     def info(self):
         "Prints info about the contents of this renderer"
@@ -122,10 +121,10 @@ class Renderer:
         r += "sorted: " + str(self.sorted) + "\n"
         r += "contains " + str(len(self.faces)) + " faces\n"
         for i in range(len(self.faces)):
-            r += "  face " + str(i) + " : center " + str(self.faces[i].CenterOfMass)
-            r += " : normal " + str(self.faces[i].normalAt(0,0))
-            r += ", " + str(len(self.faces[i].Vertexes)) + " verts"
-            r += ", color: " + self.getFill(self.fills[i]) + "\n"
+            r += "  face " + str(i) + " : center " + str(self.faces[i][0].CenterOfMass)
+            r += " : normal " + str(self.faces[i][0].normalAt(0,0))
+            r += ", " + str(len(self.faces[i][0].Vertexes)) + " verts"
+            r += ", color: " + self.getFill(self.faces[i][1]) + "\n"
         return r
 
     def addLabels(self):
@@ -133,13 +132,13 @@ class Renderer:
         c = 0
         for f in self.faces:
             l = FreeCAD.ActiveDocument.addObject("App::AnnotationLabel","facelabel")
-            l.BasePosition = f.CenterOfMass
+            l.BasePosition = f[0].CenterOfMass
             l.LabelText = str(c)
             c += 1
 
     def isVisible(self,face):
         "returns True if the given face points in the view direction"
-        normal = face.normalAt(0,0)
+        normal = face[0].normalAt(0,0)
         if DEBUG: print "checking face normal ", normal, " against ", self.wp.axis, " : ", math.degrees(normal.getAngle(self.wp.axis))
         if normal.getAngle(self.wp.axis) < math.pi/2:
             return True
@@ -150,6 +149,8 @@ class Renderer:
         if not self.faces: 
             return
         self.faces = [self.projectFace(f) for f in self.faces]
+        if self.sections:
+            self.sections = [self.projectFace(f) for f in self.sections]
         self.oriented = True
 
     def removeHidden(self):
@@ -157,21 +158,18 @@ class Renderer:
         if not self.faces: 
             return
         faces = []
-        fills = []
-        for i in range(len(self.faces)):
-            if self.isVisible(self.faces[i]):
-                faces.append(self.faces[i])
-                fills.append(self.fills[i])
+        for f in self.faces:
+            if self.isVisible(f):
+                faces.append(f)
         if DEBUG: print len(self.faces)-len(faces) , " faces removed, ", len(faces), " faces retained"
         self.faces = faces
-        self.fills = fills
         self.trimmed = True
 
     def projectFace(self,face):
         "projects a single face on the WP"
         wires = []
-        norm = face.normalAt(0,0)
-        for w in face.Wires:
+        norm = face[0].normalAt(0,0)
+        for w in face[0].Wires:
             verts = []
             edges = fcgeo.sortEdges(w.Edges)
             for e in edges:
@@ -190,12 +188,12 @@ class Renderer:
             vnorm = self.wp.getLocalCoords(norm)
             if vnorm.getAngle(sh.normalAt(0,0)) > 1:
                 sh.reverse()
-            return sh
+            return [sh]+face[1:]
 
     def flattenFace(self,face):
         "Returns a face where all vertices have Z = 0"
         wires = []
-        for w in face.Wires:
+        for w in face[0].Wires:
             verts = []
             edges = fcgeo.sortEdges(w.Edges)
             for e in edges:
@@ -209,29 +207,113 @@ class Renderer:
             if DEBUG: print "Error: Unable to flatten face"
             return None
         else:
-            return sh
+            return [sh]+face[1:]
+
+    def cut(self,cutplane):
+        "Cuts through the shapes with a given cut plane and builds section faces"
+        if self.iscut:
+            return
+        if not self.shapes:
+            if DEBUG: print "No objects to make sections"
+        else:
+            fill = (1.0,1.0,1.0,1.0)
+            placement = FreeCAD.Placement(cutplane.Placement)
+
+            # building boundbox
+            bb = self.shapes[0][0].BoundBox 
+            for sh in self.shapes[1:]:
+                bb.add(sh[0].BoundBox)
+            bb.enlarge(1)
+            um = vm = wm = 0
+            if not bb.isCutPlane(placement.Base,self.wp.axis):
+                if DEBUG: print "No objects are cut by the plane"
+            else:
+                corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
+                           FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
+                           FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMin),
+                           FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMin),
+                           FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMax),
+                           FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMax),
+                           FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
+                           FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
+                for c in corners:
+                    dv = c.sub(placement.Base)
+                    um1 = fcvec.project(dv,self.wp.u).Length
+                    um = max(um,um1)
+                    vm1 = fcvec.project(dv,self.wp.v).Length
+                    vm = max(vm,vm1)
+                    wm1 = fcvec.project(dv,self.wp.axis).Length
+                    wm = max(wm,wm1)
+                p1 = FreeCAD.Vector(-um,vm,0)
+                p2 = FreeCAD.Vector(um,vm,0)
+                p3 = FreeCAD.Vector(um,-vm,0)
+                p4 = FreeCAD.Vector(-um,-vm,0)
+                cutface = Part.makePolygon([p1,p2,p3,p4,p1])
+                cutface = Part.Face(cutface)
+                cutface.Placement = placement
+                cutnormal = fcvec.scaleTo(self.wp.axis,wm)
+                cutvolume = cutface.extrude(cutnormal)
+                shapes = []
+                faces = []
+                sections = []
+                for sh in self.shapes:
+                    for sol in sh[0].Solids:
+                        c = sol.cut(cutvolume)
+                        shapes.append([c]+sh[1:])
+                        for f in c.Faces:
+                            faces.append([f]+sh[1:])
+                        sec = sol.section(cutface)
+                        if sec.Edges:
+                            wires = fcgeo.findWires(sec.Edges)
+                            for w in wires:
+                                sec = Part.Face(w)
+                                sections.append([sec,fill])
+                self.shapes = shapes
+                self.faces = faces
+                self.sections = sections
+                if DEBUG: print "Built ",len(self.sections)," sections, ", len(self.faces), " faces retained"
+                self.iscut = True
+                self.oriented = False
+                self.trimmed = False
+                self.sorted = False
+                self.joined = False
 
     def isInside(self,vert,face):
         "Returns True if the vert is inside the face in Z projection"
-        
+    
+        # http://paulbourke.net/geometry/insidepoly/
+        count = 0
+        p = self.wp.getLocalCoords(vert.Point)
+        for e in face[0].Edges:
+            p1 = e.Vertexes[0].Point
+            p2 = e.Vertexes[-1].Point
+            if p.y > min(p1.y,p2.y):
+                if p.y <= max(p1.y,p2.y):
+                    if p.x <= max(p1.x,p2.x):
+                        if p1.y != p2.y:
+                            xinters = (p.y-p1.y)*(p2.x-p1.x)/(p2.y-p1.y)+p1.x
+                            if (p1.x == p2.x) or (p.x <= xinters):
+                                count += 1
+        if count % 2 == 0:
+            return False
+        else:
+            return True
 
     def zOverlaps(self,face1,face2):
         "Checks if face1 overlaps face2 in Z direction"
-
         face1 = self.flattenFace(face1)
         face2 = self.flattenFace(face2)
-
+        
         # first we check if one of the verts is inside the other face
-        for v in face1.Vertexes:
+        for v in face1[0].Vertexes:
             if self.isInside(v,face2):
                 return True
 
         # even so, faces can still overlap if their edges cross each other
-        for e1 in face1.Edges:
-            for e2 in face2.Edges:
+        for e1 in face1[0].Edges:
+            for e2 in face2[0].Edges:
                 if fcgeo.findIntersection(e1,e2):
                     return True
-
         return False
 
     def compare(self,face1,face2):
@@ -241,8 +323,8 @@ class Renderer:
         # http://www.siggraph.org/education/materials/HyperGraph/scanline/visibility/painter.htm
         # and practical application http://vrm.ao2.it/ (blender vector renderer)
 
-        b1 = face1.BoundBox
-        b2 = face2.BoundBox
+        b1 = face1[0].BoundBox
+        b2 = face2[0].BoundBox
 
         # test 1: if faces don't overlap, no comparison possible
         if DEBUG: print "doing test 1"
@@ -266,11 +348,11 @@ class Renderer:
 
         # test 3: all verts of face1 are in front or behind the plane of face2
         if DEBUG: print "doing test 3"
-        norm = face2.normalAt(0,0)
+        norm = face2[0].normalAt(0,0)
         behind = 0
         front = 0
-        for v in face1.Vertexes:
-            dv = v.Point.sub(face2.Vertexes[0].Point)
+        for v in face1[0].Vertexes:
+            dv = v.Point.sub(face2[0].Vertexes[0].Point)
             dv = fcvec.project(dv,norm)
             if fcvec.isNull(dv):
                 behind += 1
@@ -281,19 +363,19 @@ class Renderer:
                 else:
                     front += 1
         if DEBUG: print "front: ",front," behind: ",behind
-        if behind == len(face1.Vertexes):
+        if behind == len(face1[0].Vertexes):
             return 2
-        elif front == len(face1.Vertexes):
+        elif front == len(face1[0].Vertexes):
             return 1
         if DEBUG: print "failed, cannot say if face 1 is in front or behind"
 
         # test 4: all verts of face2 are in front or behind the plane of face1
         if DEBUG: print "doing test 4"
-        norm = face1.normalAt(0,0)
+        norm = face1[0].normalAt(0,0)
         behind = 0
         front = 0
-        for v in face2.Vertexes:
-            dv = v.Point.sub(face1.Vertexes[0].Point)
+        for v in face2[0].Vertexes:
+            dv = v.Point.sub(face1[0].Vertexes[0].Point)
             dv = fcvec.project(dv,norm)
             if fcvec.isNull(dv):
                 behind += 1
@@ -304,9 +386,9 @@ class Renderer:
                 else:
                     front += 1
         if DEBUG: print "front: ",front," behind: ",behind
-        if behind == len(face2.Vertexes):
+        if behind == len(face2[0].Vertexes):
             return 1
-        elif front == len(face2.Vertexes):
+        elif front == len(face2[0].Vertexes):
             return 2
         if DEBUG: print "failed, cannot say if face 2 is in front or behind"
 
@@ -320,6 +402,35 @@ class Renderer:
 
         if DEBUG: print "Houston, all tests passed, and still no results" 
         return 0
+
+    def join(self,otype):
+        "joins the objects of same type"
+        walls = []
+        structs = []
+        objs = []
+        for o in obj.Source.Objects:
+            t = Draft.getType(o)
+            if t == "Wall":
+                walls.append(o)
+            elif t == "Structure":
+                structs.append(o)
+            else:
+                objs.append(o)
+        for g in [walls,structs]:
+            if g:
+                print "group:",g
+                col = g[0].ViewObject.DiffuseColor[0]
+                s = g[0].Shape
+                for o in g[1:]:
+                    try:
+                        fs = s.fuse(o.Shape)
+                        fs = fs.removeSplitter()
+                    except:
+                        print "shape fusion failed"
+                        objs.append([o.Shape,o.ViewObject.DiffuseColor[0]])
+                    else:
+                        s = fs
+                objs.append([s,col])
 
     def findPosition(self,f1,faces):
         "Finds the position of a face in a list of faces"
@@ -345,24 +456,22 @@ class Renderer:
 
     def sort(self):
         "projects a shape on the WP"
-        if not self.faces: 
-            return
-        if len(self.faces) == 1:
+        if len(self.faces) <= 1:
             return
         if not self.trimmed:
             self.removeHidden()
+        if len(self.faces) == 1:
+            return
         if not self.oriented:
             self.reorient()
         faces = self.faces[:]
         if DEBUG: print "sorting ",len(self.faces)," faces"
         sfaces = []
-        sfills = []
         loopcount = 0
         notfoundstack = 0
         while faces:
             if DEBUG: print "loop ", loopcount
             f1 = faces[0]
-            fi1 = self.fills[self.faces.index(f1)]
             if sfaces and (notfoundstack < len(faces)):
                 if DEBUG: print "using ordered stack, notfound = ",notfoundstack
                 p = self.findPosition(f1,sfaces)
@@ -375,32 +484,26 @@ class Renderer:
                     # position found, we insert it
                     faces.remove(f1)
                     sfaces.insert(p,f1)
-                    sfills.insert(p,fi1)
                     notfoundstack = 0
             else:
                 # either there is no stack, or no more face can be compared
                 # find a root, 2 faces that can be compared
                 if DEBUG: print "using unordered stack, notfound = ",notfoundstack
                 for f2 in faces[1:]:
-                    fi2 = self.fills[self.faces.index(f2)]
                     if DEBUG: print "comparing face",str(self.faces.index(f1))," with face",str(self.faces.index(f2))
                     r = self.compare(f1,f2)
                     if r == 1:
                         faces.remove(f2)
                         sfaces.append(f2)
-                        sfills.append(fi2)
                         faces.remove(f1)
                         sfaces.append(f1)
-                        sfills.append(fi1)
                         notfoundstack = 0
                         break
                     elif r == 2:
                         faces.remove(f1)
                         sfaces.append(f1)
-                        sfills.append(fi1)
                         faces.remove(f2)
                         sfaces.append(f2)
-                        sfills.append(fi2)
                         notfoundstack = 0
                         break
                 else:
@@ -414,7 +517,6 @@ class Renderer:
 
         if DEBUG: print "done Z sorting. ", len(sfaces), " faces retained, ", len(self.faces)-len(sfaces), " faces lost."
         self.faces = sfaces
-        self.fills = sfills
         self.sorted = True
 
     def buildDummy(self):
@@ -424,7 +526,7 @@ class Renderer:
             self.sort()
         faces = []
         for f in self.faces[:]:
-            ff = self.flattenFace(f)
+            ff = self.flattenFace(f)[0]
             ff.translate(FreeCAD.Vector(0,0,z))
             faces.append(ff)
             z += 1
@@ -440,30 +542,35 @@ class Renderer:
         col = "#"+r+g+b
         return col
 
-    def getSVG(self,linewidth=0.01):
-        "Returns a SVG fragment"
-        if DEBUG: print len(self.faces), " faces and ", len(self.fills), " fills."
+    def getPathData(self,w):
+        "Returns a SVG path data string from a 2D wire"
+        edges = fcgeo.sortEdges(w.Edges)
+        v = edges[0].Vertexes[0].Point
+        svg = 'M '+ str(v.x) +' '+ str(v.y) + ' '
+        for e in edges:
+            if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
+                v = e.Vertexes[-1].Point
+                svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
+            elif isinstance(e.Curve,Part.Circle):
+                r = e.Curve.Radius
+                v = e.Vertexes[-1].Point
+                svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
+                svg += str(v.y) + ' '
+        svg += 'z '
+        return svg
+
+    def getViewSVG(self,linewidth=0.01):
+        "Returns a SVG fragment from viewed faces"
+        if DEBUG: print "Printing ", len(self.faces), " faces"
         if not self.sorted:
             self.sort()
         svg = ''
-        for i in range(len(self.faces)):
-            fill = self.getFill(self.fills[i])
+        for f in self.faces:
+            fill = self.getFill(f[1])
             svg +='<path '
             svg += 'd="'
-            for w in self.faces[i].Wires:
-                edges = fcgeo.sortEdges(w.Edges)
-                v = edges[0].Vertexes[0].Point
-                svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
-                for e in edges:
-                    if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
-                        v = e.Vertexes[-1].Point
-                        svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-                    elif isinstance(e.Curve,Part.Circle):
-                        r = e.Curve.Radius
-                        v = e.Vertexes[-1].Point
-                        svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                        svg += str(v.y) + ' '
-                svg += 'z '
+            for w in f[0].Wires:
+                svg += self.getPathData(w)
             svg += '" '
             svg += 'stroke="#000000" '
             svg += 'stroke-width="' + str(linewidth) + '" '
@@ -475,3 +582,28 @@ class Renderer:
             svg += 'fill-rule: evenodd'
             svg += '"/>\n'
         return svg
+
+    def getSectionSVG(self,linewidth=0.02):
+        "Returns a SVG fragment from cut faces"
+        if DEBUG: print "Printing ", len(self.sections), " cutfaces"
+        if not self.oriented:
+            self.reorient()
+        svg = ''
+        for f in self.sections:
+            fill = self.getFill(f[1])
+            svg +='<path '
+            svg += 'd="'
+            for w in f[0].Wires:
+                svg += self.getPathData(w)
+            svg += '" '
+            svg += 'stroke="#000000" '
+            svg += 'stroke-width="' + str(linewidth) + '" '
+            svg += 'style="stroke-width:0.01;'
+            svg += 'stroke-miterlimit:1;'
+            svg += 'stroke-linejoin:round;'
+            svg += 'stroke-dasharray:none;'
+            svg += 'fill:' + fill + ';'
+            svg += 'fill-rule: evenodd'
+            svg += '"/>\n'
+        return svg
+        

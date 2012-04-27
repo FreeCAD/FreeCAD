@@ -176,7 +176,7 @@ class plane:
 
         def setFromPlacement(self,pl):
                 "sets the working plane from a placement (rotaton ONLY)"
-                rot= pl.Rotation
+                rot = FreeCAD.Placement(pl).Rotation
                 self.u = rot.multVec(FreeCAD.Vector(1,0,0))
                 self.v = rot.multVec(FreeCAD.Vector(0,1,0))
                 self.axis = rot.multVec(FreeCAD.Vector(0,0,1))
