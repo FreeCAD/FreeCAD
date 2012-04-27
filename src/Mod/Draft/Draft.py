@@ -167,6 +167,8 @@ def getType(obj):
         return "Annotation"
     if obj.isDerivedFrom("Mesh::Feature"):
         return "Mesh"
+    if obj.isDerivedFrom("Points::Feature"):
+        return "Points"
     if (obj.Type == "App::DocumentObjectGroup"):
         return "Group"
     return "Unknown"

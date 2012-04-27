@@ -271,6 +271,9 @@ class Snapper:
                 elif Draft.getType(obj) == "Mesh":
                     # for meshes we only snap to vertices
                     snaps.extend(self.snapToEndpoints(obj.Mesh))
+                elif Draft.getType(obj) == "Points":
+                    # for points we only snap to points
+                    snaps.extend(self.snapToEndpoints(obj.Points))
 
             # updating last objects list
             if not self.lastObj[1]:
@@ -428,8 +431,12 @@ class Snapper:
             elif hasattr(shape,"Point"):
                 snaps.append([shape.Point,'endpoint',shape.Point])
             elif hasattr(shape,"Points"):
-                for v in shape.Points:
-                    snaps.append([v.Vector,'endpoint',v.Vector])
+                if len(shape.Points) and hasattr(shape.Points[0],"Vector"):
+                    for v in shape.Points:
+                        snaps.append([v.Vector,'endpoint',v.Vector])
+                else:
+                    for v in shape.Points:
+                        snaps.append([v,'endpoint',v])
         return snaps
 
     def snapToMidpoint(self,shape):
