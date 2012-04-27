@@ -256,6 +256,7 @@ public:
     void removeSelfIntersections(const std::vector<unsigned long>&);
     void removeFoldsOnSurface();
     void removeFullBoundaryFacets();
+    void removeInvalidPoints();
     //@}
 
     /** @name Mesh segments */
