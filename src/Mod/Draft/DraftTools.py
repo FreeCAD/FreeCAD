@@ -82,6 +82,8 @@ if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Dra
     p.SetUnsigned("constructioncolor",746455039)
     p.SetFloat("textheight",0.2)
     p.SetInt("precision",4)
+    p.SetInt("gridEvery",10)
+    p.SetFloat("gridSpacing",1.0)
 
 #---------------------------------------------------------------------------
 # General functions

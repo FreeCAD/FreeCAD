@@ -150,7 +150,10 @@ class Snapper:
             self.tracker = self.trackers[2][i]
             self.extLine = self.trackers[3][i]
         else:
-            self.grid = DraftTrackers.gridTracker()
+            if Draft.getParam("grid"):
+                self.grid = DraftTrackers.gridTracker()
+            else:
+                self.grid = None
             self.tracker = DraftTrackers.snapTracker()
             self.extLine = DraftTrackers.lineTracker(dotted=True)
             self.trackers[0].append(v)
@@ -317,8 +320,11 @@ class Snapper:
         "returns a 3D point, projected on the current working plane"
         view = Draft.get3DView()
         pt = view.getPoint(x,y)
-        dv = view.getViewDirection()
-        return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            dv = view.getViewDirection()
+            return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
+        else:
+            return pt
         
     def snapToExtensions(self,point,last,constrain,eline):
         "returns a point snapped to extension or parallel line to last object, if any"
@@ -380,9 +386,14 @@ class Snapper:
         if self.isEnabled('ortho'): 
             if last:
                 vecs = []
-                ax = [FreeCAD.DraftWorkingPlane.u,
-                       FreeCAD.DraftWorkingPlane.v,
-                       FreeCAD.DraftWorkingPlane.axis]
+                if hasattr(FreeCAD,"DraftWorkingPlane"):
+                    ax = [FreeCAD.DraftWorkingPlane.u,
+                           FreeCAD.DraftWorkingPlane.v,
+                           FreeCAD.DraftWorkingPlane.axis]
+                else:
+                    ax = [FreeCAD.Vector(1,0,0),
+                          FreeCAD.Vector(0,1,0),
+                          FreeCAD.Vector(0,0,1)]
                 for a in self.polarAngles:
                         if a == 90:
                             vecs.extend([ax[0],fcvec.neg(ax[0])])
@@ -639,6 +650,10 @@ class Snapper:
         must be constrained. If no basepoint is given, the current point is
         used as basepoint.'''
 
+        # without the Draft module fully loaded, no axes system!"
+        if not hasattr(FreeCAD,"DraftWorkingPlane"):
+            return point
+
         point = Vector(point)
 
         # setup trackers if needed
@@ -737,7 +752,8 @@ class Snapper:
             ctrl = event.wasCtrlDown()
             shift = event.wasShiftDown()
             self.pt = FreeCADGui.Snapper.snap(mousepos,lastpoint=last,active=ctrl,constrain=shift)
-            self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
+            if hasattr(FreeCAD,"DraftWorkingPlane"):
+                self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
             if self.trackLine:
                 self.trackLine.p2(self.pt)
             if movecallback:
@@ -745,7 +761,7 @@ class Snapper:
         
         def getcoords(point,relative=False):
             self.pt = point
-            if relative and last:
+            if relative and last and hasattr(FreeCAD,"DraftWorkingPlane"):
                 v = FreeCAD.DraftWorkingPlane.getGlobalCoords(point)
                 self.pt = last.add(v)
             accept()
@@ -875,3 +891,8 @@ class Snapper:
 
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
+if not hasattr(FreeCAD,"DraftWorkingPlane"):
+    import WorkingPlane, Draft_rc
+    FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
+    print FreeCAD.DraftWorkingPlane
+    FreeCADGui.addIconPath(":/icons")
