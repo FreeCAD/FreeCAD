@@ -27,11 +27,13 @@
 # include <QDesktopWidget>
 # include <QDialogButtonBox>
 # include <QDrag>
+# include <QEventLoop>
 # include <QKeyEvent>
 # include <QMimeData>
 # include <QPainter>
 # include <QPlainTextEdit>
 # include <QStylePainter>
+# include <QTimer>
 # include <QToolTip>
 #endif
 
@@ -639,6 +641,17 @@ StatusWidget::~StatusWidget()
 void StatusWidget::setStatusText(const QString& s)
 {
     label->setText(s);
+}
+
+void StatusWidget::showText(int ms)
+{
+    show();
+    QTimer timer;
+    QEventLoop loop;
+    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    timer.start(ms);
+    loop.exec(QEventLoop::ExcludeUserInputEvents);
+    hide();
 }
 
 QSize StatusWidget::sizeHint () const

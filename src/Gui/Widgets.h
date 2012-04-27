@@ -275,6 +275,7 @@ public:
     ~StatusWidget();
     void setStatusText(const QString&);
     QSize sizeHint () const;
+    void showText(int ms);
 
 protected:
     void showEvent(QShowEvent*);
