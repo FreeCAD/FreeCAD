@@ -205,51 +205,6 @@ def makeFace(wires,method=2,cleanup=False):
         print "final face:",mf.Faces
         return mf.Faces[0]
 
-def getCutVolume(objects,placement):
-    '''getCutVolume(objects,placement): returns a tuple with 2 objects: a face, positioned
-    at the given placement's position, and wide enough so the projection of all objects
-    in the list fits into it, and an extrusion vector, that can be used to extrude the
-    plane so it includes all objects in the list.'''
-    import Part
-    placement = FreeCAD.Placement(placement)
-    if not objects:
-        return None
-    bb = objects[0].Shape.BoundBox 
-    for obj in objects[1:]:
-        bb.add(obj.Shape.BoundBox)
-    bb.enlarge(1)
-    u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-    v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
-    w = placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
-    um = vm = wm = 0
-    if not bb.isCutPlane(placement.Base,w):
-        return None
-    corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
-               FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
-               FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMin),
-               FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMin),
-               FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMax),
-               FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMax),
-               FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
-               FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
-    for c in corners:
-        dv = c.sub(placement.Base)
-        um1 = fcvec.project(dv,u).Length
-        um = max(um,um1)
-        vm1 = fcvec.project(dv,v).Length
-        vm = max(vm,vm1)
-        wm1 = fcvec.project(dv,w).Length
-        wm = max(wm,wm1)
-    p1 = FreeCAD.Vector(-um,vm,0)
-    p2 = FreeCAD.Vector(um,vm,0)
-    p3 = FreeCAD.Vector(um,-vm,0)
-    p4 = FreeCAD.Vector(-um,-vm,0)
-    f = Part.makePolygon([p1,p2,p3,p4,p1])
-    f = Part.Face(f)
-    f.Placement = placement
-    n = fcvec.scaleTo(w,wm)
-    return (f,n)
-
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''

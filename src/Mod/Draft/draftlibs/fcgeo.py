@@ -559,6 +559,7 @@ def findWires(edgeslist):
         
         edges = edgeslist[:]
         wires = []
+        lost = []
         while edges:
                 e = edges[0]
                 if not wires:
@@ -568,19 +569,28 @@ def findWires(edgeslist):
                 else:
                         found = False
                         for w in wires:
-                                if found:
-                                        break
-                                for we in w:
-                                        if touches(e,we):
-                                                edges.remove(e)
-                                                w.append(e)
-                                                found = True
-                                                break
-                        else:
-                                # edge doesn't connect with any existing group
-                                edges.remove(e)
-                                wires.append([e])
-        return wires
+                                if not found:
+                                        for we in w:
+                                                if touches(e,we):
+                                                        edges.remove(e)
+                                                        w.append(e)
+                                                        found = True
+                                                        break
+                        if not found:
+                                if e in lost:
+                                        # we already tried this edge, and still nothing
+                                        edges.remove(e)
+                                        wires.append([e])
+                                        lost = []
+                                else:
+                                        # put to the end of the list
+                                        edges.remove(e)
+                                        edges.append(e)
+                                        lost.append(e)
+        nwires = []
+        for w in wires:
+                nwires.append(Part.Wire(w))
+        return nwires
                 
 def superWire(edgeslist,closed=False):
         '''superWire(edges,[closed]): forces a wire between edges that don't necessarily
@@ -993,7 +1003,7 @@ def isPlanar(shape):
 			return False
 	return True
 
-def findWires(edges):
+def findWiresOld(edges):
         '''finds connected edges in the list, and returns a list of lists containing edges
         that can be connected'''
         def verts(shape):

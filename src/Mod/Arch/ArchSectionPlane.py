@@ -181,77 +181,34 @@ class _ArchDrawingView:
                 if obj.Source.Objects:
                     svg = ''
 
-                    # getting section plane
-                    cp = ArchCommands.getCutVolume(obj.Source.Objects,obj.Source.Placement)
-                    self.sections = []
-                    if cp:
-                        cutvolume = cp[0].extrude(cp[1])
-                    shapes = []
-                    colors = []
-
-                    # sorting
-                    if join:
-                        walls = []
-                        structs = []
-                        objs = []
-                        for o in obj.Source.Objects:
-                            t = Draft.getType(o)
-                            if t == "Wall":
-                                walls.append(o)
-                            elif t == "Structure":
-                                structs.append(o)
-                            else:
-                                objs.append(o)
-                        for g in [walls,structs]:
-                            if g:
-                                print "group:",g
-                                col = g[0].ViewObject.DiffuseColor[0]
-                                s = g[0].Shape
-                                for o in g[1:]:
-                                    try:
-                                        fs = s.fuse(o.Shape)
-                                        fs = fs.removeSplitter()
-                                    except:
-                                        print "shape fusion failed"
-                                        objs.append([o.Shape,o.ViewObject.DiffuseColor[0]])
-                                    else:
-                                        s = fs
-                                objs.append([s,col])
-                    else:
-                        objs = obj.Source.Objects
-
-                    # shapes extraction    
-                    for o in objs:
-                        print "object:",o
-                        if isinstance(o,list):
-                            shape = o[0]
-                            color = o[1]
-                        else:
-                            shape = o.Shape
-                            color = o.ViewObject.DiffuseColor[0]
-                        if cp:
-                            for s in shape.Solids:
-                                shapes.append(s.cut(cutvolume))
-                                colors.append(color)
-                            sec = shape.section(cp[0])
-                            if sec.Edges:
-                                wires = fcgeo.findWires(sec.Edges)
-                                for w in wires:
-                                    sec = Part.Wire(fcgeo.sortEdges(w.Edges))
-                                    sec = Part.Face(sec)
-                                    self.sections.append(sec)
-                        else:
-                            shapes.append(shape)
-                            colors.append(color)
-
                     # generating SVG
                     linewidth = obj.LineWidth/obj.Scale        
                     if obj.RenderingMode == "Solid":
-                        svg += self.renderVRM(shapes,obj.Source.Placement,colors,linewidth)
+                        # render using the Arch Vector Renderer                        
+                        import ArchVRM
+                        render = ArchVRM.Renderer()
+                        render.setWorkingPlane(obj.Source.Placement)
+                        render.addObjects(obj.Source.Objects)
+                        render.cut(obj.Source.Shape)
+                        svg += render.getViewSVG(linewidth=linewidth)
+                        svg += render.getSectionSVG(linewidth=linewidth*2)
+                        # print render.info()
+                        
                     else:
-                        svg += self.renderOCC(shapes,obj.Source.Proxy.getNormal(obj.Source),linewidth)
-                    for s in self.sections:
-                        svg += self.renderSection(s,obj.Source.Placement,linewidth*2)
+                        # render using the Drawing module
+                        shapes = []
+                        for o in obj.Source.Objects:
+                            if o.isDerivedFrom("Part::Feature"):
+                                shapes.append(o.Shape)
+                        if shapes:
+                            base = shape.pop()
+                        for sh in shapes:
+                            base = base.fuse(sh)
+                        svgf = Drawing.projectToSVG(base,fcvec.neg(direction))
+                        if svgf:
+                            svgf = svgf.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
+                        svg += svgf
+
                     result = ''
                     result += '<g id="' + obj.Name + '"'
                     result += ' transform="'
@@ -261,72 +218,8 @@ class _ArchDrawingView:
                     result += '">\n'
                     result += svg
                     result += '</g>\n'
-                    #print "complete node:",result
+                    # print "complete node:",result
                     return result
         return ''
-
-    def renderOCC(self,shapes,direction,linewidth):
-        "renders an SVG fragment with the OCC method"
-        shapes = shapes[:]
-        if shapes:
-            base = shape.pop()
-            for sh in shapes:
-                base = base.fuse(sh)
-        result = Drawing.projectToSVG(base,fcvec.neg(direction))
-        if result:
-            result = result.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
-            return result
-        return ''
-
-    def renderVRM(self,shapes,placement,colors,linewidth):
-        "renders an SVG fragment with the ArchVRM method"
-        import ArchVRM
-        render = ArchVRM.Renderer()
-        render.setWorkingPlane(FreeCAD.Placement(placement))
-        for i in range(len(shapes)):
-            if colors:
-                render.add(shapes[i],colors[i])
-            else:
-                render.add(shapes[i])
-        svg = render.getSVG(linewidth=linewidth)
-        #print render.info()
-        return svg
-
-    def renderSection(self,shape,placement,linewidth):
-        "renders a plane parallel to the section plane"
-        placement = FreeCAD.Placement(placement)
-        u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-        v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
-        pts  = []
-        for vt in shape.Vertexes:
-            vu = fcvec.project(vt.Point,u)
-            if vu.getAngle(u) > 1:
-                x = -vu.Length
-            else:
-                x = vu.Length
-            vv = fcvec.project(vt.Point,v)
-            if vv.getAngle(v) > 1:
-                y = -vv.Length
-            else:
-                y = vv.Length
-            pts.append([x,y])
-        svg ='<path '
-        svg += 'd="M '+ str(pts[0][0]) +' '+ str(pts[0][1]) + ' '
-        for p in pts[1:]:
-            svg += 'L '+ str(p[0]) +' '+ str(p[1]) + ' '
-        svg += 'z '
-        svg += '" '
-        svg += 'stroke="#000000" '
-        svg += 'stroke-width="' + str(linewidth) + 'px" '
-        svg += 'style="stroke-width:' + str(linewidth) + ';'
-        svg += 'stroke-miterlimit:1;'
-        svg += 'stroke-linejoin:round;'
-        svg += 'stroke-dasharray:none;'
-        svg += 'fill:#ffffff;'
-        svg += 'fill-rule: evenodd'
-        svg += '"/>\n'
-        return svg
-            
-        
                 
 FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())
