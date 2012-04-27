@@ -1777,7 +1777,7 @@ class _ViewProviderDimension:
         obj.Proxy = self
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
-        obj.DisplayModes = ["2D","3D"]
+        obj.DisplayMode = ["2D","3D"]
         obj.ExtLines=0.3
         obj.Override = ''
 
