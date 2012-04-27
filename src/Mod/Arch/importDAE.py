@@ -51,6 +51,17 @@ def open(filename):
     read(filename)
     return doc
 
+def insert(filename,docname):
+    "called when freecad wants to import a file"
+    if not checkCollada(): return
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    read(filename)
+    return doc
+
 def decode(name):
     "decodes encoded strings"
     try:

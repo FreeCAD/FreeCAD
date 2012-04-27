@@ -54,6 +54,24 @@ def open(filename):
     read(filename)
     return doc
 
+def insert(filename,docname):
+    "called when freecad wants to import a file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    global createIfcGroups, useIfcOpenShell, importIfcFurniture
+    createIfcGroups = useIfcOpenShell = importIfcFurniture = False
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    useIfcOpenShell = p.GetBool("useIfcOpenShell")
+    createIfcGroups = p.GetBool("createIfcGroups")
+    importIfcFurniture = p.GetBool("importIfcFurniture")
+    if not importIfcFurniture:
+        SKIP.append("IfcFurnishingElement")    
+    read(filename)
+    return doc
+
 def decode(name):
     "decodes encoded strings"
     try:
