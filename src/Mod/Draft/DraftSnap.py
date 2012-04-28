@@ -736,6 +736,7 @@ class Snapper:
         import inspect
         
         self.pt = None
+        self.lastSnappedObject = None
         self.ui = FreeCADGui.draftToolBar
         self.view = Draft.get3DView()
 
