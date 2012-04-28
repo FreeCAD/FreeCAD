@@ -58,6 +58,7 @@
 #include "SceneInspector.h"
 #include "DemoMode.h"
 #include "TextureMapping.h"
+#include "Utilities.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -1901,6 +1902,79 @@ void StdViewBoxZoom::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_BoxSelection
+//===========================================================================
+DEF_3DV_CMD(StdBoxSelection);
+
+StdBoxSelection::StdBoxSelection()
+  : Command("Std_BoxSelection")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Box selection");
+    sToolTipText  = QT_TR_NOOP("Box selection");
+    sWhatsThis    = "Std_ViewBoxZoom";
+    sStatusTip    = QT_TR_NOOP("Box selection");
+    eType         = AlterSelection;
+}
+
+static void selectionCallback(void * ud, SoEventCallback * cb)
+{
+    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
+    std::vector<SbVec2f> picked = view->getGLPolygon();
+    SoCamera* cam = view->getCamera();
+    SbViewVolume vv = cam->getViewVolume();
+    Gui::ViewVolumeProjection proj(vv);
+    Base::Polygon2D polygon;
+    if (picked.size() == 2) {
+        SbVec2f pt1 = picked[0];
+        SbVec2f pt2 = picked[1];
+        polygon.Add(Base::Vector2D(pt1[0], pt1[1]));
+        polygon.Add(Base::Vector2D(pt1[0], pt2[1]));
+        polygon.Add(Base::Vector2D(pt2[0], pt2[1]));
+        polygon.Add(Base::Vector2D(pt2[0], pt1[1]));
+    }
+    else {
+        for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
+            polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+    }
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (doc) {
+        cb->setHandled();
+        std::vector<App::GeoFeature*> geom = doc->getObjectsOfType<App::GeoFeature>();
+        for (std::vector<App::GeoFeature*>::iterator it = geom.begin(); it != geom.end(); ++it) {
+            std::vector<App::Property*> props;
+            (*it)->getPropertyList(props);
+            for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
+                if ((*jt)->isDerivedFrom(App::PropertyGeometry::getClassTypeId())) {
+                    App::PropertyGeometry* prop = static_cast<App::PropertyGeometry*>(*jt);
+                    Base::BoundBox3d bbox = prop->getBoundingBox();
+                    Base::Vector3d pt2d;
+                    pt2d = proj(bbox.CalcCenter());
+                    if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
+                        Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
+                    }
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void StdBoxSelection::activated(int iMsg)
+{
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    if ( view ) {
+        View3DInventorViewer* viewer = view->getViewer();
+        if (!viewer->isSelecting()) {
+            viewer->startSelection(View3DInventorViewer::Rectangle);
+            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
+        }
+    }
+}
+
+//===========================================================================
 // Std_TreeSelection
 //===========================================================================
 
@@ -2113,6 +2187,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdViewZoomIn());
     rcCmdMgr.addCommand(new StdViewZoomOut());
     rcCmdMgr.addCommand(new StdViewBoxZoom());
+    rcCmdMgr.addCommand(new StdBoxSelection());
     rcCmdMgr.addCommand(new StdCmdTreeSelection());
     rcCmdMgr.addCommand(new StdCmdMeasureDistance());
     rcCmdMgr.addCommand(new StdCmdSceneInspector());
