@@ -104,8 +104,6 @@ class _ViewProviderAxis:
         vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", "The numeration style")
         vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
         vobj.Proxy = self
-        self.Object = vobj.Object
-        self.ViewObject = vobj
         vobj.BubbleSize = .1
         vobj.LineWidth = 1
         vobj.LineColor = (0.13,0.15,0.37)
@@ -119,6 +117,7 @@ class _ViewProviderAxis:
 
     def attach(self, vobj):
         self.ViewObject = vobj
+        self.Object = vobj.Object
         self.bubbles = None
 
     def getNumber(self,num):
@@ -162,48 +161,59 @@ class _ViewProviderAxis:
 
     def makeBubbles(self):
         import Part
-        rn = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
-        if self.bubbles:
-            rn.removeChild(self.bubbles)
-            self.bubbles = None
-        self.bubbles = coin.SoSeparator()
-        isep = coin.SoSeparator()
-        self.bubblestyle = coin.SoDrawStyle()
-        self.bubblestyle.linePattern = 0xffff
-        self.bubbles.addChild(self.bubblestyle)
-        for i in range(len(self.ViewObject.Object.Distances)):
-            invpl = self.ViewObject.Object.Placement.inverse()
-            verts = self.ViewObject.Object.Shape.Edges[i].Vertexes
-            p1 = invpl.multVec(verts[0].Point)
-            p2 = invpl.multVec(verts[1].Point)
-            dv = p2.sub(p1)
-            dv.normalize()
-            rad = self.ViewObject.BubbleSize
-            center = p2.add(dv.scale(rad,rad,rad))
-            ts = Part.makeCircle(rad,center).writeInventor()
-            cin = coin.SoInput()
-            cin.setBuffer(ts)
-            cob = coin.SoDB.readAll(cin)
-            co = cob.getChild(1).getChild(0).getChild(2)
-            li = cob.getChild(1).getChild(0).getChild(3)
-            self.bubbles.addChild(co)
-            self.bubbles.addChild(li)
-            st = coin.SoSeparator()
-            tr = coin.SoTransform()
-            tr.translation.setValue((center.x,center.y-rad/4,center.z))
-            fo = coin.SoFont()
-            fo.name = "Arial,Sans"
-            fo.size = rad*100
-            tx = coin.SoText2()
-            tx.justification = coin.SoText2.CENTER
-            tx.string = self.getNumber(i)
-            st.addChild(tr)
-            st.addChild(fo)
-            st.addChild(tx)
-            isep.addChild(st)
-        self.bubbles.addChild(isep)
-        rn.addChild(self.bubbles)
-            
+
+        def getNode():
+            # make sure we already have the complete node built
+            r = self.ViewObject.RootNode
+            if r.getChildren().getLength() > 2:
+                if r.getChild(2).getChildren().getLength() > 0:
+                    if r.getChild(2).getChild(0).getChildren().getLength() > 0:
+                        return self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
+            return None
+        
+        rn = getNode()
+        if rn:
+            if self.bubbles:
+                rn.removeChild(self.bubbles)
+                self.bubbles = None
+            self.bubbles = coin.SoSeparator()
+            isep = coin.SoSeparator()
+            self.bubblestyle = coin.SoDrawStyle()
+            self.bubblestyle.linePattern = 0xffff
+            self.bubbles.addChild(self.bubblestyle)
+            for i in range(len(self.ViewObject.Object.Distances)):
+                invpl = self.ViewObject.Object.Placement.inverse()
+                verts = self.ViewObject.Object.Shape.Edges[i].Vertexes
+                p1 = invpl.multVec(verts[0].Point)
+                p2 = invpl.multVec(verts[1].Point)
+                dv = p2.sub(p1)
+                dv.normalize()
+                rad = self.ViewObject.BubbleSize
+                center = p2.add(dv.scale(rad,rad,rad))
+                ts = Part.makeCircle(rad,center).writeInventor()
+                cin = coin.SoInput()
+                cin.setBuffer(ts)
+                cob = coin.SoDB.readAll(cin)
+                co = cob.getChild(1).getChild(0).getChild(2)
+                li = cob.getChild(1).getChild(0).getChild(3)
+                self.bubbles.addChild(co)
+                self.bubbles.addChild(li)
+                st = coin.SoSeparator()
+                tr = coin.SoTransform()
+                tr.translation.setValue((center.x,center.y-rad/4,center.z))
+                fo = coin.SoFont()
+                fo.name = "Arial,Sans"
+                fo.size = rad*100
+                tx = coin.SoText2()
+                tx.justification = coin.SoText2.CENTER
+                tx.string = self.getNumber(i)
+                st.addChild(tr)
+                st.addChild(fo)
+                st.addChild(tx)
+                isep.addChild(st)
+            self.bubbles.addChild(isep)
+            rn.addChild(self.bubbles)
+
     def updateData(self, obj, prop):
         if prop == "Shape":
             self.makeBubbles()
