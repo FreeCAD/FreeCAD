@@ -25,12 +25,15 @@
 
 #ifndef _PreComp_
 # include <qobject.h>
+# include <QGroupBox>
+# include <QLabel>
 #endif
 
 #include "Workbench.h"
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "../App/MeshFeature.h"
 
@@ -52,6 +55,106 @@ Workbench::Workbench()
 
 Workbench::~Workbench()
 {
+}
+
+class MeshInfoWatcher : public Gui::TaskView::TaskWatcher, public Gui::SelectionObserver
+{
+public:
+    MeshInfoWatcher() : TaskWatcher(0)
+    {
+        labelPoints = new QLabel();
+        labelPoints->setText(QString::fromAscii("Number of points:"));
+
+        labelFacets = new QLabel();
+        labelFacets->setText(QString::fromAscii("Number of facets:"));
+
+        numPoints = new QLabel();
+        numFacets = new QLabel();
+
+        labelMin = new QLabel();
+        labelMin->setText(QString::fromAscii("Minumum bound:"));
+
+        labelMax = new QLabel();
+        labelMax->setText(QString::fromAscii("Maximum bound:"));
+
+        numMin = new QLabel();
+        numMax = new QLabel();
+
+        QGroupBox* box = new QGroupBox();
+        box->setTitle(QString::fromAscii("Mesh info box"));
+        //box->setAutoFillBackground(true);
+        QGridLayout* grid = new QGridLayout(box);
+        grid->addWidget(labelPoints, 0, 0);
+        grid->addWidget(numPoints, 0, 1);
+        grid->addWidget(labelFacets, 1, 0);
+        grid->addWidget(numFacets, 1, 1);
+
+        grid->addWidget(labelMin, 2, 0);
+        grid->addWidget(numMin, 2, 1);
+        grid->addWidget(labelMax, 3, 0);
+        grid->addWidget(numMax, 3, 1);
+
+        Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
+            QPixmap(), QString::fromAscii("Mesh info"), false, 0);
+        taskbox->groupLayout()->addWidget(box);
+        Content.push_back(taskbox);
+    }
+    bool shouldShow(void)
+    {
+        return true;
+    }
+    void onSelectionChanged(const Gui::SelectionChanges& msg)
+    {
+        Base::BoundBox3d bbox;
+        unsigned long countPoints=0, countFacets=0;
+        std::vector<Mesh::Feature*> mesh = Gui::Selection().getObjectsOfType<Mesh::Feature>();
+        for (std::vector<Mesh::Feature*>::iterator it = mesh.begin(); it != mesh.end(); ++it) {
+            countPoints += (*it)->Mesh.getValue().countPoints();
+            countFacets += (*it)->Mesh.getValue().countFacets();
+            bbox.Add((*it)->Mesh.getBoundingBox());
+        }
+
+        if (countPoints > 0) {
+            numPoints->setText(QString::number(countPoints));
+            numFacets->setText(QString::number(countFacets));
+            numMin->setText(QString::fromAscii("X: %1\tY: %2\tZ: %3")
+                .arg(bbox.MinX).arg(bbox.MinX).arg(bbox.MinX));
+            numMax->setText(QString::fromAscii("X: %1\tY: %2\tZ: %3")
+                .arg(bbox.MaxX).arg(bbox.MaxX).arg(bbox.MaxX));
+        }
+        else {
+            numPoints->setText(QString::fromAscii(""));
+            numFacets->setText(QString::fromAscii(""));
+            numMin->setText(QString::fromAscii(""));
+            numMax->setText(QString::fromAscii(""));
+        }
+    }
+
+private:
+    QLabel* labelPoints;
+    QLabel* numPoints;
+    QLabel* labelFacets;
+    QLabel* numFacets;
+    QLabel* labelMin;
+    QLabel* numMin;
+    QLabel* labelMax;
+    QLabel* numMax;
+};
+
+void Workbench::activated()
+{
+    Gui::Workbench::activated();
+
+    std::vector<Gui::TaskView::TaskWatcher*> Watcher;
+    Watcher.push_back(new MeshInfoWatcher);
+    addTaskWatcher(Watcher);
+}
+
+void Workbench::deactivated()
+{
+    Gui::Workbench::deactivated();
+    removeTaskWatcher();
+
 }
 
 void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) const
