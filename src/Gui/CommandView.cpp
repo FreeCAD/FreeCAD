@@ -1914,6 +1914,10 @@ StdBoxSelection::StdBoxSelection()
     sToolTipText  = QT_TR_NOOP("Box selection");
     sWhatsThis    = "Std_ViewBoxZoom";
     sStatusTip    = QT_TR_NOOP("Box selection");
+#if QT_VERSION >= 0x040200
+    sPixmap       = "edit-select-box";
+#endif
+    sAccel        = "Shift+B";
     eType         = AlterSelection;
 }
 
