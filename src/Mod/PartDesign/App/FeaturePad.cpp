@@ -25,13 +25,18 @@
 #ifndef _PreComp_
 //# include <Bnd_Box.hxx>
 //# include <gp_Pln.hxx>
+# include <cmath>
 # include <BRep_Builder.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepOffsetAPI_MakeOffset.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
 //# include <Geom_Plane.hxx>
 # include <Handle_Geom_Surface.hxx>
+# include <ShapeAnalysis.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Face.hxx>
@@ -42,6 +47,7 @@
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/Part2DObject.h>
 
 #include "FeaturePad.h"
@@ -56,6 +62,7 @@ Pad::Pad()
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(MirroredExtent,(0));
+    ADD_PROPERTY(TaperAngle,(0.0f));
 }
 
 short Pad::mustExecute() const
@@ -64,7 +71,8 @@ short Pad::mustExecute() const
         Sketch.isTouched() ||
         Length.isTouched() ||
         MirroredExtent.isTouched() ||
-        Reversed.isTouched())
+        Reversed.isTouched()||
+        TaperAngle.isTouched())
         return 1;
     return 0;
 }
@@ -124,55 +132,99 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     this->positionBySketch();
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
-    try {
-        // extrude the face to a solid
-        gp_Vec vec(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
-        vec.Transform(invObjLoc.Transformation());
-        BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),vec,0,1);
-        if (PrismMaker.IsDone()) {
-            // if the sketch has a support fuse them to get one result object (PAD!)
-            if (SupportObject) {
-                // At this point the prism can be a compound
-                TopoDS_Shape result = PrismMaker.Shape();
-                // set the additive shape property for later usage in e.g. pattern
-                this->AddShape.setValue(result);
+    gp_Vec vec(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
+    vec.Transform(invObjLoc.Transformation());
 
-                const TopoDS_Shape& support = SupportObject->Shape.getValue();
-                bool isSolid = false;
-                if (!support.IsNull()) {
-                    TopExp_Explorer xp;
-                    xp.Init(support,TopAbs_SOLID);
-                    for (;xp.More(); xp.Next()) {
-                        isSolid = true;
-                        break;
-                    }
-                }
-                if (isSolid) {
-                    // Let's call algorithm computing a fuse operation:
-                    BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
-                    // Let's check if the fusion has been successful
-                    if (!mkFuse.IsDone())
-                        return new App::DocumentObjectExecReturn("Fusion with support failed");
-                    result = mkFuse.Shape();
-                    // we have to get the solids (fuse create seldomly compounds)
-                    TopoDS_Shape solRes = this->getSolid(result);
-                    // lets check if the result is a solid
-                    if (solRes.IsNull())
-                        return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-                    this->Shape.setValue(solRes);
-                }
-                else
-                    return new App::DocumentObjectExecReturn("Support is not a solid");
+    float taperAngle = TaperAngle.getValue();
+
+    TopoDS_Shape result;
+
+    try {
+
+        if (std::fabs(taperAngle) >= Precision::Confusion()) {
+
+            //get outer Wire
+            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(aFace));
+
+            double distance = std::tan(Base::toRadians(taperAngle)) * vec.Magnitude();
+
+            std::list<TopoDS_Wire> wire_list;
+
+            wire_list.push_back(outerWire);
+
+            BRepOffsetAPI_MakeOffset mkOffset;
+
+            mkOffset.AddWire(outerWire);
+
+            mkOffset.Perform(distance);
+
+            gp_Trsf mat;
+            mat.SetTranslation(vec);
+            BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
+
+            wire_list.push_back(TopoDS::Wire(mkTransform.Shape()));
+
+            BRepOffsetAPI_ThruSections mkGenerator(Standard_True);
+
+            for (std::list<TopoDS_Wire>::const_iterator it = wire_list.begin(); it != wire_list.end(); ++it) {
+                const TopoDS_Wire &wire = *it;
+                mkGenerator.AddWire(wire);
             }
-            else {
-                TopoDS_Shape result = this->getSolid(PrismMaker.Shape());
-                // set the additive shape property for later usage in e.g. pattern
-                this->AddShape.setValue(result);
-                this->Shape.setValue(result);
-            }
+            mkGenerator.Build();
+
+            result = mkGenerator.Shape();
+
+
         }
-        else
-            return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
+        //no taperAngle same as before
+        else{
+
+            // extrude the face to a solid
+            BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),vec,0,1);
+            if (PrismMaker.IsDone()) {
+
+                result = PrismMaker.Shape();
+            }
+            else
+                return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
+        }
+
+        // if the sketch has a support fuse them to get one result object (PAD!)
+        if (SupportObject) {
+            // set the additive shape property for later usage in e.g. pattern
+            this->AddShape.setValue(result);
+            const TopoDS_Shape& support = SupportObject->Shape.getValue();
+            bool isSolid = false;
+            if (!support.IsNull()) {
+                TopExp_Explorer xp;
+                xp.Init(support,TopAbs_SOLID);
+                for (;xp.More(); xp.Next()) {
+                    isSolid = true;
+                    break;
+                }
+            }
+            if (isSolid) {
+                // Let's call algorithm computing a fuse operation:
+                BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
+                // Let's check if the fusion has been successful
+                if (!mkFuse.IsDone())
+                    return new App::DocumentObjectExecReturn("Fusion with support failed");
+                result = mkFuse.Shape();
+                // we have to get the solids (fuse create seldomly compounds)
+                TopoDS_Shape solRes = this->getSolid(result);
+                // lets check if the result is a solid
+                if (solRes.IsNull())
+                    return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                this->Shape.setValue(solRes);
+            }
+            else
+                return new App::DocumentObjectExecReturn("Support is not a solid");
+        }
+        else {
+            // set the additive shape property for later usage in e.g. pattern
+            this->AddShape.setValue(result);
+            this->Shape.setValue(result);
+        }
 
         return App::DocumentObject::StdReturn;
     }
@@ -181,4 +233,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 }
+
+
+
 

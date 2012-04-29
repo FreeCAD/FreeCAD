@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>158</width>
-    <height>116</height>
+    <width>206</width>
+    <height>138</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,6 +62,30 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Taper Angle:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="taperAngle">
+       <property name="minimum">
+        <double>-180.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>180.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkBoxMirrored">
      <property name="enabled">
       <bool>false</bool>
@@ -80,6 +104,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>changeMode</tabstop>
+  <tabstop>doubleSpinBox</tabstop>
+  <tabstop>taperAngle</tabstop>
+  <tabstop>checkBoxMirrored</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -42,6 +42,7 @@ public:
     //App::PropertyEnumeration Side;
     App::PropertyBool Reversed;
     App::PropertyBool MirroredExtent;
+    App::PropertyAngle TaperAngle;
 
     /** @name methods override feature */
     //@{

@@ -63,6 +63,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
             this, SLOT(onMirrored(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
             this, SLOT(onReversed(bool)));
+    connect(ui->taperAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onTaperAngleChanged(double)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -70,6 +72,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     double l = pcPad->Length.getValue();
     bool mirrored = pcPad->MirroredExtent.getValue();
     bool reversed = pcPad->Reversed.getValue();
+    double ta = pcPad->TaperAngle.getValue();
 
     ui->doubleSpinBox->setMinimum(0);
     ui->doubleSpinBox->setValue(l);
@@ -79,9 +82,11 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
 
+    ui->taperAngle->setValue(ta);
+
     // Make sure that the spin box has the focus to get key events
     // Calling setFocus() directly doesn't work because the spin box is not
-    // yet visible. 
+    // yet visible.
     QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
 }
 
@@ -106,6 +111,13 @@ void TaskPadParameters::onReversed(bool on)
     pcPad->getDocument()->recomputeFeature(pcPad);
 }
 
+void TaskPadParameters::onTaperAngleChanged(double ta)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    pcPad->TaperAngle.setValue(static_cast<float>(ta));
+    pcPad->getDocument()->recomputeFeature(pcPad);
+}
+
 double TaskPadParameters::getLength(void) const
 {
     return ui->doubleSpinBox->value();
@@ -119,6 +131,12 @@ bool   TaskPadParameters::getReversed(void) const
 bool   TaskPadParameters::getMirroredExtent(void) const
 {
     return ui->checkBoxMirrored->isChecked();
+}
+
+float TaskPadParameters::getTaperAngle(void) const
+{
+    float t = static_cast<float>(ui->taperAngle->value());
+    return static_cast<float>(ui->taperAngle->value());
 }
 
 TaskPadParameters::~TaskPadParameters()
@@ -158,12 +176,12 @@ TaskDlgPadParameters::~TaskDlgPadParameters()
 
 void TaskDlgPadParameters::open()
 {
-    
+
 }
 
 void TaskDlgPadParameters::clicked(int)
 {
-    
+
 }
 
 bool TaskDlgPadParameters::accept()
@@ -175,6 +193,7 @@ bool TaskDlgPadParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirroredExtent = %i",name.c_str(),parameter->getMirroredExtent()?1:0);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TaperAngle = %f",name.c_str(),parameter->getTaperAngle());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!PadView->getObject()->isValid())
             throw Base::Exception(PadView->getObject()->getStatusString());
@@ -192,18 +211,18 @@ bool TaskDlgPadParameters::accept()
 bool TaskDlgPadParameters::reject()
 {
     // get the support and Sketch
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject()); 
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
     Sketcher::SketchObject *pcSketch;
     App::DocumentObject    *pcSupport;
     if (pcPad->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
         pcSupport = pcSketch->Support.getValue();
     }
 
     // role back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    
+
     // if abort command deleted the object the support is visible again
     if (!Gui::Application::Instance->getViewProvider(pcPad)) {
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
