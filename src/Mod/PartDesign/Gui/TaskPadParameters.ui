@@ -104,13 +104,6 @@
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>changeMode</tabstop>
-  <tabstop>doubleSpinBox</tabstop>
-  <tabstop>taperAngle</tabstop>
-  <tabstop>checkBoxMirrored</tabstop>
-  <tabstop>checkBoxReversed</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>
