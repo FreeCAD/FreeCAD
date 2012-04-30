@@ -175,28 +175,26 @@ void DlgGeneralImp::loadSettings()
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale::system().language());
     QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str();
-    Languages->addItem(Gui::Translator::tr("English"), QByteArray("English"));
     int index = 1;
+    Languages->addItem(QString::fromAscii("English"), QByteArray("English"));
+    TStringMap list = Translator::instance()->supportedLocales();
+    for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
+        QLocale locale(QString::fromAscii(it->second.c_str()));
+        QByteArray lang = it->first.c_str();
+        QString langname = QString::fromAscii(lang.constData());
 #if QT_VERSION >= 0x040800
-    TStringList list = Translator::instance()->supportedLocales();
-    for (TStringList::iterator it = list.begin(); it != list.end(); ++it, index++) {
-        QLocale locale(QString::fromAscii(it->c_str()));
-        QByteArray lang = QLocale::languageToString(locale.language()).toAscii();
-        Languages->addItem(locale.nativeLanguageName(), lang);
-        if (language == lang) {
-            Languages->setCurrentIndex(index);
+        QString native = locale.nativeLanguageName();
+        if (!native.isEmpty()) {
+            if (native[0].isLetter())
+                native[0] = native[0].toUpper();
+            langname = native;
         }
-    }
-#else
-    TStringList list = Translator::instance()->supportedLanguages();
-    for (TStringList::iterator it = list.begin(); it != list.end(); ++it, index++) {
-        QByteArray lang = it->c_str();
-        Languages->addItem(Gui::Translator::tr(lang.constData()), lang);
-        if (language == lang) {
-            Languages->setCurrentIndex(index);
-        }
-    }
 #endif
+        Languages->addItem(langname, lang);
+        if (language == lang) {
+            Languages->setCurrentIndex(index);
+        }
+    }
 
     int size = QApplication::style()->pixelMetric(QStyle::PM_ToolBarIconSize);
     int current = getMainWindow()->iconSize().width();
