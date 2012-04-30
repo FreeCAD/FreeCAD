@@ -177,19 +177,26 @@ void DlgGeneralImp::loadSettings()
     QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str();
     Languages->addItem(Gui::Translator::tr("English"), QByteArray("English"));
     int index = 1;
-    TStringList list = Translator::instance()->supportedLanguages();
-    for (TStringList::iterator it = list.begin(); it != list.end(); ++it, index++) {
-        QByteArray lang = it->c_str();
 #if QT_VERSION >= 0x040800
-        QLocale locale(QString::fromAscii(lang.constData()));
-        Languages->addItem(locale.nativeCountryName(), lang);
-#else
-        Languages->addItem(Gui::Translator::tr(lang.constData()), lang);
-#endif
+    TStringList list = Translator::instance()->supportedLocales();
+    for (TStringList::iterator it = list.begin(); it != list.end(); ++it, index++) {
+        QLocale locale(QString::fromAscii(it->c_str()));
+        QByteArray lang = QLocale::languageToString(locale.language()).toAscii();
+        Languages->addItem(locale.nativeLanguageName(), lang);
         if (language == lang) {
             Languages->setCurrentIndex(index);
         }
     }
+#else
+    TStringList list = Translator::instance()->supportedLanguages();
+    for (TStringList::iterator it = list.begin(); it != list.end(); ++it, index++) {
+        QByteArray lang = it->c_str();
+        Languages->addItem(Gui::Translator::tr(lang.constData()), lang);
+        if (language == lang) {
+            Languages->setCurrentIndex(index);
+        }
+    }
+#endif
 
     int size = QApplication::style()->pixelMetric(QStyle::PM_ToolBarIconSize);
     int current = getMainWindow()->iconSize().width();

@@ -65,6 +65,8 @@ public:
     std::string activeLanguage() const;
     /** Returns a list of supported languages. */
     TStringList supportedLanguages() const;
+    /** Returns a list of supported locales. */
+    TStringList supportedLocales() const;
     /** Adds a path where localization files can be found */
     void addPath(const QString& path);
 
