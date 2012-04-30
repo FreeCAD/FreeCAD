@@ -1686,7 +1686,7 @@ def circlefrom1Line2Points(edge, p1, p2):
 	v1 = p1.sub(s)
 	v2 = p2.sub(s)
 	projectedDist = math.sqrt(abs(v1.dot(v2)))
-	edgeDir = vec(edge); edgeDir.normailze()
+	edgeDir = vec(edge); edgeDir.normalize()
 	projectedCen1 = Vector.add(s, fcvec.scale(edgeDir, projectedDist))
 	projectedCen2 = Vector.add(s, fcvec.scale(edgeDir, -projectedDist))
 	perpEdgeDir = edgeDir.cross(Vector(0,0,1))
