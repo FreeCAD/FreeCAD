@@ -34,6 +34,7 @@ class QDir;
 namespace Gui {
 
 typedef std::list<std::string> TStringList;
+typedef std::map<std::string, std::string> TStringMap;
 
 /**
  * The Translator class uses Qt's QTranslator objects to change the language of the application
@@ -65,8 +66,8 @@ public:
     std::string activeLanguage() const;
     /** Returns a list of supported languages. */
     TStringList supportedLanguages() const;
-    /** Returns a list of supported locales. */
-    TStringList supportedLocales() const;
+    /** Returns a map of supported languages/locales. */
+    TStringMap supportedLocales() const;
     /** Adds a path where localization files can be found */
     void addPath(const QString& path);
 
