@@ -180,7 +180,12 @@ void DlgGeneralImp::loadSettings()
     TStringList list = Translator::instance()->supportedLanguages();
     for (TStringList::iterator it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->c_str();
+#if QT_VERSION >= 0x040800
+        QLocale locale(QString::fromAscii(lang.constData()));
+        Languages->addItem(locale.nativeCountryName(), lang);
+#else
         Languages->addItem(Gui::Translator::tr(lang.constData()), lang);
+#endif
         if (language == lang) {
             Languages->setCurrentIndex(index);
         }
