@@ -451,13 +451,25 @@ def makeDimension(p1,p2,p3=None,p4=None):
     '''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
     _Dimension(obj)
+    if gui:
+        _ViewProviderDimension(obj.ViewObject)
     if isinstance(p1,Vector) and isinstance(p2,Vector):
         obj.Start = p1
         obj.End = p2
+        if not p3:
+            p3 = p2.sub(p1)
+            p3.multiply(0.5)
+            p3 = p1.add(p3)
     elif isinstance(p2,int) and isinstance(p3,int):
         obj.Base = p1
-        obj.LinkedVertices = [p2,p3]
+        obj.LinkedVertices = idx = [p2,p3]
         p3 = p4
+        if not p3:
+            v1 = obj.Base.Shape.Vertexes[idx[0]].Point
+            v2 = obj.Base.Shape.Vertexes[idx[1]].Point
+            p3 = v2.sub(v1)
+            p3.multiply(0.5)
+            p3 = v1.add(p3)
     elif isinstance(p3,str):
         obj.Base = p1
         if p3 == "radius":
@@ -467,13 +479,10 @@ def makeDimension(p1,p2,p3=None,p4=None):
             obj.LinkedVertices = [p2,2,1]
             obj.ViewObject.Override = "ddim"
         p3 = p4
-    if not p3:
-        p3 = p2.sub(p1)
-        p3.multiply(0.5)
-        p3 = p1.add(p3)
+        if not p3:
+            p3 = obj.Base.Shape.Edges[0].Curve.Center.add(Vector(1,0,0))
     obj.Dimline = p3
     if gui:
-        _ViewProviderDimension(obj.ViewObject)
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
@@ -1806,7 +1815,8 @@ class _ViewProviderDimension:
             proj = ed.cross(Vector(0,0,1))
         if not proj: norm = Vector(0,0,1)
         else: norm = fcvec.neg(p3.sub(p2).cross(proj))
-        norm.normalize()
+        if not fcvec.isNull(norm):
+            norm.normalize()
         va = get3DView().getViewDirection()
         if va.getAngle(norm) < math.pi/2:
             norm = fcvec.neg(norm)

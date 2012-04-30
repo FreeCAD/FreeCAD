@@ -71,6 +71,7 @@ class Snapper:
         self.grid = None
         self.constrainLine = None
         self.trackLine = None
+        self.snapInfo = None
         self.lastSnappedObject = None
         self.active = True
         self.trackers = [[],[],[],[]] # view, grid, snap, extline
@@ -132,6 +133,7 @@ class Snapper:
                 return point
 
         snaps = []
+        self.snapInfo = None
         
         # type conversion if needed
         if isinstance(screenpos,list):
@@ -186,7 +188,7 @@ class Snapper:
         point = self.getApparentPoint(screenpos[0],screenpos[1])
             
         # check if we snapped to something
-        info = Draft.get3DView().getObjectInfo((screenpos[0],screenpos[1]))
+        self.snapInfo = Draft.get3DView().getObjectInfo((screenpos[0],screenpos[1]))
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
 
@@ -195,7 +197,7 @@ class Snapper:
             point,eline = self.snapToPolar(point,lastpoint)
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
         
-        if not info:
+        if not self.snapInfo:
             
             # nothing has been snapped, check fro grid snap
             if active:
@@ -206,7 +208,7 @@ class Snapper:
 
             # we have an object to snap to
 
-            obj = FreeCAD.ActiveDocument.getObject(info['Object'])
+            obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
             if not obj:
                 return cstr(point)
 
@@ -219,12 +221,12 @@ class Snapper:
             if not active:
                 
                 # passive snapping
-                snaps = [self.snapToVertex(info)]
+                snaps = [self.snapToVertex(self.snapInfo)]
 
             else:
                 
                 # active snapping
-                comp = info['Component']
+                comp = self.snapInfo['Component']
 
                 if (Draft.getType(obj) == "Wall") and not oldActive:
                     edges = []
@@ -258,13 +260,13 @@ class Snapper:
 
                         elif "Vertex" in comp:
                             # directly snapped to a vertex
-                            snaps.append(self.snapToVertex(info,active=True))
+                            snaps.append(self.snapToVertex(self.snapInfo,active=True))
                         elif comp == '':
                             # workaround for the new view provider
-                            snaps.append(self.snapToVertex(info,active=True))
+                            snaps.append(self.snapToVertex(self.snapInfo,active=True))
                         else:
                             # all other cases (face, etc...) default to passive snap
-                            snapArray = [self.snapToVertex(info)]
+                            snapArray = [self.snapToVertex(self.snapInfo)]
                             
                 elif Draft.getType(obj) == "Dimension":
                     # for dimensions we snap to their 3 points
@@ -290,7 +292,7 @@ class Snapper:
 
             # calculating the nearest snap point
             shortest = 1000000000000000000
-            origin = Vector(info['x'],info['y'],info['z'])
+            origin = Vector(self.snapInfo['x'],self.snapInfo['y'],self.snapInfo['z'])
             winner = [Vector(0,0,0),None,Vector(0,0,0)]
             for snap in snaps:
                 # if snap[0] == None: print "debug: Snapper: 'i[0]' is 'None'"
@@ -304,7 +306,7 @@ class Snapper:
                 dv = point.sub(winner[2])
                 if (dv.Length > self.radius):
                     if (not oldActive) and self.isEnabled("passive"):
-                        winner = self.snapToVertex(info)
+                        winner = self.snapToVertex(self.snapInfo)
 
             # setting the cursors
             if self.tracker:

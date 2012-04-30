@@ -143,7 +143,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
     point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod)
-
+    info = FreeCADGui.Snapper.snapInfo
     # project onto working plane if needed
     if (not plane.weak) and workingplane:
         # working plane was explicitely selected - project onto it
@@ -168,7 +168,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
         else:
             ui.displayPoint(point, target.node[-1], plane=plane, mask=mask)
     else: ui.displayPoint(point, plane=plane, mask=mask)
-    return point,ctrlPoint
+    return point,ctrlPoint,info
 
 def getSupport(args):
     "returns the supporting object and sets the working plane"
@@ -436,7 +436,7 @@ class Line(Creator):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
             # mouse movement detection
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             self.ui.cross(True)
             self.linetrack.p2(point)
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -446,7 +446,7 @@ class Line(Creator):
                     self.finish(False,cont=True)
                 else:
                     if not self.node: self.support = getSupport(arg)
-                    point,ctrlPoint = getPoint(self,arg)
+                    point,ctrlPoint,info = getPoint(self,arg)
                     self.pos = arg["Position"]
                     self.node.append(point)
                     self.linetrack.p1(point)
@@ -551,7 +551,7 @@ class BSpline(Line):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             self.ui.cross(True)
             self.bsplinetrack.update(self.node + [point])
             # Draw constraint tracker line.
@@ -566,7 +566,7 @@ class BSpline(Line):
                     self.finish(False,cont=True)
                 else:
                     if not self.node: self.support = getSupport(arg)
-                    point,ctrlPoint = getPoint(self,arg)
+                    point,ctrlPoint,info = getPoint(self,arg)
                     self.pos = arg["Position"]
                     self.node.append(point)
                     self.drawUpdate(point)
@@ -739,7 +739,7 @@ class Rectangle(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            point,ctrlPoint = getPoint(self,arg,mobile=True)
+            point,ctrlPoint,info = getPoint(self,arg,mobile=True)
             self.rect.update(point)
             self.ui.cross(True)
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -748,7 +748,7 @@ class Rectangle(Creator):
                     self.finish()
                 else:
                     if not self.node: self.support = getSupport(arg)
-                    point,ctrlPoint = getPoint(self,arg)
+                    point,ctrlPoint,info = getPoint(self,arg)
                     self.appendPoint(point)
 
     def numericInput(self,numx,numy,numz):
@@ -840,7 +840,7 @@ class Arc(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             # this is to make sure radius is what you see on screen
             self.ui.cross(True)
             if self.center and fcvec.dist(point,self.center) > 0:
@@ -871,10 +871,9 @@ class Arc(Creator):
                     if not self.altdown:
                         self.ui.cross(False)
                         self.altdown = True
-                    snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
-                    if snapped:
-                        ob = self.doc.getObject(snapped['Object'])
-                        num = int(snapped['Component'].lstrip('Edge'))-1
+                    if info:
+                        ob = self.doc.getObject(info['Object'])
+                        num = int(info['Component'].lstrip('Edge'))-1
                         ed = ob.Shape.Edges[num]
                         if len(self.tangents) == 2:
                             cir = fcgeo.circleFrom3tan(self.tangents[0], self.tangents[1], ed)
@@ -937,7 +936,7 @@ class Arc(Creator):
 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,ctrlPoint = getPoint(self,arg)
+                point,ctrlPoint,info = getPoint(self,arg)
                 # this is to make sure radius is what you see on screen
                 if self.center and fcvec.dist(point,self.center) > 0:
                     viewdelta = fcvec.project(point.sub(self.center), plane.axis)
@@ -1132,7 +1131,7 @@ class Polygon(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             # this is to make sure radius is what you see on screen
             self.ui.cross(True)
             if self.center and fcvec.dist(point,self.center) > 0:
@@ -1197,7 +1196,7 @@ class Polygon(Creator):
 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,ctrlPoint = getPoint(self,arg)
+                point,ctrlPoint,info = getPoint(self,arg)
                 # this is to make sure radius is what you see on screen
                 if self.center and fcvec.dist(point,self.center) > 0:
                     viewdelta = fcvec.project(point.sub(self.center), plane.axis)
@@ -1317,10 +1316,10 @@ class Text(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,dtrlPoint = getPoint(self,arg)
+                point,ctrlPoint,info = getPoint(self,arg)
                 self.node.append(point)
                 self.ui.textUi()
                 self.ui.textValue.setFocus()
@@ -1452,7 +1451,7 @@ class Dimension(Creator):
             shift = hasMod(arg,MODCONSTRAIN)
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             self.ui.cross(True)
             if hasMod(arg,MODALT) and (len(self.node)<3):
                 self.ui.cross(False)
@@ -1536,15 +1535,14 @@ class Dimension(Creator):
                     self.dimtrack.update(self.node+[point]+[self.cont])
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,ctrlPoint = getPoint(self,arg)
+                point,ctrlPoint,info = getPoint(self,arg)
                 if not self.node: self.support = getSupport(arg)
                 if hasMod(arg,MODALT) and (len(self.node)<3):
-                    snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
-                    print "snapped: ",snapped
-                    if snapped:
-                        ob = self.doc.getObject(snapped['Object'])
-                        if 'Edge' in snapped['Component']:
-                            num = int(snapped['Component'].lstrip('Edge'))-1
+                    print "snapped: ",info
+                    if info:
+                        ob = self.doc.getObject(info['Object'])
+                        if 'Edge' in info['Component']:
+                            num = int(info['Component'].lstrip('Edge'))-1
                             ed = ob.Shape.Edges[num]
                             v1 = ed.Vertexes[0].Point
                             v2 = ed.Vertexes[-1].Point
@@ -1761,7 +1759,7 @@ class Move(Modifier):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             self.linetrack.p2(point)
             self.ui.cross(True)
             # Draw constraint tracker line.
@@ -1778,7 +1776,7 @@ class Move(Modifier):
                 if not hasMod(arg,MODALT): self.finish()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,ctrlPoint = getPoint(self,arg)
+                point,ctrlPoint,info = getPoint(self,arg)
                 if (self.node == []):
                     self.node.append(point)
                     self.ui.isRelative.show()
@@ -1922,7 +1920,7 @@ class Rotate(Modifier):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             self.ui.cross(True)
             # this is to make sure radius is what you see on screen
             if self.center and fcvec.dist(point,self.center):
@@ -1977,7 +1975,7 @@ class Rotate(Modifier):
                 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,ctrlPoint = getPoint(self,arg)
+                point,ctrlPoint,info = getPoint(self,arg)
                 if self.center and fcvec.dist(point,self.center):
                     viewdelta = fcvec.project(point.sub(self.center), plane.axis)
                     if not fcvec.isNull(viewdelta): point = point.add(fcvec.neg(viewdelta))
@@ -2119,7 +2117,7 @@ class Offset(Modifier):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
             self.ui.cross(True)
-            point,ctrlPoint = getPoint(self,arg)
+            point,ctrlPoint,info = getPoint(self,arg)
             if hasMod(arg,MODCONSTRAIN) and self.constrainSeg:
                 dist = fcgeo.findPerpendicular(point,self.shape,self.constrainSeg[1])
                 e = self.shape.Edges[self.constrainSeg[1]]
@@ -2663,7 +2661,7 @@ class Trimex(Modifier):
             self.shift = hasMod(arg,MODCONSTRAIN)
             self.alt = hasMod(arg,MODALT)
             wp = not(self.extrudeMode and self.shift)
-            self.point = getPoint(self,arg,workingplane=wp)[0]
+            self.point,info = getPoint(self,arg,workingplane=wp)[0]
             if hasMod(arg,MODSNAP): self.snapped = None
             else: self.snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
             if self.extrudeMode:
@@ -2929,7 +2927,7 @@ class Scale(Modifier):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            point,ctrlPoint = getPoint(self,arg,sym=True)
+            point,ctrlPoint,info = getPoint(self,arg,sym=True)
             self.linetrack.p2(point)
             self.ui.cross(True)
             # Draw constraint tracker line.
@@ -2950,7 +2948,7 @@ class Scale(Modifier):
                 if not hasMod(arg,MODALT): self.finish()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,ctrlPoint = getPoint(self,arg,sym=True)
+                point,ctrlPoint,info = getPoint(self,arg,sym=True)
                 if (self.node == []):
                     self.node.append(point)
                     self.ui.isRelative.show()
@@ -3205,7 +3203,7 @@ class Edit(Modifier):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             if self.editing != None:
-                point,ctrlPoint = getPoint(self,arg)
+                point,ctrlPoint,info = getPoint(self,arg)
                 # Draw constraint tracker line.
                 if hasMod(arg,MODCONSTRAIN):
                     self.constraintrack.p1(point)
@@ -3223,7 +3221,7 @@ class Edit(Modifier):
                         sel = sel[0]
                         if sel.ObjectName == self.obj.Name:
                             if self.ui.addButton.isChecked():
-                                point,ctrlPoint = getPoint(self,arg)
+                                point,ctrlPoint,info = getPoint(self,arg)
                                 self.pos = arg["Position"]
                                 self.addPoint(point)
                             elif self.ui.delButton.isChecked():
