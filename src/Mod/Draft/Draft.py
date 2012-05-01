@@ -2297,7 +2297,7 @@ class _ViewProviderRectangle(_ViewProviderDraft):
     "A View Provider for the Rectangle object"
     def __init__(self, vobj):
         _ViewProviderDraft.__init__(self,vobj)
-        obj.addProperty("App::PropertyFile","TextureImage",
+        vobj.addProperty("App::PropertyFile","TextureImage",
                         "Base","Uses an image as a texture map")
 
     def attach(self,vobj):
