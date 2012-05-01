@@ -227,6 +227,7 @@ public:
     App::PropertyFloatConstraint Height;
     App::PropertyFloatConstraint Radius;
     App::PropertyFloatConstraint Angle;
+    App::PropertyEnumeration     LocalCoord;
 
     /** @name methods override feature */
     //@{
@@ -234,6 +235,9 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     //@}
+
+private:
+    static const char* LocalCSEnums[];
 };
 
 class PartExport Wedge : public Primitive
