@@ -39,7 +39,6 @@ class Ship:
         """ Creates a new ship on active document.
         @param faces Ship faces (Part::Shape entities).
         """
-        self.faces = faces
         # Add uniqueness property to identify Ship instances
         obj.addProperty("App::PropertyBool","IsShip","Ship", str(Translator.translate("True if is a valid ship instance"))).IsShip=True
         # Add main dimensions
@@ -47,7 +46,7 @@ class Ship:
         obj.addProperty("App::PropertyLength","Beam","Ship", str(Translator.translate("Ship beam (B) [m]"))).Beam=0.0
         obj.addProperty("App::PropertyLength","Draft","Ship", str(Translator.translate("Ship draft (T) [m]"))).Draft=0.0
         # Add shapes
-        obj.addProperty("Part::PropertyPartShape","Shape","Ship", str(Translator.translate("Ship surfaces"))).Shape = Part.makeShell(self.faces)
+        obj.addProperty("Part::PropertyPartShape","Shape","Ship", str(Translator.translate("Ship surfaces"))).Shape = Part.makeShell(faces)
         obj.Proxy = self
         self.obj = obj
 
@@ -55,12 +54,12 @@ class Ship:
         ''' Print the name of the property that has changed '''
         # FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
         if prop == "Length" or prop == "Beam" or prop == "Draft":
-            fp.Shape = Part.makeShell(self.faces)
+            fp.Shape = Part.makeShell(obj.Shape.Faces)
 
     def execute(self, obj):
         ''' Print a short message when doing a recomputation, this method is mandatory '''
         # FreeCAD.Console.PrintMessage("Recompute Ship\n")
-        obj.Shape = Part.makeShell(self.faces)
+        obj.Shape = Part.makeShell(obj.Shape.Faces)
 
     def lineFaceSection(self,line,surface):
         """ Returns the point of section of a line with a face
@@ -147,7 +146,7 @@ class Ship:
                 wire = wires[j].Edges
                 for k in range(0,len(wire)):
                     edges.append(wire[k])
-            # Slice curves to get points (Length based)
+            # Slice curves to get points
             points = []
             for k in range(0,nP):
                 planePoints = []
