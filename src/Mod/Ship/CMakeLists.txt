@@ -2,6 +2,7 @@ SET(ShipMain_SRCS
 	InitGui.py
 	ShipGui.py
     Instance.py
+    TankInstance.py
 )
 SOURCE_GROUP("" FILES ${ShipMain_SRCS})
 
@@ -32,6 +33,9 @@ SET(ShipIcons_SRCS
 	Icons/ReparametrizeIco.xpm
 	Icons/Ship.xcf
 	Icons/Ship.xpm
+	Icons/Tank.png
+	Icons/Tank.xcf
+	Icons/Tank.xpm
 )
 SOURCE_GROUP("shipicons" FILES ${ShipIcons_SRCS})
 
@@ -92,7 +96,14 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
+SET(ShipCreateTank_SRCS
+	tankCreateTank/__init__.py
+	tankCreateTank/TaskPanel.py
+	tankCreateTank/TaskPanel.ui
+)
+SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
+
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipCreateTank_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -150,8 +161,15 @@ INSTALL(
 )
 INSTALL(
     FILES
+        ${ShipCreateTank_SRCS}
+    DESTINATION
+        Mod/Ship/tankCreateTank
+)
+INSTALL(
+    FILES
         ${ShipMain_SRCS}
     DESTINATION
         Mod/Ship
 )
+
 
