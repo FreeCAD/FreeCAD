@@ -161,7 +161,7 @@ public:
     TopoDS_Shape makeTube(double radius, double tol) const;
     TopoDS_Shape makeTube() const;
     TopoDS_Shape makeHelix(Standard_Real pitch, Standard_Real height,
-        Standard_Real radius, Standard_Real angle=0) const;
+        Standard_Real radius, Standard_Real angle=0, Standard_Boolean left=Standard_False) const;
     TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles, Standard_Boolean isSolid,
         Standard_Boolean isRuled) const;
     TopoDS_Shape makeOffset(double offset, double tol,
