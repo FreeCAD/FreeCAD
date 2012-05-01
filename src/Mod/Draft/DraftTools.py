@@ -401,7 +401,7 @@ class Line(Creator):
         Creator.Activated(self,name)
         if self.doc:
             self.obj = None
-            self.ui.lineUi()
+            self.ui.lineUi(name)
             self.linetrack = lineTracker()
             self.constraintrack = lineTracker(dotted=True)
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
@@ -526,6 +526,8 @@ class Wire(Line):
                 'Accel' : "W, I",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Wire"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point wire. CTRL to snap, SHIFT to constrain")}
+    def Activated(self):
+        Line.Activated(self,name=str(translate("draft","Wire")))
 
     
 class BSpline(Line):
@@ -541,7 +543,7 @@ class BSpline(Line):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Line.Activated(self,"BSpline")
+        Line.Activated(self,name=str(translate("draft","BSpline")))
         if self.doc:
             self.bsplinetrack = bsplineTracker()
 
@@ -693,10 +695,11 @@ class Rectangle(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle. CTRL to snap")}
 
     def Activated(self):
-        Creator.Activated(self,"Rectangle")
+        name = str(translate("draft","Rectangle"))
+        Creator.Activated(self,name)
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi()
+            self.ui.pointUi(name)
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.rect = rectangleTracker()
@@ -1096,14 +1099,15 @@ class Polygon(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Creator.Activated(self,"Polygon")
+        name = str(translate("draft","Polygon"))
+        Creator.Activated(self,name)
         if self.ui:
             self.step = 0
             self.center = None
             self.rad = None
             self.tangents = []
             self.tanpoints = []
-            self.ui.pointUi()
+            self.ui.pointUi(name)
             self.ui.extUi()
             self.ui.numFaces.show()
             self.altdown = False
@@ -1284,12 +1288,13 @@ class Text(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Text", "Creates an annotation. CTRL to snap")}
 
     def Activated(self):
-        Creator.Activated(self,"Text")
+        name = str(translate("draft","Text"))
+        Creator.Activated(self,name)
         if self.ui:
             self.dialog = None
             self.text = ''
             self.ui.sourceCmd = self
-            self.ui.pointUi()
+            self.ui.pointUi(name)
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
@@ -1350,19 +1355,20 @@ class Dimension(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment")}
 
     def Activated(self):
+        name = str(translate("draft","Dimension"))
         if self.cont:
             self.finish()
         elif self.hasMeasures():
-            Creator.Activated(self,"Dimension")
+            Creator.Activated(self,name)
             self.dimtrack = dimTracker()
             self.arctrack = arcTracker()
             self.constraintrack = lineTracker(dotted=True)
             self.createOnMeasures()
             self.finish()
         else:
-            Creator.Activated(self,"Dimension")
+            Creator.Activated(self,name)
             if self.ui:
-                self.ui.pointUi()
+                self.ui.pointUi(name)
                 self.ui.continueCmd.show()
                 self.altdown = False
                 self.call = self.view.addEventCallback("SoEvent",self.action)
@@ -1707,7 +1713,8 @@ class Move(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy")}
     
     def Activated(self):
-        Modifier.Activated(self,"Move")
+        self.name = str(translate("draft","Move"))
+        Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():
                 self.ghost = None
@@ -1723,7 +1730,7 @@ class Move(Modifier):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = Draft.getSelection()
         self.sel = Draft.getGroupContents(self.sel)
-        self.ui.pointUi()
+        self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
@@ -2874,7 +2881,8 @@ class Scale(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy")}
 
     def Activated(self):
-        Modifier.Activated(self,"Scale")
+        self.name = str(translate("draft","Scale"))
+        Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():
                 self.ghost = None
@@ -2890,7 +2898,7 @@ class Scale(Modifier):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = Draft.getSelection()
         self.sel = Draft.getGroupContents(self.sel)
-        self.ui.pointUi()
+        self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()

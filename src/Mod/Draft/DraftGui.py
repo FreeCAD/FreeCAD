@@ -496,8 +496,11 @@ class DraftToolBar:
         self.offsetLabel.show()
         self.offsetValue.show()
 
-    def lineUi(self):
-        self.pointUi(translate("draft", "Line"))
+    def lineUi(self,title=None):
+        if title:
+            self.pointUi(title)
+        else:
+            self.pointUi(translate("draft", "Line"))
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
