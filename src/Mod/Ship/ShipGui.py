@@ -84,8 +84,21 @@ class Hydrostatics:
         ToolTip  = str(Translator.translate('Plot ship hydrostatics'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
       
+class CreateTank: 
+    def Activated(self):
+        import tankCreateTank
+        tankCreateTank.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/Tank.png"
+        MenuText = str(Translator.translate('Create a new tank'))
+        ToolTip  = str(Translator.translate('Create a new ship tank'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
 FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
+FreeCADGui.addCommand('Ship_CreateTank', CreateTank())
