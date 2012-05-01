@@ -1493,42 +1493,49 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
 }
 
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
-                                  Standard_Real radius, Standard_Real angle) const
+                                  Standard_Real radius, Standard_Real angle,
+                                  Standard_Boolean leftHanded) const
 {
-        if (pitch < Precision::Confusion())
-            Standard_Failure::Raise("Pitch of helix too small");
+    if (pitch < Precision::Confusion())
+        Standard_Failure::Raise("Pitch of helix too small");
 
-        if (height < Precision::Confusion())
-            Standard_Failure::Raise("Height of helix too small");
+    if (height < Precision::Confusion())
+        Standard_Failure::Raise("Height of helix too small");
 
-        if (radius < Precision::Confusion())
-            Standard_Failure::Raise("Radius of helix too small");
+    if (radius < Precision::Confusion())
+        Standard_Failure::Raise("Radius of helix too small");
 
-        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-        Handle_Geom_Surface surf;
-        if (angle < Precision::Confusion()) {
-            surf = new Geom_CylindricalSurface(cylAx2, radius);
-        }
-        else {
-            angle = Base::toRadians(angle);
-            if (angle < Precision::Confusion())
-                Standard_Failure::Raise("Angle of helix too small");
-            surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
-        }
+    gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+    Handle_Geom_Surface surf;
+    if (angle < Precision::Confusion()) {
+        surf = new Geom_CylindricalSurface(cylAx2, radius);
+    }
+    else {
+        angle = Base::toRadians(angle);
+        if (angle < Precision::Confusion())
+            Standard_Failure::Raise("Angle of helix too small");
+        surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
+    }
 
-        gp_Pnt2d aPnt(0, 0);
-        gp_Dir2d aDir(2. * PI, pitch);
-        gp_Ax2d aAx2d(aPnt, aDir);
+    gp_Pnt2d aPnt(0, 0);
+    gp_Dir2d aDir(2. * PI, pitch);
+    if (leftHanded) {
+        //aPnt.SetCoord(0.0, height);
+        //aDir.SetCoord(2.0 * PI, -pitch);
+        aPnt.SetCoord(2. * PI, 0.0);
+        aDir.SetCoord(-2. * PI, pitch);
+    }
+    gp_Ax2d aAx2d(aPnt, aDir);
 
-        Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
-        gp_Pnt2d beg = line->Value(0);
-        gp_Pnt2d end = line->Value(sqrt(4.0*PI*PI+pitch*pitch)*(height/pitch));
-        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
+    Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
+    gp_Pnt2d beg = line->Value(0);
+    gp_Pnt2d end = line->Value(sqrt(4.0*PI*PI+pitch*pitch)*(height/pitch));
+    Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
 
-        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
-        BRepLib::BuildCurves3d(wire);
-        return wire;
+    TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+    TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
+    BRepLib::BuildCurves3d(wire);
+    return wire;
 }
 
 TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 

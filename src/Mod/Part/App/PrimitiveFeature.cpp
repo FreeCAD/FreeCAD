@@ -100,7 +100,7 @@ void Primitive::onChanged(const App::Property* prop)
         // Do not support sphere, ellipsoid and torus because the creation
         // takes too long and thus is not feasible
         std::string grp = (prop->getGroup() ? prop->getGroup() : "");
-        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone"){
+        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone" || grp == "Helix") {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -585,6 +585,8 @@ App::DocumentObjectExecReturn *Torus::execute(void)
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 
+const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",NULL};
+
 Helix::Helix(void)
 {
     ADD_PROPERTY_TYPE(Pitch, (1.0),"Helix",App::Prop_None,"The pitch of the helix");
@@ -595,6 +597,8 @@ Helix::Helix(void)
     Radius.setConstraints(&floatRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is > 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
+    ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
+    LocalCoord.setEnums(LocalCSEnums);
 }
 
 short Helix::mustExecute() const
@@ -607,6 +611,8 @@ short Helix::mustExecute() const
         return 1;
     if (Angle.isTouched())
         return 1;
+    if (LocalCoord.isTouched())
+        return 1;
     return Primitive::mustExecute();
 }
 
@@ -617,8 +623,9 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myHeight = Height.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
+        Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
-        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle));
+        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
