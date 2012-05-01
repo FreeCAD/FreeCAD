@@ -46,7 +46,7 @@ class Ship:
         obj.addProperty("App::PropertyLength","Beam","Ship", str(Translator.translate("Ship beam (B) [m]"))).Beam=0.0
         obj.addProperty("App::PropertyLength","Draft","Ship", str(Translator.translate("Ship draft (T) [m]"))).Draft=0.0
         # Add shapes
-        obj.addProperty("Part::PropertyPartShape","Shape","Ship", str(Translator.translate("Ship surfaces"))).Shape = Part.makeShell(faces)
+        obj.Shape = Part.makeShell(faces)
         obj.Proxy = self
         self.obj = obj
 
@@ -54,7 +54,7 @@ class Ship:
         ''' Print the name of the property that has changed '''
         # FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
         if prop == "Length" or prop == "Beam" or prop == "Draft":
-            fp.Shape = Part.makeShell(obj.Shape.Faces)
+            pass
 
     def execute(self, obj):
         ''' Print a short message when doing a recomputation, this method is mandatory '''
