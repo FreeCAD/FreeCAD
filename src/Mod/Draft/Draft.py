@@ -779,6 +779,7 @@ def fuse(object1,object2):
     # testing if we have holes:
     holes = False
     fshape = object1.Shape.fuse(object2.Shape)
+    fshape = fshape.removeSplitter()
     for f in fshape.Faces:
         if len(f.Wires) > 1:
             holes = True
@@ -791,7 +792,6 @@ def fuse(object1,object2):
         obj.Tool = object2
     elif holes:
         # temporary hack, since Part::Fuse objects don't remove splitters
-        fshape = fshape.removeSplitter()
         obj = FreeCAD.ActiveDocument.addObject("Part::Feature","Fusion")
         obj.Shape = fshape
     else:
