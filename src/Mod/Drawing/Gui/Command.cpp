@@ -354,6 +354,34 @@ bool CmdDrawingOpenBrowserView::isActive(void)
     return (getActiveGuiDocument() ? true : false);
 }
 
+//===========================================================================
+// Drawing_Annotation
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingAnnotation);
+
+CmdDrawingAnnotation::CmdDrawingAnnotation()
+  : Command("Drawing_Annotation")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("&Annotation");
+    sToolTipText  = QT_TR_NOOP("Inserts an Annotation view in the active document");
+    sWhatsThis    = "Drawing_Annotation";
+    sStatusTip    = QT_TR_NOOP("Inserts an Annotation view in the active document");
+    sPixmap       = "actions/drawing-annotation";
+}
+
+void CmdDrawingAnnotation::activated(int iMsg)
+{
+    doCommand(Doc,"AnnotationView = App.activeDocument().addObject(\"Drawing::FeatureViewAnnotation\",\"ViewAnnotation\")");
+    doCommand(Doc,"AnnotationView.Scale = 7.0");
+}
+
+bool CmdDrawingAnnotation::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
 
 //===========================================================================
 // Drawing_ExportPage
@@ -451,6 +479,7 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingNewView());
     rcCmdMgr.addCommand(new CmdDrawingOrthoViews());
     rcCmdMgr.addCommand(new CmdDrawingOpenBrowserView());
+    rcCmdMgr.addCommand(new CmdDrawingAnnotation());
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
 }

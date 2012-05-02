@@ -16,6 +16,7 @@
         <file>icons/actions/drawing-view.svg</file>
         <file>icons/actions/drawing-orthoviews.svg</file>
         <file>icons/actions/drawing-openbrowser.svg</file>
+        <file>icons/actions/drawing-annotation.svg</file>
         <file>translations/Drawing_af.qm</file>
         <file>translations/Drawing_de.qm</file>
         <file>translations/Drawing_es.qm</file>

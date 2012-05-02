@@ -20,6 +20,7 @@
 #include "FeaturePage.h"
 #include "FeatureView.h"
 #include "FeatureViewPart.h"
+#include "FeatureViewAnnotation.h"
 #include "FeatureProjection.h"
 #include "PageGroup.h"
 
@@ -57,6 +58,7 @@ void DrawingExport initDrawing()
     Drawing::FeatureProjection      ::init();
     Drawing::FeatureViewPartPython  ::init();
     Drawing::FeatureViewPython      ::init();
+    Drawing::FeatureViewAnnotation  ::init();
 }
 
 } // extern "C"
