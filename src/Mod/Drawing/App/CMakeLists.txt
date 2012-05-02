@@ -27,6 +27,8 @@ SET(Features_SRCS
     FeatureView.h
     FeatureViewPart.cpp
     FeatureViewPart.h
+    FeatureViewAnnotation.cpp
+    FeatureViewAnnotation.h
     PageGroup.cpp
     PageGroup.h
 )

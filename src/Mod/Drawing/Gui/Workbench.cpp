@@ -62,6 +62,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << "Drawing_NewView";
     *part << "Drawing_OrthoViews";
     *part << "Drawing_OpenBrowserView";
+    *part << "Drawing_Annotation";
     *part << "Drawing_ExportPage";
 
     return root;
@@ -78,6 +79,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "Drawing_NewView";
     *part << "Drawing_OrthoViews";
     *part << "Drawing_OpenBrowserView";
+    *part << "Drawing_Annotation";
     *part << "Drawing_ExportPage";
     return root;
 }

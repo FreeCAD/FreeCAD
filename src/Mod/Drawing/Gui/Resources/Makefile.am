@@ -20,6 +20,7 @@ EXTRA_DIST = \
 		icons/actions/drawing-portrait-A4.svg \
 		icons/actions/drawing-orthoviews.svg \
 		icons/actions/drawing-openbrowser.svg \
+		icons/actions/drawing-annotation.svg \
 		icons/Page.svg \
 		icons/Pages.svg \
 		icons/View.svg \
