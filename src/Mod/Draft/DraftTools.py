@@ -74,7 +74,7 @@ MODALT = MODS[Draft.getParam("modalt")]
 
 # sets defaults on first load
 
-if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Draft"):
+if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod").HasGroup("Draft"):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     p.SetBool("copymode",1)
     p.SetBool("alwaysSnap",1)
@@ -84,6 +84,7 @@ if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Dra
     p.SetInt("precision",4)
     p.SetInt("gridEvery",10)
     p.SetFloat("gridSpacing",1.0)
+    p.SetInt("UiMode",1)
 
 #---------------------------------------------------------------------------
 # General functions

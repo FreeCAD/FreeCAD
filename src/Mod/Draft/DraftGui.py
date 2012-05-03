@@ -154,7 +154,7 @@ class DraftTaskPanel:
         FreeCADGui.draftToolBar.escape()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
-  
+
 class DraftToolBar:
     "main draft Toolbar"
     def __init__(self):
@@ -488,6 +488,21 @@ class DraftToolBar:
             self.retranslateUi(self.baseWidget)
             self.panel = DraftTaskPanel(self.baseWidget,extra)
             todo.delay(FreeCADGui.Control.showDialog,self.panel)
+        else:
+            # create a dummy task to block the UI during the works
+            class dummy:
+                "an empty dialog"
+                def getStandardButtons(self):
+                    return int(QtGui.QDialogButtonBox.Cancel)
+                def accept(self):
+                    FreeCADGui.ActiveDocument.resetEdit()
+                    return True
+                def reject(self):
+                    FreeCADGui.draftToolBar.isTaskOn = False
+                    FreeCADGui.draftToolBar.escape()
+                    FreeCADGui.ActiveDocument.resetEdit()
+                    return True    
+            todo.delay(FreeCADGui.Control.showDialog,dummy())
         self.setTitle(title)  
                 
     def selectPlaneUi(self):
@@ -871,6 +886,8 @@ class DraftToolBar:
     def escape(self):
         "escapes the current command"
         self.continueMode = False
+        if not self.taskmode:
+            self.continueCmd.setChecked(False)
         self.finish()
 
     def closeLine(self):
