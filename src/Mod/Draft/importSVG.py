@@ -256,7 +256,7 @@ def getsize(length,mode='discard',base=1):
         elif mode == 'tuple':
                 return float(number),unit
         elif mode == 'isabsolute':
-                return unit in ['mm','cm','in','px','pt']
+                return unit in ('mm','cm','in','px','pt')
         elif mode == 'mm':
                 return float(number)*tomm[unit]
         elif mode == 'css':
@@ -525,9 +525,11 @@ class svgHandler(xml.sax.ContentHandler):
                                 self.lastdim = obj
                                 data['d']=[]
                         pathcommandsre=re.compile('\s*?([mMlLhHvVaAcCqQsStTzZ])\s*?([^mMlLhHvVaAcCqQsStTzZ]*)\s*?',re.DOTALL)
+                        pointsre=re.compile('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)',re.DOTALL)
                         for d,pointsstr in pathcommandsre.findall(' '.join(data['d'])):
                                 relative = d.islower()
-                                pointlist = [float(str1) for str1 in pointsstr.replace(',',' ').split()]
+                                pointlist = [float(number) for number,exponent in pointsre.findall(pointsstr.replace(',',' '))]
+
                                 if (d == "M" or d == "m"):
                                         x = pointlist.pop(0)
                                         y = pointlist.pop(0)
