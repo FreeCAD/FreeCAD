@@ -374,8 +374,23 @@ CmdDrawingAnnotation::CmdDrawingAnnotation()
 
 void CmdDrawingAnnotation::activated(int iMsg)
 {
-    doCommand(Doc,"AnnotationView = App.activeDocument().addObject(\"Drawing::FeatureViewAnnotation\",\"ViewAnnotation\")");
-    doCommand(Doc,"AnnotationView.Scale = 7.0");
+
+    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
+            QObject::tr("Create a page to insert."));
+        return;
+    }
+    std::string PageName = pages.front()->getNameInDocument();
+    std::string FeatName = getUniqueObjectName("Annotation");
+    openCommand("Create Annotation");
+    doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewAnnotation','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.X = 10.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Y = 10.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 7.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
 }
 
 bool CmdDrawingAnnotation::isActive(void)

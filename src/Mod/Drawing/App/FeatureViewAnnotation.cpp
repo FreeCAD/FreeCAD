@@ -66,21 +66,20 @@ App::DocumentObjectExecReturn *FeatureViewAnnotation::execute(void)
     hg << hex << setfill('0') << setw(2) << (int)(255.0*c.g);
     hb << hex << setfill('0') << setw(2) << (int)(255.0*c.b);
 
-    result  << "<text" 
-            << " id=\"" << Label.getValue() << "\"" << endl
-            << " x=\"" << X.getValue() << "\"" << endl
-            << " y=\"" << Y.getValue() << "\"" << endl
+    result  << "<g transform=\"translate(" << X.getValue() << "," << Y.getValue() << ")"
+            << " rotate(" << Rotation.getValue() << ")\">" << endl
+            << "<text id=\"" << Label.getValue() << "\"" << endl
             << " font-family=\"" << Font.getValue() << "\"" << endl
             << " font-size=\"" << Scale.getValue() << "\"" << endl
             << " fill=\"#" << hr.str() << hg.str() << hb.str() << "\">" << endl;
 
     int index=0;
     for (std::vector<std::string>::const_iterator it = Text.getValues().begin(); it != Text.getValues().end(); ++it) {
-        result << "<tspan x=\"" << X.getValue() << "\" dy=\"1em\">" << it->c_str() << "</tspan>" << endl;
+        result << "<tspan x=\"0\" dy=\"1em\">" << it->c_str() << "</tspan>" << endl;
         index++;
     }
 
-    result << "</text>" << endl;
+    result << "</text>" << endl << "</g>" << endl;
 
     // Apply the resulting fragment
     ViewResult.setValue(result.str().c_str());
