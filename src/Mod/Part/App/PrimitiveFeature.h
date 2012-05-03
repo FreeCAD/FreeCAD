@@ -236,6 +236,9 @@ public:
     short mustExecute() const;
     //@}
 
+protected:
+    void onChanged (const App::Property* prop);
+
 private:
     static const char* LocalCSEnums[];
 };

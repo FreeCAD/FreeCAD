@@ -100,7 +100,7 @@ void Primitive::onChanged(const App::Property* prop)
         // Do not support sphere, ellipsoid and torus because the creation
         // takes too long and thus is not feasible
         std::string grp = (prop->getGroup() ? prop->getGroup() : "");
-        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone" || grp == "Helix") {
+        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone") {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -599,6 +599,22 @@ Helix::Helix(void)
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
     LocalCoord.setEnums(LocalCSEnums);
+}
+
+void Helix::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &Pitch || prop == &Height || prop == &Radius ||
+            prop == &Angle || prop == &LocalCoord) {
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
 }
 
 short Helix::mustExecute() const
