@@ -249,14 +249,11 @@ class _Wall(ArchComponent.Component):
                         "The width of this wall. Not used if this wall is based on a face")
         obj.addProperty("App::PropertyLength","Height","Base",
                         "The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")
-        obj.addProperty("App::PropertyLength","Length","Base",
-                        "The length of this wall. Not used if this wall is based on a shape")
         obj.addProperty("App::PropertyEnumeration","Align","Base",
                         "The alignment of this wall on its base object, if applicable")
         obj.Align = ['Left','Right','Center']
         self.Type = "Wall"
         obj.Width = 0.1
-        obj.Length = 1
         obj.Height = 0
         
     def execute(self,obj):
@@ -287,6 +284,9 @@ class _Wall(ArchComponent.Component):
 
     def createGeometry(self,obj):
         "builds the wall shape"
+
+        if not obj.Base:
+            return
 
         import Part
         from draftlibs import fcgeo
@@ -346,36 +346,25 @@ class _Wall(ArchComponent.Component):
 
         # computing shape
         base = None
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
-                if not obj.Base.Shape.isNull():
-                    base = obj.Base.Shape.copy()
-                    if base.Solids:
-                        pass
-                    elif base.Faces:
-                        if height:
-                            norm = normal.multiply(height)
-                            base = base.extrude(norm)
-                    elif base.Wires:
-                        temp = None
-                        for wire in obj.Base.Shape.Wires:
-                            sh = getbase(wire)
-                            if temp:
-                                temp = temp.fuse(sh)
-                            else:
-                                temp = sh
-                        base = temp
-                        base = base.removeSplitter()
-        if not base:
-            if obj.Length == 0:
-                return
-            length = obj.Length
-            if not length:
-                length = 1
-            v1 = Vector(0,0,0)
-            v2 = Vector(length,0,0)
-            w = Part.Wire(Part.Line(v1,v2).toShape())
-            base = getbase(w)
+        if obj.Base.isDerivedFrom("Part::Feature"):
+            if not obj.Base.Shape.isNull():
+                base = obj.Base.Shape.copy()
+                if base.Solids:
+                    pass
+                elif base.Faces:
+                    if height:
+                        norm = normal.multiply(height)
+                        base = base.extrude(norm)
+                elif base.Wires:
+                    temp = None
+                    for wire in obj.Base.Shape.Wires:
+                        sh = getbase(wire)
+                        if temp:
+                            temp = temp.fuse(sh)
+                        else:
+                            temp = sh
+                    base = temp
+                    base = base.removeSplitter()
 
         for app in obj.Additions:
             base = base.oldFuse(app.Shape)
@@ -394,8 +383,9 @@ class _Wall(ArchComponent.Component):
                 if not hole.Shape.isNull():
                     base = base.cut(hole.Shape)
                     hole.ViewObject.hide() # to be removed
-                
-        obj.Shape = base
+
+        if base:
+            obj.Shape = base
         if not fcgeo.isNull(pl):
             obj.Placement = pl
 
