@@ -1635,7 +1635,7 @@ def clone(obj,delta=None):
     cl.Label = "Clone of " + obj[0].Label
     _Clone(cl)
     if gui:
-        _ViewProviderDraftPart(cl.ViewObject)
+        _ViewProviderClone(cl.ViewObject)
         formatObject(cl,obj[0])
     cl.Objects = obj
     if delta:
@@ -2873,5 +2873,17 @@ class _ViewProviderDraftPart(_ViewProviderDraft):
     def claimChildren(self):
         return []
 
+class _ViewProviderClone(_ViewProviderDraft):
+    "a view provider that displays a Part icon instead of a Draft icon"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Draft_Clone.svg"
+
+    def claimChildren(self):
+        return []
+    
 if not hasattr(FreeCADGui,"Snapper"):
     import DraftSnap
