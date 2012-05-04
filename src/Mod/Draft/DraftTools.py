@@ -2361,8 +2361,14 @@ class Upgrade(Modifier):
                 if (not curves) and (Draft.getType(self.sel[0]) == "Part"):
                     msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
                     Draft.draftify(self.sel[0])
+                else:
+                    msg(translate("draft", "No upgrade available for this object\n"))
+                    self.doc.abortTransaction()
+                    return
             else:
                 msg(translate("draft", "Couldn't upgrade these objects\n"))
+                self.doc.abortTransaction()
+                return
                                         
         elif wires and (not faces) and (not openwires):
             # we have only wires, no faces
@@ -2385,15 +2391,12 @@ class Upgrade(Modifier):
                         msg(translate("draft", "One wire is not planar, upgrade not done\n"))
                         self.nodelete = True
                 for f in faces:
-                    if not curves: 
-                        msg(translate("draft", "Found a closed wire: making a Draft wire\n"))
-                        newob = Draft.makeWire(f.Wire,closed=True)
-                    else:
-                        # if there are curved segments, we do a non-parametric face
-                        msg(translate("draft", "Found a closed wire with curves: making a face\n"))
-                        newob = self.doc.addObject("Part::Feature","Face")
-                        newob.Shape = f
-                        Draft.formatObject(newob,lastob)
+                    # if there are curved segments, we do a non-parametric face
+                    msg(translate("draft", "Found a closed wire: making a face\n"))
+                    newob = self.doc.addObject("Part::Feature","Face")
+                    newob.Shape = f
+                    Draft.formatObject(newob,lastob)
+                    newob.ViewObject.DisplayMode = "Flat Lines"
                         
         elif (len(openwires) == 1) and (not faces) and (not wires):
             # special case, we have only one open wire. We close it, unless it has only 1 edge!"
@@ -2435,12 +2438,9 @@ class Upgrade(Modifier):
             w = Part.Wire(nedges)
             if len(w.Edges) == len(edges):
                 msg(translate("draft", "Found several edges: wiring them\n"))
-                if not curves:
-                    newob = Draft.makeWire(w)
-                else:
-                    newob = self.doc.addObject("Part::Feature","Wire")
-                    newob.Shape = w
-                    Draft.formatObject(newob,lastob)
+                newob = self.doc.addObject("Part::Feature","Wire")
+                newob.Shape = w
+                Draft.formatObject(newob,lastob)
             if not newob:
                 print "no new object found"
                 msg(translate("draft", "Found several non-connected edges: making compound\n"))
@@ -2562,6 +2562,14 @@ class Downgrade(Modifier):
                 
         else:
             # no faces: split wire into single edges
+            onlyedges = True
+            for ob in self.sel:
+                if ob.Shape.ShapeType != "Edge":
+                    onlyedges = False
+            if onlyedges:
+                msg(translate("draft", "No more downgrade possible\n"))
+                self.doc.abortTransaction()
+                return
             msg(translate("draft", "Found only wires: extracting their edges\n"))
             for ob in self.sel:
                 for e in edges:
