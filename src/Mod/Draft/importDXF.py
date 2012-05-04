@@ -526,7 +526,7 @@ def drawSolid(solid):
     if p4x != None: p4 = FreeCAD.Vector(p4x,p4y,p4z)
     if p4 and (p4 != p3) and (p4 != p2) and (p4 != p1):
         try:
-            return Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
+            return Part.Face(Part.makePolygon([p1,p2,p4,p3,p1]))
         except:
             warn(solid)
     else:
