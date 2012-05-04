@@ -3711,6 +3711,29 @@ class ShowSnapBar():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.show()
+
+
+class Draft_Clone():
+    "The Draft Clone command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Clone',
+                'Accel' : "C,L",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Clone", "Clones the selected object(s)")}
+
+    def Activated(self):
+        if FreeCADGui.Selection.getSelection():
+            FreeCAD.ActiveDocument.openTransaction("Clone")
+            for obj in FreeCADGui.Selection.getSelection():
+                Draft.clone(obj)
+            FreeCAD.ActiveDocument.commitTransaction()
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
             
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3744,6 +3767,7 @@ FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
+FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())

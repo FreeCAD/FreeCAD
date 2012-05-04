@@ -188,7 +188,8 @@ class DraftWorkbench (Workbench):
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
-                        "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array"]
+                        "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
+                        "Draft_Clone"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
                             "Draft_ShowSnapBar"]
