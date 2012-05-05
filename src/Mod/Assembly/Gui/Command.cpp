@@ -82,27 +82,29 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
     Command::addModule(App,"PartDesign");
     Command::addModule(Gui,"PartDesignGui");
 
-#if 1  // test code for children nesting 
-    Command::addModule(App,"Part");
-    std::string BodyName = getUniqueObjectName("Box");
-    doCommand(Doc,"App.activeDocument().addObject('Part::Box','%s')",BodyName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str(),BodyName.c_str());
-#else
 
     std::string BodyName = getUniqueObjectName("Body");
     // add the standard planes 
     std::string Plane1Name = BodyName + "_PlaneXY";
     std::string Plane2Name = BodyName + "_PlaneYZ";
     std::string Plane3Name = BodyName + "_PlaneXZ";
-    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane1Name.c_str());
-    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane2Name.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(0.000000,0.000000,0.000000),App.Rotation(-0.707107,0.000000,0.000000,-0.707107))",Plane2Name.c_str());
-    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane3Name.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Annotation = [App.activeDocument().%s,App.activeDocument().%s,App.activeDocument().%s] ",PartName.c_str(),Plane1Name.c_str(),Plane2Name.c_str(),Plane3Name.c_str());
+    //doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane1Name.c_str());
+    //doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane2Name.c_str());
+    //doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(0.000000,0.000000,0.000000),App.Rotation(-0.707107,0.000000,0.000000,-0.707107))",Plane2Name.c_str());
+    //doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane3Name.c_str());
+    //doCommand(Doc,"App.activeDocument().%s.Annotation = [App.activeDocument().%s,App.activeDocument().%s,App.activeDocument().%s] ",PartName.c_str(),Plane1Name.c_str(),Plane2Name.c_str(),Plane3Name.c_str());
     // add the main body
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",BodyName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str(),BodyName.c_str());
-#endif #
+    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str());
+
+#if 0  // test code for children nesting 
+    Command::addModule(App,"Part");
+    std::string BoxName = getUniqueObjectName("Box");
+    doCommand(Doc,"App.activeDocument().addObject('Part::Box','%s')",BoxName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",BodyName.c_str(),BoxName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s ",BodyName.c_str(),BoxName.c_str());
+#endif
+
     this->updateActive();
 }
 

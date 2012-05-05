@@ -26,8 +26,55 @@
 # include <Python.h>
 #endif
 
+#include <Base/PyObjectBase.h>
+#include <Base/Console.h>
+
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/Tree.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
+#include <Mod/PartDesign/App/BodyPy.h>
+
+// pointer to the active assembly object
+PartDesign::Body                *ActivePartObject =0;
+Gui::Document                   *ActiveGuiDoc    =0;
+Gui::ViewProviderDocumentObject *ActiveVp        =0;
+
+
+
+static PyObject * setActivePart(PyObject *self, PyObject *args)
+{
+    PyObject *object=0;
+    if (PyArg_ParseTuple(args,"|O!",&(PartDesign::BodyPy::Type), &object)&& object) {
+        PartDesign::Body* Item = static_cast<PartDesign::BodyPy*>(object)->getBodyPtr();
+        // Should be set!
+        assert(Item);    
+
+        // get the gui document of the Assembly Item 
+        if(ActivePartObject){
+
+            ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
+            ActivePartObject = 0;
+
+        }
+        ActivePartObject = Item;
+        ActiveGuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
+        ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,true);
+       
+    }else{
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
+        ActivePartObject = 0;
+    }
+
+    Py_Return;
+}
 
 /* registration table  */
 struct PyMethodDef PartDesignGui_Import_methods[] = {
+    {"setActivePart"       ,setActivePart      ,METH_VARARGS,
+     "setActivePart(BodyObject) -- Set the PartBody object in work."},
+
     {NULL, NULL}                   /* end of table marker */
 };

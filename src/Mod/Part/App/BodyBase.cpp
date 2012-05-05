@@ -27,23 +27,21 @@
 
 #include <Base/Placement.h>
 
-#include "Body.h"
+#include "BodyBase.h"
 
-
-using namespace Part;
 
 namespace Part {
 
 
-PROPERTY_SOURCE(Part::Body, Part::Feature)
+PROPERTY_SOURCE(Part::BodyBase, Part::Feature)
 
-Body::Body()
+BodyBase::BodyBase()
 {
     ADD_PROPERTY(Model,(0));
     ADD_PROPERTY(Tip  ,(0));
 }
 
-short Body::mustExecute() const
+short BodyBase::mustExecute() const
 {
     //if (Sketch.isTouched() ||
     //    Length.isTouched())
@@ -51,7 +49,7 @@ short Body::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Body::execute(void)
+App::DocumentObjectExecReturn *BodyBase::execute(void)
 {
  
     return App::DocumentObject::StdReturn;

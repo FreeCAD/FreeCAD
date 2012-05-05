@@ -128,6 +128,8 @@ void Workbench::activated()
 
 void Workbench::deactivated()
 {
+    Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(None)");
+
     Gui::Workbench::deactivated();
     removeTaskWatcher();
 

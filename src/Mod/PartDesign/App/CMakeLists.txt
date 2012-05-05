@@ -6,6 +6,8 @@ endif(MSVC)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
@@ -13,6 +15,9 @@ include_directories(
     ${XERCESC_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
+
+generate_from_xml(BodyPy)
+
 
 set(PartDesign_LIBS
     Part
@@ -68,11 +73,20 @@ SET(Module_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
+
+SET(Python_SRCS
+    BodyPy.xml
+    BodyPyImp.cpp
+
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 SET(PartDesign_SRCS
     ${Features_SRCS}
     ${FeaturesSketchBased_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
+	${Python_SRCS}
 )
 
 SET(PartDesign_Scripts
