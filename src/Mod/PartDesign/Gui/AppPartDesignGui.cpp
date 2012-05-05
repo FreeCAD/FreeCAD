@@ -33,6 +33,7 @@
 
 #include "Workbench.h"
 #include "ViewProviderPocket.h"
+#include "ViewProviderBody.h"
 #include "ViewProviderPad.h"
 #include "ViewProviderChamfer.h"
 #include "ViewProviderFillet.h"
@@ -80,6 +81,7 @@ void PartDesignGuiExport initPartDesignGui()
 
     PartDesignGui::Workbench             ::init();
     PartDesignGui::ViewProvider          ::init();
+    PartDesignGui::ViewProviderBody      ::init();
     PartDesignGui::ViewProviderPocket    ::init();
     PartDesignGui::ViewProviderPad       ::init();
     PartDesignGui::ViewProviderRevolution::init();

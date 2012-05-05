@@ -31,6 +31,7 @@
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
+#include <Gui/Command.h>
 
 using namespace PartDesignGui;
 
@@ -112,6 +113,8 @@ void Workbench::activated()
 
 void Workbench::deactivated()
 {
+    Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
+
     Gui::Workbench::deactivated();
     removeTaskWatcher();
 

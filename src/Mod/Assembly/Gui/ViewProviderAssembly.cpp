@@ -47,6 +47,7 @@ ViewProviderItemAssembly::~ViewProviderItemAssembly()
 
 bool ViewProviderItemAssembly::doubleClicked(void)
 {
+    Gui::Command::assureWorkbench("AssemblyWorkbench");
     Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().%s)",this->getObject()->getNameInDocument());
     return true;
 }

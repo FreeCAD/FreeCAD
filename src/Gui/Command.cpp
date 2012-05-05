@@ -46,6 +46,8 @@
 #include "Control.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "WorkbenchManager.h"
+#include "Workbench.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -436,9 +438,10 @@ void Command::runCommand(DoCmd_Type eType,const char* sCmd)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,sCmd);
     Base::Interpreter().runString(sCmd);
 }
+
 void Command::addModule(DoCmd_Type eType,const char* sModuleName)
 {
-    if(alreadyLoadedModule.find(sModuleName) != alreadyLoadedModule.end()) {
+    if(alreadyLoadedModule.find(sModuleName) == alreadyLoadedModule.end()) {
         std::string sCmd("import ");
         sCmd += sModuleName;
         if (eType == Gui)
@@ -448,6 +451,21 @@ void Command::addModule(DoCmd_Type eType,const char* sModuleName)
         Base::Interpreter().runString(sCmd.c_str());
         alreadyLoadedModule.insert(sModuleName);
     }
+}
+
+bool Command::assureWorkbench(const char * sName)
+{
+    // check if the WB is already open? 
+    Workbench* actWb = WorkbenchManager::instance()->active();
+    // if yes, do nothing
+    if(actWb->name() == sName)
+        return false;
+
+    // else - switch to new WB
+    doCommand(Gui,"Gui.activateWorkbench('%s')",sName);
+
+    return true;
+
 }
 
 void Command::copyVisual(const char* to, const char* attr, const char* from)

@@ -44,10 +44,10 @@ ViewProviderBody::~ViewProviderBody()
 
 bool ViewProviderBody::doubleClicked(void)
 {
-    std::string Msg("Change ");
-    Msg += this->pcObject->getNameInDocument();
-    Gui::Command::openCommand(Msg.c_str());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
+    // assure the PartDesign workbench
+    Gui::Command::assureWorkbench("PartDesignWorkbench");
+    Gui::Command::addModule(Gui::Command::Gui,"PartDesignGui");
+    Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(App.activeDocument().%s)",this->getObject()->getNameInDocument());
     return true;
 }
 
