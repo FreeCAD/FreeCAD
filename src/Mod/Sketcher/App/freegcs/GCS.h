@@ -54,11 +54,10 @@ namespace GCS
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
         std::map<double *,std::vector<Constraint *> > p2c; // parameter to constraint adjacency list
 
-        // each row of subsyslist contains 3 subsystems.
+        // each row of subsyslist contains up to 3 subsystems.
         // the first one has the highest priority, always used as the primary subsystem
-        // the second one is normally used as secondary subsystem, it is considered primary
-        // only if the first one is missing
-        // the rhird one has the lowest priority, always used as secondary system
+        // the second one is used as secondary subsystem
+        // the third one is used as secondary system and serves as a preconditioner
         std::vector< std::vector<SubSystem *> > subsyslist;
         void clearSubSystems();
 
@@ -90,7 +89,7 @@ namespace GCS
                                     double *difference, int tagId=0);
         int addConstraintP2PDistance(Point &p1, Point &p2, double *distance, int tagId=0);
         int addConstraintP2PAngle(Point &p1, Point &p2, double *angle,
-                                  double incr_angle, int tagId=0);
+                                  double incrAngle, int tagId=0);
         int addConstraintP2PAngle(Point &p1, Point &p2, double *angle, int tagId=0);
         int addConstraintP2LDistance(Point &p, Line &l, double *distance, int tagId=0);
         int addConstraintPointOnLine(Point &p, Line &l, int tagId=0);
@@ -160,7 +159,7 @@ namespace GCS
 
         bool isInit() const { return init; }
 
-        int diagnose(VEC_pD &params, VEC_I &conflicting);
+        int diagnose(VEC_pD &params, VEC_I &conflictingTags);
     };
 
     ///////////////////////////////////////
