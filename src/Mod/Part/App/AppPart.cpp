@@ -74,6 +74,7 @@
 #include "SurfaceOfExtrusionPy.h"
 #include "SurfaceOfRevolutionPy.h"
 #include "ToroidPy.h"
+#include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
 #include "PropertyGeometryList.h"
 
@@ -124,6 +125,11 @@ void PartExport initPart()
                                                             ::Type,partModule,"RectangularTrimmedSurface");
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
+
+    PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
+    Py_INCREF(brepModule);
+    PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
+    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
