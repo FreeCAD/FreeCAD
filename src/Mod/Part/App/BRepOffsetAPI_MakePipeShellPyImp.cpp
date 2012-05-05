@@ -29,6 +29,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
 #include "TopoShapePy.h"
@@ -204,19 +205,19 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::lastShape(PyObject *args)
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::generated(PyObject *args)
 {
-    //PyObject *shape;
-    //if (!PyArg_ParseTuple(args, "O!",&Part::TopoShapePy::Type,&shape))
-    //    return 0;
-    //const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape;
-    //const TopTools_ListOfShape& list = this->getBRepOffsetAPI_MakePipeShellPtr()->Generated(s);
+    PyObject *shape;
+    if (!PyArg_ParseTuple(args, "O!",&Part::TopoShapePy::Type,&shape))
+        return 0;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape;
+    const TopTools_ListOfShape& list = this->getBRepOffsetAPI_MakePipeShellPtr()->Generated(s);
 
-    //Py::List shapes;
-    //for (int i=1; i<=list.Extent(); i++) {
-    //    const TopoDS_Shape& s = list.
-    //}
-    //return Py::new_reference_to(shapes);
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    Py::List shapes;
+    TopTools_ListIteratorOfListOfShape it;
+    for (it.Initialize(list); it.More(); it.Next()) {
+        const TopoDS_Shape& s = it.Value();
+        shapes.append(Py::asObject(new TopoShapePy(new TopoShape(s))));
+    }
+    return Py::new_reference_to(shapes);
 }
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::setTolerance(PyObject *args)
