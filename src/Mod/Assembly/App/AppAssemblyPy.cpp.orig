@@ -26,6 +26,11 @@
 # include <Python.h>
 #endif
 
+<<<<<<< 8ef3abc971814e64ef79a85812dd1a5827ba955f:src/Mod/Assembly/App/AppAssemblyPy.cpp
+/* registration table  */
+struct PyMethodDef Assembly_methods[] = {
+    {NULL, NULL}        /* end of table marker */
+=======
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 
@@ -70,10 +75,12 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
 
     Py_Return;
 }
+
 /* registration table  */
-struct PyMethodDef Assembly_methods[] = {
+struct PyMethodDef PartDesignGui_Import_methods[] = {
     {"setActivePart"       ,setActivePart      ,METH_VARARGS,
      "setActivePart(BodyObject) -- Set the PartBody object in work."},
 
-    {NULL, NULL}        /* end of table marker */
+    {NULL, NULL}                   /* end of table marker */
+>>>>>>> implement active body in PartDesign:src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
 };

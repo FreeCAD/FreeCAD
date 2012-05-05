@@ -49,7 +49,7 @@
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
 #include "PartFeatures.h"
-#include "Body.h"
+#include "BodyBase.h"
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
@@ -219,7 +219,7 @@ PyMODINIT_FUNC initPart()
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
-    Part::Body                  ::init();
+    Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();
     Part::CustomFeature         ::init();

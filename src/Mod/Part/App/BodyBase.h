@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PART_Body_H
-#define PART_Body_H
+#ifndef PART_BodyBase_H
+#define PART_BodyBase_H
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -36,12 +36,12 @@ namespace Part
   * in edit or active on a workbench, the body shows only the
   * resulting shape to the outside (Tip link).
   */
-class PartExport Body : public Part::Feature
+class PartExport BodyBase : public Part::Feature
 {
-    PROPERTY_HEADER(PartDesign::Body);
+    PROPERTY_HEADER(PartDesign::BodyBase);
 
 public:
-    Body();
+    BodyBase();
 
     App::PropertyLinkList   Model;
     App::PropertyLink       Tip;
@@ -53,7 +53,7 @@ public:
     short mustExecute() const;
     /// returns the type name of the view provider
     //const char* getViewProviderName(void) const {
-    //    return "PartDesignGui::ViewProviderBody";
+    //    return "PartDesignGui::ViewProviderBodyBase";
     //}
     //@}
 };
@@ -61,4 +61,4 @@ public:
 } //namespace Part
 
 
-#endif // PART_Body_H
+#endif // PART_BodyBase_H
