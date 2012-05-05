@@ -40,6 +40,7 @@ endif(FREETYPE_FOUND)
 generate_from_xml(ArcPy)
 generate_from_xml(ArcOfCirclePy)
 generate_from_xml(ArcOfParabolaPy)
+generate_from_xml(BodyBasePy)
 generate_from_xml(CirclePy)
 generate_from_xml(ArcOfEllipsePy)
 generate_from_xml(EllipsePy)
@@ -134,8 +135,8 @@ SET(Features_SRCS
     FeatureGeometrySet.cpp
     CustomFeature.cpp
     CustomFeature.h
-	Body.h
-	Body.cpp
+	BodyBase.h
+	BodyBase.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -154,6 +155,8 @@ SET(Python_SRCS
     ArcOfCirclePyImp.cpp
     ArcOfParabolaPy.xml
     ArcOfParabolaPyImp.cpp
+    BodyBasePy.xml
+    BodyBasePyImp.cpp
     CirclePy.xml
     CirclePyImp.cpp
     ArcOfEllipsePy.xml

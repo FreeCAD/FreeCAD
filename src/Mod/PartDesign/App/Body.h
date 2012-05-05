@@ -25,13 +25,13 @@
 #define PARTDESIGN_Body_H
 
 #include <App/PropertyStandard.h>
-#include <Mod/Part/App/Body.h>
+#include <Mod/Part/App/BodyBase.h>
 
 
 namespace PartDesign
 {
 
-class Body : public Part::Body
+class Body : public Part::BodyBase
 {
     PROPERTY_HEADER(PartDesign::Body);
 
