@@ -61,10 +61,10 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
         ActivePartObject = Item;
         ActiveGuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
         ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,true);
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Underlined,true);
        
     }else{
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
+        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Underlined,false);
         ActivePartObject = 0;
     }
 

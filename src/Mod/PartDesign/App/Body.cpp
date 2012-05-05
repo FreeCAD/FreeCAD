@@ -28,6 +28,7 @@
 #include <Base/Placement.h>
 
 #include "Body.h"
+#include "BodyPy.h"
 
 
 using namespace PartDesign;
@@ -54,6 +55,15 @@ App::DocumentObjectExecReturn *Body::execute(void)
 {
  
     return App::DocumentObject::StdReturn;
+}
+
+PyObject *Body::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new BodyPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
 }
 
 }
