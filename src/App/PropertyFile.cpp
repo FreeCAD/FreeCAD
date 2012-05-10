@@ -343,7 +343,7 @@ Property *PropertyFileIncluded::Copy(void) const
         bool done = file.renameFile(NewName.filePath().c_str());
         assert(done);
         // remember the new name for the Undo
-        Base::Console().Log("Copy this=%p Befor=%s After=%s\n",p,p->_cValue.c_str(),NewName.filePath().c_str());
+        Base::Console().Log("Copy this=%p Before=%s After=%s\n",p,p->_cValue.c_str(),NewName.filePath().c_str());
         p->_cValue = NewName.filePath().c_str();
     }
 
