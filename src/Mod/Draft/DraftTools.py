@@ -2676,8 +2676,10 @@ class Trimex(Modifier):
             self.ui.cross(True)
             self.shift = hasMod(arg,MODCONSTRAIN)
             self.alt = hasMod(arg,MODALT)
+            if self.extrudeMode:
+                arg["ShiftDown"] = False
             wp = not(self.extrudeMode and self.shift)
-            self.point,info = getPoint(self,arg,workingplane=wp)[0]
+            self.point,cp,info = getPoint(self,arg,workingplane=wp)
             if hasMod(arg,MODSNAP): self.snapped = None
             else: self.snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
             if self.extrudeMode:
@@ -2705,7 +2707,7 @@ class Trimex(Modifier):
         "redraws the ghost in extrude mode"
         self.newpoint = self.obj.Shape.Faces[0].CenterOfMass
         dvec = self.point.sub(self.newpoint)
-        if shift: delta = fcvec.project(dvec,self.normal)
+        if not shift: delta = fcvec.project(dvec,self.normal)
         else: delta = dvec
         if self.force:
             ratio = self.force/delta.Length
