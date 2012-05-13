@@ -55,7 +55,7 @@ int Query2Filtered<Real>::ToLine (const Vector2<Real>& rkP, int iV0, int iV1)
     Real fLen1 = Math<Real>::Sqrt(fX1*fX1 + fY1*fY1);
     Real fScaledUncertainty = m_fUncertainty*fLen0*fLen1;
 
-    Real fDet2 = Det2(fX0,fY0,fX1,fY1);
+    Real fDet2 = this->Det2(fX0,fY0,fX1,fY1);
     if (Math<Real>::FAbs(fDet2) >= fScaledUncertainty)
     {
         return (fDet2 > (Real)0.0 ? +1 : (fDet2 < (Real)0.0 ? -1 : 0));
@@ -93,7 +93,7 @@ int Query2Filtered<Real>::ToCircumcircle (const Vector2<Real>& rkP, int iV0,
     Real fLen2 = Math<Real>::Sqrt(fD2x*fD2x + fD2y*fD2y + fZ2*fZ2);
     Real fScaledUncertainty = m_fUncertainty*fLen0*fLen1*fLen2;
 
-    Real fDet3 = Det3(fD0x,fD0y,fZ0,fD1x,fD1y,fZ1,fD2x,fD2y,fZ2);
+    Real fDet3 = this->Det3(fD0x,fD0y,fZ0,fD1x,fD1y,fZ1,fD2x,fD2y,fZ2);
     if (Math<Real>::FAbs(fDet3) >= fScaledUncertainty)
     {
         return (fDet3 < (Real)0.0 ? 1 : (fDet3 > (Real)0.0 ? -1 : 0));
