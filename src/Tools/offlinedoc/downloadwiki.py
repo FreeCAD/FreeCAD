@@ -236,6 +236,9 @@ def fetchpage(page):
 
 def fetchimage(imagelink):
     "retrieves given image from the wiki and saves it"
+    if imagelink[0:5] == "File:":
+        print "Skipping file page link"
+        return
     filename = re.findall('.*/(.*)',imagelink)[0]
     print "saving",filename
     if not exists(filename,image=True):
@@ -263,7 +266,7 @@ def local(page,image=False):
 
 def exists(page,image=False):
     "checks if given page/image already exists"
-    path = local(page,image)
+    path = local(page.replace("/","-"),image)
     if os.path.exists(path): return True
     return False
 

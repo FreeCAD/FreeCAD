@@ -42,6 +42,7 @@ NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_doc
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
+WRITETHROUGH = True # if true, fetched files are constantly written to disk, in case of failure.
 
 #    END CONFIGURATION      ##############################################
 
@@ -52,8 +53,24 @@ def crawl():
     todolist = []
     processed = []
     count = 1
-    indexpages,imgs = get(INDEX)
-    todolist.extend(indexpages)
+    if os.path.exists("wikifiles.txt"):
+        f = open("wikifiles.txt","r")
+        if VERBOSE: print "Reading existing list..."
+        for l in f.readlines():
+            if l.strip() != "":
+                if VERBOSE: print "Adding ",l
+                processed.append(l.strip())
+        f.close()
+    if os.path.exists("todolist.txt"):
+        f = open("todolist.txt","r")
+        if VERBOSE: print "Reading existing todo list..."
+        for l in f.readlines():
+            if l.strip() != "":
+                todolist.append(l.strip())
+        f.close()
+    else:
+        indexpages,imgs = get(INDEX)
+        todolist.extend(indexpages)
     while todolist:
         targetpage = todolist.pop()
         if not targetpage in NORETRIEVE:
@@ -66,8 +83,12 @@ def crawl():
             for p in pages:
                 if (not (p in todolist)) and (not (p in processed)):
                     todolist.append(p)
+            if WRITETHROUGH:
+                writeList(processed)
+                writeList(todolist,"todolist.txt")
     if VERBOSE: print "Fetched ", count, " pages"
-    writeList(processed)
+    if not WRITETHROUGH:
+        writeList(processed)
     return 0
 
 def get(page):
@@ -136,12 +157,22 @@ def fetchpage(page):
             failcount += 1
     print 'Error: unable to fetch page ' + page
 
-def writeList(pages):
-    f = open("wikifiles.txt","wb")
+def cleanList(pagelist):
+    "cleans the list"
+    npages = []
+    for p in pagelist:
+        if not p in npages:
+            if not "redlink" in p:
+                npages.append(p)
+    return npages
+
+def writeList(pages,filename="wikifiles.txt"):
+    pages = cleanList(pages)
+    f = open(filename,"wb")
     for p in pages:
         f.write(p+"\n")
     f.close()
-    if VERBOSE: print "written wikifiles.txt"
+    if VERBOSE: print "written ",filename
 
 if __name__ == "__main__":
 	crawl()
