@@ -116,7 +116,7 @@ def Displacement(ship, draft, trim):
     @param ship Selected ship instance
     @param draft Draft.
     @param trim Trim in degrees.
-    @return [areas,disp,xcb]: \n
+    @return [areas,disp,xcb,Cb]: \n
     areas : Area of each section \n
     disp: Ship displacement \n
     xcb: X bouyance center coordinate

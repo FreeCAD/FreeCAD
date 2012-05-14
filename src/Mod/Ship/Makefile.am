@@ -34,6 +34,9 @@ nobase_data_DATA = \
 	Icons/ReparametrizeIco.xpm \
 	Icons/Ship.xcf \
 	Icons/Ship.xpm \
+	Icons/Weight.png \
+	Icons/Weight.xcf \
+	Icons/Weight.xpm \
 	Icons/Tank.png \
 	Icons/Tank.xcf \
 	Icons/Tank.xpm \
@@ -66,6 +69,9 @@ nobase_data_DATA = \
 	shipUtils/Math.py \
 	shipUtils/Paths.py \
 	shipUtils/Translator.py \
+	tankWeights/__init__.py \
+	tankWeights/TaskPanel.py \
+	tankWeights/TaskPanel.ui \
 	tankCreateTank/__init__.py \
 	tankCreateTank/TaskPanel.py \
 	tankCreateTank/TaskPanel.ui
