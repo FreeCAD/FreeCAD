@@ -2694,42 +2694,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 
     if (edit && (prop == &(getSketchObject()->Geometry) || &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
-        int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
-                                               getSketchObject()->Constraints.getValues(),
-                                               true, getSketchObject()->getExternalGeometryCount());
-        std::string msg;
-        if (getSketchObject()->Geometry.getSize() == 0) {
-            signalSetUp(-1, 0, msg);
-            signalSolved(-1, 0);
-        }
-        else if (dofs < 0) { // over-constrained sketch
-            SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-            //Base::Console().Warning("Over-constrained sketch\n%s",msg.c_str());
-            signalSetUp(3, 0, msg);
-            signalSolved(-1,0);
-        }
-        else if (edit->ActSketch.hasConflicts()) { // conflicting constraints
-            SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-            //Base::Console().Warning("Sketch with conflicting constraints\n%s",msg.c_str());
-            signalSetUp(2, dofs, msg);
-            signalSolved(-1,0);
-        }
-        else if (edit->ActSketch.solve() == 0) { // solving the sketch
-            if (dofs == 0) {
-                // color the sketch as fully constrained
-                edit->FullyConstrained = true;
-                //Base::Console().Message("Fully constrained sketch\n");
-                signalSetUp(0, 0, msg);
-            }
-            else {
-                //Base::Console().Message("Under-constrained sketch with %d degrees of freedom\n", dofs);
-                signalSetUp(1, dofs, msg);
-            }
-            signalSolved(0,edit->ActSketch.SolveTime);
-        }
-        else {
-            signalSolved(1,edit->ActSketch.SolveTime);
-        }
+        solveSketch();
         draw(true);
     }
     if (edit && &(getSketchObject()->Constraints)) {
@@ -2831,10 +2796,18 @@ bool ViewProviderSketch::setEdit(int ModNum)
     else
         Gui::Control().showDialog(new TaskDlgEditSketch(this));
 
+    solveSketch();
+    draw();
+
+    return true;
+}
+
+void ViewProviderSketch::solveSketch(void)
+{
     // set up the sketch and diagnose possible conflicts
     int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
                                            getSketchObject()->Constraints.getValues(),
-                                           true, getSketchObject()->getExternalGeometryCount());
+                                           getSketchObject()->getExternalGeometryCount());
     std::string msg;
     if (getSketchObject()->Geometry.getSize() == 0) {
         signalSetUp(-1, 0, msg);
@@ -2868,10 +2841,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     else {
         signalSolved(1, edit->ActSketch.SolveTime);
     }
-
-    draw();
-
-    return true;
 }
 
 void ViewProviderSketch::createEditInventorNodes(void)

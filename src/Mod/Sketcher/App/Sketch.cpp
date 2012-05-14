@@ -96,8 +96,9 @@ void Sketch::clear(void)
     Conflicting.clear();
 }
 
-int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
-                        bool withDiagnose, int extGeoCount)
+int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
+                        const std::vector<Constraint *> &ConstraintList,
+                        int extGeoCount)
 {
     clear();
 
@@ -121,11 +122,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std:
     GCSsys.clearByTag(-1);
     GCSsys.clearByTag(-2);
     GCSsys.initSolution(Parameters);
-
-    if (withDiagnose)
-        return diagnose();
-    else
-        return 0;
+    return diagnose();
 }
 
 const char* nameByType(Sketch::GeoType type)
@@ -1606,7 +1603,7 @@ int Sketch::solve(void)
             break;
         }
 
-        // if successfully solved try write the parameters back
+        // if successfully solved try to write the parameters back
         if (ret == GCS::Success) {
             GCSsys.applySolution();
             valid_solution = updateGeometry();
