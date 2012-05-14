@@ -120,7 +120,6 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         addConstraints(ConstraintList);
 
     GCSsys.clearByTag(-1);
-    GCSsys.clearByTag(-2);
     GCSsys.initSolution(Parameters);
     return diagnose();
 }
@@ -1566,7 +1565,6 @@ int Sketch::solve(void)
     Base::TimeInfo start_time;
     if (!isInitMove) { // make sure we are in single subsystem mode
         GCSsys.clearByTag(-1);
-        GCSsys.clearByTag(-2);
         isFine = true;
     }
 
@@ -1590,13 +1588,11 @@ int Sketch::solve(void)
             break;
         case 3: // last resort: augment the system with a second subsystem and use the SQP solver
             solvername = "SQP(augmented system)";
-            GCSsys.clearByTag(-1);
-            GCSsys.clearByTag(-2);
             InitParameters.resize(Parameters.size());
             int i=0;
             for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
                 InitParameters[i] = **it;
-                GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
+                GCSsys.addConstraintEqual(*it, &InitParameters[i], -1);
             }
             GCSsys.initSolution(Parameters);
             ret = GCSsys.solve(isFine);
@@ -1615,7 +1611,7 @@ int Sketch::solve(void)
         }
 
         if (soltype == 3) // cleanup temporary constraints of the augmented system
-            GCSsys.clearByTag(-2);
+            GCSsys.clearByTag(-1);
 
         if (valid_solution) {
             if (soltype == 1)
@@ -1652,7 +1648,6 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
     geoId = checkGeoId(geoId);
 
     GCSsys.clearByTag(-1);
-    GCSsys.clearByTag(-2);
 
     // don't try to move sketches that contain conflicting constraints
     if (hasConflicts()) {
