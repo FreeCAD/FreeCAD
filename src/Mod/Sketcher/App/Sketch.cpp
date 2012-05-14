@@ -120,8 +120,11 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         addConstraints(ConstraintList);
 
     GCSsys.clearByTag(-1);
-    GCSsys.initSolution(Parameters);
-    return diagnose();
+    GCSsys.declareUnknowns(Parameters);
+    GCSsys.initSolution();
+    GCSsys.getConflicting(Conflicting);
+    GCSsys.getRedundant(Redundant);
+    return GCSsys.dofsNumber();
 }
 
 const char* nameByType(Sketch::GeoType type)
@@ -1594,7 +1597,7 @@ int Sketch::solve(void)
                 InitParameters[i] = **it;
                 GCSsys.addConstraintEqual(*it, &InitParameters[i], -1);
             }
-            GCSsys.initSolution(Parameters);
+            GCSsys.initSolution();
             ret = GCSsys.solve(isFine);
             break;
         }
@@ -1603,8 +1606,11 @@ int Sketch::solve(void)
         if (ret == GCS::Success) {
             GCSsys.applySolution();
             valid_solution = updateGeometry();
-            if (!valid_solution)
+            if (!valid_solution) {
+                GCSsys.undoSolution();
+                updateGeometry();
                 Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
+            }
         } else {
             valid_solution = false;
             //Base::Console().Log("NotSolved ");
@@ -1629,11 +1635,6 @@ int Sketch::solve(void)
             break;
         }
     } // soltype
-
-    if (!valid_solution) { // undo any changes
-        GCSsys.undoSolution();
-        updateGeometry();
-    }
 
     Base::TimeInfo end_time;
     //Base::Console().Log("T:%s\n",Base::TimeInfo::diffTime(start_time,end_time).c_str());
@@ -1752,7 +1753,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
     }
     InitParameters = MoveParameters;
 
-    GCSsys.initSolution(Parameters);
+    GCSsys.initSolution();
     isInitMove = true;
     return 0;
 }
@@ -1828,18 +1829,6 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
         return Base::Vector3d(*Points[pointId].x, *Points[pointId].y, 0);
 
     return Base::Vector3d();
-}
-
-int Sketch::diagnose(void)
-{
-    Conflicting.clear();
-    if (GCSsys.isInit()) {
-        int dofs = GCSsys.diagnose(Parameters, Conflicting);
-        return dofs;
-    }
-    else {
-        return -1;
-    }
 }
 
 

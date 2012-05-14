@@ -108,6 +108,11 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
         appendConflictMsg(sketch.getConflicting(), msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
+    if (sketch.hasRedundancies()) { // redundant constraints
+        std::string msg="Sketch with redundant constraints\n";
+        appendRedundantMsg(sketch.getRedundant(), msg);
+        return new App::DocumentObjectExecReturn(msg.c_str(),this);
+    }
 
     // solve the sketch
     if (sketch.solve() != 0)
@@ -1392,6 +1397,20 @@ void SketchObject::appendConflictMsg(const std::vector<int> &conflicting, std::s
         for (unsigned int i=1; i < conflicting.size(); i++)
             ss << ", " << conflicting[i];
         ss << ")\n";
+    }
+    msg = ss.str();
+}
+
+void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::string &msg)
+{
+    std::stringstream ss;
+    if (msg.length() > 0)
+        ss << msg;
+    if (redundant.size() > 0) {
+        ss << "The following constraints were identified as redundant and should be removed:\n" << redundant[0];
+        for (unsigned int i=1; i < redundant.size(); i++)
+            ss << ", " << redundant[i];
+        ss << "\n";
     }
     msg = ss.str();
 }
