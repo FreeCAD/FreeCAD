@@ -33,6 +33,9 @@ SET(ShipIcons_SRCS
 	Icons/ReparametrizeIco.xpm
 	Icons/Ship.xcf
 	Icons/Ship.xpm
+	Icons/Weight.png
+	Icons/Weight.xcf
+	Icons/Weight.xpm
 	Icons/Tank.png
 	Icons/Tank.xcf
 	Icons/Tank.xpm
@@ -96,6 +99,13 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
+SET(ShipWeights_SRCS
+	tankWeights/__init__.py
+	tankWeights/TaskPanel.py
+	tankWeights/TaskPanel.ui
+)
+SOURCE_GROUP("shipweights" FILES ${ShipWeights_SRCS})
+
 SET(ShipCreateTank_SRCS
 	tankCreateTank/__init__.py
 	tankCreateTank/TaskPanel.py
@@ -103,7 +113,7 @@ SET(ShipCreateTank_SRCS
 )
 SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipCreateTank_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -158,6 +168,12 @@ INSTALL(
         ${ShipUtils_SRCS}
     DESTINATION
         Mod/Ship/shipUtils
+)
+INSTALL(
+    FILES
+        ${ShipWeights_SRCS}
+    DESTINATION
+        Mod/Ship/tankWeights
 )
 INSTALL(
     FILES
