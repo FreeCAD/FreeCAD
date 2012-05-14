@@ -2853,8 +2853,9 @@ class _Clone:
             if o.isDerivedFrom("Part::Feature"):
                 sh = o.Shape.copy()
                 m = FreeCAD.Matrix()
-                m.scale(obj.Scale)
-                sh = sh.transformGeometry(m)
+                if hasattr(obj,"Scale") and not sh.isNull():
+                    m.scale(obj.Scale)
+                    sh = sh.transformGeometry(m)
                 shapes.append(sh)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)   
