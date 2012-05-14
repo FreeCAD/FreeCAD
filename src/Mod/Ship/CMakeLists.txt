@@ -101,6 +101,7 @@ SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
 SET(ShipWeights_SRCS
 	tankWeights/__init__.py
+	tankWeights/Preview.py
 	tankWeights/TaskPanel.py
 	tankWeights/TaskPanel.ui
 )

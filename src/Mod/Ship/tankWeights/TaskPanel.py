@@ -27,6 +27,7 @@ import FreeCADGui as Gui
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
+import Preview
 from Instance import *
 from shipUtils import Paths, Translator
 
@@ -34,8 +35,10 @@ class TaskPanel:
     def __init__(self):
         self.ui = Paths.modulePath() + "/tankWeights/TaskPanel.ui"
         self.ship = None
+        self.preview = Preview.Preview()
 
     def accept(self):
+        self.preview.clean()
         if not self.ship:
             return False
         # Setup lists
@@ -62,6 +65,7 @@ class TaskPanel:
         return True
 
     def reject(self):
+        self.preview.clean()
         if not self.ship:
             return False
         return True
@@ -98,6 +102,21 @@ class TaskPanel:
         self.retranslateUi()
         # Connect Signals and Slots
         QtCore.QObject.connect(form.weights,QtCore.SIGNAL("cellChanged(int,int)"),self.onTableItem);
+        # Update screen
+        name  = []
+        pos   = []
+        for i in range(0,self.form.weights.rowCount() - 1):
+            item = self.form.weights.item(i,0)
+            name.append(item.text().__str__())
+            vec  = []
+            item = self.form.weights.item(i,2)
+            vec.append(item.text().toFloat()[0])
+            item = self.form.weights.item(i,3)
+            vec.append(item.text().toFloat()[0])
+            item = self.form.weights.item(i,4)
+            vec.append(item.text().toFloat()[0])
+            pos.append(App.Base.Vector(vec[0],vec[1],vec[2]))        
+        self.preview.update(name, pos)
 
     def getMainWindow(self):
         "returns the main window"
@@ -202,6 +221,21 @@ class TaskPanel:
                 (number,flag) = item.text().toFloat()
                 if not flag:
                     item.setText('0.0')
+        # Update screen annotations
+        name  = []
+        pos   = []
+        for i in range(0,self.form.weights.rowCount() - 1):
+            item = self.form.weights.item(i,0)
+            name.append(item.text().__str__())
+            vec  = []
+            item = self.form.weights.item(i,2)
+            vec.append(item.text().toFloat()[0])
+            item = self.form.weights.item(i,3)
+            vec.append(item.text().toFloat()[0])
+            item = self.form.weights.item(i,4)
+            vec.append(item.text().toFloat()[0])
+            pos.append(App.Base.Vector(vec[0],vec[1],vec[2]))        
+        self.preview.update(name, pos)
 
 def createTask():
     panel = TaskPanel()
