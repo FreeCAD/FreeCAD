@@ -663,7 +663,7 @@ class ViewProviderShip:
 def sections(obj):
     """ Returns the discretization points of sections, with the advantage 
     that is a list of nSections lists, with the points.
-    @param Ship object
+    @param obj Ship object
     @return Sections points
     """
     histogram = obj.nPoints[:]
@@ -674,3 +674,42 @@ def sections(obj):
         for j in range(histogram[i],histogram[i+1]):
             sections[i].append(points[j])
     return sections
+
+def weights(obj):
+    """ Returns Ship weights list. If weights has not been sets, 
+    this tool creates it.
+    @param obj Ship object
+    @return Weights list. None if errors
+    """
+    # Test if is a ship instance
+    props = obj.PropertiesList
+    try:
+        props.index("IsShip")
+    except ValueError:
+        return None
+    if not obj.IsShip:
+        return None
+    # Test if properties already exist
+    try:
+        props.index("WeightNames")
+    except ValueError:
+        obj.addProperty("App::PropertyStringList","WeightNames","Ship", str(Translator.translate("Ship Weights names"))).WeightNames=[Translator.translate("Lightweight").__str__()]
+    try:
+        props.index("WeightMass")
+    except ValueError:
+        # Compute mass aproximation
+        from shipHydrostatics import Tools
+        disp = Tools.Displacement(obj,obj.Draft,0.0)
+        obj.addProperty("App::PropertyFloatList","WeightMass","Ship", str(Translator.translate("Ship Weights masses"))).WeightMass=[1000.0 * disp[1]]
+    try:
+        props.index("WeightPos")
+    except ValueError:
+        # Compute mass aproximation
+        from shipHydrostatics import Tools
+        disp = Tools.Displacement(obj,obj.Draft,0.0)
+        obj.addProperty("App::PropertyVectorList","WeightPos","Ship", str(Translator.translate("Ship Weights centers of gravity"))).WeightPos=[Vector(disp[2],0.0,obj.Draft)]
+    # Setup list
+    weights = []
+    for i in range(0,len(obj.WeightNames)):
+        weights.append([obj.WeightNames[i], obj.WeightMass[i], obj.WeightPos[i]])
+    return weights
