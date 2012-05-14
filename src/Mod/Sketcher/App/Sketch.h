@@ -53,9 +53,21 @@ public:
     int solve(void);
     /// delete all geometry and constraints, leave an empty sketch
     void clear(void);
-    /// set the sketch up with geoms and constraints
+    /** set the sketch up with geoms and constraints
+      * 
+      * returns the degree of freedom of a sketch and calculates a list of
+      * conflicting constraints
+      *
+      * 0 degrees of freedom correspond to a fully constrained sketch
+      * -1 degrees of freedom correspond to an over-constrained sketch
+      * positive degrees of freedom correspond to an under-constrained sketch
+      *
+      * an over-constrained sketch will always contain conflicting constraints
+      * a fully constrained or under-constrained sketch may contain conflicting
+      * constraints or may not
+      */
     int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
-                    bool withDiagnose=true, int extGeoCount=0);
+                    int extGeoCount=0);
     /// return the actual geometry of the sketch a TopoShape
     Part::TopoShape toShape(void) const;
     /// add unspecified geometry
