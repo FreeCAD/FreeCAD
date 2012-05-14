@@ -2825,21 +2825,30 @@ void ViewProviderSketch::solveSketch(void)
         signalSetUp(2, dofs, msg);
         signalSolved(-1, 0);
     }
-    else if (edit->ActSketch.solve() == 0) { // solving the sketch
-        if (dofs == 0) {
-            // color the sketch as fully constrained
-            edit->FullyConstrained = true;
-            //Base::Console().Message("Fully constrained sketch\n");
-            signalSetUp(0, 0, msg);
+    else {
+        if (edit->ActSketch.hasRedundancies()) { // redundant constraints
+            SketchObject::appendRedundantMsg(edit->ActSketch.getRedundant(), msg);
+            //Base::Console().Warning("Sketch with redundant constraints\n%s",msg.c_str());
+            signalSetUp(4, dofs, msg);
+        }
+        if (edit->ActSketch.solve() == 0) { // solving the sketch
+            if (dofs == 0) {
+                // color the sketch as fully constrained
+                edit->FullyConstrained = true;
+                if (!edit->ActSketch.hasRedundancies()) {
+                    //Base::Console().Message("Fully constrained sketch\n");
+                    signalSetUp(0, 0, msg);
+                }
+            }
+            else if (!edit->ActSketch.hasRedundancies()) {
+                //Base::Console().Message("Under-constrained sketch with %d degrees of freedom\n", dofs);
+                signalSetUp(1, dofs, msg);
+            }
+            signalSolved(0, edit->ActSketch.SolveTime);
         }
         else {
-            //Base::Console().Message("Under-constrained sketch with %d degrees of freedom\n", dofs);
-            signalSetUp(1, dofs, msg);
+            signalSolved(1, edit->ActSketch.SolveTime);
         }
-        signalSolved(0, edit->ActSketch.SolveTime);
-    }
-    else {
-        signalSolved(1, edit->ActSketch.SolveTime);
     }
 }
 

@@ -86,6 +86,9 @@ void TaskSketcherMessages::slotSetUp(int type, int dofs, const std::string &msg)
         case 3:
             ui->labelConstrainStatus->setText(QString::fromLatin1("<font color='red'>Over-constrained sketch<br/>%1</font>").arg(QString::fromStdString(msg)));
             break;
+        case 4:
+            ui->labelConstrainStatus->setText(QString::fromLatin1("Sketch contains redundant constraints<br/>%1").arg(QString::fromStdString(msg)));
+            break;
     }
 }
 
