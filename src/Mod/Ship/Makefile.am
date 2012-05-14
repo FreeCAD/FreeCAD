@@ -70,6 +70,7 @@ nobase_data_DATA = \
 	shipUtils/Paths.py \
 	shipUtils/Translator.py \
 	tankWeights/__init__.py \
+	tankWeights/Preview.py \
 	tankWeights/TaskPanel.py \
 	tankWeights/TaskPanel.ui \
 	tankCreateTank/__init__.py \
