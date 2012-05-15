@@ -144,6 +144,17 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::isNull(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Base::Rotation rot = * getRotationPtr();
+    Base::Rotation nullrot(0,0,0,1);
+    Base::Rotation nullrotinv(0,0,0,-1);
+    bool null = (rot == nullrot) | (rot == nullrotinv);
+    return Py_BuildValue("O", (null ? Py_True : Py_False));
+}
+
 Py::Tuple RotationPy::getQ(void) const
 {
     double q0, q1, q2, q3;
