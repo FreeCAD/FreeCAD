@@ -275,6 +275,8 @@ protected:
     /// helper which Recompute only this feature
     bool _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
+    /// refresh the internal dependency graph
+    void _rebuildDependencyList(void);
 
 
 private:

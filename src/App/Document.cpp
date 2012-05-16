@@ -141,6 +141,8 @@ struct DocumentP
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
+    DependencyList DepList;
+    std::map<DocumentObject*,Vertex> VertexObjectList;
 
     DocumentP() {
         activeObject = 0;
@@ -1077,6 +1079,24 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     return result;
 }
 
+
+void Document::_rebuildDependencyList(void){
+
+    // Filling up the adjacency List
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+        // add the object as Vertex and remember the index
+        d->VertexObjectList[It->second] = add_vertex(d->DepList);
+    // add the edges
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
+            if (*It2)
+                add_edge(d->VertexObjectList[It->second],d->VertexObjectList[*It2],d->DepList);
+    }
+
+}
+
+
 void Document::recompute()
 {
     // delete recompute log
@@ -1084,27 +1104,30 @@ void Document::recompute()
         delete *it;
     _RecomputeLog.clear();
 
-    DependencyList DepList;
-    std::map<DocumentObject*,Vertex> VertexObjectList;
+    // updates the depency graph
+    _rebuildDependencyList();
 
-    // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
-        // add the object as Vertex and remember the index
-        VertexObjectList[It->second] = add_vertex(DepList);
-    // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
-            if (*It2)
-                add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
-    }
+    //DependencyList DepList;
+    //std::map<DocumentObject*,Vertex> VertexObjectList;
+
+    //// Filling up the adjacency List
+    //for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+    //    // add the object as Vertex and remember the index
+    //    VertexObjectList[It->second] = add_vertex(DepList);
+    //// add the edges
+    //for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    //    std::vector<DocumentObject*> OutList = It->second->getOutList();
+    //    for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
+    //        if (*It2)
+    //            add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
+    //}
 
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;
 
     try {
         // this sort gives the execute
-        boost::topological_sort(DepList, std::front_inserter(make_order));
+        boost::topological_sort(d->DepList, std::front_inserter(make_order));
     }
     catch (const std::exception& e) {
         std::cerr << "Document::recompute: " << e.what() << std::endl;
@@ -1112,7 +1135,7 @@ void Document::recompute()
     }
 
     // caching vertex to DocObject
-    for (std::map<DocumentObject*,Vertex>::const_iterator It1= VertexObjectList.begin();It1 != VertexObjectList.end(); ++It1)
+    for (std::map<DocumentObject*,Vertex>::const_iterator It1= d->VertexObjectList.begin();It1 != d->VertexObjectList.end(); ++It1)
         d->vertexMap[It1->second] = It1->first;
 
 #ifdef FC_LOGFEATUREUPDATE
@@ -1132,8 +1155,8 @@ void Document::recompute()
             NeedUpdate = true;
         else {// if (Cur->mustExecute() == -1)
             // update if one of the dependencies is touched
-            for (boost::tie(j, jend) = out_edges(*i, DepList); j != jend; ++j) {
-                DocumentObject* Test = d->vertexMap[target(*j, DepList)];
+            for (boost::tie(j, jend) = out_edges(*i, d->DepList); j != jend; ++j) {
+                DocumentObject* Test = d->vertexMap[target(*j, d->DepList)];
                 if (!Test) continue;
 #ifdef FC_LOGFEATUREUPDATE
                 std::clog << Test->getNameInDocument() << ", " ;
