@@ -366,9 +366,9 @@ CmdDrawingAnnotation::CmdDrawingAnnotation()
     // seting the
     sGroup        = QT_TR_NOOP("Drawing");
     sMenuText     = QT_TR_NOOP("&Annotation");
-    sToolTipText  = QT_TR_NOOP("Inserts an Annotation view in the active document");
+    sToolTipText  = QT_TR_NOOP("Inserts an Annotation view in the active drawing");
     sWhatsThis    = "Drawing_Annotation";
-    sStatusTip    = QT_TR_NOOP("Inserts an Annotation view in the active document");
+    sStatusTip    = QT_TR_NOOP("Inserts an Annotation view in the active drawing");
     sPixmap       = "actions/drawing-annotation";
 }
 
@@ -394,6 +394,48 @@ void CmdDrawingAnnotation::activated(int iMsg)
 }
 
 bool CmdDrawingAnnotation::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
+
+//===========================================================================
+// Drawing_Clip
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingClip);
+
+CmdDrawingClip::CmdDrawingClip()
+  : Command("Drawing_Clip")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("&Clip");
+    sToolTipText  = QT_TR_NOOP("Inserts a clip group in the active drawing");
+    sWhatsThis    = "Drawing_Annotation";
+    sStatusTip    = QT_TR_NOOP("Inserts a clip group in the active drawing");
+    sPixmap       = "actions/drawing-clip";
+}
+
+void CmdDrawingClip::activated(int iMsg)
+{
+
+    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
+            QObject::tr("Create a page to insert."));
+        return;
+    }
+    std::string PageName = pages.front()->getNameInDocument();
+    std::string FeatName = getUniqueObjectName("Clip");
+    openCommand("Create Clip");
+    doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureClip','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdDrawingClip::isActive(void)
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -495,6 +537,7 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingOrthoViews());
     rcCmdMgr.addCommand(new CmdDrawingOpenBrowserView());
     rcCmdMgr.addCommand(new CmdDrawingAnnotation());
+    rcCmdMgr.addCommand(new CmdDrawingClip());
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
 }
