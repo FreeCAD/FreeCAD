@@ -22,6 +22,7 @@
 #include "FeatureViewPart.h"
 #include "FeatureViewAnnotation.h"
 #include "FeatureProjection.h"
+#include "FeatureClip.h"
 #include "PageGroup.h"
 
 extern struct PyMethodDef Drawing_methods[];
@@ -59,6 +60,7 @@ void DrawingExport initDrawing()
     Drawing::FeatureViewPartPython  ::init();
     Drawing::FeatureViewPython      ::init();
     Drawing::FeatureViewAnnotation  ::init();
+    Drawing::FeatureClip            ::init();
 }
 
 } // extern "C"
