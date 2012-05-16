@@ -29,7 +29,7 @@
 // Importing of App classes
 #ifdef FC_OS_WIN32
 # define PartDesignExport     __declspec(dllimport)
-# define PartDesignGuiExport     __declspec(dllexport)
+# define PartDesignGuiExport  __declspec(dllexport)
 # define PartExport           __declspec(dllimport)
 # define PartGuiExport        __declspec(dllimport)
 # define SketcherExport       __declspec(dllimport)

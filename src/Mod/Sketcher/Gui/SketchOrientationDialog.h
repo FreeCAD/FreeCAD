@@ -27,7 +27,7 @@
 
 namespace SketcherGui {
 
-class SketchOrientationDialog {
+class SketcherGuiExport SketchOrientationDialog {
 public:
     SketchOrientationDialog(void);
     ~SketchOrientationDialog();

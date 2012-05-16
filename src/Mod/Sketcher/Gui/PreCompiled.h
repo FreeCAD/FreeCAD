@@ -28,9 +28,9 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-# define SketcherExport __declspec(dllimport)
-# define PartExport     __declspec(dllimport)
-# define PartGuiExport  __declspec(dllimport)
+# define SketcherExport    __declspec(dllimport)
+# define PartExport        __declspec(dllimport)
+# define PartGuiExport     __declspec(dllimport)
 # define SketcherGuiExport __declspec(dllexport)
 #else // for Linux
 # define SketcherExport 

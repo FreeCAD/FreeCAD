@@ -40,6 +40,8 @@ public:
     virtual ~ViewProviderBody();
 
     virtual bool doubleClicked(void);
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+
 
 };
 

@@ -71,7 +71,7 @@ void Workbench::activated()
     //Watcher.push_back(new TaskWatcherRobot);
 
     const char* Face[] = {
-        "Sketcher_NewSketch",
+        "PartDesign_NewSketch",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         0};
@@ -83,7 +83,7 @@ void Workbench::activated()
     ));
 
     const char* Sketch[] = {
-        "Sketcher_NewSketch",
+        "PartDesign_NewSketch",
         "PartDesign_Pad",
         "PartDesign_Pocket",
         "PartDesign_Revolution",
@@ -96,7 +96,7 @@ void Workbench::activated()
     ));
 
     const char* Empty[] = {
-        "Sketcher_NewSketch",
+        "PartDesign_NewSketch",
         "Part_Box",
         "Part_Cylinder",
         0};
@@ -162,7 +162,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
-    *part << "Sketcher_NewSketch"
+    *part << "PartDesign_NewSketch"
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
@@ -183,7 +183,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design");
-    *part << "Sketcher_NewSketch"
+    *part << "PartDesign_NewSketch"
           << "Sketcher_LeaveSketch"
           << "Separator"
           << "PartDesign_Pad"
