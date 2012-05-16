@@ -28,7 +28,9 @@
 
 #include "ViewProviderBody.h"
 #include <Gui/Command.h>
-//#include <Gui/Document.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <algorithm>
 
 using namespace PartDesignGui;
 
@@ -51,4 +53,25 @@ bool ViewProviderBody::doubleClicked(void)
     return true;
 }
 
+std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
+{
+    std::vector<App::DocumentObject*> Model = static_cast<PartDesign::Body*>(getObject())->Model.getValues();
+    std::set<App::DocumentObject*> OutSet;
+
+    // search for objects handled (claimed) by the features
+    for(std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it){
+        // sketches of SketchBased features get claimed under the feature so has to be removed from the Body
+        if ((*it)->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())){
+            OutSet.insert(static_cast<PartDesign::SketchBased*>(*it)->Sketch.getValue());
+        }
+    }
+
+    // remove the otherwise handled objects 
+    std::vector<App::DocumentObject*> Result(Model.size());
+    sort (Model.begin(), Model.end());   
+    std::vector<App::DocumentObject*>::iterator it = set_difference (Model.begin(), Model.end(), OutSet.begin(),OutSet.end(), Result.begin());
+
+    // return the rest as claim set of the Body
+    return std::vector<App::DocumentObject*>(Result.begin(),it);
+}
 

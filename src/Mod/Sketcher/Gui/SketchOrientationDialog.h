@@ -29,7 +29,7 @@
 namespace SketcherGui {
 
 class Ui_SketchOrientationDialog;
-class SketchOrientationDialog : public QDialog
+class SketcherGuiExport SketchOrientationDialog : public QDialog
 {
     Q_OBJECT
 
