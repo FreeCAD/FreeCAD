@@ -241,8 +241,8 @@ void Revolution::updateAxis(void)
             axis *= SketchPlm;
             Base::Vector3d base=axis.getBase();
             Base::Vector3d dir=axis.getDirection();
-            Base.setValue(base.x,base.y,base.z);
-            Axis.setValue(dir.x,dir.y,dir.z);
+            Base.setValue(float(base.x),float(base.y),float(base.z));
+            Axis.setValue(float(dir.x),float(dir.y),float(dir.z));
         }
     }
 }
