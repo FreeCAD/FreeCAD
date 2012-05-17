@@ -36,7 +36,7 @@ using namespace Assembly;
 namespace Assembly {
 
 
-PROPERTY_SOURCE(Assembly::Item, Part::Feature)
+PROPERTY_SOURCE_ABSTRACT(Assembly::Item, App::GeoFeature)
 
 Item::Item()
 {

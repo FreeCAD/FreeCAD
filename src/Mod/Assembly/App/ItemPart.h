@@ -51,6 +51,8 @@ public:
         return "AssemblyGui::ViewProviderItemPart";
     }
     //@}
+
+    virtual TopoDS_Shape getShape(void) const;
 };
 
 } //namespace Assembly

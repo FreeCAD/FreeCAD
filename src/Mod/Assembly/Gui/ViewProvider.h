@@ -24,13 +24,13 @@
 #ifndef ASSEMBLYGUI_ViewProvider_H
 #define ASSEMBLYGUI_ViewProvider_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
+#include <Gui/ViewProviderGeometryObject.h>
 
 class SoGroup;
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderItem : public PartGui::ViewProviderPart
+class AssemblyGuiExport ViewProviderItem : public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER(AssemblyGui::ViewProviderItem);
 

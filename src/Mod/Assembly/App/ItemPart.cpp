@@ -28,6 +28,7 @@
 #include <Base/Placement.h>
 
 #include "ItemPart.h"
+#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace Assembly;
@@ -53,13 +54,19 @@ short ItemPart::mustExecute() const
 
 App::DocumentObjectExecReturn *ItemPart::execute(void)
 {
+     return App::DocumentObject::StdReturn;
+}
+
+TopoDS_Shape ItemPart::getShape(void) const 
+{
     App::DocumentObject* obj = Model.getValue();
 
     if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        this->Shape.setValue(static_cast<Part::Feature*>(obj)->Shape.getValue());
+        return static_cast<Part::Feature*>(obj)->Shape.getValue();
     }
 
-    return App::DocumentObject::StdReturn;
+    return TopoDS_Shape();
+
 }
 
 }
