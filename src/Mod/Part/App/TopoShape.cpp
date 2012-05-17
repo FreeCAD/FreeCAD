@@ -1409,7 +1409,6 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
         const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
         BRepAdaptor_Curve path_adapt(path_edge);
         myPath = new BRepAdaptor_HCurve(path_adapt);
-        theContinuity = GeomAbs_C0;
     }
     //else if (this->_Shape.ShapeType() == TopAbs_WIRE) {
     //    const TopoDS_Wire& path_wire = TopoDS::Wire(this->_Shape);
