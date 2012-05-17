@@ -37,6 +37,7 @@
 
 #include "FeaturePage.h"
 #include "FeatureView.h"
+#include "FeatureClip.h"
 
 using namespace Drawing;
 using namespace std;
@@ -124,9 +125,13 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             // get through the children and collect all the views
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
-                if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
+                if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
                     Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
                     ofile << View->ViewResult.getValue();
+                    ofile << tempendl << tempendl << tempendl;
+                } else if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId()) ) {
+                    Drawing::FeatureClip *Clip = dynamic_cast<Drawing::FeatureClip *>(*It);
+                    ofile << Clip->ViewResult.getValue();
                     ofile << tempendl << tempendl << tempendl;
                 }
             }
