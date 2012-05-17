@@ -310,6 +310,43 @@ protected:
   const MeshKernel      &_rclMesh; /**< The mesh kernel. */
 };
 
+class MeshExport MeshCollector
+{
+public:
+    MeshCollector(){}
+    virtual void Append(const MeshCore::MeshKernel&, unsigned long index) = 0;
+};
+
+class MeshExport PointCollector : public MeshCollector
+{
+public:
+    PointCollector(std::vector<unsigned long>& ind) : indices(ind){}
+    virtual void Append(const MeshCore::MeshKernel& kernel, unsigned long index)
+    {
+        unsigned long ulP1, ulP2, ulP3;
+        kernel.GetFacetPoints(index, ulP1, ulP2, ulP3);
+        indices.push_back(ulP1);
+        indices.push_back(ulP2);
+        indices.push_back(ulP3);
+    }
+
+private:
+    std::vector<unsigned long>& indices;
+};
+
+class MeshExport FacetCollector : public MeshCollector
+{
+public:
+    FacetCollector(std::vector<unsigned long>& ind) : indices(ind){}
+    void Append(const MeshCore::MeshKernel&, unsigned long index)
+    {
+        indices.push_back(index);
+    }
+
+private:
+    std::vector<unsigned long>& indices;
+};
+
 /**
  * The MeshRefPointToFacets builds up a structure to have access to all facets indexing
  * a point.
@@ -329,14 +366,14 @@ public:
     /// Rebuilds up data structure
     void Rebuild (void);
     const std::set<unsigned long>& operator[] (unsigned long) const;
-    MeshFacetArray::_TConstIterator getFacet (unsigned long) const;
+    MeshFacetArray::_TConstIterator GetFacet (unsigned long) const;
     std::set<unsigned long> NeighbourPoints(const std::vector<unsigned long>& , int level) const;
-    void Neighbours (unsigned long ulFacetInd, float fMaxDist, std::vector<MeshFacetArray::_TConstIterator> &rclNb);
+    void Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const;
     Base::Vector3f GetNormal(unsigned long) const;
 
 protected:
-    void SearchNeighbours(MeshFacetArray::_TConstIterator pFIter, const Base::Vector3f &rclCenter, 
-        float fMaxDist, std::vector<MeshFacetArray::_TConstIterator> &rclNb);
+    void SearchNeighbours(const MeshFacetArray& rFacets, unsigned long index, const Base::Vector3f &rclCenter, 
+        float fMaxDist, std::set<unsigned long> &visit, MeshCollector& collect) const;
 
 protected:
     const MeshKernel  &_rclMesh; /**< The mesh kernel. */
