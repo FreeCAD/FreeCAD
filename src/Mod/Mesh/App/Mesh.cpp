@@ -1422,10 +1422,11 @@ MeshObject* MeshObject::meshFromSegment(const std::vector<unsigned long>& indice
     return new MeshObject(kernel, _Mtrx);
 }
 
-std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, const Segment& aSegment, float dev) const
+std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, const Segment& aSegment,
+                                                     float dev, unsigned long minFacets) const
 {
     std::vector<Segment> segm;
-    unsigned long startFacet, visited;
+    unsigned long startFacet;
     if (this->_kernel.CountFacets() == 0)
         return segm;
 
@@ -1445,7 +1446,7 @@ std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, cons
     MeshCore::MeshFacetArray::_TConstIterator iEnd = rFAry.end();
 
     // start from the first not visited facet
-    visited = cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
+    cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
     iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
         MeshCore::MeshFacet::VISIT));
     startFacet = iTri - iBeg;
@@ -1455,7 +1456,7 @@ std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, cons
         std::vector<unsigned long> indices;
         indices.push_back(startFacet);
         MeshCore::MeshPlaneVisitor pv(this->_kernel, startFacet, dev, indices);
-        visited += this->_kernel.VisitNeighbourFacets(pv, startFacet);
+        this->_kernel.VisitNeighbourFacets(pv, startFacet);
 
         iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
             MeshCore::MeshFacet::VISIT));
@@ -1463,7 +1464,8 @@ std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, cons
             startFacet = iTri - iBeg;
         else
             startFacet = ULONG_MAX;
-        segm.push_back(Segment(const_cast<MeshObject*>(this), indices, false));
+        if (indices.size() > minFacets)
+            segm.push_back(Segment(const_cast<MeshObject*>(this), indices, false));
     }
 
     return segm;
