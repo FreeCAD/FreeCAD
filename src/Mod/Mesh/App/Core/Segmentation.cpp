@@ -31,7 +31,7 @@
 
 using namespace MeshCore;
 
-void MeshSurfaceSegment::PrepareFacet(unsigned long)
+void MeshSurfaceSegment::Initialize(unsigned long)
 {
 }
 
@@ -54,7 +54,7 @@ MeshDistancePlanarSegment::~MeshDistancePlanarSegment()
     delete fitter;
 }
 
-void MeshDistancePlanarSegment::PrepareFacet(unsigned long index)
+void MeshDistancePlanarSegment::Initialize(unsigned long index)
 {
     fitter->Clear();
 
@@ -204,7 +204,7 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegment*>& segm)
             // collect all facets of the same geometry
             std::vector<unsigned long> indices;
             indices.push_back(startFacet);
-            (*it)->PrepareFacet(startFacet);
+            (*it)->Initialize(startFacet);
             MeshSurfaceVisitor pv(**it, indices);
             myKernel.VisitNeighbourFacets(pv, startFacet);
 
