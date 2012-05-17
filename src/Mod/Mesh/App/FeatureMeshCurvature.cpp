@@ -29,18 +29,16 @@
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Sequencer.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
 #include "FeatureMeshCurvature.h"
 #include "MeshFeature.h"
 
+#include "Core/Curvature.h"
 #include "Core/Elements.h"
 #include "Core/Iterator.h"
 
 
 
 using namespace Mesh;
-using namespace MeshCore;
 
 PROPERTY_SOURCE(Mesh::Curvature, App::DocumentObject)
 
@@ -68,42 +66,20 @@ App::DocumentObjectExecReturn *Curvature::execute(void)
     }
  
     // get all points
-    const MeshKernel& rMesh = pcFeat->Mesh.getValue().getKernel();
-    std::vector< Wm4::Vector3<float> > aPnts;
-    aPnts.reserve(rMesh.CountPoints());
-    MeshPointIterator cPIt( rMesh );
-    for (cPIt.Init(); cPIt.More(); cPIt.Next()) {
-        Wm4::Vector3<float> cP(cPIt->x, cPIt->y, cPIt->z);
-        aPnts.push_back(cP);
-    }
+    const MeshCore::MeshKernel& rMesh = pcFeat->Mesh.getValue().getKernel();
+    MeshCore::MeshCurvature meshCurv(rMesh);
+    meshCurv.ComputePerVertex();
+    const std::vector<MeshCore::CurvatureInfo>& curv = meshCurv.GetCurvature();
 
-    // get all point connections
-    std::vector<int> aIdx;
-    aIdx.reserve(3*rMesh.CountFacets());
-    const std::vector<MeshFacet>& raFts = rMesh.GetFacets();
-    for (std::vector<MeshFacet>::const_iterator jt = raFts.begin(); jt != raFts.end(); ++jt) {
-        for (int i=0; i<3; i++) {
-            aIdx.push_back((int)jt->_aulPoints[i]);
-        }
-    }
-
-    // compute vertex based curvatures
-    Wm4::MeshCurvature<float> meshCurv(rMesh.CountPoints(), &(aPnts[0]), rMesh.CountFacets(), &(aIdx[0]));
-
-    // get curvature information now
-    const Wm4::Vector3<float>* aMaxCurvDir = meshCurv.GetMaxDirections();
-    const Wm4::Vector3<float>* aMinCurvDir = meshCurv.GetMinDirections();
-    const float* aMaxCurv = meshCurv.GetMaxCurvatures();
-    const float* aMinCurv = meshCurv.GetMinCurvatures();
-
-    std::vector<CurvatureInfo> values(rMesh.CountPoints());
-    for (unsigned long i=0; i<rMesh.CountPoints(); i++) {
+    std::vector<CurvatureInfo> values;
+    values.reserve(curv.size());
+    for (std::vector<MeshCore::CurvatureInfo>::const_iterator it = curv.begin(); it != curv.end(); ++it) {
         CurvatureInfo ci;
-        ci.cMaxCurvDir = Base::Vector3f(aMaxCurvDir[i].X(), aMaxCurvDir[i].Y(), aMaxCurvDir[i].Z());
-        ci.cMinCurvDir = Base::Vector3f(aMinCurvDir[i].X(), aMinCurvDir[i].Y(), aMinCurvDir[i].Z());
-        ci.fMaxCurvature = aMaxCurv[i];
-        ci.fMinCurvature = aMinCurv[i];
-        values[i] = ci;
+        ci.cMaxCurvDir = it->cMaxCurvDir;
+        ci.cMinCurvDir = it->cMinCurvDir;
+        ci.fMaxCurvature = it->fMaxCurvature;
+        ci.fMinCurvature = it->fMinCurvature;
+        values.push_back(ci);
     }
 
     CurvInfo.setValues(values);
