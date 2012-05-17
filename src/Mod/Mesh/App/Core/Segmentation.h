@@ -41,7 +41,7 @@ public:
         : minFacets(minFacets) {}
     virtual ~MeshSurfaceSegment() {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
-    virtual void PrepareFacet(unsigned long);
+    virtual void Initialize(unsigned long);
     void AddSegment(const std::vector<unsigned long>&);
     const std::vector<MeshSegment> GetSegments() const { return segments; }
 
@@ -69,7 +69,7 @@ public:
     MeshDistancePlanarSegment(const MeshKernel& mesh, unsigned long minFacets, float tol);
     virtual ~MeshDistancePlanarSegment();
     bool TestFacet (const MeshFacet &rclFacet) const;
-    void PrepareFacet(unsigned long);
+    void Initialize(unsigned long);
 
 protected:
     Base::Vector3f basepoint;
