@@ -54,13 +54,19 @@ short ItemAssembly::mustExecute() const
 
 App::DocumentObjectExecReturn *ItemAssembly::execute(void)
 {
+
+    return App::DocumentObject::StdReturn;
+}
+
+TopoDS_Shape ItemAssembly::getShape(void) const 
+{
     std::vector<TopoDS_Shape> s;
     std::vector<App::DocumentObject*> obj = Items.getValues();
 
     std::vector<App::DocumentObject*>::iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(Assembly::Item::getClassTypeId())) {
-            TopoDS_Shape aShape = static_cast<Assembly::Item*>(*it)->Shape.getValue();
+            TopoDS_Shape aShape = static_cast<Assembly::Item*>(*it)->getShape();
             if (!aShape.IsNull())
                 s.push_back(aShape);
         }
@@ -75,15 +81,13 @@ App::DocumentObjectExecReturn *ItemAssembly::execute(void)
 
             aBuilder.Add(aRes, *it);
         }
-        if (aRes.IsNull())
-            throw Base::Exception("Resulting shape is invalid");
-        this->Shape.setValue(aRes);
+        //if (aRes.IsNull())
+        //    throw Base::Exception("Resulting shape is invalid");
+        return aRes;
     }
-    else {
-        // set empty shape
-        this->Shape.setValue(TopoDS_Shape());
-    }
-    return App::DocumentObject::StdReturn;
+    // set empty shape
+    return TopoDS_Compound();
+    
 }
 
 }

@@ -25,13 +25,14 @@
 #define Assembly_Item_H
 
 #include <App/PropertyStandard.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <App/GeoFeature.h>
+#include <TopoDS_Shape.hxx>
 
 
 namespace Assembly
 {
 
-class AssemblyExport Item : public Part::Feature
+class AssemblyExport Item : public App::GeoFeature
 {
     PROPERTY_HEADER(Assembly::Item);
 
@@ -71,6 +72,8 @@ public:
         return "AssemblyGui::ViewProviderItem";
     }
     //@}
+
+    virtual TopoDS_Shape getShape(void)const =0 ;
 
     PyObject *getPyObject(void);
 };

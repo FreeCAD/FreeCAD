@@ -34,7 +34,7 @@
 
 using namespace AssemblyGui;
 
-PROPERTY_SOURCE(AssemblyGui::ViewProviderItem,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderItem,Gui::ViewProviderGeometryObject)
 
 ViewProviderItem::ViewProviderItem()
 {
