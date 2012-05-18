@@ -1232,7 +1232,9 @@ def getWire(wire,nospline=False):
     points = []
     for edge in edges:
         v1 = edge.Vertexes[0].Point
-        if (isinstance(edge.Curve,Part.Circle)):
+        if len(edge.Vertexes) < 2:
+            points.append((v1.x,v1.y,v1.z,None,None,0.0))
+        elif (isinstance(edge.Curve,Part.Circle)):
             mp = fcgeo.findMidpoint(edge)
             v2 = edge.Vertexes[-1].Point
             c = edge.Curve.Center
@@ -1251,14 +1253,12 @@ def getWire(wire,nospline=False):
                 bul = -bul
             points.append((v1.x,v1.y,v1.z,None,None,bul))
         elif (isinstance(edge.Curve,Part.BSplineCurve)) and (not nospline):
-            bul = 0.0
             spline = getSplineSegs(edge)
             spline.pop()
             for p in spline:
-                points.append((p.x,p.y,p.z,None,None,bul))
+                points.append((p.x,p.y,p.z,None,None,0.0))
         else:
-            bul = 0.0
-            points.append((v1.x,v1.y,v1.z,None,None,bul))
+            points.append((v1.x,v1.y,v1.z,None,None,0.0))
     if not fcgeo.isReallyClosed(wire):
         v = edges[-1].Vertexes[-1].Point
         points.append(fcvec.tup(v))
