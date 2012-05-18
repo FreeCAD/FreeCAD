@@ -61,13 +61,30 @@ class _CommandRoof:
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             sel = sel[0]
+            obj = sel.Object
             if sel.HasSubObjects:
                 if "Face" in sel.SubElementNames[0]:
-                    obj = sel.Object
                     idx = int(sel.SubElementNames[0][4:])
                     FreeCAD.ActiveDocument.openTransaction("Create Roof")
                     makeRoof(obj,idx)
                     FreeCAD.ActiveDocument.commitTransaction()
+                    FreeCAD.ActiveDocument.recompute()
+                elif obj.isDerivedFrom("Part::Feature"):
+                    if len(obj.Shape.Faces) == 1:
+                        FreeCAD.ActiveDocument.openTransaction("Create Roof")
+                        makeRoof(obj,1)
+                        FreeCAD.ActiveDocument.commitTransaction()
+                        FreeCAD.ActiveDocument.recompute()
+            elif obj.isDerivedFrom("Part::Feature"):
+                if len(obj.Shape.Faces) == 1:
+                    FreeCAD.ActiveDocument.openTransaction("Create Roof")
+                    makeRoof(obj,1)
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    FreeCAD.ActiveDocument.recompute()
+            else:
+                FreeCAD.Console.PrintMessage("Unable to create a roof")
+        else:
+            FreeCAD.Console.PrintMessage("No object selected")
        
 class _Roof(ArchComponent.Component):
     "The Roof object"
@@ -77,8 +94,6 @@ class _Roof(ArchComponent.Component):
                         "The angle of this roof")
         obj.addProperty("App::PropertyInteger","Face","Base",
                         "The face number of the base object used to build this roof")
-        obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object this roof is built on")
         self.Type = "Structure"
         
     def execute(self,obj):
