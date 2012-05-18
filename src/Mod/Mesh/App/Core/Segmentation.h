@@ -43,7 +43,7 @@ public:
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
     virtual void Initialize(unsigned long);
     void AddSegment(const std::vector<unsigned long>&);
-    const std::vector<MeshSegment> GetSegments() const { return segments; }
+    const std::vector<MeshSegment>& GetSegments() const { return segments; }
 
 protected:
     std::vector<MeshSegment> segments;

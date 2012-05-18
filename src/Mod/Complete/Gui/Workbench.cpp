@@ -229,6 +229,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_PolySplit"
           << "Mesh_PolySegm"
           << "Mesh_ToolMesh"
+          << "Mesh_Segmentation"
           << "Mesh_VertexCurvature";
 
     // Part ****************************************************************************************************
