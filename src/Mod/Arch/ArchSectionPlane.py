@@ -181,7 +181,7 @@ class _ArchDrawingView:
         if hasattr(obj,"Source"):
             if obj.Source:
                 if obj.Source.Objects:
-                    objs = Draft.getGroupContents(obj.Sourc.Objects)
+                    objs = Draft.getGroupContents(obj.Source.Objects)
                     svg = ''
 
                     # generating SVG
