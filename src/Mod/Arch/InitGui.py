@@ -61,7 +61,7 @@ class ArchWorkbench(Workbench):
         self.archtools = ["Arch_Wall","Arch_Structure","Arch_Cell",
                      "Arch_Floor","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Axis",
-                     "Arch_SectionPlane","Arch_Add","Arch_Remove"]
+                     "Arch_SectionPlane","Arch_Roof","Arch_Add","Arch_Remove"]
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Rectangle",
                       "Draft_Polygon","Draft_Arc",
                       "Draft_Circle","Draft_Dimension",
