@@ -20,6 +20,7 @@ SET(Arch_SRCS
     ArchWindow.py
     ArchAxis.py
     ArchVRM.py
+    ArchRoof.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
