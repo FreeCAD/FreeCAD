@@ -260,8 +260,6 @@ class Component:
                         "Other shapes that are appended to this wall")
         obj.addProperty("App::PropertyLinkList","Subtractions","Base",
                         "Other shapes that are subtracted from this wall")
-        obj.addProperty("App::PropertyVector","Normal","Base",
-                        "The normal extrusion direction of this wall (keep (0,0,0) for automatic normal)")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None

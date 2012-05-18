@@ -251,6 +251,8 @@ class _Wall(ArchComponent.Component):
                         "The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")
         obj.addProperty("App::PropertyEnumeration","Align","Base",
                         "The alignment of this wall on its base object, if applicable")
+        obj.addProperty("App::PropertyVector","Normal","Base",
+                        "The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
         obj.Align = ['Left','Right','Center']
         self.Type = "Wall"
         obj.Width = 0.1

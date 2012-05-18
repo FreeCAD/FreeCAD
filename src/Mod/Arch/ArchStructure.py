@@ -86,6 +86,8 @@ class _Structure(ArchComponent.Component):
                         "The height or extrusion depth of this element. Keep 0 for automatic")
         obj.addProperty("App::PropertyLinkList","Axes","Base",
                         "Axes systems this structure is built on")
+        obj.addProperty("App::PropertyVector","Normal","Base",
+                        "The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
         self.Type = "Structure"
         
     def execute(self,obj):
