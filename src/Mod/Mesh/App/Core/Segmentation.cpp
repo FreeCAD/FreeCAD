@@ -35,6 +35,10 @@ void MeshSurfaceSegment::Initialize(unsigned long)
 {
 }
 
+void MeshSurfaceSegment::AddFacet(const MeshFacet&)
+{
+}
+
 void MeshSurfaceSegment::AddSegment(const std::vector<unsigned long>& segm)
 {
     if (segm.size() >= minFacets) {
@@ -76,8 +80,13 @@ bool MeshDistancePlanarSegment::TestFacet (const MeshFacet& face) const
             return false;
     }
 
-    fitter->AddPoint(triangle.GetGravityPoint());
     return true;
+}
+
+void MeshDistancePlanarSegment::AddFacet(const MeshFacet& face)
+{
+    MeshGeomFacet triangle = kernel.GetFacet(face);
+    fitter->AddPoint(triangle.GetGravityPoint());
 }
 
 // --------------------------------------------------------
@@ -153,7 +162,7 @@ bool MeshCurvatureFreeformSegment::TestFacet (const MeshFacet &rclFacet) const
 
 // --------------------------------------------------------
 
-MeshSurfaceVisitor::MeshSurfaceVisitor (const MeshSurfaceSegment& segm, std::vector<unsigned long> &indices)
+MeshSurfaceVisitor::MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<unsigned long> &indices)
   : indices(indices), segm(segm)
 {
 }
@@ -172,6 +181,7 @@ bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
                                 unsigned long ulFInd, unsigned long)
 {
     indices.push_back(ulFInd);
+    segm.AddFacet(face);
     return true;
 }
 
