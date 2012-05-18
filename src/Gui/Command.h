@@ -238,7 +238,7 @@ public:
     /// import an external (or own) module only once 
     static void addModule(DoCmd_Type eType,const char* sModuleName);
     /// assures the switch to a certain workbench, if already in the workbench, does nothing.
-    static bool assureWorkbench(const char * sName);
+    static std::string assureWorkbench(const char * sName);
 
     static void copyVisual(const char* to, const char* attr, const char* from);
     static void copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from);

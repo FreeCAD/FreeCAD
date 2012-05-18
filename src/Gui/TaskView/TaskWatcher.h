@@ -97,6 +97,23 @@ public:
 
 };
 
+// --------------------------------------------------------------------------
+
+/// Special watcher class for showing commands when nothing is selected and a active document is there
+class GuiExport TaskWatcherCommandsNoSelection : public TaskWatcherCommands
+{
+    Q_OBJECT
+
+public:
+    TaskWatcherCommandsNoSelection(const char* commands[], const char* name, const char* pixmap);
+    ~TaskWatcherCommandsNoSelection();
+
+public:
+    /// is called wenn the document or the Selection changes. 
+    virtual bool shouldShow(void);
+
+};
+
 
 
 } //namespace TaskView

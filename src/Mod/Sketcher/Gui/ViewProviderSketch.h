@@ -238,6 +238,8 @@ protected:
     // reference coordinates for relative operations
     double xInit,yInit;
     bool relative;
+
+    std::string oldWb;
 };
 
 } // namespace PartGui

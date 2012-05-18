@@ -453,18 +453,18 @@ void Command::addModule(DoCmd_Type eType,const char* sModuleName)
     }
 }
 
-bool Command::assureWorkbench(const char * sName)
+std::string Command::assureWorkbench(const char * sName)
 {
     // check if the WB is already open? 
-    Workbench* actWb = WorkbenchManager::instance()->active();
+    std::string actName = WorkbenchManager::instance()->active()->name();
     // if yes, do nothing
-    if(actWb->name() == sName)
-        return false;
+    if(actName == sName)
+        return actName;
 
     // else - switch to new WB
     doCommand(Gui,"Gui.activateWorkbench('%s')",sName);
 
-    return true;
+    return actName;
 
 }
 
