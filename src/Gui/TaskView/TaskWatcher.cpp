@@ -169,4 +169,5 @@ bool TaskWatcherCommandsEmptySelection::shouldShow()
     return (App::GetApplication().getActiveDocument() && Gui::Selection().size() == 0);
 }
 
+
 #include "moc_TaskWatcher.cpp"

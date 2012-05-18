@@ -35,6 +35,8 @@
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
 
+#include <Mod/PartDesign/App/Body.h>
+
 using namespace PartDesignGui;
 
 #if 0 // needed for Qt's lupdate utility
@@ -43,6 +45,9 @@ using namespace PartDesignGui;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
 #endif
+
+extern PartDesign::Body *ActivePartObject;
+
 
 /// @namespace PartDesignGui @class Workbench
 TYPESYSTEM_SOURCE(PartDesignGui::Workbench, Gui::StdWorkbench)
@@ -62,16 +67,7 @@ void Workbench::activated()
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
-    //Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-    //    "FROM Robot SELECT TrajectoryObject COUNT 1"
-    //    "FROM Robot SELECT RobotObject COUNT 1",
-    //    RobotAndTrac,
-    //    "Trajectory tools",
-    //    "Robot_InsertWaypoint"
-    //));
-
-    //Watcher.push_back(new TaskWatcherRobot);
-
+ 
     const char* Edge[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
@@ -149,14 +145,26 @@ void Workbench::activated()
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
+
+    // set the previous used active Body
+    if(oldActive != "")
+        Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(App.activeDocument().%s)",oldActive.c_str());
+
 }
 
 void Workbench::deactivated()
 {
+    // remember the body for later activation 
+    if(ActivePartObject)
+        oldActive = ActivePartObject->getNameInDocument();
+    else
+        oldActive = "";
+    // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
 
     Gui::Workbench::deactivated();
     removeTaskWatcher();
+
 
 }
 

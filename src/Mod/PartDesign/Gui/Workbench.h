@@ -48,6 +48,8 @@ protected:
   Gui::MenuItem* setupMenuBar() const;
   Gui::ToolBarItem* setupToolBars() const;
   Gui::ToolBarItem* setupCommandBars() const;
+
+  std::string oldActive;
 };
 
 } // namespace PartDesignGui

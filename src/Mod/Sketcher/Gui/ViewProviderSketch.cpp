@@ -4156,6 +4156,9 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
+    // always change to sketcher WB, remember where we come from 
+    oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
+
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -4580,6 +4583,9 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
+
+    // return to the WB before edeting the sketch
+    Gui::Command::assureWorkbench(oldWb.c_str());
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
