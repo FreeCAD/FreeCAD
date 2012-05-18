@@ -78,17 +78,19 @@ class _CommandWindow:
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Window"),
                 'Accel': "W, N",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from scratch or from a selected object (wire, rectangle or sketch)")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Window")
-        if sel:
-            for obj in sel:
-                makeWindow(obj)
-        else:
-            rect = Draft.makeRectangle(1,1)
-            makeWindow(rect)
+        FreeCAD.ActiveDocument.openTransaction("Create Window")
+        for obj in sel:
+            makeWindow(obj)
         FreeCAD.ActiveDocument.commitTransaction()
        
 class _Window(ArchComponent.Component):
