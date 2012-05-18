@@ -177,7 +177,8 @@ class Renderer:
                 v = self.wp.getLocalCoords(v)
                 verts.append(v)
             verts.append(verts[0])
-            wires.append(Part.makePolygon(verts))
+            if len(verts) > 2:
+                wires.append(Part.makePolygon(verts))
         try:
             sh = ArchCommands.makeFace(wires)
         except:
