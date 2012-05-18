@@ -34,7 +34,7 @@ class _CommandSectionPlane:
         return {'Pixmap'  : 'Arch_SectionPlane',
                 'Accel': "S, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Adds a section plane object to the document")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -46,6 +46,8 @@ class _CommandSectionPlane:
         g = []
         for o in sel:
             if o.isDerivedFrom("Part::Feature"):
+                g.append(o)
+            elif o.isDerivedFrom("App::DocumentObjectGroup"):
                 g.append(o)
         obj.Objects = g
         page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage","Page")
@@ -179,6 +181,7 @@ class _ArchDrawingView:
         if hasattr(obj,"Source"):
             if obj.Source:
                 if obj.Source.Objects:
+                    objs = Draft.getGroupContents(obj.Sourc.Objects)
                     svg = ''
 
                     # generating SVG
@@ -188,7 +191,7 @@ class _ArchDrawingView:
                         import ArchVRM
                         render = ArchVRM.Renderer()
                         render.setWorkingPlane(obj.Source.Placement)
-                        render.addObjects(obj.Source.Objects)
+                        render.addObjects(objs)
                         render.cut(obj.Source.Shape)
                         svg += render.getViewSVG(linewidth=linewidth)
                         svg += render.getSectionSVG(linewidth=linewidth*2)
@@ -197,7 +200,7 @@ class _ArchDrawingView:
                     else:
                         # render using the Drawing module
                         shapes = []
-                        for o in obj.Source.Objects:
+                        for o in objs:
                             if o.isDerivedFrom("Part::Feature"):
                                 shapes.append(o.Shape)
                         if shapes:
