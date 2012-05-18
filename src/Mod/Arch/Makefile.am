@@ -27,7 +27,8 @@ data_DATA = \
 		ArchWindow.py \
 		ArchCommands.py \
 		ArchAxis.py \
-		ArchVRM.py
+		ArchVRM.py \
+		ArchRoof.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
