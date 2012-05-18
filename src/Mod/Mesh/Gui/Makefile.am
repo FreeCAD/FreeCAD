@@ -7,6 +7,7 @@ BUILT_SOURCES=\
 		ui_DlgSettingsMeshView.h \
 		ui_DlgSmoothing.h \
 		ui_RemoveComponents.h \
+		ui_Segmentation.h \
 		moc_DlgEvaluateMeshImp.cpp \
 		moc_DlgRegularSolidImp.cpp \
 		moc_DlgSettingsMeshView.cpp \
@@ -127,6 +128,7 @@ EXTRA_DIST = \
 		DlgSettingsMeshView.ui \
 		DlgSmoothing.ui \
 		RemoveComponents.ui \
+		Segmentation.ui \
 		Resources/Mesh.qrc \
 		Resources/translations/Mesh_af.qm \
 		Resources/translations/Mesh_af.ts \
