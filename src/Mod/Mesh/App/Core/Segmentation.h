@@ -42,6 +42,7 @@ public:
     virtual ~MeshSurfaceSegment() {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
     virtual void Initialize(unsigned long);
+    virtual void AddFacet(const MeshFacet& rclFacet);
     void AddSegment(const std::vector<unsigned long>&);
     const std::vector<MeshSegment>& GetSegments() const { return segments; }
 
@@ -68,8 +69,9 @@ class MeshExport MeshDistancePlanarSegment : public MeshDistanceSurfaceSegment
 public:
     MeshDistancePlanarSegment(const MeshKernel& mesh, unsigned long minFacets, float tol);
     virtual ~MeshDistancePlanarSegment();
-    bool TestFacet (const MeshFacet &rclFacet) const;
+    bool TestFacet (const MeshFacet& rclFacet) const;
     void Initialize(unsigned long);
+    void AddFacet(const MeshFacet& rclFacet);
 
 protected:
     Base::Vector3f basepoint;
@@ -134,7 +136,7 @@ private:
 class MeshExport MeshSurfaceVisitor : public MeshFacetVisitor
 {
 public:
-    MeshSurfaceVisitor (const MeshSurfaceSegment& segm, std::vector<unsigned long> &indices);
+    MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<unsigned long> &indices);
     virtual ~MeshSurfaceVisitor ();
     bool AllowVisit (const MeshFacet& face, const MeshFacet&, 
                      unsigned long, unsigned long, unsigned short neighbourIndex);
@@ -143,7 +145,7 @@ public:
 
 protected:
     std::vector<unsigned long>  &indices;
-    const MeshSurfaceSegment& segm;
+    MeshSurfaceSegment& segm;
 };
 
 class MeshExport MeshSegmentAlgorithm
