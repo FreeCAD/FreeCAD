@@ -142,18 +142,19 @@ void Workbench::activated()
         "Part_Box"
     ));
 
+   // set the previous used active Body
+    if(oldActive != "")
+        Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(App.activeDocument().%s)",oldActive.c_str());
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
 
-    // set the previous used active Body
-    if(oldActive != "")
-        Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(App.activeDocument().%s)",oldActive.c_str());
-
+ 
 }
 
 void Workbench::deactivated()
 {
+    removeTaskWatcher();
     // remember the body for later activation 
     if(ActivePartObject)
         oldActive = ActivePartObject->getNameInDocument();
@@ -163,7 +164,6 @@ void Workbench::deactivated()
     Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
 
     Gui::Workbench::deactivated();
-    removeTaskWatcher();
 
 
 }
