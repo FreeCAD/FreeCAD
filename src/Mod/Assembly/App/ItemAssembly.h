@@ -39,6 +39,7 @@ public:
     ItemAssembly();
 
     App::PropertyLinkList   Items;
+    App::PropertyLinkList   Annotations;
  
     /** @name methods override feature */
     //@{
