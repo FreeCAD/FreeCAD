@@ -71,13 +71,27 @@ class _Floor:
                         "The height of this floor")
         self.Type = "Floor"
         obj.Proxy = self
+        self.Object = obj
 
     def execute(self,obj):
-        pass
+        self.Object = obj
         
     def onChanged(self,obj,prop):
         pass
 
+    def addObject(self,child):
+        if hasattr(self,"Object"):
+            g = self.Object.Group
+            if not child in g:
+                g.append(child)
+                self.Object.Group = g
+        
+    def removeObject(self,child):
+        if hasattr(self,"Object"):
+            g = self.Object.Group
+            if child in g:
+                g.remove(child)
+                self.Object.Group = g
     
 class _ViewProviderFloor:
     "A View Provider for the Cell object"
