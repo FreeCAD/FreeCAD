@@ -4584,6 +4584,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
 
+    //Gui::Application::Instance->
+
     // return to the WB before edeting the sketch
     Gui::Command::assureWorkbench(oldWb.c_str());
 }
