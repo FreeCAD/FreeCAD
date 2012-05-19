@@ -84,9 +84,12 @@ std::vector<std::string> ViewProviderItemAssembly::getDisplayModes(void) const
 
 std::vector<App::DocumentObject*> ViewProviderItemAssembly::claimChildren(void)const
 {
+    std::vector<App::DocumentObject*> temp(static_cast<Assembly::ItemAssembly*>(getObject())->Items.getValues());
+    temp.insert(temp.end(),
+                static_cast<Assembly::ItemAssembly*>(getObject())->Annotations.getValues().begin(),
+                static_cast<Assembly::ItemAssembly*>(getObject())->Annotations.getValues().end());
 
-    return static_cast<Assembly::ItemAssembly*>(getObject())->Items.getValues();
-
+    return temp;
 }
 
 std::vector<App::DocumentObject*> ViewProviderItemAssembly::claimChildren3D(void)const

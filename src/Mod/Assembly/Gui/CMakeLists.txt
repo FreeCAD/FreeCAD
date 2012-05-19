@@ -35,6 +35,8 @@ SET(AssemblyGuiViewProvider_SRCS
     ViewProviderPart.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderConstraintGroup.cpp
+    ViewProviderConstraintGroup.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${AssemblyGuiViewProvider_SRCS})
 
