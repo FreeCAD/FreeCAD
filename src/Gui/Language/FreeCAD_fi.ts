@@ -5314,8 +5314,8 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Standardi-Näkymä</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Näyttötila</translation>
+      <source>Document window</source>
+      <translation>Asiakirjan ikkuna</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>

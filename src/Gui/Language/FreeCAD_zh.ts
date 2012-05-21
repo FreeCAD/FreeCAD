@@ -5313,8 +5313,8 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>标准视图</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>显示模式</translation>
+      <source>Document window</source>
+      <translation>文档窗口</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
