@@ -59,6 +59,7 @@
 #include "DemoMode.h"
 #include "TextureMapping.h"
 #include "Utilities.h"
+#include "NavigationStyle.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -1817,13 +1818,7 @@ void StdViewZoomIn::activated(int iMsg)
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if ( view ) {
         View3DInventorViewer* viewer = view->getViewer();
-
-        // send an event to the GL widget to use the internal View3DInventorViewer::zoom() method
-        // do only one step to zoom in 
-        SoMouseButtonEvent e;
-        e.setButton(SoMouseButtonEvent::BUTTON5);
-        e.setState(SoMouseButtonEvent::DOWN);
-        viewer->sendSoEvent(&e);
+        viewer->navigationStyle()->zoomIn();
     }
 }
 
@@ -1857,12 +1852,7 @@ void StdViewZoomOut::activated(int iMsg)
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
-        // send an event to the GL widget to use the internal View3DInventorViewer::zoom() method
-        // do only one step to zoom out 
-        SoMouseButtonEvent e;
-        e.setButton(SoMouseButtonEvent::BUTTON4);
-        e.setState(SoMouseButtonEvent::DOWN);
-        viewer->sendSoEvent(&e);
+        viewer->navigationStyle()->zoomOut();
     }
 }
 
