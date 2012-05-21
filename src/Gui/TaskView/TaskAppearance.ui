@@ -33,7 +33,7 @@
      <item>
       <widget class="QLabel" name="textLabel1" >
        <property name="text" >
-        <string>Display mode:</string>
+        <string>Document window:</string>
        </property>
       </widget>
      </item>

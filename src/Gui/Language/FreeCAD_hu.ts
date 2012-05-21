@@ -5318,8 +5318,8 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Standard-nézet</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Megjelenítési mód</translation>
+      <source>Document window</source>
+      <translation>Dokumentum ablak</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
