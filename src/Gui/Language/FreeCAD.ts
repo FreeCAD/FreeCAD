@@ -5302,7 +5302,7 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display mode</source>
+        <source>Document window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
