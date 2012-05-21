@@ -5323,8 +5323,8 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
       <translation>Vista estándar</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Modo de visualización</translation>
+      <source>Document window</source>
+      <translation>Ventana de documento</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
