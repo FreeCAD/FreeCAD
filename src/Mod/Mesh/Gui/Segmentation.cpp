@@ -24,12 +24,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 #endif
 
 #include "Segmentation.h"
 #include "ui_Segmentation.h"
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 
 #include <Mod/Mesh/App/Core/Segmentation.h>
 #include <Mod/Mesh/App/Core/Curvature.h>
@@ -89,18 +91,32 @@ void Segmentation::accept()
     finder.FindSegments(segm);
 
     App::Document* document = App::GetApplication().getActiveDocument();
+    document->openTransaction("Segmentation");
+
+    std::string internalname = "Segments_";
+    internalname += myMesh->getNameInDocument();
+    App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(document->addObject
+        ("App::DocumentObjectGroup", internalname.c_str()));
+    std::string labelname = "Segments ";
+    labelname += myMesh->Label.getValue();
+    group->Label.setValue(labelname);
     for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator it = segm.begin(); it != segm.end(); ++it) {
         const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
-            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(document->addObject("Mesh::Feature", "Segment"));
+            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();
             delete segment;
+
+            std::stringstream label;
+            label << feaSegm->Label.getValue() << " (" << (*it)->GetType() << ")";
+            feaSegm->Label.setValue(label.str());
         }
         delete (*it);
     }
+    document->commitTransaction();
 }
 
 void Segmentation::changeEvent(QEvent *e)
