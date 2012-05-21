@@ -41,6 +41,7 @@ public:
         : minFacets(minFacets) {}
     virtual ~MeshSurfaceSegment() {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
+    virtual const char* GetType() const = 0;
     virtual void Initialize(unsigned long);
     virtual void AddFacet(const MeshFacet& rclFacet);
     void AddSegment(const std::vector<unsigned long>&);
@@ -70,6 +71,7 @@ public:
     MeshDistancePlanarSegment(const MeshKernel& mesh, unsigned long minFacets, float tol);
     virtual ~MeshDistancePlanarSegment();
     bool TestFacet (const MeshFacet& rclFacet) const;
+    const char* GetType() const { return "Plane"; }
     void Initialize(unsigned long);
     void AddFacet(const MeshFacet& rclFacet);
 
@@ -97,6 +99,7 @@ public:
     MeshCurvaturePlanarSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol)
         : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
+    virtual const char* GetType() const { return "Plane"; }
 
 private:
     float tolerance;
@@ -109,6 +112,7 @@ public:
                                     float tolMin, float tolMax, float radius)
         : MeshCurvatureSurfaceSegment(ci, minFacets), toleranceMin(tolMin), toleranceMax(tolMax) { curvature = 1/radius;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
+    virtual const char* GetType() const { return "Cylinder"; }
 
 private:
     float curvature;
@@ -122,6 +126,7 @@ public:
     MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float radius)
         : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) { curvature = 1/radius;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
+    virtual const char* GetType() const { return "Sphere"; }
 
 private:
     float curvature;
@@ -136,6 +141,7 @@ public:
         : MeshCurvatureSurfaceSegment(ci, minFacets), c1(c1), c2(c2),
           toleranceMin(tolMin), toleranceMax(tolMax) {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
+    virtual const char* GetType() const { return "Freeform"; }
 
 private:
     float c1, c2;
