@@ -106,12 +106,12 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Tolerance</string>
+         <string>Tolerance (Flat)</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="tolCyl">
+       <widget class="QDoubleSpinBox" name="tol1Cyl">
         <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
@@ -121,13 +121,30 @@
        </widget>
       </item>
       <item row="2" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Tolerance (Curved)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="tol2Cyl">
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
          <string>Minimum number of faces</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QSpinBox" name="numCyl">
         <property name="maximum">
          <number>100000</number>

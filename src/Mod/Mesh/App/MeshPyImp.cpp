@@ -1399,9 +1399,10 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
         Py::Tuple t(*it);
         float c1 = (float)Py::Float(t[0]);
         float c2 = (float)Py::Float(t[1]);
-        float tol = (float)Py::Float(t[2]);
-        int num = (int)Py::Int(t[3]);
-        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol, c1, c2));
+        float tol1 = (float)Py::Float(t[2]);
+        float tol2 = (float)Py::Float(t[3]);
+        int num = (int)Py::Int(t[4]);
+        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
     finder.FindSegments(segm);
