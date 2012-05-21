@@ -84,53 +84,63 @@ protected:
 class MeshExport MeshCurvatureSurfaceSegment : public MeshSurfaceSegment
 {
 public:
-    MeshCurvatureSurfaceSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol)
-        : MeshSurfaceSegment(minFacets), info(ci), tolerance(tol) {}
+    MeshCurvatureSurfaceSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets)
+        : MeshSurfaceSegment(minFacets), info(ci) {}
 
 protected:
     const std::vector<CurvatureInfo>& info;
-    float tolerance;
 };
 
 class MeshExport MeshCurvaturePlanarSegment : public MeshCurvatureSurfaceSegment
 {
 public:
     MeshCurvaturePlanarSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol)
-        : MeshCurvatureSurfaceSegment(ci, minFacets, tol) {}
+        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
+
+private:
+    float tolerance;
 };
 
 class MeshExport MeshCurvatureCylindricalSegment : public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureCylindricalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float radius)
-        : MeshCurvatureSurfaceSegment(ci, minFacets, tol) { curvature = 1/radius;}
+    MeshCurvatureCylindricalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets,
+                                    float tolMin, float tolMax, float radius)
+        : MeshCurvatureSurfaceSegment(ci, minFacets), toleranceMin(tolMin), toleranceMax(tolMax) { curvature = 1/radius;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
 
 private:
     float curvature;
+    float toleranceMin;
+    float toleranceMax;
 };
 
 class MeshExport MeshCurvatureSphericalSegment : public MeshCurvatureSurfaceSegment
 {
 public:
     MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float radius)
-        : MeshCurvatureSurfaceSegment(ci, minFacets, tol) { curvature = 1/radius;}
+        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) { curvature = 1/radius;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
 
 private:
     float curvature;
+    float tolerance;
 };
 
 class MeshExport MeshCurvatureFreeformSegment : public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureFreeformSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float c1, float c2)
-        : MeshCurvatureSurfaceSegment(ci, minFacets, tol), c1(c1), c2(c2) {}
+    MeshCurvatureFreeformSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets,
+                                 float tolMin, float tolMax, float c1, float c2)
+        : MeshCurvatureSurfaceSegment(ci, minFacets), c1(c1), c2(c2),
+          toleranceMin(tolMin), toleranceMax(tolMax) {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
 
 private:
     float c1, c2;
+    float toleranceMin;
+    float toleranceMax;
 };
 
 class MeshExport MeshSurfaceVisitor : public MeshFacetVisitor
