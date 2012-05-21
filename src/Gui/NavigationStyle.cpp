@@ -721,6 +721,16 @@ void NavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prev
     zoom(viewer->getCamera(), (thispos[1] - prevpos[1]) * 10.0f/*20.0f*/);
 }
 
+void NavigationStyle::zoomIn()
+{
+    zoom(viewer->getCamera(), -this->zoomStep);
+}
+
+void NavigationStyle::zoomOut()
+{
+    zoom(viewer->getCamera(), this->zoomStep);
+}
+
 void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& pos)
 {
     SbBool zoomAtCur = this->zoomAtCursor;
