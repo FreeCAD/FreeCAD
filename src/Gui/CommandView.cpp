@@ -1173,7 +1173,7 @@ StdViewDockUndockFullscreen::StdViewDockUndockFullscreen()
   : Command("Std_ViewDockUndockFullscreen")
 {
     sGroup      = QT_TR_NOOP("Standard-View");
-    sMenuText   = QT_TR_NOOP("Display mode");
+    sMenuText   = QT_TR_NOOP("Document window");
     sToolTipText= QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis  = "Std_ViewDockUndockFullscreen";
     sStatusTip  = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
