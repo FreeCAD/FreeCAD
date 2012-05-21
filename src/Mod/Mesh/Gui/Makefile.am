@@ -35,6 +35,7 @@ libMeshGui_la_SOURCES=\
 		PropertyEditorMesh.cpp \
 		RemoveComponents.cpp \
 		RemoveComponents.h \
+		Segmentation.cpp \
 		SoFCIndexedFaceSet.cpp \
 		SoFCMeshObject.cpp \
 		ViewProvider.cpp \
@@ -48,6 +49,7 @@ libMeshGui_la_SOURCES=\
 
 include_HEADERS=\
 		PropertyEditorMesh.h \
+		Segmentation.h \
 		SoFCIndexedFaceSet.h \
 		SoFCMeshObject.h \
 		ViewProvider.h \
