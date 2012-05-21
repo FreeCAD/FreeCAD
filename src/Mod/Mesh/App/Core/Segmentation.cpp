@@ -108,22 +108,12 @@ bool MeshCurvatureCylindricalSegment::TestFacet (const MeshFacet &rclFacet) cons
 {
     for (int i=0; i<3; i++) {
         const CurvatureInfo& ci = info[rclFacet._aulPoints[i]];
-        if (ci.fMaxCurvature > ci.fMinCurvature) {
-            // convexe
-            if (fabs(ci.fMinCurvature) > tolerance)
-                return false;
-            float diff = ci.fMaxCurvature - curvature;
-            if (fabs(diff) > tolerance)
-                return false;
-        }
-        else {
-            // concave
-            if (fabs(ci.fMaxCurvature) > tolerance)
-                return false;
-            float diff = ci.fMinCurvature + curvature;
-            if (fabs(diff) > tolerance)
-                return false;
-        }
+        float fMax = std::max<float>(fabs(ci.fMaxCurvature), fabs(ci.fMinCurvature));
+        float fMin = std::min<float>(fabs(ci.fMaxCurvature), fabs(ci.fMinCurvature));
+        if (fMin > toleranceMin)
+            return false;
+        if (fabs(fMax - curvature) > toleranceMax)
+            return false;
     }
 
     return true;
@@ -151,9 +141,9 @@ bool MeshCurvatureFreeformSegment::TestFacet (const MeshFacet &rclFacet) const
 {
     for (int i=0; i<3; i++) {
         const CurvatureInfo& ci = info[rclFacet._aulPoints[i]];
-        if (fabs(ci.fMinCurvature-c2) > tolerance)
+        if (fabs(ci.fMinCurvature-c2) > toleranceMin)
             return false;
-        if (fabs(ci.fMaxCurvature-c1) > tolerance)
+        if (fabs(ci.fMaxCurvature-c1) > toleranceMax)
             return false;
     }
 
