@@ -202,6 +202,7 @@ class fcformat:
         self.makeBlocks = params.GetBool("groupLayers")
         self.stdSize = params.GetBool("dxfStdSize")
         self.importDxfHatches = params.GetBool("importDxfHatches")
+        self.renderPolylineWidth = params.GetBool("renderPolylineWidth")
         bparams = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
 
         if self.paramstyle > 1:
@@ -403,7 +404,21 @@ def drawPolyline(polyline,shapemode=False,num=None):
                         warn(polyline,num)
         if edges:
             try:
-                if (fmt.paramstyle >= 4) and (not curves) and (not shapemode):
+                width = rawValue(polyline,43)
+                if width and fmt.renderPolylineWidth:
+                    w = Part.Wire(edges)
+                    w1 = w.makeOffset(width/2) 
+                    if polyline.closed:
+                        w2 = w.makeOffset(-width/2)
+                        w1 = Part.Face(w1)
+                        w2 = Part.Face(w2)
+                        if w1.BoundBox.DiagonalLength > w2.BoundBox.DiagonalLength:
+                            return w1.cut(w2)
+                        else:
+                            return w2.cut(w1)
+                    else:
+                        return Part.Face(w1)
+                elif (fmt.paramstyle >= 4) and (not curves) and (not shapemode):
                     ob = Draft.makeWire(verts)
                     ob.Closed = polyline.closed
                     return ob
