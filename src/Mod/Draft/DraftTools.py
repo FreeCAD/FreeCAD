@@ -416,7 +416,7 @@ class Line(Creator):
             todo.delay(self.doc.removeObject,old)
         self.obj = None
         if (len(self.node) > 1):
-            self.commit(translate("draft","Create Wire"),
+            self.commit(translate("draft","Create DWire"),
                         partial(Draft.makeWire,self.node,closed,
                                 face=self.ui.fillmode,support=self.support))
         if self.ui:
@@ -456,7 +456,7 @@ class Line(Creator):
                         if ((point-self.node[0]).Length < Draft.tolerance()):
                             self.undolast()
                             self.finish(True,cont=True)
-                            msg(translate("draft", "Wire has been closed\n"))
+                            msg(translate("draft", "DWire has been closed\n"))
 
     def undolast(self):
         "undoes last line segment"
@@ -523,10 +523,10 @@ class Wire(Line):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Wire',
                 'Accel' : "W, I",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Wire"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point wire. CTRL to snap, SHIFT to constrain")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "DWire"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
     def Activated(self):
-        Line.Activated(self,name=str(translate("draft","Wire")))
+        Line.Activated(self,name=str(translate("draft","DWire")))
 
     
 class BSpline(Line):
