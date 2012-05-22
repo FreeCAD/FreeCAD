@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2009, 2010                                              *
-#*   Yorik van Havre <yorik@gmx.fr>, Ken Cline <cline@frii.com>            *  
+#*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
