@@ -139,7 +139,7 @@ class TaskPanel:
         """ Set user interface locale strings. 
         """
         self.form.setWindowTitle(Translator.translate("Create a new tank"))
-        name = Translator.translate("Filling level") + " (\%)"
+        name = Translator.translate("Filling level") + " (%)"
         self.form.findChild(QtGui.QLabel, "LevelLabel").setText(name)
         name = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n<html><body>'
         name = name + Translator.translate("Density")
