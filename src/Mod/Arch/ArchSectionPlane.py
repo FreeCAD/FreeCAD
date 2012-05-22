@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math,Draft,ArchCommands, DraftVecUtils
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,math,Draft,ArchCommands, DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
@@ -197,6 +197,7 @@ class _ArchDrawingView:
                         
                     else:
                         # render using the Drawing module
+                        import Drawing
                         shapes = []
                         for o in objs:
                             if o.isDerivedFrom("Part::Feature"):
