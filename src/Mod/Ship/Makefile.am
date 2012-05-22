@@ -75,7 +75,10 @@ nobase_data_DATA = \
 	tankWeights/TaskPanel.ui \
 	tankCreateTank/__init__.py \
 	tankCreateTank/TaskPanel.py \
-	tankCreateTank/TaskPanel.ui
+	tankCreateTank/TaskPanel.ui \
+	tankGZ/__init__.py \
+	tankGZ/TaskPanel.py \
+	tankGZ/TaskPanel.ui
 
 CLEANFILES = $(BUILT_SOURCES)
 
