@@ -29,8 +29,7 @@ __url__ = ["http://yorik.orgfree.com","http://free-cad.sourceforge.net"]
 This script imports OCA/gcad files into FreeCAD.
 '''
 
-import FreeCAD, os, Part, math
-from draftlibs import fcvec, fcgeo
+import FreeCAD, os, Part, math, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 
 try: import FreeCADGui
@@ -56,7 +55,7 @@ def getpoint(data):
             if (data[1][0] == "R"):
                 return objects[data[0]].add(objects[data[1]])
             elif (data[1][0] == "C"):
-                return fcgeo.findProjection(objects[data[0]],objects[data[1]])
+                return DraftGeomUtils.findProjection(objects[data[0]],objects[data[1]])
     elif (data[0][0] == "C"):
         if objects[data[0]]:
             p1 = objects[data[0]].Curve.Position
@@ -65,7 +64,7 @@ def getpoint(data):
             else:
                 if (data[1][0] == "L"):
                     l = objects[data[1]]
-                    return p1.add(fcgeo.vec(l))
+                    return p1.add(DraftGeomUtils.vec(l))
               
 def getarea(data):
     "turns an OCA area definition into a FreeCAD Part Wire"
@@ -111,7 +110,7 @@ def getarc(data):
         c = Part.Circle()
         c.Center = verts[0]
         if rad: c.Radius = rad
-        else: c.Radius = fcvec.new(verts[0],verts[1]).Length
+        else: c.Radius = DraftVecUtils.new(verts[0],verts[1]).Length
     elif (data[0][0] == "L"):
         # 2-lines circle
         lines = []
@@ -121,7 +120,7 @@ def getarc(data):
                 rad = float(data[p+1])
             elif (data[p][0] == "L"):
                 lines.append(objects[data[p]])
-        circles = fcgeo.circleFrom2LinesRadius(lines[0],lines[1],rad)
+        circles = DraftGeomUtils.circleFrom2LinesRadius(lines[0],lines[1],rad)
         if circles: c = circles[0]
     if c: return c.toShape()
 
@@ -268,7 +267,7 @@ def export(exportList,filename):
                 oca.write("C"+str(count)+"=ARC ")
                 oca.write(writepoint(e.Vertexes[0].Point))
                 oca.write(" ")
-                oca.write(writepoint(fcgeo.findMidpoint(e)))
+                oca.write(writepoint(DraftGeomUtils.findMidpoint(e)))
                 oca.write(" ")
                 oca.write(writepoint(e.Vertexes[-1].Point))
             else:

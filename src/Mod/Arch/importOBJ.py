@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-from draftlibs import fcgeo
+import FreeCAD, DraftGeomUtils
 
 if open.__module__ == '__builtin__':
     pythonopen = open
@@ -42,7 +41,7 @@ def getIndices(shape,offset):
     for f in shape.Faces:
         fi = ""
         # OCC vertices are unsorted. We need to sort in the right order...
-        edges = fcgeo.sortEdges(f.Wire.Edges)
+        edges = DraftGeomUtils.sortEdges(f.Wire.Edges)
         print edges
         for e in edges:
             print e.Vertexes[0].Point,e.Vertexes[1].Point
