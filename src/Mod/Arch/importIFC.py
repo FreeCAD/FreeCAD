@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import ifcReader, FreeCAD, Arch, Draft, os, sys, time, Part
-from draftlibs import fcvec
+import ifcReader, FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils
 
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
@@ -448,7 +447,7 @@ def getPlacement(entity):
         z = getVector(entity.Axis)
         y = z.cross(x)
         loc = getVector(entity.Location)
-        m = fcvec.getPlaneRotation(x,y,z)
+        m = DraftVecUtils.getPlaneRotation(x,y,z)
         pl = FreeCAD.Placement(m)
         pl.move(loc)
     elif entity.type == "IFCLOCALPLACEMENT":

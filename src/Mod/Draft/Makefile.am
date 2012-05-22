@@ -13,6 +13,8 @@ data_DATA = \
 		DraftGui.py \
 		DraftSnap.py \
 		DraftTrackers.py \
+		DraftVecUtils.py \
+		DraftGeomUtils.py \
 		WorkingPlane.py \
 		importOCA.py \
 		importDXF.py \
@@ -28,8 +30,6 @@ nobase_data_DATA = \
 		draftlibs/dxfImportObjects.py \
 		draftlibs/dxfLibrary.py \
 		draftlibs/dxfReader.py \
-		draftlibs/fcvec.py \
-		draftlibs/fcgeo.py \
 		draftlibs/__init__.py
 
 CLEANFILES = $(BUILT_SOURCES)

@@ -26,9 +26,8 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 
-import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers
+import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils
 from DraftGui import todo,getMainWindow
-from draftlibs import fcvec
 from FreeCAD import Vector
 from pivy import coin
 from PyQt4 import QtCore,QtGui
@@ -110,9 +109,8 @@ class Snapper:
         be True to constrain the point against the closest working plane axis.
         Screenpos can be a list, a tuple or a coin.SbVec2s object."""
 
-        global Part,fcgeo
-        import Part
-        from draftlibs import fcgeo
+        global Part, DraftGeomUtils
+        import Part, DraftGeomUtils
 
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
@@ -355,7 +353,7 @@ class Snapper:
                             for e in edges:
                                 if isinstance(e.Curve,Part.Line):
                                     np = self.getPerpendicular(e,point)
-                                    if not fcgeo.isPtOnEdge(np,e):
+                                    if not DraftGeomUtils.isPtOnEdge(np,e):
                                         if (np.sub(point)).Length < self.radius:
                                             if self.isEnabled('extension'):
                                                 if np != e.Vertexes[0].Point:
@@ -372,7 +370,7 @@ class Snapper:
                                         else:
                                             if self.isEnabled('parallel'):
                                                 if last:
-                                                    de = Part.Line(last,last.add(fcgeo.vec(e))).toShape()  
+                                                    de = Part.Line(last,last.add(DraftGeomUtils.vec(e))).toShape()  
                                                     np = self.getPerpendicular(de,point)
                                                     if (np.sub(point)).Length < self.radius:
                                                         if self.tracker:
@@ -398,13 +396,13 @@ class Snapper:
                           FreeCAD.Vector(0,0,1)]
                 for a in self.polarAngles:
                         if a == 90:
-                            vecs.extend([ax[0],fcvec.neg(ax[0])])
-                            vecs.extend([ax[1],fcvec.neg(ax[1])])
+                            vecs.extend([ax[0],DraftVecUtils.neg(ax[0])])
+                            vecs.extend([ax[1],DraftVecUtils.neg(ax[1])])
                         else:
-                            v = fcvec.rotate(ax[0],math.radians(a),ax[2])
-                            vecs.extend([v,fcvec.neg(v)])
-                            v = fcvec.rotate(ax[1],math.radians(a),ax[2])
-                            vecs.extend([v,fcvec.neg(v)])
+                            v = DraftVecUtils.rotate(ax[0],math.radians(a),ax[2])
+                            vecs.extend([v,DraftVecUtils.neg(v)])
+                            v = DraftVecUtils.rotate(ax[1],math.radians(a),ax[2])
+                            vecs.extend([v,DraftVecUtils.neg(v)])
                 for v in vecs:
                     de = Part.Line(last,last.add(v)).toShape()  
                     np = self.getPerpendicular(de,point)
@@ -457,7 +455,7 @@ class Snapper:
         snaps = []
         if self.isEnabled("midpoint"):
             if isinstance(shape,Part.Edge):
-                mp = fcgeo.findMidpoint(shape)
+                mp = DraftGeomUtils.findMidpoint(shape)
                 if mp:
                     snaps.append([mp,'midpoint',mp])
         return snaps
@@ -472,7 +470,7 @@ class Snapper:
                         np = self.getPerpendicular(shape,last)
                     elif isinstance(shape.Curve,Part.Circle):
                         dv = last.sub(shape.Curve.Center)
-                        dv = fcvec.scaleTo(dv,shape.Curve.Radius)
+                        dv = DraftVecUtils.scaleTo(dv,shape.Curve.Radius)
                         np = (shape.Curve.Center).add(dv)
                     elif isinstance(shape.Curve,Part.BSplineCurve):
                         pr = shape.Curve.parameter(last)
@@ -493,7 +491,7 @@ class Snapper:
                             if self.constraintAxis:
                                 tmpEdge = Part.Line(last,last.add(self.constraintAxis)).toShape()
                                 # get the intersection points
-                                pt = fcgeo.findIntersection(tmpEdge,shape,True,True)
+                                pt = DraftGeomUtils.findIntersection(tmpEdge,shape,True,True)
                                 if pt:
                                     for p in pt:
                                         snaps.append([p,'ortho',p])
@@ -506,14 +504,14 @@ class Snapper:
                 tmpEdge1 = Part.Line(last,last.add(self.constraintAxis)).toShape()
                 tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
                 # get the intersection points
-                pt = fcgeo.findIntersection(tmpEdge1,tmpEdge2,True,True)
+                pt = DraftGeomUtils.findIntersection(tmpEdge1,tmpEdge2,True,True)
                 if pt:
                     return [pt[0],'ortho',pt[0]]
             if eline:
                 try:
                     tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
                     # get the intersection points
-                    pt = fcgeo.findIntersection(eline,tmpEdge2,True,True)
+                    pt = DraftGeomUtils.findIntersection(eline,tmpEdge2,True,True)
                     if pt:
                         return [pt[0],'ortho',pt[0]]
                 except:
@@ -526,7 +524,7 @@ class Snapper:
         if self.isEnabled("intersection") and self.isEnabled("extension"):
             if e1 and e2:
                 # get the intersection points
-                pts = fcgeo.findIntersection(e1,e2,True,True)
+                pts = DraftGeomUtils.findIntersection(e1,e2,True,True)
                 if pts:
                     for p in pts:
                         snaps.append([p,'intersection',p])
@@ -569,7 +567,7 @@ class Snapper:
                         if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
                             for e in obj.Shape.Edges:
                                 # get the intersection points
-                                pt = fcgeo.findIntersection(e,shape)
+                                pt = DraftGeomUtils.findIntersection(e,shape)
                                 if pt:
                                     for p in pt:
                                         snaps.append([p,'intersection',p])
@@ -597,7 +595,7 @@ class Snapper:
     def getPerpendicular(self,edge,pt):
         "returns a point on an edge, perpendicular to the given point"
         dv = pt.sub(edge.Vertexes[0].Point)
-        nv = fcvec.project(dv,fcgeo.vec(edge))
+        nv = DraftVecUtils.project(dv,DraftGeomUtils.vec(edge))
         np = (edge.Vertexes[0].Point).add(nv)
         return np
 
@@ -690,7 +688,7 @@ class Snapper:
                 self.constraintAxis = FreeCAD.DraftWorkingPlane.axis
                 
         # calculating constrained point
-        cdelta = fcvec.project(delta,self.constraintAxis)
+        cdelta = DraftVecUtils.project(delta,self.constraintAxis)
         npoint = self.basepoint.add(cdelta)
 
         # setting constrain line
