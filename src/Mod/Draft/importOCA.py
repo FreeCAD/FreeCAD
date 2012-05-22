@@ -1,7 +1,7 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2009 Yorik van Havre <yorik@gmx.fr>                     * 
+#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              * 
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU General Public License (GPL)            *
@@ -22,7 +22,7 @@
 #***************************************************************************
 
 __title__="FreeCAD Draft Workbench - OCA importer/exporter"
-__author__ = "Yorik van Havre <yorik@gmx.fr>"
+__author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://yorik.orgfree.com","http://free-cad.sourceforge.net"]
 
 '''
