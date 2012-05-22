@@ -45,7 +45,7 @@ class ShipTank:
         # Add uniqueness property to identify Tank instances
         obj.addProperty("App::PropertyBool","IsShipTank","ShipTank", str(Translator.translate("True if is a valid ship tank instance"))).IsShipTank=True
         # Add general options
-        obj.addProperty("App::PropertyFloat","Level","ShipTank", str(Translator.translate("Filling level"))).Level=level
+        obj.addProperty("App::PropertyFloat","Level","ShipTank", str(Translator.translate("Fluid filling level percentage"))).Level=level
         obj.addProperty("App::PropertyFloat","Density","ShipTank", str(Translator.translate("Inside fluid density"))).Density=density
         # Add shapes
         shape = self.computeShape(solid)
@@ -1884,3 +1884,63 @@ class ViewProviderShipTank:
         "                                                                                                                                                                                                                                                                ",
         "                                                                                                                                                                                                                                                                "};
         """
+
+def tankWeight(obj, angles=Vector(0.0,0.0,0.0), cor=Vector(0.0,0.0,0.0)):
+    """ Compute tank fluid weight and their center of gravity.
+    @param obj Tank object.
+    @param angles Tank angles, Roll, Pitch and Yaw.
+    @param cor Center or rotation.
+    @return Weight and center of gravity. None if errors detected
+    """
+    # Test if is a tank instance
+    props = obj.PropertiesList
+    try:
+        props.index("IsShipTank")
+    except ValueError:
+        return None
+    if not obj.IsShipTank:
+        return None
+    # Get object solids
+    Solids = obj.Shape.Solids
+    W = [0.0, 0.0, 0.0, 0.0]
+    for s in Solids:
+        # Get fluid volume
+        bbox  = s.BoundBox
+        z0    = bbox.ZMin
+        z1    = bbox.ZMax
+        dz    = obj.Level/100.0 * (z1-z0)
+        z     = z0 + dz
+        dx    = bbox.XMax-bbox.XMin
+        dy    = bbox.YMax-bbox.YMin
+        box   = Part.makeBox(3.0*(dx), 3.0*(dy), (z1-z0)+dz, Vector(bbox.XMin-dx, bbox.YMin-dy, bbox.ZMin-(z1-z0)))
+        fluid = s.common(box)
+        vol   = fluid.Volume
+        W[0]  = W[0] + vol*obj.Density
+        # Compute fluid solid in rotated position (non linear rotation
+        # are ussually computed as Roll -> Pitch -> Yaw).
+        s.rotate(cor, Vector(1.0,0.0,0.0), angles.x)
+        s.rotate(cor, Vector(0.0,1.0,0.0), angles.y)
+        s.rotate(cor, Vector(0.0,0.0,1.0), angles.z)
+        bbox  = s.BoundBox
+        z0    = bbox.ZMin
+        z1    = bbox.ZMax
+        dx    = bbox.XMax-bbox.XMin
+        dy    = bbox.YMax-bbox.YMin
+        Error = 0.01*vol
+        z     = 0.0
+        v     = 0.0
+        while(abs(vol - v) > Error):
+            z  = z + (vol - v) / (dx*dy)
+            dz = z - z0
+            box   = Part.makeBox(3.0*(dx), 3.0*(dy), (z1-z0)+dz, Vector(bbox.XMin-dx, bbox.YMin-dy, bbox.ZMin-(z1-z0)))
+            fluid = s.common(box)
+            v     = fluid.Volume
+            if(abs(vol - v) / (dx*dy) <= 0.000001):
+                break
+        # Add fluid moments
+        for f in fluid.Solids:
+            cog  = f.CenterOfMass
+            W[1] = W[1] + f.Volume*obj.Density*cog.x
+            W[2] = W[2] + f.Volume*obj.Density*cog.y
+            W[3] = W[3] + f.Volume*obj.Density*cog.z
+    return [W[0], W[1]/W[0], W[2]/W[0], W[3]/W[0]]

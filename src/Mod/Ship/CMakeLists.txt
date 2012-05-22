@@ -114,7 +114,14 @@ SET(ShipCreateTank_SRCS
 )
 SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS})
+SET(ShipGZ_SRCS
+	tankGZ/__init__.py
+	tankGZ/TaskPanel.py
+	tankGZ/TaskPanel.ui
+)
+SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
+
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -181,6 +188,12 @@ INSTALL(
         ${ShipCreateTank_SRCS}
     DESTINATION
         Mod/Ship/tankCreateTank
+)
+INSTALL(
+    FILES
+        ${ShipGZ_SRCS}
+    DESTINATION
+        Mod/Ship/tankGZ
 )
 INSTALL(
     FILES
