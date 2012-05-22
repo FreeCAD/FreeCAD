@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -180,13 +179,13 @@ class _CommandWall:
         n = FreeCAD.DraftWorkingPlane.axis
         bv = point.sub(b)
         dv = bv.cross(n)
-        dv = fcvec.scaleTo(dv,self.Width/2)
+        dv = DraftVecUtils.scaleTo(dv,self.Width/2)
         if self.Align == "Center":
             self.tracker.update([b,point])
         elif self.Align == "Left":
             self.tracker.update([b.add(dv),point.add(dv)])
         else:
-            dv = fcvec.neg(dv)
+            dv = DraftVecUtils.neg(dv)
             self.tracker.update([b.add(dv),point.add(dv)])
 
     def taskbox(self):
@@ -275,10 +274,10 @@ class _Wall(ArchComponent.Component):
                 f = w
         f = Part.Face(f)
         n = f.normalAt(0,0)
-        v1 = fcvec.scaleTo(n,width)
+        v1 = DraftVecUtils.scaleTo(n,width)
         f.translate(v1)
-        v2 = fcvec.neg(v1)
-        v2 = fcvec.scale(v1,-2)
+        v2 = DraftVecUtils.neg(v1)
+        v2 = DraftVecUtils.scale(v1,-2)
         f = f.extrude(v2)
         if delta:
             f.translate(delta)
@@ -290,8 +289,7 @@ class _Wall(ArchComponent.Component):
         if not obj.Base:
             return
 
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
 
         flat = False
         if hasattr(obj.ViewObject,"DisplayMode"):
@@ -304,25 +302,25 @@ class _Wall(ArchComponent.Component):
         
         def getbase(wire):
             "returns a full shape from a base wire"
-            dvec = fcgeo.vec(wire.Edges[0]).cross(normal)
+            dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
             dvec.normalize()
             if obj.Align == "Left":
                 dvec = dvec.multiply(width)
-                w2 = fcgeo.offsetWire(wire,dvec)
-                w1 = Part.Wire(fcgeo.sortEdges(wire.Edges))
-                sh = fcgeo.bind(w1,w2)
+                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                sh = DraftGeomUtils.bind(w1,w2)
             elif obj.Align == "Right":
                 dvec = dvec.multiply(width)
-                dvec = fcvec.neg(dvec)
-                w2 = fcgeo.offsetWire(wire,dvec)
-                w1 = Part.Wire(fcgeo.sortEdges(wire.Edges))
-                sh = fcgeo.bind(w1,w2)
+                dvec = DraftVecUtils.neg(dvec)
+                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                sh = DraftGeomUtils.bind(w1,w2)
             elif obj.Align == "Center":
                 dvec = dvec.multiply(width/2)
-                w1 = fcgeo.offsetWire(wire,dvec)
-                dvec = fcvec.neg(dvec)
-                w2 = fcgeo.offsetWire(wire,dvec)
-                sh = fcgeo.bind(w1,w2)
+                w1 = DraftGeomUtils.offsetWire(wire,dvec)
+                dvec = DraftVecUtils.neg(dvec)
+                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                sh = DraftGeomUtils.bind(w1,w2)
             # fixing self-intersections
             sh.fix(0.1,0,1)
             if height and (not flat):
@@ -388,7 +386,7 @@ class _Wall(ArchComponent.Component):
 
         if base:
             obj.Shape = base
-        if not fcgeo.isNull(pl):
+        if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):

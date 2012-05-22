@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent, DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -104,8 +103,7 @@ class _Roof(ArchComponent.Component):
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
-        import Part,math
-        from draftlibs import fcgeo
+        import Part, math, DraftGeomUtils
         pl = obj.Placement
 
         if obj.Base and obj.Face and obj.Angle:
@@ -116,14 +114,14 @@ class _Roof(ArchComponent.Component):
                         c = round(math.tan(math.radians(obj.Angle)),Draft.precision())
                         norm = f.normalAt(0,0)
                         d = f.BoundBox.DiagonalLength
-                        edges = fcgeo.sortEdges(f.Edges)
+                        edges = DraftGeomUtils.sortEdges(f.Edges)
                         l = len(edges)
                         edges.append(edges[0])
                         shps = []
                         for i in range(l):
-                            v = fcgeo.vec(fcgeo.angleBisection(edges[i],edges[i+1]))
+                            v = DraftGeomUtils.vec(DraftGeomUtils.angleBisection(edges[i],edges[i+1]))
                             v.normalize()
-                            bis = v.getAngle(fcgeo.vec(edges[i]))
+                            bis = v.getAngle(DraftGeomUtils.vec(edges[i]))
                             delta = 1/math.cos(bis)
                             v.multiply(delta)
                             n = (FreeCAD.Vector(norm)).multiply(c)
@@ -137,7 +135,7 @@ class _Roof(ArchComponent.Component):
                         c = c.removeSplitter()
                         if not c.isNull():
                             obj.Shape = c        
-                            if not fcgeo.isNull(pl):
+                            if not DraftGeomUtils.isNull(pl):
                                 obj.Placement = pl
 
 class _ViewProviderRoof(ArchComponent.ViewProviderComponent):

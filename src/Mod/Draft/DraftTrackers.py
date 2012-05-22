@@ -25,18 +25,16 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD,FreeCADGui,math,Draft
+import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
 from FreeCAD import Vector
-from draftlibs import fcvec
 from pivy import coin
 from DraftGui import todo
 
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
     def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False):
-        global Part, fcgeo
-        import Part
-        from draftlibs import fcgeo
+        global Part, DraftGeomUtils
+        import Part, DraftGeomUtils
         self.ontop = ontop
         color = coin.SoBaseColor()
         color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("ui")
@@ -161,8 +159,8 @@ class rectangleTracker(Tracker):
     def update(self,point):
         "sets the opposite (diagonal) point of the rectangle"
         diagonal = point.sub(self.origin)
-        inpoint1 = self.origin.add(fcvec.project(diagonal,self.v))
-        inpoint2 = self.origin.add(fcvec.project(diagonal,self.u))
+        inpoint1 = self.origin.add(DraftVecUtils.project(diagonal,self.v))
+        inpoint2 = self.origin.add(DraftVecUtils.project(diagonal,self.u))
         self.coords.point.set1Value(1,inpoint1.x,inpoint1.y,inpoint1.z)
         self.coords.point.set1Value(2,point.x,point.y,point.z)
         self.coords.point.set1Value(3,inpoint2.x,inpoint2.y,inpoint2.z)
@@ -204,7 +202,7 @@ class rectangleTracker(Tracker):
         p1 = Vector(self.coords.point.getValues()[0].getValue())
         p2 = Vector(self.coords.point.getValues()[2].getValue())
         diag = p2.sub(p1)
-        return ((fcvec.project(diag,self.u)).Length,(fcvec.project(diag,self.v)).Length)
+        return ((DraftVecUtils.project(diag,self.u)).Length,(DraftVecUtils.project(diag,self.v)).Length)
 
     def getNormal(self):
         "returns the normal of the rectangle"
@@ -233,23 +231,23 @@ class dimTracker(Tracker):
     def calc(self):
         import Part
         if (self.p1 != None) and (self.p2 != None):
-            points = [fcvec.tup(self.p1,True),fcvec.tup(self.p2,True),\
-                          fcvec.tup(self.p1,True),fcvec.tup(self.p2,True)]
+            points = [DraftVecUtils.tup(self.p1,True),DraftVecUtils.tup(self.p2,True),\
+                          DraftVecUtils.tup(self.p1,True),DraftVecUtils.tup(self.p2,True)]
             if self.p3 != None:
                 p1 = self.p1
                 p4 = self.p2
-                if fcvec.equals(p1,p4):
+                if DraftVecUtils.equals(p1,p4):
                     proj = None
                 else:
                     base = Part.Line(p1,p4).toShape()
-                    proj = fcgeo.findDistance(self.p3,base)
+                    proj = DraftGeomUtils.findDistance(self.p3,base)
                 if not proj:
                     p2 = p1
                     p3 = p4
                 else:
-                    p2 = p1.add(fcvec.neg(proj))
-                    p3 = p4.add(fcvec.neg(proj))
-                points = [fcvec.tup(p1),fcvec.tup(p2),fcvec.tup(p3),fcvec.tup(p4)]
+                    p2 = p1.add(DraftVecUtils.neg(proj))
+                    p3 = p4.add(DraftVecUtils.neg(proj))
+                points = [DraftVecUtils.tup(p1),DraftVecUtils.tup(p2),DraftVecUtils.tup(p3),DraftVecUtils.tup(p4)]
             self.coords.point.setValues(0,4,points)
 
 class bsplineTracker(Tracker):
@@ -340,7 +338,7 @@ class arcTracker(Tracker):
         center = Vector(c[0],c[1],c[2])
         base = FreeCAD.DraftWorkingPlane.u
         rad = pt.sub(center)
-        return(fcvec.angle(rad,base,FreeCAD.DraftWorkingPlane.axis))
+        return(DraftVecUtils.angle(rad,base,FreeCAD.DraftWorkingPlane.axis))
 
     def getAngles(self):
         "returns the start and end angles"
@@ -496,7 +494,7 @@ class wireTracker(Tracker):
     "A wire tracker"
     def __init__(self,wire):
         self.line = coin.SoLineSet()
-        self.closed = fcgeo.isReallyClosed(wire)
+        self.closed = DraftGeomUtils.isReallyClosed(wire)
         if self.closed:
             self.line.numVertices.setValue(len(wire.Vertexes)+1)
         else:
@@ -626,11 +624,11 @@ class gridTracker(Tracker):
         "returns the closest node from the given point"
         # get the 2D coords.
         point = FreeCAD.DraftWorkingPlane.projectPoint(point)
-        u = fcvec.project(point,FreeCAD.DraftWorkingPlane.u)
+        u = DraftVecUtils.project(point,FreeCAD.DraftWorkingPlane.u)
         lu = u.Length
         if u.getAngle(FreeCAD.DraftWorkingPlane.u) > 1.5:
             lu  = -lu
-        v = fcvec.project(point,FreeCAD.DraftWorkingPlane.v)
+        v = DraftVecUtils.project(point,FreeCAD.DraftWorkingPlane.v)
         lv = v.Length
         if v.getAngle(FreeCAD.DraftWorkingPlane.v) > 1.5:
             lv = -lv
@@ -659,8 +657,7 @@ class boxTracker(Tracker):
         Tracker.__init__(self,children=[self.trans,m,self.cube])
 
     def update(self,line=None,normal=None):
-        import WorkingPlane
-        from draftlibs import fcgeo
+        import WorkingPlane, DraftGeomUtils
         if not normal:
             normal = FreeCAD.DraftWorkingPlane.axis
         if line:
@@ -668,10 +665,10 @@ class boxTracker(Tracker):
                 bp = line[0]
                 lvec = line[1].sub(line[0])
             else:
-                lvec = fcgeo.vec(line.Shape.Edges[0])
+                lvec = DraftGeomUtils.vec(line.Shape.Edges[0])
                 bp = line.Shape.Edges[0].Vertexes[0].Point
         elif self.baseline:
-            lvec = fcgeo.vec(self.baseline.Shape.Edges[0])
+            lvec = DraftGeomUtils.vec(self.baseline.Shape.Edges[0])
             bp = self.baseline.Shape.Edges[0].Vertexes[0].Point
         else:
             return
@@ -679,12 +676,12 @@ class boxTracker(Tracker):
         self.cube.width.setValue(lvec.Length)
         p = WorkingPlane.getPlacementFromPoints([bp,bp.add(lvec),bp.add(right)])
         self.trans.rotation.setValue(p.Rotation.Q)
-        bp = bp.add(fcvec.scale(lvec,0.5))
-        bp = bp.add(fcvec.scaleTo(normal,self.cube.depth.getValue()/2))
+        bp = bp.add(DraftVecUtils.scale(lvec,0.5))
+        bp = bp.add(DraftVecUtils.scaleTo(normal,self.cube.depth.getValue()/2))
         self.pos(bp)
 
     def pos(self,p):
-        self.trans.translation.setValue(fcvec.tup(p))
+        self.trans.translation.setValue(DraftVecUtils.tup(p))
 
     def width(self,w=None):
         if w:
