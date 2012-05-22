@@ -22,9 +22,8 @@
 #***************************************************************************
 
 
-import FreeCAD, FreeCADGui, math
+import FreeCAD, FreeCADGui, math, DraftVecUtils
 from FreeCAD import Vector
-from draftlibs import fcvec
 
 __title__="FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
@@ -51,7 +50,7 @@ class plane:
                 self.stored = None
 
         def __repr__(self):
-                return "Workplane x="+str(fcvec.rounded(self.u))+" y="+str(fcvec.rounded(self.v))+" z="+str(fcvec.rounded(self.axis))
+                return "Workplane x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))
 
 	def offsetToPoint(self, p, direction=None):
 		'''
@@ -96,10 +95,10 @@ class plane:
 		self.doc = FreeCAD.ActiveDocument
 		self.axis = axis;
 		self.axis.normalize()
-		if (fcvec.equals(axis, Vector(1,0,0))):
+		if (DraftVecUtils.equals(axis, Vector(1,0,0))):
 			self.u = Vector(0,1,0)
 			self.v = Vector(0,0,1)
-                elif (fcvec.equals(axis, Vector(-1,0,0))):
+                elif (DraftVecUtils.equals(axis, Vector(-1,0,0))):
                         self.u = Vector(0,-1,0)
                         self.v = Vector(0,0,1)
                 elif upvec:
@@ -109,12 +108,12 @@ class plane:
 		else:
 			self.v = axis.cross(Vector(1,0,0))
 			self.v.normalize()
-			self.u = fcvec.rotate(self.v, -math.pi/2, self.axis)
+			self.u = DraftVecUtils.rotate(self.v, -math.pi/2, self.axis)
 		offsetVector = Vector(axis); offsetVector.multiply(offset)
 		self.position = point.add(offsetVector)
 		self.weak = False
 		# FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
-		# FreeCAD.Console.PrintMessage("Current workplane: x="+str(fcvec.rounded(self.u))+" y="+str(fcvec.rounded(self.v))+" z="+str(fcvec.rounded(self.axis))+"\n")
+		# FreeCAD.Console.PrintMessage("Current workplane: x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))+"\n")
 
 	def alignToCurve(self, shape, offset):
 		if shape.ShapeType == 'Edge':
@@ -162,7 +161,7 @@ class plane:
 
         def getRotation(self):
                 "returns a placement describing the working plane orientation ONLY"
-                m = fcvec.getPlaneRotation(self.u,self.v,self.axis)
+                m = DraftVecUtils.getPlaneRotation(self.u,self.v,self.axis)
                 return FreeCAD.Placement(m)
 
         def getPlacement(self):
@@ -197,15 +196,15 @@ class plane:
 
         def getLocalCoords(self,point):
                 "returns the coordinates of a given point on the working plane"
-                xv = fcvec.project(point,self.u)
+                xv = DraftVecUtils.project(point,self.u)
                 x = xv.Length
                 if xv.getAngle(self.u) > 1:
                         x = -x
-                yv = fcvec.project(point,self.v)
+                yv = DraftVecUtils.project(point,self.v)
                 y = yv.Length
                 if yv.getAngle(self.v) > 1:
                         y = -y
-                zv = fcvec.project(point,self.axis)
+                zv = DraftVecUtils.project(point,self.axis)
                 z = zv.Length
                 if zv.getAngle(self.axis) > 1:
                         z = -z
@@ -213,9 +212,9 @@ class plane:
 
         def getGlobalCoords(self,point):
                 "returns the global coordinates of the given point, taken relatively to this working plane"
-                vx = fcvec.scale(self.u,point.x)
-                vy = fcvec.scale(self.v,point.y)
-                vz = fcvec.scale(self.axis,point.z)
+                vx = DraftVecUtils.scale(self.u,point.x)
+                vy = DraftVecUtils.scale(self.v,point.y)
+                vz = DraftVecUtils.scale(self.axis,point.z)
                 return (vx.add(vy)).add(vz)
 
         def getClosestAxis(self,point):
@@ -223,9 +222,9 @@ class plane:
                 ax = point.getAngle(self.u)
                 ay = point.getAngle(self.v)
                 az = point.getAngle(self.axis)
-                bx = point.getAngle(fcvec.neg(self.u))
-                by = point.getAngle(fcvec.neg(self.v))
-                bz = point.getAngle(fcvec.neg(self.axis))
+                bx = point.getAngle(DraftVecUtils.neg(self.u))
+                by = point.getAngle(DraftVecUtils.neg(self.v))
+                bz = point.getAngle(DraftVecUtils.neg(self.axis))
                 b = min(ax,ay,az,bx,by,bz)
                 if b in [ax,bx]:
                         return "x"

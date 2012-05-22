@@ -21,11 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math,Draft,ArchCommands
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math,Draft,ArchCommands, DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
-from draftlibs import fcvec
 
 
 class _CommandSectionPlane:
@@ -176,8 +175,7 @@ class _ArchDrawingView:
 
     def updateSVG(self, obj,join=False):
         "encapsulates a svg fragment into a transformation node"
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         if hasattr(obj,"Source"):
             if obj.Source:
                 if obj.Source.Objects:
@@ -207,7 +205,7 @@ class _ArchDrawingView:
                             base = shape.pop()
                         for sh in shapes:
                             base = base.fuse(sh)
-                        svgf = Drawing.projectToSVG(base,fcvec.neg(direction))
+                        svgf = Drawing.projectToSVG(base,DraftVecUtils.neg(direction))
                         if svgf:
                             svgf = svgf.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
                         svg += svgf

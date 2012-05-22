@@ -38,9 +38,7 @@ currently unsupported: use, image
 # implement inherting fill style from group
 # handle relative units
 
-import xml.sax, string, FreeCAD, os, math, re, Draft
-from draftlibs import fcvec
-from draftlibs import fcgeo
+import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 
 try: import FreeCADGui
@@ -271,7 +269,7 @@ def makewire(path,checkclosed=False,donttry=False):
         #ToDo Do not catch all exceptions
         if not donttry:
                 try:
-			sh = Part.Wire(fcgeo.sortEdges(path))
+			sh = Part.Wire(DraftGeomUtils.sortEdges(path))
                         #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
                 except:# BRep_API:command not done
@@ -334,13 +332,13 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
             m2=FreeCAD.Matrix()
             m2.rotateZ(xrotation)
             centeroff = currentvec.add(lastvec)
-            centeroff = fcvec.scale(centeroff,.5)
+            centeroff = DraftVecUtils.scale(centeroff,.5)
             vcenter = m2.multiply(vcx1).add(centeroff) # Step3 F.6.5.3
             #angle1 = Vector(1,0,0).getAngle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
             #angledelta = Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0).getAngle(Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
             #we need the right sign for the angle 
-            angle1 = fcvec.angle(Vector(1,0,0),Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
-            angledelta = fcvec.angle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0),Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
+            angle1 = DraftVecUtils.angle(Vector(1,0,0),Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
+            angledelta = DraftVecUtils.angle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0),Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
             results.append((vcenter,angle1,angledelta))
         return results,(rx,ry)
 
@@ -558,7 +556,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = lastvec.add(Vector(x,-y,0))
                                                 else:
                                                         currentvec = Vector(x,-y,0)
-                                                if not fcvec.equals(lastvec,currentvec):
+                                                if not DraftVecUtils.equals(lastvec,currentvec):
                                                         seg = Part.Line(lastvec,currentvec).toShape()
                                                         FreeCAD.Console.PrintMessage("line %s %s\n" %(lastvec,currentvec))
                                                         lastvec = currentvec
@@ -599,15 +597,15 @@ class svgHandler(xml.sax.ContentHandler):
                                                         # here is a better way to find the perpendicular
                                                         if sweepflag == 1:
                                                                 # clockwise
-                                                                perp = fcvec.rotate2D(chord,-math.pi/2)
+                                                                perp = DraftVecUtils.rotate2D(chord,-math.pi/2)
                                                         else:
                                                                 # anticlockwise
-                                                                perp = fcvec.rotate2D(chord,math.pi/2)
-                                                        chord = fcvec.scale(chord,.5)
+                                                                perp = DraftVecUtils.rotate2D(chord,math.pi/2)
+                                                        chord = DraftVecUtils.scale(chord,.5)
                                                         if chord.Length > rx: a = 0
                                                         else: a = math.sqrt(rx**2-chord.Length**2)
                                                         s = rx - a
-                                                        perp = fcvec.scale(perp,s/perp.Length)
+                                                        perp = DraftVecUtils.scale(perp,s/perp.Length)
                                                         midpoint = lastvec.add(chord.add(perp))
                                                         seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
                                                 else:# big arc or elliptical arc
@@ -676,7 +674,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = Vector(x,-y,0)
                                                         pole2 = Vector(p2x,-p2y,0)
 
-                                                if not fcvec.equals(currentvec,lastvec):
+                                                if not DraftVecUtils.equals(currentvec,lastvec):
                                                         mainv = currentvec.sub(lastvec)
                                                         pole1v = lastvec.add(pole1)
                                                         pole2v = currentvec.add(pole2)
@@ -718,7 +716,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 else:
                                                         currentvec = Vector(x,-y,0)
 
-                                                if not fcvec.equals(currentvec,lastvec):
+                                                if not DraftVecUtils.equals(currentvec,lastvec):
                                                         if True and \
                                                         pole.distanceToLine(lastvec,currentvec) < 20**(-1*(2+Draft.precision())):
                                                                 #print "straight segment"
@@ -733,7 +731,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         lastpole = ('quadratic',pole)
                                                         path.append(seg)
                                 elif (d == "Z") or (d == "z"):
-                                        if not fcvec.equals(lastvec,firstvec):
+                                        if not DraftVecUtils.equals(lastvec,firstvec):
                                                 seg = Part.Line(lastvec,firstvec).toShape()
                                                 path.append(seg)
                                         if path: #the path should be closed by now
@@ -821,7 +819,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 esh.append(arc.toShape())
                                 for esh1,esh2 in zip(esh[-1:]+esh[:-1],esh):
                                         p1,p2 = esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point
-                                        if not fcvec.equals(p1,p2):
+                                        if not DraftVecUtils.equals(p1,p2):
                                             edges.append(Part.Line(esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point).toShape()) #straight segments
                                         edges.append(esh2) # elliptical segments
                         sh = Part.Wire(edges)
@@ -859,7 +857,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         points=points+points[:2] # emulate closepath
 				for svgx,svgy in zip(points[2::2],points[3::2]):
 					currentvec = Vector(svgx,-svgy,0)
-					if not fcvec.equals(lastvec,currentvec):
+					if not DraftVecUtils.equals(lastvec,currentvec):
 						seg = Part.Line(lastvec,currentvec).toShape()
 						#print "polyline seg ",lastvec,currentvec
 						lastvec = currentvec

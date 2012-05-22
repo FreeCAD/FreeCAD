@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -99,7 +98,7 @@ class _Structure(ArchComponent.Component):
 
     def getAxisPoints(self,obj):
         "returns the gridpoints of linked axes"
-        from draftlibs import fcgeo
+        import DraftGeomUtils
         pts = []
         if len(obj.Axes) == 1:
             for e in obj.Axes[0].Shape.Edges:
@@ -109,12 +108,11 @@ class _Structure(ArchComponent.Component):
             set2 = obj.Axes[1].Shape.Edges
             for e1 in set1:
                 for e2 in set2: 
-                    pts.extend(fcgeo.findIntersection(e1,e2))
+                    pts.extend(DraftGeomUtils.findIntersection(e1,e2))
         return pts
 
     def createGeometry(self,obj):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         # getting default values
         height = normal = None
         if obj.Length:
@@ -187,7 +185,7 @@ class _Structure(ArchComponent.Component):
                     obj.Shape = Part.makeCompound(fsh)
             else:
                 obj.Shape = base
-            if not fcgeo.isNull(pl): obj.Placement = pl
+            if not DraftGeomUtils.isNull(pl): obj.Placement = pl
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
