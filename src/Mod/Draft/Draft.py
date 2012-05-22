@@ -528,7 +528,7 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     print closed
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
     if len(pointslist) == 2: fname = "Line"
-    else: fname = "Wire"
+    else: fname = "DWire"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _Wire(obj)
     obj.Points = pointslist
