@@ -294,9 +294,6 @@ void StdCmdMergeProjects::activated(int iMsg)
             return;
         }
 
-        QString dir1 = proj.absoluteDir().filePath(proj.baseName());
-        QString dir2 = info.absoluteDir().filePath(info.baseName());
-
         Base::FileInfo fi((const char*)project.toUtf8());
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments md(doc);
