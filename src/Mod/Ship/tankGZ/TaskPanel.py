@@ -30,12 +30,14 @@ from PyQt4 import QtGui,QtCore
 from Instance import *
 from TankInstance import *
 from shipUtils import Paths, Translator
+from shipHydrostatics import Tools as Hydrostatics
 
 class TaskPanel:
     def __init__(self):
         self.ui = Paths.modulePath() + "/tankGZ/TaskPanel.ui"
         self.ship  = None
         self.tanks = {}
+        self.trim  = 0.0
 
     def accept(self):
         if not self.ship:
@@ -163,14 +165,18 @@ class TaskPanel:
         """
         self.form.setWindowTitle(Translator.translate("GZ curve computation"))
         self.form.findChild(QtGui.QGroupBox, "LoadConditionGroup").setTitle(Translator.translate("Loading condition."))
+        self.form.findChild(QtGui.QGroupBox, "AnglesGroup").setTitle(Translator.translate("Roll angles."))
 
     def onTanksSelection(self):
         """ Called when tanks are selected or deselected.
         """
         # Set displacement label
         disp = self.computeDisplacement()
-        self.form.disp.setText(Translator.translate("Displacement") + ' %g [kg]' % (disp[0]))
-        
+        self.form.disp.setText(Translator.translate("Displacement") + ' = %g [kg]' % (disp[0]))
+        # Set draft label
+        draft = self.computeDraft(disp[0])
+        self.form.draft.setText(Translator.translate("Draft") + ' = %g [m]' % (draft))
+
     def getTanks(self):
         """ Get the selected tanks objects list.
         @return Selected tanks list.
@@ -192,23 +198,9 @@ class TaskPanel:
         """
         if not self.ship:
             return None
-        # Test if is a ship instance
-        obj   = self.ship
-        props = obj.PropertiesList
-        try:
-            props.index("IsShip")
-        except ValueError:
-            return None
-        if not obj.IsShip:
-            return None
-        # Test if properties already exist
-        try:
-            props.index("WeightNames")
-        except:
-            return None
         # Get ship structure weights
         W = [0.0, 0.0, 0.0, 0.0]
-        sWeights = weights(obj)
+        sWeights = weights(self.ship)
         for w in sWeights:
             W[0] = W[0] + w[1]
             W[1] = W[1] + w[1]*w[2][0]
@@ -223,6 +215,27 @@ class TaskPanel:
             W[2] = W[2] + w[0]*w[2]
             W[3] = W[3] + w[0]*w[3]
         return [W[0], W[1]/W[0], W[2]/W[0], W[3]/W[0]]
+
+    def computeDraft(self, disp):
+        """ Computes ship draft.
+        @param disp Ship displacement.
+        @return Ship draft. None if errors detected.
+        @note 0 trim will be assumed.
+        """
+        if not self.ship:
+            return None
+        # Initial condition
+        trim  = 0.0
+        dens  = 1025
+        bbox  = self.ship.Shape.BoundBox
+        draft = bbox.ZMin
+        dx    = bbox.XMax - bbox.XMin
+        dy    = bbox.YMax - bbox.YMin
+        w     = 0.0
+        while(abs(disp - w)/disp > 0.01):
+            draft = draft + (disp - w) / (dens*dx*dy)
+            w     = 1000.0*Hydrostatics.Displacement(self.ship, draft, trim)[1]
+        return draft
 
 def createTask():
     panel = TaskPanel()
