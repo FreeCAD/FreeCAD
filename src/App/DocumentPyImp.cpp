@@ -303,16 +303,10 @@ PyObject*  DocumentPy::findObjects(PyObject *args)
     }
 
     std::vector<DocumentObject*> res;
-    std::vector<DocumentObject*> objs = getDocumentPtr()->getObjectsOfType(type);
 
     if (sName) {
         try {
-            boost::regex rx(sName);
-            boost::cmatch what;
-            for (std::vector<DocumentObject*>::const_iterator It = objs.begin();It != objs.end();++It) {
-                if (boost::regex_match((*It)->getNameInDocument(), what, rx))
-                    res.push_back(*It);
-            }
+            res = getDocumentPtr()->findObjects(type, sName);
         }
         catch (const boost::regex_error& e) {
             PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -320,7 +314,7 @@ PyObject*  DocumentPy::findObjects(PyObject *args)
         }
     }
     else {
-        res = objs;
+        res = getDocumentPtr()->getObjectsOfType(type);
     }
 
     Py_ssize_t index=0;
