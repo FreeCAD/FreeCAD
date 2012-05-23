@@ -400,7 +400,10 @@ class Line(Creator):
         Creator.Activated(self,name)
         if self.doc:
             self.obj = None
-            self.ui.lineUi(name)
+            if self.isWire:
+                self.ui.wireUi(name)
+            else:
+                self.ui.lineUi(name)
             self.linetrack = lineTracker()
             self.constraintrack = lineTracker(dotted=True)
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
