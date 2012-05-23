@@ -523,13 +523,24 @@ class DraftToolBar:
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
+        self.undoButton.show()
+        self.continueCmd.show()
+
+    def wireUi(self,title=None):
+        if title:
+            self.pointUi(title)
+        else:
+            self.pointUi(translate("draft", "DWire"))
+        self.xValue.setEnabled(True)
+        self.yValue.setEnabled(True)
+        self.isRelative.show()
         self.hasFill.show()
         self.finishButton.show()
         self.closeButton.show()
         self.wipeButton.show()
         self.undoButton.show()
         self.continueCmd.show()
-
+        
     def circleUi(self):
         self.pointUi(translate("draft", "Circle"))
         self.continueCmd.show()
@@ -935,6 +946,8 @@ class DraftToolBar:
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
+        elif txt.endsWith("t"):
+            self.continueCmd.setChecked(not self.continueCmd.isChecked())
         elif txt.endsWith("w"):
             self.wipeLine()
         elif txt.endsWith("s"):
