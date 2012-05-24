@@ -57,7 +57,7 @@ void ViewProviderConstraintGroup::attach(App::DocumentObject *pcFeat)
 
 
     // putting all together with the switch
-    addDisplayMaskMode(getChildRoot(), "Main");
+//    addDisplayMaskMode(getChildRoot(), "Main");
 }
 
 void ViewProviderConstraintGroup::setDisplayMode(const char* ModeName)
@@ -65,7 +65,7 @@ void ViewProviderConstraintGroup::setDisplayMode(const char* ModeName)
     if ( strcmp("Main",ModeName)==0 )
         setDisplayMaskMode("Main");
 
-    ViewProviderDocumentObject::setDisplayMode( ModeName );
+//    ViewProviderDocumentObject::setDisplayMode( ModeName );
 }
 
 std::vector<std::string> ViewProviderConstraintGroup::getDisplayModes(void) const
@@ -74,7 +74,7 @@ std::vector<std::string> ViewProviderConstraintGroup::getDisplayModes(void) cons
     std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
 
     // add your own modes
-    StrList.push_back("Main");
+//    StrList.push_back("Main");
 
     return StrList;
 }
