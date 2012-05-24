@@ -35,6 +35,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderPart.h"
 #include "ViewProviderAssembly.h"
+#include "ViewProviderConstraintGroup.h"
 
 #include <Mod/Assembly/App/ItemAssembly.h>
 
@@ -81,6 +82,8 @@ void AssemblyGuiExport initAssemblyGui()
     AssemblyGui::ViewProviderItem        ::init();
     AssemblyGui::ViewProviderItemPart    ::init();
     AssemblyGui::ViewProviderItemAssembly::init();
+
+    AssemblyGui::ViewProviderConstraintGroup::init();
 
      // add resources and reloads the translators
     loadAssemblyResource();
