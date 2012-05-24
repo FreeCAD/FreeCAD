@@ -34,6 +34,14 @@
 #include "ItemAssembly.h"
 #include "ItemPart.h"
 
+#include "ConstraintAngle.h"
+#include "ConstraintAxis.h"
+#include "ConstraintContact.h"
+#include "ConstraintFix.h"
+#include "ConstraintGroup.h"
+#include "ConstraintOffset.h"
+
+
 extern struct PyMethodDef Assembly_methods[];
 
 PyDoc_STRVAR(module_Assembly_doc,
@@ -64,9 +72,19 @@ void AssemblyExport initAssembly()
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
+    // Item hirachy
     Assembly::Item            ::init();
     Assembly::ItemAssembly    ::init();
     Assembly::ItemPart        ::init();
+
+    // constraint hirachy
+    Assembly::Constraint        ::init();
+    Assembly::ConstraintAngle   ::init();
+    Assembly::ConstraintAxis    ::init();
+    Assembly::ConstraintContact ::init();
+    Assembly::ConstraintFix     ::init();
+    Assembly::ConstraintOffset  ::init();
+    Assembly::ConstraintGroup   ::init();
 }
 
 } // extern "C"
