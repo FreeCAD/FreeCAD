@@ -163,12 +163,12 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
-    PyObject *obj, *rec=0;
-    if (!PyArg_ParseTuple(args, "O!|O!",&(DocumentObjectPy::Type),&obj,&PyBool_Type,&rec))
+    PyObject *obj, *rec=0, *keep=0;
+    if (!PyArg_ParseTuple(args, "O!|O!O!",&(DocumentObjectPy::Type),&obj,&PyBool_Type,&rec,&PyBool_Type,&keep))
         return NULL;    // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
-    DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(), rec==Py_True);
+    DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(), rec==Py_True, keep==Py_True);
     if (copy) {
         return copy->getPyObject();
     }
