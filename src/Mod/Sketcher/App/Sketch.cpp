@@ -743,10 +743,7 @@ int Sketch::addPointCoincidentConstraint(int geoId1, PointPos pos1, int geoId2, 
         GCS::Point &p1 = Points[pointId1];
         GCS::Point &p2 = Points[pointId2];
         int tag = ++ConstraintsCounter;
-        // trick: we do not tag coincidence constraints in order to exclude
-        //        them from the diagnosing of conflicts
-        //GCSsys.addConstraintP2PCoincident(p1, p2, tag);
-        GCSsys.addConstraintP2PCoincident(p1, p2);
+        GCSsys.addConstraintP2PCoincident(p1, p2, tag);
         return ConstraintsCounter;
     }
     return -1;
