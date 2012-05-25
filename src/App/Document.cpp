@@ -1484,15 +1484,18 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
 }
 
 DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-                                      DocumentObject*>& copy_map, bool recursive)
+                                      DocumentObject*>& copy_map, bool recursive,
+                                      bool keepdigitsatend)
 {
     if (!obj) return 0;
     // remove number from end to avoid lengthy names
     std::string objname = obj->getNameInDocument();
+    if (!keepdigitsatend) {
     size_t lastpos = objname.length()-1;
     while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
         lastpos--;
     objname = objname.substr(0, lastpos+1);
+    }
     DocumentObject* copy = addObject(obj->getTypeId().getName(),objname.c_str());
     if (!copy) return 0;
     copy->addDynamicProperties(obj);
@@ -1512,7 +1515,7 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
                     static_cast<PropertyLink*>(it->second)->setValue(pt->second);
                 }
                 else if (recursive) {
-                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive);
+                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive, keepdigitsatend);
                     copy_map[link] = link_copy;
                     static_cast<PropertyLink*>(it->second)->setValue(link_copy);
                 }
@@ -1531,7 +1534,7 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
                             links_copy.push_back(pt->second);
                         }
                         else {
-                            links_copy.push_back(_copyObject(*jt, copy_map, recursive));
+                            links_copy.push_back(_copyObject(*jt, copy_map, recursive, keepdigitsatend));
                             copy_map[*jt] = links_copy.back();
                         }
                     }
@@ -1561,10 +1564,10 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
     return copy;
 }
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
+DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool keepdigitsatend)
 {
     std::map<DocumentObject*, DocumentObject*> copy_map;
-    DocumentObject* copy = _copyObject(obj, copy_map, recursive);
+    DocumentObject* copy = _copyObject(obj, copy_map, recursive, keepdigitsatend);
     return copy;
 }
 
