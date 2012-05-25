@@ -511,7 +511,6 @@ void CmdPartExport::activated(int iMsg)
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
-        openCommand("Import Part");
         QString ext = QFileInfo(fn).suffix().toLower();
         if (ext == QLatin1String("step") || 
             ext == QLatin1String("stp")  ||
@@ -522,7 +521,6 @@ void CmdPartExport::activated(int iMsg)
         else {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"Part");
         }
-        commitCommand();
     }
 }
 

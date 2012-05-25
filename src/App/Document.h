@@ -140,7 +140,7 @@ public:
      * are copied as well. By default \a recursive is false.
      * Returns the copy of the object or 0 if the creation failed.
      */
-    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false);
+    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false, bool keepdigitsatend=false);
     /** Move an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are moved as well. By default \a recursive is false.
@@ -261,7 +261,7 @@ protected:
     void _remObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
     DocumentObject* _copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-        DocumentObject*>&, bool recursive=false);
+        DocumentObject*>&, bool recursive=false, bool keepdigitsatend=false);
     /// checks if a valid transaction is open
     void _checkTransaction(void);
     void breakDependency(DocumentObject* pcObject, bool clear);
