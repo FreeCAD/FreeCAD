@@ -1397,7 +1397,9 @@ int System::diagnose()
                 Constraint *mostPopular = NULL;
                 for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
                      it != conflictingMap.end(); it++) {
-                    if (it->second.size() >= maxPopularity) {
+                    if (it->second.size() > maxPopularity ||
+                        (it->second.size() == maxPopularity && mostPopular &&
+                         it->first->getTag() > mostPopular->getTag())) {
                         mostPopular = it->first;
                         maxPopularity = it->second.size();
                     }
