@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import math
 # FreeCAD modules
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -37,7 +38,6 @@ class TaskPanel:
         self.ui = Paths.modulePath() + "/tankGZ/TaskPanel.ui"
         self.ship  = None
         self.tanks = {}
-        self.trim  = 0.0
 
     def accept(self):
         if not self.ship:
@@ -71,11 +71,13 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.tanks = form.findChild(QtGui.QListWidget, "Tanks")
-        form.disp  = form.findChild(QtGui.QLabel, "DisplacementLabel")
-        form.draft = form.findChild(QtGui.QLabel, "DraftLabel")
+        mw            = self.getMainWindow()
+        form          = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form.tanks    = form.findChild(QtGui.QListWidget, "Tanks")
+        form.disp     = form.findChild(QtGui.QLabel, "DisplacementLabel")
+        form.draft    = form.findChild(QtGui.QLabel, "DraftLabel")
+        form.trim     = form.findChild(QtGui.QDoubleSpinBox, "Trim")
+        form.autoTrim = form.findChild(QtGui.QPushButton, "TrimAutoCompute")
         self.form = form
         # Initial values
         if self.initValues():
@@ -84,6 +86,8 @@ class TaskPanel:
         self.onTanksSelection()
         # Connect Signals and Slots
         QtCore.QObject.connect(form.tanks,QtCore.SIGNAL("itemSelectionChanged()"),self.onTanksSelection)
+        QtCore.QObject.connect(form.trim,QtCore.SIGNAL("valueChanged(double)"),self.onTrim)
+        QtCore.QObject.connect(form.autoTrim,QtCore.SIGNAL("pressed()"),self.onAutoTrim)
         return False
 
     def getMainWindow(self):
@@ -166,6 +170,10 @@ class TaskPanel:
         self.form.setWindowTitle(Translator.translate("GZ curve computation"))
         self.form.findChild(QtGui.QGroupBox, "LoadConditionGroup").setTitle(Translator.translate("Loading condition."))
         self.form.findChild(QtGui.QGroupBox, "AnglesGroup").setTitle(Translator.translate("Roll angles."))
+        self.form.findChild(QtGui.QLabel, "TrimLabel").setText(Translator.translate("Trim") + " [deg]")
+        self.form.findChild(QtGui.QLabel, "StartAngleLabel").setText(Translator.translate("Start") + " [deg]")
+        self.form.findChild(QtGui.QLabel, "EndAngleLabel").setText(Translator.translate("Start") + " [deg]")
+        self.form.findChild(QtGui.QLabel, "NAngleLabel").setText(Translator.translate("Number of points"))
 
     def onTanksSelection(self):
         """ Called when tanks are selected or deselected.
@@ -174,8 +182,59 @@ class TaskPanel:
         disp = self.computeDisplacement()
         self.form.disp.setText(Translator.translate("Displacement") + ' = %g [kg]' % (disp[0]))
         # Set draft label
-        draft = self.computeDraft(disp[0])
-        self.form.draft.setText(Translator.translate("Draft") + ' = %g [m]' % (draft))
+        draft = self.computeDraft(disp[0], self.form.trim.value())
+        self.form.draft.setText(Translator.translate("Draft") + ' = %g [m]' % (draft[0]))
+
+    def onTrim(self, trim):
+        """ Called when trim angle value is changed.
+        @param trim Selected trim angle.
+        """
+        self.onTanksSelection()
+    
+    def onAutoTrim(self):
+        """ Called when trim angle must be auto computed.
+        """
+        # Start at null trim angle
+        trim = 0.0
+        # Get center of gravity
+        disp  = self.computeDisplacement(trim)
+        G     = [disp[1], disp[2], disp[3]]
+        disp  = disp[0]
+        # Get bouyancy center
+        draft = self.computeDraft(disp)
+        xcb   = draft[1]
+        draft = draft[0]
+        KBT   = Hydrostatics.KBT(self.ship, draft, trim)
+        B     = [xcb, KBT[0], KBT[1]]
+        # Get stability initial condition
+        BG    = [G[0]-B[0], G[1]-B[1], G[2]-B[2]]
+        x     = BG[0]*math.cos(math.radians(trim)) - BG[2]*math.sin(math.radians(trim))
+        y     = BG[1]
+        z     = BG[0]*math.sin(math.radians(trim)) + BG[2]*math.cos(math.radians(trim))
+        var   = math.degrees(math.atan2(x,z))
+        # Iterate looking stability point
+        dVar = math.copysign(0.0033, var)
+        while True:
+            if (dVar*math.copysign(dVar, var) < 0.0):
+                break
+            trim = trim - math.copysign(dVar, var)
+            # Get center of gravity
+            disp  = self.computeDisplacement(trim)
+            G     = [disp[1], disp[2], disp[3]]
+            disp  = disp[0]
+            # Get bouyancy center
+            draft = self.computeDraft(disp, trim)
+            xcb   = draft[1]
+            draft = draft[0]
+            KBT   = Hydrostatics.KBT(self.ship, draft, trim)
+            B     = [xcb, KBT[0], KBT[1]]
+            # Get stability initial condition
+            BG    = [G[0]-B[0], G[1]-B[1], G[2]-B[2]]
+            x     = BG[0]*math.cos(math.radians(trim)) - BG[2]*math.sin(math.radians(trim))
+            y     = BG[1]
+            z     = BG[0]*math.sin(math.radians(trim)) + BG[2]*math.cos(math.radians(trim))
+            var   = math.degrees(math.atan2(x,z))
+        self.form.trim.setValue(trim)
 
     def getTanks(self):
         """ Get the selected tanks objects list.
@@ -186,14 +245,15 @@ class TaskPanel:
         for item in items:
             tag  = str(item.text())
             name = self.tanks[tag]
-            t    = App.ActiveDocument.getObject('Tank')
+            t    = App.ActiveDocument.getObject(name)
             if not t:
                 continue
             tanks.append(t)
         return tanks
 
-    def computeDisplacement(self):
+    def computeDisplacement(self, trim=0.0):
         """ Computes ship displacement.
+        @param trim Trim angle [degrees].
         @return Ship displacement and center of gravity. None if errors detected.
         """
         if not self.ship:
@@ -209,33 +269,39 @@ class TaskPanel:
         # Get selected tanks weights
         tanks = self.getTanks()
         for t in tanks:
-            w = tankWeight(t)
+            w = tankWeight(t, App.Base.Vector(0.0,-trim,0.0))
+            # Unrotate center of gravity
+            x = w[1]*math.cos(math.radians(-trim)) - w[3]*math.sin(math.radians(-trim))
+            y = w[2]
+            z = w[1]*math.sin(math.radians(-trim)) + w[3]*math.cos(math.radians(-trim))
             W[0] = W[0] + w[0]
-            W[1] = W[1] + w[0]*w[1]
-            W[2] = W[2] + w[0]*w[2]
-            W[3] = W[3] + w[0]*w[3]
+            W[1] = W[1] + w[0]*x
+            W[2] = W[2] + w[0]*y
+            W[3] = W[3] + w[0]*z
         return [W[0], W[1]/W[0], W[2]/W[0], W[3]/W[0]]
 
-    def computeDraft(self, disp):
+    def computeDraft(self, disp, trim=0.0):
         """ Computes ship draft.
         @param disp Ship displacement.
-        @return Ship draft. None if errors detected.
-        @note 0 trim will be assumed.
+        @param trim Trim angle [degrees].
+        @return Ship draft, and longitudinal bouyance center position. None if errors detected.
         """
         if not self.ship:
             return None
         # Initial condition
-        trim  = 0.0
         dens  = 1025
         bbox  = self.ship.Shape.BoundBox
         draft = bbox.ZMin
         dx    = bbox.XMax - bbox.XMin
         dy    = bbox.YMax - bbox.YMin
         w     = 0.0
+        xcb   = 0.0
         while(abs(disp - w)/disp > 0.01):
             draft = draft + (disp - w) / (dens*dx*dy)
-            w     = 1000.0*Hydrostatics.Displacement(self.ship, draft, trim)[1]
-        return draft
+            ww    = Hydrostatics.Displacement(self.ship, draft, trim)
+            w     = 1000.0*ww[1]
+            xcb   = ww[2]
+        return [draft,xcb]
 
 def createTask():
     panel = TaskPanel()
