@@ -1393,10 +1393,14 @@ void SketchObject::appendConflictMsg(const std::vector<int> &conflicting, std::s
     if (msg.length() > 0)
         ss << msg;
     if (conflicting.size() > 0) {
-        ss << "Please remove at least one of the constraints (" << conflicting[0];
+        if (conflicting.size() == 1)
+            ss << "Please remove the following constraint:\n";
+        else
+            ss << "Please remove at least one of the following constraints:\n";
+        ss << conflicting[0];
         for (unsigned int i=1; i < conflicting.size(); i++)
             ss << ", " << conflicting[i];
-        ss << ")\n";
+        ss << "\n";
     }
     msg = ss.str();
 }
@@ -1407,7 +1411,11 @@ void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::st
     if (msg.length() > 0)
         ss << msg;
     if (redundant.size() > 0) {
-        ss << "The following constraints were identified as redundant and should be removed:\n" << redundant[0];
+        if (redundant.size() == 1)
+            ss << "Please remove the following redundant constraint:\n";
+        else
+            ss << "Please remove the following redundant constraints:\n";
+        ss << redundant[0];
         for (unsigned int i=1; i < redundant.size(); i++)
             ss << ", " << redundant[i];
         ss << "\n";

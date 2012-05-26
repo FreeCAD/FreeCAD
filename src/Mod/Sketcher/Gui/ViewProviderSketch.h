@@ -174,9 +174,9 @@ public:
     /// signals if the constraints list has changed
     boost::signal<void ()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signal<void (int type, int dofs, std::string &msg)> signalSetUp;
+    boost::signal<void (QString msg)> signalSetUp;
     /// signals if the sketch has been solved
-    boost::signal<void (int type, float time)> signalSolved;
+    boost::signal<void (QString msg)> signalSolved;
 
 protected:
     virtual bool setEdit(int ModNum);

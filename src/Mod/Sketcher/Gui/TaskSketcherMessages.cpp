@@ -54,8 +54,8 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
 
     this->groupLayout()->addWidget(proxy);
 
-    connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this,_1,_2,_3));
-    connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this,_1,_2));
+    connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this,_1));
+    connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this,_1));
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
@@ -65,46 +65,14 @@ TaskSketcherMessages::~TaskSketcherMessages()
     delete ui;
 }
 
-void TaskSketcherMessages::slotSetUp(int type, int dofs, const std::string &msg)
+void TaskSketcherMessages::slotSetUp(QString msg)
 {
-    switch(type){
-        case -1:
-            ui->labelConstrainStatus->setText(QString::fromLatin1("Empty sketch"));
-            break;
-        case 0:
-            ui->labelConstrainStatus->setText(QString::fromLatin1("<font color='green'>Fully constrained sketch </font>"));
-            break;
-        case 1:
-            if (dofs==1)
-                ui->labelConstrainStatus->setText(QString::fromLatin1("Under-constrained sketch with 1 degree of freedom"));
-            else
-                ui->labelConstrainStatus->setText(QString::fromLatin1("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
-            break;
-        case 2:
-            ui->labelConstrainStatus->setText(QString::fromLatin1("<font color='red'>Sketch contains conflicting constraints<br/>%1</font>").arg(QString::fromStdString(msg)));
-            break;
-        case 3:
-            ui->labelConstrainStatus->setText(QString::fromLatin1("<font color='red'>Over-constrained sketch<br/>%1</font>").arg(QString::fromStdString(msg)));
-            break;
-        case 4:
-            ui->labelConstrainStatus->setText(QString::fromLatin1("Sketch contains redundant constraints<br/>%1").arg(QString::fromStdString(msg)));
-            break;
-    }
+    ui->labelConstrainStatus->setText(msg);
 }
 
-void TaskSketcherMessages::slotSolved(int type, float time)
+void TaskSketcherMessages::slotSolved(QString msg)
 {
-    switch(type){
-        case -1:
-            ui->labelSolverStatus->setText(QString());
-            break;
-        case 0:
-            ui->labelSolverStatus->setText(QString::fromLatin1("Solved in %1 sec").arg(time));
-            break;
-        case 1:
-            ui->labelSolverStatus->setText(QString::fromLatin1("Unsolved (%1)").arg(time));
-            break;
-    }
+    ui->labelSolverStatus->setText(msg);
 }
 
 #include "moc_TaskSketcherMessages.cpp"
