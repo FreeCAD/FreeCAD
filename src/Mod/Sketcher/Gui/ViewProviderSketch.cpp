@@ -822,9 +822,9 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 if (edit->ActSketch.movePoint(GeoId, PosId, vec, relative) == 0) {
                     setPositionText(Base::Vector2D(x,y));
                     draw(true);
-                    signalSolved(0, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
                 } else {
-                    signalSolved(1, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
                     //Base::Console().Log("Error solving:%d\n",ret);
                 }
             }
@@ -835,9 +835,9 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 if (edit->ActSketch.movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2D(x,y));
                     draw(true);
-                    signalSolved(0, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
                 } else {
-                    signalSolved(1, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
                 }
             }
             return true;
@@ -2808,46 +2808,48 @@ void ViewProviderSketch::solveSketch(void)
     int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
                                            getSketchObject()->Constraints.getValues(),
                                            getSketchObject()->getExternalGeometryCount());
-    std::string msg;
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(-1, 0, msg);
-        signalSolved(-1, 0);
+        signalSetUp(QString::fromLatin1("Empty sketch"));
+        signalSolved(QString());
     }
     else if (dofs < 0) { // over-constrained sketch
+        std::string msg;
         SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-        //Base::Console().Warning("Over-constrained sketch\n%s",msg.c_str());
-        signalSetUp(3, 0, msg);
-        signalSolved(-1, 0);
+        signalSetUp(QString::fromLatin1("<font color='red'>Over-constrained sketch<br/>%1</font>")
+                    .arg(QString::fromStdString(msg)));
+        signalSolved(QString());
     }
     else if (edit->ActSketch.hasConflicts()) { // conflicting constraints
+        std::string msg;
         SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-        //Base::Console().Warning("Sketch with conflicting constraints\n%s",msg.c_str());
-        signalSetUp(2, dofs, msg);
-        signalSolved(-1, 0);
+        signalSetUp(QString::fromLatin1("<font color='red'>Sketch contains conflicting constraints<br/>%1</font>")
+                    .arg(QString::fromStdString(msg)));
+        signalSolved(QString());
     }
     else {
         if (edit->ActSketch.hasRedundancies()) { // redundant constraints
+            std::string msg;
             SketchObject::appendRedundantMsg(edit->ActSketch.getRedundant(), msg);
-            //Base::Console().Warning("Sketch with redundant constraints\n%s",msg.c_str());
-            signalSetUp(4, dofs, msg);
+            signalSetUp(QString::fromLatin1("<font color='orange'>Sketch contains redundant constraints<br/>%1</font>")
+                        .arg(QString::fromStdString(msg)));
         }
         if (edit->ActSketch.solve() == 0) { // solving the sketch
             if (dofs == 0) {
                 // color the sketch as fully constrained
                 edit->FullyConstrained = true;
-                if (!edit->ActSketch.hasRedundancies()) {
-                    //Base::Console().Message("Fully constrained sketch\n");
-                    signalSetUp(0, 0, msg);
-                }
+                if (!edit->ActSketch.hasRedundancies())
+                    signalSetUp(QString::fromLatin1("<font color='green'>Fully constrained sketch </font>"));
             }
             else if (!edit->ActSketch.hasRedundancies()) {
-                //Base::Console().Message("Under-constrained sketch with %d degrees of freedom\n", dofs);
-                signalSetUp(1, dofs, msg);
+                if (dofs == 1)
+                    signalSetUp(QString::fromLatin1("Under-constrained sketch with 1 degree of freedom"));
+                else
+                    signalSetUp(QString::fromLatin1("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
             }
-            signalSolved(0, edit->ActSketch.SolveTime);
+            signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
         }
         else {
-            signalSolved(1, edit->ActSketch.SolveTime);
+            signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
         }
     }
 }
