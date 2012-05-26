@@ -439,9 +439,9 @@ def KBT(ship, draft, trim, roll=0.0):
     @param draft Draft.
     @param trim Trim in degrees.
     @param roll Roll angle in degrees.
-    @return [KBTx, KBTy]: \n
-    KBTy : TRansversal KB y coordinate \n
-    KBTz : TRansversal KB z coordinate
+    @return [KBTy, KBTz]: \n
+    KBTy : Transversal KB y coordinate \n
+    KBTz : Transversal KB z coordinate
     """
     angle    = math.radians(trim)
     rAngle   = math.radians(roll)
