@@ -1425,7 +1425,8 @@ int System::diagnose()
                 subSysTmp->applySolution();
                 for (std::set<Constraint *>::const_iterator constr=skipped.begin();
                      constr != skipped.end(); constr++) {
-                    if ((*constr)->error() < XconvergenceFine)
+                    double err = (*constr)->error();
+                    if (err * err < XconvergenceFine)
                         redundant.insert(*constr);
                 }
                 resetToReference();
