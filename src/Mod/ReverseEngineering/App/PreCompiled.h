@@ -29,12 +29,14 @@
 // Exporting of App classes
 #ifdef FC_OS_WIN32
 # define ReenExport     __declspec(dllexport)
-# define PartExport  __declspec(dllimport)
+# define PartExport     __declspec(dllimport)
 # define MeshExport     __declspec(dllimport)
+# define PointsExport   __declspec(dllimport)
 #else // for Linux
 # define ReenExport
-# define PartExport 
-# define MeshExport   
+# define PartExport
+# define MeshExport
+# define PointsExport
 #endif
 
 #ifdef _PreComp_

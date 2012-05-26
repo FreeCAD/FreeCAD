@@ -2,10 +2,6 @@ if(WIN32)
     add_definitions(-DFCAppPoints)
 endif(WIN32)
 
-if (PCL_FOUND)
-    add_definitions(-DPCL_FOUND)
-endif(PCL_FOUND)
-
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -13,16 +9,10 @@ include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR}
-    ${PCL_INCLUDE_DIRS}
 )
 
 set(Points_LIBS
     FreeCADApp
-    ${PCL_COMMON_LIBRARIES}
-    ${PCL_KDTREE_LIBRARIES}
-    ${PCL_FEATURES_LIBRARIES}
-    ${PCL_SURFACE_LIBRARIES}
 )
 
 generate_from_xml(PointsPy)
@@ -77,3 +67,4 @@ else(MSVC)
 endif(MSVC)
 
 INSTALL(TARGETS Points DESTINATION lib)
+
