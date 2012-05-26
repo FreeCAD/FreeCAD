@@ -247,6 +247,10 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     #find_package(Eigen2)
     find_package(Eigen3)
 
+# -------------------------------- pcl ----------------------------------
+
+    find_package(PCL COMPONENTS common kdtree features surface)
+
 # -------------------------------- ODE ----------------------------------
 
     find_package(ODE)
