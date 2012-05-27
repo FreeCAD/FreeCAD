@@ -182,10 +182,10 @@
        <item row="1" column="1">
         <widget class="QDoubleSpinBox" name="EndAngle">
          <property name="maximum">
-          <double>90.000000000000000</double>
+          <double>89.000000000000000</double>
          </property>
          <property name="value">
-          <double>90.000000000000000</double>
+          <double>45.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -198,7 +198,7 @@
           <number>10000</number>
          </property>
          <property name="value">
-          <number>90</number>
+          <number>46</number>
          </property>
         </widget>
        </item>
