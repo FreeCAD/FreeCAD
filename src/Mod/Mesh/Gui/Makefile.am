@@ -7,6 +7,7 @@ BUILT_SOURCES=\
 		ui_DlgSettingsMeshView.h \
 		ui_DlgSmoothing.h \
 		ui_RemoveComponents.h \
+		ui_Segmentation.h \
 		moc_DlgEvaluateMeshImp.cpp \
 		moc_DlgRegularSolidImp.cpp \
 		moc_DlgSettingsMeshView.cpp \
@@ -34,6 +35,7 @@ libMeshGui_la_SOURCES=\
 		PropertyEditorMesh.cpp \
 		RemoveComponents.cpp \
 		RemoveComponents.h \
+		Segmentation.cpp \
 		SoFCIndexedFaceSet.cpp \
 		SoFCMeshObject.cpp \
 		ViewProvider.cpp \
@@ -47,6 +49,7 @@ libMeshGui_la_SOURCES=\
 
 include_HEADERS=\
 		PropertyEditorMesh.h \
+		Segmentation.h \
 		SoFCIndexedFaceSet.h \
 		SoFCMeshObject.h \
 		ViewProvider.h \
@@ -127,6 +130,7 @@ EXTRA_DIST = \
 		DlgSettingsMeshView.ui \
 		DlgSmoothing.ui \
 		RemoveComponents.ui \
+		Segmentation.ui \
 		Resources/Mesh.qrc \
 		Resources/translations/Mesh_af.qm \
 		Resources/translations/Mesh_af.ts \

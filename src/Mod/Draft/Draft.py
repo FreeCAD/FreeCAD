@@ -54,9 +54,9 @@ How it works / how to extend:
     - DraftTools.py: Contains the user tools of the Draft module (the commands
     from the Draft menu), and a couple of helpers such as the "Trackers"
     (temporary geometry used while drawing)
-    - draftlibs/fcvec.py: a vector math library, contains functions that are not
+    - DraftVecUtils.py: a vector math library, contains functions that are not
     implemented in the standard FreeCAD vector
-    - draftlibs/fcgeo.py: a library of misc functions to manipulate shapes.
+    - DraftGeomUtils.py: a library of misc functions to manipulate shapes.
         
     The Draft.py contains everything to create geometry in the scene. You
     should start there if you intend to modify something. Then, the DraftTools
@@ -72,9 +72,8 @@ How it works / how to extend:
 '''
 
 # import FreeCAD modules
-import FreeCAD, math, sys, os
+import FreeCAD, math, sys, os, DraftVecUtils
 from FreeCAD import Vector
-from draftlibs import fcvec
 from pivy import coin
 
 if FreeCAD.GuiUp:
@@ -108,7 +107,8 @@ def getParamType(param):
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
     elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
-                   "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid"]:
+                   "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
+                   "renderPolylineWidth"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -395,8 +395,8 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
                 ref = placement.multVec(FreeCAD.Vector(1,0,0))
                 v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
                 v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
-                a1 = -math.degrees(fcvec.angle(v1,ref))
-                a2 = -math.degrees(fcvec.angle(v2,ref))
+                a1 = -math.degrees(DraftVecUtils.angle(v1,ref))
+                a2 = -math.degrees(DraftVecUtils.angle(v2,ref))
                 obj.FirstAngle = a1
                 obj.LastAngle = a2
     else:    
@@ -514,22 +514,21 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
-    from draftlibs import fcgeo
-    import Part
+    import DraftGeomUtils, Part
     if not isinstance(pointslist,list):
         e = pointslist.Wires[0].Edges
-        pointslist = Part.Wire(fcgeo.sortEdges(e))
+        pointslist = Part.Wire(DraftGeomUtils.sortEdges(e))
         nlist = []
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
-        if fcgeo.isReallyClosed(pointslist):
+        if DraftGeomUtils.isReallyClosed(pointslist):
             closed = True
         pointslist = nlist
     print pointslist
     print closed
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
     if len(pointslist) == 2: fname = "Line"
-    else: fname = "Wire"
+    else: fname = "DWire"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _Wire(obj)
     obj.Points = pointslist
@@ -774,15 +773,15 @@ def fuse(object1,object2):
     the union of the 2 given objects. If the objects are
     coplanar, a special Draft Wire is used, otherwise we use
     a standard Part fuse.'''
-    from draftlibs import fcgeo
-    import Part
+    import DraftGeomUtils, Part
     # testing if we have holes:
     holes = False
     fshape = object1.Shape.fuse(object2.Shape)
+    fshape = fshape.removeSplitter()
     for f in fshape.Faces:
         if len(f.Wires) > 1:
             holes = True
-    if fcgeo.isCoplanar(object1.Shape.fuse(object2.Shape).Faces) and not holes:
+    if DraftGeomUtils.isCoplanar(object1.Shape.fuse(object2.Shape).Faces) and not holes:
         obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Fusion")
         _Wire(obj)
         if gui:
@@ -791,7 +790,6 @@ def fuse(object1,object2):
         obj.Tool = object2
     elif holes:
         # temporary hack, since Part::Fuse objects don't remove splitters
-        fshape = fshape.removeSplitter()
         obj = FreeCAD.ActiveDocument.addObject("Part::Feature","Fusion")
         obj.Shape = fshape
     else:
@@ -879,12 +877,12 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
         typecheck([(xvector,Vector), (yvector,Vector), (xnum,int), (ynum,int)], "rectArray")
         if not isinstance(objectslist,list): objectslist = [objectslist]
         for xcount in range(xnum):
-            currentxvector=fcvec.scale(xvector,xcount)
+            currentxvector=DraftVecUtils.scale(xvector,xcount)
             if not xcount==0:
                 move(objectslist,currentxvector,True)
             for ycount in range(ynum):
                 currentxvector=FreeCAD.Base.Vector(currentxvector)
-                currentyvector=currentxvector.add(fcvec.scale(yvector,ycount))
+                currentyvector=currentxvector.add(DraftVecUtils.scale(yvector,ycount))
                 if not ycount==0:
                     move(objectslist,currentyvector,True)
     def polarArray(objectslist,center,angle,num):
@@ -918,7 +916,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             newobj = obj
         if (obj.isDerivedFrom("Part::Feature")):
             shape = obj.Shape.copy()
-            shape.rotate(fcvec.tup(center), fcvec.tup(axis), angle)
+            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
             newobj.Shape = shape
         elif (obj.isDerivedFrom("App::Annotation")):
             if axis.normalize() == Vector(1,0,0):
@@ -939,7 +937,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
         elif hasattr(obj,"Placement"):
             shape = Part.Shape()
             shape.Placement = obj.Placement
-            shape.rotate(fcvec.tup(center), fcvec.tup(axis), angle)
+            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
             newobj.Placement = shape.Placement
         if copy:
             formatObject(newobj,obj)
@@ -972,7 +970,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             sh = sh.transformGeometry(m)
             corr = Vector(center.x,center.y,center.z)
             corr.scale(delta.x,delta.y,delta.z)
-            corr = fcvec.neg(corr.sub(center))
+            corr = DraftVecUtils.neg(corr.sub(center))
             sh.translate(corr)
             if getType(obj) == "Rectangle":
                 p = []
@@ -982,8 +980,8 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 diag = p[2].sub(p[0])
                 bb = p[1].sub(p[0])
                 bh = p[3].sub(p[0])
-                nb = fcvec.project(diag,bb)
-                nh = fcvec.project(diag,bh)
+                nb = DraftVecUtils.project(diag,bb)
+                nh = DraftVecUtils.project(diag,bh)
                 if obj.Length < 0: l = -nb.Length
                 else: l = nb.Length
                 if obj.Height < 0: h = -nh.Length
@@ -1016,7 +1014,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
         obj.Scale = delta
         corr = Vector(center.x,center.y,center.z)
         corr.scale(delta.x,delta.y,delta.z)
-        corr = fcvec.neg(corr.sub(center))
+        corr = DraftVecUtils.neg(corr.sub(center))
         p = obj.Placement
         p.move(corr)
         obj.Placement = p
@@ -1037,8 +1035,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     and the offsetted wires will be bound by their endpoints, forming a face
     if sym is True, bind must be true too, and the offset is made on both
     sides, the total width being the given delta length.'''
-    import Part
-    from draftlibs import fcgeo
+    import Part, DraftGeomUtils
 
     def getRect(p,obj):
         "returns length,heigh,placement"
@@ -1047,8 +1044,8 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         diag = p[2].sub(p[0])
         bb = p[1].sub(p[0])
         bh = p[3].sub(p[0])
-        nb = fcvec.project(diag,bb)
-        nh = fcvec.project(diag,bh)
+        nb = DraftVecUtils.project(diag,bb)
+        nh = DraftVecUtils.project(diag,bh)
         if obj.Length < 0: l = -nb.Length
         else: l = nb.Length
         if obj.Height < 0: h = -nh.Length
@@ -1058,7 +1055,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     def getRadius(obj,delta):
         "returns a new radius for a regular polygon"
         an = math.pi/obj.FacesNumber
-        nr = fcvec.rotate(delta,-an)
+        nr = DraftVecUtils.rotate(delta,-an)
         nr.multiply(1/math.cos(an))
         nr = obj.Shape.Vertexes[0].Point.add(nr)
         nr = nr.sub(obj.Placement.Base)
@@ -1075,18 +1072,18 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     else:
         if sym:
             d1 = delta.multiply(0.5)
-            d2 = fcvec.neg(d1)
-            n1 = fcgeo.offsetWire(obj.Shape,d1)
-            n2 = fcgeo.offsetWire(obj.Shape,d2)
+            d2 = DraftVecUtils.neg(d1)
+            n1 = DraftGeomUtils.offsetWire(obj.Shape,d1)
+            n2 = DraftGeomUtils.offsetWire(obj.Shape,d2)
         else:
-            newwire = fcgeo.offsetWire(obj.Shape,delta)
-            p = fcgeo.getVerts(newwire)
+            newwire = DraftGeomUtils.offsetWire(obj.Shape,delta)
+            p = DraftGeomUtils.getVerts(newwire)
     if occ:
         newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
-        newobj.Shape = fcgeo.offsetWire(obj.Shape,delta,occ=True)
+        newobj.Shape = DraftGeomUtils.offsetWire(obj.Shape,delta,occ=True)
         formatObject(newobj,obj)
     elif bind:
-        if not fcgeo.isReallyClosed(obj.Shape):
+        if not DraftGeomUtils.isReallyClosed(obj.Shape):
             if sym:
                 s1 = n1
                 s2 = n2
@@ -1161,8 +1158,7 @@ def draftify(objectslist,makeblock=False):
     '''draftify(objectslist,[makeblock]): turns each object of the given list
     (objectslist can also be a single object) into a Draft parametric
     wire. If makeblock is True, multiple objects will be grouped in a block'''
-    from draftlibs import fcgeo
-    import Part
+    import DraftGeomUtils, Part
 
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
@@ -1170,7 +1166,7 @@ def draftify(objectslist,makeblock=False):
     for obj in objectslist:
         if obj.isDerivedFrom('Part::Feature'):
             for w in obj.Shape.Wires:
-                if fcgeo.hasCurves(w):
+                if DraftGeomUtils.hasCurves(w):
                     if (len(w.Edges) == 1) and isinstance(w.Edges[0].Curve,Part.Circle):
                         nobj = makeCircle(w.Edges[0])
                     else:
@@ -1199,8 +1195,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     with the given linewidth and fontsize (used if the given object contains
     any text). You can also supply an arbitrary projection vector. the
     scale parameter allows to scale linewidths down, so they are resolution-independant.'''
-    import Part
-    from draftlibs import fcgeo
+    import Part, DraftGeomUtils
     svg = ""
     linewidth = linewidth/scale
     fontsize = (fontsize/scale)/2
@@ -1209,7 +1204,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if isinstance(direction,FreeCAD.Vector):
             if direction != Vector(0,0,0):
                 plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+                plane.alignToPointAndAxis(Vector(0,0,0),DraftVecUtils.neg(direction),0)
         elif isinstance(direction,WorkingPlane.plane):
             plane = direction
 
@@ -1240,10 +1235,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getProj(vec):
         if not plane: return vec
-        nx = fcvec.project(vec,plane.u)
+        nx = DraftVecUtils.project(vec,plane.u)
         lx = nx.Length
         if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
-        ny = fcvec.project(vec,plane.v)
+        ny = DraftVecUtils.project(vec,plane.v)
         ly = ny.Length
         if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
         return Vector(lx,ly,0)
@@ -1255,7 +1250,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getPath(edges):
         svg ='<path id="' + name + '" '
-        edges = fcgeo.sortEdges(edges)
+        edges = DraftGeomUtils.sortEdges(edges)
         v = getProj(edges[0].Vertexes[0].Point)
         svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
         for e in edges:
@@ -1320,7 +1315,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 vtext = m.multiply(plane.u)
             else:
                 vtext = m.multiply(Vector(1,0,0))
-            angle = -fcvec.angle(vtext)
+            angle = -DraftVecUtils.angle(vtext)
             svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
             svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
             svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
@@ -1328,8 +1323,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             ts = (len(dimText)*obj.ViewObject.FontSize)/4
             rm = ((p3.sub(p2)).Length/2)-ts
-            p2a = getProj(p2.add(fcvec.scaleTo(p3.sub(p2),rm)))
-            p2b = getProj(p3.add(fcvec.scaleTo(p2.sub(p3),rm)))
+            p2a = getProj(p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm)))
+            p2b = getProj(p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm)))
             angle = 0
             svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
             svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
@@ -1457,7 +1452,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     wiredEdges.extend(w.Edges)
             if len(wiredEdges) != len(obj.Shape.Edges):
                 for e in obj.Shape.Edges:
-                    if (fcgeo.findEdge(e,wiredEdges) == None):
+                    if (DraftGeomUtils.findEdge(e,wiredEdges) == None):
                         svg += getPath([e])
         else:
             svg = getCircle(obj.Shape.Edges[0])
@@ -1501,8 +1496,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
     constraints will be automatically added to wire nodes, rectangles
     and circles. If addTo is an existing sketch, geometry will be added to it instead of
     creating a new one.'''
-    import Part
-    from draftlibs import fcgeo
+    import Part, DraftGeomUtils
     from Sketcher import Constraint
 
     StartPoint = 1
@@ -1558,18 +1552,18 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                 segs = range(last-len(obj.Shape.Edges),last-1)
                 for seg in segs:
                     nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                    if fcgeo.isAligned(nobj.Geometry[seg],"x"):
+                    if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
                         nobj.addConstraint(Constraint("Vertical",seg))
-                    elif fcgeo.isAligned(nobj.Geometry[seg],"y"):
+                    elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
                         nobj.addConstraint(Constraint("Horizontal",seg))
                 if closed:
                     nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             ok = True
         if (not ok) and obj.isDerivedFrom("Part::Feature"):
-            if fcgeo.hasOnlyWires(obj.Shape):
+            if DraftGeomUtils.hasOnlyWires(obj.Shape):
                 for w in obj.Shape.Wires:
-                    for edge in fcgeo.sortEdges(w.Edges):
-                        g = fcgeo.geom(edge)
+                    for edge in DraftGeomUtils.sortEdges(w.Edges):
+                        g = DraftGeomUtils.geom(edge)
                         if g:
                             nobj.addGeometry(g)  
                     if autoconstraints:
@@ -1577,20 +1571,20 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                         segs = range(last-len(w.Edges),last-1)
                         for seg in segs:
                             nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            if fcgeo.isAligned(nobj.Geometry[seg],"x"):
+                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
                                 nobj.addConstraint(Constraint("Vertical",seg))
-                            elif fcgeo.isAligned(nobj.Geometry[seg],"y"):
+                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
                                 nobj.addConstraint(Constraint("Horizontal",seg))
                         if w.isClosed:
                             nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             else:
                 for edge in obj.Shape.Edges:
-                    nobj.addGeometry(fcgeo.geom(edge))
+                    nobj.addGeometry(DraftGeomUtils.geom(edge))
                     if autoconstraints:
                         last = nobj.GeometryCount - 1
-                        if fcgeo.isAligned(nobj.Geometry[last],"x"):
+                        if DraftGeomUtils.isAligned(nobj.Geometry[last],"x"):
                             nobj.addConstraint(Constraint("Vertical",last))
-                        elif fcgeo.isAligned(nobj.Geometry[last],"y"):
+                        elif DraftGeomUtils.isAligned(nobj.Geometry[last],"y"):
                             nobj.addConstraint(Constraint("Horizontal",last))
             ok = True
         if ok:
@@ -1635,7 +1629,7 @@ def clone(obj,delta=None):
     cl.Label = "Clone of " + obj[0].Label
     _Clone(cl)
     if gui:
-        _ViewProviderDraftPart(cl.ViewObject)
+        _ViewProviderClone(cl.ViewObject)
         formatObject(cl,obj[0])
     cl.Objects = obj
     if delta:
@@ -1793,45 +1787,44 @@ class _ViewProviderDimension:
         obj.Override = ''
 
     def calcGeom(self,obj):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         p1 = obj.Start
         p4 = obj.End
         base = Part.Line(p1,p4).toShape()
-        proj = fcgeo.findDistance(obj.Dimline,base)
+        proj = DraftGeomUtils.findDistance(obj.Dimline,base)
         if not proj:
             p2 = p1
             p3 = p4
         else:
-            p2 = p1.add(fcvec.neg(proj))
-            p3 = p4.add(fcvec.neg(proj))
+            p2 = p1.add(DraftVecUtils.neg(proj))
+            p3 = p4.add(DraftVecUtils.neg(proj))
             dmax = obj.ViewObject.ExtLines
             if dmax and (proj.Length > dmax):
-                p1 = p2.add(fcvec.scaleTo(proj,dmax))
-                p4 = p3.add(fcvec.scaleTo(proj,dmax))
-        midpoint = p2.add(fcvec.scale(p3.sub(p2),0.5))
+                p1 = p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                p4 = p3.add(DraftVecUtils.scaleTo(proj,dmax))
+        midpoint = p2.add(DraftVecUtils.scale(p3.sub(p2),0.5))
         if not proj:
-            ed = fcgeo.vec(base)
+            ed = DraftGeomUtils.vec(base)
             proj = ed.cross(Vector(0,0,1))
         if not proj: norm = Vector(0,0,1)
-        else: norm = fcvec.neg(p3.sub(p2).cross(proj))
-        if not fcvec.isNull(norm):
+        else: norm = DraftVecUtils.neg(p3.sub(p2).cross(proj))
+        if not DraftVecUtils.isNull(norm):
             norm.normalize()
         va = get3DView().getViewDirection()
         if va.getAngle(norm) < math.pi/2:
-            norm = fcvec.neg(norm)
+            norm = DraftVecUtils.neg(norm)
         u = p3.sub(p2)
         u.normalize()
         c = get3DView().getCameraNode()
         r = c.orientation.getValue()
         ru = Vector(r.multVec(coin.SbVec3f(1,0,0)).getValue())
-        if ru.getAngle(u) > math.pi/2: u = fcvec.neg(u)
+        if ru.getAngle(u) > math.pi/2: u = DraftVecUtils.neg(u)
         v = norm.cross(u)
-        offset = fcvec.scaleTo(v,obj.ViewObject.FontSize*.2)
+        offset = DraftVecUtils.scaleTo(v,obj.ViewObject.FontSize*.2)
         if obj.ViewObject:
             if hasattr(obj.ViewObject,"DisplayMode"):
                 if obj.ViewObject.DisplayMode == "3D":
-                    offset = fcvec.neg(offset)
+                    offset = DraftVecUtils.neg(offset)
         if hasattr(obj.ViewObject,"TextPosition"):
             if obj.ViewObject.TextPosition == Vector(0,0,0):
                 tbase = midpoint.add(offset)
@@ -1839,7 +1832,7 @@ class _ViewProviderDimension:
                 tbase = obj.ViewObject.TextPosition
         else:
             tbase = midpoint.add(offset)
-        rot = FreeCAD.Placement(fcvec.getPlaneRotation(u,v,norm)).Rotation.Q
+        rot = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u,v,norm)).Rotation.Q
         return p1,p2,p3,p4,tbase,norm,rot
 
     def attach(self, obj):
@@ -1858,7 +1851,7 @@ class _ViewProviderDimension:
         self.text.string = self.text3d.string = ''
         self.textpos = coin.SoTransform()
         self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-        tm = fcvec.getPlaneRotation(p3.sub(p2),norm)
+        tm = DraftVecUtils.getPlaneRotation(p3.sub(p2),norm)
         rm = coin.SbRotation()
         self.textpos.rotation = rm
         label = coin.SoSeparator()
@@ -1917,11 +1910,11 @@ class _ViewProviderDimension:
                     # arc linked dimension
                     e = obj.Base.Shape.Edges[obj.LinkedVertices[0]]
                     c = e.Curve.Center
-                    bray = fcvec.scaleTo(obj.Dimline.sub(c),e.Curve.Radius)
+                    bray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),e.Curve.Radius)
                     if obj.LinkedVertices[1] == 1:
                         v1 = c
                     else:
-                        v1 = c.add(fcvec.neg(bray))
+                        v1 = c.add(DraftVecUtils.neg(bray))
                     v2 = c.add(bray)
                 else:
                     # linear linked dimension
@@ -1952,8 +1945,8 @@ class _ViewProviderDimension:
             else:
                 ts = (len(text)*obj.ViewObject.FontSize)/4
                 rm = ((p3.sub(p2)).Length/2)-ts
-                p2a = p2.add(fcvec.scaleTo(p3.sub(p2),rm))
-                p2b = p3.add(fcvec.scaleTo(p2.sub(p3),rm))
+                p2a = p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm))
+                p2b = p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm))
                 self.coords.point.setValues([[p1.x,p1.y,p1.z],
                                              [p2.x,p2.y,p2.z],
                                              [p2a.x,p2a.y,p2a.z],
@@ -2149,15 +2142,14 @@ class _ViewProviderAngularDimension:
         self.onChanged(vobj,"FontName")
 
     def calcGeom(self,obj):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         rad = (obj.Dimline.sub(obj.Center)).Length
         cir = Part.makeCircle(rad,obj.Center,Vector(0,0,1),obj.FirstAngle,obj.LastAngle)
-        cp = fcgeo.findMidpoint(cir.Edges[0])
+        cp = DraftGeomUtils.findMidpoint(cir.Edges[0])
         rv = cp.sub(obj.Center)
-        rv = fcvec.scaleTo(rv,rv.Length + obj.ViewObject.FontSize*.2)
+        rv = DraftVecUtils.scaleTo(rv,rv.Length + obj.ViewObject.FontSize*.2)
         tbase = obj.Center.add(rv)
-        trot = fcvec.angle(rv)-math.pi/2
+        trot = DraftVecUtils.angle(rv)-math.pi/2
         if (trot > math.pi/2) or (trot < -math.pi/2):
             trot = trot + math.pi
         s = getParam("dimorientation")
@@ -2276,8 +2268,7 @@ class _Rectangle:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         plm = fp.Placement
         p1 = Vector(0,0,0)
         p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
@@ -2286,7 +2277,7 @@ class _Rectangle:
         shape = Part.makePolygon([p1,p2,p3,p4,p1])
         if "FilletRadius" in fp.PropertiesList:
             if fp.FilletRadius != 0:
-                w = fcgeo.filletWire(shape,fp.FilletRadius)
+                w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
                 if w:
                     shape = w
         shape = Part.Face(shape)
@@ -2297,7 +2288,7 @@ class _ViewProviderRectangle(_ViewProviderDraft):
     "A View Provider for the Rectangle object"
     def __init__(self, vobj):
         _ViewProviderDraft.__init__(self,vobj)
-        obj.addProperty("App::PropertyFile","TextureImage",
+        vobj.addProperty("App::PropertyFile","TextureImage",
                         "Base","Uses an image as a texture map")
 
     def attach(self,vobj):
@@ -2399,8 +2390,7 @@ class _Wire:
                     fp.Points = pts
                         
     def createGeometry(self,fp):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         plm = fp.Placement
         if fp.Base and (not fp.Tool):
             if fp.Base.isDerivedFrom("Sketcher::SketchObject"):
@@ -2416,8 +2406,8 @@ class _Wire:
                 sh1 = fp.Base.Shape.copy()
                 sh2 = fp.Tool.Shape.copy()
                 shape = sh1.fuse(sh2)
-                if fcgeo.isCoplanar(shape.Faces):
-                    shape = fcgeo.concatenate(shape)
+                if DraftGeomUtils.isCoplanar(shape.Faces):
+                    shape = DraftGeomUtils.concatenate(shape)
                     fp.Shape = shape
                     p = []
                     for v in shape.Vertexes: p.append(v.Point)
@@ -2430,7 +2420,7 @@ class _Wire:
                 shape = Part.makePolygon(fp.Points+[fp.Points[0]])
                 if "FilletRadius" in fp.PropertiesList:
                     if fp.FilletRadius != 0:
-                        w = fcgeo.filletWire(shape,fp.FilletRadius)
+                        w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
                         if w:
                             shape = w
                 shape = Part.Face(shape)
@@ -2444,7 +2434,7 @@ class _Wire:
                 shape = Part.Wire(edges)
                 if "FilletRadius" in fp.PropertiesList:
                     if fp.FilletRadius != 0:
-                        w = fcgeo.filletWire(shape,fp.FilletRadius)
+                        w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
                         if w:
                             shape = w
             fp.Shape = shape
@@ -2510,8 +2500,7 @@ class _Polygon:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         plm = fp.Placement
         angle = (math.pi*2)/fp.FacesNumber
         if fp.DrawMode == 'inscribed':
@@ -2526,7 +2515,7 @@ class _Polygon:
         shape = Part.makePolygon(pts)
         if "FilletRadius" in fp.PropertiesList:
             if fp.FilletRadius != 0:
-                w = fcgeo.filletWire(shape,fp.FilletRadius)
+                w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
                 if w:
                     shape = w
         shape = Part.Face(shape)
@@ -2690,16 +2679,15 @@ class _Shape2DView:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
-        import Drawing
-        from draftlibs import fcgeo
+        import Drawing, DraftGeomUtils
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                if not fcvec.isNull(obj.Projection):
+                if not DraftVecUtils.isNull(obj.Projection):
                     [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
                     if visibleG0:
                         obj.Shape = visibleG0
-        if not fcgeo.isNull(pl):
+        if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
 class _Array:
@@ -2745,7 +2733,7 @@ class _Array:
             self.createGeometry(obj)
             
     def createGeometry(self,obj):
-        from draftlibs import fcgeo
+        import DraftGeomUtils
         if obj.Base:
             pl = obj.Placement
             if obj.ArrayType == "ortho":
@@ -2753,21 +2741,21 @@ class _Array:
             else:
                 sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle,obj.NumberPolar,obj.Axis)
             obj.Shape = sh
-            if not fcgeo.isNull(pl):
+            if not DraftGeomUtils.isNull(pl):
                 obj.Placement = pl
 
     def rectArray(self,shape,xvector,yvector,xnum,ynum):
         import Part
         base = [shape.copy()]
         for xcount in range(xnum):
-            currentxvector=fcvec.scale(xvector,xcount)
+            currentxvector=DraftVecUtils.scale(xvector,xcount)
             if not xcount==0:
                 nshape = shape.copy()
                 nshape.translate(currentxvector)
                 base.append(nshape)
             for ycount in range(ynum):
                 currentxvector=FreeCAD.Vector(currentxvector)
-                currentyvector=currentxvector.add(fcvec.scale(yvector,ycount))
+                currentyvector=currentxvector.add(DraftVecUtils.scale(yvector,ycount))
                 if not ycount==0:
                     nshape = shape.copy()
                     nshape.translate(currentyvector)
@@ -2781,7 +2769,7 @@ class _Array:
         for i in range(num):
             currangle = fraction + (i*fraction)
             nshape = shape.copy()
-            nshape.rotate(fcvec.tup(center), fcvec.tup(axis), currangle)
+            nshape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
             base.append(nshape)
         return Part.makeCompound(base)
 
@@ -2845,20 +2833,20 @@ class _Clone:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         pl = obj.Placement
         shapes = []
         for o in obj.Objects:
             if o.isDerivedFrom("Part::Feature"):
                 sh = o.Shape.copy()
                 m = FreeCAD.Matrix()
-                m.scale(obj.Scale)
-                sh = sh.transformGeometry(m)
+                if hasattr(obj,"Scale") and not sh.isNull():
+                    m.scale(obj.Scale)
+                    sh = sh.transformGeometry(m)
                 shapes.append(sh)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)   
-        if not fcgeo.isNull(pl):
+        if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
 class _ViewProviderDraftPart(_ViewProviderDraft):
@@ -2873,5 +2861,17 @@ class _ViewProviderDraftPart(_ViewProviderDraft):
     def claimChildren(self):
         return []
 
+class _ViewProviderClone(_ViewProviderDraft):
+    "a view provider that displays a Part icon instead of a Draft icon"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Draft_Clone.svg"
+
+    def claimChildren(self):
+        return []
+    
 if not hasattr(FreeCADGui,"Snapper"):
     import DraftSnap

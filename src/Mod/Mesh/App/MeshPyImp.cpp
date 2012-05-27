@@ -41,6 +41,8 @@
 #include "Core/Grid.h"
 #include "Core/MeshKernel.h"
 #include "Core/Triangulation.h"
+#include "Core/Segmentation.h"
+#include "Core/Curvature.h"
 
 using namespace Mesh;
 
@@ -1356,15 +1358,16 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
     }
 }
 
-PyObject*  MeshPy::getPlanes(PyObject *args)
+PyObject*  MeshPy::getPlanarSegments(PyObject *args)
 {
     float dev;
-    if (!PyArg_ParseTuple(args, "f",&dev))
+    unsigned long minFacets=0;
+    if (!PyArg_ParseTuple(args, "f|k",&dev,&minFacets))
         return NULL;
 
     Mesh::MeshObject* mesh = getMeshObjectPtr();
     std::vector<Mesh::Segment> segments = mesh->getSegmentsFromType
-        (Mesh::MeshObject::PLANE, Mesh::Segment(mesh,false), dev);
+        (Mesh::MeshObject::PLANE, Mesh::Segment(mesh,false), dev, minFacets);
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
@@ -1377,6 +1380,47 @@ PyObject*  MeshPy::getPlanes(PyObject *args)
     }
 
     return Py::new_reference_to(s);
+}
+
+PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
+{
+    PyObject* l;
+    if (!PyArg_ParseTuple(args, "O!",&PyList_Type,&l))
+        return NULL;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshSegmentAlgorithm finder(kernel);
+    MeshCore::MeshCurvature meshCurv(kernel);
+    meshCurv.ComputePerVertex();
+
+    Py::List func(l);
+    std::vector<MeshCore::MeshSurfaceSegment*> segm;
+    for (Py::List::iterator it = func.begin(); it != func.end(); ++it) {
+        Py::Tuple t(*it);
+        float c1 = (float)Py::Float(t[0]);
+        float c2 = (float)Py::Float(t[1]);
+        float tol1 = (float)Py::Float(t[2]);
+        float tol2 = (float)Py::Float(t[3]);
+        int num = (int)Py::Int(t[4]);
+        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+    }
+
+    finder.FindSegments(segm);
+
+    Py::List list;
+    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
+        const std::vector<MeshCore::MeshSegment>& data = (*segmIt)->GetSegments();
+        for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
+            Py::List ary;
+            for (MeshCore::MeshSegment::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
+                ary.append(Py::Int((int)*jt));
+            }
+            list.append(ary);
+        }
+        delete (*segmIt);
+    }
+
+    return Py::new_reference_to(list);
 }
 
 Py::Int MeshPy::getCountPoints(void) const

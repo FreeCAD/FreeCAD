@@ -5311,8 +5311,8 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Standardni pogled</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Način prikaza</translation>
+      <source>Document window</source>
+      <translation>Dokument prozor</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>

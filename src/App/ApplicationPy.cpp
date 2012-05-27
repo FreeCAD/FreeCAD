@@ -383,22 +383,35 @@ PyObject* Application::sGetVersion(PyObject * /*self*/, PyObject *args,PyObject 
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL; // NULL triggers exception
 
-    PyObject* pList = PyList_New(5);
-    PyObject *pItem;
-    pItem = PyString_FromString(Application::Config()["BuildVersionMajor"].c_str());
-    PyList_SetItem(pList, 0, pItem);
-    pItem = PyString_FromString(Application::Config()["BuildVersionMinor"].c_str());
-    PyList_SetItem(pList, 1, pItem);
-    pItem = PyString_FromString(Application::Config()["BuildRevision"].c_str());
-    PyList_SetItem(pList, 2, pItem);
-    pItem = PyString_FromString(Application::Config()["BuildRepositoryURL"].c_str());
-    PyList_SetItem(pList, 4, pItem);
-    pItem = PyString_FromString(Application::Config()["BuildCurrentDate"].c_str());
-    PyList_SetItem(pList, 6, pItem);
+    Py::List list;
+    const std::map<std::string, std::string>& cfg = Application::Config();
+    std::map<std::string, std::string>::const_iterator it;
 
-    return pList;
+    it = cfg.find("BuildVersionMajor");
+    list.append(Py::String(it != cfg.end() ? it->second : ""));
+
+    it = cfg.find("BuildVersionMinor");
+    list.append(Py::String(it != cfg.end() ? it->second : ""));
+
+    it = cfg.find("BuildRevision");
+    list.append(Py::String(it != cfg.end() ? it->second : ""));
+
+    it = cfg.find("BuildRepositoryURL");
+    list.append(Py::String(it != cfg.end() ? it->second : ""));
+
+    it = cfg.find("BuildRevisionDate");
+    list.append(Py::String(it != cfg.end() ? it->second : ""));
+
+    it = cfg.find("BuildRevisionBranch");
+    if (it != cfg.end())
+        list.append(Py::String(it->second));
+
+    it = cfg.find("BuildRevisionHash");
+    if (it != cfg.end())
+        list.append(Py::String(it->second));
+
+    return Py::new_reference_to(list);
 }
-
 
 PyObject* Application::sAddImportType(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {

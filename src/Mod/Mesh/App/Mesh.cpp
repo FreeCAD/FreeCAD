@@ -44,6 +44,7 @@
 #include "Core/TopoAlgorithm.h"
 #include "Core/Evaluation.h"
 #include "Core/Degeneration.h"
+#include "Core/Segmentation.h"
 #include "Core/SetOperations.h"
 #include "Core/Visitor.h"
 
@@ -1422,50 +1423,25 @@ MeshObject* MeshObject::meshFromSegment(const std::vector<unsigned long>& indice
     return new MeshObject(kernel, _Mtrx);
 }
 
-std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, const Segment& aSegment, float dev) const
+std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, const Segment& aSegment,
+                                                     float dev, unsigned long minFacets) const
 {
     std::vector<Segment> segm;
-    unsigned long startFacet, visited;
     if (this->_kernel.CountFacets() == 0)
         return segm;
 
-    // reset VISIT flags
-    MeshCore::MeshAlgorithm cAlgo(this->_kernel);
-    if (aSegment.isEmpty()) {
-        cAlgo.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
+    MeshCore::MeshSegmentAlgorithm finder(this->_kernel);
+    MeshCore::MeshDistanceSurfaceSegment* surf;
+    surf = new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev);
+    std::vector<MeshCore::MeshSurfaceSegment*> surfaces;
+    surfaces.push_back(surf);
+    finder.FindSegments(surfaces);
+
+    const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
+    for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
+        segm.push_back(Segment(const_cast<MeshObject*>(this), *it, false));
     }
-    else {
-        cAlgo.SetFacetFlag(MeshCore::MeshFacet::VISIT);
-        cAlgo.ResetFacetsFlag(aSegment.getIndices(), MeshCore::MeshFacet::VISIT);
-    }
-
-    const MeshCore::MeshFacetArray& rFAry = this->_kernel.GetFacets();
-    MeshCore::MeshFacetArray::_TConstIterator iTri = rFAry.begin();
-    MeshCore::MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
-    MeshCore::MeshFacetArray::_TConstIterator iEnd = rFAry.end();
-
-    // start from the first not visited facet
-    visited = cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
-    iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-        MeshCore::MeshFacet::VISIT));
-    startFacet = iTri - iBeg;
-
-    while (startFacet != ULONG_MAX) {
-        // collect all facets of the same geometry
-        std::vector<unsigned long> indices;
-        indices.push_back(startFacet);
-        MeshCore::MeshPlaneVisitor pv(this->_kernel, startFacet, dev, indices);
-        visited += this->_kernel.VisitNeighbourFacets(pv, startFacet);
-
-        iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-            MeshCore::MeshFacet::VISIT));
-        if (iTri < iEnd)
-            startFacet = iTri - iBeg;
-        else
-            startFacet = ULONG_MAX;
-        segm.push_back(Segment(const_cast<MeshObject*>(this), indices, false));
-    }
-
+    delete surf;
     return segm;
 }
 

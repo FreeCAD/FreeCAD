@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore,QtGui
 
@@ -78,17 +77,19 @@ class _CommandWindow:
         return {'Pixmap'  : 'Arch_Window',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Window"),
                 'Accel': "W, N",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from scratch or from a selected object (wire, rectangle or sketch)")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Window")
-        if sel:
-            for obj in sel:
-                makeWindow(obj)
-        else:
-            rect = Draft.makeRectangle(1,1)
-            makeWindow(rect)
+        FreeCAD.ActiveDocument.openTransaction("Create Window")
+        for obj in sel:
+            makeWindow(obj)
         FreeCAD.ActiveDocument.commitTransaction()
        
 class _Window(ArchComponent.Component):
@@ -107,8 +108,7 @@ class _Window(ArchComponent.Component):
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -133,7 +133,7 @@ class _Window(ArchComponent.Component):
                             norm = shape.normalAt(0,0)
                             thk = float(obj.WindowParts[(i*5)+3])
                             if thk:
-                                exv = fcvec.scaleTo(norm,thk)
+                                exv = DraftVecUtils.scaleTo(norm,thk)
                                 shape = shape.extrude(exv)
                                 for w in wires:
                                     f = Part.Face(w)
@@ -142,12 +142,12 @@ class _Window(ArchComponent.Component):
                             if obj.WindowParts[(i*5)+4]:
                                 zof = float(obj.WindowParts[(i*5)+4])
                                 if zof:
-                                    zov = fcvec.scaleTo(norm,zof)
+                                    zov = DraftVecUtils.scaleTo(norm,zof)
                                     shape.translate(zov)
                             print shape
                             shapes.append(shape)
                     obj.Shape = Part.makeCompound(shapes)
-        if not fcgeo.isNull(pl):
+        if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):

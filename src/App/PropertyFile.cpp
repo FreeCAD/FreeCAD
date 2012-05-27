@@ -296,7 +296,7 @@ void PropertyFileIncluded::Restore(Base::XMLReader &reader)
 
 void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 {
-    std::ifstream from(_cValue.c_str());
+    Base::ifstream from(Base::FileInfo(_cValue.c_str()));
     if (!from)
         throw Base::Exception("PropertyFileIncluded::SaveDocFile() "
         "File in document transient dir deleted");
@@ -311,7 +311,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 
 void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
-    std::ofstream to(_cValue.c_str());
+    Base::ofstream to(Base::FileInfo(_cValue.c_str()));
     if (!to) 
         throw Base::Exception("PropertyFileIncluded::RestoreDocFile() "
         "File in document transient dir deleted");
@@ -343,7 +343,7 @@ Property *PropertyFileIncluded::Copy(void) const
         bool done = file.renameFile(NewName.filePath().c_str());
         assert(done);
         // remember the new name for the Undo
-        Base::Console().Log("Copy this=%p Befor=%s After=%s\n",p,p->_cValue.c_str(),NewName.filePath().c_str());
+        Base::Console().Log("Copy this=%p Before=%s After=%s\n",p,p->_cValue.c_str(),NewName.filePath().c_str());
         p->_cValue = NewName.filePath().c_str();
     }
 

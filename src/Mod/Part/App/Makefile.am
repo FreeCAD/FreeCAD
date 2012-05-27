@@ -4,6 +4,7 @@ lib_LTLIBRARIES=libPart.la Part.la
 BUILT_SOURCES=\
 		ArcPy.cpp \
 		ArcOfCirclePy.cpp \
+		BRepOffsetAPI_MakePipeShellPy.cpp \
 		CirclePy.cpp \
 		EllipsePy.cpp \
 		HyperbolaPy.cpp \
@@ -42,6 +43,7 @@ BUILT_SOURCES=\
 libPart_la_BUILT=\
 		ArcPy.h \
 		ArcOfCirclePy.h \
+		BRepOffsetAPI_MakePipeShellPy.h \
 		CirclePy.h \
 		EllipsePy.h \
 		HyperbolaPy.h \
@@ -81,6 +83,7 @@ libPart_la_SOURCES=\
 		AppPartPy.cpp \
 		ArcPyImp.cpp \
 		ArcOfCirclePyImp.cpp \
+		BRepOffsetAPI_MakePipeShellPyImp.cpp \
 		CirclePyImp.cpp \
 		CrossSection.cpp \
 		EllipsePyImp.cpp \
@@ -260,6 +263,7 @@ EXTRA_DIST = \
 		OpenCascadeAll.h \
 		ArcPy.xml \
 		ArcOfCirclePy.xml \
+		BRepOffsetAPI_MakePipeShellPy.xml \
 		CirclePy.xml \
 		EllipsePy.xml \
 		HyperbolaPy.xml \

@@ -153,7 +153,10 @@ class GitControl(VersionControl):
                 self.url = r.groups()[0]
                 break
         self.hash=os.popen("git log -1 --pretty=format:%H").read()
-        self.branch=os.popen("git branch").read().split('\n')[0][2:]
+        for self.branch in os.popen("git branch").read().split('\n'):
+            if re.match( "\*", self.branch ) != None:
+                break 
+        self.branch=self.branch[2:]
         return True
 
     def printInfo(self):

@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -180,13 +179,13 @@ class _CommandWall:
         n = FreeCAD.DraftWorkingPlane.axis
         bv = point.sub(b)
         dv = bv.cross(n)
-        dv = fcvec.scaleTo(dv,self.Width/2)
+        dv = DraftVecUtils.scaleTo(dv,self.Width/2)
         if self.Align == "Center":
             self.tracker.update([b,point])
         elif self.Align == "Left":
             self.tracker.update([b.add(dv),point.add(dv)])
         else:
-            dv = fcvec.neg(dv)
+            dv = DraftVecUtils.neg(dv)
             self.tracker.update([b.add(dv),point.add(dv)])
 
     def taskbox(self):
@@ -249,14 +248,13 @@ class _Wall(ArchComponent.Component):
                         "The width of this wall. Not used if this wall is based on a face")
         obj.addProperty("App::PropertyLength","Height","Base",
                         "The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")
-        obj.addProperty("App::PropertyLength","Length","Base",
-                        "The length of this wall. Not used if this wall is based on a shape")
         obj.addProperty("App::PropertyEnumeration","Align","Base",
                         "The alignment of this wall on its base object, if applicable")
+        obj.addProperty("App::PropertyVector","Normal","Base",
+                        "The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
         obj.Align = ['Left','Right','Center']
         self.Type = "Wall"
         obj.Width = 0.1
-        obj.Length = 1
         obj.Height = 0
         
     def execute(self,obj):
@@ -276,10 +274,10 @@ class _Wall(ArchComponent.Component):
                 f = w
         f = Part.Face(f)
         n = f.normalAt(0,0)
-        v1 = fcvec.scaleTo(n,width)
+        v1 = DraftVecUtils.scaleTo(n,width)
         f.translate(v1)
-        v2 = fcvec.neg(v1)
-        v2 = fcvec.scale(v1,-2)
+        v2 = DraftVecUtils.neg(v1)
+        v2 = DraftVecUtils.scale(v1,-2)
         f = f.extrude(v2)
         if delta:
             f.translate(delta)
@@ -288,8 +286,10 @@ class _Wall(ArchComponent.Component):
     def createGeometry(self,obj):
         "builds the wall shape"
 
-        import Part
-        from draftlibs import fcgeo
+        if not obj.Base:
+            return
+
+        import Part, DraftGeomUtils
 
         flat = False
         if hasattr(obj.ViewObject,"DisplayMode"):
@@ -302,25 +302,25 @@ class _Wall(ArchComponent.Component):
         
         def getbase(wire):
             "returns a full shape from a base wire"
-            dvec = fcgeo.vec(wire.Edges[0]).cross(normal)
+            dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
             dvec.normalize()
             if obj.Align == "Left":
                 dvec = dvec.multiply(width)
-                w2 = fcgeo.offsetWire(wire,dvec)
-                w1 = Part.Wire(fcgeo.sortEdges(wire.Edges))
-                sh = fcgeo.bind(w1,w2)
+                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                sh = DraftGeomUtils.bind(w1,w2)
             elif obj.Align == "Right":
                 dvec = dvec.multiply(width)
-                dvec = fcvec.neg(dvec)
-                w2 = fcgeo.offsetWire(wire,dvec)
-                w1 = Part.Wire(fcgeo.sortEdges(wire.Edges))
-                sh = fcgeo.bind(w1,w2)
+                dvec = DraftVecUtils.neg(dvec)
+                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                sh = DraftGeomUtils.bind(w1,w2)
             elif obj.Align == "Center":
                 dvec = dvec.multiply(width/2)
-                w1 = fcgeo.offsetWire(wire,dvec)
-                dvec = fcvec.neg(dvec)
-                w2 = fcgeo.offsetWire(wire,dvec)
-                sh = fcgeo.bind(w1,w2)
+                w1 = DraftGeomUtils.offsetWire(wire,dvec)
+                dvec = DraftVecUtils.neg(dvec)
+                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                sh = DraftGeomUtils.bind(w1,w2)
             # fixing self-intersections
             sh.fix(0.1,0,1)
             if height and (not flat):
@@ -346,36 +346,25 @@ class _Wall(ArchComponent.Component):
 
         # computing shape
         base = None
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
-                if not obj.Base.Shape.isNull():
-                    base = obj.Base.Shape.copy()
-                    if base.Solids:
-                        pass
-                    elif base.Faces:
-                        if height:
-                            norm = normal.multiply(height)
-                            base = base.extrude(norm)
-                    elif base.Wires:
-                        temp = None
-                        for wire in obj.Base.Shape.Wires:
-                            sh = getbase(wire)
-                            if temp:
-                                temp = temp.fuse(sh)
-                            else:
-                                temp = sh
-                        base = temp
-                        base = base.removeSplitter()
-        if not base:
-            if obj.Length == 0:
-                return
-            length = obj.Length
-            if not length:
-                length = 1
-            v1 = Vector(0,0,0)
-            v2 = Vector(length,0,0)
-            w = Part.Wire(Part.Line(v1,v2).toShape())
-            base = getbase(w)
+        if obj.Base.isDerivedFrom("Part::Feature"):
+            if not obj.Base.Shape.isNull():
+                base = obj.Base.Shape.copy()
+                if base.Solids:
+                    pass
+                elif base.Faces:
+                    if height:
+                        norm = normal.multiply(height)
+                        base = base.extrude(norm)
+                elif base.Wires:
+                    temp = None
+                    for wire in obj.Base.Shape.Wires:
+                        sh = getbase(wire)
+                        if temp:
+                            temp = temp.fuse(sh)
+                        else:
+                            temp = sh
+                    base = temp
+                    base = base.removeSplitter()
 
         for app in obj.Additions:
             base = base.oldFuse(app.Shape)
@@ -394,9 +383,10 @@ class _Wall(ArchComponent.Component):
                 if not hole.Shape.isNull():
                     base = base.cut(hole.Shape)
                     hole.ViewObject.hide() # to be removed
-                
-        obj.Shape = base
-        if not fcgeo.isNull(pl):
+
+        if base:
+            obj.Shape = base
+        if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):

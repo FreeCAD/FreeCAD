@@ -115,6 +115,8 @@ public:
     void setZoomStep(float);
     void setZoomAtCursor(SbBool);
     SbBool isZoomAtCursor() const;
+    void zoomIn();
+    void zoomOut();
 
     void updateAnimation();
     void redraw();

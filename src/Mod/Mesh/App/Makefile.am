@@ -22,6 +22,8 @@ libMesh_la_SOURCES=\
 		Core/Approximation.h \
 		Core/Builder.cpp \
 		Core/Builder.h \
+		Core/Curvature.cpp \
+		Core/Curvature.h \
 		Core/Definitions.cpp \
 		Core/Definitions.h \
 		Core/Degeneration.cpp \
@@ -42,6 +44,8 @@ libMesh_la_SOURCES=\
 		Core/MeshIO.h \
 		Core/Projection.cpp \
 		Core/Projection.h \
+		Core/Segmentation.cpp \
+		Core/Segmentation.h \
 		Core/SetOperations.cpp \
 		Core/SetOperations.h \
 		Core/Smoothing.cpp \
@@ -324,9 +328,9 @@ nobase_include_HEADERS = \
 
 
 # the library search path.
-libMesh_la_LDFLAGS = -L../../../Base -L../../../App $(all_libraries) $(GTS_LIBS) \
+libMesh_la_LDFLAGS = -L../../../Base -L../../../App $(QT4_CORE_LIBS) $(all_libraries) $(GTS_LIBS) \
 		-version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
-libMesh_la_CPPFLAGS = -DMeshExport= 
+libMesh_la_CPPFLAGS = -DMeshExport= -DEIGEN2_SUPPORT
 
 libMesh_la_LIBADD   = \
 		@BOOST_FILESYSTEM_LIB@ @BOOST_REGEX_LIB@ @BOOST_SYSTEM_LIB@ \
@@ -354,7 +358,8 @@ Mesh_la_DEPENDENCIES = libMesh.la
 #--------------------------------------------------------------------------------------
 
 # set the include path found by configure
-AM_CXXFLAGS = -I$(top_srcdir)/src/3rdParty -I$(top_srcdir)/src -I$(top_builddir)/src $(GTS_CFLAGS) $(all_includes) 
+AM_CXXFLAGS = -I$(top_srcdir)/src/3rdParty -I$(top_srcdir)/src -I$(top_builddir)/src $(GTS_CFLAGS) \
+		$(all_includes) $(QT4_CORE_CXXFLAGS)
 
 includedir = @includedir@/Mod/Mesh/App
 libdir = $(prefix)/Mod/Mesh

@@ -23,8 +23,7 @@
 
 "The FreeCAD Arch Vector Rendering Module"
 
-import FreeCAD,math,Part,ArchCommands
-from draftlibs import fcvec,fcgeo
+import FreeCAD,math,Part,ArchCommands,DraftVecUtils,DraftGeomUtils
 
 DEBUG = True # if we want debug messages
 MAXLOOP = 10 # the max number of loop before abort
@@ -171,13 +170,14 @@ class Renderer:
         norm = face[0].normalAt(0,0)
         for w in face[0].Wires:
             verts = []
-            edges = fcgeo.sortEdges(w.Edges)
+            edges = DraftGeomUtils.sortEdges(w.Edges)
             for e in edges:
                 v = e.Vertexes[0].Point
                 v = self.wp.getLocalCoords(v)
                 verts.append(v)
             verts.append(verts[0])
-            wires.append(Part.makePolygon(verts))
+            if len(verts) > 2:
+                wires.append(Part.makePolygon(verts))
         try:
             sh = ArchCommands.makeFace(wires)
         except:
@@ -195,7 +195,7 @@ class Renderer:
         wires = []
         for w in face[0].Wires:
             verts = []
-            edges = fcgeo.sortEdges(w.Edges)
+            edges = DraftGeomUtils.sortEdges(w.Edges)
             for e in edges:
                 v = e.Vertexes[0].Point
                 verts.append(FreeCAD.Vector(v.x,v.y,0))
@@ -238,11 +238,11 @@ class Renderer:
                            FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
                 for c in corners:
                     dv = c.sub(placement.Base)
-                    um1 = fcvec.project(dv,self.wp.u).Length
+                    um1 = DraftVecUtils.project(dv,self.wp.u).Length
                     um = max(um,um1)
-                    vm1 = fcvec.project(dv,self.wp.v).Length
+                    vm1 = DraftVecUtils.project(dv,self.wp.v).Length
                     vm = max(vm,vm1)
-                    wm1 = fcvec.project(dv,self.wp.axis).Length
+                    wm1 = DraftVecUtils.project(dv,self.wp.axis).Length
                     wm = max(wm,wm1)
                 p1 = FreeCAD.Vector(-um,vm,0)
                 p2 = FreeCAD.Vector(um,vm,0)
@@ -251,7 +251,7 @@ class Renderer:
                 cutface = Part.makePolygon([p1,p2,p3,p4,p1])
                 cutface = Part.Face(cutface)
                 cutface.Placement = placement
-                cutnormal = fcvec.scaleTo(self.wp.axis,wm)
+                cutnormal = DraftVecUtils.scaleTo(self.wp.axis,wm)
                 cutvolume = cutface.extrude(cutnormal)
                 shapes = []
                 faces = []
@@ -264,7 +264,7 @@ class Renderer:
                             faces.append([f]+sh[1:])
                         sec = sol.section(cutface)
                         if sec.Edges:
-                            wires = fcgeo.findWires(sec.Edges)
+                            wires = DraftGeomUtils.findWires(sec.Edges)
                             for w in wires:
                                 sec = Part.Face(w)
                                 sections.append([sec,fill])
@@ -312,7 +312,7 @@ class Renderer:
         # even so, faces can still overlap if their edges cross each other
         for e1 in face1[0].Edges:
             for e2 in face2[0].Edges:
-                if fcgeo.findIntersection(e1,e2):
+                if DraftGeomUtils.findIntersection(e1,e2):
                     return True
         return False
 
@@ -353,8 +353,8 @@ class Renderer:
         front = 0
         for v in face1[0].Vertexes:
             dv = v.Point.sub(face2[0].Vertexes[0].Point)
-            dv = fcvec.project(dv,norm)
-            if fcvec.isNull(dv):
+            dv = DraftVecUtils.project(dv,norm)
+            if DraftVecUtils.isNull(dv):
                 behind += 1
                 front += 1
             else:
@@ -376,8 +376,8 @@ class Renderer:
         front = 0
         for v in face2[0].Vertexes:
             dv = v.Point.sub(face1[0].Vertexes[0].Point)
-            dv = fcvec.project(dv,norm)
-            if fcvec.isNull(dv):
+            dv = DraftVecUtils.project(dv,norm)
+            if DraftVecUtils.isNull(dv):
                 behind += 1
                 front += 1
             else:
@@ -544,7 +544,7 @@ class Renderer:
 
     def getPathData(self,w):
         "Returns a SVG path data string from a 2D wire"
-        edges = fcgeo.sortEdges(w.Edges)
+        edges = DraftGeomUtils.sortEdges(w.Edges)
         v = edges[0].Vertexes[0].Point
         svg = 'M '+ str(v.x) +' '+ str(v.y) + ' '
         for e in edges:

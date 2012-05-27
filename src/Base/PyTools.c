@@ -377,8 +377,10 @@ const char *PP_Init(const char *modname) {
 //#ifdef FC_OS_LINUX /* cannot convert `const char *' to `char *' in assignment */
     if (modname!=NULL) return modname;
     { /* we assume here that the caller frees allocated memory */
-      char* __main__=(char *)malloc(sizeof("__main__"));
-      return __main__="__main__";
+      // #0000716: strange assignment and a memory leak
+      return "__main__";
+      //char* __main__=(char *)malloc(sizeof("__main__"));
+      //return __main__="__main__";
     }
 //#else    
 //    return modname == NULL ? "__main__" : modname;  /* default to '__main__' */

@@ -21,8 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -170,7 +169,7 @@ def makeFace(wires,method=2,cleanup=False):
     # cleaning up rubbish in wires
     if cleanup:
         for i in range(len(wires)):
-            wires[i] = fcgeo.removeInterVertices(wires[i])
+            wires[i] = DraftGeomUtils.removeInterVertices(wires[i])
         print "garbage removed"
     for w in wires:
         # we assume that the exterior boundary is that one with
@@ -210,8 +209,7 @@ def meshToShape(obj,mark=True):
     mark is True (default), non-solid objects will be marked in red'''
 
     name = obj.Name
-    import Part,MeshPart
-    from draftlibs import fcgeo
+    import Part, MeshPart, DraftGeomUtils
     if "Mesh" in obj.PropertiesList:
         faces = []	
         mesh = obj.Mesh
@@ -249,12 +247,12 @@ def meshToShape(obj,mark=True):
 def removeShape(objs,mark=True):
     '''takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters.'''
-    from draftlibs import fcgeo
+    import DraftGeomUtils
     if not isinstance(objs,list):
         objs = [objs]
     for obj in objs:
-        if fcgeo.isCubic(obj.Shape):
-            dims = fcgeo.getCubicDimensions(obj.Shape)
+        if DraftGeomUtils.isCubic(obj.Shape):
+            dims = DraftGeomUtils.getCubicDimensions(obj.Shape)
             if dims:
                 name = obj.Name
                 tp = Draft.getType(obj)
@@ -270,7 +268,7 @@ def removeShape(objs,mark=True):
                     length = dims[1]
                     width = dims[2]
                     v1 = Vector(length/2,0,0)
-                    v2 = fcvec.neg(v1)
+                    v2 = DraftVecUtils.neg(v1)
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)
