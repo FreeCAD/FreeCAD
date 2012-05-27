@@ -116,6 +116,7 @@ SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
 
 SET(ShipGZ_SRCS
 	tankGZ/__init__.py
+	tankGZ/Plot.py
 	tankGZ/TaskPanel.py
 	tankGZ/TaskPanel.ui
 )
