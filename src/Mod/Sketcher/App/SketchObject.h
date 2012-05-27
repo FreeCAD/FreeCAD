@@ -136,6 +136,8 @@ public:
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);
+    /// generates a warning message about redundant constraints and appends it to the given message
+    static void appendRedundantMsg(const std::vector<int> &redundant, std::string &msg);
 
     // from base class
     virtual PyObject *getPyObject(void);
