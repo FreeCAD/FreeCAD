@@ -28,6 +28,7 @@ import FreeCADGui as Gui
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
+from Plot import *
 from Instance import *
 from TankInstance import *
 from shipUtils import Paths, Translator
@@ -56,6 +57,7 @@ class TaskPanel:
         for i in range(0, nRoll):
             roll.append(i*dRoll)
             GZ.append(self.computeGZ(draft[0], trim, roll[-1]))
+        Plot(roll, GZ, disp[0]/1000.0, draft[0], trim)
         return True
 
     def reject(self):
