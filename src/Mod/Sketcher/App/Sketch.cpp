@@ -96,8 +96,9 @@ void Sketch::clear(void)
     Conflicting.clear();
 }
 
-int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
-                        bool withDiagnose, int extGeoCount)
+int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
+                        const std::vector<Constraint *> &ConstraintList,
+                        int extGeoCount)
 {
     clear();
 
@@ -119,13 +120,11 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std:
         addConstraints(ConstraintList);
 
     GCSsys.clearByTag(-1);
-    GCSsys.clearByTag(-2);
-    GCSsys.initSolution(Parameters);
-
-    if (withDiagnose)
-        return diagnose();
-    else
-        return 0;
+    GCSsys.declareUnknowns(Parameters);
+    GCSsys.initSolution();
+    GCSsys.getConflicting(Conflicting);
+    GCSsys.getRedundant(Redundant);
+    return GCSsys.dofsNumber();
 }
 
 const char* nameByType(Sketch::GeoType type)
@@ -744,10 +743,7 @@ int Sketch::addPointCoincidentConstraint(int geoId1, PointPos pos1, int geoId2, 
         GCS::Point &p1 = Points[pointId1];
         GCS::Point &p2 = Points[pointId2];
         int tag = ++ConstraintsCounter;
-        // trick: we do not tag coincidence constraints in order to exclude
-        //        them from the diagnosing of conflicts
-        //GCSsys.addConstraintP2PCoincident(p1, p2, tag);
-        GCSsys.addConstraintP2PCoincident(p1, p2);
+        GCSsys.addConstraintP2PCoincident(p1, p2, tag);
         return ConstraintsCounter;
     }
     return -1;
@@ -1569,7 +1565,6 @@ int Sketch::solve(void)
     Base::TimeInfo start_time;
     if (!isInitMove) { // make sure we are in single subsystem mode
         GCSsys.clearByTag(-1);
-        GCSsys.clearByTag(-2);
         isFine = true;
     }
 
@@ -1593,32 +1588,33 @@ int Sketch::solve(void)
             break;
         case 3: // last resort: augment the system with a second subsystem and use the SQP solver
             solvername = "SQP(augmented system)";
-            GCSsys.clearByTag(-1);
-            GCSsys.clearByTag(-2);
             InitParameters.resize(Parameters.size());
             int i=0;
             for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
                 InitParameters[i] = **it;
-                GCSsys.addConstraintEqual(*it, &InitParameters[i], -2);
+                GCSsys.addConstraintEqual(*it, &InitParameters[i], -1);
             }
-            GCSsys.initSolution(Parameters);
+            GCSsys.initSolution();
             ret = GCSsys.solve(isFine);
             break;
         }
 
-        // if successfully solved try write the parameters back
+        // if successfully solved try to write the parameters back
         if (ret == GCS::Success) {
             GCSsys.applySolution();
             valid_solution = updateGeometry();
-            if (!valid_solution)
+            if (!valid_solution) {
+                GCSsys.undoSolution();
+                updateGeometry();
                 Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
+            }
         } else {
             valid_solution = false;
             //Base::Console().Log("NotSolved ");
         }
 
         if (soltype == 3) // cleanup temporary constraints of the augmented system
-            GCSsys.clearByTag(-2);
+            GCSsys.clearByTag(-1);
 
         if (valid_solution) {
             if (soltype == 1)
@@ -1637,11 +1633,6 @@ int Sketch::solve(void)
         }
     } // soltype
 
-    if (!valid_solution) { // undo any changes
-        GCSsys.undoSolution();
-        updateGeometry();
-    }
-
     Base::TimeInfo end_time;
     //Base::Console().Log("T:%s\n",Base::TimeInfo::diffTime(start_time,end_time).c_str());
     SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);
@@ -1655,7 +1646,6 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
     geoId = checkGeoId(geoId);
 
     GCSsys.clearByTag(-1);
-    GCSsys.clearByTag(-2);
 
     // don't try to move sketches that contain conflicting constraints
     if (hasConflicts()) {
@@ -1760,7 +1750,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
     }
     InitParameters = MoveParameters;
 
-    GCSsys.initSolution(Parameters);
+    GCSsys.initSolution();
     isInitMove = true;
     return 0;
 }
@@ -1836,18 +1826,6 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
         return Base::Vector3d(*Points[pointId].x, *Points[pointId].y, 0);
 
     return Base::Vector3d();
-}
-
-int Sketch::diagnose(void)
-{
-    Conflicting.clear();
-    if (GCSsys.isInit()) {
-        int dofs = GCSsys.diagnose(Parameters, Conflicting);
-        return dofs;
-    }
-    else {
-        return -1;
-    }
 }
 
 
