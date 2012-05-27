@@ -78,6 +78,9 @@ class TaskPanel:
         form.draft    = form.findChild(QtGui.QLabel, "DraftLabel")
         form.trim     = form.findChild(QtGui.QDoubleSpinBox, "Trim")
         form.autoTrim = form.findChild(QtGui.QPushButton, "TrimAutoCompute")
+        form.roll0    = form.findChild(QtGui.QDoubleSpinBox, "StartAngle")
+        form.roll1    = form.findChild(QtGui.QDoubleSpinBox, "EndAngle")
+        form.nRoll    = form.findChild(QtGui.QSpinBox, "NAngle")
         self.form = form
         # Initial values
         if self.initValues():
@@ -88,6 +91,9 @@ class TaskPanel:
         QtCore.QObject.connect(form.tanks,QtCore.SIGNAL("itemSelectionChanged()"),self.onTanksSelection)
         QtCore.QObject.connect(form.trim,QtCore.SIGNAL("valueChanged(double)"),self.onTrim)
         QtCore.QObject.connect(form.autoTrim,QtCore.SIGNAL("pressed()"),self.onAutoTrim)
+        QtCore.QObject.connect(form.roll0,QtCore.SIGNAL("valueChanged(double)"),self.onRoll)
+        QtCore.QObject.connect(form.roll1,QtCore.SIGNAL("valueChanged(double)"),self.onRoll)
+        QtCore.QObject.connect(form.nRoll,QtCore.SIGNAL("valueChanged(int)"),self.onRoll)
         return False
 
     def getMainWindow(self):
@@ -236,6 +242,15 @@ class TaskPanel:
             var   = math.degrees(math.atan2(x,z))
         self.form.trim.setValue(trim)
 
+    def onRoll(self, value):
+        """ Called when roll angles options are modified.
+        @param value Dummy changed value.
+        """
+        roll0 = self.form.roll0.value()
+        self.form.roll1.setMinimum(roll0)
+        roll1 = self.form.roll1.value()
+        self.form.roll0.setMaximum(roll1)
+
     def getTanks(self):
         """ Get the selected tanks objects list.
         @return Selected tanks list.
@@ -254,7 +269,10 @@ class TaskPanel:
     def computeDisplacement(self, trim=0.0):
         """ Computes ship displacement.
         @param trim Trim angle [degrees].
-        @return Ship displacement and center of gravity. None if errors detected.
+        @return Ship displacement and center of gravity. None if errors 
+        detected.
+        @note Returned center of gravity is refered to ship attached 
+        axis coordinates.
         """
         if not self.ship:
             return None
