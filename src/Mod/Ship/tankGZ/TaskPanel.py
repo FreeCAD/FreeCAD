@@ -42,6 +42,20 @@ class TaskPanel:
     def accept(self):
         if not self.ship:
             return False
+        # Get general data
+        disp  = self.computeDisplacement()
+        draft = self.computeDraft(disp[0], self.form.trim.value())
+        trim  = self.form.trim.value()
+        # Get roll angles
+        roll0 = self.form.roll0.value()
+        roll1 = self.form.roll1.value()
+        nRoll = self.form.nRoll.value()
+        dRoll = (roll1 - roll0) / (nRoll - 1)
+        roll  = []
+        GZ    = []
+        for i in range(0, nRoll):
+            roll.append(i*dRoll)
+            GZ.append(self.computeGZ(draft[0], trim, roll[-1]))
         return True
 
     def reject(self):
@@ -266,7 +280,7 @@ class TaskPanel:
             tanks.append(t)
         return tanks
 
-    def computeDisplacement(self, trim=0.0):
+    def computeDisplacement(self, trim=0.0, roll=0.0):
         """ Computes ship displacement.
         @param trim Trim angle [degrees].
         @return Ship displacement and center of gravity. None if errors 
@@ -287,15 +301,18 @@ class TaskPanel:
         # Get selected tanks weights
         tanks = self.getTanks()
         for t in tanks:
-            w = tankWeight(t, App.Base.Vector(0.0,-trim,0.0))
+            w = tankWeight(t, App.Base.Vector(roll,-trim,0.0))
             # Unrotate center of gravity
             x = w[1]*math.cos(math.radians(-trim)) - w[3]*math.sin(math.radians(-trim))
             y = w[2]
             z = w[1]*math.sin(math.radians(-trim)) + w[3]*math.cos(math.radians(-trim))
+            w[1] = x
+            w[2] = y*math.cos(math.radians(-roll)) - z*math.sin(math.radians(-roll))
+            w[3] = y*math.sin(math.radians(-roll)) + z*math.cos(math.radians(-roll))
             W[0] = W[0] + w[0]
-            W[1] = W[1] + w[0]*x
-            W[2] = W[2] + w[0]*y
-            W[3] = W[3] + w[0]*z
+            W[1] = W[1] + w[0]*w[1]
+            W[2] = W[2] + w[0]*w[2]
+            W[3] = W[3] + w[0]*w[3]
         return [W[0], W[1]/W[0], W[2]/W[0], W[3]/W[0]]
 
     def computeDraft(self, disp, trim=0.0):
@@ -320,6 +337,26 @@ class TaskPanel:
             w     = 1000.0*ww[1]
             xcb   = ww[2]
         return [draft,xcb]
+
+    def computeGZ(self, draft, trim, roll):
+        """ Compute GZ value.
+        @param draft Ship draft.
+        @param trim Ship trim angle [degrees].
+        @param roll Ship roll angle [degrees].
+        @return GZ value [m].
+        """
+        # Get center of gravity (x coordinate not relevant)
+        disp = self.computeDisplacement(trim, roll)
+        G    = [disp[2], disp[3]]
+        disp = disp[0]
+        # Get bouyancy center (x coordinate not relevant)
+        KBT  = Hydrostatics.KBT(self.ship, draft, trim, roll)
+        B    = [KBT[0], KBT[1]]
+        # GZ computation
+        BG   = [G[0] - B[0], G[1] - B[1]]
+        y    = BG[0]*math.cos(math.radians(-roll)) - BG[1]*math.sin(math.radians(-roll))
+        z    = BG[0]*math.sin(math.radians(-roll)) + BG[1]*math.cos(math.radians(-roll))
+        return -y
 
 def createTask():
     panel = TaskPanel()
