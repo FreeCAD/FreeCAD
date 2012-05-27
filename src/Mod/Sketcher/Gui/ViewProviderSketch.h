@@ -174,15 +174,17 @@ public:
     /// signals if the constraints list has changed
     boost::signal<void ()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signal<void (int type, int dofs, std::string &msg)> signalSetUp;
+    boost::signal<void (QString msg)> signalSetUp;
     /// signals if the sketch has been solved
-    boost::signal<void (int type, float time)> signalSolved;
+    boost::signal<void (QString msg)> signalSolved;
 
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
     virtual void unsetEditViewer(Gui::View3DInventorViewer*);
+    /// set up and solve the sketch
+    void solveSketch(void);
     /// helper to detect whether the picked point lies on the sketch
     bool isPointOnSketch(const SoPickedPoint *pp) const;
     /// get called by the container whenever a property has been changed

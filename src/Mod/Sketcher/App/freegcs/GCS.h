@@ -49,25 +49,31 @@ namespace GCS
     // This is the main class. It holds all constraints and information
     // about partitioning into subsystems and solution strategies
     private:
-        std::vector<Constraint *> clist;
+        VEC_pD plist; // list of the unknown parameters
+        MAP_pD_I pIndex;
 
+        std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
         std::map<double *,std::vector<Constraint *> > p2c; // parameter to constraint adjacency list
 
-        // each row of subsyslist contains up to 3 subsystems.
-        // the first one has the highest priority, always used as the primary subsystem
-        // the second one is used as secondary subsystem
-        // the third one is used as secondary system and serves as a preconditioner
-        std::vector< std::vector<SubSystem *> > subsyslist;
+        std::vector<SubSystem *> subSystems, subSystemsAux;
         void clearSubSystems();
 
-        MAP_pD_D reference;
-        void clearReference();
-        void resetToReference();
+        VEC_D reference;
+        void setReference();     // copies the current parameter values to reference
+        void resetToReference(); // reverts all parameter values to the stored reference
 
-        MAP_pD_pD reductionmap; // for simplification of equality constraints
+        std::vector< VEC_pD > plists;                    // partitioned plist except equality constraints
+        std::vector< std::vector<Constraint *> > clists; // partitioned clist except equality constraints
+        std::vector< MAP_pD_pD > reductionmaps;          // for simplification of equality constraints
 
-        bool init;
+        int dofs;
+        std::set<Constraint *> redundant;
+        VEC_I conflictingTags, redundantTags;
+
+        bool hasUnknowns;  // if plist is filled with the unknown parameters
+        bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
+        bool isInit;       // if plists, clists, reductionmaps are up to date
 
         int solve_BFGS(SubSystem *subsys, bool isFine);
         int solve_LM(SubSystem *subsys);
@@ -147,7 +153,8 @@ namespace GCS
         int addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId=0);
         void rescaleConstraint(int id, double coeff);
 
-        void initSolution(VEC_pD &params);
+        void declareUnknowns(VEC_pD &params);
+        void initSolution();
 
         int solve(bool isFine=true, Algorithm alg=DogLeg);
         int solve(VEC_pD &params, bool isFine=true, Algorithm alg=DogLeg);
@@ -157,9 +164,12 @@ namespace GCS
         void applySolution();
         void undoSolution();
 
-        bool isInit() const { return init; }
-
-        int diagnose(VEC_pD &params, VEC_I &conflictingTags);
+        int diagnose();
+        int dofsNumber() { return hasDiagnosis ? dofs : -1; }
+        void getConflicting(VEC_I &conflictingOut) const
+          { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
+        void getRedundant(VEC_I &redundantOut) const
+          { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
     };
 
     ///////////////////////////////////////

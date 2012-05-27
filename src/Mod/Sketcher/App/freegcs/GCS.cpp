@@ -41,19 +41,20 @@ typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Gra
 
 // System
 System::System()
-: clist(0),
+: plist(0), clist(0),
   c2p(), p2c(),
-  subsyslist(0),
-  reference(),
-  init(false)
+  subSystems(0), subSystemsAux(0),
+  reference(0),
+  hasUnknowns(false), hasDiagnosis(false), isInit(false)
 {
 }
 
 System::System(std::vector<Constraint *> clist_)
-: c2p(), p2c(),
-  subsyslist(0),
-  reference(),
-  init(false)
+: plist(0),
+  c2p(), p2c(),
+  subSystems(0), subSystemsAux(0),
+  reference(0),
+  hasUnknowns(false), hasDiagnosis(false), isInit(false)
 {
     // create own (shallow) copy of constraints
     for (std::vector<Constraint *>::iterator constr=clist_.begin();
@@ -125,7 +126,16 @@ System::~System()
 
 void System::clear()
 {
-    clearReference();
+    plist.clear();
+    pIndex.clear();
+    hasUnknowns = false;
+    hasDiagnosis = false;
+
+    redundant.clear();
+    conflictingTags.clear();
+    redundantTags.clear();
+
+    reference.clear();
     clearSubSystems();
     free(clist);
     c2p.clear();
@@ -148,7 +158,9 @@ void System::clearByTag(int tagId)
 
 int System::addConstraint(Constraint *constr)
 {
-    clearReference();
+    isInit = false;
+    if (constr->getTag() >= 0) // negatively tagged constraints have no impact
+        hasDiagnosis = false;  // on the diagnosis
 
     clist.push_back(constr);
     VEC_pD constr_params = constr->params();
@@ -163,12 +175,15 @@ int System::addConstraint(Constraint *constr)
 
 void System::removeConstraint(Constraint *constr)
 {
-    clearReference();
-    clearSubSystems();
-
     std::vector<Constraint *>::iterator it;
     it = std::find(clist.begin(), clist.end(), constr);
+    if (it == clist.end())
+        return;
+
     clist.erase(it);
+    if (constr->getTag() >= 0)
+        hasDiagnosis = false;
+    clearSubSystems();
 
     VEC_pD constr_params = c2p[constr];
     for (VEC_pD::const_iterator param=constr_params.begin();
@@ -545,9 +560,18 @@ void System::rescaleConstraint(int id, double coeff)
         clist[id]->rescale(coeff);
 }
 
-
-void System::initSolution(VEC_pD &params)
+void System::declareUnknowns(VEC_pD &params)
 {
+    plist = params;
+    pIndex.clear();
+    for (int i=0; i < int(plist.size()); ++i)
+        pIndex[plist[i]] = i;
+    hasUnknowns = true;
+}
+
+void System::initSolution()
+{
+    // - Stores the current parameters values in the vector "reference"
     // - identifies any decoupled subsystems and partitions the original
     //   system into corresponding components
     // - Stores the current parameters in the vector "reference"
@@ -556,18 +580,38 @@ void System::initSolution(VEC_pD &params)
     // - Organizes the rest of constraints into two subsystems for
     //   tag ids >=0 and < 0 respectively and applies the
     //   system reduction specified in the previous step
-    MAP_pD_I pIndex;
-    for (int i=0; i < int(params.size()); ++i)
-        pIndex[params[i]] = i;
+
+    isInit = false;
+    if (!hasUnknowns)
+        return;
+
+    // storing reference configuration
+    setReference();
+    
+    // diagnose conflicting or redundant constraints
+    if (!hasDiagnosis) {
+        diagnose();
+        if (!hasDiagnosis)
+            return;
+    }
+    std::vector<Constraint *> clistR;
+    if (redundant.size()) {
+        for (std::vector<Constraint *>::const_iterator constr=clist.begin();
+             constr != clist.end(); ++constr)
+            if (redundant.count(*constr) == 0)
+                clistR.push_back(*constr);
+    }
+    else
+        clistR = clist;
 
     // partitioning into decoupled components
     Graph g;
-    for (int i=0; i < int(params.size() + clist.size()); i++)
+    for (int i=0; i < int(plist.size() + clistR.size()); i++)
         boost::add_vertex(g);
 
-    int cvtid = int(params.size());
-    for (std::vector<Constraint *>::const_iterator constr=clist.begin();
-         constr != clist.end(); ++constr, cvtid++) {
+    int cvtid = int(plist.size());
+    for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
+         constr != clistR.end(); ++constr, cvtid++) {
         VEC_pD &cparams = c2p[*constr];
         for (VEC_pD::const_iterator param=cparams.begin();
              param != cparams.end(); ++param) {
@@ -580,113 +624,131 @@ void System::initSolution(VEC_pD &params)
     VEC_I components(boost::num_vertices(g));
     int componentsSize = boost::connected_components(g, &components[0]);
 
-    clearReference();
-    for (VEC_pD::const_iterator param=params.begin();
-         param != params.end(); ++param)
-        reference[*param] = **param;
-
     // identification of equality constraints and parameter reduction
-    std::set<Constraint *> eliminated;  // constraints that will be eliminated through reduction
-    reductionmap.clear();
+    std::set<Constraint *> reducedConstrs;  // constraints that will be eliminated through reduction
+    reductionmaps.clear(); // destroy any maps
+    reductionmaps.resize(componentsSize); // create empty maps to be filled in
     {
-        VEC_pD reduced_params=params;
+        VEC_pD reducedParams=plist;
 
-        for (std::vector<Constraint *>::const_iterator constr=clist.begin();
-            constr != clist.end(); ++constr) {
+        for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
+            constr != clistR.end(); ++constr) {
             if ((*constr)->getTag() >= 0 && (*constr)->getTypeId() == Equal) {
                 MAP_pD_I::const_iterator it1,it2;
                 it1 = pIndex.find((*constr)->params()[0]);
                 it2 = pIndex.find((*constr)->params()[1]);
                 if (it1 != pIndex.end() && it2 != pIndex.end()) {
-                    eliminated.insert(*constr);
-                    double *p_kept = reduced_params[it1->second];
-                    double *p_replaced = reduced_params[it2->second];
-                    for (int i=0; i < int(params.size()); ++i)
-                       if (reduced_params[i] == p_replaced)
-                           reduced_params[i] = p_kept;
+                    reducedConstrs.insert(*constr);
+                    double *p_kept = reducedParams[it1->second];
+                    double *p_replaced = reducedParams[it2->second];
+                    for (int i=0; i < int(plist.size()); ++i)
+                       if (reducedParams[i] == p_replaced)
+                           reducedParams[i] = p_kept;
                 }
             }
         }
-        for (int i=0; i < int(params.size()); ++i)
-            if (params[i] != reduced_params[i])
-                reductionmap[params[i]] = reduced_params[i];
+        for (int i=0; i < int(plist.size()); ++i)
+            if (plist[i] != reducedParams[i]) {
+                int cid = components[i];
+                reductionmaps[cid][plist[i]] = reducedParams[i];
+            }
     }
 
-    std::vector< std::vector<Constraint *> > clists0(componentsSize),
-                                             clists1(componentsSize),
-                                             clists2(componentsSize);
-    int i = int(params.size());
-    for (std::vector<Constraint *>::const_iterator constr=clist.begin();
-         constr != clist.end(); ++constr, i++) {
-        if (eliminated.count(*constr) == 0) {
-            int id = components[i];
-            if ((*constr)->getTag() >= 0)
-                clists0[id].push_back(*constr);
-            else if ((*constr)->getTag() == -1) // move constraints
-                clists1[id].push_back(*constr);
-            else // distance from reference constraints
-                clists2[id].push_back(*constr);
+    clists.clear(); // destroy any lists
+    clists.resize(componentsSize); // create empty lists to be filled in
+    int i = int(plist.size());
+    for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
+         constr != clistR.end(); ++constr, i++) {
+        if (reducedConstrs.count(*constr) == 0) {
+            int cid = components[i];
+            clists[cid].push_back(*constr);
         }
     }
 
-    std::vector< std::vector<double *> > plists(componentsSize);
-    for (int i=0; i < int(params.size()); ++i) {
-        int id = components[i];
-        plists[id].push_back(params[i]);
+    plists.clear(); // destroy any lists
+    plists.resize(componentsSize); // create empty lists to be filled in
+    for (int i=0; i < int(plist.size()); ++i) {
+        int cid = components[i];
+        plists[cid].push_back(plist[i]);
     }
 
+    // calculates subSystems and subSystemsAux from clists, plists and reductionmaps
     clearSubSystems();
-    for (int cid=0; cid < componentsSize; cid++) {
-        subsyslist.push_back(std::vector<SubSystem *>(0));
-        if (clists0[cid].size() > 0)
-            subsyslist[cid].push_back(new SubSystem(clists0[cid], plists[cid], reductionmap));
-        if (clists1[cid].size() > 0)
-            subsyslist[cid].push_back(new SubSystem(clists1[cid], plists[cid], reductionmap));
-        if (clists2[cid].size() > 0)
-            subsyslist[cid].push_back(new SubSystem(clists2[cid], plists[cid], reductionmap));
+    for (int cid=0; cid < clists.size(); cid++) {
+        std::vector<Constraint *> clist0, clist1;
+        for (std::vector<Constraint *>::const_iterator constr=clists[cid].begin();
+             constr != clists[cid].end(); ++constr) {
+            if ((*constr)->getTag() >= 0)
+                clist0.push_back(*constr);
+            else // move or distance from reference constraints
+                clist1.push_back(*constr);
+        }
+
+        subSystems.push_back(NULL);
+        subSystemsAux.push_back(NULL);
+        if (clist0.size() > 0)
+            subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
+        if (clist1.size() > 0)
+            subSystemsAux[cid] = new SubSystem(clist1, plists[cid], reductionmaps[cid]);
     }
-    init = true;
+
+    isInit = true;
 }
 
-void System::clearReference()
+void System::setReference()
 {
-    init = false;
     reference.clear();
+    reference.reserve(plist.size());
+    for (VEC_pD::const_iterator param=plist.begin();
+         param != plist.end(); ++param)
+        reference.push_back(**param);
 }
 
 void System::resetToReference()
 {
-    for (MAP_pD_D::const_iterator it=reference.begin();
-         it != reference.end(); ++it)
-        *(it->first) = it->second;
+    if (reference.size() == plist.size()) {
+        VEC_D::const_iterator ref=reference.begin();
+        VEC_pD::iterator param=plist.begin();
+        for (; ref != reference.end(); ++ref, ++param)
+            **param = *ref;
+    }
 }
 
 int System::solve(VEC_pD &params, bool isFine, Algorithm alg)
 {
-    initSolution(params);
+    declareUnknowns(params);
+    initSolution();
     return solve(isFine, alg);
 }
 
 int System::solve(bool isFine, Algorithm alg)
 {
+    if (!isInit)
+        return Failed;
+
     bool isReset = false;
     // return success by default in order to permit coincidence constraints to be applied
     // even if no other system has to be solved
     int res = Success;
-    for (int cid=0; cid < int(subsyslist.size()); cid++) {
-        if (subsyslist[cid].size() > 0 && !isReset) {
+    for (int cid=0; cid < int(subSystems.size()); cid++) {
+        if ((subSystems[cid] || subSystemsAux[cid]) && !isReset) {
              resetToReference();
              isReset = true;
         }
-        if (subsyslist[cid].size() == 1)
-             res = std::max(res, solve(subsyslist[cid][0], isFine, alg));
-        else if (subsyslist[cid].size() == 2)
-             res = std::max(res, solve(subsyslist[cid][0], subsyslist[cid][1], isFine));
-        else if (subsyslist[cid].size() > 2)
-            // subsystem 1 has higher priority than subsystems 2,3,...
-            // these subsystems act like a preconditioner
-            for (int i=subsyslist[cid].size()-1; i > 0; i--)
-                res = std::max(res, solve(subsyslist[cid][0], subsyslist[cid][i], isFine));
+        if (subSystems[cid] && subSystemsAux[cid])
+            res = std::max(res, solve(subSystems[cid], subSystemsAux[cid], isFine));
+        else if (subSystems[cid])
+            res = std::max(res, solve(subSystems[cid], isFine, alg));
+        else if (subSystemsAux[cid])
+            res = std::max(res, solve(subSystemsAux[cid], isFine, alg));
+    }
+    if (res == Success) {
+        for (std::set<Constraint *>::const_iterator constr=redundant.begin();
+             constr != redundant.end(); constr++)
+             if ((*constr)->error() > XconvergenceFine) {
+                 res = Converged;
+                 return res;
+             }
     }
     return res;
 }
@@ -1068,7 +1130,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
     int xsizeB = subsysB->pSize();
     int csizeA = subsysA->cSize();
 
-    VEC_pD plist(xsizeA+xsizeB);
+    VEC_pD plistAB(xsizeA+xsizeB);
     {
         VEC_pD plistA, plistB;
         subsysA->getParamList(plistA);
@@ -1079,10 +1141,10 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 
         VEC_pD::const_iterator it;
         it = std::set_union(plistA.begin(),plistA.end(),
-                            plistB.begin(),plistB.end(),plist.begin());
-        plist.resize(it-plist.begin());
+                            plistB.begin(),plistB.end(),plistAB.begin());
+        plistAB.resize(it-plistAB.begin());
     }
-    int xsize = plist.size();
+    int xsize = plistAB.size();
 
     Eigen::MatrixXd B = Eigen::MatrixXd::Identity(xsize, xsize);
     Eigen::MatrixXd JA(csizeA, xsize);
@@ -1100,12 +1162,12 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
     subsysA->redirectParams();
     subsysB->redirectParams();
 
-    subsysB->getParams(plist,x);
-    subsysA->getParams(plist,x);
-    subsysB->setParams(plist,x);  // just to ensure that A and B are synchronized
+    subsysB->getParams(plistAB,x);
+    subsysA->getParams(plistAB,x);
+    subsysB->setParams(plistAB,x);  // just to ensure that A and B are synchronized
 
-    subsysB->calcGrad(plist,grad);
-    subsysA->calcJacobi(plist,JA);
+    subsysB->calcGrad(plistAB,grad);
+    subsysA->calcJacobi(plistAB,JA);
     subsysA->calcResidual(resA);
 
     double convergence = isFine ? XconvergenceFine : XconvergenceRough;
@@ -1130,7 +1192,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
             double tau=0.5;
             double rho=0.5;
             double alpha=1;
-            alpha = std::min(alpha, subsysA->maxStep(plist,xdir));
+            alpha = std::min(alpha, subsysA->maxStep(plistAB,xdir));
 
             // Eq. 18.32
             // double mu = lambda.lpNorm<Eigen::Infinity>() + 0.01;
@@ -1148,8 +1210,8 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
             double deriv = grad.dot(xdir) - mu * resA.lpNorm<1>();
 
             x = x0 + alpha * xdir;
-            subsysA->setParams(plist,x);
-            subsysB->setParams(plist,x);
+            subsysA->setParams(plistAB,x);
+            subsysB->setParams(plistAB,x);
             subsysA->calcResidual(resA);
             double f = subsysB->error() + mu * resA.lpNorm<1>();
 
@@ -1161,8 +1223,8 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 //                                         Eigen::ComputeThinV).solve(-resA);
                     xdir1 = -Y*resA;
                     x += xdir1; // = x0 + alpha * xdir + xdir1
-                    subsysA->setParams(plist,x);
-                    subsysB->setParams(plist,x);
+                    subsysA->setParams(plistAB,x);
+                    subsysB->setParams(plistAB,x);
                     subsysA->calcResidual(resA);
                     f = subsysB->error() + mu * resA.lpNorm<1>();
                     if (f < f0 + eta * alpha * deriv)
@@ -1172,8 +1234,8 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
                 if (alpha < 1e-8) // let the linesearch fail
                     alpha = 0.;
                 x = x0 + alpha * xdir;
-                subsysA->setParams(plist,x);
-                subsysB->setParams(plist,x);
+                subsysA->setParams(plistAB,x);
+                subsysB->setParams(plistAB,x);
                 subsysA->calcResidual(resA);
                 f = subsysB->error() + mu * resA.lpNorm<1>();
                 if (alpha < 1e-8) // let the linesearch fail
@@ -1186,8 +1248,8 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 
         y = grad - JA.transpose() * lambda;
         {
-            subsysB->calcGrad(plist,grad);
-            subsysA->calcJacobi(plist,JA);
+            subsysB->calcGrad(plistAB,grad);
+            subsysA->calcJacobi(plistAB,JA);
             subsysA->calcResidual(resA);
         }
         y = grad - JA.transpose() * lambda - y; // Eq. 18.13
@@ -1225,13 +1287,15 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
 
 void System::applySolution()
 {
-    for (int cid=0; cid < int(subsyslist.size()); cid++)
-        for (int i=subsyslist[cid].size()-1; i >= 0; i--)
-            subsyslist[cid][i]->applySolution();
-
-    for (MAP_pD_pD::const_iterator it=reductionmap.begin();
-         it != reductionmap.end(); ++it)
-        *(it->first) = *(it->second);
+    for (int cid=0; cid < int(subSystems.size()); cid++) {
+        if (subSystemsAux[cid])
+            subSystemsAux[cid]->applySolution();
+        if (subSystems[cid])
+            subSystems[cid]->applySolution();
+        for (MAP_pD_pD::const_iterator it=reductionmaps[cid].begin();
+             it != reductionmaps[cid].end(); ++it)
+            *(it->first) = *(it->second);
+    }
 }
 
 void System::undoSolution()
@@ -1239,7 +1303,7 @@ void System::undoSolution()
     resetToReference();
 }
 
-int System::diagnose(VEC_pD &params, VEC_I &conflictingTags)
+int System::diagnose()
 {
     // Analyses the constrainess grad of the system and provides feedback
     // The vector "conflictingTags" will hold a group of conflicting constraints
@@ -1251,22 +1315,24 @@ int System::diagnose(VEC_pD &params, VEC_I &conflictingTags)
     //         will provide no feedback about possible conflicts between
     //         two high priority constraints. For this reason, tagging
     //         constraints with 0 should be used carefully.
-    if (!isInit())
-        return -1;
+    hasDiagnosis = false;
+    if (!hasUnknowns) {
+        dofs = -1;
+        return dofs;
+    }
 
+    redundant.clear();
     conflictingTags.clear();
-    std::vector<VEC_I> conflictingIndex;
-    VEC_I tags;
-    Eigen::MatrixXd J(clist.size(), params.size());
+    redundantTags.clear();
+    Eigen::MatrixXd J(clist.size(), plist.size());
     int count=0;
     for (std::vector<Constraint *>::iterator constr=clist.begin();
          constr != clist.end(); ++constr) {
         (*constr)->revertParams();
         if ((*constr)->getTag() >= 0) {
             count++;
-            tags.push_back((*constr)->getTag());
-            for (int j=0; j < int(params.size()); j++)
-                J(count-1,j) = (*constr)->grad(params[j]);
+            for (int j=0; j < int(plist.size()); j++)
+                J(count-1,j) = (*constr)->grad(plist[j]);
         }
     }
 
@@ -1284,7 +1350,7 @@ int System::diagnose(VEC_pD &params, VEC_I &conflictingTags)
             R = qrJT.matrixQR().topRows(constrNum)
                                .triangularView<Eigen::Upper>();
 
-        if (constrNum > rank) { // conflicting constraints
+        if (constrNum > rank) { // conflicting or redundant constraints
             for (int i=1; i < rank; i++) {
                 // eliminate non zeros above pivot
                 assert(R(i,i) != 0);
@@ -1296,43 +1362,142 @@ int System::diagnose(VEC_pD &params, VEC_I &conflictingTags)
                     }
                 }
             }
-            conflictingIndex.resize(constrNum-rank);
+            std::vector< std::vector<Constraint *> > conflictGroups(constrNum-rank);
             for (int j=rank; j < constrNum; j++) {
                 for (int row=0; row < rank; row++) {
                     if (fabs(R(row,j)) > 1e-10) {
                         int origCol = qrJT.colsPermutation().indices()[row];
-                        conflictingIndex[j-rank].push_back(origCol);
+                        conflictGroups[j-rank].push_back(clist[origCol]);
                     }
                 }
                 int origCol = qrJT.colsPermutation().indices()[j];
-                conflictingIndex[j-rank].push_back(origCol);
+                conflictGroups[j-rank].push_back(clist[origCol]);
             }
 
-            SET_I tags_set;
-            for (int i=0; i < conflictingIndex.size(); i++) {
-                for (int j=0; j < conflictingIndex[i].size(); j++) {
-                    tags_set.insert(tags[conflictingIndex[i][j]]);
+            // try to remove the conflicting constraints and solve the
+            // system in order to check if the removed constraints were
+            // just redundant but not really conflicting
+            std::set<Constraint *> skipped;
+            SET_I satisfiedGroups;
+            while (1) {
+                std::map< Constraint *, SET_I > conflictingMap;
+                for (int i=0; i < conflictGroups.size(); i++) {
+                    if (satisfiedGroups.count(i) == 0) {
+                        for (int j=0; j < conflictGroups[i].size(); j++) {
+                            Constraint *constr = conflictGroups[i][j];
+                            if (constr->getTag() != 0) // exclude constraints tagged with zero
+                                conflictingMap[constr].insert(i);
+                        }
+                    }
+                }
+                if (conflictingMap.empty())
+                    break;
+            
+                int maxPopularity = 0;
+                Constraint *mostPopular = NULL;
+                for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
+                     it != conflictingMap.end(); it++) {
+                    if (it->second.size() > maxPopularity ||
+                        (it->second.size() == maxPopularity && mostPopular &&
+                         it->first->getTag() > mostPopular->getTag())) {
+                        mostPopular = it->first;
+                        maxPopularity = it->second.size();
+                    }
+                }
+                if (maxPopularity > 0) {
+                    skipped.insert(mostPopular);
+                    for (SET_I::const_iterator it=conflictingMap[mostPopular].begin();
+                         it != conflictingMap[mostPopular].end(); it++)
+                        satisfiedGroups.insert(*it);
                 }
             }
-            tags_set.erase(0); // exclude constraints tagged with zero
-            conflictingTags.resize(tags_set.size());
-            std::copy(tags_set.begin(), tags_set.end(), conflictingTags.begin());
 
-            if (paramsNum == rank) // over-constrained
-                return paramsNum - constrNum;
+            std::vector<Constraint *> clistTmp;
+            clistTmp.reserve(clist.size());
+            for (std::vector<Constraint *>::iterator constr=clist.begin();
+                 constr != clist.end(); ++constr)
+                if (skipped.count(*constr) == 0)
+                    clistTmp.push_back(*constr);
+
+            SubSystem *subSysTmp = new SubSystem(clistTmp, plist);
+            int res = solve(subSysTmp);
+            if (res == Success) {
+                subSysTmp->applySolution();
+                for (std::set<Constraint *>::const_iterator constr=skipped.begin();
+                     constr != skipped.end(); constr++) {
+                    double err = (*constr)->error();
+                    if (err * err < XconvergenceFine)
+                        redundant.insert(*constr);
+                }
+                resetToReference();
+
+                std::vector< std::vector<Constraint *> > conflictGroupsOrig=conflictGroups;
+                conflictGroups.clear();
+                for (int i=conflictGroupsOrig.size()-1; i >= 0; i--) {
+                    bool isRedundant = false;
+                    for (int j=0; j < conflictGroupsOrig[i].size(); j++) {
+                        if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
+                            isRedundant = true;
+                            break;
+                        }
+                    }
+                    if (!isRedundant)
+                        conflictGroups.push_back(conflictGroupsOrig[i]);
+                    else
+                        constrNum--;
+                }
+            }
+            delete subSysTmp;
+
+            // simplified output of conflicting tags
+            SET_I conflictingTagsSet;
+            for (int i=0; i < conflictGroups.size(); i++) {
+                for (int j=0; j < conflictGroups[i].size(); j++) {
+                    conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
+                }
+            }
+            conflictingTagsSet.erase(0); // exclude constraints tagged with zero
+            conflictingTags.resize(conflictingTagsSet.size());
+            std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(),
+                      conflictingTags.begin());
+
+            // output of redundant tags
+            SET_I redundantTagsSet;
+            for (std::set<Constraint *>::iterator constr=redundant.begin();
+                 constr != redundant.end(); ++constr)
+                redundantTagsSet.insert((*constr)->getTag());
+            // remove tags represented at least in one non-redundant constraint
+            for (std::vector<Constraint *>::iterator constr=clist.begin();
+                 constr != clist.end(); ++constr)
+                if (redundant.count(*constr) == 0)
+                    redundantTagsSet.erase((*constr)->getTag());
+            redundantTags.resize(redundantTagsSet.size());
+            std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
+                      redundantTags.begin());
+
+            if (paramsNum == rank && constrNum > rank) { // over-constrained
+                hasDiagnosis = true;
+                dofs = paramsNum - constrNum;
+                return dofs;
+            }
         }
 
-        return paramsNum - rank;
+        hasDiagnosis = true;
+        dofs = paramsNum - rank;
+        return dofs;
     }
-    return params.size();
+    hasDiagnosis = true;
+    dofs = plist.size();
+    return dofs;
 }
 
 void System::clearSubSystems()
 {
-    init = false;
-    for (int i=0; i < int(subsyslist.size()); i++)
-        free(subsyslist[i]);
-    subsyslist.clear();
+    isInit = false;
+    free(subSystems);
+    free(subSystemsAux);
+    subSystems.clear();
+    subSystemsAux.clear();
 }
 
 double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
