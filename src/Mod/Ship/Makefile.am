@@ -77,6 +77,7 @@ nobase_data_DATA = \
 	tankCreateTank/TaskPanel.py \
 	tankCreateTank/TaskPanel.ui \
 	tankGZ/__init__.py \
+	tankGZ/Plot.py \
 	tankGZ/TaskPanel.py \
 	tankGZ/TaskPanel.ui
 
