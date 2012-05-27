@@ -29,9 +29,8 @@ __url__ = "http://free-cad.sourceforge.net"
 # Generic stuff
 #---------------------------------------------------------------------------
 
-import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, importSVG, Draft, Draft_rc
+import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, importSVG, Draft, Draft_rc, DraftVecUtils
 from functools import partial
-from draftlibs import fcvec
 from FreeCAD import Vector
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
@@ -74,7 +73,7 @@ MODALT = MODS[Draft.getParam("modalt")]
 
 # sets defaults on first load
 
-if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Draft"):
+if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod").HasGroup("Draft"):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     p.SetBool("copymode",1)
     p.SetBool("alwaysSnap",1)
@@ -84,6 +83,7 @@ if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/").HasGroup("Dra
     p.SetInt("precision",4)
     p.SetInt("gridEvery",10)
     p.SetFloat("gridSpacing",1.0)
+    p.SetInt("UiMode",1)
 
 #---------------------------------------------------------------------------
 # General functions
@@ -282,7 +282,7 @@ class SelectPlane:
             self.display('side')
             self.finish()
         elif arg == "currentView":
-            viewDirection = fcvec.neg(self.view.getViewDirection())
+            viewDirection = DraftVecUtils.neg(self.view.getViewDirection())
             plane.alignToPointAndAxis(Vector(0,0,0), viewDirection, self.offset)
             self.display(viewDirection)
             self.finish()
@@ -326,9 +326,8 @@ class Creator:
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
-        global Part, fcgeo
-        import Part
-        from draftlibs import fcgeo
+        global Part, DraftGeomUtils
+        import Part, DraftGeomUtils
         self.ui = None
         self.call = None
         self.doc = None
@@ -347,7 +346,7 @@ class Creator:
             self.ui.show()
             rot = self.view.getCameraNode().getField("orientation").getValue()
             upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-            plane.setup(fcvec.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
             self.node = []
             self.pos = []
             self.constrain = None
@@ -401,7 +400,10 @@ class Line(Creator):
         Creator.Activated(self,name)
         if self.doc:
             self.obj = None
-            self.ui.lineUi()
+            if self.isWire:
+                self.ui.wireUi(name)
+            else:
+                self.ui.lineUi(name)
             self.linetrack = lineTracker()
             self.constraintrack = lineTracker(dotted=True)
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
@@ -417,7 +419,7 @@ class Line(Creator):
             todo.delay(self.doc.removeObject,old)
         self.obj = None
         if (len(self.node) > 1):
-            self.commit(translate("draft","Create Wire"),
+            self.commit(translate("draft","Create DWire"),
                         partial(Draft.makeWire,self.node,closed,
                                 face=self.ui.fillmode,support=self.support))
         if self.ui:
@@ -457,7 +459,7 @@ class Line(Creator):
                         if ((point-self.node[0]).Length < Draft.tolerance()):
                             self.undolast()
                             self.finish(True,cont=True)
-                            msg(translate("draft", "Wire has been closed\n"))
+                            msg(translate("draft", "DWire has been closed\n"))
 
     def undolast(self):
         "undoes last line segment"
@@ -524,8 +526,10 @@ class Wire(Line):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Wire',
                 'Accel' : "W, I",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Wire"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point wire. CTRL to snap, SHIFT to constrain")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "DWire"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
+    def Activated(self):
+        Line.Activated(self,name=str(translate("draft","DWire")))
 
     
 class BSpline(Line):
@@ -541,7 +545,7 @@ class BSpline(Line):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Line.Activated(self,"BSpline")
+        Line.Activated(self,name=str(translate("draft","BSpline")))
         if self.doc:
             self.bsplinetrack = bsplineTracker()
 
@@ -693,10 +697,11 @@ class Rectangle(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle. CTRL to snap")}
 
     def Activated(self):
-        Creator.Activated(self,"Rectangle")
+        name = str(translate("draft","Rectangle"))
+        Creator.Activated(self,name)
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi()
+            self.ui.pointUi(name)
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.rect = rectangleTracker()
@@ -717,12 +722,12 @@ class Rectangle(Creator):
         p1 = self.node[0]
         p3 = self.node[-1]
         diagonal = p3.sub(p1)
-        p2 = p1.add(fcvec.project(diagonal, plane.v))
-        p4 = p1.add(fcvec.project(diagonal, plane.u))
+        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
         length = p4.sub(p1).Length
-        if abs(fcvec.angle(p4.sub(p1),plane.u,plane.axis)) > 1: length = -length
+        if abs(DraftVecUtils.angle(p4.sub(p1),plane.u,plane.axis)) > 1: length = -length
         height = p2.sub(p1).Length
-        if abs(fcvec.angle(p2.sub(p1),plane.v,plane.axis)) > 1: height = -height
+        if abs(DraftVecUtils.angle(p2.sub(p1),plane.v,plane.axis)) > 1: height = -height
         p = plane.getRotation()
         p.move(p1)
         try:
@@ -843,10 +848,10 @@ class Arc(Creator):
             point,ctrlPoint,info = getPoint(self,arg)
             # this is to make sure radius is what you see on screen
             self.ui.cross(True)
-            if self.center and fcvec.dist(point,self.center) > 0:
-                viewdelta = fcvec.project(point.sub(self.center), plane.axis)
-                if not fcvec.isNull(viewdelta):
-                    point = point.add(fcvec.neg(viewdelta))
+            if self.center and DraftVecUtils.dist(point,self.center) > 0:
+                viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
+                if not DraftVecUtils.isNull(viewdelta):
+                    point = point.add(DraftVecUtils.neg(viewdelta))
             if (self.step == 0): # choose center
                 if hasMod(arg,MODALT):
                     if not self.altdown:
@@ -860,12 +865,12 @@ class Arc(Creator):
                             self.ui.switchUi(False)
             elif (self.step == 1): # choose radius
                 if len(self.tangents) == 2:
-                    cir = fcgeo.circleFrom2tan1pt(self.tangents[0], self.tangents[1], point)
-                    self.center = fcgeo.findClosestCircle(point,cir).Center
+                    cir = DraftGeomUtils.circleFrom2tan1pt(self.tangents[0], self.tangents[1], point)
+                    self.center = DraftGeomUtils.findClosestCircle(point,cir).Center
                     self.arctrack.setCenter(self.center)
                 elif self.tangents and self.tanpoints:
-                    cir = fcgeo.circleFrom1tan2pt(self.tangents[0], self.tanpoints[0], point)
-                    self.center = fcgeo.findClosestCircle(point,cir).Center
+                    cir = DraftGeomUtils.circleFrom1tan2pt(self.tangents[0], self.tanpoints[0], point)
+                    self.center = DraftGeomUtils.findClosestCircle(point,cir).Center
                     self.arctrack.setCenter(self.center)
                 if hasMod(arg,MODALT):
                     if not self.altdown:
@@ -876,20 +881,20 @@ class Arc(Creator):
                         num = int(info['Component'].lstrip('Edge'))-1
                         ed = ob.Shape.Edges[num]
                         if len(self.tangents) == 2:
-                            cir = fcgeo.circleFrom3tan(self.tangents[0], self.tangents[1], ed)
-                            cl = fcgeo.findClosestCircle(point,cir)
+                            cir = DraftGeomUtils.circleFrom3tan(self.tangents[0], self.tangents[1], ed)
+                            cl = DraftGeomUtils.findClosestCircle(point,cir)
                             self.center = cl.Center
                             self.rad = cl.Radius
                             self.arctrack.setCenter(self.center)
                         else:
-                            self.rad = self.center.add(fcgeo.findDistance(self.center,ed).sub(self.center)).Length
+                            self.rad = self.center.add(DraftGeomUtils.findDistance(self.center,ed).sub(self.center)).Length
                     else:
-                        self.rad = fcvec.dist(point,self.center)
+                        self.rad = DraftVecUtils.dist(point,self.center)
                 else:
                     if self.altdown:
                         self.ui.cross(True)
                         self.altdown = False
-                    self.rad = fcvec.dist(point,self.center)
+                    self.rad = DraftVecUtils.dist(point,self.center)
                 self.ui.setRadiusValue(self.rad)
                 self.arctrack.setRadius(self.rad)
                 # Draw constraint tracker line.
@@ -903,11 +908,11 @@ class Arc(Creator):
                 self.linetrack.p2(point)
                 self.linetrack.on()
             elif (self.step == 2): # choose first angle
-                currentrad = fcvec.dist(point,self.center)
+                currentrad = DraftVecUtils.dist(point,self.center)
                 if currentrad != 0:
-                    angle = fcvec.angle(plane.u, point.sub(self.center), plane.axis)
+                    angle = DraftVecUtils.angle(plane.u, point.sub(self.center), plane.axis)
                 else: angle = 0
-                self.linetrack.p2(fcvec.scaleTo(point.sub(self.center),self.rad).add(self.center))
+                self.linetrack.p2(DraftVecUtils.scaleTo(point.sub(self.center),self.rad).add(self.center))
                 # Draw constraint tracker line.
                 if hasMod(arg,MODCONSTRAIN):
                     self.constraintrack.p1(point)
@@ -918,11 +923,11 @@ class Arc(Creator):
                 self.ui.setRadiusValue(math.degrees(angle))
                 self.firstangle = angle
             else: # choose second angle
-                currentrad = fcvec.dist(point,self.center)
+                currentrad = DraftVecUtils.dist(point,self.center)
                 if currentrad != 0:
-                    angle = fcvec.angle(plane.u, point.sub(self.center), plane.axis)
+                    angle = DraftVecUtils.angle(plane.u, point.sub(self.center), plane.axis)
                 else: angle = 0
-                self.linetrack.p2(fcvec.scaleTo(point.sub(self.center),self.rad).add(self.center))
+                self.linetrack.p2(DraftVecUtils.scaleTo(point.sub(self.center),self.rad).add(self.center))
                 # Draw constraint tracker line.
                 if hasMod(arg,MODCONSTRAIN):
                     self.constraintrack.p1(point)
@@ -938,10 +943,10 @@ class Arc(Creator):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 point,ctrlPoint,info = getPoint(self,arg)
                 # this is to make sure radius is what you see on screen
-                if self.center and fcvec.dist(point,self.center) > 0:
-                    viewdelta = fcvec.project(point.sub(self.center), plane.axis)
-                    if not fcvec.isNull(viewdelta):
-                        point = point.add(fcvec.neg(viewdelta))
+                if self.center and DraftVecUtils.dist(point,self.center) > 0:
+                    viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
+                    if not DraftVecUtils.isNull(viewdelta):
+                        point = point.add(DraftVecUtils.neg(viewdelta))
                 if (self.step == 0): # choose center
                     self.support = getSupport(arg)
                     if hasMod(arg,MODALT):
@@ -986,7 +991,7 @@ class Arc(Creator):
                     self.ui.labelRadius.setText("Aperture")
                     self.step = 3
                     # scale center->point vector for proper display
-                    u = fcvec.scaleTo(point.sub(self.center), self.rad)
+                    u = DraftVecUtils.scaleTo(point.sub(self.center), self.rad)
                     self.arctrack.setStartAngle(self.firstangle)
                     msg(translate("draft", "Pick aperture:\n"))
                 else: # choose second angle
@@ -1032,15 +1037,15 @@ class Arc(Creator):
         if (self.step == 1):
             self.rad = rad
             if len(self.tangents) == 2:
-                cir = fcgeo.circleFrom2tan1rad(self.tangents[0], self.tangents[1], rad)
+                cir = DraftGeomUtils.circleFrom2tan1rad(self.tangents[0], self.tangents[1], rad)
                 if self.center:
-                    self.center = fcgeo.findClosestCircle(self.center,cir).Center
+                    self.center = DraftGeomUtils.findClosestCircle(self.center,cir).Center
                 else:
                     self.center = cir[-1].Center
             elif self.tangents and self.tanpoints:
-                cir = fcgeo.circleFrom1tan1pt1rad(self.tangents[0],self.tanpoints[0],rad)
+                cir = DraftGeomUtils.circleFrom1tan1pt1rad(self.tangents[0],self.tanpoints[0],rad)
                 if self.center:
-                    self.center = fcgeo.findClosestCircle(self.center,cir).Center
+                    self.center = DraftGeomUtils.findClosestCircle(self.center,cir).Center
                 else:
                     self.center = cir[-1].Center
             if self.closedCircle:
@@ -1057,9 +1062,9 @@ class Arc(Creator):
         elif (self.step == 2):
             self.ui.labelRadius.setText(str(translate("draft", "Aperture")))
             self.firstangle = math.radians(rad)
-            if fcvec.equals(plane.axis, Vector(1,0,0)): u = Vector(0,self.rad,0)
-            else: u = fcvec.scaleTo(Vector(1,0,0).cross(plane.axis), self.rad)
-            urotated = fcvec.rotate(u, math.radians(rad), plane.axis)
+            if DraftVecUtils.equals(plane.axis, Vector(1,0,0)): u = Vector(0,self.rad,0)
+            else: u = DraftVecUtils.scaleTo(Vector(1,0,0).cross(plane.axis), self.rad)
+            urotated = DraftVecUtils.rotate(u, math.radians(rad), plane.axis)
             self.arctrack.setStartAngle(self.firstangle)
             self.step = 3
             self.ui.radiusValue.setText("")
@@ -1096,14 +1101,15 @@ class Polygon(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Creator.Activated(self,"Polygon")
+        name = str(translate("draft","Polygon"))
+        Creator.Activated(self,name)
         if self.ui:
             self.step = 0
             self.center = None
             self.rad = None
             self.tangents = []
             self.tanpoints = []
-            self.ui.pointUi()
+            self.ui.pointUi(name)
             self.ui.extUi()
             self.ui.numFaces.show()
             self.altdown = False
@@ -1134,10 +1140,10 @@ class Polygon(Creator):
             point,ctrlPoint,info = getPoint(self,arg)
             # this is to make sure radius is what you see on screen
             self.ui.cross(True)
-            if self.center and fcvec.dist(point,self.center) > 0:
-                viewdelta = fcvec.project(point.sub(self.center), plane.axis)
-                if not fcvec.isNull(viewdelta):
-                    point = point.add(fcvec.neg(viewdelta))
+            if self.center and DraftVecUtils.dist(point,self.center) > 0:
+                viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
+                if not DraftVecUtils.isNull(viewdelta):
+                    point = point.add(DraftVecUtils.neg(viewdelta))
             if (self.step == 0): # choose center
                 if hasMod(arg,MODALT):
                     if not self.altdown:
@@ -1151,12 +1157,12 @@ class Polygon(Creator):
                         self.ui.switchUi(False)
             else: # choose radius
                 if len(self.tangents) == 2:
-                    cir = fcgeo.circleFrom2tan1pt(self.tangents[0], self.tangents[1], point)
-                    self.center = fcgeo.findClosestCircle(point,cir).Center
+                    cir = DraftGeomUtils.circleFrom2tan1pt(self.tangents[0], self.tangents[1], point)
+                    self.center = DraftGeomUtils.findClosestCircle(point,cir).Center
                     self.arctrack.setCenter(self.center)
                 elif self.tangents and self.tanpoints:
-                    cir = fcgeo.circleFrom1tan2pt(self.tangents[0], self.tanpoints[0], point)
-                    self.center = fcgeo.findClosestCircle(point,cir).Center
+                    cir = DraftGeomUtils.circleFrom1tan2pt(self.tangents[0], self.tanpoints[0], point)
+                    self.center = DraftGeomUtils.findClosestCircle(point,cir).Center
                     self.arctrack.setCenter(self.center)
                 if hasMod(arg,MODALT):
                     if not self.altdown:
@@ -1168,20 +1174,20 @@ class Polygon(Creator):
                         num = int(snapped['Component'].lstrip('Edge'))-1
                         ed = ob.Shape.Edges[num]
                         if len(self.tangents) == 2:
-                            cir = fcgeo.circleFrom3tan(self.tangents[0], self.tangents[1], ed)
-                            cl = fcgeo.findClosestCircle(point,cir)
+                            cir = DraftGeomUtils.circleFrom3tan(self.tangents[0], self.tangents[1], ed)
+                            cl = DraftGeomUtils.findClosestCircle(point,cir)
                             self.center = cl.Center
                             self.rad = cl.Radius
                             self.arctrack.setCenter(self.center)
                         else:
-                            self.rad = self.center.add(fcgeo.findDistance(self.center,ed).sub(self.center)).Length
+                            self.rad = self.center.add(DraftGeomUtils.findDistance(self.center,ed).sub(self.center)).Length
                     else:
-                        self.rad = fcvec.dist(point,self.center)
+                        self.rad = DraftVecUtils.dist(point,self.center)
                 else:
                     if self.altdown:
                         self.ui.cross(True)
                         self.altdown = False
-                    self.rad = fcvec.dist(point,self.center)
+                    self.rad = DraftVecUtils.dist(point,self.center)
                 self.ui.setRadiusValue(self.rad)
                 self.arctrack.setRadius(self.rad)
                 # Draw constraint tracker line.
@@ -1198,10 +1204,10 @@ class Polygon(Creator):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 point,ctrlPoint,info = getPoint(self,arg)
                 # this is to make sure radius is what you see on screen
-                if self.center and fcvec.dist(point,self.center) > 0:
-                    viewdelta = fcvec.project(point.sub(self.center), plane.axis)
-                    if not fcvec.isNull(viewdelta):
-                        point = point.add(fcvec.neg(viewdelta))
+                if self.center and DraftVecUtils.dist(point,self.center) > 0:
+                    viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
+                    if not DraftVecUtils.isNull(viewdelta):
+                        point = point.add(DraftVecUtils.neg(viewdelta))
                 if (self.step == 0): # choose center
                     if not self.node: self.support = getSupport(arg)
                     if hasMod(arg,MODALT):
@@ -1260,15 +1266,15 @@ class Polygon(Creator):
         "this function gets called by the toolbar when valid radius have been entered there"
         self.rad = rad
         if len(self.tangents) == 2:
-            cir = fcgeo.circleFrom2tan1rad(self.tangents[0], self.tangents[1], rad)
+            cir = DraftGeomUtils.circleFrom2tan1rad(self.tangents[0], self.tangents[1], rad)
             if self.center:
-                self.center = fcgeo.findClosestCircle(self.center,cir).Center
+                self.center = DraftGeomUtils.findClosestCircle(self.center,cir).Center
             else:
                 self.center = cir[-1].Center
         elif self.tangents and self.tanpoints:
-            cir = fcgeo.circleFrom1tan1pt1rad(self.tangents[0],self.tanpoints[0],rad)
+            cir = DraftGeomUtils.circleFrom1tan1pt1rad(self.tangents[0],self.tanpoints[0],rad)
             if self.center:
-                self.center = fcgeo.findClosestCircle(self.center,cir).Center
+                self.center = DraftGeomUtils.findClosestCircle(self.center,cir).Center
             else:
                 self.center = cir[-1].Center
         self.drawPolygon()
@@ -1284,12 +1290,13 @@ class Text(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Text", "Creates an annotation. CTRL to snap")}
 
     def Activated(self):
-        Creator.Activated(self,"Text")
+        name = str(translate("draft","Text"))
+        Creator.Activated(self,name)
         if self.ui:
             self.dialog = None
             self.text = ''
             self.ui.sourceCmd = self
-            self.ui.pointUi()
+            self.ui.pointUi(name)
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
@@ -1350,19 +1357,20 @@ class Dimension(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment")}
 
     def Activated(self):
+        name = str(translate("draft","Dimension"))
         if self.cont:
             self.finish()
         elif self.hasMeasures():
-            Creator.Activated(self,"Dimension")
+            Creator.Activated(self,name)
             self.dimtrack = dimTracker()
             self.arctrack = arcTracker()
             self.constraintrack = lineTracker(dotted=True)
             self.createOnMeasures()
             self.finish()
         else:
-            Creator.Activated(self,"Dimension")
+            Creator.Activated(self,name)
             if self.ui:
-                self.ui.pointUi()
+                self.ui.pointUi(name)
                 self.ui.continueCmd.show()
                 self.altdown = False
                 self.call = self.view.addEventCallback("SoEvent",self.action)
@@ -1478,7 +1486,7 @@ class Dimension(Creator):
                     r = point.sub(self.center)
                     self.arctrack.setRadius(r.Length)
                     a = self.arctrack.getAngle(point)
-                    pair = fcgeo.getBoundaryAngles(a,self.pts)
+                    pair = DraftGeomUtils.getBoundaryAngles(a,self.pts)
                     if not (pair[0] < a < pair[1]):
                         self.angledata = [4*math.pi-pair[0],2*math.pi-pair[1]]
                     else:
@@ -1489,14 +1497,14 @@ class Dimension(Creator):
                     self.altdown = False
                     self.ui.switchUi(False)
                 if self.dir:
-                    point = self.node[0].add(fcvec.project(point.sub(self.node[0]),self.dir))
+                    point = self.node[0].add(DraftVecUtils.project(point.sub(self.node[0]),self.dir))
                 if len(self.node) == 2:
                     if self.arcmode and self.edges:
                         cen = self.edges[0].Curve.Center
                         rad = self.edges[0].Curve.Radius
                         baseray = point.sub(cen)
-                        v2 = fcvec.scaleTo(baseray,rad)
-                        v1 = fcvec.neg(v2)
+                        v2 = DraftVecUtils.scaleTo(baseray,rad)
+                        v1 = DraftVecUtils.neg(v2)
                         if shift:
                             self.node = [cen,cen.add(v2)]
                             self.arcmode = "radius"
@@ -1567,7 +1575,7 @@ class Dimension(Creator):
                                     # there is already a snapped edge, so we start angular dimension
                                     self.edges.append(ed)
                                     self.node.extend([v1,v2]) # self.node now has the 4 endpoints
-                                    c = fcgeo.findIntersection(self.node[0],
+                                    c = DraftGeomUtils.findIntersection(self.node[0],
                                                                self.node[1],
                                                                self.node[2],
                                                                self.node[3],
@@ -1586,7 +1594,7 @@ class Dimension(Creator):
                             self.dimtrack.on()
                 else:
                     if self.dir:
-                        point = self.node[0].add(fcvec.project(point.sub(self.node[0]),self.dir))
+                        point = self.node[0].add(DraftVecUtils.project(point.sub(self.node[0]),self.dir))
                     self.node.append(point)
                 print "node",self.node
                 self.dimtrack.update(self.node)
@@ -1603,7 +1611,7 @@ class Dimension(Creator):
                     # for unlinked arc mode:
                     # if self.arcmode:
                     #        v = self.node[1].sub(self.node[0])
-                    #        v = fcvec.scale(v,0.5)
+                    #        v = DraftVecUtils.scale(v,0.5)
                     #        cen = self.node[0].add(v)
                     #        self.node = [self.node[0],self.node[1],cen]
                     self.createObject()
@@ -1644,9 +1652,8 @@ class Modifier:
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
-        global Part, fcgeo
-        import Part
-        from draftlibs import fcgeo
+        global Part, DraftGeomUtils
+        import Part, DraftGeomUtils
         self.ui = None
         self.call = None
         self.commitList = []
@@ -1660,7 +1667,7 @@ class Modifier:
             FreeCADGui.draftToolBar.show()
             rot = self.view.getCameraNode().getField("orientation").getValue()
             upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-            plane.setup(fcvec.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
             self.node = []
             self.ui.sourceCmd = self
             self.constrain = None
@@ -1707,7 +1714,8 @@ class Move(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy")}
     
     def Activated(self):
-        Modifier.Activated(self,"Move")
+        self.name = str(translate("draft","Move"))
+        Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():
                 self.ghost = None
@@ -1723,7 +1731,7 @@ class Move(Modifier):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = Draft.getSelection()
         self.sel = Draft.getGroupContents(self.sel)
-        self.ui.pointUi()
+        self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
@@ -1923,10 +1931,10 @@ class Rotate(Modifier):
             point,ctrlPoint,info = getPoint(self,arg)
             self.ui.cross(True)
             # this is to make sure radius is what you see on screen
-            if self.center and fcvec.dist(point,self.center):
-                viewdelta = fcvec.project(point.sub(self.center), plane.axis)
-                if not fcvec.isNull(viewdelta):
-                    point = point.add(fcvec.neg(viewdelta))
+            if self.center and DraftVecUtils.dist(point,self.center):
+                viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
+                if not DraftVecUtils.isNull(viewdelta):
+                    point = point.add(DraftVecUtils.neg(viewdelta))
             if self.extendedCopy:
                 if not hasMod(arg,MODALT):
                     self.step = 3
@@ -1934,9 +1942,9 @@ class Rotate(Modifier):
             if (self.step == 0):
                 pass
             elif (self.step == 1):
-                currentrad = fcvec.dist(point,self.center)
+                currentrad = DraftVecUtils.dist(point,self.center)
                 if (currentrad != 0):
-                    angle = fcvec.angle(plane.u, point.sub(self.center), plane.axis)
+                    angle = DraftVecUtils.angle(plane.u, point.sub(self.center), plane.axis)
                 else: angle = 0
                 self.linetrack.p2(point)
                 # Draw constraint tracker line.
@@ -1951,16 +1959,16 @@ class Rotate(Modifier):
                 self.ui.radiusValue.setFocus()
                 self.ui.radiusValue.selectAll()
             elif (self.step == 2):
-                currentrad = fcvec.dist(point,self.center)
+                currentrad = DraftVecUtils.dist(point,self.center)
                 if (currentrad != 0):
-                    angle = fcvec.angle(plane.u, point.sub(self.center), plane.axis)
+                    angle = DraftVecUtils.angle(plane.u, point.sub(self.center), plane.axis)
                 else: angle = 0
                 if (angle < self.firstangle): 
                     sweep = (2*math.pi-self.firstangle)+angle
                 else:
                     sweep = angle - self.firstangle
                 self.arctrack.setApertureAngle(sweep)
-                self.ghost.trans.rotation.setValue(coin.SbVec3f(fcvec.tup(plane.axis)),sweep)
+                self.ghost.trans.rotation.setValue(coin.SbVec3f(DraftVecUtils.tup(plane.axis)),sweep)
                 self.linetrack.p2(point)
                 # Draw constraint tracker line.
                 if hasMod(arg,MODCONSTRAIN):
@@ -1976,9 +1984,9 @@ class Rotate(Modifier):
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 point,ctrlPoint,info = getPoint(self,arg)
-                if self.center and fcvec.dist(point,self.center):
-                    viewdelta = fcvec.project(point.sub(self.center), plane.axis)
-                    if not fcvec.isNull(viewdelta): point = point.add(fcvec.neg(viewdelta))
+                if self.center and DraftVecUtils.dist(point,self.center):
+                    viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
+                    if not DraftVecUtils.isNull(viewdelta): point = point.add(DraftVecUtils.neg(viewdelta))
                 if (self.step == 0):
                     self.center = point
                     self.node = [point]
@@ -1994,16 +2002,16 @@ class Rotate(Modifier):
                     self.planetrack.set(point)
                 elif (self.step == 1):
                     self.ui.labelRadius.setText("Rotation")
-                    self.rad = fcvec.dist(point,self.center)
+                    self.rad = DraftVecUtils.dist(point,self.center)
                     self.arctrack.on()
                     self.arctrack.setStartPoint(point)
                     self.ghost.on()
                     self.step = 2
                     msg(translate("draft", "Pick rotation angle:\n"))
                 else:
-                    currentrad = fcvec.dist(point,self.center)
+                    currentrad = DraftVecUtils.dist(point,self.center)
                     angle = point.sub(self.center).getAngle(plane.u)
-                    if fcvec.project(point.sub(self.center), plane.v).getAngle(plane.v) > 1:
+                    if DraftVecUtils.project(point.sub(self.center), plane.v).getAngle(plane.v) > 1:
                         angle = -angle
                     if (angle < self.firstangle): 
                         sweep = (2*math.pi-self.firstangle)+angle
@@ -2119,33 +2127,33 @@ class Offset(Modifier):
             self.ui.cross(True)
             point,ctrlPoint,info = getPoint(self,arg)
             if hasMod(arg,MODCONSTRAIN) and self.constrainSeg:
-                dist = fcgeo.findPerpendicular(point,self.shape,self.constrainSeg[1])
+                dist = DraftGeomUtils.findPerpendicular(point,self.shape,self.constrainSeg[1])
                 e = self.shape.Edges[self.constrainSeg[1]]
                 self.constraintrack.p1(e.Vertexes[0].Point)
                 self.constraintrack.p2(point.add(dist[0]))
                 self.constraintrack.on()
             else:
-                dist = fcgeo.findPerpendicular(point,self.shape.Edges)
+                dist = DraftGeomUtils.findPerpendicular(point,self.shape.Edges)
                 self.constraintrack.off()
             if dist:
                 self.ghost.on()
                 if self.mode == "Wire":
-                    d = fcvec.neg(dist[0])
-                    v1 = fcgeo.getTangent(self.shape.Edges[0],point)
-                    v2 = fcgeo.getTangent(self.shape.Edges[dist[1]],point)
-                    a = -fcvec.angle(v1,v2)
-                    self.dvec = fcvec.rotate(d,a,plane.axis)
+                    d = DraftVecUtils.neg(dist[0])
+                    v1 = DraftGeomUtils.getTangent(self.shape.Edges[0],point)
+                    v2 = DraftGeomUtils.getTangent(self.shape.Edges[dist[1]],point)
+                    a = -DraftVecUtils.angle(v1,v2)
+                    self.dvec = DraftVecUtils.rotate(d,a,plane.axis)
                     occmode = self.ui.occOffset.isChecked()
-                    self.ghost.update(fcgeo.offsetWire(self.shape,self.dvec,occ=occmode),forceclosed=occmode)
+                    self.ghost.update(DraftGeomUtils.offsetWire(self.shape,self.dvec,occ=occmode),forceclosed=occmode)
                 elif self.mode == "BSpline":
-                    d = fcvec.neg(dist[0])
+                    d = DraftVecUtils.neg(dist[0])
                     e = self.shape.Edges[0]
-                    basetan = fcgeo.getTangent(e,point)
+                    basetan = DraftGeomUtils.getTangent(e,point)
                     self.npts = []
                     for p in self.sel.Points:
-                        currtan = fcgeo.getTangent(e,p)
-                        a = -fcvec.angle(currtan,basetan)
-                        self.dvec = fcvec.rotate(d,a,plane.axis)
+                        currtan = DraftGeomUtils.getTangent(e,p)
+                        a = -DraftVecUtils.angle(currtan,basetan)
+                        self.dvec = DraftVecUtils.rotate(d,a,plane.axis)
                         self.npts.append(p.add(self.dvec))
                     self.ghost.update(self.npts)
                 elif self.mode == "Circle":
@@ -2321,12 +2329,12 @@ class Upgrade(Modifier):
                 u = faces.pop(0)
                 for f in faces:
                     u = u.fuse(f)
-                if fcgeo.isCoplanar(faces):
+                if DraftGeomUtils.isCoplanar(faces):
                     if self.sel[0].ViewObject.DisplayMode == "Wireframe":
                         f = False
                     else:
                         f = True
-                    u = fcgeo.concatenate(u)
+                    u = DraftGeomUtils.concatenate(u)
                     if not curves:
                         # several coplanar and non-curved faces: they can becoem a Draft wire
                         msg(translate("draft", "Found several objects or faces: making a parametric face\n"))
@@ -2353,8 +2361,14 @@ class Upgrade(Modifier):
                 if (not curves) and (Draft.getType(self.sel[0]) == "Part"):
                     msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
                     Draft.draftify(self.sel[0])
+                else:
+                    msg(translate("draft", "No upgrade available for this object\n"))
+                    self.doc.abortTransaction()
+                    return
             else:
                 msg(translate("draft", "Couldn't upgrade these objects\n"))
+                self.doc.abortTransaction()
+                return
                                         
         elif wires and (not faces) and (not openwires):
             # we have only wires, no faces
@@ -2370,22 +2384,19 @@ class Upgrade(Modifier):
             else:
                 # only closed wires
                 for w in wires:
-                    if fcgeo.isPlanar(w):
+                    if DraftGeomUtils.isPlanar(w):
                         f = Part.Face(w)
                         faces.append(f)
                     else:
                         msg(translate("draft", "One wire is not planar, upgrade not done\n"))
                         self.nodelete = True
                 for f in faces:
-                    if not curves: 
-                        msg(translate("draft", "Found a closed wire: making a Draft wire\n"))
-                        newob = Draft.makeWire(f.Wire,closed=True)
-                    else:
-                        # if there are curved segments, we do a non-parametric face
-                        msg(translate("draft", "Found a closed wire with curves: making a face\n"))
-                        newob = self.doc.addObject("Part::Feature","Face")
-                        newob.Shape = f
-                        Draft.formatObject(newob,lastob)
+                    # if there are curved segments, we do a non-parametric face
+                    msg(translate("draft", "Found a closed wire: making a face\n"))
+                    newob = self.doc.addObject("Part::Feature","Face")
+                    newob.Shape = f
+                    Draft.formatObject(newob,lastob)
+                    newob.ViewObject.DisplayMode = "Flat Lines"
                         
         elif (len(openwires) == 1) and (not faces) and (not wires):
             # special case, we have only one open wire. We close it, unless it has only 1 edge!"
@@ -2394,7 +2405,7 @@ class Upgrade(Modifier):
             edges = openwires[0].Edges
             if len(edges) > 1:
                 edges.append(Part.Line(p1,p0).toShape())
-            w = Part.Wire(fcgeo.sortEdges(edges))
+            w = Part.Wire(DraftGeomUtils.sortEdges(edges))
             if len(edges) == 1:
                 if len(w.Vertexes) == 2:
                     msg(translate("draft", "Found 1 open edge: making a line\n"))
@@ -2422,17 +2433,14 @@ class Upgrade(Modifier):
                 for e in ob.Shape.Edges:
                     edges.append(e)
             newob = None
-            nedges = fcgeo.sortEdges(edges[:])
+            nedges = DraftGeomUtils.sortEdges(edges[:])
             # for e in nedges: print "debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point
             w = Part.Wire(nedges)
             if len(w.Edges) == len(edges):
                 msg(translate("draft", "Found several edges: wiring them\n"))
-                if not curves:
-                    newob = Draft.makeWire(w)
-                else:
-                    newob = self.doc.addObject("Part::Feature","Wire")
-                    newob.Shape = w
-                    Draft.formatObject(newob,lastob)
+                newob = self.doc.addObject("Part::Feature","Wire")
+                newob.Shape = w
+                Draft.formatObject(newob,lastob)
             if not newob:
                 print "no new object found"
                 msg(translate("draft", "Found several non-connected edges: making compound\n"))
@@ -2554,6 +2562,14 @@ class Downgrade(Modifier):
                 
         else:
             # no faces: split wire into single edges
+            onlyedges = True
+            for ob in self.sel:
+                if ob.Shape.ShapeType != "Edge":
+                    onlyedges = False
+            if onlyedges:
+                msg(translate("draft", "No more downgrade possible\n"))
+                self.doc.abortTransaction()
+                return
             msg(translate("draft", "Found only wires: extracting their edges\n"))
             for ob in self.sel:
                 for e in edges:
@@ -2627,7 +2643,7 @@ class Trimex(Modifier):
             self.extrudeMode = False
             if self.obj.Shape.Wires:
                 self.edges = self.obj.Shape.Wires[0].Edges
-                self.edges = fcgeo.sortEdges(self.edges)
+                self.edges = DraftGeomUtils.sortEdges(self.edges)
             else:
                 self.edges = self.obj.Shape.Edges	
             self.ghost = []
@@ -2660,8 +2676,10 @@ class Trimex(Modifier):
             self.ui.cross(True)
             self.shift = hasMod(arg,MODCONSTRAIN)
             self.alt = hasMod(arg,MODALT)
+            if self.extrudeMode:
+                arg["ShiftDown"] = False
             wp = not(self.extrudeMode and self.shift)
-            self.point,info = getPoint(self,arg,workingplane=wp)[0]
+            self.point,cp,info = getPoint(self,arg,workingplane=wp)
             if hasMod(arg,MODSNAP): self.snapped = None
             else: self.snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
             if self.extrudeMode:
@@ -2689,7 +2707,7 @@ class Trimex(Modifier):
         "redraws the ghost in extrude mode"
         self.newpoint = self.obj.Shape.Faces[0].CenterOfMass
         dvec = self.point.sub(self.newpoint)
-        if shift: delta = fcvec.project(dvec,self.normal)
+        if not shift: delta = DraftVecUtils.project(dvec,self.normal)
         else: delta = dvec
         if self.force:
             ratio = self.force/delta.Length
@@ -2715,7 +2733,7 @@ class Trimex(Modifier):
         for e in self.edges: vlist.append(e.Vertexes[0].Point)
         vlist.append(self.edges[-1].Vertexes[-1].Point)
         if shift: npoint = self.activePoint
-        else: npoint = fcgeo.findClosest(point,vlist)
+        else: npoint = DraftGeomUtils.findClosest(point,vlist)
         if npoint > len(self.edges)/2: reverse = True
         if alt: reverse = not reverse
         self.activePoint = npoint
@@ -2740,16 +2758,16 @@ class Trimex(Modifier):
             snapped = self.doc.getObject(snapped['Object'])
             pts = []
             for e in snapped.Shape.Edges:
-                int = fcgeo.findIntersection(edge,e,True,True)
+                int = DraftGeomUtils.findIntersection(edge,e,True,True)
                 if int: pts.extend(int)
             if pts:
-                point = pts[fcgeo.findClosest(point,pts)]
+                point = pts[DraftGeomUtils.findClosest(point,pts)]
 
         # modifying active edge
         if isinstance(edge.Curve,Part.Line):
-            perp = fcgeo.vec(edge).cross(Vector(0,0,1))
+            perp = DraftGeomUtils.vec(edge).cross(Vector(0,0,1))
             chord = v1.sub(point)
-            proj = fcvec.project(chord,perp)
+            proj = DraftVecUtils.project(chord,perp)
             self.newpoint = Vector.add(point,proj)
             dist = v1.sub(self.newpoint).Length
             ghost.p1(self.newpoint)
@@ -2758,15 +2776,15 @@ class Trimex(Modifier):
             if real:
                 if self.force:
                     ray = self.newpoint.sub(v1)
-                    ray = fcvec.scale(ray,self.force/ray.Length)
+                    ray = DraftVecUtils.scale(ray,self.force/ray.Length)
                     self.newpoint = Vector.add(v1,ray)
                 newedges.append(Part.Line(self.newpoint,v2).toShape())
         else:
             center = edge.Curve.Center
             rad = edge.Curve.Radius
-            ang1 = fcvec.angle(v2.sub(center))
-            ang2 = fcvec.angle(point.sub(center))
-            self.newpoint=Vector.add(center,fcvec.rotate(Vector(rad,0,0),-ang2))
+            ang1 = DraftVecUtils.angle(v2.sub(center))
+            ang2 = DraftVecUtils.angle(point.sub(center))
+            self.newpoint=Vector.add(center,DraftVecUtils.rotate(Vector(rad,0,0),-ang2))
             self.ui.labelRadius.setText("Angle")
             dist = math.degrees(-ang2)
             # if ang1 > ang2: ang1,ang2 = ang2,ang1
@@ -2778,11 +2796,11 @@ class Trimex(Modifier):
             if real:
                 if self.force:
                     angle = math.radians(self.force)
-                    newray = fcvec.rotate(Vector(rad,0,0),-angle)
+                    newray = DraftVecUtils.rotate(Vector(rad,0,0),-angle)
                     self.newpoint = Vector.add(center,newray)
                 chord = self.newpoint.sub(v2)
                 perp = chord.cross(Vector(0,0,1))
-                scaledperp = fcvec.scaleTo(perp,rad)
+                scaledperp = DraftVecUtils.scaleTo(perp,rad)
                 midpoint = Vector.add(center,scaledperp)
                 newedges.append(Part.Arc(self.newpoint,midpoint,v2).toShape())
         ghost.on()
@@ -2797,8 +2815,8 @@ class Trimex(Modifier):
                 ghost.p1(edge.Vertexes[0].Point)
                 ghost.p2(edge.Vertexes[-1].Point)
             else:
-                ang1 = fcvec.angle(edge.Vertexes[0].Point.sub(center))
-                ang2 = fcvec.angle(edge.Vertexes[-1].Point.sub(center))
+                ang1 = DraftVecUtils.angle(edge.Vertexes[0].Point.sub(center))
+                ang2 = DraftVecUtils.angle(edge.Vertexes[-1].Point.sub(center))
                 # if ang1 > ang2: ang1,ang2 = ang2,ang1
                 ghost.setEndAngle(-ang2)
                 ghost.setStartAngle(-ang1)
@@ -2874,7 +2892,8 @@ class Scale(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy")}
 
     def Activated(self):
-        Modifier.Activated(self,"Scale")
+        self.name = str(translate("draft","Scale"))
+        Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():
                 self.ghost = None
@@ -2890,7 +2909,7 @@ class Scale(Modifier):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = Draft.getSelection()
         self.sel = Draft.getGroupContents(self.sel)
-        self.ui.pointUi()
+        self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
@@ -2942,7 +2961,7 @@ class Scale(Modifier):
                 self.ghost.trans.scaleFactor.setValue([delta.x,delta.y,delta.z])
                 corr = Vector(self.node[0].x,self.node[0].y,self.node[0].z)
                 corr.scale(delta.x,delta.y,delta.z)
-                corr = fcvec.neg(corr.sub(self.node[0]))
+                corr = DraftVecUtils.neg(corr.sub(self.node[0]))
                 self.ghost.trans.translation.setValue([corr.x,corr.y,corr.z])
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
@@ -3147,9 +3166,9 @@ class Edit(Modifier):
                         self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
                         v = self.obj.Shape.Vertexes
                         self.bx = v[1].Point.sub(v[0].Point)
-                        if self.obj.Length < 0: self.bx = fcvec.neg(self.bx)
+                        if self.obj.Length < 0: self.bx = DraftVecUtils.neg(self.bx)
                         self.by = v[2].Point.sub(v[1].Point)
-                        if self.obj.Height < 0: self.by = fcvec.neg(self.by)
+                        if self.obj.Height < 0: self.by = DraftVecUtils.neg(self.by)
                     elif Draft.getType(self.obj) == "Polygon":
                         self.editpoints.append(self.obj.Placement.Base)
                         self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
@@ -3273,8 +3292,8 @@ class Edit(Modifier):
                 self.obj.Placement = p
             elif self.editing == 1:
                 diag = v.sub(self.obj.Placement.Base)
-                nx = fcvec.project(diag,self.bx)
-                ny = fcvec.project(diag,self.by)
+                nx = DraftVecUtils.project(diag,self.bx)
+                ny = DraftVecUtils.project(diag,self.by)
                 ax = nx.Length
                 ay = ny.Length
                 if ax and ay:
@@ -3694,6 +3713,29 @@ class ShowSnapBar():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.show()
+
+
+class Draft_Clone():
+    "The Draft Clone command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Clone',
+                'Accel' : "C,L",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Clone", "Clones the selected object(s)")}
+
+    def Activated(self):
+        if FreeCADGui.Selection.getSelection():
+            FreeCAD.ActiveDocument.openTransaction("Clone")
+            for obj in FreeCADGui.Selection.getSelection():
+                Draft.clone(obj)
+            FreeCAD.ActiveDocument.commitTransaction()
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
             
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3727,6 +3769,7 @@ FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
+FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())

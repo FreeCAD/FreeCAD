@@ -12,10 +12,15 @@ The Draft module offer several convenient functions to work with simple objects.
 .. automodule:: DraftSnap
    :members:
 
-The draftlibs contain two submodules, widely used throughout the Draft module: fcvec, which contains useful methods for dealing with vectors, and fcgeo, which offers many tools for working with Part shape objects.
+The Draft module also contains two submodules, widely used throughout the Draft and Arch modules: DraftVecUtils, which contains useful methods for dealing with vectors, and DraftGeomUtils, which offers many tools for working with OpenCascade geometry.
 
-.. automodule:: draftlibs.fcvec
+.. automodule:: DraftVecUtils
    :members:
 
-.. automodule:: draftlibs.fcgeo
+.. automodule:: DraftGeomUtils
+   :members:
+
+The Draft module also features a module that contains trackers, special objects made to display 3D temporary geometry in the 3D scene, that have no real existence in the FreeCAD document.
+
+.. automodule:: DraftTrackers
    :members:

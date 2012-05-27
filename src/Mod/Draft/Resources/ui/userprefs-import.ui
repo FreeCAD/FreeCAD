@@ -320,6 +320,26 @@ If color mapping is choosed, you must choose a color mapping file containing a t
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
+          <property name="toolTip">
+           <string>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</string>
+          </property>
+          <property name="text">
+           <string>Render polylines with width</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>renderPolylineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>

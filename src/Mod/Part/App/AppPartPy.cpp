@@ -1043,14 +1043,36 @@ static PyObject * makeTube(PyObject *self, PyObject *args)
     PyObject *pshape;
     double radius;
     double tolerance=0.001;
+    char* scont = "C0";
+    int maxdegree = 3;
+    int maxsegment = 30;
 
     // Path + radius
-    if (!PyArg_ParseTuple(args, "O!d", &(TopoShapePy::Type), &pshape, &radius))
+    if (!PyArg_ParseTuple(args, "O!d|sii", &(TopoShapePy::Type), &pshape, &radius, &scont, &maxdegree, &maxsegment))
         return 0;
+    std::string str_cont = scont;
+    int cont;
+    if (str_cont == "C0")
+        cont = (int)GeomAbs_C0;
+    else if (str_cont == "C1")
+        cont = (int)GeomAbs_C1;
+    else if (str_cont == "C2")
+        cont = (int)GeomAbs_C2;
+    else if (str_cont == "C3")
+        cont = (int)GeomAbs_C3;
+    else if (str_cont == "CN")
+        cont = (int)GeomAbs_CN;
+    else if (str_cont == "G1")
+        cont = (int)GeomAbs_G1;
+    else if (str_cont == "G2")
+        cont = (int)GeomAbs_G2;
+    else
+        cont = (int)GeomAbs_C0;
+
     try {
         const TopoDS_Shape& path_shape = static_cast<TopoShapePy*>(pshape)->getTopoShapePtr()->_Shape;
         TopoShape myShape(path_shape);
-        TopoDS_Shape face = myShape.makeTube(radius, tolerance);
+        TopoDS_Shape face = myShape.makeTube(radius, tolerance, cont, maxdegree, maxsegment);
         return new TopoShapeFacePy(new TopoShape(face));
     }
     catch (Standard_Failure) {
@@ -1465,7 +1487,8 @@ struct PyMethodDef Part_methods[] = {
      "these must have the same number of edges."},
 
     {"makeTube" ,makeTube,METH_VARARGS,
-     "makeTube(edge,float) -- Create a tube."},
+     "makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.\n"
+     "continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',"},
 
     {"makeSweepSurface" ,makeSweepSurface,METH_VARARGS,
      "makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."},

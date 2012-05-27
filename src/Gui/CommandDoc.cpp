@@ -281,7 +281,7 @@ void StdCmdMergeProjects::activated(int iMsg)
 {
     QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
     QString project = QFileDialog::getOpenFileName(Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge project")), QString(),
+        QString::fromUtf8(QT_TR_NOOP("Merge project")), QDir::homePath(),
         QString::fromUtf8(QT_TR_NOOP("%1 document (*.fcstd)")).arg(exe));
     if (!project.isEmpty()) {
         App::Document* doc = App::GetApplication().getActiveDocument();
@@ -293,9 +293,6 @@ void StdCmdMergeProjects::activated(int iMsg)
                 QString::fromUtf8(QT_TR_NOOP("Cannot merge project with itself.")));
             return;
         }
-
-        QString dir1 = proj.absoluteDir().filePath(proj.baseName());
-        QString dir2 = info.absoluteDir().filePath(info.baseName());
 
         Base::FileInfo fi((const char*)project.toUtf8());
         Base::ifstream str(fi, std::ios::in | std::ios::binary);

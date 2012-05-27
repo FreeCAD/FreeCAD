@@ -5325,8 +5325,8 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
         <translation>Standardansicht</translation>
     </message>
     <message>
-        <source>Display mode</source>
-        <translation>Anzeige-Modus</translation>
+        <source>Document window</source>
+        <translation>Dokumentfenster</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>

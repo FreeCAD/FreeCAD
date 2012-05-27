@@ -5305,8 +5305,8 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Normalny widok</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Tryb wyświetlania</translation>
+      <source>Document window</source>
+      <translation>Okno dokumentu</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>

@@ -47,8 +47,8 @@ public:
     TaskSketcherMessages(ViewProviderSketch *sketchView);
     ~TaskSketcherMessages();
 
-    void slotSetUp(int type, int dofs, const std::string &msg);
-    void slotSolved(int type, float time);
+    void slotSetUp(QString msg);
+    void slotSolved(QString msg);
 
 private Q_SLOTS:
     

@@ -32,7 +32,9 @@
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_HCurve.hxx>
+# include <BRepAdaptor_HCompCurve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
@@ -1343,7 +1345,8 @@ TopoDS_Shape TopoShape::makePipeShell(const TopTools_ListOfShape& profiles,
     return mkPipeShell.Shape();
 }
 
-TopoDS_Shape TopoShape::makeTube(double radius, double tol) const
+#if 0
+TopoDS_Shape TopoShape::makeTube() const
 {
     // http://opencascade.blogspot.com/2009/11/surface-modeling-part3.html
     if (this->_Shape.IsNull())
@@ -1378,43 +1381,53 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol) const
     );
     return mkBuilder.Face();
 }
-
-// for testing
-static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, const Standard_Real theLast)
+#else 
+static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, const Standard_Real theLast, const Standard_Real theRadius)
 {
     //Handle_Law_BSpline aBs;
     //Handle_Law_BSpFunc aFunc = new Law_BSpFunc (aBs, theFirst, theLast);
     Handle_Law_Linear aFunc = new Law_Linear();
-    aFunc->Set(theFirst, 2.0, theLast, 3.0);
+    aFunc->Set(theFirst, theRadius, theLast, theRadius);
     return aFunc;
 }
 
-// for testing
-TopoDS_Shape TopoShape::makeTube() const
+TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdegree, int maxsegm) const
 {
     // http://opencascade.blogspot.com/2009/11/surface-modeling-part3.html
-    Standard_Real theTol = 0.001;
+    Standard_Real theTol = tol;
     Standard_Boolean theIsPolynomial = Standard_True;
     Standard_Boolean myIsElem = Standard_True;
-    GeomAbs_Shape theContinuity = GeomAbs_G1;
-    Standard_Integer theMaxDegree = 3;
-    Standard_Integer theMaxSegment = 1000;
+    GeomAbs_Shape theContinuity = GeomAbs_Shape(cont);
+    Standard_Integer theMaxDegree = maxdegree;
+    Standard_Integer theMaxSegment = maxsegm;
 
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot sweep along empty spine");
-    if (this->_Shape.ShapeType() != TopAbs_EDGE)
-        Standard_Failure::Raise("Spine shape is not an edge");
 
-    const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
-    BRepAdaptor_Curve path_adapt(path_edge);
+    Handle(Adaptor3d_HCurve) myPath;
+    if (this->_Shape.ShapeType() == TopAbs_EDGE) {
+        const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
+        BRepAdaptor_Curve path_adapt(path_edge);
+        myPath = new BRepAdaptor_HCurve(path_adapt);
+    }
+    //else if (this->_Shape.ShapeType() == TopAbs_WIRE) {
+    //    const TopoDS_Wire& path_wire = TopoDS::Wire(this->_Shape);
+    //    BRepAdaptor_CompCurve path_adapt(path_wire);
+    //    myPath = new BRepAdaptor_HCompCurve(path_adapt);
+    //}
+    //else {
+    //    Standard_Failure::Raise("Spine shape is neither an edge nor a wire");
+    //}
+    else {
+        Standard_Failure::Raise("Spine shape is not an edge");
+    }
 
     //circular profile
-    Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), 1.0);
+    Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), radius);
     aCirc->Rotate (gp::OZ(), Standard_PI/2.);
 
     //perpendicular section
-    Handle(BRepAdaptor_HCurve) myPath = new BRepAdaptor_HCurve(path_adapt);
-    Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter());
+    Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter(), radius);
     Handle(GeomFill_SectionLaw) aSec = new GeomFill_EvolvedSection(aCirc, myEvol);
     Handle(GeomFill_LocationLaw) aLoc = new GeomFill_CurveAndTrihedron(new GeomFill_CorrectedFrenet);
     aLoc->SetCurve (myPath);
@@ -1438,6 +1451,7 @@ TopoDS_Shape TopoShape::makeTube() const
 
     return TopoDS_Shape();
 }
+#endif
 
 TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int fillMode) const
 {
@@ -1493,42 +1507,49 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
 }
 
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
-                                  Standard_Real radius, Standard_Real angle) const
+                                  Standard_Real radius, Standard_Real angle,
+                                  Standard_Boolean leftHanded) const
 {
-        if (pitch < Precision::Confusion())
-            Standard_Failure::Raise("Pitch of helix too small");
+    if (pitch < Precision::Confusion())
+        Standard_Failure::Raise("Pitch of helix too small");
 
-        if (height < Precision::Confusion())
-            Standard_Failure::Raise("Height of helix too small");
+    if (height < Precision::Confusion())
+        Standard_Failure::Raise("Height of helix too small");
 
-        if (radius < Precision::Confusion())
-            Standard_Failure::Raise("Radius of helix too small");
+    if (radius < Precision::Confusion())
+        Standard_Failure::Raise("Radius of helix too small");
 
-        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-        Handle_Geom_Surface surf;
-        if (angle < Precision::Confusion()) {
-            surf = new Geom_CylindricalSurface(cylAx2, radius);
-        }
-        else {
-            angle = Base::toRadians(angle);
-            if (angle < Precision::Confusion())
-                Standard_Failure::Raise("Angle of helix too small");
-            surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
-        }
+    gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+    Handle_Geom_Surface surf;
+    if (angle < Precision::Confusion()) {
+        surf = new Geom_CylindricalSurface(cylAx2, radius);
+    }
+    else {
+        angle = Base::toRadians(angle);
+        if (angle < Precision::Confusion())
+            Standard_Failure::Raise("Angle of helix too small");
+        surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
+    }
 
-        gp_Pnt2d aPnt(0, 0);
-        gp_Dir2d aDir(2. * PI, pitch);
-        gp_Ax2d aAx2d(aPnt, aDir);
+    gp_Pnt2d aPnt(0, 0);
+    gp_Dir2d aDir(2. * PI, pitch);
+    if (leftHanded) {
+        //aPnt.SetCoord(0.0, height);
+        //aDir.SetCoord(2.0 * PI, -pitch);
+        aPnt.SetCoord(2. * PI, 0.0);
+        aDir.SetCoord(-2. * PI, pitch);
+    }
+    gp_Ax2d aAx2d(aPnt, aDir);
 
-        Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
-        gp_Pnt2d beg = line->Value(0);
-        gp_Pnt2d end = line->Value(sqrt(4.0*PI*PI+pitch*pitch)*(height/pitch));
-        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
+    Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
+    gp_Pnt2d beg = line->Value(0);
+    gp_Pnt2d end = line->Value(sqrt(4.0*PI*PI+pitch*pitch)*(height/pitch));
+    Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
 
-        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
-        BRepLib::BuildCurves3d(wire);
-        return wire;
+    TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+    TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
+    BRepLib::BuildCurves3d(wire);
+    return wire;
 }
 
 TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 

@@ -23,9 +23,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRep_Tool.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopExp.hxx>
+# include <TopTools_ListOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 # include <QMessageBox>
 #endif
+
+#include <sstream>
+#include <algorithm>
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -347,7 +359,98 @@ void CmdPartDesignFillet::activated(int iMsg)
             QObject::tr("Fillet works only on parts"));
         return;
     }
-    std::string SelString = selection[0].getAsPropertyLinkSubString();
+
+    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+
+    const Part::TopoShape& TopShape = base->Shape.getShape();
+    if (TopShape._Shape.IsNull()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Shape of selected Part is empty"));
+        return;
+    }
+
+    TopTools_IndexedMapOfShape mapOfEdges;
+    TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+    TopExp::MapShapesAndAncestors(TopShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+    TopExp::MapShapes(TopShape._Shape, TopAbs_EDGE, mapOfEdges);
+
+    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
+
+    int i = 0;
+
+    while(i < SubNames.size())
+    {
+        std::string aSubName = static_cast<std::string>(SubNames.at(i));
+
+        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
+            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
+            const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
+
+            if(los.Extent() != 2)
+            {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            const TopoDS_Shape& face1 = los.First();
+            const TopoDS_Shape& face2 = los.Last();
+            GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(edge),
+                                                       TopoDS::Face(face1),
+                                                       TopoDS::Face(face2));
+            if (cont != GeomAbs_C0) {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            i++;
+        }
+        else if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+            TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
+
+            TopTools_IndexedMapOfShape mapOfFaces;
+            TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaces);
+
+            for(int j = 1; j <= mapOfFaces.Extent(); ++j) {
+                TopoDS_Edge edge = TopoDS::Edge(mapOfFaces.FindKey(j));
+
+                int id = mapOfEdges.FindIndex(edge);
+
+                std::stringstream buf;
+                buf << "Edge";
+                buf << id;
+
+                if(std::find(SubNames.begin(),SubNames.end(),buf.str()) == SubNames.end())
+                {
+                    SubNames.push_back(buf.str());
+                }
+
+            }
+
+            SubNames.erase(SubNames.begin()+i);
+        }
+    }
+
+    if(SubNames.size() == 0){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        QObject::tr("No Fillet possilbe on seleced faces/edges"));
+        return;
+    }
+
+    std::string SelString;
+    SelString += "(App.";
+    SelString += "ActiveDocument";//getObject()->getDocument()->getName();
+    SelString += ".";
+    SelString += selection[0].getFeatName();
+    SelString += ",[";
+    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
+        SelString += "\"";
+        SelString += *it;
+        SelString += "\"";
+        if(it != --SubNames.end())
+            SelString += ",";
+    }
+    SelString += "])";
+
     std::string FeatName = getUniqueObjectName("Fillet");
 
     openCommand("Make Fillet");
@@ -398,7 +501,99 @@ void CmdPartDesignChamfer::activated(int iMsg)
             QObject::tr("Chamfer works only on parts"));
         return;
     }
-    std::string SelString = selection[0].getAsPropertyLinkSubString();
+
+    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+
+    const Part::TopoShape& TopShape = base->Shape.getShape();
+
+    if (TopShape._Shape.IsNull()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Shape of selected part is empty"));
+        return;
+    }
+
+    TopTools_IndexedMapOfShape mapOfEdges;
+    TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+    TopExp::MapShapesAndAncestors(TopShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+    TopExp::MapShapes(TopShape._Shape, TopAbs_EDGE, mapOfEdges);
+
+    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
+
+    int i = 0;
+
+    while(i < SubNames.size())
+    {
+        std::string aSubName = static_cast<std::string>(SubNames.at(i));
+
+        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
+            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
+            const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
+
+            if(los.Extent() != 2)
+            {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            const TopoDS_Shape& face1 = los.First();
+            const TopoDS_Shape& face2 = los.Last();
+            GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(edge),
+                                                       TopoDS::Face(face1),
+                                                       TopoDS::Face(face2));
+            if (cont != GeomAbs_C0) {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            i++;
+        }
+        else if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+            TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
+
+            TopTools_IndexedMapOfShape mapOfFaces;
+            TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaces);
+
+            for(int j = 1; j <= mapOfFaces.Extent(); ++j) {
+                TopoDS_Edge edge = TopoDS::Edge(mapOfFaces.FindKey(j));
+
+                int id = mapOfEdges.FindIndex(edge);
+
+                std::stringstream buf;
+                buf << "Edge";
+                buf << id;
+
+                if(std::find(SubNames.begin(),SubNames.end(),buf.str()) == SubNames.end())
+                {
+                    SubNames.push_back(buf.str());
+                }
+
+            }
+
+            SubNames.erase(SubNames.begin()+i);
+        }
+    }
+
+    if(SubNames.size() == 0){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        QObject::tr("No Fillet possilbe on seleced faces/edges"));
+        return;
+    }
+
+    std::string SelString;
+    SelString += "(App.";
+    SelString += "ActiveDocument";//getObject()->getDocument()->getName();
+    SelString += ".";
+    SelString += selection[0].getFeatName();
+    SelString += ",[";
+    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
+        SelString += "\"";
+        SelString += *it;
+        SelString += "\"";
+        if(it != --SubNames.end())
+            SelString += ",";
+    }
+    SelString += "])";
+
     std::string FeatName = getUniqueObjectName("Chamfer");
 
     openCommand("Make Chamfer");

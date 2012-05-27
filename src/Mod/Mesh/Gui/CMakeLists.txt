@@ -34,6 +34,7 @@ set(Dialogs_UIC_SRCS
     DlgSettingsMeshView.ui
     DlgSmoothing.ui
     RemoveComponents.ui
+    Segmentation.ui
 )
 qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
 SET(Dialogs_SRCS
@@ -53,6 +54,9 @@ SET(Dialogs_SRCS
     RemoveComponents.ui
     RemoveComponents.cpp
     RemoveComponents.h
+    Segmentation.ui
+    Segmentation.cpp
+    Segmentation.h
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 

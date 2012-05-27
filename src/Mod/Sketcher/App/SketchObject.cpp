@@ -97,7 +97,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     rebuildExternalGeometry();
     Sketch sketch;
     int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  true, getExternalGeometryCount());
+                                  getExternalGeometryCount());
     if (dofs < 0) { // over-constrained sketch
         std::string msg="Over-constrained sketch\n";
         appendConflictMsg(sketch.getConflicting(), msg);
@@ -106,6 +106,11 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     if (sketch.hasConflicts()) { // conflicting constraints
         std::string msg="Sketch with conflicting constraints\n";
         appendConflictMsg(sketch.getConflicting(), msg);
+        return new App::DocumentObjectExecReturn(msg.c_str(),this);
+    }
+    if (sketch.hasRedundancies()) { // redundant constraints
+        std::string msg="Sketch with redundant constraints\n";
+        appendRedundantMsg(sketch.getRedundant(), msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
 
@@ -128,7 +133,7 @@ int SketchObject::hasConflicts(void) const
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     Sketch sketch;
     int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  true, getExternalGeometryCount());
+                                  getExternalGeometryCount());
     if (dofs < 0) // over-constrained sketch
         return -2;
     if (sketch.hasConflicts()) // conflicting constraints
@@ -166,7 +171,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     Sketch sketch;
     int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  true, getExternalGeometryCount());
+                                  getExternalGeometryCount());
     int err=0;
     if (dofs < 0) // over-constrained sketch
         err = -3;
@@ -192,7 +197,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
 {
     Sketch sketch;
     int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  true, getExternalGeometryCount());
+                                  getExternalGeometryCount());
     if (dofs < 0) // over-constrained sketch
         return -1;
     if (sketch.hasConflicts()) // conflicting constraints
@@ -1388,10 +1393,32 @@ void SketchObject::appendConflictMsg(const std::vector<int> &conflicting, std::s
     if (msg.length() > 0)
         ss << msg;
     if (conflicting.size() > 0) {
-        ss << "Please remove at least one of the constraints (" << conflicting[0];
+        if (conflicting.size() == 1)
+            ss << "Please remove the following constraint:\n";
+        else
+            ss << "Please remove at least one of the following constraints:\n";
+        ss << conflicting[0];
         for (unsigned int i=1; i < conflicting.size(); i++)
             ss << ", " << conflicting[i];
-        ss << ")\n";
+        ss << "\n";
+    }
+    msg = ss.str();
+}
+
+void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::string &msg)
+{
+    std::stringstream ss;
+    if (msg.length() > 0)
+        ss << msg;
+    if (redundant.size() > 0) {
+        if (redundant.size() == 1)
+            ss << "Please remove the following redundant constraint:\n";
+        else
+            ss << "Please remove the following redundant constraints:\n";
+        ss << redundant[0];
+        for (unsigned int i=1; i < redundant.size(); i++)
+            ss << ", " << redundant[i];
+        ss << "\n";
     }
     msg = ss.str();
 }

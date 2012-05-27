@@ -58,9 +58,9 @@ class ArchWorkbench(Workbench):
 	
     def Initialize(self):
         import DraftTools,DraftGui,Arch_rc,Arch
-        self.archtools = ["Arch_Wall","Arch_Structure","Arch_Cell",
+        self.archtools = ["Arch_Wall","Arch_Structure",
                      "Arch_Floor","Arch_Building","Arch_Site",
-                     "Arch_Window","Arch_Axis",
+                     "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Add","Arch_Remove"]
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Rectangle",
                       "Draft_Polygon","Draft_Arc",
@@ -100,6 +100,12 @@ class ArchWorkbench(Workbench):
 FreeCADGui.addWorkbench(ArchWorkbench)
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
-FreeCAD.addImportType("Collada (*.dae)","importDAE")
-FreeCAD.addExportType("Collada (*.dae)","importDAE")
+# check for pycollada
+try:
+    import collada
+except:
+    FreeCAD.Console.PrintError("pycollada not found, no collada support.\n")
+else:
+    FreeCAD.addImportType("Collada (*.dae)","importDAE")
+    FreeCAD.addExportType("Collada (*.dae)","importDAE")
 

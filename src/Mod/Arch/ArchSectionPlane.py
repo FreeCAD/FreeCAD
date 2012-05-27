@@ -21,11 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math,Draft,ArchCommands
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,math,Draft,ArchCommands, DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
-from draftlibs import fcvec
 
 
 class _CommandSectionPlane:
@@ -34,7 +33,7 @@ class _CommandSectionPlane:
         return {'Pixmap'  : 'Arch_SectionPlane',
                 'Accel': "S, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Adds a section plane object to the document")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -46,6 +45,8 @@ class _CommandSectionPlane:
         g = []
         for o in sel:
             if o.isDerivedFrom("Part::Feature"):
+                g.append(o)
+            elif o.isDerivedFrom("App::DocumentObjectGroup"):
                 g.append(o)
         obj.Objects = g
         page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage","Page")
@@ -174,11 +175,11 @@ class _ArchDrawingView:
 
     def updateSVG(self, obj,join=False):
         "encapsulates a svg fragment into a transformation node"
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         if hasattr(obj,"Source"):
             if obj.Source:
                 if obj.Source.Objects:
+                    objs = Draft.getGroupContents(obj.Source.Objects)
                     svg = ''
 
                     # generating SVG
@@ -188,7 +189,7 @@ class _ArchDrawingView:
                         import ArchVRM
                         render = ArchVRM.Renderer()
                         render.setWorkingPlane(obj.Source.Placement)
-                        render.addObjects(obj.Source.Objects)
+                        render.addObjects(objs)
                         render.cut(obj.Source.Shape)
                         svg += render.getViewSVG(linewidth=linewidth)
                         svg += render.getSectionSVG(linewidth=linewidth*2)
@@ -196,15 +197,16 @@ class _ArchDrawingView:
                         
                     else:
                         # render using the Drawing module
+                        import Drawing
                         shapes = []
-                        for o in obj.Source.Objects:
+                        for o in objs:
                             if o.isDerivedFrom("Part::Feature"):
                                 shapes.append(o.Shape)
                         if shapes:
                             base = shape.pop()
                         for sh in shapes:
                             base = base.fuse(sh)
-                        svgf = Drawing.projectToSVG(base,fcvec.neg(direction))
+                        svgf = Drawing.projectToSVG(base,DraftVecUtils.neg(direction))
                         if svgf:
                             svgf = svgf.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
                         svg += svgf

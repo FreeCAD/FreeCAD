@@ -103,9 +103,12 @@ void Feature::onChanged(const App::Property* prop)
         }
         else {
             Base::Placement p;
-            p.fromMatrix(this->Shape.getShape().getTransform());
-            if (p != this->Placement.getValue())
-                this->Placement.setValue(p);
+            // shape must not be null to override the placement
+            if (!this->Shape.getValue().IsNull()) {
+                p.fromMatrix(this->Shape.getShape().getTransform());
+                if (p != this->Placement.getValue())
+                    this->Placement.setValue(p);
+            }
         }
     }
     
