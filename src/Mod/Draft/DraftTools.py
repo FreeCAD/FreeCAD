@@ -415,13 +415,26 @@ class Line(Creator):
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
         if self.obj:
+            # remove temporary object, if any
             old = self.obj.Name
             todo.delay(self.doc.removeObject,old)
         self.obj = None
         if (len(self.node) > 1):
+            # building command string
+            if self.support:
+                sup = 'FreeCAD.ActiveDocument.getObject("' + self.support.Name + '")'
+            else:
+                sup = 'None'
+            points='['
+            for n in self.node:
+                if len(points) > 1:
+                    points += ','
+                points += 'FreeCAD.Vector('+str(n.x) + ',' + str(n.y) + ',' + str(n.z) + ')'
+            points += ']'
             self.commit(translate("draft","Create DWire"),
-                        partial(Draft.makeWire,self.node,closed,
-                                face=self.ui.fillmode,support=self.support))
+                        ['import Draft',
+                         'points='+points,
+                         'Draft.makeWire(points,closed='+str(closed)+',face='+str(bool(self.ui.fillmode))+',support='+sup+')'])
         if self.ui:
             self.linetrack.finalize()
             self.constraintrack.finalize()
