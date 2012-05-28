@@ -78,7 +78,11 @@ class todo:
                 try:
                     name = str(name)
                     FreeCAD.ActiveDocument.openTransaction(name)
-                    func()
+                    if isinstance(func,list):
+                        for l in func:
+                            FreeCADGui.doCommand(l)
+                    else:
+                        func()
                     FreeCAD.ActiveDocument.commitTransaction()
                 except:
                     wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
