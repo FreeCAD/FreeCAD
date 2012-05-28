@@ -359,7 +359,7 @@ Mesh_la_DEPENDENCIES = libMesh.la
 
 # set the include path found by configure
 AM_CXXFLAGS = -I$(top_srcdir)/src/3rdParty -I$(top_srcdir)/src -I$(top_builddir)/src $(GTS_CFLAGS) \
-		$(all_includes) $(QT4_CORE_CXXFLAGS)
+		$(all_includes) -I$(EIGEN3_INC) $(QT4_CORE_CXXFLAGS)
 
 includedir = @includedir@/Mod/Mesh/App
 libdir = $(prefix)/Mod/Mesh
