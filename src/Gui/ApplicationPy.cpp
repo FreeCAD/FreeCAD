@@ -128,6 +128,9 @@ PyMethodDef Application::Methods[] = {
   {"getDocument",             (PyCFunction) Application::sGetDocument,      1,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
+  {"doCommand",               (PyCFunction) Application::sDoCommand,        1,
+   "doCommand(string) -> None\n\n"
+   "Prints the given string in the python console and runs it"},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -765,3 +768,12 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject 
         return 0;
     }
 } 
+
+PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception
+    Command::doCommand(Command::Doc,pstr);
+    return Py_None;
+}
