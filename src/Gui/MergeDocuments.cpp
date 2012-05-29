@@ -235,4 +235,8 @@ void MergeDocuments::RestoreDocFile(Base::Reader & reader)
     }
 
     xmlReader.readEndElement("Document");
+
+    // In the file GuiDocument.xml new data files might be added
+    if (!xmlReader.getFilenames().empty())
+        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader));
 }
