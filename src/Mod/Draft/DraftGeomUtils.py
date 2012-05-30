@@ -765,7 +765,7 @@ def isReallyClosed(wire):
 def getNormal(shape):
         "finds the normal of a shape, if possible"
         n = Vector(0,0,1)
-        if shape.ShapeType == "Face":
+        if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
                 n = shape.normalAt(0.5,0.5)
         elif shape.ShapeType == "Edge":
                 if isinstance(shape.Curve,Part.Circle):
