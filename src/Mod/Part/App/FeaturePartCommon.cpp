@@ -41,14 +41,10 @@ Common::Common(void)
 {
 }
 
-TopoDS_Shape Common::runOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:
-    BRepAlgoAPI_Common mkCommon(base, tool);
-    // Let's check if the section has been successful
-    if (!mkCommon.IsDone()) 
-        throw Base::Exception("Intersection failed");
-    return mkCommon.Shape();
+    return new BRepAlgoAPI_Common(base, tool);
 }
 
 // ----------------------------------------------------

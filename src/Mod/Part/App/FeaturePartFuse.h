@@ -42,7 +42,7 @@ public:
     //@{
     /// recalculate the Feature
 protected:
-    TopoDS_Shape runOperation(const TopoDS_Shape&, const TopoDS_Shape&) const;
+    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const;
     //@}
 };
 

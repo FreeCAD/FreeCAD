@@ -27,6 +27,8 @@
 #include <App/PropertyLinks.h>
 #include "PartFeature.h"
 
+class BRepAlgoAPI_BooleanOperation;
+
 namespace Part
 {
 
@@ -51,9 +53,13 @@ public:
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderBoolean";
     }
+    BRepAlgoAPI_BooleanOperation* getBooleanOperation() const { return myBoolOp; }
 
 protected:
-    virtual TopoDS_Shape runOperation(const TopoDS_Shape&, const TopoDS_Shape&) const = 0;
+    virtual BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const = 0;
+
+private:
+    BRepAlgoAPI_BooleanOperation* myBoolOp;
 };
 
 }
