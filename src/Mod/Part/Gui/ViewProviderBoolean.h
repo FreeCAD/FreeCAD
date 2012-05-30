@@ -42,6 +42,7 @@ public:
     /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void) const;
     QIcon getIcon(void) const;
+    void updateData(const App::Property*);
 };
 
 /// ViewProvider for the MultiFuse feature

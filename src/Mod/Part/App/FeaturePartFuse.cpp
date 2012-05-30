@@ -41,14 +41,10 @@ Fuse::Fuse(void)
 {
 }
 
-TopoDS_Shape Fuse::runOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a fuse operation:
-    BRepAlgoAPI_Fuse mkFuse(base, tool);
-    // Let's check if the fusion has been successful
-    if (!mkFuse.IsDone()) 
-        throw Base::Exception("Fusion failed");
-    return mkFuse.Shape();
+    return new BRepAlgoAPI_Fuse(base, tool);
 }
 
 // ----------------------------------------------------
