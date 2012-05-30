@@ -30,7 +30,6 @@ __url__ = "http://free-cad.sourceforge.net"
 #---------------------------------------------------------------------------
 
 import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, importSVG, Draft, Draft_rc, DraftVecUtils
-from functools import partial
 from FreeCAD import Vector
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
@@ -1482,16 +1481,16 @@ class Dimension(Creator):
         "creates an object in the current doc"
         if self.angledata:
             self.commit(translate("draft","Create Dimension"),
-                        partial(Draft.makeAngularDimension,self.center,
-                                self.angledata,self.node[-1]))
+                        ['import Draft',
+                         'Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+')'])
         elif self.link and (not self.arcmode):
             self.commit(translate("draft","Create Dimension"),
-                        partial(Draft.makeDimension,self.link[0],self.link[1],
-                                self.link[2],self.node[2]))
+                        ['import Draft',
+                         'Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')'])
         elif self.arcmode:
             self.commit(translate("draft","Create Dimension"),
-                        partial(Draft.makeDimension,self.link[0],self.link[1],
-                                self.arcmode,self.node[2]))
+                        ['import Draft',
+                         'Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+',"'+str(self.arcmode)+'",'+DraftVecUtils.toString(self.node[2])+')'])                      
         else:
             self.commit(translate("draft","Create Dimension"),
                         ['import Draft',
