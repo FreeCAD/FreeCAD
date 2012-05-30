@@ -21,12 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYTOPOSHAPE_H
-#define PROPERTYTOPOSHAPE_H
+#ifndef PART_PROPERTYTOPOSHAPE_H
+#define PART_PROPERTYTOPOSHAPE_H
 
 #include "TopoShape.h"
+#include <TopAbs_ShapeEnum.hxx>
 #include <App/DocumentObject.h>
 #include <App/PropertyGeo.h>
+#include <map>
+#include <vector>
 
 namespace Part
 {
@@ -95,6 +98,59 @@ private:
     TopoShape _Shape;
 };
 
+struct PartExport ShapeHistory {
+    TopAbs_ShapeEnum type;
+    std::map<int, std::vector<int> > modified;
+    std::map<int, std::vector<int> > generated;
+    std::map<int, int> accepted;
+    std::set<int> deleted;
+};
+
+class PartExport PropertyShapeHistory : public App::PropertyLists
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyShapeHistory();
+    ~PropertyShapeHistory();
+
+    virtual void setSize(int newSize) {
+        _lValueList.resize(newSize);
+    }
+    virtual int getSize(void) const {
+        return _lValueList.size();
+    }
+
+    /** Sets the property
+     */
+    void setValue(const ShapeHistory&);
+
+    void setValues (const std::vector<ShapeHistory>& values);
+
+    const std::vector<ShapeHistory> &getValues(void) const {
+        return _lValueList;
+    }
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual void SaveDocFile (Base::Writer &writer) const;
+    virtual void RestoreDocFile(Base::Reader &reader);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
+    virtual unsigned int getMemSize (void) const {
+        return _lValueList.size() * sizeof(ShapeHistory);
+    }
+
+private:
+    std::vector<ShapeHistory> _lValueList;
+};
+
 /** A property class to store hash codes and two radii for the fillet algorithm.
  * @author Werner Mayer
  */
@@ -151,4 +207,4 @@ private:
 } //namespace Part
 
 
-#endif // PROPERTYTOPOSHAPE_H
+#endif // PART_PROPERTYTOPOSHAPE_H

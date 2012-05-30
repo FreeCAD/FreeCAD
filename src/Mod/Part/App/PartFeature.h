@@ -30,6 +30,8 @@
 #include <App/FeaturePython.h>
 #include <App/PropertyGeo.h>
 
+class BRepBuilderAPI_MakeShape;
+
 namespace Part
 {
 
@@ -63,9 +65,9 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
-
-protected:
     TopLoc_Location getLocation() const;
+    ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
+        const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
 };
 
 class FilletBase : public Part::Feature

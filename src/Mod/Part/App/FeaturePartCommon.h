@@ -53,6 +53,7 @@ public:
     MultiCommon();
 
     App::PropertyLinkList Shapes;
+    PropertyShapeHistory History;
 
     /** @name methods override feature */
     //@{

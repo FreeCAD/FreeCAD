@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_BooleanOperation.hxx>
-#include <memory>
+# include <memory>
 #endif
 
 #include "FeaturePartBoolean.h"
@@ -35,10 +35,13 @@ using namespace Part;
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 
-Boolean::Boolean(void) : myBoolOp(0)
+Boolean::Boolean(void)
 {
     ADD_PROPERTY(Base,(0));
     ADD_PROPERTY(Tool,(0));
+    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 short Boolean::mustExecute() const
@@ -77,14 +80,15 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
         }
 
-        // tmp. set boolean operation pointer
-        this->myBoolOp = mkBool.get();
+        std::vector<ShapeHistory> history;
+        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
+        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
+
         this->Shape.setValue(resShape);
-        this->myBoolOp = 0;
+        this->History.setValues(history);
         return App::DocumentObject::StdReturn;
     }
     catch (...) {
-        this->myBoolOp = 0;
         return new App::DocumentObjectExecReturn("A fatal error occurred when running boolean operation");
     }
 }

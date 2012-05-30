@@ -56,6 +56,9 @@ MultiFuse::MultiFuse(void)
 {
     ADD_PROPERTY(Shapes,(0));
     Shapes.setSize(0);
+    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 short MultiFuse::mustExecute() const
@@ -79,6 +82,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 
     if (s.size() >= 2) {
         try {
+            std::vector<ShapeHistory> history;
             TopoDS_Shape res = s.front();
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
                 // Let's call algorithm computing a fuse operation:
@@ -87,10 +91,13 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                 if (!mkFuse.IsDone()) 
                     throw Base::Exception("Fusion failed");
                 res = mkFuse.Shape();
+                history.push_back(buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape1()));
+                history.push_back(buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape2()));
             }
             if (res.IsNull())
                 throw Base::Exception("Resulting shape is invalid");
             this->Shape.setValue(res);
+            this->History.setValues(history);
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();

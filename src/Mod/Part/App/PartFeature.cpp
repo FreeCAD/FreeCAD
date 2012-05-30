@@ -26,6 +26,10 @@
 #ifndef _PreComp_
 # include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
+# include <BRepBuilderAPI_MakeShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 
@@ -126,6 +130,57 @@ TopLoc_Location Feature::getLocation() const
     trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
     trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
     return TopLoc_Location(trf);
+}
+
+ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+                                   const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
+{
+    ShapeHistory history;
+    history.type = type;
+
+    TopTools_IndexedMapOfShape newM, oldM;
+    TopExp::MapShapes(newS, type, newM);
+    TopExp::MapShapes(oldS, type, oldM);
+
+    for (int i=1; i<=oldM.Extent(); i++) {
+        bool modified=false, generated=false;
+        TopTools_ListIteratorOfListOfShape it;
+        for (it.Initialize(mkShape.Modified(oldM(i))); it.More(); it.Next()) {
+            modified = true;
+            for (int j=1; j<=newM.Extent(); j++) {
+                if (newM(j).IsPartner(it.Value())) {
+                    history.modified[i-1].push_back(j-1);
+                    break;
+                }
+            }
+        }
+
+        for (it.Initialize(mkShape.Generated(oldM(i))); it.More(); it.Next()) {
+            generated = true;
+            for (int j=1; j<=newM.Extent(); j++) {
+                if (newM(j).IsPartner(it.Value())) {
+                    history.generated[i-1].push_back(j-1);
+                    break;
+                }
+            }
+        }
+
+        if (!modified && !generated) {
+            if (mkShape.IsDeleted(oldM(i))) {
+                history.deleted.insert(i-1);
+            }
+            else {
+                for (int j=1; j<=newM.Extent(); j++) {
+                    if (newM(j).IsPartner(oldM(i))) {
+                        history.accepted[i-1] = j-1;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return history;
 }
 
     /// returns the type name of the ViewProvider
