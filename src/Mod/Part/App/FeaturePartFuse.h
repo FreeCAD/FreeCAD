@@ -54,6 +54,7 @@ public:
     MultiFuse();
 
     App::PropertyLinkList Shapes;
+    PropertyShapeHistory History;
 
     /** @name methods override feature */
     //@{

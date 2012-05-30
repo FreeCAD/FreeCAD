@@ -77,80 +77,69 @@ QIcon ViewProviderBoolean::getIcon(void) const
     return ViewProviderPart::getIcon();
 }
 
-void findFaces(BRepAlgoAPI_BooleanOperation* mkBool,
-               const TopTools_IndexedMapOfShape& M1,
-               const TopTools_IndexedMapOfShape& M3,
-               const std::vector<App::Color>& colBase,
-               std::vector<App::Color>& colBool)
+void applyColor(const Part::ShapeHistory& hist,
+                const std::vector<App::Color>& colBase,
+                std::vector<App::Color>& colBool)
 {
-    for (int i=1; i<=M1.Extent(); i++) {
-        bool modified=false, generated=false;
-        TopTools_ListIteratorOfListOfShape it;
-        for (it.Initialize(mkBool->Modified(M1(i))); it.More(); it.Next()) {
-            modified = true;
-            for (int j=1; j<=M3.Extent(); j++) {
-                if (M3(j).IsPartner(it.Value())) {
-                    colBool[j-1] = colBase[i-1];
-                    break;
-                }
-            }
+    std::map<int, std::vector<int> >::const_iterator jt;
+    // apply color from modified faces
+    for (jt = hist.modified.begin(); jt != hist.modified.end(); ++jt) {
+        std::vector<int>::const_iterator kt;
+        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+            colBool[*kt] = colBase[jt->first];
         }
-
-        for (it.Initialize(mkBool->Generated(M1(i))); it.More(); it.Next()) {
-            generated = true;
-            for (int j=1; j<=M3.Extent(); j++) {
-                if (M3(j).IsPartner(it.Value())) {
-                    colBool[j-1] = colBase[i-1];
-                    break;
-                }
-            }
+    }
+    // apply color from generated faces
+    for (jt = hist.generated.begin(); jt != hist.generated.end(); ++jt) {
+        std::vector<int>::const_iterator kt;
+        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+            colBool[*kt] = colBase[jt->first];
         }
-
-        if (!modified && !generated && !mkBool->IsDeleted(M1(i))) {
-            for (int j=1; j<=M3.Extent(); j++) {
-                if (M3(j).IsPartner(M1(i))) {
-                    colBool[j-1] = colBase[i-1];
-                    break;
-                }
-            }
-        }
+    }
+    // apply data from accepted faces
+    for (std::map<int, int>::const_iterator kt = hist.accepted.begin(); kt != hist.accepted.end(); ++kt) {
+        colBool[kt->second] = colBase[kt->first];
     }
 }
 
 void ViewProviderBoolean::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
+            (prop)->getValues();
+        if (hist.size() != 2)
+            return;
         Part::Boolean* objBool = dynamic_cast<Part::Boolean*>(getObject());
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(objBool->Base.getValue());
         Part::Feature* objTool = dynamic_cast<Part::Feature*>(objBool->Tool.getValue());
-
-        BRepAlgoAPI_BooleanOperation* mkBool = objBool->getBooleanOperation();
-        if (mkBool && objBase && objTool) {
+        if (objBase && objTool) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& toolShape = objTool->Shape.getValue();
             const TopoDS_Shape& boolShape = objBool->Shape.getValue();
 
-            TopTools_IndexedMapOfShape M1, M2, M3;
-            TopExp::MapShapes(baseShape, TopAbs_FACE, M1);
-            TopExp::MapShapes(toolShape, TopAbs_FACE, M2);
-            TopExp::MapShapes(boolShape, TopAbs_FACE, M3);
+            TopTools_IndexedMapOfShape baseMap, toolMap, boolMap;
+            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
+            TopExp::MapShapes(toolShape, TopAbs_FACE, toolMap);
+            TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
+
             Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
             Gui::ViewProvider* vpTool = Gui::Application::Instance->getViewProvider(objTool);
             std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
             std::vector<App::Color> colTool = static_cast<PartGui::ViewProviderPart*>(vpTool)->DiffuseColor.getValues();
             std::vector<App::Color> colBool;
-            colBool.resize(M3.Extent(), this->ShapeColor.getValue());
-            bool applyColor=false;
-            if (colBase.size() == M1.Extent()) {
-                findFaces(mkBool, M1, M3, colBase, colBool);
-                applyColor = true;
+            colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+
+            bool setColor=false;
+            if (colBase.size() == baseMap.Extent()) {
+                applyColor(hist[0], colBase, colBool);
+                setColor = true;
             }
-            if (colTool.size() == M2.Extent()) {
-                findFaces(mkBool, M2, M3, colTool, colBool);
-                applyColor = true;
+            if (colTool.size() == toolMap.Extent()) {
+                applyColor(hist[1], colTool, colBool);
+                setColor = true;
             }
-            if (applyColor)
+            if (setColor)
                 this->DiffuseColor.setValues(colBool);
         }
     }
@@ -176,6 +165,46 @@ QIcon ViewProviderMultiFuse::getIcon(void) const
     return Gui::BitmapFactory().pixmap("Part_Fuse");
 }
 
+void ViewProviderMultiFuse::updateData(const App::Property* prop)
+{
+    PartGui::ViewProviderPart::updateData(prop);
+    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
+            (prop)->getValues();
+        Part::MultiFuse* objBool = dynamic_cast<Part::MultiFuse*>(getObject());
+        std::vector<App::DocumentObject*> sources = objBool->Shapes.getValues();
+        if (hist.size() != sources.size())
+            return;
+
+        const TopoDS_Shape& boolShape = objBool->Shape.getValue();
+        TopTools_IndexedMapOfShape boolMap;
+        TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
+
+        std::vector<App::Color> colBool;
+        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+
+        bool setColor=false;
+        int index=0;
+        for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            const TopoDS_Shape& baseShape = objBase->Shape.getValue();
+ 
+            TopTools_IndexedMapOfShape baseMap;
+            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
+
+            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
+            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
+            if (colBase.size() == baseMap.Extent()) {
+                applyColor(hist[index], colBase, colBool);
+                setColor = true;
+            }
+        }
+
+        if (setColor)
+            this->DiffuseColor.setValues(colBool);
+    }
+}
+
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiCommon,PartGui::ViewProviderPart)
 
@@ -195,4 +224,44 @@ std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren(void)co
 QIcon ViewProviderMultiCommon::getIcon(void) const
 {
     return Gui::BitmapFactory().pixmap("Part_Common");
+}
+
+void ViewProviderMultiCommon::updateData(const App::Property* prop)
+{
+    PartGui::ViewProviderPart::updateData(prop);
+    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
+            (prop)->getValues();
+        Part::MultiCommon* objBool = dynamic_cast<Part::MultiCommon*>(getObject());
+        std::vector<App::DocumentObject*> sources = objBool->Shapes.getValues();
+        if (hist.size() != sources.size())
+            return;
+
+        const TopoDS_Shape& boolShape = objBool->Shape.getValue();
+        TopTools_IndexedMapOfShape boolMap;
+        TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
+
+        std::vector<App::Color> colBool;
+        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+
+        bool setColor=false;
+        int index=0;
+        for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            const TopoDS_Shape& baseShape = objBase->Shape.getValue();
+ 
+            TopTools_IndexedMapOfShape baseMap;
+            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
+
+            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
+            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
+            if (colBase.size() == baseMap.Extent()) {
+                applyColor(hist[index], colBase, colBool);
+                setColor = true;
+            }
+        }
+
+        if (setColor)
+            this->DiffuseColor.setValues(colBool);
+    }
 }

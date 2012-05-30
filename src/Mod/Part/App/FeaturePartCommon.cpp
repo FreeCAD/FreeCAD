@@ -56,6 +56,9 @@ MultiCommon::MultiCommon(void)
 {
     ADD_PROPERTY(Shapes,(0));
     Shapes.setSize(0);
+    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 short MultiCommon::mustExecute() const
@@ -78,6 +81,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
     }
 
     if (s.size() >= 2) {
+        std::vector<ShapeHistory> history;
         TopoDS_Shape res = s.front();
         for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
             // Let's call algorithm computing a fuse operation:
@@ -86,10 +90,13 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
             if (!mkCommon.IsDone()) 
                 throw Base::Exception("Intersection failed");
             res = mkCommon.Shape();
+            history.push_back(buildHistory(mkCommon, TopAbs_FACE, res, mkCommon.Shape1()));
+            history.push_back(buildHistory(mkCommon, TopAbs_FACE, res, mkCommon.Shape2()));
         }
         if (res.IsNull())
             throw Base::Exception("Resulting shape is invalid");
         this->Shape.setValue(res);
+        this->History.setValues(history);
     }
     else {
         throw Base::Exception("Not enough shape objects linked");

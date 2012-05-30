@@ -41,6 +41,7 @@ public:
 
     App::PropertyLink Base;
     App::PropertyLink Tool;
+    PropertyShapeHistory History;
 
     /** @name methods overide Feature */
     //@{
@@ -53,13 +54,9 @@ public:
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderBoolean";
     }
-    BRepAlgoAPI_BooleanOperation* getBooleanOperation() const { return myBoolOp; }
 
 protected:
     virtual BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const = 0;
-
-private:
-    BRepAlgoAPI_BooleanOperation* myBoolOp;
 };
 
 }
