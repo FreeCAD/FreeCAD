@@ -46,6 +46,16 @@ void MeshSurfaceSegment::AddSegment(const std::vector<unsigned long>& segm)
     }
 }
 
+MeshSegment MeshSurfaceSegment::FindSegment(unsigned long index) const
+{
+    for (std::vector<MeshSegment>::const_iterator it = segments.begin(); it != segments.end(); ++it) {
+        if (std::find(it->begin(), it->end(), index) != it->end())
+            return *it;
+    }
+
+    return MeshSegment();
+}
+
 // --------------------------------------------------------
 
 MeshDistancePlanarSegment::MeshDistancePlanarSegment(const MeshKernel& mesh, unsigned long minFacets, float tol)
