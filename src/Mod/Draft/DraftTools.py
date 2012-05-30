@@ -1363,15 +1363,15 @@ class Text(Creator):
 
     def createObject(self):
         "creates an object in the current doc"
-        tx = ''
+        tx = '['
         for l in self.text:
-            if tx:
+            if len(tx) > 1:
                 tx += ','
-            tx += '"'+l+'"'
-#        self.commit(translate("draft","Create Text"),
-#                    ['import Draft',
-#                     'Draft.makeText(['+tx+'],'+DraftVecUtils.toString(self.node[0])+')'])
-        self.commit(translate("draft","Create Text"),partial(Draft.makeText,self.text,self.node[0]))
+            tx += '"'+str(l)+'"'
+        tx += ']'
+        self.commit(translate("draft","Create Text"),
+                    ['import Draft',
+                     'Draft.makeText('+tx+',point='+DraftVecUtils.toString(self.node[0])+')'])
 
         self.finish(cont=True)
 
@@ -1911,19 +1911,21 @@ class ApplyStyle(Modifier):
         if self.ui:
             self.sel = Draft.getSelection()
             if (len(self.sel)>0):
+                c = ['import Draft']
                 for ob in self.sel:
                     if (ob.Type == "App::DocumentObjectGroup"):
-                        self.formatGroup(ob)
+                        c.extend(self.formatGroup(ob))
                     else:
-                        self.commit(translate("draft","Change Style"),partial(Draft.formatObject,ob))
+                        c.append('Draft.formatObject(FreeCAD.ActiveDocument.'+ob.Name+')')
+                self.commit(translate("draft","Change Style"),c)
 
     def formatGroup(self,grpob):
+        c=[]
         for ob in grpob.Group:
             if (ob.Type == "App::DocumentObjectGroup"):
-                self.formatGroup(ob)
+                c.extend(self.formatGroup(ob))
             else:
-                self.commit(translate("draft","Change Style"),partial(Draft.formatObject,ob))
-
+                c.append('Draft.formatObject(FreeCAD.ActiveDocument.'+ob.Name+')') 
 			
 class Rotate(Modifier):
     "The Draft_Rotate FreeCAD command definition"
