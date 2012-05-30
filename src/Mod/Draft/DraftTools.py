@@ -380,8 +380,38 @@ class Creator:
             todo.delayCommit(self.commitList)
         self.commitList = []
 
+    def getStrings(self):
+        "returns a couple of useful strings fro building python commands"
+
+        # current plane rotation
+        p = plane.getRotation()
+        qr = p.Rotation.Q
+        qr = '('+str(qr[0])+','+str(qr[1])+','+str(qr[2])+','+str(qr[3])+')'
+
+        # support object
+        if self.support:
+            sup = 'FreeCAD.ActiveDocument.getObject("' + self.support.Name + '")'
+        else:
+            sup = 'None'
+
+        # contents of self.node
+        points='['
+        for n in self.node:
+            if len(points) > 1:
+                points += ','
+            points += DraftVecUtils.toString(n)
+        points += ']'
+
+        # fill mode
+        if self.ui:
+            fil = str(bool(self.ui.fillmode))
+        else:
+            fil = "True"
+        
+        return qr,sup,points,fil
+
     def commit(self,name,func):
-        "stores partial actions to be committed to the FreeCAD document"
+        "stores actions to be committed to the FreeCAD document"
         self.commitList.append((name,func))
 
 class Line(Creator):
@@ -421,20 +451,11 @@ class Line(Creator):
         self.obj = None
         if (len(self.node) > 1):
             # building command string
-            if self.support:
-                sup = 'FreeCAD.ActiveDocument.getObject("' + self.support.Name + '")'
-            else:
-                sup = 'None'
-            points='['
-            for n in self.node:
-                if len(points) > 1:
-                    points += ','
-                points += 'FreeCAD.Vector('+str(n.x) + ',' + str(n.y) + ',' + str(n.z) + ')'
-            points += ']'
+            rot,sup,pts,fil = self.getStrings()
             self.commit(translate("draft","Create DWire"),
                         ['import Draft',
-                         'points='+points,
-                         'Draft.makeWire(points,closed='+str(closed)+',face='+str(bool(self.ui.fillmode))+',support='+sup+')'])
+                         'points='+pts,
+                         'Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
         if self.ui:
             self.linetrack.finalize()
             self.constraintrack.finalize()
@@ -628,9 +649,12 @@ class BSpline(Line):
             old = self.obj.Name
             self.doc.removeObject(old)
             try:
+                # building command string
+                rot,sup,pts,fil = self.getStrings()
                 self.commit(translate("draft","Create BSpline"),
-                            partial(Draft.makeBSpline,self.node,closed,
-                                    face=self.ui.fillmode,support=self.support))
+                            ['import Draft',
+                             'points='+pts,
+                             'Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
             except:
                 print "Draft: error delaying commit"
         if self.ui:
@@ -741,12 +765,15 @@ class Rectangle(Creator):
         if abs(DraftVecUtils.angle(p4.sub(p1),plane.u,plane.axis)) > 1: length = -length
         height = p2.sub(p1).Length
         if abs(DraftVecUtils.angle(p2.sub(p1),plane.v,plane.axis)) > 1: height = -height
-        p = plane.getRotation()
-        p.move(p1)
         try:
+            # building command string
+            rot,sup,pts,fil = self.getStrings()
             self.commit(translate("draft","Create Rectangle"),
-                        partial(Draft.makeRectangle,length,height,
-                                p,self.ui.fillmode,support=self.support))
+                        ['import Draft',
+                         'pl=FreeCAD.Placement()',
+                         'pl.Rotation.Q='+rot,
+                         'pl.Base='+DraftVecUtils.toString(p1),
+                         'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
             print "Draft: error delaying commit"
         self.finish(cont=True)
@@ -1013,23 +1040,30 @@ class Arc(Creator):
 
     def drawArc(self):
         "actually draws the FreeCAD object"
-        p = plane.getRotation()
-        p.move(self.center)
+        rot,sup,pts,fil = self.getStrings()
         if self.closedCircle:
             try:
-                    self.commit(translate("draft","Create Circle"),
-                                partial(Draft.makeCircle,self.rad,p,
-                                        self.ui.fillmode,support=self.support))
+                # building command string
+                self.commit(translate("draft","Create Circle"),
+                            ['import Draft',
+                             'pl=FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base='+DraftVecUtils.toString(self.center),
+                             'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')'])
             except:
-                    print "Draft: error delaying commit"
+                print "Draft: error delaying commit"
         else:
             sta = math.degrees(self.firstangle)
             end = math.degrees(self.firstangle+self.angle)
             if end < sta: sta,end = end,sta
             try:
-                    self.commit(translate("draft","Create Arc"),
-                                partial(Draft.makeCircle,self.rad,p,self.ui.fillmode,
-                                        sta,end,support=self.support))
+                # building command string
+                self.commit(translate("draft","Create Arc"),
+                            ['import Draft',
+                             'pl=FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base='+DraftVecUtils.toString(self.center),
+                             'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')'])
             except:
                     print "Draft: error delaying commit"
         self.finish(cont=True)
@@ -1257,11 +1291,14 @@ class Polygon(Creator):
 
     def drawPolygon(self):
         "actually draws the FreeCAD object"
-        p = plane.getRotation()
-        p.move(self.center)
+        rot,sup,pts,fil = self.getStrings()        
+        # building command string
         self.commit(translate("draft","Create Polygon"),
-                    partial(Draft.makePolygon,self.ui.numFaces.value(),self.rad,
-                            True,p,face=self.ui.fillmode,support=self.support))
+                    ['import Draft',
+                     'pl=FreeCAD.Placement()',
+                     'pl.Rotation.Q='+rot,
+                     'pl.Base='+DraftVecUtils.toString(self.center),
+                     'Draft.makePolygon('+str(self.ui.numFaces.value())+',radius='+str(self.rad)+',inscribed=True,placement=pl,face='+fil+',support='+sup+')'])
         self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
@@ -1326,8 +1363,16 @@ class Text(Creator):
 
     def createObject(self):
         "creates an object in the current doc"
-        self.commit(translate("draft","Create Text"),
-                    partial(Draft.makeText,self.text,self.node[0]))
+        tx = ''
+        for l in self.text:
+            if tx:
+                tx += ','
+            tx += '"'+l+'"'
+#        self.commit(translate("draft","Create Text"),
+#                    ['import Draft',
+#                     'Draft.makeText(['+tx+'],'+DraftVecUtils.toString(self.node[0])+')'])
+        self.commit(translate("draft","Create Text"),partial(Draft.makeText,self.text,self.node[0]))
+
         self.finish(cont=True)
 
     def action(self,arg):
@@ -1429,9 +1474,9 @@ class Dimension(Creator):
             pt = o.ViewObject.RootNode.getChildren()[1].getChildren()[0].getChildren()[0].getChildren()[3]
             p3 = Vector(pt.point.getValues()[2].getValue())
             self.commit(translate("draft","Create Dimension"),
-                        partial(Draft.makeDimension,p1,p2,p3))
-            self.commit(translate("draft","Delete Measurement"),
-                        partial(FreeCAD.ActiveDocument.removeObject,o.Name))
+                        ['import Draft',
+                         'Draft.makeDimension('+DraftVecUtils.toString(p1)+','+DraftVecUtils.toString(p2)+','+DraftVecUtils.toString(p3)+')',
+                         'FreeCAD.ActiveDocument.removeObject("'+o.Name+'")'])
 
     def createObject(self):
         "creates an object in the current doc"
@@ -1449,8 +1494,8 @@ class Dimension(Creator):
                                 self.arcmode,self.node[2]))
         else:
             self.commit(translate("draft","Create Dimension"),
-                        partial(Draft.makeDimension,self.node[0],self.node[1],
-                                self.node[2]))
+                        ['import Draft',
+                         'Draft.makeDimension('+DraftVecUtils.toString(self.node[0])+','+DraftVecUtils.toString(self.node[1])+','+DraftVecUtils.toString(self.node[2])+')'])
         if self.ui.continueMode:
             self.cont = self.node[2]
             if not self.dir:
@@ -1712,7 +1757,7 @@ class Modifier:
         self.commitList = []
 
     def commit(self,name,func):
-        "stores partial actions to be committed to the FreeCAD document"
+        "stores actions to be committed to the FreeCAD document"
         # print "committing"
         self.commitList.append((name,func))
 
@@ -1768,10 +1813,20 @@ class Move(Modifier):
 
     def move(self,delta,copy=False):
         "moving the real shapes"
+        sel = '['
+        for o in self.sel:
+            if len(sel) > 1:
+                sel += ','
+            sel += 'FreeCAD.ActiveDocument.'+o.Name
+        sel += ']'
         if copy:
-            self.commit(translate("draft","Copy"),partial(Draft.move,self.sel,delta,copy))
+            self.commit(translate("draft","Copy"),
+                        ['import Draft',
+                         'Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')'])
         else:
-            self.commit(translate("draft","Move"),partial(Draft.move,self.sel,delta,copy))
+            self.commit(translate("draft","Move"),
+                        ['import Draft',
+                         'Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')'])
         self.doc.recompute()
 
     def action(self,arg):
@@ -1926,14 +1981,20 @@ class Rotate(Modifier):
 
     def rot (self,angle,copy=False):
         "rotating the real shapes"
+        sel = '['
+        for o in self.sel:
+            if len(sel) > 1:
+                sel += ','
+            sel += 'FreeCAD.ActiveDocument.'+o.Name
+        sel += ']'
         if copy:
             self.commit(translate("draft","Copy"),
-                        partial(Draft.rotate,self.sel,
-                                math.degrees(angle),self.center,plane.axis,copy))
+                        ['import Draft',
+                         'Draft.rotate('+sel+','+str(math.degrees(angle))+','+DraftVecUtils.toString(self.center)+',axis='+DraftVecUtils.toString(plane.axis)+',copy='+str(copy)+')'])
         else:
             self.commit(translate("draft","Rotate"),
-                        partial(Draft.rotate,self.sel,
-                                math.degrees(angle),self.center,plane.axis,copy))
+                        ['import Draft',
+                         'Draft.rotate('+sel+','+str(math.degrees(angle))+','+DraftVecUtils.toString(self.center)+',axis='+DraftVecUtils.toString(plane.axis)+',copy='+str(copy)+')'])
 
     def action(self,arg):
         "scene event handler"
@@ -2194,13 +2255,18 @@ class Offset(Modifier):
                 occmode = self.ui.occOffset.isChecked()
                 if hasMod(arg,MODALT) or self.ui.isCopy.isChecked(): copymode = True
                 if self.npts:
+                    print "offset:npts=",self.npts
                     self.commit(translate("draft","Offset"),
-                                partial(Draft.offset,self.sel,
-                                        self.npts,copymode,occ=False))
+                                ['import Draft',
+                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.ntps)+',copy='+str(copymode)+')'])
                 elif self.dvec:
+                    if isinstance(self.dvec,float):
+                        d = str(self.dvec)
+                    else:
+                        d = DraftVecUtils.toString(self.dvec)
                     self.commit(translate("draft","Offset"),
-                                partial(Draft.offset,self.sel,
-                                        self.dvec,copymode,occ=occmode))
+                                ['import Draft',
+                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')'])
                 if hasMod(arg,MODALT):
                     self.extendedCopy = True
                 else:
@@ -2222,9 +2288,13 @@ class Offset(Modifier):
             copymode = False
             occmode = self.ui.occOffset.isChecked()
             if self.ui.isCopy.isChecked(): copymode = True
+            if isinstance(self.dvec,float):
+                d = str(self.dvec)
+            else:
+                d = DraftVecUtils.toString(self.dvec)
             self.commit(translate("draft","Offset"),
-                        partial(Draft.offset,self.sel,
-                                self.dvec,copymode,occ=occmode))
+                        ['import Draft',
+                         'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')'])
             self.finish()
 
             
@@ -2946,12 +3016,20 @@ class Scale(Modifier):
 
     def scale(self,delta,copy=False):
         "moving the real shapes"
+        sel = '['
+        for o in self.sel:
+            if len(sel) > 1:
+                sel += ','
+            sel += 'FreeCAD.ActiveDocument.'+o.Name
+        sel += ']'
         if copy:
             self.commit(translate("draft","Copy"),
-                        partial(Draft.scale,self.sel,delta,self.node[0],copy))
+                        ['import Draft',
+                         'Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')'])
         else:
             self.commit(translate("draft","Scale"),
-                        partial(Draft.scale,self.sel,delta,self.node[0],copy))
+                        ['import Draft',
+                         'Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')'])                     
 
     def action(self,arg):
         "scene event handler"
