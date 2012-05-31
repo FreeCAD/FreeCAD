@@ -124,7 +124,17 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                 applyColor(hist[0], colBase, colBool);
                 setColor = true;
             }
+            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                colBase.resize(baseMap.Extent(), colBase[0]);
+                applyColor(hist[0], colBase, colBool);
+                setColor = true;
+            }
             if (colTool.size() == toolMap.Extent()) {
+                applyColor(hist[1], colTool, colBool);
+                setColor = true;
+            }
+            else if (!colTool.empty() && colTool[0] != this->ShapeColor.getValue()) {
+                colTool.resize(toolMap.Extent(), colTool[0]);
                 applyColor(hist[1], colTool, colBool);
                 setColor = true;
             }
@@ -187,6 +197,11 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
                 applyColor(hist[index], colBase, colBool);
                 setColor = true;
             }
+            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                colBase.resize(baseMap.Extent(), colBase[0]);
+                applyColor(hist[index], colBase, colBool);
+                setColor = true;
+            }
         }
 
         if (setColor)
@@ -245,6 +260,11 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
             Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
             std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
             if (colBase.size() == baseMap.Extent()) {
+                applyColor(hist[index], colBase, colBool);
+                setColor = true;
+            }
+            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                colBase.resize(baseMap.Extent(), colBase[0]);
                 applyColor(hist[index], colBase, colBool);
                 setColor = true;
             }
