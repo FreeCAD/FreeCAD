@@ -143,36 +143,36 @@ ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_Sha
     TopExp::MapShapes(oldS, type, oldM);
 
     for (int i=1; i<=oldM.Extent(); i++) {
-        bool modified=false, generated=false;
+        bool found = false;
         TopTools_ListIteratorOfListOfShape it;
         for (it.Initialize(mkShape.Modified(oldM(i))); it.More(); it.Next()) {
-            modified = true;
+            found = true;
             for (int j=1; j<=newM.Extent(); j++) {
                 if (newM(j).IsPartner(it.Value())) {
-                    history.modified[i-1].push_back(j-1);
+                    history.shapeMap[i-1].push_back(j-1);
                     break;
                 }
             }
         }
 
         for (it.Initialize(mkShape.Generated(oldM(i))); it.More(); it.Next()) {
-            generated = true;
+            found = true;
             for (int j=1; j<=newM.Extent(); j++) {
                 if (newM(j).IsPartner(it.Value())) {
-                    history.generated[i-1].push_back(j-1);
+                    history.shapeMap[i-1].push_back(j-1);
                     break;
                 }
             }
         }
 
-        if (!modified && !generated) {
+        if (!found) {
             if (mkShape.IsDeleted(oldM(i))) {
-                history.deleted.insert(i-1);
+                history.shapeMap[i-1] = std::vector<int>();
             }
             else {
                 for (int j=1; j<=newM.Extent(); j++) {
                     if (newM(j).IsPartner(oldM(i))) {
-                        history.accepted[i-1] = j-1;
+                        history.shapeMap[i-1].push_back(j-1);
                         break;
                     }
                 }
@@ -181,6 +181,27 @@ ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_Sha
     }
 
     return history;
+}
+
+ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& newH)
+{
+    ShapeHistory join;
+    join.type = oldH.type;
+
+    for (ShapeHistory::MapList::const_iterator it = oldH.shapeMap.begin(); it != oldH.shapeMap.end(); ++it) {
+        int old_shape_index = it->first;
+        if (it->second.empty())
+            join.shapeMap[old_shape_index] = ShapeHistory::List();
+        for (ShapeHistory::List::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+            ShapeHistory::MapList::const_iterator kt = newH.shapeMap.find(*jt);
+            if (kt != newH.shapeMap.end()) {
+                ShapeHistory::List& ary = join.shapeMap[old_shape_index];
+                ary.insert(ary.end(), kt->second.begin(), kt->second.end());
+            }
+        }
+    }
+
+    return join;
 }
 
     /// returns the type name of the ViewProvider

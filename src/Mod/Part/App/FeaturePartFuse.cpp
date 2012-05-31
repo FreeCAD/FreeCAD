@@ -91,8 +91,18 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                 if (!mkFuse.IsDone()) 
                     throw Base::Exception("Fusion failed");
                 res = mkFuse.Shape();
-                history.push_back(buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape1()));
-                history.push_back(buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape2()));
+
+                ShapeHistory hist1 = buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape1());
+                ShapeHistory hist2 = buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape2());
+                if (history.empty()) {
+                    history.push_back(hist1);
+                    history.push_back(hist2);
+                }
+                else {
+                    for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                        *jt = joinHistory(*jt, hist1);
+                    history.push_back(hist2);
+                }
             }
             if (res.IsNull())
                 throw Base::Exception("Resulting shape is invalid");

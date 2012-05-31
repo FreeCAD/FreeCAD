@@ -68,6 +68,7 @@ protected:
     TopLoc_Location getLocation() const;
     ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
         const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
 };
 
 class FilletBase : public Part::Feature
