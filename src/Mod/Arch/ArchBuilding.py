@@ -23,12 +23,13 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeBuilding(objectslist=None,join=False,name="Building"):
+def makeBuilding(objectslist=None,join=False,name=str(translate("Arch","Building"))):
     '''makeBuilding(objectslist,[joinmode]): creates a building including the
     objects from the given list. If joinmode is True, components will be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
@@ -51,15 +52,24 @@ class _CommandBuilding:
         ok = False
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Floor"]:
-                FreeCAD.ActiveDocument.openTransaction("Type conversion")
-                nobj = makeBuilding()
-                ArchCommands.copyProperties(sel[0],nobj)
-                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Type conversion")))
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("obj = Arch.makeBuilding()")
+                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.removeObject("+sel[0].Name+")")
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
         if not ok:
-            FreeCAD.ActiveDocument.openTransaction("Building")
-            makeBuilding(sel)
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch"," Create Building")))
+            ss = "["
+            for o in sel:
+                if len(ss) > 1:
+                    ss += ","
+                ss += "FreeCAD.ActiveDocument."+o.Name
+            ss += "]"
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Floor")))
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         

@@ -24,12 +24,13 @@
 import FreeCAD,FreeCADGui,Draft,ArchComponent, DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeRoof(baseobj,facenr=1,angle=45,name="Roof"):
+def makeRoof(baseobj,facenr=1,angle=45,name=str(translate("Arch","Roof"))):
     '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a
     face from an existing object. You can provide the number of the face
     to build the roof on (default = 1), the angle (default=45) and a name (default
@@ -64,35 +65,38 @@ class _CommandRoof:
             if sel.HasSubObjects:
                 if "Face" in sel.SubElementNames[0]:
                     idx = int(sel.SubElementNames[0][4:])
-                    FreeCAD.ActiveDocument.openTransaction("Create Roof")
-                    makeRoof(obj,idx)
+                    FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Roof")))
+                    FreeCADGui.doCommand("import Arch")
+                    FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+","+str(idx)+")")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                 elif obj.isDerivedFrom("Part::Feature"):
                     if len(obj.Shape.Faces) == 1:
-                        FreeCAD.ActiveDocument.openTransaction("Create Roof")
-                        makeRoof(obj,1)
+                        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Roof")))
+                        FreeCADGui.doCommand("import Arch")
+                        FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+",1)")
                         FreeCAD.ActiveDocument.commitTransaction()
                         FreeCAD.ActiveDocument.recompute()
             elif obj.isDerivedFrom("Part::Feature"):
                 if len(obj.Shape.Faces) == 1:
-                    FreeCAD.ActiveDocument.openTransaction("Create Roof")
-                    makeRoof(obj,1)
+                    FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Roof")))
+                    FreeCADGui.doCommand("import Arch")
+                    FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+",1)")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
             else:
-                FreeCAD.Console.PrintMessage("Unable to create a roof")
+                FreeCAD.Console.PrintMessage(str(translate("Arch","Unable to create a roof")))
         else:
-            FreeCAD.Console.PrintMessage("No object selected")
+            FreeCAD.Console.PrintMessage(str(translate("Arch","No object selected")))
        
 class _Roof(ArchComponent.Component):
     "The Roof object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyAngle","Angle","Base",
-                        "The angle of this roof")
+                        str(translate("Arch","The angle of this roof")))
         obj.addProperty("App::PropertyInteger","Face","Base",
-                        "The face number of the base object used to build this roof")
+                        str(translate("Arch","The face number of the base object used to build this roof")))
         self.Type = "Structure"
         
     def execute(self,obj):

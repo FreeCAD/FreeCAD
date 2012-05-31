@@ -23,12 +23,13 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeFloor(objectslist=None,join=True,name="Floor"):
+def makeFloor(objectslist=None,join=True,name=str(translate("Arch","Floor"))):
     '''makeFloor(objectslist,[joinmode]): creates a floor including the
     objects from the given list. If joinmode is False, components will
     not be joined.'''
@@ -52,23 +53,31 @@ class _CommandFloor:
         ok = False
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Building"]:
-                FreeCAD.ActiveDocument.openTransaction("Type conversion")
-                nobj = makeFloor()
-                ArchCommands.copyProperties(sel[0],nobj)
-                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Type conversion")))
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("obj = Arch.makeFloor()")
+                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.removeObject("+sel[0].Name+")")
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
         if not ok:
-            FreeCAD.ActiveDocument.openTransaction("Floor")
-            makeFloor(sel)
+            ss = "["
+            for o in sel:
+                if len(ss) > 1:
+                    ss += ","
+                ss += "FreeCAD.ActiveDocument."+o.Name
+            ss += "]"
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Floor")))
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
         
 class _Floor:
     "The Cell object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLength","Height","Base",
-                        "The height of this floor")
+                        str(translate("Arch","The height of this floor")))
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj

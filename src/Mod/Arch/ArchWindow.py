@@ -24,12 +24,13 @@
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore,QtGui
+from DraftTools import translate
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeWindow(baseobj=None,width=None,name="Window"):
+def makeWindow(baseobj=None,width=None,name=str(translate("Arch","Window"))):
     '''makeWindow(obj,[name]): creates a window based on the
     given object'''
     if baseobj:
@@ -87,9 +88,10 @@ class _CommandWindow:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Create Window")
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
+        FreeCADGui.doCommand("import Arch")
         for obj in sel:
-            makeWindow(obj)
+            FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
        
 class _Window(ArchComponent.Component):
@@ -97,7 +99,7 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyStringList","WindowParts","Base",
-                        "the components of this window")
+                        str(translate("Arch","the components of this window")))
         self.Type = "Window"
         
     def execute(self,obj):
