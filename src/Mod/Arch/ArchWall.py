@@ -24,12 +24,13 @@
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeWall(baseobj=None,width=None,height=None,align="Center",name="Wall"):
+def makeWall(baseobj=None,width=None,height=None,align="Center",name=str(translate("Arch","Wall"))):
     '''makeWall(obj,[width],[height],[align],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid. align
     can be "Center","Left" or "Right"'''
@@ -117,10 +118,12 @@ class _CommandWall:
         if sel:
             import Draft
             if Draft.getType(sel[0]) != "Wall":
-                FreeCAD.ActiveDocument.openTransaction("Wall")
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Wall")))
+                FreeCADGui.doCommand('import Arch')
                 for obj in sel:
-                    makeWall(obj)
+                    FreeCADGui.doCommand('Arch.makeWall(FreeCAD.ActiveDocument.'+obj.Name+')')
                 FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
                 done = True
         if not done:
             import DraftTrackers
@@ -146,32 +149,33 @@ class _CommandWall:
             add = False
             l = Part.Line(self.points[0],self.points[1])
             self.tracker.finalize()
-            FreeCAD.ActiveDocument.openTransaction("Wall")
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Wall")))
+            FreeCADGui.doCommand('import Arch')
+            FreeCADGui.doCommand('import Part')
+            FreeCADGui.doCommand('trace=Part.Line(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
             if not self.existing:
                 self.addDefault(l)
             else:
                 w = joinWalls(self.existing)
                 if w:
                     if areSameWallTypes([w,self]):
-                        w.Base.addGeometry(l)
+                        FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
                     else:
-                        nw = self.addDefault(l)
+                        self.addDefault(l)
                         add = True
                 else:
                     self.addDefault(l)
+            if add:
+                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
-            if add:
-                import ArchCommands
-                ArchCommands.addComponents(nw,w)
             if self.continueCmd:
                 self.Activated()
 
     def addDefault(self,l):
-        s = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
-        s.addGeometry(l)
-        w = makeWall(s,width=self.Width,height=self.Height,align=self.Align)
-        return w
+        FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","'+str(translate('Arch','WallTrace'))+'")')
+        FreeCADGui.doCommand('base.addGeometry(trace)')
+        FreeCADGui.doCommand('Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
 
     def update(self,point):
         "this function is called by the Snapper when the mouse is moved"
@@ -191,11 +195,11 @@ class _CommandWall:
     def taskbox(self):
         "sets up a taskbox widget"
         w = QtGui.QWidget()
-        w.setWindowTitle("Wall options")
+        w.setWindowTitle(str(translate("Arch","Wall options")))
         lay0 = QtGui.QVBoxLayout(w)
         lay1 = QtGui.QHBoxLayout()
         lay0.addLayout(lay1)
-        label1 = QtGui.QLabel("Width")
+        label1 = QtGui.QLabel(str(translate("Arch","Width")))
         lay1.addWidget(label1)
         value1 = QtGui.QDoubleSpinBox()
         value1.setDecimals(2)
@@ -203,7 +207,7 @@ class _CommandWall:
         lay1.addWidget(value1)
         lay2 = QtGui.QHBoxLayout()
         lay0.addLayout(lay2)
-        label2 = QtGui.QLabel("Height")
+        label2 = QtGui.QLabel(str(translate("Arch","Height")))
         lay2.addWidget(label2)
         value2 = QtGui.QDoubleSpinBox()
         value2.setDecimals(2)
@@ -211,14 +215,14 @@ class _CommandWall:
         lay2.addWidget(value2)
         lay3 = QtGui.QHBoxLayout()
         lay0.addLayout(lay3)
-        label3 = QtGui.QLabel("Alignment")
+        label3 = QtGui.QLabel(str(translate("Arch","Alignment")))
         lay3.addWidget(label3)
         value3 = QtGui.QComboBox()
         items = ["Center","Left","Right"]
         value3.addItems(items)
         value3.setCurrentIndex(items.index(self.Align))
         lay3.addWidget(value3)
-        value4 = QtGui.QCheckBox("Continue")
+        value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
         lay0.addWidget(value4)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
@@ -245,13 +249,13 @@ class _Wall(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Width","Base",
-                        "The width of this wall. Not used if this wall is based on a face")
+                        str(translate("Arch","The width of this wall. Not used if this wall is based on a face")))
         obj.addProperty("App::PropertyLength","Height","Base",
-                        "The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")
+                        str(translate("Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")))
         obj.addProperty("App::PropertyEnumeration","Align","Base",
-                        "The alignment of this wall on its base object, if applicable")
+                        str(translate("Arch","The alignment of this wall on its base object, if applicable")))
         obj.addProperty("App::PropertyVector","Normal","Base",
-                        "The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
+                        str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
         obj.Align = ['Left','Right','Center']
         self.Type = "Wall"
         obj.Width = 0.1
