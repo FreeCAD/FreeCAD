@@ -99,11 +99,11 @@ private:
 };
 
 struct PartExport ShapeHistory {
+    typedef std::map<int, std::vector<int> > MapList;
+    typedef std::vector<int> List;
+
     TopAbs_ShapeEnum type;
-    std::map<int, std::vector<int> > modified;
-    std::map<int, std::vector<int> > generated;
-    std::map<int, int> accepted;
-    std::set<int> deleted;
+    MapList shapeMap;
 };
 
 class PartExport PropertyShapeHistory : public App::PropertyLists

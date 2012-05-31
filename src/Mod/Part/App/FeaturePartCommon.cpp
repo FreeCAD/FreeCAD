@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Common.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 
@@ -81,22 +82,38 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
     }
 
     if (s.size() >= 2) {
-        std::vector<ShapeHistory> history;
-        TopoDS_Shape res = s.front();
-        for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
-            // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Common mkCommon(res, *it);
-            // Let's check if the fusion has been successful
-            if (!mkCommon.IsDone()) 
-                throw Base::Exception("Intersection failed");
-            res = mkCommon.Shape();
-            history.push_back(buildHistory(mkCommon, TopAbs_FACE, res, mkCommon.Shape1()));
-            history.push_back(buildHistory(mkCommon, TopAbs_FACE, res, mkCommon.Shape2()));
+        try {
+            std::vector<ShapeHistory> history;
+            TopoDS_Shape res = s.front();
+            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                // Let's call algorithm computing a fuse operation:
+                BRepAlgoAPI_Common mkCommon(res, *it);
+                // Let's check if the fusion has been successful
+                if (!mkCommon.IsDone()) 
+                    throw Base::Exception("Intersection failed");
+                res = mkCommon.Shape();
+
+                ShapeHistory hist1 = buildHistory(mkCommon, TopAbs_FACE, res, mkCommon.Shape1());
+                ShapeHistory hist2 = buildHistory(mkCommon, TopAbs_FACE, res, mkCommon.Shape2());
+                if (history.empty()) {
+                    history.push_back(hist1);
+                    history.push_back(hist2);
+                }
+                else {
+                    for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                        *jt = joinHistory(*jt, hist1);
+                    history.push_back(hist2);
+                }
+            }
+            if (res.IsNull())
+                throw Base::Exception("Resulting shape is invalid");
+            this->Shape.setValue(res);
+            this->History.setValues(history);
         }
-        if (res.IsNull())
-            throw Base::Exception("Resulting shape is invalid");
-        this->Shape.setValue(res);
-        this->History.setValues(history);
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
+        }
     }
     else {
         throw Base::Exception("Not enough shape objects linked");

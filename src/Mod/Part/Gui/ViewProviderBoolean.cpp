@@ -83,22 +83,11 @@ void applyColor(const Part::ShapeHistory& hist,
 {
     std::map<int, std::vector<int> >::const_iterator jt;
     // apply color from modified faces
-    for (jt = hist.modified.begin(); jt != hist.modified.end(); ++jt) {
+    for (jt = hist.shapeMap.begin(); jt != hist.shapeMap.end(); ++jt) {
         std::vector<int>::const_iterator kt;
         for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
             colBool[*kt] = colBase[jt->first];
         }
-    }
-    // apply color from generated faces
-    for (jt = hist.generated.begin(); jt != hist.generated.end(); ++jt) {
-        std::vector<int>::const_iterator kt;
-        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-            colBool[*kt] = colBase[jt->first];
-        }
-    }
-    // apply data from accepted faces
-    for (std::map<int, int>::const_iterator kt = hist.accepted.begin(); kt != hist.accepted.end(); ++kt) {
-        colBool[kt->second] = colBase[kt->first];
     }
 }
 
