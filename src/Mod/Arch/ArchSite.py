@@ -23,12 +23,13 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchCommands
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeSite(objectslist=None,name="Site"):
+def makeSite(objectslist=None,name=str(translate("Arch","Site"))):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
@@ -51,15 +52,27 @@ class _CommandSite:
         ok = False
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Building","Floor"]:
-                FreeCAD.ActiveDocument.openTransaction("Type conversion")
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Type conversion")))
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("obj = Arch.makeSite()")
+                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.removeObject("+sel[0].Name+")")
+
                 nobj = makeSite()
                 ArchCommands.copyProperties(sel[0],nobj)
                 FreeCAD.ActiveDocument.removeObject(sel[0].Name)
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
         if not ok:
-            FreeCAD.ActiveDocument.openTransaction("Site")
-            makeSite(sel)
+            ss = "["
+            for o in sel:
+                if len(ss) > 1:
+                    ss += ","
+                ss += "FreeCAD.ActiveDocument."+o.Name
+            ss += "]"
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Site")))
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.makeSite("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         
