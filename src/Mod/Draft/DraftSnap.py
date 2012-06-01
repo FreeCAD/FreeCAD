@@ -73,6 +73,7 @@ class Snapper:
         self.snapInfo = None
         self.lastSnappedObject = None
         self.active = True
+        self.forceGridOff = False
         self.trackers = [[],[],[],[]] # view, grid, snap, extline
 
         self.polarAngles = [90,45]
@@ -166,7 +167,7 @@ class Snapper:
             self.radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
 
         # set the grid
-        if self.grid and Draft.getParam("grid"):
+        if self.grid and Draft.getParam("grid") and (not self.forceGridOff):
             self.grid.set()
         
         # activate snap
@@ -243,18 +244,20 @@ class Snapper:
                     if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
                         if "Edge" in comp:
                             # we are snapping to an edge
-                            edge = obj.Shape.Edges[int(comp[4:])-1]
-                            snaps.extend(self.snapToEndpoints(edge))
-                            snaps.extend(self.snapToMidpoint(edge))
-                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                            #snaps.extend(self.snapToOrtho(edge,lastpoint,constrain)) # now part of snapToPolar
-                            snaps.extend(self.snapToIntersection(edge))
-                            snaps.extend(self.snapToElines(edge,eline))
+                            en = int(comp[4:])-1
+                            if len(obj.Shape.Edges) > en:
+                                edge = obj.Shape.Edges[en]
+                                snaps.extend(self.snapToEndpoints(edge))
+                                snaps.extend(self.snapToMidpoint(edge))
+                                snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                                #snaps.extend(self.snapToOrtho(edge,lastpoint,constrain)) # now part of snapToPolar
+                                snaps.extend(self.snapToIntersection(edge))
+                                snaps.extend(self.snapToElines(edge,eline))
 
-                            if isinstance (edge.Curve,Part.Circle):
-                                # the edge is an arc, we have extra options
-                                snaps.extend(self.snapToAngles(edge))
-                                snaps.extend(self.snapToCenter(edge))
+                                if isinstance (edge.Curve,Part.Circle):
+                                    # the edge is an arc, we have extra options
+                                    snaps.extend(self.snapToAngles(edge))
+                                    snaps.extend(self.snapToCenter(edge))
 
                         elif "Vertex" in comp:
                             # directly snapped to a vertex
@@ -418,18 +421,19 @@ class Snapper:
     def snapToGrid(self,point):
         "returns a grid snap point if available"
         if self.grid:
-            if self.isEnabled("grid"):
-                np = self.grid.getClosestNode(point)
-                if np:
-                    if self.radius != 0:
-                        dv = point.sub(np)
-                        if dv.Length <= self.radius:
-                            if self.tracker:
-                                self.tracker.setCoords(np)
-                                self.tracker.setMarker(self.mk['grid'])
-                                self.tracker.on()
-                            self.setCursor('grid')
-                            return np
+            if self.grid.Visible:
+                if self.isEnabled("grid"):
+                    np = self.grid.getClosestNode(point)
+                    if np:
+                        if self.radius != 0:
+                            dv = point.sub(np)
+                            if dv.Length <= self.radius:
+                                if self.tracker:
+                                    self.tracker.setCoords(np)
+                                    self.tracker.setMarker(self.mk['grid'])
+                                    self.tracker.on()
+                                self.setCursor('grid')
+                                return np
         return point
 
     def snapToEndpoints(self,shape):
@@ -889,7 +893,7 @@ class Snapper:
         if self.grid:
             if self.grid.Visible:
                 self.grid.set()
-
+        
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
 if not hasattr(FreeCAD,"DraftWorkingPlane"):

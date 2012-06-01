@@ -192,12 +192,12 @@ class DraftWorkbench (Workbench):
                         "Draft_Clone"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
-                            "Draft_ShowSnapBar"]
+                            "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
         self.appendToolbar(str(DraftTools.translate("draft","Draft creation tools")),self.cmdList)
         self.appendToolbar(str(DraftTools.translate("draft","Draft modification tools")),self.modList)
         self.appendMenu(str(DraftTools.translate("draft","&Draft")),self.cmdList+self.modList)
-        self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Display options"))],self.treecmdList)
+        self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Context tools"))],self.treecmdList)
         self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Wire tools"))],self.lineList)
                                         
     def Activated(self):
@@ -211,7 +211,7 @@ class DraftWorkbench (Workbench):
             if (FreeCAD.activeDraftCommand == None):
                 if (FreeCADGui.Selection.getSelection()):
                     self.appendContextMenu("Draft",self.cmdList+self.modList)
-                    self.appendContextMenu("Display options",self.treecmdList)
+                    self.appendContextMenu("Draft context tools",self.treecmdList)
                 else:
                     self.appendContextMenu("Draft",self.cmdList)
             else:
