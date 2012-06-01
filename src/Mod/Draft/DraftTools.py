@@ -3828,7 +3828,27 @@ class Draft_Clone():
             return True
         else:
             return False
-            
+
+
+class ToggleGrid():
+    "The Draft ToggleGrid command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Grid',
+                'Accel' : "G,R",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft gid on/off")}
+
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            if FreeCADGui.Snapper.grid:
+                if FreeCADGui.Snapper.grid.Visible:
+                    FreeCADGui.Snapper.grid.off()
+                    FreeCADGui.Snapper.forceGridOff=True
+                else:
+                    FreeCADGui.Snapper.grid.on()
+                    FreeCADGui.Snapper.forceGridOff=False
+                    
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
 #---------------------------------------------------------------------------
@@ -3876,6 +3896,7 @@ FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
 FreeCADGui.addCommand('Draft_ToggleSnap',ToggleSnap())
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
+FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None

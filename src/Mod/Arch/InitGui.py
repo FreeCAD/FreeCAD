@@ -69,8 +69,9 @@ class ArchWorkbench(Workbench):
                       "Draft_Offset","Draft_Upgrade",
                       "Draft_Downgrade","Draft_Trimex"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode",
-                             "Draft_AddToGroup","Draft_SelectGroup",
-                             "Draft_SelectPlane","Draft_ToggleSnap"]
+                                  "Draft_AddToGroup","Draft_SelectGroup",
+                                  "Draft_SelectPlane","Draft_ToggleSnap",
+                                  "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
         self.appendToolbar(str(DraftTools.translate("arch","Arch tools")),self.archtools)
