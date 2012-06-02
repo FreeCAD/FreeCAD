@@ -52,6 +52,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-Wno-write-strings)
     add_definitions(-Wno-deprecated)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+    # get linker errors as soon as possible and not at runtime e.g. for modules
+    if(UNIX)
+        SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+    endif(UNIX)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
@@ -98,7 +102,14 @@ OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished cod
 OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
-OPTION(USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
+OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
+OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
+
+# if this is set override some options
+if (FREECAD_BUILD_DEBIAN)
+    set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
+    set(FREECAD_USE_EXTERNAL_PIVY ON)
+endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
 
