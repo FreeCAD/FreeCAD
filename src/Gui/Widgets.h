@@ -63,6 +63,30 @@ Q_SIGNALS:
 
 // ------------------------------------------------------------------------------
 
+class ActionSelector : public QWidget
+{
+public:
+    ActionSelector(QWidget* parent=0);
+    ~ActionSelector();
+
+private:
+    QGridLayout *gridLayout;
+    QPushButton *moveActionRightButton;
+    QSpacerItem *spacerItem;
+    QSpacerItem *spacerItem1;
+    QPushButton *moveActionLeftButton;
+    QPushButton *moveActionDownButton;
+    QPushButton *moveActionUpButton;
+    QVBoxLayout *vboxLayout;
+    QLabel *label_2;
+    QTreeWidget *avalableTreeWidget;
+    QVBoxLayout *vboxLayout1;
+    QLabel *label;
+    QTreeWidget *selectedTreeWidget;
+};
+
+// ------------------------------------------------------------------------------
+
 /**
  * The AccelLineEdit class provides a lineedit to specfify shortcuts.
  * \author Werner Mayer

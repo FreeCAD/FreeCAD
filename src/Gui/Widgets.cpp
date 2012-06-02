@@ -104,6 +104,85 @@ void CommandIconView::onSelectionChanged(QListWidgetItem * item, QListWidgetItem
 
 // ------------------------------------------------------------------------------
 
+ActionSelector::ActionSelector(QWidget* parent)
+  : QWidget(parent)
+{
+    moveActionRightButton = new QPushButton(this);
+    moveActionRightButton->setMinimumSize(QSize(30, 30));
+    QIcon icon;
+    icon.addFile(QString::fromUtf8(":/icons/button_right.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    moveActionRightButton->setIcon(icon);
+    gridLayout->addWidget(moveActionRightButton, 1, 1, 1, 1);
+
+    spacerItem = new QSpacerItem(33, 57, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    gridLayout->addItem(spacerItem, 5, 1, 1, 1);
+    spacerItem1 = new QSpacerItem(33, 58, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    gridLayout->addItem(spacerItem1, 0, 1, 1, 1);
+
+    moveActionLeftButton = new QPushButton(this);
+    moveActionLeftButton->setMinimumSize(QSize(30, 30));
+    QIcon icon1;
+    icon1.addFile(QString::fromUtf8(":/icons/button_left.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    moveActionLeftButton->setIcon(icon1);
+    moveActionLeftButton->setAutoDefault(true);
+    moveActionLeftButton->setDefault(false);
+
+    gridLayout->addWidget(moveActionLeftButton, 2, 1, 1, 1);
+
+    moveActionDownButton = new QPushButton(this);
+    moveActionDownButton->setMinimumSize(QSize(30, 30));
+    QIcon icon2;
+    icon2.addFile(QString::fromUtf8(":/icons/button_down.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    moveActionDownButton->setIcon(icon2);
+    moveActionDownButton->setAutoDefault(true);
+
+    gridLayout->addWidget(moveActionDownButton, 4, 1, 1, 1);
+
+    moveActionUpButton = new QPushButton(this);
+    moveActionUpButton->setMinimumSize(QSize(30, 30));
+    QIcon icon3;
+    icon3.addFile(QString::fromUtf8(":/icons/button_up.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    moveActionUpButton->setIcon(icon3);
+
+    gridLayout->addWidget(moveActionUpButton, 3, 1, 1, 1);
+
+    vboxLayout = new QVBoxLayout();
+    vboxLayout->setContentsMargins(0, 0, 0, 0);
+    label_2 = new QLabel(this);
+    vboxLayout->addWidget(label_2);
+
+    avalableTreeWidget = new QTreeWidget(this);
+    avalableTreeWidget->setRootIsDecorated(false);
+    avalableTreeWidget->setColumnCount(0);
+    vboxLayout->addWidget(avalableTreeWidget);
+
+    gridLayout->addLayout(vboxLayout, 0, 0, 6, 1);
+
+    vboxLayout1 = new QVBoxLayout();
+    vboxLayout1->setContentsMargins(0, 0, 0, 0);
+    label = new QLabel(this);
+    vboxLayout1->addWidget(label);
+
+    selectedTreeWidget = new QTreeWidget(this);
+    vboxLayout1->addWidget(selectedTreeWidget);
+
+    gridLayout->addLayout(vboxLayout1, 0, 2, 6, 1);
+
+    moveActionRightButton->setText(QString());
+    moveActionLeftButton->setText(QString());
+    moveActionDownButton->setText(QString());
+    moveActionUpButton->setText(QString());
+    label_2->setText(QApplication::translate("Gui::ActionSelector", "Available:", 0, QApplication::UnicodeUTF8));
+    label->setText(QApplication::translate("Gui::ActionSelector", "Selected:", 0, QApplication::UnicodeUTF8));
+}
+
+ActionSelector::~ActionSelector()
+{
+}
+
+
+// ------------------------------------------------------------------------------
+
 /* TRANSLATOR Gui::AccelLineEdit */
 
 /**
