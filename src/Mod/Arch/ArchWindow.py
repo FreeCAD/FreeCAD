@@ -88,11 +88,27 @@ class _CommandWindow:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
-        FreeCADGui.doCommand("import Arch")
-        for obj in sel:
-            FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-        FreeCAD.ActiveDocument.commitTransaction()
+        if sel:
+            if Draft.getType(sel[0]) == "Wall":
+                FreeCADGui.activateWorkbench("SketcherWorkbench")
+                FreeCADGui.runCommand("Sketcher_NewSketch")
+            else:
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
+                FreeCADGui.doCommand("import Arch")
+                for obj in sel:
+                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                    if hasattr(obj,"Support"):
+                        if obj.Support:
+                            if isinstance(obj.Support,tuple):
+                                s = obj.Support[0]
+                            else:
+                                s = obj.Support
+                            w = FreeCAD.ActiveDocument.Objects[-1] # last created object
+                            FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+s.Name+")")
+                        elif Draft.isClone(w,"Window"):
+                            if w.Objects[0].Inlist:
+                                FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+w.Objects[0].Inlist[0].Name+")")
+                FreeCAD.ActiveDocument.commitTransaction()
        
 class _Window(ArchComponent.Component):
     "The Window object"
