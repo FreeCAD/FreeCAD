@@ -63,26 +63,47 @@ Q_SIGNALS:
 
 // ------------------------------------------------------------------------------
 
-class ActionSelector : public QWidget
+class GuiExport ActionSelector : public QWidget
 {
+    Q_OBJECT
+
 public:
     ActionSelector(QWidget* parent=0);
     ~ActionSelector();
 
+    QTreeWidget* availableTreeWidget() const
+    { return availableWidget; }
+    QTreeWidget* selectedTreeWidget() const
+    { return selectedWidget; }
+
+private:
+    void keyPressEvent(QKeyEvent *);
+    void changeEvent(QEvent*);
+    void retranslateUi();
+    void setButtonsEnabled();
+
+private Q_SLOTS:
+    void on_addButton_clicked();
+    void on_removeButton_clicked();
+    void on_upButton_clicked();
+    void on_downButton_clicked();
+    void onItemChanged(QTreeWidgetItem * item, int column);
+    void onItemDoubleClicked(QTreeWidgetItem * item, int column);
+
 private:
     QGridLayout *gridLayout;
-    QPushButton *moveActionRightButton;
+    QVBoxLayout *vboxLayout;
+    QVBoxLayout *vboxLayout1;
+    QPushButton *addButton;
+    QPushButton *removeButton;
+    QPushButton *upButton;
+    QPushButton *downButton;
+    QLabel      *labelAvailable;
+    QLabel      *labelSelected;
+    QTreeWidget *availableWidget;
+    QTreeWidget *selectedWidget;
     QSpacerItem *spacerItem;
     QSpacerItem *spacerItem1;
-    QPushButton *moveActionLeftButton;
-    QPushButton *moveActionDownButton;
-    QPushButton *moveActionUpButton;
-    QVBoxLayout *vboxLayout;
-    QLabel *label_2;
-    QTreeWidget *avalableTreeWidget;
-    QVBoxLayout *vboxLayout1;
-    QLabel *label;
-    QTreeWidget *selectedTreeWidget;
 };
 
 // ------------------------------------------------------------------------------

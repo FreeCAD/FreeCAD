@@ -37,6 +37,7 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QGridLayout>
+#include <QTreeWidget>
 
 namespace Gui
 {
@@ -172,6 +173,32 @@ public:
 
 protected:
     void keyPressEvent ( QKeyEvent * e);
+};
+
+// ------------------------------------------------------------------------------
+
+class ActionSelector : public QWidget
+{
+    Q_OBJECT
+
+public:
+    ActionSelector(QWidget* parent=0);
+    ~ActionSelector();
+
+private:
+    QGridLayout *gridLayout;
+    QVBoxLayout *vboxLayout;
+    QVBoxLayout *vboxLayout1;
+    QPushButton *addButton;
+    QPushButton *removeButton;
+    QPushButton *upButton;
+    QPushButton *downButton;
+    QLabel      *labelAvailable;
+    QLabel      *labelSelected;
+    QTreeWidget *availableWidget;
+    QTreeWidget *selectedWidget;
+    QSpacerItem *spacerItem;
+    QSpacerItem *spacerItem1;
 };
 
 // ------------------------------------------------------------------------------
