@@ -830,9 +830,14 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                             children.insert(kt->second);
                             QTreeWidgetItem* parent = kt->second->parent();
                             if (parent && parent != it->second) {
-                                int index = parent->indexOfChild(kt->second);
-                                parent->takeChild(index);
-                                it->second->addChild(kt->second);
+                                if (it->second != kt->second) {
+                                    int index = parent->indexOfChild(kt->second);
+                                    parent->takeChild(index);
+                                    it->second->addChild(kt->second);
+                                }
+                                else {
+                                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                }
                             }
                         }
                         else {
