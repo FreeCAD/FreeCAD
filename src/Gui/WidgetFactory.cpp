@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <CXX/Objects.hxx>
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -190,6 +191,79 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
         w = WidgetFactory().createWidget((const char*)className.toAscii(), parent);
     if (w) w->setObjectName(name);
     return w;
+}
+
+// ----------------------------------------------------
+
+PyObject *UiLoaderPy::PyMake(struct _typeobject *type, PyObject * args, PyObject * kwds)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    return new UiLoaderPy();
+}
+
+void UiLoaderPy::init_type()
+{
+    behaviors().name("UiLoader");
+    behaviors().doc("UiLoader to create widgets");
+    behaviors().type_object()->tp_new = &PyMake;
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    add_varargs_method("createWidget",&UiLoaderPy::createWidget,"createWidget()");
+}
+
+UiLoaderPy::UiLoaderPy()
+{
+}
+
+UiLoaderPy::~UiLoaderPy()
+{
+}
+
+Py::Object UiLoaderPy::repr()
+{
+    std::string s;
+    std::ostringstream s_out;
+    s_out << "Ui loader";
+    return Py::String(s_out.str());
+}
+
+Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
+{
+    Py::Module sipmod(PyImport_AddModule((char*)"sip"));
+    Py::Module qtmod(PyImport_ImportModule((char*)"PyQt4.Qt"));
+
+    // 1st argument
+    std::string className = (std::string)Py::String(args[0]);
+
+    // 2nd argument
+    QWidget* parent = 0;
+    if (args.size() > 1) {
+        Py::Callable func = sipmod.getDict().getItem("unwrapinstance");
+        Py::Tuple arguments(1);
+        arguments[0] = args[1]; //PyQt pointer
+        Py::Object result = func.apply(arguments);
+        void* ptr = PyLong_AsVoidPtr(result.ptr());
+        QObject* object = reinterpret_cast<QObject*>(ptr);
+        if (object)
+            parent = qobject_cast<QWidget*>(object);
+    }
+
+    // 3rd argument
+    std::string objectName;
+    if (args.size() > 2) {
+        objectName = (std::string)Py::String(args[2]);
+    }
+
+    QWidget* widget = loader.createWidget(QString::fromAscii(className.c_str()), parent,
+        QString::fromAscii(objectName.c_str()));
+    Py::Callable func = sipmod.getDict().getItem("wrapinstance");
+    Py::Tuple arguments(2);
+    arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
+    arguments[1] = qtmod.getDict().getItem("QWidget");
+    return func.apply(arguments);
 }
 
 // ----------------------------------------------------

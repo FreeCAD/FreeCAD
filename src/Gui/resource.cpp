@@ -91,6 +91,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::PrefColorButton>;
     new WidgetProducer<Gui::CommandIconView>;
     new WidgetProducer<Gui::AccelLineEdit>;
+    new WidgetProducer<Gui::ActionSelector>;
     new WidgetProducer<Gui::ColorButton>;
     new WidgetProducer<Gui::UrlLabel>;
     new WidgetProducer<Gui::FileChooser>;
