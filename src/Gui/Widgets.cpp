@@ -110,6 +110,7 @@ ActionSelector::ActionSelector(QWidget* parent)
   : QWidget(parent)
 {
     addButton = new QPushButton(this);
+    addButton->setObjectName(QLatin1String("addButton"));
     addButton->setMinimumSize(QSize(30, 30));
     QIcon icon;
     icon.addFile(QString::fromUtf8(":/icons/button_right.xpm"), QSize(), QIcon::Normal, QIcon::Off);
@@ -123,6 +124,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     gridLayout->addItem(spacerItem1, 0, 1, 1, 1);
 
     removeButton = new QPushButton(this);
+    removeButton->setObjectName(QLatin1String("removeButton"));
     removeButton->setMinimumSize(QSize(30, 30));
     QIcon icon1;
     icon1.addFile(QString::fromUtf8(":/icons/button_left.xpm"), QSize(), QIcon::Normal, QIcon::Off);
@@ -133,6 +135,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     gridLayout->addWidget(removeButton, 2, 1, 1, 1);
 
     upButton = new QPushButton(this);
+    upButton->setObjectName(QLatin1String("upButton"));
     upButton->setMinimumSize(QSize(30, 30));
     QIcon icon3;
     icon3.addFile(QString::fromUtf8(":/icons/button_up.xpm"), QSize(), QIcon::Normal, QIcon::Off);
@@ -141,6 +144,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     gridLayout->addWidget(upButton, 3, 1, 1, 1);
 
     downButton = new QPushButton(this);
+    downButton->setObjectName(QLatin1String("downButton"));
     downButton->setMinimumSize(QSize(30, 30));
     QIcon icon2;
     icon2.addFile(QString::fromUtf8(":/icons/button_down.xpm"), QSize(), QIcon::Normal, QIcon::Off);
@@ -155,6 +159,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     vboxLayout->addWidget(labelAvailable);
 
     availableWidget = new QTreeWidget(this);
+    availableWidget->setObjectName(QLatin1String("availableTreeWidget"));
     availableWidget->setRootIsDecorated(false);
     availableWidget->setHeaderLabels(QStringList() << QString());
     availableWidget->header()->hide();
@@ -168,6 +173,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     vboxLayout1->addWidget(labelSelected);
 
     selectedWidget = new QTreeWidget(this);
+    selectedWidget->setObjectName(QLatin1String("selectedTreeWidget"));
     selectedWidget->setRootIsDecorated(false);
     selectedWidget->setHeaderLabels(QStringList() << QString());
     selectedWidget->header()->hide();
@@ -192,16 +198,38 @@ ActionSelector::ActionSelector(QWidget* parent)
             this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
     connect(selectedWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
             this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
-    connect(availableWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            this, SLOT(onItemChanged(QTreeWidgetItem *,int)) );
-    connect(selectedWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            this, SLOT(onItemChanged(QTreeWidgetItem *,int)) );
+    connect(availableWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
+            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
+    connect(selectedWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
+            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
     retranslateUi();
+    setButtonsEnabled();
 }
 
 ActionSelector::~ActionSelector()
 {
 }
+
+void ActionSelector::setSelectedLabel(const QString& label)
+{
+    labelSelected->setText(label);
+}
+
+QString ActionSelector::selectedLabel() const
+{
+    return labelSelected->text();
+}
+
+void ActionSelector::setAvailableLabel(const QString& label)
+{
+    labelAvailable->setText(label);
+}
+
+QString ActionSelector::availableLabel() const
+{
+    return labelAvailable->text();
+}
+
 
 void ActionSelector::retranslateUi()
 {
@@ -254,7 +282,7 @@ void ActionSelector::setButtonsEnabled()
                            selectedWidget->indexOfTopLevelItem(selectedWidget->currentItem()) < selectedWidget->topLevelItemCount() - 1);
 }
 
-void ActionSelector::onItemChanged(QTreeWidgetItem * /*item*/, int /*column*/)
+void ActionSelector::onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)
 {
     setButtonsEnabled();
 }
