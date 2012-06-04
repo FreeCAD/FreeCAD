@@ -28,6 +28,9 @@
 #endif
 
 #include "FeaturePartBoolean.h"
+#include "modelRefine.h"
+#include <App/Application.h>
+#include <Base/Parameter.h>
 
 
 using namespace Part;
@@ -75,7 +78,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         if (!mkBool->IsDone()) {
             return new App::DocumentObjectExecReturn("Boolean operation failed");
         }
-        const TopoDS_Shape& resShape = mkBool->Shape();
+        TopoDS_Shape resShape = mkBool->Shape();
         if (resShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
         }
@@ -83,6 +86,17 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         std::vector<ShapeHistory> history;
         history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
         history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
+
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+        if (hGrp->GetBool("RefineModel", false)) {
+            TopoDS_Shape oldShape = resShape;
+            BRepBuilderAPI_RefineModel mkRefine(oldShape);
+            resShape = mkRefine.Shape();
+            ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+            history[0] = joinHistory(history[0], hist);
+            history[1] = joinHistory(history[1], hist);
+        }
 
         this->Shape.setValue(resShape);
         this->History.setValues(history);
