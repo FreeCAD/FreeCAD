@@ -257,9 +257,9 @@ class Component:
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object this component is built upon")
         obj.addProperty("App::PropertyLinkList","Additions","Base",
-                        "Other shapes that are appended to this wall")
+                        "Other shapes that are appended to this object")
         obj.addProperty("App::PropertyLinkList","Subtractions","Base",
-                        "Other shapes that are subtracted from this wall")
+                        "Other shapes that are subtracted from this object")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None

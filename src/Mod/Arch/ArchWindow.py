@@ -117,6 +117,7 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyStringList","WindowParts","Base",
                         str(translate("Arch","the components of this window")))
         self.Type = "Window"
+        obj.Proxy = self
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -130,43 +131,45 @@ class _Window(ArchComponent.Component):
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
-                    shapes = []
-                    for i in range(len(obj.WindowParts)/5):
-                        wires = []
-                        wstr = obj.WindowParts[(i*5)+2].split(',')
-                        for s in wstr:
-                            j = int(s[4:])
-                            if obj.Base.Shape.Wires:
-                                if len(obj.Base.Shape.Wires) >= j:
-                                    wires.append(obj.Base.Shape.Wires[j])
-                        if wires:
-                            max_length = 0
-                            for w in wires:
-                                if w.BoundBox.DiagonalLength > max_length:
-                                    max_length = w.BoundBox.DiagonalLength
-                                    ext = w
-                            wires.remove(ext)
-                            shape = Part.Face(ext)
-                            norm = shape.normalAt(0,0)
-                            thk = float(obj.WindowParts[(i*5)+3])
-                            if thk:
-                                exv = DraftVecUtils.scaleTo(norm,thk)
-                                shape = shape.extrude(exv)
+                if hasattr(obj,"WindowParts"):
+                    if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
+                        shapes = []
+                        for i in range(len(obj.WindowParts)/5):
+                            wires = []
+                            wstr = obj.WindowParts[(i*5)+2].split(',')
+                            for s in wstr:
+                                j = int(s[4:])
+                                if obj.Base.Shape.Wires:
+                                    if len(obj.Base.Shape.Wires) >= j:
+                                        wires.append(obj.Base.Shape.Wires[j])
+                            if wires:
+                                max_length = 0
                                 for w in wires:
-                                    f = Part.Face(w)
-                                    f = f.extrude(exv)
-                                    shape = shape.cut(f)
-                            if obj.WindowParts[(i*5)+4]:
-                                zof = float(obj.WindowParts[(i*5)+4])
-                                if zof:
-                                    zov = DraftVecUtils.scaleTo(norm,zof)
-                                    shape.translate(zov)
-                            print shape
-                            shapes.append(shape)
-                    obj.Shape = Part.makeCompound(shapes)
-        if not DraftGeomUtils.isNull(pl):
-            obj.Placement = pl
+                                    if w.BoundBox.DiagonalLength > max_length:
+                                        max_length = w.BoundBox.DiagonalLength
+                                        ext = w
+                                wires.remove(ext)
+                                shape = Part.Face(ext)
+                                norm = shape.normalAt(0,0)
+                                thk = float(obj.WindowParts[(i*5)+3])
+                                if thk:
+                                    exv = DraftVecUtils.scaleTo(norm,thk)
+                                    shape = shape.extrude(exv)
+                                    for w in wires:
+                                        f = Part.Face(w)
+                                        f = f.extrude(exv)
+                                        shape = shape.cut(f)
+                                if obj.WindowParts[(i*5)+4]:
+                                    zof = float(obj.WindowParts[(i*5)+4])
+                                    if zof:
+                                        zov = DraftVecUtils.scaleTo(norm,zof)
+                                        shape.translate(zov)
+                                print shape
+                                shapes.append(shape)
+                        if shapes:
+                            obj.Shape = Part.makeCompound(shapes)
+                            if not DraftGeomUtils.isNull(pl):
+                                obj.Placement = pl
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
