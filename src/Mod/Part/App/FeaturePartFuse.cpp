@@ -29,7 +29,9 @@
 
 
 #include "FeaturePartFuse.h"
-
+#include "modelRefine.h"
+#include <App/Application.h>
+#include <Base/Parameter.h>
 #include <Base/Exception.h>
 
 using namespace Part;
@@ -83,17 +85,17 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
     if (s.size() >= 2) {
         try {
             std::vector<ShapeHistory> history;
-            TopoDS_Shape res = s.front();
+            TopoDS_Shape resShape = s.front();
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(res, *it);
+                BRepAlgoAPI_Fuse mkFuse(resShape, *it);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone()) 
                     throw Base::Exception("Fusion failed");
-                res = mkFuse.Shape();
+                resShape = mkFuse.Shape();
 
-                ShapeHistory hist1 = buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape1());
-                ShapeHistory hist2 = buildHistory(mkFuse, TopAbs_FACE, res, mkFuse.Shape2());
+                ShapeHistory hist1 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape1());
+                ShapeHistory hist2 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape2());
                 if (history.empty()) {
                     history.push_back(hist1);
                     history.push_back(hist2);
@@ -104,9 +106,21 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                     history.push_back(hist2);
                 }
             }
-            if (res.IsNull())
+            if (resShape.IsNull())
                 throw Base::Exception("Resulting shape is invalid");
-            this->Shape.setValue(res);
+
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+            if (hGrp->GetBool("RefineModel", false)) {
+                TopoDS_Shape oldShape = resShape;
+                BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                resShape = mkRefine.Shape();
+                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                    *jt = joinHistory(*jt, hist);
+            }
+
+            this->Shape.setValue(resShape);
             this->History.setValues(history);
         }
         catch (Standard_Failure) {

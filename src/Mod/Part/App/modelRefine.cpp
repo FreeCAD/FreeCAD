@@ -31,6 +31,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Cylinder.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopoDS.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -547,6 +548,8 @@ bool FaceUniter::process()
 {
     if (workShell.IsNull())
         return false;
+    modifiedShapes.clear();
+    deletedShapes.clear();
     typeObjects.push_back(&getPlaneObject());
     typeObjects.push_back(&getCylinderObject());
     //add more face types.
@@ -583,6 +586,12 @@ bool FaceUniter::process()
                         facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());
                     FaceVectorType temp = adjacencySplitter.getGroup(adjacentIndex);
                     facesToRemove.insert(facesToRemove.end(), temp.begin(), temp.end());
+                    // the first shape will be marked as modified, i.e. replaced by newFace, all others are marked as deleted
+                    if (!temp.empty())
+                    {
+                        modifiedShapes.push_back(std::make_pair(temp.front(), newFace));
+                        deletedShapes.insert(deletedShapes.end(), temp.begin()+1, temp.end());
+                    }
                 }
             }
         }
@@ -632,3 +641,141 @@ bool FaceUniter::process()
     }
     return true;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//TODO: Implement a way to log all modifications
+
+Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape& shape)
+{
+    myShape = shape;
+    Build();
+}
+
+void Part::BRepBuilderAPI_RefineModel::Build()
+{
+    if (myShape.IsNull())
+        Standard_Failure::Raise("Cannot remove splitter from empty shape");
+
+    if (myShape.ShapeType() == TopAbs_SOLID) {
+        const TopoDS_Solid &solid = TopoDS::Solid(myShape);
+        BRepTools_ReShape reshape;
+        TopExp_Explorer it;
+        for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
+            const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
+            ModelRefine::FaceUniter uniter(currentShell);
+            if (uniter.process()) {
+                if (uniter.isModified()) {
+                    const TopoDS_Shell &newShell = uniter.getShell();
+                    reshape.Replace(currentShell, newShell);
+                    LogModifications(uniter);
+                }
+            }
+            else {
+                Standard_Failure::Raise("Removing splitter failed");
+            }
+        }
+        myShape = reshape.Apply(solid);
+    }
+    else if (myShape.ShapeType() == TopAbs_SHELL) {
+        const TopoDS_Shell& shell = TopoDS::Shell(myShape);
+        ModelRefine::FaceUniter uniter(shell);
+        if (uniter.process()) {
+            myShape = uniter.getShell();
+            LogModifications(uniter);
+        }
+        else {
+            Standard_Failure::Raise("Removing splitter failed");
+        }
+    }
+    else if (myShape.ShapeType() == TopAbs_COMPOUND) {
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+
+        TopExp_Explorer xp;
+        // solids
+        for (xp.Init(myShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+            const TopoDS_Solid &solid = TopoDS::Solid(xp.Current());
+            BRepTools_ReShape reshape;
+            TopExp_Explorer it;
+            for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
+                const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
+                ModelRefine::FaceUniter uniter(currentShell);
+                if (uniter.process()) {
+                    if (uniter.isModified()) {
+                        const TopoDS_Shell &newShell = uniter.getShell();
+                        reshape.Replace(currentShell, newShell);
+                        LogModifications(uniter);
+                    }
+                }
+            }
+            builder.Add(comp, reshape.Apply(solid));
+        }
+        // free shells
+        for (xp.Init(myShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+            const TopoDS_Shell& shell = TopoDS::Shell(xp.Current());
+            ModelRefine::FaceUniter uniter(shell);
+            if (uniter.process()) {
+                builder.Add(comp, uniter.getShell());
+                LogModifications(uniter);
+            }
+        }
+        // the rest
+        for (xp.Init(myShape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(myShape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(myShape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(myShape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+
+        myShape = comp;
+    }
+
+    Done();
+}
+
+void Part::BRepBuilderAPI_RefineModel::LogModifications(const ModelRefine::FaceUniter& uniter)
+{
+    const std::vector<ShapePairType>& modShapes = uniter.getModifiedShapes();
+    for (std::vector<ShapePairType>::const_iterator it = modShapes.begin(); it != modShapes.end(); ++it) {
+        TopTools_ListOfShape list;
+        list.Append(it->second);
+        myModified.Bind(it->first, list);
+    }
+    const ShapeVectorType& delShapes = uniter.getDeletedShapes();
+    for (ShapeVectorType::const_iterator it = delShapes.begin(); it != delShapes.end(); ++it) {
+        myDeleted.Append(*it);
+    }
+}
+
+const TopTools_ListOfShape& Part::BRepBuilderAPI_RefineModel::Modified(const TopoDS_Shape& S)
+{
+    if (myModified.IsBound(S))
+        return myModified.Find(S);
+    else
+        return myEmptyList;
+}
+
+Standard_Boolean Part::BRepBuilderAPI_RefineModel::IsDeleted(const TopoDS_Shape& S)
+{
+    TopTools_ListIteratorOfListOfShape it;
+    for (it.Initialize(myDeleted); it.More(); it.Next())
+    {
+        if (it.Value().IsSame(S))
+            return Standard_True;
+    }
+
+    return Standard_False;
+}
+

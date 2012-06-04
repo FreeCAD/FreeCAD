@@ -36,12 +36,15 @@
 #include <TopTools_DataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 
 namespace ModelRefine
 {
-    typedef std::vector<TopoDS_Face> FaceVectorType;
-    typedef std::vector<TopoDS_Edge> EdgeVectorType;
+    typedef std::vector<TopoDS_Face>  FaceVectorType;
+    typedef std::vector<TopoDS_Edge>  EdgeVectorType;
+    typedef std::vector<TopoDS_Shape> ShapeVectorType;
+    typedef std::pair<TopoDS_Shape, TopoDS_Shape> ShapePairType;
 
     void getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges);
     void boundaryEdges(const FaceVectorType &faces, EdgeVectorType &edgesOut);
@@ -147,10 +150,16 @@ namespace ModelRefine
         bool process();
         const TopoDS_Shell& getShell() const {return workShell;}
         bool isModified(){return modifiedSignal;}
+        const std::vector<ShapePairType>& getModifiedShapes() const
+        {return modifiedShapes;}
+        const ShapeVectorType& getDeletedShapes() const
+        {return deletedShapes;}
 
     private:
         TopoDS_Shell workShell;
         std::vector<FaceTypedBase *> typeObjects;
+        std::vector<ShapePairType> modifiedShapes;
+        ShapeVectorType deletedShapes;
         bool modifiedSignal;
     };
 }
@@ -170,5 +179,23 @@ GeomAbs_OffsetSurface,
 GeomAbs_OtherSurface
 };
 */
+namespace Part {
+class BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
+{
+public:
+    BRepBuilderAPI_RefineModel(const TopoDS_Shape&);
+    void Build();
+    const TopTools_ListOfShape& Modified(const TopoDS_Shape& S);
+    Standard_Boolean IsDeleted(const TopoDS_Shape& S);
+
+private:
+    void LogModifications(const ModelRefine::FaceUniter& uniter);
+
+private:
+    TopTools_DataMapOfShapeListOfShape myModified;
+    TopTools_ListOfShape myEmptyList;
+    TopTools_ListOfShape myDeleted;
+};
+}
 
 #endif // MODELREFINE_H
