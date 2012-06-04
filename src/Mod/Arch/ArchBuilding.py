@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchCommands
+import FreeCAD,FreeCADGui,Draft,ArchCommands,ArchFloor
 from PyQt4 import QtCore
 from DraftTools import translate
 
@@ -56,7 +56,7 @@ class _CommandBuilding:
                 FreeCADGui.doCommand("import Arch")
                 FreeCADGui.doCommand("obj = Arch.makeBuilding()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument.removeObject("+sel[0].Name+")")
+                FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
         if not ok:
@@ -73,47 +73,19 @@ class _CommandBuilding:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         
-class _Building:
+class _Building(ArchFloor._Floor):
     "The Building object"
     def __init__(self,obj):
+        ArchFloor._Floor.__init__(self,obj)
         self.Type = "Building"
-        obj.Proxy = self
-        self.Object = obj
-        
-    def execute(self,obj):
-        self.Object = obj
-        
-    def onChanged(self,obj,prop):
-        pass
-
-    def addObject(self,child):
-        if hasattr(self,"Object"):
-            g = self.Object.Group
-            if not child in g:
-                g.append(child)
-                self.Object.Group = g
-        
-    def removeObject(self,child):
-        if hasattr(self,"Object"):
-            g = self.Object.Group
-            if child in g:
-                g.remove(child)
-                self.Object.Group = g
-        
-class _ViewProviderBuilding:
+        obj.setEditorMode('Height',2)
+                
+class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
     "A View Provider for the Building object"
     def __init__(self,vobj):
-        vobj.Proxy = self
+        ArchFloor._ViewProviderFloor.__init__(self,vobj)        
 
     def getIcon(self):
         return ":/icons/Arch_Building_Tree.svg"
 
-    def attach(self,vobj):
-        self.Object = vobj.Object
-        return    
-    
-    def claimChildren(self):
-        return self.Object.Group
-    
-    
 FreeCADGui.addCommand('Arch_Building',_CommandBuilding())

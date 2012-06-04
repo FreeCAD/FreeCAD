@@ -265,6 +265,7 @@ class _Wall(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        print prop
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
 
@@ -373,7 +374,8 @@ class _Wall(ArchComponent.Component):
                     base = temp
 
         for app in obj.Additions:
-            base = base.fuse(app.Shape)
+            if hasattr(app,"Shape"):
+                base = base.fuse(app.Shape)
             app.ViewObject.hide() #to be removed
         for hole in obj.Subtractions:
             if Draft.getType(hole) == "Window":
@@ -393,10 +395,14 @@ class _Wall(ArchComponent.Component):
                     hole.ViewObject.hide() # to be removed
 
         if base:
-            base.removeSplitter()
-            obj.Shape = base
-        if not DraftGeomUtils.isNull(pl):
-            obj.Placement = pl
+            if not base.isNull():
+                try:
+                    base.removeSplitter()
+                except:
+                    print "Wall: Error removing splitter"
+                obj.Shape = base
+                if not DraftGeomUtils.isNull(pl):
+                    obj.Placement = pl
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     "A View Provider for the Wall object"
