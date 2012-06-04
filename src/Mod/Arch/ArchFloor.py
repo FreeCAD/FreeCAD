@@ -57,7 +57,7 @@ class _CommandFloor:
                 FreeCADGui.doCommand("import Arch")
                 FreeCADGui.doCommand("obj = Arch.makeFloor()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument.removeObject("+sel[0].Name+")")
+                FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
         if not ok:
@@ -74,7 +74,7 @@ class _CommandFloor:
         FreeCAD.ActiveDocument.recompute()
         
 class _Floor:
-    "The Cell object"
+    "The Floor object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLength","Height","Base",
                         str(translate("Arch","The height of this floor")))
@@ -82,11 +82,17 @@ class _Floor:
         obj.Proxy = self
         self.Object = obj
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
     def execute(self,obj):
-        self.Object = obj
+        pass
         
     def onChanged(self,obj,prop):
-        pass
+        self.Object = obj
 
     def addObject(self,child):
         if hasattr(self,"Object"):
@@ -103,7 +109,7 @@ class _Floor:
                 self.Object.Group = g
     
 class _ViewProviderFloor:
-    "A View Provider for the Cell object"
+    "A View Provider for the Floor object"
     def __init__(self,vobj):
         vobj.Proxy = self
 
@@ -117,4 +123,10 @@ class _ViewProviderFloor:
     def claimChildren(self):
         return self.Object.Group
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+    
 FreeCADGui.addCommand('Arch_Floor',_CommandFloor())
