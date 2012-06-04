@@ -163,17 +163,13 @@ class _Structure(ArchComponent.Component):
             base = Part.Face(base)
             base = base.extrude(normal)
         for app in obj.Additions:
-            base = base.oldFuse(app.Shape)
-            app.ViewObject.hide() # to be removed
+            if hasattr(app,"Shape"):
+                if not app.Shape.isNull():
+                    base = base.fuse(app.Shape)
+                    app.ViewObject.hide() # to be removed
         for hole in obj.Subtractions:
-            cut = False
-            if hasattr(hole,"Proxy"):
-                if hasattr(hole.Proxy,"Subvolume"):
-                    if hole.Proxy.Subvolume:
-                        base = base.cut(hole.Proxy.Subvolume)
-                        cut = True
-            if not cut:
-                if hasattr(obj,"Shape"):
+            if hasattr(hole,"Shape"):
+                if not hole.Shape.isNull():
                     base = base.cut(hole.Shape)
                     hole.ViewObject.hide() # to be removed
         if base:
@@ -186,7 +182,9 @@ class _Structure(ArchComponent.Component):
                     fsh.append(sh)
                     obj.Shape = Part.makeCompound(fsh)
             else:
-                obj.Shape = base
+                if not base.isNull():
+                    base = base.removeSplitter()
+                    obj.Shape = base
             if not DraftGeomUtils.isNull(pl): obj.Placement = pl
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):

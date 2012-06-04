@@ -272,20 +272,23 @@ class _Wall(ArchComponent.Component):
         "returns a subvolume from a base object"
         import Part
         max_length = 0
+        f = None
         for w in base.Shape.Wires:
             if w.BoundBox.DiagonalLength > max_length:
                 max_length = w.BoundBox.DiagonalLength
                 f = w
-        f = Part.Face(f)
-        n = f.normalAt(0,0)
-        v1 = DraftVecUtils.scaleTo(n,width)
-        f.translate(v1)
-        v2 = DraftVecUtils.neg(v1)
-        v2 = DraftVecUtils.scale(v1,-2)
-        f = f.extrude(v2)
-        if delta:
-            f.translate(delta)
-        return f
+        if f:
+            f = Part.Face(f)
+            n = f.normalAt(0,0)
+            v1 = DraftVecUtils.scaleTo(n,width)
+            f.translate(v1)
+            v2 = DraftVecUtils.neg(v1)
+            v2 = DraftVecUtils.scale(v1,-2)
+            f = f.extrude(v2)
+            if delta:
+                f.translate(delta)
+            return f
+        return None
 
     def createGeometry(self,obj):
         "builds the wall shape"
@@ -368,27 +371,29 @@ class _Wall(ArchComponent.Component):
                         else:
                             temp = sh
                     base = temp
-                    base = base.removeSplitter()
 
         for app in obj.Additions:
-            base = base.oldFuse(app.Shape)
+            base = base.fuse(app.Shape)
             app.ViewObject.hide() #to be removed
         for hole in obj.Subtractions:
             if Draft.getType(hole) == "Window":
                 # window
                 if hole.Base and obj.Width:
                     f = self.getSubVolume(hole.Base,width)
-                    base = base.cut(f)
+                    if f:
+                        base = base.cut(f)
             elif Draft.isClone(hole,"Window"):
                 if hole.Objects[0].Base and width:
                     f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement.Base)
-                    base = base.cut(f)                   
+                    if f:
+                        base = base.cut(f)                   
             elif hasattr(hole,"Shape"):
                 if not hole.Shape.isNull():
                     base = base.cut(hole.Shape)
                     hole.ViewObject.hide() # to be removed
 
         if base:
+            base.removeSplitter()
             obj.Shape = base
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
