@@ -617,6 +617,15 @@ bool FaceUniter::process()
                 sew.Add(*sewIt);
             sew.Perform();
             workShell = TopoDS::Shell(sew.SewedShape());
+            // update the list of modifications
+            for (std::vector<ShapePairType>::iterator it = modifiedShapes.begin(); it != modifiedShapes.end(); ++it)
+            {
+                if (sew.IsModified(it->second))
+                {
+                    it->second = sew.Modified(it->second);
+                    break;
+                }
+            }
         }
         else
         {
@@ -638,13 +647,25 @@ bool FaceUniter::process()
             faceFixer.Perform();
         }
         workShell = TopoDS::Shell(edgeFuse.Shape());
+        // update the list of modifications
+        TopTools_DataMapOfShapeShape faceMap;
+        edgeFuse.Faces(faceMap);
+        for (std::vector<ShapePairType>::iterator it = modifiedShapes.begin(); it != modifiedShapes.end(); ++it)
+        {
+            if (faceMap.IsBound(it->second))
+            {
+                const TopoDS_Shape& value = faceMap.Find(it->second);
+                if (!value.IsSame(it->second))
+                    it->second = value;
+            }
+        }
     }
     return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//TODO: Implement a way to log all modifications
+//BRepBuilderAPI_RefineModel implement a way to log all modifications on the faces
 
 Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape& shape)
 {
