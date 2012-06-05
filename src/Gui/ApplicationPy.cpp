@@ -362,10 +362,18 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
             if (ext == QLatin1String("iv") || ext == QLatin1String("wrl") ||
                 ext == QLatin1String("vrml") || ext == QLatin1String("wrz") ||
                 ext == QLatin1String("svg") || ext == QLatin1String("idtf")) {
-                QString cmd = QString::fromLatin1(
-                    "Gui.getDocument(\"%1\").ActiveView.dump(\"%2\")"
-                    ).arg(QLatin1String(doc->getName())).arg(fi.absoluteFilePath());
-                Base::Interpreter().runString(cmd.toUtf8());
+                Gui::Document* gui_doc = Application::Instance->getDocument(doc);
+                std::list<MDIView*> view3d = gui_doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
+                if (view3d.empty()) {
+                    PyErr_SetString(PyExc_Exception, "Cannot export to SVG because document doesn't have a 3d view");
+                    return 0;
+                }
+                else {
+                    QString cmd = QString::fromLatin1(
+                        "Gui.getDocument(\"%1\").mdiViewsOfType('Gui::View3DInventor')[0].dump(\"%2\")"
+                        ).arg(QLatin1String(doc->getName())).arg(fi.absoluteFilePath());
+                    Base::Interpreter().runString(cmd.toUtf8());
+                }
             }
             else if (ext == QLatin1String("pdf")) {
                 Gui::Document* gui_doc = Application::Instance->getDocument(doc);
