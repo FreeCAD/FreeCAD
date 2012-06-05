@@ -139,6 +139,10 @@ exporter(PyObject *self, PyObject *args)
                     str_out.close();
                     break;
                 }
+                else {
+                    PyErr_SetString(PyExc_TypeError, "Export as SVG of this object type is not supported by Drawing module");
+                    return 0;
+                }
             }
         }
     } PY_CATCH;
