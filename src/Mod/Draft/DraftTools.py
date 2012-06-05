@@ -231,6 +231,17 @@ class SelectPlane:
         self.call = None
         self.doc = FreeCAD.ActiveDocument
         if self.doc:
+            sel = FreeCADGui.Selection.getSelectionEx()
+            if len(sel) == 1:
+                sel = sel[0]
+                if sel.HasSubObjects:
+                    if len(sel.SubElementNames) == 1:
+                        if "Face" in sel.SubElementNames[0]:
+                            self.ui = FreeCADGui.draftToolBar
+                            plane.alignToFace(sel.SubObjects[0], self.offset)
+                            self.display(plane.axis)
+                            self.finish()
+                            return
             FreeCAD.activeDraftCommand = self
             self.view = Draft.get3DView()
             self.ui = FreeCADGui.draftToolBar
