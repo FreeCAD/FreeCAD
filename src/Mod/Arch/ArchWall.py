@@ -397,7 +397,7 @@ class _Wall(ArchComponent.Component):
         if base:
             if not base.isNull():
                 try:
-                    base.removeSplitter()
+                    base = base.removeSplitter()
                 except:
                     print "Wall: Error removing splitter"
                 obj.Shape = base
