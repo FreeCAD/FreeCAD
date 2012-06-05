@@ -1653,7 +1653,7 @@ class Dimension(Creator):
                     if self.dir:
                         point = self.node[0].add(DraftVecUtils.project(point.sub(self.node[0]),self.dir))
                     self.node.append(point)
-                print "node",self.node
+                #print "node",self.node
                 self.dimtrack.update(self.node)
                 if (len(self.node) == 2):
                     self.point2 = self.node[1]
