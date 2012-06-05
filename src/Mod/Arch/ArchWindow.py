@@ -92,6 +92,8 @@ class _CommandWindow:
             if Draft.getType(sel[0]) == "Wall":
                 FreeCADGui.activateWorkbench("SketcherWorkbench")
                 FreeCADGui.runCommand("Sketcher_NewSketch")
+                FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(sel[0],FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
+                FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
             else:
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
                 FreeCADGui.doCommand("import Arch")

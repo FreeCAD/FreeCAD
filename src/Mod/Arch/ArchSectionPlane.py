@@ -234,6 +234,7 @@ class _ArchDrawingView:
                         svgf = Drawing.projectToSVG(base,DraftVecUtils.neg(direction))
                         if svgf:
                             svgf = svgf.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
+                            svgf = svgf.replace('stroke-width:0.01','stroke-width:' + str(linewidth) + 'px')
                         svg += svgf
 
                     result = ''

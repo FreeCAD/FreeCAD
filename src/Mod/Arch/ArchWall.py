@@ -256,7 +256,10 @@ class _Wall(ArchComponent.Component):
                         str(translate("Arch","The alignment of this wall on its base object, if applicable")))
         obj.addProperty("App::PropertyVector","Normal","Base",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
+        obj.addProperty("App::PropertyBool","ForceWire","Base",
+                        str(translate("Arch","If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face.")))
         obj.Align = ['Left','Right','Center']
+        obj.ForceWire = False
         self.Type = "Wall"
         obj.Width = 0.1
         obj.Height = 0
@@ -265,7 +268,6 @@ class _Wall(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
-        print prop
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
 
@@ -359,7 +361,7 @@ class _Wall(ArchComponent.Component):
                 base = obj.Base.Shape.copy()
                 if base.Solids:
                     pass
-                elif base.Faces:
+                elif base.Faces and (not obj.ForceWire):
                     if height:
                         norm = normal.multiply(height)
                         base = base.extrude(norm)
@@ -372,6 +374,13 @@ class _Wall(ArchComponent.Component):
                         else:
                             temp = sh
                     base = temp
+                elif base.Edges:
+                    wire = Part.Wire(base.Edges)
+                    sh = getbase(wire)
+                    if sh:
+                        base = sh
+                else:
+                    FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
 
         for app in obj.Additions:
             if hasattr(app,"Shape"):
@@ -399,7 +408,7 @@ class _Wall(ArchComponent.Component):
                 try:
                     base = base.removeSplitter()
                 except:
-                    print "Wall: Error removing splitter"
+                    FreeCAD.Console.PrintError(str(translate("Arch","Error removing splitter from wall shape")))
                 obj.Shape = base
                 if not DraftGeomUtils.isNull(pl):
                     obj.Placement = pl
