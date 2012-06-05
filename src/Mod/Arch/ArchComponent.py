@@ -308,16 +308,23 @@ class ViewProviderComponent:
         return False
 
 class ArchSelectionObserver:
-    def __init__(self,origin,watched):
+    def __init__(self,origin,watched,hide=True,nextCommand=None):
         self.origin = origin
         self.watched = watched
+        self.hide = hide
+        self.nextCommand = nextCommand
     def addSelection(self,document, object, element, position):
         if object == self.watched.Name:
             if not element:
                 print "closing Sketch edit"
-                self.origin.ViewObject.Transparency = 0
-                self.origin.ViewObject.Selectable = True
-                self.watched.ViewObject.hide()
+                if self.hide:
+                    self.origin.ViewObject.Transparency = 0
+                    self.origin.ViewObject.Selectable = True
+                    self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("ArchWorkbench")
                 FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                if self.nextCommand:
+                    FreeCADGui.Selection.clearSelection()
+                    FreeCADGui.Selection.addSelection(self.watched)
+                    FreeCADGui.runCommand(self.nextCommand)
                 del FreeCAD.ArchObserver
