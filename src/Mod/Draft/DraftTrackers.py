@@ -617,7 +617,9 @@ class gridTracker(Tracker):
 
     def set(self):
         Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
+        P = FreeCAD.DraftWorkingPlane.position
         self.trans.rotation.setValue([Q[0],Q[1],Q[2],Q[3]])
+        self.trans.translation.setValue([P.x,P.y,P.z])
         self.on()
 
     def getClosestNode(self,point):
