@@ -41,6 +41,7 @@ def makeSectionPlane(objectslist=None):
             elif o.isDerivedFrom("App::DocumentObjectGroup"):
                 g.append(o)
         obj.Objects = g
+    return obj
 
 def makeSectionView(section):
     """makeSectionView(section) : Creates a Drawing view of the given Section Plane
@@ -55,15 +56,14 @@ def makeSectionView(section):
         template = Draft.getParam("template")
         if not template:
             template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
-        page.ViewObject.HintOffsetX = 200
-        page.ViewObject.HintOffsetY = 100
-        page.ViewObject.HintScale = 20
         page.Template = template
         
     view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
     page.addObject(view)
     _ArchDrawingView(view)
     view.Source = section
+    view.Label = str(translate("Arch","View of"))+" "+section.Name
+    return view
 
 class _CommandSectionPlane:
     "the Arch SectionPlane command definition"
