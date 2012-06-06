@@ -382,28 +382,32 @@ class _Wall(ArchComponent.Component):
                 else:
                     FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
 
-        for app in obj.Additions:
-            if hasattr(app,"Shape"):
-                base = base.fuse(app.Shape)
-            app.ViewObject.hide() #to be removed
-        for hole in obj.Subtractions:
-            if Draft.getType(hole) == "Window":
-                # window
-                if hole.Base and obj.Width:
-                    f = self.getSubVolume(hole.Base,width)
-                    if f:
-                        base = base.cut(f)
-            elif Draft.isClone(hole,"Window"):
-                if hole.Objects[0].Base and width:
-                    f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement.Base)
-                    if f:
-                        base = base.cut(f)                   
-            elif hasattr(hole,"Shape"):
-                if not hole.Shape.isNull():
-                    base = base.cut(hole.Shape)
-                    hole.ViewObject.hide() # to be removed
-
         if base:
+            for app in obj.Additions:
+                if hasattr(app,"Shape"):
+                    if app.Shape:
+                        if not app.Shape.isNull():
+                            base = base.fuse(app.Shape)
+                            app.ViewObject.hide() #to be removed
+                
+            for hole in obj.Subtractions:
+                if Draft.getType(hole) == "Window":
+                    # window
+                    if hole.Base and obj.Width:
+                        f = self.getSubVolume(hole.Base,width)
+                        if f:
+                            base = base.cut(f)
+                elif Draft.isClone(hole,"Window"):
+                    if hole.Objects[0].Base and width:
+                        f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement.Base)
+                        if f:
+                            base = base.cut(f)                   
+                elif hasattr(hole,"Shape"):
+                    if hole.Shape:
+                        if not hole.Shape.isNull():
+                            base = base.cut(hole.Shape)
+                            hole.ViewObject.hide() # to be removed
+
             if not base.isNull():
                 try:
                     base = base.removeSplitter()
