@@ -167,7 +167,7 @@ class Snapper:
             self.radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
 
         # set the grid
-        if self.grid and Draft.getParam("grid") and (not self.forceGridOff):
+        if self.grid and (not self.forceGridOff):
             self.grid.set()
         
         # activate snap
@@ -894,7 +894,7 @@ class Snapper:
 
     def setGrid(self):
         "sets the grid, if visible"
-        if self.grid:
+        if self.grid and (not self.forceGridOff):
             if self.grid.Visible:
                 self.grid.set()
         

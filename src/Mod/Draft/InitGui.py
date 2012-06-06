@@ -201,10 +201,16 @@ class DraftWorkbench (Workbench):
         self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Wire tools"))],self.lineList)
                                         
     def Activated(self):
-        FreeCADGui.draftToolBar.Activated()
-
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Activated()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.show()
+        Msg("Draft workbench activated\n")
+        
     def Deactivated(self):
-        FreeCADGui.draftToolBar.Deactivated()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Deactivated()
+        Msg("Draft workbench deactivated\n")
 
     def ContextMenu(self, recipient):
         if (recipient == "View"):
