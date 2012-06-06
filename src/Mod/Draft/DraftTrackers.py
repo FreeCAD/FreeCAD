@@ -81,6 +81,22 @@ class Tracker:
         self.switch.whichChild = -1
         self.Visible = False
 
+    def lowerTracker(self):
+        '''lowers the tracker to the bottom of the scenegraph, so
+        it doesn't obscure the other objects'''
+        if self.switch:
+            sg=Draft.get3DView().getSceneGraph()
+            sg.removeChild(self.switch)
+            sg.addChild(self.switch)
+
+    def raiseTracker(self):
+        '''raises the tracker to the top of the scenegraph, so
+        it obscures the other objects'''
+        if self.switch:
+            sg=Draft.get3DView().getSceneGraph()
+            sg.removeChild(self.switch)
+            sg.insertChild(self.switch,0)
+        
 class snapTracker(Tracker):
     "A Snap Mark tracker, used by tools that support snapping"
     def __init__(self):

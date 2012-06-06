@@ -327,68 +327,76 @@ class SelectPlane:
 # Geometry constructors
 #---------------------------------------------------------------------------
 
-class Creator:
-    "A generic Draft Creator Tool used by creation tools such as line or arc"
+class DraftTool:
+    "The base class of all Draft Tools"
     
     def __init__(self):
         self.commitList = []
-        
+
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
+            
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
+        
         self.ui = None
         self.call = None
-        self.doc = None
-        self.support = None
+        self.support = None        
         self.commitList = []
         self.doc = FreeCAD.ActiveDocument
-        self.view = Draft.get3DView()
-        self.featureName = name
         if not self.doc:
             self.finish()
-        else:
-            FreeCAD.activeDraftCommand = self
-            self.ui = FreeCADGui.draftToolBar
-            self.ui.sourceCmd = self
-            self.ui.setTitle(name)
-            self.ui.show()
-            rot = self.view.getCameraNode().getField("orientation").getValue()
-            upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
-            self.node = []
-            self.pos = []
-            self.constrain = None
-            self.obj = None
-            self.snap = snapTracker()
-            self.extsnap = lineTracker(dotted=True)
-            self.planetrack = PlaneTracker()
-                        
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
+            return
 
+        FreeCAD.activeDraftCommand = self
+        self.view = Draft.get3DView()
+        self.ui = FreeCADGui.draftToolBar
+        self.ui.sourceCmd = self
+        self.ui.setTitle(name)
+        self.ui.show()
+        rot = self.view.getCameraNode().getField("orientation").getValue()
+        upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+        plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+        self.node = []
+        self.pos = []
+        self.constrain = None
+        self.obj = None
+        self.extendedCopy = False
+        self.ui.setTitle(name)
+        self.featureName = name
+        #self.snap = snapTracker()
+        #self.extsnap = lineTracker(dotted=True)
+        self.planetrack = None
+        if Draft.getParam("showPlaneTracker"):
+            self.planetrack = PlaneTracker()
+		
     def finish(self):
-        self.snap.finalize()
-        self.extsnap.finalize()
-        self.node=[]
-        self.planetrack.finalize()
-        if self.support: plane.restore()
-        FreeCADGui.Snapper.off()
+        self.node = []
+        #self.snap.finalize()
+        #self.extsnap.finalize()
         FreeCAD.activeDraftCommand = None
         if self.ui:
             self.ui.offUi()
-            self.ui.sourceCmd = None
+            self.ui.sourceCmd=None
+            #self.ui.cross(False)
         msg("")
+        if self.planetrack:
+            self.planetrack.finalize()
+        if self.support:
+            plane.restore()
+        FreeCADGui.Snapper.off()
         if self.call:
             self.view.removeEventCallback("SoEvent",self.call)
             self.call = None
         if self.commitList:
             todo.delayCommit(self.commitList)
         self.commitList = []
+
+    def commit(self,name,func):
+        "stores actions to be committed to the FreeCAD document"
+        # print "committing"
+        self.commitList.append((name,func))
 
     def getStrings(self):
         "returns a couple of useful strings fro building python commands"
@@ -419,10 +427,19 @@ class Creator:
             fil = "True"
         
         return qr,sup,points,fil
-
-    def commit(self,name,func):
-        "stores actions to be committed to the FreeCAD document"
-        self.commitList.append((name,func))
+    
+            
+class Creator(DraftTool):
+    "A generic Draft Creator Tool used by creation tools such as line or arc"
+    
+    def __init__(self):
+        DraftTool.__init__(self)
+            
+    def IsActive(self):
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
 
 class Line(Creator):
     "The Line FreeCAD command definition"
@@ -527,7 +544,8 @@ class Line(Creator):
         if (len(self.node) == 1):
             self.linetrack.on()
             msg(translate("draft", "Pick next point:\n"))
-            self.planetrack.set(self.node[0])
+            if self.planetrack:
+                self.planetrack.set(self.node[0])
         elif (len(self.node) == 2):
             last = self.node[len(self.node)-2]
             newseg = Part.Line(last,point).toShape()
@@ -550,7 +568,8 @@ class Line(Creator):
             self.obj.ViewObject.Visibility = False
             self.node = [self.node[-1]]
             self.linetrack.p1(self.node[0])
-            self.planetrack.set(self.node[0])
+            if self.planetrack:
+                self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
                         
     def numericInput(self,numx,numy,numz):
@@ -643,7 +662,8 @@ class BSpline(Line):
     def drawUpdate(self,point):
         if (len(self.node) == 1):
             self.bsplinetrack.on()
-            self.planetrack.set(self.node[0])
+            if self.planetrack:
+                self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
         else:
             spline = Part.BSplineCurve()
@@ -821,7 +841,8 @@ class Rectangle(Creator):
             self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()
-            self.planetrack.set(point)
+            if self.planetrack:
+                self.planetrack.set(point)
 
 
 class Arc(Creator):
@@ -1026,7 +1047,8 @@ class Arc(Creator):
                         self.step = 1
                         self.linetrack.on()
                         msg(translate("draft", "Pick radius:\n"))
-                        self.planetrack.set(point)                        
+                        if self.planetrack:
+                            self.planetrack.set(point)                        
                 elif (self.step == 1): # choose radius
                     if self.closedCircle:
                         self.ui.cross(False)
@@ -1294,7 +1316,8 @@ class Polygon(Creator):
                         self.step = 1
                         self.linetrack.on()
                         msg(translate("draft", "Pick radius:\n"))
-                        self.planetrack.set(point)
+                        if self.planetrack:
+                            self.planetrack.set(point)
                 elif (self.step == 1): # choose radius
                     self.ui.cross(False)
                     self.drawPolygon()
@@ -1670,7 +1693,8 @@ class Dimension(Creator):
                     self.point2 = self.node[1]
                 if (len(self.node) == 1):
                     self.dimtrack.on()
-                    self.planetrack.set(self.node[0])
+                    if self.planetrack:
+                        self.planetrack.set(self.node[0])
                 elif (len(self.node) == 2) and self.cont:
                     self.node.append(self.cont)
                     self.createObject()
@@ -1705,72 +1729,17 @@ class Dimension(Creator):
 # Modifier functions
 #---------------------------------------------------------------------------
 
-class Modifier:
+class Modifier(DraftTool):
     "A generic Modifier Tool, used by modification tools such as move"
-    
-    def __init__(self):
-        self.commitList = []
 
+    def __init__(self):
+        DraftTool.__init__(self)
+            
     def IsActive(self):
         if Draft.getSelection():
             return True
         else:
             return False
-
-    def Activated(self,name="None"):
-        if FreeCAD.activeDraftCommand:
-            FreeCAD.activeDraftCommand.finish()
-        global Part, DraftGeomUtils
-        import Part, DraftGeomUtils
-        self.ui = None
-        self.call = None
-        self.commitList = []
-        self.doc = FreeCAD.ActiveDocument
-        if not self.doc:
-            self.finish()
-        else:
-            FreeCAD.activeDraftCommand = self
-            self.view = Draft.get3DView()
-            self.ui = FreeCADGui.draftToolBar
-            FreeCADGui.draftToolBar.show()
-            rot = self.view.getCameraNode().getField("orientation").getValue()
-            upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
-            self.node = []
-            self.ui.sourceCmd = self
-            self.constrain = None
-            self.obj = None
-            self.extendedCopy = False
-            self.ui.setTitle(name)
-            self.featureName = name
-            #self.snap = snapTracker()
-            #self.extsnap = lineTracker(dotted=True)
-            self.planetrack = PlaneTracker()
-		
-    def finish(self):
-        self.node = []
-        #self.snap.finalize()
-        #self.extsnap.finalize()
-        FreeCAD.activeDraftCommand = None
-        if self.ui:
-            self.ui.offUi()
-            self.ui.sourceCmd=None
-            self.ui.cross(False)
-        msg("")
-        self.planetrack.finalize()
-        FreeCADGui.Snapper.off()
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-            self.call = None
-        if self.commitList:
-            todo.delayCommit(self.commitList)
-        self.commitList = []
-
-    def commit(self,name,func):
-        "stores actions to be committed to the FreeCAD document"
-        # print "committing"
-        self.commitList.append((name,func))
-
 
 class Move(Modifier):
     "The Draft_Move FreeCAD command definition"
@@ -1870,7 +1839,8 @@ class Move(Modifier):
                     self.ghost.on()
                     self.linetrack.p1(point)
                     msg(translate("draft", "Pick end point:\n"))
-                    self.planetrack.set(point)
+                    if self.planetrack:
+                        self.planetrack.set(point)
                 else:
                     last = self.node[0]
                     if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
@@ -2085,7 +2055,8 @@ class Rotate(Modifier):
                     self.linetrack.on()
                     self.step = 1
                     msg(translate("draft", "Pick base angle:\n"))
-                    self.planetrack.set(point)
+                    if self.planetrack:
+                        self.planetrack.set(point)
                 elif (self.step == 1):
                     self.ui.labelRadius.setText("Rotation")
                     self.rad = DraftVecUtils.dist(point,self.center)
@@ -2201,7 +2172,8 @@ class Offset(Modifier):
             self.call = self.view.addEventCallback("SoEvent",self.action)
             msg(translate("draft", "Pick distance:\n"))
             self.ui.cross(True)
-            self.planetrack.set(self.shape.Vertexes[0].Point)
+            if self.planetrack:
+                self.planetrack.set(self.shape.Vertexes[0].Point)
             self.running = True
 
     def action(self,arg):
@@ -3293,7 +3265,8 @@ class Edit(Modifier):
                         plane.save()
                         if "Shape" in self.obj.PropertiesList:
                             plane.alignToFace(self.obj.Shape)
-                        self.planetrack.set(self.editpoints[0])
+                        if self.planetrack:
+                            self.planetrack.set(self.editpoints[0])
                     else:
                         msg(translate("draft", "This object type is not editable\n"),'warning')
                         self.finish()

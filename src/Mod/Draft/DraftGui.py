@@ -87,6 +87,9 @@ class todo:
                 except:
                     wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                     FreeCAD.Console.PrintWarning (wrn)
+            # restack Draft screen widgets after creation
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.restack()
         todo.commitlist = []
 
     @staticmethod
