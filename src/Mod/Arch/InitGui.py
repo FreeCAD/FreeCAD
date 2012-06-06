@@ -85,11 +85,15 @@ class ArchWorkbench(Workbench):
         Log ('Loading Arch module... done\n')
                 
     def Activated(self):
-        FreeCADGui.draftToolBar.Activated()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Activated()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.show()
         Msg("Arch workbench activated\n")
                 
     def Deactivated(self):
-        FreeCADGui.draftToolBar.Deactivated()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Deactivated()
         Msg("Arch workbench deactivated\n")
                 
     def ContextMenu(self, recipient):
