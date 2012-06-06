@@ -631,6 +631,10 @@ class Snapper:
                     v.setCursor(cur)
                 self.cursorMode = mode
 
+    def restack(self):
+        if self.grid:
+            self.grid.lowerTracker()
+
     def off(self):
         "finishes snapping"
         if self.tracker:
