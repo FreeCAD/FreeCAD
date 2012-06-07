@@ -339,7 +339,7 @@ class Snapper:
             if view.getCameraType() == "Perspective":
                 camera = view.getCameraNode()
                 p = camera.getField("position").getValue()
-                vd = pt.sub(Vector(p[0],p[1],p[2]))
+                dv = pt.sub(Vector(p[0],p[1],p[2]))
             else:
                 dv = view.getViewDirection()
             return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
@@ -390,15 +390,17 @@ class Snapper:
                                         else:
                                             if self.isEnabled('parallel'):
                                                 if last:
-                                                    de = Part.Line(last,last.add(DraftGeomUtils.vec(e))).toShape()  
-                                                    np = self.getPerpendicular(de,point)
-                                                    if (np.sub(point)).Length < self.radius:
-                                                        if self.tracker:
-                                                            self.tracker.setCoords(np)
-                                                            self.tracker.setMarker(self.mk['parallel'])
-                                                            self.tracker.on()
-                                                        self.setCursor('parallel')
-                                                        return np,de
+                                                    ve = DraftGeomUtils.vec(e)
+                                                    if not DraftVecUtils.isNull(ve):
+                                                        de = Part.Line(last,last.add(ve)).toShape()  
+                                                        np = self.getPerpendicular(de,point)
+                                                        if (np.sub(point)).Length < self.radius:
+                                                            if self.tracker:
+                                                                self.tracker.setCoords(np)
+                                                                self.tracker.setMarker(self.mk['parallel'])
+                                                                self.tracker.on()
+                                                            self.setCursor('parallel')
+                                                            return np,de
         return point,eline
 
     def snapToPolar(self,point,last):

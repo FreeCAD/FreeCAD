@@ -3823,6 +3823,8 @@ class ToggleGrid():
                 else:
                     FreeCADGui.Snapper.grid.on()
                     FreeCADGui.Snapper.forceGridOff=False
+            else:
+                FreeCADGui.Snapper.show()
                     
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
