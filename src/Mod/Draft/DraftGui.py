@@ -959,6 +959,10 @@ class DraftToolBar:
             self.wipeLine()
         elif txt.endsWith("s"):
             self.togglesnap()
+        elif txt.endsWith("["):
+            self.toggleradius(1)
+        elif txt.endsWith("]"):
+            self.toggleradius(-1)
         elif txt.endsWith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
@@ -1158,6 +1162,11 @@ class DraftToolBar:
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.toggle()
 
+    def toggleradius(self,val):
+        if hasattr(FreeCADGui,"Snapper"):
+            par = Draft.getParam("snapRange")
+            Draft.setParam("snapRange",par+val)
+            FreeCADGui.Snapper.showradius()
 
 #---------------------------------------------------------------------------
 # TaskView operations
