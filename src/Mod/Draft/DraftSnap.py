@@ -883,7 +883,7 @@ class Snapper:
         return False
 
     def show(self):
-        "shows the toolbar"
+        "shows the toolbar and the grid"
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
         mw = getMainWindow()
@@ -891,6 +891,11 @@ class Snapper:
         if not bt:
             mw.addToolBar(self.toolbar)
         self.toolbar.show()
+        if FreeCADGui.ActiveDocument:
+            if not self.forceGridOff:
+                if not self.grid:
+                    self.grid = DraftTrackers.gridTracker()
+                self.grid.set()
 
     def setGrid(self):
         "sets the grid, if visible"
