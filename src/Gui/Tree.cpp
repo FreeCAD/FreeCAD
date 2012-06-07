@@ -726,6 +726,8 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
     setWindowTitle(tr("Tree view"));
     this->treeWidget = new TreeWidget(this);
     this->treeWidget->setRootIsDecorated(false);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
 
     QGridLayout* pLayout = new QGridLayout(this); 
     pLayout->setSpacing(0);
