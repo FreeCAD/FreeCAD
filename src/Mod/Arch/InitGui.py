@@ -109,7 +109,8 @@ FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 try:
     import collada
 except:
-    FreeCAD.Console.PrintMessage(str(DraftTools.translate("arch","pycollada not found, collada support will be disabled.\n")))
+    from DraftTools import translate
+    FreeCAD.Console.PrintMessage(str(translate("arch","pycollada not found, collada support will be disabled.\n")))
 else:
     FreeCAD.addImportType("Collada (*.dae)","importDAE")
     FreeCAD.addExportType("Collada (*.dae)","importDAE")
