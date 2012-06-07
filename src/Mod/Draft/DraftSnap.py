@@ -70,11 +70,12 @@ class Snapper:
         self.grid = None
         self.constrainLine = None
         self.trackLine = None
+        self.radiusTracker = None
         self.snapInfo = None
         self.lastSnappedObject = None
         self.active = True
         self.forceGridOff = False
-        self.trackers = [[],[],[],[]] # view, grid, snap, extline
+        self.trackers = [[],[],[],[],[]] # view, grid, snap, extline, radius
 
         self.polarAngles = [90,45]
         
@@ -126,10 +127,13 @@ class Snapper:
         def cstr(point):
             "constrains if needed"
             if constrain:
-                return self.constrain(point,lastpoint)
+                fpt = self.constrain(point,lastpoint)
             else:
                 self.unconstrain()
-                return point
+                fpt = point
+            if self.radiusTracker:
+                self.radiusTracker.update(fpt)
+            return fpt
 
         snaps = []
         self.snapInfo = None
@@ -150,6 +154,7 @@ class Snapper:
             self.grid = self.trackers[1][i]
             self.tracker = self.trackers[2][i]
             self.extLine = self.trackers[3][i]
+            self.radiusTracker = self.trackers[4][i]
         else:
             if Draft.getParam("grid"):
                 self.grid = DraftTrackers.gridTracker()
@@ -157,19 +162,23 @@ class Snapper:
                 self.grid = None
             self.tracker = DraftTrackers.snapTracker()
             self.extLine = DraftTrackers.lineTracker(dotted=True)
+            self.radiusTracker = DraftTrackers.radiusTracker()
             self.trackers[0].append(v)
             self.trackers[1].append(self.grid)
             self.trackers[2].append(self.tracker)
             self.trackers[3].append(self.extLine)
+            self.trackers[4].append(self.radiusTracker)
 
         # getting current snap Radius
-        if not self.radius:
-            self.radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
+        if self.radiusTracker:
+            self.radiusTracker.update(self.radius)
+            self.radiusTracker.off()
 
         # set the grid
         if self.grid and (not self.forceGridOff):
             self.grid.set()
-        
+
         # activate snap
         oldActive = False
         if Draft.getParam("alwaysSnap"):
@@ -195,7 +204,7 @@ class Snapper:
             eline = None
             point,eline = self.snapToPolar(point,lastpoint)
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
-        
+            
         if not self.snapInfo:
             
             # nothing has been snapped, check fro grid snap
@@ -223,6 +232,9 @@ class Snapper:
                 snaps = [self.snapToVertex(self.snapInfo)]
 
             else:
+
+                # first stick to the snapped object
+                point = self.snapToVertex(self.snapInfo)[0]
                 
                 # active snapping
                 comp = self.snapInfo['Component']
@@ -324,7 +336,12 @@ class Snapper:
         view = Draft.get3DView()
         pt = view.getPoint(x,y)
         if hasattr(FreeCAD,"DraftWorkingPlane"):
-            dv = view.getViewDirection()
+            if view.getCameraType() == "Perspective":
+                camera = view.getCameraNode()
+                p = camera.getField("position").getValue()
+                vd = pt.sub(Vector(p[0],p[1],p[2]))
+            else:
+                dv = view.getViewDirection()
             return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
         else:
             return pt
@@ -641,6 +658,8 @@ class Snapper:
             self.tracker.off()
         if self.extLine:
             self.extLine.off()
+        if self.radiusTracker:
+            self.radiusTracker.off()
         if self.grid:
             if not Draft.getParam("alwaysShowGrid"):
                 self.grid.off()
@@ -874,6 +893,13 @@ class Snapper:
                     self.savedButtonStates.append(self.toolbarButtons[i].isChecked())
                     self.toolbarButtons[i].setEnabled(False)
         self.saveSnapModes()
+
+    def showradius(self):
+        "shows the snap radius indicator"
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange"),(400,300))
+        if self.radiusTracker:
+            self.radiusTracker.update(self.radius)
+            self.radiusTracker.on()
 
     def isEnabled(self,but):
         "returns true if the given button is turned on"
