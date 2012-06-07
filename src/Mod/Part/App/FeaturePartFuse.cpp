@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
@@ -111,6 +112,12 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 
             Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                 .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+            if (hGrp->GetBool("CheckModel", false)) {
+                BRepCheck_Analyzer aChecker(resShape);
+                if (! aChecker.IsValid() ) {
+                    return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+                }
+            }
             if (hGrp->GetBool("RefineModel", false)) {
                 TopoDS_Shape oldShape = resShape;
                 BRepBuilderAPI_RefineModel mkRefine(oldShape);

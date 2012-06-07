@@ -70,6 +70,7 @@ void DlgSettingsGeneral::saveSettings()
             break;
     }
     ui->checkBooleanRefine->onSave();
+    ui->checkBooleanCheck->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -79,6 +80,7 @@ void DlgSettingsGeneral::loadSettings()
     int unit = hGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
     ui->checkBooleanRefine->onRestore();
+    ui->checkBooleanCheck->onRestore();
 }
 
 /**
