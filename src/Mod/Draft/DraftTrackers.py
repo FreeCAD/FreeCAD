@@ -640,14 +640,12 @@ class gridTracker(Tracker):
 
     def getClosestNode(self,point):
         "returns the closest node from the given point"
-        print "in:",point
         # get the 2D coords.
         # point = FreeCAD.DraftWorkingPlane.projectPoint(point)
         pt = FreeCAD.DraftWorkingPlane.getLocalCoords(point)
         pu = (round(pt.x/self.space,0))*self.space
         pv = (round(pt.y/self.space,0))*self.space
         pt = FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(pu,pv,0))
-        print "out:",pt
         return pt
     
 class boxTracker(Tracker):                
