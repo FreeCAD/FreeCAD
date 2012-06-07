@@ -428,11 +428,15 @@ void CmdPartDesignFillet::activated(int iMsg)
 
             SubNames.erase(SubNames.begin()+i);
         }
+        // empty name or any other sub-element
+        else {
+            SubNames.erase(SubNames.begin()+i);
+        }
     }
 
-    if(SubNames.size() == 0){
+    if (SubNames.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("No Fillet possilbe on seleced faces/edges"));
+        QObject::tr("No fillet possible on selected faces/edges"));
         return;
     }
 
@@ -571,11 +575,15 @@ void CmdPartDesignChamfer::activated(int iMsg)
 
             SubNames.erase(SubNames.begin()+i);
         }
+        // empty name or any other sub-element
+        else {
+            SubNames.erase(SubNames.begin()+i);
+        }
     }
 
-    if(SubNames.size() == 0){
+    if (SubNames.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("No Fillet possilbe on seleced faces/edges"));
+        QObject::tr("No chamfer possible on selected faces/edges"));
         return;
     }
 
