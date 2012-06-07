@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_BooleanOperation.hxx>
+# include <BRepCheck_Analyzer.hxx>
 # include <memory>
 #endif
 
@@ -82,13 +83,20 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         if (resShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
         }
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+
+        if (hGrp->GetBool("CheckModel", false)) {
+            BRepCheck_Analyzer aChecker(resShape);
+            if (! aChecker.IsValid() ) {
+                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+            }
+        }
 
         std::vector<ShapeHistory> history;
         history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
         history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
 
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
         if (hGrp->GetBool("RefineModel", false)) {
             TopoDS_Shape oldShape = resShape;
             BRepBuilderAPI_RefineModel mkRefine(oldShape);
