@@ -29,8 +29,15 @@
 #include <App/GeoFeature.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyGeo.h>
+// includes for findAllFacesCutBy()
+#include <TopoDS_Face.hxx>
+class gp_Dir;
 
 class BRepBuilderAPI_MakeShape;
+
+// includes for findAllFacesCutBy()
+#include <TopoDS_Face.hxx>
+class gp_Dir;
 
 namespace Part
 {
@@ -63,9 +70,22 @@ public:
     virtual PyObject* getPyObject(void);
     virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 
+    /**
+    /* Find the origin of a reference, e.g. the vertex or edge in a sketch that
+    /* produced a face
+    */
+    const TopoDS_Shape findOriginOf(const TopoDS_Shape& reference);
+
 protected:
     void onChanged(const App::Property* prop);
     TopLoc_Location getLocation() const;
+    /**
+    /* Build a history of changes
+    /* MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+    /* type: The type of object we are interested in, e.g. TopAbs_FACE
+    /* newS: The new shape that was created by the operation
+    /* oldS: The original shape prior to the operation
+    */
     ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
         const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
     ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
@@ -98,6 +118,18 @@ public:
         return "PartGui::ViewProviderPartExt";
     }
 };
+
+// Utility methods
+/**
+/* Find all faces cut by a line through the centre of gravity of a given face
+/* Useful for the "up to face" options to pocket or pad
+*/
+struct cutFaces {
+    TopoDS_Face face;
+    double distsq;
+};
+std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
+                                        const TopoDS_Shape& face, const gp_Dir& dir);
 
 } //namespace Part
 
