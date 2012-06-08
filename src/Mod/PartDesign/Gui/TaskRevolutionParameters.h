@@ -54,10 +54,14 @@ public:
 
     QString getReferenceAxis(void) const;
     double  getAngle(void) const;
+    bool   getMidplane(void) const;
+    bool   getReversed(void) const;
 
 private Q_SLOTS:
     void onAngleChanged(double);
     void onAxisChanged(int);
+    void onMidplane(bool);
+    void onReversed(bool);
 
 protected:
     void changeEvent(QEvent *e);
