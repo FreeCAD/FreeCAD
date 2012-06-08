@@ -69,6 +69,8 @@ public:
 
     void setReadOnly(bool);
     bool isReadOnly() const;
+    void setDecimals(int);
+    int decimals() const;
 
     PropertyItem *child(int row);
     int childCount() const;
@@ -99,6 +101,7 @@ private:
     PropertyItem *parentItem;
     QList<PropertyItem*> childItems;
     bool readonly;
+    int precision;
 };
 
 /**
