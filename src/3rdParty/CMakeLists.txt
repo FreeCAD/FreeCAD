@@ -20,7 +20,7 @@ elseif(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKFILE7X)
 #endif(MINGW)
 # applies for Unix, MinGW and Windows with custom LibPack
 elseif(FREECAD_BUILD_GUI)
-    if (NOT FREECAD_BUILD_DEBIAN)
+    if (NOT FREECAD_USE_EXTERNAL_PIVY)
         find_path(COIN_VERSION3 Inventor/scxml/ScXML.h ${COIN3D_INCLUDE_DIR})
         if (COIN_VERSION3)
         if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Pivy-0.5)
@@ -31,7 +31,7 @@ elseif(FREECAD_BUILD_GUI)
             add_subdirectory(Pivy)
         endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Pivy)
         endif(COIN_VERSION3)
-    endif (NOT FREECAD_BUILD_DEBIAN)
+    endif (NOT FREECAD_USE_EXTERNAL_PIVY)
 endif(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKFILE6X)
 
 # For Windows we have all stuff in the LibPack

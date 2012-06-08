@@ -23,9 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAlgoAPI_BooleanOperation.hxx>
+# include <memory>
 #endif
 
 #include "FeaturePartBoolean.h"
+#include "modelRefine.h"
+#include <App/Application.h>
+#include <Base/Parameter.h>
 
 
 using namespace Part;
@@ -37,6 +42,9 @@ Boolean::Boolean(void)
 {
     ADD_PROPERTY(Base,(0));
     ADD_PROPERTY(Tool,(0));
+    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 short Boolean::mustExecute() const
@@ -66,10 +74,32 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         TopoDS_Shape BaseShape = base->Shape.getValue();
         TopoDS_Shape ToolShape = tool->Shape.getValue();
 
-        TopoDS_Shape resShape = runOperation(BaseShape, ToolShape);
-        if (resShape.IsNull())
+        std::auto_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
+        if (!mkBool->IsDone()) {
+            return new App::DocumentObjectExecReturn("Boolean operation failed");
+        }
+        TopoDS_Shape resShape = mkBool->Shape();
+        if (resShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+
+        std::vector<ShapeHistory> history;
+        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
+        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
+
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+        if (hGrp->GetBool("RefineModel", false)) {
+            TopoDS_Shape oldShape = resShape;
+            BRepBuilderAPI_RefineModel mkRefine(oldShape);
+            resShape = mkRefine.Shape();
+            ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+            history[0] = joinHistory(history[0], hist);
+            history[1] = joinHistory(history[1], hist);
+        }
+
         this->Shape.setValue(resShape);
+        this->History.setValues(history);
         return App::DocumentObject::StdReturn;
     }
     catch (...) {

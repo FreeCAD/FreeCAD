@@ -34,6 +34,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Reader.h"
+#include "Base64.h"
 #include "Exception.h"
 #include "Persistence.h"
 #include "InputSource.h"
@@ -79,6 +80,7 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
     //parser->setFeature(XMLUni::fgXercesDynamic, true);
 
     parser->setContentHandler(this);
+    parser->setLexicalHandler(this);
     parser->setErrorHandler(this);
 
     try {
@@ -127,7 +129,7 @@ long Base::XMLReader::getAttributeAsInteger(const char* AttrName) const
     if (pos != AttrMap.end())
         return atol(pos->second.c_str());
     else
-        // wrong name, use hasAttribute if not shure!
+        // wrong name, use hasAttribute if not sure!
         assert(0);
 
     return 0;
@@ -140,7 +142,7 @@ unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) cons
     if (pos != AttrMap.end())
         return strtoul(pos->second.c_str(),0,10);
     else
-        // wrong name, use hasAttribute if not shure!
+        // wrong name, use hasAttribute if not sure!
         assert(0);
 
     return 0;
@@ -153,7 +155,7 @@ double Base::XMLReader::getAttributeAsFloat  (const char* AttrName) const
     if (pos != AttrMap.end())
         return atof(pos->second.c_str());
     else
-        // wrong name, use hasAttribute if not shure!
+        // wrong name, use hasAttribute if not sure!
         assert(0);
 
     return 0.0;
@@ -166,7 +168,7 @@ const char*  Base::XMLReader::getAttribute (const char* AttrName) const
     if (pos != AttrMap.end())
         return pos->second.c_str();
     else
-        // wrong name, use hasAttribute if not shure!
+        // wrong name, use hasAttribute if not sure!
         assert(0);
 
     return ""; 
@@ -253,6 +255,22 @@ void Base::XMLReader::readEndElement(const char* ElementName)
 
 void Base::XMLReader::readCharacters(void)
 {
+}
+
+void Base::XMLReader::readBinFile(const char* filename)
+{
+    Base::FileInfo fi(filename);
+    Base::ofstream to(fi, std::ios::out | std::ios::binary);
+    if (!to)
+        throw Base::Exception("XMLReader::readBinFile() Could not open file!");
+
+    bool ok;
+    do {
+        ok = read(); if (!ok) break;
+    } while (ReadType != EndCDATA);
+
+    to << Base::base64_decode(Characters);
+    to.close();
 }
 
 void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
@@ -370,15 +388,32 @@ void Base::XMLReader::endElement  (const XMLCh* const /*uri*/, const XMLCh *cons
         ReadType = EndElement;
 }
 
+void Base::XMLReader::startCDATA ()
+{
+    ReadType = StartCDATA;
+}
 
+void Base::XMLReader::endCDATA ()
+{
+    ReadType = EndCDATA;
+}
+
+#if (XERCES_VERSION_MAJOR == 2)
 void Base::XMLReader::characters(const   XMLCh* const chars, const unsigned int length)
+#else
+void Base::XMLReader::characters(const   XMLCh* const chars, const XMLSize_t length)
+#endif
 {
     Characters = StrX(chars).c_str();
     ReadType = Chars;
     CharacterCount += length;
 }
 
+#if (XERCES_VERSION_MAJOR == 2)
 void Base::XMLReader::ignorableWhitespace( const   XMLCh* const /*chars*/, const unsigned int /*length*/)
+#else
+void Base::XMLReader::ignorableWhitespace( const   XMLCh* const /*chars*/, const XMLSize_t /*length*/)
+#endif
 {
     //fSpaceCount += length;
 }

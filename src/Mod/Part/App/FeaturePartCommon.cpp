@@ -25,11 +25,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Common.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 
 #include "FeaturePartCommon.h"
-
+#include "modelRefine.h"
+#include <App/Application.h>
+#include <Base/Parameter.h>
 #include <Base/Exception.h>
 
 using namespace Part;
@@ -41,14 +44,10 @@ Common::Common(void)
 {
 }
 
-TopoDS_Shape Common::runOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:
-    BRepAlgoAPI_Common mkCommon(base, tool);
-    // Let's check if the section has been successful
-    if (!mkCommon.IsDone()) 
-        throw Base::Exception("Intersection failed");
-    return mkCommon.Shape();
+    return new BRepAlgoAPI_Common(base, tool);
 }
 
 // ----------------------------------------------------
@@ -60,6 +59,9 @@ MultiCommon::MultiCommon(void)
 {
     ADD_PROPERTY(Shapes,(0));
     Shapes.setSize(0);
+    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 short MultiCommon::mustExecute() const
@@ -82,18 +84,50 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
     }
 
     if (s.size() >= 2) {
-        TopoDS_Shape res = s.front();
-        for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
-            // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Common mkCommon(res, *it);
-            // Let's check if the fusion has been successful
-            if (!mkCommon.IsDone()) 
-                throw Base::Exception("Intersection failed");
-            res = mkCommon.Shape();
+        try {
+            std::vector<ShapeHistory> history;
+            TopoDS_Shape resShape = s.front();
+            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                // Let's call algorithm computing a fuse operation:
+                BRepAlgoAPI_Common mkCommon(resShape, *it);
+                // Let's check if the fusion has been successful
+                if (!mkCommon.IsDone()) 
+                    throw Base::Exception("Intersection failed");
+                resShape = mkCommon.Shape();
+
+                ShapeHistory hist1 = buildHistory(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape1());
+                ShapeHistory hist2 = buildHistory(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape2());
+                if (history.empty()) {
+                    history.push_back(hist1);
+                    history.push_back(hist2);
+                }
+                else {
+                    for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                        *jt = joinHistory(*jt, hist1);
+                    history.push_back(hist2);
+                }
+            }
+            if (resShape.IsNull())
+                throw Base::Exception("Resulting shape is invalid");
+
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+            if (hGrp->GetBool("RefineModel", false)) {
+                TopoDS_Shape oldShape = resShape;
+                BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                resShape = mkRefine.Shape();
+                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                    *jt = joinHistory(*jt, hist);
+            }
+
+            this->Shape.setValue(resShape);
+            this->History.setValues(history);
         }
-        if (res.IsNull())
-            throw Base::Exception("Resulting shape is invalid");
-        this->Shape.setValue(res);
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
+        }
     }
     else {
         throw Base::Exception("Not enough shape objects linked");

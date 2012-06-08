@@ -63,6 +63,55 @@ Q_SIGNALS:
 
 // ------------------------------------------------------------------------------
 
+class GuiExport ActionSelector : public QWidget
+{
+    Q_OBJECT
+
+public:
+    ActionSelector(QWidget* parent=0);
+    ~ActionSelector();
+
+    QTreeWidget* availableTreeWidget() const
+    { return availableWidget; }
+    QTreeWidget* selectedTreeWidget() const
+    { return selectedWidget; }
+    void setSelectedLabel(const QString&);
+    QString selectedLabel() const;
+    void setAvailableLabel(const QString&);
+    QString availableLabel() const;
+
+private:
+    void keyPressEvent(QKeyEvent *);
+    void changeEvent(QEvent*);
+    void retranslateUi();
+    void setButtonsEnabled();
+
+private Q_SLOTS:
+    void on_addButton_clicked();
+    void on_removeButton_clicked();
+    void on_upButton_clicked();
+    void on_downButton_clicked();
+    void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
+    void onItemDoubleClicked(QTreeWidgetItem * item, int column);
+
+private:
+    QGridLayout *gridLayout;
+    QVBoxLayout *vboxLayout;
+    QVBoxLayout *vboxLayout1;
+    QPushButton *addButton;
+    QPushButton *removeButton;
+    QPushButton *upButton;
+    QPushButton *downButton;
+    QLabel      *labelAvailable;
+    QLabel      *labelSelected;
+    QTreeWidget *availableWidget;
+    QTreeWidget *selectedWidget;
+    QSpacerItem *spacerItem;
+    QSpacerItem *spacerItem1;
+};
+
+// ------------------------------------------------------------------------------
+
 /**
  * The AccelLineEdit class provides a lineedit to specfify shortcuts.
  * \author Werner Mayer

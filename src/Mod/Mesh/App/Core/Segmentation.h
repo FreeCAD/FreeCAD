@@ -46,6 +46,7 @@ public:
     virtual void AddFacet(const MeshFacet& rclFacet);
     void AddSegment(const std::vector<unsigned long>&);
     const std::vector<MeshSegment>& GetSegments() const { return segments; }
+    MeshSegment FindSegment(unsigned long) const;
 
 protected:
     std::vector<MeshSegment> segments;

@@ -24,12 +24,13 @@
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore,QtGui
+from DraftTools import translate
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeWindow(baseobj=None,width=None,name="Window"):
+def makeWindow(baseobj=None,width=None,name=str(translate("Arch","Window"))):
     '''makeWindow(obj,[name]): creates a window based on the
     given object'''
     if baseobj:
@@ -87,18 +88,38 @@ class _CommandWindow:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Create Window")
-        for obj in sel:
-            makeWindow(obj)
-        FreeCAD.ActiveDocument.commitTransaction()
+        if sel:
+            if Draft.getType(sel[0]) == "Wall":
+                FreeCADGui.activateWorkbench("SketcherWorkbench")
+                FreeCADGui.runCommand("Sketcher_NewSketch")
+                FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(sel[0],FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
+                FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+            else:
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
+                FreeCADGui.doCommand("import Arch")
+                for obj in sel:
+                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                    if hasattr(obj,"Support"):
+                        if obj.Support:
+                            if isinstance(obj.Support,tuple):
+                                s = obj.Support[0]
+                            else:
+                                s = obj.Support
+                            w = FreeCAD.ActiveDocument.Objects[-1] # last created object
+                            FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+s.Name+")")
+                        elif Draft.isClone(w,"Window"):
+                            if w.Objects[0].Inlist:
+                                FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+w.Objects[0].Inlist[0].Name+")")
+                FreeCAD.ActiveDocument.commitTransaction()
        
 class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyStringList","WindowParts","Base",
-                        "the components of this window")
+                        str(translate("Arch","the components of this window")))
         self.Type = "Window"
+        obj.Proxy = self
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -112,43 +133,45 @@ class _Window(ArchComponent.Component):
         pl = obj.Placement
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
-                    shapes = []
-                    for i in range(len(obj.WindowParts)/5):
-                        wires = []
-                        wstr = obj.WindowParts[(i*5)+2].split(',')
-                        for s in wstr:
-                            j = int(s[4:])
-                            if obj.Base.Shape.Wires:
-                                if len(obj.Base.Shape.Wires) >= j:
-                                    wires.append(obj.Base.Shape.Wires[j])
-                        if wires:
-                            max_length = 0
-                            for w in wires:
-                                if w.BoundBox.DiagonalLength > max_length:
-                                    max_length = w.BoundBox.DiagonalLength
-                                    ext = w
-                            wires.remove(ext)
-                            shape = Part.Face(ext)
-                            norm = shape.normalAt(0,0)
-                            thk = float(obj.WindowParts[(i*5)+3])
-                            if thk:
-                                exv = DraftVecUtils.scaleTo(norm,thk)
-                                shape = shape.extrude(exv)
+                if hasattr(obj,"WindowParts"):
+                    if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
+                        shapes = []
+                        for i in range(len(obj.WindowParts)/5):
+                            wires = []
+                            wstr = obj.WindowParts[(i*5)+2].split(',')
+                            for s in wstr:
+                                j = int(s[4:])
+                                if obj.Base.Shape.Wires:
+                                    if len(obj.Base.Shape.Wires) >= j:
+                                        wires.append(obj.Base.Shape.Wires[j])
+                            if wires:
+                                max_length = 0
                                 for w in wires:
-                                    f = Part.Face(w)
-                                    f = f.extrude(exv)
-                                    shape = shape.cut(f)
-                            if obj.WindowParts[(i*5)+4]:
-                                zof = float(obj.WindowParts[(i*5)+4])
-                                if zof:
-                                    zov = DraftVecUtils.scaleTo(norm,zof)
-                                    shape.translate(zov)
-                            print shape
-                            shapes.append(shape)
-                    obj.Shape = Part.makeCompound(shapes)
-        if not DraftGeomUtils.isNull(pl):
-            obj.Placement = pl
+                                    if w.BoundBox.DiagonalLength > max_length:
+                                        max_length = w.BoundBox.DiagonalLength
+                                        ext = w
+                                wires.remove(ext)
+                                shape = Part.Face(ext)
+                                norm = shape.normalAt(0,0)
+                                thk = float(obj.WindowParts[(i*5)+3])
+                                if thk:
+                                    exv = DraftVecUtils.scaleTo(norm,thk)
+                                    shape = shape.extrude(exv)
+                                    for w in wires:
+                                        f = Part.Face(w)
+                                        f = f.extrude(exv)
+                                        shape = shape.cut(f)
+                                if obj.WindowParts[(i*5)+4]:
+                                    zof = float(obj.WindowParts[(i*5)+4])
+                                    if zof:
+                                        zov = DraftVecUtils.scaleTo(norm,zof)
+                                        shape.translate(zov)
+                                print shape
+                                shapes.append(shape)
+                        if shapes:
+                            obj.Shape = Part.makeCompound(shapes)
+                            if not DraftGeomUtils.isNull(pl):
+                                obj.Placement = pl
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"

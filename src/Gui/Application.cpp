@@ -341,6 +341,10 @@ Application::Application(bool GUIenabled)
             "workbenches.");
         Py::Module(module).setAttr(std::string("ActiveDocument"),Py::None());
 
+        UiLoaderPy::init_type();
+        Base::Interpreter().addType(UiLoaderPy::type_object(),
+            module,"UiLoader");
+
         //insert Selection module
         PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,
             "Selection module");

@@ -26,6 +26,10 @@
 #ifndef _PreComp_
 # include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
+# include <BRepBuilderAPI_MakeShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 
@@ -126,6 +130,78 @@ TopLoc_Location Feature::getLocation() const
     trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
     trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
     return TopLoc_Location(trf);
+}
+
+ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+                                   const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
+{
+    ShapeHistory history;
+    history.type = type;
+
+    TopTools_IndexedMapOfShape newM, oldM;
+    TopExp::MapShapes(newS, type, newM);
+    TopExp::MapShapes(oldS, type, oldM);
+
+    for (int i=1; i<=oldM.Extent(); i++) {
+        bool found = false;
+        TopTools_ListIteratorOfListOfShape it;
+        for (it.Initialize(mkShape.Modified(oldM(i))); it.More(); it.Next()) {
+            found = true;
+            for (int j=1; j<=newM.Extent(); j++) {
+                if (newM(j).IsPartner(it.Value())) {
+                    history.shapeMap[i-1].push_back(j-1);
+                    break;
+                }
+            }
+        }
+
+        for (it.Initialize(mkShape.Generated(oldM(i))); it.More(); it.Next()) {
+            found = true;
+            for (int j=1; j<=newM.Extent(); j++) {
+                if (newM(j).IsPartner(it.Value())) {
+                    history.shapeMap[i-1].push_back(j-1);
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            if (mkShape.IsDeleted(oldM(i))) {
+                history.shapeMap[i-1] = std::vector<int>();
+            }
+            else {
+                for (int j=1; j<=newM.Extent(); j++) {
+                    if (newM(j).IsPartner(oldM(i))) {
+                        history.shapeMap[i-1].push_back(j-1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return history;
+}
+
+ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& newH)
+{
+    ShapeHistory join;
+    join.type = oldH.type;
+
+    for (ShapeHistory::MapList::const_iterator it = oldH.shapeMap.begin(); it != oldH.shapeMap.end(); ++it) {
+        int old_shape_index = it->first;
+        if (it->second.empty())
+            join.shapeMap[old_shape_index] = ShapeHistory::List();
+        for (ShapeHistory::List::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+            ShapeHistory::MapList::const_iterator kt = newH.shapeMap.find(*jt);
+            if (kt != newH.shapeMap.end()) {
+                ShapeHistory::List& ary = join.shapeMap[old_shape_index];
+                ary.insert(ary.end(), kt->second.begin(), kt->second.end());
+            }
+        }
+    }
+
+    return join;
 }
 
     /// returns the type name of the ViewProvider

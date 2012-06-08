@@ -563,6 +563,26 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
+          <property name="toolTip">
+           <string>if checked, a widget indicating the current working plane orientation appears during drawing operations</string>
+          </property>
+          <property name="text">
+           <string>Show Working Plane tracker</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>showPlaneTracker</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
@@ -874,19 +894,6 @@ Values with differences below this value will be treated as same.</string>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_9">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_2">
           <property name="maximumSize">
            <size>
@@ -908,17 +915,6 @@ Values with differences below this value will be treated as same.</string>
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Default text font</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
@@ -931,6 +927,13 @@ Values with differences below this value will be treated as same.</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Default text font</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
