@@ -35,9 +35,10 @@ from FreeCAD import Part, Base, Vector
 from shipUtils import Paths, Translator, Math
 
 class Ship:
-    def __init__(self, obj, faces):
+    def __init__(self, obj, solids):
         """ Creates a new ship on active document.
-        @param faces Ship faces (Part::Shape entities).
+        @param obj Part::FeaturePython created object.
+        @param faces Ship solids components.
         """
         # Add uniqueness property to identify Ship instances
         obj.addProperty("App::PropertyBool","IsShip","Ship", str(Translator.translate("True if is a valid ship instance"))).IsShip=True
@@ -46,20 +47,23 @@ class Ship:
         obj.addProperty("App::PropertyLength","Beam","Ship", str(Translator.translate("Ship beam (B) [m]"))).Beam=0.0
         obj.addProperty("App::PropertyLength","Draft","Ship", str(Translator.translate("Ship draft (T) [m]"))).Draft=0.0
         # Add shapes
-        obj.Shape = Part.makeShell(faces)
+        obj.Shape = Part.makeCompound(solids)
         obj.Proxy = self
         self.obj = obj
 
     def onChanged(self, fp, prop):
-        ''' Print the name of the property that has changed '''
-        # FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
+        """ Called when a ship property is modified 
+        @param fp Part::FeaturePython object.
+        @param prop Property changed.
+        """
         if prop == "Length" or prop == "Beam" or prop == "Draft":
             pass
 
-    def execute(self, obj):
-        ''' Print a short message when doing a recomputation, this method is mandatory '''
-        # FreeCAD.Console.PrintMessage("Recompute Ship\n")
-        obj.Shape = Part.makeShell(obj.Shape.Faces)
+    def execute(self, fp):
+        """ Called when a recomputation is needed. 
+        @param fp Part::FeaturePython object.
+        """
+        fp.Shape = Part.makeCompound(fp.Shape.Solids)
 
     def lineFaceSection(self,line,surface):
         """ Returns the point of section of a line with a face
@@ -91,94 +95,6 @@ class Ship:
             if flag > 0:
                 result.append(points[i])
         return result
-
-    def discretize(self, nS, nP):
-        """ Discretize the surface.
-        @param nS Number of sections
-        @param nP Number of points per section
-        """
-        self.obj.addProperty("App::PropertyInteger","nSections","Ship", str(Translator.translate("Number of sections"))).nSections=nS
-        self.obj.addProperty("App::PropertyIntegerList","nPoints","Ship", str(Translator.translate("List of number of points per sections (accumulated histogram)"))).nPoints=[0]
-        self.obj.addProperty("App::PropertyFloatList","xSection","Ship", str(Translator.translate("List of sections x coordinate"))).xSection=[]
-        self.obj.addProperty("App::PropertyVectorList","mSections","Ship", str(Translator.translate("List of sections points"))).mSections=[]
-        nPoints   = [0]
-        xSection  = []
-        mSections = []
-        # Get bounds
-        shape = self.obj.Shape
-        bbox = shape.BoundBox
-        x0 = bbox.XMin
-        x1 = bbox.XMax
-        y0 = bbox.YMin
-        y1 = bbox.YMax
-        z0 = bbox.ZMin
-        z1 = bbox.ZMax
-        # Create a set of planes to perfom edges sections
-        planes = []
-        dz = (z1 - z0) / (nP - 1)
-        for j in range(0,nP):
-            z = z0 + j*dz
-            rX = x1 - x0
-            rY = max(y1 - y0, abs(y1), abs(y0))
-            planes.append(Part.makePlane(4*rX,4*rY,Base.Vector(-2*rX,-2*rY,z),Base.Vector(0,0,1)))
-        # Division are performed at x axis
-        dx = (x1 - x0) / (nS - 1.0)
-        for i in range(0,nS):
-            section = []
-            x = x0 + i*dx
-            xSection.append(x)
-            percen = i*100 / (nS-1)
-            FreeCAD.Console.PrintMessage('%d%%\n' % (percen));
-            # Slice the surface to get curves
-            wires = shape.slice(Vector(1.0,0.0,0.0), x)
-            if not wires:
-                if (i != 0) or (i != nS-1):
-                    msg = 'Found empty section at x=%g\n' % (x)
-                    msg = Translator.translate(msg)
-                    FreeCAD.Console.PrintWarning(msg)
-                    FreeCAD.Console.PrintWarning('\tThis may happens if a bad defined (or really complex) surface has been provided.\n')
-                    FreeCAD.Console.PrintWarning('\tPlease, ensure that this section is correct, or fix surfaces and create a new ship.\n')
-                    nPoints.append(0)
-                    continue
-            # Desarrollate wires into edges list
-            edges = []
-            for j in range(0,len(wires)):
-                wire = wires[j].Edges
-                for k in range(0,len(wire)):
-                    edges.append(wire[k])
-            # Slice curves to get points
-            points = []
-            for k in range(0,nP):
-                planePoints = []
-                for j in range(0,len(edges)):
-                    aux = self.lineFaceSection(edges[j], planes[k])
-                    for l in range(0,len(aux)):
-                        planePoints.append(Vector(aux[l].X, aux[l].Y, aux[l].Z))
-                if not planePoints:                             # No section found, symmetry plane point will used
-                    planePoints.append(Vector(x,0,z0 + k*dz))
-                # Get Y coordinates
-                auxY = []
-                for l in range(0,len(planePoints)):
-                    auxY.append(planePoints[l].y)
-                # Sort them
-                auxY.sort()
-                # And store
-                for l in range(0,len(planePoints)):
-                    points.append(Vector(planePoints[l].x, auxY[l], planePoints[l].z))
-            # Store points
-            section = points[:]
-            nPoints.append(len(section))
-            for j in range(0,len(section)):
-                mSections.append(section[j])
-        # Save data
-        for i in range(1,len(nPoints)):
-            nPoints[i] = nPoints[i] + nPoints[i-1]
-        self.obj.nPoints   = nPoints[:]
-        self.obj.xSection  = xSection[:]
-        self.obj.mSections = mSections[:]
-        msg = '%d Discretization points performed\n' % (len(mSections))
-        msg = Translator.translate(msg)
-        FreeCAD.Console.PrintMessage(msg)
 
 class ViewProviderShip:
     def __init__(self, obj):
@@ -659,21 +575,6 @@ class ViewProviderShip:
         "                                                                ",
         "                                                                "};
         """
-
-def sections(obj):
-    """ Returns the discretization points of sections, with the advantage 
-    that is a list of nSections lists, with the points.
-    @param obj Ship object
-    @return Sections points
-    """
-    histogram = obj.nPoints[:]
-    points    = obj.mSections[:]
-    sections  = []
-    for i in range(0, len(histogram) - 1):
-        sections.append([])
-        for j in range(histogram[i],histogram[i+1]):
-            sections[i].append(points[j])
-    return sections
 
 def weights(obj):
     """ Returns Ship weights list. If weights has not been sets, 
