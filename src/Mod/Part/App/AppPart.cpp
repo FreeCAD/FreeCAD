@@ -134,6 +134,7 @@ void PartExport initPart()
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
     Part::PropertyGeometryList  ::init();
+    Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
 
     Part::Feature               ::init();

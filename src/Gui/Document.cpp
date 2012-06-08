@@ -748,7 +748,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
                     << views.size() <<"\">" << std::endl;
 
     bool xml = writer.isForceXML();
-    writer.setForceXML(true);
+    //writer.setForceXML(true);
     writer.incInd(); // indention for 'ViewProvider name'
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
     for (jt = views.begin(); jt != views.end(); ++jt) {

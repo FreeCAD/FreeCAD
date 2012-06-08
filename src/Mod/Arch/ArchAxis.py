@@ -25,12 +25,13 @@ import FreeCAD,FreeCADGui,Draft,math,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore, QtGui
 from pivy import coin
+from DraftTools import translate
 
 __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeAxis(num=0,size=0,name="Axes"):
+def makeAxis(num=5,size=1,name=str(translate("Arch","Axes"))):
     '''makeAxis(num,size): makes an Axis System
     based on the given number of axes and interval distances'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
@@ -56,16 +57,17 @@ class _CommandAxis:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Axis")
-        makeAxis(5,1)
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Axis")))
+        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.doCommand("Arch.makeAxis()")
         FreeCAD.ActiveDocument.commitTransaction()
        
 class _Axis:
     "The Axis object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyFloatList","Distances","Base", "The intervals between axes")
-        obj.addProperty("App::PropertyFloatList","Angles","Base", "The angles of each axis")
-        obj.addProperty("App::PropertyFloat","Length","Base", "The length of the axes")
+        obj.addProperty("App::PropertyFloatList","Distances","Base", str(translate("Arch","The intervals between axes")))
+        obj.addProperty("App::PropertyFloatList","Angles","Base", str(translate("Arch","The angles of each axis")))
+        obj.addProperty("App::PropertyFloat","Length","Base", str(translate("Arch","The length of the axes")))
         self.Type = "Axis"
         obj.Length=1.0
         obj.Proxy = self
@@ -98,8 +100,8 @@ class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","BubbleSize","Base", "The size of the axis bubbles")
-        vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", "The numeration style")
+        vobj.addProperty("App::PropertyLength","BubbleSize","Base", str(translate("Arch","The size of the axis bubbles")))
+        vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", str(translate("Arch","The numeration style")))
         vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
         vobj.Proxy = self
         vobj.BubbleSize = .1

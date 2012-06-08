@@ -433,25 +433,19 @@ void TopoShape::operator = (const TopoShape& sh)
     }
 }
 
-void TopoShape::setTransform(const Base::Matrix4D& rclTrf)
+void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 {
-    gp_Trsf mov;
-    mov.SetValues(rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
-                  rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
-                  rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3],
-                  0.00001,0.00001);
-    TopLoc_Location loc(mov);
-    _Shape.Location(loc);
+    trsf.SetValues(mtrx[0][0],mtrx[0][1],mtrx[0][2],mtrx[0][3],
+                   mtrx[1][0],mtrx[1][1],mtrx[1][2],mtrx[1][3],
+                   mtrx[2][0],mtrx[2][1],mtrx[2][2],mtrx[2][3],
+                   0.00001,0.00001);
 }
 
-Base::Matrix4D TopoShape::getTransform(void) const
+void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
 {
-    Base::Matrix4D mtrx;
-    gp_Trsf Trf = _Shape.Location().Transformation();
-
-    gp_Mat m = Trf._CSFDB_Getgp_Trsfmatrix();
-    gp_XYZ p = Trf._CSFDB_Getgp_Trsfloc();
-    Standard_Real scale = Trf._CSFDB_Getgp_Trsfscale();
+    gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
+    gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
+    Standard_Real scale = trsf._CSFDB_Getgp_Trsfscale();
 
     // set Rotation matrix
     mtrx[0][0] = scale * m._CSFDB_Getgp_Matmatrix(0,0);
@@ -470,7 +464,21 @@ Base::Matrix4D TopoShape::getTransform(void) const
     mtrx[0][3] = p._CSFDB_Getgp_XYZx();
     mtrx[1][3] = p._CSFDB_Getgp_XYZy();
     mtrx[2][3] = p._CSFDB_Getgp_XYZz();
+}
 
+void TopoShape::setTransform(const Base::Matrix4D& rclTrf)
+{
+    gp_Trsf mov;
+    convertTogpTrsf(rclTrf, mov);
+    TopLoc_Location loc(mov);
+    _Shape.Location(loc);
+}
+
+Base::Matrix4D TopoShape::getTransform(void) const
+{
+    Base::Matrix4D mtrx;
+    gp_Trsf Trf = _Shape.Location().Transformation();
+    convertToMatrix(Trf, mtrx);
     return mtrx;
 }
 

@@ -24,7 +24,12 @@
 			  <UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [0|Length] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
-	  <Methode Name="normalAt">
+		<Methode Name="parameterAt">
+			<Documentation>
+				<UserDocu>Float = parameterAt(Vertex) - Get the parameter at the given vertex if lying on the edge</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="normalAt">
 		  <Documentation>
 			  <UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [0|Length] if defined</UserDocu>
 		  </Documentation>
@@ -62,6 +67,11 @@
 		<Methode Name="discretize">
 			<Documentation>
 				<UserDocu>Discretizes the edge using a given deflection or number of points and returns a list of points</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="split">
+			<Documentation>
+				<UserDocu>Splits the edge at the given parameter values and builds a wire out of it</UserDocu>
 			</Documentation>
 		</Methode>
 		<Attribute Name="Tolerance">

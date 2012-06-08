@@ -65,32 +65,26 @@ void Writer::insertAsciiFile(const char* FileName)
     if (!from)
         throw Base::Exception("Writer::insertAsciiFile() Could not open file!");
 
-    Stream() << "<![CDATA[" << endl;
+    Stream() << "<![CDATA[";
     char ch;
     while (from.get(ch))
         Stream().put(ch);
-    Stream() << endl << "]]>" << endl;
+    Stream() << "]]>" << endl;
 }
 
 void Writer::insertBinFile(const char* FileName)
 {
     Base::FileInfo fi(FileName);
-    Base::ifstream from(fi, std::ios::in | std::ios::binary);
+    Base::ifstream from(fi, std::ios::in | std::ios::binary | std::ios::ate);
     if (!from)
         throw Base::Exception("Writer::insertAsciiFile() Could not open file!");
 
-    Stream() << "<![CDATA[" << endl;
-
-    unsigned char buf[60];
-    std::string encoded;
-    unsigned int i;
-
-    while (from) {
-        for (i=0 ; i<60 && from;i++)
-            buf[i] = from.get();
-        Stream() << Base::base64_encode(buf,i) << endl;
-    }
-
+    Stream() << "<![CDATA[";
+    std::ifstream::pos_type fileSize = from.tellg();
+    from.seekg(0, std::ios::beg);
+    std::vector<unsigned char> bytes(fileSize);
+    from.read((char*)&bytes[0], fileSize);
+    Stream() << Base::base64_encode(&bytes[0], fileSize);
     Stream() << "]]>" << endl;
 }
 

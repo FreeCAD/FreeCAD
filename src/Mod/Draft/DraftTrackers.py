@@ -81,6 +81,22 @@ class Tracker:
         self.switch.whichChild = -1
         self.Visible = False
 
+    def lowerTracker(self):
+        '''lowers the tracker to the bottom of the scenegraph, so
+        it doesn't obscure the other objects'''
+        if self.switch:
+            sg=Draft.get3DView().getSceneGraph()
+            sg.removeChild(self.switch)
+            sg.addChild(self.switch)
+
+    def raiseTracker(self):
+        '''raises the tracker to the top of the scenegraph, so
+        it obscures the other objects'''
+        if self.switch:
+            sg=Draft.get3DView().getSceneGraph()
+            sg.removeChild(self.switch)
+            sg.insertChild(self.switch,0)
+        
 class snapTracker(Tracker):
     "A Snap Mark tracker, used by tools that support snapping"
     def __init__(self):
@@ -617,29 +633,21 @@ class gridTracker(Tracker):
 
     def set(self):
         Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
+        P = FreeCAD.DraftWorkingPlane.position
         self.trans.rotation.setValue([Q[0],Q[1],Q[2],Q[3]])
+        self.trans.translation.setValue([P.x,P.y,P.z])
         self.on()
 
     def getClosestNode(self,point):
         "returns the closest node from the given point"
         # get the 2D coords.
-        point = FreeCAD.DraftWorkingPlane.projectPoint(point)
-        u = DraftVecUtils.project(point,FreeCAD.DraftWorkingPlane.u)
-        lu = u.Length
-        if u.getAngle(FreeCAD.DraftWorkingPlane.u) > 1.5:
-            lu  = -lu
-        v = DraftVecUtils.project(point,FreeCAD.DraftWorkingPlane.v)
-        lv = v.Length
-        if v.getAngle(FreeCAD.DraftWorkingPlane.v) > 1.5:
-            lv = -lv
-        # print "u = ",u," v = ",v
-        # find nearest grid node
-        pu = (round(lu/self.space,0))*self.space
-        pv = (round(lv/self.space,0))*self.space
-        rot = FreeCAD.Rotation()
-        rot.Q = self.trans.rotation.getValue().getValue()
-        return rot.multVec(Vector(pu,pv,0))
-
+        # point = FreeCAD.DraftWorkingPlane.projectPoint(point)
+        pt = FreeCAD.DraftWorkingPlane.getLocalCoords(point)
+        pu = (round(pt.x/self.space,0))*self.space
+        pv = (round(pt.y/self.space,0))*self.space
+        pt = FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(pu,pv,0))
+        return pt
+    
 class boxTracker(Tracker):                
     "A box tracker, can be based on a line object"
     def __init__(self,line=None,width=0.1,height=1):
@@ -701,3 +709,27 @@ class boxTracker(Tracker):
             self.update()
         else:
             return self.cube.depth.getValue()
+
+class radiusTracker(Tracker):
+    "A tracker that displays a transparent sphere to inicate a radius"
+    def __init__(self,position=FreeCAD.Vector(0,0,0),radius=1):
+        self.trans = coin.SoTransform()
+        self.trans.translation.setValue([position.x,position.y,position.z])
+        m = coin.SoMaterial()
+        m.transparency.setValue(0.9)
+        m.diffuseColor.setValue([0,1,0])
+        self.sphere = coin.SoSphere()
+        self.sphere.radius.setValue(radius)
+        self.baseline = None
+        Tracker.__init__(self,children=[self.trans,m,self.sphere])
+
+    def update(self,arg1,arg2=None):
+        if isinstance(arg1,FreeCAD.Vector):
+            self.trans.translation.setValue([arg1.x,arg1.y,arg1.z])
+        else:
+            self.sphere.radius.setValue(arg1)
+        if arg2 != None:
+            if isinstance(arg2,FreeCAD.Vector):
+                self.trans.translation.setValue([arg2.x,arg2.y,arg2.z])
+            else:
+                self.sphere.radius.setValue(arg2)

@@ -1475,6 +1475,28 @@ void Application::ParseOptions(int ac, char ** av)
     //x11.add_options()
     //    ("display",  boost::program_options::value< string >(), "set the X-Server")
     //    ;
+    //0000723: improper handling of qt specific comand line arguments
+    std::vector<std::string> args;
+    bool merge=false;
+    for (int i=1; i<ac; i++) {
+        if (merge) {
+            merge = false;
+            args.back() += "=";
+            args.back() += av[i];
+        }
+        else {
+            args.push_back(av[i]);
+        }
+        if (strcmp(av[i],"-style") == 0) {
+            merge = true;
+        }
+        else if (strcmp(av[i],"-stylesheet") == 0) {
+            merge = true;
+        }
+        else if (strcmp(av[i],"-session") == 0) {
+            merge = true;
+        }
+    }
 
     // 0000659: SIGABRT on startup in boost::program_options (Boost 1.49)
     // Add some text to the constructor
@@ -1492,7 +1514,7 @@ void Application::ParseOptions(int ac, char ** av)
 
     variables_map vm;
     try {
-        store( boost::program_options::command_line_parser(ac, av).
+        store( boost::program_options::command_line_parser(args).
                options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
 
         std::ifstream ifs("FreeCAD.cfg");
@@ -1535,7 +1557,7 @@ void Application::ParseOptions(int ac, char ** av)
         vector<string> args;
         copy(tok.begin(), tok.end(), back_inserter(args));
         // Parse the file and store the options
-        store( boost::program_options::command_line_parser(ac, av).
+        store( boost::program_options::command_line_parser(args).
                options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
     }
 

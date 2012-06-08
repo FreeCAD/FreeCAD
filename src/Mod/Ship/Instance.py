@@ -49,7 +49,6 @@ class Ship:
         # Add shapes
         obj.Shape = Part.makeCompound(solids)
         obj.Proxy = self
-        self.obj = obj
 
     def onChanged(self, fp, prop):
         """ Called when a ship property is modified 
