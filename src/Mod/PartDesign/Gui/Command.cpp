@@ -328,6 +328,82 @@ bool CmdPartDesignRevolution::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Groove
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignGroove);
+
+CmdPartDesignGroove::CmdPartDesignGroove()
+  : Command("PartDesign_Groove")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Groove");
+    sToolTipText  = QT_TR_NOOP("Revolve a selected sketch");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Groove";
+}
+
+void CmdPartDesignGroove::activated(int iMsg)
+{
+    unsigned int n = getSelection().countObjectsOfType(Part::Part2DObject::getClassTypeId());
+    if (n != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select a sketch or 2D object."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("Groove");
+
+    std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
+    Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(Sel.front());
+    const TopoDS_Shape& shape = sketch->Shape.getValue();
+    if (shape.IsNull()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("The shape of the selected object is empty."));
+        return;
+    }
+
+    // count free wires
+    int ctWires=0;
+    TopExp_Explorer ex;
+    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
+        ctWires++;
+    }
+    if (ctWires == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("The shape of the selected object is not a wire."));
+        return;
+    }
+
+    App::DocumentObject* support = sketch->Support.getValue();
+
+    openCommand("Make Groove");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Groove\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
+                                                                             FeatName.c_str(), sketch->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
+    updateActive();
+    if (isActiveObjectValid()) {
+        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
+        if (support)
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
+    }
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    if (support) {
+        copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
+        copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
+        copyVisual(FeatName.c_str(), "PointColor", support->getNameInDocument());
+    }
+}
+
+bool CmdPartDesignGroove::isActive(void)
+{
+    return hasActiveDocument();
+}
+//===========================================================================
 // PartDesign_Fillet
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignFillet);
@@ -628,6 +704,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
+    rcCmdMgr.addCommand(new CmdPartDesignGroove());
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     //rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
