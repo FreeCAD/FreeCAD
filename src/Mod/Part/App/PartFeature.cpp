@@ -272,6 +272,7 @@ template class PartExport FeaturePythonT<Part::Feature>;
 }
 
 // ----------------------------------------------------------------
+
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 #include <gce_MakeLin.hxx>
@@ -318,4 +319,3 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
 
     return result;
 }
-// --------------------------------------------------------------------

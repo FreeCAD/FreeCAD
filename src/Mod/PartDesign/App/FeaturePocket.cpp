@@ -27,6 +27,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
