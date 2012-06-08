@@ -338,10 +338,11 @@ CmdPartDesignGroove::CmdPartDesignGroove()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Groove");
-    sToolTipText  = QT_TR_NOOP("Revolve a selected sketch");
+    sToolTipText  = QT_TR_NOOP("Groove a selected sketch");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Groove";
+  //sPixmap       = "PartDesign_Groove";
+    sPixmap       = "PartDesign_Revolution";
 }
 
 void CmdPartDesignGroove::activated(int iMsg)

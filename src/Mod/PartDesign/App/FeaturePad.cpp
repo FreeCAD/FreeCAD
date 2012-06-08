@@ -26,6 +26,7 @@
 //# include <Bnd_Box.hxx>
 //# include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
@@ -87,7 +88,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn("Length of pad too small");
     double L2 = Length2.getValue();
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-            return new App::DocumentObjectExecReturn("Second length of pad too small");
+        return new App::DocumentObjectExecReturn("Second length of pad too small");
 
     App::DocumentObject* link = Sketch.getValue();
     if (!link)
@@ -178,7 +179,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                         it_near = it;
                 upToFace = (std::string(Type.getValueAsString()) == "UpToLast" ? it_far->face : it_near->face);
             } else {
-                if (FaceName.getValue() == "")
+                if (FaceName.isEmpty())
                     return new App::DocumentObjectExecReturn("Cannot extrude up to face: No face selected");
 
                 // Get active object, this is the object that the user referenced when he clicked on the face!

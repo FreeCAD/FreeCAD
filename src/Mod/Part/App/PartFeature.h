@@ -128,6 +128,8 @@ struct cutFaces {
     TopoDS_Face face;
     double distsq;
 };
+
+PartExport
 std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
                                         const TopoDS_Shape& face, const gp_Dir& dir);
 
