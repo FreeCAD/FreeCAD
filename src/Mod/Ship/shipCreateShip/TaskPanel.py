@@ -47,13 +47,11 @@ class TaskPanel:
         obj.Beam   = self.form.beam.value()
         obj.Draft  = self.form.draft.value()
         # Discretize it
-        ship.discretize(self.form.nSections.value(), self.form.nPoints.value())
         App.ActiveDocument.recompute()
         return True
 
     def reject(self):
         self.preview.clean()
-        self.close()
         return True
 
     def clicked(self, index):
