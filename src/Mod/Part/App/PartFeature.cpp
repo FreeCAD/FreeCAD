@@ -30,6 +30,10 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+// includes for findAllFacesCutBy()
+# include <TopoDS_Face.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx> // for Precision::Confusion()
 #endif
 
 
@@ -139,22 +143,25 @@ ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_Sha
     history.type = type;
 
     TopTools_IndexedMapOfShape newM, oldM;
-    TopExp::MapShapes(newS, type, newM);
-    TopExp::MapShapes(oldS, type, oldM);
+    TopExp::MapShapes(newS, type, newM); // map containing all old objects of type "type"
+    TopExp::MapShapes(oldS, type, oldM); // map containing all new objects of type "type"
 
+    // Look at all objects in the old shape and try to find the modified object in the new shape
     for (int i=1; i<=oldM.Extent(); i++) {
         bool found = false;
         TopTools_ListIteratorOfListOfShape it;
+        // Find all new objects that are a modification of the old object (e.g. a face was resized)
         for (it.Initialize(mkShape.Modified(oldM(i))); it.More(); it.Next()) {
             found = true;
-            for (int j=1; j<=newM.Extent(); j++) {
+            for (int j=1; j<=newM.Extent(); j++) { // one old object might create several new ones!
                 if (newM(j).IsPartner(it.Value())) {
-                    history.shapeMap[i-1].push_back(j-1);
+                    history.shapeMap[i-1].push_back(j-1); // adjust indices to start at zero
                     break;
                 }
             }
         }
 
+        // Find all new objects that were generated from an old object (e.g. a face generated from an edge)
         for (it.Initialize(mkShape.Generated(oldM(i))); it.More(); it.Next()) {
             found = true;
             for (int j=1; j<=newM.Extent(); j++) {
@@ -166,10 +173,12 @@ ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_Sha
         }
 
         if (!found) {
+            // Find all old objects that don't exist any more (e.g. a face was completely cut away)
             if (mkShape.IsDeleted(oldM(i))) {
                 history.shapeMap[i-1] = std::vector<int>();
             }
             else {
+                // Mop up the rest (will this ever be reached?)
                 for (int j=1; j<=newM.Extent(); j++) {
                     if (newM(j).IsPartner(oldM(i))) {
                         history.shapeMap[i-1].push_back(j-1);
@@ -202,6 +211,15 @@ ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& 
     }
 
     return join;
+}
+
+const TopoDS_Shape Feature::findOriginOf(const TopoDS_Shape& reference) {
+/*    Base::Console().Error("Looking for origin of face in %s\n", this->getName());
+    if (reference.ShapeType() == TopAbs_FACE) {
+        // Find index of reference in the history
+    }
+*/
+    return TopoDS_Shape();
 }
 
     /// returns the type name of the ViewProvider
@@ -253,3 +271,51 @@ template<> PyObject* Part::FeaturePython::getPyObject(void) {
 template class PartExport FeaturePythonT<Part::Feature>;
 }
 
+// ----------------------------------------------------------------
+#include <GProp_GProps.hxx>
+#include <BRepGProp.hxx>
+#include <gce_MakeLin.hxx>
+#include <BRepIntCurveSurface_Inter.hxx>
+#include <IntCurveSurface_IntersectionPoint.hxx>
+#include <gce_MakeDir.hxx>
+
+std::vector<Part::cutFaces> Part::findAllFacesCutBy(
+        const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir)
+{
+    // Find the centre of gravity of the face
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(face,props);
+    gp_Pnt cog = props.CentreOfMass();
+
+    // create a line through the centre of gravity
+    gp_Lin line = gce_MakeLin(cog, dir);
+
+    // Find intersection of line with all faces of the shape
+    std::vector<cutFaces> result;
+    BRepIntCurveSurface_Inter mkSection;
+    // TODO: Less precision than Confusion() should be OK?
+
+    for (mkSection.Init(shape, line, Precision::Confusion()); mkSection.More(); mkSection.Next()) {
+        gp_Pnt iPnt = mkSection.Pnt();
+        double dsq = cog.SquareDistance(iPnt);
+
+        if (dsq < Precision::Confusion())
+            continue; // intersection with original face
+
+        // Find out which side of the original face the intersection is on
+        gce_MakeDir mkDir(cog, iPnt);
+        if (!mkDir.IsDone())
+            continue; // some error (appears highly unlikely to happen, though...)
+
+        if (mkDir.Value().IsOpposite(dir, Precision::Confusion()))
+            continue; // wrong side of face (opposite to extrusion direction)
+
+        cutFaces newF;
+        newF.face = mkSection.Face();
+        newF.distsq = dsq;
+        result.push_back(newF);
+    }
+
+    return result;
+}
+// --------------------------------------------------------------------
