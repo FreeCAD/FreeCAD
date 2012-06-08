@@ -56,6 +56,8 @@ Revolution::Revolution()
     ADD_PROPERTY(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)));
     ADD_PROPERTY(Angle,(360.0));
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::PropertyType)(App::Prop_None),"Reference axis of revolution");
+    ADD_PROPERTY(Midplane,(0));
+    ADD_PROPERTY(Reversed, (0));
 }
 
 short Revolution::mustExecute() const
@@ -65,7 +67,8 @@ short Revolution::mustExecute() const
         ReferenceAxis.isTouched() ||
         Axis.isTouched() ||
         Base.isTouched() ||
-        Angle.isTouched())
+        Angle.isTouched() ||
+        Midplane.isTouched())
         return 1;
     return 0;
 }
@@ -151,35 +154,54 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     if (aFace.IsNull())
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
+    // Rotate the face by half the angle to get revolution symmetric to sketch plane
+    if (Midplane.getValue()) {
+        gp_Trsf mov;
+        mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
+        TopLoc_Location loc(mov);
+        aFace.Move(loc);
+    }
+
     this->positionBySketch();
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     pnt.Transform(invObjLoc.Transformation());
     dir.Transform(invObjLoc.Transformation());
 
-    // revolve the face to a solid
-    BRepPrimAPI_MakeRevol RevolMaker(aFace.Moved(invObjLoc), gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()));
+    // Reverse angle if selected
+    double angle = Base::toRadians<double>(Angle.getValue());
+    if (Reversed.getValue() && !Midplane.getValue())
+        angle *= (-1.0);
 
-    if (RevolMaker.IsDone()) {
-        TopoDS_Shape result = RevolMaker.Shape();
-        // if the sketch has a support fuse them to get one result object (PAD!)
-        if (SupportObject) {
-            const TopoDS_Shape& support = SupportObject->Shape.getValue();
-            if (!support.IsNull() && support.ShapeType() == TopAbs_SOLID) {
-                // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
-                // Let's check if the fusion has been successful
-                if (!mkFuse.IsDone())
-                    throw Base::Exception("Fusion with support failed");
-                result = mkFuse.Shape();
+    try {
+        // revolve the face to a solid
+        BRepPrimAPI_MakeRevol RevolMaker(aFace.Moved(invObjLoc), gp_Ax1(pnt, dir), angle);
+
+        if (RevolMaker.IsDone()) {
+            TopoDS_Shape result = RevolMaker.Shape();
+            // if the sketch has a support fuse them to get one result object (PAD!)
+            if (SupportObject) {
+                const TopoDS_Shape& support = SupportObject->Shape.getValue();
+                if (!support.IsNull() && support.ShapeType() == TopAbs_SOLID) {
+                    // Let's call algorithm computing a fuse operation:
+                    BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
+                    // Let's check if the fusion has been successful
+                    if (!mkFuse.IsDone())
+                        throw Base::Exception("Fusion with support failed");
+                    result = mkFuse.Shape();
+                }
             }
+
+            this->Shape.setValue(result);
         }
+        else
+            return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
 
-        this->Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
     }
-    else
-        return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
-
-    return App::DocumentObject::StdReturn;
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
 }
 
 }

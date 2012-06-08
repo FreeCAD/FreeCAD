@@ -60,11 +60,18 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
             this, SLOT(onAngleChanged(double)));
     connect(ui->axis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplane(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversed(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
     double l = pcRevolution->Angle.getValue();
+    bool mirrored = pcRevolution->Midplane.getValue();
+    bool reversed = pcRevolution->Reversed.getValue();
+
     ui->doubleSpinBox->setValue(l);
 
     int count=pcRevolution->getSketchAxisCount();
@@ -94,6 +101,9 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     }
 
     ui->axis->setCurrentIndex(pos);
+
+    ui->checkBoxMidplane->setChecked(mirrored);
+    ui->checkBoxReversed->setChecked(reversed);
 
     setFocus ();
 }
@@ -126,6 +136,19 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     pcRevolution->getDocument()->recomputeFeature(pcRevolution);
 }
 
+void TaskRevolutionParameters::onMidplane(bool on)
+{
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    pcRevolution->Midplane.setValue(on);
+    pcRevolution->getDocument()->recomputeFeature(pcRevolution);
+}
+
+void TaskRevolutionParameters::onReversed(bool on)
+{
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    pcRevolution->Reversed.setValue(on);
+    pcRevolution->getDocument()->recomputeFeature(pcRevolution);
+}
 
 double TaskRevolutionParameters::getAngle(void) const
 {
@@ -155,6 +178,16 @@ QString TaskRevolutionParameters::getReferenceAxis(void) const
         buf = QString::fromUtf8("''");
 
     return buf;
+}
+
+bool   TaskRevolutionParameters::getMidplane(void) const
+{
+    return ui->checkBoxMidplane->isChecked();
+}
+
+bool   TaskRevolutionParameters::getReversed(void) const
+{
+    return ui->checkBoxReversed->isChecked();
 }
 
 TaskRevolutionParameters::~TaskRevolutionParameters()
@@ -210,6 +243,8 @@ bool TaskDlgRevolutionParameters::accept()
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
     std::string axis = parameter->getReferenceAxis().toStdString();
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();
