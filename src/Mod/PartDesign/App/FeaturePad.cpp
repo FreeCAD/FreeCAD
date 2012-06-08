@@ -23,15 +23,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-//# include <Bnd_Box.hxx>
-//# include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
-//# include <Geom_Plane.hxx>
 # include <Handle_Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
