@@ -118,25 +118,37 @@ void SweepWidget::findShapes()
 bool SweepWidget::accept()
 {
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1");
-    if (!edgeFilter.match()) {
-        QMessageBox::critical(this, tr("Sweep path"), tr("Select an edge you want to sweep along."));
+    Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
+    bool matchEdge = edgeFilter.match();
+    bool matchPart = partFilter.match();
+    if (!matchEdge && !matchPart) {
+        QMessageBox::critical(this, tr("Sweep path"), tr("Select an edge or wire you want to sweep along."));
         return false;
     }
 
     // get the selected object
-    const std::vector<Gui::SelectionObject>& result = edgeFilter.Result[0];
-    const std::vector<std::string>& edges = result[0].getSubNames();
+    std::string objectName, subShape;
+    if (matchEdge) {
+        const std::vector<Gui::SelectionObject>& result = edgeFilter.Result[0];
+        const std::vector<std::string>& edges = result[0].getSubNames();
+        objectName = result.front().getFeatName();
+        subShape = edges.front();
+    }
+    else {
+        const std::vector<Gui::SelectionObject>& result = partFilter.Result[0];
+        objectName = result.front().getFeatName();
+    }
 
-    QString list, solid, fresnet;
+    QString list, solid, frenet;
     if (d->ui.checkSolid->isChecked())
         solid = QString::fromAscii("True");
     else
         solid = QString::fromAscii("False");
 
-    if (d->ui.checkFresnet->isChecked())
-        fresnet = QString::fromAscii("True");
+    if (d->ui.checkFrenet->isChecked())
+        frenet = QString::fromAscii("True");
     else
-        fresnet = QString::fromAscii("False");
+        frenet = QString::fromAscii("False");
 
     QTextStream str(&list);
 
@@ -158,11 +170,11 @@ bool SweepWidget::accept()
             "App.getDocument('%6').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%6').ActiveObject.Spine=(FreeCAD.ActiveDocument.%2,['%3'])\n"
             "App.getDocument('%6').ActiveObject.Solid=%4\n"
-            "App.getDocument('%6').ActiveObject.Fresnet=%5\n"
+            "App.getDocument('%6').ActiveObject.Frenet=%5\n"
             )
-            .arg(list).arg(QLatin1String(result.front().getFeatName()))
-            .arg(QLatin1String(edges.front().c_str()))
-            .arg(solid).arg(fresnet).arg(QString::fromAscii(d->document.c_str()));
+            .arg(list).arg(QLatin1String(objectName.c_str()))
+            .arg(QLatin1String(subShape.c_str()))
+            .arg(solid).arg(frenet).arg(QString::fromAscii(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) throw Base::Exception("Document doesn't exist anymore");

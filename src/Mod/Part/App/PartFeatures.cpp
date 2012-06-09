@@ -28,6 +28,8 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shell.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
 
@@ -199,6 +201,8 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
 // ----------------------------------------------------------------------------
 
+const char* Part::Sweep::TransitionEnums[]= {"Transformed","Right corner", "Round corner",NULL};
+
 PROPERTY_SOURCE(Part::Sweep, Part::Feature)
 
 Sweep::Sweep()
@@ -207,7 +211,9 @@ Sweep::Sweep()
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
     ADD_PROPERTY_TYPE(Solid,(false),"Sweep",App::Prop_None,"Create solid");
-    ADD_PROPERTY_TYPE(Fresnet,(false),"Sweep",App::Prop_None,"Fresnet");
+    ADD_PROPERTY_TYPE(Frenet,(false),"Sweep",App::Prop_None,"Frenet");
+    ADD_PROPERTY_TYPE(Transition,(long(0)),"Sweep",App::Prop_None,"Transition mode");
+    Transition.setEnums(TransitionEnums);
 }
 
 short Sweep::mustExecute() const
@@ -218,7 +224,9 @@ short Sweep::mustExecute() const
         return 1;
     if (Solid.isTouched())
         return 1;
-    if (Fresnet.isTouched())
+    if (Frenet.isTouched())
+        return 1;
+    if (Transition.isTouched())
         return 1;
     return 0;
 }
@@ -234,22 +242,24 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         return new App::DocumentObjectExecReturn("No sections linked.");
     App::DocumentObject* spine = Spine.getValue();
     if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-        return new App::DocumentObjectExecReturn("No shape linked.");
+        return new App::DocumentObjectExecReturn("No spine linked.");
     const std::vector<std::string>& subedge = Spine.getSubValues();
     if (subedge.size() != 1)
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
 
-    TopoDS_Shape edge;
+    TopoDS_Shape path;
     const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
     if (!shape._Shape.IsNull()) {
         if (!subedge[0].empty()) {
-            edge = shape.getSubShape(subedge[0].c_str());
+            path = shape.getSubShape(subedge[0].c_str());
         }
         else {
             if (shape._Shape.ShapeType() == TopAbs_EDGE)
-                edge = shape._Shape;
+                path = shape._Shape;
             else if (shape._Shape.ShapeType() == TopAbs_WIRE)
-                edge = shape._Shape;
+                path = shape._Shape;
+            else
+                return new App::DocumentObjectExecReturn("Spine is neither an edge nor a wire.");
         }
     }
 
@@ -279,11 +289,37 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         }
 
         Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
-        Standard_Boolean isFresnet = Fresnet.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean isFrenet = Frenet.getValue() ? Standard_True : Standard_False;
+        BRepBuilderAPI_TransitionMode transMode;
+        switch (Transition.getValue()) {
+            case 1: transMode = BRepBuilderAPI_RightCorner;
+                break;
+            case 2: transMode = BRepBuilderAPI_RoundCorner;
+                break;
+            default: transMode = BRepBuilderAPI_Transformed;
+                break;
+        }
 
-        BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(edge));
-        TopoShape myShape(mkWire.Wire());
-        this->Shape.setValue(myShape.makePipeShell(profiles, isSolid, isFresnet));
+        if (path.ShapeType() == TopAbs_EDGE) {
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(path));
+            path = mkWire.Wire();
+        }
+
+        BRepOffsetAPI_MakePipeShell mkPipeShell(TopoDS::Wire(path));
+        mkPipeShell.SetMode(isFrenet);
+        mkPipeShell.SetTransitionMode(transMode);
+        TopTools_ListIteratorOfListOfShape iter;
+        for (iter.Initialize(profiles); iter.More(); iter.Next()) {
+            mkPipeShell.Add(TopoDS_Shape(iter.Value()));
+        }
+
+        if (!mkPipeShell.IsReady())
+            Standard_Failure::Raise("shape is not ready to build");
+        mkPipeShell.Build();
+        if (isSolid)
+            mkPipeShell.MakeSolid();
+
+        this->Shape.setValue(mkPipeShell.Shape());
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
