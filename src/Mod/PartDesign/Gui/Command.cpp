@@ -341,8 +341,7 @@ CmdPartDesignGroove::CmdPartDesignGroove()
     sToolTipText  = QT_TR_NOOP("Groove a selected sketch");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-  //sPixmap       = "PartDesign_Groove";
-    sPixmap       = "PartDesign_Revolution";
+    sPixmap       = "PartDesign_Groove";
 }
 
 void CmdPartDesignGroove::activated(int iMsg)
