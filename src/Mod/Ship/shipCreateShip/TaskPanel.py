@@ -113,9 +113,9 @@ class TaskPanel:
         self.solids = None
         selObjs  = Gui.Selection.getSelection()
         if not selObjs:
-            msg = Translator.translate("Ship objects can only be created on top of hull geometry (any object selected).")
+            msg = Translator.translate("Ship objects can only be created on top of hull geometry (any object selected).\n")
             App.Console.PrintError(msg)
-            msg = Translator.translate("Please create or load a ship hull geometry before using this tool.")
+            msg = Translator.translate("Please create or load a ship hull geometry before using this tool.\n")
             App.Console.PrintError(msg)
             return True
         self.solids = []
