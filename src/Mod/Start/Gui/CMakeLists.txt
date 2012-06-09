@@ -54,6 +54,8 @@ SET(StartPage_Resources
     StartPage/PartDesignExample.png
     StartPage/ArchExample.png
     StartPage/web.png
+    StartPage/blank.png
+    StartPage/complete.jpg
 )
 
 add_library(StartGui SHARED ${StartGui_SRCS})
