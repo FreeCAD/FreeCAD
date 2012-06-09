@@ -160,9 +160,9 @@ class TaskPanel:
         self.form.length.setMinimum(0.001)
         self.form.length.setValue(bounds[0])
         self.L = bounds[0]
-        self.form.beam.setMaximum(2.0*bounds[1])
+        self.form.beam.setMaximum(bounds[1])
         self.form.beam.setMinimum(0.001)
-        self.form.beam.setValue(2.0*bounds[1])
+        self.form.beam.setValue(bounds[1])
         self.B = bounds[1]
         self.form.draft.setMaximum(bounds[2])
         self.form.draft.setMinimum(0.001)
