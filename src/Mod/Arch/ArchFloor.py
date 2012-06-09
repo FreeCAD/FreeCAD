@@ -114,6 +114,7 @@ class _ViewProviderFloor:
         vobj.Proxy = self
 
     def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Floor_Tree.svg"
 
     def attach(self,vobj):

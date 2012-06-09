@@ -28,6 +28,8 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shell.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
 
@@ -189,6 +191,135 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
         TopoShape myShape;
         this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled));
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+const char* Part::Sweep::TransitionEnums[]= {"Transformed","Right corner", "Round corner",NULL};
+
+PROPERTY_SOURCE(Part::Sweep, Part::Feature)
+
+Sweep::Sweep()
+{
+    ADD_PROPERTY_TYPE(Sections,(0),"Sweep",App::Prop_None,"List of sections");
+    Sections.setSize(0);
+    ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
+    ADD_PROPERTY_TYPE(Solid,(false),"Sweep",App::Prop_None,"Create solid");
+    ADD_PROPERTY_TYPE(Frenet,(false),"Sweep",App::Prop_None,"Frenet");
+    ADD_PROPERTY_TYPE(Transition,(long(0)),"Sweep",App::Prop_None,"Transition mode");
+    Transition.setEnums(TransitionEnums);
+}
+
+short Sweep::mustExecute() const
+{
+    if (Sections.isTouched())
+        return 1;
+    if (Spine.isTouched())
+        return 1;
+    if (Solid.isTouched())
+        return 1;
+    if (Frenet.isTouched())
+        return 1;
+    if (Transition.isTouched())
+        return 1;
+    return 0;
+}
+
+void Sweep::onChanged(const App::Property* prop)
+{
+    Part::Feature::onChanged(prop);
+}
+
+App::DocumentObjectExecReturn *Sweep::execute(void)
+{
+    if (Sections.getSize() == 0)
+        return new App::DocumentObjectExecReturn("No sections linked.");
+    App::DocumentObject* spine = Spine.getValue();
+    if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+        return new App::DocumentObjectExecReturn("No spine linked.");
+    const std::vector<std::string>& subedge = Spine.getSubValues();
+    if (subedge.size() != 1)
+        return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
+
+    TopoDS_Shape path;
+    const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
+    if (!shape._Shape.IsNull()) {
+        if (!subedge[0].empty()) {
+            path = shape.getSubShape(subedge[0].c_str());
+        }
+        else {
+            if (shape._Shape.ShapeType() == TopAbs_EDGE)
+                path = shape._Shape;
+            else if (shape._Shape.ShapeType() == TopAbs_WIRE)
+                path = shape._Shape;
+            else
+                return new App::DocumentObjectExecReturn("Spine is neither an edge nor a wire.");
+        }
+    }
+
+    try {
+        TopTools_ListOfShape profiles;
+        const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
+        std::vector<App::DocumentObject*>::const_iterator it;
+        for (it = shapes.begin(); it != shapes.end(); ++it) {
+            if (!(*it)->isDerivedFrom(Part::Feature::getClassTypeId()))
+                return new App::DocumentObjectExecReturn("Linked object is not a shape.");
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Linked shape is invalid.");
+            if (shape.ShapeType() == TopAbs_WIRE) {
+                profiles.Append(shape);
+            }
+            else if (shape.ShapeType() == TopAbs_EDGE) {
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
+                profiles.Append(mkWire.Wire());
+            }
+            else if (shape.ShapeType() == TopAbs_VERTEX) {
+                profiles.Append(shape);
+            }
+            else {
+                return new App::DocumentObjectExecReturn("Linked shape is not a vertex, edge nor wire.");
+            }
+        }
+
+        Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean isFrenet = Frenet.getValue() ? Standard_True : Standard_False;
+        BRepBuilderAPI_TransitionMode transMode;
+        switch (Transition.getValue()) {
+            case 1: transMode = BRepBuilderAPI_RightCorner;
+                break;
+            case 2: transMode = BRepBuilderAPI_RoundCorner;
+                break;
+            default: transMode = BRepBuilderAPI_Transformed;
+                break;
+        }
+
+        if (path.ShapeType() == TopAbs_EDGE) {
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(path));
+            path = mkWire.Wire();
+        }
+
+        BRepOffsetAPI_MakePipeShell mkPipeShell(TopoDS::Wire(path));
+        mkPipeShell.SetMode(isFrenet);
+        mkPipeShell.SetTransitionMode(transMode);
+        TopTools_ListIteratorOfListOfShape iter;
+        for (iter.Initialize(profiles); iter.More(); iter.Next()) {
+            mkPipeShell.Add(TopoDS_Shape(iter.Value()));
+        }
+
+        if (!mkPipeShell.IsReady())
+            Standard_Failure::Raise("shape is not ready to build");
+        mkPipeShell.Build();
+        if (isSolid)
+            mkPipeShell.MakeSolid();
+
+        this->Shape.setValue(mkPipeShell.Shape());
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {

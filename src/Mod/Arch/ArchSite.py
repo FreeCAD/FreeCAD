@@ -89,6 +89,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         ArchFloor._ViewProviderFloor.__init__(self,vobj)        
 
     def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Site_Tree.svg"
 
 

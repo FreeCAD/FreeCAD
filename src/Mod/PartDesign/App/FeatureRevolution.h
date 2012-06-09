@@ -39,7 +39,9 @@ public:
 
     App::PropertyVector Base;
     App::PropertyVector Axis;
-    App::PropertyAngle Angle;
+    App::PropertyAngle  Angle;
+    App::PropertyBool   Midplane;
+    App::PropertyBool   Reversed;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line

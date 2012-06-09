@@ -21,30 +21,32 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pad_H
-#define PARTDESIGN_Pad_H
+#ifndef PARTDESIGN_Groove_H
+#define PARTDESIGN_Groove_H
 
 #include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include "FeatureAdditive.h"
+#include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
 
-class Pad : public Additive
+class Groove : public SketchBased
 {
-    PROPERTY_HEADER(PartDesign::Pad);
+    PROPERTY_HEADER(PartDesign::Groove);
 
 public:
-    Pad();
+    Groove();
 
-    App::PropertyEnumeration    Type;
-    App::PropertyLength         Length;
-    //App::PropertyEnumeration Side;
-    App::PropertyBool           Reversed;
-    App::PropertyBool           Midplane;
-    App::PropertyLength         Length2;
-    App::PropertyString         FaceName;
+    App::PropertyVector Base;
+    App::PropertyVector Axis;
+    App::PropertyAngle  Angle;
+    App::PropertyBool   Midplane;
+    App::PropertyBool   Reversed;
+
+    /** if this property is set to a valid link, both Axis and Base properties
+     *  are calculated according to the linked line
+    */
+    App::PropertyLinkSub ReferenceAxis;
 
     /** @name methods override feature */
     //@{
@@ -53,15 +55,12 @@ public:
     short mustExecute() const;
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderPad";
+        return "PartDesignGui::ViewProviderGroove";
     }
     //@}
-private:
-    static const char* TypeEnums[];
-    //static const char* SideEnums[];
 };
 
 } //namespace PartDesign
 
 
-#endif // PART_Pad_H
+#endif // PART_Groove_H

@@ -32,7 +32,7 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
 #endif
 
 #include <Base/Axis.h>
@@ -40,7 +40,7 @@
 #include <Base/Tools.h>
 #include <Mod/Part/App/Part2DObject.h>
 
-#include "FeatureRevolution.h"
+#include "FeatureGroove.h"
 
 
 using namespace PartDesign;
@@ -48,19 +48,19 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Groove, PartDesign::SketchBased)
 
-Revolution::Revolution()
+Groove::Groove()
 {
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3f(0.0f,0.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Axis");
-    ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
-    ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::Prop_None),"Reference axis of revolution");
-    ADD_PROPERTY_TYPE(Midplane,(0),"Revolution", App::Prop_None, "Mid plane");
-    ADD_PROPERTY_TYPE(Reversed, (0),"Revolution", App::Prop_None, "Reversed");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3f(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
+    ADD_PROPERTY_TYPE(Midplane,(0),"Groove", App::Prop_None, "Mid plane");
+    ADD_PROPERTY_TYPE(Reversed, (0),"Groove", App::Prop_None, "Reversed");
 }
 
-short Revolution::mustExecute() const
+short Groove::mustExecute() const
 {
     if (Placement.isTouched() ||
         Sketch.isTouched() ||
@@ -74,7 +74,7 @@ short Revolution::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Revolution::execute(void)
+App::DocumentObjectExecReturn *Groove::execute(void)
 {
     App::DocumentObject* link = Sketch.getValue();
     if (!link)
@@ -155,7 +155,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     if (aFace.IsNull())
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
-    // Rotate the face by half the angle to get revolution symmetric to sketch plane
+    // Rotate the face by half the angle to get Groove symmetric to sketch plane
     if (Midplane.getValue()) {
         gp_Trsf mov;
         mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
@@ -184,11 +184,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
                 const TopoDS_Shape& support = SupportObject->Shape.getValue();
                 if (!support.IsNull() && support.ShapeType() == TopAbs_SOLID) {
                     // Let's call algorithm computing a fuse operation:
-                    BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
+                    BRepAlgoAPI_Cut mkCut(support.Moved(invObjLoc), result);
                     // Let's check if the fusion has been successful
-                    if (!mkFuse.IsDone())
-                        throw Base::Exception("Fusion with support failed");
-                    result = mkFuse.Shape();
+                    if (!mkCut.IsDone())
+                        throw Base::Exception("Cut out of support failed");
+                    result = mkCut.Shape();
                 }
             }
 

@@ -123,6 +123,7 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
 
     def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):

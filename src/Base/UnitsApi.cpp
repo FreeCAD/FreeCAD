@@ -85,6 +85,7 @@ UnitsSchema  *UnitsApi::UserPrefSystem = new UnitsSchemaInternal();
 
 double   UnitsApi::UserPrefFactor [50];
 QString  UnitsApi::UserPrefUnit   [50];
+int      UnitsApi::UserPrefDecimals = 2;
 
 UnitsApi::UnitsApi(const char* filter)
 {
@@ -194,6 +195,16 @@ const QString & UnitsApi::getPrefUnitOf(QuantityType t)
 const double UnitsApi::getPrefFactorOf(QuantityType t)
 {
     return UserPrefFactor[t];
+}
+
+void UnitsApi::setDecimals(int prec)
+{
+    UserPrefDecimals = prec;
+}
+
+int UnitsApi::getDecimals()
+{
+    return UserPrefDecimals;
 }
 
 void UnitsApi::setDefaults(void)
