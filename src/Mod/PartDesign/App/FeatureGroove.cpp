@@ -52,12 +52,12 @@ PROPERTY_SOURCE(PartDesign::Groove, PartDesign::SketchBased)
 
 Groove::Groove()
 {
-    ADD_PROPERTY(Base,(Base::Vector3f(0.0f,0.0f,0.0f)));
-    ADD_PROPERTY(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)));
-    ADD_PROPERTY(Angle,(360.0));
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3f(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
-    ADD_PROPERTY(Midplane,(0));
-    ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY_TYPE(Midplane,(0),"Groove", App::Prop_None, "Mid plane");
+    ADD_PROPERTY_TYPE(Reversed, (0),"Groove", App::Prop_None, "Reversed");
 }
 
 short Groove::mustExecute() const
@@ -68,7 +68,8 @@ short Groove::mustExecute() const
         Axis.isTouched() ||
         Base.isTouched() ||
         Angle.isTouched() ||
-        Midplane.isTouched())
+        Midplane.isTouched() ||
+        Reversed.isTouched())
         return 1;
     return 0;
 }
