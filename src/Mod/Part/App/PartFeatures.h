@@ -83,7 +83,8 @@ public:
     App::PropertyLinkList Sections;
     App::PropertyLinkSub Spine;
     App::PropertyBool Solid;
-    App::PropertyBool Fresnet;
+    App::PropertyBool Frenet;
+    App::PropertyEnumeration Transition;
 
     /** @name methods override feature */
     //@{
@@ -94,6 +95,9 @@ public:
 
 protected:
     void onChanged (const App::Property* prop);
+
+private:
+    static const char* TransitionEnums[];
 };
 
 } //namespace Part

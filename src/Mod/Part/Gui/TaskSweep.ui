@@ -38,9 +38,9 @@
     </spacer>
    </item>
    <item row="1" column="1">
-    <widget class="QCheckBox" name="checkFresnet">
+    <widget class="QCheckBox" name="checkFrenet">
      <property name="text">
-      <string>Fresnet</string>
+      <string>Frenet</string>
      </property>
     </widget>
    </item>
