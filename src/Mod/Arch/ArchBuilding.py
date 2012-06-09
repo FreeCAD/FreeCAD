@@ -86,6 +86,7 @@ class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
         ArchFloor._ViewProviderFloor.__init__(self,vobj)        
 
     def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Building_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Building',_CommandBuilding())
