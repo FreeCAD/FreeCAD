@@ -121,6 +121,7 @@ class _ViewProviderCell(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
 
     def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Cell_Tree.svg"
        
     def updateData(self,obj,prop):

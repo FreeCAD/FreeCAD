@@ -52,6 +52,7 @@
 #include <Base/Factory.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 
@@ -327,6 +328,10 @@ Application::Application(bool GUIenabled)
         QString lang = QLocale::languageToString(QLocale::system().language());
         Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str());
         GetWidgetFactorySupplier();
+
+        ParameterGrp::handle hUnits = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Units");
+        Base::UnitsApi::setDecimals(hUnits->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
         // setting up Python binding
         Base::PyGILStateLocker lock;

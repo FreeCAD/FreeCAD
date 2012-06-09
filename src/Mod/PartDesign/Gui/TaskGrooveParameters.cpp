@@ -26,8 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-#include "ui_TaskRevolutionParameters.h"
-#include "TaskRevolutionParameters.h"
+#include "ui_TaskGrooveParameters.h"
+#include "TaskGrooveParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -38,21 +38,21 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeatureRevolution.h>
+#include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 
 using namespace PartDesignGui;
 using namespace Gui;
 
-/* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
+/* TRANSLATOR PartDesignGui::TaskGrooveParameters */
 
-TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Revolution"),tr("Revolution parameters"),true, parent),RevolutionView(RevolutionView)
+TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidget *parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Groove"),tr("Groove parameters"),true, parent),GrooveView(GrooveView)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskRevolutionParameters();
+    ui = new Ui_TaskGrooveParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -67,14 +67,14 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    double l = pcRevolution->Angle.getValue();
-    bool mirrored = pcRevolution->Midplane.getValue();
-    bool reversed = pcRevolution->Reversed.getValue();
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    double l = pcGroove->Angle.getValue();
+    bool mirrored = pcGroove->Midplane.getValue();
+    bool reversed = pcGroove->Reversed.getValue();
 
     ui->doubleSpinBox->setValue(l);
 
-    int count=pcRevolution->getSketchAxisCount();
+    int count=pcGroove->getSketchAxisCount();
 
     for (int i=ui->axis->count()-1; i >= count+2; i--)
         ui->axis->removeItem(i);
@@ -83,9 +83,9 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
 
     int pos=-1;
 
-    App::DocumentObject *pcReferenceAxis = pcRevolution->ReferenceAxis.getValue();
-    const std::vector<std::string> &subReferenceAxis = pcRevolution->ReferenceAxis.getSubValues();
-    if (pcReferenceAxis && pcReferenceAxis == pcRevolution->Sketch.getValue()) {
+    App::DocumentObject *pcReferenceAxis = pcGroove->ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = pcGroove->ReferenceAxis.getSubValues();
+    if (pcReferenceAxis && pcReferenceAxis == pcGroove->Sketch.getValue()) {
         assert(subReferenceAxis.size()==1);
         if (subReferenceAxis[0] == "V_Axis")
             pos = 0;
@@ -108,58 +108,59 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     setFocus ();
 }
 
-void TaskRevolutionParameters::onAngleChanged(double len)
+void TaskGrooveParameters::onAngleChanged(double len)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    pcRevolution->Angle.setValue((float)len);
-    pcRevolution->getDocument()->recomputeFeature(pcRevolution);
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    pcGroove->Angle.setValue((float)len);
+    pcGroove->getDocument()->recomputeFeature(pcGroove);
 }
 
-void TaskRevolutionParameters::onAxisChanged(int num)
+void TaskGrooveParameters::onAxisChanged(int num)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
     if (pcSketch) {
         int maxcount = pcSketch->getAxisCount()+2;
         if (num == 0)
-            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
+            pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
         else if (num == 1)
-            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
+            pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
         else if (num >= 2 && num < maxcount) {
             QString buf = QString::fromUtf8("Axis%1").arg(num-2);
             std::string str = buf.toStdString();
-            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,str));
+            pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,str));
         }
         if (num < maxcount && ui->axis->count() > maxcount)
             ui->axis->setMaxCount(maxcount);
     }
-    pcRevolution->getDocument()->recomputeFeature(pcRevolution);
+    pcGroove->getDocument()->recomputeFeature(pcGroove);
 }
 
-void TaskRevolutionParameters::onMidplane(bool on)
+void TaskGrooveParameters::onMidplane(bool on)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    pcRevolution->Midplane.setValue(on);
-    pcRevolution->getDocument()->recomputeFeature(pcRevolution);
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    pcGroove->Midplane.setValue(on);
+    pcGroove->getDocument()->recomputeFeature(pcGroove);
 }
 
-void TaskRevolutionParameters::onReversed(bool on)
+void TaskGrooveParameters::onReversed(bool on)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    pcRevolution->Reversed.setValue(on);
-    pcRevolution->getDocument()->recomputeFeature(pcRevolution);
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    pcGroove->Reversed.setValue(on);
+    pcGroove->getDocument()->recomputeFeature(pcGroove);
 }
 
-double TaskRevolutionParameters::getAngle(void) const
+
+double TaskGrooveParameters::getAngle(void) const
 {
     return ui->doubleSpinBox->value();
 }
 
-QString TaskRevolutionParameters::getReferenceAxis(void) const
+QString TaskGrooveParameters::getReferenceAxis(void) const
 {
     // get the support and Sketch
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
 
     QString buf;
     if (pcSketch) {
@@ -180,22 +181,22 @@ QString TaskRevolutionParameters::getReferenceAxis(void) const
     return buf;
 }
 
-bool   TaskRevolutionParameters::getMidplane(void) const
+bool   TaskGrooveParameters::getMidplane(void) const
 {
     return ui->checkBoxMidplane->isChecked();
 }
 
-bool   TaskRevolutionParameters::getReversed(void) const
+bool   TaskGrooveParameters::getReversed(void) const
 {
     return ui->checkBoxReversed->isChecked();
 }
 
-TaskRevolutionParameters::~TaskRevolutionParameters()
+TaskGrooveParameters::~TaskGrooveParameters()
 {
     delete ui;
 }
 
-void TaskRevolutionParameters::changeEvent(QEvent *e)
+void TaskGrooveParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -208,16 +209,16 @@ void TaskRevolutionParameters::changeEvent(QEvent *e)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution *RevolutionView)
-    : TaskDialog(),RevolutionView(RevolutionView)
+TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
+    : TaskDialog(),GrooveView(GrooveView)
 {
-    assert(RevolutionView);
-    parameter  = new TaskRevolutionParameters(RevolutionView);
+    assert(GrooveView);
+    parameter  = new TaskGrooveParameters(GrooveView);
 
     Content.push_back(parameter);
 }
 
-TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
+TaskDlgGrooveParameters::~TaskDlgGrooveParameters()
 {
 
 }
@@ -225,21 +226,21 @@ TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
 //==== calls from the TaskView ===============================================================
 
 
-void TaskDlgRevolutionParameters::open()
+void TaskDlgGrooveParameters::open()
 {
 
 }
 
-void TaskDlgRevolutionParameters::clicked(int)
+void TaskDlgGrooveParameters::clicked(int)
 {
 
 }
 
-bool TaskDlgRevolutionParameters::accept()
+bool TaskDlgGrooveParameters::accept()
 {
-    std::string name = RevolutionView->getObject()->getNameInDocument();
+    std::string name = GrooveView->getObject()->getNameInDocument();
 
-    //Gui::Command::openCommand("Revolution changed");
+    //Gui::Command::openCommand("Groove changed");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
     std::string axis = parameter->getReferenceAxis().toStdString();
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
@@ -252,14 +253,14 @@ bool TaskDlgRevolutionParameters::accept()
     return true;
 }
 
-bool TaskDlgRevolutionParameters::reject()
+bool TaskDlgGrooveParameters::reject()
 {
     // get the support and Sketch
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
     Sketcher::SketchObject *pcSketch;
     App::DocumentObject    *pcSupport;
-    if (pcRevolution->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
+    if (pcGroove->Sketch.getValue()) {
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
         pcSupport = pcSketch->Support.getValue();
     }
 
@@ -268,7 +269,7 @@ bool TaskDlgRevolutionParameters::reject()
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
     // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcRevolution)) {
+    if (!Gui::Application::Instance->getViewProvider(pcGroove)) {
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
         if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
@@ -283,4 +284,4 @@ bool TaskDlgRevolutionParameters::reject()
 
 
 
-#include "moc_TaskRevolutionParameters.cpp"
+#include "moc_TaskGrooveParameters.cpp"

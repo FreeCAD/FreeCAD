@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PartDesignGui::TaskRevolutionParameters</class>
- <widget class="QWidget" name="PartDesignGui::TaskRevolutionParameters">
+ <class>PartDesignGui::TaskGrooveParameters</class>
+ <widget class="QWidget" name="PartDesignGui::TaskGrooveParameters">
   <property name="geometry">
    <rect>
     <x>0</x>

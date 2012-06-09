@@ -179,7 +179,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
-    def getIcon(self):          
+    def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Window_Tree.svg"
 
     def setEdit(self,vobj,mode):

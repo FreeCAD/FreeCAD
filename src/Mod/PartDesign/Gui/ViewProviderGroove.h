@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,47 +21,39 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pad_H
-#define PARTDESIGN_Pad_H
+#ifndef PARTGUI_ViewProviderGroove_H
+#define PARTGUI_ViewProviderGroove_H
 
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include "FeatureAdditive.h"
+#include "ViewProvider.h"
 
-namespace PartDesign
+
+namespace PartDesignGui {
+
+class PartDesignGuiExport ViewProviderGroove : public ViewProvider
 {
-
-class Pad : public Additive
-{
-    PROPERTY_HEADER(PartDesign::Pad);
+    PROPERTY_HEADER(PartGui::ViewProviderGroove);
 
 public:
-    Pad();
+    /// constructor
+    ViewProviderGroove();
+    /// destructor
+    virtual ~ViewProviderGroove();
 
-    App::PropertyEnumeration    Type;
-    App::PropertyLength         Length;
-    //App::PropertyEnumeration Side;
-    App::PropertyBool           Reversed;
-    App::PropertyBool           Midplane;
-    App::PropertyLength         Length2;
-    App::PropertyString         FaceName;
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderPad";
-    }
-    //@}
-private:
-    static const char* TypeEnums[];
-    //static const char* SideEnums[];
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+    virtual bool onDelete(const std::vector<std::string> &);
+
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+
 };
 
-} //namespace PartDesign
+
+} // namespace PartDesignGui
 
 
-#endif // PART_Pad_H
+#endif // PARTGUI_ViewProviderGroove_H

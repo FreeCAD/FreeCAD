@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
-#define GUI_TASKVIEW_TaskRevolutionParameters_H
+#ifndef GUI_TASKVIEW_TaskGrooveParameters_H
+#define GUI_TASKVIEW_TaskGrooveParameters_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include "ViewProviderRevolution.h"
+#include "ViewProviderGroove.h"
 
-class Ui_TaskRevolutionParameters;
+class Ui_TaskGrooveParameters;
 
 namespace App {
 class Property;
@@ -44,13 +44,13 @@ namespace PartDesignGui {
 
 
 
-class TaskRevolutionParameters : public Gui::TaskView::TaskBox
+class TaskGrooveParameters : public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent = 0);
-    ~TaskRevolutionParameters();
+    TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidget *parent = 0);
+    ~TaskGrooveParameters();
 
     QString getReferenceAxis(void) const;
     double  getAngle(void) const;
@@ -70,21 +70,21 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskRevolutionParameters* ui;
-    ViewProviderRevolution *RevolutionView;
+    Ui_TaskGrooveParameters* ui;
+    ViewProviderGroove *GrooveView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgRevolutionParameters : public Gui::TaskView::TaskDialog
+class TaskDlgGrooveParameters : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgRevolutionParameters(ViewProviderRevolution *RevolutionView);
-    ~TaskDlgRevolutionParameters();
+    TaskDlgGrooveParameters(ViewProviderGroove *GrooveView);
+    ~TaskDlgGrooveParameters();
 
-    ViewProviderRevolution* getRevolutionView() const
-    { return RevolutionView; }
+    ViewProviderGroove* getGrooveView() const
+    { return GrooveView; }
 
 
 public:
@@ -105,9 +105,9 @@ public:
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderRevolution   *RevolutionView;
+    ViewProviderGroove   *GrooveView;
 
-    TaskRevolutionParameters  *parameter;
+    TaskGrooveParameters  *parameter;
 };
 
 } //namespace PartDesignGui

@@ -109,7 +109,8 @@ class _ViewProviderAxis:
         vobj.LineColor = (0.13,0.15,0.37)
         vobj.DrawStyle = "Dashdot"
     
-    def getIcon(self):          
+    def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Axis_Tree.svg"
 
     def claimChildren(self):
