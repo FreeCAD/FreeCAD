@@ -61,6 +61,7 @@
 #include "ViewProvider.h"
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
+#include "TaskSweep.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -960,6 +961,31 @@ bool CmdPartLoft::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdPartSweep);
+
+CmdPartSweep::CmdPartSweep()
+  : Command("Part_Sweep")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Sweep...");
+    sToolTipText  = QT_TR_NOOP("Advanced utility to sweep");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartSweep::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskSweep());
+}
+
+bool CmdPartSweep::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdShapeInfo);
 
 CmdShapeInfo::CmdShapeInfo()
@@ -1194,5 +1220,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRuledSurface());
     rcCmdMgr.addCommand(new CmdPartBuilder());
     rcCmdMgr.addCommand(new CmdPartLoft());
+    rcCmdMgr.addCommand(new CmdPartSweep());
 } 
 

@@ -196,3 +196,98 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 }
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Sweep, Part::Feature)
+
+Sweep::Sweep()
+{
+    ADD_PROPERTY_TYPE(Sections,(0),"Sweep",App::Prop_None,"List of sections");
+    Sections.setSize(0);
+    ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
+    ADD_PROPERTY_TYPE(Solid,(false),"Sweep",App::Prop_None,"Create solid");
+    ADD_PROPERTY_TYPE(Fresnet,(false),"Sweep",App::Prop_None,"Fresnet");
+}
+
+short Sweep::mustExecute() const
+{
+    if (Sections.isTouched())
+        return 1;
+    if (Spine.isTouched())
+        return 1;
+    if (Solid.isTouched())
+        return 1;
+    if (Fresnet.isTouched())
+        return 1;
+    return 0;
+}
+
+void Sweep::onChanged(const App::Property* prop)
+{
+    Part::Feature::onChanged(prop);
+}
+
+App::DocumentObjectExecReturn *Sweep::execute(void)
+{
+    if (Sections.getSize() == 0)
+        return new App::DocumentObjectExecReturn("No sections linked.");
+    App::DocumentObject* spine = Spine.getValue();
+    if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+        return new App::DocumentObjectExecReturn("No shape linked.");
+    const std::vector<std::string>& subedge = Spine.getSubValues();
+    if (subedge.size() != 1)
+        return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
+
+    TopoDS_Shape edge;
+    const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
+    if (!shape._Shape.IsNull()) {
+        if (!subedge[0].empty()) {
+            edge = shape.getSubShape(subedge[0].c_str());
+        }
+        else {
+            if (shape._Shape.ShapeType() == TopAbs_EDGE)
+                edge = shape._Shape;
+            else if (shape._Shape.ShapeType() == TopAbs_WIRE)
+                edge = shape._Shape;
+        }
+    }
+
+    try {
+        TopTools_ListOfShape profiles;
+        const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
+        std::vector<App::DocumentObject*>::const_iterator it;
+        for (it = shapes.begin(); it != shapes.end(); ++it) {
+            if (!(*it)->isDerivedFrom(Part::Feature::getClassTypeId()))
+                return new App::DocumentObjectExecReturn("Linked object is not a shape.");
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Linked shape is invalid.");
+            if (shape.ShapeType() == TopAbs_WIRE) {
+                profiles.Append(shape);
+            }
+            else if (shape.ShapeType() == TopAbs_EDGE) {
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
+                profiles.Append(mkWire.Wire());
+            }
+            else if (shape.ShapeType() == TopAbs_VERTEX) {
+                profiles.Append(shape);
+            }
+            else {
+                return new App::DocumentObjectExecReturn("Linked shape is not a vertex, edge nor wire.");
+            }
+        }
+
+        Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean isFresnet = Fresnet.getValue() ? Standard_True : Standard_False;
+
+        BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(edge));
+        TopoShape myShape(mkWire.Wire());
+        this->Shape.setValue(myShape.makePipeShell(profiles, isSolid, isFresnet));
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+}
