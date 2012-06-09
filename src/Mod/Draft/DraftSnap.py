@@ -148,36 +148,13 @@ class Snapper:
             return None
 
         # setup trackers if needed
-        v = Draft.get3DView()
-        if v in self.trackers[0]:
-            i = self.trackers[0].index(v)
-            self.grid = self.trackers[1][i]
-            self.tracker = self.trackers[2][i]
-            self.extLine = self.trackers[3][i]
-            self.radiusTracker = self.trackers[4][i]
-        else:
-            if Draft.getParam("grid"):
-                self.grid = DraftTrackers.gridTracker()
-            else:
-                self.grid = None
-            self.tracker = DraftTrackers.snapTracker()
-            self.extLine = DraftTrackers.lineTracker(dotted=True)
-            self.radiusTracker = DraftTrackers.radiusTracker()
-            self.trackers[0].append(v)
-            self.trackers[1].append(self.grid)
-            self.trackers[2].append(self.tracker)
-            self.trackers[3].append(self.extLine)
-            self.trackers[4].append(self.radiusTracker)
+        self.setTrackers()
 
         # getting current snap Radius
         self.radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.off()
-
-        # set the grid
-        if self.grid and (not self.forceGridOff):
-            self.grid.set()
 
         # activate snap
         oldActive = False
@@ -362,6 +339,19 @@ class Snapper:
                         self.extLine.on()
                     self.setCursor(tsnap[1])
                     return tsnap[2],eline
+            else:
+                tsnap = self.snapToExtPerpendicular(last)
+                if tsnap:
+                    if (tsnap[0].sub(point)).Length < self.radius:
+                        if self.tracker:
+                            self.tracker.setCoords(tsnap[2])
+                            self.tracker.setMarker(self.mk[tsnap[1]])
+                            self.tracker.on()
+                        if self.extLine:
+                            self.extLine.p2(tsnap[2])
+                            self.extLine.on()
+                        self.setCursor(tsnap[1])
+                        return tsnap[2],eline
                 
         for o in [self.lastObj[1],self.lastObj[0]]:
             if o:
@@ -540,6 +530,14 @@ class Snapper:
                 except:
                     return None
         return None
+
+    def snapToExtPerpendicular(self,last):
+        "returns a perpendicular X extension snap location"
+        if self.isEnabled("extension") and self.isEnabled("perpendicular"):
+            if last and self.extLine:
+                tmpEdge = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+                np = self.getPerpendicular(tmpEdge,last)
+                return [np,'perpendicular',np]
 
     def snapToElines(self,e1,e2):
         "returns a snap location at the infinite intersection of the given edges"
@@ -920,16 +918,31 @@ class Snapper:
             mw.addToolBar(self.toolbar)
         self.toolbar.show()
         if FreeCADGui.ActiveDocument:
-            if not self.forceGridOff:
-                if not self.grid:
-                    self.grid = DraftTrackers.gridTracker()
-                self.grid.set()
+            self.setTrackers()
 
-    def setGrid(self):
-        "sets the grid, if visible"
-        if self.grid and (not self.forceGridOff):
-            if self.grid.Visible:
-                self.grid.set()
+    def setTrackers(self):
+        v = Draft.get3DView()
+        if v in self.trackers[0]:
+            i = self.trackers[0].index(v)
+            self.grid = self.trackers[1][i]
+            self.tracker = self.trackers[2][i]
+            self.extLine = self.trackers[3][i]
+            self.radiusTracker = self.trackers[4][i]
+        else:
+            if Draft.getParam("grid"):
+                self.grid = DraftTrackers.gridTracker()
+            else:
+                self.grid = None
+            self.tracker = DraftTrackers.snapTracker()
+            self.extLine = DraftTrackers.lineTracker(dotted=True)
+            self.radiusTracker = DraftTrackers.radiusTracker()
+            self.trackers[0].append(v)
+            self.trackers[1].append(self.grid)
+            self.trackers[2].append(self.tracker)
+            self.trackers[3].append(self.extLine)
+            self.trackers[4].append(self.radiusTracker)
+        if not self.forceGridOff:
+            self.grid.set()
         
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
