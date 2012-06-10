@@ -32,6 +32,7 @@
 #include "TaskSweep.h"
 
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -225,7 +226,8 @@ TaskSweep::TaskSweep()
 {
     widget = new SweepWidget();
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        Gui::BitmapFactory().pixmap("Part_Sweep"),
+        widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
