@@ -106,6 +106,9 @@ public:
     void setAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled(void) const;
 
+    void setPopupMenuEnabled(const SbBool on);
+    SbBool isPopupMenuEnabled(void) const;
+
     void startAnimating(const SbVec3f& axis, float velocity);
     void stopAnimating(void);
     SbBool isAnimating(void) const;

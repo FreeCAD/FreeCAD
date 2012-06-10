@@ -284,7 +284,7 @@
       <translation>Napravi obrub</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
+      <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Napravi obrub između linija ili u podudarnoj točki</translation>
     </message>
   </context>

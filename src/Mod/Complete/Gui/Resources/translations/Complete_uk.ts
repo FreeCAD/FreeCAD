@@ -32,11 +32,11 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
+      <source>Dr&amp;awing</source>
       <translation>&amp;Малювання</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
+      <source>S&amp;ketch</source>
       <translation>Ес&amp;кіз</translation>
     </message>
     <message>

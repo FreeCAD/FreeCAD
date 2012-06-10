@@ -495,6 +495,7 @@ int RectangleSelection::mouseButtonEvent( const SoMouseButtonEvent * const e, co
                 {
                     releaseMouseModel();
                     m_bWorking = false;
+                    _clPoly.push_back(e->getPosition());
                     ret = Finish;
                 }   break;
             default:

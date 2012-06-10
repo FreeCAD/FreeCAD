@@ -163,12 +163,12 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
-    PyObject *obj, *rec=0;
-    if (!PyArg_ParseTuple(args, "O!|O!",&(DocumentObjectPy::Type),&obj,&PyBool_Type,&rec))
+    PyObject *obj, *rec=0, *keep=0;
+    if (!PyArg_ParseTuple(args, "O!|O!O!",&(DocumentObjectPy::Type),&obj,&PyBool_Type,&rec,&PyBool_Type,&keep))
         return NULL;    // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
-    DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(), rec==Py_True);
+    DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(), rec==Py_True, keep==Py_True);
     if (copy) {
         return copy->getPyObject();
     }
@@ -303,16 +303,10 @@ PyObject*  DocumentPy::findObjects(PyObject *args)
     }
 
     std::vector<DocumentObject*> res;
-    std::vector<DocumentObject*> objs = getDocumentPtr()->getObjectsOfType(type);
 
     if (sName) {
         try {
-            boost::regex rx(sName);
-            boost::cmatch what;
-            for (std::vector<DocumentObject*>::const_iterator It = objs.begin();It != objs.end();++It) {
-                if (boost::regex_match((*It)->getNameInDocument(), what, rx))
-                    res.push_back(*It);
-            }
+            res = getDocumentPtr()->findObjects(type, sName);
         }
         catch (const boost::regex_error& e) {
             PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -320,7 +314,7 @@ PyObject*  DocumentPy::findObjects(PyObject *args)
         }
     }
     else {
-        res = objs;
+        res = getDocumentPtr()->getObjectsOfType(type);
     }
 
     Py_ssize_t index=0;

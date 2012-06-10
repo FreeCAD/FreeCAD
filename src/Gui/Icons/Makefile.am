@@ -58,6 +58,7 @@ EXTRA_DIST = \
 		edit-delete.svg \
 		edit-paste.svg \
 		edit-select-all.svg \
+		edit-select-box.svg \
 		edit-redo.svg \
 		edit-undo.svg \
 		preferences-system.svg \

@@ -68,6 +68,21 @@
         <UserDocu>deprecated -- use ActiveView</UserDocu>
       </Documentation>
     </Methode>
+  <Methode Name="mdiViewsOfType" Const="true">
+      <Documentation>
+        <UserDocu>Return a list if mdi views of a given type</UserDocu>
+      </Documentation>
+  </Methode>
+  <Methode Name="sendMsgToViews">
+      <Documentation>
+        <UserDocu>Send a message to all views of the document</UserDocu>
+      </Documentation>
+  </Methode>
+  <Methode Name="mergeProject">
+      <Documentation>
+        <UserDocu>Merges this document with another project file</UserDocu>
+      </Documentation>
+  </Methode>
 	<Attribute Name="ActiveObject" ReadOnly="false">
 	  <Documentation>
 	    <UserDocu>The active object of the document</UserDocu>

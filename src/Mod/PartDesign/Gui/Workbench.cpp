@@ -86,6 +86,7 @@ void Workbench::activated()
         "PartDesign_Pad",
         "PartDesign_Pocket",
         "PartDesign_Revolution",
+        "PartDesign_Groove",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -169,6 +170,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer";
 
@@ -186,6 +188,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer";
 

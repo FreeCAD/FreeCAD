@@ -77,14 +77,38 @@ EXTRA_DIST = \
 		CMakeLists.txt \
 		UnitTest.ui \
 		Resources/Test.qrc \
+		Resources/translations/Test_af.qm \
+		Resources/translations/Test_af.ts \
 		Resources/translations/Test_de.qm \
-		Resources/translations/Test_es.qm \
-		Resources/translations/Test_fr.qm \
-		Resources/translations/Test_it.qm \
-		Resources/translations/Test_se.qm \
 		Resources/translations/Test_de.ts \
+		Resources/translations/Test_es.qm \
 		Resources/translations/Test_es.ts \
+		Resources/translations/Test_fi.qm \
+		Resources/translations/Test_fi.ts \
+		Resources/translations/Test_fr.qm \
 		Resources/translations/Test_fr.ts \
+		Resources/translations/Test_hr.qm \
+		Resources/translations/Test_hr.ts \
+		Resources/translations/Test_hu.qm \
+		Resources/translations/Test_hu.ts \
+		Resources/translations/Test_it.qm \
 		Resources/translations/Test_it.ts \
+		Resources/translations/Test_ja.qm \
+		Resources/translations/Test_ja.ts \
+		Resources/translations/Test_nl.qm \
+		Resources/translations/Test_nl.ts \
+		Resources/translations/Test_no.qm \
+		Resources/translations/Test_no.ts \
+		Resources/translations/Test_pl.qm \
+		Resources/translations/Test_pl.ts \
+		Resources/translations/Test_pt.qm \
+		Resources/translations/Test_pt.ts \
+		Resources/translations/Test_ru.qm \
+		Resources/translations/Test_ru.ts \
+		Resources/translations/Test_se.qm \
 		Resources/translations/Test_se.ts \
+		Resources/translations/Test_uk.qm \
+		Resources/translations/Test_uk.ts \
+		Resources/translations/Test_zh.qm \
+		Resources/translations/Test_zh.ts \
 		qtunittest.py

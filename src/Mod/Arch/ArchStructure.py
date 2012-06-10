@@ -21,16 +21,16 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structure"):
+def makeStructure(baseobj=None,length=None,width=None,height=None,name=str(translate("Arch","Structure"))):
     '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
@@ -65,27 +65,31 @@ class _CommandStructure:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
         
     def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
+        FreeCADGui.doCommand("import Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            FreeCAD.ActiveDocument.openTransaction("Structure")
             for obj in sel:
-                makeStructure(obj)
-            FreeCAD.ActiveDocument.commitTransaction()
+                FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument."+obj.Name+")")
         else:
-            makeStructure()
+            FreeCADGui.doCommand("Arch.makeStructure()")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
        
 class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Length","Base",
-                        "The length of this element, if not based on a profile")
+                        str(translate("Arch","The length of this element, if not based on a profile")))
         obj.addProperty("App::PropertyLength","Width","Base",
-                        "The width of this element, if not based on a profile")
+                        str(translate("Arch","The width of this element, if not based on a profile")))
         obj.addProperty("App::PropertyLength","Height","Base",
-                        "The height or extrusion depth of this element. Keep 0 for automatic")
+                        str(translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic")))
         obj.addProperty("App::PropertyLinkList","Axes","Base",
-                        "Axes systems this structure is built on")
+                        str(translate("Arch","Axes systems this structure is built on")))
+        obj.addProperty("App::PropertyVector","Normal","Base",
+                        str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
         self.Type = "Structure"
         
     def execute(self,obj):
@@ -97,7 +101,7 @@ class _Structure(ArchComponent.Component):
 
     def getAxisPoints(self,obj):
         "returns the gridpoints of linked axes"
-        from draftlibs import fcgeo
+        import DraftGeomUtils
         pts = []
         if len(obj.Axes) == 1:
             for e in obj.Axes[0].Shape.Edges:
@@ -107,22 +111,21 @@ class _Structure(ArchComponent.Component):
             set2 = obj.Axes[1].Shape.Edges
             for e1 in set1:
                 for e2 in set2: 
-                    pts.extend(fcgeo.findIntersection(e1,e2))
+                    pts.extend(DraftGeomUtils.findIntersection(e1,e2))
         return pts
 
     def createGeometry(self,obj):
-        import Part
-        from draftlibs import fcgeo
+        import Part, DraftGeomUtils
         # getting default values
         height = normal = None
         if obj.Length:
             length = obj.Length
         else:
             length = 1
-        if obj.Width:
-            width = obj.Width
-        else:
-            width = 1
+        width = 1
+        if hasattr(obj,"Width"):
+            if obj.Width:
+                width = obj.Width
         if obj.Height:
             height = obj.Height
         else:
@@ -160,18 +163,13 @@ class _Structure(ArchComponent.Component):
             base = Part.Face(base)
             base = base.extrude(normal)
         for app in obj.Additions:
-            base = base.oldFuse(app.Shape)
-            app.ViewObject.hide() # to be removed
+            if hasattr(app,"Shape"):
+                if not app.Shape.isNull():
+                    base = base.fuse(app.Shape)
+                    app.ViewObject.hide() # to be removed
         for hole in obj.Subtractions:
-            cut = False
-            if hasattr(hole,"Proxy"):
-                if hasattr(hole.Proxy,"Subvolume"):
-                    if hole.Proxy.Subvolume:
-                        print "cutting subvolume",hole.Proxy.Subvolume
-                        base = base.cut(hole.Proxy.Subvolume)
-                        cut = True
-            if not cut:
-                if hasattr(obj,"Shape"):
+            if hasattr(hole,"Shape"):
+                if not hole.Shape.isNull():
                     base = base.cut(hole.Shape)
                     hole.ViewObject.hide() # to be removed
         if base:
@@ -184,8 +182,10 @@ class _Structure(ArchComponent.Component):
                     fsh.append(sh)
                     obj.Shape = Part.makeCompound(fsh)
             else:
-                obj.Shape = base
-            if not fcgeo.isNull(pl): obj.Placement = pl
+                if not base.isNull():
+                    base = base.removeSplitter()
+                    obj.Shape = base
+            if not DraftGeomUtils.isNull(pl): obj.Placement = pl
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
@@ -193,7 +193,8 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
-    def getIcon(self):          
+    def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Structure_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Structure',_CommandStructure())

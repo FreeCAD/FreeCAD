@@ -392,7 +392,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
 
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertUKnots(k,m,tol,(add==Py_True));
+        surf->InsertVKnots(k,m,tol,(add==Py_True));
         Py_Return;
     }
     catch (Standard_Failure) {
@@ -751,6 +751,9 @@ PyObject* BSplineSurfacePy::getPole(PyObject *args)
     try {
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
+        Standard_OutOfRange_Raise_if
+            (uindex < 1 || uindex > surf->NbUPoles() ||
+             vindex < 1 || vindex > surf->NbVPoles(), "Pole index out of range");
         gp_Pnt pnt = surf->Pole(uindex,vindex);
         Base::VectorPy* vec = new Base::VectorPy(Base::Vector3d(
             pnt.X(), pnt.Y(), pnt.Z()));
@@ -870,6 +873,9 @@ PyObject* BSplineSurfacePy::getWeight(PyObject *args)
     try {
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
+        Standard_OutOfRange_Raise_if
+            (uindex < 1 || uindex > surf->NbUPoles() ||
+             vindex < 1 || vindex > surf->NbVPoles(), "Weight index out of range");
         double w = surf->Weight(uindex,vindex);
         return Py_BuildValue("d", w);
     }

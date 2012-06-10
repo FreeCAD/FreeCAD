@@ -32,11 +32,11 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
+      <source>Dr&amp;awing</source>
       <translation>图纸(&amp;D)</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
+      <source>S&amp;ketch</source>
       <translation>草绘(&amp;T)</translation>
     </message>
     <message>

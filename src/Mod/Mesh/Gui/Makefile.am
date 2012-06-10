@@ -7,6 +7,7 @@ BUILT_SOURCES=\
 		ui_DlgSettingsMeshView.h \
 		ui_DlgSmoothing.h \
 		ui_RemoveComponents.h \
+		ui_Segmentation.h \
 		moc_DlgEvaluateMeshImp.cpp \
 		moc_DlgRegularSolidImp.cpp \
 		moc_DlgSettingsMeshView.cpp \
@@ -34,6 +35,7 @@ libMeshGui_la_SOURCES=\
 		PropertyEditorMesh.cpp \
 		RemoveComponents.cpp \
 		RemoveComponents.h \
+		Segmentation.cpp \
 		SoFCIndexedFaceSet.cpp \
 		SoFCMeshObject.cpp \
 		ViewProvider.cpp \
@@ -47,6 +49,7 @@ libMeshGui_la_SOURCES=\
 
 include_HEADERS=\
 		PropertyEditorMesh.h \
+		Segmentation.h \
 		SoFCIndexedFaceSet.h \
 		SoFCMeshObject.h \
 		ViewProvider.h \
@@ -66,7 +69,7 @@ libMeshGui_la_CPPFLAGS = -DMeshExport= -DMeshGuiExport=
 
 libMeshGui_la_LIBADD   = \
 		@BOOST_SIGNALS_LIB@ @BOOST_SYSTEM_LIB@ \
-		@GL_LIBS@ \
+		@GL_LIBS@ @ZIPIOS_LIB@ \
 		-lFreeCADBase \
 		-lFreeCADApp \
 		-lFreeCADGui \
@@ -127,6 +130,7 @@ EXTRA_DIST = \
 		DlgSettingsMeshView.ui \
 		DlgSmoothing.ui \
 		RemoveComponents.ui \
+		Segmentation.ui \
 		Resources/Mesh.qrc \
 		Resources/translations/Mesh_af.qm \
 		Resources/translations/Mesh_af.ts \
@@ -146,6 +150,8 @@ EXTRA_DIST = \
 		Resources/translations/Mesh_nl.ts \
 		Resources/translations/Mesh_no.qm \
 		Resources/translations/Mesh_no.ts \
+		Resources/translations/Mesh_pl.qm \
+		Resources/translations/Mesh_pl.ts \
 		Resources/translations/Mesh_pt.qm \
 		Resources/translations/Mesh_pt.ts \
 		Resources/translations/Mesh_ru.qm \

@@ -598,21 +598,21 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     int result = 0;
     PyGILStateLocker locker;
     int version = getSWIGVersionFromModule(Module);
-    switch (version&0xff)
+    switch (version)
     {
-    case 25:
+    case 66329:
         result = Swig_1_3_25::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 33:
+    case 66337:
         result = Swig_1_3_33::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 36:
+    case 66340:
         result = Swig_1_3_36::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 38:
+    case 66342:
         result = Swig_1_3_38::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 40:
+    case 66344:
         result = Swig_1_3_40::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
     default:

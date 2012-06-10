@@ -481,12 +481,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Height=%3\n"
                 "App.ActiveDocument.%1.Radius=%4\n"
                 "App.ActiveDocument.%1.Angle=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n")
+                "App.ActiveDocument.%1.LocalCoord=%6\n"
+                "App.ActiveDocument.%1.Placement=%7\n")
                 .arg(name)
                 .arg(ui.helixPitch->value(),0,'f',2)
                 .arg(ui.helixHeight->value(),0,'f',2)
                 .arg(ui.helixRadius->value(),0,'f',2)
                 .arg(ui.helixAngle->value(),0,'f',2)
+                .arg(ui.helixLocalCS->currentIndex())
                 .arg(placement);
         }
         else if (ui.comboBox1->currentIndex() == 9) {  // circle

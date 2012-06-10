@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2009, 2010                                              *
-#*   Yorik van Havre <yorik@gmx.fr>, Ken Cline <cline@frii.com>            *  
+#*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -39,6 +39,10 @@ def typecheck (args_and_types, name="?"):
 		if not isinstance (v,t):
 			FreeCAD.Console.PrintWarning("typecheck[" + str(name) + "]: " + str(v) + " is not " + str(t) + "\n")
 			raise TypeError("fcvec." + str(name))
+
+def toString(u):
+        "returns a string containing a python command to recreate this vector"
+        return "FreeCAD.Vector("+str(u.x)+","+str(u.y)+","+str(u.z)+")"
 
 def tup(u,array=False):
 	"returns a tuple (x,y,z) with the vector coords, or an array if array=true"

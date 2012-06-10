@@ -347,7 +347,12 @@ PyObject*  TopoShapePy::exportStl(PyObject *args)
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception,e.what());
-        return NULL;
+        return 0;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
     }
 
     Py_Return;

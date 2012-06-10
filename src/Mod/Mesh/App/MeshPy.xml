@@ -370,11 +370,24 @@ an empty dictionary if there is no intersection.
 </UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPlanes" Const="true">
+		<Methode Name="getPlanarSegments" Const="true">
 			<Documentation>
-				<UserDocu>Get all planes of the mesh as segment.
+				<UserDocu>getPlanarSegments(dev,[min faces=0]) -> list
+Get all planes of the mesh as segment.
 In the worst case each triangle can be regarded as single
 plane if none of its neighours is coplanar.</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getSegmentsByCurvature" Const="true">
+			<Documentation>
+				<UserDocu>getSegmentsByCurvature(list) -> list
+The argument list gives a list if tuples where it defines the preferred maximum curvature,
+the preferred minumum curvature, the tolerances and the number of minimum faces for the segment.
+Example:
+c=(1.0, 0.0, 0.1, 0.1, 500) # search for a cylinder with radius 1.0
+p=(0.0, 0.0, 0.1, 0.1, 500) # search for a plane
+mesh.getSegmentsByCurvature([c,p])
+				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Attribute Name="Points" ReadOnly="true">

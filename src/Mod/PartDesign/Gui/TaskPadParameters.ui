@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>158</width>
-    <height>116</height>
+    <width>272</width>
+    <height>238</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="textLabel1">
        <property name="text">
-        <string>Type:</string>
+        <string>Type</string>
        </property>
       </widget>
      </item>
@@ -39,7 +39,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Length:</string>
+        <string>Length</string>
        </property>
       </widget>
      </item>
@@ -55,19 +55,19 @@
         <double>5.000000000000000</double>
        </property>
        <property name="value">
-        <double>20.000000000000000</double>
+        <double>10.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxMirrored">
+    <widget class="QCheckBox" name="checkBoxMidplane">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="text">
-      <string>Mirrored extent</string>
+      <string>Symmetric to plane</string>
      </property>
     </widget>
    </item>
@@ -77,6 +77,47 @@
       <string>Reversed</string>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>2nd length</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox2">
+       <property name="minimum">
+        <double>-999999999.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>999999999.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="textLabel1_2">
+       <property name="text">
+        <string>Face</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineFaceName"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

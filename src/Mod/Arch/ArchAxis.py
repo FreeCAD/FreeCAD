@@ -21,18 +21,17 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,math
-
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,math,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore, QtGui
 from pivy import coin
+from DraftTools import translate
 
 __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeAxis(num=0,size=0,name="Axes"):
+def makeAxis(num=5,size=1,name=str(translate("Arch","Axes"))):
     '''makeAxis(num,size): makes an Axis System
     based on the given number of axes and interval distances'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
@@ -58,16 +57,17 @@ class _CommandAxis:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Axis")
-        makeAxis(5,1)
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Axis")))
+        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.doCommand("Arch.makeAxis()")
         FreeCAD.ActiveDocument.commitTransaction()
        
 class _Axis:
     "The Axis object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyFloatList","Distances","Base", "The intervals between axes")
-        obj.addProperty("App::PropertyFloatList","Angles","Base", "The angles of each axis")
-        obj.addProperty("App::PropertyFloat","Length","Base", "The length of the axes")
+        obj.addProperty("App::PropertyFloatList","Distances","Base", str(translate("Arch","The intervals between axes")))
+        obj.addProperty("App::PropertyFloatList","Angles","Base", str(translate("Arch","The angles of each axis")))
+        obj.addProperty("App::PropertyFloat","Length","Base", str(translate("Arch","The length of the axes")))
         self.Type = "Axis"
         obj.Length=1.0
         obj.Proxy = self
@@ -100,20 +100,17 @@ class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","BubbleSize","Base", "The size of the axis bubbles")
-        vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", "The numeration style")
-        vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base", "The representation style")
+        vobj.addProperty("App::PropertyLength","BubbleSize","Base", str(translate("Arch","The size of the axis bubbles")))
+        vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Base", str(translate("Arch","The numeration style")))
         vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
-        vobj.DrawStyle = ["solid","dotted","dashed","dashdot"]
         vobj.Proxy = self
-        self.Object = vobj.Object
-        self.ViewObject = vobj
         vobj.BubbleSize = .1
         vobj.LineWidth = 1
         vobj.LineColor = (0.13,0.15,0.37)
-        vobj.DrawStyle = "dashdot"
+        vobj.DrawStyle = "Dashdot"
     
-    def getIcon(self):          
+    def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Axis_Tree.svg"
 
     def claimChildren(self):
@@ -121,6 +118,7 @@ class _ViewProviderAxis:
 
     def attach(self, vobj):
         self.ViewObject = vobj
+        self.Object = vobj.Object
         self.bubbles = None
 
     def getNumber(self,num):
@@ -162,61 +160,61 @@ class _ViewProviderAxis:
             return "L"+str(num)
         return ""
 
-    def setStyle(self):
-        ds = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0).getChild(1)
-        if self.ViewObject.DrawStyle == "solid":
-            ds.linePattern = 0xffff
-        elif self.ViewObject.DrawStyle == "dotted":
-            ds.linePattern = 0x0f0f
-        elif self.ViewObject.DrawStyle == "dashed":
-            ds.linePattern = 0xf00f
-        elif self.ViewObject.DrawStyle == "dashdot":
-            ds.linePattern = 0xff88
-        
     def makeBubbles(self):
         import Part
-        rn = self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
-        if self.bubbles:
-            rn.removeChild(self.bubbles)
-            self.bubbles = None
-        self.bubbles = coin.SoSeparator()
-        isep = coin.SoSeparator()
-        self.bubblestyle = coin.SoDrawStyle()
-        self.bubblestyle.linePattern = 0xffff
-        self.bubbles.addChild(self.bubblestyle)
-        for i in range(len(self.ViewObject.Object.Distances)):
-            invpl = self.ViewObject.Object.Placement.inverse()
-            verts = self.ViewObject.Object.Shape.Edges[i].Vertexes
-            p1 = invpl.multVec(verts[0].Point)
-            p2 = invpl.multVec(verts[1].Point)
-            dv = p2.sub(p1)
-            dv.normalize()
-            rad = self.ViewObject.BubbleSize
-            center = p2.add(dv.scale(rad,rad,rad))
-            ts = Part.makeCircle(rad,center).writeInventor()
-            cin = coin.SoInput()
-            cin.setBuffer(ts)
-            cob = coin.SoDB.readAll(cin)
-            co = cob.getChild(1).getChild(0).getChild(2)
-            li = cob.getChild(1).getChild(0).getChild(3)
-            self.bubbles.addChild(co)
-            self.bubbles.addChild(li)
-            st = coin.SoSeparator()
-            tr = coin.SoTransform()
-            tr.translation.setValue((center.x,center.y,center.z))
-            fo = coin.SoFont()
-            fo.name = "Arial,Sans"
-            fo.size = rad*100
-            tx = coin.SoText2()
-            tx.justification = coin.SoText2.CENTER
-            tx.string = self.getNumber(i)
-            st.addChild(tr)
-            st.addChild(fo)
-            st.addChild(tx)
-            isep.addChild(st)
-        self.bubbles.addChild(isep)
-        rn.addChild(self.bubbles)
-            
+
+        def getNode():
+            # make sure we already have the complete node built
+            r = self.ViewObject.RootNode
+            if r.getChildren().getLength() > 2:
+                if r.getChild(2).getChildren().getLength() > 0:
+                    if r.getChild(2).getChild(0).getChildren().getLength() > 0:
+                        return self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
+            return None
+        
+        rn = getNode()
+        if rn:
+            if self.bubbles:
+                rn.removeChild(self.bubbles)
+                self.bubbles = None
+            self.bubbles = coin.SoSeparator()
+            isep = coin.SoSeparator()
+            self.bubblestyle = coin.SoDrawStyle()
+            self.bubblestyle.linePattern = 0xffff
+            self.bubbles.addChild(self.bubblestyle)
+            for i in range(len(self.ViewObject.Object.Distances)):
+                invpl = self.ViewObject.Object.Placement.inverse()
+                verts = self.ViewObject.Object.Shape.Edges[i].Vertexes
+                p1 = invpl.multVec(verts[0].Point)
+                p2 = invpl.multVec(verts[1].Point)
+                dv = p2.sub(p1)
+                dv.normalize()
+                rad = self.ViewObject.BubbleSize
+                center = p2.add(dv.scale(rad,rad,rad))
+                ts = Part.makeCircle(rad,center).writeInventor()
+                cin = coin.SoInput()
+                cin.setBuffer(ts)
+                cob = coin.SoDB.readAll(cin)
+                co = cob.getChild(1).getChild(0).getChild(2)
+                li = cob.getChild(1).getChild(0).getChild(3)
+                self.bubbles.addChild(co)
+                self.bubbles.addChild(li)
+                st = coin.SoSeparator()
+                tr = coin.SoTransform()
+                tr.translation.setValue((center.x,center.y-rad/4,center.z))
+                fo = coin.SoFont()
+                fo.name = "Arial,Sans"
+                fo.size = rad*100
+                tx = coin.SoText2()
+                tx.justification = coin.SoText2.CENTER
+                tx.string = self.getNumber(i)
+                st.addChild(tr)
+                st.addChild(fo)
+                st.addChild(tx)
+                isep.addChild(st)
+            self.bubbles.addChild(isep)
+            rn.addChild(self.bubbles)
+
     def updateData(self, obj, prop):
         if prop == "Shape":
             self.makeBubbles()
@@ -225,8 +223,6 @@ class _ViewProviderAxis:
     def onChanged(self, vobj, prop):
         if prop in ["NumerationStyle","BubbleSize"]:
             self.makeBubbles()
-        elif prop == "DrawStyle":
-            self.setStyle()
         elif prop == "LineWidth":
             if self.bubbles:
                 self.bubblestyle.lineWidth = vobj.LineWidth

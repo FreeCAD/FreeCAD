@@ -115,6 +115,10 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     unsigned long lPyError = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned long>
         (QString::fromAscii(QT_TR_NOOP("Python error")), lPyError));
+    col.setRgb(224, 224, 224); 
+    unsigned long lCLine = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
+    d->colormap.push_back(QPair<QString, unsigned long>
+        (QString::fromAscii(QT_TR_NOOP("Current line highlight")), lCLine));
 
     QStringList labels; labels << tr("Items");
     this->displayItems->setHeaderLabels(labels);

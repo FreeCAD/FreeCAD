@@ -48,6 +48,16 @@ public:
     bool operator () (const std::pair<std::string, App::Property*>& elem) const
     {
         if (elem.first == propertyname) {
+            //  flag set that property is read-only or hidden
+            if (elem.second->StatusBits.test(2) || elem.second->StatusBits.test(3))
+                return false;
+            App::PropertyContainer* parent = elem.second->getContainer();
+            if (parent) {
+                //  flag set that property is read-only or hidden
+                if (parent->isReadOnly(elem.second) ||
+                    parent->isHidden(elem.second))
+                    return false;
+            }
             return elem.second->isDerivedFrom
                 (Base::Type::fromName("App::PropertyPlacement"));
         }

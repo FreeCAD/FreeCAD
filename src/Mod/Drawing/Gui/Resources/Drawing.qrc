@@ -16,6 +16,8 @@
         <file>icons/actions/drawing-view.svg</file>
         <file>icons/actions/drawing-orthoviews.svg</file>
         <file>icons/actions/drawing-openbrowser.svg</file>
+        <file>icons/actions/drawing-annotation.svg</file>
+        <file>icons/actions/drawing-clip.svg</file>
         <file>translations/Drawing_af.qm</file>
         <file>translations/Drawing_de.qm</file>
         <file>translations/Drawing_es.qm</file>
@@ -25,6 +27,7 @@
         <file>translations/Drawing_it.qm</file>
         <file>translations/Drawing_nl.qm</file>
         <file>translations/Drawing_no.qm</file>
+        <file>translations/Drawing_pl.qm</file>
         <file>translations/Drawing_pt.qm</file>
         <file>translations/Drawing_ru.qm</file>
         <file>translations/Drawing_se.qm</file>

@@ -4,7 +4,8 @@ datadir = $(prefix)/Mod/Ship
 data_DATA = \
 	InitGui.py \
 	ShipGui.py \
-	Instance.py
+	Instance.py \
+	TankInstance.py
 
 nobase_data_DATA = \
 	Icons/AreaCurveIco.png \
@@ -33,6 +34,12 @@ nobase_data_DATA = \
 	Icons/ReparametrizeIco.xpm \
 	Icons/Ship.xcf \
 	Icons/Ship.xpm \
+	Icons/Weight.png \
+	Icons/Weight.xcf \
+	Icons/Weight.xpm \
+	Icons/Tank.png \
+	Icons/Tank.xcf \
+	Icons/Tank.xpm \
 	Examples/s60.fcstd \
 	Examples/barehull5415.fcstd \
 	Examples/s60_katamaran.fcstd \
@@ -61,7 +68,18 @@ nobase_data_DATA = \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
 	shipUtils/Paths.py \
-	shipUtils/Translator.py
+	shipUtils/Translator.py \
+	tankWeights/__init__.py \
+	tankWeights/Preview.py \
+	tankWeights/TaskPanel.py \
+	tankWeights/TaskPanel.ui \
+	tankCreateTank/__init__.py \
+	tankCreateTank/TaskPanel.py \
+	tankCreateTank/TaskPanel.ui \
+	tankGZ/__init__.py \
+	tankGZ/Plot.py \
+	tankGZ/TaskPanel.py \
+	tankGZ/TaskPanel.ui
 
 CLEANFILES = $(BUILT_SOURCES)
 

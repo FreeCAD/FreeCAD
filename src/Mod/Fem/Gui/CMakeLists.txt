@@ -29,13 +29,31 @@ if(SMESH_FOUND)
     list( APPEND FemGui_LIBS ${SMESH_LIBRARIES} )
 endif(SMESH_FOUND)
 
+set(FemGui_MOC_HDRS
+    Hypothesis.h
+)
+fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
+SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
+
+set(FemGui_UIC_SRCS
+    Hypothesis.ui
+)
+qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
+SET(FemGui_DLG_SRCS
+    ${FemGui_UIC_HDRS}
+    Hypothesis.ui
+    Hypothesis.cpp
+    Hypothesis.h
+)
+SOURCE_GROUP("Dialogs" FILES ${FemGui_DLG_SRCS})
+
 qt4_add_resources(FemResource_SRCS Resources/Fem.qrc)
 
 SOURCE_GROUP("Resources" FILES ${FemResource_SRCS})
 
 
 SET(FemGui_SRCS
-    #${FemGui_UIC_HDRS}
+    ${FemGui_DLG_SRCS}
     ${FemResource_SRCS}
     AppFemGui.cpp
     AppFemGuiPy.cpp

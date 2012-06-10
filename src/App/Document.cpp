@@ -52,6 +52,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <sstream>
 # include <climits>
 #endif
@@ -62,6 +63,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/visitors.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/bind.hpp>
+#include <boost/regex.hpp>
 
 
 #include "Document.h"
@@ -1452,20 +1454,48 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
                     }
                 }
             }
+            else if (pt->second->getTypeId().isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
+                PropertyLinkSubList* link = static_cast<PropertyLinkSubList*>(pt->second);
+                if (link->getContainer() == pcObject && clear) {
+                    link->setValues(std::vector<DocumentObject*>(), std::vector<std::string>());
+                }
+                else {
+                    const std::vector<DocumentObject*>& links = link->getValues();
+                    const std::vector<std::string>& sub = link->getSubValues();
+                    std::vector<DocumentObject*> newLinks;
+                    std::vector<std::string> newSub;
+
+                    if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
+                        std::vector<DocumentObject*>::const_iterator jt;
+                        std::vector<std::string>::const_iterator kt;
+                        for (jt = links.begin(),kt = sub.begin(); jt != links.end() && kt != sub.end(); ++jt, ++kt) {
+                            if (*jt != pcObject) {
+                                newLinks.push_back(*jt);
+                                newSub.push_back(*kt);
+                            }
+                        }
+
+                        link->setValues(newLinks, newSub);
+                    }
+                }
+            }
         }
     }
 }
 
 DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-                                      DocumentObject*>& copy_map, bool recursive)
+                                      DocumentObject*>& copy_map, bool recursive,
+                                      bool keepdigitsatend)
 {
     if (!obj) return 0;
     // remove number from end to avoid lengthy names
     std::string objname = obj->getNameInDocument();
+    if (!keepdigitsatend) {
     size_t lastpos = objname.length()-1;
     while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
         lastpos--;
     objname = objname.substr(0, lastpos+1);
+    }
     DocumentObject* copy = addObject(obj->getTypeId().getName(),objname.c_str());
     if (!copy) return 0;
     copy->addDynamicProperties(obj);
@@ -1485,7 +1515,7 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
                     static_cast<PropertyLink*>(it->second)->setValue(pt->second);
                 }
                 else if (recursive) {
-                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive);
+                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive, keepdigitsatend);
                     copy_map[link] = link_copy;
                     static_cast<PropertyLink*>(it->second)->setValue(link_copy);
                 }
@@ -1504,7 +1534,7 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
                             links_copy.push_back(pt->second);
                         }
                         else {
-                            links_copy.push_back(_copyObject(*jt, copy_map, recursive));
+                            links_copy.push_back(_copyObject(*jt, copy_map, recursive, keepdigitsatend));
                             copy_map[*jt] = links_copy.back();
                         }
                     }
@@ -1534,10 +1564,10 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
     return copy;
 }
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
+DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool keepdigitsatend)
 {
     std::map<DocumentObject*, DocumentObject*> copy_map;
-    DocumentObject* copy = _copyObject(obj, copy_map, recursive);
+    DocumentObject* copy = _copyObject(obj, copy_map, recursive, keepdigitsatend);
     return copy;
 }
 
@@ -1659,6 +1689,20 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(typeId))
             Objects.push_back(*it);
+    }
+    return Objects;
+}
+
+std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
+{
+    boost::regex rx(objname);
+    boost::cmatch what;
+    std::vector<DocumentObject*> Objects;
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(typeId)) {
+            if (boost::regex_match((*it)->getNameInDocument(), what, rx))
+                Objects.push_back(*it);
+        }
     }
     return Objects;
 }

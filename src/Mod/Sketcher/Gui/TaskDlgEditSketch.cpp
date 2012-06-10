@@ -42,6 +42,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     : TaskDialog(),sketchView(sketchView)
 {
     assert(sketchView);
+    documentName = sketchView->getObject()->getDocument()->getName();
     Constraints  = new TaskSketcherConstrains(sketchView);
     General  = new TaskSketcherGeneral(sketchView);
     Messages  = new TaskSketcherMessages(sketchView);
@@ -76,10 +77,9 @@ bool TaskDlgEditSketch::accept()
 
 bool TaskDlgEditSketch::reject()
 {
-//    Gui::Command::openCommand("Sketch changed");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-//    Gui::Command::commitCommand();
+    std::string document = documentName; // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').recompute()", document.c_str());
 
     return true;
 }

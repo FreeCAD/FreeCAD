@@ -232,9 +232,10 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "        return self.bigsection(dir, '#ffffff', '#ee77aa', contents)\n"
             "\n"
             "pydoc.html=FreeCADDoc()\n"
+            "title='FreeCAD Python Modules Index'\n"
             "\n"
-            "heading = pydoc.html.heading(\n"
-            "'<big><big><strong>Python: Index of Modules</strong></big></big>',\n"
+            "heading = pydoc.html.heading("
+            "'<big><big><strong>Python: Index of Modules</strong></big></big>',"
             "'#ffffff', '#7799ee')\n"
             "def bltinlink(name):\n"
             "    return '<a href=\"%s.html\">%s</a>' % (name, name)\n"
@@ -257,13 +258,16 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "        indices.append(ret)\n"
             "contents = heading + string.join(indices) + '''<p align=right>\n"
             "<font color=\"#909090\" face=\"helvetica, arial\"><strong>\n"
-            "pydoc</strong> by Ka-Ping Yee &lt;ping@lfw.org&gt;</font>'''\n";
+            "pydoc</strong> by Ka-Ping Yee &lt;ping@lfw.org&gt;</font>'''\n"
+            "htmldocument=pydoc.html.page(title,contents)\n";
 
         PyObject* result = PyRun_String(cmd.constData(), Py_file_input, dict, dict);
         if (result) {
             Py_DECREF(result);
-            result = PyDict_GetItemString(dict, "contents");
+            result = PyDict_GetItemString(dict, "htmldocument");
             const char* contents = PyString_AsString(result);
+            res.append("HTTP/1.0 200 OK\n");
+            res.append("Content-type: text/html\n");
             res.append(contents);
             return res;
         }
@@ -293,6 +297,8 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "page");
             const char* page = PyString_AsString(result);
+            res.append("HTTP/1.0 200 OK\n");
+            res.append("Content-type: text/html\n");
             res.append(page);
         }
         else {

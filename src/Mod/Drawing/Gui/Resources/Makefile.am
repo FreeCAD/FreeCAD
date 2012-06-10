@@ -20,6 +20,8 @@ EXTRA_DIST = \
 		icons/actions/drawing-portrait-A4.svg \
 		icons/actions/drawing-orthoviews.svg \
 		icons/actions/drawing-openbrowser.svg \
+		icons/actions/drawing-annotation.svg \
+		icons/actions/drawing-clip.svg \
 		icons/Page.svg \
 		icons/Pages.svg \
 		icons/View.svg \
@@ -32,6 +34,7 @@ EXTRA_DIST = \
 		translations/Drawing_it.qm \
 		translations/Drawing_nl.qm \
 		translations/Drawing_no.qm \
+		translations/Drawing_pl.qm \
 		translations/Drawing_pt.qm \
 		translations/Drawing_ru.qm \
 		translations/Drawing_se.qm \
@@ -46,6 +49,7 @@ EXTRA_DIST = \
 		translations/Drawing_it.ts \
 		translations/Drawing_nl.ts \
 		translations/Drawing_no.ts \
+		translations/Drawing_pl.ts \
 		translations/Drawing_pt.ts \
 		translations/Drawing_ru.ts \
 		translations/Drawing_se.ts \

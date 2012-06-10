@@ -28,7 +28,9 @@ import re, FreeCAD, FreeCADGui, Part, cProfile, os, string
 from FreeCAD import Vector, Base
 from Draft import *
 
-pythonopen = open
+if open.__module__ == '__builtin__':
+        pythonopen = open
+
 useDraftWire = True
 
 def decodeName(name):

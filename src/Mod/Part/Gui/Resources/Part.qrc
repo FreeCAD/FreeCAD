@@ -16,6 +16,7 @@
         <file>icons/Part_Fillet.svg</file>
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Import.svg</file>
+        <file>icons/Part_Loft.svg</file>
         <file>icons/Part_Mirror.svg</file>
         <file>icons/Part_MirrorPNG.png</file>
         <file>icons/Part_Revolve.svg</file>
@@ -24,6 +25,7 @@
         <file>icons/Part_Shapebuilder.png</file>
         <file>icons/Part_ShapeInfo.svg</file>
         <file>icons/Part_Sphere.svg</file>
+        <file>icons/Part_Sweep.svg</file>
         <file>icons/Part_Torus.svg</file>
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
@@ -36,6 +38,7 @@
         <file>translations/Part_it.qm</file>
         <file>translations/Part_nl.qm</file>
         <file>translations/Part_no.qm</file>
+        <file>translations/Part_pl.qm</file>
         <file>translations/Part_pt.qm</file>
         <file>translations/Part_ru.qm</file>
         <file>translations/Part_se.qm</file>

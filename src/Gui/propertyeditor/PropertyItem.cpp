@@ -57,6 +57,7 @@ TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyItem, Base::BaseClass);
 
 PropertyItem::PropertyItem() : parentItem(0), readonly(false)
 {
+    precision = Base::UnitsApi::getDecimals();
 }
 
 PropertyItem::~PropertyItem()
@@ -121,11 +122,23 @@ int PropertyItem::columnCount() const
 void PropertyItem::setReadOnly(bool ro)
 {
     readonly = ro;
+    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
+        (*it)->setReadOnly(ro);
 }
 
 bool PropertyItem::isReadOnly() const
 {
     return readonly;
+}
+
+void PropertyItem::setDecimals(int prec)
+{
+    precision = prec;
+}
+
+int PropertyItem::decimals() const
+{
+    return precision;
 }
 
 QVariant PropertyItem::toolTip(const App::Property* prop) const
@@ -572,7 +585,7 @@ void PropertyFloatItem::setValue(const QVariant& value)
     if (!value.canConvert(QVariant::Double))
         return;
     double val = value.toDouble();
-    QString data = QString::fromAscii("%1").arg(val,0,'f',2);
+    QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -580,6 +593,7 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receive
 {
     QDoubleSpinBox *sb = new QDoubleSpinBox(parent);
     sb->setFrame(false);
+    sb->setDecimals(decimals());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
     return sb;
 }
@@ -701,13 +715,14 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
     if (!value.canConvert(QVariant::Double))
         return;
     double val = value.toDouble();
-    QString data = QString::fromAscii("%1").arg(val,0,'f',2);
+    QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
     setPropertyValue(data);
 }
 
 QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
     QDoubleSpinBox *sb = new QDoubleSpinBox(parent);
+    sb->setDecimals(decimals());
     sb->setFrame(false);
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
     return sb;
@@ -871,9 +886,9 @@ void PropertyVectorItem::setValue(const QVariant& value)
         return;
     const Base::Vector3f& val = value.value<Base::Vector3f>();
     QString data = QString::fromAscii("(%1, %2, %3)")
-                    .arg(val.x,0,'f',2)
-                    .arg(val.y,0,'f',2)
-                    .arg(val.z,0,'f',2);
+                    .arg(val.x,0,'f',decimals())
+                    .arg(val.y,0,'f',decimals())
+                    .arg(val.z,0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -974,9 +989,9 @@ void PropertyDoubleVectorItem::setValue(const QVariant& value)
         return;
     const Base::Vector3d& val = value.value<Base::Vector3d>();
     QString data = QString::fromAscii("(%1, %2, %3)")
-                    .arg(val.x,0,'f',2)
-                    .arg(val.y,0,'f',2)
-                    .arg(val.z,0,'f',2);
+                    .arg(val.x,0,'f',decimals())
+                    .arg(val.y,0,'f',decimals())
+                    .arg(val.z,0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -1501,9 +1516,9 @@ void PropertyColorItem::setValue(const QVariant& value)
     val.g = (float)col.green()/255.0f;
     val.b = (float)col.blue()/255.0f;
     QString data = QString::fromAscii("(%1,%2,%3)")
-                    .arg(val.r,0,'f',2)
-                    .arg(val.g,0,'f',2)
-                    .arg(val.b,0,'f',2);
+                    .arg(val.r,0,'f',decimals())
+                    .arg(val.g,0,'f',decimals())
+                    .arg(val.b,0,'f',decimals());
     setPropertyValue(data);
 }
 

@@ -284,7 +284,7 @@
       <translation>Maak afronding</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
+      <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Maak een afronding tussen twee lijnen of op een samenvallend punt</translation>
     </message>
   </context>

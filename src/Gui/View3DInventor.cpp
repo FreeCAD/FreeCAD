@@ -93,7 +93,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent* ev)
 
 /* TRANSLATOR Gui::View3DInventor */
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::BaseView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
@@ -937,7 +937,12 @@ void View3DInventor::customEvent(QEvent * e)
 {
     if (e->type() == QEvent::User) {
         NavigationStyleEvent* se = static_cast<NavigationStyleEvent*>(e);
-        _viewer->setNavigationType(se->style());
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        if (hGrp->GetBool("SameStyleForAllViews", true))
+            hGrp->SetASCII("NavigationStyle", se->style().getName());
+        else
+            _viewer->setNavigationType(se->style());
     }
 }
 

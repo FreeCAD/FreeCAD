@@ -140,8 +140,8 @@
     </message>
     <message>
       <location filename="StartPage.py" line="41"/>
-      <source>FreeCAD default workbench</source>
-      <translation>FreeCAD default workbench</translation>
+      <source>FreeCAD Complete workbench</source>
+      <translation>FreeCAD Complete workbench</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="43"/>

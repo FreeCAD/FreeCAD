@@ -107,6 +107,8 @@ EXTRA_DIST = \
 		Resources/translations/Image_nl.ts \
 		Resources/translations/Image_no.qm \
 		Resources/translations/Image_no.ts \
+		Resources/translations/Image_pl.qm \
+		Resources/translations/Image_pl.ts \
 		Resources/translations/Image_pt.qm \
 		Resources/translations/Image_pt.ts \
 		Resources/translations/Image_ru.qm \

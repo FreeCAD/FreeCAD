@@ -87,10 +87,10 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
             }
             _pcSingleton->addPath(path);
         }
+        _pcSingleton->addPath(QString::fromAscii("%1/icons").arg(QString::fromUtf8(App::GetApplication().GetHomePath())));
+        _pcSingleton->addPath(QString::fromAscii("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));
-        _pcSingleton->addPath(QString::fromUtf8(App::GetApplication().GetHomePath()));
-        _pcSingleton->addPath(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str()));
 
         RegisterIcons();
     }
@@ -189,6 +189,27 @@ bool BitmapFactoryInst::findPixmapInCache(const char* name, QPixmap& px) const
     return false;
 }
 
+bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
+{
+    QFileInfo fi(filename);
+    if (fi.exists()) {
+        // first check if it's an SVG because Qt's qsvg4 module shouldn't be used therefore
+        if (fi.suffix().toLower() == QLatin1String("svg")) {
+            QFile svgFile(filename);
+            if (svgFile.open(QFile::ReadOnly | QFile::Text)) {
+                QByteArray content = svgFile.readAll();
+                icon = pixmapFromSvg(content, QSize(64,64));
+            }
+        }
+        else {
+            // try with Qt plugins
+            icon.load(filename);
+        }
+    }
+
+    return !icon.isNull();
+}
+
 QPixmap BitmapFactoryInst::pixmap(const char* name) const
 {
     if (!name || *name == '\0')
@@ -205,33 +226,29 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     if (It != d->xpmMap.end())
         icon = QPixmap(It.value());
 
-    // If an absolute path is given
+    // Try whether an absolute path is given
     QString fn = QString::fromUtf8(name);
-    if (icon.isNull() && QFile(fn).exists())
-        icon.load(fn);
-
-    // first check if it's an SVG because Qt's qsvg4 module shouldn't be used therefore
-    if (icon.isNull()) {
-        icon = pixmapFromSvg(name, QSize(64,64));
-    }
+    if (icon.isNull())
+        loadPixmap(fn, icon);
 
     // try to find it in the given directories
     if (icon.isNull()) {
         bool found = false;
         QList<QByteArray> formats = QImageReader::supportedImageFormats();
+        formats.prepend("SVG"); // check first for SVG to use special import mechanism
         for (QStringList::ConstIterator pt = d->paths.begin(); pt != d->paths.end() && !found; ++pt) {
             QDir d(*pt);
             QString fileName = d.filePath(fn);
-            if (QFile(fileName).exists()) {
-                icon.load(fileName);
+            if (loadPixmap(fileName, icon)) {
                 found = true;
                 break;
-            } else {
+            }
+            else {
+                // Go through supported file formats
                 for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
                     QString path = QString::fromAscii("%1.%2").arg(fileName).
                         arg(QString::fromAscii((*fm).toLower().constData()));
-                    if (QFile(path).exists()) {
-                        icon.load(path);
+                    if (loadPixmap(path, icon)) {
                         found = true;
                         break;
                     }

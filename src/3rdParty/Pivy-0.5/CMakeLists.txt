@@ -88,7 +88,7 @@ if(MSVC)
         debug ${PYTHON_DEBUG_LIBRARY}
         optimized ${PYTHON_LIBRARY})
 else(MSVC)
-    set(CoinPy_LIBS
+    set(SoQtPy_LIBS
         ${SOQT_LIBRARIES}
         ${COIN3D_LIBRARY}
         ${PYTHON_LIBRARY})

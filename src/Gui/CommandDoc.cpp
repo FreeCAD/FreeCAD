@@ -50,11 +50,13 @@
 #include "DlgProjectUtility.h"
 #include "Transform.h"
 #include "Placement.h"
+#include "ManualAlignment.h"
 #include "WaitCursor.h"
 #include "ViewProvider.h"
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include "MergeDocuments.h"
+#include "NavigationStyle.h"
 
 using namespace Gui;
 
@@ -279,7 +281,7 @@ void StdCmdMergeProjects::activated(int iMsg)
 {
     QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
     QString project = QFileDialog::getOpenFileName(Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge project")), QString(),
+        QString::fromUtf8(QT_TR_NOOP("Merge project")), QDir::homePath(),
         QString::fromUtf8(QT_TR_NOOP("%1 document (*.fcstd)")).arg(exe));
     if (!project.isEmpty()) {
         App::Document* doc = App::GetApplication().getActiveDocument();
@@ -291,9 +293,6 @@ void StdCmdMergeProjects::activated(int iMsg)
                 QString::fromUtf8(QT_TR_NOOP("Cannot merge project with itself.")));
             return;
         }
-
-        QString dir1 = proj.absoluteDir().filePath(proj.baseName());
-        QString dir2 = info.absoluteDir().filePath(info.baseName());
 
         Base::FileInfo fi((const char*)project.toUtf8());
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
@@ -1014,6 +1013,63 @@ bool StdCmdPlacement::isActive(void)
 }
 
 //===========================================================================
+// Std_Alignment
+//===========================================================================
+DEF_STD_CMD_A(StdCmdAlignment);
+
+StdCmdAlignment::StdCmdAlignment()
+  : Command("Std_Alignment")
+{
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("Alignment...");
+    sToolTipText  = QT_TR_NOOP("Align the selected objects");
+    sStatusTip    = QT_TR_NOOP("Align the selected objects");
+    sWhatsThis    = "Std_Alignment";
+}
+
+void StdCmdAlignment::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
+        (App::GeoFeature::getClassTypeId());
+    ManualAlignment* align = ManualAlignment::instance();
+    QObject::connect(align, SIGNAL(emitCanceled()), align, SLOT(deleteLater()));
+    QObject::connect(align, SIGNAL(emitFinished()), align, SLOT(deleteLater()));
+
+    // Get the fixed and moving meshes
+    FixedGroup fixedGroup;
+    std::map<int, MovableGroup> groupMap;
+    fixedGroup.addView(sel[0]);
+    groupMap[0].addView(sel[1]);
+
+    // add the fixed group
+    align->setFixedGroup(fixedGroup);
+
+    // create the model of movable groups
+    MovableGroupModel model;
+    model.addGroups(groupMap);
+    align->setModel(model);
+    Base::Type style = Base::Type::fromName("Gui::CADNavigationStyle");
+    Gui::Document* doc = Application::Instance->activeDocument();
+    if (doc) {
+        View3DInventor* mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
+        if (mdi) {
+            style = mdi->getViewer()->navigationStyle()->getTypeId();
+        }
+    }
+
+    align->setMinPoints(1);
+    align->startAlignment(style);
+    Gui::Selection().clearSelection();
+}
+
+bool StdCmdAlignment::isActive(void)
+{
+    if (ManualAlignment::hasInstance())
+        return false;
+    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 2;
+}
+
+//===========================================================================
 // Std_Edit
 //===========================================================================
 DEF_STD_CMD_A(StdCmdEdit);
@@ -1022,7 +1078,7 @@ StdCmdEdit::StdCmdEdit()
   :Command("Std_Edit")
 {
   sGroup        = QT_TR_NOOP("Edit");
-  sMenuText     = QT_TR_NOOP("Toggle &Editmode");
+  sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
   sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
   sWhatsThis    = "Std_Edit";
   sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
@@ -1085,6 +1141,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdRefresh());
     rcCmdMgr.addCommand(new StdCmdTransform());
     rcCmdMgr.addCommand(new StdCmdPlacement());
+    rcCmdMgr.addCommand(new StdCmdAlignment());
     rcCmdMgr.addCommand(new StdCmdEdit());
 }
 

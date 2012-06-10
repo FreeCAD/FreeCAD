@@ -69,6 +69,7 @@
 #include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
 #include "MeshEditor.h"
+#include "Segmentation.h"
 
 using namespace Mesh;
 
@@ -289,11 +290,12 @@ void CmdMeshImport::activated(int iMsg)
 {
     // use current path as default
     QStringList filter;
-    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.ply)");
+    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)");
     filter << QObject::tr("Binary STL (*.stl)");
     filter << QObject::tr("ASCII STL (*.ast)");
     filter << QObject::tr("Binary Mesh (*.bms)");
     filter << QObject::tr("Alias Mesh (*.obj)");
+    filter << QObject::tr("Object File Format (*.off)");
     filter << QObject::tr("Inventor V2.1 ascii (*.iv)");
     filter << QObject::tr("Stanford Polygon (*.ply)");
     //filter << "Nastran (*.nas *.bdf)";
@@ -1367,6 +1369,39 @@ bool CmdMeshFillInteractiveHole::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdMeshSegmentation);
+
+CmdMeshSegmentation::CmdMeshSegmentation()
+  : Command("Mesh_Segmentation")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Create mesh segments...");
+    sToolTipText  = QT_TR_NOOP("Create mesh segments");
+    sWhatsThis    = "Mesh_Segmentation";
+    sStatusTip    = QT_TR_NOOP("Create mesh segments");
+}
+
+void CmdMeshSegmentation::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
+        (Mesh::Feature::getClassTypeId());
+    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(objs.front());
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        dlg = new MeshGui::TaskSegmentation(mesh);
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdMeshSegmentation::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+    return Gui::Selection().countObjectsOfType
+        (Mesh::Feature::getClassTypeId()) == 1;
+}
+
 void CreateMeshCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1399,4 +1434,5 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFillInteractiveHole());
     rcCmdMgr.addCommand(new CmdMeshRemoveCompByHand());
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
+    rcCmdMgr.addCommand(new CmdMeshSegmentation());
 }

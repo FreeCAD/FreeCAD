@@ -65,6 +65,7 @@ public:
 
 protected:
     ViewProviderSketch   *sketchView;
+    std::string documentName;
 
     TaskSketcherConstrains  *Constraints;
     TaskSketcherGeneral     *General;

@@ -21,17 +21,20 @@
 #*                                                                         *
 #***************************************************************************
 
-import ifcReader, FreeCAD, Arch, Draft, os, sys, time, tempfile, Part
-from draftlibs import fcvec
+import ifcReader, FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils
 
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
+# config
 DEBUG = True
 SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
-SKIP = ["IfcOpeningElement"]
-pyopen = open # because we'll redefine open below
+SKIP = ["IfcOpeningElement","IfcSpace"]
+# end config
+
+if open.__module__ == '__builtin__':
+    pyopen = open # because we'll redefine open below
 
 def open(filename):
     "called when freecad opens a file"
@@ -39,13 +42,33 @@ def open(filename):
     doc = FreeCAD.newDocument(docname)
     doc.Label = decode(docname)
     FreeCAD.ActiveDocument = doc
+    global createIfcGroups, useIfcOpenShell, importIfcFurniture
+    createIfcGroups = useIfcOpenShell = importIfcFurniture = False
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    op = p.GetBool("useIfcOpenShell")
-    ip = p.GetBool("useIfcParser")
-    if op:
-        readOpenShell(filename,useParser=ip)
-    else:
-        read(filename)
+    useIfcOpenShell = p.GetBool("useIfcOpenShell")
+    createIfcGroups = p.GetBool("createIfcGroups")
+    importIfcFurniture = p.GetBool("importIfcFurniture")
+    if not importIfcFurniture:
+        SKIP.append("IfcFurnishingElement")
+    read(filename)
+    return doc
+
+def insert(filename,docname):
+    "called when freecad wants to import a file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    global createIfcGroups, useIfcOpenShell, importIfcFurniture
+    createIfcGroups = useIfcOpenShell = importIfcFurniture = False
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    useIfcOpenShell = p.GetBool("useIfcOpenShell")
+    createIfcGroups = p.GetBool("createIfcGroups")
+    importIfcFurniture = p.GetBool("importIfcFurniture")
+    if not importIfcFurniture:
+        SKIP.append("IfcFurnishingElement")    
+    read(filename)
     return doc
 
 def decode(name):
@@ -83,41 +106,72 @@ def getIfcOpenShell():
     else:
         return True
 
-def readOpenShell(filename,useParser=False):
-    "Parses an IFC file with IfcOpenShell"
+def read(filename):
+    "Parses an IFC file"
 
-    altifc = None
-    if useParser:
-        altifc = parseFile(filename)
+    # parsing the IFC file
+    t1 = time.time()
+    schema=getSchema()
+    if schema:
+        if DEBUG: global ifc
+        if DEBUG: print "opening",filename,"..."
+        ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
+    else:
+        FreeCAD.Console.PrintWarning("IFC Schema not found, IFC import disabled.\n")
+        return None
+    t2 = time.time()
+    if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
     
-    if getIfcOpenShell():
-        USESHAPES = False
+    if useIfcOpenShell and getIfcOpenShell():
+        # use the IfcOpenShell parser
+        
+        useShapes = False
         if hasattr(IfcImport,"USE_BREP_DATA"):
             IfcImport.Settings(IfcImport.USE_BREP_DATA,True)
-            USESHAPES = True
+            useShapes = True
         if IfcImport.Init(filename):
             while True:
 
                 obj = IfcImport.Get()
                 if DEBUG: print "parsing ",obj.id,": ",obj.name," of type ",obj.type
                 meshdata = []
-                n = obj.name
-                if not n: n = "Unnamed"
 
+                # retrieving name
+                n = obj.name
+                if not n:
+                    n = "Unnamed"
+
+                # build shape
+                shape = None
+                if useShapes:
+                    shape = getShape(obj)
+
+                # skip types
                 if obj.type in SKIP:
                     pass
-                
-                elif altifc and (obj.type == "IfcWallStandardCase"):
-                    if USESHAPES:
-                        makeWall(altifc.Entities[obj.id],shape=getShape(obj))
-                    else:
-                        makeWall(altifc.Entities[obj.id])
+
+                # walls
+                elif obj.type == "IfcWallStandardCase":
+                    makeWall(ifc.Entities[obj.id],shape)
+
+                # windows
+                elif obj.type in ["IfcWindow","IfcDoor"]:
+                    makeWindow(ifc.Entities[obj.id],shape)
+
+                # structs
+                elif obj.type in ["IfcBeam","IfcColumn","IfcSlab"]:
+                    makeStructure(ifc.Entities[obj.id],shape)
+
+                # furniture
+                elif obj.type == "IfcFurnishingElement":
+                    nobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Furniture")
+                    nobj.Shape = shape
                     
-                elif USESHAPES:
-                    # treat as Parts
-                    sh = getShape(obj)
+                elif shape:
+                    # treat as dumb parts
                     nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
-                    nobj.Shape = sh
+                    nobj.Shape = shape
+                    
                 else:
                     # treat as meshes
                     me,pl = getMesh(obj)
@@ -127,8 +181,212 @@ def readOpenShell(filename,useParser=False):
                     
                 if not IfcImport.Next():
                     break
-    IfcImport.CleanUp()
+
+        IfcImport.CleanUp()
+        
+    else:
+        # use only the internal python parser
+       
+        # getting walls
+        for w in ifc.getEnt("IfcWallStandardCase"):
+            makeWall(w)
+            
+        # getting windows and doors
+        for w in (ifc.getEnt("IfcWindow") + ifc.getEnt("IfcDoor")):
+            makeWindow(w)
+            
+        # getting structs
+        for w in (ifc.getEnt("IfcSlab") + ifc.getEnt("IfcBeam") + ifc.getEnt("IfcColumn")):
+            makeStructure(w)
+            
+    order(ifc)
+    FreeCAD.ActiveDocument.recompute()
+    t3 = time.time()
+    if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
+    
     return None
+    
+def order(ifc):
+    "orders the already generated elements by building and by floor"
+    
+    # getting floors
+    for f in ifc.getEnt("IfcBuildingStorey"):
+        group(f,"Floor")
+    # getting buildings
+    for b in ifc.getEnt("IfcBuilding"):
+        group(b,"Building")
+    # getting sites
+    for s in ifc.getEnt("IfcSite"):
+        group(s,"Site")
+
+def group(entity,mode=None):
+    "gathers the children of the given entity"
+    
+    try:
+        if DEBUG: print "=====> making group",entity.id
+        placement = None
+        placement = getPlacement(entity.ObjectPlacement)
+        if DEBUG: print "got cell placement",entity.id,":",placement
+        subelements = ifc.find("IFCRELCONTAINEDINSPATIALSTRUCTURE","RelatingStructure",entity)
+        subelements.extend(ifc.find("IFCRELAGGREGATES","RelatingObject",entity))
+        elts = []
+        for s in subelements:
+            if hasattr(s,"RelatedElements"):
+                s = s.RelatedElements
+                if not isinstance(s,list): s = [s]
+                elts.extend(s)
+            elif hasattr(s,"RelatedObjects"):
+                s = s.RelatedObjects
+                if not isinstance(s,list): s = [s]
+                elts.extend(s)
+            elif hasattr(s,"RelatedObject"):
+                s = s.RelatedObject
+                if not isinstance(s,list): s = [s]
+                elts.extend(s)
+        print "found dependent elements: ",elts
+        
+        groups = [['Wall','IfcWallStandardCase',[]],
+                  ['Window','IfcWindow',[]],
+                  ['Door','IfcDoor',[]],
+                  ['Slab','IfcSlab',[]],
+                  ['Beam','IfcBeam',[]],
+                  ['Column','IfcColumn',[]],
+                  ['Floor','IfcBuildingStorey',[]],
+                  ['Building','IfcBuilding',[]],
+                  ['Furniture','IfcFurnishingElement',[]]]
+        
+        for e in elts:
+            for g in groups:
+                if e.type.upper() == g[1].upper():
+                    o = FreeCAD.ActiveDocument.getObject(g[0] + str(e.id))
+                    if o:
+                        g[2].append(o)
+        print "groups:",groups
+
+        comps = []
+        if createIfcGroups:
+            if DEBUG: print "creating subgroups"
+            for g in groups:
+                if g[2]:
+                    if g[0] in ['Building','Floor']:
+                        comps.extend(g[2])
+                    else:
+                        fcg = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",g[0]+"s")
+                        for o in g[2]:
+                            fcg.addObject(o)
+                        comps.append(fcg)
+        else:
+            for g in groups:
+                comps.extend(g[2])
+
+        name = mode + str(entity.id)
+        if mode == "Site":
+            cell = Arch.makeSite(comps,name=name)
+        elif mode == "Floor":
+            cell = Arch.makeFloor(comps,name=name)
+        elif mode == "Building":
+            cell = Arch.makeBuilding(comps,name=name)
+    except:
+        if DEBUG: print "error: skipping group ",entity.id        
+
+def makeWall(entity,shape=None):
+    "makes a wall in the freecad document"
+    try:
+        if DEBUG: print "=====> making wall",entity.id
+        if shape:
+            sh = FreeCAD.ActiveDocument.addObject("Part::Feature","WallBody")
+            sh.Shape = shape
+            wall = Arch.makeWall(sh,name="Wall"+str(entity.id))
+            if DEBUG: print "made wall object  ",entity.id,":",wall
+            return
+        placement = wall = wire = body = width = height = None
+        placement = getPlacement(entity.ObjectPlacement)
+        if DEBUG: print "got wall placement",entity.id,":",placement
+        width = entity.getProperty("Width")
+        height = entity.getProperty("Height")
+        if width and height:
+                if DEBUG: print "got width, height ",entity.id,":",width,"/",height
+                for r in entity.Representation.Representations:
+                    if r.RepresentationIdentifier == "Axis":
+                        wire = getWire(r.Items,placement)
+                        wall = Arch.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
+        else:
+                if DEBUG: print "no height or width properties found..."
+                for r in entity.Representation.Representations:
+                    if r.RepresentationIdentifier == "Body":
+                        for b in r.Items:
+                            if b.type == "IFCEXTRUDEDAREASOLID":
+                                norm = getVector(b.ExtrudedDirection)
+                                norm.normalize()
+                                wire = getWire(b.SweptArea,placement)
+                                wall = Arch.makeWall(wire,width=0,height=b.Depth,name="Wall"+str(entity.id))
+                                wall.Normal = norm
+        if wall:
+            if DEBUG: print "made wall object  ",entity.id,":",wall
+    except:
+        if DEBUG: print "error: skipping wall",entity.id
+
+def makeWindow(entity,shape=None):
+    "makes a window in the freecad document"
+    try:
+        typ = "Window" if entity.type == "IFCWINDOW" else "Door"
+        if DEBUG: print "=====> making window",entity.id
+        if shape:
+            window = Arch.makeWindow(name=typ+str(entity.id))
+            window.Shape = shape
+            if DEBUG: print "made window object  ",entity.id,":",window
+            return
+        placement = window = wire = body = width = height = None
+        placement = getPlacement(entity.ObjectPlacement)
+        if DEBUG: print "got window placement",entity.id,":",placement
+        width = entity.getProperty("Width")
+        height = entity.getProperty("Height")
+        for r in entity.Representation.Representations:
+            if r.RepresentationIdentifier == "Body":
+                for b in r.Items:
+                    if b.type == "IFCEXTRUDEDAREASOLID":
+                        wire = getWire(b.SweptArea,placement)
+                        window = Arch.makeWindow(wire,width=b.Depth,name=typ+str(entity.id))
+        if window:
+            if DEBUG: print "made window object  ",entity.id,":",window
+    except:
+        if DEBUG: print "error: skipping window",entity.id
+
+def makeStructure(entity,shape=None):
+    "makes a structure in the freecad document"
+    try:
+        if entity.type == "IFCSLAB":
+            typ = "Slab"
+        elif entity.type == "IFCBEAM":
+            typ = "Beam"
+        else:
+            typ = "Column"
+        
+        if DEBUG: print "=====> making struct",entity.id
+        if shape:
+            sh = FreeCAD.ActiveDocument.addObject("Part::Feature","StructureBody")
+            sh.Shape = shape
+            structure = Arch.makeStructure(sh,name=typ+str(entity.id))
+            if DEBUG: print "made structure object  ",entity.id,":",structure
+            return
+        placement = structure = wire = body = width = height = None
+        placement = getPlacement(entity.ObjectPlacement)
+        if DEBUG: print "got window placement",entity.id,":",placement
+        width = entity.getProperty("Width")
+        height = entity.getProperty("Height")
+        for r in entity.Representation.Representations:
+            if r.RepresentationIdentifier == "Body":
+                for b in r.Items:
+                    if b.type == "IFCEXTRUDEDAREASOLID":
+                        wire = getWire(b.SweptArea,placement)
+                        structure = Arch.makeStructure(wire,height=b.Depth,name=typ+str(entity.id))
+        if structure:
+            if DEBUG: print "made structure object  ",entity.id,":",structure
+    except:
+        if DEBUG: print "error: skipping structure",entity.id
+
+        
+# geometry helpers ###################################################################
 
 def getMesh(obj):
     "gets mesh and placement from an IfcOpenShell object"
@@ -163,127 +421,21 @@ def getShape(obj):
                          0, 0, 0, 1)
     sh.Placement = FreeCAD.Placement(mat)  
     return sh
-    
-def read(filename):
-    "processes an ifc file and add its objects to the given document"
-    t1 = time.time()
-    ifc = parseFile(filename)
-    t2 = time.time()
-    if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
-    # getting walls
-    for w in ifc.getEnt("IFCWALLSTANDARDCASE"):
-        makeWall(w)
-    # getting floors
-    for f in ifc.getEnt("IFCBUILDINGSTOREY"):
-        makeCell(f,"Floor")
-    # getting buildings
-    for b in ifc.getEnt("IFCBUILDING"):
-        makeCell(b,"Building")
-    FreeCAD.ActiveDocument.recompute()
-    t3 = time.time()
-    if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
-
-def parseFile(filename):
-    "parses an IFC file"
-    schema=getSchema()
-    if schema:
-        if DEBUG: global ifc
-        if DEBUG: print "opening",filename,"..."
-        ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
-        return ifc
-    else:
-        FreeCAD.Console.PrintWarning("IFC Schema not found, IFC import disabled.\n")
-        return None
-
-def makeCell(entity,mode="Cell"):
-    "makes a cell in the freecad document"
-    try:
-        if DEBUG: print "=====> making cell",entity.id
-        placement = None
-        placement = getPlacement(entity.ObjectPlacement)
-        if DEBUG: print "got cell placement",entity.id,":",placement
-        subelements = ifc.find("IFCRELCONTAINEDINSPATIALSTRUCTURE","RelatingStructure",entity)
-        subelements.extend(ifc.find("IFCRELAGGREGATES","RelatingObject",entity))
-        fcelts = []
-        for s in subelements:
-            if hasattr(s,"RelatedElements"):
-                s = s.RelatedElements
-                if not isinstance(s,list): s = [s]
-                for r in s:
-                    if r.type == "IFCWALLSTANDARDCASE":
-                        o = FreeCAD.ActiveDocument.getObject("Wall"+str(r.id))
-                        if o: fcelts.append(o)
-            elif hasattr(s,"RelatedObjects"):
-                s = s.RelatedObjects
-                if not isinstance(s,list): s = [s]
-                for r in s:
-                    if r.type == "IFCBUILDINGSTOREY":
-                        o = FreeCAD.ActiveDocument.getObject("Floor"+str(r.id))
-                        if o: fcelts.append(o)
-        name = mode+str(entity.id)
-        if mode == "Site":
-            cell = Arch.makeSite(fcelts,name=name)
-        elif mode == "Floor":
-            cell = Arch.makeFloor(fcelts,join=True,name=name)
-        elif mode == "Building":
-            cell = Arch.makeBuilding(fcelts,name=name)
-        else:
-            cell = Arch.makeCell(fcelts,join=True,name=name)
-        cell.CellType = type
-    except:
-        if DEBUG: print "error: skipping cell",entity.id        
-
-def makeWall(entity,shape=None):
-    "makes a wall in the freecad document"
-    try:
-        if DEBUG: print "=====> making wall",entity.id
-        if shape:
-            sh = FreeCAD.ActiveDocument.addObject("Part::Feature","WallBody")
-            sh.Shape = shape
-            wall = Arch.makeWall(sh)
-            if DEBUG: print "made wall object  ",entity.id,":",wall
-            return
-        placement = wall = wire = body = width = height = None
-        placement = getPlacement(entity.ObjectPlacement)
-        if DEBUG: print "got wall placement",entity.id,":",placement
-        width = entity.getProperty("Width")
-        height = entity.getProperty("Height")
-        if width and height:
-                if DEBUG: print "got width, height ",entity.id,":",width,"/",height
-                for r in entity.Representation.Representations:
-                    if r.RepresentationIdentifier == "Axis":
-                        wire = makeWire(r.Items,placement)
-                        wall = Arch.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
-        else:
-                if DEBUG: print "no height or width properties found..."
-                for r in entity.Representation.Representations:
-                    if r.RepresentationIdentifier == "Body":
-                        for b in r.Items:
-                            if b.type == "IFCEXTRUDEDAREASOLID":
-                                norm = getVector(b.ExtrudedDirection)
-                                norm.normalize()
-                                wire = makeWire(b.SweptArea,placement)
-                                wall = Arch.makeWall(wire,width=0,height=b.Depth,name="Wall"+str(entity.id))
-                                wall.Normal = norm
-        if wall:
-            if DEBUG: print "made wall object  ",entity.id,":",wall
-    except:
-        if DEBUG: print "error: skipping wall",entity.id
-
-def makeWire(entity,placement=None):
-    "makes a wire in the freecad document"
+        
+def getWire(entity,placement=None):
+    "returns a wire (created in the freecad document) from the given entity"
     if DEBUG: print "making Wire from :",entity
     if not entity: return None
     if entity.type == "IFCPOLYLINE":
         pts = []
         for p in entity.Points:
             pts.append(getVector(p))
-        return Draft.makeWire(pts,placement=placement)
+        return Draft.getWire(pts,placement=placement)
     elif entity.type == "IFCARBITRARYCLOSEDPROFILEDEF":
         pts = []
         for p in entity.OuterCurve.Points:
             pts.append(getVector(p))
-        return Draft.makeWire(pts,closed=True,placement=placement)
+        return Draft.getWire(pts,closed=True,placement=placement)
 
 def getPlacement(entity):
     "returns a placement from the given entity"
@@ -295,7 +447,7 @@ def getPlacement(entity):
         z = getVector(entity.Axis)
         y = z.cross(x)
         loc = getVector(entity.Location)
-        m = fcvec.getPlaneRotation(x,y,z)
+        m = DraftVecUtils.getPlaneRotation(x,y,z)
         pl = FreeCAD.Placement(m)
         pl.move(loc)
     elif entity.type == "IFCLOCALPLACEMENT":
@@ -313,6 +465,7 @@ def getPlacement(entity):
     return pl
 
 def getVector(entity):
+    "returns a vector from the given entity"
     if DEBUG: print "getting point from",entity
     if entity.type == "IFCDIRECTION":
         if len(entity.DirectionRatios) == 3:

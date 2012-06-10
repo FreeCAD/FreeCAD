@@ -77,7 +77,10 @@ PyObject*  MeshFeaturePy::smooth(PyObject *args)
         return NULL;
 
     PY_TRY {
-        getFeaturePtr()->Mesh.smooth(iter, d_max);
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->smooth(iter, d_max);
+        obj->Mesh.finishEditing();
     } PY_CATCH;
 
     Py_Return; 
@@ -87,7 +90,10 @@ PyObject*  MeshFeaturePy::removeNonManifolds(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
-    getFeaturePtr()->Mesh.removeNonManifolds();
+    Mesh::Feature* obj = getFeaturePtr();
+    MeshObject* kernel = obj->Mesh.startEditing();
+    kernel->removeNonManifolds();
+    obj->Mesh.finishEditing();
     Py_Return
 }
 
@@ -97,7 +103,10 @@ PyObject*  MeshFeaturePy::fixIndices(PyObject *args)
         return NULL;
 
     PY_TRY {
-        getFeaturePtr()->Mesh.validateIndices();
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->validateIndices();
+        obj->Mesh.finishEditing();
     } PY_CATCH;
 
     Py_Return; 
@@ -109,7 +118,10 @@ PyObject*  MeshFeaturePy::fixDegenerations(PyObject *args)
         return NULL;
 
     PY_TRY {
-        getFeaturePtr()->Mesh.validateDegenerations();
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->validateDegenerations();
+        obj->Mesh.finishEditing();
     } PY_CATCH;
 
     Py_Return; 
@@ -121,7 +133,10 @@ PyObject*  MeshFeaturePy::removeDuplicatedFacets(PyObject *args)
         return NULL;
 
     PY_TRY {
-        getFeaturePtr()->Mesh.removeDuplicatedFacets();
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->removeDuplicatedFacets();
+        obj->Mesh.finishEditing();
     } PY_CATCH;
 
     Py_Return; 
@@ -133,7 +148,10 @@ PyObject*  MeshFeaturePy::removeDuplicatedPoints(PyObject *args)
         return NULL;
 
     PY_TRY {
-        getFeaturePtr()->Mesh.removeDuplicatedPoints();
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->removeDuplicatedPoints();
+        obj->Mesh.finishEditing();
     } PY_CATCH;
 
     Py_Return; 
@@ -144,7 +162,10 @@ PyObject*  MeshFeaturePy::fixSelfIntersections(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     try {
-        getFeaturePtr()->Mesh.removeSelfIntersections();
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->removeSelfIntersections();
+        obj->Mesh.finishEditing();
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());
@@ -158,7 +179,10 @@ PyObject*  MeshFeaturePy::removeFoldsOnSurface(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     try {
-        getFeaturePtr()->Mesh.removeFoldsOnSurface();
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->removeFoldsOnSurface();
+        obj->Mesh.finishEditing();
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());
