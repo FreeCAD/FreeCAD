@@ -39,7 +39,6 @@ class Ship:
         """ Creates a new ship on active document.
         @param faces Ship faces (Part::Shape entities).
         """
-        self.faces = faces
         # Add uniqueness property to identify Ship instances
         obj.addProperty("App::PropertyBool","IsShip","Ship", str(Translator.translate("True if is a valid ship instance"))).IsShip=True
         # Add main dimensions
@@ -47,7 +46,7 @@ class Ship:
         obj.addProperty("App::PropertyLength","Beam","Ship", str(Translator.translate("Ship beam (B) [m]"))).Beam=0.0
         obj.addProperty("App::PropertyLength","Draft","Ship", str(Translator.translate("Ship draft (T) [m]"))).Draft=0.0
         # Add shapes
-        obj.addProperty("Part::PropertyPartShape","Shape","Ship", str(Translator.translate("Ship surfaces"))).Shape = Part.makeShell(self.faces)
+        obj.Shape = Part.makeShell(faces)
         obj.Proxy = self
         self.obj = obj
 
@@ -55,12 +54,12 @@ class Ship:
         ''' Print the name of the property that has changed '''
         # FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
         if prop == "Length" or prop == "Beam" or prop == "Draft":
-            fp.Shape = Part.makeShell(self.faces)
+            pass
 
     def execute(self, obj):
         ''' Print a short message when doing a recomputation, this method is mandatory '''
         # FreeCAD.Console.PrintMessage("Recompute Ship\n")
-        obj.Shape = Part.makeShell(self.faces)
+        obj.Shape = Part.makeShell(obj.Shape.Faces)
 
     def lineFaceSection(self,line,surface):
         """ Returns the point of section of a line with a face
@@ -147,7 +146,7 @@ class Ship:
                 wire = wires[j].Edges
                 for k in range(0,len(wire)):
                     edges.append(wire[k])
-            # Slice curves to get points (Length based)
+            # Slice curves to get points
             points = []
             for k in range(0,nP):
                 planePoints = []
@@ -664,7 +663,7 @@ class ViewProviderShip:
 def sections(obj):
     """ Returns the discretization points of sections, with the advantage 
     that is a list of nSections lists, with the points.
-    @param Ship object
+    @param obj Ship object
     @return Sections points
     """
     histogram = obj.nPoints[:]
@@ -675,3 +674,42 @@ def sections(obj):
         for j in range(histogram[i],histogram[i+1]):
             sections[i].append(points[j])
     return sections
+
+def weights(obj):
+    """ Returns Ship weights list. If weights has not been sets, 
+    this tool creates it.
+    @param obj Ship object
+    @return Weights list. None if errors
+    """
+    # Test if is a ship instance
+    props = obj.PropertiesList
+    try:
+        props.index("IsShip")
+    except ValueError:
+        return None
+    if not obj.IsShip:
+        return None
+    # Test if properties already exist
+    try:
+        props.index("WeightNames")
+    except ValueError:
+        obj.addProperty("App::PropertyStringList","WeightNames","Ship", str(Translator.translate("Ship Weights names"))).WeightNames=[Translator.translate("Lightweight").__str__()]
+    try:
+        props.index("WeightMass")
+    except ValueError:
+        # Compute mass aproximation
+        from shipHydrostatics import Tools
+        disp = Tools.Displacement(obj,obj.Draft,0.0)
+        obj.addProperty("App::PropertyFloatList","WeightMass","Ship", str(Translator.translate("Ship Weights masses"))).WeightMass=[1000.0 * disp[1]]
+    try:
+        props.index("WeightPos")
+    except ValueError:
+        # Compute mass aproximation
+        from shipHydrostatics import Tools
+        disp = Tools.Displacement(obj,obj.Draft,0.0)
+        obj.addProperty("App::PropertyVectorList","WeightPos","Ship", str(Translator.translate("Ship Weights centers of gravity"))).WeightPos=[Vector(disp[2],0.0,obj.Draft)]
+    # Setup list
+    weights = []
+    for i in range(0,len(obj.WeightNames)):
+        weights.append([obj.WeightNames[i], obj.WeightMass[i], obj.WeightPos[i]])
+    return weights

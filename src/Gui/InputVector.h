@@ -275,6 +275,13 @@ public:
         }
     }
 
+    void setPosition(const Base::Vector3f& v)
+    {
+        this->xPos->setValue(v.x);
+        this->yPos->setValue(v.y);
+        this->zPos->setValue(v.z);
+    }
+
     Base::Vector3f getPosition() const
     {
         return Base::Vector3f((float)this->xPos->value(),

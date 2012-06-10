@@ -235,7 +235,8 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     gp_Pnt2d p1,p2;
     Handle_Geom2d_Curve secondaryCurve;
     for (int id=0; id < int(geomlist.size()); id++) {
-        if (id != GeoId && !geomlist[id]->Construction) {
+        // #0000624: Trim tool doesn't work with construction lines
+        if (id != GeoId/* && !geomlist[id]->Construction*/) {
             geom = (geomlist[id])->handle();
             curve3d = Handle_Geom_Curve::DownCast(geom);
             if (!curve3d.IsNull()) {

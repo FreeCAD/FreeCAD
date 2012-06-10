@@ -58,16 +58,39 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
+    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
+            this, SLOT(onFaceName(QString)));
 
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
     double l = pcPocket->Length.getValue();
+    int index = pcPocket->Type.getValue(); // must extract value here, clear() kills it!
+    const char* upToFace = pcPocket->FaceName.getValue();
 
-    ui->doubleSpinBox->setMaximum(INT_MAX);
-    ui->doubleSpinBox->setValue(l);
-    ui->doubleSpinBox->selectAll();
-    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+    ui->changeMode->clear();
+    ui->changeMode->insertItem(0, tr("Dimension"));
+    ui->changeMode->insertItem(1, tr("To last"));
+    ui->changeMode->insertItem(2, tr("To first"));
+    ui->changeMode->insertItem(3, tr("Through all"));
+    ui->changeMode->insertItem(4, tr("Up to face"));
+    ui->changeMode->setCurrentIndex(index);
+
+    if (index == 0) { // Only this option requires a numeric value
+        ui->doubleSpinBox->setMaximum(INT_MAX);
+        ui->doubleSpinBox->setValue(l);
+        ui->doubleSpinBox->selectAll();
+        QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+        ui->lineFaceName->setEnabled(false);
+    } else if (index == 4) { // Only this option requires to select a face
+        ui->doubleSpinBox->setEnabled(false);
+        ui->lineFaceName->setText(upToFace == "" ? tr("No face selected") : tr(upToFace));
+    } else { // Neither value nor face required
+        ui->doubleSpinBox->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+    }
  
     //// check if the sketch has support
     //Sketcher::SketchObject *pcSketch;
@@ -81,10 +104,68 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     //}
 }
 
+void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    if (pcPocket->Type.getValue() != 4) // ignore user selections if mode is not upToFace
+        return;
+
+    if (!msg.pSubName || msg.pSubName[0] == '\0')
+        return;
+    std::string element(msg.pSubName);
+    if (element.substr(0,4) != "Face")
+      return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        pcPocket->FaceName.setValue(element);
+        pcPocket->getDocument()->recomputeFeature(pcPocket);
+        ui->lineFaceName->setText(tr(element.c_str()));
+    }
+}
+
 void TaskPocketParameters::onLengthChanged(double len)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
     pcPocket->Length.setValue((float)len);
+    pcPocket->getDocument()->recomputeFeature(pcPocket);
+}
+
+void TaskPocketParameters::onModeChanged(int index)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+
+    switch (index) {
+        case 0: pcPocket->Type.setValue("Length"); break;
+        case 1: pcPocket->Type.setValue("UpToLast"); break;
+        case 2: pcPocket->Type.setValue("UpToFirst"); break;
+        case 3: pcPocket->Type.setValue("ThroughAll"); break;
+        case 4: pcPocket->Type.setValue("UpToFace"); break;
+        default: pcPocket->Type.setValue("Length");
+    }
+
+    if (index == 0) {
+        ui->doubleSpinBox->setEnabled(true);
+        ui->lineFaceName->setEnabled(false);
+        ui->doubleSpinBox->setValue(pcPocket->Length.getValue());
+    } else if (index == 4) {
+        ui->lineFaceName->setEnabled(true);
+        ui->doubleSpinBox->setEnabled(false);
+        ui->lineFaceName->setText(tr(pcPocket->FaceName.getValue()));
+    } else {
+        ui->doubleSpinBox->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+    }
+
+    pcPocket->getDocument()->recomputeFeature(pcPocket);
+}
+
+void TaskPocketParameters::onFaceName(const QString& text)
+{
+    if (text.left(4) != tr("Face"))
+      return;
+
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    pcPocket->FaceName.setValue(text.toUtf8());
     pcPocket->getDocument()->recomputeFeature(pcPocket);
 }
 
@@ -93,6 +174,15 @@ double TaskPocketParameters::getLength(void) const
     return ui->doubleSpinBox->value();
 }
 
+int TaskPocketParameters::getMode(void) const
+{
+    return ui->changeMode->currentIndex();
+}
+
+const QString TaskPocketParameters::getFaceName(void) const
+{
+    return ui->lineFaceName->text();
+}
 
 TaskPocketParameters::~TaskPocketParameters()
 {
@@ -145,6 +235,8 @@ bool TaskDlgPocketParameters::accept()
 
     //Gui::Command::openCommand("Pocket changed");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceName = \"%s\"",name.c_str(),parameter->getFaceName().toAscii().data());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();
@@ -163,7 +255,7 @@ bool TaskDlgPocketParameters::reject()
         pcSupport = pcSketch->Support.getValue();
     }
 
-    // role back the done things
+    // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     

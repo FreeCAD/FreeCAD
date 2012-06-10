@@ -65,7 +65,11 @@ SET(CamGui_SRCS
 
 add_library(CamGui SHARED ${CamGui_SRCS})
 target_link_libraries(CamGui ${CamGui_LIBS})
-fc_copy_script("Mod/Cam" "CamGui" InitGui.py)
+
+fc_target_copy_resource(CamGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Cam
+    ${CMAKE_BINARY_DIR}/Mod/Cam
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(CamGui PROPERTIES SUFFIX ".pyd")

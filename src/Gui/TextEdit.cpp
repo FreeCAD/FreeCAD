@@ -192,7 +192,7 @@ struct TextEditorP
         colormap[QLatin1String("Operator")] = QColor(160, 160, 164);
         colormap[QLatin1String("Python output")] = QColor(170, 170, 127);
         colormap[QLatin1String("Python error")] = Qt::red;
-        colormap[QLatin1String("Line")] = QColor(224,224,224);
+        colormap[QLatin1String("Current line highlight")] = QColor(224,224,224);
     }
 };
 } // namespace Gui
@@ -272,8 +272,11 @@ void TextEditor::highlightCurrentLine()
 
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
-        QColor lineColor = d->colormap[QLatin1String("Line")];
-
+        QColor lineColor = d->colormap[QLatin1String("Current line highlight")];
+        unsigned long col = (lineColor.red() << 24) | (lineColor.green() << 16) | (lineColor.blue() << 8);
+        ParameterGrp::handle hPrefGrp = getWindowParameter();
+        col = hPrefGrp->GetUnsigned( "Current line highlight", col);
+        lineColor.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();

@@ -406,7 +406,7 @@
         <item row="2" column="1">
          <widget class="Gui::PrefColorButton" name="ConstructionColor">
           <property name="toolTip">
-           <string>The color of construction geometry in editmode</string>
+           <string>The color of construction geometry in edit mode</string>
           </property>
           <property name="color">
            <color>
@@ -426,7 +426,7 @@
         <item row="3" column="1">
          <widget class="Gui::PrefColorButton" name="FullyConstrainedColor">
           <property name="toolTip">
-           <string>The color of fully constrained geometry in editmode</string>
+           <string>The color of fully constrained geometry in edit mode</string>
           </property>
           <property name="color">
            <color>

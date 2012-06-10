@@ -45,12 +45,12 @@
 using namespace CompleteGui;
 
 #if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "Ske&tch");
-    qApp->translate("Workbench", "&Drawing");
+    qApp->translate("Workbench", "S&ketch");
+    qApp->translate("Workbench", "Dr&awing");
     qApp->translate("Workbench", "&Raytracing");
     qApp->translate("Workbench", "&Drafting");
     qApp->translate("Workbench", "Sketch based");
-    qApp->translate("Workbench", "Parametric");
+    qApp->translate("Workbench", "Primitives");
     qApp->translate("Workbench", "Object appearence");
     qApp->translate("Workbench", "Wire Tools");
     // taken from TestGui.py
@@ -132,7 +132,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_SelectAll" << "Std_Delete" << "Std_Placement"
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Placement" << "Std_Alignment"
           << "Separator" << "Std_DlgPreferences";
 
     // Standard views
@@ -228,6 +229,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_PolySplit"
           << "Mesh_PolySegm"
           << "Mesh_ToolMesh"
+          << "Mesh_Segmentation"
           << "Mesh_VertexCurvature";
 
     // Part ****************************************************************************************************
@@ -237,7 +239,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // submenu boolean
     Gui::MenuItem* para = new Gui::MenuItem();
-    para->setCommand("Parametric");
+    para->setCommand("Primitives");
     *para << "Part_Box"
           << "Part_Cylinder"
           << "Part_Sphere"
@@ -305,7 +307,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* drawing = new Gui::MenuItem(menuBar);
 
-    drawing->setCommand("&Drawing");
+    drawing->setCommand("Dr&awing");
     *drawing
         << "Drawing_Open"
         << "Separator"

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+      Father="PyObjectBase"
+      Name="BRepOffsetAPI_MakePipeShellPy"
+      Twin="BRepOffsetAPI_MakePipeShell"
+      TwinPointer="BRepOffsetAPI_MakePipeShell"
+      Include="BRepOffsetAPI_MakePipeShell.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+			<UserDocu>Describes a portion of a circle</UserDocu>
+		</Documentation>
+		<Methode Name="setFrenetMode">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setTrihedronMode">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setBiNormalMode">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setSpineSupport">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setAuxiliarySpine">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="add">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="remove">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isReady">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getStatus">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="makeSolid">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setTolerance">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setTransitionMode">
+			<Documentation>
+				<UserDocu>
+					0: BRepBuilderAPI_Transformed
+					1: BRepBuilderAPI_RightCorner
+					2: BRepBuilderAPI_RoundCorner
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="firstShape">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="lastShape">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="build">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="shape">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="generated">
+			<Documentation>
+				<UserDocu></UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

@@ -130,12 +130,18 @@ void PropertyLink::Restore(Base::XMLReader &reader)
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
 
     if (name != "") {
-        DocumentObject *pcObject = static_cast<DocumentObject*>(getContainer())->
-            getDocument()->getObject(name.c_str());
-        if (!pcObject)
+        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        DocumentObject* object = parent->getDocument()->getObject(name.c_str());
+        if (!object) {
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",name.c_str());
-        setValue(pcObject);
+        }
+        else if (parent == object) {
+            Base::Console().Warning("Object '%s' links to itself, nullify it\n",name.c_str());
+            object = 0;
+        }
+
+        setValue(object);
     }
     else {
         setValue(0);

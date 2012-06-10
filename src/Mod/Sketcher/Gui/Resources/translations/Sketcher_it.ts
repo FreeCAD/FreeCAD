@@ -284,7 +284,7 @@
       <translation>Crea raccordo</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
+      <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Creare un raccordo tra due linee o in un punto coincidente</translation>
     </message>
   </context>

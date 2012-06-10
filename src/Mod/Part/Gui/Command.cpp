@@ -61,6 +61,7 @@
 #include "ViewProvider.h"
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
+#include "TaskSweep.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -511,7 +512,6 @@ void CmdPartExport::activated(int iMsg)
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
-        openCommand("Import Part");
         QString ext = QFileInfo(fn).suffix().toLower();
         if (ext == QLatin1String("step") || 
             ext == QLatin1String("stp")  ||
@@ -522,7 +522,6 @@ void CmdPartExport::activated(int iMsg)
         else {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"Part");
         }
-        commitCommand();
     }
 }
 
@@ -948,6 +947,7 @@ CmdPartLoft::CmdPartLoft()
     sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Loft";
 }
 
 void CmdPartLoft::activated(int iMsg)
@@ -956,6 +956,32 @@ void CmdPartLoft::activated(int iMsg)
 }
 
 bool CmdPartLoft::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdPartSweep);
+
+CmdPartSweep::CmdPartSweep()
+  : Command("Part_Sweep")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Sweep...");
+    sToolTipText  = QT_TR_NOOP("Advanced utility to sweep");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Sweep";
+}
+
+void CmdPartSweep::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskSweep());
+}
+
+bool CmdPartSweep::isActive(void)
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -1196,5 +1222,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRuledSurface());
     rcCmdMgr.addCommand(new CmdPartBuilder());
     rcCmdMgr.addCommand(new CmdPartLoft());
+    rcCmdMgr.addCommand(new CmdPartSweep());
 } 
 

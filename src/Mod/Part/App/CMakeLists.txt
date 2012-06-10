@@ -61,6 +61,7 @@ generate_from_xml(TopoShapeShellPy)
 generate_from_xml(TopoShapeSolidPy)
 generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
+generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 
 SET(Features_SRCS
     FeaturePartBoolean.cpp
@@ -203,6 +204,8 @@ SET(Python_SRCS
     TopoShapeVertexPyImp.cpp
     TopoShapeWirePy.xml
     TopoShapeWirePyImp.cpp
+    BRepOffsetAPI_MakePipeShellPy.xml
+    BRepOffsetAPI_MakePipeShellPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 

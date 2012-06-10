@@ -144,7 +144,7 @@ public:
     void save(const char* file,MeshCore::MeshIO::Format f=MeshCore::MeshIO::Undefined,
         const MeshCore::Material* mat = 0) const;
     void save(std::ostream&) const;
-    bool load(const char* file);
+    bool load(const char* file, MeshCore::Material* mat = 0);
     void load(std::istream&);
     //@}
 
@@ -177,6 +177,14 @@ public:
     std::vector<std::vector<unsigned long> > getComponents() const;
     unsigned long countComponents() const;
     void removeComponents(unsigned long);
+    /**
+     * Checks for the given facet indices what will be the degree for each point
+     * when these facets are removed from the mesh kernel.
+     * The point degree information is stored in \a point_degree. The return value
+     * gices the number of points which will have a degree of zero.
+     */
+    unsigned long getPointDegree(const std::vector<unsigned long>& facets,
+        std::vector<unsigned long>& point_degree) const;
     void fillupHoles(unsigned long, int, MeshCore::AbstractPolygonTriangulator&);
     void offset(float fSize);
     void offsetSpecial2(float fSize);
@@ -248,6 +256,7 @@ public:
     void removeSelfIntersections(const std::vector<unsigned long>&);
     void removeFoldsOnSurface();
     void removeFullBoundaryFacets();
+    void removeInvalidPoints();
     //@}
 
     /** @name Mesh segments */
@@ -257,7 +266,7 @@ public:
     const Segment& getSegment(unsigned long) const;
     Segment& getSegment(unsigned long);
     MeshObject* meshFromSegment(const std::vector<unsigned long>&) const;
-    std::vector<Segment> getSegmentsFromType(Type, const Segment& aSegment, float dev) const;
+    std::vector<Segment> getSegmentsFromType(Type, const Segment& aSegment, float dev, unsigned long minFacets) const;
     //@}
 
     /** @name Primitives */

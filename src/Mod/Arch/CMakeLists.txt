@@ -19,6 +19,8 @@ SET(Arch_SRCS
     importOBJ.py
     ArchWindow.py
     ArchAxis.py
+    ArchVRM.py
+    ArchRoof.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 

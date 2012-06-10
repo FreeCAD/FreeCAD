@@ -25,6 +25,8 @@ EXTRA_DIST = \
 		translations/PartDesign_nl.ts \
 		translations/PartDesign_no.qm \
 		translations/PartDesign_no.ts \
+		translations/PartDesign_pl.qm \
+		translations/PartDesign_pl.ts \
 		translations/PartDesign_pt.qm \
 		translations/PartDesign_pt.ts \
 		translations/PartDesign_ru.qm \
@@ -35,6 +37,7 @@ EXTRA_DIST = \
 		translations/PartDesign_uk.ts \
 		translations/PartDesign_zh.qm \
 		translations/PartDesign_zh.ts \
+		icons/PartDesign_Groove.svg \
 		icons/PartDesign_Pad.svg \
 		icons/PartDesign_Pocket.svg \
 		icons/PartDesign_Revolution.svg \

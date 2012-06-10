@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <climits>
+#include <cmath>
 #include "Base/Matrix.h"
 
 // inclusion of the generated files (generated out of MatrixPy.xml)
@@ -158,8 +159,9 @@ PyObject* MatrixPy::richCompare(PyObject *v, PyObject *w, int op)
         }
     }
     else {
-        PyErr_SetString(PyExc_TypeError, "Cannot compare Matrix with other type");
-        return 0;
+        // This always returns False
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
     }
 }
 
@@ -415,32 +417,34 @@ PyObject* MatrixPy::submatrix(PyObject * args)
 
 PyObject* MatrixPy::isOrthogonal(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    double eps=1.0e-06;
+    if (!PyArg_ParseTuple(args, "|d",&eps))
         return 0;
     const Base::Matrix4D& mat = *getMatrixPtr();
     Base::Matrix4D trp = mat;
     trp.transpose();
     trp = trp * mat;
 
+    bool ok = true;
     double mult = trp[0][0];
-    for (int i=0; (i<4) && (mult!=0.0); i++) {
-        for (int j=0; (j<4) && (mult!=0.0); j++) {
+    for (int i=0; i<4 && ok; i++) {
+        for (int j=0; j<4 && ok; j++) {
             if (i != j) {
-                if (trp[i][j] != 0.0) {
-                    mult = 0.0;
+                if (fabs(trp[i][j]) > eps) {
+                    ok = false;
                     break;
                 }
             }
-            else { // the diagonal
-                if (trp[i][j] != mult) {
-                    mult = 0.0;
+            else { // the main diagonal
+                if (fabs(trp[i][j]-mult) > eps) {
+                    ok = false;
                     break;
                 }
             }
         }
     }
 
-    return Py::new_reference_to(Py::Float(mult));
+    return Py::new_reference_to(Py::Float(ok ? mult : 0.0));
 }
 
 PyObject* MatrixPy::transposed(PyObject * args)

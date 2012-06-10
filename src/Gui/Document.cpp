@@ -55,7 +55,6 @@
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 #include "Selection.h"
-#include "SoFCSelection.h"
 #include "WaitCursor.h"
 #include "Thumbnail.h"
 
@@ -406,17 +405,18 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
   
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-        View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-        if (activeView && viewProvider) {
-            if (d->_pcInEdit == viewProvider)
-                resetEdit();
-            activeView->getViewer()->removeViewProvider(viewProvider);
+    if (viewProvider && viewProvider->getTypeId().isDerivedFrom
+        (ViewProviderDocumentObject::getClassTypeId())) {
+        // go through the views
+        for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+            if (activeView) {
+                if (d->_pcInEdit == viewProvider)
+                    resetEdit();
+                activeView->getViewer()->removeViewProvider(viewProvider);
+            }
         }
-    }
 
-    if (viewProvider && viewProvider->getTypeId().isDerivedFrom(
-        ViewProviderDocumentObject::getClassTypeId())) {
         // removing from tree
         signalDeletedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
 
@@ -642,8 +642,13 @@ void Document::RestoreDocFile(Base::Reader &reader)
         std::string sMsg = "SetCamera ";
         sMsg += ppReturn;
         if (strcmp(ppReturn, "") != 0) { // non-empty attribute
-            if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
-                d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            try {
+                if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
+                    d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+            }
         }
     }
 
@@ -743,7 +748,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
                     << views.size() <<"\">" << std::endl;
 
     bool xml = writer.isForceXML();
-    writer.setForceXML(true);
+    //writer.setForceXML(true);
     writer.incInd(); // indention for 'ViewProvider name'
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
     for (jt = views.begin(); jt != views.end(); ++jt) {
@@ -826,6 +831,7 @@ void Document::createView(const char* sType)
         .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
 
     view3D->setWindowTitle(title);
+    view3D->setWindowModified(this->isModified());
     view3D->setWindowIcon(QApplication::windowIcon());
     view3D->resize(400, 300);
     getMainWindow()->addWindow(view3D);
@@ -967,6 +973,19 @@ std::list<MDIView*> Document::getMDIViews() const
     return views;
 }
 
+std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId) const
+{
+    std::list<MDIView*> views;
+    for (std::list<BaseView*>::const_iterator it = d->baseViews.begin();
+         it != d->baseViews.end(); ++it) {
+        MDIView* view = dynamic_cast<MDIView*>(*it);
+        if (view && view->isDerivedFrom(typeId))
+            views.push_back(view);
+    }
+
+    return views;
+}
+
 /// send messages to the active view
 bool Document::sendMsgToViews(const char* pMsg)
 {
@@ -1006,9 +1025,9 @@ MDIView* Document::getActiveView(void) const
         }
     }
 
-    // the active view is not part of this document, just use the first view
+    // the active view is not part of this document, just use the last view
     if (!ok && !mdis.empty())
-        active = mdis.front();
+        active = mdis.back();
 
     return active;
 }

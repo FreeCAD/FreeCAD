@@ -48,4 +48,14 @@ void DressUp::positionByBase(void)
         this->Placement.setValue(base->Placement.getValue());
 }
 
+void DressUp::onChanged(const App::Property* prop)
+{
+    if (prop == &Base) {
+        // if attached to a sketch then mark it as read-only
+        this->Placement.StatusBits.set(2, Base.getValue() != 0);
+    }
+
+    Feature::onChanged(prop);
+}
+
 }

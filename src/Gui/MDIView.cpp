@@ -29,6 +29,7 @@
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
+#include <iostream>
 #endif
 
 
@@ -56,15 +57,17 @@ MDIView::~MDIView()
     //the application crashes when accessing this deleted view.
     //This effect only occurs if this widget is not in Child mode, because otherwise
     //the focus stuff is done correctly.
-    QWidget* foc = getMainWindow()->focusWidget();
-    if (foc) {
-        QWidget* par = foc;
-        while (par) {
-            if (par == this) {
-                getMainWindow()->setFocus();
-                break;
+    if (getMainWindow()) {
+        QWidget* foc = getMainWindow()->focusWidget();
+        if (foc) {
+            QWidget* par = foc;
+            while (par) {
+                if (par == this) {
+                    getMainWindow()->setFocus();
+                    break;
+                }
+                par = par->parentWidget();
             }
-            par = par->parentWidget();
         }
     }
 }
@@ -166,22 +169,24 @@ void MDIView::windowStateChanged( MDIView* )
 {
 }
 
+void MDIView::print(QPrinter* printer)
+{
+    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
+}
+
 void MDIView::print()
 {
-    // print command specified but print method not overriden!
-    assert(0);
+    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
 }
 
 void MDIView::printPdf()
 {
-    // print command specified but print method not overriden!
-    assert(0);
+    std::cerr << "Printing PDF not implemented for " << this->metaObject()->className() << std::endl;
 }
 
 void MDIView::printPreview()
 {
-    // print command specified but print method not overriden!
-    assert(0);
+    std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
 }
 
 QSize MDIView::minimumSizeHint () const

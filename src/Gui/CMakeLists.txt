@@ -125,6 +125,7 @@ set(Gui_MOC_HDRS
     HelpView.h
     InputVector.h
     MainWindow.h
+    ManualAlignment.h
     MDIView.h
     NetworkRetriever.h
     OnlineDocumentation.h
@@ -627,7 +628,7 @@ SET(Inventor_CPP_SRCS
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
     SoFCSelection.cpp
-	SoFCUnifiedSelection.cpp
+    SoFCUnifiedSelection.cpp
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
@@ -647,7 +648,7 @@ SET(Inventor_SRCS
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
     SoFCSelection.h
-	SoFCUnifiedSelection.h
+    SoFCUnifiedSelection.h
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
@@ -743,6 +744,7 @@ SET(FreeCADGui_CPP_SRCS
     Thumbnail.cpp
     Utilities.cpp
     WaitCursor.cpp
+    ManualAlignment.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -763,6 +765,7 @@ SET(FreeCADGui_SRCS
     Thumbnail.h
     Utilities.h
     WaitCursor.h
+    ManualAlignment.h
 )
 
 SET(FreeCADGui_SRCS

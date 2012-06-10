@@ -200,12 +200,14 @@ EXTRA_DIST = \
 		Resources/icons/Part_Fillet.svg \
 		Resources/icons/Part_Revolve.svg \
 		Resources/icons/Part_Import.svg \
+		Resources/icons/Part_Loft.svg \
 		Resources/icons/Part_Mirror.svg \
 		Resources/icons/Part_MirrorPNG.png \
 		Resources/icons/Part_RuledSurface.svg \
 		Resources/icons/Part_Shapebuilder.png \
 		Resources/icons/Part_Shapebuilder.svg \
 		Resources/icons/Part_ShapeInfo.svg \
+		Resources/icons/Part_Sweep.svg \
 		Resources/icons/Tree_Part.svg \
 		Resources/icons/preferences-part_design.svg \
 		Resources/icons/PartFeature.svg \
@@ -247,6 +249,8 @@ EXTRA_DIST = \
 		Resources/translations/Part_nl.ts \
 		Resources/translations/Part_no.qm \
 		Resources/translations/Part_no.ts \
+		Resources/translations/Part_pl.qm \
+		Resources/translations/Part_pl.ts \
 		Resources/translations/Part_pt.qm \
 		Resources/translations/Part_pt.ts \
 		Resources/translations/Part_ru.qm \

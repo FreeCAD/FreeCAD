@@ -39,12 +39,16 @@ def Cylinder (radius, len, closed, edgelen, count):
 
 def Cone (radius1, radius2, len, closed, edgelen, count):
     polyline = []
-    if (closed):        
-        step = radius2 / math.ceil(radius2 / edgelen)
-        i = 0.0
-        while (i < radius2 - step / 2.0):
-            polyline.append([len, i])
-            i = i + step
+    if (closed):
+        try:
+            step = radius2 / math.ceil(radius2 / edgelen)
+        except ZeroDivisionError:
+            pass
+        else:
+            i = 0.0
+            while (i < radius2 - step / 2.0):
+                polyline.append([len, i])
+                i = i + step
 
     ct = math.ceil(len / edgelen)        
     step = len / ct
@@ -58,12 +62,16 @@ def Cone (radius1, radius2, len, closed, edgelen, count):
     polyline.append([0.0, radius1])
 
     if (closed):
-        step = radius1 / math.ceil(radius1 / edgelen)
-        i = radius1 - step
-        while (i > 0.0 + step / 2.0):
-            polyline.append([0.0, i])
-            i = i - step
-        polyline.append([0.0, 0.0])
+        try:
+            step = radius1 / math.ceil(radius1 / edgelen)
+        except ZeroDivisionError:
+            pass
+        else:
+            i = radius1 - step
+            while (i > 0.0 + step / 2.0):
+                polyline.append([0.0, i])
+                i = i - step
+            polyline.append([0.0, 0.0])
         
     return RotationBody(polyline, count)
 

@@ -49,6 +49,7 @@ class TaskPanel:
         obj.Draft  = self.form.draft.value()
         # Discretize it
         ship.discretize(self.form.nSections.value(), self.form.nPoints.value())
+        App.ActiveDocument.recompute()
         return True
 
     def reject(self):

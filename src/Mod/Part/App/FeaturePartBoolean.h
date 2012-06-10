@@ -27,6 +27,8 @@
 #include <App/PropertyLinks.h>
 #include "PartFeature.h"
 
+class BRepAlgoAPI_BooleanOperation;
+
 namespace Part
 {
 
@@ -39,6 +41,7 @@ public:
 
     App::PropertyLink Base;
     App::PropertyLink Tool;
+    PropertyShapeHistory History;
 
     /** @name methods overide Feature */
     //@{
@@ -53,7 +56,7 @@ public:
     }
 
 protected:
-    virtual TopoDS_Shape runOperation(const TopoDS_Shape&, const TopoDS_Shape&) const = 0;
+    virtual BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const = 0;
 };
 
 }

@@ -201,10 +201,10 @@ void ShapeBuilderWidget::createEdge()
 
 void ShapeBuilderWidget::createFace()
 {
-    Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 3..");
+    Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     bool matchEdge = edgeFilter.match();
     if (!matchEdge) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select three or more edges"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select one or more edges"));
         return;
     }
 

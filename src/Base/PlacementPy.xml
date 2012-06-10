@@ -75,6 +75,14 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="isNull">
+			<Documentation>
+				<UserDocu>
+					isNull() -> Bool
+					returns True if the placement has no displacement and no rotation
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Base" ReadOnly="false">
 			<Documentation>
 				<UserDocu>Vector to the Base Position of the Placement</UserDocu>

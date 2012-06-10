@@ -768,7 +768,7 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 int GeoId;
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
-                edit->ActSketch.initMove(GeoId, PosId);
+                edit->ActSketch.initMove(GeoId, PosId, false);
                 relative = false;
                 xInit = 0;
                 yInit = 0;
@@ -785,7 +785,7 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 edit->PreselectCurve != -1 && edit->DragCurve != edit->PreselectCurve) {
                 Mode = STATUS_SKETCH_DragCurve;
                 edit->DragCurve = edit->PreselectCurve;
-                edit->ActSketch.initMove(edit->DragCurve, Sketcher::none);
+                edit->ActSketch.initMove(edit->DragCurve, Sketcher::none, false);
                 const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     relative = true;
@@ -822,9 +822,9 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 if (edit->ActSketch.movePoint(GeoId, PosId, vec, relative) == 0) {
                     setPositionText(Base::Vector2D(x,y));
                     draw(true);
-                    signalSolved(0, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
                 } else {
-                    signalSolved(1, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
                     //Base::Console().Log("Error solving:%d\n",ret);
                 }
             }
@@ -835,9 +835,9 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 if (edit->ActSketch.movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2D(x,y));
                     draw(true);
-                    signalSolved(0, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
                 } else {
-                    signalSolved(1, edit->ActSketch.SolveTime);
+                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
                 }
             }
             return true;
@@ -1497,7 +1497,9 @@ void ViewProviderSketch::drawConstraintIcons()
             break;
         case Perpendicular:
             icoType = QString::fromAscii("small/Constraint_Perpendicular_sm");
-            index2 = 4;
+            // second icon is available only when there is no common point
+            if ((*it)->FirstPos == Sketcher::none)
+                index2 = 4;
             break;
         case Equal:
             icoType = QString::fromAscii("small/Constraint_EqualLength_sm");
@@ -1824,8 +1826,93 @@ Restart:
 
                 }
                 break;
-            case Parallel:
             case Perpendicular:
+                {
+                    assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
+                    assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
+                    // get the geometry
+                    const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
+                    const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
+
+                    Base::Vector3d midpos1, dir1, norm1;
+                    Base::Vector3d midpos2, dir2, norm2;
+
+                    if (Constr->FirstPos == Sketcher::none) {
+                        if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
+                            midpos1 = ((lineSeg1->getEndPoint()+lineSeg1->getStartPoint())/2);
+                            dir1 = (lineSeg1->getEndPoint()-lineSeg1->getStartPoint()).Normalize();
+                            norm1 = Base::Vector3d(-dir1.y,dir1.x,0.);
+                        } else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
+                            double startangle, endangle, midangle;
+                            arc->getRange(startangle, endangle);
+                            midangle = (startangle + endangle)/2;
+                            norm1 = Base::Vector3d(cos(midangle),sin(midangle),0);
+                            dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
+                            midpos1 = arc->getCenter() + arc->getRadius() * norm1;
+                        } else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
+                            norm1 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
+                            dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
+                            midpos1 = circle->getCenter() + circle->getRadius() * norm1;
+                        } else
+                            break;
+
+                        if (geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                            midpos2 = ((lineSeg2->getEndPoint()+lineSeg2->getStartPoint())/2);
+                            dir2 = (lineSeg2->getEndPoint()-lineSeg2->getStartPoint()).Normalize();
+                            norm2 = Base::Vector3d(-dir2.y,dir2.x,0.);
+                        } else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                            double startangle, endangle, midangle;
+                            arc->getRange(startangle, endangle);
+                            midangle = (startangle + endangle)/2;
+                            norm2 = Base::Vector3d(cos(midangle),sin(midangle),0);
+                            dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
+                            midpos2 = arc->getCenter() + arc->getRadius() * norm2;
+                        } else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
+                            norm2 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
+                            dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
+                            midpos2 = circle->getCenter() + circle->getRadius() * norm2;
+                        } else
+                            break;
+
+                    } else {
+                        if (temp)
+                            midpos1 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
+                        else
+                            midpos1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
+                        norm1 = Base::Vector3d(0,1,0);
+                        dir1 = Base::Vector3d(1,0,0);
+                    }
+
+                    // Get Current Scale Factor
+                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
+
+                    Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
+                    constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
+
+                    // Translate the Icon based on calculated position
+                    Base::Vector3d relPos1 = (constrPos1 - midpos1) / scale ; // Relative Position of Icons to Midpoint1
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+
+                    if (Constr->FirstPos == Sketcher::none) {
+                        Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
+                        constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
+
+                        Base::Vector3d relPos2 = (constrPos2 - midpos2) / scale ; // Relative Position of Icons to Midpoint2
+                        Base::Vector3d secondPos = midpos2 - midpos1;
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                    }
+
+                }
+                break;
+            case Parallel:
             case Equal:
                 {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
@@ -1877,7 +1964,7 @@ Restart:
                             norm2 = Base::Vector3d(cos(angle2),sin(angle2),0);
                             dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
                             midpos2 += r2*norm2;
-                        } else // Parallel or Perpendicular can only apply to a GeomLineSegment
+                        } else // Parallel can only apply to a GeomLineSegment
                             break;
                     } else {
                         const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
@@ -2153,24 +2240,31 @@ Restart:
                             const Part::GeomCircle *circle1 = dynamic_cast<const Part::GeomCircle *>(geo1);
                             const Part::GeomCircle *circle2 = dynamic_cast<const Part::GeomCircle *>(geo2);
                             // tangency between two cicles
+                            Base::Vector3d dir = (circle2->getCenter() - circle1->getCenter()).Normalize();
+                            pos =  circle1->getCenter() + dir *  circle1->getRadius();
+                            relPos = dir * 1;
                         }
                         else if (geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) {
                             std::swap(geo1,geo2);
                         }
 
-                        if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId()) {
+                        if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId() &&
+                            geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
-                            if (geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
-                                // tangency between a circle and an arc
-                            }
+                            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                            // tangency between a circle and an arc
+                            Base::Vector3d dir = (arc->getCenter() - circle->getCenter()).Normalize();
+                            pos =  circle->getCenter() + dir *  circle->getRadius();
+                            relPos = dir * 1;
                         }
-
-                        if (geo1->getTypeId()== Part::GeomArcOfCircle::getClassTypeId() &&
-                            geo1->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
+                        else if (geo1->getTypeId()== Part::GeomArcOfCircle::getClassTypeId() &&
+                                 geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomArcOfCircle *arc1 = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
                             const Part::GeomArcOfCircle *arc2 = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
                             // tangency between two arcs
+                            Base::Vector3d dir = (arc2->getCenter() - arc1->getCenter()).Normalize();
+                            pos =  arc1->getCenter() + dir *  arc1->getRadius();
+                            relPos = dir * 1;
                         }
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos.x, relPos.y, 0);
@@ -2600,42 +2694,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 
     if (edit && (prop == &(getSketchObject()->Geometry) || &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
-        int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
-                                               getSketchObject()->Constraints.getValues(),
-                                               true, getSketchObject()->getExternalGeometryCount());
-        std::string msg;
-        if (getSketchObject()->Geometry.getSize() == 0) {
-            signalSetUp(-1, 0, msg);
-            signalSolved(-1, 0);
-        }
-        else if (dofs < 0) { // over-constrained sketch
-            SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-            //Base::Console().Warning("Over-constrained sketch\n%s",msg.c_str());
-            signalSetUp(3, 0, msg);
-            signalSolved(-1,0);
-        }
-        else if (edit->ActSketch.hasConflicts()) { // conflicting constraints
-            SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-            //Base::Console().Warning("Sketch with conflicting constraints\n%s",msg.c_str());
-            signalSetUp(2, dofs, msg);
-            signalSolved(-1,0);
-        }
-        else if (edit->ActSketch.solve() == 0) { // solving the sketch
-            if (dofs == 0) {
-                // color the sketch as fully constrained
-                edit->FullyConstrained = true;
-                //Base::Console().Message("Fully constrained sketch\n");
-                signalSetUp(0, 0, msg);
-            }
-            else {
-                //Base::Console().Message("Under-constrained sketch with %d degrees of freedom\n", dofs);
-                signalSetUp(1, dofs, msg);
-            }
-            signalSolved(0,edit->ActSketch.SolveTime);
-        }
-        else {
-            signalSolved(1,edit->ActSketch.SolveTime);
-        }
+        solveSketch();
         draw(true);
     }
     if (edit && &(getSketchObject()->Constraints)) {
@@ -2737,47 +2796,62 @@ bool ViewProviderSketch::setEdit(int ModNum)
     else
         Gui::Control().showDialog(new TaskDlgEditSketch(this));
 
-    // set up the sketch and diagnose possible conflicts
-    int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
-                                           getSketchObject()->Constraints.getValues(),
-                                           true, getSketchObject()->getExternalGeometryCount());
-    std::string msg;
-    if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(-1, 0, msg);
-        signalSolved(-1, 0);
-    }
-    else if (dofs < 0) { // over-constrained sketch
-        SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-        //Base::Console().Warning("Over-constrained sketch\n%s",msg.c_str());
-        signalSetUp(3, 0, msg);
-        signalSolved(-1, 0);
-    }
-    else if (edit->ActSketch.hasConflicts()) { // conflicting constraints
-        SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-        //Base::Console().Warning("Sketch with conflicting constraints\n%s",msg.c_str());
-        signalSetUp(2, dofs, msg);
-        signalSolved(-1, 0);
-    }
-    else if (edit->ActSketch.solve() == 0) { // solving the sketch
-        if (dofs == 0) {
-            // color the sketch as fully constrained
-            edit->FullyConstrained = true;
-            //Base::Console().Message("Fully constrained sketch\n");
-            signalSetUp(0, 0, msg);
-        }
-        else {
-            //Base::Console().Message("Under-constrained sketch with %d degrees of freedom\n", dofs);
-            signalSetUp(1, dofs, msg);
-        }
-        signalSolved(0, edit->ActSketch.SolveTime);
-    }
-    else {
-        signalSolved(1, edit->ActSketch.SolveTime);
-    }
-
+    solveSketch();
     draw();
 
     return true;
+}
+
+void ViewProviderSketch::solveSketch(void)
+{
+    // set up the sketch and diagnose possible conflicts
+    int dofs = edit->ActSketch.setUpSketch(getSketchObject()->getCompleteGeometry(),
+                                           getSketchObject()->Constraints.getValues(),
+                                           getSketchObject()->getExternalGeometryCount());
+    if (getSketchObject()->Geometry.getSize() == 0) {
+        signalSetUp(QString::fromLatin1("Empty sketch"));
+        signalSolved(QString());
+    }
+    else if (dofs < 0) { // over-constrained sketch
+        std::string msg;
+        SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
+        signalSetUp(QString::fromLatin1("<font color='red'>Over-constrained sketch<br/>%1</font>")
+                    .arg(QString::fromStdString(msg)));
+        signalSolved(QString());
+    }
+    else if (edit->ActSketch.hasConflicts()) { // conflicting constraints
+        std::string msg;
+        SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
+        signalSetUp(QString::fromLatin1("<font color='red'>Sketch contains conflicting constraints<br/>%1</font>")
+                    .arg(QString::fromStdString(msg)));
+        signalSolved(QString());
+    }
+    else {
+        if (edit->ActSketch.hasRedundancies()) { // redundant constraints
+            std::string msg;
+            SketchObject::appendRedundantMsg(edit->ActSketch.getRedundant(), msg);
+            signalSetUp(QString::fromLatin1("<font color='orange'>Sketch contains redundant constraints<br/>%1</font>")
+                        .arg(QString::fromStdString(msg)));
+        }
+        if (edit->ActSketch.solve() == 0) { // solving the sketch
+            if (dofs == 0) {
+                // color the sketch as fully constrained
+                edit->FullyConstrained = true;
+                if (!edit->ActSketch.hasRedundancies())
+                    signalSetUp(QString::fromLatin1("<font color='green'>Fully constrained sketch </font>"));
+            }
+            else if (!edit->ActSketch.hasRedundancies()) {
+                if (dofs == 1)
+                    signalSetUp(QString::fromLatin1("Under-constrained sketch with 1 degree of freedom"));
+                else
+                    signalSetUp(QString::fromLatin1("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
+            }
+            signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
+        }
+        else {
+            signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
+        }
+    }
 }
 
 void ViewProviderSketch::createEditInventorNodes(void)

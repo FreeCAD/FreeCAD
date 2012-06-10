@@ -284,7 +284,7 @@
       <translation>Criar filete</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
+      <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Criar um filete entre duas linhas ou em um ponto coincidente</translation>
     </message>
   </context>

@@ -95,6 +95,7 @@ void Gui::SoFCDB::init()
     TranslateManip                  ::initClass();
     SoShapeScale                    ::initClass();
     SoAxisCrossKit                  ::initClass();
+    SoRegPoint                      ::initClass();
     SoDrawingGrid                   ::initClass();
 
     PropertyItem                    ::init();

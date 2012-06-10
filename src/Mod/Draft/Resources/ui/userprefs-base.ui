@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>590</width>
-    <height>629</height>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -469,7 +469,7 @@
            <string>Snap maximum</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>maxSnap</cstring>
@@ -494,6 +494,9 @@
         </item>
         <item>
          <widget class="QLabel" name="label_23">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="toolTip">
            <string>Maximum number of edges to be considered for snapping</string>
           </property>
@@ -504,6 +507,9 @@
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_6">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="maximum">
            <number>999</number>
           </property>
@@ -512,6 +518,62 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>maxSnapEdges</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_21">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+          <property name="toolTip">
+           <string>If checked, the Snap toolbar will be shown whenever you use snapping</string>
+          </property>
+          <property name="text">
+           <string>Show Draft Snap toolbar</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>showSnapBar</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
+          <property name="text">
+           <string>Hide Draft snap toolbar after use</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>hideSnapBar</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
+          <property name="toolTip">
+           <string>if checked, a widget indicating the current working plane orientation appears during drawing operations</string>
+          </property>
+          <property name="text">
+           <string>Show Working Plane tracker</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>showPlaneTracker</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -592,7 +654,7 @@
            <string>Use grid</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>grid</cstring>
@@ -616,7 +678,29 @@
          </spacer>
         </item>
         <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
+          </property>
+          <property name="text">
+           <string>Always show</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>alwaysShowGrid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_15">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Grid spacing</string>
           </property>
@@ -624,8 +708,17 @@
         </item>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_3">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="toolTip">
            <string>The spacing between each grid line</string>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
@@ -640,6 +733,9 @@
         </item>
         <item>
          <widget class="QLabel" name="label_16">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Main lines every</string>
           </property>
@@ -647,6 +743,9 @@
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_4">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="toolTip">
            <string>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</string>
           </property>
@@ -795,19 +894,6 @@ Values with differences below this value will be treated as same.</string>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_9">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_2">
           <property name="maximumSize">
            <size>
@@ -829,17 +915,6 @@ Values with differences below this value will be treated as same.</string>
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Default text font</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
@@ -852,6 +927,13 @@ Values with differences below this value will be treated as same.</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Default text font</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
@@ -1141,12 +1223,12 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>103</x>
-     <y>373</y>
+     <x>92</x>
+     <y>379</y>
     </hint>
     <hint type="destinationlabel">
-     <x>347</x>
-     <y>374</y>
+     <x>417</x>
+     <y>381</y>
     </hint>
    </hints>
   </connection>
@@ -1173,12 +1255,12 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>49</x>
-     <y>275</y>
+     <x>67</x>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
-     <x>550</x>
-     <y>277</y>
+     <x>571</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
@@ -1189,12 +1271,12 @@ such as &quot;Arial:Bold&quot;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>44</x>
-     <y>275</y>
+     <x>62</x>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
-     <x>405</x>
-     <y>283</y>
+     <x>516</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
@@ -1209,8 +1291,8 @@ such as &quot;Arial:Bold&quot;</string>
      <y>365</y>
     </hint>
     <hint type="destinationlabel">
-     <x>163</x>
-     <y>369</y>
+     <x>354</x>
+     <y>381</y>
     </hint>
    </hints>
   </connection>
@@ -1225,8 +1307,40 @@ such as &quot;Arial:Bold&quot;</string>
      <y>367</y>
     </hint>
     <hint type="destinationlabel">
-     <x>393</x>
-     <y>368</y>
+     <x>516</x>
+     <y>381</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_7</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gui::prefcheckbox_9</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gui::prefcheckbox_10</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>373</y>
     </hint>
    </hints>
   </connection>
