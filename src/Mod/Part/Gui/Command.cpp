@@ -947,6 +947,7 @@ CmdPartLoft::CmdPartLoft()
     sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Loft";
 }
 
 void CmdPartLoft::activated(int iMsg)
@@ -972,6 +973,7 @@ CmdPartSweep::CmdPartSweep()
     sToolTipText  = QT_TR_NOOP("Advanced utility to sweep");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Sweep";
 }
 
 void CmdPartSweep::activated(int iMsg)

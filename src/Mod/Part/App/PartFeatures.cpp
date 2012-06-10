@@ -212,7 +212,7 @@ Sweep::Sweep()
     ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
     ADD_PROPERTY_TYPE(Solid,(false),"Sweep",App::Prop_None,"Create solid");
     ADD_PROPERTY_TYPE(Frenet,(false),"Sweep",App::Prop_None,"Frenet");
-    ADD_PROPERTY_TYPE(Transition,(long(0)),"Sweep",App::Prop_None,"Transition mode");
+    ADD_PROPERTY_TYPE(Transition,(long(1)),"Sweep",App::Prop_None,"Transition mode");
     Transition.setEnums(TransitionEnums);
 }
 

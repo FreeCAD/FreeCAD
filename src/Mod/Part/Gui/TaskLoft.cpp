@@ -32,6 +32,7 @@
 #include "TaskLoft.h"
 
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
@@ -198,7 +199,8 @@ TaskLoft::TaskLoft()
 {
     widget = new LoftWidget();
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        Gui::BitmapFactory().pixmap("Part_Loft"),
+        widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
