@@ -544,7 +544,7 @@ PropertyFloatItem::PropertyFloatItem()
 QVariant PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale::system().toString(value, 'f', 2);
+    QString data = QLocale::system().toString(value, 'f', decimals());
     const std::vector<App::Property*>& props = getPropertyData();
     if (!props.empty()) {
         if (props.front()->getTypeId().isDerivedFrom(App::PropertyDistance::getClassTypeId())) {
@@ -698,7 +698,7 @@ PropertyFloatConstraintItem::PropertyFloatConstraintItem()
 QVariant PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale::system().toString(value, 'f', 2);
+    QString data = QLocale::system().toString(value, 'f', decimals());
     return QVariant(data);
 }
 
@@ -791,7 +791,7 @@ QVariant PropertyAngleItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
     QString data = QString::fromUtf8("%1 \xc2\xb0")
-        .arg(QLocale::system().toString(value, 'f', 2));
+        .arg(QLocale::system().toString(value, 'f', decimals()));
     return QVariant(data);
 }
 
@@ -1246,13 +1246,13 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     QString data = QString::fromAscii("Axis: (%1 %2 %3)\n"
                                       "Angle: %4\n"
                                       "Move: (%5 %6 %7)")
-                    .arg(QLocale::system().toString(dir.x,'f',2))
-                    .arg(QLocale::system().toString(dir.y,'f',2))
-                    .arg(QLocale::system().toString(dir.z,'f',2))
-                    .arg(QLocale::system().toString(angle,'f',2))
-                    .arg(QLocale::system().toString(pos.x,'f',2))
-                    .arg(QLocale::system().toString(pos.y,'f',2))
-                    .arg(QLocale::system().toString(pos.z,'f',2));
+                    .arg(QLocale::system().toString(dir.x,'f',decimals()))
+                    .arg(QLocale::system().toString(dir.y,'f',decimals()))
+                    .arg(QLocale::system().toString(dir.z,'f',decimals()))
+                    .arg(QLocale::system().toString(angle,'f',decimals()))
+                    .arg(QLocale::system().toString(pos.x,'f',decimals()))
+                    .arg(QLocale::system().toString(pos.y,'f',decimals()))
+                    .arg(QLocale::system().toString(pos.z,'f',decimals()));
     return QVariant(data);
 }
 
