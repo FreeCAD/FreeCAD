@@ -34,6 +34,7 @@
 #include <App/Application.h>
 #include <boost/regex.hpp>
 #include <iostream>
+#include <iterator>
 
 #include "FeaturePage.h"
 #include "FeatureView.h"
@@ -86,10 +87,11 @@ void FeaturePage::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)
 {
-    if(Template.getValue() == "")
+    std::string temp = Template.getValue();
+    if (temp.empty())
         return App::DocumentObject::StdReturn;
 
-    Base::FileInfo fi(Template.getValue());
+    Base::FileInfo fi(temp);
     if (!fi.isReadable()) {
         // if there is a old absolute template file set use a redirect
         fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
@@ -186,8 +188,9 @@ std::vector<std::string> FeaturePage::getEditableTextsFromTemplate(void) const {
 
     std::vector<string> eds;
 
-    if (Template.getValue() != "") {
-        Base::FileInfo tfi(Template.getValue());
+    std::string temp = Template.getValue();
+    if (!temp.empty()) {
+        Base::FileInfo tfi(temp);
         if (!tfi.isReadable()) {
             // if there is a old absolute template file set use a redirect
             tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
