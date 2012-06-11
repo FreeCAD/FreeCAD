@@ -442,7 +442,6 @@ CmdPartImport::CmdPartImport()
     sPixmap       = "Part_Import";
 }
 
-
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
@@ -471,6 +470,11 @@ void CmdPartImport::activated(int iMsg)
             doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
         commitCommand();
+
+        std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+            (*it)->viewAll();
+        }
     }
 }
 
