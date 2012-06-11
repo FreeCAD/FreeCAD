@@ -111,15 +111,15 @@ def selectObject(arg):
         if (arg["Key"] == "ESCAPE"):
             FreeCAD.activeDraftCommand.finish()
             # TODO : this part raises a coin3D warning about scene traversal, to be fixed.
-        if (arg["Type"] == "SoMouseButtonEvent"):
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                cursor = arg["Position"]
-                snapped = Draft.get3DView().getObjectInfo((cursor[0],cursor[1]))
-                if snapped:
-                    obj = FreeCAD.ActiveDocument.getObject(snapped['Object'])
-                    FreeCADGui.Selection.addSelection(obj)
-                    FreeCAD.activeDraftCommand.component=snapped['Component']
-                    FreeCAD.activeDraftCommand.proceed()
+    elif (arg["Type"] == "SoMouseButtonEvent"):
+        if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+            cursor = arg["Position"]
+            snapped = Draft.get3DView().getObjectInfo((cursor[0],cursor[1]))
+            if snapped:
+                obj = FreeCAD.ActiveDocument.getObject(snapped['Object'])
+                FreeCADGui.Selection.addSelection(obj)
+                FreeCAD.activeDraftCommand.component=snapped['Component']
+                FreeCAD.activeDraftCommand.proceed()
 
 def getPoint(target,args,mobile=False,sym=False,workingplane=True):
     '''
@@ -1726,12 +1726,6 @@ class Modifier(DraftTool):
     def __init__(self):
         DraftTool.__init__(self)
             
-    def IsActive(self):
-        if Draft.getSelection():
-            return True
-        else:
-            return False
-
 class Move(Modifier):
     "The Draft_Move FreeCAD command definition"
 
@@ -1771,9 +1765,11 @@ class Move(Modifier):
         self.ui.cross(True)
 
     def finish(self,closed=False,cont=False):
-        if self.ui:
+        if self.ghost:
             self.ghost.finalize()
+        if self.linetrack:
             self.linetrack.finalize()
+        if self.constraintrack:
             self.constraintrack.finalize()
         Modifier.finish(self)
         if cont and self.ui:
@@ -1941,11 +1937,15 @@ class Rotate(Modifier):
     def finish(self,closed=False,cont=False):
         "finishes the arc"
         Modifier.finish(self)
-        if self.ui:
+        if self.linetrack:
             self.linetrack.finalize()
+        if self.constraintrack:
             self.constraintrack.finalize()
+        if self.arctrack:
             self.arctrack.finalize()
+        if self.ghost:
             self.ghost.finalize()
+        if self.doc:
             self.doc.recompute()
         if cont and self.ui:
             if self.ui.continueMode:
@@ -2248,10 +2248,13 @@ class Offset(Modifier):
                     self.finish()
                                         
     def finish(self,closed=False):
-        if self.ui and self.running:
-            self.linetrack.finalize()
-            self.constraintrack.finalize()
-            self.ghost.finalize()
+        if self.running:
+            if self.linetrack:
+                self.linetrack.finalize()
+            if self.constraintrack:
+                self.constraintrack.finalize()
+            if self.ghost:
+                self.ghost.finalize()
         Modifier.finish(self)
 
     def numericRadius(self,rad):
@@ -2924,8 +2927,10 @@ class Trimex(Modifier):
         Modifier.finish(self)
         self.force = None
         if self.ui:
-            self.linetrack.finalize()
-            self.constraintrack.finalize()
+            if self.linetrack:
+                self.linetrack.finalize()
+            if self.constraintrack:
+                self.constraintrack.finalize()
             if self.ghost:
                 for g in self.ghost:
                     g.finalize()
@@ -2980,9 +2985,11 @@ class Scale(Modifier):
 
     def finish(self,closed=False,cont=False):
         Modifier.finish(self)
-        if self.ui:
+        if self.ghost:
             self.ghost.finalize()
+        if self.linetrack:
             self.linetrack.finalize()
+        if self.constraintrack:
             self.constraintrack.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
