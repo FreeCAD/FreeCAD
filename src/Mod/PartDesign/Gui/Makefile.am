@@ -8,8 +8,10 @@ BUILT_SOURCES=\
 		moc_TaskPocketParameters.cpp \
 		moc_TaskChamferParameters.cpp \
 		moc_TaskFilletParameters.cpp \
+		moc_TaskGrooveParameters.cpp \
 		moc_TaskHoleParameters.cpp \
 		moc_TaskRevolutionParameters.cpp \
+		ui_TaskGrooveParameters.h \
 		ui_TaskPadParameters.h \
 		ui_TaskPatternRectangularParameters.h \
 		ui_TaskPocketParameters.h \
@@ -32,6 +34,8 @@ libPartDesignGui_la_SOURCES=\
 		Command.cpp \
 		PreCompiled.cpp \
 		PreCompiled.h \
+		TaskGrooveParameters.cpp \
+		TaskGrooveParameters.h \
 		TaskPadParameters.cpp \
 		TaskPadParameters.h \
 		TaskPatternRectangularParameters.cpp \
@@ -58,6 +62,8 @@ libPartDesignGui_la_SOURCES=\
 		ViewProviderChamfer.h \
 		ViewProviderFillet.cpp \
 		ViewProviderFillet.h \
+		ViewProviderGroove.cpp \
+		ViewProviderGroove.h \
 		ViewProviderRevolution.cpp \
 		ViewProviderRevolution.h \
 		ViewProviderPatternRectangular.cpp \
