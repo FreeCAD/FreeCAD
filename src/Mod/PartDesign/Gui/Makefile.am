@@ -21,6 +21,7 @@ BUILT_SOURCES=\
 		ui_TaskRevolutionParameters.h
 
 libPartDesignGui_la_UI=\
+		TaskGrooveParameters.ui \
 		TaskPadParameters.ui \
 		TaskPatternRectangularParameters.ui \
 		TaskPocketParameters.ui \
