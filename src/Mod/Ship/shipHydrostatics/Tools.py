@@ -23,11 +23,155 @@
 
 import math
 # FreeCAD modules
+from FreeCAD import Vector, Part
 import FreeCAD as App
 import FreeCADGui as Gui
 # Module
 import Instance
 from shipUtils import Math
+
+def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
+    """ Compute ship transversal areas.
+    @param ship Ship instance.
+    @param draft Ship draft.
+    @param roll Ship roll angle.
+    @param trim Ship trim angle.
+    @param yaw Ship yaw angle. Ussually you don't want to use this 
+    value.
+    @param n Number of sections to perform.
+    @return Transversal areas (every area value is composed by x 
+    coordinate and computed area)
+    """
+    if n < 2:
+        return []
+    # We will take a duplicate of ship shape in order to place it
+    shape = ship.Shape.copy()
+    shape.translate(Vector(0.0,0.0,-draft))
+    # Rotations composition is Roll->Trim->Yaw
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(1.0,0.0,0.0), roll)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,0.0,1.0), yaw)
+    # Now we need to know the x range of values
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    dx   = (xmax - xmin) / (n-1.0)
+    # First area is equal to zero.
+    areas = [[xmin, 0.0]]
+    # Since we need face entities, in order to compute sections we will
+    # create boxes with front face at transversal area position, 
+    # compute solid common, divide by faces, and preserve only desired
+    # ones.
+    App.Console.PrintMessage("Computing transversal areas...\n")
+    App.Console.PrintMessage("Some Inventor representation errors can be shown, ignore it please.\n")
+    for i in range(1,n-1):
+        App.Console.PrintMessage("%d / %d\n" % (i, n-2))
+        x    = xmin + i*dx
+        area = 0.0
+        # Create the box
+        L = xmax - xmin
+        B = bbox.YMax - bbox.YMin
+        p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+        box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin + 1.0, p)
+        # Compute common part with ship
+        for s in shape.Solids:
+            # Get solids intersection
+            try:
+                common = box.common(s)
+            except:
+                continue
+            if common.Volume == 0.0:
+                continue
+            # Recompute object adding it to the scene, when we have
+            # computed desired data we can remove it.
+            try:
+                Part.show(common)
+            except:
+                continue
+            # Divide by faces and compute only section placed ones
+            faces  = common.Faces
+            for f in faces:
+                faceBounds = f.BoundBox
+                # Orientation filter
+                if faceBounds.XMax - faceBounds.XMin > 0.00001:
+                    continue
+                # Place filter
+                if abs(faceBounds.XMax - x) > 0.00001:
+                    continue
+                # Valid face, compute area
+                area = area + f.Area
+            # Destroy last object generated
+            App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
+        # Append transversal area
+        areas.append([x, area])
+    # Last area is equal to zero
+    areas.append([xmax, 0.0])
+    App.Console.PrintMessage("Done!\n")
+    return areas
+
+def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
+    """ Compute ship displacement.
+    @param ship Ship instance.
+    @param draft Ship draft.
+    @param roll Ship roll angle.
+    @param trim Ship trim angle.
+    @param yaw Ship yaw angle. Ussually you don't want to use this 
+    value.
+    @return [disp, B, Cb], \n
+    disp = Ship displacement [ton].
+    B    = Bouyance center [m].
+    Cb   = Block coefficient.
+    @note Bouyance center will returned as FreeCAD.Vector class.
+    @note Returned Bouyance center is in non modified ship coordinates
+    """
+    # We will take a duplicate of ship shape in order to place it
+    shape = ship.Shape.copy()
+    shape.translate(Vector(0.0,0.0,-draft))
+    # Rotations composition is Roll->Trim->Yaw
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(1.0,0.0,0.0), roll)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,0.0,1.0), yaw)
+    # Now we need to know box dimensions
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    # Create the box
+    L = xmax - xmin
+    B = bbox.YMax - bbox.YMin
+    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+    box = Part.makeBox(3.0*L, 3.0*B, -bbox.ZMin + 1.0, p)
+    # Compute common part with ship
+    try:
+        common = box.common(shape)
+    except:
+        return [0.0, Vector(), 0.0]
+    # Get data
+    vol = common.Volume
+    cog = Vector()
+    for s in common.Solids:
+        sCoG  = s.CenterOfMass
+        cog.x = cog.x + sCoG.x*s.Volume
+        cog.y = cog.y + sCoG.y*s.Volume
+        cog.z = cog.z + sCoG.z*s.Volume
+    cog.x = cog.x / vol
+    cog.y = cog.y / vol
+    cog.z = cog.z / vol
+    Vol = L*B*abs(bbox.ZMin)
+    # Undo transformations
+    B   = Vector()
+    B.x = cog.x*math.cos(math.radians(-yaw)) - cog.y*math.sin(math.radians(-yaw))
+    B.y = cog.x*math.sin(math.radians(-yaw)) + cog.y*math.cos(math.radians(-yaw))
+    B.z = cog.z
+    cog.x = B.x*math.cos(math.radians(-trim)) - B.z*math.sin(math.radians(-trim))
+    cog.y = B.y
+    cog.z = B.x*math.sin(math.radians(-trim)) + B.z*math.cos(math.radians(-trim))
+    B.x = cog.x
+    B.y = cog.y*math.cos(math.radians(-roll)) - cog.z*math.sin(math.radians(-roll))
+    B.z = cog.y*math.sin(math.radians(-roll)) + cog.z*math.cos(math.radians(-roll))
+    B.z = B.z + draft
+    # Return data
+    dens = 1.025 # [tons/m3], salt water
+    return [dens*vol, B, vol/Vol]
 
 def convertSection(section, x, z):
     """ Transform linear points distribution of full section 
