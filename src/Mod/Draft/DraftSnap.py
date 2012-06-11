@@ -956,7 +956,7 @@ class Snapper:
             self.trackers[2].append(self.tracker)
             self.trackers[3].append(self.extLine)
             self.trackers[4].append(self.radiusTracker)
-        if not self.forceGridOff:
+        if self.grid and (not self.forceGridOff):
             self.grid.set()
         
 if not hasattr(FreeCADGui,"Snapper"):
