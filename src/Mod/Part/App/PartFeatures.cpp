@@ -244,16 +244,19 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
     if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
         return new App::DocumentObjectExecReturn("No spine linked.");
     const std::vector<std::string>& subedge = Spine.getSubValues();
-    if (subedge.size() != 1)
-        return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
 
     TopoDS_Shape path;
     const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
     if (!shape._Shape.IsNull()) {
-        if (!subedge[0].empty()) {
-            path = shape.getSubShape(subedge[0].c_str());
+        try {
+            BRepBuilderAPI_MakeWire mkWire;
+            for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
+                TopoDS_Shape subshape = shape.getSubShape(it->c_str());
+                mkWire.Add(TopoDS::Edge(subshape));
+            }
+            path = mkWire.Wire();
         }
-        else {
+        catch (Standard_Failure) {
             if (shape._Shape.ShapeType() == TopAbs_EDGE)
                 path = shape._Shape;
             else if (shape._Shape.ShapeType() == TopAbs_WIRE)
@@ -273,8 +276,12 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
+            // There is a weird behaviour of BRepOffsetAPI_MakePipeShell when trying to add the wire as is.
+            // If we re-create the wire then everything works fine.
+            // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
             if (shape.ShapeType() == TopAbs_WIRE) {
-                profiles.Append(shape);
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape));
+                profiles.Append(mkWire.Wire());
             }
             else if (shape.ShapeType() == TopAbs_EDGE) {
                 BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
