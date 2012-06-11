@@ -697,7 +697,7 @@ class DraftToolBar:
         if not self.taskmode:
             self.labelx.setText(translate("draft", "Pick Object"))
             self.labelx.show()
-            self.makeDumbTask()
+        self.makeDumbTask()
 
     def editUi(self):
         self.taskUi(translate("draft", "Edit"))
@@ -769,7 +769,7 @@ class DraftToolBar:
             def __init__(self):
                 pass
             def getStandardButtons(self):
-                return 0
+                return int(QtGui.QDialogButtonBox.Cancel)
         panel = TaskPanel()
         FreeCADGui.Control.showDialog(panel)
 
