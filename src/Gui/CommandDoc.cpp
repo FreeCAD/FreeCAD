@@ -192,6 +192,11 @@ void StdCmdImport::activated(int iMsg)
             getActiveGuiDocument()->getDocument()->getName(),
             it.value().toAscii());
     }
+
+    std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+    for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+        (*it)->viewAll();
+    }
 }
 
 bool StdCmdImport::isActive(void)

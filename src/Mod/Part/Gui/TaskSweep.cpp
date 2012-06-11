@@ -32,6 +32,7 @@
 #include "TaskSweep.h"
 
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -117,7 +118,7 @@ void SweepWidget::findShapes()
 
 bool SweepWidget::accept()
 {
-    Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1");
+    Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
     bool matchEdge = edgeFilter.match();
     bool matchPart = partFilter.match();
@@ -127,16 +128,14 @@ bool SweepWidget::accept()
     }
 
     // get the selected object
-    std::string objectName, subShape;
+    std::string selection;
     if (matchEdge) {
         const std::vector<Gui::SelectionObject>& result = edgeFilter.Result[0];
-        const std::vector<std::string>& edges = result[0].getSubNames();
-        objectName = result.front().getFeatName();
-        subShape = edges.front();
+        selection = result.front().getAsPropertyLinkSubString();
     }
     else {
         const std::vector<Gui::SelectionObject>& result = partFilter.Result[0];
-        objectName = result.front().getFeatName();
+        selection = result.front().getAsPropertyLinkSubString();
     }
 
     QString list, solid, frenet;
@@ -166,15 +165,17 @@ bool SweepWidget::accept()
     try {
         QString cmd;
         cmd = QString::fromAscii(
-            "App.getDocument('%6').addObject('Part::Sweep','Sweep')\n"
-            "App.getDocument('%6').ActiveObject.Sections=[%1]\n"
-            "App.getDocument('%6').ActiveObject.Spine=(FreeCAD.ActiveDocument.%2,['%3'])\n"
-            "App.getDocument('%6').ActiveObject.Solid=%4\n"
-            "App.getDocument('%6').ActiveObject.Frenet=%5\n"
+            "App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
+            "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
+            "App.getDocument('%5').ActiveObject.Spine=%2\n"
+            "App.getDocument('%5').ActiveObject.Solid=%3\n"
+            "App.getDocument('%5').ActiveObject.Frenet=%4\n"
             )
-            .arg(list).arg(QLatin1String(objectName.c_str()))
-            .arg(QLatin1String(subShape.c_str()))
-            .arg(solid).arg(frenet).arg(QString::fromAscii(d->document.c_str()));
+            .arg(list)
+            .arg(QLatin1String(selection.c_str()))
+            .arg(solid)
+            .arg(frenet)
+            .arg(QString::fromAscii(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) throw Base::Exception("Document doesn't exist anymore");
@@ -225,7 +226,8 @@ TaskSweep::TaskSweep()
 {
     widget = new SweepWidget();
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        Gui::BitmapFactory().pixmap("Part_Sweep"),
+        widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

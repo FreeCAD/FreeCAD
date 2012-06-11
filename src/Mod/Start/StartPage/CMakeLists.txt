@@ -24,6 +24,8 @@ SET(StartPage_DATA
     PartDesignExample.png
     ArchExample.png
     web.png
+    blank.png
+    complete.jpg
 )
 
 INSTALL(FILES ${StartPage_SRCS}

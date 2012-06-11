@@ -442,7 +442,6 @@ CmdPartImport::CmdPartImport()
     sPixmap       = "Part_Import";
 }
 
-
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
@@ -471,6 +470,11 @@ void CmdPartImport::activated(int iMsg)
             doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
         commitCommand();
+
+        std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+            (*it)->viewAll();
+        }
     }
 }
 
@@ -947,6 +951,7 @@ CmdPartLoft::CmdPartLoft()
     sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Loft";
 }
 
 void CmdPartLoft::activated(int iMsg)
@@ -972,6 +977,7 @@ CmdPartSweep::CmdPartSweep()
     sToolTipText  = QT_TR_NOOP("Advanced utility to sweep");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Sweep";
 }
 
 void CmdPartSweep::activated(int iMsg)
