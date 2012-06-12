@@ -948,7 +948,7 @@ CmdPartLoft::CmdPartLoft()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Loft...");
-    sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
+    sToolTipText  = QT_TR_NOOP("Utility to loft");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Loft";
@@ -974,7 +974,7 @@ CmdPartSweep::CmdPartSweep()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Sweep...");
-    sToolTipText  = QT_TR_NOOP("Advanced utility to sweep");
+    sToolTipText  = QT_TR_NOOP("Utility to sweep");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Sweep";
