@@ -88,6 +88,8 @@ public:
   inline const double*    operator[] (unsigned short usNdx) const;
   /// Compute the determinant of the matrix
   double determinant() const;
+  /// Analyse the transformation
+  std::string analyse(void) const;
   //@}
 
   void getMatrix  (double dMtrx[16]) const;
