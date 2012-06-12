@@ -183,7 +183,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Std_DlgMacroRecord" << "Std_MacroStopRecord"
           << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect"
           << "Separator" << "Std_ViewScreenShot" << "Std_SceneInspector"
-          << "Std_ProjectUtil" << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
+          << "Std_ExportGraphviz" << "Std_ProjectUtil"
+          << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
 
     // Mesh ****************************************************************************************************
     Gui::MenuItem* mesh = new Gui::MenuItem( menuBar );

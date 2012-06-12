@@ -24,12 +24,16 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QClipboard>
+# include <QEventLoop>
 # include <QStatusBar>
 # include <QPointer>
+# include <QProcess>
+# include <sstream>
 #endif
 #include <algorithm>
 
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <App/Document.h>
@@ -309,6 +313,77 @@ void StdCmdMergeProjects::activated(int iMsg)
 bool StdCmdMergeProjects::isActive(void)
 {
     return this->hasActiveDocument();
+}
+
+//===========================================================================
+// Std_ExportGraphviz
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdExportGraphviz);
+
+StdCmdExportGraphviz::StdCmdExportGraphviz()
+  : Command("Std_ExportGraphviz")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("Dependency graph...");
+    sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
+    sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
+    sWhatsThis    = "Std_ExportGraphviz";
+    eType         = 0;
+}
+
+void StdCmdExportGraphviz::activated(int iMsg)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    Base::FileInfo fi(Base::FileInfo::getTempFileName());
+    Base::ofstream str(fi);
+    doc->exportGraphviz(str);
+    str.close();
+
+    Base::FileInfo out(Base::FileInfo::getTempFileName());
+    QProcess proc;
+    QEventLoop loop;
+    QObject::connect(&proc, SIGNAL(finished(int, QProcess::ExitStatus)), 
+                     &loop, SLOT(quit()));
+    QStringList args;
+    args << QLatin1String("-Tpng") << QString::fromUtf8(fi.filePath().c_str())
+         << QLatin1String("-o") << QString::fromUtf8(out.filePath().c_str());
+    QString exe = QLatin1String("dot");
+    QStringList env = QProcess::systemEnvironment();
+    proc.setEnvironment(env);
+    proc.start(exe, args);
+    if (proc.state() == QProcess::Running) {
+        loop.exec();
+        fi.deleteFile();
+    }
+    else {
+        QMessageBox::warning(getMainWindow(),
+            qApp->translate("Std_ExportGraphviz","Graphviz not found"),
+            qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system"));
+        fi.deleteFile();
+        return;
+    }
+
+    if (out.exists()) {
+        QPixmap px(QString::fromUtf8(out.filePath().c_str()), "PNG");
+        out.deleteFile();
+        QLabel* label = new QLabel(0);
+        label->setAttribute(Qt::WA_DeleteOnClose);
+        label->setPixmap(px);
+        label->resize(px.size());
+        label->show();
+    }
+    else {
+        QMessageBox::warning(getMainWindow(),
+            qApp->translate("Std_ExportGraphviz","Graphviz failed"),
+            qApp->translate("Std_ExportGraphviz","Graphviz failed to create an image file"));
+    }
+}
+
+bool StdCmdExportGraphviz::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
 }
 
 //===========================================================================
@@ -1126,6 +1201,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
+    rcCmdMgr.addCommand(new StdCmdExportGraphviz());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
