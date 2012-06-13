@@ -182,7 +182,7 @@ bool BrowserView::chckHostAllowed(const QString& host)
 void BrowserView::onDownloadRequested(const QNetworkRequest & request)
 {
     Dialog::DownloadDialog dlg (request.url(),this);
-    int result = dlg.exec();
+    dlg.exec();
 }
 
 void BrowserView::load(const char* URL)

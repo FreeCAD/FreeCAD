@@ -270,7 +270,6 @@ DlgPrimitives::~DlgPrimitives()
 void DlgPrimitives::pickCallback(void * ud, SoEventCallback * n)
 {
     const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->setHandled();
