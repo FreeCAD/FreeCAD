@@ -26,6 +26,8 @@
 # include <QClipboard>
 # include <QEventLoop>
 # include <QFileDialog>
+# include <QGraphicsScene>
+# include <QGraphicsView>
 # include <QLabel>
 # include <QStatusBar>
 # include <QPointer>
