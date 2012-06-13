@@ -271,7 +271,7 @@ class _Wall(ArchComponent.Component):
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
 
-    def getSubVolume(self,base,width,delta=None):
+    def getSubVolume(self,base,width,plac=None):
         "returns a subvolume from a base object"
         import Part
         max_length = 0
@@ -288,8 +288,8 @@ class _Wall(ArchComponent.Component):
             v2 = DraftVecUtils.neg(v1)
             v2 = DraftVecUtils.scale(v1,-2)
             f = f.extrude(v2)
-            if delta:
-                f.translate(delta)
+            if plac:
+                f.Placement = plac
             return f
         return None
 
@@ -384,12 +384,22 @@ class _Wall(ArchComponent.Component):
 
         if base:
             for app in obj.Additions:
-                if hasattr(app,"Shape"):
+                if Draft.getType(app) == "Window":
+                    # window
+                    if app.Base and obj.Width:
+                        f = self.getSubVolume(app.Base,width)
+                        if f:
+                            base = base.cut(f)
+                elif Draft.isClone(app,"Window"):
+                    if app.Objects[0].Base and width:
+                        f = self.getSubVolume(app.Objects[0].Base,width,app.Placement)
+                        if f:
+                            base = base.cut(f)
+                elif app.isDerivedFrom("Part::Feature"):
                     if app.Shape:
                         if not app.Shape.isNull():
                             base = base.fuse(app.Shape)
                             app.ViewObject.hide() #to be removed
-                
             for hole in obj.Subtractions:
                 if Draft.getType(hole) == "Window":
                     # window
@@ -399,10 +409,10 @@ class _Wall(ArchComponent.Component):
                             base = base.cut(f)
                 elif Draft.isClone(hole,"Window"):
                     if hole.Objects[0].Base and width:
-                        f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement.Base)
+                        f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement)
                         if f:
                             base = base.cut(f)                   
-                elif hasattr(hole,"Shape"):
+                elif hole.isDerivedFrom("Part::Feature"):
                     if hole.Shape:
                         if not hole.Shape.isNull():
                             base = base.cut(hole.Shape)
