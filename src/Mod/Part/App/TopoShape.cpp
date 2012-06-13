@@ -1403,7 +1403,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 {
     // http://opencascade.blogspot.com/2009/11/surface-modeling-part3.html
     Standard_Real theTol = tol;
-    Standard_Boolean theIsPolynomial = Standard_True;
+    //Standard_Boolean theIsPolynomial = Standard_True;
     Standard_Boolean myIsElem = Standard_True;
     GeomAbs_Shape theContinuity = GeomAbs_Shape(cont);
     Standard_Integer theMaxDegree = maxdegree;
@@ -1445,7 +1445,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     mkSweep.Build (aSec, GeomFill_Location, theContinuity, theMaxDegree, theMaxSegment);
     if (mkSweep.IsDone()) {
         Handle_Geom_Surface mySurface = mkSweep.Surface();
-        Standard_Real myError = mkSweep.ErrorOnSurface();
+        //Standard_Real myError = mkSweep.ErrorOnSurface();
 
         Standard_Real u1,u2,v1,v2;
         mySurface->Bounds(u1,u2,v1,v2);

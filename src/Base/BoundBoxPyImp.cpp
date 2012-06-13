@@ -192,7 +192,6 @@ PyObject*  BoundBoxPy::getIntersectionPoint(PyObject *args)
             *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()),
             point, epsilon);
         // IsInBox() doesn't handle border points correctly
-        BoundBoxPy::PointerType bb = getBoundBoxPtr();
         if (ok) {
             return new VectorPy(point);
         }
@@ -209,6 +208,7 @@ PyObject*  BoundBoxPy::move(PyObject *args)
 {
    double x,y,z;
     PyObject *object;
+
     Base::Vector3d vec;
 
     if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {
