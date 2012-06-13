@@ -25,6 +25,10 @@
 #ifndef _PreComp_
 # include <QClipboard>
 # include <QEventLoop>
+# include <QFileDialog>
+# include <QGraphicsScene>
+# include <QGraphicsView>
+# include <QLabel>
 # include <QStatusBar>
 # include <QPointer>
 # include <QProcess>
@@ -319,6 +323,28 @@ bool StdCmdMergeProjects::isActive(void)
 // Std_ExportGraphviz
 //===========================================================================
 
+namespace Gui {
+class ImageView : public MDIView
+{
+public:
+    ImageView(const QPixmap& p, QWidget* parent=0) : MDIView(0, parent)
+    {
+        scene = new QGraphicsScene();
+        scene->addPixmap(p);
+        view = new QGraphicsView(scene, this);
+        view->show();
+        setCentralWidget(view);
+    }
+    ~ImageView()
+    {
+        delete scene;
+        delete view;
+    }
+    QGraphicsScene* scene;
+    QGraphicsView* view;
+};
+}
+
 DEF_STD_CMD_A(StdCmdExportGraphviz);
 
 StdCmdExportGraphviz::StdCmdExportGraphviz()
@@ -336,48 +362,57 @@ StdCmdExportGraphviz::StdCmdExportGraphviz()
 void StdCmdExportGraphviz::activated(int iMsg)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Base::FileInfo fi(Base::FileInfo::getTempFileName());
-    Base::ofstream str(fi);
+    std::stringstream str;
     doc->exportGraphviz(str);
-    str.close();
 
-    Base::FileInfo out(Base::FileInfo::getTempFileName());
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Paths");
     QProcess proc;
-    QEventLoop loop;
-    QObject::connect(&proc, SIGNAL(finished(int, QProcess::ExitStatus)), 
-                     &loop, SLOT(quit()));
     QStringList args;
-    args << QLatin1String("-Tpng") << QString::fromUtf8(fi.filePath().c_str())
-         << QLatin1String("-o") << QString::fromUtf8(out.filePath().c_str());
-    QString exe = QLatin1String("dot");
-    QStringList env = QProcess::systemEnvironment();
-    proc.setEnvironment(env);
-    proc.start(exe, args);
-    if (proc.state() == QProcess::Running) {
-        loop.exec();
-        fi.deleteFile();
+    args << QLatin1String("-Tpng");
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+    bool pathChanged = false;
+    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+    proc.setEnvironment(QProcess::systemEnvironment());
+    do {
+        proc.start(exe, args);
+        if (!proc.waitForStarted()) {
+            int ret = QMessageBox::warning(getMainWindow(),
+                qApp->translate("Std_ExportGraphviz","Graphviz not found"),
+                qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system.\n"
+                                "Do you want to specify its installation path if it's already installed?"),
+                                QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No)
+                return;
+            path = QFileDialog::getExistingDirectory(Gui::getMainWindow(),
+                qApp->translate("Std_ExportGraphviz","Graphviz installation path"));
+            if (path.isEmpty())
+                return;
+            pathChanged = true;
+            exe = QString::fromAscii("\"%1/dot\"").arg(path);
+        }
+        else {
+            if (pathChanged)
+                hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
+            break;
+        }
     }
-    else {
-        QMessageBox::warning(getMainWindow(),
-            qApp->translate("Std_ExportGraphviz","Graphviz not found"),
-            qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system"));
-        fi.deleteFile();
-        return;
-    }
+    while(true);
 
-    if (out.exists()) {
-        QPixmap px(QString::fromUtf8(out.filePath().c_str()), "PNG");
-        out.deleteFile();
-        QLabel* label = new QLabel(0);
-        label->setAttribute(Qt::WA_DeleteOnClose);
-        label->setPixmap(px);
-        label->resize(px.size());
-        label->show();
+    proc.write(str.str().c_str(), str.str().size());
+    proc.closeWriteChannel();
+    if (!proc.waitForFinished())
+        return;
+
+    QPixmap px;
+    if (px.loadFromData(proc.readAll(), "PNG")) {
+        Gui::ImageView* view = new Gui::ImageView(px);
+        view->setWindowTitle(qApp->translate("Std_ExportGraphviz","Dependency graph"));
+        getMainWindow()->addWindow(view);
     }
     else {
         QMessageBox::warning(getMainWindow(),
-            qApp->translate("Std_ExportGraphviz","Graphviz failed"),
-            qApp->translate("Std_ExportGraphviz","Graphviz failed to create an image file"));
+        qApp->translate("Std_ExportGraphviz","Graphviz failed"),
+        qApp->translate("Std_ExportGraphviz","Graphviz failed to create an image file"));
     }
 }
 
