@@ -369,9 +369,17 @@ void StdCmdExportGraphviz::activated(int iMsg)
     QProcess proc;
     QStringList args;
     args << QLatin1String("-Tpng");
+#ifdef FC_OS_LINUX
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
+#else
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+#endif
     bool pathChanged = false;
+#ifdef FC_OS_WIN32
     QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+    QString exe = QString::fromAscii("%1/dot").arg(path);
+#endif
     proc.setEnvironment(QProcess::systemEnvironment());
     do {
         proc.start(exe, args);
@@ -388,7 +396,11 @@ void StdCmdExportGraphviz::activated(int iMsg)
             if (path.isEmpty())
                 return;
             pathChanged = true;
+#ifdef FC_OS_WIN32
             exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+            exe = QString::fromAscii("%1/dot").arg(path);
+#endif
         }
         else {
             if (pathChanged)
