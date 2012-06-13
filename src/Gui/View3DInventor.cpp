@@ -32,6 +32,8 @@
 # include <QDropEvent>
 # include <QDragEnterEvent>
 # include <QFileDialog>
+# include <QGLFormat>
+# include <QGLWidget>
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
@@ -298,6 +300,29 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"UseAntialiasing") == 0) {
         _viewer->getGLRenderAction()->setSmoothing(rGrp.GetBool("UseAntialiasing",false));
+    }
+    else if (strcmp(Reason,"SampleBuffers") == 0) {
+#if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 5)
+        _viewer->setSampleBuffers(rGrp.GetInt("SampleBuffers",4));
+#else
+        // http://stackoverflow.com/questions/4207506/where-is-gl-multisample-defined
+        //int sb = rGrp.GetInt("SampleBuffers",4);
+        //QGLWidget* gl = static_cast<QGLWidget*>(_viewer->getGLWidget());
+        //QGLFormat fmt = gl->format();
+        //if (sb > 0) {
+        //    fmt.setSampleBuffers(true);
+        //    fmt.setSamples(sb);
+        //    gl->setFormat(fmt);
+        //    gl->makeCurrent();
+        //    //glEnable(GL_MULTISAMPLE);
+        //}
+        //else {
+        //    fmt.setSampleBuffers(false);
+        //    gl->setFormat(fmt);
+        //    gl->makeCurrent();
+        //    //glDisable(GL_MULTISAMPLE);
+        //}
+#endif
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
