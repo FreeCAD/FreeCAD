@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QMutex>
+# include <QProcess> 
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
@@ -241,6 +242,18 @@ static QString getPlatform()
 #elif defined (Q_OS_MAC)
     return QString::fromAscii("Mac OS X");
 #elif defined (Q_OS_LINUX)
+    QString exe(QLatin1String("lsb_release"));
+    QStringList args;
+    args << QLatin1String("-ds");
+    QProcess proc;
+    proc.setEnvironment(QProcess::systemEnvironment());
+    proc.start(exe, args);
+    if (proc.waitForStarted() && proc.waitForFinished()) {
+        QByteArray info = proc.readAll();
+        info.replace('\n',"");
+        return QString::fromAscii((const char*)info);
+    }
+
     return QString::fromAscii("Linux");
 #elif defined (Q_OS_UNIX)
     return QString::fromAscii("UNIX");
@@ -326,6 +339,7 @@ void AboutDialog::on_copyButton_clicked()
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromAscii(config["BuildRevision"].c_str());
+    str << "Platform: " << getPlatform() << " (" << QSysInfo::WordSize << "-bit)" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
