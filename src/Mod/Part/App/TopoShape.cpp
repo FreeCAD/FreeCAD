@@ -1432,7 +1432,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 
     //circular profile
     Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), radius);
-    aCirc->Rotate (gp::OZ(), Standard_PI/2.);
+    aCirc->Rotate (gp::OZ(), M_PI/2.);
 
     //perpendicular section
     Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter(), radius);
@@ -1540,18 +1540,18 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     }
 
     gp_Pnt2d aPnt(0, 0);
-    gp_Dir2d aDir(2. * PI, pitch);
+    gp_Dir2d aDir(2. * M_PI, pitch);
     if (leftHanded) {
         //aPnt.SetCoord(0.0, height);
         //aDir.SetCoord(2.0 * PI, -pitch);
-        aPnt.SetCoord(2. * PI, 0.0);
-        aDir.SetCoord(-2. * PI, pitch);
+        aPnt.SetCoord(2. * M_PI, 0.0);
+        aDir.SetCoord(-2. * M_PI, pitch);
     }
     gp_Ax2d aAx2d(aPnt, aDir);
 
     Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
     gp_Pnt2d beg = line->Value(0);
-    gp_Pnt2d end = line->Value(sqrt(4.0*PI*PI+pitch*pitch)*(height/pitch));
+    gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(height/pitch));
     Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
 
     TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
@@ -1944,7 +1944,11 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
     Standard_Real x3, y3, z3;
 
     Handle_StlMesh_Mesh aMesh = new StlMesh_Mesh();
-    StlTransfer::BuildIncrementalMesh(this->_Shape, accuracy, aMesh);
+    StlTransfer::BuildIncrementalMesh(this->_Shape, accuracy,
+#if OCC_VERSION_HEX >= 0x060503
+        Standard_True,
+#endif
+        aMesh);
     StlMesh_MeshExplorer xp(aMesh);
     for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
         for (xp.InitTriangle (nbd); xp.MoreTriangle (); xp.NextTriangle ()) {
