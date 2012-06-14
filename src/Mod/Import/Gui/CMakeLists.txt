@@ -22,6 +22,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(ImportGui_LIBS
     FreeCADGui
     PartGui
+    TKCAF
     TKXCAF
     TKLCAF
     TKXDESTEP
