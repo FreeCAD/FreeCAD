@@ -22,6 +22,7 @@
 #***************************************************************************
 
 import time
+from math import *
 
 # COIN
 from pivy.coin import *
@@ -48,6 +49,7 @@ class Ship:
         obj.addProperty("App::PropertyLength","Draft","Ship", str(Translator.translate("Ship draft (T) [m]"))).Draft=0.0
         # Add shapes
         obj.Shape = Part.makeCompound(solids)
+        obj.addProperty("Part::PropertyPartShape","ExternalFaces","Ship", str(Translator.translate("Ship only external faces")))
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
@@ -63,37 +65,6 @@ class Ship:
         @param fp Part::FeaturePython object.
         """
         fp.Shape = Part.makeCompound(fp.Shape.Solids)
-
-    def lineFaceSection(self,line,surface):
-        """ Returns the point of section of a line with a face
-        @param line Line object, that can be a curve.
-        @param surface Surface object (must be a Part::Shape)
-        @return Section points array, [] if line don't cut surface
-        """
-        # Get initial data
-        result = []
-        vertexes = line.Vertexes
-        nVertex = len(vertexes)
-        # Perform the cut
-        section = line.cut(surface)
-        # Filter all old points
-        points = section.Vertexes
-        nPoint = len(points)
-        if nPoint <= nVertex:
-            # Any valid point
-            return result
-        for i in range(0,nPoint):
-            disp = len(result)
-            flag = 0
-            if not Math.isAprox(points[i].X,vertexes[i-disp].X,0.0001):
-                flag = flag+1
-            if not Math.isAprox(points[i].Y,vertexes[i-disp].Y,0.0001):
-                flag = flag+1
-            if not Math.isAprox(points[i].Z,vertexes[i-disp].Z,0.0001):
-                flag = flag+1
-            if flag > 0:
-                result.append(points[i])
-        return result
 
 class ViewProviderShip:
     def __init__(self, obj):
