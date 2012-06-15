@@ -175,19 +175,17 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
     dens = 1.025 # [tons/m3], salt water
     return [dens*vol, B, vol/Vol]
 
-def wettedArea(ship, draft, trim):
+def wettedArea(shape, draft, trim):
     """ Calculate wetted ship area.
-    @param ship Selected ship instance
+    @param shape Ship external faces instance.
     @param draft Draft.
     @param trim Trim in degrees.
     @return Wetted ship area.
     """
-    return 0.0
-    faces    = []
     area     = 0.0
     nObjects = 0
     # We will take a duplicate of ship shape in order to place it
-    shape = ship.Shape.copy()
+    shape = shape.copy()
     shape.translate(Vector(0.0,0.0,-draft))
     shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
     # Now we need to know the x range of values
@@ -200,57 +198,13 @@ def wettedArea(ship, draft, trim):
     p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
     box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
     # Compute common part with ship
-    for s in shape.Solids:
+    for f in shape.Faces:
         # Get solids intersection
         try:
-            common = box.common(s)
+            common = box.common(f)
         except:
             continue
-        if common.Volume == 0.0:
-            continue
-        # Recompute object adding it to the scene, when we have
-        # computed desired data we can remove it.
-        try:
-            Part.show(common)
-        except:
-            continue
-        nObjects = nObjects + 1
-        # Divide by faces and discard free surface faces
-        faces  = common.Faces
-        for f in faces:
-            fbox = f.BoundBox
-            # Orientation filter
-            if (fbox.ZMax-fbox.ZMin > 0.00001) and (abs(fbox.ZMax) > 0.00001):
-                continue
-            # Valid face, append it
-            faces.append(f)
-    # Study repeated faces, if a face is repeated, both of them must be
-    # discarded.
-    i = 0;
-    while(i < len(faces)):
-        j = i+1
-        while(j < len(faces)):
-            f0 = faces[i]
-            f1 = faces[j]
-            # We will consider same face if share all their vertexes
-            nVertex = len(f0.Vertexes)
-            for v0 in f0.Vertexes:
-                for v1 in f1.Vertexes:
-                    if Math.isSameVertex(v0,v1):
-                        nVertex = nVertex - 1
-            if nVertex <= 0:
-                del faces[j]
-                del faces[i]
-                i = i-1
-                break
-            j = j+1
-        i = i+1
-    # Integrate areas
-    for f in faces:
-        area = area + f.Area
-    # Destroy generated objects
-    for i in range(0,nObjects):
-        App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
+        area = area + common.Area
     return area
 
 def moment(ship, draft, trim, disp, xcb):
@@ -435,16 +389,20 @@ class Point:
     Cm Main frame coefficient.
     @note Moment is positive when produce positive trim.
     """
-    def __init__(self, ship, draft, trim):
+    def __init__(self, ship, faces, draft, trim):
         """ Use all hydrostatics tools to define a hydrostatics 
         point.
         @param ship Selected ship instance
+        @param faces Ship external faces
         @param draft Draft.
         @param trim Trim in degrees.
         """
         # Hydrostatics computation
         dispData   = displacement(ship,draft,0.0,trim,0.0)
-        wet        = wettedArea(ship,draft,trim)
+        if not faces:
+            wet    = 0.0
+        else:
+            wet    = wettedArea(faces,draft,trim)
         mom        = moment(ship,draft,trim,dispData[0],dispData[1].x)
         farea      = FloatingArea(ship,draft,trim)
         bm         = BMT(ship,draft,trim)
