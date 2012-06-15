@@ -47,7 +47,8 @@ def makeBottle(myWidth=50.0, myHeight=70.0, myThickness=30.0):
 	aTrsf=Base.Matrix()
 	aTrsf.rotateZ(math.pi) # rotate around the z-axis
 
-	aMirroredWire=aWire.transformGeometry(aTrsf)
+	aMirroredWire=aWire.copy()
+	aMirroredWire.transformShape(aTrsf)
 	myWireProfile=Part.Wire([aWire,aMirroredWire])
 	
 	myFaceProfile=Part.Face(myWireProfile)
@@ -80,8 +81,11 @@ def makeBottle(myWidth=50.0, myHeight=70.0, myThickness=30.0):
 	
 	# This doesn't work for any reason		
 	myBody = myBody.makeThickness([faceToRemove],-myThickness/50 , 1.e-3)
+	myThreading = Part.makeThread(myNeckHeight/10, myNeckRadius*0.06, myHeight/10, myNeckRadius*0.99)
+	myThreading.translate(Base.Vector(0,0,myHeight))
+	myCompound = Part.Compound([myBody, myThreading])
 
-	return myBody
+	return myCompound
 
 def makeBoreHole():
 	# create a document if needed
