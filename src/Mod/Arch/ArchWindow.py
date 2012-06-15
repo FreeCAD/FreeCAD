@@ -107,9 +107,9 @@ class _CommandWindow:
                                 s = obj.Support
                             w = FreeCAD.ActiveDocument.Objects[-1] # last created object
                             FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+s.Name+")")
-                        elif Draft.isClone(w,"Window"):
-                            if w.Objects[0].Inlist:
-                                FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+w.Objects[0].Inlist[0].Name+")")
+                    elif Draft.isClone(obj,"Window"):
+                        if obj.Objects[0].Inlist:
+                            FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+obj.Name+",host=FreeCAD.ActiveDocument."+obj.Objects[0].Inlist[0].Name+")")
                 FreeCAD.ActiveDocument.commitTransaction()
        
 class _Window(ArchComponent.Component):

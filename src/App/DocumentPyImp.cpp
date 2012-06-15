@@ -92,6 +92,25 @@ PyObject*  DocumentPy::restore(PyObject * args)
     Py_Return;
 }
 
+PyObject*  DocumentPy::exportGraphviz(PyObject * args)
+{
+    char* fn=0;
+    if (!PyArg_ParseTuple(args, "|s",&fn))     // convert args: Python->C 
+        return NULL;                    // NULL triggers exception 
+    if (fn) {
+        Base::FileInfo fi(fn);
+        Base::ofstream str(fi);
+        getDocumentPtr()->exportGraphviz(str);
+        str.close();
+        Py_Return;
+    }
+    else {
+        std::stringstream str;
+        getDocumentPtr()->exportGraphviz(str);
+        return PyString_FromString(str.str().c_str());
+    }
+}
+
 PyObject*  DocumentPy::addObject(PyObject *args)
 {
     char *sType,*sName=0;

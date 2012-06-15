@@ -468,6 +468,8 @@ class PlaneTracker(Tracker):
         p1 = Draft.get3DView().getPoint((100,100))
         p2 = Draft.get3DView().getPoint((110,100))
         bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange")/2)
+        pick = coin.SoPickStyle()
+        pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         m1 = coin.SoMaterial()
@@ -486,6 +488,7 @@ class PlaneTracker(Tracker):
         l = coin.SoLineSet()
         l.numVertices.setValues([3,3,3])
         s = coin.SoSeparator()
+        s.addChild(pick)
         s.addChild(self.trans)
         s.addChild(m1)
         s.addChild(c1)
@@ -542,6 +545,9 @@ class gridTracker(Tracker):
         self.mainlines = Draft.getParam("gridEvery")
         self.numlines = 100
         col = [0.2,0.2,0.3]
+
+        pick = coin.SoPickStyle()
+        pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
@@ -595,6 +601,7 @@ class gridTracker(Tracker):
         lines3 = coin.SoLineSet()
         lines3.numVertices.setValues(aidx)
         s = coin.SoSeparator()
+        s.addChild(pick)
         s.addChild(self.trans)
         s.addChild(mat1)
         s.addChild(self.coords1)

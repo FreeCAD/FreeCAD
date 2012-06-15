@@ -32,7 +32,7 @@ using namespace MeshCore;
 
 MeshTrimming::MeshTrimming(MeshKernel &rclM, const Base::ViewProjMethod* pclProj, 
                            const Base::Polygon2D& rclPoly)
-  : myMesh(rclM), myProj(pclProj), myPoly(rclPoly), myInner(true)
+  : myMesh(rclM), myInner(true), myProj(pclProj), myPoly(rclPoly)
 {
 }
 

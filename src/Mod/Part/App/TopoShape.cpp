@@ -105,6 +105,7 @@
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <Geom2d_Ellipse.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <Geom_BezierSurface.hxx>
 # include <Geom_BSplineCurve.hxx>
@@ -1403,7 +1404,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 {
     // http://opencascade.blogspot.com/2009/11/surface-modeling-part3.html
     Standard_Real theTol = tol;
-    Standard_Boolean theIsPolynomial = Standard_True;
+    //Standard_Boolean theIsPolynomial = Standard_True;
     Standard_Boolean myIsElem = Standard_True;
     GeomAbs_Shape theContinuity = GeomAbs_Shape(cont);
     Standard_Integer theMaxDegree = maxdegree;
@@ -1432,7 +1433,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 
     //circular profile
     Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), radius);
-    aCirc->Rotate (gp::OZ(), Standard_PI/2.);
+    aCirc->Rotate (gp::OZ(), M_PI/2.);
 
     //perpendicular section
     Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter(), radius);
@@ -1445,7 +1446,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     mkSweep.Build (aSec, GeomFill_Location, theContinuity, theMaxDegree, theMaxSegment);
     if (mkSweep.IsDone()) {
         Handle_Geom_Surface mySurface = mkSweep.Surface();
-        Standard_Real myError = mkSweep.ErrorOnSurface();
+        //Standard_Real myError = mkSweep.ErrorOnSurface();
 
         Standard_Real u1,u2,v1,v2;
         mySurface->Bounds(u1,u2,v1,v2);
@@ -1540,24 +1541,86 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     }
 
     gp_Pnt2d aPnt(0, 0);
-    gp_Dir2d aDir(2. * PI, pitch);
+    gp_Dir2d aDir(2. * M_PI, pitch);
     if (leftHanded) {
         //aPnt.SetCoord(0.0, height);
         //aDir.SetCoord(2.0 * PI, -pitch);
-        aPnt.SetCoord(2. * PI, 0.0);
-        aDir.SetCoord(-2. * PI, pitch);
+        aPnt.SetCoord(2. * M_PI, 0.0);
+        aDir.SetCoord(-2. * M_PI, pitch);
     }
     gp_Ax2d aAx2d(aPnt, aDir);
 
     Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
     gp_Pnt2d beg = line->Value(0);
-    gp_Pnt2d end = line->Value(sqrt(4.0*PI*PI+pitch*pitch)*(height/pitch));
+    gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(height/pitch));
     Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
 
     TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
     TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
     BRepLib::BuildCurves3d(wire);
     return wire;
+}
+
+TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
+                                   Standard_Real depth,
+                                   Standard_Real height,
+                                   Standard_Real radius) const
+{
+    if (pitch < Precision::Confusion())
+        Standard_Failure::Raise("Pitch of thread too small");
+
+    if (depth < Precision::Confusion())
+        Standard_Failure::Raise("Depth of thread too small");
+
+    if (height < Precision::Confusion())
+        Standard_Failure::Raise("Height of thread too small");
+
+    if (radius < Precision::Confusion())
+        Standard_Failure::Raise("Radius of thread too small");
+
+    //Threading : Create Surfaces
+    gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+    Handle(Geom_CylindricalSurface) aCyl1 = new Geom_CylindricalSurface(cylAx2 , radius);
+    Handle(Geom_CylindricalSurface) aCyl2 = new Geom_CylindricalSurface(cylAx2 , radius+depth);
+
+    //Threading : Define 2D Curves
+    gp_Pnt2d aPnt(2. * M_PI , height / 2.);
+    gp_Dir2d aDir(2. * M_PI , height / 4.);
+    gp_Ax2d aAx2d(aPnt , aDir);
+
+    Standard_Real aMajor = 2. * M_PI;
+    Standard_Real aMinor = pitch;
+
+    Handle(Geom2d_Ellipse) anEllipse1 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor);
+    Handle(Geom2d_Ellipse) anEllipse2 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor / 4);
+
+    Handle(Geom2d_TrimmedCurve) aArc1 = new Geom2d_TrimmedCurve(anEllipse1 , 0 , M_PI);
+    Handle(Geom2d_TrimmedCurve) aArc2 = new Geom2d_TrimmedCurve(anEllipse2 , 0 , M_PI);
+
+    gp_Pnt2d anEllipsePnt1 = anEllipse1->Value(0);
+    gp_Pnt2d anEllipsePnt2 = anEllipse1->Value(M_PI);
+
+    Handle(Geom2d_TrimmedCurve) aSegment = GCE2d_MakeSegment(anEllipsePnt1 , anEllipsePnt2);
+
+    //Threading : Build Edges and Wires
+    TopoDS_Edge aEdge1OnSurf1 = BRepBuilderAPI_MakeEdge(aArc1 , aCyl1);
+    TopoDS_Edge aEdge2OnSurf1 = BRepBuilderAPI_MakeEdge(aSegment , aCyl1);
+    TopoDS_Edge aEdge1OnSurf2 = BRepBuilderAPI_MakeEdge(aArc2 , aCyl2);
+    TopoDS_Edge aEdge2OnSurf2 = BRepBuilderAPI_MakeEdge(aSegment , aCyl2);
+
+    TopoDS_Wire threadingWire1 = BRepBuilderAPI_MakeWire(aEdge1OnSurf1 , aEdge2OnSurf1);
+    TopoDS_Wire threadingWire2 = BRepBuilderAPI_MakeWire(aEdge1OnSurf2 , aEdge2OnSurf2);
+
+    BRepLib::BuildCurves3d(threadingWire1);
+    BRepLib::BuildCurves3d(threadingWire2);
+
+    BRepOffsetAPI_ThruSections aTool(Standard_True);
+
+    aTool.AddWire(threadingWire1);
+    aTool.AddWire(threadingWire2);
+    aTool.CheckCompatibility(Standard_False);
+
+    return aTool.Shape();
 }
 
 TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 
@@ -1944,7 +2007,11 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
     Standard_Real x3, y3, z3;
 
     Handle_StlMesh_Mesh aMesh = new StlMesh_Mesh();
-    StlTransfer::BuildIncrementalMesh(this->_Shape, accuracy, aMesh);
+    StlTransfer::BuildIncrementalMesh(this->_Shape, accuracy,
+#if OCC_VERSION_HEX >= 0x060503
+        Standard_True,
+#endif
+        aMesh);
     StlMesh_MeshExplorer xp(aMesh);
     for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
         for (xp.InitTriangle (nbd); xp.MoreTriangle (); xp.NextTriangle ()) {

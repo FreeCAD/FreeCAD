@@ -60,6 +60,7 @@ class Snapper:
         self.constraintAxis = None
         self.basepoint = None
         self.affinity = None
+        self.mask = None
         self.cursorMode = None
         if Draft.getParam("maxSnap"):
             self.maxEdges = Draft.getParam("maxSnapEdges")
@@ -126,7 +127,7 @@ class Snapper:
 
         def cstr(point):
             "constrains if needed"
-            if constrain:
+            if constrain or self.mask:
                 fpt = self.constrain(point,lastpoint)
             else:
                 self.unconstrain()
@@ -211,7 +212,9 @@ class Snapper:
             else:
 
                 # first stick to the snapped object
-                point = self.snapToVertex(self.snapInfo)[0]
+                s = self.snapToVertex(self.snapInfo)
+                if s:
+                    point = s[0]
                 
                 # active snapping
                 comp = self.snapInfo['Component']
@@ -278,7 +281,7 @@ class Snapper:
                 self.lastObj[1] = obj.Name
 
             if not snaps:
-                return point
+                return cstr(point)
 
             # calculating the nearest snap point
             shortest = 1000000000000000000
@@ -395,7 +398,7 @@ class Snapper:
 
     def snapToPolar(self,point,last):
         "snaps to polar lines from the given point"
-        if self.isEnabled('ortho'): 
+        if self.isEnabled('ortho') and (not self.mask): 
             if last:
                 vecs = []
                 if hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -535,9 +538,11 @@ class Snapper:
         "returns a perpendicular X extension snap location"
         if self.isEnabled("extension") and self.isEnabled("perpendicular"):
             if last and self.extLine:
-                tmpEdge = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
-                np = self.getPerpendicular(tmpEdge,last)
-                return [np,'perpendicular',np]
+                if self.extLine.p1() != self.extLine.p2():
+                    tmpEdge = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+                    np = self.getPerpendicular(tmpEdge,last)
+                    return [np,'perpendicular',np]
+        return None
 
     def snapToElines(self,e1,e2):
         "returns a snap location at the infinite intersection of the given edges"
@@ -668,6 +673,7 @@ class Snapper:
         self.setCursor()
         if Draft.getParam("hideSnapBar"):
             self.toolbar.hide()
+        self.mask = None
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
@@ -696,6 +702,8 @@ class Snapper:
         delta = point.sub(self.basepoint)
 
         # setting constraint axis
+        if self.mask:
+            self.affinity = self.mask
         if not self.affinity:
             self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
         if isinstance(axis,FreeCAD.Vector):
@@ -920,6 +928,13 @@ class Snapper:
         if FreeCADGui.ActiveDocument:
             self.setTrackers()
 
+    def setGrid(self):
+        "sets the grid, if visible"
+        if self.grid and (not self.forceGridOff):
+            if self.grid.Visible:
+                self.grid.set()
+            self.setTrackers()
+
     def setTrackers(self):
         v = Draft.get3DView()
         if v in self.trackers[0]:
@@ -941,7 +956,7 @@ class Snapper:
             self.trackers[2].append(self.tracker)
             self.trackers[3].append(self.extLine)
             self.trackers[4].append(self.radiusTracker)
-        if not self.forceGridOff:
+        if self.grid and (not self.forceGridOff):
             self.grid.set()
         
 if not hasattr(FreeCADGui,"Snapper"):

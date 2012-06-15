@@ -137,7 +137,7 @@ class DraftLineEdit(QtGui.QLineEdit):
             self.emit(QtCore.SIGNAL("up()"))
         elif event.key() == QtCore.Qt.Key_Down:
             self.emit(QtCore.SIGNAL("down()"))
-        elif (event.key() == QtCore.Qt.Key_Z) and QtCore.Qt.ControlModifier:
+        elif (event.key() == QtCore.Qt.Key_Z) and (int(event.modifiers()) == QtCore.Qt.ControlModifier):
             self.emit(QtCore.SIGNAL("undo()"))
         else:
             QtGui.QLineEdit.keyPressEvent(self, event)
@@ -184,6 +184,7 @@ class DraftToolBar:
         self.crossedViews = []
         self.isTaskOn = False
         self.fillmode = Draft.getParam("fillmode")
+        self.mask = None
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -593,6 +594,7 @@ class DraftToolBar:
         self.cancel = None
         self.sourceCmd = None
         self.pointcallback = None
+        self.mask = None
         if self.taskmode:
             self.isTaskOn = False
             self.baseWidget = QtGui.QWidget()
@@ -695,7 +697,7 @@ class DraftToolBar:
         if not self.taskmode:
             self.labelx.setText(translate("draft", "Pick Object"))
             self.labelx.show()
-            self.makeDumbTask()
+        self.makeDumbTask()
 
     def editUi(self):
         self.taskUi(translate("draft", "Edit"))
@@ -767,7 +769,7 @@ class DraftToolBar:
             def __init__(self):
                 pass
             def getStandardButtons(self):
-                return 0
+                return int(QtGui.QDialogButtonBox.Cancel)
         panel = TaskPanel()
         FreeCADGui.Control.showDialog(panel)
 
@@ -882,15 +884,16 @@ class DraftToolBar:
                                     last = self.sourceCmd.node[0]
                                 else:
                                     last = self.sourceCmd.node[-1]
-                                numx = last.x + numx
-                                numy = last.y + numy
-                                numz = last.z + numz
+                                print "last:",last
+                                v = FreeCAD.Vector(numx,numy,numz)
+                                print "orig:",v
                                 if FreeCAD.DraftWorkingPlane:
                                     v = FreeCAD.Vector(numx,numy,numz)
-                                    v = FreeCAD.DraftWorkingPlane.getGlobalCoords(v)
-                                    numx = v.x
-                                    numy = v.y
-                                    numz = v.z
+                                    v = FreeCAD.DraftWorkingPlane.getGlobalRot(v)
+                                    print "rotated:",v
+                                numx = last.x + v.x
+                                numy = last.y + v.y
+                                numz = last.z + v.z
                         self.sourceCmd.numericInput(numx,numy,numz)
 
     def finish(self):
@@ -963,6 +966,12 @@ class DraftToolBar:
             self.toggleradius(1)
         elif txt.endsWith("]"):
             self.toggleradius(-1)
+        elif txt.endsWith("x"):
+            self.constrain("x")
+        elif txt.endsWith("y"):
+            self.constrain("y")
+        elif txt.endsWith("z"):
+            self.constrain("z")    
         elif txt.endsWith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
@@ -1025,29 +1034,38 @@ class DraftToolBar:
             dp = point
             if self.relativeMode and (last != None):
                 if plane:
-                    dp = plane.getLocalCoords(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
+                    dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
                 else:
                     dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
 
             # set widgets
-            self.xValue.setText("%.2f" % dp.x)
-            self.yValue.setText("%.2f" % dp.y)
-            self.zValue.setText("%.2f" % dp.z)
+            if self.mask in ['y','z']:
+                self.xValue.setText("0.00")
+            else:
+                self.xValue.setText("%.2f" % dp.x)
+            if self.mask in ['x','z']:
+                self.yValue.setText("0.00")
+            else:
+                self.yValue.setText("%.2f" % dp.y)
+            if self.mask in ['x','y']:
+                self.zValue.setText("0.00")
+            else:
+                self.zValue.setText("%.2f" % dp.z)
 
             # set masks
-            if mask == "x":
+            if (mask == "x") or (self.mask == "x"):
                 self.xValue.setEnabled(True)
                 self.yValue.setEnabled(False)
                 self.zValue.setEnabled(False)
                 self.xValue.setFocus()
                 self.xValue.selectAll()
-            elif mask == "y":
+            elif (mask == "y") or (self.mask == "y"):
                 self.xValue.setEnabled(False)
                 self.yValue.setEnabled(True)
                 self.zValue.setEnabled(False)
                 self.yValue.setFocus()
                 self.yValue.selectAll()
-            elif mask == "z":
+            elif (mask == "z") or (self.mask == "z"):
                 self.xValue.setEnabled(False)
                 self.yValue.setEnabled(False)
                 self.zValue.setEnabled(True)
@@ -1167,6 +1185,16 @@ class DraftToolBar:
             par = Draft.getParam("snapRange")
             Draft.setParam("snapRange",par+val)
             FreeCADGui.Snapper.showradius()
+
+    def constrain(self,val):
+        if self.mask == val:
+            self.mask = None
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.mask = None
+        else:
+            self.mask = val
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.mask = val
 
 #---------------------------------------------------------------------------
 # TaskView operations

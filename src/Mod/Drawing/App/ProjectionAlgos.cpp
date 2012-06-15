@@ -263,7 +263,7 @@ std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale)
         << "ENTITIES" << endl;
 
     if (!H.IsNull() && (type & WithHidden)) {
-        float width = 0.15f/scale;
+        //float width = 0.15f/scale;
         BRepMesh::Mesh(H,0.1);
         result  //<< "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -278,7 +278,7 @@ std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale)
                 //<< "</g>" << endl;
     }
     if (!HO.IsNull() && (type & WithHidden)) {
-        float width = 0.15f/scale;
+        //float width = 0.15f/scale;
         BRepMesh::Mesh(HO,0.1);
         result  //<< "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -293,7 +293,7 @@ std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale)
                 //<< "</g>" << endl;
     }
     if (!VO.IsNull()) {
-        float width = 0.35f/scale;
+        //float width = 0.35f/scale;
         BRepMesh::Mesh(VO,0.1);
         result  //<< "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -309,8 +309,7 @@ std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale)
                 //<< "</g>" << endl;
     }
     if (!V.IsNull()) {
-        float width = 0.35f/scale;
-
+        //float width = 0.35f/scale;
         BRepMesh::Mesh(V,0.1);
         result  //<< "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -326,7 +325,7 @@ std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale)
 
     }
     if (!V1.IsNull() && (type & WithSmooth)) {
-        float width = 0.35f/scale;
+        //float width = 0.35f/scale;
         BRepMesh::Mesh(V1,0.1);
         result  //<< "<g" 
 
@@ -342,8 +341,7 @@ std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale)
                 //<< "</g>" << endl;
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
-
-        float width = 0.15f/scale;
+        //float width = 0.15f/scale;
         BRepMesh::Mesh(H1,0.1);
         result  //<< "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl

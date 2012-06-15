@@ -664,6 +664,7 @@ DEF_STD_CMD_A(CmdPartReverseShape);
 CmdPartReverseShape::CmdPartReverseShape()
   :Command("Part_ReverseShape")
 {
+
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Reverse shapes");
@@ -948,7 +949,7 @@ CmdPartLoft::CmdPartLoft()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Loft...");
-    sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
+    sToolTipText  = QT_TR_NOOP("Utility to loft");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Loft";
@@ -974,7 +975,7 @@ CmdPartSweep::CmdPartSweep()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Sweep...");
-    sToolTipText  = QT_TR_NOOP("Advanced utility to sweep");
+    sToolTipText  = QT_TR_NOOP("Utility to sweep");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Sweep";
@@ -1008,6 +1009,7 @@ CmdShapeInfo::CmdShapeInfo()
 
 void CmdShapeInfo::activated(int iMsg)
 {
+#if 0
     static const char * const part_pipette[]={
         "32 32 17 1",
         "# c #000000",
@@ -1062,6 +1064,7 @@ void CmdShapeInfo::activated(int iMsg)
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+#endif
     //if (view) {
     //    Gui::View3DInventorViewer* viewer = view->getViewer();
     //    viewer->setEditing(true);

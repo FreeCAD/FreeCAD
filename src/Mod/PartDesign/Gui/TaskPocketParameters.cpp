@@ -86,7 +86,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
         ui->lineFaceName->setEnabled(false);
     } else if (index == 4) { // Only this option requires to select a face
         ui->doubleSpinBox->setEnabled(false);
-        ui->lineFaceName->setText(upToFace == "" ? tr("No face selected") : tr(upToFace));
+        ui->lineFaceName->setText(pcPocket->FaceName.isEmpty() ? tr("No face selected") : tr(upToFace));
     } else { // Neither value nor face required
         ui->doubleSpinBox->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
