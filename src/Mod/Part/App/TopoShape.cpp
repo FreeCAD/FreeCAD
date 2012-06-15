@@ -105,6 +105,7 @@
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <Geom2d_Ellipse.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <Geom_BezierSurface.hxx>
 # include <Geom_BSplineCurve.hxx>
@@ -1558,6 +1559,68 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
     BRepLib::BuildCurves3d(wire);
     return wire;
+}
+
+TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
+                                   Standard_Real depth,
+                                   Standard_Real height,
+                                   Standard_Real radius) const
+{
+    if (pitch < Precision::Confusion())
+        Standard_Failure::Raise("Pitch of thread too small");
+
+    if (depth < Precision::Confusion())
+        Standard_Failure::Raise("Depth of thread too small");
+
+    if (height < Precision::Confusion())
+        Standard_Failure::Raise("Height of thread too small");
+
+    if (radius < Precision::Confusion())
+        Standard_Failure::Raise("Radius of thread too small");
+
+    //Threading : Create Surfaces
+    gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+    Handle(Geom_CylindricalSurface) aCyl1 = new Geom_CylindricalSurface(cylAx2 , radius);
+    Handle(Geom_CylindricalSurface) aCyl2 = new Geom_CylindricalSurface(cylAx2 , radius+depth);
+
+    //Threading : Define 2D Curves
+    gp_Pnt2d aPnt(2. * M_PI , height / 2.);
+    gp_Dir2d aDir(2. * M_PI , height / 4.);
+    gp_Ax2d aAx2d(aPnt , aDir);
+
+    Standard_Real aMajor = 2. * M_PI;
+    Standard_Real aMinor = pitch;
+
+    Handle(Geom2d_Ellipse) anEllipse1 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor);
+    Handle(Geom2d_Ellipse) anEllipse2 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor / 4);
+
+    Handle(Geom2d_TrimmedCurve) aArc1 = new Geom2d_TrimmedCurve(anEllipse1 , 0 , M_PI);
+    Handle(Geom2d_TrimmedCurve) aArc2 = new Geom2d_TrimmedCurve(anEllipse2 , 0 , M_PI);
+
+    gp_Pnt2d anEllipsePnt1 = anEllipse1->Value(0);
+    gp_Pnt2d anEllipsePnt2 = anEllipse1->Value(M_PI);
+
+    Handle(Geom2d_TrimmedCurve) aSegment = GCE2d_MakeSegment(anEllipsePnt1 , anEllipsePnt2);
+
+    //Threading : Build Edges and Wires
+    TopoDS_Edge aEdge1OnSurf1 = BRepBuilderAPI_MakeEdge(aArc1 , aCyl1);
+    TopoDS_Edge aEdge2OnSurf1 = BRepBuilderAPI_MakeEdge(aSegment , aCyl1);
+    TopoDS_Edge aEdge1OnSurf2 = BRepBuilderAPI_MakeEdge(aArc2 , aCyl2);
+    TopoDS_Edge aEdge2OnSurf2 = BRepBuilderAPI_MakeEdge(aSegment , aCyl2);
+
+    TopoDS_Wire threadingWire1 = BRepBuilderAPI_MakeWire(aEdge1OnSurf1 , aEdge2OnSurf1);
+    TopoDS_Wire threadingWire2 = BRepBuilderAPI_MakeWire(aEdge1OnSurf2 , aEdge2OnSurf2);
+
+    BRepLib::BuildCurves3d(threadingWire1);
+    BRepLib::BuildCurves3d(threadingWire2);
+
+    BRepOffsetAPI_ThruSections aTool(Standard_True);
+
+    aTool.AddWire(threadingWire1);
+    aTool.AddWire(threadingWire2);
+    aTool.CheckCompatibility(Standard_False);
+
+    return aTool.Shape();
 }
 
 TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles, 

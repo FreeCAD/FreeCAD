@@ -785,6 +785,24 @@ static PyObject * makeHelix(PyObject *self, PyObject *args)
     }
 }
 
+static PyObject * makeThread(PyObject *self, PyObject *args)
+{
+    double pitch, height, depth, radius;
+    if (!PyArg_ParseTuple(args, "dddd", &pitch, &height, &depth, &radius))
+        return 0;
+
+    try {
+        TopoShape helix;
+        TopoDS_Shape wire = helix.makeThread(pitch, height, depth, radius);
+        return new TopoShapeWirePy(new TopoShape(wire));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
 static PyObject * makeLine(PyObject *self, PyObject *args)
 {
     PyObject *obj1, *obj2;
@@ -1474,6 +1492,9 @@ struct PyMethodDef Part_methods[] = {
      "makeHelix(pitch,height,radius,[angle]) -- Make a helix with a given pitch, height and radius\n"
      "By default a cylindrical surface is used to create the helix. If the fourth parameter is set\n"
      "(the apex given in degree) a conical surface is used instead"},
+
+    {"makeThread" ,makeThread,METH_VARARGS,
+     "makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"},
 
     {"makeRevolution" ,makeRevolution,METH_VARARGS,
      "makeRevolution(Curve,[vmin,vmax,angle,pnt,dir]) -- Make a revolved shape\n"
