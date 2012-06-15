@@ -2857,9 +2857,13 @@ class _Clone:
                 if hasattr(obj,"Scale") and not sh.isNull():
                     m.scale(obj.Scale)
                     sh = sh.transformGeometry(m)
-                shapes.append(sh)
+                if not sh.isNull():
+                    shapes.append(sh)
         if shapes:
-            obj.Shape = Part.makeCompound(shapes)   
+            if len(shapes) == 1:
+                obj.Shape = shapes[0]
+            else:
+                obj.Shape = Part.makeCompound(shapes)   
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
