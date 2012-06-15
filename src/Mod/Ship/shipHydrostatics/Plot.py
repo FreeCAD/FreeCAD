@@ -109,6 +109,7 @@ class Plot(object):
         Output.write(" #################################################################\n")
         # Print data
         for i in range(0,len(drafts)):
+            FreeCAD.Console.PrintMessage("%d / %d" % (i+1, len(drafts)))
             draft = drafts[i]
             point = Tools.Point(ship,draft,trim)
             string = "%f %f %f %f %f %f %f %f %f %f %f\n" % (point.disp, point.draft, point.wet, point.mom, point.xcb, point.farea, point.KBt, point.BMt, point.Cb, point.Cf, point.Cm)
