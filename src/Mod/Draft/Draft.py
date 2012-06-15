@@ -2416,16 +2416,17 @@ class _Wire:
                 for v in shape.Vertexes: p.append(v.Point)
                 if fp.Points != p: fp.Points = p
         elif fp.Base and fp.Tool:
-            if ('Shape' in fp.Base.PropertiesList) and ('Shape' in fp.Tool.PropertiesList):
-                sh1 = fp.Base.Shape.copy()
-                sh2 = fp.Tool.Shape.copy()
-                shape = sh1.fuse(sh2)
-                if DraftGeomUtils.isCoplanar(shape.Faces):
-                    shape = DraftGeomUtils.concatenate(shape)
-                    fp.Shape = shape
-                    p = []
-                    for v in shape.Vertexes: p.append(v.Point)
-                    if fp.Points != p: fp.Points = p
+            if fp.Base.isDerivedFrom("Part::Feature") and fp.Tool.isDerivedFrom("Part::Feature"):
+                if (not fp.Base.Shape.isNull()) and (not fp.Tool.Shape.isNull()):
+                    sh1 = fp.Base.Shape.copy()
+                    sh2 = fp.Tool.Shape.copy()
+                    shape = sh1.fuse(sh2)
+                    if DraftGeomUtils.isCoplanar(shape.Faces):
+                        shape = DraftGeomUtils.concatenate(shape)
+                        fp.Shape = shape
+                        p = []
+                        for v in shape.Vertexes: p.append(v.Point)
+                        if fp.Points != p: fp.Points = p
         elif fp.Points:
             if fp.Points[0] == fp.Points[-1]:
                 if not fp.Closed: fp.Closed = True
