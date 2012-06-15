@@ -641,8 +641,8 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         bool ready = false;
         for (MeshFacetArray::_TConstIterator it = _rclMesh._aclFacetArray.begin(); it != _rclMesh._aclFacetArray.end(); ++it) {
             for (int i=0; i<3; i++) {
-                if ((it->_aulPoints[i] == refPoint0) && (it->_aulPoints[(i+1)%3] == refPoint1) ||
-                    (it->_aulPoints[i] == refPoint1) && (it->_aulPoints[(i+1)%3] == refPoint0)) {
+                if (((it->_aulPoints[i] == refPoint0) && (it->_aulPoints[(i+1)%3] == refPoint1)) ||
+                    ((it->_aulPoints[i] == refPoint1) && (it->_aulPoints[(i+1)%3] == refPoint0))) {
                     rFace = *it;
                     rTriangle = _rclMesh.GetFacet(*it);
                     ready = true;
@@ -1526,6 +1526,7 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
         }
         rclLines.erase(pFront);
       }
+
 
       if (pEnd != rclLines.end())
       {

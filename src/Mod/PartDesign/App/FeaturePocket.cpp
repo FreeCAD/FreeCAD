@@ -178,7 +178,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                         it_near = it;
                 upToFace = (std::string(Type.getValueAsString()) == "UpToLast" ? it_far->face : it_near->face);
             } else {
-                if (FaceName.getValue() == "")
+                if (FaceName.isEmpty())
                     return new App::DocumentObjectExecReturn("Cannot extrude up to face: No face selected");
 
                 // Get active object, this is the object that the user referenced when he clicked on the face!
