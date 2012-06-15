@@ -54,7 +54,6 @@ class ShipTank:
             return
         obj.Shape = shape
         obj.Proxy = self
-        self.obj = obj
 
     def onChanged(self, fp, prop):
         """ Property changed, tank must be recomputed """
