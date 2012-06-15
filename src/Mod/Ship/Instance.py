@@ -570,15 +570,15 @@ def weights(obj):
     except ValueError:
         # Compute mass aproximation
         from shipHydrostatics import Tools
-        disp = Tools.Displacement(obj,obj.Draft,0.0)
-        obj.addProperty("App::PropertyFloatList","WeightMass","Ship", str(Translator.translate("Ship Weights masses"))).WeightMass=[1000.0 * disp[1]]
+        disp = Tools.displacement(obj,obj.Draft)
+        obj.addProperty("App::PropertyFloatList","WeightMass","Ship", str(Translator.translate("Ship Weights masses"))).WeightMass=[1000.0 * disp[0]]
     try:
         props.index("WeightPos")
     except ValueError:
         # Compute mass aproximation
         from shipHydrostatics import Tools
-        disp = Tools.Displacement(obj,obj.Draft,0.0)
-        obj.addProperty("App::PropertyVectorList","WeightPos","Ship", str(Translator.translate("Ship Weights centers of gravity"))).WeightPos=[Vector(disp[2],0.0,obj.Draft)]
+        disp = Tools.displacement(obj,obj.Draft)
+        obj.addProperty("App::PropertyVectorList","WeightPos","Ship", str(Translator.translate("Ship Weights centers of gravity"))).WeightPos=[Vector(disp[1].x,0.0,obj.Draft)]
     # Setup list
     weights = []
     for i in range(0,len(obj.WeightNames)):
