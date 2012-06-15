@@ -47,6 +47,11 @@ typedef NCollection_Array1<TColStd_SequenceOfInteger> StdMeshers_Array1OfSequenc
 #include <SMESH_Array1.hxx>
 typedef SMESH_Array1<TColStd_SequenceOfInteger> StdMeshers_Array1OfSequenceOfInteger;
 #endif
+#include <cmath>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 //=======================================================================
 //function : StdMeshers_QuadToTriaAdaptor

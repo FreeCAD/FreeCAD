@@ -82,6 +82,10 @@
 #include <numeric>
 #include <limits>
 
+#ifndef PI
+#define PI M_PI
+#endif
+
 #define cast2Node(elem) static_cast<const SMDS_MeshNode*>( elem )
 
 using namespace std;
