@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Python.h>
 # include <QApplication>
 # include <QClipboard>
 # include <QMutex>
@@ -30,7 +31,6 @@
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
-# include <Python.h>
 # include <Inventor/C/basic.h>
 # include <Inventor/Qt/SoQtBasic.h>
 #endif
