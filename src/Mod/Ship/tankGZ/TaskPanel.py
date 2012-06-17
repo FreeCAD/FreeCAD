@@ -247,9 +247,9 @@ class TaskPanel:
         # Iterate looking stability point
         dVar = math.copysign(0.01, var)
         while True:
-            if (dVar*math.copysign(dVar, var) < 0.0):
+            if (dVar*var < 0.0) or (abs(var) < 0.1):
                 break
-            trim = trim - math.copysign(dVar, var)
+            trim = trim - math.copysign(max(dVar, abs(var)/200.0), var)
             # Get center of gravity
             disp  = self.computeDisplacement(trim)
             G     = [disp[1], disp[2], disp[3]]
