@@ -95,6 +95,7 @@ class TaskPanel:
         form.tanks    = form.findChild(QtGui.QListWidget, "Tanks")
         form.disp     = form.findChild(QtGui.QLabel, "DisplacementLabel")
         form.draft    = form.findChild(QtGui.QLabel, "DraftLabel")
+        form.update   = form.findChild(QtGui.QPushButton, "UpdateData")
         form.trim     = form.findChild(QtGui.QDoubleSpinBox, "Trim")
         form.autoTrim = form.findChild(QtGui.QPushButton, "TrimAutoCompute")
         form.roll0    = form.findChild(QtGui.QDoubleSpinBox, "StartAngle")
@@ -105,9 +106,9 @@ class TaskPanel:
         if self.initValues():
             return True
         self.retranslateUi()
-        self.onTanksSelection()
         # Connect Signals and Slots
         QtCore.QObject.connect(form.tanks,QtCore.SIGNAL("itemSelectionChanged()"),self.onTanksSelection)
+        QtCore.QObject.connect(form.update,QtCore.SIGNAL("pressed()"),self.onUpdate)
         QtCore.QObject.connect(form.trim,QtCore.SIGNAL("valueChanged(double)"),self.onTrim)
         QtCore.QObject.connect(form.autoTrim,QtCore.SIGNAL("pressed()"),self.onAutoTrim)
         QtCore.QObject.connect(form.roll0,QtCore.SIGNAL("valueChanged(double)"),self.onRoll)
@@ -199,9 +200,17 @@ class TaskPanel:
         self.form.findChild(QtGui.QLabel, "StartAngleLabel").setText(Translator.translate("Start") + " [deg]")
         self.form.findChild(QtGui.QLabel, "EndAngleLabel").setText(Translator.translate("End") + " [deg]")
         self.form.findChild(QtGui.QLabel, "NAngleLabel").setText(Translator.translate("Number of points"))
+        self.form.disp.setText(Translator.translate("Displacement = Press update to compute"))
+        self.form.draft.setText(Translator.translate("Draft = Press update to compute"))
+        self.form.update.setText(Translator.translate("Update displacement and draft"))
 
     def onTanksSelection(self):
         """ Called when tanks are selected or deselected.
+        """
+        pass
+        
+    def onUpdate(self):
+        """ Called when update displacement and draft is requested.
         """
         # Set displacement label
         disp = self.computeDisplacement()
@@ -236,7 +245,7 @@ class TaskPanel:
         z     = BG[0]*math.sin(math.radians(trim)) + BG[2]*math.cos(math.radians(trim))
         var   = math.degrees(math.atan2(x,z))
         # Iterate looking stability point
-        dVar = math.copysign(0.0033, var)
+        dVar = math.copysign(0.01, var)
         while True:
             if (dVar*math.copysign(dVar, var) < 0.0):
                 break
