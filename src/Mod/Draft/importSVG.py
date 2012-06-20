@@ -448,8 +448,7 @@ class svgHandler(xml.sax.ContentHandler):
                                 abh = getsize(h,unitmode)
                                 sx=abw/vbw
                                 sy=abh/vbh
-                                preservearstr=data.get('preserveAspectRatio',\
-                                        '').lower()
+                                preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
                                 uniformscaling = round(sx/sy,5) == 1
                                 if uniformscaling:
                                     m.scale(Vector(sx,sy,1))
@@ -624,7 +623,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                         if sweepflag:
                                                                 #angledelta=-(-angledelta % (math.pi *2)) # Step4
                                                                 #angledelta=(-angledelta % (math.pi *2)) # Step4
-                                                                angle1  = angle1-angledelta
+                                                                angle1  = angle1+angledelta
+                                                                angledelta = -angledelta
                                                                 #angle1 = math.pi - angle1 
 
                                                         e1a = Part.Arc(e1,angle1-swapaxis*math.radians(90),\
