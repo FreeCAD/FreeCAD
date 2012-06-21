@@ -108,6 +108,7 @@ SET(Robot_Scripts
     RobotExampleTrajectoryOutOfShapes.py
 )
 
+if (EXISTS Lib/Kuka)
 SET(Robot_Resources
     Lib/Kuka/kr500_1.wrl
     Lib/Kuka/kr500_1.csv
@@ -122,6 +123,7 @@ SET(Robot_Resources
     Lib/Kuka/kr_125.csv
     Lib/Kuka/kr125_2.pdf
 )
+endif (EXISTS Lib/Kuka)
 
 add_library(Robot SHARED ${Robot_SRCS})
 target_link_libraries(Robot ${Robot_LIBS})
