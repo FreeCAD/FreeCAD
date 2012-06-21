@@ -250,7 +250,7 @@ def main():
         if o in ("-b", "--bindir"):
             bindir = a
 
-    vcs=[Subversion(), BazaarControl(), GitControl(), MercurialControl(), DebianChangelog(), UnknownControl()]
+    vcs=[GitControl(), BazaarControl(), Subversion(), MercurialControl(), DebianChangelog(), UnknownControl()]
     for i in vcs:
         if i.extractInfo(srcdir):
             # Open the template file and the version file
