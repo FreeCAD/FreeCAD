@@ -353,7 +353,9 @@ endif(FREECAD_LIBPACK_USE)
 
 # copy build convenient files for M$
 if(WIN32)
-    configure_file(BuildAll.bat ${CMAKE_BINARY_DIR}/BuildAll.bat COPYONLY)
+    if (EXISTS BuildAll.bat)
+        configure_file(BuildAll.bat ${CMAKE_BINARY_DIR}/BuildAll.bat COPYONLY)
+    endif (EXISTS BuildAll.bat)
     #configure_file(BuildAllNice.bat ${CMAKE_BINARY_DIR}/BuildAllNice.bat COPYONLY)
 endif(WIN32)
 

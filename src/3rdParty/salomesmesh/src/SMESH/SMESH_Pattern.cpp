@@ -74,6 +74,11 @@
 #include "SMESH_subMesh.hxx"
 
 #include "utilities.h"
+#include <cmath>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 using namespace std;
 
