@@ -95,7 +95,7 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
 
         // make model
         aReader.ClearShapes();
-        Standard_Integer nbRootsForTransfer = aReader.NbRootsForTransfer();
+        //Standard_Integer nbRootsForTransfer = aReader.NbRootsForTransfer();
         aReader.TransferRoots();
         pi->EndScope();
 

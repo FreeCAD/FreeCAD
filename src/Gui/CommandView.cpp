@@ -452,6 +452,7 @@ void StdCmdFreezeViews::languageChange()
     }
 }
 
+
 //===========================================================================
 // Std_ToggleClipPlane
 //===========================================================================
@@ -522,8 +523,8 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(pcAction);
 
-    QAction* a0 = pcAction->addAction(QString());
-    QAction* a1 = pcAction->addAction(QString());
+    pcAction->addAction(QString());
+    pcAction->addAction(QString());
     _pcAction = pcAction;
     languageChange();
     return pcAction;

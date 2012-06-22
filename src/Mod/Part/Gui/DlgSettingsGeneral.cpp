@@ -69,6 +69,8 @@ void DlgSettingsGeneral::saveSettings()
             Interface_Static::SetCVal("write.step.unit","MM");
             break;
     }
+    ui->checkBooleanRefine->onSave();
+    ui->checkBooleanCheck->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -77,6 +79,8 @@ void DlgSettingsGeneral::loadSettings()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
     int unit = hGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
+    ui->checkBooleanRefine->onRestore();
+    ui->checkBooleanCheck->onRestore();
 }
 
 /**

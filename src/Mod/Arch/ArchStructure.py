@@ -24,12 +24,13 @@
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structure"):
+def makeStructure(baseobj=None,length=1,width=1,height=1,name=str(translate("Arch","Structure"))):
     '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
@@ -37,16 +38,12 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Structure(obj)
     _ViewProviderStructure(obj.ViewObject)
-    if baseobj: obj.Base = baseobj
-    if length: obj.Length = length
-    if width: obj.Width = width
-    if height: obj.Height = height
-    if obj.Base:
+    if baseobj:
+        obj.Base = baseobj
         obj.Base.ViewObject.hide()
-    else:
-        if (not obj.Width) and (not obj.Length):
-            obj.Width = 1
-            obj.Height = 1
+    obj.Width = width
+    obj.Height = height
+    obj.Length = length
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     c = p.GetUnsigned("StructureColor")
     r = float((c>>24)&0xFF)/255.0
@@ -64,29 +61,31 @@ class _CommandStructure:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
         
     def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
+        FreeCADGui.doCommand("import Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            FreeCAD.ActiveDocument.openTransaction("Structure")
             for obj in sel:
-                makeStructure(obj)
-            FreeCAD.ActiveDocument.commitTransaction()
+                FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument."+obj.Name+")")
         else:
-            makeStructure()
+            FreeCADGui.doCommand("Arch.makeStructure()")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
        
 class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Length","Base",
-                        "The length of this element, if not based on a profile")
+                        str(translate("Arch","The length of this element, if not based on a profile")))
         obj.addProperty("App::PropertyLength","Width","Base",
-                        "The width of this element, if not based on a profile")
+                        str(translate("Arch","The width of this element, if not based on a profile")))
         obj.addProperty("App::PropertyLength","Height","Base",
-                        "The height or extrusion depth of this element. Keep 0 for automatic")
+                        str(translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic")))
         obj.addProperty("App::PropertyLinkList","Axes","Base",
-                        "Axes systems this structure is built on")
+                        str(translate("Arch","Axes systems this structure is built on")))
         obj.addProperty("App::PropertyVector","Normal","Base",
-                        "The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
+                        str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
         self.Type = "Structure"
         
     def execute(self,obj):
@@ -113,43 +112,45 @@ class _Structure(ArchComponent.Component):
 
     def createGeometry(self,obj):
         import Part, DraftGeomUtils
+        
         # getting default values
-        height = normal = None
-        if obj.Length:
-            length = obj.Length
-        else:
-            length = 1
-        width = 1
+        height = width = length = 1
+        if hasattr(obj,"Length"):
+            if obj.Length:
+                length = obj.Length
         if hasattr(obj,"Width"):
             if obj.Width:
                 width = obj.Width
-        if obj.Height:
-            height = obj.Height
-        else:
-            for p in obj.InList:
-                if Draft.getType(p) == "Floor":
-                    height = p.Height
-        if not height: height = 1
-        if obj.Normal == Vector(0,0,0):
-            normal = Vector(0,0,1)
-        else:
-            normal = Vector(obj.Normal)
+        if hasattr(obj,"Height"):
+            if obj.Height:
+                height = obj.Height
 
-        # creating shape
+        # creating base shape
         pl = obj.Placement
-        norm = normal.multiply(height)
         base = None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
+                if obj.Normal == Vector(0,0,0):
+                    p = FreeCAD.Placement(obj.Base.Placement)
+                    normal = p.Rotation.multVec(Vector(0,0,1))
+                else:
+                    normal = Vector(obj.Normal)
+                normal = normal.multiply(height)
                 base = obj.Base.Shape.copy()
                 if base.Solids:
                     pass
                 elif base.Faces:
                     base = base.extrude(normal)
-                elif (len(base.Wires) == 1) and base.Wires[0].isClosed():
-                    base = Part.Face(base.Wires[0])
-                    base = base.extrude(normal)                
+                elif (len(base.Wires) == 1):
+                    if base.Wires[0].isClosed():
+                        base = Part.Face(base.Wires[0])
+                        base = base.extrude(normal)                
         else:
+            if obj.Normal == Vector(0,0,0):
+                normal = Vector(0,0,1)
+            else:
+                normal = Vector(obj.Normal)
+            normal = normal.multiply(height)
             l2 = length/2 or 0.5
             w2 = width/2 or 0.5
             v1 = Vector(-l2,-w2,0)
@@ -159,22 +160,20 @@ class _Structure(ArchComponent.Component):
             base = Part.makePolygon([v1,v2,v3,v4,v1])
             base = Part.Face(base)
             base = base.extrude(normal)
-        for app in obj.Additions:
-            base = base.oldFuse(app.Shape)
-            app.ViewObject.hide() # to be removed
-        for hole in obj.Subtractions:
-            cut = False
-            if hasattr(hole,"Proxy"):
-                if hasattr(hole.Proxy,"Subvolume"):
-                    if hole.Proxy.Subvolume:
-                        print "cutting subvolume",hole.Proxy.Subvolume
-                        base = base.cut(hole.Proxy.Subvolume)
-                        cut = True
-            if not cut:
-                if hasattr(obj,"Shape"):
-                    base = base.cut(hole.Shape)
-                    hole.ViewObject.hide() # to be removed
+            
         if base:
+            # applying adds and subs
+            if not base.isNull():
+                for app in obj.Additions:
+                    if hasattr(app,"Shape"):
+                        if not app.Shape.isNull():
+                            base = base.fuse(app.Shape)
+                            app.ViewObject.hide() # to be removed
+                for hole in obj.Subtractions:
+                    if hasattr(hole,"Shape"):
+                        if not hole.Shape.isNull():
+                            base = base.cut(hole.Shape)
+                            hole.ViewObject.hide() # to be removed
             pts = self.getAxisPoints(obj)
             if pts:
                 fsh = []
@@ -184,8 +183,12 @@ class _Structure(ArchComponent.Component):
                     fsh.append(sh)
                     obj.Shape = Part.makeCompound(fsh)
             else:
-                obj.Shape = base
-            if not DraftGeomUtils.isNull(pl): obj.Placement = pl
+                if base:
+                    if not base.isNull():
+                        base = base.removeSplitter()
+                        obj.Shape = base
+            if not DraftGeomUtils.isNull(pl):
+                obj.Placement = pl
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
@@ -193,7 +196,8 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
 
-    def getIcon(self):          
+    def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Structure_Tree.svg"
 
 FreeCADGui.addCommand('Arch_Structure',_CommandStructure())

@@ -26,8 +26,8 @@
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <climits>
 # include <Python.h>
+# include <climits>
 # include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
 # include <Handle_TDocStd_Document.hxx>

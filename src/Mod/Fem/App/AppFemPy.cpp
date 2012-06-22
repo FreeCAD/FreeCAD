@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
 #include <App/Application.h>
@@ -498,12 +499,12 @@ static PyObject * minBoundingBox(PyObject *self, PyObject *args)
 
 		//Do a Monte Carlo approach and start from the Principal Axis System
 		//and rotate +/- 60° around each axis in a first iteration
-		double	angle_range_min_x=-PI/3.0,angle_range_max_x=PI/3.0,
-			angle_range_min_y=-PI/3.0,angle_range_max_y=PI/3.0,
-			angle_range_min_z=-PI/3.0,angle_range_max_z=PI/3.0;
+		double	angle_range_min_x=-M_PI/3.0,angle_range_max_x=M_PI/3.0,
+			angle_range_min_y=-M_PI/3.0,angle_range_max_y=M_PI/3.0,
+			angle_range_min_z=-M_PI/3.0,angle_range_max_z=M_PI/3.0;
 
 		//We rotate until we are 0.1° sure to be in the right position
-		for (step_size = (2.0*PI/it_steps);step_size>(2.0*PI/3600.0);step_size=(2.0*PI/it_steps))
+		for (step_size = (2.0*M_PI/it_steps);step_size>(2.0*M_PI/3600.0);step_size=(2.0*M_PI/it_steps))
 		{
 			for(alpha_x=angle_range_min_x;alpha_x<angle_range_max_x;alpha_x=alpha_x+step_size)
 			{
@@ -744,11 +745,11 @@ static PyObject * import_NASTRAN(PyObject *self, PyObject *args)
 
 		//Do a Monte Carlo approach and start from the Principal Axis System
 		//and rotate +/- 60° around each axis in a first iteration
-		double	angle_range_min_x=-PI/3.0,angle_range_max_x=PI/3.0,
-				angle_range_min_y=-PI/3.0,angle_range_max_y=PI/3.0,
-				angle_range_min_z=-PI/3.0,angle_range_max_z=PI/3.0;
+		double	angle_range_min_x=-M_PI/3.0,angle_range_max_x=M_PI/3.0,
+				angle_range_min_y=-M_PI/3.0,angle_range_max_y=M_PI/3.0,
+				angle_range_min_z=-M_PI/3.0,angle_range_max_z=M_PI/3.0;
 		
-		for (step_size = (2.0*PI/it_steps);step_size>(2.0*PI/360.0);step_size=(2.0*PI/it_steps))
+		for (step_size = (2.0*M_PI/it_steps);step_size>(2.0*M_PI/360.0);step_size=(2.0*M_PI/it_steps))
 		{
 			for(alpha_x=angle_range_min_x;alpha_x<angle_range_max_x;alpha_x=alpha_x+step_size)
 			{

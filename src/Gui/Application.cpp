@@ -52,6 +52,7 @@
 #include <Base/Factory.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 
@@ -328,6 +329,10 @@ Application::Application(bool GUIenabled)
         Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str());
         GetWidgetFactorySupplier();
 
+        ParameterGrp::handle hUnits = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Units");
+        Base::UnitsApi::setDecimals(hUnits->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+
         // setting up Python binding
         Base::PyGILStateLocker lock;
         PyObject* module = Py_InitModule3("FreeCADGui", Application::Methods,
@@ -340,6 +345,10 @@ Application::Application(bool GUIenabled)
             "The FreeCADGui module also provides a set of functions to work with so called\n"
             "workbenches.");
         Py::Module(module).setAttr(std::string("ActiveDocument"),Py::None());
+
+        UiLoaderPy::init_type();
+        Base::Interpreter().addType(UiLoaderPy::type_object(),
+            module,"UiLoader");
 
         //insert Selection module
         PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,

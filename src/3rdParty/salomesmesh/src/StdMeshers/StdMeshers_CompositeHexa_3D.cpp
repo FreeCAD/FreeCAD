@@ -56,6 +56,11 @@
 #include <list>
 #include <set>
 #include <vector>
+#include <cmath>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 
 #ifdef _DEBUG_

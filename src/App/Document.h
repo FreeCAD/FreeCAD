@@ -114,6 +114,7 @@ public:
     /// Restore the document from the file in Property Path
     void restore (void);
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
+    void exportGraphviz(std::ostream&);
     std::vector<App::DocumentObject*> importObjects(std::istream&);
     /// Opens the document from its file name
     //void open (void);

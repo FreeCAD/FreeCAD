@@ -125,6 +125,14 @@ Get the sub-matrix. The parameter must be in the range [1,4].
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="analyze">
+      <Documentation>
+        <UserDocu>
+analyze() -> string
+Analyzes the type of transformation.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="A11" ReadOnly="false">
       <Documentation>
         <UserDocu>The matrix elements</UserDocu>

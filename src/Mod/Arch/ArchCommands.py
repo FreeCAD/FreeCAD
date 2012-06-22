@@ -24,6 +24,7 @@
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
@@ -341,11 +342,20 @@ class _CommandAdd:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Grouping")
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
         if not mergeCells(sel):
             host = sel.pop()
-            addComponents(sel,host)
+            ss = "["
+            for o in sel:
+                if len(ss) > 1:
+                    ss += ","
+                ss += "FreeCAD.ActiveDocument."+o.Name
+            ss += "]"
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        
         
 class _CommandRemove:
     "the Arch Add command definition"
@@ -362,13 +372,22 @@ class _CommandRemove:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Ungrouping")
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
         if Draft.getType(sel[-1]) in ["Wall","Structure"]:
             host = sel.pop()
-            removeComponents(sel,host)
+            ss = "["
+            for o in sel:
+                if len(ss) > 1:
+                    ss += ","
+                ss += "FreeCAD.ActiveDocument."+o.Name
+            ss += "]"
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         else:
-            removeComponents(sel)
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.removeComponents("+ss+")")
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 
 class _CommandSplitMesh:
@@ -387,7 +406,7 @@ class _CommandSplitMesh:
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
             sel = FreeCADGui.Selection.getSelection()
-            FreeCAD.ActiveDocument.openTransaction("Split Mesh")
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Split Mesh")))
             for obj in sel:
                 n = obj.Name
                 nobjs = splitMesh(obj)
@@ -396,6 +415,7 @@ class _CommandSplitMesh:
                     for o in nobjs:
                         g.addObject(o)
             FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
 
             
 class _CommandMeshToShape:
@@ -424,7 +444,7 @@ class _CommandMeshToShape:
                 if f.InList:
                     if f.InList[0].isDerivedFrom("App::DocumentObjectGroup"):
                         g = f.InList[0]
-            FreeCAD.ActiveDocument.openTransaction("Mesh to Shape")
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Mesh to Shape")))
             for obj in FreeCADGui.Selection.getSelection():
                 newobj = meshToShape(obj)
                 if g and newobj:

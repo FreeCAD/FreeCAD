@@ -44,7 +44,7 @@ namespace PartDesignGui {
 
 
 
-class TaskPocketParameters : public Gui::TaskView::TaskBox
+class TaskPocketParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -53,14 +53,19 @@ public:
     ~TaskPocketParameters();
 
     double getLength(void) const;
+    int getMode(void) const;
+    const QString getFaceName(void) const;
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onModeChanged(int);
+    void onFaceName(const QString& text);
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
     QWidget* proxy;

@@ -23,12 +23,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Python.h>
 # include <QApplication>
 # include <QClipboard>
 # include <QMutex>
+# include <QProcess> 
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
+# include <Inventor/C/basic.h>
+# include <Inventor/Qt/SoQtBasic.h>
 #endif
 
 #include "Splashscreen.h"
@@ -241,6 +245,18 @@ static QString getPlatform()
 #elif defined (Q_OS_MAC)
     return QString::fromAscii("Mac OS X");
 #elif defined (Q_OS_LINUX)
+    QString exe(QLatin1String("lsb_release"));
+    QStringList args;
+    args << QLatin1String("-ds");
+    QProcess proc;
+    proc.setEnvironment(QProcess::systemEnvironment());
+    proc.start(exe, args);
+    if (proc.waitForStarted() && proc.waitForFinished()) {
+        QByteArray info = proc.readAll();
+        info.replace('\n',"");
+        return QString::fromAscii((const char*)info);
+    }
+
     return QString::fromAscii("Linux");
 #elif defined (Q_OS_UNIX)
     return QString::fromAscii("UNIX");
@@ -326,6 +342,7 @@ void AboutDialog::on_copyButton_clicked()
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromAscii(config["BuildRevision"].c_str());
+    str << "Platform: " << getPlatform() << " (" << QSysInfo::WordSize << "-bit)" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
@@ -333,6 +350,14 @@ void AboutDialog::on_copyButton_clicked()
     it = config.find("BuildRevisionHash");
     if (it != config.end())
         str << "Hash: " << it->second.c_str() << endl;
+    // report also the version numbers of the most important libraries in FreeCAD
+    str << "Python version: " << PY_VERSION << endl;
+    str << "Qt version: " << QT_VERSION_STR << endl;
+    str << "Coin version: " << COIN_VERSION << endl;
+    str << "SoQt version: " << SOQT_VERSION << endl;
+    it = config.find("OCC_VERSION");
+    if (it != config.end())
+        str << "OCC version: " << it->second.c_str() << endl;
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

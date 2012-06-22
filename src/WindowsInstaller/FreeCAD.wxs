@@ -78,7 +78,7 @@
 			<?if $(var.ProcessorArchitecture)=x64 ?>
 			<Merge  Id="CRT" Language="0" SourceFile='$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC90_CRT_x86_x64.msm' DiskId="1"/>
 			<?else ?>
-			<Merge  Id="CRT" Language="0" SourceFile='Microsoft_VC90_CRT_x86.msm' DiskId="1"/>
+			<Merge  Id="CRT" Language="0" SourceFile='$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC90_CRT_x86.msm' DiskId="1"/>
 			<?endif ?>
 			
 			<?if $(var.ProcessorArchitecture)=x64 ?>

@@ -257,9 +257,9 @@ class Component:
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object this component is built upon")
         obj.addProperty("App::PropertyLinkList","Additions","Base",
-                        "Other shapes that are appended to this wall")
+                        "Other shapes that are appended to this object")
         obj.addProperty("App::PropertyLinkList","Subtractions","Base",
-                        "Other shapes that are subtracted from this wall")
+                        "Other shapes that are subtracted from this object")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -308,16 +308,23 @@ class ViewProviderComponent:
         return False
 
 class ArchSelectionObserver:
-    def __init__(self,origin,watched):
+    def __init__(self,origin,watched,hide=True,nextCommand=None):
         self.origin = origin
         self.watched = watched
+        self.hide = hide
+        self.nextCommand = nextCommand
     def addSelection(self,document, object, element, position):
         if object == self.watched.Name:
             if not element:
                 print "closing Sketch edit"
-                self.origin.ViewObject.Transparency = 0
-                self.origin.ViewObject.Selectable = True
-                self.watched.ViewObject.hide()
+                if self.hide:
+                    self.origin.ViewObject.Transparency = 0
+                    self.origin.ViewObject.Selectable = True
+                    self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("ArchWorkbench")
                 FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                if self.nextCommand:
+                    FreeCADGui.Selection.clearSelection()
+                    FreeCADGui.Selection.addSelection(self.watched)
+                    FreeCADGui.runCommand(self.nextCommand)
                 del FreeCAD.ArchObserver

@@ -86,8 +86,29 @@ class plane:
 
 	def projectPoint(self, p, direction=None):
 		'''project point onto plane, default direction is orthogonal'''
-		if not direction: direction = self.axis
+		if not direction:
+                        direction = self.axis
+                lp = self.getLocalCoords(p)
+                gp = self.getGlobalCoords(Vector(lp.x,lp.y,0))
+                a = direction.getAngle(gp.sub(p))
+                if a > math.pi/2:
+                        direction = DraftVecUtils.neg(direction)
+                        a = math.pi - a
+                ld = self.getLocalRot(direction)
+                gd = self.getGlobalRot(Vector(ld.x,ld.y,0))
+                hyp = abs(math.tan(a) * lp.z)
+                return gp.add(DraftVecUtils.scaleTo(gd,hyp))
+                
+	def projectPointOld(self, p, direction=None):
+		'''project point onto plane, default direction is orthogonal. Obsolete'''
+		if not direction:
+                        direction = self.axis
 		t = Vector(direction)
+                #t.normalize()
+                a = round(t.getAngle(self.axis),DraftVecUtils.precision())
+                pp = round((math.pi)/2,DraftVecUtils.precision())
+                if a == pp:
+                        return p
 		t.multiply(self.offsetToPoint(p, direction))
 		return p.add(t)
 
@@ -196,6 +217,31 @@ class plane:
 
         def getLocalCoords(self,point):
                 "returns the coordinates of a given point on the working plane"
+                pt = point.sub(self.position)
+                xv = DraftVecUtils.project(pt,self.u)
+                x = xv.Length
+                if xv.getAngle(self.u) > 1:
+                        x = -x
+                yv = DraftVecUtils.project(pt,self.v)
+                y = yv.Length
+                if yv.getAngle(self.v) > 1:
+                        y = -y
+                zv = DraftVecUtils.project(pt,self.axis)
+                z = zv.Length
+                if zv.getAngle(self.axis) > 1:
+                        z = -z
+                return Vector(x,y,z)
+
+        def getGlobalCoords(self,point):
+                "returns the global coordinates of the given point, taken relatively to this working plane"
+                vx = DraftVecUtils.scale(self.u,point.x)
+                vy = DraftVecUtils.scale(self.v,point.y)
+                vz = DraftVecUtils.scale(self.axis,point.z)
+                pt = (vx.add(vy)).add(vz)
+                return pt.add(self.position)
+
+        def getLocalRot(self,point):
+                "Same as getLocalCoords, but discards the WP position"
                 xv = DraftVecUtils.project(point,self.u)
                 x = xv.Length
                 if xv.getAngle(self.u) > 1:
@@ -210,13 +256,14 @@ class plane:
                         z = -z
                 return Vector(x,y,z)
 
-        def getGlobalCoords(self,point):
-                "returns the global coordinates of the given point, taken relatively to this working plane"
+        def getGlobalRot(self,point):
+                "Same as getGlobalCoords, but discards the WP position"
                 vx = DraftVecUtils.scale(self.u,point.x)
                 vy = DraftVecUtils.scale(self.v,point.y)
                 vz = DraftVecUtils.scale(self.axis,point.z)
-                return (vx.add(vy)).add(vz)
-
+                pt = (vx.add(vy)).add(vz)
+                return pt
+        
         def getClosestAxis(self,point):
                 "returns which of the workingplane axes is closest from the given vector"
                 ax = point.getAngle(self.u)

@@ -51,7 +51,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int  SecondIndex= Constraint::GeoUndef;
     int  SecondPos  = none;
     int  ThirdIndex = Constraint::GeoUndef;
-    int  ThirdPos   = none;
+  //int  ThirdPos   = none;
     double Value    = 0;
     // Note: In Python 2.x PyArg_ParseTuple prints a warning if a float is given but an integer is expected.
     // This means we must use a PyObject and check afterwards if it's a float or integer.
