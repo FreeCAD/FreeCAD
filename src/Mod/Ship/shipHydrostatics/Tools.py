@@ -217,12 +217,13 @@ def moment(ship, draft, trim, disp, xcb):
     @return Moment to trim ship 1cm (ton m).
     @note Moment is positive when produce positive trim.
     """
-    angle = math.degrees(math.atan2(0.01,0.5*ship.Length))
+    factor = 10.0
+    angle = factor*math.degrees(math.atan2(0.01,0.5*ship.Length))
     newTrim = trim + angle
     data = displacement(ship,draft,0.0,newTrim,0.0)
     mom0 = -disp*xcb
     mom1 = -data[0]*data[1].x
-    return mom1 - mom0
+    return (mom1 - mom0) / factor
 
 def FloatingArea(ship, draft, trim):
     """ Calculate ship floating area.
