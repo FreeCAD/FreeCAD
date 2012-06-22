@@ -69,13 +69,14 @@ class ArchWorkbench(Workbench):
                       "Draft_Offset","Draft_Upgrade",
                       "Draft_Downgrade","Draft_Trimex"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode",
-                             "Draft_AddToGroup","Draft_SelectGroup",
-                             "Draft_SelectPlane","Draft_ToggleSnap"]
+                                  "Draft_AddToGroup","Draft_SelectGroup",
+                                  "Draft_SelectPlane","Draft_ToggleSnap",
+                                  "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
         self.appendToolbar(str(DraftTools.translate("arch","Arch tools")),self.archtools)
         self.appendToolbar(str(DraftTools.translate("arch","Draft tools")),self.drafttools)
-        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Tools"))],self.meshtools)
+        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Conversion Tools"))],self.meshtools)
         self.appendMenu(str(DraftTools.translate("arch","&Architecture")),self.archtools)
         self.appendMenu(str(DraftTools.translate("arch","&Draft")),self.drafttools+self.draftcontexttools)
         FreeCADGui.addIconPath(":/icons")
@@ -84,11 +85,15 @@ class ArchWorkbench(Workbench):
         Log ('Loading Arch module... done\n')
                 
     def Activated(self):
-        FreeCADGui.draftToolBar.Activated()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Activated()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.show()
         Msg("Arch workbench activated\n")
                 
     def Deactivated(self):
-        FreeCADGui.draftToolBar.Deactivated()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Deactivated()
         Msg("Arch workbench deactivated\n")
                 
     def ContextMenu(self, recipient):
@@ -104,7 +109,8 @@ FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 try:
     import collada
 except:
-    FreeCAD.Console.PrintError("pycollada not found, no collada support.\n")
+    from DraftTools import translate
+    FreeCAD.Console.PrintMessage(str(translate("arch","pycollada not found, collada support will be disabled.\n")))
 else:
     FreeCAD.addImportType("Collada (*.dae)","importDAE")
     FreeCAD.addExportType("Collada (*.dae)","importDAE")

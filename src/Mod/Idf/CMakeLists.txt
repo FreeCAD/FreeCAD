@@ -6,6 +6,7 @@ SET(Idf_SRCS
 SOURCE_GROUP("" FILES ${Idf_SRCS})
 
 SET(IdfLibs_SRCS
+    lib/License.txt
     lib/0603_SMD.stp
     lib/0805_SMD.stp
     lib/1206_SMD.stp

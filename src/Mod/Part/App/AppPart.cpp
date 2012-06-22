@@ -13,6 +13,7 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <Interface_Static.hxx>
+# include <sstream>
 #endif
 
 #include <Base/Console.h>
@@ -86,6 +87,10 @@ PyDoc_STRVAR(module_part_doc,
 extern "C" {
 void PartExport initPart()
 {
+    std::stringstream str;
+    str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
+    App::Application::Config()["OCC_VERSION"] = str.str();
+
     PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading Part module... done\n");
 
@@ -134,6 +139,7 @@ void PartExport initPart()
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
     Part::PropertyGeometryList  ::init();
+    Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
 
     Part::Feature               ::init();
@@ -178,6 +184,7 @@ void PartExport initPart()
     Part::Part2DObjectPython    ::init();
     Part::RuledSurface          ::init();
     Part::Loft                  ::init();
+    Part::Sweep                 ::init();
 
     // Geometry types
     Part::Geometry                ::init();

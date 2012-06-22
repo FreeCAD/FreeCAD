@@ -726,6 +726,8 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
     setWindowTitle(tr("Tree view"));
     this->treeWidget = new TreeWidget(this);
     this->treeWidget->setRootIsDecorated(false);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
 
     QGridLayout* pLayout = new QGridLayout(this); 
     pLayout->setSpacing(0);
@@ -830,9 +832,14 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                             children.insert(kt->second);
                             QTreeWidgetItem* parent = kt->second->parent();
                             if (parent && parent != it->second) {
-                                int index = parent->indexOfChild(kt->second);
-                                parent->takeChild(index);
-                                it->second->addChild(kt->second);
+                                if (it->second != kt->second) {
+                                    int index = parent->indexOfChild(kt->second);
+                                    parent->takeChild(index);
+                                    it->second->addChild(kt->second);
+                                }
+                                else {
+                                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                }
                             }
                         }
                         else {

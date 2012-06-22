@@ -24,12 +24,20 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QClipboard>
+# include <QEventLoop>
+# include <QFileDialog>
+# include <QGraphicsScene>
+# include <QGraphicsView>
+# include <QLabel>
 # include <QStatusBar>
 # include <QPointer>
+# include <QProcess>
+# include <sstream>
 #endif
 #include <algorithm>
 
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <App/Document.h>
@@ -192,6 +200,11 @@ void StdCmdImport::activated(int iMsg)
             getActiveGuiDocument()->getDocument()->getName(),
             it.value().toAscii());
     }
+
+    std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+    for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+        (*it)->viewAll();
+    }
 }
 
 bool StdCmdImport::isActive(void)
@@ -304,6 +317,120 @@ void StdCmdMergeProjects::activated(int iMsg)
 bool StdCmdMergeProjects::isActive(void)
 {
     return this->hasActiveDocument();
+}
+
+//===========================================================================
+// Std_ExportGraphviz
+//===========================================================================
+
+namespace Gui {
+class ImageView : public MDIView
+{
+public:
+    ImageView(const QPixmap& p, QWidget* parent=0) : MDIView(0, parent)
+    {
+        scene = new QGraphicsScene();
+        scene->addPixmap(p);
+        view = new QGraphicsView(scene, this);
+        view->show();
+        setCentralWidget(view);
+    }
+    ~ImageView()
+    {
+        delete scene;
+        delete view;
+    }
+    QGraphicsScene* scene;
+    QGraphicsView* view;
+};
+}
+
+DEF_STD_CMD_A(StdCmdExportGraphviz);
+
+StdCmdExportGraphviz::StdCmdExportGraphviz()
+  : Command("Std_ExportGraphviz")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("Dependency graph...");
+    sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
+    sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
+    sWhatsThis    = "Std_ExportGraphviz";
+    eType         = 0;
+}
+
+void StdCmdExportGraphviz::activated(int iMsg)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    std::stringstream str;
+    doc->exportGraphviz(str);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Paths");
+    QProcess proc;
+    QStringList args;
+    args << QLatin1String("-Tpng");
+#ifdef FC_OS_LINUX
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
+#else
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+#endif
+    bool pathChanged = false;
+#ifdef FC_OS_WIN32
+    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+    QString exe = QString::fromAscii("%1/dot").arg(path);
+#endif
+    proc.setEnvironment(QProcess::systemEnvironment());
+    do {
+        proc.start(exe, args);
+        if (!proc.waitForStarted()) {
+            int ret = QMessageBox::warning(getMainWindow(),
+                qApp->translate("Std_ExportGraphviz","Graphviz not found"),
+                qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system.\n"
+                                "Do you want to specify its installation path if it's already installed?"),
+                                QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No)
+                return;
+            path = QFileDialog::getExistingDirectory(Gui::getMainWindow(),
+                qApp->translate("Std_ExportGraphviz","Graphviz installation path"));
+            if (path.isEmpty())
+                return;
+            pathChanged = true;
+#ifdef FC_OS_WIN32
+            exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+            exe = QString::fromAscii("%1/dot").arg(path);
+#endif
+        }
+        else {
+            if (pathChanged)
+                hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
+            break;
+        }
+    }
+    while(true);
+
+    proc.write(str.str().c_str(), str.str().size());
+    proc.closeWriteChannel();
+    if (!proc.waitForFinished())
+        return;
+
+    QPixmap px;
+    if (px.loadFromData(proc.readAll(), "PNG")) {
+        Gui::ImageView* view = new Gui::ImageView(px);
+        view->setWindowTitle(qApp->translate("Std_ExportGraphviz","Dependency graph"));
+        getMainWindow()->addWindow(view);
+    }
+    else {
+        QMessageBox::warning(getMainWindow(),
+        qApp->translate("Std_ExportGraphviz","Graphviz failed"),
+        qApp->translate("Std_ExportGraphviz","Graphviz failed to create an image file"));
+    }
+}
+
+bool StdCmdExportGraphviz::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
 }
 
 //===========================================================================
@@ -1121,6 +1248,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
+    rcCmdMgr.addCommand(new StdCmdExportGraphviz());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());

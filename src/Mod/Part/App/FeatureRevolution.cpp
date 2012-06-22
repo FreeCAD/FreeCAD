@@ -28,7 +28,7 @@
 
 
 #include "FeatureRevolution.h"
-
+#include <Base/Tools.h>
 
 using namespace Part;
 
@@ -72,7 +72,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     try {
         // Now, let's get the TopoDS_Shape
         TopoDS_Shape revolve = base->Shape.getShape().revolve(gp_Ax1(pnt, dir),
-            Angle.getValue()/180.0f*Standard_PI);
+            Angle.getValue()/180.0f*M_PI);
         if (revolve.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(revolve);

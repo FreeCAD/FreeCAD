@@ -343,6 +343,72 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
 // -------------------------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Part::PropertyShapeHistory , App::PropertyLists);
+
+PropertyShapeHistory::PropertyShapeHistory()
+{
+}
+
+PropertyShapeHistory::~PropertyShapeHistory()
+{
+}
+
+void PropertyShapeHistory::setValue(const ShapeHistory& sh)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0] = sh;
+    hasSetValue();
+}
+
+void PropertyShapeHistory::setValues(const std::vector<ShapeHistory>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyShapeHistory::getPyObject(void)
+{
+    return Py::new_reference_to(Py::None());
+}
+
+void PropertyShapeHistory::setPyObject(PyObject *value)
+{
+}
+
+void PropertyShapeHistory::Save (Base::Writer &writer) const
+{
+}
+
+void PropertyShapeHistory::Restore(Base::XMLReader &reader)
+{
+}
+
+void PropertyShapeHistory::SaveDocFile (Base::Writer &writer) const
+{
+}
+
+void PropertyShapeHistory::RestoreDocFile(Base::Reader &reader)
+{
+}
+
+App::Property *PropertyShapeHistory::Copy(void) const
+{
+    PropertyShapeHistory *p= new PropertyShapeHistory();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyShapeHistory::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyShapeHistory&>(from)._lValueList;
+    hasSetValue();
+}
+
+// -------------------------------------------------------------------------
+
 TYPESYSTEM_SOURCE(Part::PropertyFilletEdges , App::PropertyLists);
 
 PropertyFilletEdges::PropertyFilletEdges()

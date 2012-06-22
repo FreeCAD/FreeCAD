@@ -40,12 +40,8 @@ Cut::Cut(void)
 {
 }
 
-TopoDS_Shape Cut::runOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Cut::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a cut operation:
-    BRepAlgoAPI_Cut mkCut(base, tool);
-    // Let's check if the cut has been successful
-    if (!mkCut.IsDone()) 
-        throw Base::Exception("Cut failed");
-    return mkCut.Shape();
+    return new BRepAlgoAPI_Cut(base, tool);
 }

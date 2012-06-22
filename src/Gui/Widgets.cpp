@@ -104,6 +104,260 @@ void CommandIconView::onSelectionChanged(QListWidgetItem * item, QListWidgetItem
 
 // ------------------------------------------------------------------------------
 
+/* TRANSLATOR Gui::ActionSelector */
+
+ActionSelector::ActionSelector(QWidget* parent)
+  : QWidget(parent)
+{
+    addButton = new QPushButton(this);
+    addButton->setObjectName(QLatin1String("addButton"));
+    addButton->setMinimumSize(QSize(30, 30));
+    QIcon icon;
+    icon.addFile(QString::fromUtf8(":/icons/button_right.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    addButton->setIcon(icon);
+    gridLayout = new QGridLayout(this);
+    gridLayout->addWidget(addButton, 1, 1, 1, 1);
+
+    spacerItem = new QSpacerItem(33, 57, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    gridLayout->addItem(spacerItem, 5, 1, 1, 1);
+    spacerItem1 = new QSpacerItem(33, 58, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    gridLayout->addItem(spacerItem1, 0, 1, 1, 1);
+
+    removeButton = new QPushButton(this);
+    removeButton->setObjectName(QLatin1String("removeButton"));
+    removeButton->setMinimumSize(QSize(30, 30));
+    QIcon icon1;
+    icon1.addFile(QString::fromUtf8(":/icons/button_left.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    removeButton->setIcon(icon1);
+    removeButton->setAutoDefault(true);
+    removeButton->setDefault(false);
+
+    gridLayout->addWidget(removeButton, 2, 1, 1, 1);
+
+    upButton = new QPushButton(this);
+    upButton->setObjectName(QLatin1String("upButton"));
+    upButton->setMinimumSize(QSize(30, 30));
+    QIcon icon3;
+    icon3.addFile(QString::fromUtf8(":/icons/button_up.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    upButton->setIcon(icon3);
+
+    gridLayout->addWidget(upButton, 3, 1, 1, 1);
+
+    downButton = new QPushButton(this);
+    downButton->setObjectName(QLatin1String("downButton"));
+    downButton->setMinimumSize(QSize(30, 30));
+    QIcon icon2;
+    icon2.addFile(QString::fromUtf8(":/icons/button_down.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    downButton->setIcon(icon2);
+    downButton->setAutoDefault(true);
+
+    gridLayout->addWidget(downButton, 4, 1, 1, 1);
+
+    vboxLayout = new QVBoxLayout();
+    vboxLayout->setContentsMargins(0, 0, 0, 0);
+    labelAvailable = new QLabel(this);
+    vboxLayout->addWidget(labelAvailable);
+
+    availableWidget = new QTreeWidget(this);
+    availableWidget->setObjectName(QLatin1String("availableTreeWidget"));
+    availableWidget->setRootIsDecorated(false);
+    availableWidget->setHeaderLabels(QStringList() << QString());
+    availableWidget->header()->hide();
+    vboxLayout->addWidget(availableWidget);
+
+    gridLayout->addLayout(vboxLayout, 0, 0, 6, 1);
+
+    vboxLayout1 = new QVBoxLayout();
+    vboxLayout1->setContentsMargins(0, 0, 0, 0);
+    labelSelected = new QLabel(this);
+    vboxLayout1->addWidget(labelSelected);
+
+    selectedWidget = new QTreeWidget(this);
+    selectedWidget->setObjectName(QLatin1String("selectedTreeWidget"));
+    selectedWidget->setRootIsDecorated(false);
+    selectedWidget->setHeaderLabels(QStringList() << QString());
+    selectedWidget->header()->hide();
+    vboxLayout1->addWidget(selectedWidget);
+
+    gridLayout->addLayout(vboxLayout1, 0, 2, 6, 1);
+
+    addButton->setText(QString());
+    removeButton->setText(QString());
+    upButton->setText(QString());
+    downButton->setText(QString());
+
+    connect(addButton, SIGNAL(clicked()),
+            this, SLOT(on_addButton_clicked()) );
+    connect(removeButton, SIGNAL(clicked()),
+            this, SLOT(on_removeButton_clicked()) );
+    connect(upButton, SIGNAL(clicked()),
+            this, SLOT(on_upButton_clicked()) );
+    connect(downButton, SIGNAL(clicked()),
+            this, SLOT(on_downButton_clicked()) );
+    connect(availableWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+            this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
+    connect(selectedWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+            this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
+    connect(availableWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
+            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
+    connect(selectedWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
+            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
+    retranslateUi();
+    setButtonsEnabled();
+}
+
+ActionSelector::~ActionSelector()
+{
+}
+
+void ActionSelector::setSelectedLabel(const QString& label)
+{
+    labelSelected->setText(label);
+}
+
+QString ActionSelector::selectedLabel() const
+{
+    return labelSelected->text();
+}
+
+void ActionSelector::setAvailableLabel(const QString& label)
+{
+    labelAvailable->setText(label);
+}
+
+QString ActionSelector::availableLabel() const
+{
+    return labelAvailable->text();
+}
+
+
+void ActionSelector::retranslateUi()
+{
+    labelAvailable->setText(QApplication::translate("Gui::ActionSelector", "Available:", 0, QApplication::UnicodeUTF8));
+    labelSelected->setText(QApplication::translate("Gui::ActionSelector", "Selected:", 0, QApplication::UnicodeUTF8));
+    addButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Add", 0, QApplication::UnicodeUTF8));
+    removeButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Remove", 0, QApplication::UnicodeUTF8));
+    upButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Move up", 0, QApplication::UnicodeUTF8));
+    downButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Move down", 0, QApplication::UnicodeUTF8));
+}
+
+void ActionSelector::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+    QWidget::changeEvent(event);
+}
+
+void ActionSelector::keyPressEvent(QKeyEvent* event)
+{
+    if ((event->modifiers() & Qt::ControlModifier)) {
+        switch (event->key())
+        {
+        case Qt::Key_Right:
+            on_addButton_clicked();
+            break;
+        case Qt::Key_Left:
+            on_removeButton_clicked();
+            break;
+        case Qt::Key_Up:
+            on_upButton_clicked();
+            break;
+        case Qt::Key_Down:
+            on_downButton_clicked();
+            break;
+        default:
+            event->ignore();
+            return;
+        }
+    }
+}
+
+void ActionSelector::setButtonsEnabled()
+{
+    addButton->setEnabled(availableWidget->indexOfTopLevelItem(availableWidget->currentItem()) > -1);
+    removeButton->setEnabled(selectedWidget->indexOfTopLevelItem(selectedWidget->currentItem()) > -1);
+    upButton->setEnabled(selectedWidget->indexOfTopLevelItem(selectedWidget->currentItem()) > 0);
+    downButton->setEnabled(selectedWidget->indexOfTopLevelItem(selectedWidget->currentItem()) > -1 &&
+                           selectedWidget->indexOfTopLevelItem(selectedWidget->currentItem()) < selectedWidget->topLevelItemCount() - 1);
+}
+
+void ActionSelector::onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)
+{
+    setButtonsEnabled();
+}
+
+void ActionSelector::onItemDoubleClicked(QTreeWidgetItem * item, int column)
+{
+    QTreeWidget* treeWidget = item->treeWidget();
+    if (treeWidget == availableWidget) {
+        int index = availableWidget->indexOfTopLevelItem(item);
+        item = availableWidget->takeTopLevelItem(index);
+        availableWidget->setCurrentItem(0);
+        selectedWidget->addTopLevelItem(item);
+        selectedWidget->setCurrentItem(item);
+    }
+    else if (treeWidget == selectedWidget) {
+        int index = selectedWidget->indexOfTopLevelItem(item);
+        item = selectedWidget->takeTopLevelItem(index);
+        selectedWidget->setCurrentItem(0);
+        availableWidget->addTopLevelItem(item);
+        availableWidget->setCurrentItem(item);
+    }
+}
+
+void ActionSelector::on_addButton_clicked()
+{
+    QTreeWidgetItem* item = availableWidget->currentItem();
+    if (item) {
+        int index = availableWidget->indexOfTopLevelItem(item);
+        item = availableWidget->takeTopLevelItem(index);
+        availableWidget->setCurrentItem(0);
+        selectedWidget->addTopLevelItem(item);
+        selectedWidget->setCurrentItem(item);
+    }
+}
+
+void ActionSelector::on_removeButton_clicked()
+{
+    QTreeWidgetItem* item = selectedWidget->currentItem();
+    if (item) {
+        int index = selectedWidget->indexOfTopLevelItem(item);
+        item = selectedWidget->takeTopLevelItem(index);
+        selectedWidget->setCurrentItem(0);
+        availableWidget->addTopLevelItem(item);
+        availableWidget->setCurrentItem(item);
+    }
+}
+
+void ActionSelector::on_upButton_clicked()
+{
+    QTreeWidgetItem* item = selectedWidget->currentItem();
+    if (item && selectedWidget->isItemSelected(item)) {
+        int index = selectedWidget->indexOfTopLevelItem(item);
+        if (index > 0) {
+            selectedWidget->takeTopLevelItem(index);
+            selectedWidget->insertTopLevelItem(index-1, item);
+            selectedWidget->setCurrentItem(item);
+        }
+    }
+}
+
+void ActionSelector::on_downButton_clicked()
+{
+    QTreeWidgetItem* item = selectedWidget->currentItem();
+    if (item && selectedWidget->isItemSelected(item)) {
+        int index = selectedWidget->indexOfTopLevelItem(item);
+        if (index < selectedWidget->topLevelItemCount()-1) {
+            selectedWidget->takeTopLevelItem(index);
+            selectedWidget->insertTopLevelItem(index+1, item);
+            selectedWidget->setCurrentItem(item);
+        }
+    }
+}
+
+// ------------------------------------------------------------------------------
+
 /* TRANSLATOR Gui::AccelLineEdit */
 
 /**

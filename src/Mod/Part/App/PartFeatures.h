@@ -73,6 +73,33 @@ protected:
     void onChanged (const App::Property* prop);
 };
 
+class Sweep : public Part::Feature
+{
+    PROPERTY_HEADER(Part::Sweep);
+
+public:
+    Sweep();
+
+    App::PropertyLinkList Sections;
+    App::PropertyLinkSub Spine;
+    App::PropertyBool Solid;
+    App::PropertyBool Frenet;
+    App::PropertyEnumeration Transition;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    //@}
+
+protected:
+    void onChanged (const App::Property* prop);
+
+private:
+    static const char* TransitionEnums[];
+};
+
 } //namespace Part
 
 

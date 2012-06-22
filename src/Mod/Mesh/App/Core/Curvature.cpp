@@ -151,7 +151,7 @@ private:
 // --------------------------------------------------------
 
 FacetCurvature::FacetCurvature(const MeshKernel& kernel, const MeshRefPointToFacets& search, float r, unsigned long pt)
-  : myKernel(kernel), mySearch(search), myRadius(r), myMinPoints(pt)
+  : myKernel(kernel), mySearch(search), myMinPoints(pt), myRadius(r)
 {
 }
 

@@ -108,7 +108,7 @@ def getParamType(param):
         return "float"
     elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
                    "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
-                   "renderPolylineWidth"]:
+                   "renderPolylineWidth","showPlaneTracker"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -1782,7 +1782,6 @@ class _ViewProviderDimension:
         obj.Proxy = self
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
-        obj.DisplayMode = ["2D","3D"]
         obj.ExtLines=0.3
         obj.Override = ''
 
@@ -1825,18 +1824,19 @@ class _ViewProviderDimension:
             if hasattr(obj.ViewObject,"DisplayMode"):
                 if obj.ViewObject.DisplayMode == "3D":
                     offset = DraftVecUtils.neg(offset)
-        if hasattr(obj.ViewObject,"TextPosition"):
-            if obj.ViewObject.TextPosition == Vector(0,0,0):
-                tbase = midpoint.add(offset)
+            if hasattr(obj.ViewObject,"TextPosition"):
+                if obj.ViewObject.TextPosition == Vector(0,0,0):
+                    tbase = midpoint.add(offset)
+                else:
+                    tbase = obj.ViewObject.TextPosition
             else:
-                tbase = obj.ViewObject.TextPosition
+                tbase = midpoint.add(offset)
         else:
-            tbase = midpoint.add(offset)
+            tbase = midpoint
         rot = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u,v,norm)).Rotation.Q
         return p1,p2,p3,p4,tbase,norm,rot
 
     def attach(self, obj):
-        obj.DisplayMode = ["2D","3D"]
         self.Object = obj.Object
         p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj.Object)
         self.color = coin.SoBaseColor()
@@ -1903,6 +1903,10 @@ class _ViewProviderDimension:
         self.onChanged(obj,"FontName")
             
     def updateData(self, obj, prop):
+        try:
+            dm = obj.ViewObject.DisplayMode
+        except:
+            dm = "2D"
         text = None
         if obj.Base and obj.LinkedVertices:
             if "Shape" in obj.Base.PropertiesList:
@@ -1936,7 +1940,7 @@ class _ViewProviderDimension:
             self.text.string = self.text3d.string = text
             self.textpos.rotation = coin.SbRotation(rot[0],rot[1],rot[2],rot[3])
             self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-            if obj.ViewObject.DisplayMode == "2D":
+            if dm == "2D":
                 self.coords.point.setValues([[p1.x,p1.y,p1.z],
                                              [p2.x,p2.y,p2.z],
                                              [p3.x,p3.y,p3.z],
@@ -1958,6 +1962,7 @@ class _ViewProviderDimension:
             self.coord2.point.setValue((p3.x,p3.y,p3.z))
 
     def onChanged(self, vp, prop):
+        self.Object = vp.Object
         if prop == "FontSize":
             self.font.size = vp.FontSize
             self.font3d.size = vp.FontSize*100
@@ -1969,13 +1974,20 @@ class _ViewProviderDimension:
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vp.LineWidth
         else:
+            self.drawstyle.lineWidth = vp.LineWidth
             self.updateData(vp.Object, None)
 
     def getDisplayModes(self,obj):
         return ["2D","3D"]
 
     def getDefaultDisplayMode(self):
-        return "2D"
+        if hasattr(self,"defaultmode"):
+            return self.defaultmode
+        else:
+            return "2D"
+
+    def setDisplayMode(self,mode):
+        return mode
 
     def getIcon(self):
         if self.Object.Base:
@@ -2034,10 +2046,12 @@ class _ViewProviderDimension:
                 """
 
     def __getstate__(self):
-        return None
+        return self.Object.ViewObject.DisplayMode
     
     def __setstate__(self,state):
-        return None
+        if state:
+            self.defaultmode = state
+            self.setDisplayMode(state)
 
 class _AngularDimension:
     "The AngularDimension object"
@@ -2402,16 +2416,17 @@ class _Wire:
                 for v in shape.Vertexes: p.append(v.Point)
                 if fp.Points != p: fp.Points = p
         elif fp.Base and fp.Tool:
-            if ('Shape' in fp.Base.PropertiesList) and ('Shape' in fp.Tool.PropertiesList):
-                sh1 = fp.Base.Shape.copy()
-                sh2 = fp.Tool.Shape.copy()
-                shape = sh1.fuse(sh2)
-                if DraftGeomUtils.isCoplanar(shape.Faces):
-                    shape = DraftGeomUtils.concatenate(shape)
-                    fp.Shape = shape
-                    p = []
-                    for v in shape.Vertexes: p.append(v.Point)
-                    if fp.Points != p: fp.Points = p
+            if fp.Base.isDerivedFrom("Part::Feature") and fp.Tool.isDerivedFrom("Part::Feature"):
+                if (not fp.Base.Shape.isNull()) and (not fp.Tool.Shape.isNull()):
+                    sh1 = fp.Base.Shape.copy()
+                    sh2 = fp.Tool.Shape.copy()
+                    shape = sh1.fuse(sh2)
+                    if DraftGeomUtils.isCoplanar(shape.Faces):
+                        shape = DraftGeomUtils.concatenate(shape)
+                        fp.Shape = shape
+                        p = []
+                        for v in shape.Vertexes: p.append(v.Point)
+                        if fp.Points != p: fp.Points = p
         elif fp.Points:
             if fp.Points[0] == fp.Points[-1]:
                 if not fp.Closed: fp.Closed = True
@@ -2843,9 +2858,13 @@ class _Clone:
                 if hasattr(obj,"Scale") and not sh.isNull():
                     m.scale(obj.Scale)
                     sh = sh.transformGeometry(m)
-                shapes.append(sh)
+                if not sh.isNull():
+                    shapes.append(sh)
         if shapes:
-            obj.Shape = Part.makeCompound(shapes)   
+            if len(shapes) == 1:
+                obj.Shape = shapes[0]
+            else:
+                obj.Shape = Part.makeCompound(shapes)   
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 

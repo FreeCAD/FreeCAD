@@ -544,7 +544,6 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     if (!buf)
         return false;
 
-    bool readvertices=false;
     std::getline(rstrIn, line);
     boost::algorithm::to_lower(line);
     if (line.find("off") == std::string::npos)
@@ -2315,6 +2314,7 @@ bool MeshVRML::Save (std::ostream &rstrOut, const std::vector<App::Color> &raclC
     MeshFacetIterator pFIter(_rclMesh);
     pFIter.Transform(this->_transform);
     i = 0, k = _rclMesh.CountFacets();
+
     for (pFIter.Init(); pFIter.More(); pFIter.Next()) {
         MeshFacet clFacet = pFIter.GetIndices();
         rstrOut << "      "

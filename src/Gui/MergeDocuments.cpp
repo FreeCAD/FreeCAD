@@ -122,16 +122,13 @@ MergeDocuments::importObjects(std::istream& input)
         reader.readElement("Object");
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
-        std::string docn = name;
-
-        // remove number from end to avoid lengthy names
-        size_t lastpos = docn.length()-1;
-        while (docn[lastpos] >= 48 && docn[lastpos] <= 57)
-            lastpos--;
-        docn = docn.substr(0, lastpos+1);
 
         try {
-            App::DocumentObject* o = appdoc->addObject(type.c_str(),docn.c_str());
+            // Use name from XML as is and do NOT remove trailing digits because
+            // otherwise we may cause a dependency to itself
+            // Example: Object 'Cut001' references object 'Cut' and removing the
+            // digits we make an object 'Cut' referencing itself.
+            App::DocumentObject* o = appdoc->addObject(type.c_str(),name.c_str());
             objs.push_back(o);
             // use this name for the later access because an object with
             // the given name may already exist

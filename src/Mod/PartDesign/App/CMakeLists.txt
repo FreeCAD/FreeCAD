@@ -50,6 +50,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePocket.h
     FeatureRevolution.cpp
     FeatureRevolution.h
+    FeatureGroove.cpp
+    FeatureGroove.h
     FeatureAdditive.cpp
     FeatureAdditive.h
     FeatureSubtractive.h

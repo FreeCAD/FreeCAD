@@ -32,6 +32,7 @@
 #include "TaskLoft.h"
 
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
@@ -68,10 +69,14 @@ LoftWidget::LoftWidget(QWidget* parent)
     Gui::Application::Instance->runPythonCode("import Part");
 
     d->ui.setupUi(this);
-    connect(d->ui.treeWidgetWire, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
+    d->ui.selector->setAvailableLabel(tr("Vertex/Wire"));
+    d->ui.selector->setSelectedLabel(tr("Loft"));
+
+    connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
             this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(d->ui.treeWidgetLoft, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
+    connect(d->ui.selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
             this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+
     findShapes();
 }
 
@@ -105,7 +110,7 @@ void LoftWidget::findShapes()
             child->setData(0, Qt::UserRole, name);
             Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
             if (vp) child->setIcon(0, vp->getIcon());
-            d->ui.treeWidgetWire->addTopLevelItem(child);
+            d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
         }
     }
 }
@@ -125,13 +130,13 @@ bool LoftWidget::accept()
 
     QTextStream str(&list);
 
-    int count = d->ui.treeWidgetLoft->topLevelItemCount();
+    int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
     if (count < 2) {
         QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices, edges or wires are required."));
         return false;
     }
     for (int i=0; i<count; i++) {
-        QTreeWidgetItem* child = d->ui.treeWidgetLoft->topLevelItem(i);
+        QTreeWidgetItem* child = d->ui.selector->selectedTreeWidget()->topLevelItem(i);
         QString name = child->data(0, Qt::UserRole).toString();
         str << "App.getDocument('" << d->document.c_str() << "')." << name << ", ";
     }
@@ -177,61 +182,13 @@ void LoftWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem*
     }
 }
 
-void LoftWidget::on_addButton_clicked()
-{
-    QTreeWidgetItem* item = d->ui.treeWidgetWire->currentItem();
-    if (item) {
-        int index = d->ui.treeWidgetWire->indexOfTopLevelItem(item);
-        item = d->ui.treeWidgetWire->takeTopLevelItem(index);
-        d->ui.treeWidgetWire->setCurrentItem(0);
-        d->ui.treeWidgetLoft->addTopLevelItem(item);
-        d->ui.treeWidgetLoft->setCurrentItem(item);
-    }
-}
-
-void LoftWidget::on_removeButton_clicked()
-{
-    QTreeWidgetItem* item = d->ui.treeWidgetLoft->currentItem();
-    if (item) {
-        int index = d->ui.treeWidgetLoft->indexOfTopLevelItem(item);
-        item = d->ui.treeWidgetLoft->takeTopLevelItem(index);
-        d->ui.treeWidgetLoft->setCurrentItem(0);
-        d->ui.treeWidgetWire->addTopLevelItem(item);
-        d->ui.treeWidgetWire->setCurrentItem(item);
-    }
-}
-
-void LoftWidget::on_upButton_clicked()
-{
-    QTreeWidgetItem* item = d->ui.treeWidgetLoft->currentItem();
-    if (item && d->ui.treeWidgetLoft->isItemSelected(item)) {
-        int index = d->ui.treeWidgetLoft->indexOfTopLevelItem(item);
-        if (index > 0) {
-            d->ui.treeWidgetLoft->takeTopLevelItem(index);
-            d->ui.treeWidgetLoft->insertTopLevelItem(index-1, item);
-            d->ui.treeWidgetLoft->setCurrentItem(item);
-        }
-    }
-}
-
-void LoftWidget::on_downButton_clicked()
-{
-    QTreeWidgetItem* item = d->ui.treeWidgetLoft->currentItem();
-    if (item && d->ui.treeWidgetLoft->isItemSelected(item)) {
-        int index = d->ui.treeWidgetLoft->indexOfTopLevelItem(item);
-        if (index < d->ui.treeWidgetLoft->topLevelItemCount()-1) {
-            d->ui.treeWidgetLoft->takeTopLevelItem(index);
-            d->ui.treeWidgetLoft->insertTopLevelItem(index+1, item);
-            d->ui.treeWidgetLoft->setCurrentItem(item);
-        }
-    }
-}
-
 void LoftWidget::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         d->ui.retranslateUi(this);
+        d->ui.selector->setAvailableLabel(tr("Vertex/Wire"));
+        d->ui.selector->setSelectedLabel(tr("Loft"));
     }
 }
 
@@ -242,7 +199,8 @@ TaskLoft::TaskLoft()
 {
     widget = new LoftWidget();
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        Gui::BitmapFactory().pixmap("Part_Loft"),
+        widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

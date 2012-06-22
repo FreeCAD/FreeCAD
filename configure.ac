@@ -1082,10 +1082,10 @@ AC_MSG_NOTICE([
   RTTI enabled (forced):     true
   Compiler warnings enabled: $fc_set_warn
   installation prefix:       $prefix
-  eneble-assembly:           $fc_set_assembly
-  eneble-cam:                $fc_set_cam
+  enable-assembly:           $fc_set_assembly
+  enable-cam:                $fc_set_cam
   enable-sandbox:            $fc_set_sandbox
-  eneble-template:           $fc_set_template
+  enable-template:           $fc_set_template
   Now, run 'make' to build FreeCAD.
 
   **************************************************************************

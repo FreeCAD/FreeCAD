@@ -40,6 +40,10 @@ def typecheck (args_and_types, name="?"):
 			FreeCAD.Console.PrintWarning("typecheck[" + str(name) + "]: " + str(v) + " is not " + str(t) + "\n")
 			raise TypeError("fcvec." + str(name))
 
+def toString(u):
+        "returns a string containing a python command to recreate this vector"
+        return "FreeCAD.Vector("+str(u.x)+","+str(u.y)+","+str(u.z)+")"
+
 def tup(u,array=False):
 	"returns a tuple (x,y,z) with the vector coords, or an array if array=true"
 	typecheck ([(u,Vector)], "tup");
