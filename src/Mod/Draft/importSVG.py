@@ -51,8 +51,8 @@ if open.__module__ == '__builtin__':
   pythonopen = open
 
 svgcolors = {
-	  'Pink': (255, 192, 203), 
-	  'Blue': (0, 0, 255), 
+          'Pink': (255, 192, 203),
+          'Blue': (0, 0, 255),
           'Honeydew': (240, 255, 240),
           'Purple': (128, 0, 128),
           'Fuchsia': (255, 0, 255),
@@ -269,7 +269,7 @@ def makewire(path,checkclosed=False,donttry=False):
         #ToDo Do not catch all exceptions
         if not donttry:
                 try:
-			sh = Part.Wire(DraftGeomUtils.sortEdges(path))
+                        sh = Part.Wire(DraftGeomUtils.sortEdges(path))
                         #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
                 except:# BRep_API:command not done
@@ -448,8 +448,7 @@ class svgHandler(xml.sax.ContentHandler):
                                 abh = getsize(h,unitmode)
                                 sx=abw/vbw
                                 sy=abh/vbh
-                                preservearstr=data.get('preserveAspectRatio',\
-                                        '').lower()
+                                preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
                                 uniformscaling = round(sx/sy,5) == 1
                                 if uniformscaling:
                                     m.scale(Vector(sx,sy,1))
@@ -534,7 +533,8 @@ class svgHandler(xml.sax.ContentHandler):
                                         if path:
                                                 #sh = Part.Wire(path)
                                                 sh = makewire(path)
-                                                if self.fill: sh = Part.Face(sh)
+                                                if self.fill and sh.isClosed():
+                                                    sh = Part.Face(sh)
                                                 sh = self.applyTrans(sh)
                                                 obj = self.doc.addObject("Part::Feature",pathname)
                                                 obj.Shape = sh
@@ -624,7 +624,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                         if sweepflag:
                                                                 #angledelta=-(-angledelta % (math.pi *2)) # Step4
                                                                 #angledelta=(-angledelta % (math.pi *2)) # Step4
-                                                                angle1  = angle1-angledelta
+                                                                angle1  = angle1+angledelta
+                                                                angledelta = -angledelta
                                                                 #angle1 = math.pi - angle1 
 
                                                         e1a = Part.Arc(e1,angle1-swapaxis*math.radians(90),\
@@ -750,7 +751,8 @@ class svgHandler(xml.sax.ContentHandler):
                         if path:
                                 sh=makewire(path,checkclosed=False)
                                 #sh = Part.Wire(path)
-                                if self.fill: sh = Part.Face(sh)
+                                if self.fill and sh.isClosed():
+                                    sh = Part.Face(sh)
                                 sh = self.applyTrans(sh)
                                 obj = self.doc.addObject("Part::Feature",pathname)
                                 obj.Shape = sh
@@ -828,7 +830,6 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
-				     
                 # processing lines
 
 		if name == "line":
@@ -864,7 +865,8 @@ class svgHandler(xml.sax.ContentHandler):
 						path.append(seg)
                                 if path:
                                         sh = Part.Wire(path)
-                                        if self.fill: sh = Part.Face(sh)
+                                        if self.fill and sh.isClosed():
+                                            sh = Part.Face(sh)
                                         sh = self.applyTrans(sh)
                                         obj = self.doc.addObject("Part::Feature",pathname)
                                         obj.Shape = sh
