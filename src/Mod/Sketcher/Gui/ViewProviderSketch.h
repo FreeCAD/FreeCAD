@@ -200,6 +200,7 @@ protected:
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
 
+    void setPositionText(const Base::Vector2D &Pos, const std::string &txt);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
 
