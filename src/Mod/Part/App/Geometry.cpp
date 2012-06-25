@@ -1362,6 +1362,11 @@ GeomBSplineSurface::~GeomBSplineSurface()
 {
 }
 
+void GeomBSplineSurface::setHandle(const Handle_Geom_BSplineSurface& s)
+{
+    mySurface = Handle_Geom_BSplineSurface::DownCast(s->Copy());
+}
+
 const Handle_Geom_Geometry& GeomBSplineSurface::handle() const
 {
     return mySurface;
