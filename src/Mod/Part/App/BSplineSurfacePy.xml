@@ -677,5 +677,10 @@
 				<UserDocu>Returns a reparametrized copy of this surface</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="interpolate">
+			<Documentation>
+				<UserDocu>Replaces this B-Spline surface by interpolating a set of points.</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>
