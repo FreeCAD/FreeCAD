@@ -175,6 +175,7 @@ protected:
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent * const ev);
+    void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
     void clearLog(void);
