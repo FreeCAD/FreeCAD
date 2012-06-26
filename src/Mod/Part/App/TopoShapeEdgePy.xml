@@ -88,11 +88,23 @@
 	  </Attribute>
 	  <Attribute Name="ParameterRange" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>Returns a 4 tuple with the parameter range</UserDocu>
+			  <UserDocu>Returns a 2 tuple with the parameter range</UserDocu>
 		  </Documentation>
 		  <Parameter Name="ParameterRange" Type="Tuple"/>
 	  </Attribute>
-	  <Attribute Name="Curve" ReadOnly="true">
+		<Attribute Name="FirstParameter" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the start value of the parameter range</UserDocu>
+			</Documentation>
+			<Parameter Name="FirstParameter" Type="Float"/>
+		</Attribute>
+		<Attribute Name="LastParameter" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the end value of the parameter range</UserDocu>
+			</Documentation>
+			<Parameter Name="LastParameter" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Curve" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Returns the 3D curve of the edge</UserDocu>
 		  </Documentation>
