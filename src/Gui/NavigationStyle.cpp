@@ -1118,11 +1118,13 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
             pcPolygon = mouseSelection->getPositions();
             clipInner = mouseSelection->isInner();
             delete mouseSelection; mouseSelection = 0;
+            syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
         }
         else if (hd==AbstractMouseSelection::Cancel) {
             pcPolygon.clear();
             delete mouseSelection; mouseSelection = 0;
+            syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
         }
     }
@@ -1148,6 +1150,72 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     return viewer->processSoEventBase(ev);
+}
+
+void NavigationStyle::syncWithEvent(const SoEvent * const ev)
+{
+    // Events when in "ready-to-seek" mode are ignored, except those
+    // which influence the seek mode itself -- these are handled further
+    // up the inheritance hierarchy.
+    if (this->isSeekMode()) { return; }
+
+    const SoType type(ev->getTypeId());
+
+    // Mismatches in state of the modifier keys happens if the user
+    // presses or releases them outside the viewer window.
+    if (this->ctrldown != ev->wasCtrlDown()) {
+        this->ctrldown = ev->wasCtrlDown();
+    }
+    if (this->shiftdown != ev->wasShiftDown()) {
+        this->shiftdown = ev->wasShiftDown();
+    }
+    if (this->altdown != ev->wasAltDown()) {
+        this->altdown = ev->wasAltDown();
+    }
+
+    // Keyboard handling
+    if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
+        const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
+        const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+        switch (event->getKey()) {
+        case SoKeyboardEvent::LEFT_CONTROL:
+        case SoKeyboardEvent::RIGHT_CONTROL:
+            this->ctrldown = press;
+            break;
+        case SoKeyboardEvent::LEFT_SHIFT:
+        case SoKeyboardEvent::RIGHT_SHIFT:
+            this->shiftdown = press;
+            break;
+        case SoKeyboardEvent::LEFT_ALT:
+        case SoKeyboardEvent::RIGHT_ALT:
+            this->altdown = press;
+            break;
+        default:
+            break;
+        }
+    }
+
+    // Mouse Button / Spaceball Button handling
+    if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
+        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        const int button = event->getButton();
+        const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+
+        // SoDebugError::postInfo("processSoEvent", "button = %d", button);
+        switch (button) {
+        case SoMouseButtonEvent::BUTTON1:
+            this->button1down = press;
+            break;
+        case SoMouseButtonEvent::BUTTON2:
+            this->button2down = press;
+            break;
+        case SoMouseButtonEvent::BUTTON3:
+            this->button3down = press;
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 SbBool NavigationStyle::processMotionEvent(const SoMotion3Event * const ev)
