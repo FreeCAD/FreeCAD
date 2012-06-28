@@ -126,6 +126,7 @@ public:
     void exportIges(const char *FileName) const;
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;
+    void exportBrep(std::ostream&);
     void exportStl (const char *FileName) const;
     void exportFaceSet(double, double, std::ostream&) const;
     void exportLineSet(std::ostream&) const;

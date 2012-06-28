@@ -311,6 +311,32 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::exportBrepToString(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    try {
+        // write brep file
+        std::stringstream str;
+        getTopoShapePtr()->exportBrep(str);
+        return Py::new_reference_to(Py::String(str.str()));
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
 PyObject*  TopoShapePy::importBrep(PyObject *args)
 {
     PyObject* input;
@@ -330,6 +356,34 @@ PyObject*  TopoShapePy::importBrep(PyObject *args)
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception,e.what());
         return NULL;
+    }
+
+    Py_Return;
+}
+
+PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read brep
+        std::stringstream str(input);
+        getTopoShapePtr()->importBrep(str);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
     }
 
     Py_Return;
