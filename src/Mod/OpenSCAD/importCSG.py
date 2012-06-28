@@ -276,7 +276,6 @@ def p_operation(p):
               | union_action
               | rotate_extrude_action
               | linear_extrude_with_twist
-              | linear_extrude_action2
               | rotate_extrude_file
               | import_file1
               | projection_action
@@ -296,11 +295,27 @@ def p_size_vector(p):
     print "size vector"
     p[0] = [p[2],p[4],p[6]]
 
-def p_assign(p):
-    'assign : ID EQ NUMBER'
-    print "Assignment"
-    print p[1] + ' : ' + p[3]
-    p[0] = p[3]
+def p_keywordargument(p):
+    '''keywordargument : ID EQ NUMBER
+    | ID EQ boolean
+    | ID EQ size_vector
+    | ID EQ vector
+    | ID EQ 2d_point
+    | ID EQ stripped_string
+     '''
+    p[0] = (p[1],p[3])
+    print p[0]
+
+def p_keywordargument_list(p):
+    '''
+    keywordargument_list : keywordargument
+               | keywordargument_list COMMA keywordargument
+    '''
+    if len(p) == 2:
+        p[0] = {p[1][0] : p[1][1]}
+    else:
+        p[1][p[3][0]] = p[3][1]
+        p[0]=p[1]
 
 def p_color_action(p):
     'color_action : color LPAREN vector RPAREN OBRACE block_list EBRACE'
@@ -410,21 +425,20 @@ def process_rotate_extrude(obj):
     return(newobj)
 
 def p_rotate_extrude_action(p): 
-    'rotate_extrude_action : rotate_extrude LPAREN assign COMMA assign COMMA assign COMMA assign RPAREN OBRACE block_list EBRACE'
+    'rotate_extrude_action : rotate_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     print "Rotate Extrude"
-    if (len(p[12]) > 1) :
-        part = fuse(p[12],"Rotate Extrude Union")
+    if (len(p[6]) > 1) :
+        part = fuse(p[6],"Rotate Extrude Union")
     else :
-        part = p[12][0]
+        part = p[6][0]
     p[0] = [process_rotate_extrude(part)]
     print "End Rotate Extrude"
 
 def p_rotate_extrude_file(p):
-    'rotate_extrude_file : rotate_extrude LPAREN file EQ stripped_string COMMA layer EQ stripped_string COMMA origin EQ 2d_point COMMA assign \
-    COMMA assign COMMA assign COMMA assign COMMA assign RPAREN SEMICOL'
+    'rotate_extrude_file : rotate_extrude LPAREN keywordargument_list RPAREN SEMICOL'
     print "Rotate Extrude File"
-    filen,ext =p[5] .rsplit('.',1)
-    obj = process_import_file(filen,ext,p[9])
+    filen,ext =p[3]['file'] .rsplit('.',1)
+    obj = process_import_file(filen,ext,p[3]['layer'])
     p[0] = [process_rotate_extrude(obj)]
     print "End Rotate Extrude File"
 
@@ -463,45 +477,28 @@ def process_linear_extrude_with_twist(base,height,twist) :
     return(newobj)
 
 def p_linear_extrude_with_twist(p):
-    'linear_extrude_with_twist : linear_extrude LPAREN assign COMMA center EQ boolean COMMA assign COMMA assign COMMA assign COMMA \
-     assign COMMA assign COMMA assign RPAREN OBRACE block_list EBRACE'
+    'linear_extrude_with_twist : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     print "Linear Extrude With Twist"
-    h = float(p[3])
-    print "Twist : "+p[11]
-    t = float(p[11])
-    s = int(p[13])
-    if (len(p[22]) > 1) :
-        obj = fuse(p[22],"Linear Extrude Union")
+    h = float(p[3]['height'])
+    print "Twist : ",p[3]
+    t = float(p[11]['twist'])
+    if (len(p[6]) > 1) :
+        obj = fuse(p[6],"Linear Extrude Union")
     else :
-        obj = p[22][0]
+        obj = p[6][0]
     if t:
         p[0] = [process_linear_extrude_with_twist(obj,h,t)]
     else:
         p[0] = [process_linear_extrude(obj,h)]
-    if p[7]=='true' :
+    if p[2]['center']=='true' :
        center(obj,0,0,h)
     print "End Linear Extrude with twist"
-    
-def p_linear_extrude_action2(p):
-    'linear_extrude_action2 : linear_extrude LPAREN assign COMMA center EQ boolean COMMA assign COMMA assign COMMA assign COMMA \
-     assign RPAREN OBRACE block_list EBRACE'
-    print "Linear Extrude 2"
-    h = float(p[3])
-    if (len(p[18]) > 1) :
-        obj = fuse(p[18],"Linear Extrude Union")
-    else :
-        obj = p[18][0]
-    p[0] = [process_linear_extrude(obj,h)]
-    if p[7]=='true' :
-       center(obj,0,0,h)
-    print "End Linear Extrude 2"
 
 def p_import_file1(p):
-    'import_file1 : import LPAREN file EQ stripped_string COMMA layer EQ stripped_string COMMA origin EQ 2d_point  COMMA assign COMMA assign COMMA \
-    assign COMMA assign COMMA assign RPAREN SEMICOL'
+    'import_file1 : import LPAREN keywordargument_list RPAREN SEMICOL'
     print "Import File"
-    filen,ext =p[5] .rsplit('.',1)
-    p[0] = [process_import_file(filen,ext,p[9])]
+    filen,ext =p[3]['file'].rsplit('.',1)
+    p[0] = [process_import_file(filen,ext,p[3]['layer'])]
     print "End Import File"
 
 def process_import_file(fname,ext,layer):
@@ -670,9 +667,9 @@ def center(obj,x,y,z):
         FreeCAD.Rotation(0,0,0,1))
     
 def p_sphere_action(p):
-    'sphere_action : sphere LPAREN assign COMMA assign COMMA assign COMMA assign RPAREN SEMICOL'
-    print "Sphere : "+p[9]
-    r = float(p[9])
+    'sphere_action : sphere LPAREN keywordargument_list RPAREN SEMICOL'
+    print "Sphere : ",p[3]
+    r = float(p[3]['r'])
     mysphere = doc.addObject("Part::Sphere",p[1])
     mysphere.Radius = r
     print "Push Sphere"
@@ -696,15 +693,16 @@ def myPolygon(n,r1):
     return(polygon)
 
 def p_cylinder_action(p):
-    'cylinder_action : cylinder LPAREN assign COMMA assign COMMA assign COMMA assign COMMA assign COMMA assign COMMA center EQ boolean RPAREN SEMICOL'
+    'cylinder_action : cylinder LPAREN keywordargument_list RPAREN SEMICOL'
     print "Cylinder"
-    h = float(p[9])
-    r1 = float(p[11])
-    r2 = float(p[13])
-    print p[9] + ' : ' + p[11] + ' : ' + p[13]
-    if ( r1 == r2 ):   
+    tocenter = p[3]['center']
+    h = float(p[3]['h'])
+    r1 = float(p[3]['r1'])
+    r2 = float(p[3]['r2'])
+    n = int(p[3]['$fn'])
+    print p[3]
+    if ( r1 == r2 ):
         print "Make Cylinder"
-        n = int(p[3])
         fnmax = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetInt('useMaxFN')
@@ -738,8 +736,8 @@ def p_cylinder_action(p):
         mycyl.Height = h
         mycyl.Radius1 = r1
         mycyl.Radius2 = r2
-    print "Center = "+str(p[17])
-    if p[17]=='true' :
+    print "Center = ",center
+    if tocenter=='true' :
        center(mycyl,0,0,h)  
     if False :  
 #   Does not fix problemfile or beltTighener although later is closer       
@@ -759,27 +757,24 @@ def p_cylinder_action(p):
     
     
 def p_cube_action(p):
-    'cube_action : cube LPAREN size EQ size_vector COMMA center EQ boolean RPAREN SEMICOL'
+    'cube_action : cube LPAREN keywordargument_list RPAREN SEMICOL'
     global doc
-    l = float(p[5][0])
-    w = float(p[5][1])
-    h = float(p[5][2])
-    print "cube : "+p[5][0] + ' : ' + p[5][1] +' : '+ p[5][2]
+    l,w,h = [float(str1) for str1 in p[3]['size']]
+    print "cube : ",p[3]
     mycube=doc.addObject('Part::Box',p[1])
     mycube.Length=l
     mycube.Width=w
     mycube.Height=h
-    print "Center = "+str(p[9])
-    if p[9]=='true' :
+    if p[3]['center']=='true' :
        center(mycube,l,w,h);                                   
     p[0] = [mycube]
     print "End Cube"
 
 def p_circle_action(p) :
-    'circle_action : circle LPAREN assign COMMA assign COMMA assign COMMA assign RPAREN SEMICOL'
-    print "Circle : "+str(p[9])
-    r = float(p[9])
-    n = int(p[3])
+    'circle_action : circle LPAREN keywordargument_list RPAREN SEMICOL'
+    print "Circle : "+str(p[3])
+    r = float(p[3]['r'])
+    n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
         GetInt('useMaxFN')
@@ -794,10 +789,11 @@ def p_circle_action(p) :
     p[0] = [mycircle]
 
 def p_square_action(p) :
-    'square_action : square LPAREN size EQ 2d_point COMMA center EQ boolean RPAREN SEMICOL'
+    'square_action : square LPAREN keywordargument_list RPAREN SEMICOL'
     print "Square"
-    x = float(p[5][0])
-    y = float(p[5][1])
+    size = P[3]['size']
+    x = float(size[0])
+    y = float(size[1])
     mysquare = doc.addObject('Part::Plane',p[1])
     mysquare.Length=x
     mysquare.Width=y
@@ -815,7 +811,7 @@ def convert_points_list_to_vector(l):
 
 
 def p_polygon_action_nopath(p) :
-    'polygon_action_nopath : polygon LPAREN points EQ OSQUARE points_list_2d ESQUARE COMMA paths EQ undef COMMA assign RPAREN SEMICOL'
+    'polygon_action_nopath : polygon LPAREN points EQ OSQUARE points_list_2d ESQUARE COMMA paths EQ undef COMMA keywordargument_list RPAREN SEMICOL'
     print "Polygon"
     print p[6]
     v = convert_points_list_to_vector(p[6])
@@ -829,7 +825,7 @@ def p_polygon_action_nopath(p) :
     p[0] = [mypolygon]       
 
 def p_polygon_action_plus_path(p) :
-    'polygon_action_plus_path : polygon LPAREN points EQ OSQUARE points_list_2d ESQUARE COMMA paths EQ OSQUARE path_set ESQUARE COMMA assign RPAREN SEMICOL'
+    'polygon_action_plus_path : polygon LPAREN points EQ OSQUARE points_list_2d ESQUARE COMMA paths EQ OSQUARE path_set ESQUARE COMMA keywordargument_list RPAREN SEMICOL'
     print "Polygon with Path"
     print p[6]
     v = convert_points_list_to_vector(p[6])
@@ -858,7 +854,7 @@ def make_face(v1,v2,v3):
     return face
 
 def p_polyhedron_action(p) :
-    'polyhedron_action : polyhedron LPAREN points EQ OSQUARE points_list_3d ESQUARE COMMA triangles EQ OSQUARE points_list_3d ESQUARE COMMA assign RPAREN SEMICOL'
+    'polyhedron_action : polyhedron LPAREN points EQ OSQUARE points_list_3d ESQUARE COMMA triangles EQ OSQUARE points_list_3d ESQUARE COMMA keywordargument_list RPAREN SEMICOL'
     print "Polyhedron Points"
     v = []
     for i in p[6] :
@@ -878,7 +874,7 @@ def p_polyhedron_action(p) :
     p[0] = [mypolyhed]       
 
 def p_projection_action(p) :
-    'projection_action : projection LPAREN cut EQ boolean COMMA assign RPAREN OBRACE block_list EBRACE'
+    'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     print 'Projection'
     from PyQt4 import QtGui
     QtGui.QMessageBox.critical(None, "Projection Not yet Coded waiting for Peter Li"," Press OK")
