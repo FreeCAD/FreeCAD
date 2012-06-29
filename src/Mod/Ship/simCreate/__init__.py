@@ -21,30 +21,16 @@
 #*                                                                         *
 #***************************************************************************
 
-class ShipWorkbench ( Workbench ):
-    """ @brief Workbench of Ship design module. Here toolbars & icons are append. """
-    from shipUtils import Paths, Translator
-    import ShipGui
+# FreeCAD modules
+import FreeCAD
+import FreeCADGui
 
-    Icon = Paths.iconsPath() + "/Ico.png"
-    MenuText = str(Translator.translate("Ship design"))
-    ToolTip = str(Translator.translate("Ship design"))
+# Qt libraries
+from PyQt4 import QtGui,QtCore
 
-    def Initialize(self):
-        # ToolBar
-        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
-        self.appendToolbar("Ship design",list)
-        list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
-        self.appendToolbar("Weights",list)
-        list = ["Ship_CreateSim"]
-        self.appendToolbar("Simulation",list)
-        
-        # Menu
-        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
-        self.appendMenu("Ship design",list)
-        list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
-        self.appendToolbar("Weights",list)
-        list = ["Ship_CreateSim"]
-        self.appendToolbar("Simulation",list)
+# Main object
+import TaskPanel
 
-Gui.addWorkbench(ShipWorkbench())
+def load():
+    """ Loads the tool """
+    TaskPanel.createTask()

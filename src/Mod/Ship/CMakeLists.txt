@@ -2,6 +2,7 @@ SET(ShipMain_SRCS
 	InitGui.py
 	ShipGui.py
     Instance.py
+    SimInstance.py
     TankInstance.py
 )
 SOURCE_GROUP("" FILES ${ShipMain_SRCS})
@@ -36,6 +37,11 @@ SET(ShipIcons_SRCS
 	Icons/Weight.png
 	Icons/Weight.xcf
 	Icons/Weight.xpm
+	Icons/SimIco.xcf
+	Icons/Sim.xpm
+	Icons/SimCreateIco.png
+	Icons/SimCreateIco.xcf
+	Icons/SimCreateIco.xpm
 	Icons/Tank.png
 	Icons/Tank.xcf
 	Icons/Tank.xpm
@@ -121,9 +127,16 @@ SET(ShipGZ_SRCS
 	tankGZ/TaskPanel.py
 	tankGZ/TaskPanel.ui
 )
-SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
+SOURCE_GROUP("shipgz" FILES ${ShipGZ_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS})
+SET(SimCreate_SRCS
+	simCreate/__init__.py
+	simCreate/TaskPanel.py
+	simCreate/TaskPanel.ui
+)
+SOURCE_GROUP("simcreate" FILES ${SimCreate_SRCS})
+
+SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS} ${SimCreate_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -196,6 +209,12 @@ INSTALL(
         ${ShipGZ_SRCS}
     DESTINATION
         Mod/Ship/tankGZ
+)
+INSTALL(
+    FILES
+        ${SimCreate_SRCS}
+    DESTINATION
+        Mod/Ship/simCreate
 )
 INSTALL(
     FILES
