@@ -2714,29 +2714,35 @@ class _Array:
         obj.addProperty("App::PropertyEnumeration","ArrayType","Base",
                         "The type of array to create")
         obj.addProperty("App::PropertyVector","Axis","Base",
-                        "The axis direction for polar arrays")
+                        "The axis direction")
         obj.addProperty("App::PropertyInteger","NumberX","Base",
-                        "Number of copies in X direction (ortho arrays)")
+                        "Number of copies in X direction")
         obj.addProperty("App::PropertyInteger","NumberY","Base",
-                        "Number of copies in Y direction (ortho arrays)")
+                        "Number of copies in Y direction")
+        obj.addProperty("App::PropertyInteger","NumberZ","Base",
+                        "Number of copies in Z direction")
         obj.addProperty("App::PropertyInteger","NumberPolar","Base",
-                        "Number of copies (polar arrays)")
+                        "Number of copies")
         obj.addProperty("App::PropertyVector","IntervalX","Base",
-                        "Distance and orientation of intervals in X direction (ortho arrays)")
+                        "Distance and orientation of intervals in X direction")
         obj.addProperty("App::PropertyVector","IntervalY","Base",
-                        "Distance and orientation of intervals in Y direction (ortho arrays)")
+                        "Distance and orientation of intervals in Y direction")
+        obj.addProperty("App::PropertyVector","IntervalZ","Base",
+                        "Distance and orientation of intervals in Z direction")
         obj.addProperty("App::PropertyVector","Center","Base",
-                        "Center point (polar arrays)")
+                        "Center point")
         obj.addProperty("App::PropertyAngle","Angle","Base",
-                        "Angle to cover with copies (polar arrays)")
+                        "Angle to cover with copies")
         obj.Proxy = self
         self.Type = "Array"
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
         obj.NumberY = 1
+        obj.NumberZ = 1
         obj.NumberPolar = 1
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
+        obj.IntervalZ = Vector(0,0,1)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
 
@@ -2744,7 +2750,32 @@ class _Array:
         self.createGeometry(obj)
 
     def onChanged(self,obj,prop):
-        if prop in ["ArrayType","NumberX","NumberY","NumberPolar","IntervalX","IntervalY","Angle","Center","Axis"]:
+        if prop == "ArrayType":
+            if obj.ViewObject:
+                if obj.ArrayType == "ortho":
+                    obj.ViewObject.setEditorMode('Axis',2)
+                    obj.ViewObject.setEditorMode('NumberPolar',2)
+                    obj.ViewObject.setEditorMode('Center',2)
+                    obj.ViewObject.setEditorMode('Angle',2)
+                    obj.ViewObject.setEditorMode('NumberX',0)
+                    obj.ViewObject.setEditorMode('NumberY',0)
+                    obj.ViewObject.setEditorMode('NumberZ',0)
+                    obj.ViewObject.setEditorMode('IntervalX',0)
+                    obj.ViewObject.setEditorMode('IntervalY',0)
+                    obj.ViewObject.setEditorMode('IntervalZ',0)
+                else:
+                    obj.ViewObject.setEditorMode('Axis',0)
+                    obj.ViewObject.setEditorMode('NumberPolar',0)
+                    obj.ViewObject.setEditorMode('Center',0)
+                    obj.ViewObject.setEditorMode('Angle',0)
+                    obj.ViewObject.setEditorMode('NumberX',2)
+                    obj.ViewObject.setEditorMode('NumberY',2)
+                    obj.ViewObject.setEditorMode('NumberY',2)
+                    obj.ViewObject.setEditorMode('IntervalX',2)
+                    obj.ViewObject.setEditorMode('IntervalY',2)
+                    obj.ViewObject.setEditorMode('IntervalZ',2)              
+        if prop in ["ArrayType","NumberX","NumberY","NumberZ","NumberPolar",
+                    "IntervalX","IntervalY","IntervalZ","Angle","Center","Axis"]:
             self.createGeometry(obj)
             
     def createGeometry(self,obj):
@@ -2752,14 +2783,15 @@ class _Array:
         if obj.Base:
             pl = obj.Placement
             if obj.ArrayType == "ortho":
-                sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,obj.NumberX,obj.NumberY)
+                sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,
+                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
             else:
                 sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle,obj.NumberPolar,obj.Axis)
             obj.Shape = sh
             if not DraftGeomUtils.isNull(pl):
                 obj.Placement = pl
 
-    def rectArray(self,shape,xvector,yvector,xnum,ynum):
+    def rectArray(self,shape,xvector,yvector,zvector,xnum,ynum,znum):
         import Part
         base = [shape.copy()]
         for xcount in range(xnum):
@@ -2769,12 +2801,19 @@ class _Array:
                 nshape.translate(currentxvector)
                 base.append(nshape)
             for ycount in range(ynum):
-                currentxvector=FreeCAD.Vector(currentxvector)
-                currentyvector=currentxvector.add(DraftVecUtils.scale(yvector,ycount))
+                currentyvector=FreeCAD.Vector(currentxvector)
+                currentyvector=currentyvector.add(DraftVecUtils.scale(yvector,ycount))
                 if not ycount==0:
                     nshape = shape.copy()
                     nshape.translate(currentyvector)
                     base.append(nshape)
+                for zcount in range(znum):
+                    currentzvector=FreeCAD.Vector(currentyvector)
+                    currentzvector=currentzvector.add(DraftVecUtils.scale(zvector,zcount))
+                    if not zcount==0:
+                        nshape = shape.copy()
+                        nshape.translate(currentzvector)
+                        base.append(nshape)
         return Part.makeCompound(base)
 
     def polarArray(self,shape,center,angle,num,axis):
