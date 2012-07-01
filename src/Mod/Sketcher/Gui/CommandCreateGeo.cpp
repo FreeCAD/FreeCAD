@@ -488,8 +488,10 @@ class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerLineSet()
-      : Mode(STATUS_SEEK_First),EditCurve(2),firstPoint(-1),previousCurve(-1){}
-    virtual ~DrawSketchHandlerLineSet(){}
+      : Mode(STATUS_SEEK_First),LineMode(LINE_MODE_Line),EditCurve(2),
+        firstCurve(-1),firstPoint(-1),previousCurve(-1),previousPoint(-1),
+        isTangent(false) {}
+    virtual ~DrawSketchHandlerLineSet() {}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -497,6 +499,41 @@ public:
         STATUS_Do,
         STATUS_Close
     };
+
+    enum SelectLineMode
+    {
+        LINE_MODE_Arc,
+        LINE_MODE_Line
+    };
+
+    virtual void registerPressedKey(bool pressed, int key)
+    {
+        if (key == SoKeyboardEvent::A && pressed) {
+            if (LineMode != LINE_MODE_Arc) {
+                Base::Vector2D onSketchPos = EditCurve[isTangent ? 2 : 1];
+                LineMode = LINE_MODE_Arc;
+                if (previousCurve != -1)
+                    isTangent = true;
+                else
+                    isTangent = false;
+                EditCurve.resize(32);
+                mouseMove(onSketchPos); // trigger an update of EditCurve
+            }
+            else {
+                Base::Vector2D onSketchPos = EditCurve[29];
+                LineMode = LINE_MODE_Line;
+                if (previousCurve != -1) {
+                    const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(previousCurve);
+                    if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+                        isTangent = true;
+                    else
+                        isTangent = false;
+                }
+                EditCurve.resize(isTangent ? 3 : 2);
+                mouseMove(onSketchPos); // trigger an update of EditCurve
+            }
+        }
+    }
 
     virtual void activated(ViewProviderSketch *sketchgui)
     {
@@ -513,11 +550,72 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Second){
-            EditCurve[1] = onSketchPos;
-            sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
+            if (LineMode == LINE_MODE_Line) {
+                EditCurve[isTangent ? 2 : 1] = onSketchPos;
+                if (isTangent) {
+                    Base::Vector2D Tangent(dirVec.x,dirVec.y);
+                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Tangent);
+                    EditCurve[1] = EditCurve[0] + EditCurve[1];
+                }
+                sketchgui->drawEdit(EditCurve);
+                if (!isTangent) {
+                    sugConstr2 = sugConstr1; // Copy the previously found constraints
+                    if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
+                        renderSuggestConstraintsCursor(sugConstr2);
+                        return;
+                    }
+                }
+            }
+            else if (LineMode == LINE_MODE_Arc) {
+                Base::Vector2D Tangent(dirVec.x,dirVec.y);
+                float theta = Tangent.GetAngle(onSketchPos - EditCurve[0]);
+                arcRadius = (onSketchPos - EditCurve[0]).Length()/(2.0*sin(theta));
+                // At this point we need a unit normal vector pointing torwards
+                // the center of the arc we are drawing. Derivation of the formula
+                // used here can be found at http://people.richland.edu/james/lecture/m116/matrices/area.html
+                float x1 = EditCurve[0].fX;
+                float y1 = EditCurve[0].fY;
+                float x2 = x1 + Tangent.fX;
+                float y2 = y1 + Tangent.fY;
+                float x3 = onSketchPos.fX;
+                float y3 = onSketchPos.fY;
+                if ((x2*y3-x3*y2)-(x1*y3-x3*y1)+(x1*y2-x2*y1) > 0)
+                    arcRadius *= -1;
+
+                Base::Vector3d centerVec = dirVec % Base::Vector3d(0.f,0.f,1.0);
+                centerVec.Normalize(); // this step should actually be redundant
+
+                CenterPoint = EditCurve[0] + Base::Vector2D(arcRadius * centerVec.x, arcRadius * centerVec.y);
+
+                float rx = EditCurve[0].fX - CenterPoint.fX;
+                float ry = EditCurve[0].fY - CenterPoint.fY;
+
+                startAngle = atan2(ry,rx);
+
+                float rxe = onSketchPos.fX - CenterPoint.fX;
+                float rye = onSketchPos.fY - CenterPoint.fY;
+                float arcAngle = atan2(-rxe*ry + rye*rx, rxe*rx + rye*ry);
+                if (arcRadius >= 0 && arcAngle > 0)
+                    arcAngle -= 2*M_PI;
+                if (arcRadius < 0 && arcAngle < 0)
+                    arcAngle += 2*M_PI;
+                endAngle = startAngle + arcAngle;
+
+                for (int i=1; i <= 29; i++) {
+                    float angle = i*arcAngle/29.0;
+                    float dx = rx * cos(angle) - ry * sin(angle);
+                    float dy = rx * sin(angle) + ry * cos(angle);
+                    EditCurve[i] = Base::Vector2D(CenterPoint.fX + dx, CenterPoint.fY + dy);
+                }
+
+                EditCurve[30] = CenterPoint;
+                EditCurve[31] = EditCurve[0];
+
+                sketchgui->drawEdit(EditCurve);
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f))) {
+                    renderSuggestConstraintsCursor(sugConstr3);
+                    return;
+                }
             }
         }
         applyCursor();
@@ -529,15 +627,31 @@ public:
             // remember our first point
             firstPoint = getHighestVertexIndex() + 1;
             firstCurve = getHighestCurveIndex() + 1;
+            // TODO: here we should check if there is a preselected point
+            // and set up a transition from the neighbouring segment.
+            // (peviousCurve, previousPoint, dirVec, isTangent)
+            if (LineMode == LINE_MODE_Line)
+                EditCurve.resize(isTangent ? 3 : 2);
+            else if (LineMode == LINE_MODE_Arc)
+                EditCurve.resize(32);
             EditCurve[0] = onSketchPos;
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode==STATUS_SEEK_Second) {
-            EditCurve[1] = onSketchPos;
+            if (LineMode == LINE_MODE_Line) {
+                EditCurve[isTangent ? 2 : 1] = onSketchPos;
+                if (isTangent) {
+                    Base::Vector2D Tangent(dirVec.x,dirVec.y);
+                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Tangent);
+                    EditCurve[1] = EditCurve[0] + EditCurve[1];
+                }
+            }
+            else if (LineMode == LINE_MODE_Arc)
+                EditCurve[29] = onSketchPos; // not so important
             sketchgui->drawEdit(EditCurve);
             applyCursor();
             // exit on clicking exactly at the same position (e.g. double click)
-            if (EditCurve[1] == EditCurve[0]) {
+            if (onSketchPos == EditCurve[0]) {
                 unsetCursor();
                 EditCurve.clear();
                 resetPositionText();
@@ -554,32 +668,46 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
-        if (Mode==STATUS_Do || Mode==STATUS_Close) {
-            // open the transaction
-            Gui::Command::openCommand("add sketch wire");
-            // issue the geometry
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                      sketchgui->getObject()->getNameInDocument(),
-                      EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
+        if (Mode == STATUS_Do || Mode == STATUS_Close) {
 
+            if (LineMode == LINE_MODE_Line) {
+                // open the transaction
+                Gui::Command::openCommand("Add sketch wire");
+                // issue the geometry
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
+            }
+            else if (LineMode == LINE_MODE_Arc) { // We're dealing with an Arc
+                Gui::Command::openCommand("Add sketch wire");
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
+                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    CenterPoint.fX, CenterPoint.fY, std::abs(arcRadius),
+                    std::min(startAngle,endAngle), std::max(startAngle,endAngle));
+            }
             // issue the constraint
             if (previousCurve != -1) {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                          ,sketchgui->getObject()->getNameInDocument()
-                          ,previousCurve-1,previousCurve
-                          );
-            }
-
-            if (Mode==STATUS_Close) {
-                // close the loop by constrain to the first curve point
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                          ,sketchgui->getObject()->getNameInDocument()
-                          ,previousCurve,firstCurve
-                          );
-
+                int coincidentPoint = (LineMode == LINE_MODE_Arc && startAngle > endAngle) ? 2 : 1;
+                // in case of a tangency constraint, the coincident constraint is redundant
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    isTangent ? "Tangent" : "Coincident",
+                    previousCurve, previousPoint /* == 2 */, previousCurve+1, coincidentPoint);
+                if (Mode == STATUS_Close)
+                    // close the loop by constrain to the first curve point
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) ",
+                        sketchgui->getObject()->getNameInDocument(),
+                        previousCurve+1,coincidentPoint,firstCurve,firstPoint);
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
+            }
 
+            if (Mode == STATUS_Close) {
                 if (sugConstr2.size() > 0) {
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
@@ -612,35 +740,63 @@ public:
                     sugConstr2.clear();
                 }
 
-                //remember the vertex for the next rounds constraint...
-                previousCurve = getHighestCurveIndex() + 1;
+                // remember the vertex for the next rounds constraint..
+                previousCurve = getHighestCurveIndex();
+                previousPoint = (LineMode == LINE_MODE_Arc && startAngle > endAngle) ? 1 : 2;
 
                 // setup for the next line segment
                 // Use updated endPoint as autoconstraints can modify the position
+                // Need to determine if the previous element was a line or an arc or ???
                 const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(getHighestCurveIndex());
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geom);
                     EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
+                    dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
+                               lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
+                               0.f);
                 }
-                else
-                    EditCurve[0] = onSketchPos;
+                else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                    assert(LineMode == LINE_MODE_Arc);
+                    const Part::GeomArcOfCircle *arcSeg = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+                    if (startAngle > endAngle) {
+                        EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint().x,arcSeg->getStartPoint().y);
+                        dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint()-arcSeg->getCenter());
+                    }
+                    else { // cw arcs are rendered in reverse
+                        EditCurve[0] = Base::Vector2D(arcSeg->getEndPoint().x,arcSeg->getEndPoint().y);
+                        dirVec = Base::Vector3d(0.f,0.f,1.0) % (arcSeg->getEndPoint()-arcSeg->getCenter());
+                    }
+                }
+                dirVec.Normalize();
 
-                sketchgui->drawEdit(EditCurve);
                 applyCursor();
-
                 Mode = STATUS_SEEK_Second;
+                isTangent = (LineMode == LINE_MODE_Arc);
+                LineMode = LINE_MODE_Line;
+                EditCurve.resize(isTangent ? 3 : 2);
+                EditCurve[1] = EditCurve[0];
+                if (isTangent)
+                    EditCurve[2] = EditCurve[0];
+                sketchgui->drawEdit(EditCurve);
             }
         }
         return true;
     }
 protected:
     SelectMode Mode;
+    SelectLineMode LineMode;
+
     std::vector<Base::Vector2D> EditCurve;
-    Base::Vector2D lastPos;
     int firstPoint;
     int firstCurve;
+    int previousPoint;
     int previousCurve;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
+
+    Base::Vector2D CenterPoint;
+    Base::Vector3d dirVec;
+    bool isTangent;
+    float startAngle, endAngle, arcRadius;
 };
 
 

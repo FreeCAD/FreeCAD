@@ -281,6 +281,11 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             }
             return false;
         }
+    default:
+        {
+            if (edit && edit->sketchHandler)
+                edit->sketchHandler->registerPressedKey(pressed,key);
+        }
     }
 
     return true; // handle all other key events
