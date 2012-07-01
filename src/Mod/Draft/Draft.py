@@ -258,11 +258,30 @@ def getGroupContents(objectslist):
     is a group, its content is appened to the list, which is returned'''
     newlist = []
     for obj in objectslist:
-        if obj.Type == "App::DocumentObjectGroup":
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             newlist.extend(getGroupContents(obj.Group))
         else:
             newlist.append(obj)
     return newlist
+
+def printShape(shape):
+    """prints detailed information of a shape"""
+    print "solids: ", len(shape.Solids)
+    print "faces: ", len(shape.Faces)
+    print "wires: ",len(shape.Wires)
+    if shape.Faces:
+        for f in range(len(shape.Faces)):
+            print "face ",f,":"
+            for v in shape.Faces[f].Vertexes:
+                print "    ",v.Point
+    elif shape.Wires:
+        for w in range(len(shape.Wires)):
+            print "wire ",w,":"
+            for v in shape.Wires[w].Vertexes:
+                print "    ",v.Point
+    else:
+        for v in shape.Vertexes:
+            print "    ",v.Point
 
 def formatObject(target,origin=None):
     '''
