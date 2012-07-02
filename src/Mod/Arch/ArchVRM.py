@@ -145,12 +145,14 @@ class Renderer:
 
     def reorient(self):
         "reorients the faces on the WP"
+        #print "VRM: start reorient"
         if not self.faces: 
             return
         self.faces = [self.projectFace(f) for f in self.faces]
         if self.sections:
             self.sections = [self.projectFace(f) for f in self.sections]
         self.oriented = True
+        #print "VRM: end reorient"
 
     def removeHidden(self):
         "removes faces pointing outwards"
@@ -166,7 +168,11 @@ class Renderer:
 
     def projectFace(self,face):
         "projects a single face on the WP"
+        #print "VRM: projectFace start"
         wires = []
+        if not face[0].Wires:
+            if DEBUG: print "Error: Unable to project face on the WP"
+            return None
         norm = face[0].normalAt(0,0)
         for w in face[0].Wires:
             verts = []
@@ -177,7 +183,9 @@ class Renderer:
                 verts.append(v)
             verts.append(verts[0])
             if len(verts) > 2:
+                print verts
                 wires.append(Part.makePolygon(verts))
+        print "wires:",wires
         try:
             sh = ArchCommands.makeFace(wires)
         except:
@@ -188,6 +196,7 @@ class Renderer:
             vnorm = self.wp.getLocalCoords(norm)
             if vnorm.getAngle(sh.normalAt(0,0)) > 1:
                 sh.reverse()
+            #print "VRM: projectFace end"
             return [sh]+face[1:]
 
     def flattenFace(self,face):
@@ -211,6 +220,7 @@ class Renderer:
 
     def cut(self,cutplane):
         "Cuts through the shapes with a given cut plane and builds section faces"
+        if DEBUG: print "\n\n======> Starting cut\n\n"
         if self.iscut:
             return
         if not self.shapes:
@@ -277,6 +287,7 @@ class Renderer:
                 self.trimmed = False
                 self.sorted = False
                 self.joined = False
+        if DEBUG: print "\n\n======> Finished cut\n\n"
 
     def isInside(self,vert,face):
         "Returns True if the vert is inside the face in Z projection"
@@ -318,6 +329,15 @@ class Renderer:
 
     def compare(self,face1,face2):
         "zsorts two faces. Returns 1 if face1 is closer, 2 if face2 is closer, 0 otherwise"
+
+        #print face1,face2
+
+        if not face1:
+            if DEBUG: print "Warning, undefined face!" 
+            return 31
+        elif not face2:
+            if DEBUG: print "Warning, undefined face!" 
+            return 32
 
         # theory from
         # http://www.siggraph.org/education/materials/HyperGraph/scanline/visibility/painter.htm
@@ -456,14 +476,17 @@ class Renderer:
 
     def sort(self):
         "projects a shape on the WP"
+        if DEBUG: print "\n\n======> Starting sort\n\n"
         if len(self.faces) <= 1:
             return
         if not self.trimmed:
             self.removeHidden()
+            if DEBUG: print "Done hidden face removal"
         if len(self.faces) == 1:
             return
         if not self.oriented:
             self.reorient()
+            if DEBUG: print "Done reorientation"
         faces = self.faces[:]
         if DEBUG: print "sorting ",len(self.faces)," faces"
         sfaces = []
@@ -492,6 +515,7 @@ class Renderer:
                 for f2 in faces[1:]:
                     if DEBUG: print "comparing face",str(self.faces.index(f1))," with face",str(self.faces.index(f2))
                     r = self.compare(f1,f2)
+                    print "comparison result:",r
                     if r == 1:
                         faces.remove(f2)
                         sfaces.append(f2)
@@ -506,6 +530,10 @@ class Renderer:
                         sfaces.append(f2)
                         notfoundstack = 0
                         break
+                    elif r == 31:
+                        faces.remove(f1)
+                    elif r == 32:
+                        faces.remove(f2)
                 else:
                     # nothing found, move the face to the end of the pile
                     faces.remove(f1)
@@ -518,6 +546,7 @@ class Renderer:
         if DEBUG: print "done Z sorting. ", len(sfaces), " faces retained, ", len(self.faces)-len(sfaces), " faces lost."
         self.faces = sfaces
         self.sorted = True
+        if DEBUG: print "\n\n======> Finished sort\n\n"
 
     def buildDummy(self):
         "Builds a dummy object with faces spaced on the Z axis, for visual check"
@@ -566,21 +595,22 @@ class Renderer:
             self.sort()
         svg = ''
         for f in self.faces:
-            fill = self.getFill(f[1])
-            svg +='<path '
-            svg += 'd="'
-            for w in f[0].Wires:
-                svg += self.getPathData(w)
-            svg += '" '
-            svg += 'stroke="#000000" '
-            svg += 'stroke-width="' + str(linewidth) + '" '
-            svg += 'style="stroke-width:' + str(linewidth) + ';'
-            svg += 'stroke-miterlimit:1;'
-            svg += 'stroke-linejoin:round;'
-            svg += 'stroke-dasharray:none;'
-            svg += 'fill:' + fill + ';'
-            svg += 'fill-rule: evenodd'
-            svg += '"/>\n'
+            if f:
+                fill = self.getFill(f[1])
+                svg +='<path '
+                svg += 'd="'
+                for w in f[0].Wires:
+                    svg += self.getPathData(w)
+                svg += '" '
+                svg += 'stroke="#000000" '
+                svg += 'stroke-width="' + str(linewidth) + '" '
+                svg += 'style="stroke-width:' + str(linewidth) + ';'
+                svg += 'stroke-miterlimit:1;'
+                svg += 'stroke-linejoin:round;'
+                svg += 'stroke-dasharray:none;'
+                svg += 'fill:' + fill + ';'
+                svg += 'fill-rule: evenodd'
+                svg += '"/>\n'
         return svg
 
     def getSectionSVG(self,linewidth=0.02):
@@ -590,20 +620,21 @@ class Renderer:
             self.reorient()
         svg = ''
         for f in self.sections:
-            fill = self.getFill(f[1])
-            svg +='<path '
-            svg += 'd="'
-            for w in f[0].Wires:
-                svg += self.getPathData(w)
-            svg += '" '
-            svg += 'stroke="#000000" '
-            svg += 'stroke-width="' + str(linewidth) + '" '
-            svg += 'style="stroke-width:' + str(linewidth) + ';'
-            svg += 'stroke-miterlimit:1;'
-            svg += 'stroke-linejoin:round;'
-            svg += 'stroke-dasharray:none;'
-            svg += 'fill:' + fill + ';'
-            svg += 'fill-rule: evenodd'
-            svg += '"/>\n'
+            if f:
+                fill = self.getFill(f[1])
+                svg +='<path '
+                svg += 'd="'
+                for w in f[0].Wires:
+                    svg += self.getPathData(w)
+                svg += '" '
+                svg += 'stroke="#000000" '
+                svg += 'stroke-width="' + str(linewidth) + '" '
+                svg += 'style="stroke-width:' + str(linewidth) + ';'
+                svg += 'stroke-miterlimit:1;'
+                svg += 'stroke-linejoin:round;'
+                svg += 'stroke-dasharray:none;'
+                svg += 'fill:' + fill + ';'
+                svg += 'fill-rule: evenodd'
+                svg += '"/>\n'
         return svg
         
