@@ -215,7 +215,7 @@ class _ArchDrawingView:
                         import ArchVRM
                         render = ArchVRM.Renderer()
                         render.setWorkingPlane(obj.Source.Placement)
-                        render.addObjects(objs)
+                        render.addObjects(Draft.getGroupContents(objs))
                         render.cut(obj.Source.Shape)
                         svg += render.getViewSVG(linewidth=linewidth)
                         svg += render.getSectionSVG(linewidth=linewidth*2)

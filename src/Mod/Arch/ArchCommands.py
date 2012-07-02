@@ -154,31 +154,35 @@ def splitMesh(obj,mark=True):
 
 def makeFace(wires,method=2,cleanup=False):
     '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
-
+    #print "makeFace: start"
     import Part
     
     if not isinstance(wires,list):
+        if len(wires.Vertexes) < 3:
+            raise
         return Part.Face(wires)
     elif len(wires) == 1:
+        if len(wires[0].Vertexes) < 3:
+            raise
         return Part.Face(wires[0])
 
     wires = wires[:]
     
-    print "inner wires found"
+    #print "makeFace: inner wires found"
     ext = None
     max_length = 0
     # cleaning up rubbish in wires
     if cleanup:
         for i in range(len(wires)):
             wires[i] = DraftGeomUtils.removeInterVertices(wires[i])
-        print "garbage removed"
+        #print "makeFace: garbage removed"
     for w in wires:
         # we assume that the exterior boundary is that one with
         # the biggest bounding box
         if w.BoundBox.DiagonalLength > max_length:
             max_length = w.BoundBox.DiagonalLength
             ext = w
-    print "exterior wire",ext
+    #print "makeFace: exterior wire",ext
     wires.remove(ext)
 
     if method == 1:
@@ -186,23 +190,22 @@ def makeFace(wires,method=2,cleanup=False):
         # all interior wires mark a hole and must reverse
         # their orientation, otherwise Part.Face fails
         for w in wires:
-            print "reversing",w
+            #print "makeFace: reversing",w
             w.reverse()
-            print "reversed"
             # make sure that the exterior wires comes as first in the list
             wires.insert(0, ext)
-            print "done sorting", wires
+            #print "makeFace: done sorting", wires
         if wires:
             return Part.Face(wires)
     else:
         # method 2: use the cut method
         mf = Part.Face(ext)
-        print "external face:",mf
+        #print "makeFace: external face:",mf
         for w in wires:
             f = Part.Face(w)
-            print "internal face:",f
+            #print "makeFace: internal face:",f
             mf = mf.cut(f)
-        print "final face:",mf.Faces
+        #print "makeFace: final face:",mf.Faces
         return mf.Faces[0]
 
 def meshToShape(obj,mark=True):
