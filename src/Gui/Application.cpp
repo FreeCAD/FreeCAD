@@ -1545,8 +1545,16 @@ void Application::runApplication(void)
     int argc = App::Application::GetARGC();
     GUIApplication mainApp(argc, App::Application::GetARGV());
     // set application icon and window title
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it;
+    it = cfg.find("Application");
+    if (it != cfg.end()) {
+        mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
+    }
+    else {
+        mainApp.setApplicationName(QString::fromUtf8(App::GetApplication().getExecutableName()));
+    }
     mainApp.setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
-    mainApp.setApplicationName(QString::fromAscii(App::GetApplication().getExecutableName()));
     QString plugin;
     plugin = QString::fromUtf8(App::GetApplication().GetHomePath());
     plugin += QLatin1String("/plugins");
@@ -1606,8 +1614,6 @@ void Application::runApplication(void)
 
     QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
 
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("WindowTitle");
     if (it != cfg.end()) {
         QString title = QString::fromUtf8(it->second.c_str());
