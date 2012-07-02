@@ -82,10 +82,20 @@ std::string PropertyPythonObject::toString() const
     std::string repr;
     Base::PyGILStateLocker lock;
     try {
-        Py::Module pickle(PyImport_ImportModule("cPickle"),true);
+        Py::Module pickle(PyImport_ImportModule("json"),true);
         Py::Callable method(pickle.getAttr(std::string("dumps")));
+        Py::Object dump;
+        if (this->object.hasAttr("__getstate__")) {
+            Py::Tuple args(0);
+            Py::Callable state(this->object.getAttr("__getstate__"));
+            dump = state.apply(args);
+        }
+        else if (this->object.hasAttr("__dict__")) {
+            dump = this->object.getAttr("__dict__");
+        }
+
         Py::Tuple args(1);
-        args.setItem(0, this->object);
+        args.setItem(0, dump);
         Py::Object res = method.apply(args);
         Py::String str(res);
         repr = str.as_std_string();
@@ -102,12 +112,21 @@ void PropertyPythonObject::fromString(const std::string& repr)
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::Module pickle(PyImport_ImportModule("cPickle"),true);
+        Py::Module pickle(PyImport_ImportModule("json"),true);
         Py::Callable method(pickle.getAttr(std::string("loads")));
         Py::Tuple args(1);
         args.setItem(0, Py::String(repr));
         Py::Object res = method.apply(args);
-        this->object = res;
+
+        if (this->object.hasAttr("__setstate__")) {
+            Py::Tuple args(1);
+            args.setItem(0, res);
+            Py::Callable state(this->object.getAttr("__setstate__"));
+            state.apply(args);
+        }
+        else {
+            this->object.setAttr("__dict__", res);
+        }
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -210,7 +229,24 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
         repr = Base::base64_encode((const unsigned char*)repr.c_str(), repr.size());
         std::string val = /*encodeValue*/(repr);
         writer.Stream() << writer.ind() << "<Python value=\"" << val
-                        <<"\" encoded=\"yes\"";
+                        << "\" encoded=\"yes\"";
+
+        try {
+            if (this->object.hasAttr("__module__") && this->object.hasAttr("__class__")) {
+                Py::String mod(this->object.getAttr("__module__"));
+                Py::Object cls(this->object.getAttr("__class__"));
+                if (cls.hasAttr("__name__")) {
+                    Py::String name(cls.getAttr("__name__"));
+                    writer.Stream() << " module=\"" << (std::string)mod << "\""
+                                    << " class=\"" << (std::string)name << "\"";
+                }
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            Base::Console().Warning("PropertyPythonObject::Save: %s\n", e.what());
+        }
+
         saveObject(writer);
         writer.Stream() << "/>" << std::endl;
     //}
@@ -235,6 +271,17 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         }
         else {
             buffer = decodeValue(buffer);
+        }
+
+        try {
+            if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
+                Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
+                this->object = PyInstance_NewRaw(mod.getAttr(reader.getAttribute("class")).ptr(), 0);
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            Base::Console().Warning("PropertyPythonObject::Restore: %s\n", e.what());
         }
 
         aboutToSetValue();
