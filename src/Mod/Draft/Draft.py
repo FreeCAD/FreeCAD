@@ -253,7 +253,7 @@ def shapify(obj):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
-def getGroupContents(objectslist):
+def getGroupContents(objectslist,walls=False):
     '''getGroupContents(objectlist): if any object of the given list
     is a group, its content is appened to the list, which is returned'''
     newlist = []
@@ -262,13 +262,20 @@ def getGroupContents(objectslist):
             newlist.extend(getGroupContents(obj.Group))
         else:
             newlist.append(obj)
+            if walls:
+                if getType(obj) == "Wall":
+                    for o in obj.OutList:
+                        if (getType(o) == "Window") or isClone(o,"Window"):
+                            newlist.append(o)
     return newlist
 
 def printShape(shape):
     """prints detailed information of a shape"""
     print "solids: ", len(shape.Solids)
     print "faces: ", len(shape.Faces)
-    print "wires: ",len(shape.Wires)
+    print "wires: ", len(shape.Wires)
+    print "edges: ", len(shape.Edges)
+    print "verts: ", len(shape.Vertexes)
     if shape.Faces:
         for f in range(len(shape.Faces)):
             print "face ",f,":"
@@ -1964,7 +1971,7 @@ class _ViewProviderDimension:
                                              [p2.x,p2.y,p2.z],
                                              [p3.x,p3.y,p3.z],
                                              [p4.x,p4.y,p4.z]])
-                self.line.numVertices.setValues([4])
+                self.line.numVertices.setValue(4)
             else:
                 ts = (len(text)*obj.ViewObject.FontSize)/4
                 rm = ((p3.sub(p2)).Length/2)-ts
