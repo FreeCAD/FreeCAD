@@ -62,7 +62,8 @@ def addToComponent(compobject,addobject,mod=None):
                     l = getattr(compobject,mod)
                     l.append(addobject)
                     setattr(compobject,mod,l)
-                    addobject.ViewObject.hide()
+                    if mod != "Objects":
+                        addobject.ViewObject.hide()
         else:
             for a in attribs[:3]:
                 if hasattr(compobject,a):
