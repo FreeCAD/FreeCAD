@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,math,Draft,ArchCommands, DraftVecUtils
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
@@ -215,7 +215,7 @@ class _ArchDrawingView:
                         import ArchVRM
                         render = ArchVRM.Renderer()
                         render.setWorkingPlane(obj.Source.Placement)
-                        render.addObjects(Draft.getGroupContents(objs))
+                        render.addObjects(Draft.getGroupContents(objs,walls=True))
                         render.cut(obj.Source.Shape)
                         svg += render.getViewSVG(linewidth=linewidth)
                         svg += render.getSectionSVG(linewidth=linewidth*2)
