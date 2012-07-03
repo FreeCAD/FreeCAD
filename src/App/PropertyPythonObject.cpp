@@ -138,6 +138,7 @@ void PropertyPythonObject::fromString(const std::string& repr)
 void PropertyPythonObject::loadPickle(const std::string& str)
 {
     // find the custom attributes and restore them
+    Base::PyGILStateLocker lock;
     try {
         std::string buffer = str;
         boost::regex pickle("S'(\\w+)'.+S'(\\w+)'\\n");
@@ -257,6 +258,7 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
         writer.Stream() << writer.ind() << "<Python value=\"" << val
                         << "\" encoded=\"yes\"";
 
+        Base::PyGILStateLocker lock;
         try {
             if (this->object.hasAttr("__module__") && this->object.hasAttr("__class__")) {
                 Py::String mod(this->object.getAttr("__module__"));
@@ -301,6 +303,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
             buffer = decodeValue(buffer);
         }
 
+        Base::PyGILStateLocker lock;
         try {
             boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
             boost::match_results<std::string::const_iterator> what;
