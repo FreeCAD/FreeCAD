@@ -35,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <iostream>
+#include <boost/regex.hpp>
 
 using namespace App;
 
@@ -131,6 +132,31 @@ void PropertyPythonObject::fromString(const std::string& repr)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         Base::Console().Warning("PropertyPythonObject::fromString: %s\n", e.what());
+    }
+}
+
+void PropertyPythonObject::loadPickle(const std::string& str)
+{
+    // find the custom attributes and restore them
+    try {
+        std::string buffer = str;
+        boost::regex pickle("S'(\\w+)'.+S'(\\w+)'\\n");
+        boost::match_results<std::string::const_iterator> what;
+        std::string::const_iterator start, end;
+        start = buffer.begin();
+        end = buffer.end();
+        while (boost::regex_search(start, end, what, pickle)) {
+            std::string key = std::string(what[1].first, what[1].second);
+            std::string val = std::string(what[2].first, what[2].second);
+            this->object.setAttr(key, Py::String(val));
+            buffer = std::string(what[2].second, end);
+            start = buffer.begin();
+            end = buffer.end();
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        Base::Console().Warning("PropertyPythonObject::loadPickle: %s\n", e.what());
     }
 }
 
@@ -264,6 +290,8 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         reader.addFile(file.c_str(),this);
     }
     else {
+        bool load_json=false;
+        bool load_pickle=false;
         std::string buffer = reader.getAttribute("value");
         if (reader.hasAttribute("encoded") &&
             strcmp(reader.getAttribute("encoded"),"yes") == 0) {
@@ -274,9 +302,23 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         }
 
         try {
+            boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
+            boost::match_results<std::string::const_iterator> what;
+            std::string::const_iterator start, end;
+            start = buffer.begin();
+            end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
                 Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
                 this->object = PyInstance_NewRaw(mod.getAttr(reader.getAttribute("class")).ptr(), 0);
+                load_json = true;
+            }
+            else if (boost::regex_search(start, end, what, pickle)) {
+                std::string nam = std::string(what[1].first, what[1].second);
+                std::string cls = std::string(what[2].first, what[2].second);
+                Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
+                this->object = PyInstance_NewRaw(mod.getAttr(cls).ptr(), 0);
+                load_pickle = true;
+                buffer = std::string(what[2].second, end);
             }
         }
         catch (Py::Exception&) {
@@ -285,7 +327,12 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         }
 
         aboutToSetValue();
-        this->fromString(buffer);
+        if (load_json)
+            this->fromString(buffer);
+        else if (load_pickle)
+            this->loadPickle(buffer);
+        else
+            Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer);
         restoreObject(reader);
         hasSetValue();
     }
