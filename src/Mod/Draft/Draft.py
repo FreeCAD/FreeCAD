@@ -1540,7 +1540,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
         ok = False
         tp = getType(obj)
         if tp == "BSpline":
-            pass
+            print "makeSketch: BSplines not supported"
         elif tp == "Circle":
             if obj.FirstAngle == obj.LastAngle:
                 nobj.addGeometry(obj.Shape.Edges[0].Curve)
@@ -1586,32 +1586,16 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                     nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             ok = True
         if (not ok) and obj.isDerivedFrom("Part::Feature"):
-            if DraftGeomUtils.hasOnlyWires(obj.Shape):
-                for w in obj.Shape.Wires:
-                    for edge in DraftGeomUtils.sortEdges(w.Edges):
-                        g = DraftGeomUtils.geom(edge)
-                        if g:
-                            nobj.addGeometry(g)  
-                    if autoconstraints:
-                        last = nobj.GeometryCount
-                        segs = range(last-len(w.Edges),last-1)
-                        for seg in segs:
-                            nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                                nobj.addConstraint(Constraint("Vertical",seg))
-                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                                nobj.addConstraint(Constraint("Horizontal",seg))
-                        if w.isClosed:
-                            nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
-            else:
-                for edge in obj.Shape.Edges:
-                    nobj.addGeometry(DraftGeomUtils.geom(edge))
-                    if autoconstraints:
-                        last = nobj.GeometryCount - 1
-                        if DraftGeomUtils.isAligned(nobj.Geometry[last],"x"):
-                            nobj.addConstraint(Constraint("Vertical",last))
-                        elif DraftGeomUtils.isAligned(nobj.Geometry[last],"y"):
-                            nobj.addConstraint(Constraint("Horizontal",last))
+            if not DraftGeomUtils.isPlanar(obj.Shape):
+                print "Error: The given object is not planar and cannot be converted into a sketch."
+                return None
+            if not addTo:
+                nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
+            edges = []
+            for e in obj.Shape.Edges:
+                g = (DraftGeomUtils.geom(e,nobj.Placement))
+                if g:
+                    nobj.addGeometry(g)
             ok = True
         if ok:
             FreeCAD.ActiveDocument.removeObject(obj.Name)
