@@ -162,7 +162,7 @@ def makeFace(wires,method=2,cleanup=False):
             raise
         return Part.Face(wires)
     elif len(wires) == 1:
-        import Draft;Draft.printShape(wires[0])
+        #import Draft;Draft.printShape(wires[0])
         if len(wires[0].Vertexes) < 3:
             raise
         return Part.Face(wires[0])

@@ -1011,7 +1011,7 @@ def isCoplanar(faces):
             for v in faces[i].Vertexes:
                 chord = v.Point.sub(faces[0].Vertexes[0].Point)
                 dist = DraftVecUtils.project(chord,base)
-                if dist.Length > 0:
+                if round(dist.Length,DraftVecUtils.precision()) > 0:
                     return False
         return True
 
