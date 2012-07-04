@@ -273,7 +273,9 @@ class Renderer:
                         shapes.append([c]+sh[1:])
                         for f in c.Faces:
                             faces.append([f]+sh[1:])
+                            print "iscoplanar:",f.Vertexes[0].Point,f.normalAt(0,0),cutface.Vertexes[0].Point,cutface.normalAt(0,0)
                             if DraftGeomUtils.isCoplanar([f,cutface]):
+                                print "COPLANAR"
                                 sections.append([f,fill])
                 self.shapes = shapes
                 self.faces = faces
@@ -614,7 +616,7 @@ class Renderer:
 
     def getSectionSVG(self,linewidth=0.02):
         "Returns a SVG fragment from cut faces"
-        if DEBUG: print "Printing ", len(self.sections), " cutfaces"
+        if DEBUG: print "Printing ", len(self.sections), " sections"
         if not self.oriented:
             self.reorient()
         svg = ''
