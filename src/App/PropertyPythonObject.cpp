@@ -335,7 +335,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         else if (load_pickle)
             this->loadPickle(buffer);
         else
-            Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer);
+            Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer.c_str());
         restoreObject(reader);
         hasSetValue();
     }
