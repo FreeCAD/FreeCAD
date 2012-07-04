@@ -72,7 +72,7 @@ How it works / how to extend:
 '''
 
 # import FreeCAD modules
-import FreeCAD, math, sys, os, DraftVecUtils
+import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc
 from FreeCAD import Vector
 from pivy import coin
 
