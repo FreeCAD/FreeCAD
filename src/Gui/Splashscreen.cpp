@@ -88,23 +88,31 @@ public:
                 textColor = col;
         }
     }
-
     virtual ~SplashObserver()
     {
         Base::Console().DetachObserver(this);
     }
-
+    const char* Name()
+    {
+        return "SplashObserver";
+    }
     void Warning(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Message(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Error  (const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Log (const char * s)
     {
