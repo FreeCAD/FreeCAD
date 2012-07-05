@@ -161,83 +161,6 @@ private:
     QDomDocument domDocument;
 };
 
-class ProgramOptions
-{
-public:
-    ProgramOptions()
-    {
-        newcout = new ProgramOptionsStream(out);
-        oldcout = std::cout.rdbuf(newcout);
-        out.reserve(80);
-        newcerr = new ProgramOptionsStream(err);
-        oldcerr = std::cerr.rdbuf(newcerr);
-        err.reserve(80);
-
-        error = true;
-        ::atexit(ProgramOptions::failure);
-    }
-    ~ProgramOptions()
-    {
-        std::cout.rdbuf(oldcout);
-        delete newcout;
-        std::cerr.rdbuf(oldcerr);
-        delete newcerr;
-        error = false;
-    }
-    static void failure()
-    {
-        if (error) {
-            int argc=0;
-            QApplication app(argc,0);
-            QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-            if (!err.empty()) {
-                QString msg = QString::fromAscii(err.c_str());
-                QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-                QMessageBox::critical(0, appName, s);
-            }
-            else if (!out.empty()) {
-                QString msg = QString::fromAscii(out.c_str());
-                QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-                QMessageBox::information(0, appName, s);
-            }
-        }
-    }
-
-private:
-    class ProgramOptionsStream : public std::streambuf
-    {
-    public:
-        ProgramOptionsStream(std::string& s) : buf(s)
-        {
-        }
-        int overflow(int c = EOF)
-        {
-            if (c != EOF)
-                buf.push_back((char)c);
-            return c;
-        }
-        int sync()
-        {
-            return 0;
-        }
-    private:
-        std::string& buf;
-    };
-
-private:
-    friend class ProgramOptionsStream;
-    std::streambuf* oldcout;
-    std::streambuf* newcout;
-    std::streambuf* oldcerr;
-    std::streambuf* newcerr;
-    static std::string out, err;
-    static bool error;
-};
-
-bool ProgramOptions::error = false;
-std::string ProgramOptions::out;
-std::string ProgramOptions::err;
-
 #if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
 QString myDecoderFunc(const QByteArray &localFileName)
 {
@@ -300,9 +223,24 @@ int main( int argc, char ** argv )
         App::Application::Config()["RunMode"] = "Gui";
 
         // Inits the Application 
-        ProgramOptions po;
         App::Application::init(argc,argv);
         Gui::Application::initApplication();
+    }
+    catch (const Base::UnknownProgramOption& e) {
+        QApplication app(argc,argv);
+        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromAscii(e.what());
+        QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
+        QMessageBox::critical(0, appName, s);
+        exit(1);
+    }
+    catch (const Base::ProgramInformation& e) {
+        QApplication app(argc,argv);
+        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromAscii(e.what());
+        QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
+        QMessageBox::information(0, appName, s);
+        exit(0);
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows

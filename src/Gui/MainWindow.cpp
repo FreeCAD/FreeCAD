@@ -52,6 +52,7 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 #include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Reader.h>
@@ -1152,7 +1153,13 @@ void MainWindow::showMainWindow()
 void MainWindow::delayedStartup()
 {
     // processing all command line files
-    App::Application::processCmdLineFiles();
+    try {
+        App::Application::processCmdLineFiles();
+    }
+    catch (const Base::SystemExitException&) {
+        QApplication::quit();
+        return;
+    }
 
     const std::map<std::string,std::string>& cfg = App::Application::Config();
     std::map<std::string,std::string>::const_iterator it = cfg.find("StartHidden");

@@ -37,6 +37,7 @@
 
 #include <stdio.h>
 #include <sstream>
+#include <iostream>
 
 // FreeCAD Base header
 #include <Base/Console.h>
@@ -88,6 +89,14 @@ int main( int argc, char ** argv )
 
         // Inits the Application
         App::Application::init(argc,argv);
+    }
+    catch (const Base::UnknownProgramOption& e) {
+        std::cerr << e.what();
+        exit(1);
+    }
+    catch (const Base::ProgramInformation& e) {
+        std::cout << e.what();
+        exit(0);
     }
     catch (const Base::Exception& e) {
         std::string appName = App::Application::Config()["ExeName"];

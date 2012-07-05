@@ -102,8 +102,6 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
     SoInput in;
     in.setBuffer((void*)ppReturn,std::strlen(ppReturn));
 
-    //if (!in.openFile(filename)) { exit(1); }
-
     SoNode* rootNode;
     SoDB::read(&in,rootNode);
 
