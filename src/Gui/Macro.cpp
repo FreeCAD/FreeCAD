@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <stdio.h>
+# include <QApplication>
 # include <QFile>
 # include <QTextStream>
 #endif
@@ -232,9 +233,7 @@ void MacroManager::run(MacroType eType,const char *sName)
         Base::Interpreter().runFile(sName, this->localEnv);
     }
     catch (const Base::SystemExitException&) {
-        Base::PyGILStateLocker lock;
-        PyErr_Clear();
-        Base::Interpreter().systemExit();
+        qApp->quit();
     }
     catch (const Base::PyException& e) {
         Base::Console().Error("%s%s: %s\n",
