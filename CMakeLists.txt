@@ -268,7 +268,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- ODE ----------------------------------
 
-    find_package(ODE)
+#    find_package(ODE)
 
 # -------------------------------- Qt --------------------------------
 
@@ -439,7 +439,7 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 		set(PKG_ARCH amd64)
 	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 	set(CPACK_DEBIAN_PACKAGE_SECTION "science")
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libode1, libsoqt4-20, libxerces-c3.1, libgts-0.7-5, zlib1g, libboost-dev, libeigen2-dev")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libsoqt4-20, libxerces-c3.1, zlib1g, libboost-dev, libeigen2-dev")
 	set(CPACK_PACKAGE_CONTACT "<root@localhost>")
 	set(CPACK_PACKAGE_FILE_NAME "${PACKAGE_NAME}-${PACKAGE_VERSION}_${PKG_ARCH}")
 	
