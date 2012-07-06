@@ -54,10 +54,12 @@ struct NavigationStyleP {
     SbVec3f focal1, focal2;
     SbRotation endRotation;
     SoTimerSensor * animsensor;
+    float sensitivity;
 
     NavigationStyleP()
     {
         this->animationsteps = 0;
+        this->sensitivity = 2.0f;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };
@@ -780,6 +782,14 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     this->spinprojector->project(lastpos);
     SbRotation r;
     this->spinprojector->projectAndGetRotation(pointerpos, r);
+    float sensitivity = getSensitivity();
+    if (sensitivity > 1.0f) {
+        SbVec3f axis;
+        float radians;
+        r.getValue(axis, radians);
+        radians = sensitivity * radians;
+        r.setValue(axis, radians);
+    }
     r.invert();
     this->reorientCamera(viewer->getCamera(), r);
 
@@ -921,6 +931,16 @@ void NavigationStyle::stopAnimating(void)
     }
     this->setViewingMode(this->isViewing() ? 
         NavigationStyle::IDLE : NavigationStyle::INTERACT);
+}
+
+void NavigationStyle::setSensitivity(float val)
+{
+    PRIVATE(this)->sensitivity = val;
+}
+
+float NavigationStyle::getSensitivity() const
+{
+    return PRIVATE(this)->sensitivity;
 }
 
 void NavigationStyle::setZoomInverted(SbBool on)

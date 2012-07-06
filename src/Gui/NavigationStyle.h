@@ -110,6 +110,9 @@ public:
     void stopAnimating(void);
     SbBool isAnimating(void) const;
 
+    void setSensitivity(float);
+    float getSensitivity() const;
+
     void setZoomInverted(SbBool);
     SbBool isZoomInverted() const;
     void setZoomStep(float);
