@@ -25,6 +25,9 @@ import time
 from math import *
 import threading
 
+# pyOpenCL
+import pyopencl as cl
+
 # FreeCAD
 import FreeCAD,FreeCADGui
 from FreeCAD import Part, Base, Vector
@@ -33,14 +36,20 @@ from FreeCAD import Part, Base, Vector
 from shipUtils import Paths, Translator, Math
 
 class FreeCADShipSimulation(threading.Thread):
-    def __init__ (self, endTime, output, FSmesh, waves):
+    def __init__ (self, device, endTime, output, FSmesh, waves):
         """ Thread constructor.
+        @param device Device to use.
         @param endTime Maximum simulation time.
         @param output [Rate,Type] Output rate, Type=0 if FPS, 1 if IPF.
         @param FSmesh Free surface mesh faces.
         @param waves Waves parameters (A,T,phi,heading)
         """
         threading.Thread.__init__(self)
+        # Build OpenCL context and command queue
+        self.device  = device
+        self.context = cl.Context(devices=[self.device])
+        self.queue   = cl.CommandQueue(self.context)
+        # Storage data
         self.endTime = endTime
         self.output  = output
         self.FSmesh  = FSmesh
