@@ -21,30 +21,36 @@
 #*                                                                         *
 #***************************************************************************
 
-class ShipWorkbench ( Workbench ):
-    """ @brief Workbench of Ship design module. Here toolbars & icons are append. """
-    from shipUtils import Paths, Translator
-    import ShipGui
+import time
+from math import *
+import threading
 
-    Icon = Paths.iconsPath() + "/Ico.png"
-    MenuText = str(Translator.translate("Ship design"))
-    ToolTip = str(Translator.translate("Ship design"))
+# FreeCAD
+import FreeCAD,FreeCADGui
+from FreeCAD import Part, Base, Vector
 
-    def Initialize(self):
-        # ToolBar
-        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
-        self.appendToolbar("Ship design",list)
-        list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
-        self.appendToolbar("Weights",list)
-        list = ["Ship_CreateSim", "Ship_RunSim"]
-        self.appendToolbar("Simulation",list)
+# Ship design module
+from shipUtils import Paths, Translator, Math
+
+class FreeCADShipSimulation(threading.Thread):
+    def __init__ (self, endTime, output, FSmesh, waves):
+        """ Thread constructor.
+        @param endTime Maximum simulation time.
+        @param output [Rate,Type] Output rate, Type=0 if FPS, 1 if IPF.
+        @param FSmesh Free surface mesh faces.
+        @param waves Waves parameters (A,T,phi,heading)
+        """
+        threading.Thread.__init__(self)
+        self.endTime = endTime
+        self.output  = output
+        self.FSmesh  = FSmesh
+        self.waves   = waves
         
-        # Menu
-        list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
-        self.appendMenu("Ship design",list)
-        list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
-        self.appendToolbar("Weights",list)
-        list = ["Ship_CreateSim", "Ship_RunSim"]
-        self.appendToolbar("Simulation",list)
-
-Gui.addWorkbench(ShipWorkbench())
+    def run(self):
+        """ Runs the simulation.
+        """
+        # Perform work here
+        print("Im thread, Im running...")
+        time.sleep(2)
+        # ...
+        print("Im thread, I end!")

@@ -36,9 +36,22 @@ class TaskPanel:
 
     def accept(self):
         form = self.form
+        # Read waves data
+        w = []
+        for i in range(0,form.waves.rowCount() - 1):
+            item = form.waves.item(i,0)
+            A = item.text().toFloat()[0]
+            item = form.waves.item(i,1)
+            T = item.text().toFloat()[0]
+            item = form.waves.item(i,2)
+            phi = item.text().toFloat()[0]
+            item = form.waves.item(i,3)
+            head = item.text().toFloat()[0]
+            w.append([A,T,phi,head])
         obj = App.ActiveDocument.addObject("Part::FeaturePython","ShipSimulation")
         sim = SimInstance.ShipSimulation(obj, 
-              [form.length.value(), form.beam.value(), form.n.value()])
+              [form.length.value(), form.beam.value(), form.n.value()],
+              w)
         SimInstance.ViewProviderShipSimulation(obj.ViewObject)
         return True
 
@@ -72,6 +85,7 @@ class TaskPanel:
         form.length = form.findChild(QtGui.QDoubleSpinBox, "Length")
         form.beam = form.findChild(QtGui.QDoubleSpinBox, "Beam")
         form.n = form.findChild(QtGui.QSpinBox, "N")
+        form.waves = form.findChild(QtGui.QTableWidget, "Waves")
         self.form = form
         # Initial values
         if self.initValues():
@@ -81,6 +95,7 @@ class TaskPanel:
         QtCore.QObject.connect(form.length, QtCore.SIGNAL("valueChanged(double)"), self.onFS)
         QtCore.QObject.connect(form.beam, QtCore.SIGNAL("valueChanged(double)"), self.onFS)
         QtCore.QObject.connect(form.n, QtCore.SIGNAL("valueChanged(int)"), self.onFS)
+        QtCore.QObject.connect(form.waves,QtCore.SIGNAL("cellChanged(int,int)"),self.onWaves);
 
     def getMainWindow(self):
         "returns the main window"
@@ -108,13 +123,47 @@ class TaskPanel:
         self.form.findChild(QtGui.QLabel, "LengthLabel").setText(Translator.translate("Length"))
         self.form.findChild(QtGui.QLabel, "BeamLabel").setText(Translator.translate("Beam"))
         self.form.findChild(QtGui.QLabel, "NLabel").setText(Translator.translate("Number of points"))
+        self.form.findChild(QtGui.QGroupBox, "WavesDataBox").setTitle(Translator.translate("Waves"))
+        labels = []
+        labels.append(Translator.translate("Amplitude") + " [m]")
+        labels.append(Translator.translate("Period") + " [s]")
+        labels.append(Translator.translate("Phase") + " [rad]")
+        labels.append(Translator.translate("Heading") + " [deg]")
+        self.form.waves.setHorizontalHeaderLabels(labels)
 
     def onFS(self, value):
-        """ Method called when ship data is changed.
-         Annotations must be showed.
+        """ Method called when free surface data is changed.
          @param value Changed value.
         """
         pass
+
+    def onWaves(self, row, column):
+        """ Method called when waves data is changed.
+         @param row Affected row.
+         @param col Affected column.
+        """
+        item = self.form.waves.item(row,column)
+        # Row deletion
+        if column == 0:
+            if not item.text():
+                self.form.waves.removeRow(row)
+        # Ensure that exist one empty item at the end
+        nRow = self.form.waves.rowCount()
+        last = self.form.waves.item(nRow-1,0)
+        if last:
+            if(last.text() != ''):
+                self.form.waves.setRowCount(nRow+1)
+        # Fields must be numbers
+        for i in range(0,self.form.waves.rowCount()-1):      # Avoid last row
+            for j in range(0,self.form.waves.columnCount()): # Avoid name column
+                item = self.form.waves.item(i,j)
+                if not item:
+                    item = QtGui.QTableWidgetItem('0.0')
+                    self.form.waves.setItem(i,j,item)
+                    continue
+                (number,flag) = item.text().toFloat()
+                if not flag:
+                    item.setText('0.0')
 
 def createTask():
     panel = TaskPanel()
