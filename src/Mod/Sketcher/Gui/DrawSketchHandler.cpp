@@ -385,6 +385,12 @@ void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstrain
     applyCursor(newCursor);
 }
 
+void DrawSketchHandler::setPositionText(const Base::Vector2D &Pos, const std::string &text)
+{
+    sketchgui->setPositionText(Pos, text);
+}
+
+
 void DrawSketchHandler::setPositionText(const Base::Vector2D &Pos)
 {
     sketchgui->setPositionText(Pos);

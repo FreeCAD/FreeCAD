@@ -31,6 +31,8 @@
 # include <TColStd_Array1OfInteger.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
+# include <Precision.hxx>
+# include <GeomAPI_PointsToBSplineSurface.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -1238,6 +1240,55 @@ PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* BSplineSurfacePy::interpolate(PyObject *args)
+{
+    PyObject* obj;
+    double tol3d = Precision::Approximation();
+    PyObject* closed = Py_False;
+    PyObject* t1=0; PyObject* t2=0;
+    if (!PyArg_ParseTuple(args, "O!",&(PyList_Type), &obj))
+        return 0;
+    try {
+        Py::List list(obj);
+        Standard_Integer lu = list.size();
+        Py::List col(list.getItem(0));
+        Standard_Integer lv = col.size();
+        TColgp_Array2OfPnt interpolationPoints(1, lu, 1, lv);
+
+        Standard_Integer index1 = 0;
+        Standard_Integer index2 = 0;
+        for (Py::List::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
+            index1++;
+            index2=0;
+            Py::List row(*it1);
+            for (Py::List::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
+                index2++;
+                Py::Vector v(*it2);
+                Base::Vector3d pnt = v.toVector();
+                gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
+                interpolationPoints.SetValue(index1, index2, newPoint);
+            }
+        }
+
+        if (interpolationPoints.RowLength() < 2 || interpolationPoints.ColLength() < 2) {
+            Standard_Failure::Raise("not enough points given");
+        }
+
+        GeomAPI_PointsToBSplineSurface surInterpolation;
+        surInterpolation.Interpolate (interpolationPoints);
+        Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
+        this->getGeomBSplineSurfacePtr()->setHandle(sur);
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        std::string err = e->GetMessageString();
+        if (err.empty()) err = e->DynamicType()->Name();
+        PyErr_SetString(PyExc_Exception, err.c_str());
         return 0;
     }
 }

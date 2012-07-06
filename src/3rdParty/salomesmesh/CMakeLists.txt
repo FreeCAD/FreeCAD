@@ -173,7 +173,7 @@ FILE(GLOB StdMeshers_source_files src/StdMeshers/*.cpp src/MEFISTO2/*.cpp src/ME
 INCLUDE_DIRECTORIES(src/StdMeshers)
 
 ADD_LIBRARY(StdMeshers SHARED ${StdMeshers_source_files})
-TARGET_LINK_LIBRARIES(StdMeshers SMESH TKernel TKMath TKAdvTools f2c gfortran)
+TARGET_LINK_LIBRARIES(StdMeshers SMESH TKernel TKMath TKAdvTools gfortran)
 SET(StdMeshers_CFLAGS "")
 IF(WIN32)
   SET(StdMeshers_CFLAGS "-DSTDMESHERS_EXPORTS -DMEFISTO2D_EXPORTS")

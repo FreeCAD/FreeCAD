@@ -355,27 +355,33 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 	else :
 		print "fcgeo: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")"
 
-def geom(edge):
-        "returns a Line, ArcOfCircle or Circle geom from the given edge"
-        if isinstance(edge.Curve,Part.Line):
-                return edge.Curve
-        elif isinstance(edge.Curve,Part.Circle):
-                if len(edge.Vertexes) == 1:
-                        return Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
-                else:
-                        ref = edge.Placement.multVec(Vector(1,0,0))
-                        ref = ref.sub(edge.Placement.Base) # we only want the orientation
-                        v1 = edge.Vertexes[0].Point
-                        v2 = edge.Vertexes[-1].Point
-                        c = edge.Curve.Center
-                        cu = Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
-                        a1 = -DraftVecUtils.angle(v1.sub(c),ref,edge.Curve.Axis)
-                        a2 = -DraftVecUtils.angle(v2.sub(c),ref,edge.Curve.Axis)
-                        print "creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)"
-                        p= Part.ArcOfCircle(cu,a1,a2)
-                        return p
+def geom(edge,plac=FreeCAD.Placement()):
+    "returns a Line, ArcOfCircle or Circle geom from the given edge, according to the given placement"
+    if isinstance(edge.Curve,Part.Line):
+            return edge.Curve
+    elif isinstance(edge.Curve,Part.Circle):
+        if len(edge.Vertexes) == 1:
+            return Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
         else:
-                return edge.Curve
+            # reorienting the arc along the correct normal
+            normal = plac.Rotation.multVec(FreeCAD.Vector(0,0,1))
+            v1 = edge.Vertexes[0].Point
+            v2 = edge.Vertexes[-1].Point
+            c = edge.Curve.Center
+            cu = Part.Circle(edge.Curve.Center,normal,edge.Curve.Radius)
+            ref = plac.Rotation.multVec(Vector(1,0,0))
+            a1 = math.pi + DraftVecUtils.angle(v1.sub(c),ref,normal)
+            a2 = DraftVecUtils.angle(v2.sub(c),ref,normal)
+
+            # direction check
+            if a1 > a2:
+                a1,a2 = a2,a1
+                
+            #print "creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)"
+            p= Part.ArcOfCircle(cu,a1,a2)
+            return p
+    else:
+        return edge.Curve
 
 def mirror (point, edge):
 	"finds mirror point relative to an edge"
@@ -445,98 +451,91 @@ def isLine(bsp):
         return True
 
 def sortEdges(lEdges, aVertex=None):
-        "an alternative, more accurate version of Part.__sortEdges__"
+    "an alternative, more accurate version of Part.__sortEdges__"
 
-        #There is no reason to limit this to lines only because every non-closed edge always
-        #has exactly two vertices (wmayer)
-        #for e in lEdges:
-        #        if not isinstance(e.Curve,Part.Line):
-        #                print "Warning: sortedges cannot treat wired containing curves yet."
-        #                return lEdges
-	
-	def isSameVertex(V1, V2):
-		''' Test if vertexes have same coordinates with precision 10E(-precision)'''
-		if round(V1.X-V2.X,1)==0 and round(V1.Y-V2.Y,1)==0 and round(V1.Z-V2.Z,1)==0 :
-			return True
-		else :
-			return False
-	
-	def lookfor(aVertex, inEdges):
-		''' Look for (aVertex, inEdges) returns count, the position of the instance
-			the position in the instance and the instance of the Edge'''
-		count = 0
-		linstances = [] #lists the instances of aVertex
-		for i in range(len(inEdges)) :
-			for j in range(2) :
-				if isSameVertex(aVertex,inEdges[i].Vertexes[j-1]):
-					instance = inEdges[i]
-					count += 1
-					linstances += [i,j-1,instance]
-		return [count]+linstances
-	
-	if (len(lEdges) < 2):
-                if aVertex == None:
-                        return lEdges
+    #There is no reason to limit this to lines only because every non-closed edge always
+    #has exactly two vertices (wmayer)
+    #for e in lEdges:
+    #        if not isinstance(e.Curve,Part.Line):
+    #                print "Warning: sortedges cannot treat wired containing curves yet."
+    #                return lEdges
+
+    def lookfor(aVertex, inEdges):
+        ''' Look for (aVertex, inEdges) returns count, the position of the instance
+        the position in the instance and the instance of the Edge'''
+        count = 0
+        linstances = [] #lists the instances of aVertex
+        for i in range(len(inEdges)) :
+            for j in range(2) :
+                if aVertex.Point == inEdges[i].Vertexes[j-1].Point:
+                        instance = inEdges[i]
+                        count += 1
+                        linstances += [i,j-1,instance]
+        return [count]+linstances
+
+    if (len(lEdges) < 2):
+        if aVertex == None:
+            return lEdges
+        else:
+            result = lookfor(aVertex,lEdges)
+            if result[0] != 0:
+                if aVertex.Point == result[3].Vertexes[0].Point:
+                    return lEdges
                 else:
-                        result = lookfor(aVertex,lEdges)
-                        if result[0] != 0:
-                                if isSameVertex(aVertex,result[3].Vertexes[0]):
-                                        return lEdges
-                                else:
-                                        if isinstance(result[3].Curve,Part.Line):
-                                                return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
-                                        elif isinstance(result[3].Curve,Part.Circle):
-                                                mp = findMidpoint(result[3])
-                                                return [Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()]
-                                        elif isinstance(result[3].Curve,Part.BSplineCurve):
-                                                if isLine(result[3].Curve):
-                                                        return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
-                                                else:
-                                                        return lEdges
-                                        else:
-                                                return lEdges
-                                        
-	olEdges = [] # ol stands for ordered list 
-	if aVertex == None:
-		for i in range(len(lEdges)*2) :
-			if len(lEdges[i/2].Vertexes) > 1:
-				result = lookfor(lEdges[i/2].Vertexes[i%2],lEdges)
-				if result[0] == 1 :  # Have we found an end ?
-					olEdges = sortEdges(lEdges, result[3].Vertexes[result[2]])
-					return olEdges
-		# if the wire is closed there is no end so choose 1st Vertex
-                #print "closed wire, starting from ",lEdges[0].Vertexes[0].Point
-		return sortEdges(lEdges, lEdges[0].Vertexes[0]) 
-	else :
-                #print "looking ",aVertex.Point
-		result = lookfor(aVertex,lEdges)
-		if result[0] != 0 :
-			del lEdges[result[1]]
-			next = sortEdges(lEdges, result[3].Vertexes[-((-result[2])^1)])
-                        #print "result ",result[3].Vertexes[0].Point,"    ",result[3].Vertexes[1].Point, " compared to ",aVertex.Point
-                        if isSameVertex(aVertex,result[3].Vertexes[0]):
-                                #print "keeping"
-                                olEdges += [result[3]] + next
+                    if isinstance(result[3].Curve,Part.Line):
+                        return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
+                    elif isinstance(result[3].Curve,Part.Circle):
+                        mp = findMidpoint(result[3])
+                        return [Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()]
+                    elif isinstance(result[3].Curve,Part.BSplineCurve):
+                        if isLine(result[3].Curve):
+                            return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
                         else:
-                                #print "inverting", result[3].Curve
-                                if isinstance(result[3].Curve,Part.Line):
-                                        newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
-                                        olEdges += [newedge] + next
-                                elif isinstance(result[3].Curve,Part.Circle):
-                                        mp = findMidpoint(result[3])
-                                        newedge = Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()
-                                        olEdges += [newedge] + next
-                                elif isinstance(result[3].Curve,Part.BSplineCurve):
-                                        if isLine(result[3].Curve):
-                                                newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
-                                                olEdges += [newedge] + next
-                                        else:
-                                                olEdges += [result[3]] + next
-                                else:
-                                        olEdges += [result[3]] + next                                        
-			return olEdges
-		else :
-			return []
+                            return lEdges
+                    else:
+                        return lEdges
+
+    olEdges = [] # ol stands for ordered list 
+    if aVertex == None:
+        for i in range(len(lEdges)*2) :
+            if len(lEdges[i/2].Vertexes) > 1:
+                result = lookfor(lEdges[i/2].Vertexes[i%2],lEdges)
+                if result[0] == 1 :  # Have we found an end ?
+                    olEdges = sortEdges(lEdges, result[3].Vertexes[result[2]])
+                    return olEdges
+        # if the wire is closed there is no end so choose 1st Vertex
+        # print "closed wire, starting from ",lEdges[0].Vertexes[0].Point
+        return sortEdges(lEdges, lEdges[0].Vertexes[0]) 
+    else :
+        #print "looking ",aVertex.Point
+        result = lookfor(aVertex,lEdges)
+        if result[0] != 0 :
+            del lEdges[result[1]]
+            next = sortEdges(lEdges, result[3].Vertexes[-((-result[2])^1)])
+            #print "result ",result[3].Vertexes[0].Point,"    ",result[3].Vertexes[1].Point, " compared to ",aVertex.Point
+            if aVertex.Point == result[3].Vertexes[0].Point:
+                #print "keeping"
+                olEdges += [result[3]] + next
+            else:
+                #print "inverting", result[3].Curve
+                if isinstance(result[3].Curve,Part.Line):
+                    newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
+                    olEdges += [newedge] + next
+                elif isinstance(result[3].Curve,Part.Circle):
+                    mp = findMidpoint(result[3])
+                    newedge = Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()
+                    olEdges += [newedge] + next
+                elif isinstance(result[3].Curve,Part.BSplineCurve):
+                    if isLine(result[3].Curve):
+                        newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
+                        olEdges += [newedge] + next
+                    else:
+                        olEdges += [result[3]] + next
+                else:
+                    olEdges += [result[3]] + next                                        
+            return olEdges
+        else :
+            return []
 
 
 def findWires(edgeslist):
@@ -787,6 +786,31 @@ def getNormal(shape):
 	        if n.getAngle(vdir) < 0.78: n = DraftVecUtils.neg(n)
         return n
 
+def getRotation(v1,v2=FreeCAD.Vector(0,0,1)):
+    '''Get the rotation Quaternion between 2 vectors'''
+    if (v1.dot(v2) > 0.999999) or (v1.dot(v2) < -0.999999):
+        # vectors are opposite
+        return None
+    axis = v1.cross(v2)
+    axis.normalize()
+    angle = math.degrees(math.sqrt((v1.Length ^ 2) * (v2.Length ^ 2)) + v1.dot(v2))
+    return FreeCAD.Rotation(axis,angle)
+
+def calculatePlacement(shape):
+    '''calculatePlacement(shape): if the given shape is planar, this function
+    returns a placement located at the center of gravity of the shape, and oriented
+    towards the shape's normal. Otherwise, it returns a null placement.'''
+    if not isPlanar(shape):
+        return FreeCAD.Placement()
+    pos = shape.BoundBox.Center
+    norm = getNormal(shape)
+    pla = FreeCAD.Placement()
+    pla.Base = pos
+    r =  getRotation(norm)
+    if r:
+        pla.Rotation = r
+    return pla
+
 def offsetWire(wire,dvec,bind=False,occ=False):
         '''
         offsetWire(wire,vector,[bind]): offsets the given wire along the
@@ -982,11 +1006,13 @@ def isCoplanar(faces):
         "checks if all faces in the given list are coplanar"
         if len(faces) < 2:
                 return True
-        base =faces[0].normalAt(.5,.5)
+        base =faces[0].normalAt(0,0)
         for i in range(1,len(faces)):
-                normal = faces[i].normalAt(.5,.5)
-                if (normal.getAngle(base) > .0001) and (normal.getAngle(base) < 3.1415):
-                        return False
+            for v in faces[i].Vertexes:
+                chord = v.Point.sub(faces[0].Vertexes[0].Point)
+                dist = DraftVecUtils.project(chord,base)
+                if round(dist.Length,DraftVecUtils.precision()) > 0:
+                    return False
         return True
 
 def isPlanar(shape):
