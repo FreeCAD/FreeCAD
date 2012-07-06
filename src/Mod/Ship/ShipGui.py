@@ -140,7 +140,7 @@ class RunSim:
     def GetResources(self):
         from shipUtils import Paths, Translator
         IconPath = Paths.iconsPath() + "/SimRunIco.png"
-        MenuText = str(Translator.translate('Run a  simulation'))
+        MenuText = str(Translator.translate('Run a simulation'))
         ToolTip  = str(Translator.translate('Run a simulation'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
