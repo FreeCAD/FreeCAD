@@ -36,15 +36,26 @@ class ShipWorkbench ( Workbench ):
         self.appendToolbar("Ship design",list)
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
         self.appendToolbar("Weights",list)
-        list = ["Ship_CreateSim", "Ship_RunSim"]
-        self.appendToolbar("Simulation",list)
+        try:
+            import pyopencl
+        except ImportError:
+            msg = Translator.translate("pyOpenCL not installed, ship simulations disabled\n")
+            App.Console.PrintWarning(msg)
+        else:
+            list = ["Ship_CreateSim", "Ship_RunSim"]
+            self.appendToolbar("Simulation",list)
         
         # Menu
         list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
         self.appendMenu("Ship design",list)
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
         self.appendToolbar("Weights",list)
-        list = ["Ship_CreateSim", "Ship_RunSim"]
-        self.appendToolbar("Simulation",list)
+        try:
+            import pyopencl
+        except ImportError:
+            pass
+        else:
+            list = ["Ship_CreateSim", "Ship_RunSim"]
+            self.appendToolbar("Simulation",list)
 
 Gui.addWorkbench(ShipWorkbench())

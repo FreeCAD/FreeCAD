@@ -26,6 +26,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 # Qt library
 from PyQt4 import QtGui,QtCore
+# pyOpenCL
+import pyopencl as cl
 # Module
 import SimInstance
 from shipUtils import Paths, Translator
@@ -37,8 +39,6 @@ class TaskPanel:
         self.sim = False
 
     def accept(self):
-        if not self.sim:
-            return False
         msg = Translator.translate("Building data...\n")
         App.Console.PrintMessage(msg)
         # Get GUI data
@@ -46,6 +46,16 @@ class TaskPanel:
         output  = []
         output.append(self.form.output.value())
         output.append(self.form.outputType.currentIndex())
+        devId   = self.form.device.currentIndex()
+        # Get OpenCL device
+        count = 0
+        platforms = cl.get_platforms()
+        for p in platforms:
+            devs = p.get_devices()
+            for d in devs:
+                if count == devId:
+                    device = d
+                count = count + 1
         # Get free surfaces data
         FSMesh = SimInstance.FSMesh(self.sim)
         wData  = self.sim.Waves
@@ -56,8 +66,8 @@ class TaskPanel:
         msg = Translator.translate("Launching simulation...\n")
         App.Console.PrintMessage(msg)
         # Build simulation thread
-        t = Sim(endTime, output, FSMesh, waves)
-        t.start()
+        simulator = Sim(device, endTime, output, FSMesh, waves)
+        simulator.start()
         msg = Translator.translate("Done!\n")
         App.Console.PrintMessage(msg)
         return True
@@ -92,6 +102,7 @@ class TaskPanel:
         form.time       = form.findChild(QtGui.QDoubleSpinBox, "SimTime")
         form.output     = form.findChild(QtGui.QDoubleSpinBox, "Output")
         form.outputType = form.findChild(QtGui.QComboBox, "OutputType")
+        form.device = form.findChild(QtGui.QComboBox, "Device")
         self.form = form
         # Initial values
         if self.initValues():
@@ -140,6 +151,20 @@ class TaskPanel:
             msg = Translator.translate("Ship simulation instance must be selected (no valid simulation found at selected objects)\n")
             App.Console.PrintError(msg)
             return True
+        # Get the list of devices
+        devices = []
+        platforms = cl.get_platforms()
+        for p in platforms:
+            devs = p.get_devices()
+            for d in devs:
+                devices.append([p,d])
+                dname = d.get_info(cl.device_info.NAME)
+                pname = p.get_info(cl.platform_info.NAME)
+                self.form.device.addItem(dname + " (" + pname + ")")
+        if not len(devices):
+            msg = Translator.translate("This tool requires an active OpenCL context to work\n")
+            App.Console.PrintError(msg)
+            return True
         msg = Translator.translate("Ready to work\n")
         App.Console.PrintMessage(msg)
         return False
@@ -150,6 +175,7 @@ class TaskPanel:
         self.form.setWindowTitle(Translator.translate("Run the simulation"))
         self.form.findChild(QtGui.QLabel, "SimTimeLabel").setText(Translator.translate("Simulation time"))
         self.form.findChild(QtGui.QLabel, "OutputLabel").setText(Translator.translate("Output"))
+        self.form.findChild(QtGui.QLabel, "DeviceLabel").setText(Translator.translate("OpenCL device"))
 
 def createTask():
     panel = TaskPanel()
