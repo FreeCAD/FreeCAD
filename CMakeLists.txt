@@ -104,6 +104,11 @@ OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only f
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
+if(MSVC)
+OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+else(MSVC)
+set(FREECAD_USE_3DCONNEXION OFF)
+endif(MSVC)
 
 # if this is set override some options
 if (FREECAD_BUILD_DEBIAN)
