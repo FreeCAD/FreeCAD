@@ -23,6 +23,7 @@
 
 import time
 from math import *
+import threading
 
 # COIN
 from pivy.coin import *
@@ -40,24 +41,45 @@ class FreeSurfaceFace:
         """ Face storage.
         @param pos Face position.
         @param normal Face normal.
-        @param Element length (distance between elements at x direction)
-        @param Element beam (distance between elements at y direction)
+        @param l Element length (distance between elements at x direction)
+        @param b Element beam (distance between elements at y direction)
         """
         self.pos    = pos
         self.normal = normal
         self.area   = l*b
 
+    def __init__(self, pos, normal, area):
+        """ Face storage.
+        @param pos Face position.
+        @param normal Face normal.
+        @param area Element area
+        """
+        self.pos    = pos
+        self.normal = normal
+        self.area   = area
+
 class ShipSimulation:
-    def __init__(self, obj, fsMeshData):
+    def __init__(self, obj, fsMeshData, waves):
         """ Creates a new simulation instance on active document.
         @param obj Created Part::FeaturePython object.
         @param fsMeshData [L,B,N] Free surface mesh data, with lenght 
         (x), Beam (y) and desired number of points.
+        @param waves [[A,T,phi,heading],] Waves involved 
         """
         # Add uniqueness property to identify Tank instances
         obj.addProperty("App::PropertyBool","IsShipSimulation","ShipSimulation", str(Translator.translate("True if is a valid ship simulation instance"))).IsShipSimulation=True
         # Compute free surface mesh
         self.createFSMesh(obj,fsMeshData)
+        # Store waves
+        obj.addProperty("App::PropertyVectorList","Waves","ShipSimulation", str(Translator.translate("Waves (Amplitude,period,phase)"))).Waves=[]
+        obj.addProperty("App::PropertyFloatList","Waves_Dir","ShipSimulation", str(Translator.translate("Waves direction (0 deg to stern waves)"))).Waves_Dir=[]
+        w = []
+        d = []
+        for i in range(0,len(waves)):
+            w.append(Vector(waves[i][0], waves[i][1], waves[i][2]))
+            d.append(waves[i][3])
+        obj.Waves = w
+        obj.Waves_Dir = d
         # Add shapes
         shape = self.computeShape(obj)
         if not shape:
@@ -103,7 +125,6 @@ class ShipSimulation:
         b    = sqrt(area)
         nx   = int(round(L / l))
         ny   = int(round(B / b))
-        print(l,b,nx,ny)
         # Start data fields if not already exist
         props = obj.PropertiesList
         try:
@@ -141,87 +162,27 @@ class ShipSimulation:
         obj.FS_Area     = areas[:]
         obj.FS_Normal   = normal[:]
 
-    def FSMesh(self, obj):
-        """ Get free surface mesh in matrix mode.
-        @param obj Created Part::FeaturePython object.
-        @return Faces matrix
-        @note areas and normals will recomputed.
-        """
-        nx = obj.FS_Nx
-        ny = obj.FS_Ny
-        # Transform positions into a mesh
-        pos = []
-        for i in range(0,nx):
-            pos.append([])
-            for j in range(0,ny):
-                pos[i].append(obj.FS_Position[j + i*ny])
-        # Recompute normals and dimensions
-        normal = []
-        l      = []
-        b      = []
-        for i in range(0,nx):
-            normal.append([])
-            l.append([])
-            b.append([])
-            for j in range(0,ny):
-                i0 = i-1
-                i1 = i+1
-                fi = 1.0
-                j0 = j-1
-                j1 = j+1
-                fj = 1.0
-                if i == 0:
-                    i0 = i
-                    i1 = i+1
-                    fi = 2.0
-                if i == nx-1:
-                    i0 = i-1
-                    i1 = i
-                    fi = 2.0
-                if j == 0:
-                    j0 = j
-                    j1 = j+1
-                    fj = 2.0
-                if j == ny-1:
-                    j0 = j-1
-                    j1 = j
-                    fj = 2.0
-                l[i].append(fi*(obj.FS_Position[j + i1*ny].x - obj.FS_Position[j + i0*ny].x))
-                b[i].append(fj*(obj.FS_Position[j1 + i*ny].y - obj.FS_Position[j0 + i*ny].y))
-                xvec = Vector(obj.FS_Position[j + i1*ny].x - obj.FS_Position[j + i0*ny].x,
-                              obj.FS_Position[j + i1*ny].y - obj.FS_Position[j + i0*ny].y,
-                              obj.FS_Position[j + i1*ny].z - obj.FS_Position[j + i0*ny].z)
-                yvec = Vector(obj.FS_Position[j1 + i*ny].x - obj.FS_Position[j0 + i*ny].x,
-                              obj.FS_Position[j1 + i*ny].y - obj.FS_Position[j0 + i*ny].y,
-                              obj.FS_Position[j1 + i*ny].z - obj.FS_Position[j0 + i*ny].z)
-                n = Vector(xvec.cross(yvec))    # Z positive
-                normal[i].append(n.normalize())
-        # Create faces
-        faces = []
-        for i in range(0,nx):
-            faces.append([])
-            for j in range(0,ny):
-                faces[i].append(FreeSurfaceFace(pos[i][j], normal[i][j], l[i][j], b[i][j]))
-        # Reconstruct mesh data
-        for i in range(0,nx):
-            for j in range(0,ny):
-                obj.FS_Position[j + i*ny] = faces[i][j].pos
-                obj.FS_Normal[j + i*ny]   = faces[i][j].normal
-                obj.FS_Area[j + i*ny]     = faces[i][j].area
-        return faces
-
     def computeShape(self, obj):
         """ Computes simulation involved shapes.
         @param obj Created Part::FeaturePython object.
         @return Shape
         """
+        print("[ShipSimulation] Computing mesh shape...")
         nx     = obj.FS_Nx
         ny     = obj.FS_Ny
-        mesh   = self.FSMesh(obj)
+        mesh   = FSMesh(obj)
         planes = []
         # Create planes
+        Percentage = 0
+        Count = 0
+        print("0%")
         for i in range(1,nx-1):
             for j in range(1,ny-1):
+                Count = Count+1
+                done = int(round(100 * Count / ((nx-2)*(ny-2))))
+                if done != Percentage:
+                    Percentage = done
+                    print("%i%%" % (done))
                 v0 = (mesh[i][j].pos + mesh[i-1][j].pos + mesh[i][j-1].pos + mesh[i-1][j-1].pos).multiply(0.25)
                 v1 = (mesh[i][j].pos + mesh[i+1][j].pos + mesh[i][j-1].pos + mesh[i+1][j-1].pos).multiply(0.25)
                 v2 = (mesh[i][j].pos + mesh[i+1][j].pos + mesh[i][j+1].pos + mesh[i+1][j+1].pos).multiply(0.25)
@@ -615,3 +576,81 @@ class ViewProviderShipSimulation:
         "                                                                ",
         "                                                                "};
         """
+
+def FSMesh(obj, recompute=False):
+    """ Get free surface mesh in matrix mode.
+    @param obj Created Part::FeaturePython object.
+    @param recompute True if mesh must be recomputed, False otherwise.
+    @return Faces matrix
+    """
+    nx = obj.FS_Nx
+    ny = obj.FS_Ny
+    if not recompute:
+        faces = []
+        for i in range(0,nx):
+            faces.append([])
+            for j in range(0,ny):
+                faces[i].append(FreeSurfaceFace(obj.FS_Position[j + i*ny],
+                                                obj.FS_Normal[j + i*ny],
+                                                obj.FS_Area[j + i*ny]))
+        return faces
+    # Transform positions into a mesh
+    pos = []
+    for i in range(0,nx):
+        pos.append([])
+        for j in range(0,ny):
+            pos[i].append(obj.FS_Position[j + i*ny])
+    # Recompute normals and dimensions
+    normal = []
+    l      = []
+    b      = []
+    for i in range(0,nx):
+        normal.append([])
+        l.append([])
+        b.append([])
+        for j in range(0,ny):
+            i0 = i-1
+            i1 = i+1
+            fi = 1.0
+            j0 = j-1
+            j1 = j+1
+            fj = 1.0
+            if i == 0:
+                i0 = i
+                i1 = i+1
+                fi = 2.0
+            if i == nx-1:
+                i0 = i-1
+                i1 = i
+                fi = 2.0
+            if j == 0:
+                j0 = j
+                j1 = j+1
+                fj = 2.0
+            if j == ny-1:
+                j0 = j-1
+                j1 = j
+                fj = 2.0
+            l[i].append(fi*(obj.FS_Position[j + i1*ny].x - obj.FS_Position[j + i0*ny].x))
+            b[i].append(fj*(obj.FS_Position[j1 + i*ny].y - obj.FS_Position[j0 + i*ny].y))
+            xvec = Vector(obj.FS_Position[j + i1*ny].x - obj.FS_Position[j + i0*ny].x,
+                          obj.FS_Position[j + i1*ny].y - obj.FS_Position[j + i0*ny].y,
+                          obj.FS_Position[j + i1*ny].z - obj.FS_Position[j + i0*ny].z)
+            yvec = Vector(obj.FS_Position[j1 + i*ny].x - obj.FS_Position[j0 + i*ny].x,
+                          obj.FS_Position[j1 + i*ny].y - obj.FS_Position[j0 + i*ny].y,
+                          obj.FS_Position[j1 + i*ny].z - obj.FS_Position[j0 + i*ny].z)
+            n = Vector(xvec.cross(yvec))    # Z positive
+            normal[i].append(n.normalize())
+    # Create faces
+    faces = []
+    for i in range(0,nx):
+        faces.append([])
+        for j in range(0,ny):
+            faces[i].append(FreeSurfaceFace(pos[i][j], normal[i][j], l[i][j], b[i][j]))
+    # Reconstruct mesh data
+    for i in range(0,nx):
+        for j in range(0,ny):
+            obj.FS_Position[j + i*ny] = faces[i][j].pos
+            obj.FS_Normal[j + i*ny]   = faces[i][j].normal
+            obj.FS_Area[j + i*ny]     = faces[i][j].area
+    return faces
