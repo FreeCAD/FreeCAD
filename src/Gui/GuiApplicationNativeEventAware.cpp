@@ -40,10 +40,9 @@
 #endif
 #endif
 
-#ifdef Q_WS_WIN
-#include <windows.h>
+#ifdef _USE_3DCONNEXION_SDK
+Gui::GUIApplicationNativeEventAware* Gui::GUIApplicationNativeEventAware::gMouseInput = 0;
 #endif
-
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
         QApplication (argc, argv), spaceballPresent(false)
@@ -59,11 +58,18 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
     else
         Base::Console().Log("Disconnected from spacenav daemon\n");
 #endif
+
+#ifdef _USE_3DCONNEXION_SDK
+    if (gMouseInput == this) {
+        gMouseInput = 0;
+    }
+#endif
 }
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
     mainWindow = window;
+
 #ifdef SPNAV_FOUND
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1)
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
@@ -73,6 +79,19 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
         spaceballPresent = true;
     }
 #endif
+
+#ifdef _USE_3DCONNEXION_SDK
+    spaceballPresent = Is3dmouseAttached();
+
+    if (spaceballPresent) {
+        fLast3dmouseInputTime = 0;
+
+        if (InitializeRawInput(mainWindow->winId())){
+            gMouseInput = this;
+            qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
+        }
+    }
+#endif // _USE_3DCONNEXION_SDK
 
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
     Spaceball::ButtonEvent::ButtonEventType = QEvent::registerEventType();
@@ -146,15 +165,8 @@ bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
     return true;
 #else
     return false;
-#endif
+#endif // SPNAV_FOUND
 }
-#endif
-
-#ifdef Q_WS_WIN
-bool Gui::GUIApplicationNativeEventAware::winEventFilter(MSG *msg, long *result)
-{
-    return false;
-}
-#endif
+#endif // Q_WS_X11
 
 #include "moc_GuiApplicationNativeEventAware.cpp"
