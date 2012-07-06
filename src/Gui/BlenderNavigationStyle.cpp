@@ -181,6 +181,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
             else if (press && (this->currentmode == NavigationStyle::PANNING ||
                                this->currentmode == NavigationStyle::ZOOMING)) {
                 newmode = NavigationStyle::DRAGGING;
+                saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
                 processed = TRUE;
             }
@@ -221,6 +222,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (press && (this->currentmode == NavigationStyle::PANNING ||
                           this->currentmode == NavigationStyle::ZOOMING)) {
                 newmode = NavigationStyle::DRAGGING;
+                saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
                 processed = TRUE;
             }
@@ -285,6 +287,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         else if (this->currentmode == NavigationStyle::DRAGGING) {
             this->addToLog(event->getPosition(), event->getTime());
             this->spin(posn);
+            moveCursorPosition();
             processed = TRUE;
         }
     }
@@ -338,6 +341,9 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::PANNING;
         break;
     case BUTTON3DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:

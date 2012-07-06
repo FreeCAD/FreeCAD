@@ -55,11 +55,13 @@ struct NavigationStyleP {
     SbRotation endRotation;
     SoTimerSensor * animsensor;
     float sensitivity;
+    SbBool resetcursorpos;
 
     NavigationStyleP()
     {
         this->animationsteps = 0;
         this->sensitivity = 2.0f;
+        this->resetcursorpos = FALSE;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };
@@ -844,6 +846,25 @@ SbBool NavigationStyle::doSpin()
     return FALSE;
 }
 
+void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
+{
+    this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
+    this->localPos = ev->getPosition();
+}
+
+void NavigationStyle::moveCursorPosition()
+{
+    if (!isResetCursorPosition())
+        return;
+
+    QPoint cpos = QCursor::pos();
+    if (abs(cpos.x()-globalPos[0]) > 10 ||
+        abs(cpos.y()-globalPos[1]) > 10) {
+        QCursor::setPos(globalPos[0], globalPos[1]-1);
+        this->log.position[0] = localPos;
+    }
+}
+
 void NavigationStyle::updateAnimation()
 {
     SbTime now = SbTime::getTimeOfDay();
@@ -941,6 +962,16 @@ void NavigationStyle::setSensitivity(float val)
 float NavigationStyle::getSensitivity() const
 {
     return PRIVATE(this)->sensitivity;
+}
+
+void NavigationStyle::setResetCursorPosition(SbBool on)
+{
+    PRIVATE(this)->resetcursorpos = on;
+}
+
+SbBool NavigationStyle::isResetCursorPosition() const
+{
+    return PRIVATE(this)->resetcursorpos;
 }
 
 void NavigationStyle::setZoomInverted(SbBool on)
