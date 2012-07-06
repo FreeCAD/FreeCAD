@@ -72,7 +72,7 @@ How it works / how to extend:
 '''
 
 # import FreeCAD modules
-import FreeCAD, math, sys, os, DraftVecUtils
+import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc
 from FreeCAD import Vector
 from pivy import coin
 
@@ -253,16 +253,42 @@ def shapify(obj):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
-def getGroupContents(objectslist):
+def getGroupContents(objectslist,walls=False):
     '''getGroupContents(objectlist): if any object of the given list
     is a group, its content is appened to the list, which is returned'''
     newlist = []
     for obj in objectslist:
-        if obj.Type == "App::DocumentObjectGroup":
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             newlist.extend(getGroupContents(obj.Group))
         else:
             newlist.append(obj)
+            if walls:
+                if getType(obj) == "Wall":
+                    for o in obj.OutList:
+                        if (getType(o) == "Window") or isClone(o,"Window"):
+                            newlist.append(o)
     return newlist
+
+def printShape(shape):
+    """prints detailed information of a shape"""
+    print "solids: ", len(shape.Solids)
+    print "faces: ", len(shape.Faces)
+    print "wires: ", len(shape.Wires)
+    print "edges: ", len(shape.Edges)
+    print "verts: ", len(shape.Vertexes)
+    if shape.Faces:
+        for f in range(len(shape.Faces)):
+            print "face ",f,":"
+            for v in shape.Faces[f].Vertexes:
+                print "    ",v.Point
+    elif shape.Wires:
+        for w in range(len(shape.Wires)):
+            print "wire ",w,":"
+            for v in shape.Wires[w].Vertexes:
+                print "    ",v.Point
+    else:
+        for v in shape.Vertexes:
+            print "    ",v.Point
 
 def formatObject(target,origin=None):
     '''
@@ -1514,7 +1540,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
         ok = False
         tp = getType(obj)
         if tp == "BSpline":
-            pass
+            print "makeSketch: BSplines not supported"
         elif tp == "Circle":
             if obj.FirstAngle == obj.LastAngle:
                 nobj.addGeometry(obj.Shape.Edges[0].Curve)
@@ -1560,32 +1586,16 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                     nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             ok = True
         if (not ok) and obj.isDerivedFrom("Part::Feature"):
-            if DraftGeomUtils.hasOnlyWires(obj.Shape):
-                for w in obj.Shape.Wires:
-                    for edge in DraftGeomUtils.sortEdges(w.Edges):
-                        g = DraftGeomUtils.geom(edge)
-                        if g:
-                            nobj.addGeometry(g)  
-                    if autoconstraints:
-                        last = nobj.GeometryCount
-                        segs = range(last-len(w.Edges),last-1)
-                        for seg in segs:
-                            nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                                nobj.addConstraint(Constraint("Vertical",seg))
-                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                                nobj.addConstraint(Constraint("Horizontal",seg))
-                        if w.isClosed:
-                            nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
-            else:
-                for edge in obj.Shape.Edges:
-                    nobj.addGeometry(DraftGeomUtils.geom(edge))
-                    if autoconstraints:
-                        last = nobj.GeometryCount - 1
-                        if DraftGeomUtils.isAligned(nobj.Geometry[last],"x"):
-                            nobj.addConstraint(Constraint("Vertical",last))
-                        elif DraftGeomUtils.isAligned(nobj.Geometry[last],"y"):
-                            nobj.addConstraint(Constraint("Horizontal",last))
+            if not DraftGeomUtils.isPlanar(obj.Shape):
+                print "Error: The given object is not planar and cannot be converted into a sketch."
+                return None
+            if not addTo:
+                nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
+            edges = []
+            for e in obj.Shape.Edges:
+                g = (DraftGeomUtils.geom(e,nobj.Placement))
+                if g:
+                    nobj.addGeometry(g)
             ok = True
         if ok:
             FreeCAD.ActiveDocument.removeObject(obj.Name)
@@ -1945,7 +1955,7 @@ class _ViewProviderDimension:
                                              [p2.x,p2.y,p2.z],
                                              [p3.x,p3.y,p3.z],
                                              [p4.x,p4.y,p4.z]])
-                self.line.numVertices.setValues([4])
+                self.line.numVertices.setValue(4)
             else:
                 ts = (len(text)*obj.ViewObject.FontSize)/4
                 rm = ((p3.sub(p2)).Length/2)-ts
@@ -2714,29 +2724,35 @@ class _Array:
         obj.addProperty("App::PropertyEnumeration","ArrayType","Base",
                         "The type of array to create")
         obj.addProperty("App::PropertyVector","Axis","Base",
-                        "The axis direction for polar arrays")
+                        "The axis direction")
         obj.addProperty("App::PropertyInteger","NumberX","Base",
-                        "Number of copies in X direction (ortho arrays)")
+                        "Number of copies in X direction")
         obj.addProperty("App::PropertyInteger","NumberY","Base",
-                        "Number of copies in Y direction (ortho arrays)")
+                        "Number of copies in Y direction")
+        obj.addProperty("App::PropertyInteger","NumberZ","Base",
+                        "Number of copies in Z direction")
         obj.addProperty("App::PropertyInteger","NumberPolar","Base",
-                        "Number of copies (polar arrays)")
+                        "Number of copies")
         obj.addProperty("App::PropertyVector","IntervalX","Base",
-                        "Distance and orientation of intervals in X direction (ortho arrays)")
+                        "Distance and orientation of intervals in X direction")
         obj.addProperty("App::PropertyVector","IntervalY","Base",
-                        "Distance and orientation of intervals in Y direction (ortho arrays)")
+                        "Distance and orientation of intervals in Y direction")
+        obj.addProperty("App::PropertyVector","IntervalZ","Base",
+                        "Distance and orientation of intervals in Z direction")
         obj.addProperty("App::PropertyVector","Center","Base",
-                        "Center point (polar arrays)")
+                        "Center point")
         obj.addProperty("App::PropertyAngle","Angle","Base",
-                        "Angle to cover with copies (polar arrays)")
+                        "Angle to cover with copies")
         obj.Proxy = self
         self.Type = "Array"
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
         obj.NumberY = 1
+        obj.NumberZ = 1
         obj.NumberPolar = 1
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
+        obj.IntervalZ = Vector(0,0,1)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
 
@@ -2744,7 +2760,32 @@ class _Array:
         self.createGeometry(obj)
 
     def onChanged(self,obj,prop):
-        if prop in ["ArrayType","NumberX","NumberY","NumberPolar","IntervalX","IntervalY","Angle","Center","Axis"]:
+        if prop == "ArrayType":
+            if obj.ViewObject:
+                if obj.ArrayType == "ortho":
+                    obj.ViewObject.setEditorMode('Axis',2)
+                    obj.ViewObject.setEditorMode('NumberPolar',2)
+                    obj.ViewObject.setEditorMode('Center',2)
+                    obj.ViewObject.setEditorMode('Angle',2)
+                    obj.ViewObject.setEditorMode('NumberX',0)
+                    obj.ViewObject.setEditorMode('NumberY',0)
+                    obj.ViewObject.setEditorMode('NumberZ',0)
+                    obj.ViewObject.setEditorMode('IntervalX',0)
+                    obj.ViewObject.setEditorMode('IntervalY',0)
+                    obj.ViewObject.setEditorMode('IntervalZ',0)
+                else:
+                    obj.ViewObject.setEditorMode('Axis',0)
+                    obj.ViewObject.setEditorMode('NumberPolar',0)
+                    obj.ViewObject.setEditorMode('Center',0)
+                    obj.ViewObject.setEditorMode('Angle',0)
+                    obj.ViewObject.setEditorMode('NumberX',2)
+                    obj.ViewObject.setEditorMode('NumberY',2)
+                    obj.ViewObject.setEditorMode('NumberY',2)
+                    obj.ViewObject.setEditorMode('IntervalX',2)
+                    obj.ViewObject.setEditorMode('IntervalY',2)
+                    obj.ViewObject.setEditorMode('IntervalZ',2)              
+        if prop in ["ArrayType","NumberX","NumberY","NumberZ","NumberPolar",
+                    "IntervalX","IntervalY","IntervalZ","Angle","Center","Axis"]:
             self.createGeometry(obj)
             
     def createGeometry(self,obj):
@@ -2752,14 +2793,15 @@ class _Array:
         if obj.Base:
             pl = obj.Placement
             if obj.ArrayType == "ortho":
-                sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,obj.NumberX,obj.NumberY)
+                sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,
+                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
             else:
                 sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle,obj.NumberPolar,obj.Axis)
             obj.Shape = sh
             if not DraftGeomUtils.isNull(pl):
                 obj.Placement = pl
 
-    def rectArray(self,shape,xvector,yvector,xnum,ynum):
+    def rectArray(self,shape,xvector,yvector,zvector,xnum,ynum,znum):
         import Part
         base = [shape.copy()]
         for xcount in range(xnum):
@@ -2769,12 +2811,19 @@ class _Array:
                 nshape.translate(currentxvector)
                 base.append(nshape)
             for ycount in range(ynum):
-                currentxvector=FreeCAD.Vector(currentxvector)
-                currentyvector=currentxvector.add(DraftVecUtils.scale(yvector,ycount))
+                currentyvector=FreeCAD.Vector(currentxvector)
+                currentyvector=currentyvector.add(DraftVecUtils.scale(yvector,ycount))
                 if not ycount==0:
                     nshape = shape.copy()
                     nshape.translate(currentyvector)
                     base.append(nshape)
+                for zcount in range(znum):
+                    currentzvector=FreeCAD.Vector(currentyvector)
+                    currentzvector=currentzvector.add(DraftVecUtils.scale(zvector,zcount))
+                    if not zcount==0:
+                        nshape = shape.copy()
+                        nshape.translate(currentzvector)
+                        base.append(nshape)
         return Part.makeCompound(base)
 
     def polarArray(self,shape,center,angle,num,axis):

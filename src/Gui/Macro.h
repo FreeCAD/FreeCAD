@@ -98,6 +98,7 @@ protected:
     bool recordGui;
     bool guiAsComment;
     bool scriptToPyConsole;
+    bool localEnv;
     PythonConsole* pyConsole;       // link to the python console
     PythonDebugger* pyDebugger;
     Base::Reference<ParameterGrp> params;  // link to the Macro parameter group

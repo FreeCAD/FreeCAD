@@ -88,23 +88,31 @@ public:
                 textColor = col;
         }
     }
-
     virtual ~SplashObserver()
     {
         Base::Console().DetachObserver(this);
     }
-
+    const char* Name()
+    {
+        return "SplashObserver";
+    }
     void Warning(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Message(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Error  (const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Log (const char * s)
     {
@@ -267,11 +275,9 @@ static QString getPlatform()
 
 void AboutDialog::setupLabels()
 {
+    QString exeName = qApp->applicationName();
     std::map<std::string, std::string>& config = App::Application::Config();
-    QString exeName = QString::fromAscii(config["ExeName"].c_str());
-    std::map<std::string,std::string>::iterator it = config.find("WindowTitle");
-    if (it != config.end())
-        exeName = QString::fromUtf8(it->second.c_str());
+    std::map<std::string,std::string>::iterator it;
     QString banner  = QString::fromUtf8(config["CopyrightInfo"].c_str());
     banner = banner.left( banner.indexOf(QLatin1Char('\n')) );
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
