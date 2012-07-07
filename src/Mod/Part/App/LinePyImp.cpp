@@ -53,8 +53,8 @@ std::string LinePy::representation(void) const
         Base::Vector3d start = getGeomLineSegmentPtr()->getStartPoint();
         Base::Vector3d end   = getGeomLineSegmentPtr()->getEndPoint();
         str << "<Line (" 
-            << start.x << ";" <<start.y << "," <<start.z << ") (" 
-            << end.x   << ";" <<end.y   << "," <<end.z   << ") >"; 
+            << start.x << "," <<start.y << "," <<start.z << ") (" 
+            << end.x   << "," <<end.y   << "," <<end.z   << ") >"; 
     //}
 
     return str.str();
