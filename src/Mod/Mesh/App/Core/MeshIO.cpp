@@ -565,7 +565,8 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     meshPoints.reserve(numPoints);
     meshFacets.reserve(numFaces);
 
-    for (int i=0; i<numPoints; i++) {
+    int cntPoints = 0;
+    while (cntPoints < numPoints) {
         if (!std::getline(rstrIn, line))
             break;
         if (boost::regex_match(line.c_str(), what, rx_p)) {
@@ -573,9 +574,12 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+            cntPoints++;
         }
     }
-    for (int i=0; i<numFaces; i++) {
+
+    int cntFaces = 0;
+    while (cntFaces < numFaces) {
         if (!std::getline(rstrIn, line))
             break;
         if (boost::regex_match(line.c_str(), what, rx_f3)) {
@@ -586,6 +590,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
                 i3 = std::atoi(what[4].first);
                 item.SetVertices(i1,i2,i3);
                 meshFacets.push_back(item);
+                cntFaces++;
             }
         }
         else if (boost::regex_match(line.c_str(), what, rx_f4)) {
@@ -601,6 +606,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 
                 item.SetVertices(i3,i4,i1);
                 meshFacets.push_back(item);
+                cntFaces++;
             }
         }
     }
