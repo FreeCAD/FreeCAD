@@ -405,6 +405,9 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
   
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
+#if 0 // With this we can show child objects again if this method was called by undo
+    viewProvider->onDelete(std::vector<std::string>());
+#endif
     if (viewProvider && viewProvider->getTypeId().isDerivedFrom
         (ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views
