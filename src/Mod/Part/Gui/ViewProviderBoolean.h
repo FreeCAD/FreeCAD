@@ -43,6 +43,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void) const;
     QIcon getIcon(void) const;
     void updateData(const App::Property*);
+    bool onDelete(const std::vector<std::string> &);
 };
 
 /// ViewProvider for the MultiFuse feature
@@ -60,6 +61,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void) const;
     QIcon getIcon(void) const;
     void updateData(const App::Property*);
+    bool onDelete(const std::vector<std::string> &);
 };
 
 /// ViewProvider for the MultiFuse feature
@@ -77,6 +79,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void) const;
     QIcon getIcon(void) const;
     void updateData(const App::Property*);
+    bool onDelete(const std::vector<std::string> &);
 };
 
 
