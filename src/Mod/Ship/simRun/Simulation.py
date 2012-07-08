@@ -27,6 +27,7 @@ import threading
 
 # pyOpenCL
 import pyopencl as cl
+import numpy as np
 
 # FreeCAD
 import FreeCAD,FreeCADGui
