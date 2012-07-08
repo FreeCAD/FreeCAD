@@ -1242,6 +1242,102 @@ bool CmdSketcherCreateCircle::isActive(void)
 
 // ======================================================================================
 
+/* XPM */
+static const char *cursor_createpoint[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"...............+++++++..........",
+"..............++.....++.........",
+".............+.........+........",
+"............++.........++.......",
+"...........++...........++......",
+"...........+.............+......",
+"...........+.............+......",
+"...........+.............+......",
+"...........+.............+......",
+"...........+.............+......",
+"...........+.............+......",
+"...........++...........++......",
+"............++.........++.......",
+".............+.........+........",
+"..............++.....++.........",
+"...............+++++++..........",
+"................................",
+"................................",
+"................................"};
+
+class DrawSketchHandlerPoint: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerPoint() : selectionDone(false) {}
+    virtual ~DrawSketchHandlerPoint() {}
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        setCursor(QPixmap(cursor_createpoint),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2D onSketchPos)
+    {
+        setPositionText(onSketchPos);
+        if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            renderSuggestConstraintsCursor(sugConstr);
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2D onSketchPos)
+    {
+        EditPoint = onSketchPos;
+        selectionDone = true;
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    {
+        if (selectionDone){
+            unsetCursor();
+            resetPositionText();
+
+            Gui::Command::openCommand("Add sketch point");
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                      sketchgui->getObject()->getNameInDocument(),
+                      EditPoint.fX,EditPoint.fY);
+            Gui::Command::commitCommand();
+            Gui::Command::updateActive();
+
+            // add auto constraints for the line segment start
+            if (sugConstr.size() > 0) {
+                createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::start);
+                sugConstr.clear();
+            }
+
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+        return true;
+    }
+protected:
+    bool selectionDone;
+    Base::Vector2D EditPoint;
+    std::vector<AutoConstraint> sugConstr;
+};
+
+
 DEF_STD_CMD_A(CmdSketcherCreatePoint);
 
 CmdSketcherCreatePoint::CmdSketcherCreatePoint()
@@ -1259,11 +1355,12 @@ CmdSketcherCreatePoint::CmdSketcherCreatePoint()
 
 void CmdSketcherCreatePoint::activated(int iMsg)
 {
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPoint());
 }
 
 bool CmdSketcherCreatePoint::isActive(void)
 {
-    return false;
+    return isCreateGeoActive(getActiveGuiDocument());
 }
 
 // ======================================================================================
@@ -1882,7 +1979,7 @@ void CreateSketcherCommandsCreateGeo(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    //rcCmdMgr.addCommand(new CmdSketcherCreatePoint());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePoint());
     rcCmdMgr.addCommand(new CmdSketcherCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
