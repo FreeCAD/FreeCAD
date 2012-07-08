@@ -42,7 +42,7 @@ class ShipWorkbench ( Workbench ):
             msg = Translator.translate("pyOpenCL not installed, ship simulations disabled\n")
             App.Console.PrintWarning(msg)
         else:
-            list = ["Ship_CreateSim", "Ship_RunSim"]
+            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
             self.appendToolbar("Simulation",list)
         
         # Menu
@@ -55,7 +55,7 @@ class ShipWorkbench ( Workbench ):
         except ImportError:
             pass
         else:
-            list = ["Ship_CreateSim", "Ship_RunSim"]
+            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
             self.appendToolbar("Simulation",list)
 
 Gui.addWorkbench(ShipWorkbench())

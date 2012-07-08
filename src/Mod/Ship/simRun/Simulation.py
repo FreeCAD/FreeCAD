@@ -35,7 +35,18 @@ from FreeCAD import Part, Base, Vector
 # Ship design module
 from shipUtils import Paths, Translator, Math
 
+class Singleton(type):
+    def __init__(cls, name, bases, dct):
+        cls.__instance = None
+        type.__init__(cls, name, bases, dct)
+ 
+    def __call__(cls, *args, **kw):
+        if cls.__instance is None:
+            cls.__instance = type.__call__(cls, *args,**kw)
+        return cls.__instance
+
 class FreeCADShipSimulation(threading.Thread):
+    __metaclass__ = Singleton
     def __init__ (self, device, endTime, output, FSmesh, waves):
         """ Thread constructor.
         @param device Device to use.
@@ -45,6 +56,8 @@ class FreeCADShipSimulation(threading.Thread):
         @param waves Waves parameters (A,T,phi,heading)
         """
         threading.Thread.__init__(self)
+        # Setup as stopped
+        self.active  = False
         # Build OpenCL context and command queue
         self.device  = device
         self.context = cl.Context(devices=[self.device])
@@ -58,8 +71,25 @@ class FreeCADShipSimulation(threading.Thread):
     def run(self):
         """ Runs the simulation.
         """
+        self.active = True
         # Perform work here
-        print("Im thread, Im running...")
-        time.sleep(2)
-        # ...
-        print("Im thread, I end!")
+        while self.active:
+            print("Im thread, Im running...")
+            time.sleep(1)
+            # ...
+            print("Im thread, step done!")
+        # Set thread as stopped (and prepare it to restarting)
+        self.active = False
+        threading.Event().set()
+        threading.Thread.__init__(self)
+
+    def stop(self):
+        """ Call to stop execution.
+        """
+        self.active = False
+        
+    def isRunning(self):
+        """ Report thread state
+        @return True if thread is running, False otherwise.
+        """
+        return self.active
