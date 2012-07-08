@@ -110,6 +110,12 @@ public:
     void stopAnimating(void);
     SbBool isAnimating(void) const;
 
+    void setSensitivity(float);
+    float getSensitivity() const;
+
+    void setResetCursorPosition(SbBool);
+    SbBool isResetCursorPosition() const;
+
     void setZoomInverted(SbBool);
     SbBool isZoomInverted() const;
     void setZoomStep(float);
@@ -172,6 +178,8 @@ protected:
     void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
     SbBool doSpin();
+    void moveCursorPosition();
+    void saveCursorPosition(const SoEvent * const ev);
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent * const ev);
@@ -192,6 +200,8 @@ protected:
     View3DInventorViewer* viewer;
     ViewerMode currentmode;
     SbVec2f lastmouseposition;
+    SbVec2s globalPos;
+    SbVec2s localPos;
     SbPlane panningplane;
     SbTime prevRedrawTime;
     SbTime centerTime;
