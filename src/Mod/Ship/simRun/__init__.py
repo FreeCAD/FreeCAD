@@ -34,3 +34,7 @@ import TaskPanel
 def load():
     """ Loads the tool """
     TaskPanel.createTask()
+
+def stop():
+    """ Stops the simulation """
+    TaskPanel.stopSimulation()

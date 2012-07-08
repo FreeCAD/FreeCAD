@@ -33,6 +33,8 @@ import SimInstance
 from shipUtils import Paths, Translator
 from Simulation import FreeCADShipSimulation as Sim
 
+import time
+
 class TaskPanel:
     def __init__(self):
         self.ui  = Paths.modulePath() + "/simRun/TaskPanel.ui"
@@ -184,3 +186,18 @@ def createTask():
         Gui.Control.closeDialog(panel)
         return None
     return panel
+
+def stopSimulation():
+    try:
+        simulator = Sim()
+        if not simulator.isRunning():
+            msg = Translator.translate("Simulation already stopped\n")
+            App.Console.PrintWarning(msg)
+            return
+    except:
+        msg = Translator.translate("Any active simulation to stop!\n")
+        App.Console.PrintError(msg)
+        return
+    simulator.stop()
+    msg = Translator.translate("Simulation will stop at the end of actual iteration\n")
+    App.Console.PrintMessage(msg)
