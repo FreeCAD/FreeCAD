@@ -36,12 +36,22 @@ class ShipWorkbench ( Workbench ):
         self.appendToolbar("Ship design",list)
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
         self.appendToolbar("Weights",list)
+        # Simulation stuff only if pyOpenCL & numpy are present
+        hasOpenCL = True
+        hasNumpy  = True
         try:
             import pyopencl
         except ImportError:
+            hasOpenCL = False
             msg = Translator.translate("pyOpenCL not installed, ship simulations disabled\n")
             App.Console.PrintWarning(msg)
-        else:
+        try:
+            import numpy
+        except ImportError:
+            hasNumpy = False
+            msg = Translator.translate("numpy not installed, ship simulations disabled\n")
+            App.Console.PrintWarning(msg)
+        if hasOpenCL and hasNumpy:
             list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
             self.appendToolbar("Simulation",list)
         
@@ -50,11 +60,7 @@ class ShipWorkbench ( Workbench ):
         self.appendMenu("Ship design",list)
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
         self.appendMenu("Weights",list)
-        try:
-            import pyopencl
-        except ImportError:
-            pass
-        else:
+        if hasOpenCL and hasNumpy:
             list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
             self.appendMenu("Simulation",list)
 
