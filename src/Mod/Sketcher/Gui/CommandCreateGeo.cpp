@@ -489,7 +489,7 @@ class DrawSketchHandlerLineSet: public DrawSketchHandler
 public:
     DrawSketchHandlerLineSet()
       : Mode(STATUS_SEEK_First),LineMode(LINE_MODE_Line),EditCurve(2),
-        firstCurve(-1),firstPoint(-1),previousCurve(-1),previousPoint(-1),
+        firstVertex(-1),firstCurve(-1),previousCurve(-1),previousPosId(-1),
         isTangent(false) {}
     virtual ~DrawSketchHandlerLineSet() {}
     /// mode table
@@ -625,11 +625,13 @@ public:
     {
         if (Mode==STATUS_SEEK_First) {
             // remember our first point
-            firstPoint = getHighestVertexIndex() + 1;
+            firstVertex = getHighestVertexIndex() + 1;
             firstCurve = getHighestCurveIndex() + 1;
             // TODO: here we should check if there is a preselected point
             // and set up a transition from the neighbouring segment.
-            // (peviousCurve, previousPoint, dirVec, isTangent)
+            // (peviousCurve, previousPosId, dirVec, isTangent)
+            // in that case we should set firstCurve and firstVertex to -1
+            // in order to disable closing the wire
             if (LineMode == LINE_MODE_Line)
                 EditCurve.resize(isTangent ? 3 : 2);
             else if (LineMode == LINE_MODE_Arc)
@@ -658,7 +660,7 @@ public:
                 sketchgui->drawEdit(EditCurve);
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
-            if (sketchgui->getPreselectPoint() == firstPoint)
+            if (sketchgui->getPreselectPoint() == firstVertex)
                 Mode = STATUS_Close;
             else
                 Mode = STATUS_Do;
@@ -672,7 +674,7 @@ public:
 
             if (LineMode == LINE_MODE_Line) {
                 // open the transaction
-                Gui::Command::openCommand("Add sketch wire");
+                Gui::Command::openCommand("Add line to sketch wire");
                 // issue the geometry
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
@@ -680,7 +682,7 @@ public:
                     EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
             }
             else if (LineMode == LINE_MODE_Arc) { // We're dealing with an Arc
-                Gui::Command::openCommand("Add sketch wire");
+                Gui::Command::openCommand("Add arc to sketch wire");
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
@@ -690,19 +692,26 @@ public:
             }
             // issue the constraint
             if (previousCurve != -1) {
-                int coincidentPoint = (LineMode == LINE_MODE_Arc && startAngle > endAngle) ? 2 : 1;
+                int lastCurve = previousCurve+1;
+                int lastStartPosId = (LineMode == LINE_MODE_Arc && startAngle > endAngle) ? 2 : 1;
+                int lastEndPosId = (LineMode == LINE_MODE_Arc && startAngle > endAngle) ? 1 : 2;
                 // in case of a tangency constraint, the coincident constraint is redundant
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
                     sketchgui->getObject()->getNameInDocument(),
                     isTangent ? "Tangent" : "Coincident",
-                    previousCurve, previousPoint /* == 2 */, previousCurve+1, coincidentPoint);
-                if (Mode == STATUS_Close)
+                    previousCurve, previousPosId /* == 2 */, lastCurve, lastStartPosId);
+                if (Mode == STATUS_Close) {
+                    int firstGeoId;
+                    Sketcher::PointPos firstPosId;
+                    sketchgui->getSketchObject()->getGeoVertexIndex(firstVertex, firstGeoId, firstPosId);
+                    //assert(firstCurve == firstGeoId);
                     // close the loop by constrain to the first curve point
                     Gui::Command::doCommand(Gui::Command::Doc,
                         "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) ",
                         sketchgui->getObject()->getNameInDocument(),
-                        previousCurve+1,coincidentPoint,firstCurve,firstPoint);
+                        lastCurve,lastEndPosId,firstCurve,firstPosId);
+                }
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
             }
@@ -742,7 +751,7 @@ public:
 
                 // remember the vertex for the next rounds constraint..
                 previousCurve = getHighestCurveIndex();
-                previousPoint = (LineMode == LINE_MODE_Arc && startAngle > endAngle) ? 1 : 2;
+                previousPosId = (LineMode == LINE_MODE_Arc && startAngle > endAngle) ? 1 : 2;
 
                 // setup for the next line segment
                 // Use updated endPoint as autoconstraints can modify the position
@@ -787,9 +796,9 @@ protected:
     SelectLineMode LineMode;
 
     std::vector<Base::Vector2D> EditCurve;
-    int firstPoint;
+    int firstVertex;
     int firstCurve;
-    int previousPoint;
+    int previousPosId;
     int previousCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 
