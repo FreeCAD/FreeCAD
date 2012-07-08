@@ -75,6 +75,7 @@ SketchObject::SketchObject()
     VLine->Construction = true;
     ExternalGeo.push_back(HLine);
     ExternalGeo.push_back(VLine);
+    rebuildVertexIndex();
 }
 
 SketchObject::~SketchObject()
@@ -1328,7 +1329,10 @@ void SketchObject::rebuildVertexIndex(void)
     const std::vector< Part::Geometry * > geometry = getCompleteGeometry();
     for (std::vector< Part::Geometry * >::const_iterator it = geometry.begin();
          it != geometry.end(); ++it) {
-        if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(start);
+        } else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
             VertexId2GeoId.push_back(i);
