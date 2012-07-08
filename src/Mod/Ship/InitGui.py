@@ -49,13 +49,13 @@ class ShipWorkbench ( Workbench ):
         list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
         self.appendMenu("Ship design",list)
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
-        self.appendToolbar("Weights",list)
+        self.appendMenu("Weights",list)
         try:
             import pyopencl
         except ImportError:
             pass
         else:
             list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
-            self.appendToolbar("Simulation",list)
+            self.appendMenu("Simulation",list)
 
 Gui.addWorkbench(ShipWorkbench())
