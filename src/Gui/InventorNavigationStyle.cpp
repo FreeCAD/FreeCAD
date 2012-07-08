@@ -279,6 +279,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         else if (this->currentmode == NavigationStyle::DRAGGING) {
             this->addToLog(event->getPosition(), event->getTime());
             this->spin(posn);
+            moveCursorPosition();
             processed = TRUE;
         }
     }
@@ -316,6 +317,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         break;
     case BUTTON1DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON3DOWN:

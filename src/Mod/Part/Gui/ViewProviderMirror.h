@@ -64,6 +64,7 @@ public:
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
     std::vector<App::DocumentObject*> claimChildren() const;
+    bool onDelete(const std::vector<std::string> &);
 
 protected:
     bool setEdit(int ModNum);
@@ -84,6 +85,7 @@ public:
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
     std::vector<App::DocumentObject*> claimChildren() const;
+    bool onDelete(const std::vector<std::string> &);
 
 protected:
     bool setEdit(int ModNum);
@@ -103,6 +105,7 @@ public:
 
     /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void)const;
+    bool onDelete(const std::vector<std::string> &);
 };
 
 } // namespace PartGui
