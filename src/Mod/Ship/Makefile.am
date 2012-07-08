@@ -44,6 +44,8 @@ nobase_data_DATA = \
 	Icons/SimCreateIco.xpm \
 	Icons/SimRunIco.png \
 	Icons/SimRunIco.xpm \
+	Icons/SimStopIco.png \
+	Icons/SimStopIco.xpm \
 	Icons/Tank.png \
 	Icons/Tank.xcf \
 	Icons/Tank.xpm \
