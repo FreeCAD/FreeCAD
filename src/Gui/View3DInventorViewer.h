@@ -231,7 +231,7 @@ public:
      * \a TRUE the reorientation is animated, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& rot);
+    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
     void setCameraType(SoType t);
     void moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms);
     /** 

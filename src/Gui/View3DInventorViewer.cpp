@@ -1309,9 +1309,9 @@ void View3DInventorViewer::pubSeekToPoint(const SbVec3f& pos)
     this->seekToPoint(pos);
 }
 
-void View3DInventorViewer::setCameraOrientation(const SbRotation& rot)
+void View3DInventorViewer::setCameraOrientation(const SbRotation& rot, SbBool moveTocenter)
 {
-    navigation->setCameraOrientation(rot);
+    navigation->setCameraOrientation(rot, moveTocenter);
 }
 
 void View3DInventorViewer::setCameraType(SoType t)

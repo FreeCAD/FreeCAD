@@ -127,7 +127,7 @@ public:
     void updateAnimation();
     void redraw();
 
-    void setCameraOrientation(const SbRotation& rot);
+    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
     void lookAtPoint(const SbVec3f&);
     void boxZoom(const SbBox2s& box);
     virtual void viewAll();
