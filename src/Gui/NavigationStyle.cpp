@@ -376,7 +376,7 @@ void NavigationStyle::lookAtPoint(const SbVec3f& pos)
     }
 }
 
-void NavigationStyle::setCameraOrientation(const SbRotation& rot)
+void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToCenter)
 {
     SoCamera* cam = viewer->getCamera();
     if (cam == 0) return;
@@ -387,16 +387,18 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot)
     PRIVATE(this)->focal1 = cam->position.getValue() +
                             cam->focalDistance.getValue() * direction;
     PRIVATE(this)->focal2 = PRIVATE(this)->focal1;
-    SoGetBoundingBoxAction action(viewer->getViewportRegion());
-    action.apply(viewer->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
-    if (!box.isEmpty()) {
-        rot.multVec(SbVec3f(0, 0, -1), direction);
-        //float s = (this->focal1 - box.getCenter()).dot(direction);
-        //this->focal2 = box.getCenter() + s * direction;
-        // setting the center of the overall bounding box as the future focal point
-        // seems to be a satisfactory solution
-        PRIVATE(this)->focal2 = box.getCenter();
+    if (moveToCenter) {
+        SoGetBoundingBoxAction action(viewer->getViewportRegion());
+        action.apply(viewer->getSceneGraph());
+        SbBox3f box = action.getBoundingBox();
+        if (!box.isEmpty()) {
+            rot.multVec(SbVec3f(0, 0, -1), direction);
+            //float s = (this->focal1 - box.getCenter()).dot(direction);
+            //this->focal2 = box.getCenter() + s * direction;
+            // setting the center of the overall bounding box as the future focal point
+            // seems to be a satisfactory solution
+            PRIVATE(this)->focal2 = box.getCenter();
+        }
     }
 
     // avoid to interfere with spinning (fixes #3101462)
