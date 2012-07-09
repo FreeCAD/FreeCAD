@@ -508,7 +508,7 @@ public:
 
     virtual void registerPressedKey(bool pressed, int key)
     {
-        if (key == SoKeyboardEvent::A && pressed) {
+        if (key == SoKeyboardEvent::A && pressed && previousCurve != -1) {
             if (LineMode != LINE_MODE_Arc) {
                 Base::Vector2D onSketchPos = EditCurve[isTangent ? 2 : 1];
                 LineMode = LINE_MODE_Arc;
@@ -559,7 +559,6 @@ public:
                 }
                 sketchgui->drawEdit(EditCurve);
                 if (!isTangent) {
-                    sugConstr2 = sugConstr1; // Copy the previously found constraints
                     if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
                         renderSuggestConstraintsCursor(sugConstr2);
                         return;
@@ -612,8 +611,8 @@ public:
                 EditCurve[31] = EditCurve[0];
 
                 sketchgui->drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f))) {
-                    renderSuggestConstraintsCursor(sugConstr3);
+                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
+                    renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
             }
@@ -739,7 +738,7 @@ public:
                 Gui::Command::updateActive();
 
                 // Add auto constraints
-                if (sugConstr1.size() > 0) {
+                if (sugConstr1.size() > 0) { // this is relevant only to the very first point
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
                     sugConstr1.clear();
                 }
@@ -800,7 +799,7 @@ protected:
     int firstCurve;
     int previousPosId;
     int previousCurve;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2;
 
     Base::Vector2D CenterPoint;
     Base::Vector3d dirVec;
