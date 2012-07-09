@@ -1327,8 +1327,10 @@ void SketchObject::rebuildVertexIndex(void)
     int imax=getHighestCurveIndex();
     int i=0;
     const std::vector< Part::Geometry * > geometry = getCompleteGeometry();
+    if (geometry.size() <= 2)
+        return;
     for (std::vector< Part::Geometry * >::const_iterator it = geometry.begin();
-         it != geometry.end(); ++it) {
+         it != geometry.end()-2; ++it) {
         if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
