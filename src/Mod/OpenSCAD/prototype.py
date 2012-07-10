@@ -476,12 +476,17 @@ class Node:
             else:
                 raise(NotImplementedError)
         elif namel == 'surface':
-            import os
-            scadstr = 'surface(file = "%s", center = %s );' % \
-                (self.arguments['file'], 'true' if self.arguments['center'] else 'false')
-            docname=os.path.split(self.arguments['file'])[1]
-            objname,extension = docname.split('.',1)
-            obj = openscadmesh(doc,scadstr,objname)
+            obj = doc.addObject("Part::Feature",namel) #include filename?
+            obj.Shape,xoff,yoff=makeSurfaceVolume(self.arguments['file'])
+            if self.arguments['center']:
+                center(obj,xoff,yoff,0.0)
+            return obj
+            #import os
+            #scadstr = 'surface(file = "%s", center = %s );' % \
+            #    (self.arguments['file'], 'true' if self.arguments['center'] else 'false')
+            #docname=os.path.split(self.arguments['file'])[1]
+            #objname,extension = docname.split('.',1)
+            #obj = openscadmesh(doc,scadstr,objname)
 
         elif namel in ['glide','hull']:
             raise(NotImplementedError)
