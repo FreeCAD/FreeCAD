@@ -32,6 +32,7 @@
 # include <gp_Circ.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRep_Tool.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
@@ -1226,15 +1227,17 @@ void SketchObject::rebuildExternalGeometry(void)
                     invPlm.multVec(p2,p2);
 
                     if (Base::Distance(p1,p2) < Precision::Confusion()) {
-                        std::string msg = SubElement + " perpendicular to the sketch plane cannot be used as external geometry";
-                        throw Base::Exception(msg.c_str());
+                        Base::Vector3d p = (p1 + p2) / 2;
+                        Part::GeomPoint* point = new Part::GeomPoint(p);
+                        point->Construction = true;
+                        ExternalGeo.push_back(point);
                     }
-
-                    Part::GeomLineSegment* line = new Part::GeomLineSegment();
-                    line->setPoints(p1,p2);
-
-                    line->Construction = true;
-                    ExternalGeo.push_back(line);
+                    else {
+                        Part::GeomLineSegment* line = new Part::GeomLineSegment();
+                        line->setPoints(p1,p2);
+                        line->Construction = true;
+                        ExternalGeo.push_back(line);
+                    }
                 }
                 else {
                     try {
@@ -1256,15 +1259,17 @@ void SketchObject::rebuildExternalGeometry(void)
                                     Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
 
                                     if (Base::Distance(p1,p2) < Precision::Confusion()) {
-                                        std::string msg = SubElement + " perpendicular to the sketch plane cannot be used as external geometry";
-                                        throw Base::Exception(msg.c_str());
+                                        Base::Vector3d p = (p1 + p2) / 2;
+                                        Part::GeomPoint* point = new Part::GeomPoint(p);
+                                        point->Construction = true;
+                                        ExternalGeo.push_back(point);
                                     }
-
-                                    Part::GeomLineSegment* line = new Part::GeomLineSegment();
-                                    line->setPoints(p1,p2);
-
-                                    line->Construction = true;
-                                    ExternalGeo.push_back(line);
+                                    else {
+                                        Part::GeomLineSegment* line = new Part::GeomLineSegment();
+                                        line->setPoints(p1,p2);
+                                        line->Construction = true;
+                                        ExternalGeo.push_back(line);
+                                    }
                                 }
                                 else if (curve.GetType() == GeomAbs_Circle) {
                                     gp_Circ c = curve.Circle();
@@ -1304,7 +1309,12 @@ void SketchObject::rebuildExternalGeometry(void)
             }
             break;
         case TopAbs_VERTEX:
-            throw Base::Exception("Vertices cannot be used as external geometry for sketches");
+            {
+                gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
+                Part::GeomPoint* point = new Part::GeomPoint(Base::Vector3d(p.X(),p.Y(),p.Z()));
+                point->Construction = true;
+                ExternalGeo.push_back(point);
+            }
             break;
         default:
             throw Base::Exception("Unknown type of geometry");
