@@ -11,7 +11,6 @@ data_DATA = \
 	    OpenSCADCommands.py \
 	    exportCSG.py \
 	    importCSG.py \
-	    prototype.py \
 	    tokrules.py \
 	    colorcodeshapes.py \
 	    expandplacements.py \
