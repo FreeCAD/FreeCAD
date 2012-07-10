@@ -149,26 +149,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckboxmultmatrixfeature">
-          <property name="toolTip">
-           <string>Debug: Register filetype to prototype importer</string>
-          </property>
-          <property name="text">
-           <string>Debug: Register filetype to prototype importer</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>debugRegisterPrototype</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/OpenSCAD</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3"/>
       </item>
      </layout>

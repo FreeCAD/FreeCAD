@@ -35,7 +35,6 @@
             <File Id="OpenSCADCommandspy" Name="OpenSCADCommands.py" DiskId="1" />
             <File Id="OpenSCADFeaturespy" Name="OpenSCADFeatures.py" DiskId="1" />
             <File Id="OpenSCADUtilspy" Name="OpenSCADUtils.py" DiskId="1" />
-            <File Id="prototypepy" Name="prototype.py" DiskId="1" />
             <File Id="replaceobjpy" Name="replaceobj.py" DiskId="1" />
             <File Id="tokrulespy" Name="tokrules.py" DiskId="1" />
         </Component>
