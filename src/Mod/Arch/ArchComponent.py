@@ -80,7 +80,7 @@ def removeFromComponent(compobject,subobject):
     it is added as a subtraction.'''
     if compobject == subobject: return
     found = False
-    attribs = ["Additions","Subtractions","Objects","Components","Base"]
+    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":

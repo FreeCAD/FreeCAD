@@ -110,6 +110,12 @@ class _Structure(ArchComponent.Component):
                     pts.extend(DraftGeomUtils.findIntersection(e1,e2))
         return pts
 
+    def getAxisPlacement(self,obj):
+        "returns an axis placement"
+        if obj.Axes:
+            return obj.Axes[0].Placement
+        return None
+
     def createGeometry(self,obj):
         import Part, DraftGeomUtils
         
@@ -174,22 +180,29 @@ class _Structure(ArchComponent.Component):
                         if not hole.Shape.isNull():
                             base = base.cut(hole.Shape)
                             hole.ViewObject.hide() # to be removed
+
+            # applying axes
             pts = self.getAxisPoints(obj)
+            apl = self.getAxisPlacement(obj)
             if pts:
                 fsh = []
                 for p in pts:
                     sh = base.copy()
+                    if apl:
+                        sh.Placement.Rotation = apl.Rotation
                     sh.translate(p)
                     fsh.append(sh)
                     obj.Shape = Part.makeCompound(fsh)
+
+            # finalizing
             else:
                 if base:
                     if not base.isNull():
                         base = base.removeSplitter()
                         obj.Shape = base
-            if not DraftGeomUtils.isNull(pl):
-                obj.Placement = pl
-
+                if not DraftGeomUtils.isNull(pl):
+                    obj.Placement = pl
+    
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
 
