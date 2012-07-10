@@ -75,6 +75,14 @@ def removeComponents(objectsList,host=None):
         objectsList = [objectsList]
     if host:
         if Draft.getType(host) in ["Wall","Structure"]:
+            if hasattr(host,"Axes"):
+                a = host.Axes
+                print a
+                for o in objectsList[:]:
+                    print o.Name
+                    if o in a:
+                        a.remove(o)
+                        objectsList.remove(o)
             s = host.Subtractions
             for o in objectsList:
                 if not o in s:
