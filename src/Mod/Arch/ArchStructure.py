@@ -86,6 +86,8 @@ class _Structure(ArchComponent.Component):
                         str(translate("Arch","Axes systems this structure is built on")))
         obj.addProperty("App::PropertyVector","Normal","Base",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
+        obj.addProperty("App::PropertyIntegerList","Exclude","Base",
+                        str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
         self.Type = "Structure"
         
     def execute(self,obj):
@@ -186,11 +188,14 @@ class _Structure(ArchComponent.Component):
             apl = self.getAxisPlacement(obj)
             if pts:
                 fsh = []
-                for p in pts:
+                for i in range(len(pts)):
+                    if hasattr(obj,"Exclude"):
+                        if i in obj.Exclude:
+                            continue
                     sh = base.copy()
                     if apl:
                         sh.Placement.Rotation = apl.Rotation
-                    sh.translate(p)
+                    sh.translate(pts[i])
                     fsh.append(sh)
                     obj.Shape = Part.makeCompound(fsh)
 
