@@ -930,13 +930,16 @@ bool Document::canClose ()
         return false;
     }
     else if (!Gui::Control().isAllowedAlterDocument()) {
-        QMessageBox::warning(getActiveView(),
-            QObject::tr("Document not closable"),
-            QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
-                        "You either have to finish or cancel the editing in the task panel."));
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        if (dlg) Gui::Control().showDialog(dlg);
-        return false;
+        std::string name = Gui::Control().activeDialog()->getDocumentName();
+        if (name == this->getDocument()->getName()) {
+            QMessageBox::warning(getActiveView(),
+                QObject::tr("Document not closable"),
+                QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
+                            "You either have to finish or cancel the editing in the task panel."));
+            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+            if (dlg) Gui::Control().showDialog(dlg);
+            return false;
+        }
     }
 
     if (!isModified())
