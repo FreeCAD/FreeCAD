@@ -33,6 +33,7 @@
 # include <QPointer>
 # include <QProcess>
 # include <sstream>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 #include <algorithm>
 
@@ -1176,16 +1177,27 @@ void StdCmdAlignment::activated(int iMsg)
     model.addGroups(groupMap);
     align->setModel(model);
     Base::Type style = Base::Type::fromName("Gui::CADNavigationStyle");
+    Base::Vector3d upDir(0,1,0), viewDir(0,0,-1);
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {
         View3DInventor* mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
         if (mdi) {
-            style = mdi->getViewer()->navigationStyle()->getTypeId();
+            View3DInventorViewer* viewer = mdi->getViewer();
+            SoCamera* camera = viewer->getCamera();
+            if (camera) {
+                SbVec3f up(0,1,0), dir(0,0,-1);
+                camera->orientation.getValue().multVec(dir, dir);
+                viewDir.Set(dir[0],dir[1],dir[2]);
+                camera->orientation.getValue().multVec(up, up);
+                upDir.Set(up[0],up[1],up[2]);
+            }
+            style = viewer->navigationStyle()->getTypeId();
         }
     }
 
     align->setMinPoints(1);
     align->startAlignment(style);
+    align->setViewingDirections(viewDir,upDir, viewDir,upDir);
     Gui::Selection().clearSelection();
 }
 
