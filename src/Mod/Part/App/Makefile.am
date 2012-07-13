@@ -14,6 +14,7 @@ BUILT_SOURCES=\
 		GeometryCurvePy.cpp \
 		GeometrySurfacePy.cpp \
 		LinePy.cpp \
+		PointPy.cpp \
 		BezierCurvePy.cpp \
 		BSplineCurvePy.cpp \
 		PlanePy.cpp \
@@ -53,6 +54,7 @@ libPart_la_BUILT=\
 		GeometryCurvePy.h \
 		GeometrySurfacePy.h \
 		LinePy.h \
+		PointPy.h \
 		BezierCurvePy.h \
 		BSplineCurvePy.h \
 		PlanePy.h \
@@ -94,6 +96,7 @@ libPart_la_SOURCES=\
 		GeometryCurvePyImp.cpp \
 		GeometrySurfacePyImp.cpp \
 		LinePyImp.cpp \
+		PointPyImp.cpp \
 		BezierCurvePyImp.cpp \
 		BSplineCurvePyImp.cpp \
 		PlanePyImp.cpp \
@@ -273,6 +276,7 @@ EXTRA_DIST = \
 		GeometryCurvePy.xml \
 		GeometrySurfacePy.xml \
 		LinePy.xml \
+		PointPy.xml \
 		BezierCurvePy.xml \
 		BSplineCurvePy.xml \
 		PlanePy.xml \
