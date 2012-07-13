@@ -150,7 +150,11 @@ const char* nameByType(Sketch::GeoType type)
 
 int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
-    if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
+    if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
+        const GeomPoint *point = dynamic_cast<const GeomPoint*>(geo);
+        // create the definition struct for that geom
+        return addPoint(*point, fixed);
+    } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = dynamic_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
@@ -174,24 +178,30 @@ void Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
         addGeometry(*it, fixed);
 }
 
-int Sketch::addPoint(const Base::Vector3d &newPoint, bool fixed)
+int Sketch::addPoint(const Part::GeomPoint &point, bool fixed)
 {
     std::vector<double *> &params = fixed ? FixParameters : Parameters;
 
+    // create our own copy
+    GeomPoint *p = static_cast<GeomPoint*>(point.clone());
+    // points in a sketch are always construction elements
+    p->Construction = true;
     // create the definition struct for that geom
     GeoDef def;
-    def.geo  = 0;
+    def.geo  = p;
     def.type = Point;
 
     // set the parameter for the solver
-    params.push_back(new double(newPoint.x));
-    params.push_back(new double(newPoint.y));
+    params.push_back(new double(p->getPoint().x));
+    params.push_back(new double(p->getPoint().y));
 
     // set the points for later constraints
     GCS::Point p1;
     p1.x = params[params.size()-2];
     p1.y = params[params.size()-1];
     def.startPointId = Points.size();
+    def.endPointId = Points.size();
+    def.midPointId = Points.size();
     Points.push_back(p1);
 
     // store complete set
@@ -393,7 +403,10 @@ Py::Tuple Sketch::getPyGeometry(void) const
     Py::Tuple tuple(Geoms.size());
     int i=0;
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
-        if (it->type == Line) {
+        if (it->type == Point) {
+            Base::Vector3d temp(*(Points[it->startPointId].x),*(Points[it->startPointId].y),0);
+            tuple[i] = Py::asObject(new VectorPy(temp));
+        } else if (it->type == Line) {
             GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo->clone());
             tuple[i] = Py::asObject(new LinePy(lineSeg));
         } else if (it->type == Arc) {
@@ -402,9 +415,6 @@ Py::Tuple Sketch::getPyGeometry(void) const
         } else if (it->type == Circle) {
             GeomCircle *circle = dynamic_cast<GeomCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new CirclePy(circle));
-        } else if (it->type == Point) {
-            Base::Vector3d temp(*(Points[Geoms[i].startPointId].x),*(Points[Geoms[i].startPointId].y),0);
-            tuple[i] = Py::asObject(new VectorPy(temp));
         } else if (it->type == Ellipse) {
             GeomEllipse *ellipse = dynamic_cast<GeomEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new EllipsePy(ellipse));
@@ -1517,7 +1527,13 @@ bool Sketch::updateGeometry()
     int i=0;
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
         try {
-            if (it->type == Line) {
+            if (it->type == Point) {
+                GeomPoint *point = dynamic_cast<GeomPoint*>(it->geo);
+                point->setPoint(Vector3d(*Points[it->startPointId].x,
+                                         *Points[it->startPointId].y,
+                                         0.0)
+                               );
+            } else if (it->type == Line) {
                 GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo);
                 lineSeg->setPoints(Vector3d(*Lines[it->index].p1.x,
                                             *Lines[it->index].p1.y,
@@ -1653,7 +1669,18 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         return -1;
     }
 
-    if (Geoms[geoId].type == Line) {
+    if (Geoms[geoId].type == Point) {
+        if (pos == start) {
+            GCS::Point &point = Points[Geoms[geoId].startPointId];
+            GCS::Point p0;
+            MoveParameters.resize(2); // px,py
+            p0.x = &MoveParameters[0];
+            p0.y = &MoveParameters[1];
+            *p0.x = *point.x;
+            *p0.y = *point.y;
+            GCSsys.addConstraintP2PCoincident(p0,point,-1);
+        }
+    } else if (Geoms[geoId].type == Line) {
         if (pos == start || pos == end) {
             MoveParameters.resize(2); // x,y
             GCS::Point p0;
@@ -1770,6 +1797,11 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
         for (int i=0; i < int(MoveParameters.size()-1); i+=2) {
             MoveParameters[i] = InitParameters[i] + toPoint.x;
             MoveParameters[i+1] = InitParameters[i+1] + toPoint.y;
+        }
+    } else if (Geoms[geoId].type == Point) {
+        if (pos == start) {
+            MoveParameters[0] = toPoint.x;
+            MoveParameters[1] = toPoint.y;
         }
     } else if (Geoms[geoId].type == Line) {
         if (pos == start || pos == end) {

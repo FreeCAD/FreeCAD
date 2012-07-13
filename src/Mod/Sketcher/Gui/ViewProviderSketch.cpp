@@ -137,7 +137,7 @@ struct EditData {
     CurvesMaterials(0),
     PointsCoordinate(0),
     CurvesCoordinate(0),
-    CurveSet(0),
+    CurveSet(0), EditCurveSet(0), RootCrossSet(0),
     PointSet(0)
     {}
 
@@ -159,12 +159,13 @@ struct EditData {
     bool blockedPreselection;
     bool FullyConstrained;
 
-    // pointer to the Solver
+    // instance of the solver
     Sketcher::Sketch ActSketch;
     // container to track our own selected parts
     std::set<int> SelPointSet;
     std::set<int> SelCurvSet; // also holds cross axes at -1 and -2
     std::set<int> SelConstraintSet;
+    std::vector<int> CurvIdToGeoId; // conversion of SoLineSet index to GeoId
 
     // helper data structure for the constraint rendering
     std::vector<ConstraintType> vConstrType;
@@ -280,6 +281,11 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                 return true;
             }
             return false;
+        }
+    default:
+        {
+            if (edit && edit->sketchHandler)
+                edit->sketchHandler->registerPressedKey(pressed,key);
         }
     }
 
@@ -610,16 +616,16 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                             Gui::MenuItem *geom = new Gui::MenuItem();
                             geom->setCommand("Sketcher geoms");
-                            *geom /*<< "Sketcher_CreatePoint"*/
-                                << "Sketcher_CreateArc"
-                                << "Sketcher_CreateCircle"
-                                << "Sketcher_CreateLine"
-                                << "Sketcher_CreatePolyline"
-                                << "Sketcher_CreateRectangle"
-                                << "Sketcher_CreateFillet"
-                                << "Sketcher_Trimming"
-                                << "Sketcher_External"
-                                << "Sketcher_ToggleConstruction"
+                            *geom << "Sketcher_CreatePoint"
+                                  << "Sketcher_CreateArc"
+                                  << "Sketcher_CreateCircle"
+                                  << "Sketcher_CreateLine"
+                                  << "Sketcher_CreatePolyline"
+                                  << "Sketcher_CreateRectangle"
+                                  << "Sketcher_CreateFillet"
+                                  << "Sketcher_Trimming"
+                                  << "Sketcher_External"
+                                  << "Sketcher_ToggleConstruction"
                                 /*<< "Sketcher_CreateText"*/
                                 /*<< "Sketcher_CreateDraftLine"*/;
 
@@ -748,8 +754,8 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
     bool preselectChanged;
     if (Mode!=STATUS_SKETCH_DragPoint && Mode!=STATUS_SKETCH_DragCurve &&
         Mode!=STATUS_SKETCH_DragConstraint) {
-        int PtIndex,CurvIndex,ConstrIndex,CrossIndex;
-        preselectChanged = detectPreselection(pp,PtIndex,CurvIndex,ConstrIndex,CrossIndex);
+        int PtIndex,GeoIndex,ConstrIndex,CrossIndex;
+        preselectChanged = detectPreselection(pp,PtIndex,GeoIndex,ConstrIndex,CrossIndex);
     }
 
     switch (Mode) {
@@ -1179,12 +1185,12 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtIndex, int &CurvIndex, int &ConstrIndex, int &CrossIndex)
+bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtIndex, int &GeoIndex, int &ConstrIndex, int &CrossIndex)
 {
     assert(edit);
 
     PtIndex = -1;
-    CurvIndex = -1; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
+    GeoIndex = -1; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
     CrossIndex = -1;
     ConstrIndex = -1;
 
@@ -1208,12 +1214,8 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                 const SoDetail *curve_detail = Point->getDetail(edit->CurveSet);
                 if (curve_detail && curve_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
                     // get the index
-                    CurvIndex = static_cast<const SoLineDetail *>(curve_detail)->getLineIndex();
-                    int maxGeoId = getSketchObject()->getHighestCurveIndex();
-                    if (CurvIndex > maxGeoId) { // hit on external geometry
-                        int extGeoCount = getSketchObject()->getExternalGeometryCount();
-                        CurvIndex = -extGeoCount + (CurvIndex - maxGeoId - 1);
-                    }
+                    int CurvIndex = static_cast<const SoLineDetail *>(curve_detail)->getLineIndex();
+                    GeoIndex = edit->CurvIdToGeoId[CurvIndex];
                 }
             // checking for a hit in the cross
             } else if (tail == edit->RootCrossSet) {
@@ -1254,12 +1256,12 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if (CurvIndex != -1 && CurvIndex != edit->PreselectCurve) {  // if a new curve is hit
+        } else if (GeoIndex != -1 && GeoIndex != edit->PreselectCurve) {  // if a new curve is hit
             std::stringstream ss;
-            if (CurvIndex >= 0)
-                ss << "Edge" << CurvIndex;
+            if (GeoIndex >= 0)
+                ss << "Edge" << GeoIndex;
             else // external geometry
-                ss << "ExternalEdge" << -CurvIndex - 3; // convert index start from -3 to 0
+                ss << "ExternalEdge" << -GeoIndex - 3; // convert index start from -3 to 0
             bool accepted =
             Gui::Selection().setPreselect(getSketchObject()->getDocument()->getName()
                                          ,getSketchObject()->getNameInDocument()
@@ -1270,7 +1272,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
             edit->blockedPreselection = !accepted;
             if (accepted) {
                 resetPreselectPoint();
-                edit->PreselectCurve = CurvIndex;
+                edit->PreselectCurve = GeoIndex;
                 edit->PreselectCross = -1;
                 edit->PreselectConstraint = -1;
                 if (edit->sketchHandler)
@@ -1321,7 +1323,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if ((PtIndex == -1 && CurvIndex == -1 && CrossIndex == -1 && ConstrIndex == -1) &&
+        } else if ((PtIndex == -1 && GeoIndex == -1 && CrossIndex == -1 && ConstrIndex == -1) &&
                    (edit->PreselectPoint != -1 || edit->PreselectCurve != -1 || edit->PreselectCross != -1
                     || edit->PreselectConstraint != -1 || edit->blockedPreselection)) {
             // we have just left a preselection
@@ -1379,7 +1381,7 @@ void ViewProviderSketch::updateColor(void)
     int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
     int extGeoCount = getSketchObject()->getExternalGeometryCount();
     for (int  i=0; i < CurvNum; i++) {
-        int GeoId = (i < intGeoCount) ? i : -(extGeoCount - (i - intGeoCount));
+        int GeoId = edit->CurvIdToGeoId[i];
         if (edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end())
             color[i] = SelectColor;
         else if (edit->PreselectCurve == GeoId)
@@ -1624,8 +1626,16 @@ void ViewProviderSketch::draw(bool temp)
     assert(int(geomlist->size()) == extGeoCount + intGeoCount);
     assert(int(geomlist->size()) >= 2);
 
-    for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end()-2; ++it) {
-        if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // add a line
+    edit->CurvIdToGeoId.clear();
+    int GeoId = 0;
+    for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end()-2; ++it, GeoId++) {
+        if (GeoId >= intGeoCount)
+            GeoId = -extGeoCount;
+        if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) { // add a point
+            const Part::GeomPoint *point = dynamic_cast<const Part::GeomPoint *>(*it);
+            Points.push_back(point->getPoint());
+        }
+        else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // add a line
             const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(*it);
             // create the definition struct for that geom
             Coords.push_back(lineSeg->getStartPoint());
@@ -1633,6 +1643,7 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(lineSeg->getStartPoint());
             Points.push_back(lineSeg->getEndPoint());
             Index.push_back(2);
+            edit->CurvIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { // add a circle
             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(*it);
@@ -1650,6 +1661,7 @@ void ViewProviderSketch::draw(bool temp)
             Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 
             Index.push_back(countSegments+1);
+            edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) { // add an arc
@@ -1680,6 +1692,7 @@ void ViewProviderSketch::draw(bool temp)
             Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 
             Index.push_back(countSegments+1);
+            edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(center);
             Points.push_back(start);
             Points.push_back(end);
@@ -1713,6 +1726,7 @@ void ViewProviderSketch::draw(bool temp)
             }
 
             Index.push_back(countSegments+1);
+            edit->CurvIdToGeoId.push_back(GeoId);
         }
         else {
             ;
