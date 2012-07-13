@@ -34,6 +34,7 @@ generate_from_xml(GeometryPy)
 generate_from_xml(GeometryCurvePy)
 generate_from_xml(GeometrySurfacePy)
 generate_from_xml(LinePy)
+generate_from_xml(PointPy)
 generate_from_xml(BezierCurvePy)
 generate_from_xml(BSplineCurvePy)
 generate_from_xml(PlanePy)
@@ -154,6 +155,8 @@ SET(Python_SRCS
     GeometrySurfacePyImp.cpp
     LinePy.xml
     LinePyImp.cpp
+    PointPy.xml
+    PointPyImp.cpp
     BezierCurvePy.xml
     BezierCurvePyImp.cpp
     BSplineCurvePy.xml
