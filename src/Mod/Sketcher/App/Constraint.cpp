@@ -51,7 +51,8 @@ Constraint::Constraint()
   SecondPos(none),
   Third(GeoUndef),
   ThirdPos(none),
-  LabelDistance(10.f)
+  LabelDistance(10.f),
+  LabelPosition(0.f)
 {
 }
 
@@ -65,7 +66,8 @@ Constraint::Constraint(const Constraint& from)
   SecondPos(from.SecondPos),
   Third(from.Third),
   ThirdPos(from.ThirdPos),
-  LabelDistance(from.LabelDistance)
+  LabelDistance(from.LabelDistance),
+  LabelPosition(from.LabelPosition)
 {
 }
 
@@ -100,7 +102,8 @@ void Constraint::Save (Writer &writer) const
     << "SecondPos=\""     <<  (int) SecondPos << "\" "
     << "Third=\""         <<  Third           << "\" "
     << "ThirdPos=\""      <<  (int) ThirdPos  << "\" "
-    << "LabelDistance=\"" <<  LabelDistance<< "\" />"
+    << "LabelDistance=\"" <<  LabelDistance   << "\" "
+    << "LabelPosition=\"" <<  LabelPosition   << "\" />"
     << std::endl;
 }
 
@@ -123,4 +126,7 @@ void Constraint::Restore(XMLReader &reader)
     // Read the distance a constraint label has been moved
     if (reader.hasAttribute("LabelDistance"))
         LabelDistance = (float)reader.getAttributeAsFloat("LabelDistance");
+
+    if (reader.hasAttribute("LabelPosition"))
+        LabelPosition = (float)reader.getAttributeAsFloat("LabelPosition");
 }

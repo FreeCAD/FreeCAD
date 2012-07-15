@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011                                                    *
+ *   Copyright (c) 2011-2012 Luke Parry <l.parry@warwick.ac.uk>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,6 +45,7 @@
 # include <math.h>
 #endif
 
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -73,11 +74,23 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_CONSTRUCTOR(SoDatumLabel);
     SO_NODE_ADD_FIELD(string, (""));
     SO_NODE_ADD_FIELD(textColor, (SbVec3f(1.0f,1.0f,1.0f)));
-    SO_NODE_ADD_FIELD(name, ("Helvetica"));
-    SO_NODE_ADD_FIELD(size, (12));
+    SO_NODE_ADD_FIELD(pnts, (SbVec3f(.0f,.0f,.0f)));
 
-    this->bbx = 0;
-    this->bby = 0;
+    SO_NODE_ADD_FIELD(name, ("Helvetica"));
+    SO_NODE_ADD_FIELD(size, (12.f));
+    SO_NODE_ADD_FIELD(lineWidth, (2.f));
+
+    SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
+
+    SO_NODE_DEFINE_ENUM_VALUE(Type, DISTANCE);
+    SO_NODE_DEFINE_ENUM_VALUE(Type, DISTANCEX);
+    SO_NODE_DEFINE_ENUM_VALUE(Type, DISTANCEY);
+    SO_NODE_DEFINE_ENUM_VALUE(Type, ANGLE);
+    SO_NODE_DEFINE_ENUM_VALUE(Type, RADIUS);
+    SO_NODE_SET_SF_ENUM_TYPE(datumtype, Type);
+
+    this->imgWidth = 0;
+    this->imgHeight = 0;
 }
 
 void SoDatumLabel::drawImage()
@@ -123,103 +136,199 @@ void SoDatumLabel::drawImage()
 
 void SoDatumLabel::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
 {
-    SbVec2s size;
-    int nc;
-
-    const unsigned char * dataptr = this->image.getValue(size, nc);
-    if (dataptr == NULL) {
-        box.setBounds(SbVec3f(0,0,0), SbVec3f(0,0,0));
-        center.setValue(0.0f,0.0f,0.0f);
-        return;
-    }
-
-    float srcw = size[0];
-    float srch = size[1];
-
-    float height, width;
-
-    if(action->getTypeId() == SoGLRenderAction::getClassTypeId()) {
-         // Update using the GL state
-        SoState *state =  action->getState();
-        float srcw = size[0];
-        float srch = size[1];
-
-        const SbViewVolume & vv = SoViewVolumeElement::get(state);
-        float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.5f);
-
-        float aspectRatio =  (float) srcw / (float) srch;
-        float height = scale / (float) srch;
-        float width  = aspectRatio * (float) height;
-
-        // Update stored values
-        this->bbx = width;
-        this->bby = height;
-    } else {
-        // Update Primitives using stored dimensions
-        width = this->bbx;
-        height = this->bby;
-    }
-
-    SbVec3f min (-width / 2, -height / 2, 0.f);
-    SbVec3f max (width  / 2, height  / 2, 0.f);
-    box.setBounds(min, max);
-    center.setValue(0.f,0.f,0.f);
+    // Set the bounding box using stored parameters
+    box.setBounds(this->bbox.getMin(),this->bbox.getMax() );
+    SbVec3f bbcenter = this->bbox.getCenter();
+    center.setValue(bbcenter[0], bbcenter[1], bbcenter[2]);
 }
 
 void SoDatumLabel::generatePrimitives(SoAction * action)
 {
-    // Get the size
-    SbVec2s size;
-    int nc;
 
-    const unsigned char * dataptr = this->image.getValue(size, nc);
-    if (dataptr == NULL)
-        return;
-    
-    float width, height;
+    // Initialisation check (needs something more sensible) prevents an infinite loop bug
+    if(this->imgHeight <= FLT_EPSILON || this->imgWidth <= FLT_EPSILON)
+      return;
 
-    if (action->getTypeId() == SoGLRenderAction::getClassTypeId()) {
-         // Update using the GL state
-        SoState *state =  action->getState();
-        float srcw = size[0];
-        float srch = size[1];
+    // Get the points stored
+    const SbVec3f *pnts = this->pnts.getValues(0);
+    SbVec3f p1 = pnts[0];
+    SbVec3f p2 = pnts[1];
 
-        const SbViewVolume & vv = SoViewVolumeElement::get(state);
-        float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.5f);
+    float offsetX, offsetY;
 
-        float aspectRatio =  (float) srcw / (float) srch;
-        float height = scale / (float) srch;
-        float width  = aspectRatio * (float) height;
+    // Change the offset and bounding box parameters depending on Datum Type
+    if(this->datumtype.getValue() == DISTANCE || this->datumtype.getValue() == DISTANCEX || this->datumtype.getValue() == DISTANCEY ){
 
-        // Update stored dimensions
-        this->bbx = width;
-        this->bby = height;
-    } else {
-        // Update Primitives using stored dimensions
-        width = this->bbx;
-        height = this->bby;
+        float length = this->param1.getValue();
+        float length2 = this->param2.getValue();
+        SbVec3f dir, norm;
+        if (this->datumtype.getValue() == DISTANCE) {
+            dir = (p2-p1);
+        } else if (this->datumtype.getValue() == DISTANCEX) {
+            dir = SbVec3f( (p2[0] - p1[0] >= FLT_EPSILON) ? 1 : -1, 0, 0);
+        } else if (this->datumtype.getValue() == DISTANCEY) {
+            dir = SbVec3f(0, (p2[1] - p1[1] >= FLT_EPSILON) ? 1 : -1, 0);
+        }
+
+        dir.normalize();
+        norm = SbVec3f (-dir[1],dir[0],0);
+
+        float normproj12 = (p2-p1).dot(norm);
+        SbVec3f p1_ = p1 + normproj12 * norm;
+
+        SbVec3f midpos = (p1_ + p2)/2;
+        // Get magnitude of angle between horizontal
+        float angle = atan2f(dir[1],dir[0]);
+
+        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+        // Rotate through an angle
+        float s = sin(angle);
+        float c = cos(angle);
+
+        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
+        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f); 
+        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
+        img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
+
+        SbVec3f textOffset = midpos + norm * length + dir * length2;
+
+        img1 += textOffset;
+        img2 += textOffset;
+        img3 += textOffset;
+        img4 += textOffset;
+
+        // Primitive Shape is only for text as this should only be selectable
+        SoPrimitiveVertex pv;
+
+        this->beginShape(action, QUADS);
+
+        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+        // Set coordinates
+        pv.setPoint( img1 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img2 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img3 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img4 );
+        shapeVertex(&pv);
+
+        this->endShape();
+
+    } else if (this->datumtype.getValue() == RADIUS) {
+
+        SbVec3f dir = (p2-p1);
+        dir.normalize();
+        SbVec3f norm (-dir[1],dir[0],0);
+
+        float length = this->param1.getValue();
+        SbVec3f pos = p2 + length*dir;
+
+        float angle = atan2f(dir[1],dir[0]);
+
+        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+        // Rotate through an angle
+        float s = sin(angle);
+        float c = cos(angle);
+
+        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
+        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
+        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
+        img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
+
+        SbVec3f textOffset = pos;
+
+        img1 += textOffset;
+        img2 += textOffset;
+        img3 += textOffset;
+        img4 += textOffset;
+
+        // Primitive Shape is only for text as this should only be selectable
+        SoPrimitiveVertex pv;
+
+        this->beginShape(action, QUADS);
+
+        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+        // Set coordinates
+        pv.setPoint( img1 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img2 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img3 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img4 );
+        shapeVertex(&pv);
+
+        this->endShape();
+      } else if (this->datumtype.getValue() == ANGLE) {
+
+        // Only the angle intersection point is needed
+        SbVec3f p0 = pnts[0];
+
+        // Load the Paramaters
+        float length     = this->param1.getValue();
+        float startangle = this->param2.getValue();
+        float range      = this->param3.getValue();
+        float endangle   = startangle + range;
+
+        float r = 2*length;
+
+        // Useful Information
+        // v0 - vector for text position
+        // p0 - vector for angle intersect
+        SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
+
+        SbVec3f textOffset = p0 + v0 * r;
+
+        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+        img1 += textOffset;
+        img2 += textOffset;
+        img3 += textOffset;
+        img4 += textOffset;
+
+        // Primitive Shape is only for text as this should only be selectable
+        SoPrimitiveVertex pv;
+
+        this->beginShape(action, QUADS);
+
+        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+        // Set coordinates
+        pv.setPoint( img1 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img2 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img3 );
+        shapeVertex(&pv);
+
+        pv.setPoint( img4 );
+        shapeVertex(&pv);
+
+        this->endShape();
     }
 
-    SoPrimitiveVertex pv;
-
-    beginShape(action, QUADS);
-
-    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-    // Set coordinates
-    pv.setPoint( SbVec3f(-width / 2, height / 2, 0.f) );
-    shapeVertex(&pv);
-
-    pv.setPoint( SbVec3f(-width / 2, -height / 2, 0.f) );
-    shapeVertex(&pv);
-
-    pv.setPoint( SbVec3f(width / 2, -height / 2, 0.f) );
-    shapeVertex(&pv);
-    
-    pv.setPoint( SbVec3f(width / 2, height / 2, 0.f) );
-    shapeVertex(&pv);
-
-    endShape();
 }
 
 void SoDatumLabel::GLRender(SoGLRenderAction * action)
@@ -239,13 +348,384 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     int srcw = size[0];
     int srch = size[1];
 
+    // Create the quad to hold texture
+    const SbViewVolume & vv = SoViewVolumeElement::get(state);
+    float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.4f);
+
+    float aspectRatio =  (float) srcw / (float) srch;
+    this->imgHeight = scale / (float) srch;
+    this->imgWidth  = aspectRatio * (float) this->imgHeight;
+
+
+    // Get the points stored
+    const SbVec3f *pnts = this->pnts.getValues(0);
+
     state->push();
 
+    //Set General OpenGL Properties
     glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
+
+    //Enable Anti-alias
+    if(action->isSmoothing())
+    {
+      glEnable(GL_LINE_SMOOTH);
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+      glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
+    }
+    // Position for Datum Text Label
+    float offsetX, offsetY, angle;
+
+    SbVec3f textOffset;
+    if(this->datumtype.getValue() == DISTANCE || this->datumtype.getValue() == DISTANCEX || this->datumtype.getValue() == DISTANCEY )
+        {
+        float length = this->param1.getValue();
+        float length2 = this->param2.getValue();
+        const SbVec3f *pnts = this->pnts.getValues(0);
+
+        SbVec3f p1 = pnts[0];
+        SbVec3f p2 = pnts[1];
+
+        SbVec3f dir, norm;
+        if (this->datumtype.getValue() == DISTANCE) {
+            dir = (p2-p1);
+        } else if (this->datumtype.getValue() == DISTANCEX) {
+            dir = SbVec3f( (p2[0] - p1[0] >= FLT_EPSILON) ? 1 : -1, 0, 0);
+        } else if (this->datumtype.getValue() == DISTANCEY) {
+            dir = SbVec3f(0, (p2[1] - p1[1] >= FLT_EPSILON) ? 1 : -1, 0);
+        }
+
+        dir.normalize();
+        norm = SbVec3f (-dir[1],dir[0],0);
+
+        // when the datum line is not parallel to p1-p2 the projection of
+        // p1-p2 on norm is not zero, p2 is considered as reference and p1
+        // is replaced by its projection p1_
+        float normproj12 = (p2-p1).dot(norm);
+        SbVec3f p1_ = p1 + normproj12 * norm;
+
+        SbVec3f midpos = (p1_ + p2)/2;
+
+        float offset1 = (length + normproj12 < 0) ? -0.02  : 0.02;
+        float offset2 = (length < 0) ? -0.02  : 0.02;
+
+        // Get magnitude of angle between horizontal
+        angle = atan2f(dir[1],dir[0]);
+        bool flip=false;
+        if (angle > M_PI_2+M_PI/12) {
+            angle -= M_PI;
+            flip = true;
+        } else if (angle <= -M_PI_2+M_PI/12) {
+            angle += M_PI;
+            flip = true;
+        }
+
+        textOffset = midpos + norm * length + dir * length2;
+
+        // Get the colour
+        const SbColor& t = textColor.getValue();
+
+        // Set GL Properties
+        glLineWidth(this->lineWidth.getValue());
+        glColor3f(t[0], t[1], t[2]);
+        float margin = 0.01f;
+        margin *= scale;
+
+        SbVec3f perp1 = p1_ + norm * (length + offset1 * scale);
+        SbVec3f perp2 = p2  + norm * (length + offset2 * scale);
+
+        // Calculate the coordinates for the parallel datum lines
+        SbVec3f par1 = p1_ + norm * length;
+        SbVec3f par2 = midpos + norm * length + dir * (length2 - this->imgWidth / 2 - margin);
+        SbVec3f par3 = midpos + norm * length + dir * (length2 + this->imgWidth / 2 + margin);
+        SbVec3f par4 = p2  + norm * length;
+
+        bool flipTriang = false;
+
+        if ((par3-par1).dot(dir) > (par4 - par1).length()) {
+            // Increase Margin to improve visability
+            float tmpMargin = 0.08f * scale;
+            par3 = par4;
+            if((par2-par1).dot(dir) > (par4 - par1).length()) {
+                par3 = par2;
+                par2 = par1 - dir * tmpMargin;
+                flipTriang = true;
+            }
+        } else if ((par2-par1).dot(dir) < 0.f) {
+            float tmpMargin = 0.08f * scale;
+            par2 = par1;
+            if((par3-par1).dot(dir) < 0.f) {
+                par2 = par3;
+                par3 = par4 + dir * tmpMargin;
+                flipTriang = true;
+            }
+        }
+        // Perp Lines
+        glBegin(GL_LINES);
+        glVertex2f(p1[0], p1[1]);
+        glVertex2f(perp1[0], perp1[1]);
+
+        glVertex2f(p2[0], p2[1]);
+        glVertex2f(perp2[0], perp2[1]);
+
+        glVertex2f(par1[0], par1[1]);
+        glVertex2f(par2[0], par2[1]);
+
+        glVertex2f(par3[0], par3[1]);
+        glVertex2f(par4[0], par4[1]);
+        glEnd();
+
+        SbVec3f ar1 = par1 + ((flipTriang) ? -1 : 1) * dir * 0.866 * 2 * margin;
+        SbVec3f ar2 = ar1 + norm * margin;
+                ar1 -= norm * margin;
+
+        SbVec3f ar3 = par4 - ((flipTriang) ? -1 : 1) * dir * 0.866 * 2 * margin;
+        SbVec3f ar4 = ar3 + norm * margin ;
+                ar3 -= norm * margin;
+
+        //Draw a pretty arrowhead (Equilateral) (Eventually could be improved to other shapes?)
+        glBegin(GL_TRIANGLES);
+          glVertex2f(par1[0], par1[1]);
+          glVertex2f(ar1[0], ar1[1]);
+          glVertex2f(ar2[0], ar2[1]);
+
+          glVertex2f(par4[0], par4[1]);
+          glVertex2f(ar3[0], ar3[1]);
+          glVertex2f(ar4[0], ar4[1]);
+        glEnd();
+
+        // BOUNDING BOX CALCULATION - IMPORTANT
+        // Finds the mins and maxes
+        std::vector<SbVec3f> corners;
+        corners.push_back(p1);
+        corners.push_back(p2);
+        corners.push_back(perp1);
+        corners.push_back(perp2);
+
+        float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
+        for (std::vector<SbVec3f>::const_iterator it=corners.begin(); it != corners.end(); ++it) {
+            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
+            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
+            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
+            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        }
+        //Store the bounding box
+        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
+
+    } else if (this->datumtype.getValue() == RADIUS) {
+        // Get the Points
+        SbVec3f p1 = pnts[0];
+        SbVec3f p2 = pnts[1];
+        
+        SbVec3f dir = (p2-p1);
+        dir.normalize();
+        SbVec3f norm (-dir[1],dir[0],0);
+
+        float length = this->param1.getValue();
+        SbVec3f pos = p2 + length*dir;
+
+        // Get magnitude of angle between horizontal
+        angle = atan2f(dir[1],dir[0]);
+        bool flip=false;
+        if (angle > M_PI_2+M_PI/12) {
+            angle -= M_PI;
+            flip = true;
+        } else if (angle <= -M_PI_2+M_PI/12) {
+            angle += M_PI;
+            flip = true;
+        }
+
+        textOffset = pos;
+
+          // Get the colour
+        const SbColor& t = textColor.getValue();
+
+        // Set GL Properties
+        glLineWidth(this->lineWidth.getValue());
+        glColor3f(t[0], t[1], t[2]);
+
+        float margin = 0.01f;
+        margin *= scale;
+
+        // Create the arrowhead
+        SbVec3f ar0  = p2;
+        SbVec3f ar1  = p2 - dir * 0.866 * 2 * margin;
+        SbVec3f ar2  = ar1 + norm * margin;
+        ar1 -= norm * margin;
+
+        SbVec3f p3 = pos +  dir * (this->imgWidth / 2 + margin);
+        if ((p3-p1).length() > (p2-p1).length())
+        p2 = p3;
+
+        // Calculate the points
+        SbVec3f pnt1 = pos - dir * (margin + this->imgWidth / 2);
+        SbVec3f pnt2 = pos + dir * (margin + this->imgWidth / 2);
+
+        // Draw the Lines
+        glBegin(GL_LINES);
+        glVertex2f(p1[0], p1[1]);
+        glVertex2f(pnt1[0], pnt1[1]);
+
+        glVertex2f(pnt2[0], pnt2[1]);
+        glVertex2f(p2[0], p2[1]);
+        glEnd();
+
+        glBegin(GL_TRIANGLES);
+          glVertex2f(ar0[0], ar0[1]);
+          glVertex2f(ar1[0], ar1[1]);
+          glVertex2f(ar2[0], ar2[1]);
+        glEnd();
+        // BOUNDING BOX CALCULATION - IMPORTANT
+        // Finds the mins and maxes
+        std::vector<SbVec3f> corners;
+        corners.push_back(p1);
+        corners.push_back(p2);
+        corners.push_back(pnt1);
+        corners.push_back(pnt2);
+
+        float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
+        for (std::vector<SbVec3f>::const_iterator it=corners.begin(); it != corners.end(); ++it) {
+            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
+            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
+            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
+            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        }
+        //Store the bounding box
+        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
+    } else if (this->datumtype.getValue() == ANGLE) {
+        // Only the angle intersection point is needed
+        SbVec3f p0 = pnts[0];
+
+        // Load the Paramaters
+        float length     = this->param1.getValue();
+        float startangle = this->param2.getValue();
+        float range      = this->param3.getValue();
+        float endangle   = startangle + range;
+
+        
+        float r = 2*length;
+
+        // Set the Text label angle to zero
+        angle = 0.f;
+
+        // Useful Information
+        // v0 - vector for text position
+        // p0 - vector for angle intersect
+        SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
+
+        // leave some space for the text
+        if (range >= 0)
+            range = std::max(0.2f*range, range - this->imgWidth/(2*r));
+        else
+            range = std::min(0.2f*range, range + this->imgWidth/(2*r));
+
+        int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+        double segment = range / (2*countSegments-2);
+
+        textOffset = p0 + v0 * r;
+
+        float margin = 0.01f;
+        margin *= scale;
+
+          // Get the colour
+        const SbColor& t = textColor.getValue();
+
+        // Set GL Properties
+        glLineWidth(this->lineWidth.getValue());
+        glColor3f(t[0], t[1], t[2]);
+
+        // Draw
+        glBegin(GL_LINE_STRIP);
+
+        int i=0;
+
+        for (; i < countSegments; i++) {
+            double theta = startangle + segment*i;
+            SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
+            glVertex2f(v1[0],v1[1]);
+        }
+        glEnd();
+
+        glBegin(GL_LINE_STRIP);
+        i=0;
+        for (; i < countSegments; i++) {
+            double theta = endangle - segment*i;
+            SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
+            glVertex2f(v1[0],v1[1]);
+        }
+        glEnd();
+
+        // Direction vectors for start and end lines
+        SbVec3f v1(cos(startangle),sin(startangle),0);
+        SbVec3f v2(cos(endangle),sin(endangle),0);
+
+        SbVec3f pnt1 = p0+(r-margin)*v1;
+        SbVec3f pnt2 = p0+(r+margin)*v1;
+        SbVec3f pnt3 = p0+(r-margin)*v2;
+        SbVec3f pnt4 = p0+(r+margin)*v2;
+
+        glBegin(GL_LINES);
+        glVertex2f(pnt1[0],pnt1[1]);
+        glVertex2f(pnt2[0],pnt2[1]);
+
+        glVertex2f(pnt3[0],pnt3[1]);
+        glVertex2f(pnt4[0],pnt4[1]);
+        glEnd();
+
+        // BOUNDING BOX CALCULATION - IMPORTANT
+        // Finds the mins and maxes
+        // We may need to include the text position too
+
+        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+        img1 += textOffset;
+        img2 += textOffset;
+        img3 += textOffset;
+        img4 += textOffset;
+
+        std::vector<SbVec3f> corners;
+        corners.push_back(pnt1);
+        corners.push_back(pnt2);
+        corners.push_back(pnt3);
+        corners.push_back(pnt4);
+        corners.push_back(img1);
+        corners.push_back(img2);
+        corners.push_back(img3);
+        corners.push_back(img4);
+
+        float minX = pnt1[0], minY = pnt1[1], maxX = pnt1[0] , maxY = pnt1[1];
+        for (std::vector<SbVec3f>::const_iterator it=corners.begin(); it != corners.end(); ++it) {
+            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
+            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
+            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
+            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        }
+        //Store the bounding box
+        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
+
+    }
+
+    SbVec3f surfNorm(0.f, 0.f, 1.f) ;
+    //Get the camera z-direction
+    SbVec3f z = vv.zVector();
+    const SbViewportRegion & vpr = SoViewportRegionElement::get(state);
+
+    SoGetMatrixAction * getmatrixaction = new SoGetMatrixAction(vpr);
+    getmatrixaction->apply(this);
+
+    SbMatrix transform = getmatrixaction->getMatrix();
+    transform.multVecMatrix(surfNorm, surfNorm);
+
+    bool flip = surfNorm.dot(z) > 0;
+
+    glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D); // Enable Textures
-    glEnable(GL_BLEND); 
+    glEnable(GL_BLEND);
+
     // Copy the text bitmap into memory and bind
     GLuint myTexture;
     // generate a texture
@@ -259,27 +739,26 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // Create the quad to hold texture
-    const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.4f);
-                    
-    float aspectRatio =  (float) srcw / (float) srch;
-    float height = scale / (float) srch;
-    float width  = aspectRatio * (float) height;
 
-    this->bbx = width;
-    this->bby = height;
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+
+    // Apply a rotation and translation matrix
+    glTranslatef(textOffset[0],textOffset[1], textOffset[2]);
+    glRotatef((GLfloat) angle * 180 / M_PI, 0,0,1);
     glBegin(GL_QUADS);
+    
     glColor3f(1.f, 1.f, 1.f);
-    glTexCoord2f(0.f, 1.f); glVertex2f(-width/ 2, height / 2);
-    glTexCoord2f(0.f, 0.f); glVertex2f(-width / 2,-height / 2);
-    glTexCoord2f(1.f, 0.f); glVertex2f( width/ 2,-height / 2);
-    glTexCoord2f(1.f, 1.f); glVertex2f( width / 2, height / 2);
 
+    glTexCoord2f((flip) ? 0.f : 1.f, 1.f); glVertex2f( -this->imgWidth / 2,  this->imgHeight / 2);
+    glTexCoord2f((flip) ? 0.f : 1.f, 0.f); glVertex2f( -this->imgWidth / 2, -this->imgHeight / 2);
+    glTexCoord2f((flip) ? 1.f : 0.f, 0.f); glVertex2f( this->imgWidth / 2, -this->imgHeight / 2);
+    glTexCoord2f((flip) ? 1.f : 0.f, 1.f); glVertex2f( this->imgWidth / 2,  this->imgHeight / 2);
+    
     glEnd();
 
     // Reset the Mode
-
+    glPopMatrix();
     glPopAttrib();
     state->pop();
 }
