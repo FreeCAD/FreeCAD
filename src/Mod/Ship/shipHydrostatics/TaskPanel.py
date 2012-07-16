@@ -44,7 +44,7 @@ class TaskPanel:
         self.save()
         draft  = self.form.minDraft.value()
         drafts = [draft]
-        dDraft = (self.form.maxDraft.value() - self.form.minDraft.value())/self.form.nDraft.value()
+        dDraft = (self.form.maxDraft.value() - self.form.minDraft.value())/(self.form.nDraft.value()-1)
         for i in range(1,self.form.nDraft.value()):
             draft = draft + dDraft
             drafts.append(draft)
