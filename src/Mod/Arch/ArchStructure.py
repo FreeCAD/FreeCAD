@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from DraftTools import translate
@@ -52,6 +52,18 @@ def makeStructure(baseobj=None,length=1,width=1,height=1,name=str(translate("Arc
     obj.ViewObject.ShapeColor = (r,g,b,1.0)
     return obj
 
+def makeStructuralSystem(objects,axes):
+    '''makeStructuralSystem(objects,axes): makes a structural system
+    based on the given objects and axes'''
+    result = []
+    if objects and axes:
+        for o in objects:
+            s = makeStructure(o)
+            s.Axes = axes
+            result.append(s)
+        FreeCAD.ActiveDocument.recompute()
+    return result
+
 class _CommandStructure:
     "the Arch Structure command definition"
     def GetResources(self):
@@ -65,8 +77,15 @@ class _CommandStructure:
         FreeCADGui.doCommand("import Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            for obj in sel:
-                FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument."+obj.Name+")")
+            # if selection contains structs and axes, make a system
+            st = Draft.getObjectsOfType(sel,"Structure")
+            ax = Draft.getObjectsOfType(sel,"Axis")
+            if st and ax:
+                FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
+            else:
+                # else, do normal structs
+                for obj in sel:
+                    FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
         else:
             FreeCADGui.doCommand("Arch.makeStructure()")
         FreeCAD.ActiveDocument.commitTransaction()

@@ -59,7 +59,13 @@ class _CommandAxis:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Axis")))
         FreeCADGui.doCommand("import Arch")
-        FreeCADGui.doCommand("Arch.makeAxis()")
+        sel = FreeCADGui.Selection.getSelection()
+        st = Draft.getObjectsOfType(sel,"Structure")
+        if st:
+            FreeCADGui.doCommand("axe = Arch.makeAxis()")
+            FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + ",[axe])")
+        else:
+            FreeCADGui.doCommand("Arch.makeAxis()")
         FreeCAD.ActiveDocument.commitTransaction()
        
 class _Axis:
