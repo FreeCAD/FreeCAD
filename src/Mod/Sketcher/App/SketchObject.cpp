@@ -224,7 +224,11 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
     assert(GeoId == H_Axis || GeoId == V_Axis ||
            (GeoId <= getHighestCurveIndex() && GeoId >= -getExternalGeometryCount()) );
     const Part::Geometry *geo = getGeometry(GeoId);
-    if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+        const Part::GeomPoint *p = dynamic_cast<const Part::GeomPoint*>(geo);
+        if (PosId == start || PosId == mid || PosId == end)
+            return p->getPoint();
+    } else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geo);
         if (PosId == start)
             return lineSeg->getStartPoint();
