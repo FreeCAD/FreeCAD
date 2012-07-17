@@ -327,6 +327,62 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         shapeVertex(&pv);
 
         this->endShape();
+    } else if (this->datumtype.getValue() == SYMMETRIC) {
+
+          // Get the Scale
+        SoState *state = action->getState();
+        const SbViewVolume & vv = SoViewVolumeElement::get(state);
+        float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.4f);
+
+        SbVec3f dir = (p2-p1);
+        dir.normalize();
+        SbVec3f norm (-dir[1],dir[0],0);
+
+        float margin = 0.01f;
+        margin *= scale;
+
+        // Calculate coordinates for the first arrow
+        SbVec3f ar0, ar1, ar2;
+        ar0  = p1 + dir * 5 * margin;
+        ar1  = ar0 - dir * 0.866 * 2 * margin; // Base Point of Arrow
+        ar2  = ar1 + norm * margin; // Triangular corners
+        ar1 -= norm * margin;
+
+        // Calculate coordinates for the second arrow
+        SbVec3f ar3, ar4, ar5;
+        ar3  = p2 - dir * 5 * margin;
+        ar4  = ar3 + dir * 0.866 * 2 * margin; // Base Point of 2nd Arrow
+
+        ar5  = ar4 + norm * margin; // Triangular corners
+        ar4 -= norm * margin;
+
+        SoPrimitiveVertex pv;
+
+        this->beginShape(action, TRIANGLES);
+
+        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+        // Set coordinates
+        pv.setPoint( ar0 );
+        shapeVertex(&pv);
+
+        pv.setPoint( ar1 );
+        shapeVertex(&pv);
+
+        pv.setPoint( ar2 );
+        shapeVertex(&pv);
+
+        // Set coordinates
+        pv.setPoint( ar3 );
+        shapeVertex(&pv);
+
+        pv.setPoint( ar4 );
+        shapeVertex(&pv);
+
+        pv.setPoint( ar5 );
+        shapeVertex(&pv);
+
+        this->endShape();
     }
 
 }
@@ -338,26 +394,33 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         return;
     if (action->handleTransparency(true))
       return;
-    drawImage();
 
-    SbVec2s size;
-    int nc;
-    const unsigned char * dataptr = this->image.getValue(size, nc);
-    if (dataptr == NULL) return; // no image
-
-    int srcw = size[0];
-    int srch = size[1];
-
-    // Create the quad to hold texture
+    // Get the Scale
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
     float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.4f);
 
-    float aspectRatio =  (float) srcw / (float) srch;
-    this->imgHeight = scale / (float) srch;
-    this->imgWidth  = aspectRatio * (float) this->imgHeight;
+    const SbString* s = string.getValues(0);
+    bool hasText = (s->getLength() > 0) ? true : false;
 
+    SbVec2s size;
+    int nc;
+    int srcw, srch;
 
-    // Get the points stored
+    if(hasText) {
+        drawImage();
+
+        const unsigned char * dataptr = this->image.getValue(size, nc);
+        if (dataptr == NULL) return; // no image
+
+        srcw = size[0];
+        srch = size[1];
+
+        float aspectRatio =  (float) srcw / (float) srch;
+        this->imgHeight = scale / (float) srch;
+        this->imgWidth  = aspectRatio * (float) this->imgHeight;
+    }
+
+    // Get the points stored in the pnt field
     const SbVec3f *pnts = this->pnts.getValues(0);
 
     state->push();
@@ -378,6 +441,14 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     float offsetX, offsetY, angle;
 
     SbVec3f textOffset;
+
+    // Get the colour
+    const SbColor& t = textColor.getValue();
+
+    // Set GL Properties
+    glLineWidth(2.f);
+    glColor3f(t[0], t[1], t[2]);
+
     if(this->datumtype.getValue() == DISTANCE || this->datumtype.getValue() == DISTANCEX || this->datumtype.getValue() == DISTANCEY )
         {
         float length = this->param1.getValue();
@@ -538,13 +609,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         textOffset = pos;
 
-          // Get the colour
-        const SbColor& t = textColor.getValue();
-
-        // Set GL Properties
-        glLineWidth(this->lineWidth.getValue());
-        glColor3f(t[0], t[1], t[2]);
-
         float margin = 0.01f;
         margin *= scale;
 
@@ -628,13 +692,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         float margin = 0.01f;
         margin *= scale;
 
-          // Get the colour
-        const SbColor& t = textColor.getValue();
-
-        // Set GL Properties
-        glLineWidth(this->lineWidth.getValue());
-        glColor3f(t[0], t[1], t[2]);
-
         // Draw
         glBegin(GL_LINE_STRIP);
 
@@ -706,59 +763,123 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         }
         //Store the bounding box
         this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
+    } else if (this->datumtype.getValue() == SYMMETRIC) {
 
+        SbVec3f p1 = pnts[0];
+        SbVec3f p2 = pnts[1];
+
+        SbVec3f dir = (p2-p1);
+        dir.normalize();
+        SbVec3f norm (-dir[1],dir[0],0);
+
+        float margin = 0.01f;
+        margin *= scale;
+
+        // Calculate coordinates for the first arrow
+        SbVec3f ar0, ar1, ar2;
+        ar0  = p1 + dir * 4 * margin; // Tip of Arrow
+        ar1  = ar0 - dir * 0.866 * 2 * margin;
+        ar2  = ar1 + norm * margin;
+        ar1 -= norm * margin;
+
+        glBegin(GL_LINES);
+          glVertex2f(p1[0],p1[1]);
+          glVertex2f(ar0[0],ar0[1]);
+          glVertex2f(ar0[0],ar0[1]);
+          glVertex2f(ar1[0],ar1[1]);
+          glVertex2f(ar0[0],ar0[1]);
+          glVertex2f(ar2[0],ar2[1]);
+        glEnd();
+
+        // Calculate coordinates for the second arrow
+        SbVec3f ar3, ar4, ar5;
+        ar3  = p2 - dir * 4 * margin; // Tip of 2nd Arrow
+        ar4  = ar3 + dir * 0.866 * 2 * margin;
+        ar5  = ar4 + norm * margin;
+        ar4 -= norm * margin;
+
+        glBegin(GL_LINES);
+          glVertex2f(p2[0],p2[1]);
+          glVertex2f(ar3[0],ar3[1]);
+          glVertex2f(ar3[0], ar3[1]);
+          glVertex2f(ar4[0], ar4[1]);
+          glVertex2f(ar3[0], ar3[1]);
+          glVertex2f(ar5[0], ar5[1]);
+        glEnd();
+
+        // BOUNDING BOX CALCULATION - IMPORTANT
+        // Finds the mins and maxes
+        std::vector<SbVec3f> corners;
+        corners.push_back(p1);
+        corners.push_back(p2);
+ 
+        float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
+        for (std::vector<SbVec3f>::iterator it=corners.begin(); it != corners.end(); ++it) {
+            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
+            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
+            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
+            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        }
+        //Store the bounding box
+        this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
     }
 
-    SbVec3f surfNorm(0.f, 0.f, 1.f) ;
-    //Get the camera z-direction
-    SbVec3f z = vv.zVector();
-    const SbViewportRegion & vpr = SoViewportRegionElement::get(state);
+    if(hasText) {
 
-    SoGetMatrixAction * getmatrixaction = new SoGetMatrixAction(vpr);
-    getmatrixaction->apply(this);
+        const unsigned char * dataptr = this->image.getValue(size, nc);
 
-    SbMatrix transform = getmatrixaction->getMatrix();
-    transform.multVecMatrix(surfNorm, surfNorm);
+        SbVec3f surfNorm(0.f, 0.f, 1.f) ;
+        //Get the camera z-direction
+        SbVec3f z = vv.zVector();
+        const SbViewportRegion & vpr = SoViewportRegionElement::get(state);
 
-    bool flip = surfNorm.dot(z) > 0;
+        SoGetMatrixAction * getmatrixaction = new SoGetMatrixAction(vpr);
+        getmatrixaction->apply(this);
 
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D); // Enable Textures
-    glEnable(GL_BLEND);
+        SbMatrix transform = getmatrixaction->getMatrix();
+        transform.multVecMatrix(surfNorm, surfNorm);
 
-    // Copy the text bitmap into memory and bind
-    GLuint myTexture;
-    // generate a texture
-    glGenTextures(1, &myTexture);
+        bool flip = surfNorm.dot(z) > 0;
 
-    glBindTexture(GL_TEXTURE_2D, myTexture);
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_TEXTURE_2D); // Enable Textures
+        glEnable(GL_BLEND);
 
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        // Copy the text bitmap into memory and bind
+        GLuint myTexture;
+        // generate a texture
+        glGenTextures(1, &myTexture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
+        glBindTexture(GL_TEXTURE_2D, myTexture);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
+        glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
 
-    // Apply a rotation and translation matrix
-    glTranslatef(textOffset[0],textOffset[1], textOffset[2]);
-    glRotatef((GLfloat) angle * 180 / M_PI, 0,0,1);
-    glBegin(GL_QUADS);
-    
-    glColor3f(1.f, 1.f, 1.f);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glTexCoord2f((flip) ? 0.f : 1.f, 1.f); glVertex2f( -this->imgWidth / 2,  this->imgHeight / 2);
-    glTexCoord2f((flip) ? 0.f : 1.f, 0.f); glVertex2f( -this->imgWidth / 2, -this->imgHeight / 2);
-    glTexCoord2f((flip) ? 1.f : 0.f, 0.f); glVertex2f( this->imgWidth / 2, -this->imgHeight / 2);
-    glTexCoord2f((flip) ? 1.f : 0.f, 1.f); glVertex2f( this->imgWidth / 2,  this->imgHeight / 2);
-    
-    glEnd();
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
 
-    // Reset the Mode
-    glPopMatrix();
+        // Apply a rotation and translation matrix
+        glTranslatef(textOffset[0],textOffset[1], textOffset[2]);
+        glRotatef((GLfloat) angle * 180 / M_PI, 0,0,1);
+        glBegin(GL_QUADS);
+
+        glColor3f(1.f, 1.f, 1.f);
+
+        glTexCoord2f(flip ? 0.f : 1.f, 1.f); glVertex2f( -this->imgWidth / 2,  this->imgHeight / 2);
+        glTexCoord2f(flip ? 0.f : 1.f, 0.f); glVertex2f( -this->imgWidth / 2, -this->imgHeight / 2);
+        glTexCoord2f(flip ? 1.f : 0.f, 0.f); glVertex2f( this->imgWidth / 2, -this->imgHeight / 2);
+        glTexCoord2f(flip ? 1.f : 0.f, 1.f); glVertex2f( this->imgWidth / 2,  this->imgHeight / 2);
+
+        glEnd();
+
+        // Reset the Mode
+        glPopMatrix();
+    }
+
     glPopAttrib();
     state->pop();
 }
