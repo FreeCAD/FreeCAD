@@ -33,6 +33,7 @@
 # include <TColgp_Array2OfPnt.hxx>
 # include <Precision.hxx>
 # include <GeomAPI_PointsToBSplineSurface.hxx>
+# include <GeomAbs_Shape.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -42,6 +43,7 @@
 #include "BSplineCurvePy.h"
 #include "BSplineSurfacePy.h"
 #include "BSplineSurfacePy.cpp"
+
 
 using namespace Part;
 
@@ -1244,13 +1246,21 @@ PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
     }
 }
 
-PyObject* BSplineSurfacePy::interpolate(PyObject *args)
+PyObject* BSplineSurfacePy::approximate(PyObject *args)
 {
     PyObject* obj;
-    double tol3d = Precision::Approximation();
-    PyObject* closed = Py_False;
-    PyObject* t1=0; PyObject* t2=0;
-    if (!PyArg_ParseTuple(args, "O!",&(PyList_Type), &obj))
+    Standard_Integer degMin=0;
+    Standard_Integer degMax=0;
+    Standard_Integer continuity=0;
+    Standard_Real tol3d = Precision::Approximation();
+    Standard_Real X0=0;
+    Standard_Real dX=0;
+    Standard_Real Y0=0;
+    Standard_Real dY=0;
+
+    int len = PyTuple_GET_SIZE(args);
+
+    if (!PyArg_ParseTuple(args, "O!iiid|dddd",&(PyList_Type), &obj, &degMin, &degMax, &continuity, &tol3d, &X0, &dX, &Y0, &dY))
         return 0;
     try {
         Py::List list(obj);
@@ -1258,6 +1268,8 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
         Py::List col(list.getItem(0));
         Standard_Integer lv = col.size();
         TColgp_Array2OfPnt interpolationPoints(1, lu, 1, lv);
+        TColStd_Array2OfReal zPoints(1, lu, 1, lv);
+        //Base::Console().Message("lu=%d, lv=%d\n", lu, lv);
 
         Standard_Integer index1 = 0;
         Standard_Integer index2 = 0;
@@ -1267,10 +1279,97 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
             Py::List row(*it1);
             for (Py::List::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
                 index2++;
-                Py::Vector v(*it2);
-                Base::Vector3d pnt = v.toVector();
-                gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
-                interpolationPoints.SetValue(index1, index2, newPoint);
+                if(len == 5){
+                	Py::Vector v(*it2);
+                	Base::Vector3d pnt = v.toVector();
+                	gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
+                	interpolationPoints.SetValue(index1, index2, newPoint);
+                }
+                else {
+                	Standard_Real val = PyFloat_AsDouble((*it2).ptr());
+                	zPoints.SetValue(index1, index2, val);
+                }
+            }
+        }
+
+        if(continuity<0 || continuity>3){
+        	Standard_Failure::Raise("continuity must be between 0 and 3");
+        }
+        GeomAbs_Shape c;
+        switch(continuity){
+        case 0:
+        	c = GeomAbs_C0;
+        case 1:
+        	c = GeomAbs_C1;
+        case 2:
+        	c = GeomAbs_C2;
+        case 3:
+        	c = GeomAbs_C3;
+        }
+
+        if (interpolationPoints.RowLength() < 2 || interpolationPoints.ColLength() < 2) {
+            Standard_Failure::Raise("not enough points given");
+        }
+
+        GeomAPI_PointsToBSplineSurface surInterpolation;
+        if(len == 5){
+        	surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
+        }
+        else {
+        	surInterpolation.Init(zPoints, X0, dX, Y0, dY, degMin, degMax, c, tol3d);
+        }
+        Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
+        this->getGeomBSplineSurfacePtr()->setHandle(sur);
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        std::string err = e->GetMessageString();
+        if (err.empty()) err = e->DynamicType()->Name();
+        PyErr_SetString(PyExc_Exception, err.c_str());
+        return 0;
+    }
+}
+
+PyObject* BSplineSurfacePy::interpolate(PyObject *args)
+{
+    PyObject* obj;
+    Standard_Real tol3d = Precision::Approximation();
+    Standard_Real X0=0;
+    Standard_Real dX=0;
+    Standard_Real Y0=0;
+    Standard_Real dY=0;
+
+    int len = PyTuple_GET_SIZE(args);
+
+    if (!PyArg_ParseTuple(args, "O!|dddd",&(PyList_Type), &obj, &X0, &dX, &Y0, &dY))
+        return 0;
+    try {
+        Py::List list(obj);
+        Standard_Integer lu = list.size();
+        Py::List col(list.getItem(0));
+        Standard_Integer lv = col.size();
+        TColgp_Array2OfPnt interpolationPoints(1, lu, 1, lv);
+        TColStd_Array2OfReal zPoints(1, lu, 1, lv);
+
+        Standard_Integer index1 = 0;
+        Standard_Integer index2 = 0;
+        for (Py::List::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
+            index1++;
+            index2=0;
+            Py::List row(*it1);
+            for (Py::List::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
+                index2++;
+                if(len == 1){
+                	Py::Vector v(*it2);
+                	Base::Vector3d pnt = v.toVector();
+                	gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
+                	interpolationPoints.SetValue(index1, index2, newPoint);
+                }
+                else {
+                	Standard_Real val = PyFloat_AsDouble((*it2).ptr());
+                	zPoints.SetValue(index1, index2, val);
+                }
             }
         }
 
@@ -1279,7 +1378,12 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
         }
 
         GeomAPI_PointsToBSplineSurface surInterpolation;
-        surInterpolation.Interpolate (interpolationPoints);
+        if(len == 1){
+        	surInterpolation.Interpolate (interpolationPoints);
+        }
+        else {
+        	surInterpolation.Interpolate(zPoints, X0, dX, Y0, dY);
+        }
         Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
         this->getGeomBSplineSurfacePtr()->setHandle(sur);
         Py_Return;

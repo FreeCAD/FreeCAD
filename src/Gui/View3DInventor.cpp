@@ -140,6 +140,8 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     OnChange(*hGrp,"BacklightIntensity");
     OnChange(*hGrp,"NavigationStyle");
     OnChange(*hGrp,"OrbitStyle");
+    OnChange(*hGrp,"Sensitivity");
+    OnChange(*hGrp,"ResetCursorPosition");
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -273,6 +275,14 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"OrbitStyle") == 0) {
         int style = rGrp.GetInt("OrbitStyle",1);
         _viewer->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
+    }
+    else if (strcmp(Reason,"Sensitivity") == 0) {
+        float val = rGrp.GetFloat("Sensitivity",2.0f);
+        _viewer->navigationStyle()->setSensitivity(val);
+    }
+    else if (strcmp(Reason,"ResetCursorPosition") == 0) {
+        bool on = rGrp.GetBool("ResetCursorPosition",false);
+        _viewer->navigationStyle()->setResetCursorPosition(on);
     }
     else if (strcmp(Reason,"InvertZoom") == 0) {
         bool on = rGrp.GetBool("InvertZoom", false);

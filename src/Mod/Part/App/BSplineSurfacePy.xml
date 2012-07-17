@@ -677,9 +677,33 @@
 				<UserDocu>Returns a reparametrized copy of this surface</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="approximate">
+			<Documentation>
+				<UserDocu>
+					approximate(points, degMin, degMax, continuity, tol)
+					approximate(zPoints, degMin, degMax, continuity, tol, X0, dX, Y0, dY)
+					
+					Replaces this B-Spline surface by approximating a set of points.
+					continuity is an integer between 0 and 3
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="interpolate">
 			<Documentation>
-				<UserDocu>Replaces this B-Spline surface by interpolating a set of points.</UserDocu>
+				<UserDocu>
+					interpolate(points)
+					interpolate(zpoints, X0, dX, Y0, dY)
+					
+					Replaces this B-Spline surface by interpolating a set of points.
+					The resulting surface is of degree 3 and continuity C2.
+					Arguments:
+					a 2 dimensional array of vectors, that the surface passes through
+					or
+					a 2 dimensional array of floats with the z values,
+					the x starting point X0 (float),
+					the x increment dX (float),
+					the y starting point Y0 and increment dY
+				</UserDocu>
 			</Documentation>
 		</Methode>
 	</PythonExport>

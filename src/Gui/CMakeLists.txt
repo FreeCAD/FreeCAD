@@ -3,6 +3,9 @@
 if(WIN32)
 add_definitions(-DFCGui -DQIIS_MAKEDLL)
 endif(WIN32)
+if (FREECAD_USE_3DCONNEXION)
+add_definitions(-D_USE_3DCONNEXION_SDK)
+endif(FREECAD_USE_3DCONNEXION)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -77,6 +80,17 @@ SET(FreeCADGui_XML_SRCS
     DocumentPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
+
+# The 3D Connexion SDK files
+if(FREECAD_USE_3DCONNEXION)
+SET(FreeCADGui_SDK_SRCS
+    3Dconnexion/I3dMouseParams.h
+    3Dconnexion/MouseParameters.cpp
+    3Dconnexion/MouseParameters.h
+    3Dconnexion/GuiApplicationNativeEventAwareWin32.cpp
+)
+SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+endif(FREECAD_USE_3DCONNEXION)
 
 set(Gui_MOC_HDRS
     Action.h
@@ -769,6 +783,7 @@ SET(FreeCADGui_SRCS
 )
 
 SET(FreeCADGui_SRCS
+    ${FreeCADGui_SDK_SRCS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${iis_MOC_SRCS}

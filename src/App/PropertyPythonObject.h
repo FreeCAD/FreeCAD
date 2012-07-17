@@ -77,6 +77,7 @@ private:
     void restoreObject(Base::XMLReader &reader);
     std::string encodeValue(const std::string& str) const;
     std::string decodeValue(const std::string& str) const;
+    void loadPickle(const std::string& str);
     Py::Object object;
 };
 

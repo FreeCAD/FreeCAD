@@ -142,6 +142,26 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                 this->DiffuseColor.setValues(colBool);
         }
     }
+    else if (prop->getTypeId() == App::PropertyLink::getClassTypeId()) {
+        App::DocumentObject *pBase = static_cast<const App::PropertyLink*>(prop)->getValue();
+        if (pBase)
+            Gui::Application::Instance->hideViewProvider(pBase);
+    }
+}
+
+bool ViewProviderBoolean::onDelete(const std::vector<std::string> &)
+{
+    // get the input shapes
+    Part::Boolean* pBool = static_cast<Part::Boolean*>(getObject()); 
+    App::DocumentObject *pBase = pBool->Base.getValue();
+    App::DocumentObject *pTool = pBool->Tool.getValue();
+
+    if (pBase)
+        Gui::Application::Instance->showViewProvider(pBase);
+    if (pTool)
+        Gui::Application::Instance->showViewProvider(pTool);
+
+    return true;
 }
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiFuse,PartGui::ViewProviderPart)
@@ -207,6 +227,26 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
         if (setColor)
             this->DiffuseColor.setValues(colBool);
     }
+    else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+        std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
+        for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+            if (*it)
+                Gui::Application::Instance->hideViewProvider(*it);
+        }
+    }
+}
+
+bool ViewProviderMultiFuse::onDelete(const std::vector<std::string> &)
+{
+    // get the input shapes
+    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it)
+            Gui::Application::Instance->showViewProvider(*it);
+    }
+
+    return true;
 }
 
 
@@ -273,4 +313,24 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
         if (setColor)
             this->DiffuseColor.setValues(colBool);
     }
+    else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+        std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
+        for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+            if (*it)
+                Gui::Application::Instance->hideViewProvider(*it);
+        }
+    }
+}
+
+bool ViewProviderMultiCommon::onDelete(const std::vector<std::string> &)
+{
+    // get the input shapes
+    Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it)
+            Gui::Application::Instance->showViewProvider(*it);
+    }
+
+    return true;
 }

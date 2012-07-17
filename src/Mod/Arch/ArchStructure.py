@@ -86,6 +86,8 @@ class _Structure(ArchComponent.Component):
                         str(translate("Arch","Axes systems this structure is built on")))
         obj.addProperty("App::PropertyVector","Normal","Base",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
+        obj.addProperty("App::PropertyIntegerList","Exclude","Base",
+                        str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
         self.Type = "Structure"
         
     def execute(self,obj):
@@ -109,6 +111,12 @@ class _Structure(ArchComponent.Component):
                 for e2 in set2: 
                     pts.extend(DraftGeomUtils.findIntersection(e1,e2))
         return pts
+
+    def getAxisPlacement(self,obj):
+        "returns an axis placement"
+        if obj.Axes:
+            return obj.Axes[0].Placement
+        return None
 
     def createGeometry(self,obj):
         import Part, DraftGeomUtils
@@ -174,22 +182,32 @@ class _Structure(ArchComponent.Component):
                         if not hole.Shape.isNull():
                             base = base.cut(hole.Shape)
                             hole.ViewObject.hide() # to be removed
+
+            # applying axes
             pts = self.getAxisPoints(obj)
+            apl = self.getAxisPlacement(obj)
             if pts:
                 fsh = []
-                for p in pts:
+                for i in range(len(pts)):
+                    if hasattr(obj,"Exclude"):
+                        if i in obj.Exclude:
+                            continue
                     sh = base.copy()
-                    sh.translate(p)
+                    if apl:
+                        sh.Placement.Rotation = apl.Rotation
+                    sh.translate(pts[i])
                     fsh.append(sh)
                     obj.Shape = Part.makeCompound(fsh)
+
+            # finalizing
             else:
                 if base:
                     if not base.isNull():
                         base = base.removeSplitter()
                         obj.Shape = base
-            if not DraftGeomUtils.isNull(pl):
-                obj.Placement = pl
-
+                if not DraftGeomUtils.isNull(pl):
+                    obj.Placement = pl
+    
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
 
