@@ -32,6 +32,17 @@ __url__ = "http://free-cad.sourceforge.net"
 
 # module functions ###############################################
 
+def getStringList(objects):
+    '''getStringList(objects): returns a string defining a list
+    of objects'''
+    result = "["
+    for o in objects:
+        if len(result) > 1:
+            result += ","
+        result += "FreeCAD.ActiveDocument." + o.Name
+    result += "]"
+    return result
+
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
     from the given list as components to the given host Object. Use this for
@@ -53,11 +64,18 @@ def addComponents(objectsList,host):
         host.Group = c
     elif tp in ["Wall","Structure"]:
         a = host.Additions
+        if hasattr(host,"Axes"):
+            x = host.Axes
         for o in objectsList:
-            if not o in a:
+            if Draft.getType(o) == "Axis":
+                if not o in x:
+                    x.append(o) 
+            elif not o in a:
                 if hasattr(o,"Shape"):
                     a.append(o)
         host.Additions = a
+        if hasattr(host,"Axes"):
+            host.Axes = x
     elif tp in ["SectionPlane"]:
         a = host.Objects
         for o in objectsList:
