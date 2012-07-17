@@ -1428,6 +1428,7 @@ void ViewProviderSketch::updateColor(void)
         ConstraintType type = getSketchObject()->Constraints.getValues()[i]->Type;
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                                type == Sketcher::Radius ||
+                               type == Sketcher::Symmetric ||
                                type == Sketcher::Distance ||
                                type == Sketcher::DistanceX || type == Sketcher::DistanceY);
 
@@ -1527,7 +1528,7 @@ void ViewProviderSketch::drawConstraintIcons()
             break;
         case Symmetric:
             icoType = QString::fromAscii("small/Constraint_Symmetric_sm");
-            index1 = 3;
+            index1 = 2;
             break;
         default:
             continue; // Icon shouldn't be generated
@@ -2252,34 +2253,18 @@ Restart:
                     dir.normalize();
                     SbVec3f norm (-dir[1],dir[0],0);
 
-                    // Get the datum nodes
-                    SoSeparator *sepArrows = dynamic_cast<SoSeparator *>(sep->getChild(1));
-                    SoCoordinate3 *arrowsCord = dynamic_cast<SoCoordinate3 *>(sepArrows->getChild(0));
+                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(0));
+                    asciiText->datumtype    = SoDatumLabel::SYMMETRIC;
 
-                    arrowsCord->point.setNum(10);
+                    asciiText->pnts.setNum(2);
+                    SbVec3f *verts = asciiText->pnts.startEditing();
 
-                    // Calculate coordinates for the first arrow
-                    arrowsCord->point.set1Value(0,p1);
-                    arrowsCord->point.set1Value(1,p1 + dir * 5);
-                    arrowsCord->point.set1Value(2,p1 + dir * 3 + norm * 2);
-                    arrowsCord->point.set1Value(3,p1 + dir * 5);
-                    arrowsCord->point.set1Value(4,p1 + dir * 3 - norm * 2);
+                    verts[0] = p1;
+                    verts[1] = p2;
 
-                    // Calculate coordinates for the second arrow
-                    arrowsCord->point.set1Value(5,p2);
-                    arrowsCord->point.set1Value(6,p2 - dir * 5);
-                    arrowsCord->point.set1Value(7,p2 - dir * 3 + norm * 2);
-                    arrowsCord->point.set1Value(8,p2 - dir * 5);
-                    arrowsCord->point.set1Value(9,p2 - dir * 3 - norm * 2);
+                    asciiText->pnts.finishEditing();
 
-                    // Use the coordinates calculated earlier to the lineset
-                    SoLineSet *arrowsLineSet = dynamic_cast<SoLineSet *>(sepArrows->getChild(1));
-                    arrowsLineSet->numVertices.set1Value(0,3);
-                    arrowsLineSet->numVertices.set1Value(1,2);
-                    arrowsLineSet->numVertices.set1Value(2,3);
-                    arrowsLineSet->numVertices.set1Value(3,2);
-
-                    dynamic_cast<SoTranslation *>(sep->getChild(2))->translation = (p1 + p2)/2;
+                    dynamic_cast<SoTranslation *>(sep->getChild(1))->translation = (p1 + p2)/2;
                 }
                 break;
             case Angle:
@@ -2508,16 +2493,13 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 break;
             case Symmetric:
                 {
-                    SoSeparator *sepArrows = new SoSeparator();
-                    sepArrows->addChild(new SoCoordinate3());
-                    SoLineSet *lineSet = new SoLineSet;
-                    sepArrows->addChild(lineSet);
-                    sep->addChild(Material);
-                    sep->addChild(sepArrows);           // 1.
+                    SoDatumLabel *arrows = new SoDatumLabel();
+                    arrows->string = "";
+                    arrows->textColor = ConstrDimColor;
 
-                    // Add new nodes to Constraint Seperator
-                    sep->addChild(new SoTranslation()); // 2.
-                    sep->addChild(new SoImage());       // 3. constraint icon
+                    sep->addChild(arrows);              // 0.
+                    sep->addChild(new SoTranslation()); // 1.
+                    sep->addChild(new SoImage());       // 2. constraint icon
 
                     edit->vConstrType.push_back((*it)->Type);
                 }
