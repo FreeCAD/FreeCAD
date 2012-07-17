@@ -1013,14 +1013,17 @@ bool ViewProviderSketch::isConstraintAtPosition(const Base::Vector3d &constrPos,
 
     SoRayPickAction rp(viewer->getViewportRegion());
     rp.setRadius(0.1f);
-
-    rp.setRay(SbVec3f(constrPos.x, constrPos.y,constrPos.z), SbVec3f(0, 0, 1) );
+    rp.setPickAll(true);
+    rp.setRay(SbVec3f(constrPos.x, constrPos.y, -1.f), SbVec3f(0, 0, 1) );
     //problem
     rp.apply(edit->constrGroup); // We could narrow it down to just the SoGroup containing the constraints
 
     // returns a copy of the point
     SoPickedPoint *pp = rp.getPickedPoint();
+    const SoPickedPointList ppl = rp.getPickedPointList();
 
+    if(ppl.getLength() > 1)
+      return true;
     if (pp) {
         SoPath *path = pp->getPath();
         int length = path->getLength();
