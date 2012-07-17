@@ -58,27 +58,36 @@ class ArchWorkbench(Workbench):
 	
     def Initialize(self):
         import DraftTools,DraftGui,Arch_rc,Arch
+
+        # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure",
                      "Arch_Floor","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Add","Arch_Remove"]
-        self.drafttools = ["Draft_Line","Draft_Wire","Draft_Rectangle",
-                      "Draft_Polygon","Draft_Arc",
-                      "Draft_Circle","Draft_Dimension",
-                      "Draft_Move","Draft_Rotate",
-                      "Draft_Offset","Draft_Upgrade",
-                      "Draft_Downgrade","Draft_Trimex"]
-        self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode",
-                                  "Draft_AddToGroup","Draft_SelectGroup",
-                                  "Draft_SelectPlane","Draft_ToggleSnap",
-                                  "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
+
+        # draft tools
+        self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
+                        "Draft_Polygon","Draft_Rectangle", "Draft_Text",
+                        "Draft_Dimension", "Draft_BSpline","Draft_Point"]
+        self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
+                        "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
+                        "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
+                        "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
+                        "Draft_Clone"]
+        self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
+                            "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
+                            "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
+                            "Draft_FinishLine","Draft_CloseLine"]
+
         self.appendToolbar(str(DraftTools.translate("arch","Arch tools")),self.archtools)
         self.appendToolbar(str(DraftTools.translate("arch","Draft tools")),self.drafttools)
+        self.appendToolbar(str(DraftTools.translate("arch","Draft mod tools")),self.draftmodtools)
         self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Conversion Tools"))],self.meshtools)
         self.appendMenu(str(DraftTools.translate("arch","&Architecture")),self.archtools)
-        self.appendMenu(str(DraftTools.translate("arch","&Draft")),self.drafttools+self.draftcontexttools)
+        self.appendMenu(str(DraftTools.translate("arch","&Draft")),self.drafttools+self.draftmodtools)
+        self.appendMenu([str(DraftTools.translate("arch","&Draft")),str(DraftTools.translate("arch","Context Tools"))],self.draftcontexttools)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")

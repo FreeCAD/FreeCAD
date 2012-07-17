@@ -173,6 +173,15 @@ def getType(obj):
         return "Group"
     return "Unknown"
 
+def getObjectsOfType(objectslist,typ):
+    """getObjectsOfType(objectslist,typ): returns a list of objects of type "typ" found
+    in the given object list"""
+    objs = []
+    for o in objectslist:
+        if getType(o) == typ:
+            objs.append(o)
+    return objs
+
 def get3DView():
     "get3DView(): returns the current view if it is 3D, or the first 3D view found, or None"
     v = FreeCADGui.ActiveDocument.ActiveView
