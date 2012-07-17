@@ -1252,13 +1252,13 @@ void SketchObject::rebuildExternalGeometry(void)
                         if (!projShape.IsNull()) {
                             TopExp_Explorer xp;
                             for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
-                                TopoDS_Edge edge = TopoDS::Edge(xp.Current());
+                                TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
                                 TopLoc_Location loc(mov);
-                                edge.Location(loc);
-                                BRepAdaptor_Curve curve(edge);
-                                if (curve.GetType() == GeomAbs_Line) {
-                                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
-                                    gp_Pnt P2 = curve.Value(curve.LastParameter());
+                                projEdge.Location(loc);
+                                BRepAdaptor_Curve projCurve(projEdge);
+                                if (projCurve.GetType() == GeomAbs_Line) {
+                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
                                     Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
                                     Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
 
@@ -1275,11 +1275,11 @@ void SketchObject::rebuildExternalGeometry(void)
                                         ExternalGeo.push_back(line);
                                     }
                                 }
-                                else if (curve.GetType() == GeomAbs_Circle) {
-                                    gp_Circ c = curve.Circle();
+                                else if (projCurve.GetType() == GeomAbs_Circle) {
+                                    gp_Circ c = projCurve.Circle();
                                     gp_Pnt p = c.Location();
-                                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
-                                    gp_Pnt P2 = curve.Value(curve.LastParameter());
+                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
                                     if (P1.SquareDistance(P2) < Precision::Confusion()) {
                                         Part::GeomCircle* circle = new Part::GeomCircle();
@@ -1293,7 +1293,11 @@ void SketchObject::rebuildExternalGeometry(void)
                                         Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
                                         arc->setRadius(c.Radius());
                                         arc->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
-                                        arc->setRange(curve.FirstParameter(), curve.LastParameter());
+                                        if (c.Axis().Direction().Z() < 0) // clockwise
+                                            arc->setRange(2*M_PI - projCurve.LastParameter(),
+                                                          2*M_PI - projCurve.FirstParameter());
+                                        else // counter-clockwise
+                                            arc->setRange(projCurve.FirstParameter(), projCurve.LastParameter());
 
                                         arc->Construction = true;
                                         ExternalGeo.push_back(arc);
@@ -1314,8 +1318,13 @@ void SketchObject::rebuildExternalGeometry(void)
             break;
         case TopAbs_VERTEX:
             {
-                gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
-                Part::GeomPoint* point = new Part::GeomPoint(Base::Vector3d(p.X(),p.Y(),p.Z()));
+                gp_Pnt P = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
+                GeomAPI_ProjectPointOnSurf proj(P,gPlane);
+                P = proj.NearestPoint();
+                Base::Vector3d p(P.X(),P.Y(),P.Z());
+                invPlm.multVec(p,p);
+
+                Part::GeomPoint* point = new Part::GeomPoint(p);
                 point->Construction = true;
                 ExternalGeo.push_back(point);
             }
@@ -1344,7 +1353,9 @@ void SketchObject::rebuildVertexIndex(void)
     if (geometry.size() <= 2)
         return;
     for (std::vector< Part::Geometry * >::const_iterator it = geometry.begin();
-         it != geometry.end()-2; ++it) {
+         it != geometry.end()-2; ++it, i++) {
+        if (i > imax)
+              i = -getExternalGeometryCount();
         if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
@@ -1364,9 +1375,6 @@ void SketchObject::rebuildVertexIndex(void)
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(end);
         }
-        i++;
-        if (i > imax)
-              i = -getExternalGeometryCount();
     }
 }
 
