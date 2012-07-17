@@ -67,6 +67,8 @@ public:
     virtual void modifyStandardButtons(QDialogButtonBox*)
     {}
 
+    const std::string& getDocumentName() const
+    { return documentName; }
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
     virtual bool isAllowedAlterView(void) const
@@ -92,6 +94,7 @@ protected:
     /// List of TaskBoxes of that dialog
     std::vector<QWidget*> Content;
     ButtonPosition pos;
+    std::string documentName;
 };
 
 } //namespace TaskView

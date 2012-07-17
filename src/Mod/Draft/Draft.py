@@ -72,7 +72,7 @@ How it works / how to extend:
 '''
 
 # import FreeCAD modules
-import FreeCAD, math, sys, os, DraftVecUtils
+import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc
 from FreeCAD import Vector
 from pivy import coin
 
@@ -253,16 +253,42 @@ def shapify(obj):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
-def getGroupContents(objectslist):
+def getGroupContents(objectslist,walls=False):
     '''getGroupContents(objectlist): if any object of the given list
     is a group, its content is appened to the list, which is returned'''
     newlist = []
     for obj in objectslist:
-        if obj.Type == "App::DocumentObjectGroup":
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             newlist.extend(getGroupContents(obj.Group))
         else:
             newlist.append(obj)
+            if walls:
+                if getType(obj) == "Wall":
+                    for o in obj.OutList:
+                        if (getType(o) == "Window") or isClone(o,"Window"):
+                            newlist.append(o)
     return newlist
+
+def printShape(shape):
+    """prints detailed information of a shape"""
+    print "solids: ", len(shape.Solids)
+    print "faces: ", len(shape.Faces)
+    print "wires: ", len(shape.Wires)
+    print "edges: ", len(shape.Edges)
+    print "verts: ", len(shape.Vertexes)
+    if shape.Faces:
+        for f in range(len(shape.Faces)):
+            print "face ",f,":"
+            for v in shape.Faces[f].Vertexes:
+                print "    ",v.Point
+    elif shape.Wires:
+        for w in range(len(shape.Wires)):
+            print "wire ",w,":"
+            for v in shape.Wires[w].Vertexes:
+                print "    ",v.Point
+    else:
+        for v in shape.Vertexes:
+            print "    ",v.Point
 
 def formatObject(target,origin=None):
     '''
@@ -1514,7 +1540,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
         ok = False
         tp = getType(obj)
         if tp == "BSpline":
-            pass
+            print "makeSketch: BSplines not supported"
         elif tp == "Circle":
             if obj.FirstAngle == obj.LastAngle:
                 nobj.addGeometry(obj.Shape.Edges[0].Curve)
@@ -1560,32 +1586,16 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                     nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
             ok = True
         if (not ok) and obj.isDerivedFrom("Part::Feature"):
-            if DraftGeomUtils.hasOnlyWires(obj.Shape):
-                for w in obj.Shape.Wires:
-                    for edge in DraftGeomUtils.sortEdges(w.Edges):
-                        g = DraftGeomUtils.geom(edge)
-                        if g:
-                            nobj.addGeometry(g)  
-                    if autoconstraints:
-                        last = nobj.GeometryCount
-                        segs = range(last-len(w.Edges),last-1)
-                        for seg in segs:
-                            nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                                nobj.addConstraint(Constraint("Vertical",seg))
-                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                                nobj.addConstraint(Constraint("Horizontal",seg))
-                        if w.isClosed:
-                            nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
-            else:
-                for edge in obj.Shape.Edges:
-                    nobj.addGeometry(DraftGeomUtils.geom(edge))
-                    if autoconstraints:
-                        last = nobj.GeometryCount - 1
-                        if DraftGeomUtils.isAligned(nobj.Geometry[last],"x"):
-                            nobj.addConstraint(Constraint("Vertical",last))
-                        elif DraftGeomUtils.isAligned(nobj.Geometry[last],"y"):
-                            nobj.addConstraint(Constraint("Horizontal",last))
+            if not DraftGeomUtils.isPlanar(obj.Shape):
+                print "Error: The given object is not planar and cannot be converted into a sketch."
+                return None
+            if not addTo:
+                nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
+            edges = []
+            for e in obj.Shape.Edges:
+                g = (DraftGeomUtils.geom(e,nobj.Placement))
+                if g:
+                    nobj.addGeometry(g)
             ok = True
         if ok:
             FreeCAD.ActiveDocument.removeObject(obj.Name)
@@ -1945,7 +1955,7 @@ class _ViewProviderDimension:
                                              [p2.x,p2.y,p2.z],
                                              [p3.x,p3.y,p3.z],
                                              [p4.x,p4.y,p4.z]])
-                self.line.numVertices.setValues([4])
+                self.line.numVertices.setValue(4)
             else:
                 ts = (len(text)*obj.ViewObject.FontSize)/4
                 rm = ((p3.sub(p2)).Length/2)-ts

@@ -62,7 +62,8 @@ def addToComponent(compobject,addobject,mod=None):
                     l = getattr(compobject,mod)
                     l.append(addobject)
                     setattr(compobject,mod,l)
-                    addobject.ViewObject.hide()
+                    if mod != "Objects":
+                        addobject.ViewObject.hide()
         else:
             for a in attribs[:3]:
                 if hasattr(compobject,a):
@@ -79,7 +80,7 @@ def removeFromComponent(compobject,subobject):
     it is added as a subtraction.'''
     if compobject == subobject: return
     found = False
-    attribs = ["Additions","Subtractions","Objects","Components","Base"]
+    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":

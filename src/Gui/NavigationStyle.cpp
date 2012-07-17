@@ -54,10 +54,14 @@ struct NavigationStyleP {
     SbVec3f focal1, focal2;
     SbRotation endRotation;
     SoTimerSensor * animsensor;
+    float sensitivity;
+    SbBool resetcursorpos;
 
     NavigationStyleP()
     {
         this->animationsteps = 0;
+        this->sensitivity = 2.0f;
+        this->resetcursorpos = FALSE;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };
@@ -372,7 +376,7 @@ void NavigationStyle::lookAtPoint(const SbVec3f& pos)
     }
 }
 
-void NavigationStyle::setCameraOrientation(const SbRotation& rot)
+void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToCenter)
 {
     SoCamera* cam = viewer->getCamera();
     if (cam == 0) return;
@@ -383,16 +387,18 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot)
     PRIVATE(this)->focal1 = cam->position.getValue() +
                             cam->focalDistance.getValue() * direction;
     PRIVATE(this)->focal2 = PRIVATE(this)->focal1;
-    SoGetBoundingBoxAction action(viewer->getViewportRegion());
-    action.apply(viewer->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
-    if (!box.isEmpty()) {
-        rot.multVec(SbVec3f(0, 0, -1), direction);
-        //float s = (this->focal1 - box.getCenter()).dot(direction);
-        //this->focal2 = box.getCenter() + s * direction;
-        // setting the center of the overall bounding box as the future focal point
-        // seems to be a satisfactory solution
-        PRIVATE(this)->focal2 = box.getCenter();
+    if (moveToCenter) {
+        SoGetBoundingBoxAction action(viewer->getViewportRegion());
+        action.apply(viewer->getSceneGraph());
+        SbBox3f box = action.getBoundingBox();
+        if (!box.isEmpty()) {
+            rot.multVec(SbVec3f(0, 0, -1), direction);
+            //float s = (this->focal1 - box.getCenter()).dot(direction);
+            //this->focal2 = box.getCenter() + s * direction;
+            // setting the center of the overall bounding box as the future focal point
+            // seems to be a satisfactory solution
+            PRIVATE(this)->focal2 = box.getCenter();
+        }
     }
 
     // avoid to interfere with spinning (fixes #3101462)
@@ -780,6 +786,14 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     this->spinprojector->project(lastpos);
     SbRotation r;
     this->spinprojector->projectAndGetRotation(pointerpos, r);
+    float sensitivity = getSensitivity();
+    if (sensitivity > 1.0f) {
+        SbVec3f axis;
+        float radians;
+        r.getValue(axis, radians);
+        radians = sensitivity * radians;
+        r.setValue(axis, radians);
+    }
     r.invert();
     this->reorientCamera(viewer->getCamera(), r);
 
@@ -832,6 +846,25 @@ SbBool NavigationStyle::doSpin()
     }
 
     return FALSE;
+}
+
+void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
+{
+    this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
+    this->localPos = ev->getPosition();
+}
+
+void NavigationStyle::moveCursorPosition()
+{
+    if (!isResetCursorPosition())
+        return;
+
+    QPoint cpos = QCursor::pos();
+    if (abs(cpos.x()-globalPos[0]) > 10 ||
+        abs(cpos.y()-globalPos[1]) > 10) {
+        QCursor::setPos(globalPos[0], globalPos[1]-1);
+        this->log.position[0] = localPos;
+    }
 }
 
 void NavigationStyle::updateAnimation()
@@ -921,6 +954,26 @@ void NavigationStyle::stopAnimating(void)
     }
     this->setViewingMode(this->isViewing() ? 
         NavigationStyle::IDLE : NavigationStyle::INTERACT);
+}
+
+void NavigationStyle::setSensitivity(float val)
+{
+    PRIVATE(this)->sensitivity = val;
+}
+
+float NavigationStyle::getSensitivity() const
+{
+    return PRIVATE(this)->sensitivity;
+}
+
+void NavigationStyle::setResetCursorPosition(SbBool on)
+{
+    PRIVATE(this)->resetcursorpos = on;
+}
+
+SbBool NavigationStyle::isResetCursorPosition() const
+{
+    return PRIVATE(this)->resetcursorpos;
 }
 
 void NavigationStyle::setZoomInverted(SbBool on)
