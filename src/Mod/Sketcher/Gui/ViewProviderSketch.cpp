@@ -2987,13 +2987,44 @@ Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const
 
 bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 {
-    //FIXME use the selection subelements instead of the Sel Sets...
     if (edit) {
-        // We must tmp. block the signaling because otherwise we empty the sets while
-        // looping through them which may cause a crash
-        this->blockConnection(true);
+        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+
+        Gui::Selection().clearSelection();
+        resetPreselectPoint();
+        edit->PreselectCurve = -1;
+        edit->PreselectCross = -1;
+        edit->PreselectConstraint = -1;
+
+        std::set<int> delGeometries, delCoincidents, delConstraints;
+        // go through the selected subelements
+        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
+            if (it->size() > 4 && it->substr(0,4) == "Edge") {
+                int GeoId = std::atoi(it->substr(4,4000).c_str());
+                delGeometries.insert(GeoId);
+            } else if (it->size() > 12 && it->substr(0,12) == "ExternalEdge") {
+                int GeoId = std::atoi(it->substr(12,4000).c_str());
+                GeoId = -GeoId - 3;
+                delGeometries.insert(GeoId);
+            } else if (it->size() > 6 && it->substr(0,6) == "Vertex") {
+                int VtId = std::atoi(it->substr(6,4000).c_str());
+                int GeoId;
+                Sketcher::PointPos PosId;
+                getSketchObject()->getGeoVertexIndex(VtId, GeoId, PosId);
+                if (getSketchObject()->getGeometry(GeoId)->getTypeId()
+                    == Part::GeomPoint::getClassTypeId())
+                    delGeometries.insert(GeoId);
+                else
+                    delCoincidents.insert(VtId);
+            } else if (it->size() > 10 && it->substr(0,10) == "Constraint") {
+                int ConstrId = std::atoi(it->substr(10,4000).c_str());
+                delConstraints.insert(ConstrId);
+            }
+        }
+
         std::set<int>::const_reverse_iterator rit;
-        for (rit = edit->SelConstraintSet.rbegin(); rit != edit->SelConstraintSet.rend(); rit++) {
+        for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); rit++) {
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
                                        ,getObject()->getNameInDocument(), *rit);
@@ -3003,7 +3034,17 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        for (rit = edit->SelCurvSet.rbegin(); rit != edit->SelCurvSet.rend(); rit++) {
+        for (rit = delCoincidents.rbegin(); rit != delCoincidents.rend(); rit++) {
+            try {
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i)"
+                                       ,getObject()->getNameInDocument(), *rit);
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+            }
+        }
+
+        for (rit = delGeometries.rbegin(); rit != delGeometries.rend(); rit++) {
             try {
                 if (*rit >= 0)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delGeometry(%i)"
@@ -3016,22 +3057,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                 Base::Console().Error("%s\n", e.what());
             }
         }
-        for (rit = edit->SelPointSet.rbegin(); rit != edit->SelPointSet.rend(); rit++) {
-            try {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i)"
-                                       ,getObject()->getNameInDocument(), *rit);
-            }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
-            }
-        }
 
-        this->blockConnection(false);
-        Gui::Selection().clearSelection();
-        resetPreselectPoint();
-        edit->PreselectCurve = -1;
-        edit->PreselectCross = -1;
-        edit->PreselectConstraint = -1;
         this->drawConstraintIcons();
         this->updateColor();
         // if in edit not delete the object
