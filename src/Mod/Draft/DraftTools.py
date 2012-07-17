@@ -333,10 +333,15 @@ class SelectPlane(DraftTool):
             sel = FreeCADGui.Selection.getSelectionEx()
             if len(sel) == 1:
                 sel = sel[0]
-                if sel.HasSubObjects:
+                self.ui = FreeCADGui.draftToolBar
+                if Draft.getType(sel.Object) == "Axis":
+                    plane.alignToEdges(sel.Object.Shape.Edges)
+                    self.display(plane.axis)
+                    self.finish()
+                    return
+                elif sel.HasSubObjects:
                     if len(sel.SubElementNames) == 1:
                         if "Face" in sel.SubElementNames[0]:
-                            self.ui = FreeCADGui.draftToolBar
                             plane.alignToFace(sel.SubObjects[0], self.offset)
                             self.display(plane.axis)
                             self.finish()

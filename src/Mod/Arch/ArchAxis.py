@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,math,DraftVecUtils
+import FreeCAD,FreeCADGui,Draft,math,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore, QtGui
 from pivy import coin
