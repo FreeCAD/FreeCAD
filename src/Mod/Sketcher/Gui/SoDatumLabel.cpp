@@ -136,10 +136,12 @@ void SoDatumLabel::drawImage()
 
 void SoDatumLabel::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
 {
-    // Set the bounding box using stored parameters
-    box.setBounds(this->bbox.getMin(),this->bbox.getMax() );
-    SbVec3f bbcenter = this->bbox.getCenter();
-    center.setValue(bbcenter[0], bbcenter[1], bbcenter[2]);
+    if (!this->bbox.isEmpty()) {
+        // Set the bounding box using stored parameters
+        box.setBounds(this->bbox.getMin(),this->bbox.getMax() );
+        SbVec3f bbcenter = this->bbox.getCenter();
+        center.setValue(bbcenter[0], bbcenter[1], bbcenter[2]);
+    }
 }
 
 void SoDatumLabel::generatePrimitives(SoAction * action)
@@ -344,14 +346,14 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         // Calculate coordinates for the first arrow
         SbVec3f ar0, ar1, ar2;
         ar0  = p1 + dir * 5 * margin;
-        ar1  = ar0 - dir * 0.866 * 2 * margin; // Base Point of Arrow
+        ar1  = ar0 - dir * 0.866f * 2 * margin; // Base Point of Arrow
         ar2  = ar1 + norm * margin; // Triangular corners
         ar1 -= norm * margin;
 
         // Calculate coordinates for the second arrow
         SbVec3f ar3, ar4, ar5;
         ar3  = p2 - dir * 5 * margin;
-        ar4  = ar3 + dir * 0.866 * 2 * margin; // Base Point of 2nd Arrow
+        ar4  = ar3 + dir * 0.866f * 2 * margin; // Base Point of 2nd Arrow
 
         ar5  = ar4 + norm * margin; // Triangular corners
         ar4 -= norm * margin;
@@ -547,11 +549,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         glVertex2f(par4[0], par4[1]);
         glEnd();
 
-        SbVec3f ar1 = par1 + ((flipTriang) ? -1 : 1) * dir * 0.866 * 2 * margin;
+        SbVec3f ar1 = par1 + ((flipTriang) ? -1 : 1) * dir * 0.866f * 2 * margin;
         SbVec3f ar2 = ar1 + norm * margin;
                 ar1 -= norm * margin;
 
-        SbVec3f ar3 = par4 - ((flipTriang) ? -1 : 1) * dir * 0.866 * 2 * margin;
+        SbVec3f ar3 = par4 - ((flipTriang) ? -1 : 1) * dir * 0.866f * 2 * margin;
         SbVec3f ar4 = ar3 + norm * margin ;
                 ar3 -= norm * margin;
 
@@ -614,7 +616,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Create the arrowhead
         SbVec3f ar0  = p2;
-        SbVec3f ar1  = p2 - dir * 0.866 * 2 * margin;
+        SbVec3f ar1  = p2 - dir * 0.866f * 2 * margin;
         SbVec3f ar2  = ar1 + norm * margin;
         ar1 -= norm * margin;
 
@@ -778,7 +780,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Calculate coordinates for the first arrow
         SbVec3f ar0, ar1, ar2;
         ar0  = p1 + dir * 4 * margin; // Tip of Arrow
-        ar1  = ar0 - dir * 0.866 * 2 * margin;
+        ar1  = ar0 - dir * 0.866f * 2 * margin;
         ar2  = ar1 + norm * margin;
         ar1 -= norm * margin;
 
@@ -794,7 +796,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Calculate coordinates for the second arrow
         SbVec3f ar3, ar4, ar5;
         ar3  = p2 - dir * 4 * margin; // Tip of 2nd Arrow
-        ar4  = ar3 + dir * 0.866 * 2 * margin;
+        ar4  = ar3 + dir * 0.866f * 2 * margin;
         ar5  = ar4 + norm * margin;
         ar4 -= norm * margin;
 
