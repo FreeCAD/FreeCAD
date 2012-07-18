@@ -1366,13 +1366,13 @@ void messageHandlerCoin(const SoError * error, void * userdata)
         switch (dbg->getSeverity())
         {
         case SoDebugError::INFO:
-            Base::Console().Message( msg );
+            Base::Console().Message("%s\n", msg);
             break;
         case SoDebugError::WARNING:
-            Base::Console().Warning( msg );
+            Base::Console().Warning("%s\n", msg);
             break;
         default: // error
-            Base::Console().Error( msg );
+            Base::Console().Error("%s\n", msg);
             break;
         }
 #ifdef FC_OS_WIN32
