@@ -336,12 +336,14 @@ int SketchObject::delGeometry(int GeoId)
     std::vector< Constraint * > newConstraints(0);
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
-        if ((*it)->First != GeoId && (*it)->Second != GeoId) {
+        if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
             Constraint *copiedConstr = (*it)->clone();
             if (copiedConstr->First > GeoId)
                 copiedConstr->First -= 1;
             if (copiedConstr->Second > GeoId)
                 copiedConstr->Second -= 1;
+            if (copiedConstr->Third > GeoId)
+                copiedConstr->Third -= 1;
             newConstraints.push_back(copiedConstr);
         }
     }
