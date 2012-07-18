@@ -2830,8 +2830,12 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     this->show();
 
-    // and update the sketch
-    getSketchObject()->getDocument()->recompute();
+    try {
+        // and update the sketch
+        getSketchObject()->getDocument()->recompute();
+    }
+    catch (...) {
+    }
 
     // clear the selection and set the new/edited sketch(convenience)
     Gui::Selection().clearSelection();
