@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils
+import FreeCAD, DraftGeomUtils, Part
 
 if open.__module__ == '__builtin__':
     pythonopen = open
@@ -35,20 +35,27 @@ def findVert(aVertex,aList):
 def getIndices(shape,offset):
     "returns a list with 2 lists: vertices and face indexes, offsetted with the given amount"
     vlist = []
+    elist = []
     flist = []
     for v in shape.Vertexes:
-        vlist.append(" "+str(round(v.X,4))+" "+str(round(v.Z,4))+" "+str(round(v.Y,4)))
+        vlist.append(" "+str(round(v.X,4))+" "+str(round(v.Y,4))+" "+str(round(v.Z,4)))
+    if not shape.Faces:
+        for e in shape.Edges:
+            if isinstance(e,Part.Line):
+                ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes)+offset)
+                ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes)+offset)
+                elist.append(ei)
     for f in shape.Faces:
         fi = ""
         # OCC vertices are unsorted. We need to sort in the right order...
         edges = DraftGeomUtils.sortEdges(f.Wire.Edges)
-        print edges
+        #print edges
         for e in edges:
-            print e.Vertexes[0].Point,e.Vertexes[1].Point
+            #print e.Vertexes[0].Point,e.Vertexes[1].Point
             v = e.Vertexes[0]
             fi+=" "+str(findVert(v,shape.Vertexes)+offset)
         flist.append(fi)
-    return vlist,flist
+    return vlist,elist,flist
 
 def export(exportList,filename):
     "called when freecad exports a file"
@@ -59,13 +66,16 @@ def export(exportList,filename):
     offset = 1
     for obj in exportList:
         if obj.isDerivedFrom("Part::Feature"):
-            vlist,flist = getIndices(obj.Shape,offset)
-            offset += len(vlist)
-            outfile.write("o " + obj.Name + "\n")
-            for v in vlist:
-                outfile.write("v" + v + "\n")
-            for f in flist:
-                outfile.write("f" + f + "\n")
+            if obj.ViewObject.isVisible():
+                vlist,elist,flist = getIndices(obj.Shape,offset)
+                offset += len(vlist)
+                outfile.write("o " + obj.Name + "\n")
+                for v in vlist:
+                    outfile.write("v" + v + "\n")
+                for e in elist:
+                    outfile.write("l" + e + "\n")
+                for f in flist:
+                    outfile.write("f" + f + "\n")
     outfile.close()
     FreeCAD.Console.PrintMessage("successfully written "+filename)
             
