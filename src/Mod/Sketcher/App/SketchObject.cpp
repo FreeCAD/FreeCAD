@@ -320,6 +320,18 @@ int SketchObject::delGeometry(int GeoId)
     std::vector< Part::Geometry * > newVals(vals);
     newVals.erase(newVals.begin()+GeoId);
 
+    // Find coincident points to replace the points of the deleted geometry
+    std::vector<int> GeoIdList;
+    std::vector<PointPos> PosIdList;
+    for (PointPos PosId = start; PosId != mid; ) {
+        getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+        if (GeoIdList.size() > 1) {
+            delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
+            transferConstraints(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
+        }
+        PosId = (PosId == start) ? end : mid; // loop through [start, end, mid]
+    }
+
     const std::vector< Constraint * > &constraints = this->Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
@@ -446,7 +458,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
             if ((*it)->Type == Sketcher::Distance ||
                 (*it)->Type == Sketcher::DistanceX || (*it)->Type == Sketcher::DistanceY) {
                 if ((*it)->First == GeoId && (*it)->FirstPos == none &&
-                    (PosId == start || PosId ==end)) {
+                    (PosId == start || PosId == end)) {
                     // remove the constraint even if it is not directly associated
                     // with the given point
                     continue; // skip this constraint
@@ -508,12 +520,14 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     std::vector<Constraint *> newVals(vals);
     for (int i=0; i < int(newVals.size()); i++) {
-        if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId) {
+        if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
+            !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId)) {
             Constraint *constNew = newVals[i]->clone();
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
             newVals[i] = constNew;
-        } else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId) {
+        } else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
+                   !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)) {
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
