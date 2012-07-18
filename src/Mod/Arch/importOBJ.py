@@ -21,7 +21,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part
+import FreeCAD, DraftGeomUtils, Part, Draft
+
+p = Draft.precision()
 
 if open.__module__ == '__builtin__':
     pythonopen = open
@@ -29,8 +31,10 @@ if open.__module__ == '__builtin__':
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"
     for i in range(len(aList)):
-        if (aVertex.X == aList[i].X) and (aVertex.Y == aList[i].Y) and (aVertex.Z == aList[i].Z):
-            return i
+        if ( round(aVertex.X,p) == round(aList[i].X,p) ):
+            if ( round(aVertex.Y,p) == round(aList[i].Y,p) ):
+                if ( round(aVertex.Z,p) == round(aList[i].Z,p) ):
+                    return i
 
 def getIndices(shape,offset):
     "returns a list with 2 lists: vertices and face indexes, offsetted with the given amount"
@@ -38,23 +42,33 @@ def getIndices(shape,offset):
     elist = []
     flist = []
     for v in shape.Vertexes:
-        vlist.append(" "+str(round(v.X,4))+" "+str(round(v.Y,4))+" "+str(round(v.Z,4)))
+        vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
     if not shape.Faces:
         for e in shape.Edges:
             if isinstance(e,Part.Line):
-                ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes)+offset)
-                ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes)+offset)
+                ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offset)
+                ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offset)
                 elist.append(ei)
     for f in shape.Faces:
-        fi = ""
-        # OCC vertices are unsorted. We need to sort in the right order...
-        edges = DraftGeomUtils.sortEdges(f.Wire.Edges)
-        #print edges
-        for e in edges:
-            #print e.Vertexes[0].Point,e.Vertexes[1].Point
-            v = e.Vertexes[0]
-            fi+=" "+str(findVert(v,shape.Vertexes)+offset)
-        flist.append(fi)
+        if len(f.Wires) > 1:
+            # if we have holes, we triangulate
+            tris = f.tessellate(1)
+            for fdata in tris[1]:
+                fi = ""
+                for vi in fdata:
+                    vdata = Part.Vertex(tris[0][vi])
+                    fi += " " + str(findVert(vdata,shape.Vertexes) + offset)
+                flist.append(fi)
+        else:
+            fi = ""
+            # OCC vertices are unsorted. We need to sort in the right order...
+            edges = DraftGeomUtils.sortEdges(f.Wire.Edges)
+            #print edges
+            for e in edges:
+                #print e.Vertexes[0].Point,e.Vertexes[1].Point
+                v = e.Vertexes[0]
+                fi += " " + str(findVert(v,shape.Vertexes) + offset)
+            flist.append(fi)
     return vlist,elist,flist
 
 def export(exportList,filename):
