@@ -1188,13 +1188,13 @@ void Application::processCmdLineFiles(void)
                 Application::_pcSingleton->openDocument(File.filePath().c_str());
             }
             else if (File.hasExtension("fcscript")||File.hasExtension("fcmacro")) {
-                Base::Interpreter().runFile(File.filePath().c_str(), false);
+                Base::Interpreter().runFile(File.filePath().c_str(), true);
             }
             else if (File.hasExtension("py")) {
                 //FIXME: Does this make any sense? I think we should do the ame as for
                 // fcmacro or fcscript.
                 //Base::Interpreter().loadModule(File.fileNamePure().c_str());
-                Base::Interpreter().runFile(File.filePath().c_str(), false);
+                Base::Interpreter().runFile(File.filePath().c_str(), true);
             }
             else {
                 std::vector<std::string> mods = App::GetApplication().getImportModules(Ext.c_str());
@@ -1210,8 +1210,7 @@ void Application::processCmdLineFiles(void)
             }
         }
         catch (const Base::SystemExitException&) {
-            Base::PyGILStateLocker locker;
-            Base::Interpreter().systemExit();
+            throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
             Console().Error("Exception while processing file: %s [%s]\n", File.filePath().c_str(), e.what());
@@ -1523,20 +1522,23 @@ void Application::ParseOptions(int ac, char ** av)
         notify(vm);
     }
     catch (const std::exception& e) {
-        cerr << e.what() << endl << endl << visible << endl;
-        exit(1);
+        std::stringstream str;
+        str << e.what() << endl << endl << visible << endl;
+        throw UnknownProgramOption(str.str());
     }
     catch (...) {
-        cerr << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
-        exit(1);
+        std::stringstream str;
+        str << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
+        throw UnknownProgramOption(str.str());
     }
 
     if (vm.count("help")) {
-        cout << mConfig["ExeName"] << endl << endl;
-        cout << "For detailed descripton see http://free-cad.sf.net" << endl<<endl;
-        cout << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
-        cout << visible << endl;
-        exit(0);
+        std::stringstream str;
+        str << mConfig["ExeName"] << endl << endl;
+        str << "For detailed descripton see http://free-cad.sf.net" << endl<<endl;
+        str << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
+        str << visible << endl;
+        throw Base::ProgramInformation(str.str());
     }
 
     if (vm.count("response-file")) {
@@ -1544,9 +1546,10 @@ void Application::ParseOptions(int ac, char ** av)
         std::ifstream ifs(vm["response-file"].as<string>().c_str());
         if (!ifs) {
             Base::Console().Error("Could no open the response file\n");
-            cerr << "Could no open the response file: '"
-                 << vm["response-file"].as<string>() << "'" << endl;
-            exit(1);
+            std::stringstream str;
+            str << "Could no open the response file: '"
+                << vm["response-file"].as<string>() << "'" << endl;
+            throw Base::UnknownProgramOption(str.str());
         }
         // Read the whole file into a string
         stringstream ss;
@@ -1562,9 +1565,10 @@ void Application::ParseOptions(int ac, char ** av)
     }
 
     if (vm.count("version")) {
-        std::cout << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
-                  << " Revision: " << mConfig["BuildRevision"] << std::endl;
-        exit(0);
+        std::stringstream str;
+        str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
+            << " Revision: " << mConfig["BuildRevision"] << std::endl;
+        throw Base::ProgramInformation(str.str());
     }
 
     if (vm.count("console")) {

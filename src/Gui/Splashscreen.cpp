@@ -26,6 +26,7 @@
 # include <Python.h>
 # include <QApplication>
 # include <QClipboard>
+# include <QDialogButtonBox>
 # include <QMutex>
 # include <QProcess> 
 # include <QSysInfo>
@@ -88,23 +89,31 @@ public:
                 textColor = col;
         }
     }
-
     virtual ~SplashObserver()
     {
         Base::Console().DetachObserver(this);
     }
-
+    const char* Name()
+    {
+        return "SplashObserver";
+    }
     void Warning(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Message(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Error  (const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Log (const char * s)
     {
@@ -174,7 +183,11 @@ AboutDialogFactory::~AboutDialogFactory()
 
 QDialog *AboutDialogFactory::create(QWidget *parent) const
 {
+#ifdef _USE_3DCONNEXION_SDK
+    return new AboutDialog(true, parent);
+#else
     return new AboutDialog(false, parent);
+#endif
 }
 
 const AboutDialogFactory *AboutDialogFactory::defaultFactory()
@@ -267,11 +280,9 @@ static QString getPlatform()
 
 void AboutDialog::setupLabels()
 {
+    QString exeName = qApp->applicationName();
     std::map<std::string, std::string>& config = App::Application::Config();
-    QString exeName = QString::fromAscii(config["ExeName"].c_str());
-    std::map<std::string,std::string>::iterator it = config.find("WindowTitle");
-    if (it != config.end())
-        exeName = QString::fromUtf8(it->second.c_str());
+    std::map<std::string,std::string>::iterator it;
     QString banner  = QString::fromUtf8(config["CopyrightInfo"].c_str());
     banner = banner.left( banner.indexOf(QLatin1Char('\n')) );
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
@@ -328,8 +339,54 @@ void AboutDialog::setupLabels()
     }
 }
 
+namespace Gui {
+namespace Dialog {
+
+class GuiExport LicenseDialog : public QDialog
+{
+public:
+    LicenseDialog(QWidget *parent = 0) : QDialog(parent, Qt::FramelessWindowHint)
+    {
+        QString info;
+#ifdef _USE_3DCONNEXION_SDK
+        info = QString::fromAscii(
+            "3D Mouse Support:\n"
+            "Development tools and related technology provided under license from 3Dconnexion.\n"
+            "(c) 1992 - 2012 3Dconnexion. All rights reserved");
+#endif
+        statusLabel = new QLabel(info);
+        buttonBox = new QDialogButtonBox;
+        buttonBox->setStandardButtons(QDialogButtonBox::Ok);
+        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+
+        QHBoxLayout *topLayout = new QHBoxLayout;
+        topLayout->addWidget(statusLabel);
+
+        QVBoxLayout *mainLayout = new QVBoxLayout;
+        mainLayout->addLayout(topLayout);
+        mainLayout->addWidget(buttonBox);
+        setLayout(mainLayout);
+
+        setWindowTitle(tr("Copyright"));
+    }
+    ~LicenseDialog()
+    {
+    }
+
+private:
+    QLabel *statusLabel;
+    QDialogButtonBox *buttonBox;
+};
+
+} // namespace Dialog
+} // namespace Gui
+
 void AboutDialog::on_licenseButton_clicked()
 {
+#ifdef _USE_3DCONNEXION_SDK
+    LicenseDialog dlg(this);
+    dlg.exec();
+#endif
 }
 
 void AboutDialog::on_copyButton_clicked()

@@ -32,6 +32,7 @@
 # include <gp_Circ.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRep_Tool.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
@@ -75,6 +76,7 @@ SketchObject::SketchObject()
     VLine->Construction = true;
     ExternalGeo.push_back(HLine);
     ExternalGeo.push_back(VLine);
+    rebuildVertexIndex();
 }
 
 SketchObject::~SketchObject()
@@ -222,7 +224,11 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
     assert(GeoId == H_Axis || GeoId == V_Axis ||
            (GeoId <= getHighestCurveIndex() && GeoId >= -getExternalGeometryCount()) );
     const Part::Geometry *geo = getGeometry(GeoId);
-    if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+        const Part::GeomPoint *p = dynamic_cast<const Part::GeomPoint*>(geo);
+        if (PosId == start || PosId == mid || PosId == end)
+            return p->getPoint();
+    } else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geo);
         if (PosId == start)
             return lineSeg->getStartPoint();
@@ -314,16 +320,30 @@ int SketchObject::delGeometry(int GeoId)
     std::vector< Part::Geometry * > newVals(vals);
     newVals.erase(newVals.begin()+GeoId);
 
+    // Find coincident points to replace the points of the deleted geometry
+    std::vector<int> GeoIdList;
+    std::vector<PointPos> PosIdList;
+    for (PointPos PosId = start; PosId != mid; ) {
+        getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+        if (GeoIdList.size() > 1) {
+            delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
+            transferConstraints(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
+        }
+        PosId = (PosId == start) ? end : mid; // loop through [start, end, mid]
+    }
+
     const std::vector< Constraint * > &constraints = this->Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
-        if ((*it)->First != GeoId && (*it)->Second != GeoId) {
+        if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
             Constraint *copiedConstr = (*it)->clone();
             if (copiedConstr->First > GeoId)
                 copiedConstr->First -= 1;
             if (copiedConstr->Second > GeoId)
                 copiedConstr->Second -= 1;
+            if (copiedConstr->Third > GeoId)
+                copiedConstr->Third -= 1;
             newConstraints.push_back(copiedConstr);
         }
     }
@@ -440,7 +460,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
             if ((*it)->Type == Sketcher::Distance ||
                 (*it)->Type == Sketcher::DistanceX || (*it)->Type == Sketcher::DistanceY) {
                 if ((*it)->First == GeoId && (*it)->FirstPos == none &&
-                    (PosId == start || PosId ==end)) {
+                    (PosId == start || PosId == end)) {
                     // remove the constraint even if it is not directly associated
                     // with the given point
                     continue; // skip this constraint
@@ -502,12 +522,14 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     std::vector<Constraint *> newVals(vals);
     for (int i=0; i < int(newVals.size()); i++) {
-        if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId) {
+        if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
+            !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId)) {
             Constraint *constNew = newVals[i]->clone();
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
             newVals[i] = constNew;
-        } else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId) {
+        } else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
+                   !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)) {
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
@@ -1225,15 +1247,17 @@ void SketchObject::rebuildExternalGeometry(void)
                     invPlm.multVec(p2,p2);
 
                     if (Base::Distance(p1,p2) < Precision::Confusion()) {
-                        std::string msg = SubElement + " perpendicular to the sketch plane cannot be used as external geometry";
-                        throw Base::Exception(msg.c_str());
+                        Base::Vector3d p = (p1 + p2) / 2;
+                        Part::GeomPoint* point = new Part::GeomPoint(p);
+                        point->Construction = true;
+                        ExternalGeo.push_back(point);
                     }
-
-                    Part::GeomLineSegment* line = new Part::GeomLineSegment();
-                    line->setPoints(p1,p2);
-
-                    line->Construction = true;
-                    ExternalGeo.push_back(line);
+                    else {
+                        Part::GeomLineSegment* line = new Part::GeomLineSegment();
+                        line->setPoints(p1,p2);
+                        line->Construction = true;
+                        ExternalGeo.push_back(line);
+                    }
                 }
                 else {
                     try {
@@ -1244,32 +1268,34 @@ void SketchObject::rebuildExternalGeometry(void)
                         if (!projShape.IsNull()) {
                             TopExp_Explorer xp;
                             for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
-                                TopoDS_Edge edge = TopoDS::Edge(xp.Current());
+                                TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
                                 TopLoc_Location loc(mov);
-                                edge.Location(loc);
-                                BRepAdaptor_Curve curve(edge);
-                                if (curve.GetType() == GeomAbs_Line) {
-                                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
-                                    gp_Pnt P2 = curve.Value(curve.LastParameter());
+                                projEdge.Location(loc);
+                                BRepAdaptor_Curve projCurve(projEdge);
+                                if (projCurve.GetType() == GeomAbs_Line) {
+                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
                                     Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
                                     Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
 
                                     if (Base::Distance(p1,p2) < Precision::Confusion()) {
-                                        std::string msg = SubElement + " perpendicular to the sketch plane cannot be used as external geometry";
-                                        throw Base::Exception(msg.c_str());
+                                        Base::Vector3d p = (p1 + p2) / 2;
+                                        Part::GeomPoint* point = new Part::GeomPoint(p);
+                                        point->Construction = true;
+                                        ExternalGeo.push_back(point);
                                     }
-
-                                    Part::GeomLineSegment* line = new Part::GeomLineSegment();
-                                    line->setPoints(p1,p2);
-
-                                    line->Construction = true;
-                                    ExternalGeo.push_back(line);
+                                    else {
+                                        Part::GeomLineSegment* line = new Part::GeomLineSegment();
+                                        line->setPoints(p1,p2);
+                                        line->Construction = true;
+                                        ExternalGeo.push_back(line);
+                                    }
                                 }
-                                else if (curve.GetType() == GeomAbs_Circle) {
-                                    gp_Circ c = curve.Circle();
+                                else if (projCurve.GetType() == GeomAbs_Circle) {
+                                    gp_Circ c = projCurve.Circle();
                                     gp_Pnt p = c.Location();
-                                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
-                                    gp_Pnt P2 = curve.Value(curve.LastParameter());
+                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
                                     if (P1.SquareDistance(P2) < Precision::Confusion()) {
                                         Part::GeomCircle* circle = new Part::GeomCircle();
@@ -1283,7 +1309,11 @@ void SketchObject::rebuildExternalGeometry(void)
                                         Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
                                         arc->setRadius(c.Radius());
                                         arc->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
-                                        arc->setRange(curve.FirstParameter(), curve.LastParameter());
+                                        if (c.Axis().Direction().Z() < 0) // clockwise
+                                            arc->setRange(2*M_PI - projCurve.LastParameter(),
+                                                          2*M_PI - projCurve.FirstParameter());
+                                        else // counter-clockwise
+                                            arc->setRange(projCurve.FirstParameter(), projCurve.LastParameter());
 
                                         arc->Construction = true;
                                         ExternalGeo.push_back(arc);
@@ -1303,7 +1333,17 @@ void SketchObject::rebuildExternalGeometry(void)
             }
             break;
         case TopAbs_VERTEX:
-            throw Base::Exception("Vertices cannot be used as external geometry for sketches");
+            {
+                gp_Pnt P = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
+                GeomAPI_ProjectPointOnSurf proj(P,gPlane);
+                P = proj.NearestPoint();
+                Base::Vector3d p(P.X(),P.Y(),P.Z());
+                invPlm.multVec(p,p);
+
+                Part::GeomPoint* point = new Part::GeomPoint(p);
+                point->Construction = true;
+                ExternalGeo.push_back(point);
+            }
             break;
         default:
             throw Base::Exception("Unknown type of geometry");
@@ -1326,9 +1366,16 @@ void SketchObject::rebuildVertexIndex(void)
     int imax=getHighestCurveIndex();
     int i=0;
     const std::vector< Part::Geometry * > geometry = getCompleteGeometry();
+    if (geometry.size() <= 2)
+        return;
     for (std::vector< Part::Geometry * >::const_iterator it = geometry.begin();
-         it != geometry.end(); ++it) {
-        if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+         it != geometry.end()-2; ++it, i++) {
+        if (i > imax)
+              i = -getExternalGeometryCount();
+        if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(start);
+        } else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
             VertexId2GeoId.push_back(i);
@@ -1344,9 +1391,6 @@ void SketchObject::rebuildVertexIndex(void)
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(end);
         }
-        i++;
-        if (i > imax)
-              i = -getExternalGeometryCount();
     }
 }
 

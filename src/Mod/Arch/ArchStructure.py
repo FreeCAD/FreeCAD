@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from DraftTools import translate
@@ -52,6 +52,18 @@ def makeStructure(baseobj=None,length=1,width=1,height=1,name=str(translate("Arc
     obj.ViewObject.ShapeColor = (r,g,b,1.0)
     return obj
 
+def makeStructuralSystem(objects,axes):
+    '''makeStructuralSystem(objects,axes): makes a structural system
+    based on the given objects and axes'''
+    result = []
+    if objects and axes:
+        for o in objects:
+            s = makeStructure(o)
+            s.Axes = axes
+            result.append(s)
+        FreeCAD.ActiveDocument.recompute()
+    return result
+
 class _CommandStructure:
     "the Arch Structure command definition"
     def GetResources(self):
@@ -65,8 +77,15 @@ class _CommandStructure:
         FreeCADGui.doCommand("import Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            for obj in sel:
-                FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument."+obj.Name+")")
+            # if selection contains structs and axes, make a system
+            st = Draft.getObjectsOfType(sel,"Structure")
+            ax = Draft.getObjectsOfType(sel,"Axis")
+            if st and ax:
+                FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
+            else:
+                # else, do normal structs
+                for obj in sel:
+                    FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
         else:
             FreeCADGui.doCommand("Arch.makeStructure()")
         FreeCAD.ActiveDocument.commitTransaction()
@@ -86,6 +105,8 @@ class _Structure(ArchComponent.Component):
                         str(translate("Arch","Axes systems this structure is built on")))
         obj.addProperty("App::PropertyVector","Normal","Base",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
+        obj.addProperty("App::PropertyIntegerList","Exclude","Base",
+                        str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
         self.Type = "Structure"
         
     def execute(self,obj):
@@ -109,6 +130,12 @@ class _Structure(ArchComponent.Component):
                 for e2 in set2: 
                     pts.extend(DraftGeomUtils.findIntersection(e1,e2))
         return pts
+
+    def getAxisPlacement(self,obj):
+        "returns an axis placement"
+        if obj.Axes:
+            return obj.Axes[0].Placement
+        return None
 
     def createGeometry(self,obj):
         import Part, DraftGeomUtils
@@ -174,22 +201,32 @@ class _Structure(ArchComponent.Component):
                         if not hole.Shape.isNull():
                             base = base.cut(hole.Shape)
                             hole.ViewObject.hide() # to be removed
+
+            # applying axes
             pts = self.getAxisPoints(obj)
+            apl = self.getAxisPlacement(obj)
             if pts:
                 fsh = []
-                for p in pts:
+                for i in range(len(pts)):
+                    if hasattr(obj,"Exclude"):
+                        if i in obj.Exclude:
+                            continue
                     sh = base.copy()
-                    sh.translate(p)
+                    if apl:
+                        sh.Placement.Rotation = apl.Rotation
+                    sh.translate(pts[i])
                     fsh.append(sh)
                     obj.Shape = Part.makeCompound(fsh)
+
+            # finalizing
             else:
                 if base:
                     if not base.isNull():
                         base = base.removeSplitter()
                         obj.Shape = base
-            if not DraftGeomUtils.isNull(pl):
-                obj.Placement = pl
-
+                if not DraftGeomUtils.isNull(pl):
+                    obj.Placement = pl
+    
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
 

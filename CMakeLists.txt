@@ -104,6 +104,11 @@ OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only f
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
+if(MSVC)
+OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+else(MSVC)
+set(FREECAD_USE_3DCONNEXION OFF)
+endif(MSVC)
 
 # if this is set override some options
 if (FREECAD_BUILD_DEBIAN)
@@ -206,7 +211,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 	if( ${OCE_FOUND} )
 		message("-- OpenCASCADE Community Edition has been found.")
 		add_definitions ( -DHAVE_CONFIG_H )
-		set( OCC_LIBRARIES "TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
+		set( OCC_LIBRARIES "TKFeat;TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
 		set( OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS} )
 		set( OCC_FOUND ${OCE_FOUND} )
 	else() #look for OpenCASCADE
@@ -219,12 +224,6 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 		ENDIF()
 	endif()
 
-# -------------------------------- f2c ----------------------------------
-
-    IF(OCC_FOUND)
-        find_package(F2C REQUIRED)
-    ENDIF(OCC_FOUND)
-	
 # -------------------------------- Salome SMESH --------------------------
 
     # Salome SMESH sources are under src/3rdParty now
@@ -268,7 +267,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- ODE ----------------------------------
 
-    find_package(ODE)
+#    find_package(ODE)
 
 # -------------------------------- Qt --------------------------------
 
@@ -439,7 +438,7 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 		set(PKG_ARCH amd64)
 	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 	set(CPACK_DEBIAN_PACKAGE_SECTION "science")
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libode1, libsoqt4-20, libxerces-c3.1, libgts-0.7-5, zlib1g, libboost-dev, libeigen2-dev")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libsoqt4-20, libxerces-c3.1, zlib1g, libboost-dev, libeigen2-dev")
 	set(CPACK_PACKAGE_CONTACT "<root@localhost>")
 	set(CPACK_PACKAGE_FILE_NAME "${PACKAGE_NAME}-${PACKAGE_VERSION}_${PKG_ARCH}")
 	

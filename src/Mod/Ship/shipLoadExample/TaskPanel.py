@@ -38,10 +38,12 @@ class TaskPanel:
         path = Paths.modulePath() + "/Examples/"
         if(self.form.ship.currentIndex() == 0):     # s60 from Iowa University
             App.open(path + "s60.fcstd")
-        elif(self.form.ship.currentIndex() == 1):   # Barehull 5415
-            App.open(path + "barehull5415.fcstd")
+        elif(self.form.ship.currentIndex() == 1):   # Wigley canonical ship
+            App.open(path + "wigley.fcstd")
         elif(self.form.ship.currentIndex() == 2):   # s60 (Katamaran)
             App.open(path + "s60_katamaran.fcstd")
+        elif(self.form.ship.currentIndex() == 2):   # Wigley (Katamaran)
+            App.open(path + "wigley_katamaran.fcstd")
         return True
 
     def reject(self):

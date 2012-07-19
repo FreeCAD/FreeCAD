@@ -30,7 +30,6 @@ from PyQt4 import QtGui,QtCore
 import Preview
 import Instance
 from shipUtils import Paths, Translator
-from surfUtils import Geometry
 
 class TaskPanel:
     def __init__(self):
@@ -41,20 +40,18 @@ class TaskPanel:
         self.preview.clean()
         # Create new ship instance
         obj = App.ActiveDocument.addObject("Part::FeaturePython","Ship")
-        ship = Instance.Ship(obj, self.faces)
+        ship = Instance.Ship(obj, self.solids)
         Instance.ViewProviderShip(obj.ViewObject)
         # Set main dimensions
         obj.Length = self.form.length.value()
         obj.Beam   = self.form.beam.value()
         obj.Draft  = self.form.draft.value()
         # Discretize it
-        ship.discretize(self.form.nSections.value(), self.form.nPoints.value())
         App.ActiveDocument.recompute()
         return True
 
     def reject(self):
         self.preview.clean()
-        self.close()
         return True
 
     def clicked(self, index):
@@ -84,8 +81,6 @@ class TaskPanel:
         form.length = form.findChild(QtGui.QDoubleSpinBox, "Length")
         form.beam = form.findChild(QtGui.QDoubleSpinBox, "Beam")
         form.draft = form.findChild(QtGui.QDoubleSpinBox, "Draft")
-        form.nSections = form.findChild(QtGui.QSpinBox, "NSections")
-        form.nPoints = form.findChild(QtGui.QSpinBox, "NPoints")
         form.mainLogo = form.findChild(QtGui.QLabel, "MainLogo")
         iconPath = Paths.iconsPath() + "/Ico.xpm"
         form.mainLogo.setPixmap(QtGui.QPixmap(iconPath))
@@ -99,8 +94,6 @@ class TaskPanel:
         QtCore.QObject.connect(form.length, QtCore.SIGNAL("valueChanged(double)"), self.onData)
         QtCore.QObject.connect(form.beam, QtCore.SIGNAL("valueChanged(double)"), self.onData)
         QtCore.QObject.connect(form.draft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
-        QtCore.QObject.connect(form.nSections, QtCore.SIGNAL("valueChanged(int)"), self.onDiscretization)
-        QtCore.QObject.connect(form.nPoints, QtCore.SIGNAL("valueChanged(int)"), self.onDiscretization)
 
     def getMainWindow(self):
         "returns the main window"
@@ -117,36 +110,36 @@ class TaskPanel:
         """ Set initial values for fields
         """
         # Get objects
-        self.faces = None
-        selObjs  = Geometry.getSelectedObjs()
+        self.solids = None
+        selObjs  = Gui.Selection.getSelection()
         if not selObjs:
-            msg = Translator.translate("Ship objects can only be created on top of hull geometry (no object selected).\n")
+            msg = Translator.translate("Ship objects can only be created on top of hull geometry (any object selected).\n")
             App.Console.PrintError(msg)
-            msg = Translator.translate("Please create or download a ship hull geometry before using this tool\n")
+            msg = Translator.translate("Please create or load a ship hull geometry before using this tool.\n")
             App.Console.PrintError(msg)
             return True
-        self.faces = []
+        self.solids = []
         for i in range(0, len(selObjs)):
-            faces = Geometry.getFaces(selObjs[i])
-            for j in range(0, len(faces)):
-                self.faces.append(faces[j])
-        if not self.faces:
-            msg = Translator.translate("Ship objects can only be created on top of hull geometry (no face object selected).\n")
+            solids = self.getSolids(selObjs[i])
+            for j in range(0, len(solids)):
+                self.solids.append(solids[j])
+        if not self.solids:
+            msg = Translator.translate("Ship objects can only be created on top of hull geometry (no solid found at selected objects).\n")
             App.Console.PrintError(msg)
-            msg = Translator.translate("Please create or download a ship hull geometry before using this tool\n")
+            msg = Translator.translate("Please create or load a ship hull geometry before using this tool\n")
             App.Console.PrintError(msg)
             return True
         # Get bounds
         bounds = [0.0, 0.0, 0.0]
-        bbox = self.faces[0].BoundBox
+        bbox = self.solids[0].BoundBox
         minX = bbox.XMin
         maxX = bbox.XMax
         minY = bbox.YMin
         maxY = bbox.YMax
         minZ = bbox.ZMin
         maxZ = bbox.ZMax
-        for i in range(1,len(self.faces)):
-            bbox = self.faces[i].BoundBox
+        for i in range(1,len(self.solids)):
+            bbox = self.solids[i].BoundBox
             if minX > bbox.XMin:
                 minX = bbox.XMin
             if maxX < bbox.XMax:
@@ -167,10 +160,10 @@ class TaskPanel:
         self.form.length.setMinimum(0.001)
         self.form.length.setValue(bounds[0])
         self.L = bounds[0]
-        self.form.beam.setMaximum(2.0*bounds[1])
+        self.form.beam.setMaximum(bounds[1])
         self.form.beam.setMinimum(0.001)
-        self.form.beam.setValue(2.0*bounds[1])
-        self.B = 2.0*bounds[1]
+        self.form.beam.setValue(bounds[1])
+        self.B = bounds[1]
         self.form.draft.setMaximum(bounds[2])
         self.form.draft.setMinimum(0.001)
         self.form.draft.setValue(0.5*bounds[2])
@@ -186,8 +179,6 @@ class TaskPanel:
         self.form.findChild(QtGui.QLabel, "LengthLabel").setText(Translator.translate("Length"))
         self.form.findChild(QtGui.QLabel, "BeamLabel").setText(Translator.translate("Beam"))
         self.form.findChild(QtGui.QLabel, "DraftLabel").setText(Translator.translate("Draft"))
-        self.form.findChild(QtGui.QLabel, "NSectionsLabel").setText(Translator.translate("Number of sections"))
-        self.form.findChild(QtGui.QLabel, "NPointsLabel").setText(Translator.translate("Points per section"))
 
     def onData(self, value):
         """ Method called when ship data is changed.
@@ -199,16 +190,26 @@ class TaskPanel:
         self.T = self.form.draft.value()
         self.preview.update(self.L, self.B, self.T)
 
-    def onDiscretization(self, value):
-        """ Method called when discretization data is changed.
-         Annotations must be showed.
-         @param value Changed value.
+    def getSolids(self, obj):
+        """ Returns object solids (list of them)
+        @param obj Object to extract solids.
+        @return Solids. None if errors happens
         """
-        pass
-
-    def close(self):
-        """ Destroy all dependant objects
-        """
+        if not obj:
+            return None
+        if obj.isDerivedFrom('Part::Feature'):
+            # get shape
+            shape = obj.Shape
+            if not shape:
+                return None
+            obj = shape
+        if not obj.isDerivedFrom('Part::TopoShape'):
+            return None
+        # get face
+        solids = obj.Solids
+        if not solids:
+            return None
+        return solids
 
 def createTask():
     panel = TaskPanel()

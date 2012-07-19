@@ -55,6 +55,7 @@
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeShellPy.h"
 #include "LinePy.h"
+#include "PointPy.h"
 #include "CirclePy.h"
 #include "EllipsePy.h"
 #include "ArcPy.h"
@@ -106,6 +107,7 @@ void PartExport initPart()
     Base::Interpreter().addType(&Part::TopoShapeShellPy     ::Type,partModule,"Shell");
 
     Base::Interpreter().addType(&Part::LinePy               ::Type,partModule,"Line");
+    Base::Interpreter().addType(&Part::PointPy              ::Type,partModule,"Point");
     Base::Interpreter().addType(&Part::CirclePy             ::Type,partModule,"Circle");
     Base::Interpreter().addType(&Part::EllipsePy            ::Type,partModule,"Ellipse");
     Base::Interpreter().addType(&Part::HyperbolaPy          ::Type,partModule,"Hyperbola");

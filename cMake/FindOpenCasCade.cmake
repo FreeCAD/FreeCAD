@@ -78,6 +78,7 @@ IF(OCC_LIBRARY)
     TKSTEPBase
     TKSTEPAttr
     TKHLR
+    TKFeat
   )
 ENDIF(OCC_LIBRARY)
 

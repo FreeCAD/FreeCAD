@@ -54,6 +54,7 @@ DlgSettingsMacroImp::~DlgSettingsMacroImp()
 
 void DlgSettingsMacroImp::saveSettings()
 {
+    PrefCheckBox_LocalEnv->onSave();
     MacroPath->onSave();
     PrefCheckBox_RecordGui->onSave();
     PrefCheckBox_GuiAsComment->onSave();
@@ -64,6 +65,7 @@ void DlgSettingsMacroImp::saveSettings()
 
 void DlgSettingsMacroImp::loadSettings()
 {
+    PrefCheckBox_LocalEnv->onRestore();
     MacroPath->onRestore();
     PrefCheckBox_RecordGui->onRestore();
     PrefCheckBox_GuiAsComment->onRestore();
