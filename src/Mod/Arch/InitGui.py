@@ -65,7 +65,8 @@ class ArchWorkbench(Workbench):
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Add","Arch_Remove"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
-                     "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
+                     "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
+                     "Arch_CloseHoles"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",

@@ -235,6 +235,33 @@ def makeFace(wires,method=2,cleanup=False):
         #print "makeFace: final face:",mf.Faces
         return mf.Faces[0]
 
+def closeHole(shape):
+    '''closeHole(shape): closes a hole in an open shape'''
+    import DraftGeomUtils, Part
+    # creating an edges lookup table
+    lut = {}
+    for face in shape.Faces:
+        for edge in face.Edges:
+            hc = edge.hashCode()
+            if lut.has_key(hc):
+                lut[hc] = lut[hc] + 1
+            else:
+                lut[hc] = 1
+    # filter out the edges shared by more than one face
+    bound = []
+    for e in shape.Edges:
+        if lut[e.hashCode()] == 1:
+            bound.append(e)
+    bound = DraftGeomUtils.sortEdges(bound)
+    try:
+        nface = Part.Face(Part.Wire(bound))
+        shell = Part.makeShell(shape.Faces+[nface])
+        solid = Part.Solid(shell)
+    except:
+        raise
+    else:
+        return solid
+
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
@@ -242,10 +269,10 @@ def meshToShape(obj,mark=True):
     name = obj.Name
     import Part, MeshPart, DraftGeomUtils
     if "Mesh" in obj.PropertiesList:
-        faces = []	
+        faces = []  
         mesh = obj.Mesh
         plac = obj.Placement
-        segments = mesh.getPlanes(0.001) # use rather strict tolerance here
+        segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
         print len(segments)," segments ",segments
         for i in segments:
             print "treating",segments.index(i),i
@@ -262,7 +289,7 @@ def meshToShape(obj,mark=True):
             se = Part.makeShell(faces)
             solid = Part.Solid(se)
         except:
-            pass
+            raise
         else:
             if solid.isClosed():
                 FreeCAD.ActiveDocument.removeObject(name)
@@ -522,9 +549,28 @@ class _CommandRemoveShape:
         sel = FreeCADGui.Selection.getSelection()
         removeShape(sel)
 
+class _CommandCloseHoles:
+    "the Arch CloseHoles command definition"
+    def GetResources(self):
+        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CloseHoles","Close holes"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_RemoveShape","Closes holes in open shapes, turning them solids")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        for o in FreeCADGui.Selection.getSelection():
+            s = closeHole(o.Shape)
+            if s:
+                o.Shape = s
+
 FreeCADGui.addCommand('Arch_Add',_CommandAdd())
 FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
 FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
 FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
 FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())
 FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
+FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
