@@ -660,6 +660,22 @@ Py::Tuple TopoShapeEdgePy::getParameterRange(void) const
     return t;
 }
 
+Py::Float TopoShapeEdgePy::getFirstParameter(void) const
+{
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    BRepAdaptor_Curve adapt(e);
+    double t = adapt.FirstParameter();
+    return Py::Float(t);
+}
+
+Py::Float TopoShapeEdgePy::getLastParameter(void) const
+{
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    BRepAdaptor_Curve adapt(e);
+    double t = adapt.LastParameter();
+    return Py::Float(t);
+}
+
 Py::Object TopoShapeEdgePy::getCenterOfMass(void) const
 {
     GProp_GProps props;

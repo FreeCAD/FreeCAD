@@ -288,11 +288,13 @@ class Snapper:
             origin = Vector(self.snapInfo['x'],self.snapInfo['y'],self.snapInfo['z'])
             winner = [Vector(0,0,0),None,Vector(0,0,0)]
             for snap in snaps:
-                # if snap[0] == None: print "debug: Snapper: 'i[0]' is 'None'"
-                delta = snap[0].sub(origin)
-                if delta.Length < shortest:
-                    shortest = delta.Length
-                    winner = snap
+                if snap[0] == None:
+                    print "debug: Snapper: snap point = ",snap
+                else:
+                    delta = snap[0].sub(origin)
+                    if delta.Length < shortest:
+                        shortest = delta.Length
+                        winner = snap
 
             # see if we are out of the max radius, if any
             if self.radius:

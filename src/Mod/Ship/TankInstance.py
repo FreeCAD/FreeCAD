@@ -52,10 +52,8 @@ class ShipTank:
         if not shape:
             obj.IsShipTank=False
             return
-        # obj.addProperty("Part::PropertyPartShape","Shape","ShipTank", str(Translator.translate("Tank solid"))).Shape = shape
         obj.Shape = shape
         obj.Proxy = self
-        self.obj = obj
 
     def onChanged(self, fp, prop):
         """ Property changed, tank must be recomputed """

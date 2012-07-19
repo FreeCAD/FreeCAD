@@ -23,336 +23,191 @@
 
 import math
 # FreeCAD modules
+from FreeCAD import Vector, Part
 import FreeCAD as App
 import FreeCADGui as Gui
 # Module
 import Instance
 from shipUtils import Math
 
-def convertSection(section, x, z):
-    """ Transform linear points distribution of full section 
-    into double list, where points are gropued by height, and 
-    reachs z maximum height.
-    @param section Ship section.
-    @param x Ship section x coordinate.
-    @param z Maximum section height.
-    @return Converted section, None if no valid section (i.e.- All section are over z)
+def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
+    """ Compute ship transversal areas.
+    @param ship Ship instance.
+    @param draft Ship draft.
+    @param roll Ship roll angle.
+    @param trim Ship trim angle.
+    @param yaw Ship yaw angle. Ussually you don't want to use this 
+    value.
+    @param n Number of sections to perform.
+    @return Transversal areas (every area value is composed by x 
+    coordinate and computed area)
     """
-    # Convert into array with n elements (Number of points by sections)
-    # with m elements into them (Number of points with the same height,
-    # that is typical of multibody)
-    points = []
-    nPoints = 0
-    j = 0
-    while j < len(section)-1:
-        points.append([section[j]])
-        k = j+1
-        last=False  # In order to identify if last point has been append
-        while(k < len(section)):
-            if not Math.isAprox(section[j].z, section[k].z):
-                break
-            points[nPoints].append(section[k])
-            last=True
-            k = k+1
-        nPoints = nPoints + 1
-        j = k
-    if not last:    # Last point has not been added
-        points.append([section[len(section)-1]])
-    # Count the number of valid points
-    n = 0
-    for j in range(0,len(points)):
-        Z = points[j][0].z
-        if Z > z:
-            break
-        n = n+1
-    # Discard invalid sections
-    if n == 0:
-        return None
-    # Truncate only valid points
-    l = points[0:n]
-    # Study if additional point is needed
-    if n < len(points):
-        # Get last sections
-        pts1 = points[n]
-        pts0 = points[n-1]
-        if len(pts1) == len(pts0):
-            # Simple interpolation between points
-            #    \----\-----|--------|
-            #     \    |    |       /
-            #      \    \   |      |
-            #       \----|--|-----/
-            pts = []
-            for i in range(0,len(pts1)):
-                y0 = pts0[i].y
-                z0 = pts0[i].z
-                y1 = pts1[i].y
-                z1 = pts1[i].z
-                factor = (z - z0) / (z1 - z0)
-                y = y0 + factor*(y1 - y0)
-                pts.append(App.Base.Vector(x,y,z))
-            l.append(pts)
-        if len(pts1) > len(pts0):
-            # pts0 has been multiplied
-            #    \---|---|
-            #     \  |   |
-            #      \ |   |
-            #       \|---|
-            # @todo Only katamaran are involved, multiple points multiplication must be study
-            pts = []
-            for i in range(0,len(pts1)):
-                y0 = pts0[min(len(pts0)-1,i)].y
-                z0 = pts0[min(len(pts0)-1,i)].z
-                y1 = pts1[i].y
-                z1 = pts1[i].z
-                factor = (z - z0) / (z1 - z0)
-                y = y0 + factor*(y1 - y0)
-                pts.append(App.Base.Vector(x,y,z))
-            l.append(pts)
-        # @todo Only katamaran are involved, multiple points creation/destruction must be study
-    return l
-
-def Displacement(ship, draft, trim):
-    """ Calculate ship displacement.
-    @param ship Selected ship instance
-    @param draft Draft.
-    @param trim Trim in degrees.
-    @return [areas,disp,xcb,Cb]: \n
-    areas : Area of each section \n
-    disp: Ship displacement \n
-    xcb: X bouyance center coordinate
-    Cb: Block coefficient
-    """
-    angle    = math.radians(trim)
-    sections = Instance.sections(ship)
-    xCoord   = ship.xSection[:]
-    minX     = None
-    maxX     = None
-    maxY     = 0.0
-    areas    = []
-    vol      = 0.0
-    moment   = 0.0
-    if not sections:
-        return [[],0.0,0.0,0.0]
-    for i in range(0, len(sections)):
-        # Get the section
-        section = sections[i]
-        if len(section) < 2:    # Empty section
-            areas.append(0.0)
-            continue
-        # Get the position of the section
-        x = xCoord[i]
-        # Get the maximum Z value
-        Z = draft - x*math.tan(angle)
-        # Format section
-        section = convertSection(section, x, Z)
-        if not section:
-            areas.append(0.0)
-            continue
-        maxX = x
-        if not minX:
-            minX = x
-        # Integrate area
+    if n < 2:
+        return []
+    # We will take a duplicate of ship shape in order to place it
+    shape = ship.Shape.copy()
+    shape.translate(Vector(0.0,0.0,-draft))
+    # Rotations composition is Roll->Trim->Yaw
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(1.0,0.0,0.0), roll)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,0.0,1.0), yaw)
+    # Now we need to know the x range of values
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    dx   = (xmax - xmin) / (n-1.0)
+    # First area is equal to zero.
+    areas = [[xmin, 0.0]]
+    # Since we need face entities, in order to compute sections we will
+    # create boxes with front face at transversal area position, 
+    # compute solid common, divide by faces, and preserve only desired
+    # ones.
+    App.Console.PrintMessage("Computing transversal areas...\n")
+    App.Console.PrintMessage("Some Inventor representation errors can be shown, ignore it please.\n")
+    for i in range(1,n-1):
+        App.Console.PrintMessage("%d / %d\n" % (i, n-2))
+        x    = xmin + i*dx
         area = 0.0
-        for j in range(0, len(section)-1):
-            for k in range(0, min(len(section[j])-1, len(section[j+1])-1)):
-                # y11,z11 ------- y01,z01
-                #    |               |
-                #    |               |
-                #    |               |
-                # y10,z10 ------- y00,z00
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = 0.5*((y00 - y10) + (y01 - y11))
-                dz = 0.5*((z01 - z00) + (z11 - z10))
-                area = area + dy*dz
-                maxY = max([maxY,y00,y10,y01,y11])
-            if(len(section[j]) < len(section[j+1])):
-                # y01,z01 ------- y11,z11
-                #    |        __/
-                #    |     __/
-                #    |    /
-                # y00,z00
-                k = len(section[j])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = y01 - y11
-                dz = z01 - z00
-                area = area + 0.5*dy*dz
-                maxY = max([maxY,y00,y01,y11])                
-            elif(len(section[j]) > len(section[j+1])):
-                # y01,z01
-                #    |    \__
-                #    |       \__
-                #    |          \
-                # y00,z00 ------- y10,z10
-                k = len(section[j+1])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                dy = y00 - y10
-                dz = z01 - z00
-                area = area + 0.5*dy*dz
-                maxY = max([maxY,y00,y10,y01])
-            elif(len(section[j]) == 1):
-                # y1,z1 ------- 
-                #    |          
-                #    |          
-                #    |          
-                # y0,z0 ------- 
-                k = 0
-                y0 = abs(section[j][k].y)
-                z0 = section[j][k].z
-                y1 = abs(section[j+1][k].y)
-                z1 = section[j+1][k].z
-                dy = 0.5 * (y0 + y1)
-                dz = z1 - z0
-                area = area + dy*dz
-                maxY = max([maxY,y0,y1])
-        areas.append(2.0*area)	                # 2x because only half ship is represented
-        # Add volume & moment if proceed
-        if i > 0:
-            dx     = xCoord[i] - xCoord[i-1]
-            x      = 0.5*(xCoord[i] + xCoord[i-1])
-            area   = 0.5*(areas[i] + areas[i-1])
-            vol    = vol + area*dx
-            moment = moment + area*dx*x
-    # Compute displacement and xcb
-    disp  = vol / 1.025  # rho = 1.025 ton/m3 (salt water density)
-    xcb   = 0.0
-    cb    = 0.0
-    if vol > 0.0:
-        xcb  = moment / vol
-        block = (maxX-minX)*2.0*maxY*draft
-        cb    = vol / block
-    return [areas,disp,xcb,cb]
+        # Create the box
+        L = xmax - xmin
+        B = bbox.YMax - bbox.YMin
+        p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+        box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin + 1.0, p)
+        # Compute common part with ship
+        for s in shape.Solids:
+            # Get solids intersection
+            try:
+                common = box.common(s)
+            except:
+                continue
+            if common.Volume == 0.0:
+                continue
+            # Recompute object adding it to the scene, when we have
+            # computed desired data we can remove it.
+            try:
+                Part.show(common)
+            except:
+                continue
+            # Divide by faces and compute only section placed ones
+            faces  = common.Faces
+            for f in faces:
+                faceBounds = f.BoundBox
+                # Orientation filter
+                if faceBounds.XMax - faceBounds.XMin > 0.00001:
+                    continue
+                # Place filter
+                if abs(faceBounds.XMax - x) > 0.00001:
+                    continue
+                # Valid face, compute area
+                area = area + f.Area
+            # Destroy last object generated
+            App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
+        # Append transversal area
+        areas.append([x, area])
+    # Last area is equal to zero
+    areas.append([xmax, 0.0])
+    App.Console.PrintMessage("Done!\n")
+    return areas
 
-def WettedArea(ship, draft, trim):
+def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
+    """ Compute ship displacement.
+    @param ship Ship instance.
+    @param draft Ship draft.
+    @param roll Ship roll angle.
+    @param trim Ship trim angle.
+    @param yaw Ship yaw angle. Ussually you don't want to use this 
+    value.
+    @return [disp, B, Cb], \n
+    disp = Ship displacement [ton].
+    B    = Bouyance center [m].
+    Cb   = Block coefficient.
+    @note Bouyance center will returned as FreeCAD.Vector class.
+    @note Returned Bouyance center is in non modified ship coordinates
+    """
+    # We will take a duplicate of ship shape in order to place it
+    shape = ship.Shape.copy()
+    shape.translate(Vector(0.0,0.0,-draft))
+    # Rotations composition is Roll->Trim->Yaw
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(1.0,0.0,0.0), roll)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,0.0,1.0), yaw)
+    # Now we need to know box dimensions
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    # Create the box
+    L = xmax - xmin
+    B = bbox.YMax - bbox.YMin
+    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+    box = Part.makeBox(3.0*L, 3.0*B, -bbox.ZMin + 1.0, p)
+    vol = 0.0
+    cog = Vector()
+    for solid in shape.Solids:
+        # Compute common part with ship
+        try:
+            common = box.common(solid)
+        except:
+            continue
+        # Get data
+        vol = vol + common.Volume
+        for s in common.Solids:
+            sCoG  = s.CenterOfMass
+            cog.x = cog.x + sCoG.x*s.Volume
+            cog.y = cog.y + sCoG.y*s.Volume
+            cog.z = cog.z + sCoG.z*s.Volume
+    cog.x = cog.x / vol
+    cog.y = cog.y / vol
+    cog.z = cog.z / vol
+    Vol = L*B*abs(bbox.ZMin)
+    # Undo transformations
+    B   = Vector()
+    B.x = cog.x*math.cos(math.radians(-yaw)) - cog.y*math.sin(math.radians(-yaw))
+    B.y = cog.x*math.sin(math.radians(-yaw)) + cog.y*math.cos(math.radians(-yaw))
+    B.z = cog.z
+    cog.x = B.x*math.cos(math.radians(-trim)) - B.z*math.sin(math.radians(-trim))
+    cog.y = B.y
+    cog.z = B.x*math.sin(math.radians(-trim)) + B.z*math.cos(math.radians(-trim))
+    B.x = cog.x
+    B.y = cog.y*math.cos(math.radians(-roll)) - cog.z*math.sin(math.radians(-roll))
+    B.z = cog.y*math.sin(math.radians(-roll)) + cog.z*math.cos(math.radians(-roll))
+    B.z = B.z + draft
+    # Return data
+    dens = 1.025 # [tons/m3], salt water
+    return [dens*vol, B, vol/Vol]
+
+def wettedArea(shape, draft, trim):
     """ Calculate wetted ship area.
-    @param ship Selected ship instance
+    @param shape Ship external faces instance.
     @param draft Draft.
     @param trim Trim in degrees.
     @return Wetted ship area.
     """
-    angle    = math.radians(trim)
-    sections = Instance.sections(ship)
-    xCoord   = ship.xSection[:]
-    lines    = []
     area     = 0.0
-    if not sections:
-        return 0.0
-    for i in range(0, len(sections)):
-        # Get the section
-        section = sections[i]
-        if len(section) < 2:    # Empty section
-            lines.append(0.0)
+    nObjects = 0
+    # We will take a duplicate of ship shape in order to place it
+    shape = shape.copy()
+    shape.translate(Vector(0.0,0.0,-draft))
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
+    # Now we need to know the x range of values
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    # Create the box
+    L = xmax - xmin
+    B = bbox.YMax - bbox.YMin
+    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+    box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
+    # Compute common part with ship
+    for f in shape.Faces:
+        # Get solids intersection
+        try:
+            common = box.common(f)
+        except:
             continue
-        # Get the position of the section
-        x = xCoord[i]
-        # Get the maximum Z value
-        Z = draft - x*math.tan(angle)
-        # Format section
-        section = convertSection(section, x, Z)
-        if not section:
-            lines.append(0.0)
-            continue            
-        # Integrate line area
-        line = 0.0
-        for j in range(0, len(section)-1):
-            for k in range(0, min(len(section[j])-1, len(section[j+1])-1)):
-                # y11,z11 ------- y01,z01
-                #    |               |
-                #    |               |
-                #    |               |
-                # y10,z10 ------- y00,z00
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = y11 - y10
-                dz = z11 - z10
-                line = line + math.sqrt(dy*dy + dz*dz)
-                dy = y01 - y00
-                dz = z01 - z00
-                line = line + math.sqrt(dy*dy + dz*dz)
-            if(len(section[j]) < len(section[j+1])):
-                # y01,z01 ------- y11,z11
-                #    |        __/
-                #    |     __/
-                #    |    /
-                # y00,z00
-                k = len(section[j])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = y11 - y00
-                dz = z11 - z00
-                line = line + math.sqrt(dy*dy + dz*dz)
-                dy = y01 - y00
-                dz = z01 - z00
-                line = line + math.sqrt(dy*dy + dz*dz)
-            elif(len(section[j]) > len(section[j+1])):
-                # y01,z01
-                #    |    \__
-                #    |       \__
-                #    |          \
-                # y00,z00 ------- y10,z10
-                k = len(section[j+1])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                dy = y01 - y00
-                dz = z01 - z00
-                line = line + math.sqrt(dy*dy + dz*dz)
-                dy = y01 - y10
-                dz = z01 - z10
-                line = line + math.sqrt(dy*dy + dz*dz)
-            elif(len(section[j]) == 1):
-                # y1,z1 ------- 
-                #    |          
-                #    |          
-                #    |          
-                # y0,z0 ------- 
-                k = 0
-                y0 = abs(section[j][k].y)
-                z0 = section[j][k].z
-                y1 = abs(section[j+1][k].y)
-                z1 = section[j+1][k].z
-                dy = y1 - y0
-                dz = z1 - z0
-                line = line + math.sqrt(dy*dy + dz*dz)
-        lines.append(2.0*line)	                # 2x because only half ship is represented
-        # Add area if proceed
-        if i > 0:
-            dx     = xCoord[i] - xCoord[i-1]
-            x      = 0.5*(xCoord[i] + xCoord[i-1])
-            line   = 0.5*(lines[i] + lines[i-1])
-            area   = area + line*dx
+        area = area + common.Area
     return area
 
-def Moment(ship, draft, trim, disp, xcb):
+def moment(ship, draft, trim, disp, xcb):
     """ Calculate triming 1cm ship moment.
     @param ship Selected ship instance
     @param draft Draft.
@@ -362,12 +217,13 @@ def Moment(ship, draft, trim, disp, xcb):
     @return Moment to trim ship 1cm (ton m).
     @note Moment is positive when produce positive trim.
     """
-    angle = math.degrees(math.atan2(0.01,0.5*ship.Length))
+    factor = 10.0
+    angle = factor*math.degrees(math.atan2(0.01,0.5*ship.Length))
     newTrim = trim + angle
-    data = Displacement(ship,draft,newTrim)
+    data = displacement(ship,draft,0.0,newTrim,0.0)
     mom0 = -disp*xcb
-    mom1 = -data[1]*data[2]
-    return mom1 - mom0
+    mom1 = -data[0]*data[1].x
+    return (mom1 - mom0) / factor
 
 def FloatingArea(ship, draft, trim):
     """ Calculate ship floating area.
@@ -376,458 +232,146 @@ def FloatingArea(ship, draft, trim):
     @param trim Trim in degrees.
     @return Ship floating area, and floating coefficient.
     """
-    angle    = math.radians(trim)
-    sections = Instance.sections(ship)
-    xCoord   = ship.xSection[:]
-    lines    = []
     area     = 0.0
-    minX     = None
-    maxX     = None
-    maxY     = 0.0
     cf       = 0.0
-    if not sections:
-        return [0.0, 0.0]
-    for i in range(0, len(sections)):
-        # Get the section
-        section = sections[i]
-        if len(section) < 2:    # Empty section
-            lines.append(0.0)
+    maxX     = 0.0
+    minX     = 0.0
+    maxY     = 0.0
+    minY     = 0.0
+    # We will take a duplicate of ship shape in order to place it
+    shape = ship.Shape.copy()
+    shape.translate(Vector(0.0,0.0,-draft))
+    shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
+    # Now we need to know the x range of values
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    # Create the box
+    L = xmax - xmin
+    B = bbox.YMax - bbox.YMin
+    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+    box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
+    # Compute common part with ship
+    for s in shape.Solids:
+        # Get solids intersection
+        try:
+            common = box.common(s)
+        except:
             continue
-        # Get the position of the section
-        x = xCoord[i]
-        # Get the maximum Z value
-        Z = draft - x*math.tan(angle)
-        # Format section
-        section = convertSection(section, x, Z)
-        if not section:
-            lines.append(0.0)
-            continue            
-        maxX = x
-        if not minX:
-            minX = x
-        # Get floating line length
-        line = 0.0
-        flag = True  # Even lines compute for floating areas, odd no
-        j = len(section)-1
-        k = len(section[j])-1
-        while k>0:
-            k = k-1
-            if flag:
-                y0 = abs(section[j][k-1].y)
-                y1 = abs(section[j][k].y)
-                line = line + (y1 - y0)
-                maxY = max([maxY,y1,y0])
-            flag = not flag
-        if flag:    # Central body computation lefts
-            y = abs(section[j][0].y)
-            line = line + y
-            maxY = max([maxY,y])
-        lines.append(2.0*line)	                # 2x because only half ship is represented
-        # Add area if proceed
-        if i > 0:
-            dx     = xCoord[i] - xCoord[i-1]
-            x      = 0.5*(xCoord[i] + xCoord[i-1])
-            line   = 0.5*(lines[i] + lines[i-1])
-            area   = area + line*dx
-    if area:
-        cf = area / ( (maxX-minX) * 2.0*maxY )
+        if common.Volume == 0.0:
+            continue
+        # Recompute object adding it to the scene, when we have
+        # computed desired data we can remove it.
+        try:
+            Part.show(common)
+        except:
+            continue
+        # Divide by faces and compute only section placed ones
+        faces  = common.Faces
+        for f in faces:
+            faceBounds = f.BoundBox
+            # Orientation filter
+            if faceBounds.ZMax - faceBounds.ZMin > 0.00001:
+                continue
+            # Place filter
+            if abs(faceBounds.ZMax) > 0.00001:
+                continue
+            # Valid face, compute area
+            area = area + f.Area
+            maxX = max(maxX, faceBounds.XMax)
+            minX = max(minX, faceBounds.XMin)
+            maxY = max(maxY, faceBounds.YMax)
+            minY = max(minY, faceBounds.YMin)
+        # Destroy last object generated
+        App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
+    dx = maxX - minX
+    dy = maxY - minY
+    if dx*dy > 0.0:
+        cf = area / (dx*dy)
     return [area, cf]
 
-def KBT(ship, draft, trim, roll=0.0):
-    """ Calculate ship Keel to Bouyance center transversal distance.
-    @param ship Selected ship instance
-    @param draft Draft.
-    @param trim Trim in degrees.
-    @param roll Roll angle in degrees.
-    @return [KBTy, KBTz]: \n
-    KBTy : Transversal KB y coordinate \n
-    KBTz : Transversal KB z coordinate
-    """
-    angle    = math.radians(trim)
-    rAngle   = math.radians(roll)
-    sections = Instance.sections(ship)
-    xCoord   = ship.xSection[:]
-    areas    = []
-    vol      = 0.0
-    vMy      = 0.0
-    vMz      = 0.0
-    My       = []
-    Mz       = []
-    kb       = [0.0,0.0]
-    if not sections:
-        return [[],0.0,0.0]
-    for i in range(0, len(sections)):
-        # ------------------------------------
-        # Board
-        # ------------------------------------
-        # Get the section
-        section = sections[i]
-        if len(section) < 2:    # Empty section
-            areas.append(0.0)
-            continue
-        # Get the position of the section
-        x = xCoord[i]
-        # Get the maximum Z value
-        Z = draft - x*math.tan(angle)
-        # Format section
-        aux = convertSection(section, x, Z)
-        if not aux:
-            areas.append(0.0)
-            My.append(0.0)
-            Mz.append(0.0)
-            continue
-        # Correct by roll angle
-        pts  = aux[len(aux)-1]
-        beam = pts[0].y
-        for i in range(1,len(pts)):
-            beam = max(beam, pts[i].y)
-        Z = Z - beam*math.tan(rAngle)
-        # Format section
-        section = convertSection(section, x, Z)
-        if not section:
-            areas.append(0.0)
-            My.append(0.0)
-            Mz.append(0.0)
-            continue
-        # Integrate area
-        area = 0.0
-        momy = 0.0
-        momz = 0.0
-        for j in range(0, len(section)-1):
-            for k in range(0, min(len(section[j])-1, len(section[j+1])-1)):
-                # y11,z11 ------- y01,z01
-                #    |               |
-                #    |               |
-                #    |               |
-                # y10,z10 ------- y00,z00
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = 0.5*((y00 - y10) + (y01 - y11))
-                dz = 0.5*((z01 - z00) + (z11 - z10))
-                y  = 0.25*(y00 + y10 + y01 + y11)
-                z  = 0.25*(z01 + z00 + z11 + z10)
-                area = area + dy*dz
-                momy = momy + y*dy*dz
-                momz = momz + z*dy*dz
-            if(len(section[j]) < len(section[j+1])):
-                # y01,z01 ------- y11,z11
-                #    |        __/
-                #    |     __/
-                #    |    /
-                # y00,z00
-                k = len(section[j])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = y01 - y11
-                dz = z01 - z00
-                y  = 0.33*(y00 + y01 + y11)
-                z  = 0.33*(z01 + z00 + z11)
-                area = area + 0.5*dy*dz
-                momy = momy + y*0.5*dy*dz
-                momz = momz + z*0.5*dy*dz
-            elif(len(section[j]) > len(section[j+1])):
-                # y01,z01
-                #    |    \__
-                #    |       \__
-                #    |          \
-                # y00,z00 ------- y10,z10
-                k = len(section[j+1])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                dy = y00 - y10
-                dz = z01 - z00
-                y  = 0.33*(y00 + y01 + y10)
-                z  = 0.33*(z01 + z00 + z10)
-                area = area + 0.5*dy*dz
-                momy = momy + y*0.5*dy*dz
-                momz = momz + z*0.5*dy*dz
-            elif(len(section[j]) == 1):
-                # y1,z1 ------- 
-                #    |          
-                #    |          
-                #    |          
-                # y0,z0 ------- 
-                k = 0
-                y0 = abs(section[j][k].y)
-                z0 = section[j][k].z
-                y1 = abs(section[j+1][k].y)
-                z1 = section[j+1][k].z
-                dy = 0.5 * (y0 + y1)
-                dz = z1 - z0
-                y  = 0.25*(y1 + y0)
-                z  = 0.25*(z1 + z0)
-                area = area + dy*dz
-                momy = momy + y*dy*dz
-                momz = momz + z*dy*dz
-        # ------------------------------------
-        # StarBoard
-        # ------------------------------------
-        # Get the section
-        section = sections[i]
-        # Get the maximum Z value
-        Z = draft - x*math.tan(angle)
-        # Format section
-        aux = convertSection(section, x, Z)
-        if not aux:
-            areas.append(0.0)
-            My.append(0.0)
-            Mz.append(0.0)
-            continue
-        # Correct by roll angle
-        pts  = aux[len(aux)-1]
-        beam = pts[0].y
-        for i in range(1,len(pts)):
-            beam = max(beam, pts[i].y)
-        Z = Z + beam*math.tan(rAngle)
-        # Format section
-        section = convertSection(section, x, Z)
-        if not section:
-            areas.append(0.0)
-            My.append(0.0)
-            Mz.append(0.0)
-            continue
-        # Integrate area
-        for j in range(0, len(section)-1):
-            for k in range(0, min(len(section[j])-1, len(section[j+1])-1)):
-                # y11,z11 ------- y01,z01
-                #    |               |
-                #    |               |
-                #    |               |
-                # y10,z10 ------- y00,z00
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = 0.5*((y00 - y10) + (y01 - y11))
-                dz = 0.5*((z01 - z00) + (z11 - z10))
-                y  = 0.25*(y00 + y10 + y01 + y11)
-                z  = 0.25*(z01 + z00 + z11 + z10)
-                area = area + dy*dz
-                momy = momy - y*dy*dz
-                momz = momz + z*dy*dz
-            if(len(section[j]) < len(section[j+1])):
-                # y01,z01 ------- y11,z11
-                #    |        __/
-                #    |     __/
-                #    |    /
-                # y00,z00
-                k = len(section[j])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                y11 = abs(section[j+1][k+1].y)
-                z11 = section[j+1][k+1].z
-                dy = y01 - y11
-                dz = z01 - z00
-                y  = 0.33*(y00 + y01 + y11)
-                z  = 0.33*(z01 + z00 + z11)
-                area = area + 0.5*dy*dz
-                momy = momy - y*0.5*dy*dz
-                momz = momz + z*0.5*dy*dz
-            elif(len(section[j]) > len(section[j+1])):
-                # y01,z01
-                #    |    \__
-                #    |       \__
-                #    |          \
-                # y00,z00 ------- y10,z10
-                k = len(section[j+1])-1
-                y00 = abs(section[j][k].y)
-                z00 = section[j][k].z
-                y10 = abs(section[j][k+1].y)
-                z10 = section[j][k+1].z
-                y01 = abs(section[j+1][k].y)
-                z01 = section[j+1][k].z
-                dy = y00 - y10
-                dz = z01 - z00
-                y  = 0.33*(y00 + y01 + y10)
-                z  = 0.33*(z01 + z00 + z10)
-                area = area + 0.5*dy*dz
-                momy = momy - y*0.5*dy*dz
-                momz = momz + z*0.5*dy*dz
-            elif(len(section[j]) == 1):
-                # y1,z1 ------- 
-                #    |          
-                #    |          
-                #    |          
-                # y0,z0 ------- 
-                k = 0
-                y0 = abs(section[j][k].y)
-                z0 = section[j][k].z
-                y1 = abs(section[j+1][k].y)
-                z1 = section[j+1][k].z
-                dy = 0.5 * (y0 + y1)
-                dz = z1 - z0
-                y  = 0.25*(y1 + y0)
-                z  = 0.25*(z1 + z0)
-                area = area + dy*dz
-                momy = momy - y*dy*dz
-                momz = momz + z*dy*dz
-        areas.append(area)
-        My.append(momy)
-        Mz.append(momz)
-        # Add volume & moment if proceed
-        if i > 0:
-            dx     = xCoord[i] - xCoord[i-1]
-            x      = 0.5*(xCoord[i] + xCoord[i-1])
-            area   = 0.5*(areas[i] + areas[i-1])
-            momy   = 0.5*(My[i] + My[i-1])
-            momz   = 0.5*(Mz[i] + Mz[i-1])
-            vol    = vol + area*dx
-            vMy    = vMy + momy*dx
-            vMz    = vMz + momz*dx
-    # Compute KBT
-    kb[0] = vMy / vol
-    kb[1] = vMz / vol
-    return kb
-
-def BMT(ship, draft, trim):
+def BMT(ship, draft, trim=0.0):
     """ Calculate ship Bouyance center transversal distance.
-    @param ship Selected ship instance
-    @param draft Draft.
-    @param trim Trim in degrees.
-    @return BM Bouyance to metacenter height.
+    @param ship Ship instance.
+    @param draft Ship draft.
+    @param trim Ship trim angle.
+    @return BM Bouyance to metacenter height [m].
     """
     nRoll    = 2
     maxRoll  = 7.0
-    kb0      = KBT(ship,draft,trim)
+    B0       = displacement(ship,draft,0.0,trim,0.0)[1]
     BM       = 0.0
     for i in range(0,nRoll):
         roll = (maxRoll/nRoll)*(i+1)
-        kb = KBT(ship,draft,trim,roll)
+        B1   = displacement(ship,draft,roll,trim,0.0)[1]
         #     * M
         #    / \            
         #   /   \  BM     ==|>   BM = (BB/2) / tan(alpha/2)
         #  /     \          
         # *-------*
         #     BB
-        BB = [kb[0] - kb0[0], kb[1] - kb0[1]]
+        BB = [B1.x - B0.x, B1.y - B0.y]
         BB = math.sqrt(BB[0]*BB[0] + BB[1]*BB[1])
         BM = BM + 0.5*BB/math.tan(math.radians(0.5*roll)) / nRoll   # nRoll is the weight function
     return BM
 
-def MainFrameCoeff(ship, draft):
+def mainFrameCoeff(ship, draft):
     """ Calculate main frame coefficient.
     @param ship Selected ship instance
     @param draft Draft.
     @return Main frame coefficient
     """
-    sections = Instance.sections(ship)
-    xCoord   = ship.xSection[:]
     cm       = 0.0
-    if not sections:
-        return 0.0
-    # Look for nearest to main frame section
-    sectionID = 0
-    X = xCoord[0]
-    for i in range(1, len(sections)):
-        # Get the position of the section
-        x = xCoord[i]
-        if abs(x) < abs(X):
-            sectionID = i
-            X = x
-    # Get the section
-    section = sections[sectionID]
-    if len(section) < 2:    # Empty section
-        return 0.0
-    x = X
-    # Get the maximum Z value
-    Z = draft
-    # Format section
-    section = convertSection(section, x, Z)
-    if not section:
-        return 0.0
-    # Integrate area
-    area = 0.0
     maxY     = 0.0
-    for j in range(0, len(section)-1):
-        for k in range(0, min(len(section[j])-1, len(section[j+1])-1)):
-            # y11,z11 ------- y01,z01
-            #    |               |
-            #    |               |
-            #    |               |
-            # y10,z10 ------- y00,z00
-            y00 = abs(section[j][k].y)
-            z00 = section[j][k].z
-            y10 = abs(section[j][k+1].y)
-            z10 = section[j][k+1].z
-            y01 = abs(section[j+1][k].y)
-            z01 = section[j+1][k].z
-            y11 = abs(section[j+1][k+1].y)
-            z11 = section[j+1][k+1].z
-            dy = 0.5*((y00 - y10) + (y01 - y11))
-            dz = 0.5*((z01 - z00) + (z11 - z10))
-            area = area + dy*dz
-            maxY = max([maxY,y00,y10,y01,y11])
-        if(len(section[j]) < len(section[j+1])):
-            # y01,z01 ------- y11,z11
-            #    |        __/
-            #    |     __/
-            #    |    /
-            # y00,z00
-            k = len(section[j])-1
-            y00 = abs(section[j][k].y)
-            z00 = section[j][k].z
-            y01 = abs(section[j+1][k].y)
-            z01 = section[j+1][k].z
-            y11 = abs(section[j+1][k+1].y)
-            z11 = section[j+1][k+1].z
-            dy = y01 - y11
-            dz = z01 - z00
-            area = area + 0.5*dy*dz
-            maxY = max([maxY,y00,y01,y11])                
-        elif(len(section[j]) > len(section[j+1])):
-            # y01,z01
-            #    |    \__
-            #    |       \__
-            #    |          \
-            # y00,z00 ------- y10,z10
-            k = len(section[j+1])-1
-            y00 = abs(section[j][k].y)
-            z00 = section[j][k].z
-            y10 = abs(section[j][k+1].y)
-            z10 = section[j][k+1].z
-            y01 = abs(section[j+1][k].y)
-            z01 = section[j+1][k].z
-            dy = y00 - y10
-            dz = z01 - z00
-            area = area + 0.5*dy*dz
-            maxY = max([maxY,y00,y10,y01])
-        elif(len(section[j]) == 1):
-            # y1,z1 ------- 
-            #    |          
-            #    |          
-            #    |          
-            # y0,z0 ------- 
-            k = 0
-            y0 = abs(section[j][k].y)
-            z0 = section[j][k].z
-            y1 = abs(section[j+1][k].y)
-            z1 = section[j+1][k].z
-            dy = 0.5 * (y0 + y1)
-            dz = z1 - z0
-            area = area + dy*dz
-            maxY = max([maxY,y0,y1])
-    if maxY*draft > 0.0:
-        cm = area / (maxY*draft)
+    minY     = 0.0
+    # We will take a duplicate of ship shape in order to place it
+    shape = ship.Shape.copy()
+    shape.translate(Vector(0.0,0.0,-draft))
+    x    = 0.0
+    area = 0.0
+    # Now we need to know the x range of values
+    bbox = shape.BoundBox
+    xmin = bbox.XMin
+    xmax = bbox.XMax
+    # Create the box
+    L = xmax - xmin
+    B = bbox.YMax - bbox.YMin
+    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
+    box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin + 1.0, p)
+    # Compute common part with ship
+    for s in shape.Solids:
+        # Get solids intersection
+        try:
+            common = box.common(s)
+        except:
+            continue
+        if common.Volume == 0.0:
+            continue
+        # Recompute object adding it to the scene, when we have
+        # computed desired data we can remove it.
+        try:
+            Part.show(common)
+        except:
+            continue
+        # Divide by faces and compute only section placed ones
+        faces  = common.Faces
+        for f in faces:
+            faceBounds = f.BoundBox
+            # Orientation filter
+            if faceBounds.XMax - faceBounds.XMin > 0.00001:
+                continue
+            # Place filter
+            if abs(faceBounds.XMax - x) > 0.00001:
+                continue
+            # Valid face, compute area
+            area = area + f.Area
+            maxY = max(maxY, faceBounds.YMax)
+            minY = max(minY, faceBounds.YMin)
+        # Destroy last object generated
+        App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
+    dy = maxY - minY
+    if dy*draft > 0.0:
+        cm = area / (dy*draft)
     return cm
 
 class Point:
@@ -846,31 +390,34 @@ class Point:
     Cm Main frame coefficient.
     @note Moment is positive when produce positive trim.
     """
-    def __init__(self, ship, draft, trim):
+    def __init__(self, ship, faces, draft, trim):
         """ Use all hydrostatics tools to define a hydrostatics 
         point.
         @param ship Selected ship instance
+        @param faces Ship external faces
         @param draft Draft.
         @param trim Trim in degrees.
         """
         # Hydrostatics computation
-        areasData  = Displacement(ship,draft,trim)
-        wettedArea = WettedArea(ship,draft,trim)
-        moment     = Moment(ship,draft,trim,areasData[1],areasData[2])
+        dispData   = displacement(ship,draft,0.0,trim,0.0)
+        if not faces:
+            wet    = 0.0
+        else:
+            wet    = wettedArea(faces,draft,trim)
+        mom        = moment(ship,draft,trim,dispData[0],dispData[1].x)
         farea      = FloatingArea(ship,draft,trim)
-        kb         = KBT(ship,draft,trim)
         bm         = BMT(ship,draft,trim)
-        cm         = MainFrameCoeff(ship,draft)
+        cm         = mainFrameCoeff(ship,draft)
         # Store final data
         self.draft = draft
         self.trim  = trim
-        self.disp  = areasData[1]
-        self.xcb   = areasData[2]
-        self.wet   = wettedArea
+        self.disp  = dispData[0]
+        self.xcb   = dispData[1].x
+        self.wet   = wet
         self.farea = farea[0]
-        self.mom   = moment
-        self.KBt   = kb[1]
+        self.mom   = mom
+        self.KBt   = dispData[1].y
         self.BMt   = bm
-        self.Cb   = areasData[3]
-        self.Cf   = farea[1]
-        self.Cm   = cm
+        self.Cb    = dispData[2]
+        self.Cf    = farea[1]
+        self.Cm    = cm

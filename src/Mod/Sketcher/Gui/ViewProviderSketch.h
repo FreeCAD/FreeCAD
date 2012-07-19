@@ -126,7 +126,7 @@ public:
     /// helper to detect preselection
     //bool handlePreselection(const SoPickedPoint *pp);
     /// helper to detect preselection
-    bool detectPreselection(const SoPickedPoint *Point, int &PtIndex,int &CurvIndex, int &ConstrIndex, int &CrossIndex);
+    bool detectPreselection(const SoPickedPoint *Point, int &PtIndex,int &GeoIndex, int &ConstrIndex, int &CrossIndex);
     /// helper change the color of the sketch according to selection and solver status
     void updateColor(void);
     /// get the pointer to the sketch document object
@@ -200,6 +200,7 @@ protected:
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
 
+    void setPositionText(const Base::Vector2D &Pos, const std::string &txt);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
 

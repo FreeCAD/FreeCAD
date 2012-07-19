@@ -333,10 +333,15 @@ class SelectPlane(DraftTool):
             sel = FreeCADGui.Selection.getSelectionEx()
             if len(sel) == 1:
                 sel = sel[0]
-                if sel.HasSubObjects:
+                self.ui = FreeCADGui.draftToolBar
+                if Draft.getType(sel.Object) == "Axis":
+                    plane.alignToEdges(sel.Object.Shape.Edges)
+                    self.display(plane.axis)
+                    self.finish()
+                    return
+                elif sel.HasSubObjects:
                     if len(sel.SubElementNames) == 1:
                         if "Face" in sel.SubElementNames[0]:
-                            self.ui = FreeCADGui.draftToolBar
                             plane.alignToFace(sel.SubObjects[0], self.offset)
                             self.display(plane.axis)
                             self.finish()
@@ -3612,7 +3617,7 @@ class WireToBSpline(Modifier):
 	def finish(self):
 		Modifier.finish(self)
 
-                
+
 class SelectGroup():
     "The SelectGroup FreeCAD command definition"
 
@@ -3629,7 +3634,14 @@ class SelectGroup():
         
     def Activated(self):
         sellist = []
-        for ob in Draft.getSelection():
+        sel = Draft.getSelection()
+        if len(sel) == 1:
+            if sel[0].isDerivedFrom("App::DocumentObjectGroup"):
+                cts = Draft.getGroupContents(FreeCADGui.Selection.getSelection())
+                for o in cts:
+                    FreeCADGui.Selection.addSelection(o)
+                return
+        for ob in sel:
             for child in ob.OutList:
                 FreeCADGui.Selection.addSelection(child)
                 for parent in ob.InList:
@@ -3637,7 +3649,7 @@ class SelectGroup():
                     for child in parent.OutList:
                         FreeCADGui.Selection.addSelection(child)
 
-                        
+
 class Shape2DView():
     "The Shape2DView FreeCAD command definition"
     def GetResources(self):

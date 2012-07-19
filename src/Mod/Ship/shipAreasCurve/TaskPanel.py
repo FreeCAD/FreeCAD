@@ -45,11 +45,15 @@ class TaskPanel:
             return False
         self.save()
         # Plot data
-        data   = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
-        x    = self.ship.xSection[:]
-        y    = data[0]
-        disp = data[1]
-        xcb  = data[2]
+        data = Hydrostatics.displacement(self.ship,self.form.draft.value(),0.0,self.form.trim.value())
+        disp = data[0]
+        xcb  = data[1].x
+        data = Hydrostatics.areas(self.ship,self.form.draft.value(),0.0,self.form.trim.value())
+        x    = []
+        y    = []
+        for i in range(0,len(data)):
+            x.append(data[i][0])
+            y.append(data[i][1])
         Plot.Plot(x,y,disp,xcb, self.ship)
         self.preview.clean()
         return True
@@ -194,7 +198,7 @@ class TaskPanel:
         if draftFP < 0.0:
             draftFP = 0.0
         # Calculate hydrostatics involved
-        data = Hydrostatics.Displacement(self.ship,self.form.draft.value(),self.form.trim.value())
+        data = Hydrostatics.displacement(self.ship,self.form.draft.value(),0.0,self.form.trim.value())
         # Prepare the string in html format
         string = 'L = %g [m]<BR>' % (self.ship.Length)
         string = string + 'B = %g [m]<BR>' % (self.ship.Beam)
@@ -202,8 +206,8 @@ class TaskPanel:
         string = string + 'Trim = %g [degrees]<BR>' % (self.form.trim.value())
         string = string + 'T<sub>AP</sub> = %g [m]<BR>' % (draftAP)
         string = string + 'T<sub>FP</sub> = %g [m]<HR>' % (draftFP)
-        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (data[1])
-        string = string + 'XCB = %g [m]' % (data[2])
+        string = string + Translator.translate('Displacement') + ' = %g [ton]<BR>' % (data[0])
+        string = string + 'XCB = %g [m]' % (data[1].x)
         # Set the document
         self.form.output.setHtml(string)
 

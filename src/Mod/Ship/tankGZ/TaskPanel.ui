@@ -72,6 +72,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="UpdateData">
+         <property name="text">
+          <string>Update displacement and draft</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QLabel" name="TrimLabel">
@@ -182,7 +189,7 @@
        <item row="1" column="1">
         <widget class="QDoubleSpinBox" name="EndAngle">
          <property name="maximum">
-          <double>89.000000000000000</double>
+          <double>180.000000000000000</double>
          </property>
          <property name="value">
           <double>45.000000000000000</double>

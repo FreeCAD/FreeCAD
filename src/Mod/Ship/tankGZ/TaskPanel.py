@@ -54,7 +54,10 @@ class TaskPanel:
         dRoll = (roll1 - roll0) / (nRoll - 1)
         roll  = []
         GZ    = []
+        msg = Translator.translate("Computing GZ...\n")
+        App.Console.PrintMessage(msg)
         for i in range(0, nRoll):
+            App.Console.PrintMessage("\t%d/%d\n" % (i+1,nRoll))
             roll.append(i*dRoll)
             GZ.append(self.computeGZ(draft[0], trim, roll[-1]))
         Plot(roll, GZ, disp[0]/1000.0, draft[0], trim)
@@ -92,6 +95,7 @@ class TaskPanel:
         form.tanks    = form.findChild(QtGui.QListWidget, "Tanks")
         form.disp     = form.findChild(QtGui.QLabel, "DisplacementLabel")
         form.draft    = form.findChild(QtGui.QLabel, "DraftLabel")
+        form.update   = form.findChild(QtGui.QPushButton, "UpdateData")
         form.trim     = form.findChild(QtGui.QDoubleSpinBox, "Trim")
         form.autoTrim = form.findChild(QtGui.QPushButton, "TrimAutoCompute")
         form.roll0    = form.findChild(QtGui.QDoubleSpinBox, "StartAngle")
@@ -102,9 +106,9 @@ class TaskPanel:
         if self.initValues():
             return True
         self.retranslateUi()
-        self.onTanksSelection()
         # Connect Signals and Slots
         QtCore.QObject.connect(form.tanks,QtCore.SIGNAL("itemSelectionChanged()"),self.onTanksSelection)
+        QtCore.QObject.connect(form.update,QtCore.SIGNAL("pressed()"),self.onUpdate)
         QtCore.QObject.connect(form.trim,QtCore.SIGNAL("valueChanged(double)"),self.onTrim)
         QtCore.QObject.connect(form.autoTrim,QtCore.SIGNAL("pressed()"),self.onAutoTrim)
         QtCore.QObject.connect(form.roll0,QtCore.SIGNAL("valueChanged(double)"),self.onRoll)
@@ -194,11 +198,19 @@ class TaskPanel:
         self.form.findChild(QtGui.QGroupBox, "AnglesGroup").setTitle(Translator.translate("Roll angles."))
         self.form.findChild(QtGui.QLabel, "TrimLabel").setText(Translator.translate("Trim") + " [deg]")
         self.form.findChild(QtGui.QLabel, "StartAngleLabel").setText(Translator.translate("Start") + " [deg]")
-        self.form.findChild(QtGui.QLabel, "EndAngleLabel").setText(Translator.translate("Start") + " [deg]")
+        self.form.findChild(QtGui.QLabel, "EndAngleLabel").setText(Translator.translate("End") + " [deg]")
         self.form.findChild(QtGui.QLabel, "NAngleLabel").setText(Translator.translate("Number of points"))
+        self.form.disp.setText(Translator.translate("Displacement = Press update to compute"))
+        self.form.draft.setText(Translator.translate("Draft = Press update to compute"))
+        self.form.update.setText(Translator.translate("Update displacement and draft"))
 
     def onTanksSelection(self):
         """ Called when tanks are selected or deselected.
+        """
+        pass
+        
+    def onUpdate(self):
+        """ Called when update displacement and draft is requested.
         """
         # Set displacement label
         disp = self.computeDisplacement()
@@ -224,10 +236,8 @@ class TaskPanel:
         disp  = disp[0]
         # Get bouyancy center
         draft = self.computeDraft(disp)
-        xcb   = draft[1]
+        B     = [draft[1].x, draft[1].y, draft[1].z]
         draft = draft[0]
-        KBT   = Hydrostatics.KBT(self.ship, draft, trim)
-        B     = [xcb, KBT[0], KBT[1]]
         # Get stability initial condition
         BG    = [G[0]-B[0], G[1]-B[1], G[2]-B[2]]
         x     = BG[0]*math.cos(math.radians(trim)) - BG[2]*math.sin(math.radians(trim))
@@ -235,21 +245,19 @@ class TaskPanel:
         z     = BG[0]*math.sin(math.radians(trim)) + BG[2]*math.cos(math.radians(trim))
         var   = math.degrees(math.atan2(x,z))
         # Iterate looking stability point
-        dVar = math.copysign(0.0033, var)
+        dVar = math.copysign(0.01, var)
         while True:
-            if (dVar*math.copysign(dVar, var) < 0.0):
+            if (dVar*var < 0.0) or (abs(var) < 0.1):
                 break
-            trim = trim - math.copysign(dVar, var)
+            trim = trim - math.copysign(max(dVar, abs(var)/200.0), var)
             # Get center of gravity
             disp  = self.computeDisplacement(trim)
             G     = [disp[1], disp[2], disp[3]]
             disp  = disp[0]
             # Get bouyancy center
             draft = self.computeDraft(disp, trim)
-            xcb   = draft[1]
+            B     = [draft[1].x, draft[1].y, draft[1].z]
             draft = draft[0]
-            KBT   = Hydrostatics.KBT(self.ship, draft, trim)
-            B     = [xcb, KBT[0], KBT[1]]
             # Get stability initial condition
             BG    = [G[0]-B[0], G[1]-B[1], G[2]-B[2]]
             x     = BG[0]*math.cos(math.radians(trim)) - BG[2]*math.sin(math.radians(trim))
@@ -321,7 +329,7 @@ class TaskPanel:
         """ Computes ship draft.
         @param disp Ship displacement.
         @param trim Trim angle [degrees].
-        @return Ship draft, and longitudinal bouyance center position. None if errors detected.
+        @return Ship draft, and bouyance center position. None if errors detected.
         """
         if not self.ship:
             return None
@@ -335,10 +343,10 @@ class TaskPanel:
         xcb   = 0.0
         while(abs(disp - w)/disp > 0.01):
             draft = draft + (disp - w) / (dens*dx*dy)
-            ww    = Hydrostatics.Displacement(self.ship, draft, trim)
-            w     = 1000.0*ww[1]
-            xcb   = ww[2]
-        return [draft,xcb]
+            ww    = Hydrostatics.displacement(self.ship, draft, 0.0, trim, 0.0)
+            w     = 1000.0*ww[0]
+            B     = ww[1]
+        return [draft,B]
 
     def computeGZ(self, draft, trim, roll):
         """ Compute GZ value.
@@ -352,13 +360,13 @@ class TaskPanel:
         G    = [disp[2], disp[3]]
         disp = disp[0]
         # Get bouyancy center (x coordinate not relevant)
-        KBT  = Hydrostatics.KBT(self.ship, draft, trim, roll)
-        B    = [KBT[0], KBT[1]]
+        disp  = Hydrostatics.displacement(self.ship, draft, roll, trim, 0.0)
+        B     = [disp[1].y, disp[1].z]
         # GZ computation
         BG   = [G[0] - B[0], G[1] - B[1]]
-        y    = BG[0]*math.cos(math.radians(-roll)) - BG[1]*math.sin(math.radians(-roll))
-        z    = BG[0]*math.sin(math.radians(-roll)) + BG[1]*math.cos(math.radians(-roll))
-        return -y
+        y    = BG[0]*math.cos(math.radians(roll)) - BG[1]*math.sin(math.radians(roll))
+        z    = BG[0]*math.sin(math.radians(roll)) + BG[1]*math.cos(math.radians(roll))
+        return y
 
 def createTask():
     panel = TaskPanel()

@@ -32,6 +32,17 @@ __url__ = "http://free-cad.sourceforge.net"
 
 # module functions ###############################################
 
+def getStringList(objects):
+    '''getStringList(objects): returns a string defining a list
+    of objects'''
+    result = "["
+    for o in objects:
+        if len(result) > 1:
+            result += ","
+        result += "FreeCAD.ActiveDocument." + o.Name
+    result += "]"
+    return result
+
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
     from the given list as components to the given host Object. Use this for
@@ -53,11 +64,18 @@ def addComponents(objectsList,host):
         host.Group = c
     elif tp in ["Wall","Structure"]:
         a = host.Additions
+        if hasattr(host,"Axes"):
+            x = host.Axes
         for o in objectsList:
-            if not o in a:
+            if Draft.getType(o) == "Axis":
+                if not o in x:
+                    x.append(o) 
+            elif not o in a:
                 if hasattr(o,"Shape"):
                     a.append(o)
         host.Additions = a
+        if hasattr(host,"Axes"):
+            host.Axes = x
     elif tp in ["SectionPlane"]:
         a = host.Objects
         for o in objectsList:
@@ -75,6 +93,14 @@ def removeComponents(objectsList,host=None):
         objectsList = [objectsList]
     if host:
         if Draft.getType(host) in ["Wall","Structure"]:
+            if hasattr(host,"Axes"):
+                a = host.Axes
+                print a
+                for o in objectsList[:]:
+                    print o.Name
+                    if o in a:
+                        a.remove(o)
+                        objectsList.remove(o)
             s = host.Subtractions
             for o in objectsList:
                 if not o in s:
@@ -154,31 +180,36 @@ def splitMesh(obj,mark=True):
 
 def makeFace(wires,method=2,cleanup=False):
     '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
-
+    #print "makeFace: start:", wires
     import Part
     
     if not isinstance(wires,list):
+        if len(wires.Vertexes) < 3:
+            raise
         return Part.Face(wires)
     elif len(wires) == 1:
+        #import Draft;Draft.printShape(wires[0])
+        if len(wires[0].Vertexes) < 3:
+            raise
         return Part.Face(wires[0])
 
     wires = wires[:]
     
-    print "inner wires found"
+    #print "makeFace: inner wires found"
     ext = None
     max_length = 0
     # cleaning up rubbish in wires
     if cleanup:
         for i in range(len(wires)):
             wires[i] = DraftGeomUtils.removeInterVertices(wires[i])
-        print "garbage removed"
+        #print "makeFace: garbage removed"
     for w in wires:
         # we assume that the exterior boundary is that one with
         # the biggest bounding box
         if w.BoundBox.DiagonalLength > max_length:
             max_length = w.BoundBox.DiagonalLength
             ext = w
-    print "exterior wire",ext
+    #print "makeFace: exterior wire",ext
     wires.remove(ext)
 
     if method == 1:
@@ -186,23 +217,22 @@ def makeFace(wires,method=2,cleanup=False):
         # all interior wires mark a hole and must reverse
         # their orientation, otherwise Part.Face fails
         for w in wires:
-            print "reversing",w
+            #print "makeFace: reversing",w
             w.reverse()
-            print "reversed"
             # make sure that the exterior wires comes as first in the list
             wires.insert(0, ext)
-            print "done sorting", wires
+            #print "makeFace: done sorting", wires
         if wires:
             return Part.Face(wires)
     else:
         # method 2: use the cut method
         mf = Part.Face(ext)
-        print "external face:",mf
+        #print "makeFace: external face:",mf
         for w in wires:
             f = Part.Face(w)
-            print "internal face:",f
+            #print "makeFace: internal face:",f
             mf = mf.cut(f)
-        print "final face:",mf.Faces
+        #print "makeFace: final face:",mf.Faces
         return mf.Faces[0]
 
 def meshToShape(obj,mark=True):

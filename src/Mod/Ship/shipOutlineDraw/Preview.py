@@ -63,48 +63,67 @@ class Preview(object):
         sections = []
         for i in range(0,nL):
             pos = sectionsL[i]
+            # Cut ship
             section = shape.slice(Vector(1.0,0.0,0.0), pos)
             for j in range(0,len(section)):
                 edges = section[j].Edges
-                if pos == 0.0:
-                    section[j] = section[j].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0))
-                    edges2 = section[j].Edges
-                    for k in range(0,len(edges2)):
-                        edges.append(edges2[k])
-                elif pos < 0:
-                    section[j] = section[j].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0))
-                    edges = section[j].Edges                    
-                for k in range(0,len(edges)):
-                    sections.append(edges[k])
+                # We have 3 cases, 
+                # * when section is before midship, then only starboard section will be considered
+                # * When section is midship, then all section must be preserved
+                # * When section is after midship, then only board will be considered
+                if pos > 0.01:
+                    # Look for edges at the wrong side and delete it
+                    for k in range(len(edges)-1,-1,-1):
+                        edge = edges[k]
+                        bbox = edge.BoundBox
+                        if bbox.YMin < -0.001:
+                            del edges[k]
+                elif pos < -0.01:
+                    # Look for edges at the wrong side and delete it
+                    for k in range(len(edges)-1,-1,-1):
+                        edge = edges[k]
+                        bbox = edge.BoundBox
+                        if bbox.YMax > 0.001:
+                            del edges[k]
+                sections.extend(edges)
         for i in range(0,nB):
             pos = sectionsB[i]
             section = shape.slice(Vector(0.0,1.0,0.0), pos)
             for j in range(0,len(section)):
                 edges = section[j].Edges
+                # Longitudinal sections will preserve board and starboard ever. Since we take from one side,
+                # we nned to mirror it.
                 section[j] = section[j].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0))
                 edges2 = section[j].Edges
-                for k in range(0,len(edges2)):
-                    edges.append(edges2[k])
-                for k in range(0,len(edges)):
-                    sections.append(edges[k])
+                sections.extend(edges)
+                sections.extend(edges2)
         for i in range(0,nT):
             pos = sectionsT[i]
             section = shape.slice(Vector(0.0,0.0,1.0), pos)
             for j in range(0,len(section)):
                 edges = section[j].Edges
-                if pos == T:
-                    section[j] = section[j].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0))
-                    edges2 = section[j].Edges
-                    for k in range(0,len(edges2)):
-                        edges.append(edges2[k])
-                elif pos > T:
-                    section[j] = section[j].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0))
-                    edges = section[j].Edges                    
-                for k in range(0,len(edges)):
-                    sections.append(edges[k])
+                # We have 3 cases, 
+                # * when section is below draft, then only board section will be considered
+                # * When section is draft, then all section must be preserved
+                # * When section is above draft, then only starboard will be considered
+                if pos > T + 0.01:
+                    # Look for edges at the wrong side and delete it
+                    for k in range(len(edges)-1,-1,-1):
+                        edge = edges[k]
+                        bbox = edge.BoundBox
+                        if bbox.YMax > 0.001:
+                            del edges[k]
+                elif pos < T - 0.01:
+                    # Look for edges at the wrong side and delete it
+                    for k in range(len(edges)-1,-1,-1):
+                        edge = edges[k]
+                        bbox = edge.BoundBox
+                        if bbox.YMin < -0.001:
+                            del edges[k]
+                sections.extend(edges)
         # Convert all BSplines into a shape
         if not sections:
-            msg = Translator.translate('Any valid ship section found\n')
+            msg = Translator.translate('Any valid ship section found')
             FreeCAD.Console.PrintWarning(msg)
             return
         obj = sections[0]
