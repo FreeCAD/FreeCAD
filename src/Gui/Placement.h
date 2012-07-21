@@ -28,9 +28,14 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
 
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
+
 class QSignalMapper;
 
 namespace Gui {
+class Document;
+
 namespace Dialog {
 
 class Ui_Placement;
@@ -64,6 +69,8 @@ private:
     Base::Placement getPlacementData() const;
     void directionActivated(int);
     void applyPlacement(const Base::Placement& p, bool incremental, bool data);
+    void revertTransformation();
+    void slotActiveDocument(const Gui::Document&);
 
 Q_SIGNALS:
     void placementChanged(const QVariant &, bool, bool);
@@ -71,10 +78,13 @@ Q_SIGNALS:
 
 private:
     typedef Gui::LocationInterfaceComp<Ui_Placement> Ui_PlacementComp;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
+    Connection connectAct;
     Base::Placement ref;
     std::string propertyName; // the name of the placement property
+    std::set<std::string> documents;
 
     friend class TaskPlacement;
 };
