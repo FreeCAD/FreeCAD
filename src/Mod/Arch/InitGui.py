@@ -57,7 +57,7 @@ class ArchWorkbench(Workbench):
     ToolTip = "Architecture workbench"
 	
     def Initialize(self):
-        import DraftTools,DraftGui,Arch_rc,Arch
+        import DraftTools,DraftGui,Arch_rc,Arch,Draft_rc
 
         # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure",
@@ -65,7 +65,8 @@ class ArchWorkbench(Workbench):
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Add","Arch_Remove"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
-                     "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
+                     "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
+                     "Arch_CloseHoles"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
@@ -91,6 +92,8 @@ class ArchWorkbench(Workbench):
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
+        FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+        FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
         Log ('Loading Arch module... done\n')
                 
     def Activated(self):
@@ -106,7 +109,7 @@ class ArchWorkbench(Workbench):
         Msg("Arch workbench deactivated\n")
                 
     def ContextMenu(self, recipient):
-        self.appendContextMenu("Display tools",self.draftcontexttools)
+        self.appendContextMenu("Draft context tools",self.draftcontexttools)
 
     def GetClassName(self): 
         return "Gui::PythonWorkbench"
