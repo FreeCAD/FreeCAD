@@ -11,6 +11,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
 # include <QMessageBox>
 #endif
 
@@ -90,16 +91,15 @@ void CmdDrawingNewPage::activated(int iMsg)
 {
     std::string FeatName = getUniqueObjectName("Page");
 
-    if (iMsg == 3) {
+    std::stringstream out;
+    out << App::Application::getResourceDir()
+        << "Mod/Drawing/Templates/"
+        << "A" << iMsg << "_Landscape.svg";
+    Base::FileInfo tfi(out.str());
+    if (tfi.isReadable()) {
         openCommand("Drawing create page");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = 'A3_Landscape.svg'",FeatName.c_str());
-        commitCommand();
-    }
-    else if (iMsg == 4) {
-        openCommand("Drawing create page");
-        doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = 'A4_Landscape.svg'",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), tfi.filePath().c_str());
         commitCommand();
     }
     else {
