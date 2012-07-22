@@ -356,6 +356,8 @@ def formatObject(target,origin=None):
                         setattr(obrep,p,val)
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
+            if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
+                obrep.DiffuseColor = matchrep.DiffuseColor
 
 def getSelection():
     "getSelection(): returns the current FreeCAD selection"
@@ -1066,7 +1068,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             for o in objectslist:
                 o.ViewObject.hide()
         if gui:
-            _ViewProviderDraftPart(obj.ViewObject)
+            _ViewProviderClone(obj.ViewObject)
             formatObject(obj,objectslist[-1])
             select(obj)
         return obj
