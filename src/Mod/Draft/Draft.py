@@ -278,6 +278,15 @@ def getGroupContents(objectslist,walls=False):
                             newlist.append(o)
     return newlist
 
+def removeHidden(objectslist):
+    """removeHidden(objectslist): removes hidden objects from the list"""
+    newlist = objectslist[:]
+    for o in objectslist:
+        if o.ViewObject:
+            if not o.ViewObject.isVisible():
+                newlist.remove(o)
+    return newlist
+
 def printShape(shape):
     """prints detailed information of a shape"""
     print "solids: ", len(shape.Solids)
