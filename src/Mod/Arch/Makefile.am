@@ -62,6 +62,9 @@ EXTRA_DIST = \
 		Resources/icons/Arch_Axis.svg \
 		Resources/icons/Arch_Axis_Tree.svg \
 		Resources/icons/Arch_Roof.svg \
-		Resources/icons/Arch_Roof_Tree.svg
+		Resources/icons/Arch_Roof_Tree.svg \
+		Resources/icons/Arch_CloseHoles.svg \
+		Resources/icons/Arch_Check.svg \
+		Resources/icons/Arch_SelectNonManifold.svg \
 		Resources/ui/archprefs-base.ui
 

@@ -206,6 +206,7 @@ class _ArchDrawingView:
             if obj.Source:
                 if obj.Source.Objects:
                     objs = Draft.getGroupContents(obj.Source.Objects)
+                    objs = Draft.removeHidden(objs)
                     svg = ''
 
                     # generating SVG
@@ -229,7 +230,7 @@ class _ArchDrawingView:
                             if o.isDerivedFrom("Part::Feature"):
                                 shapes.append(o.Shape)
                         if shapes:
-                            base = shape.pop()
+                            base = shapes.pop()
                         for sh in shapes:
                             base = base.fuse(sh)
                         svgf = Drawing.projectToSVG(base,DraftVecUtils.neg(direction))
