@@ -133,7 +133,12 @@ def p_block_list_(p):
     else :
         p[0] = p[1]
     print "End Block List"    
-    
+
+def p_render_action(p):
+    'render_action : render LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    print "Render (ignored)"
+    p[0] = p[6]
+
 def p_group_action1(p):
     'group_action1 : group LPAREN RPAREN OBRACE block_list EBRACE'
     print "Group"
@@ -166,6 +171,7 @@ def p_statement(p):
                  | group_action1
                  | group_action2
                  | color_action
+                 | render_action
                  | not_supported
     '''
     p[0] = p[1]
@@ -296,8 +302,8 @@ def p_size_vector(p):
     p[0] = [p[2],p[4],p[6]]
 
 def p_keywordargument(p):
-    '''keywordargument : ID EQ NUMBER
-    | ID EQ boolean
+    '''keywordargument : ID EQ boolean
+    | ID EQ NUMBER
     | ID EQ size_vector
     | ID EQ vector
     | ID EQ 2d_point
