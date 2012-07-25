@@ -279,9 +279,9 @@ def FloatingArea(ship, draft, trim):
             # Valid face, compute area
             area = area + f.Area
             maxX = max(maxX, faceBounds.XMax)
-            minX = max(minX, faceBounds.XMin)
+            minX = min(minX, faceBounds.XMin)
             maxY = max(maxY, faceBounds.YMax)
-            minY = max(minY, faceBounds.YMin)
+            minY = min(minY, faceBounds.YMin)
         # Destroy last object generated
         App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
     dx = maxX - minX
@@ -416,7 +416,7 @@ class Point:
         self.wet   = wet
         self.farea = farea[0]
         self.mom   = mom
-        self.KBt   = dispData[1].y
+        self.KBt   = dispData[1].z
         self.BMt   = bm
         self.Cb    = dispData[2]
         self.Cf    = farea[1]
