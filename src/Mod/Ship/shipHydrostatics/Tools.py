@@ -306,13 +306,13 @@ def BMT(ship, draft, trim=0.0):
         B1   = displacement(ship,draft,roll,trim,0.0)[1]
         #     * M
         #    / \            
-        #   /   \  BM     ==|>   BM = (BB/2) / tan(alpha/2)
+        #   /   \  BM     ==|>   BM = (BB/2) / sin(alpha/2)
         #  /     \          
         # *-------*
         #     BB
-        BB = [B1.x - B0.x, B1.y - B0.y]
+        BB = [B1.y - B0.y, B1.z - B0.z]
         BB = math.sqrt(BB[0]*BB[0] + BB[1]*BB[1])
-        BM = BM + 0.5*BB/math.tan(math.radians(0.5*roll)) / nRoll   # nRoll is the weight function
+        BM = BM + 0.5*BB/math.sin(math.radians(0.5*roll)) / nRoll   # nRoll is the weight function
     return BM
 
 def mainFrameCoeff(ship, draft):
