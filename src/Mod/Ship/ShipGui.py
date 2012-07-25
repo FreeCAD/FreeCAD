@@ -120,6 +120,42 @@ class GZ:
         ToolTip  = str(Translator.translate('Transversal stability GZ curve computation'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
+class CreateSim: 
+    def Activated(self):
+        import simCreate
+        simCreate.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimCreateIco.png"
+        MenuText = str(Translator.translate('Create a new simulation'))
+        ToolTip  = str(Translator.translate('Create a new simulation in order to process later'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class RunSim: 
+    def Activated(self):
+        import simRun
+        simRun.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimRunIco.png"
+        MenuText = str(Translator.translate('Run a simulation'))
+        ToolTip  = str(Translator.translate('Run a simulation'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class StopSim: 
+    def Activated(self):
+        import simRun
+        simRun.stop()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimStopIco.png"
+        MenuText = str(Translator.translate('Stop active simulation'))
+        ToolTip  = str(Translator.translate('Stop active simulation'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
@@ -128,3 +164,6 @@ FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
 FreeCADGui.addCommand('Ship_Weights', SetWeights())
 FreeCADGui.addCommand('Ship_CreateTank', CreateTank())
 FreeCADGui.addCommand('Ship_GZ', GZ())
+FreeCADGui.addCommand('Ship_CreateSim', CreateSim())
+FreeCADGui.addCommand('Ship_RunSim', RunSim())
+FreeCADGui.addCommand('Ship_StopSim', StopSim())

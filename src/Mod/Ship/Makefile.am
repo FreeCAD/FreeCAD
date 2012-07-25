@@ -5,6 +5,7 @@ data_DATA = \
 	InitGui.py \
 	ShipGui.py \
 	Instance.py \
+	SimInstance.py \
 	TankInstance.py
 
 nobase_data_DATA = \
@@ -37,6 +38,14 @@ nobase_data_DATA = \
 	Icons/Weight.png \
 	Icons/Weight.xcf \
 	Icons/Weight.xpm \
+	Icons/SimIco.xcf \
+	Icons/Sim.xpm \
+	Icons/SimCreateIco.png \
+	Icons/SimCreateIco.xpm \
+	Icons/SimRunIco.png \
+	Icons/SimRunIco.xpm \
+	Icons/SimStopIco.png \
+	Icons/SimStopIco.xpm \
 	Icons/Tank.png \
 	Icons/Tank.xcf \
 	Icons/Tank.xpm \
@@ -80,7 +89,14 @@ nobase_data_DATA = \
 	tankGZ/__init__.py \
 	tankGZ/Plot.py \
 	tankGZ/TaskPanel.py \
-	tankGZ/TaskPanel.ui
+	tankGZ/TaskPanel.ui \
+	simCreate/__init__.py \
+	simCreate/TaskPanel.py \
+	simCreate/TaskPanel.ui \
+	simRun/__init__.py \
+	simRun/Simulation.py \
+	simRun/TaskPanel.py \
+	simRun/TaskPanel.ui
 
 CLEANFILES = $(BUILT_SOURCES)
 
