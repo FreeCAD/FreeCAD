@@ -31,6 +31,7 @@ class ShipWorkbench ( Workbench ):
     ToolTip = str(Translator.translate("Ship design"))
 
     def Initialize(self):
+        from shipUtils import Translator
         # ToolBar
         list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
         self.appendToolbar("Ship design",list)
