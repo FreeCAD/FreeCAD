@@ -25,8 +25,9 @@ import os
 import math
 # FreeCAD modules
 import FreeCAD,FreeCADGui
-from FreeCAD import Part, Base, Vector
+from FreeCAD import Base, Vector
 from FreeCAD import Image, ImageGui
+import Part
 # FreeCADShip modules
 from shipUtils import Paths, Translator
 import Tools
