@@ -31,7 +31,8 @@ from pivy import coin
 
 # FreeCAD
 import FreeCAD,FreeCADGui
-from FreeCAD import Part, Base, Vector
+from FreeCAD import Base, Vector
+import Part
 
 # Ship design module
 from shipUtils import Paths, Translator, Math
