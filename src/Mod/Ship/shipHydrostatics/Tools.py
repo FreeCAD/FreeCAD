@@ -23,7 +23,8 @@
 
 import math
 # FreeCAD modules
-from FreeCAD import Vector, Part
+from FreeCAD import Vector
+import Part
 import FreeCAD as App
 import FreeCADGui as Gui
 # Module
