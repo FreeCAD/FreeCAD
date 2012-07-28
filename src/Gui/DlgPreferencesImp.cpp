@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <cstring>
 # include <algorithm>
+# include <QDebug>
 # include <QMessageBox>
 #endif
 
@@ -89,6 +90,15 @@ void DlgPreferencesImp::setupPages()
         }
         fileName = std::string("preferences-") + fileName;
         QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(fileName.c_str(), QSize(96,96));
+        if (icon.isNull()) {
+            icon = Gui::BitmapFactory().pixmap(fileName.c_str());
+            if (icon.isNull()) {
+                qWarning() << "No group icon found for " << fileName.c_str();
+            }
+            else if (icon.size() != QSize(96,96)) {
+                qWarning() << "Group icon for " << fileName.c_str() << " is not of size 96x96";
+            }
+        }
         item->setIcon(icon);
         item->setTextAlignment(Qt::AlignHCenter);
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
