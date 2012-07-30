@@ -53,6 +53,7 @@ nobase_data_DATA = \
 	Examples/s60_katamaran.fcstd \
 	Examples/wigley.fcstd \
 	Examples/wigley_katamaran.fcstd \
+	OpenCL/simInit.cl \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \
@@ -96,7 +97,11 @@ nobase_data_DATA = \
 	simRun/__init__.py \
 	simRun/Simulation.py \
 	simRun/TaskPanel.py \
-	simRun/TaskPanel.ui
+	simRun/TaskPanel.ui \
+	simRun/Sim/__init__.py \
+	simRun/Sim/initialization.py
+	simRun/Sim/Utils.py
+
 
 CLEANFILES = $(BUILT_SOURCES)
 
