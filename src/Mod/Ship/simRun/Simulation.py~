@@ -88,6 +88,8 @@ class FreeCADShipSimulation(threading.Thread):
             time.sleep(1)
             # ...
             print("Im thread, step done!")
+            msg = Translator.translate("\t[Sim]: Output performed!\n")
+            FreeCAD.Console.PrintMessage(msg)
         # Set thread as stopped (and prepare it to restarting)
         self.active = False
         threading.Event().set()
