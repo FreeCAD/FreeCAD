@@ -56,6 +56,7 @@ SET(ShipExamples_SRCS
 	Examples/s60_katamaran.fcstd
 	Examples/wigley.fcstd
 	Examples/wigley_katamaran.fcstd
+	OpenCL/simInit.cl
 )
 SOURCE_GROUP("shipexamples" FILES ${ShipExamples_SRCS})
 
@@ -144,6 +145,9 @@ SET(SimRun_SRCS
 	simRun/Simulation.py
 	simRun/TaskPanel.py
 	simRun/TaskPanel.ui
+	simRun/Sim/__init__.py
+	simRun/Sim/initialization.py
+	simRun/Sim/Utils.py
 )
 SOURCE_GROUP("simrun" FILES ${SimRun_SRCS})
 
