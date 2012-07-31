@@ -48,9 +48,10 @@ class TaskPanel:
         output  = []
         output.append(self.form.output.value())
         output.append(self.form.outputType.currentIndex())
-        devId   = self.form.device.currentIndex()
+        devId   = self.form.device.currentIndex() - 1 # First is not OpenCL
         # Get OpenCL device
-        count = 0
+        device = None
+        count  = 0
         platforms = cl.get_platforms()
         for p in platforms:
             devs = p.get_devices()
@@ -154,6 +155,7 @@ class TaskPanel:
             App.Console.PrintError(msg)
             return True
         # Get the list of devices
+        self.form.device.addItem("CPU based version (No OpenCL)")
         devices = []
         platforms = cl.get_platforms()
         for p in platforms:
@@ -164,9 +166,8 @@ class TaskPanel:
                 pname = p.get_info(cl.platform_info.NAME)
                 self.form.device.addItem(dname + " (" + pname + ")")
         if not len(devices):
-            msg = Translator.translate("This tool requires an active OpenCL context to work\n")
-            App.Console.PrintError(msg)
-            return True
+            msg = Translator.translate("Can't find OpenCL devices\n")
+            App.Console.PrintWarning(msg)
         msg = Translator.translate("Ready to work\n")
         App.Console.PrintMessage(msg)
         return False

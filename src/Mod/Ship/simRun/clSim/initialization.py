@@ -29,12 +29,12 @@ import pyopencl as cl
 import numpy as np
 
 class perform:
-    def __init__(self, context, queue, FSmesh, waves):
+    def __init__(self, FSmesh, waves, context, queue):
         """ Constructor, includes program loading.
-        @param context OpenCL context where apply.
-        @param queue OpenCL command queue.
         @param FSmesh Initial free surface mesh.
         @param waves Considered simulation waves (A,T,phi,heading).
+        @param context OpenCL context where apply.
+        @param queue OpenCL command queue.
         """
         self.context = context
         self.queue   = queue
@@ -100,7 +100,6 @@ class perform:
         N[1] = self.fs['Ny']
         n = np.uint32(self.waves['N'])
         gSize = (globalSize(N[0]),globalSize(N[1]),)
-        print(gSize)
         # Kernel arguments
         kernelargs = (self.fs['pos'],
                       self.fs['vel'],
@@ -108,10 +107,7 @@ class perform:
                       self.waves['data'],
                       self.fs['velPot'],
                       self.fs['accPot'],
-                      N, n)        
-        print('Launching...')
+                      N, n)
         # Kernel launch
         self.program.FS(self.queue, gSize, None, *(kernelargs))
-        print('Waiting...')
         self.queue.finish()
-        print('OK!')
