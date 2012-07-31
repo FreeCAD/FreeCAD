@@ -346,10 +346,10 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 
 Property *PropertyFileIncluded::Copy(void) const
 {
-    PropertyFileIncluded *p= new PropertyFileIncluded();
+    PropertyFileIncluded *prop = new PropertyFileIncluded();
 
     // remember the base name
-    p->_BaseFileName = _BaseFileName;
+    prop->_BaseFileName = _BaseFileName;
 
     if (!_cValue.empty()) {
         Base::FileInfo file(_cValue);
@@ -361,11 +361,11 @@ Property *PropertyFileIncluded::Copy(void) const
         bool done = file.renameFile(NewName.filePath().c_str());
         assert(done);
         // remember the new name for the Undo
-        Base::Console().Log("Copy this=%p Before=%s After=%s\n",p,p->_cValue.c_str(),NewName.filePath().c_str());
-        p->_cValue = NewName.filePath().c_str();
+        Base::Console().Log("Copy this=%p Before=%s After=%s\n",prop,prop->_cValue.c_str(),NewName.filePath().c_str());
+        prop->_cValue = NewName.filePath().c_str();
     }
 
-    return p;
+    return prop;
 }
 
 void PropertyFileIncluded::Paste(const Property &from)
@@ -375,6 +375,9 @@ void PropertyFileIncluded::Paste(const Property &from)
     // delete old file (if still there)
     file.deleteFile();
     const PropertyFileIncluded &fileInc = dynamic_cast<const PropertyFileIncluded&>(from);
+
+    // set the base name
+    _BaseFileName = fileInc._BaseFileName;
 
     if (!fileInc._cValue.empty()) {
         // move the saved files back in place
