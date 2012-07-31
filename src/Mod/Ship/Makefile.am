@@ -98,10 +98,11 @@ nobase_data_DATA = \
 	simRun/Simulation.py \
 	simRun/TaskPanel.py \
 	simRun/TaskPanel.ui \
+	simRun/clSim/__init__.py \
+	simRun/clSim/initialization.py \
+	simRun/clSim/Utils.py \
 	simRun/Sim/__init__.py \
 	simRun/Sim/initialization.py
-	simRun/Sim/Utils.py
-
 
 CLEANFILES = $(BUILT_SOURCES)
 

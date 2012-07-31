@@ -34,9 +34,6 @@ import FreeCAD,FreeCADGui
 from FreeCAD import Base, Vector
 import Part
 
-# Simulation stuff
-from Sim import initialization
-
 # Ship design module
 from shipUtils import Paths, Translator, Math
 
@@ -65,8 +62,12 @@ class FreeCADShipSimulation(threading.Thread):
         self.active  = False
         # Build OpenCL context and command queue
         self.device  = device
-        self.context = cl.Context(devices=[self.device])
-        self.queue   = cl.CommandQueue(self.context)
+        if self.device == None: # Can't use OpenCL
+            self.context = None
+            self.queue   = None
+        else:
+            self.context = cl.Context(devices=[self.device])
+            self.queue   = cl.CommandQueue(self.context)
         # Storage data
         self.endTime = endTime
         self.output  = output
@@ -77,10 +78,14 @@ class FreeCADShipSimulation(threading.Thread):
         """ Runs the simulation.
         """
         self.active = True
-        # Perform work here
+        # Simulation stuff
+        if self.device == None:
+            from Sim import initialization
+        else:
+            from clSim import initialization
         msg = Translator.translate("\t[Sim]: Initializating OpenCL...\n")
         FreeCAD.Console.PrintMessage(msg)
-        init = initialization.perform(self.context,self.queue,self.FSmesh,self.waves)
+        init = initialization.perform(self.FSmesh,self.waves,self.context,self.queue)
         msg = Translator.translate("\t[Sim]: Iterating (outputs will be noticed)...\n")
         FreeCAD.Console.PrintMessage(msg)
         while self.active:
