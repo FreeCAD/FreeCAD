@@ -21,65 +21,62 @@
 #*                                                                         *
 #***************************************************************************
 
-# Simulation stuff
-from Utils import *
-
-# pyOpenCL
-import pyopencl as cl
+# numpy
 import numpy as np
 
+grav=9.81
+
 class perform:
-    def __init__(self, context, queue, FSmesh, waves):
+    def __init__(self, FSmesh, waves, context=None, queue=None):
         """ Constructor, includes program loading.
-        @param context OpenCL context where apply.
-        @param queue OpenCL command queue.
         @param FSmesh Initial free surface mesh.
         @param waves Considered simulation waves (A,T,phi,heading).
+        @param context OpenCL context where apply. Only for compatibility, 
+        must be None.
+        @param queue OpenCL command queue. Only for compatibility, 
+        must be None.
         """
         self.context = context
         self.queue   = queue
-        self.program = loadProgram(context, clPath() + "/simInit.cl")
         self.loadData(FSmesh, waves)
         self.execute()
 
     def loadData(self, FSmesh, waves):
-        """ Convert data to numpy format, and create OpenCL
-        buffers.
+        """ Convert data to numpy format.
         @param FSmesh Initial free surface mesh.
         @param waves Considered simulation waves (A,T,phi,heading).        
         """
-        mf = cl.mem_flags
         nx = len(FSmesh)
         ny = len(FSmesh[0])
         nW = len(waves)
         # Mesh data
-        p  = np.ndarray((nx*ny, 4), dtype=np.float32)
-        n  = np.ndarray((nx*ny, 4), dtype=np.float32)
-        a  = np.ndarray((nx*ny, 1), dtype=np.float32)
+        p   = np.ndarray((nx,ny, 3), dtype=np.float32)
+        v   = np.ndarray((nx,ny, 3), dtype=np.float32)
+        f   = np.ndarray((nx,ny, 3), dtype=np.float32)
+        n   = np.ndarray((nx,ny, 3), dtype=np.float32)
+        a   = np.ndarray((nx,ny, 1), dtype=np.float32)
+        phi = np.ndarray((nx,ny, 1), dtype=np.float32)
+        Phi = np.ndarray((nx,ny, 1), dtype=np.float32)
         for i in range(0, nx):
             for j in range(0, ny):
-                id      = i*ny + j
                 pos     = FSmesh[i][j].pos
                 normal  = FSmesh[i][j].normal
                 area    = FSmesh[i][j].area
-                p[id,0] = pos.x
-                p[id,1] = pos.y
-                p[id,2] = pos.z
-                p[id,3] = 1.
-                n[id,0] = normal.x
-                n[id,1] = normal.y
-                n[id,2] = normal.z
-                n[id,3] = 0.
-                a[id,0] = area
-        p_cl = cl.Buffer(self.context, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=p)
-        n_cl = cl.Buffer(self.context, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=n)
-        a_cl = cl.Buffer(self.context, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=a)
-        v_cl = cl.Buffer(self.context, mf.READ_WRITE, size = nx*ny*4 * np.dtype('float32').itemsize)
-        f_cl = cl.Buffer(self.context, mf.READ_WRITE, size = nx*ny*4 * np.dtype('float32').itemsize)
-        phi  = cl.Buffer(self.context, mf.READ_WRITE, size = nx*ny * np.dtype('float32').itemsize)
-        Phi  = cl.Buffer(self.context, mf.READ_WRITE, size = nx*ny * np.dtype('float32').itemsize)
-        self.fs = {'Nx':nx, 'Ny':ny, 'pos':p_cl, 'vel':v_cl, 'acc':f_cl, \
-                   'normal':n_cl, 'area':a_cl, 'velPot':phi, 'accPot':Phi}
+                p[i,j,0] = pos.x
+                p[i,j,1] = pos.y
+                p[i,j,2] = pos.z
+                v[i,j,0] = 0.
+                v[i,j,1] = 0.
+                v[i,j,2] = 0.
+                f[i,j,0] = 0.
+                f[i,j,1] = 0.
+                f[i,j,2] = 0.
+                n[i,j,0] = normal.x
+                n[i,j,1] = normal.y
+                n[i,j,2] = normal.z
+                a[i,j]   = area
+        self.fs = {'Nx':nx, 'Ny':ny, 'pos':p, 'vel':v, 'acc':f, \
+                   'normal':n, 'area':a, 'velPot':phi, 'accPot':Phi}
         # Waves data
         w = np.ndarray((nW, 4), dtype=np.float32)
         for i in range(0,nW):
@@ -87,27 +84,31 @@ class perform:
             w[i,1] = waves[i][1]
             w[i,2] = waves[i][2]
             w[i,3] = waves[i][3]
-        w_cl = cl.Buffer(self.context, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=w)        
-        self.waves = {'N':nW, 'data':w_cl}
-        # Ensure that all data has been written
-        self.queue.finish()
+        self.waves = {'N':nW, 'data':w}
 
     def execute(self):
         """ Compute initial conditions. """
-        # Global size computation
-        N  = np.ndarray((2, 1), dtype=np.uint32)
-        N[0] = self.fs['Nx']
-        N[1] = self.fs['Ny']
-        n = np.uint32(self.waves['N'])
-        gSize = (globalSize(N[0]),globalSize(N[1]),)
-        # Kernel arguments
-        kernelargs = (self.fs['pos'],
-                      self.fs['vel'],
-                      self.fs['acc'],
-                      self.waves['data'],
-                      self.fs['velPot'],
-                      self.fs['accPot'],
-                      N, n)        
-        # Kernel launch
-        self.program.FS(self.queue, gSize, None, *(kernelargs))
-        self.queue.finish()
+        nx = self.fs['Nx']
+        ny = self.fs['Ny']
+        for i in range(0,nx):
+            for j in range(0,ny):
+                for w in self.waves['data']:
+                    A       = w[0]
+                    T       = w[1]
+                    phase   = w[2]
+                    heading = np.pi*w[3]/180.0
+                    wl      = 0.5 * grav / np.pi * T*T
+                    k       = 2.0*np.pi/wl
+                    frec    = 2.0*np.pi/T
+                    pos     = self.fs['pos'][i,j]
+                    l       = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
+                    amp     = A*np.sin(k*l + phase)
+                    self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + amp
+                    amp     = frec*A*np.cos(k*l + phase)
+                    self.fs['vel'][i,j][2] = self.fs['vel'][i,j][2] - amp
+                    amp     = frec*frec*A*np.sin(k*l + phase)
+                    self.fs['acc'][i,j][2] = self.fs['acc'][i,j][2] - amp
+                    amp     = grav/frec*A*np.sin(k*l + phase)
+                    self.fs['velPot'][i,j] = self.fs['velPot'][i,j] + amp
+                    amp     = grav*A*np.cos(k*l + phase)
+                    self.fs['accPot'][i,j] = self.fs['accPot'][i,j] + amp
