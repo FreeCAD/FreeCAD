@@ -1516,10 +1516,10 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
     // remove number from end to avoid lengthy names
     std::string objname = obj->getNameInDocument();
     if (!keepdigitsatend) {
-    size_t lastpos = objname.length()-1;
-    while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
-        lastpos--;
-    objname = objname.substr(0, lastpos+1);
+        size_t lastpos = objname.length()-1;
+        while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
+            lastpos--;
+        objname = objname.substr(0, lastpos+1);
     }
     DocumentObject* copy = addObject(obj->getTypeId().getName(),objname.c_str());
     if (!copy) return 0;
