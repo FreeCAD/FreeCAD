@@ -1660,10 +1660,10 @@ def clone(obj,delta=None):
     _Clone(cl)
     if gui:
         _ViewProviderClone(cl.ViewObject)
-        formatObject(cl,obj[0])
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
+    formatObject(cl,obj[0])
     return cl
 
 def heal(objlist=None,delete=True,reparent=True):
