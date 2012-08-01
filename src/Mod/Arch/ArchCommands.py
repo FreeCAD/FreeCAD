@@ -262,6 +262,52 @@ def closeHole(shape):
     else:
         return solid
 
+def getCutVolume(cutplane,shapes):
+    """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
+    from the given shapes and the given cutting plane"""
+    import Part
+    placement = FreeCAD.Placement(cutplane.Placement)
+    # building boundbox
+    bb = shapes[0].BoundBox 
+    for sh in shapes[1:]:
+        bb.add(sh.BoundBox)
+    bb.enlarge(1)
+    um = vm = wm = 0
+    ax = placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+    v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+    if not bb.isCutPlane(placement.Base,ax):
+        print "No objects are cut by the plane"
+        return None,None
+    else:
+        corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
+        for c in corners:
+            dv = c.sub(placement.Base)
+            um1 = DraftVecUtils.project(dv,u).Length
+            um = max(um,um1)
+            vm1 = DraftVecUtils.project(dv,v).Length
+            vm = max(vm,vm1)
+            wm1 = DraftVecUtils.project(dv,ax).Length
+            wm = max(wm,wm1)
+        p1 = FreeCAD.Vector(-um,vm,0)
+        p2 = FreeCAD.Vector(um,vm,0)
+        p3 = FreeCAD.Vector(um,-vm,0)
+        p4 = FreeCAD.Vector(-um,-vm,0)
+        cutface = Part.makePolygon([p1,p2,p3,p4,p1])
+        cutface = Part.Face(cutface)
+        cutface.Placement = placement
+        cutnormal = DraftVecUtils.scaleTo(ax,wm)
+        cutvolume = cutface.extrude(cutnormal)
+        return cutface,cutvolume
+  
+
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''

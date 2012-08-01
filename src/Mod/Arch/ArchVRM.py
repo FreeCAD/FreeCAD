@@ -228,42 +228,11 @@ class Renderer:
             if DEBUG: print "No objects to make sections"
         else:
             fill = (1.0,1.0,1.0,1.0)
-            placement = FreeCAD.Placement(cutplane.Placement)
-
-            # building boundbox
-            bb = self.shapes[0][0].BoundBox 
-            for sh in self.shapes[1:]:
-                bb.add(sh[0].BoundBox)
-            bb.enlarge(1)
-            um = vm = wm = 0
-            if not bb.isCutPlane(placement.Base,self.wp.axis):
-                if DEBUG: print "No objects are cut by the plane"
-            else:
-                corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
-                           FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
-                           FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMin),
-                           FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMin),
-                           FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMax),
-                           FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMax),
-                           FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
-                           FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
-                for c in corners:
-                    dv = c.sub(placement.Base)
-                    um1 = DraftVecUtils.project(dv,self.wp.u).Length
-                    um = max(um,um1)
-                    vm1 = DraftVecUtils.project(dv,self.wp.v).Length
-                    vm = max(vm,vm1)
-                    wm1 = DraftVecUtils.project(dv,self.wp.axis).Length
-                    wm = max(wm,wm1)
-                p1 = FreeCAD.Vector(-um,vm,0)
-                p2 = FreeCAD.Vector(um,vm,0)
-                p3 = FreeCAD.Vector(um,-vm,0)
-                p4 = FreeCAD.Vector(-um,-vm,0)
-                cutface = Part.makePolygon([p1,p2,p3,p4,p1])
-                cutface = Part.Face(cutface)
-                cutface.Placement = placement
-                cutnormal = DraftVecUtils.scaleTo(self.wp.axis,wm)
-                cutvolume = cutface.extrude(cutnormal)
+            shps = []
+            for sh in self.shapes:
+                shps.append(sh[0])
+            cutface,cutvolume = ArchCommands.getCutVolume(cutplane,shps)
+            if cutface and cutvolume:
                 shapes = []
                 faces = []
                 sections = []
