@@ -26,7 +26,7 @@ import numpy as np
 
 grav=9.81
 
-class simMatrixGen:
+class simComputeSources:
     def __init__(self, context=None, queue=None):
         """ Constructor.
         @param context OpenCL context where apply. Only for compatibility, 
@@ -38,42 +38,32 @@ class simMatrixGen:
         self.queue   = queue
 
     def execute(self, fs, A):
-        """ Compute system matrix.
+        """ Compute potential sources (for velocity potential and 
+        acceleration potential).
         @param fs Free surface instance.
         @param A Linear system matrix.
         """
         self.fs = fs
+        # Allocate memory
         nx      = self.fs['Nx']
         ny      = self.fs['Ny']
         nF      = nx*ny
         nB      = 0 # No body for the moment
-        N  = nx*ny + nB
-        # Fluid sources rows
+        N       = nx*ny + nB
+        b       = np.ndarray(N, dtype=np.float32)
+        bb      = np.ndarray(N, dtype=np.float32)
+        s       = np.ndarray(N, dtype=np.float32)
+        ss      = np.ndarray(N, dtype=np.float32)
+        # Create independent terms
         for i in range(0,nx):
             for j in range(0,ny):
-                # Append fluid effect
-                pos = self.fs['pos'][i,j]
-                A[i*ny+j,0:nF] = self.fluidEffect(pos)
-                # Append body effect
-                # ...
-
-    def fluidEffect(self, pos):
-        """ Compute fluid effect terms over desired position. Desingularized 
-        sources must taken into account.
-        @param pos Point to evaluate.
-        @return Fluid effect row.
-        """
-        nx  = self.fs['Nx']
-        ny  = self.fs['Ny']
-        nF  = nx*ny
-        row = np.ndarray(nF, dtype=np.float32)
+                b[i*ny+j]  = self.fs['velPot'][i,j]
+                bb[i*ny+j] = self.fs['accPot'][i,j]
+        # Solve systems
+        s  = np.linalg.solve(A, b)
+        ss = np.linalg.solve(A, bb)
+        # Store sources
         for i in range(0,nx):
             for j in range(0,ny):
-                # Get source position (desingularized)
-                source      = np.copy(self.fs['pos'][i,j])
-                area        = self.fs['area'][i,j]
-                source[2]   = source[2] + np.sqrt(area)
-                # Get distance between points
-                d           = np.linalg.norm(pos-source)
-                row[i*ny+j] = np.log(d)*area
-        return row
+                self.fs['velSrc'][i,j] =  s[i*ny+j]
+                self.fs['accSrc'][i,j] = ss[i*ny+j]
