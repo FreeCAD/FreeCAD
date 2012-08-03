@@ -150,6 +150,7 @@ SET(SimRun_SRCS
 	simRun/clSim/Utils.py
 	simRun/Sim/__init__.py
 	simRun/Sim/initialization.py
+	simRun/Sim/matrixGen.py
 )
 SOURCE_GROUP("simrun" FILES ${SimRun_SRCS})
 

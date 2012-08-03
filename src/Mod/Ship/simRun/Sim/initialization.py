@@ -26,9 +26,9 @@ import numpy as np
 
 grav=9.81
 
-class perform:
+class simInitialization:
     def __init__(self, FSmesh, waves, context=None, queue=None):
-        """ Constructor, includes program loading.
+        """ Constructor.
         @param FSmesh Initial free surface mesh.
         @param waves Considered simulation waves (A,T,phi,heading).
         @param context OpenCL context where apply. Only for compatibility, 
@@ -54,9 +54,9 @@ class perform:
         v   = np.ndarray((nx,ny, 3), dtype=np.float32)
         f   = np.ndarray((nx,ny, 3), dtype=np.float32)
         n   = np.ndarray((nx,ny, 3), dtype=np.float32)
-        a   = np.ndarray((nx,ny, 1), dtype=np.float32)
-        phi = np.ndarray((nx,ny, 1), dtype=np.float32)
-        Phi = np.ndarray((nx,ny, 1), dtype=np.float32)
+        a   = np.ndarray((nx,ny), dtype=np.float32)
+        phi = np.ndarray((nx,ny), dtype=np.float32)
+        Phi = np.ndarray((nx,ny), dtype=np.float32)
         for i in range(0, nx):
             for j in range(0, ny):
                 pos     = FSmesh[i][j].pos
