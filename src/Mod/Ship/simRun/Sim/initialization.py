@@ -57,6 +57,8 @@ class simInitialization:
         a   = np.ndarray((nx,ny), dtype=np.float32)
         phi = np.ndarray((nx,ny), dtype=np.float32)
         Phi = np.ndarray((nx,ny), dtype=np.float32)
+        s   = np.ndarray((nx,ny), dtype=np.float32)
+        ss  = np.ndarray((nx,ny), dtype=np.float32)
         for i in range(0, nx):
             for j in range(0, ny):
                 pos     = FSmesh[i][j].pos
@@ -75,8 +77,13 @@ class simInitialization:
                 n[i,j,1] = normal.y
                 n[i,j,2] = normal.z
                 a[i,j]   = area
+                phi[i,j] = 0.
+                Phi[i,j] = 0.
+                s[i,j]   = 0.
+                ss[i,j]  = 0.
         self.fs = {'Nx':nx, 'Ny':ny, 'pos':p, 'vel':v, 'acc':f, \
-                   'normal':n, 'area':a, 'velPot':phi, 'accPot':Phi}
+                   'normal':n, 'area':a, 'velPot':phi, 'accPot':Phi, \
+                   'velSrc':s, 'accSrc':ss}
         # Waves data
         w = np.ndarray((nW, 4), dtype=np.float32)
         for i in range(0,nW):
@@ -85,6 +92,11 @@ class simInitialization:
             w[i,2] = waves[i][2]
             w[i,3] = waves[i][3]
         self.waves = {'N':nW, 'data':w}
+        # Linear system matrix
+        nF     = nx*ny
+        nB     = 0 # No body for the moment
+        N      = nx*ny + nB
+        self.A = np.ndarray((N, N), dtype=np.float32)
 
     def execute(self):
         """ Compute initial conditions. """
