@@ -21,7 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import time
 from math import *
 import threading
 
@@ -80,19 +79,21 @@ class FreeCADShipSimulation(threading.Thread):
         self.active = True
         # Simulation stuff
         if self.device == None:
-            from Sim import initialization
+            from Sim import *
         else:
-            from clSim import initialization
-        msg = Translator.translate("\t[Sim]: Initializating OpenCL...\n")
+            from clSim import *
+        msg = Translator.translate("\t[Sim]: Initializating...\n")
         FreeCAD.Console.PrintMessage(msg)
-        init = initialization.perform(self.FSmesh,self.waves,self.context,self.queue)
-        msg = Translator.translate("\t[Sim]: Iterating (outputs will be noticed)...\n")
+        init   = simInitialization(self.FSmesh,self.waves,self.context,self.queue)
+        matGen = simMatrixGen(self.context,self.queue)
+        FS     = init.fs
+        waves  = init.waves
+        msg = Translator.translate("\t[Sim]: Iterating...\n")
         FreeCAD.Console.PrintMessage(msg)
         while self.active:
-            print("Im thread, Im running...")
-            time.sleep(1)
-            # ...
-            print("Im thread, step done!")
+            msg = Translator.translate("\t\t[Sim]: Generating linear system matrix...\n")
+            FreeCAD.Console.PrintMessage(msg)
+            A = matGen.execute(FS)
         # Set thread as stopped (and prepare it to restarting)
         self.active = False
         threading.Event().set()
