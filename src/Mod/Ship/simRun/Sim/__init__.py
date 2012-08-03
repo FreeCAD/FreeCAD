@@ -21,4 +21,5 @@
 #*                                                                         *
 #***************************************************************************
 
-import initialization
+from initialization import *
+from matrixGen import *
