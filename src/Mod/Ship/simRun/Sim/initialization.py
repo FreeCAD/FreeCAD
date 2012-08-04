@@ -40,6 +40,10 @@ class simInitialization:
         self.queue   = queue
         self.loadData(FSmesh, waves)
         self.execute()
+        # Compute time step
+        self.dt = 0.1
+        for w in self.waves['data']:
+            self.dt = np.min(self.dt, w[1]/200.0)
 
     def loadData(self, FSmesh, waves):
         """ Convert data to numpy format.
@@ -51,8 +55,6 @@ class simInitialization:
         nW = len(waves)
         # Mesh data
         p   = np.ndarray((nx,ny, 3), dtype=np.float32)
-        v   = np.ndarray((nx,ny, 3), dtype=np.float32)
-        f   = np.ndarray((nx,ny, 3), dtype=np.float32)
         n   = np.ndarray((nx,ny, 3), dtype=np.float32)
         a   = np.ndarray((nx,ny), dtype=np.float32)
         phi = np.ndarray((nx,ny), dtype=np.float32)
@@ -67,12 +69,6 @@ class simInitialization:
                 p[i,j,0] = pos.x
                 p[i,j,1] = pos.y
                 p[i,j,2] = pos.z
-                v[i,j,0] = 0.
-                v[i,j,1] = 0.
-                v[i,j,2] = 0.
-                f[i,j,0] = 0.
-                f[i,j,1] = 0.
-                f[i,j,2] = 0.
                 n[i,j,0] = normal.x
                 n[i,j,1] = normal.y
                 n[i,j,2] = normal.z
@@ -81,9 +77,8 @@ class simInitialization:
                 Phi[i,j] = 0.
                 s[i,j]   = 0.
                 ss[i,j]  = 0.
-        self.fs = {'Nx':nx, 'Ny':ny, 'pos':p, 'vel':v, 'acc':f, \
-                   'normal':n, 'area':a, 'velPot':phi, 'accPot':Phi, \
-                   'velSrc':s, 'accSrc':ss}
+        self.fs = {'Nx':nx, 'Ny':ny, 'pos':p, 'normal':n, 'area':a, \
+                   'velPot':phi, 'accPot':Phi, 'velSrc':s, 'accSrc':ss}
         # Waves data
         w = np.ndarray((nW, 4), dtype=np.float32)
         for i in range(0,nW):
