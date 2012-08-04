@@ -251,6 +251,14 @@
       <source>Insert new A4 landscape drawing</source>
       <translation>Neue A3-Zeichung einfügen (im Querformat) {4 ?}</translation>
     </message>
+    <message>
+      <source>Insert new A%1 landscape drawing</source>
+      <translation>Neue A%1-Zeichung im Querformat einfügen</translation>
+    </message>
+    <message>
+      <source>A%1 landscape</source>
+      <translation>A%1 im Querformat</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>

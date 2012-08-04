@@ -23,7 +23,8 @@
 
 # FreeCAD modules
 import FreeCAD,FreeCADGui
-from FreeCAD import Base, Part, Vector
+from FreeCAD import Base, Vector
+import Part
 # FreeCADShip modules
 from shipUtils import Paths, Translator
 from surfUtils import Geometry

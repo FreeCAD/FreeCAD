@@ -186,7 +186,7 @@ class _ArchDrawingView:
         obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing View","The rendering mode to use")
         obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The line width of the rendered objects")
         obj.RenderingMode = ["Solid","Wireframe"]
-        obj.RenderingMode = "Solid"
+        obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35
         obj.Proxy = self
         self.Type = "DrawingView"
@@ -206,6 +206,7 @@ class _ArchDrawingView:
             if obj.Source:
                 if obj.Source.Objects:
                     objs = Draft.getGroupContents(obj.Source.Objects)
+                    objs = Draft.removeHidden(objs)
                     svg = ''
 
                     # generating SVG
@@ -223,18 +224,33 @@ class _ArchDrawingView:
                         
                     else:
                         # render using the Drawing module
-                        import Drawing
+                        import Drawing, Part
                         shapes = []
+                        p = FreeCAD.Placement(obj.Source.Placement)
+                        direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         for o in objs:
                             if o.isDerivedFrom("Part::Feature"):
-                                shapes.append(o.Shape)
-                        if shapes:
-                            base = shape.pop()
-                        for sh in shapes:
-                            base = base.fuse(sh)
-                        svgf = Drawing.projectToSVG(base,DraftVecUtils.neg(direction))
+                                shapes.extend(o.Shape.Solids)
+                        cutface,cutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
+                        if cutvolume:
+                            nsh = []
+                            for sh in shapes:
+                                for sol in sh.Solids:
+                                    c = sol.cut(cutvolume)
+                                    nsh.append(c)
+                            shapes = nsh
+                        base = Part.makeCompound(shapes)
+                        #if shapes:
+                        #    base = shapes.pop().copy()
+                        #for sh in shapes:
+                        #    try:
+                        #        base = base.fuse(sh)
+                        #    except:
+                        #        print "unable to fuse, passing..."
+                        svgf = Drawing.projectToSVG(base,direction)
                         if svgf:
                             svgf = svgf.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
+                            svgf = svgf.replace('stroke-width="1"','stroke-width="' + str(linewidth) + 'px"')
                             svgf = svgf.replace('stroke-width:0.01','stroke-width:' + str(linewidth) + 'px')
                         svg += svgf
 

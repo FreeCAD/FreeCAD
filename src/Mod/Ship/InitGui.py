@@ -31,16 +31,38 @@ class ShipWorkbench ( Workbench ):
     ToolTip = str(Translator.translate("Ship design"))
 
     def Initialize(self):
+        from shipUtils import Translator
         # ToolBar
         list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
         self.appendToolbar("Ship design",list)
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
-        self.appendToolbar("Loading",list)
+        self.appendToolbar("Weights",list)
+        # Simulation stuff only if pyOpenCL & numpy are present
+        hasOpenCL = True
+        hasNumpy  = True
+        try:
+            import pyopencl
+        except ImportError:
+            hasOpenCL = False
+            msg = Translator.translate("pyOpenCL not installed, ship simulations disabled\n")
+            App.Console.PrintWarning(msg)
+        try:
+            import numpy
+        except ImportError:
+            hasNumpy = False
+            msg = Translator.translate("numpy not installed, ship simulations disabled\n")
+            App.Console.PrintWarning(msg)
+        if hasOpenCL and hasNumpy:
+            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
+            self.appendToolbar("Simulation",list)
         
         # Menu
         list = ["Ship_LoadExample", "Ship_CreateShip", "Ship_OutlineDraw", "Ship_AreasCurve", "Ship_Hydrostatics"]
         self.appendMenu("Ship design",list)
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
-        self.appendToolbar("Loading",list)
+        self.appendMenu("Weights",list)
+        if hasOpenCL and hasNumpy:
+            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
+            self.appendMenu("Simulation",list)
 
 Gui.addWorkbench(ShipWorkbench())

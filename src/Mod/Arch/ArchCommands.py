@@ -235,6 +235,79 @@ def makeFace(wires,method=2,cleanup=False):
         #print "makeFace: final face:",mf.Faces
         return mf.Faces[0]
 
+def closeHole(shape):
+    '''closeHole(shape): closes a hole in an open shape'''
+    import DraftGeomUtils, Part
+    # creating an edges lookup table
+    lut = {}
+    for face in shape.Faces:
+        for edge in face.Edges:
+            hc = edge.hashCode()
+            if lut.has_key(hc):
+                lut[hc] = lut[hc] + 1
+            else:
+                lut[hc] = 1
+    # filter out the edges shared by more than one face
+    bound = []
+    for e in shape.Edges:
+        if lut[e.hashCode()] == 1:
+            bound.append(e)
+    bound = DraftGeomUtils.sortEdges(bound)
+    try:
+        nface = Part.Face(Part.Wire(bound))
+        shell = Part.makeShell(shape.Faces+[nface])
+        solid = Part.Solid(shell)
+    except:
+        raise
+    else:
+        return solid
+
+def getCutVolume(cutplane,shapes):
+    """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
+    from the given shapes and the given cutting plane"""
+    import Part
+    placement = FreeCAD.Placement(cutplane.Placement)
+    # building boundbox
+    bb = shapes[0].BoundBox 
+    for sh in shapes[1:]:
+        bb.add(sh.BoundBox)
+    bb.enlarge(1)
+    um = vm = wm = 0
+    ax = placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+    v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+    if not bb.isCutPlane(placement.Base,ax):
+        print "No objects are cut by the plane"
+        return None,None
+    else:
+        corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
+        for c in corners:
+            dv = c.sub(placement.Base)
+            um1 = DraftVecUtils.project(dv,u).Length
+            um = max(um,um1)
+            vm1 = DraftVecUtils.project(dv,v).Length
+            vm = max(vm,vm1)
+            wm1 = DraftVecUtils.project(dv,ax).Length
+            wm = max(wm,wm1)
+        p1 = FreeCAD.Vector(-um,vm,0)
+        p2 = FreeCAD.Vector(um,vm,0)
+        p3 = FreeCAD.Vector(um,-vm,0)
+        p4 = FreeCAD.Vector(-um,-vm,0)
+        cutface = Part.makePolygon([p1,p2,p3,p4,p1])
+        cutface = Part.Face(cutface)
+        cutface.Placement = placement
+        cutnormal = DraftVecUtils.scaleTo(ax,wm)
+        cutvolume = cutface.extrude(cutnormal)
+        return cutface,cutvolume
+  
+
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
@@ -242,10 +315,10 @@ def meshToShape(obj,mark=True):
     name = obj.Name
     import Part, MeshPart, DraftGeomUtils
     if "Mesh" in obj.PropertiesList:
-        faces = []	
+        faces = []  
         mesh = obj.Mesh
         plac = obj.Placement
-        segments = mesh.getPlanes(0.001) # use rather strict tolerance here
+        segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
         print len(segments)," segments ",segments
         for i in segments:
             print "treating",segments.index(i),i
@@ -262,7 +335,7 @@ def meshToShape(obj,mark=True):
             se = Part.makeShell(faces)
             solid = Part.Solid(se)
         except:
-            pass
+            raise
         else:
             if solid.isClosed():
                 FreeCAD.ActiveDocument.removeObject(name)
@@ -354,6 +427,34 @@ def download(url):
         return None
     else:
         return filepath
+
+def check(objectslist,includehidden=True):
+    """check(objectslist,includehidden=True): checks if the given objects contain only solids"""
+    objs = Draft.getGroupContents(objectslist)
+    if not includehidden:
+        objs = Draft.removeHidden(objs)
+    bad = []
+    for o in objs:
+        if not o.isDerivedFrom("Part::Feature"):
+            bad.append([o,"is not a Part-based object"])
+        else:
+            s = o.Shape
+            if not s.isClosed():
+                bad.append([o,"is not closed"])
+            elif not s.isValid():
+                bad.append([o,"is not valid"])
+            elif not s.Solids:
+                bad.append([o,"doesn't contain any solid"])
+            else:
+                f = 0
+                for sol in s.Solids:
+                    f += len(sol.Faces)
+                    if not sol.isClosed():
+                        bad.append([o,"contains a non-closed solid"])
+                if len(s.Faces) != f:
+                    bad.append([o,"contains faces that are not part of any solid"])
+    return bad
+
     
 # command definitions ###############################################
                        
@@ -484,7 +585,8 @@ class _CommandMeshToShape:
 class _CommandSelectNonSolidMeshes:
     "the Arch SelectNonSolidMeshes command definition"
     def GetResources(self):
-        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
+        return {'Pixmap': 'Arch_SelectNonManifold.svg',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
         
     def Activated(self):
@@ -522,9 +624,54 @@ class _CommandRemoveShape:
         sel = FreeCADGui.Selection.getSelection()
         removeShape(sel)
 
+class _CommandCloseHoles:
+    "the Arch CloseHoles command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_CloseHoles',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CloseHoles","Close holes"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        for o in FreeCADGui.Selection.getSelection():
+            s = closeHole(o.Shape)
+            if s:
+                o.Shape = s
+
+class _CommandCheck:
+    "the Arch Check command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Check',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Check"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Checks the selected objects for problems")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        result = check(FreeCADGui.Selection.getSelection())
+        if not result:
+            FreeCAD.Console.PrintMessage("All good! no problems found")
+        else:
+            FreeCADGui.Selection.clearSelection()
+            for i in result:
+                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+i[1])
+                FreeCADGui.Selection.addSelection(i[0])
+
+
 FreeCADGui.addCommand('Arch_Add',_CommandAdd())
 FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
 FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
 FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
 FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())
 FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
+FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
+FreeCADGui.addCommand('Arch_Check',_CommandCheck())

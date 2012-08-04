@@ -894,9 +894,9 @@ bool StdCmdPaste::isActive(void)
     return getMainWindow()->canInsertFromMimeData(mime);
 }
 
-DEF_STD_CMD_A(StdCmdDDuplicateSelection);
+DEF_STD_CMD_A(StdCmdDuplicateSelection);
 
-StdCmdDDuplicateSelection::StdCmdDDuplicateSelection()
+StdCmdDuplicateSelection::StdCmdDuplicateSelection()
   :Command("Std_DuplicateSelection")
 {
     sAppModule    = "Edit";
@@ -907,7 +907,7 @@ StdCmdDDuplicateSelection::StdCmdDDuplicateSelection()
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
 }
 
-void StdCmdDDuplicateSelection::activated(int iMsg)
+void StdCmdDuplicateSelection::activated(int iMsg)
 {
     App::Document* act = App::GetApplication().getActiveDocument();
     if (!act)
@@ -964,7 +964,7 @@ void StdCmdDDuplicateSelection::activated(int iMsg)
     }
 }
 
-bool StdCmdDDuplicateSelection::isActive(void)
+bool StdCmdDuplicateSelection::isActive(void)
 {
     return Gui::Selection().hasSelection();
 }
@@ -1275,7 +1275,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdCut());
     rcCmdMgr.addCommand(new StdCmdCopy());
     rcCmdMgr.addCommand(new StdCmdPaste());
-    rcCmdMgr.addCommand(new StdCmdDDuplicateSelection());
+    rcCmdMgr.addCommand(new StdCmdDuplicateSelection());
     rcCmdMgr.addCommand(new StdCmdSelectAll());
     rcCmdMgr.addCommand(new StdCmdDelete());
     rcCmdMgr.addCommand(new StdCmdRefresh());

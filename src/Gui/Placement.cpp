@@ -99,10 +99,15 @@ Placement::Placement(QWidget* parent, Qt::WFlags fl)
 
     connect(signalMapper, SIGNAL(mapped(int)),
             this, SLOT(onPlacementChanged(int)));
+    connectAct = Application::Instance->signalActiveDocument.connect
+        (boost::bind(&Placement::slotActiveDocument, this, _1));
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (activeDoc) documents.insert(activeDoc->getName());
 }
 
 Placement::~Placement()
 {
+    connectAct.disconnect();
     delete ui;
 }
 
@@ -111,6 +116,36 @@ void Placement::showDefaultButtons(bool ok)
     ui->oKButton->setVisible(ok);
     ui->closeButton->setVisible(ok);
     ui->applyButton->setVisible(ok);
+}
+
+void Placement::slotActiveDocument(const Gui::Document& doc)
+{
+    documents.insert(doc.getDocument()->getName());
+}
+
+void Placement::revertTransformation()
+{
+    for (std::set<std::string>::iterator it = documents.begin(); it != documents.end(); ++it) {
+        Gui::Document* document = Application::Instance->getDocument(it->c_str());
+        if (!document) continue;
+
+        std::vector<App::DocumentObject*> obj = document->getDocument()->
+            getObjectsOfType(App::DocumentObject::getClassTypeId());
+        if (!obj.empty()) {
+            for (std::vector<App::DocumentObject*>::iterator it=obj.begin();it!=obj.end();++it) {
+                std::map<std::string,App::Property*> props;
+                (*it)->getPropertyMap(props);
+                // search for the placement property
+                std::map<std::string,App::Property*>::iterator jt;
+                jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
+                if (jt != props.end()) {
+                    Base::Placement cur = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
+                    Gui::ViewProvider* vp = document->getViewProvider(*it);
+                    if (vp) vp->setTransformation(cur.toMatrix());
+                }
+            }
+        }
+    }
 }
 
 void Placement::applyPlacement(const Base::Placement& p, bool incremental, bool data)
@@ -225,12 +260,15 @@ void Placement::reject()
     QVariant data = QVariant::fromValue<Base::Placement>(plm);
     /*emit*/ placementChanged(data, true, false);
 
+    revertTransformation();
     QDialog::reject();
 }
 
 void Placement::accept()
 {
     on_applyButton_clicked();
+
+    revertTransformation();
     QDialog::accept();
 }
 
