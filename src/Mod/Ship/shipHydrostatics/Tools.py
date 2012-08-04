@@ -23,7 +23,8 @@
 
 import math
 # FreeCAD modules
-from FreeCAD import Vector, Part
+from FreeCAD import Vector
+import Part
 import FreeCAD as App
 import FreeCADGui as Gui
 # Module
@@ -279,9 +280,9 @@ def FloatingArea(ship, draft, trim):
             # Valid face, compute area
             area = area + f.Area
             maxX = max(maxX, faceBounds.XMax)
-            minX = max(minX, faceBounds.XMin)
+            minX = min(minX, faceBounds.XMin)
             maxY = max(maxY, faceBounds.YMax)
-            minY = max(minY, faceBounds.YMin)
+            minY = min(minY, faceBounds.YMin)
         # Destroy last object generated
         App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
     dx = maxX - minX
@@ -306,13 +307,13 @@ def BMT(ship, draft, trim=0.0):
         B1   = displacement(ship,draft,roll,trim,0.0)[1]
         #     * M
         #    / \            
-        #   /   \  BM     ==|>   BM = (BB/2) / tan(alpha/2)
+        #   /   \  BM     ==|>   BM = (BB/2) / sin(alpha/2)
         #  /     \          
         # *-------*
         #     BB
-        BB = [B1.x - B0.x, B1.y - B0.y]
+        BB = [B1.y - B0.y, B1.z - B0.z]
         BB = math.sqrt(BB[0]*BB[0] + BB[1]*BB[1])
-        BM = BM + 0.5*BB/math.tan(math.radians(0.5*roll)) / nRoll   # nRoll is the weight function
+        BM = BM + 0.5*BB/math.sin(math.radians(0.5*roll)) / nRoll   # nRoll is the weight function
     return BM
 
 def mainFrameCoeff(ship, draft):
@@ -416,7 +417,7 @@ class Point:
         self.wet   = wet
         self.farea = farea[0]
         self.mom   = mom
-        self.KBt   = dispData[1].y
+        self.KBt   = dispData[1].z
         self.BMt   = bm
         self.Cb    = dispData[2]
         self.Cf    = farea[1]

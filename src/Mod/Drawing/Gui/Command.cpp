@@ -11,7 +11,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
+# include <QCoreApplication>
+# include <QDir>
+# include <QFile>
+# include <QFileInfo>
 # include <QMessageBox>
+# include <QRegExp>
 #endif
 
 #include <vector>
@@ -88,18 +94,16 @@ CmdDrawingNewPage::CmdDrawingNewPage()
 
 void CmdDrawingNewPage::activated(int iMsg)
 {
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QAction* a = pcAction->actions()[iMsg];
+
     std::string FeatName = getUniqueObjectName("Page");
 
-    if (iMsg == 3) {
+    QFileInfo tfi(a->property("Template").toString());
+    if (tfi.isReadable()) {
         openCommand("Drawing create page");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = 'A3_Landscape.svg'",FeatName.c_str());
-        commitCommand();
-    }
-    else if (iMsg == 4) {
-        openCommand("Drawing create page");
-        doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = 'A4_Landscape.svg'",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
         commitCommand();
     }
     else {
@@ -115,25 +119,45 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(pcAction);
 
-    QAction* a0 = pcAction->addAction(QString());
-    a0->setIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape-A0"));
+    QAction* defaultAction = 0;
+    int defaultId = 0;
 
-    QAction* a1 = pcAction->addAction(QString());
-    a1->setIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape-A1"));
+    std::string path = App::Application::getResourceDir();
+    path += "Mod/Drawing/Templates/";
+    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("A*_Landscape.svg"));
+    for (unsigned int i=0; i<dir.count(); i++ ) {
+        QRegExp rx(QString::fromAscii("A(\\d)_Landscape.svg"));
+        if (rx.indexIn(dir[i]) > -1) {
+            int id = rx.cap(1).toInt();
+            QFile file(QString::fromAscii(":/icons/actions/drawing-landscape-A0.svg"));
+            QAction* a = pcAction->addAction(QString());
+            if (file.open(QFile::ReadOnly)) {
+                QString s = QString::fromAscii("style=\"font-size:22px\">A%1</tspan></text>").arg(id);
+                QByteArray data = file.readAll();
+                data.replace("style=\"font-size:22px\">A0</tspan></text>", s.toAscii());
+                a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(24,24)));
+            }
 
-    QAction* a2 = pcAction->addAction(QString());
-    a2->setIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape-A2"));
+            a->setProperty("TemplateId", id);
+            a->setProperty("Template", dir.absoluteFilePath(dir[i]));
 
-    QAction* a3 = pcAction->addAction(QString());
-    a3->setIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape-A3"));
-
-    QAction* a4 = pcAction->addAction(QString());
-    a4->setIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape-A4"));
+            if (id == 3) {
+                defaultAction = a;
+                defaultId = pcAction->actions().size() - 1;
+            }
+        }
+    }
 
     _pcAction = pcAction;
     languageChange();
-    pcAction->setIcon(a3->icon());
-    pcAction->setProperty("defaultAction", QVariant(3));
+    if (defaultAction) {
+        pcAction->setIcon(defaultAction->icon());
+        pcAction->setProperty("defaultAction", QVariant(defaultId));
+    }
+    else if (!pcAction->actions().isEmpty()) {
+        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setProperty("defaultAction", QVariant(0));
+    }
 
     return pcAction;
 }
@@ -146,41 +170,15 @@ void CmdDrawingNewPage::languageChange()
         return;
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
-
-    a[0]->setText(QCoreApplication::translate(
-        "Drawing_NewPage", "A0 landscape", 0,
-        QCoreApplication::CodecForTr));
-    a[0]->setToolTip(QCoreApplication::translate(
-        "Drawing_NewPage", "Insert new A0 landscape drawing", 0,
-        QCoreApplication::CodecForTr));
-
-    a[1]->setText(QCoreApplication::translate(
-        "Drawing_NewPage", "A1 landscape", 0,
-        QCoreApplication::CodecForTr));
-    a[1]->setToolTip(QCoreApplication::translate(
-        "Drawing_NewPage", "Insert new A1 landscape drawing", 0,
-        QCoreApplication::CodecForTr));
-
-    a[2]->setText(QCoreApplication::translate(
-        "Drawing_NewPage", "A2 landscape", 0,
-        QCoreApplication::CodecForTr));
-    a[2]->setToolTip(QCoreApplication::translate(
-        "Drawing_NewPage", "Insert new A2 landscape drawing", 0,
-        QCoreApplication::CodecForTr));
-
-    a[3]->setText(QCoreApplication::translate(
-        "Drawing_NewPage", "A3 landscape", 0,
-        QCoreApplication::CodecForTr));
-    a[3]->setToolTip(QCoreApplication::translate(
-        "Drawing_NewPage", "Insert new A3 landscape drawing", 0,
-        QCoreApplication::CodecForTr));
-
-    a[4]->setText(QCoreApplication::translate(
-        "Drawing_NewPage", "A4 landscape", 0,
-        QCoreApplication::CodecForTr));
-    a[4]->setToolTip(QCoreApplication::translate(
-        "Drawing_NewPage", "Insert new A4 landscape drawing", 0,
-        QCoreApplication::CodecForTr));
+    for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
+        int id = (*it)->property("TemplateId").toInt();
+        (*it)->setText(QCoreApplication::translate(
+            "Drawing_NewPage", "A%1 landscape", 0,
+            QCoreApplication::CodecForTr).arg(id));
+        (*it)->setToolTip(QCoreApplication::translate(
+            "Drawing_NewPage", "Insert new A%1 landscape drawing", 0,
+            QCoreApplication::CodecForTr).arg(id));
+    }
 }
 
 bool CmdDrawingNewPage::isActive(void)

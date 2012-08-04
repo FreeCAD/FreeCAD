@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <QMessageBox>
 # include <QSet>
 #endif
 
@@ -194,10 +195,17 @@ bool FaceColors::accept()
 
 bool FaceColors::reject()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
-    doc->resetEdit();
-    d->vp->DiffuseColor.setValues(d->current);
-    return true;
+    int ret = QMessageBox::question(this, tr("Face colors"), tr("Do you really want to cancel?"),
+        QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape);
+    if (ret == QMessageBox::Yes) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+        doc->resetEdit();
+        d->vp->DiffuseColor.setValues(d->current);
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void FaceColors::changeEvent(QEvent *e)

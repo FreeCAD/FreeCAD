@@ -278,6 +278,15 @@ def getGroupContents(objectslist,walls=False):
                             newlist.append(o)
     return newlist
 
+def removeHidden(objectslist):
+    """removeHidden(objectslist): removes hidden objects from the list"""
+    newlist = objectslist[:]
+    for o in objectslist:
+        if o.ViewObject:
+            if not o.ViewObject.isVisible():
+                newlist.remove(o)
+    return newlist
+
 def printShape(shape):
     """prints detailed information of a shape"""
     print "solids: ", len(shape.Solids)
@@ -347,6 +356,8 @@ def formatObject(target,origin=None):
                         setattr(obrep,p,val)
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
+            if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
+                obrep.DiffuseColor = matchrep.DiffuseColor
 
 def getSelection():
     "getSelection(): returns the current FreeCAD selection"
@@ -1057,7 +1068,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             for o in objectslist:
                 o.ViewObject.hide()
         if gui:
-            _ViewProviderDraftPart(obj.ViewObject)
+            _ViewProviderClone(obj.ViewObject)
             formatObject(obj,objectslist[-1])
             select(obj)
         return obj
@@ -1649,10 +1660,10 @@ def clone(obj,delta=None):
     _Clone(cl)
     if gui:
         _ViewProviderClone(cl.ViewObject)
-        formatObject(cl,obj[0])
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
+    formatObject(cl,obj[0])
     return cl
 
 def heal(objlist=None,delete=True,reparent=True):
