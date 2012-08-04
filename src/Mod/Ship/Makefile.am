@@ -104,7 +104,8 @@ nobase_data_DATA = \
 	simRun/Sim/__init__.py \
 	simRun/Sim/initialization.py \
 	simRun/Sim/matrixGen.py \
-	simRun/Sim/computeSources.py
+	simRun/Sim/computeSources.py \
+	simRun/Sim/fsEvolution.py
 
 CLEANFILES = $(BUILT_SOURCES)
 

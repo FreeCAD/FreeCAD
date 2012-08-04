@@ -87,9 +87,12 @@ class FreeCADShipSimulation(threading.Thread):
         init   = simInitialization(self.FSmesh,self.waves,self.context,self.queue)
         matGen = simMatrixGen(self.context,self.queue)
         solver = simComputeSources(self.context,self.queue)
+        fsEvol = simFSEvolution(self.context,self.queue)
         A      = init.A
         FS     = init.fs
         waves  = init.waves
+        dt     = init.dt
+        t      = 0.0
         msg = Translator.translate("\t[Sim]: Iterating...\n")
         FreeCAD.Console.PrintMessage(msg)
         while self.active:
@@ -99,6 +102,11 @@ class FreeCADShipSimulation(threading.Thread):
             msg = Translator.translate("\t\t[Sim]: Solving linear systems...\n")
             FreeCAD.Console.PrintMessage(msg)
             solver.execute(FS, A)
+            msg = Translator.translate("\t\t[Sim]: Time integrating...\n")
+            FreeCAD.Console.PrintMessage(msg)
+            fsEvol.execute(FS, waves, dt, t)
+            t = t + dt
+            FreeCAD.Console.PrintMessage('t = %g s' % (t))
         # Set thread as stopped (and prepare it to restarting)
         self.active = False
         threading.Event().set()
