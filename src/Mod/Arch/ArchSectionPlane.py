@@ -184,10 +184,12 @@ class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing View","The rendering mode to use")
+        obj.addProperty("App::PropertyBool","ShowCut","Drawing View","If cut geometry is shown or not")
         obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The line width of the rendered objects")
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35
+        obj.ShowCut = False
         obj.Proxy = self
         self.Type = "DrawingView"
 
@@ -199,6 +201,22 @@ class _ArchDrawingView:
         if prop in ["Source","RenderingMode"]:
             obj.ViewResult = self.updateSVG(obj)
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+    def getShape(self, obj):
+        "returns a flat shape representation of the view"
+        if hasattr(self,"baseshape"):
+            import Drawing
+            [V0,V1,H0,H1] = Drawing.project(self.baseshape,direction)
+            return V0.Edges+V1.Edges
+        else:
+            print "No shape has been computed yet"
+            return None
+
     def updateSVG(self, obj,join=False):
         "encapsulates a svg fragment into a transformation node"
         import Part, DraftGeomUtils
@@ -209,6 +227,9 @@ class _ArchDrawingView:
                     objs = Draft.removeHidden(objs)
                     svg = ''
 
+                    st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness")
+                    if not st: st = 2
+
                     # generating SVG
                     linewidth = obj.LineWidth/obj.Scale        
                     if obj.RenderingMode == "Solid":
@@ -217,29 +238,43 @@ class _ArchDrawingView:
                         render = ArchVRM.Renderer()
                         render.setWorkingPlane(obj.Source.Placement)
                         render.addObjects(Draft.getGroupContents(objs,walls=True))
-                        render.cut(obj.Source.Shape)
+                        render.cut(obj.Source.Shape,obj.ShowCut)
                         svg += render.getViewSVG(linewidth=linewidth)
-                        svg += render.getSectionSVG(linewidth=linewidth*2)
+                        svg += render.getSectionSVG(linewidth=linewidth*st)
+                        if obj.ShowCut:
+                            svg += render.getHiddenSVG(linewidth=linewidth)
                         # print render.info()
                         
                     else:
                         # render using the Drawing module
                         import Drawing, Part
                         shapes = []
+                        hshapes = []
+                        sshapes = []
                         p = FreeCAD.Placement(obj.Source.Placement)
                         direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         for o in objs:
                             if o.isDerivedFrom("Part::Feature"):
-                                shapes.extend(o.Shape.Solids)
-                        cutface,cutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
+                                if o.Shape.isValid():
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    FreeCAD.Console.PrintWarning("Skipping invalid object: "+o.Name)
+                        cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
                         if cutvolume:
                             nsh = []
                             for sh in shapes:
                                 for sol in sh.Solids:
                                     c = sol.cut(cutvolume)
                                     nsh.append(c)
+                                    s = sol.section(cutface)
+                                    sshapes.append(s)
+                                    if obj.ShowCut:
+                                        c = sol.cut(invcutvolume)
+                                        hshapes.append(c)
                             shapes = nsh
-                        base = Part.makeCompound(shapes)
+                        if shapes:
+                            self.baseshape = Part.makeCompound(shapes)
+                            svgf = Drawing.projectToSVG(self.baseshape,direction)
                         #if shapes:
                         #    base = shapes.pop().copy()
                         #for sh in shapes:
@@ -247,12 +282,36 @@ class _ArchDrawingView:
                         #        base = base.fuse(sh)
                         #    except:
                         #        print "unable to fuse, passing..."
-                        svgf = Drawing.projectToSVG(base,direction)
                         if svgf:
                             svgf = svgf.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
                             svgf = svgf.replace('stroke-width="1"','stroke-width="' + str(linewidth) + 'px"')
                             svgf = svgf.replace('stroke-width:0.01','stroke-width:' + str(linewidth) + 'px')
-                        svg += svgf
+                            svg += svgf
+                        if hshapes:
+                            hshapes = Part.makeCompound(hshapes)
+                            svgh = Drawing.projectToSVG(hshapes,direction)
+                            if svgh:
+                                svgh = svgh.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
+                                svgh = svgh.replace('stroke-width="1"','stroke-width="' + str(linewidth) + 'px"')
+                                svgh = svgh.replace('stroke-width:0.01','stroke-width:' + str(linewidth) + 'px')
+                                svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="0.09,0.05"')                              
+                                svg += svgh
+                        if sshapes:
+                            edges = []
+                            for s in sshapes:
+                                edges.extend(s.Edges)
+                            wires = DraftGeomUtils.findWires(edges)
+                            faces = []
+                            for w in wires:
+                                if (w.ShapeType == "Wire") and w.isClosed():
+                                    faces.append(Part.Face(w))
+                            sshapes = Part.makeCompound(faces)
+                            svgs = Drawing.projectToSVG(sshapes,direction)
+                            if svgs:
+                                svgs = svgs.replace('stroke-width="0.35"','stroke-width="' + str(linewidth*st) + 'px"')
+                                svgs = svgs.replace('stroke-width="1"','stroke-width="' + str(linewidth*st) + 'px"')
+                                svgs = svgs.replace('stroke-width:0.01','stroke-width:' + str(linewidth*st) + 'px')
+                                svg += svgs
 
                     result = ''
                     result += '<g id="' + obj.Name + '"'

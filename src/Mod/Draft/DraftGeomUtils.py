@@ -539,57 +539,62 @@ def sortEdges(lEdges, aVertex=None):
 
 
 def findWires(edgeslist):
-        '''finds connected wires in the given list of edges'''
+    '''finds connected wires in the given list of edges'''
 
-        def touches(e1,e2):
-                if len(e1.Vertexes) < 2:
-                        return False
-                if len(e2.Vertexes) < 2:
-                        return False
-                if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point):
-                        return True
-                if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point):
-                        return True
-                if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point):
-                        return True
-                if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point):
-                        return True
-                return False
-        
-        edges = edgeslist[:]
-        wires = []
-        lost = []
-        while edges:
-                e = edges[0]
-                if not wires:
-                        # create first group
-                        edges.remove(e)
-                        wires.append([e])
+    def touches(e1,e2):
+        if len(e1.Vertexes) < 2:
+            return False
+        if len(e2.Vertexes) < 2:
+            return False
+        if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point):
+            return True
+        if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point):
+            return True
+        if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point):
+            return True
+        if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point):
+            return True
+        return False
+    
+    edges = edgeslist[:]
+    wires = []
+    lost = []
+    while edges:
+        e = edges[0]
+        if not wires:
+            # create first group
+            edges.remove(e)
+            wires.append([e])
+        else:
+            found = False
+            for w in wires:
+                if not found:
+                    for we in w:
+                        if touches(e,we):
+                            edges.remove(e)
+                            w.append(e)
+                            found = True
+                            break
+            if not found:
+                if e in lost:
+                    # we already tried this edge, and still nothing
+                    edges.remove(e)
+                    wires.append([e])
+                    lost = []
                 else:
-                        found = False
-                        for w in wires:
-                                if not found:
-                                        for we in w:
-                                                if touches(e,we):
-                                                        edges.remove(e)
-                                                        w.append(e)
-                                                        found = True
-                                                        break
-                        if not found:
-                                if e in lost:
-                                        # we already tried this edge, and still nothing
-                                        edges.remove(e)
-                                        wires.append([e])
-                                        lost = []
-                                else:
-                                        # put to the end of the list
-                                        edges.remove(e)
-                                        edges.append(e)
-                                        lost.append(e)
-        nwires = []
-        for w in wires:
-                nwires.append(Part.Wire(w))
-        return nwires
+                    # put to the end of the list
+                    edges.remove(e)
+                    edges.append(e)
+                    lost.append(e)
+    nwires = []
+    for w in wires:
+        try:
+            wi = Part.Wire(w)
+        except:
+            print "couldn't join some edges"
+        else:
+            nwires.append(wi)
+    return nwires
                 
 def superWire(edgeslist,closed=False):
         '''superWire(edges,[closed]): forces a wire between edges that don't necessarily

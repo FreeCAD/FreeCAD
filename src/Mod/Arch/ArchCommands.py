@@ -278,7 +278,7 @@ def getCutVolume(cutplane,shapes):
     v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
     if not bb.isCutPlane(placement.Base,ax):
         print "No objects are cut by the plane"
-        return None,None
+        return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
                    FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
@@ -305,7 +305,9 @@ def getCutVolume(cutplane,shapes):
         cutface.Placement = placement
         cutnormal = DraftVecUtils.scaleTo(ax,wm)
         cutvolume = cutface.extrude(cutnormal)
-        return cutface,cutvolume
+        cutnormal = DraftVecUtils.neg(cutnormal)
+        invcutvolume = cutface.extrude(cutnormal)
+        return cutface,cutvolume,invcutvolume
   
 
 def meshToShape(obj,mark=True):
@@ -428,8 +430,8 @@ def download(url):
     else:
         return filepath
 
-def check(objectslist,includehidden=True):
-    """check(objectslist,includehidden=True): checks if the given objects contain only solids"""
+def check(objectslist,includehidden=False):
+    """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
     objs = Draft.getGroupContents(objectslist)
     if not includehidden:
         objs = Draft.removeHidden(objs)
@@ -439,11 +441,11 @@ def check(objectslist,includehidden=True):
             bad.append([o,"is not a Part-based object"])
         else:
             s = o.Shape
-            if not s.isClosed():
+            if (not s.isClosed()) and (not (Draft.getType(o) == "Axis")):
                 bad.append([o,"is not closed"])
             elif not s.isValid():
                 bad.append([o,"is not valid"])
-            elif not s.Solids:
+            elif (not s.Solids) and (not (Draft.getType(o) == "Axis")):
                 bad.append([o,"doesn't contain any solid"])
             else:
                 f = 0
