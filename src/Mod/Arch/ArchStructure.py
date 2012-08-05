@@ -44,12 +44,7 @@ def makeStructure(baseobj=None,length=1,width=1,height=1,name=str(translate("Arc
     obj.Width = width
     obj.Height = height
     obj.Length = length
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    c = p.GetUnsigned("StructureColor")
-    r = float((c>>24)&0xFF)/255.0
-    g = float((c>>16)&0xFF)/255.0
-    b = float((c>>8)&0xFF)/255.0
-    obj.ViewObject.ShapeColor = (r,g,b,1.0)
+    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     return obj
 
 def makeStructuralSystem(objects,axes):
@@ -171,7 +166,13 @@ class _Structure(ArchComponent.Component):
                 elif (len(base.Wires) == 1):
                     if base.Wires[0].isClosed():
                         base = Part.Face(base.Wires[0])
-                        base = base.extrude(normal)                
+                        base = base.extrude(normal)
+            elif obj.Base.isDerivedFrom("Mesh::Feature"):
+                if obj.Mesh.isSolid():
+                    if obj.Mesh.countComponents() == 1:
+                        sh = ArchCommands.getShapeFromMesh(obj.Mesh)
+                        if sh.isClosed() and sh.isValid() and sh.Solids:
+                            base = sh
         else:
             if obj.Normal == Vector(0,0,0):
                 normal = Vector(0,0,1)

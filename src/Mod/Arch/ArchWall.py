@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from DraftTools import translate
@@ -37,17 +37,16 @@ def makeWall(baseobj=None,width=None,height=None,align="Center",name=str(transla
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Wall(obj)
     _ViewProviderWall(obj.ViewObject)
-    if baseobj: obj.Base = baseobj
-    if width: obj.Width = width
-    if height: obj.Height = height
+    if baseobj:
+        obj.Base = baseobj
+    if width:
+        obj.Width = width
+    if height:
+        obj.Height = height
     obj.Align = align
-    if obj.Base: obj.Base.ViewObject.hide()
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    c = p.GetUnsigned("WallColor")
-    r = float((c>>24)&0xFF)/255.0
-    g = float((c>>16)&0xFF)/255.0
-    b = float((c>>8)&0xFF)/255.0
-    obj.ViewObject.ShapeColor = (r,g,b,1.0)
+    if obj.Base:
+        obj.Base.ViewObject.hide()
+    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
     return obj
 
 def joinWalls(walls):
@@ -357,7 +356,7 @@ class _Wall(ArchComponent.Component):
         # computing shape
         base = None
         if obj.Base.isDerivedFrom("Part::Feature"):
-            if not obj.Base.Shape.isNull():
+            if obj.Base.isValid() and (not obj.Base.Shape.isNull()):
                 base = obj.Base.Shape.copy()
                 if base.Solids:
                     pass
@@ -380,7 +379,17 @@ class _Wall(ArchComponent.Component):
                     if sh:
                         base = sh
                 else:
+                    base = None
                     FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
+        elif obj.Base.isDerivedFrom("Mesh::Feature"):
+            if obj.Base.Mesh.isSolid():
+                if obj.Base.Mesh.countComponents() == 1:
+                    sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
+                    if sh.isClosed() and sh.isValid() and sh.Solids and (not sh.isNull()):
+                        base = sh
+                    else:
+                        FreeCAD.Console.PrintWarning("This mesh is an invalid solid")
+                        obj.Base.ViewObject.show()
 
         if base:
             for app in obj.Additions:
