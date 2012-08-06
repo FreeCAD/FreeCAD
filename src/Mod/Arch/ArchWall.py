@@ -356,7 +356,7 @@ class _Wall(ArchComponent.Component):
         # computing shape
         base = None
         if obj.Base.isDerivedFrom("Part::Feature"):
-            if obj.Base.isValid() and (not obj.Base.Shape.isNull()):
+            if obj.Base.Shape.isValid() and (not obj.Base.Shape.isNull()):
                 base = obj.Base.Shape.copy()
                 if base.Solids:
                     pass
