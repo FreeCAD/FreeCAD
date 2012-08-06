@@ -48,11 +48,12 @@ class Singleton(type):
 
 class FreeCADShipSimulation(threading.Thread):
     __metaclass__ = Singleton
-    def __init__ (self, device, endTime, output, FSmesh, waves):
+    def __init__ (self, device, endTime, output, simInstance, FSmesh, waves):
         """ Thread constructor.
         @param device Device to use.
         @param endTime Maximum simulation time.
         @param output [Rate,Type] Output rate, Type=0 if FPS, 1 if IPF.
+        @param simInstance Simulaation instance.
         @param FSmesh Free surface mesh faces.
         @param waves Waves parameters (A,T,phi,heading)
         """
@@ -70,6 +71,7 @@ class FreeCADShipSimulation(threading.Thread):
         # Storage data
         self.endTime = endTime
         self.output  = output
+        self.sim     = simInstance
         self.FSmesh  = FSmesh
         self.waves   = waves
         
@@ -93,9 +95,11 @@ class FreeCADShipSimulation(threading.Thread):
         waves  = init.waves
         dt     = init.dt
         t      = 0.0
+        nx = FS['Nx']
+        ny = FS['Ny']
         msg = Translator.translate("\t[Sim]: Iterating...\n")
         FreeCAD.Console.PrintMessage(msg)
-        while self.active:
+        while self.active and t < self.endTime:
             msg = Translator.translate("\t\t[Sim]: Generating linear system matrix...\n")
             FreeCAD.Console.PrintMessage(msg)
             matGen.execute(FS, A)
@@ -106,7 +110,16 @@ class FreeCADShipSimulation(threading.Thread):
             FreeCAD.Console.PrintMessage(msg)
             fsEvol.execute(FS, waves, dt, t)
             t = t + dt
-            FreeCAD.Console.PrintMessage('t = %g s' % (t))
+            FreeCAD.Console.PrintMessage('t = %g s\n' % (t))
+            # Update FreeCAD
+            """
+            pos = self.sim.FS_Position[:]
+            for i in range(0, nx):
+                for j in range(0, ny):
+                    pos[i*ny+j].z = float(FS['pos'][i,j][2])
+            self.sim.FS_Position = pos[:]
+            FreeCAD.ActiveDocument.recompute()
+            """
         # Set thread as stopped (and prepare it to restarting)
         self.active = False
         threading.Event().set()
