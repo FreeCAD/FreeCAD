@@ -490,7 +490,7 @@ public:
     DrawSketchHandlerLineSet()
       : Mode(STATUS_SEEK_First),SegmentMode(SEGMENT_MODE_Line),
         TransitionMode(TRANSITION_MODE_Free),suppressTransition(false),EditCurve(2),
-        firstVertex(-1),firstCurve(-1),previousCurve(-1),previousPosId(-1) {}
+        firstVertex(-1),firstCurve(-1),previousCurve(-1),previousPosId(Sketcher::none) {}
     virtual ~DrawSketchHandlerLineSet() {}
     /// mode table
     enum SELECT_MODE {
@@ -692,19 +692,41 @@ public:
     virtual bool pressButton(Base::Vector2D onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
-            // remember our first point
-            firstVertex = getHighestVertexIndex() + 1;
-            firstCurve = getHighestCurveIndex() + 1;
-            // TODO: here we should check if there is a preselected point
-            // and set up a transition from the neighbouring segment.
+
+            EditCurve[0] = onSketchPos; // this may be overwritten if previousCurve is found
+
+            // here we check if there is a preselected point and
+            // we set up a transition from the neighbouring segment.
             // (peviousCurve, previousPosId, dirVec, TransitionMode)
-            // in that case we should set firstCurve and firstVertex to -1
-            // in order to disable closing the wire
+            for (int i=0; i < sugConstr1.size(); i++)
+                if (sugConstr1[i].Type == Sketcher::Coincident) {
+                    const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(sugConstr1[i].GeoId);
+                    if ((geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
+                         geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) &&
+                        (sugConstr1[i].PosId == Sketcher::start ||
+                         sugConstr1[i].PosId == Sketcher::end)) {
+                        previousCurve = sugConstr1[i].GeoId;
+                        previousPosId = sugConstr1[i].PosId;
+                        updateTransitionData(previousCurve,previousPosId); // -> dirVec, EditMode[0]
+                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+                            TransitionMode = TRANSITION_MODE_Tangent;
+                        sugConstr1.erase(sugConstr1.begin()+i); // actually we should clear the vector completely
+                        break;
+                    }
+                }
+
+            // in case a transition is set up, firstCurve and firstVertex should
+            // remain set to -1 in order to disable closing the wire
+            if (previousCurve == -1) {
+                // remember our first point
+                firstVertex = getHighestVertexIndex() + 1;
+                firstCurve = getHighestCurveIndex() + 1;
+            }
+
             if (SegmentMode == SEGMENT_MODE_Line)
                 EditCurve.resize(TransitionMode == TRANSITION_MODE_Free ? 2 : 3);
             else if (SegmentMode == SEGMENT_MODE_Arc)
                 EditCurve.resize(32);
-            EditCurve[0] = onSketchPos;
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode == STATUS_SEEK_Second) {
@@ -716,7 +738,7 @@ public:
                 sketchgui->drawEdit(EditCurve);
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
-            if (sketchgui->getPreselectPoint() == firstVertex)
+            if (sketchgui->getPreselectPoint() == firstVertex && firstVertex != -1)
                 Mode = STATUS_Close;
             else
                 Mode = STATUS_Do;
@@ -748,9 +770,11 @@ public:
             }
             // issue the constraint
             if (previousCurve != -1) {
-                int lastCurve = previousCurve+1;
-                int lastStartPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ? 2 : 1;
-                int lastEndPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ? 1 : 2;
+                int lastCurve = getHighestCurveIndex();
+                Sketcher::PointPos lastStartPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
+                                                    Sketcher::end : Sketcher::start;
+                Sketcher::PointPos lastEndPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
+                                                  Sketcher::start : Sketcher::end;
                 // in case of a tangency constraint, the coincident constraint is redundant
                 std::string constrType = "Coincident";
                 if (!suppressTransition) {
@@ -763,7 +787,7 @@ public:
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
                     sketchgui->getObject()->getNameInDocument(), constrType.c_str(),
-                    previousCurve, previousPosId /* == 2 */, lastCurve, lastStartPosId);
+                    previousCurve, previousPosId, lastCurve, lastStartPosId);
                 if (Mode == STATUS_Close) {
                     int firstGeoId;
                     Sketcher::PointPos firstPosId;
@@ -814,32 +838,12 @@ public:
 
                 // remember the vertex for the next rounds constraint..
                 previousCurve = getHighestCurveIndex();
-                previousPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ? 1 : 2;
+                previousPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
+                                 Sketcher::start : Sketcher::end; // cw arcs are rendered in reverse
 
                 // setup for the next line segment
-                // Use updated endPoint as autoconstraints can modify the position
-                // Need to determine if the previous element was a line or an arc or ???
-                const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(getHighestCurveIndex());
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                    const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geom);
-                    EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
-                    dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
-                               lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
-                               0.f);
-                }
-                else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                    assert(SegmentMode == SEGMENT_MODE_Arc);
-                    const Part::GeomArcOfCircle *arcSeg = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
-                    if (startAngle > endAngle) {
-                        EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint().x,arcSeg->getStartPoint().y);
-                        dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint()-arcSeg->getCenter());
-                    }
-                    else { // cw arcs are rendered in reverse
-                        EditCurve[0] = Base::Vector2D(arcSeg->getEndPoint().x,arcSeg->getEndPoint().y);
-                        dirVec = Base::Vector3d(0.f,0.f,1.0) % (arcSeg->getEndPoint()-arcSeg->getCenter());
-                    }
-                }
-                dirVec.Normalize();
+                // calculate dirVec and EditCurve[0]
+                updateTransitionData(previousCurve,previousPosId);
 
                 applyCursor();
                 Mode = STATUS_SEEK_Second;
@@ -868,13 +872,40 @@ protected:
     std::vector<Base::Vector2D> EditCurve;
     int firstVertex;
     int firstCurve;
-    int previousPosId;
     int previousCurve;
+    Sketcher::PointPos previousPosId;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 
     Base::Vector2D CenterPoint;
     Base::Vector3d dirVec;
     float startAngle, endAngle, arcRadius;
+
+    void updateTransitionData(int GeoId, Sketcher::PointPos PosId) {
+
+        // Use updated startPoint/endPoint as autoconstraints can modify the position
+        const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geom);
+            EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
+            dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
+                       lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
+                       0.f);
+            if (PosId == Sketcher::start)
+                dirVec *= -1;
+        }
+        else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            const Part::GeomArcOfCircle *arcSeg = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+            if (PosId == Sketcher::start) {
+                EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint().x,arcSeg->getStartPoint().y);
+                dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint()-arcSeg->getCenter());
+            }
+            else {
+                EditCurve[0] = Base::Vector2D(arcSeg->getEndPoint().x,arcSeg->getEndPoint().y);
+                dirVec = Base::Vector3d(0.f,0.f,1.0) % (arcSeg->getEndPoint()-arcSeg->getCenter());
+            }
+        }
+        dirVec.Normalize();
+    }
 };
 
 
