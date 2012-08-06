@@ -69,7 +69,7 @@ class TaskPanel:
         msg = Translator.translate("Launching simulation...\n")
         App.Console.PrintMessage(msg)
         # Build simulation thread
-        simulator = Sim(device, endTime, output, FSMesh, waves)
+        simulator = Sim(device, endTime, output, self.sim, FSMesh, waves)
         simulator.start()
         msg = Translator.translate("Done!\n")
         App.Console.PrintMessage(msg)
