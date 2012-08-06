@@ -2834,7 +2834,7 @@ void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const std::s
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
 {
     char buf[40];
-    sprintf( buf, " (%.1f,%.1f)", Pos.fX,Pos.fY );
+    sprintf(buf, " (%.1f,%.1f)", Pos.fX, Pos.fY);
     edit->textX->string = buf;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
