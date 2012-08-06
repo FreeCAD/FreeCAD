@@ -142,15 +142,21 @@ public:
 
     virtual void mouseMove(Base::Vector2D onSketchPos)
     {
-        setPositionText(onSketchPos);
-
         if (Mode==STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second){
+            float length = (onSketchPos - EditCurve[0]).Length();
+            float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
+            char buf[40];
+            sprintf(buf, " (%.1f,%.1f°)", length, angle * 180 / M_PI);
+            std::string text = buf;
+            setPositionText(onSketchPos, text);
+
             EditCurve[1] = onSketchPos;
             sketchgui->drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
@@ -301,15 +307,22 @@ public:
 
     virtual void mouseMove(Base::Vector2D onSketchPos)
     {
-        setPositionText(onSketchPos);
 
         if (Mode==STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
+            float dx = onSketchPos.fX - EditCurve[0].fX;
+            float dy = onSketchPos.fY - EditCurve[0].fY;
+            char buf[40];
+            sprintf(buf, " (%.1f x %.1f)", dx, dy);
+            std::string text = buf;
+            setPositionText(onSketchPos, text);
+
             EditCurve[2] = onSketchPos;
             EditCurve[1] = Base::Vector2D(onSketchPos.fX ,EditCurve[0].fY);
             EditCurve[3] = Base::Vector2D(EditCurve[0].fX,onSketchPos.fY);
@@ -596,8 +609,8 @@ public:
     virtual void mouseMove(Base::Vector2D onSketchPos)
     {
         suppressTransition = false;
-        setPositionText(onSketchPos);
         if (Mode==STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
@@ -622,7 +635,17 @@ public:
                     EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Perpendicular);
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
                 }
+
                 sketchgui->drawEdit(EditCurve);
+
+                float length = (EditCurve[1] - EditCurve[0]).Length();
+                float angle = (EditCurve[1] - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
+
+                char buf[40];
+                sprintf(buf, " (%.1f,%.1f°)", length, angle * 180 / M_PI);
+                std::string text = buf;
+                setPositionText(EditCurve[1], text);
+
                 if (TransitionMode == TRANSITION_MODE_Free) {
                     if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
                         renderSuggestConstraintsCursor(sugConstr2);
@@ -680,6 +703,12 @@ public:
                 EditCurve[31] = EditCurve[0];
 
                 sketchgui->drawEdit(EditCurve);
+
+                char buf[40];
+                sprintf(buf, " (%.1fR,%.1f°)", std::abs(arcRadius), arcAngle * 180 / M_PI);
+                std::string text = buf;
+                setPositionText(onSketchPos, text);
+
                 if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
@@ -1017,10 +1046,10 @@ public:
 
             // Display radius and start angle
             float radius = (onSketchPos - EditCurve[0]).Length();
-            float angle = atan2f(dy_ , dx_) * 180 / M_PI;
+            float angle = atan2f(dy_ , dx_);
 
             char buf[40];
-            sprintf( buf, " (R%.1f,%.1f)", radius, angle);
+            sprintf(buf, " (%.1fR,%.1f°)", radius, angle * 180 / M_PI);
             std::string text = buf;
             setPositionText(onSketchPos, text);
 
@@ -1042,11 +1071,11 @@ public:
                 EditCurve[i] = Base::Vector2D(CenterPoint.fX + dx, CenterPoint.fY + dy);
             }
 
-            // Display radius and end angle
+            // Display radius and arc angle
             float radius = (onSketchPos - EditCurve[0]).Length();
 
             char buf[40];
-            sprintf( buf, " (R%.1f,%.1f)", radius, arcAngle * 180 / M_PI);
+            sprintf(buf, " (%.1fR,%.1f°)", radius, arcAngle * 180 / M_PI);
             std::string text = buf;
             setPositionText(onSketchPos, text);
             
@@ -1256,7 +1285,7 @@ public:
             float radius = (onSketchPos - EditCurve[0]).Length();
 
             char buf[40];
-            sprintf( buf, "R%.1f", radius);
+            sprintf(buf, " (%.1fR)", radius);
             std::string text = buf;
             setPositionText(onSketchPos, text);
 
