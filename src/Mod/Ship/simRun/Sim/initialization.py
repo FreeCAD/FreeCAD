@@ -43,7 +43,8 @@ class simInitialization:
         # Compute time step
         self.dt = 0.1
         for w in self.waves['data']:
-            self.dt = np.min(self.dt, w[1]/200.0)
+            if(self.dt > w[1]/200.0):
+                self.dt = w[1]/200.0
 
     def loadData(self, FSmesh, waves):
         """ Convert data to numpy format.
@@ -99,6 +100,7 @@ class simInitialization:
         ny = self.fs['Ny']
         for i in range(0,nx):
             for j in range(0,ny):
+                self.fs['pos'][i,j][2] = 0.
                 for w in self.waves['data']:
                     A       = w[0]
                     T       = w[1]
@@ -111,11 +113,7 @@ class simInitialization:
                     l       = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
                     amp     = A*np.sin(k*l + phase)
                     self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + amp
-                    amp     = frec*A*np.cos(k*l + phase)
-                    self.fs['vel'][i,j][2] = self.fs['vel'][i,j][2] - amp
-                    amp     = frec*frec*A*np.sin(k*l + phase)
-                    self.fs['acc'][i,j][2] = self.fs['acc'][i,j][2] - amp
-                    amp     = grav/frec*A*np.sin(k*l + phase)
+                    amp     = - grav/frec*A*np.sin(k*l + phase)
                     self.fs['velPot'][i,j] = self.fs['velPot'][i,j] + amp
                     amp     = grav*A*np.cos(k*l + phase)
                     self.fs['accPot'][i,j] = self.fs['accPot'][i,j] + amp

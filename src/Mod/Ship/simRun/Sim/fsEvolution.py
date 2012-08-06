@@ -54,6 +54,11 @@ class simFSEvolution:
         # Integrate variables
         for i in range(0,nx):
             for j in range(0,ny):
+                # Get value at pos using characteristics method
+                gradVal = np.dot(np.abs(grad[i*ny+j]),grad[i*ny+j])
+                gradVal = np.copysign(np.sqrt(np.abs(gradVal)), gradVal)
+                self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + \
+                                         dt*np.linalg.norm(grad[i*ny+j])
                 # Free surface points position
                 self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + dt*grad[i*ny+j][2]
                 # Velocity potential
@@ -66,6 +71,9 @@ class simFSEvolution:
         # Force boundary conditions
         for i in range(0,nx):
             for j in [0,ny-1]:
+                self.boundaryCondition(i,j, waves, dt, t)
+        for j in range(0,ny):
+            for i in [0,nx-1]:
                 self.boundaryCondition(i,j, waves, dt, t)
 
     def evaluateGradient(self):
@@ -89,7 +97,7 @@ class simFSEvolution:
         """
         nx   = self.fs['Nx']
         ny   = self.fs['Ny']
-        grad = np.ndarray(3, dtype=np.float32)
+        grad = np.zeros(3, dtype=np.float32)
         for i in range(0,nx):
             for j in range(0,ny):
                 # Get source position (desingularized)
@@ -100,6 +108,8 @@ class simFSEvolution:
                 # Get distance between points
                 d         = pos-srcPos
                 grad      = grad + d/np.dot(d,d)*src*area
+        # Discard Z induced effect by desingularization
+        grad[2] = 0.
         return grad
 
     def boundaryCondition(self, i,j, waves, dt, t):
@@ -113,6 +123,8 @@ class simFSEvolution:
         """
         pos = self.fs['pos'][i,j]
         pos[2] = 0.
+        self.fs['velPot'][i,j] = 0.
+        self.fs['accPot'][i,j] = 0.
         for w in waves['data']:
             A       = w[0]
             T       = w[1]
@@ -125,11 +137,7 @@ class simFSEvolution:
             l       = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
             amp     = A*np.sin(k*l - frec*(t+dt) + phase)
             self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + amp
-            amp     = frec*A*np.cos(k*l - frec*(t+dt) + phase)
-            self.fs['vel'][i,j][2] = self.fs['vel'][i,j][2] - amp
-            amp     = frec*frec*A*np.sin(k*l - frec*(t+dt) + phase)
-            self.fs['acc'][i,j][2] = self.fs['acc'][i,j][2] - amp
-            amp     = grav/frec*A*np.sin(k*l - frec*(t+dt) + phase)
+            amp     = - grav/frec*A*np.sin(k*l - frec*(t+dt) + phase)
             self.fs['velPot'][i,j] = self.fs['velPot'][i,j] + amp
             amp     = grav*A*np.cos(k*l - frec*(t+dt) + phase)
             self.fs['accPot'][i,j] = self.fs['accPot'][i,j] + amp
