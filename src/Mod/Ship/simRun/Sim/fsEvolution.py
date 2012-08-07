@@ -57,24 +57,47 @@ class simFSEvolution:
                 # Get value at pos using characteristics method
                 gradVal = np.dot(np.abs(grad[i*ny+j]),grad[i*ny+j])
                 gradVal = np.copysign(np.sqrt(np.abs(gradVal)), gradVal)
-                self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + \
-                                         dt*np.linalg.norm(grad[i*ny+j])
-                # Free surface points position
-                self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + dt*grad[i*ny+j][2]
+                self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + dt*gradVal
                 # Velocity potential
                 self.fs['velPot'][i,j] = self.fs['velPot'][i,j]    + \
-                                         dt*self.fs['accPot'][i,j] - \
-                                         0.5*dt*dt*grav*grad[i*ny+j][2]
-                # Acceleration potential
-                self.fs['accPot'][i,j] = self.fs['accPot'][i,j]  - \
-                                         dt*grav*grad[i*ny+j][2]
-        # Force boundary conditions
+                                         dt*self.fs['accPot'][i,j] + \
+                                         0.5*dt*dt*grav*self.fs['pos'][i,j][2]
+                # Acceleration potential. This is really hard to simulate
+                # accurately due to numerical diffusion of the function, so
+                # external waves, and diffracted waves will be computed
+                # in two different ways:
+                # * External waves will be considered analitically,
+                # substracting waves at t, and adding waves at t+dt
+                # * Second order waves will be computed substracting external
+                # waves to free surface height, and then imposing boundary
+                # condition.
+                pos = np.copy(self.fs['pos'][i,j])
+                for w in waves['data']:
+                    A       = w[0]
+                    T       = w[1]
+                    phase   = w[2]
+                    heading = np.pi*w[3]/180.0
+                    wl      = 0.5 * grav / np.pi * T*T
+                    k       = 2.0*np.pi/wl
+                    frec    = 2.0*np.pi/T
+                    l       = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
+                    # Substract external waves height in order to know second
+                    # order waves free surface amplitude.
+                    amp     = A*np.sin(k*l - frec*(t+dt) + phase)
+                    pos[2]  = pos[2] - amp
+                    # Compute analitic external waves acceleration potential
+                    amp0    = grav*A*np.cos(k*l - frec*t + phase)
+                    amp1    = grav*A*np.cos(k*l - frec*(t+dt) + phase)
+                    self.fs['accPot'][i,j] = self.fs['accPot'][i,j] - amp0 + amp1
+                # Now impose free surface boundary condition
+                # self.fs['accPot'][i,j] = self.fs['accPot'][i,j] + grav*pos[2]
+        # Impose values at beach (far free surface)
         for i in range(0,nx):
             for j in [0,ny-1]:
-                self.boundaryCondition(i,j, waves, dt, t)
+                self.beach(i,j, waves, dt, t)
         for j in range(0,ny):
             for i in [0,nx-1]:
-                self.boundaryCondition(i,j, waves, dt, t)
+                self.beach(i,j, waves, dt, t)
 
     def evaluateGradient(self):
         """ Evaluate potential gradients over free surface.
@@ -84,10 +107,15 @@ class simFSEvolution:
         ny   = self.fs['Ny']
         nF   = nx*ny
         grad = np.ndarray((nF,3), dtype=np.float32)
+        FF   = open('gradient', 'w')
         for i in range(0,nx):
             for j in range(0,ny):
                 pos = self.fs['pos'][i,j]
                 grad[i*ny+j] = self.gradientphi(pos)
+                gradVal = np.dot(np.abs(grad[i*ny+j]),grad[i*ny+j])
+                gradVal = np.copysign(np.sqrt(np.abs(gradVal)), gradVal)
+                FF.write('%g\t%g\n' % (pos[1], gradVal))
+        FF.close()
         return grad
 
     def gradientphi(self, pos):
@@ -112,9 +140,9 @@ class simFSEvolution:
         grad[2] = 0.
         return grad
 
-    def boundaryCondition(self, i,j, waves, dt, t):
-        """ Compute free surface at boundaries, assuming that only 
-        incident wave can be taken into account.
+    def beach(self, i,j, waves, dt, t):
+        """ Compute far free surface where only 
+        incident waves can be taken into account.
         @param i First free surface cell index.
         @param j Second free surface cell index.
         @param waves Waves instance.
@@ -133,7 +161,6 @@ class simFSEvolution:
             wl      = 0.5 * grav / np.pi * T*T
             k       = 2.0*np.pi/wl
             frec    = 2.0*np.pi/T
-            pos     = self.fs['pos'][i,j]
             l       = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
             amp     = A*np.sin(k*l - frec*(t+dt) + phase)
             self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + amp

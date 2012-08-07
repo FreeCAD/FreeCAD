@@ -94,12 +94,14 @@ class FreeCADShipSimulation(threading.Thread):
         FS     = init.fs
         waves  = init.waves
         dt     = init.dt
-        t      = 0.0
+        self.t  = 0.0
+        self.FS = FS
         nx = FS['Nx']
         ny = FS['Ny']
         msg = Translator.translate("\t[Sim]: Iterating...\n")
         FreeCAD.Console.PrintMessage(msg)
-        while self.active and t < self.endTime:
+        count = 0
+        while self.active and self.t < self.endTime:
             msg = Translator.translate("\t\t[Sim]: Generating linear system matrix...\n")
             FreeCAD.Console.PrintMessage(msg)
             matGen.execute(FS, A)
@@ -108,18 +110,16 @@ class FreeCADShipSimulation(threading.Thread):
             solver.execute(FS, A)
             msg = Translator.translate("\t\t[Sim]: Time integrating...\n")
             FreeCAD.Console.PrintMessage(msg)
-            fsEvol.execute(FS, waves, dt, t)
-            t = t + dt
-            FreeCAD.Console.PrintMessage('t = %g s\n' % (t))
-            # Update FreeCAD
-            """
-            pos = self.sim.FS_Position[:]
-            for i in range(0, nx):
-                for j in range(0, ny):
-                    pos[i*ny+j].z = float(FS['pos'][i,j][2])
-            self.sim.FS_Position = pos[:]
-            FreeCAD.ActiveDocument.recompute()
-            """
+            fsEvol.execute(FS, waves, dt, self.t)
+            self.t = self.t + dt
+            FreeCAD.Console.PrintMessage('t = %g s\n' % (self.t))
+            count = count+1
+            FF = open('%d' % (count), 'w')
+            i=1
+            for j in range(0,ny):
+                FF.write("%g\t%g\t%g\t%g\n" % (FS['pos'][i,j,1], FS['pos'][i,j,2],
+                         FS['velPot'][i,j], FS['accPot'][i,j]))
+            FF.close()
         # Set thread as stopped (and prepare it to restarting)
         self.active = False
         threading.Event().set()
