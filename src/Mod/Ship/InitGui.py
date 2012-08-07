@@ -53,7 +53,7 @@ class ShipWorkbench ( Workbench ):
             msg = Translator.translate("numpy not installed, ship simulations disabled\n")
             App.Console.PrintWarning(msg)
         if hasOpenCL and hasNumpy:
-            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
+            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim", "Ship_TrackSim"]
             self.appendToolbar("Simulation",list)
         
         # Menu
@@ -62,7 +62,7 @@ class ShipWorkbench ( Workbench ):
         list = ["Ship_Weights", "Ship_CreateTank", "Ship_GZ"]
         self.appendMenu("Weights",list)
         if hasOpenCL and hasNumpy:
-            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim"]
+            list = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim", "Ship_TrackSim"]
             self.appendMenu("Simulation",list)
 
 Gui.addWorkbench(ShipWorkbench())
