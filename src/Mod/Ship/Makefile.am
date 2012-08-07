@@ -46,6 +46,8 @@ nobase_data_DATA = \
 	Icons/SimRunIco.xpm \
 	Icons/SimStopIco.png \
 	Icons/SimStopIco.xpm \
+	Icons/SimPostIco.png \
+	Icons/SimPostIco.xpm \
 	Icons/Tank.png \
 	Icons/Tank.xcf \
 	Icons/Tank.xpm \
@@ -105,7 +107,10 @@ nobase_data_DATA = \
 	simRun/Sim/initialization.py \
 	simRun/Sim/matrixGen.py \
 	simRun/Sim/computeSources.py \
-	simRun/Sim/fsEvolution.py
+	simRun/Sim/fsEvolution.py \
+	simPost/__init__.py \
+	simPost/TaskPanel.py \
+	simPost/TaskPanel.ui
 
 CLEANFILES = $(BUILT_SOURCES)
 
