@@ -191,7 +191,7 @@ class _ArchDrawingView:
         obj.LineWidth = 0.35
         obj.ShowCut = False
         obj.Proxy = self
-        self.Type = "DrawingView"
+        self.Type = "ArchSectionView"
 
     def execute(self, obj):
         if obj.Source:
@@ -207,12 +207,30 @@ class _ArchDrawingView:
     def __setstate__(self,state):
         return None
 
-    def getShape(self, obj):
+    def getDisplayModes(self,vobj):
+        modes=["Default"]
+        return modes
+
+    def setDisplayMode(self,mode):
+        return mode
+
+    def getFlatShape(self):
         "returns a flat shape representation of the view"
         if hasattr(self,"baseshape"):
             import Drawing
-            [V0,V1,H0,H1] = Drawing.project(self.baseshape,direction)
+            [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
             return V0.Edges+V1.Edges
+        else:
+            print "No shape has been computed yet"
+            return None
+
+    def getDXF(self):
+        "returns a flat shape representation of the view"
+        if hasattr(self,"baseshape"):
+            import Drawing
+            [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
+            DxfOutput = Drawing.projectToDXF(self.baseshape,self.direction)
+            return DxfOutput
         else:
             print "No shape has been computed yet"
             return None
@@ -252,7 +270,7 @@ class _ArchDrawingView:
                         hshapes = []
                         sshapes = []
                         p = FreeCAD.Placement(obj.Source.Placement)
-                        direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
+                        self.direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         for o in objs:
                             if o.isDerivedFrom("Part::Feature"):
                                 if o.Shape.isValid():
@@ -265,23 +283,17 @@ class _ArchDrawingView:
                             for sh in shapes:
                                 for sol in sh.Solids:
                                     c = sol.cut(cutvolume)
-                                    nsh.append(c)
                                     s = sol.section(cutface)
+                                    nsh.extend(c.Solids)
                                     sshapes.append(s)
                                     if obj.ShowCut:
                                         c = sol.cut(invcutvolume)
                                         hshapes.append(c)
                             shapes = nsh
                         if shapes:
+                            self.shapes = shapes
                             self.baseshape = Part.makeCompound(shapes)
-                            svgf = Drawing.projectToSVG(self.baseshape,direction)
-                        #if shapes:
-                        #    base = shapes.pop().copy()
-                        #for sh in shapes:
-                        #    try:
-                        #        base = base.fuse(sh)
-                        #    except:
-                        #        print "unable to fuse, passing..."
+                            svgf = Drawing.projectToSVG(self.baseshape,self.direction)
                         if svgf:
                             svgf = svgf.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
                             svgf = svgf.replace('stroke-width="1"','stroke-width="' + str(linewidth) + 'px"')
@@ -289,7 +301,7 @@ class _ArchDrawingView:
                             svg += svgf
                         if hshapes:
                             hshapes = Part.makeCompound(hshapes)
-                            svgh = Drawing.projectToSVG(hshapes,direction)
+                            svgh = Drawing.projectToSVG(hshapes,self.direction)
                             if svgh:
                                 svgh = svgh.replace('stroke-width="0.35"','stroke-width="' + str(linewidth) + 'px"')
                                 svgh = svgh.replace('stroke-width="1"','stroke-width="' + str(linewidth) + 'px"')
@@ -306,7 +318,7 @@ class _ArchDrawingView:
                                 if (w.ShapeType == "Wire") and w.isClosed():
                                     faces.append(Part.Face(w))
                             sshapes = Part.makeCompound(faces)
-                            svgs = Drawing.projectToSVG(sshapes,direction)
+                            svgs = Drawing.projectToSVG(sshapes,self.direction)
                             if svgs:
                                 svgs = svgs.replace('stroke-width="0.35"','stroke-width="' + str(linewidth*st) + 'px"')
                                 svgs = svgs.replace('stroke-width="1"','stroke-width="' + str(linewidth*st) + 'px"')
