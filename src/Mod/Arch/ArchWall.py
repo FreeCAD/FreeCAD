@@ -381,6 +381,7 @@ class _Wall(ArchComponent.Component):
                 else:
                     base = None
                     FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
+                    
         elif obj.Base.isDerivedFrom("Mesh::Feature"):
             if obj.Base.Mesh.isSolid():
                 if obj.Base.Mesh.countComponents() == 1:
@@ -392,6 +393,7 @@ class _Wall(ArchComponent.Component):
                         obj.Base.ViewObject.show()
 
         if base:
+
             for app in obj.Additions:
                 if Draft.getType(app) == "Window":
                     # window
@@ -427,7 +429,12 @@ class _Wall(ArchComponent.Component):
                             base = base.cut(hole.Shape)
                             hole.ViewObject.hide() # to be removed
 
-            if not base.isNull():
+            if base.isValid() and (not base.isNull()) and base.Solids:
+                if base.Volume < 0:
+                    base.reverse()
+                if base.Volume < 0:
+                    FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute the wall shape")))
+                    return
                 try:
                     base = base.removeSplitter()
                 except:

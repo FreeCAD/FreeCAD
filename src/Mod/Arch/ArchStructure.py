@@ -222,7 +222,12 @@ class _Structure(ArchComponent.Component):
             # finalizing
             else:
                 if base:
-                    if not base.isNull():
+                    if base.isValid() and (not base.isNull()) and base.Solids:
+                        if base.Volume < 0:
+                            base.reverse()
+                        if base.Volume < 0:
+                            FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute the wall shape")))
+                            return
                         base = base.removeSplitter()
                         obj.Shape = base
                 if not DraftGeomUtils.isNull(pl):
