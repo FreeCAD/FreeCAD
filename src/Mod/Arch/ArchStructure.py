@@ -168,9 +168,9 @@ class _Structure(ArchComponent.Component):
                         base = Part.Face(base.Wires[0])
                         base = base.extrude(normal)
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
-                if obj.Mesh.isSolid():
-                    if obj.Mesh.countComponents() == 1:
-                        sh = ArchCommands.getShapeFromMesh(obj.Mesh)
+                if obj.Base.Mesh.isSolid():
+                    if obj.Base.Mesh.countComponents() == 1:
+                        sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
                         if sh.isClosed() and sh.isValid() and sh.Solids:
                             base = sh
         else:
