@@ -100,7 +100,6 @@ class FreeCADShipSimulation(threading.Thread):
         ny = FS['Ny']
         msg = Translator.translate("\t[Sim]: Iterating...\n")
         FreeCAD.Console.PrintMessage(msg)
-        count = 0
         while self.active and self.t < self.endTime:
             msg = Translator.translate("\t\t[Sim]: Generating linear system matrix...\n")
             FreeCAD.Console.PrintMessage(msg)
@@ -113,13 +112,6 @@ class FreeCADShipSimulation(threading.Thread):
             fsEvol.execute(FS, waves, dt, self.t)
             self.t = self.t + dt
             FreeCAD.Console.PrintMessage('t = %g s\n' % (self.t))
-            count = count+1
-            FF = open('%d' % (count), 'w')
-            i=1
-            for j in range(0,ny):
-                FF.write("%g\t%g\t%g\t%g\n" % (FS['pos'][i,j,1], FS['pos'][i,j,2],
-                         FS['velPot'][i,j], FS['accPot'][i,j]))
-            FF.close()
         # Set thread as stopped (and prepare it to restarting)
         self.active = False
         threading.Event().set()
