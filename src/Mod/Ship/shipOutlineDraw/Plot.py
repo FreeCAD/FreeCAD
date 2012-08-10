@@ -27,7 +27,6 @@ from FreeCAD import Base, Vector
 import Part
 # FreeCADShip modules
 from shipUtils import Paths, Translator
-from surfUtils import Geometry
 
 def Plot(scale, sections, shape):
     """ Creates the outline draw.
@@ -52,7 +51,7 @@ def Plot(scale, sections, shape):
     x0 = xMid - 0.5*xTot
     y0 = 297.0 - yMid - 0.5*yTot # 297 = A3_width
     # Get border
-    edges = Geometry.getEdges([shape])
+    edges = self.getEdges([shape])
     border = edges[0]
     for i in range(0,len(edges)):
         border = border.oldFuse(edges[i])   # Only group objects, don't try to build more complex entities
@@ -95,3 +94,31 @@ def Plot(scale, sections, shape):
     FreeCAD.ActiveDocument.OutlineDrawPlot.addObject(FreeCAD.ActiveDocument.OutlineDrawUpView)
     FreeCAD.ActiveDocument.recompute()
     return obj
+
+def getEdges(self, objs=None):
+    """ Returns object edges (list of them)
+    @param objs Object to get the faces, none if selected
+    object may used.
+    @return Selected edges. None if errors happens
+    """
+    edges = []
+    if not objs:
+        objs = FreeCADGui.Selection.getSelection()
+    if not objs:
+        return None
+    for i in range(0, len(objs)):
+        obj = objs[i]
+        if obj.isDerivedFrom('Part::Feature'):
+            # get shape
+            shape = obj.Shape
+            if not shape:
+                return None
+            obj = shape
+        if not obj.isDerivedFrom('Part::TopoShape'):
+            return None
+        objEdges = obj.Edges
+        if not objEdges:
+            continue
+        for j in range(0, len(objEdges)):
+            edges.append(objEdges[j])
+    return edges
