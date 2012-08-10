@@ -28,7 +28,6 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 from shipUtils import Paths, Translator
-from surfUtils import Geometry
 
 class TaskPanel:
     def __init__(self):
