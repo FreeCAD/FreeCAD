@@ -2735,9 +2735,14 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditCurveSet = new SoLineSet;
     edit->EditRoot->addChild(edit->EditCurveSet);
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    float transparency;
+    SbColor cursorTextColor(0,0,1);
+    cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
+
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoMaterial *EditMaterials = new SoMaterial;
-    EditMaterials->diffuseColor = SbColor(0,0,1);
+    EditMaterials->diffuseColor = cursorTextColor;
     edit->EditRoot->addChild(EditMaterials);
 
     SoSeparator *Coordsep = new SoSeparator();

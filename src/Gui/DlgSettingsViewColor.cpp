@@ -66,6 +66,7 @@ void DlgSettingsViewColor::saveSettings()
     checkBoxSelection->onSave();
     HighlightColor->onSave();
     SelectionColor->onSave();
+    CursorTextColor->onSave();
     EditedEdgeColor->onSave();
     EditedVertexColor->onSave();
     ConstructionColor->onSave();
@@ -85,6 +86,7 @@ void DlgSettingsViewColor::loadSettings()
     checkBoxSelection->onRestore();
     HighlightColor->onRestore();
     SelectionColor->onRestore();
+    CursorTextColor->onRestore();
     EditedEdgeColor->onRestore();
     EditedVertexColor->onRestore();
     ConstructionColor->onRestore();
