@@ -255,6 +255,17 @@ float MeshAlgorithm::GetAverageEdgeLength() const
     return fLen;
 }
 
+Base::Vector3f MeshAlgorithm::GetGravityPoint() const
+{
+    Base::Vector3f center;
+    MeshPointIterator cP(_rclMesh);
+    for (cP.Init(); cP.More(); cP.Next()) {
+        center += *cP;
+    }
+
+    return center / (float)_rclMesh.CountPoints();
+}
+
 void MeshAlgorithm::GetMeshBorders (std::list<std::vector<Base::Vector3f> > &rclBorders) const
 {
     std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
