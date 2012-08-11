@@ -233,7 +233,7 @@ void MacroManager::run(MacroType eType,const char *sName)
         Base::Interpreter().runFile(sName, this->localEnv);
     }
     catch (const Base::SystemExitException&) {
-        qApp->quit();
+        throw;
     }
     catch (const Base::PyException& e) {
         Base::Console().Error("%s%s: %s\n",

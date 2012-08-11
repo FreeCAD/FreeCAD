@@ -300,6 +300,9 @@ int main( int argc, char ** argv )
         else
             App::Application::runApplication();
     }
+    catch (const Base::SystemExitException&) {
+        exit(0);
+    }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
     }
