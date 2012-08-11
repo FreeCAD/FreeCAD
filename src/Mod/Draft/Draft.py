@@ -1562,10 +1562,8 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
         if tp == "BSpline":
             print "makeSketch: BSplines not supported"
         elif tp == "Circle":
-            if obj.FirstAngle == obj.LastAngle:
-                nobj.addGeometry(obj.Shape.Edges[0].Curve)
-            else:
-                nobj.addGeometry(Part.ArcOfCircle(obj.Shape.Edges[0].Curve,math.radians(obj.FirstAngle),math.radians(obj.LastAngle)))
+            g = (DraftGeomUtils.geom(obj.Shape.Edges[0],nobj.Placement))
+            nobj.addGeometry(g)
             # TODO add Radius constraits
             ok = True
         elif tp == "Rectangle":
@@ -1586,25 +1584,26 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                     nobj.addConstraint(Constraint("Vertical",last))
                 ok = True
         elif tp in ["Wire","Polygon"]:
-            closed = False
-            if tp == "Polygon":
-                closed = True
-            elif hasattr(obj,"Closed"):
-                closed = obj.Closed
-            for edge in obj.Shape.Edges:
-                nobj.addGeometry(edge.Curve)
-            if autoconstraints:
-                last = nobj.GeometryCount
-                segs = range(last-len(obj.Shape.Edges),last-1)
-                for seg in segs:
-                    nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                    if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                        nobj.addConstraint(Constraint("Vertical",seg))
-                    elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                        nobj.addConstraint(Constraint("Horizontal",seg))
-                if closed:
-                    nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
-            ok = True
+            if obj.FilletRadius == 0:
+                closed = False
+                if tp == "Polygon":
+                    closed = True
+                elif hasattr(obj,"Closed"):
+                    closed = obj.Closed
+                for edge in obj.Shape.Edges:
+                    nobj.addGeometry(edge.Curve)
+                if autoconstraints:
+                    last = nobj.GeometryCount
+                    segs = range(last-len(obj.Shape.Edges),last-1)
+                    for seg in segs:
+                        nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                        if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
+                            nobj.addConstraint(Constraint("Vertical",seg))
+                        elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
+                            nobj.addConstraint(Constraint("Horizontal",seg))
+                    if closed:
+                        nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+                ok = True
         if (not ok) and obj.isDerivedFrom("Part::Feature"):
             if not DraftGeomUtils.isPlanar(obj.Shape):
                 print "Error: The given object is not planar and cannot be converted into a sketch."
