@@ -709,7 +709,7 @@ void PythonConsole::runSource(const QString& line)
         }
         if (ret == QMessageBox::Yes) {
             PyErr_Clear();
-            qApp->quit();
+            throw;
         }
         else {
             PyErr_Clear();
