@@ -39,14 +39,14 @@ precision = params.GetInt("precision")
 
 
 def vec(edge):
-	"vec(edge) or vec(line) -- returns a vector from an edge or a Part.line"
-	# if edge is not straight, you'll get strange results!
-	if isinstance(edge,Part.Shape):
-		return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
-	elif isinstance(edge,Part.Line):
-		return edge.EndPoint.sub(edge.StartPoint)
-	else:
-		return None
+    "vec(edge) or vec(line) -- returns a vector from an edge or a Part.line"
+    # if edge is not straight, you'll get strange results!
+    if isinstance(edge,Part.Shape):
+        return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
+    elif isinstance(edge,Part.Line):
+        return edge.EndPoint.sub(edge.StartPoint)
+    else:
+        return None
 
 def edg(p1,p2):
 	"edg(Vector,Vector) -- returns an edge from 2 vectors"
@@ -370,17 +370,18 @@ def geom(edge,plac=FreeCAD.Placement()):
             c = edge.Curve.Center
             cu = Part.Circle(edge.Curve.Center,normal,edge.Curve.Radius)
             ref = plac.Rotation.multVec(Vector(1,0,0))
-            a1 = math.pi + DraftVecUtils.angle(v1.sub(c),ref,normal)
-            a2 = DraftVecUtils.angle(v2.sub(c),ref,normal)
+            a1 = DraftVecUtils.angle(v1.sub(c),ref,DraftVecUtils.neg(normal))
+            a2 = DraftVecUtils.angle(v2.sub(c),ref,DraftVecUtils.neg(normal))
 
             # direction check
-            if a1 > a2:
+            if edge.Curve.Axis.getAngle(normal) > 1:
                 a1,a2 = a2,a1
-                
             #print "creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)"
+            
             p= Part.ArcOfCircle(cu,a1,a2)
             return p
     else:
+        print edge.Curve
         return edge.Curve
 
 def mirror (point, edge):
@@ -772,8 +773,8 @@ def getNormal(shape):
         if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
                 n = shape.normalAt(0.5,0.5)
         elif shape.ShapeType == "Edge":
-                if isinstance(shape.Curve,Part.Circle):
-                        n = shape.Curve.Axis
+                if isinstance(shape.Edges[0].Curve,Part.Circle):
+                        n = shape.Edges[0].Curve.Axis
         else:
                 for e in shape.Edges:
                         if isinstance(e.Curve,Part.Circle):
