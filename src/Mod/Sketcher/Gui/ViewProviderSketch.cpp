@@ -2830,17 +2830,17 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
 }
 
-void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const std::string &text)
+void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbString &text)
 {
-    edit->textX->string = text.c_str();
+    edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
   
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
 {
-    char buf[40];
-    sprintf(buf, " (%.1f,%.1f)", Pos.fX, Pos.fY);
-    edit->textX->string = buf;
+    SbString text;
+    text.sprintf(" (%.1f,%.1f)", Pos.fX, Pos.fY);
+    edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
 

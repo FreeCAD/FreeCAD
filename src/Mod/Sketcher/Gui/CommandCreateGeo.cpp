@@ -152,9 +152,8 @@ public:
         else if (Mode==STATUS_SEEK_Second){
             float length = (onSketchPos - EditCurve[0]).Length();
             float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
-            char buf[40];
-            sprintf(buf, " (%.1f,%.1f°)", length, angle * 180 / M_PI);
-            std::string text = buf;
+            SbString text;
+            text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
             setPositionText(onSketchPos, text);
 
             EditCurve[1] = onSketchPos;
@@ -318,9 +317,8 @@ public:
         else if (Mode==STATUS_SEEK_Second) {
             float dx = onSketchPos.fX - EditCurve[0].fX;
             float dy = onSketchPos.fY - EditCurve[0].fY;
-            char buf[40];
-            sprintf(buf, " (%.1f x %.1f)", dx, dy);
-            std::string text = buf;
+            SbString text;
+            text.sprintf(" (%.1f x %.1f)", dx, dy);
             setPositionText(onSketchPos, text);
 
             EditCurve[2] = onSketchPos;
@@ -529,6 +527,9 @@ public:
 
     virtual void registerPressedKey(bool pressed, int key)
     {
+        if (Mode != STATUS_SEEK_Second)
+            return; // SegmentMode can be changed only in STATUS_SEEK_Second mode
+
         if (key == SoKeyboardEvent::M && pressed && previousCurve != -1) {
             // loop through the following modes:
             // SEGMENT_MODE_Line, TRANSITION_MODE_Free / TRANSITION_MODE_Tangent
@@ -641,9 +642,8 @@ public:
                 float length = (EditCurve[1] - EditCurve[0]).Length();
                 float angle = (EditCurve[1] - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
 
-                char buf[40];
-                sprintf(buf, " (%.1f,%.1f°)", length, angle * 180 / M_PI);
-                std::string text = buf;
+                SbString text;
+                text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
                 setPositionText(EditCurve[1], text);
 
                 if (TransitionMode == TRANSITION_MODE_Free) {
@@ -675,6 +675,8 @@ public:
                 float y3 = onSketchPos.fY;
                 if ((x2*y3-x3*y2)-(x1*y3-x3*y1)+(x1*y2-x2*y1) > 0)
                     arcRadius *= -1;
+                if (isnan(arcRadius) || isinf(arcRadius))
+                    arcRadius = 0.f;
 
                 CenterPoint = EditCurve[0] + Base::Vector2D(arcRadius * Tangent.fY, -arcRadius * Tangent.fX);
 
@@ -686,6 +688,8 @@ public:
                 float rxe = onSketchPos.fX - CenterPoint.fX;
                 float rye = onSketchPos.fY - CenterPoint.fY;
                 float arcAngle = atan2(-rxe*ry + rye*rx, rxe*rx + rye*ry);
+                if (isnan(arcAngle) || isinf(arcAngle))
+                    arcAngle = 0.f;
                 if (arcRadius >= 0 && arcAngle > 0)
                     arcAngle -= 2*M_PI;
                 if (arcRadius < 0 && arcAngle < 0)
@@ -704,9 +708,8 @@ public:
 
                 sketchgui->drawEdit(EditCurve);
 
-                char buf[40];
-                sprintf(buf, " (%.1fR,%.1f°)", std::abs(arcRadius), arcAngle * 180 / M_PI);
-                std::string text = buf;
+                SbString text;
+                text.sprintf(" (%.1fR,%.1fdeg)", std::abs(arcRadius), arcAngle * 180 / M_PI);
                 setPositionText(onSketchPos, text);
 
                 if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
@@ -789,6 +792,10 @@ public:
                     EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
             }
             else if (SegmentMode == SEGMENT_MODE_Arc) { // We're dealing with an Arc
+                if (!isnormal(arcRadius)) {
+                    Mode = STATUS_SEEK_Second;
+                    return true;
+                }
                 Gui::Command::openCommand("Add arc to sketch wire");
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
@@ -887,7 +894,7 @@ public:
                 }
                 SegmentMode = SEGMENT_MODE_Line;
                 EditCurve[1] = EditCurve[0];
-                sketchgui->drawEdit(EditCurve);
+                mouseMove(onSketchPos); // trigger an update of EditCurve
             }
         }
         return true;
@@ -1048,9 +1055,8 @@ public:
             float radius = (onSketchPos - EditCurve[0]).Length();
             float angle = atan2f(dy_ , dx_);
 
-            char buf[40];
-            sprintf(buf, " (%.1fR,%.1f°)", radius, angle * 180 / M_PI);
-            std::string text = buf;
+            SbString text;
+            text.sprintf(" (%.1fR,%.1fdeg)", radius, angle * 180 / M_PI);
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
@@ -1074,9 +1080,8 @@ public:
             // Display radius and arc angle
             float radius = (onSketchPos - EditCurve[0]).Length();
 
-            char buf[40];
-            sprintf(buf, " (%.1fR,%.1f°)", radius, arcAngle * 180 / M_PI);
-            std::string text = buf;
+            SbString text;
+            text.sprintf(" (%.1fR,%.1fdeg)", radius, arcAngle * 180 / M_PI);
             setPositionText(onSketchPos, text);
             
             sketchgui->drawEdit(EditCurve);
@@ -1284,9 +1289,8 @@ public:
             // Display radius for user
             float radius = (onSketchPos - EditCurve[0]).Length();
 
-            char buf[40];
-            sprintf(buf, " (%.1fR)", radius);
-            std::string text = buf;
+            SbString text;
+            text.sprintf(" (%.1fR)", radius);
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
