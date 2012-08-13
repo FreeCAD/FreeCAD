@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Console.h>
 
 #include <Gui/Application.h>
@@ -675,7 +676,7 @@ public:
                 float y3 = onSketchPos.fY;
                 if ((x2*y3-x3*y2)-(x1*y3-x3*y1)+(x1*y2-x2*y1) > 0)
                     arcRadius *= -1;
-                if (isnan(arcRadius) || isinf(arcRadius))
+                if (boost::math::isnan(arcRadius) || boost::math::isinf(arcRadius))
                     arcRadius = 0.f;
 
                 CenterPoint = EditCurve[0] + Base::Vector2D(arcRadius * Tangent.fY, -arcRadius * Tangent.fX);
@@ -688,7 +689,7 @@ public:
                 float rxe = onSketchPos.fX - CenterPoint.fX;
                 float rye = onSketchPos.fY - CenterPoint.fY;
                 float arcAngle = atan2(-rxe*ry + rye*rx, rxe*rx + rye*ry);
-                if (isnan(arcAngle) || isinf(arcAngle))
+                if (boost::math::isnan(arcAngle) || boost::math::isinf(arcAngle))
                     arcAngle = 0.f;
                 if (arcRadius >= 0 && arcAngle > 0)
                     arcAngle -= 2*M_PI;
@@ -792,7 +793,7 @@ public:
                     EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
             }
             else if (SegmentMode == SEGMENT_MODE_Arc) { // We're dealing with an Arc
-                if (!isnormal(arcRadius)) {
+                if (!boost::math::isnormal(arcRadius)) {
                     Mode = STATUS_SEEK_Second;
                     return true;
                 }
