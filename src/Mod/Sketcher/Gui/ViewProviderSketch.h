@@ -43,6 +43,7 @@ class SoMarkerSet;
 
 class SoText2;
 class SoTranslation;
+class SbString;
 class SbTime;
 
 struct EditData;
