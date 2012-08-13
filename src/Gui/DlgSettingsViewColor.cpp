@@ -71,6 +71,9 @@ void DlgSettingsViewColor::saveSettings()
     EditedVertexColor->onSave();
     ConstructionColor->onSave();
     FullyConstrainedColor->onSave();
+    DefaultShapeColor->onSave();
+    DefaultShapeLineColor->onSave();
+    DefaultShapeLineWidth->onSave();
 }
 
 void DlgSettingsViewColor::loadSettings()
@@ -91,6 +94,9 @@ void DlgSettingsViewColor::loadSettings()
     EditedVertexColor->onRestore();
     ConstructionColor->onRestore();
     FullyConstrainedColor->onRestore();
+    DefaultShapeColor->onRestore();
+    DefaultShapeLineColor->onRestore();
+    DefaultShapeLineWidth->onRestore();
 }
 
 /**
