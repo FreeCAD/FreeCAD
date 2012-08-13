@@ -125,9 +125,14 @@ ViewProviderPartExt::ViewProviderPartExt()
 {
     VisualTouched = true;
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long lcol = hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL); // dark grey (25,25,25)
+    float r,g,b;
+    r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
+    int lwidth = hGrp->GetInt("DefaultShapeLineWidth",2);
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);
-    mat.diffuseColor.set(0.1f,0.1f,0.1f);
+    mat.diffuseColor.set(r,g,b);
     mat.specularColor.set(0.0f,0.0f,0.0f);
     mat.emissiveColor.set(0.0f,0.0f,0.0f);
     mat.shininess = 1.0f;
@@ -137,10 +142,10 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(LineColor,(mat.diffuseColor));
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
     ADD_PROPERTY(DiffuseColor,(ShapeColor.getValue()));
-    ADD_PROPERTY(LineWidth,(2.0f));
+    ADD_PROPERTY(LineWidth,(lwidth));
     LineWidth.setConstraints(&sizeRange);
     PointSize.setConstraints(&sizeRange);
-    ADD_PROPERTY(PointSize,(2.0f));
+    ADD_PROPERTY(PointSize,(lwidth));
     ADD_PROPERTY(Deviation,(0.5f));
     Deviation.setConstraints(&tessRange);
     ADD_PROPERTY(ControlPoints,(false));
