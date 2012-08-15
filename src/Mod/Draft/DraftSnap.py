@@ -317,16 +317,16 @@ class Snapper:
         "returns a 3D point, projected on the current working plane"
         view = Draft.get3DView()
         pt = view.getPoint(x,y)
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            if view.getCameraType() == "Perspective":
-                camera = view.getCameraNode()
-                p = camera.getField("position").getValue()
-                dv = pt.sub(Vector(p[0],p[1],p[2]))
-            else:
-                dv = view.getViewDirection()
-            return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
-        else:
-            return pt
+        if self.mask != "z":
+            if hasattr(FreeCAD,"DraftWorkingPlane"):
+                if view.getCameraType() == "Perspective":
+                    camera = view.getCameraNode()
+                    p = camera.getField("position").getValue()
+                    dv = pt.sub(Vector(p[0],p[1],p[2]))
+                else:
+                    dv = view.getViewDirection()
+                return FreeCAD.DraftWorkingPlane.projectPoint(pt,dv)
+        return pt
         
     def snapToExtensions(self,point,last,constrain,eline):
         "returns a point snapped to extension or parallel line to last object, if any"
