@@ -327,6 +327,24 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Get a list of facet indices and intersection points</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="cut">
+			<Documentation>
+				<UserDocu>Cuts the mesh with a given closed polygon
+cut(list, int) -> None
+The argument list is an array of points, a polygon
+The argument int is the mode: 0=inner, 1=outer
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="trim">
+			<Documentation>
+				<UserDocu>Trims the mesh with a given closed polygon
+trim(list, int) -> None
+The argument list is an array of points, a polygon
+The argument int is the mode: 0=inner, 1=outer
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<!-- The Const here is just a hack -->
 		<Methode Name="harmonizeNormals" Const="true">
 			<Documentation>
