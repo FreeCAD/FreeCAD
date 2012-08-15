@@ -356,31 +356,32 @@ class _Wall(ArchComponent.Component):
         # computing shape
         base = None
         if obj.Base.isDerivedFrom("Part::Feature"):
-            if obj.Base.Shape.isValid() and (not obj.Base.Shape.isNull()):
-                base = obj.Base.Shape.copy()
-                if base.Solids:
-                    pass
-                elif base.Faces and (not obj.ForceWire):
-                    if height:
-                        norm = normal.multiply(height)
-                        base = base.extrude(norm)
-                elif base.Wires:
-                    temp = None
-                    for wire in obj.Base.Shape.Wires:
+            if not obj.Base.Shape.isNull():
+                if obj.Base.Shape.isValid():
+                    base = obj.Base.Shape.copy()
+                    if base.Solids:
+                        pass
+                    elif base.Faces and (not obj.ForceWire):
+                        if height:
+                            norm = normal.multiply(height)
+                            base = base.extrude(norm)
+                    elif base.Wires:
+                        temp = None
+                        for wire in obj.Base.Shape.Wires:
+                            sh = getbase(wire)
+                            if temp:
+                                temp = temp.fuse(sh)
+                            else:
+                                temp = sh
+                        base = temp
+                    elif base.Edges:
+                        wire = Part.Wire(base.Edges)
                         sh = getbase(wire)
-                        if temp:
-                            temp = temp.fuse(sh)
-                        else:
-                            temp = sh
-                    base = temp
-                elif base.Edges:
-                    wire = Part.Wire(base.Edges)
-                    sh = getbase(wire)
-                    if sh:
-                        base = sh
-                else:
-                    base = None
-                    FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
+                        if sh:
+                            base = sh
+                    else:
+                        base = None
+                        FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
                     
         elif obj.Base.isDerivedFrom("Mesh::Feature"):
             if obj.Base.Mesh.isSolid():
@@ -429,19 +430,20 @@ class _Wall(ArchComponent.Component):
                             base = base.cut(hole.Shape)
                             hole.ViewObject.hide() # to be removed
 
-            if base.isValid() and (not base.isNull()) and base.Solids:
-                if base.Volume < 0:
-                    base.reverse()
-                if base.Volume < 0:
-                    FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute the wall shape")))
-                    return
-                try:
-                    base = base.removeSplitter()
-                except:
-                    FreeCAD.Console.PrintError(str(translate("Arch","Error removing splitter from wall shape")))
-                obj.Shape = base
-                if not DraftGeomUtils.isNull(pl):
-                    obj.Placement = pl
+            if not base.isNull():
+                if base.isValid() and base.Solids:
+                    if base.Volume < 0:
+                        base.reverse()
+                    if base.Volume < 0:
+                        FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute the wall shape")))
+                        return
+                    try:
+                        base = base.removeSplitter()
+                    except:
+                        FreeCAD.Console.PrintError(str(translate("Arch","Error removing splitter from wall shape")))
+                    obj.Shape = base
+                    if not DraftGeomUtils.isNull(pl):
+                        obj.Placement = pl
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     "A View Provider for the Wall object"
