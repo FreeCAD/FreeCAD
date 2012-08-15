@@ -156,6 +156,19 @@ class StopSim:
         ToolTip  = str(Translator.translate('Stop active simulation'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
+class TrackSim: 
+    def Activated(self):
+        import simPost
+        simPost.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimPostIco.png"
+        MenuText = str(Translator.translate('Track simulation'))
+        ToolTip  = str(Translator.translate('Track simulation'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
@@ -167,3 +180,4 @@ FreeCADGui.addCommand('Ship_GZ', GZ())
 FreeCADGui.addCommand('Ship_CreateSim', CreateSim())
 FreeCADGui.addCommand('Ship_RunSim', RunSim())
 FreeCADGui.addCommand('Ship_StopSim', StopSim())
+FreeCADGui.addCommand('Ship_TrackSim', TrackSim())

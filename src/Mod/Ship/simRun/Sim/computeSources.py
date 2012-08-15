@@ -21,7 +21,49 @@
 #*                                                                         *
 #***************************************************************************
 
-from initialization import *
-from matrixGen import *
-from computeSources import *
-from fsEvolution import *
+# numpy
+import numpy as np
+
+grav=9.81
+
+class simComputeSources:
+    def __init__(self, context=None, queue=None):
+        """ Constructor.
+        @param context OpenCL context where apply. Only for compatibility, 
+        must be None.
+        @param queue OpenCL command queue. Only for compatibility, 
+        must be None.
+        """
+        self.context = context
+        self.queue   = queue
+
+    def execute(self, fs, A):
+        """ Compute potential sources (for velocity potential and 
+        acceleration potential).
+        @param fs Free surface instance.
+        @param A Linear system matrix.
+        """
+        self.fs = fs
+        # Allocate memory
+        nx      = self.fs['Nx']
+        ny      = self.fs['Ny']
+        nF      = nx*ny
+        nB      = 0 # No body for the moment
+        N       = nx*ny + nB
+        b       = np.ndarray(N, dtype=np.float32)
+        bb      = np.ndarray(N, dtype=np.float32)
+        s       = np.ndarray(N, dtype=np.float32)
+        ss      = np.ndarray(N, dtype=np.float32)
+        # Create independent terms
+        for i in range(0,nx):
+            for j in range(0,ny):
+                b[i*ny+j]  = self.fs['velPot'][i,j]
+                bb[i*ny+j] = self.fs['accPot'][i,j]
+        # Solve systems
+        s  = np.linalg.solve(A, b)
+        ss = np.linalg.solve(A, bb)
+        # Store sources
+        for i in range(0,nx):
+            for j in range(0,ny):
+                self.fs['velSrc'][i,j] =  s[i*ny+j]
+                self.fs['accSrc'][i,j] = ss[i*ny+j]

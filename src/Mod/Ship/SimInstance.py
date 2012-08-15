@@ -21,7 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import time
 from math import *
 import threading
 
@@ -71,6 +70,7 @@ class ShipSimulation:
         obj.addProperty("App::PropertyBool","IsShipSimulation","ShipSimulation", str(Translator.translate("True if is a valid ship simulation instance"))).IsShipSimulation=True
         # Compute free surface mesh
         self.createFSMesh(obj,fsMeshData)
+        self.computeWaves(obj,waves)
         # Store waves
         obj.addProperty("App::PropertyVectorList","Waves","ShipSimulation", str(Translator.translate("Waves (Amplitude,period,phase)"))).Waves=[]
         obj.addProperty("App::PropertyFloatList","Waves_Dir","ShipSimulation", str(Translator.translate("Waves direction (0 deg to stern waves)"))).Waves_Dir=[]
@@ -163,35 +163,51 @@ class ShipSimulation:
         obj.FS_Area     = areas[:]
         obj.FS_Normal   = normal[:]
 
+    def computeWaves(self, obj, waves):
+        """ Add waves effect to free surface mesh positions.
+        @param obj Created Part::FeaturePython object.
+        @param waves waves data [A,T,phase, heading].
+        """
+        grav = 9.81
+        positions = obj.FS_Position[:]
+        for i in range(0, len(positions)):
+            for w in waves:
+                A       = w[0]
+                T       = w[1]
+                phase   = w[2]
+                heading = pi*w[3]/180.0
+                wl      = 0.5 * grav / pi * T*T
+                k       = 2.0*pi/wl
+                frec    = 2.0*pi/T
+                pos     = obj.FS_Position[i]
+                l       = pos.x*cos(heading) + pos.y*sin(heading)
+                amp     = A*sin(k*l + phase)
+                positions[i].z = positions[i].z + amp
+        obj.FS_Position = positions[:]
+
     def computeShape(self, obj):
         """ Computes simulation involved shapes.
         @param obj Created Part::FeaturePython object.
         @return Shape
         """
-        print("[ShipSimulation] Computing mesh shape...")
         nx     = obj.FS_Nx
         ny     = obj.FS_Ny
         mesh   = FSMesh(obj)
-        planes = []
-        # Create planes
-        Percentage = 0
-        Count = 0
-        print("0%")
+        # Create BSpline surface
+        surf   = Part.BSplineSurface()
         for i in range(1,nx-1):
-            for j in range(1,ny-1):
-                Count = Count+1
-                done = int(round(100 * Count / ((nx-2)*(ny-2))))
-                if done != Percentage:
-                    Percentage = done
-                    print("%i%%" % (done))
-                v0 = (mesh[i][j].pos + mesh[i-1][j].pos + mesh[i][j-1].pos + mesh[i-1][j-1].pos).multiply(0.25)
-                v1 = (mesh[i][j].pos + mesh[i+1][j].pos + mesh[i][j-1].pos + mesh[i+1][j-1].pos).multiply(0.25)
-                v2 = (mesh[i][j].pos + mesh[i+1][j].pos + mesh[i][j+1].pos + mesh[i+1][j+1].pos).multiply(0.25)
-                v3 = (mesh[i][j].pos + mesh[i-1][j].pos + mesh[i][j+1].pos + mesh[i-1][j+1].pos).multiply(0.25)
-                p  = Part.makePolygon([v0,v1,v2,v3,v0])
-                planes.append(Part.makeFilledFace(p.Edges))
-        # Join into a compound
-        return Part.makeCompound(planes)
+            u = i / float(nx-1)
+            surf.insertUKnot(u,i,0.000001)
+        for i in range(1,ny-1):
+            v = i / float(ny-1)
+            surf.insertVKnot(v,i,0.000001)
+        for i in range(0,nx):
+            for j in range(0,ny):
+                u     = i / float(nx-1)
+                v     = j / float(ny-1)
+                point = mesh[i][j].pos
+                surf.movePoint(u,v,point,i+1,i+1,j+1,j+1)
+        return surf.toShape()
 
 class ViewProviderShipSimulation:
     def __init__(self, obj):

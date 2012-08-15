@@ -25,11 +25,12 @@
 
 import FreeCAD,math,Part,ArchCommands,DraftVecUtils,DraftGeomUtils
 
-DEBUG = True # if we want debug messages
 MAXLOOP = 10 # the max number of loop before abort
 
 # WARNING: in this module, faces are lists whose first item is the actual OCC face, the
 # other items being additional information such as color, etc.
+
+DEBUG = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ShowVRMDebug")
 
 class Renderer:
     "A renderer object"
@@ -73,6 +74,7 @@ class Renderer:
         self.iscut = False
         self.joined = False
         self.sections = []
+        self.hiddenEdges = []
 
     def setWorkingPlane(self,wp):
         "sets a Draft WorkingPlane or Placement for this renderer"
@@ -151,6 +153,8 @@ class Renderer:
         self.faces = [self.projectFace(f) for f in self.faces]
         if self.sections:
             self.sections = [self.projectFace(f) for f in self.sections]
+        if self.hiddenEdges:
+            self.hiddenEdges = [self.projectEdge(e) for e in self.hiddenEdges]
         self.oriented = True
         #print "VRM: end reorient"
 
@@ -200,6 +204,14 @@ class Renderer:
             #print "VRM: projectFace end: ",len(sh.Vertexes)," verts"
             return [sh]+face[1:]
 
+    def projectEdge(self,edge):
+        "projects a single edge on the WP"
+        if len(edge.Vertexes) > 1:
+            v1 = self.wp.getLocalCoords(edge.Vertexes[0].Point)
+            v2 = self.wp.getLocalCoords(edge.Vertexes[-1].Point)
+            return Part.Line(v1,v2).toShape()
+        return edge
+        
     def flattenFace(self,face):
         "Returns a face where all vertices have Z = 0"
         wires = []
@@ -219,7 +231,7 @@ class Renderer:
         else:
             return [sh]+face[1:]
 
-    def cut(self,cutplane):
+    def cut(self,cutplane,hidden=False):
         "Cuts through the shapes with a given cut plane and builds section faces"
         if DEBUG: print "\n\n======> Starting cut\n\n"
         if self.iscut:
@@ -231,7 +243,7 @@ class Renderer:
             shps = []
             for sh in self.shapes:
                 shps.append(sh[0])
-            cutface,cutvolume = ArchCommands.getCutVolume(cutplane,shps)
+            cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(cutplane,shps)
             if cutface and cutvolume:
                 shapes = []
                 faces = []
@@ -246,6 +258,9 @@ class Renderer:
                             if DraftGeomUtils.isCoplanar([f,cutface]):
                                 print "COPLANAR"
                                 sections.append([f,fill])
+                        if hidden:
+                            c = sol.cut(invcutvolume)
+                            self.hiddenEdges.extend(c.Edges)
                 self.shapes = shapes
                 self.faces = faces
                 self.sections = sections
@@ -555,7 +570,8 @@ class Renderer:
                 v = e.Vertexes[-1].Point
                 svg += 'A '+ tostr(r) + ' '+ tostr(r) +' 0 0 1 '+ tostr(v.x) +' '
                 svg += tostr(v.y) + ' '
-        svg += 'Z '
+        if len(edges) > 1:
+            svg += 'Z '
         return svg
 
     def getViewSVG(self,linewidth=0.01):
@@ -607,5 +623,26 @@ class Renderer:
                 svg += 'fill:' + fill + ';'
                 svg += 'fill-rule: evenodd'
                 svg += '"/>\n'
+        return svg
+
+    def getHiddenSVG(self,linewidth=0.02):
+        "Returns a SVG fragment from cut geometry"
+        if DEBUG: print "Printing ", len(self.sections), " hidden faces"
+        if not self.oriented:
+            self.reorient()
+        svg = ''
+        for e in self.hiddenEdges:
+            svg +='<path '
+            svg += 'd="'
+            svg += self.getPathData(e)
+            svg += '" '
+            svg += 'stroke="#000000" '
+            svg += 'stroke-width="' + str(linewidth) + '" '
+            svg += 'style="stroke-width:' + str(linewidth) + ';'
+            svg += 'stroke-miterlimit:1;'
+            svg += 'stroke-linejoin:round;'
+            svg += 'stroke-dasharray:0.09,0.05;'
+            svg += 'fill:none;'
+            svg += '"/>\n'
         return svg
         

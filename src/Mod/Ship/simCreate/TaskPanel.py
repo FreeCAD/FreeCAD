@@ -149,10 +149,13 @@ class TaskPanel:
                 self.form.waves.removeRow(row)
         # Ensure that exist one empty item at the end
         nRow = self.form.waves.rowCount()
-        last = self.form.waves.item(nRow-1,0)
-        if last:
-            if(last.text() != ''):
-                self.form.waves.setRowCount(nRow+1)
+        if not nRow:
+            self.form.waves.setRowCount(1)
+        else:
+            last = self.form.waves.item(nRow-1,0)
+            if last:
+                if(last.text() != ''):
+                    self.form.waves.setRowCount(nRow+1)
         # Fields must be numbers
         for i in range(0,self.form.waves.rowCount()-1):      # Avoid last row
             for j in range(0,self.form.waves.columnCount()): # Avoid name column

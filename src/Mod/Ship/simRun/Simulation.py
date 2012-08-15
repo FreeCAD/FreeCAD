@@ -21,7 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import time
 from math import *
 import threading
 
@@ -49,11 +48,12 @@ class Singleton(type):
 
 class FreeCADShipSimulation(threading.Thread):
     __metaclass__ = Singleton
-    def __init__ (self, device, endTime, output, FSmesh, waves):
+    def __init__ (self, device, endTime, output, simInstance, FSmesh, waves):
         """ Thread constructor.
         @param device Device to use.
         @param endTime Maximum simulation time.
         @param output [Rate,Type] Output rate, Type=0 if FPS, 1 if IPF.
+        @param simInstance Simulaation instance.
         @param FSmesh Free surface mesh faces.
         @param waves Waves parameters (A,T,phi,heading)
         """
@@ -71,6 +71,7 @@ class FreeCADShipSimulation(threading.Thread):
         # Storage data
         self.endTime = endTime
         self.output  = output
+        self.sim     = simInstance
         self.FSmesh  = FSmesh
         self.waves   = waves
         
@@ -80,19 +81,37 @@ class FreeCADShipSimulation(threading.Thread):
         self.active = True
         # Simulation stuff
         if self.device == None:
-            from Sim import initialization
+            from Sim import *
         else:
-            from clSim import initialization
-        msg = Translator.translate("\t[Sim]: Initializating OpenCL...\n")
+            from clSim import *
+        msg = Translator.translate("\t[Sim]: Initializating...\n")
         FreeCAD.Console.PrintMessage(msg)
-        init = initialization.perform(self.FSmesh,self.waves,self.context,self.queue)
-        msg = Translator.translate("\t[Sim]: Iterating (outputs will be noticed)...\n")
+        init   = simInitialization(self.FSmesh,self.waves,self.context,self.queue)
+        matGen = simMatrixGen(self.context,self.queue)
+        solver = simComputeSources(self.context,self.queue)
+        fsEvol = simFSEvolution(self.context,self.queue)
+        A      = init.A
+        FS     = init.fs
+        waves  = init.waves
+        dt     = init.dt
+        self.t  = 0.0
+        self.FS = FS
+        nx = FS['Nx']
+        ny = FS['Ny']
+        msg = Translator.translate("\t[Sim]: Iterating...\n")
         FreeCAD.Console.PrintMessage(msg)
-        while self.active:
-            print("Im thread, Im running...")
-            time.sleep(1)
-            # ...
-            print("Im thread, step done!")
+        while self.active and self.t < self.endTime:
+            msg = Translator.translate("\t\t[Sim]: Generating linear system matrix...\n")
+            FreeCAD.Console.PrintMessage(msg)
+            matGen.execute(FS, A)
+            msg = Translator.translate("\t\t[Sim]: Solving linear systems...\n")
+            FreeCAD.Console.PrintMessage(msg)
+            solver.execute(FS, A)
+            msg = Translator.translate("\t\t[Sim]: Time integrating...\n")
+            FreeCAD.Console.PrintMessage(msg)
+            fsEvol.execute(FS, waves, dt, self.t)
+            self.t = self.t + dt
+            FreeCAD.Console.PrintMessage('t = %g s\n' % (self.t))
         # Set thread as stopped (and prepare it to restarting)
         self.active = False
         threading.Event().set()

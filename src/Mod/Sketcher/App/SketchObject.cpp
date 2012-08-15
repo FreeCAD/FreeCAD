@@ -1350,6 +1350,8 @@ void SketchObject::rebuildExternalGeometry(void)
             break;
         }
     }
+
+    rebuildVertexIndex();
 }
 
 std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void) const
@@ -1491,8 +1493,6 @@ void SketchObject::Restore(XMLReader &reader)
 {
     // read the father classes
     Part::Part2DObject::Restore(reader);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
 }
 
 void SketchObject::onChanged(const App::Property* prop)
