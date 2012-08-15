@@ -145,6 +145,7 @@
 # include <ShapeFix_Shape.hxx>
 # include <XSControl_WorkSession.hxx>
 # include <Transfer_TransientProcess.hxx>
+# include <Transfer_FinderProcess.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 
 #include <Base/Builder3D.h>
@@ -696,7 +697,7 @@ void TopoShape::exportStep(const char *filename) const
         STEPControl_Writer aWriter;
 
         Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
-        aWriter.WS()->MapReader()->SetProgress(pi);
+        aWriter.WS()->MapWriter()->SetProgress(pi);
         pi->NewScope(100, "Writing STEP file...");
         pi->Show();
 
