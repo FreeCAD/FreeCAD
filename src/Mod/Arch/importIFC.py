@@ -22,6 +22,7 @@
 #***************************************************************************
 
 import ifcReader, FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils
+from DraftTools import translate
 
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
@@ -79,7 +80,7 @@ def decode(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            print "ifc: error: couldn't determine character encoding"
+            FreeCAD.Console.PrintError(str(translate("Arch", "Error: Couldn't determine character encoding\n")))
             decodedName = name
     return decodedName
 
@@ -101,7 +102,7 @@ def getIfcOpenShell():
         global IfcImport
         import IfcImport
     except:
-        print "Couldn't import IfcOpenShell"
+        FreeCAD.Console.PrintMessage(str(translate("Arch","Couldn't locate IfcOpenShell\n")))
         return False
     else:
         return True
@@ -117,7 +118,7 @@ def read(filename):
         if DEBUG: print "opening",filename,"..."
         ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
     else:
-        FreeCAD.Console.PrintWarning("IFC Schema not found, IFC import disabled.\n")
+        FreeCAD.Console.PrintWarning(str(translate("Arch","IFC Schema not found, IFC import disabled.\n")))
         return None
     t2 = time.time()
     if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))

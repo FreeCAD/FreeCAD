@@ -74,7 +74,6 @@ How it works / how to extend:
 # import FreeCAD modules
 import FreeCAD, math, sys, os, DraftVecUtils, Draft_rc
 from FreeCAD import Vector
-from pivy import coin
 
 if FreeCAD.GuiUp:
     import FreeCADGui, WorkingPlane
@@ -220,6 +219,7 @@ def ungroup(obj):
 def dimSymbol():
     "returns the current dim symbol from the preferences as a pivy SoMarkerSet"
     s = getParam("dimsymbol")
+    from pivy import coin
     marker = coin.SoMarkerSet()
     if s == 0: marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_5_5
     elif s == 1: marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_7_7
@@ -1816,6 +1816,7 @@ class _ViewProviderDimension:
 
     def calcGeom(self,obj):
         import Part, DraftGeomUtils
+        from pivy import coin
         p1 = obj.Start
         p4 = obj.End
         base = Part.Line(p1,p4).toShape()
@@ -1866,6 +1867,7 @@ class _ViewProviderDimension:
         return p1,p2,p3,p4,tbase,norm,rot
 
     def attach(self, obj):
+        from pivy import coin
         self.Object = obj.Object
         p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj.Object)
         self.color = coin.SoBaseColor()
@@ -1932,6 +1934,7 @@ class _ViewProviderDimension:
         self.onChanged(obj,"FontName")
             
     def updateData(self, obj, prop):
+        from pivy import coin
         try:
             dm = obj.ViewObject.DisplayMode
         except:
@@ -2122,6 +2125,7 @@ class _ViewProviderAngularDimension:
         obj.Override = ''
 
     def attach(self, vobj):
+        from pivy import coin
         self.Object = vobj.Object
         self.arc = None
         c,tbase,trot,p2,p3 = self.calcGeom(vobj.Object)
@@ -2202,6 +2206,7 @@ class _ViewProviderAngularDimension:
         return cir, tbase, trot, cir.Vertexes[0].Point, cir.Vertexes[-1].Point
 
     def updateData(self, obj, prop):
+        from pivy import coin
         text = None
         ivob = None
         c,tbase,trot,p2,p3 = self.calcGeom(obj)
@@ -2492,6 +2497,7 @@ class _ViewProviderWire(_ViewProviderDraft):
                         "Displays a dim symbol at the end of the wire")
 
     def attach(self, obj):
+        from pivy import coin
         self.Object = obj.Object
         col = coin.SoBaseColor()
         col.rgb.setValue(obj.LineColor[0],
@@ -2646,6 +2652,7 @@ class _BSpline:
 class _ViewProviderBSpline(_ViewProviderDraft):
     "A View Provider for the BSPline object"
     def __init__(self, obj):
+        from pivy import coin
         _ViewProviderDraft.__init__(self,obj)
         obj.addProperty("App::PropertyBool","EndArrow",
                         "Base","Displays a dim symbol at the end of the wire")

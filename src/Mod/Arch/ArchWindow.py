@@ -161,7 +161,6 @@ class _Window(ArchComponent.Component):
                                     if zof:
                                         zov = DraftVecUtils.scaleTo(norm,zof)
                                         shape.translate(zov)
-                                print shape
                                 shapes.append(shape)
                         if shapes:
                             obj.Shape = Part.makeCompound(shapes)
@@ -440,10 +439,7 @@ class _ArchWindowTaskPanel:
                 self.obj.WindowParts = parts
                 self.update()
         else:
-            FreeCAD.Console.PrintWarning(str(
-                    QtGui.QApplication.translate(
-                        "Arch", "Unable to create component",
-                        None, QtGui.QApplication.UnicodeUTF8)))
+            FreeCAD.Console.PrintWarning(str(translate("Arch", "Unable to create component")))
         
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)
