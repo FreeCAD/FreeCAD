@@ -26,9 +26,9 @@ import numpy as np
 
 grav=9.81
 
-class perform:
+class simInitialization:
     def __init__(self, FSmesh, waves, context=None, queue=None):
-        """ Constructor, includes program loading.
+        """ Constructor.
         @param FSmesh Initial free surface mesh.
         @param waves Considered simulation waves (A,T,phi,heading).
         @param context OpenCL context where apply. Only for compatibility, 
@@ -40,6 +40,11 @@ class perform:
         self.queue   = queue
         self.loadData(FSmesh, waves)
         self.execute()
+        # Compute time step
+        self.dt = 0.1
+        for w in self.waves['data']:
+            if(self.dt > w[1]/200.0):
+                self.dt = w[1]/200.0
 
     def loadData(self, FSmesh, waves):
         """ Convert data to numpy format.
@@ -51,12 +56,12 @@ class perform:
         nW = len(waves)
         # Mesh data
         p   = np.ndarray((nx,ny, 3), dtype=np.float32)
-        v   = np.ndarray((nx,ny, 3), dtype=np.float32)
-        f   = np.ndarray((nx,ny, 3), dtype=np.float32)
         n   = np.ndarray((nx,ny, 3), dtype=np.float32)
-        a   = np.ndarray((nx,ny, 1), dtype=np.float32)
-        phi = np.ndarray((nx,ny, 1), dtype=np.float32)
-        Phi = np.ndarray((nx,ny, 1), dtype=np.float32)
+        a   = np.ndarray((nx,ny), dtype=np.float32)
+        phi = np.ndarray((nx,ny), dtype=np.float32)
+        Phi = np.ndarray((nx,ny), dtype=np.float32)
+        s   = np.ndarray((nx,ny), dtype=np.float32)
+        ss  = np.ndarray((nx,ny), dtype=np.float32)
         for i in range(0, nx):
             for j in range(0, ny):
                 pos     = FSmesh[i][j].pos
@@ -65,18 +70,16 @@ class perform:
                 p[i,j,0] = pos.x
                 p[i,j,1] = pos.y
                 p[i,j,2] = pos.z
-                v[i,j,0] = 0.
-                v[i,j,1] = 0.
-                v[i,j,2] = 0.
-                f[i,j,0] = 0.
-                f[i,j,1] = 0.
-                f[i,j,2] = 0.
                 n[i,j,0] = normal.x
                 n[i,j,1] = normal.y
                 n[i,j,2] = normal.z
                 a[i,j]   = area
-        self.fs = {'Nx':nx, 'Ny':ny, 'pos':p, 'vel':v, 'acc':f, \
-                   'normal':n, 'area':a, 'velPot':phi, 'accPot':Phi}
+                phi[i,j] = 0.
+                Phi[i,j] = 0.
+                s[i,j]   = 0.
+                ss[i,j]  = 0.
+        self.fs = {'Nx':nx, 'Ny':ny, 'pos':p, 'normal':n, 'area':a, \
+                   'velPot':phi, 'accPot':Phi, 'velSrc':s, 'accSrc':ss}
         # Waves data
         w = np.ndarray((nW, 4), dtype=np.float32)
         for i in range(0,nW):
@@ -85,6 +88,11 @@ class perform:
             w[i,2] = waves[i][2]
             w[i,3] = waves[i][3]
         self.waves = {'N':nW, 'data':w}
+        # Linear system matrix
+        nF     = nx*ny
+        nB     = 0 # No body for the moment
+        N      = nx*ny + nB
+        self.A = np.ndarray((N, N), dtype=np.float32)
 
     def execute(self):
         """ Compute initial conditions. """
@@ -92,6 +100,7 @@ class perform:
         ny = self.fs['Ny']
         for i in range(0,nx):
             for j in range(0,ny):
+                self.fs['pos'][i,j][2] = 0.
                 for w in self.waves['data']:
                     A       = w[0]
                     T       = w[1]
@@ -104,11 +113,7 @@ class perform:
                     l       = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
                     amp     = A*np.sin(k*l + phase)
                     self.fs['pos'][i,j][2] = self.fs['pos'][i,j][2] + amp
-                    amp     = frec*A*np.cos(k*l + phase)
-                    self.fs['vel'][i,j][2] = self.fs['vel'][i,j][2] - amp
-                    amp     = frec*frec*A*np.sin(k*l + phase)
-                    self.fs['acc'][i,j][2] = self.fs['acc'][i,j][2] - amp
-                    amp     = grav/frec*A*np.sin(k*l + phase)
+                    amp     = - grav/frec*A*np.sin(k*l + phase)
                     self.fs['velPot'][i,j] = self.fs['velPot'][i,j] + amp
                     amp     = grav*A*np.cos(k*l + phase)
                     self.fs['accPot'][i,j] = self.fs['accPot'][i,j] + amp

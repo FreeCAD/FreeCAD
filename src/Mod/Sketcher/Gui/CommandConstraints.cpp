@@ -1636,15 +1636,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
             Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
 
-            float sf = 1.f;
-            Gui::Document *doc = getActiveGuiDocument();
-            if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-                SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-                sf = vp->getScaleFactor();
-
-                constr->LabelDistance = 2. * sf;
-                vp->draw(); // Redraw
-            }
+            updateDatumDistance(getActiveGuiDocument(), constr);
 
             //updateActive();
             getSelection().clearSelection();

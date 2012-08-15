@@ -43,6 +43,7 @@ class SoMarkerSet;
 
 class SoText2;
 class SoTranslation;
+class SbString;
 class SbTime;
 
 struct EditData;
@@ -137,10 +138,9 @@ public:
 
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2D &toPos);
-    /// checks if there is a constraint object at position vector
-    bool isConstraintAtPosition(const Base::Vector3d &constrPos, const SoNode *constraint);
     /// finds a free position for placing a constraint icon
-    Base::Vector3d seekConstraintPosition(const Base::Vector3d &suggestedPos,
+    Base::Vector3d seekConstraintPosition(const Base::Vector3d &origPos,
+                                          const Base::Vector3d &norm,
                                           const Base::Vector3d &dir, float step,
                                           const SoNode *constraint);
 
@@ -200,7 +200,7 @@ protected:
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
 
-    void setPositionText(const Base::Vector2D &Pos, const std::string &txt);
+    void setPositionText(const Base::Vector2D &Pos, const SbString &txt);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
 

@@ -152,6 +152,7 @@ SET(FreeCADBase_XML_SRCS
 SOURCE_GROUP("XML" FILES ${FreeCADBase_XML_SRCS})
 
 set(FreeCADBase_MOC_HDRS
+    Debugger.h
     FutureWatcherProgress.h
 )
 fc_wrap_cpp(FreeCADBase_MOC_SRCS ${FreeCADBase_MOC_HDRS})
@@ -182,6 +183,7 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    Debugger.cpp
     Exception.cpp
     Factory.cpp
     FileInfo.cpp
@@ -234,6 +236,7 @@ SET(FreeCADBase_HPP_SRCS
     BoundBox.h
     Builder3D.h
     Console.h
+    Debugger.h
     Exception.h
     Factory.h
     FileInfo.h

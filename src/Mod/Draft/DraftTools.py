@@ -3711,7 +3711,7 @@ class Draft2Sketch():
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
                     Draft.makeSketch(obj,autoconstraints=True)
                 elif obj.isDerivedFrom("Part::Feature"):
-                    if len(obj.Shape.Wires) == 1:
+                    if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
                         Draft.makeSketch(obj,autoconstraints=False)
             FreeCAD.ActiveDocument.commitTransaction()
 

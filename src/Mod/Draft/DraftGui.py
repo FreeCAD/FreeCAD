@@ -990,7 +990,7 @@ class DraftToolBar:
     def setCurrentText(self,tstr):
         if (not self.taskmode) or (self.taskmode and self.isTaskOn):
             self.textValue.setText(tstr)
-                                                
+    
     def sendText(self):
         '''
         this function sends the entered text to the active draft command

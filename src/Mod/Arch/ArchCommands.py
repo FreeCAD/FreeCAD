@@ -43,6 +43,22 @@ def getStringList(objects):
     result += "]"
     return result
 
+def getDefaultColor(objectType):
+    '''getDefaultColor(string): returns a color value for the given object
+    type (Wall, Structure, Window)'''
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    if objectType == "Wall":
+        c = p.GetUnsigned("WallColor")
+    elif objectType == "Structure":
+        c = p.GetUnsigned("StructureColor")
+    else:
+        c = p.GetUnsigned("WindowsColor")
+    r = float((c>>24)&0xFF)/255.0
+    g = float((c>>16)&0xFF)/255.0
+    b = float((c>>8)&0xFF)/255.0
+    result = (r,g,b,1.0)
+    return result
+
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
     from the given list as components to the given host Object. Use this for
@@ -278,7 +294,7 @@ def getCutVolume(cutplane,shapes):
     v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
     if not bb.isCutPlane(placement.Base,ax):
         print "No objects are cut by the plane"
-        return None,None
+        return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
                    FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
@@ -305,7 +321,44 @@ def getCutVolume(cutplane,shapes):
         cutface.Placement = placement
         cutnormal = DraftVecUtils.scaleTo(ax,wm)
         cutvolume = cutface.extrude(cutnormal)
-        return cutface,cutvolume
+        cutnormal = DraftVecUtils.neg(cutnormal)
+        invcutvolume = cutface.extrude(cutnormal)
+        return cutface,cutvolume,invcutvolume
+
+def getShapeFromMesh(mesh):
+    import Part, MeshPart
+    if mesh.isSolid() and (mesh.countComponents() == 1):
+        # use the best method
+        faces = []
+        for f in mesh.Facets:
+            p=f.Points+[f.Points[0]]
+            pts = []
+            for pp in p:
+                pts.append(FreeCAD.Vector(pp[0],pp[1],pp[2]))
+            faces.append(Part.Face(Part.makePolygon(pts)))
+        shell = Part.makeShell(faces)
+        solid = Part.Solid(shell)
+        solid = solid.removeSplitter()
+        return solid
+
+    faces = []  
+    segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
+    for i in segments:
+        if len(i) > 0:
+            wires = MeshPart.wireFromSegment(mesh, i)
+            if wires:
+                faces.append(makeFace(wires))
+    try:
+        se = Part.makeShell(faces)
+    except:
+        return None
+    else:
+        try:
+            solid = Part.Solid(se)
+        except:
+            return se
+        else:
+            return solid
   
 
 def meshToShape(obj,mark=True):
@@ -313,36 +366,18 @@ def meshToShape(obj,mark=True):
     mark is True (default), non-solid objects will be marked in red'''
 
     name = obj.Name
-    import Part, MeshPart, DraftGeomUtils
     if "Mesh" in obj.PropertiesList:
         faces = []  
         mesh = obj.Mesh
         plac = obj.Placement
-        segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
-        print len(segments)," segments ",segments
-        for i in segments:
-            print "treating",segments.index(i),i
-            if len(i) > 0:
-                wires = MeshPart.wireFromSegment(mesh, i)
-                print "wire done"
-                print wires
-                if wires:
-                    faces.append(makeFace(wires))
-                print "done facing"
-            print "faces",faces
-
-        try:
-            se = Part.makeShell(faces)
-            solid = Part.Solid(se)
-        except:
-            raise
-        else:
-            if solid.isClosed():
+        solid = getShapeFromMesh(mesh)
+        if solid:
+            if solid.isClosed() and solid.isValid():
                 FreeCAD.ActiveDocument.removeObject(name)
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             newobj.Shape = solid
             newobj.Placement = plac
-            if not solid.isClosed():
+            if (not solid.isClosed()) or (not solid.isValid()):
                 if mark:
                     newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
             return newobj
@@ -428,8 +463,8 @@ def download(url):
     else:
         return filepath
 
-def check(objectslist,includehidden=True):
-    """check(objectslist,includehidden=True): checks if the given objects contain only solids"""
+def check(objectslist,includehidden=False):
+    """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
     objs = Draft.getGroupContents(objectslist)
     if not includehidden:
         objs = Draft.removeHidden(objs)
@@ -439,11 +474,11 @@ def check(objectslist,includehidden=True):
             bad.append([o,"is not a Part-based object"])
         else:
             s = o.Shape
-            if not s.isClosed():
+            if (not s.isClosed()) and (not (Draft.getType(o) == "Axis")):
                 bad.append([o,"is not closed"])
             elif not s.isValid():
                 bad.append([o,"is not valid"])
-            elif not s.Solids:
+            elif (not s.Solids) and (not (Draft.getType(o) == "Axis")):
                 bad.append([o,"doesn't contain any solid"])
             else:
                 f = 0

@@ -1005,55 +1005,55 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
     draw(true);
 }
 
-bool ViewProviderSketch::isConstraintAtPosition(const Base::Vector3d &constrPos, const SoNode *constraint)
+Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &origPos,
+                                                          const Base::Vector3d &norm,
+                                                          const Base::Vector3d &dir, float step,
+                                                          const SoNode *constraint)
 {
     assert(edit);
     Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
     SoRayPickAction rp(viewer->getViewportRegion());
-    rp.setRadius(0.1f);
-    rp.setPickAll(true);
-    rp.setRay(SbVec3f(constrPos.x, constrPos.y, -1.f), SbVec3f(0, 0, 1) );
-    //problem
-    rp.apply(edit->constrGroup); // We could narrow it down to just the SoGroup containing the constraints
 
-    // returns a copy of the point
-    SoPickedPoint *pp = rp.getPickedPoint();
-    const SoPickedPointList ppl = rp.getPickedPointList();
+    float scaled_step = step * getScaleFactor();
 
-    if(ppl.getLength() > 1)
-      return true;
-    if (pp) {
-        SoPath *path = pp->getPath();
-        int length = path->getLength();
-        SoNode *tailFather1 = path->getNode(length-2);
-        SoNode *tailFather2 = path->getNode(length-3);
-
-        // checking if a constraint is the same as the one selected
-        if (tailFather1 == constraint || tailFather2 == constraint) {
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
-}
-
-Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &suggestedPos,
-                                                          const Base::Vector3d &dir, float step,
-                                                          const SoNode *constraint)
-{
     int multiplier = 0;
-    Base::Vector3d freePos;
-    do {
+    Base::Vector3d relPos, freePos;
+    bool isConstraintAtPosition = true;
+    while (isConstraintAtPosition && multiplier < 10) {
         // Calculate new position of constraint
-        freePos = suggestedPos + (dir * (multiplier * step));
-        multiplier++; // Increment the multiplier
+        relPos = norm * 0.5f + dir * multiplier;
+        freePos = origPos + relPos * scaled_step;
+
+        rp.setRadius(0.1f);
+        rp.setPickAll(true);
+        rp.setRay(SbVec3f(freePos.x, freePos.y, -1.f), SbVec3f(0, 0, 1) );
+        //problem
+        rp.apply(edit->constrGroup); // We could narrow it down to just the SoGroup containing the constraints
+
+        // returns a copy of the point
+        SoPickedPoint *pp = rp.getPickedPoint();
+        const SoPickedPointList ppl = rp.getPickedPointList();
+
+        if (ppl.getLength() <= 1 && pp) {
+            SoPath *path = pp->getPath();
+            int length = path->getLength();
+            SoNode *tailFather1 = path->getNode(length-2);
+            SoNode *tailFather2 = path->getNode(length-3);
+
+            // checking if a constraint is the same as the one selected
+            if (tailFather1 == constraint || tailFather2 == constraint)
+                isConstraintAtPosition = false;
+        } else
+            isConstraintAtPosition = false;
+
+        multiplier *= -1; // search in both sides
+        if  (multiplier >= 0)
+            multiplier++; // Increment the multiplier
     }
-    while (isConstraintAtPosition(freePos, constraint));
-    return freePos;
+    if (multiplier == 10)
+        relPos = norm * 0.5f; // no free position found
+    return relPos * step;
 }
 
 bool ViewProviderSketch::isSelectable(void) const
@@ -1716,7 +1716,7 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(start);
             Points.push_back(end);
         }
-        else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a circle
+        else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
             const Part::GeomBSplineCurve *spline = dynamic_cast<const Part::GeomBSplineCurve *>(*it);
             Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(spline->handle());
 
@@ -1842,19 +1842,12 @@ Restart:
                     Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
                     Base::Vector3d norm(-dir.y,dir.x,0);
 
-                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-                    Base::Vector3d constrPos = midpos + (norm * 2.5 * scale);
-
-                    constrPos = seekConstraintPosition(constrPos, dir, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                    // Translate the Icon based on calculated position
-                    Base::Vector3d relPos = constrPos - midpos; // Relative Position of Icons to Midpoint
-                    relPos = relPos / scale; // Must Divide by Scale Factor
+                    Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
 
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos.x, relPos.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos.x, relpos.y, 0);
 
                 }
                 break;
@@ -1921,25 +1914,16 @@ Restart:
                         dir1 = Base::Vector3d(1,0,0);
                     }
 
-                    // Get Current Scale Factor
-                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-
-                    Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
-                    constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
-
-                    // Translate the Icon based on calculated position
-                    Base::Vector3d relPos1 = (constrPos1 - midpos1) / scale ; // Relative Position of Icons to Midpoint1
+                    Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                     if (Constr->FirstPos == Sketcher::none) {
-                        Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
-                        constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
-                        Base::Vector3d relPos2 = (constrPos2 - midpos2) / scale ; // Relative Position of Icons to Midpoint2
                         Base::Vector3d secondPos = midpos2 - midpos1;
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
                     }
 
                 }
@@ -2012,32 +1996,19 @@ Restart:
                         norm2 = Base::Vector3d(-dir2.y,dir2.x,0.);
                     }
 
-                    // Get Current Scale Factor
-                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-
-                    Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
-                    constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
-
-                    Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
-                    constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                    // Translate the Icon based on calculated position
-                    Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1
-                    Base::Vector3d relPos2 = constrPos2 - midpos2 ; // Relative Position of Icons to Midpoint2
-
-                    relPos1 = relPos1 / scale;
-                    relPos2 = relPos2 / scale;
+                    Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                    Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                     Base::Vector3d secondPos = midpos2 - midpos1;
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y -relpos1.y, 0);
 
                 }
                 break;
@@ -2148,32 +2119,19 @@ Restart:
                             Base::Vector3d norm1 = Base::Vector3d(-dir1.y,dir1.x,0.f);
                             Base::Vector3d norm2 = Base::Vector3d(-dir2.y,dir2.x,0.f);
 
-                            // Get Current Scale Factor
-                            float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-
-                            Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
-                            constrPos1 = seekConstraintPosition(constrPos1, dir1, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                            Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
-                            constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                            // Translate the Icon based on calculated position
-                            Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1
-                            Base::Vector3d relPos2 = constrPos2 - midpos2 ; // Relative Position of Icons to Midpoint2
-
-                            relPos1 = relPos1 / scale;
-                            relPos2 = relPos2 / scale;
+                            Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
                             dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                             //Reference Position that is scaled according to zoom
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
                             dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                             //Reference Position that is scaled according to zoom
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
 
                             break;
                         }
@@ -2777,9 +2735,14 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditCurveSet = new SoLineSet;
     edit->EditRoot->addChild(edit->EditCurveSet);
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    float transparency;
+    SbColor cursorTextColor(0,0,1);
+    cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
+
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoMaterial *EditMaterials = new SoMaterial;
-    EditMaterials->diffuseColor = SbColor(0,0,1);
+    EditMaterials->diffuseColor = cursorTextColor;
     edit->EditRoot->addChild(EditMaterials);
 
     SoSeparator *Coordsep = new SoSeparator();
@@ -2867,17 +2830,17 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
 }
 
-void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const std::string &text)
+void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbString &text)
 {
-    edit->textX->string = text.c_str();
+    edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
   
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
 {
-    char buf[40];
-    sprintf( buf, " (%.1f,%.1f)", Pos.fX,Pos.fY );
-    edit->textX->string = buf;
+    SbString text;
+    text.sprintf(" (%.1f,%.1f)", Pos.fX, Pos.fY);
+    edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
 
