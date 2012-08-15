@@ -452,7 +452,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
           << "Std_ViewRight" << "Std_ViewTop" << "Separator" << "Std_ViewRear" << "Std_ViewLeft"
-          << "Std_ViewBottom";
+          << "Std_ViewBottom" << "Separator" << "Std_MeasureDistance";
 
     // Part Design
     Gui::ToolBarItem* part_design = new Gui::ToolBarItem( root );

@@ -135,6 +135,8 @@ public:
   void transform    (const Vector3f& rclVct, const Matrix4D& rclMtrx);
   void transform    (const Vector3d& rclVct, const Matrix4D& rclMtrx);
   void inverse      (void);
+  /// if matrix is orthogonal a special way of getting the inverse is used
+  void inverseOrthogonal(void);
   void inverseGauss (void);
   void transpose    (void);
   //@}

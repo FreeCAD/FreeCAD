@@ -35,12 +35,12 @@
 #include "MeshPy.cpp"
 #include "MeshProperties.h"
 #include "Core/Algorithm.h"
+#include "Core/Triangulation.h"
 #include "Core/Iterator.h"
 #include "Core/Degeneration.h"
 #include "Core/Elements.h"
 #include "Core/Grid.h"
 #include "Core/MeshKernel.h"
-#include "Core/Triangulation.h"
 #include "Core/Segmentation.h"
 #include "Core/Curvature.h"
 
@@ -1278,6 +1278,46 @@ PyObject*  MeshPy::foraminate(PyObject *args)
     catch (const Py::Exception&) {
         return 0;
     }
+}
+
+PyObject*  MeshPy::cut(PyObject *args)
+{
+    PyObject* poly;
+    int mode;
+    if (!PyArg_ParseTuple(args, "O!i", &PyList_Type, &poly, &mode))
+        return NULL;
+
+    Py::List list(poly);
+    std::vector<Base::Vector3f> polygon;
+    polygon.reserve(list.size());
+    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Base::Vector3d pnt = Py::Vector(*it).toVector();
+        polygon.push_back(Base::convertTo<Base::Vector3f>(pnt));
+    }
+
+    getMeshObjectPtr()->cut(polygon, MeshObject::CutType(mode));
+
+    Py_Return; 
+}
+
+PyObject*  MeshPy::trim(PyObject *args)
+{
+    PyObject* poly;
+    int mode;
+    if (!PyArg_ParseTuple(args, "O!i", &PyList_Type, &poly, &mode))
+        return NULL;
+
+    Py::List list(poly);
+    std::vector<Base::Vector3f> polygon;
+    polygon.reserve(list.size());
+    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Base::Vector3d pnt = Py::Vector(*it).toVector();
+        polygon.push_back(Base::convertTo<Base::Vector3f>(pnt));
+    }
+
+    getMeshObjectPtr()->trim(polygon, MeshObject::CutType(mode));
+
+    Py_Return; 
 }
 
 PyObject*  MeshPy::smooth(PyObject *args)

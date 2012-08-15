@@ -345,11 +345,24 @@ int PolyPickerSelection::mouseButtonEvent( const SoMouseButtonEvent * const e, c
                     m_iXnew = pos.x();  m_iYnew = pos.y();
                     m_iXold = pos.x();  m_iYold = pos.y();
                 }
-
+            }   break;
+        default:
+            {
+            }   break;
+        }
+    }
+    // release
+    else {
+        switch (button)
+        {
+        case SoMouseButtonEvent::BUTTON2:
+            {
                 QCursor cur = _pcView3D->getWidget()->cursor();
                 _pcView3D->getWidget()->setCursor(m_cPrevCursor);
-//              _pcView3D->getGLWidget()->releaseMouse();
 
+                // The pop-up menu should be shown when releasing mouse button because
+                // otherwise the navigation style doesn't get the UP event and gets into
+                // an inconsistent state.
                 int id = popupMenu();
                 if (id == Finish || id == Cancel) {
                     releaseMouseModel();
