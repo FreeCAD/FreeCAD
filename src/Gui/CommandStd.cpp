@@ -576,7 +576,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
-    rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
+    //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
 }
