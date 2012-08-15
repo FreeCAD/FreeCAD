@@ -222,7 +222,7 @@ class _ArchDrawingView:
             [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
             return V0.Edges+V1.Edges
         else:
-            print "No shape has been computed yet, use wireframe rendering and re-render"
+            FreeCAD.Console.PrintMessage(str(translate("Arch","No shape has been computed yet, select wireframe rendering and render again")))
             return None
 
     def getDXF(self):
@@ -233,7 +233,7 @@ class _ArchDrawingView:
             DxfOutput = Drawing.projectToDXF(self.baseshape,self.direction)
             return DxfOutput
         else:
-            print "No shape has been computed yet, use wireframe rendering and re-render"
+            FreeCAD.Console.PrintMessage(str(translate("Arch","No shape has been computed yet, select wireframe rendering and render again")))
             return None
 
     def buildSVG(self, obj,join=False):
@@ -273,7 +273,7 @@ class _ArchDrawingView:
                                 if o.Shape.isValid():
                                     shapes.extend(o.Shape.Solids)
                                 else:
-                                    FreeCAD.Console.PrintWarning("Skipping invalid object: "+o.Name)
+                                    FreeCAD.Console.PrintWarning(str(translate("Arch","Skipping invalid object: "))+o.Name)
                         cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
                         if cutvolume:
                             nsh = []

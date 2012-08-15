@@ -390,7 +390,7 @@ class _Wall(ArchComponent.Component):
                     if sh.isClosed() and sh.isValid() and sh.Solids and (not sh.isNull()):
                         base = sh
                     else:
-                        FreeCAD.Console.PrintWarning("This mesh is an invalid solid")
+                        FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
                         obj.Base.ViewObject.show()
 
         if base:

@@ -111,9 +111,7 @@ def removeComponents(objectsList,host=None):
         if Draft.getType(host) in ["Wall","Structure"]:
             if hasattr(host,"Axes"):
                 a = host.Axes
-                print a
                 for o in objectsList[:]:
-                    print o.Name
                     if o in a:
                         a.remove(o)
                         objectsList.remove(o)
@@ -127,10 +125,10 @@ def removeComponents(objectsList,host=None):
                             if o.Base.Support:
                                 if isinstance(o.Base.Support,tuple):
                                    if o.Base.Support[0].Name == host.Name:
-                                       print "removing sketch support to avoid cross-referencing"
+                                       FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
                                        o.Base.Support = None
                                 elif o.Base.Support.Name == host.Name:
-                                    print "removing sketch support to avoid cross-referencing"
+                                    FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
                                     o.Base.Support = None
             host.Subtractions = s
     else:
@@ -293,7 +291,7 @@ def getCutVolume(cutplane,shapes):
     u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
     v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
     if not bb.isCutPlane(placement.Base,ax):
-        print "No objects are cut by the plane"
+        FreeCAD.Console.PrintMessage(str(translate("Arch","No objects are cut by the plane")))
         return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
@@ -475,19 +473,19 @@ def check(objectslist,includehidden=False):
         else:
             s = o.Shape
             if (not s.isClosed()) and (not (Draft.getType(o) == "Axis")):
-                bad.append([o,"is not closed"])
+                bad.append([o,str(translate("Arch","is not closed"))])
             elif not s.isValid():
-                bad.append([o,"is not valid"])
+                bad.append([o,str(translate("Arch","is not valid"))])
             elif (not s.Solids) and (not (Draft.getType(o) == "Axis")):
-                bad.append([o,"doesn't contain any solid"])
+                bad.append([o,str(translate("Arch","doesn't contain any solid"))])
             else:
                 f = 0
                 for sol in s.Solids:
                     f += len(sol.Faces)
                     if not sol.isClosed():
-                        bad.append([o,"contains a non-closed solid"])
+                        bad.append([o,str(translate("Arch","contains a non-closed solid"))])
                 if len(s.Faces) != f:
-                    bad.append([o,"contains faces that are not part of any solid"])
+                    bad.append([o,str(translate("Arch","contains faces that are not part of any solid"))])
     return bad
 
     
@@ -589,7 +587,7 @@ class _CommandMeshToShape:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_MeshToShape',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToShape","Mesh to Shape"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToPart","Turns selected meshes into Part Shape objects")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -694,7 +692,7 @@ class _CommandCheck:
     def Activated(self):
         result = check(FreeCADGui.Selection.getSelection())
         if not result:
-            FreeCAD.Console.PrintMessage("All good! no problems found")
+            FreeCAD.Console.PrintMessage(str(translate("Arch","All good! no problems found")))
         else:
             FreeCADGui.Selection.clearSelection()
             for i in result:

@@ -22,6 +22,7 @@
 #***************************************************************************
 
 import FreeCAD, DraftGeomUtils, Part, Draft
+from DraftTools import translate
 
 p = Draft.precision()
 
@@ -91,7 +92,7 @@ def export(exportList,filename):
                 for f in flist:
                     outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage("successfully written "+filename)
+    FreeCAD.Console.PrintMessage(str(translate("Arch","successfully written "))+filename)
             
             
             
