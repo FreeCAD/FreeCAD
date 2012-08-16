@@ -253,11 +253,15 @@ class _ArchDrawingView:
                         render = ArchVRM.Renderer()
                         render.setWorkingPlane(obj.Source.Placement)
                         render.addObjects(Draft.getGroupContents(objs,walls=True))
-                        render.cut(obj.Source.Shape,obj.ShowCut)
+                        if hasattr(obj,"ShowCut"):
+                            render.cut(obj.Source.Shape,obj.ShowCut)
+                        else:
+                            render.cut(obj.Source.Shape)
                         self.svg += render.getViewSVG(linewidth="LWPlaceholder")
                         self.svg += render.getSectionSVG(linewidth="SWPLaceholder")
-                        if obj.ShowCut:
-                            self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
+                        if hasattr(obj,"ShowCut"):
+                            if obj.ShowCut:
+                                self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
                         # print render.info()
                         
                     else:
@@ -285,9 +289,10 @@ class _ArchDrawingView:
                                     s = sol.section(cutface)
                                     nsh.extend(c.Solids)
                                     sshapes.append(s)
-                                    if obj.ShowCut:
-                                        c = sol.cut(invcutvolume)
-                                        hshapes.append(c)
+                                    if hasattr(obj,"ShowCut"):
+                                        if obj.ShowCut:
+                                            c = sol.cut(invcutvolume)
+                                            hshapes.append(c)
                             shapes = nsh
                         if shapes:
                             self.shapes = shapes

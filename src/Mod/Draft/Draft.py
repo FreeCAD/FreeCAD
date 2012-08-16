@@ -1510,15 +1510,23 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
     given page. lwmod modifies lineweights (in percent), tmod modifies text heights
     (in percent). The Hint scale, X and Y of the page are used.
     '''
-    viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View"+obj.Name)
-    _DrawingView(viewobj)
-    page.addObject(viewobj)
-    viewobj.Scale = page.ViewObject.HintScale
-    viewobj.X = page.ViewObject.HintOffsetX
-    viewobj.Y = page.ViewObject.HintOffsetY
-    viewobj.Source = obj
-    if lwmod: viewobj.LineweightModifier = lwmod
-    if tmod: viewobj.TextModifier = tmod
+    if getType(obj) == "SectionPlane":
+        import ArchSectionPlane
+        viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
+        page.addObject(viewobj)
+        ArchSectionPlane._ArchDrawingView(viewobj)
+        viewobj.Source = obj
+        viewobj.Label = "View of "+obj.Name
+    else:
+        viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View"+obj.Name)
+        _DrawingView(viewobj)
+        page.addObject(viewobj)
+        viewobj.Scale = page.ViewObject.HintScale
+        viewobj.X = page.ViewObject.HintOffsetX
+        viewobj.Y = page.ViewObject.HintOffsetY
+        viewobj.Source = obj
+        if lwmod: viewobj.LineweightModifier = lwmod
+        if tmod: viewobj.TextModifier = tmod
     return viewobj
 
 def makeShape2DView(baseobj,projectionVector=None):
@@ -1785,6 +1793,7 @@ class _Dimension:
                         "The base object this dimension is linked to")
         obj.addProperty("App::PropertyIntegerList","LinkedVertices","Base",
                         "The indices of the vertices from the base object to measure")
+        obj.addProperty("App::PropertyLength","Distance","Base","The measurement of this dimension")
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
@@ -1792,7 +1801,7 @@ class _Dimension:
         self.Type = "Dimension"
 		
     def onChanged(self, obj, prop):
-        pass
+        obj.setEditorMode('Distance',1)
 
     def execute(self, obj):
         if obj.ViewObject:
@@ -1992,6 +2001,10 @@ class _ViewProviderDimension:
                 self.line.numVertices.setValues([3,3])
             self.coord1.point.setValue((p2.x,p2.y,p2.z))
             self.coord2.point.setValue((p3.x,p3.y,p3.z))
+        if hasattr(obj,"Distance"):
+            l = p3.sub(p2).Length
+            if round(obj.Distance,precision()) != round(l,precision()):
+                obj.Distance = l
 
     def onChanged(self, vp, prop):
         self.Object = vp.Object
