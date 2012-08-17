@@ -185,6 +185,10 @@ class DraftToolBar:
         self.isTaskOn = False
         self.fillmode = Draft.getParam("fillmode")
         self.mask = None
+
+        # set default to taskbar mode
+        if self.taskmode == None:
+            self.taskmode = 1
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
