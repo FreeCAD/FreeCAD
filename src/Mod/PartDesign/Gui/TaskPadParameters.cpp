@@ -69,6 +69,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
             this, SLOT(onModeChanged(int)));
     connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
             this, SLOT(onFaceName(QString)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -159,6 +161,15 @@ void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         pcPad->getDocument()->recomputeFeature(pcPad);
         ui->lineFaceName->setText(tr(element.c_str()));
     }
+}
+
+void TaskPadParameters::onUpdateView(bool on)
+{
+    ui->changeMode->blockSignals(!on);
+    ui->doubleSpinBox->blockSignals(!on);
+    ui->checkBoxMidplane->blockSignals(!on);
+    ui->checkBoxReversed->blockSignals(!on);
+    ui->doubleSpinBox2->blockSignals(!on);
 }
 
 void TaskPadParameters::onLengthChanged(double len)
