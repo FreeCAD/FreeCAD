@@ -242,7 +242,7 @@ class _ArchDrawingView:
         if hasattr(obj,"Source"):
             if obj.Source:
                 if obj.Source.Objects:
-                    objs = Draft.getGroupContents(obj.Source.Objects)
+                    objs = Draft.getGroupContents(obj.Source.Objects,walls=True)
                     objs = Draft.removeHidden(objs)
                     self.svg = ''
 
@@ -252,7 +252,7 @@ class _ArchDrawingView:
                         import ArchVRM
                         render = ArchVRM.Renderer()
                         render.setWorkingPlane(obj.Source.Placement)
-                        render.addObjects(Draft.getGroupContents(objs,walls=True))
+                        render.addObjects(objs)
                         if hasattr(obj,"ShowCut"):
                             render.cut(obj.Source.Shape,obj.ShowCut)
                         else:
@@ -336,6 +336,8 @@ class _ArchDrawingView:
         else:
             if not self.svg:
                 self.buildSVG(obj)
+        if not hasattr(self,"svg"):
+            return ''
         linewidth = obj.LineWidth/obj.Scale
         st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness")
         if not st:
