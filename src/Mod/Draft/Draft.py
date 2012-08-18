@@ -2746,7 +2746,29 @@ class _Shape2DView:
         import Drawing, DraftGeomUtils
         pl = obj.Placement
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if getType(obj.Base) == "SectionPlane":
+                if obj.Base.Objects:
+                    import Arch, Part, Drawing
+                    objs = getGroupContents(obj.Base.Objects,walls=True)
+                    objs = removeHidden(objs)
+                    shapes = []
+                    for o in objs:
+                        if o.isDerivedFrom("Part::Feature"):
+                            shapes.extend(o.Shape.Solids)
+                    cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
+                    cuts = []
+                    for sh in shapes:
+                        if sh.Volume < 0:
+                            sh.reverse()
+                        c = sh.cut(cutv)
+                        cuts.extend(c.Solids)
+                    comp = Part.makeCompound(cuts)
+                    opl = FreeCAD.Placement(obj.Base.Placement)
+                    proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
+                    [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(comp,proj)
+                    if visibleG0:
+                        obj.Shape = visibleG0
+            elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not DraftVecUtils.isNull(obj.Projection):
                     [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
                     if visibleG0:
