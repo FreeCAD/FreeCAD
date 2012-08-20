@@ -636,24 +636,24 @@ void TaskOrthoViews::compute()
 
 void TaskOrthoViews::validate_cbs()
 {
-    for (int i=0; i < 5; i++)
-        for (int j=0; j < 5; j++)
-            if ((abs(i-2) + abs(j-2)) < 3)                              //if i,j combination corresponds to valid check box, then proceed with:
+    for (int i=0; i < 5; i++) {
+        for (int j=0; j < 5; j++) {
+            if ((abs(i-2) + abs(j-2)) < 3) {                            //if i,j combination corresponds to valid check box, then proceed with:
 
                 if (view_count == 0)
                 {
                     c_boxes[i][j]->setEnabled(false);
                     c_boxes[i][j]->setChecked(false);
                 }
-                else if (!c_boxes[i][j]->isChecked())                   //only questions boxes 'enableability' if it's not checked
-                    if (view_count == 4)
+                else if (!c_boxes[i][j]->isChecked()) {                 //only questions boxes 'enableability' if it's not checked
+                    if (view_count == 4) {
                         c_boxes[i][j]->setEnabled(false);               //if there are four checked boxes then all others are disabled
-                    else
-                    {
-                        if ((abs(i-2) + abs(j-2)) == 1)                 //only true for boxes immediately up/down/left/right of centre
+                    }
+                    else {
+                        if ((abs(i-2) + abs(j-2)) == 1) {               //only true for boxes immediately up/down/left/right of centre
                             c_boxes[i][j]->setEnabled(c_boxes[2][2]->isChecked());            //which are enabled if centre box is checked
-                        else
-                        {
+                        }
+                        else {
                             int di = ((i-2) < 0) - ((i-2) > 0);         //which direction is towards centre?
                             int dj = ((j-2) < 0) - ((j-2) > 0);
  
@@ -668,8 +668,11 @@ void TaskOrthoViews::validate_cbs()
                                 c_boxes[i][j]->setEnabled(false);       
                         }
                     }
+                }
+            }
+        }
+    }
 }
-
 
 void TaskOrthoViews::cb_toggled(bool toggle)
 {

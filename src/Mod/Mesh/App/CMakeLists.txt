@@ -1,20 +1,26 @@
 if(WIN32)
-    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
+    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT -DEIGEN2_SUPPORT)
+else (Win32)
+    add_definitions(-DEIGEN2_SUPPORT)
 endif(WIN32)
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/3rdParty
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
+    ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${EIGEN2_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
 )
 
 
 set(Mesh_LIBS
     ${Boost_LIBRARIES}
+    ${QT_QTCORE_LIBRARY}
+    ${QT_QTCORE_LIBRARY_DEBUG}
     FreeCADBase
     FreeCADApp
 )
@@ -41,6 +47,8 @@ SET(Core_SRCS
     Core/Approximation.h
     Core/Builder.cpp
     Core/Builder.h
+    Core/Curvature.cpp
+    Core/Curvature.h
     Core/Definitions.cpp
     Core/Definitions.h
     Core/Degeneration.cpp
@@ -61,6 +69,8 @@ SET(Core_SRCS
     Core/MeshKernel.h
     Core/Projection.cpp
     Core/Projection.h
+    Core/Segmentation.cpp
+    Core/Segmentation.h
     Core/SetOperations.cpp
     Core/SetOperations.h
     Core/Smoothing.cpp

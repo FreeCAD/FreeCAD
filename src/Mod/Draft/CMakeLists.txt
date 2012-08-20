@@ -7,6 +7,8 @@ SET(Draft_SRCS
     DraftGui.py
     DraftSnap.py
     DraftTrackers.py
+    DraftVecUtils.py
+    DraftGeomUtils.py
     WorkingPlane.py
     importDXF.py
     importOCA.py
@@ -22,8 +24,6 @@ SET(DraftLibs_SRCS
     draftlibs/dxfImportObjects.py
     draftlibs/dxfLibrary.py
     draftlibs/dxfReader.py
-    draftlibs/fcgeo.py
-    draftlibs/fcvec.py
     draftlibs/__init__.py
 )
 SOURCE_GROUP("draftlibs" FILES ${DraftLibs_SRCS})

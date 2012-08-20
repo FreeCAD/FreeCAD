@@ -34,9 +34,11 @@
 #include <App/Application.h>
 #include <boost/regex.hpp>
 #include <iostream>
+#include <iterator>
 
 #include "FeaturePage.h"
 #include "FeatureView.h"
+#include "FeatureClip.h"
 
 using namespace Drawing;
 using namespace std;
@@ -85,10 +87,11 @@ void FeaturePage::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)
 {
-    if(Template.getValue() == "")
+    std::string temp = Template.getValue();
+    if (temp.empty())
         return App::DocumentObject::StdReturn;
 
-    Base::FileInfo fi(Template.getValue());
+    Base::FileInfo fi(temp);
     if (!fi.isReadable()) {
         // if there is a old absolute template file set use a redirect
         fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
@@ -124,9 +127,13 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             // get through the children and collect all the views
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
-                if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
+                if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
                     Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
                     ofile << View->ViewResult.getValue();
+                    ofile << tempendl << tempendl << tempendl;
+                } else if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId()) ) {
+                    Drawing::FeatureClip *Clip = dynamic_cast<Drawing::FeatureClip *>(*It);
+                    ofile << Clip->ViewResult.getValue();
                     ofile << tempendl << tempendl << tempendl;
                 }
             }
@@ -181,8 +188,9 @@ std::vector<std::string> FeaturePage::getEditableTextsFromTemplate(void) const {
 
     std::vector<string> eds;
 
-    if (Template.getValue() != "") {
-        Base::FileInfo tfi(Template.getValue());
+    std::string temp = Template.getValue();
+    if (!temp.empty()) {
+        Base::FileInfo tfi(temp);
         if (!tfi.isReadable()) {
             // if there is a old absolute template file set use a redirect
             tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());

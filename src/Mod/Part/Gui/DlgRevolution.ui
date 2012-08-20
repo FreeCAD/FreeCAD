@@ -49,7 +49,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QDoubleSpinBox" name="baseZ"/>
+      <widget class="QDoubleSpinBox" name="zPos"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
@@ -62,7 +62,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QDoubleSpinBox" name="baseY"/>
+      <widget class="QDoubleSpinBox" name="yPos"/>
      </item>
      <item row="4" column="1">
       <widget class="QComboBox" name="direction"/>
@@ -88,7 +88,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QDoubleSpinBox" name="baseX"/>
+      <widget class="QDoubleSpinBox" name="xPos"/>
      </item>
      <item row="0" column="1">
       <widget class="QDoubleSpinBox" name="angle">
@@ -105,7 +105,7 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <spacer>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -118,7 +118,7 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="0" rowspan="3">
+   <item row="0" column="0" rowspan="4">
     <widget class="QTreeWidget" name="treeWidget">
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -136,14 +136,21 @@
      </column>
     </widget>
    </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="selectLine">
+     <property name="text">
+      <string>Select line in 3D view</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>treeWidget</tabstop>
   <tabstop>angle</tabstop>
-  <tabstop>baseX</tabstop>
-  <tabstop>baseY</tabstop>
-  <tabstop>baseZ</tabstop>
+  <tabstop>xPos</tabstop>
+  <tabstop>yPos</tabstop>
+  <tabstop>zPos</tabstop>
   <tabstop>direction</tabstop>
  </tabstops>
  <resources/>

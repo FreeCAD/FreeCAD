@@ -79,7 +79,7 @@ class DrawingGuiExport DrawingView : public Gui::MDIView
     Q_OBJECT
 
 public:
-    DrawingView(QWidget* parent = 0);
+    DrawingView(Gui::Document* doc, QWidget* parent = 0);
 
 public Q_SLOTS:
     void load(const QString &path = QString());
@@ -92,9 +92,8 @@ public:
     void print();
     void printPdf();
     void printPreview();
-
-protected Q_SLOTS:
     void print(QPrinter* printer);
+    PyObject* getPyObject();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);

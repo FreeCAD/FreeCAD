@@ -43,6 +43,7 @@ class SoMarkerSet;
 
 class SoText2;
 class SoTranslation;
+class SbString;
 class SbTime;
 
 struct EditData;
@@ -126,7 +127,7 @@ public:
     /// helper to detect preselection
     //bool handlePreselection(const SoPickedPoint *pp);
     /// helper to detect preselection
-    bool detectPreselection(const SoPickedPoint *Point, int &PtIndex,int &CurvIndex, int &ConstrIndex, int &CrossIndex);
+    bool detectPreselection(const SoPickedPoint *Point, int &PtIndex,int &GeoIndex, int &ConstrIndex, int &CrossIndex);
     /// helper change the color of the sketch according to selection and solver status
     void updateColor(void);
     /// get the pointer to the sketch document object
@@ -137,10 +138,9 @@ public:
 
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2D &toPos);
-    /// checks if there is a constraint object at position vector
-    bool isConstraintAtPosition(const Base::Vector3d &constrPos, const SoNode *constraint);
     /// finds a free position for placing a constraint icon
-    Base::Vector3d seekConstraintPosition(const Base::Vector3d &suggestedPos,
+    Base::Vector3d seekConstraintPosition(const Base::Vector3d &origPos,
+                                          const Base::Vector3d &norm,
                                           const Base::Vector3d &dir, float step,
                                           const SoNode *constraint);
 
@@ -174,15 +174,17 @@ public:
     /// signals if the constraints list has changed
     boost::signal<void ()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signal<void (int type, int dofs, std::string &msg)> signalSetUp;
+    boost::signal<void (QString msg)> signalSetUp;
     /// signals if the sketch has been solved
-    boost::signal<void (int type, float time)> signalSolved;
+    boost::signal<void (QString msg)> signalSolved;
 
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
     virtual void unsetEditViewer(Gui::View3DInventorViewer*);
+    /// set up and solve the sketch
+    void solveSketch(void);
     /// helper to detect whether the picked point lies on the sketch
     bool isPointOnSketch(const SoPickedPoint *pp) const;
     /// get called by the container whenever a property has been changed
@@ -198,6 +200,7 @@ protected:
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
 
+    void setPositionText(const Base::Vector2D &Pos, const SbString &txt);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
 

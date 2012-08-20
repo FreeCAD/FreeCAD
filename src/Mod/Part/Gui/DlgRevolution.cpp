@@ -24,7 +24,13 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <gp_Dir.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Pnt.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
 #endif
 
 #include "ui_DlgRevolution.h"
@@ -40,16 +46,60 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/Tools.h>
 
 using namespace PartGui;
 
+class DlgRevolution::EdgeSelection : public Gui::SelectionFilterGate
+{
+public:
+    gp_Pnt loc;
+    gp_Dir dir;
+    bool canSelect;
+
+    EdgeSelection()
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+    {
+    }
+    bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+    {
+        this->canSelect = false;
+        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+            return false;
+        if (!sSubName || sSubName[0] == '\0')
+            return false;
+        std::string element(sSubName);
+        if (element.substr(0,4) != "Edge")
+            return false;
+        Part::Feature* fea = static_cast<Part::Feature*>(pObj);
+        try {
+            TopoDS_Shape sub = fea->Shape.getShape().getSubShape(sSubName);
+            if (!sub.IsNull() && sub.ShapeType() == TopAbs_EDGE) {
+                const TopoDS_Edge& edge = TopoDS::Edge(sub);
+                BRepAdaptor_Curve adapt(edge);
+                if (adapt.GetType() == GeomAbs_Line) {
+                    gp_Lin line = adapt.Line();
+                    this->loc = line.Location();
+                    this->dir = line.Direction();
+                    this->canSelect = true;
+                    return true;
+                }
+            }
+        }
+        catch (...) {
+        }
+
+        return false;
+    }
+};
+
 DlgRevolution::DlgRevolution(QWidget* parent, Qt::WFlags fl)
-  : Gui::LocationDialog(parent, fl)
+  : Gui::LocationDialog(parent, fl), filter(0)
 {
     ui = new Ui_RevolutionComp(this);
-    ui->baseX->setRange(-DBL_MAX,DBL_MAX);
-    ui->baseY->setRange(-DBL_MAX,DBL_MAX);
-    ui->baseZ->setRange(-DBL_MAX,DBL_MAX);
+    ui->xPos->setRange(-DBL_MAX,DBL_MAX);
+    ui->yPos->setRange(-DBL_MAX,DBL_MAX);
+    ui->zPos->setRange(-DBL_MAX,DBL_MAX);
     findShapes();
 
     Gui::ItemViewSelection sel(ui->treeWidget);
@@ -62,6 +112,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WFlags fl)
 DlgRevolution::~DlgRevolution()
 {
     // no need to delete child widgets, Qt does it all for us
+    Gui::Selection().rmvSelectionGate();
     delete ui;
 }
 
@@ -142,9 +193,9 @@ void DlgRevolution::accept()
             .arg(axis.x,0,'f',2)
             .arg(axis.y,0,'f',2)
             .arg(axis.z,0,'f',2)
-            .arg(ui->baseX->value(),0,'f',2)
-            .arg(ui->baseY->value(),0,'f',2)
-            .arg(ui->baseZ->value(),0,'f',2)
+            .arg(ui->xPos->value(),0,'f',2)
+            .arg(ui->yPos->value(),0,'f',2)
+            .arg(ui->zPos->value(),0,'f',2)
             .arg(ui->angle->value(),0,'f',2);
         Gui::Application::Instance->runPythonCode((const char*)code.toAscii());
         QByteArray to = name.toAscii();
@@ -157,6 +208,24 @@ void DlgRevolution::accept()
     activeDoc->commitTransaction();
     activeDoc->recompute();
     QDialog::accept();
+}
+
+void DlgRevolution::on_selectLine_clicked()
+{
+    if (!filter) {
+        filter = new EdgeSelection();
+        Gui::Selection().addSelectionGate(filter);
+    }
+}
+
+void DlgRevolution::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (filter && filter->canSelect) {
+            ui->setPosition (Base::convertTo<Base::Vector3f>(filter->loc));
+            ui->setDirection(Base::convertTo<Base::Vector3f>(filter->dir));
+        }
+    }
 }
 
 // ---------------------------------------

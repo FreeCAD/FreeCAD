@@ -37,6 +37,7 @@
 #include "ViewProviderChamfer.h"
 #include "ViewProviderFillet.h"
 #include "ViewProviderRevolution.h"
+#include "ViewProviderGroove.h"
 
 //#include "resources/qrc_PartDesign.cpp"
 
@@ -83,6 +84,7 @@ void PartDesignGuiExport initPartDesignGui()
     PartDesignGui::ViewProviderPocket    ::init();
     PartDesignGui::ViewProviderPad       ::init();
     PartDesignGui::ViewProviderRevolution::init();
+    PartDesignGui::ViewProviderGroove    ::init();
     PartDesignGui::ViewProviderChamfer   ::init();
     PartDesignGui::ViewProviderFillet    ::init();
 

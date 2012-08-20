@@ -47,6 +47,7 @@
 #include <Gui/Command.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/Tools.h>
 
@@ -270,7 +271,9 @@ DlgPrimitives::~DlgPrimitives()
 void DlgPrimitives::pickCallback(void * ud, SoEventCallback * n)
 {
     const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Picker* pick = reinterpret_cast<Picker*>(ud);
+    if (pick->exitCode >= 0)
+        pick->loop.exit(pick->exitCode);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->setHandled();
@@ -278,16 +281,14 @@ void DlgPrimitives::pickCallback(void * ud, SoEventCallback * n)
         if (mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint * point = n->getPickedPoint();
             if (point) {
-                Picker* pick = reinterpret_cast<Picker*>(ud);
                 if (pick->pickedPoint(point)) {
-                    pick->loop.exit(0);
+                    pick->exitCode = 0;
                 }
             }
         }
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2) {
         if (mbe->getState() == SoButtonEvent::UP) {
-            Picker* pick = reinterpret_cast<Picker*>(ud);
             pick->loop.exit(1);
         }
     }
@@ -306,9 +307,17 @@ void DlgPrimitives::executeCallback(Picker* p)
         if (!viewer->isEditing()) {
             viewer->setEditing(true);
             viewer->setRedirectToSceneGraph(true);
+            SoNode* root = viewer->getSceneGraph();
+            int mode;
+            if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId())) {
+                mode = static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.getValue();
+                static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(Gui::SoFCUnifiedSelection::OFF);
+            }
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback, p);
             this->setDisabled(true);
             int ret = p->loop.exec();
+            if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId()))
+                static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(mode);
             this->setEnabled(true);
             viewer->setEditing(false);
             viewer->setRedirectToSceneGraph(false);
@@ -481,12 +490,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Height=%3\n"
                 "App.ActiveDocument.%1.Radius=%4\n"
                 "App.ActiveDocument.%1.Angle=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n")
+                "App.ActiveDocument.%1.LocalCoord=%6\n"
+                "App.ActiveDocument.%1.Placement=%7\n")
                 .arg(name)
                 .arg(ui.helixPitch->value(),0,'f',2)
                 .arg(ui.helixHeight->value(),0,'f',2)
                 .arg(ui.helixRadius->value(),0,'f',2)
                 .arg(ui.helixAngle->value(),0,'f',2)
+                .arg(ui.helixLocalCS->currentIndex())
                 .arg(placement);
         }
         else if (ui.comboBox1->currentIndex() == 9) {  // circle
@@ -586,6 +597,9 @@ Location::~Location()
         viewer->setEditing(false);
         viewer->setRedirectToSceneGraph(false);
         viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback,this);
+        SoNode* root = viewer->getSceneGraph();
+        if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId()))
+            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(this->mode);
     }
 }
 
@@ -604,6 +618,11 @@ void Location::on_viewPositionButton_clicked()
             viewer->setEditing(true);
             viewer->setRedirectToSceneGraph(true);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback, this);
+            SoNode* root = viewer->getSceneGraph();
+            if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId())) {
+                this->mode = static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.getValue();
+                static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(Gui::SoFCUnifiedSelection::OFF);
+            }
         }
      }
 }
@@ -616,15 +635,7 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1) {
-        if (mbe->getState() == SoButtonEvent::UP) {
-            n->setHandled();
-            view->setEditing(false);
-            view->setRedirectToSceneGraph(false);
-            Location* dlg = reinterpret_cast<Location*>(ud);
-            dlg->activeView = 0;
-            view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback,ud);
-        }
-        else if (mbe->getState() == SoButtonEvent::DOWN) {
+        if (mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint * point = n->getPickedPoint();
             if (point) {
                 SbVec3f pnt = point->getPoint();
@@ -634,6 +645,19 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
                 dlg->ui.loc->setDirection(Base::Vector3f(nor[0],nor[1],nor[2]));
                 n->setHandled();
             }
+        }
+    }
+    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2) {
+        if (mbe->getState() == SoButtonEvent::UP) {
+            n->setHandled();
+            view->setEditing(false);
+            view->setRedirectToSceneGraph(false);
+            Location* dlg = reinterpret_cast<Location*>(ud);
+            dlg->activeView = 0;
+            view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback,ud);
+            SoNode* root = view->getSceneGraph();
+            if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId()))
+                static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(static_cast<Location*>(ud)->mode);
         }
     }
 }

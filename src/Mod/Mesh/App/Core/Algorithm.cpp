@@ -255,6 +255,17 @@ float MeshAlgorithm::GetAverageEdgeLength() const
     return fLen;
 }
 
+Base::Vector3f MeshAlgorithm::GetGravityPoint() const
+{
+    Base::Vector3f center;
+    MeshPointIterator cP(_rclMesh);
+    for (cP.Init(); cP.More(); cP.Next()) {
+        center += *cP;
+    }
+
+    return center / (float)_rclMesh.CountPoints();
+}
+
 void MeshAlgorithm::GetMeshBorders (std::list<std::vector<Base::Vector3f> > &rclBorders) const
 {
     std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
@@ -641,8 +652,8 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         bool ready = false;
         for (MeshFacetArray::_TConstIterator it = _rclMesh._aclFacetArray.begin(); it != _rclMesh._aclFacetArray.end(); ++it) {
             for (int i=0; i<3; i++) {
-                if ((it->_aulPoints[i] == refPoint0) && (it->_aulPoints[(i+1)%3] == refPoint1) ||
-                    (it->_aulPoints[i] == refPoint1) && (it->_aulPoints[(i+1)%3] == refPoint0)) {
+                if (((it->_aulPoints[i] == refPoint0) && (it->_aulPoints[(i+1)%3] == refPoint1)) ||
+                    ((it->_aulPoints[i] == refPoint1) && (it->_aulPoints[(i+1)%3] == refPoint0))) {
                     rFace = *it;
                     rTriangle = _rclMesh.GetFacet(*it);
                     ready = true;
@@ -1156,7 +1167,6 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
 {
     const MeshPointArray& p = _rclMesh.GetPoints();
     const MeshFacetArray& f = _rclMesh.GetFacets();
-    Base::SequencerLauncher seq("Check facets", f.size());
     Base::Vector3f pt2d;
     unsigned long index=0;
     for (MeshFacetArray::_TConstIterator it = f.begin(); it != f.end(); ++it,++index) {
@@ -1167,7 +1177,6 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
                 break;
             }
         }
-        seq.next();
     }
 }
 
@@ -1529,6 +1538,7 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
         rclLines.erase(pFront);
       }
 
+
       if (pEnd != rclLines.end())
       {
         if (bEndFirst == true)
@@ -1743,47 +1753,38 @@ std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(const std::vector<
     return nb;
 }
 
-// ermittelt alle Nachbarn zum Facet deren Schwerpunkt unterhalb der mpx. Distanz befindet. 
-// Facet deren VISIT-Flag gesetzt ist werden nicht beruecksichtig. 
-/// @todo
-void MeshRefPointToFacets::Neighbours (unsigned long ulFacetInd, float fMpxDist, std::vector<MeshFacetArray::_TConstIterator> &rclNb)
+void MeshRefPointToFacets::Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const
 {
-    rclNb.clear();
+    std::set<unsigned long> visited;
     Base::Vector3f  clCenter = _rclMesh.GetFacet(ulFacetInd).GetGravityPoint();
 
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
-    SearchNeighbours(rFacets.begin() + ulFacetInd, clCenter, fMpxDist * fMpxDist, rclNb);
-
-    for (std::vector<MeshFacetArray::_TConstIterator>::iterator i = rclNb.begin(); i != rclNb.end(); i++)
-        (*i)->ResetFlag(MeshFacet::VISIT);  
+    SearchNeighbours(rFacets, ulFacetInd, clCenter, fMaxDist * fMaxDist, visited, collect);
 }
 
-/// @todo
-void MeshRefPointToFacets::SearchNeighbours(MeshFacetArray::_TConstIterator f_it, const Base::Vector3f &rclCenter, float fMpxDist, std::vector<MeshFacetArray::_TConstIterator> &rclNb)
+void MeshRefPointToFacets::SearchNeighbours(const MeshFacetArray& rFacets, unsigned long index, const Base::Vector3f &rclCenter,
+                                            float fMaxDist2, std::set<unsigned long>& visited, MeshCollector& collect) const
 {
-    if (f_it->IsFlag(MeshFacet::VISIT) == true)
+    if (visited.find(index) != visited.end())
         return;
 
-    if (Base::DistanceP2(rclCenter, _rclMesh.GetFacet(*f_it).GetGravityPoint()) > fMpxDist)
+    const MeshFacet& face = rFacets[index];
+    if (Base::DistanceP2(rclCenter, _rclMesh.GetFacet(face).GetGravityPoint()) > fMaxDist2)
         return;
 
-    rclNb.push_back(f_it);
-    f_it->SetFlag(MeshFacet::VISIT);
-
-    MeshPointArray::_TConstIterator p_beg = _rclMesh.GetPoints().begin();
-    MeshFacetArray::_TConstIterator f_beg = _rclMesh.GetFacets().begin();
-
+    visited.insert(index);
+    collect.Append(_rclMesh, index);
     for (int i = 0; i < 3; i++) {
-        const std::set<unsigned long> &f = (*this)[f_it->_aulPoints[i]];
+        const std::set<unsigned long> &f = (*this)[face._aulPoints[i]];
 
         for (std::set<unsigned long>::const_iterator j = f.begin(); j != f.end(); ++j) {
-            SearchNeighbours(f_beg+*j, rclCenter, fMpxDist, rclNb);
+            SearchNeighbours(rFacets, *j, rclCenter, fMaxDist2, visited, collect);
         }
     }
 }
 
 MeshFacetArray::_TConstIterator
-MeshRefPointToFacets::getFacet (unsigned long index) const
+MeshRefPointToFacets::GetFacet (unsigned long index) const
 {
     return _rclMesh.GetFacets().begin() + index;
 }

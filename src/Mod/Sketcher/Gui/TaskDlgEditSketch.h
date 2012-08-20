@@ -65,7 +65,6 @@ public:
 
 protected:
     ViewProviderSketch   *sketchView;
-
     TaskSketcherConstrains  *Constraints;
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;

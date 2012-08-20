@@ -29,9 +29,28 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_19">
         <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
+          <property name="toolTip">
+           <string>If this is checked, the Draft workbench won't appear. Useful since all of the Draft tools are also in the Arch workbench.</string>
+          </property>
+          <property name="text">
+           <string>Hide Draft workbench</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>hideDraftWorkbench</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_19">
           <property name="text">
            <string>Draft interface mode</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -563,6 +582,26 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
+          <property name="toolTip">
+           <string>if checked, a widget indicating the current working plane orientation appears during drawing operations</string>
+          </property>
+          <property name="text">
+           <string>Show Working Plane tracker</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>showPlaneTracker</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
@@ -658,6 +697,25 @@
          </spacer>
         </item>
         <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
+          </property>
+          <property name="text">
+           <string>Always show</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>alwaysShowGrid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_15">
           <property name="enabled">
            <bool>false</bool>
@@ -674,6 +732,12 @@
           </property>
           <property name="toolTip">
            <string>The spacing between each grid line</string>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
@@ -849,19 +913,6 @@ Values with differences below this value will be treated as same.</string>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_9">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_2">
           <property name="maximumSize">
            <size>
@@ -883,17 +934,6 @@ Values with differences below this value will be treated as same.</string>
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Default text font</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
@@ -906,6 +946,13 @@ Values with differences below this value will be treated as same.</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Default text font</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
@@ -1297,6 +1344,22 @@ such as &quot;Arial:Bold&quot;</string>
     <hint type="destinationlabel">
      <x>400</x>
      <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gui::prefcheckbox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gui::prefcheckbox_10</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>373</y>
     </hint>
    </hints>
   </connection>

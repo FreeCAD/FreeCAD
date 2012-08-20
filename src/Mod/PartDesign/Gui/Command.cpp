@@ -23,9 +23,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRep_Tool.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopExp.hxx>
+# include <TopTools_ListOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 # include <QMessageBox>
 #endif
+
+#include <sstream>
+#include <algorithm>
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -316,6 +328,82 @@ bool CmdPartDesignRevolution::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Groove
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignGroove);
+
+CmdPartDesignGroove::CmdPartDesignGroove()
+  : Command("PartDesign_Groove")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Groove");
+    sToolTipText  = QT_TR_NOOP("Groove a selected sketch");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Groove";
+}
+
+void CmdPartDesignGroove::activated(int iMsg)
+{
+    unsigned int n = getSelection().countObjectsOfType(Part::Part2DObject::getClassTypeId());
+    if (n != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select a sketch or 2D object."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("Groove");
+
+    std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
+    Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(Sel.front());
+    const TopoDS_Shape& shape = sketch->Shape.getValue();
+    if (shape.IsNull()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("The shape of the selected object is empty."));
+        return;
+    }
+
+    // count free wires
+    int ctWires=0;
+    TopExp_Explorer ex;
+    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
+        ctWires++;
+    }
+    if (ctWires == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("The shape of the selected object is not a wire."));
+        return;
+    }
+
+    App::DocumentObject* support = sketch->Support.getValue();
+
+    openCommand("Make Groove");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Groove\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
+                                                                             FeatName.c_str(), sketch->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
+    updateActive();
+    if (isActiveObjectValid()) {
+        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
+        if (support)
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
+    }
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    if (support) {
+        copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
+        copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
+        copyVisual(FeatName.c_str(), "PointColor", support->getNameInDocument());
+    }
+}
+
+bool CmdPartDesignGroove::isActive(void)
+{
+    return hasActiveDocument();
+}
+//===========================================================================
 // PartDesign_Fillet
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignFillet);
@@ -347,7 +435,102 @@ void CmdPartDesignFillet::activated(int iMsg)
             QObject::tr("Fillet works only on parts"));
         return;
     }
-    std::string SelString = selection[0].getAsPropertyLinkSubString();
+
+    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+
+    const Part::TopoShape& TopShape = base->Shape.getShape();
+    if (TopShape._Shape.IsNull()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Shape of selected Part is empty"));
+        return;
+    }
+
+    TopTools_IndexedMapOfShape mapOfEdges;
+    TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+    TopExp::MapShapesAndAncestors(TopShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+    TopExp::MapShapes(TopShape._Shape, TopAbs_EDGE, mapOfEdges);
+
+    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
+
+    int i = 0;
+
+    while(i < SubNames.size())
+    {
+        std::string aSubName = static_cast<std::string>(SubNames.at(i));
+
+        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
+            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
+            const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
+
+            if(los.Extent() != 2)
+            {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            const TopoDS_Shape& face1 = los.First();
+            const TopoDS_Shape& face2 = los.Last();
+            GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(edge),
+                                                       TopoDS::Face(face1),
+                                                       TopoDS::Face(face2));
+            if (cont != GeomAbs_C0) {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            i++;
+        }
+        else if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+            TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
+
+            TopTools_IndexedMapOfShape mapOfFaces;
+            TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaces);
+
+            for(int j = 1; j <= mapOfFaces.Extent(); ++j) {
+                TopoDS_Edge edge = TopoDS::Edge(mapOfFaces.FindKey(j));
+
+                int id = mapOfEdges.FindIndex(edge);
+
+                std::stringstream buf;
+                buf << "Edge";
+                buf << id;
+
+                if(std::find(SubNames.begin(),SubNames.end(),buf.str()) == SubNames.end())
+                {
+                    SubNames.push_back(buf.str());
+                }
+
+            }
+
+            SubNames.erase(SubNames.begin()+i);
+        }
+        // empty name or any other sub-element
+        else {
+            SubNames.erase(SubNames.begin()+i);
+        }
+    }
+
+    if (SubNames.size() == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        QObject::tr("No fillet possible on selected faces/edges"));
+        return;
+    }
+
+    std::string SelString;
+    SelString += "(App.";
+    SelString += "ActiveDocument";//getObject()->getDocument()->getName();
+    SelString += ".";
+    SelString += selection[0].getFeatName();
+    SelString += ",[";
+    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
+        SelString += "\"";
+        SelString += *it;
+        SelString += "\"";
+        if(it != --SubNames.end())
+            SelString += ",";
+    }
+    SelString += "])";
+
     std::string FeatName = getUniqueObjectName("Fillet");
 
     openCommand("Make Fillet");
@@ -398,7 +581,103 @@ void CmdPartDesignChamfer::activated(int iMsg)
             QObject::tr("Chamfer works only on parts"));
         return;
     }
-    std::string SelString = selection[0].getAsPropertyLinkSubString();
+
+    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+
+    const Part::TopoShape& TopShape = base->Shape.getShape();
+
+    if (TopShape._Shape.IsNull()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Shape of selected part is empty"));
+        return;
+    }
+
+    TopTools_IndexedMapOfShape mapOfEdges;
+    TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
+    TopExp::MapShapesAndAncestors(TopShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+    TopExp::MapShapes(TopShape._Shape, TopAbs_EDGE, mapOfEdges);
+
+    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
+
+    int i = 0;
+
+    while(i < SubNames.size())
+    {
+        std::string aSubName = static_cast<std::string>(SubNames.at(i));
+
+        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
+            TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
+            const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
+
+            if(los.Extent() != 2)
+            {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            const TopoDS_Shape& face1 = los.First();
+            const TopoDS_Shape& face2 = los.Last();
+            GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(edge),
+                                                       TopoDS::Face(face1),
+                                                       TopoDS::Face(face2));
+            if (cont != GeomAbs_C0) {
+                SubNames.erase(SubNames.begin()+i);
+                continue;
+            }
+
+            i++;
+        }
+        else if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+            TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
+
+            TopTools_IndexedMapOfShape mapOfFaces;
+            TopExp::MapShapes(face, TopAbs_EDGE, mapOfFaces);
+
+            for(int j = 1; j <= mapOfFaces.Extent(); ++j) {
+                TopoDS_Edge edge = TopoDS::Edge(mapOfFaces.FindKey(j));
+
+                int id = mapOfEdges.FindIndex(edge);
+
+                std::stringstream buf;
+                buf << "Edge";
+                buf << id;
+
+                if(std::find(SubNames.begin(),SubNames.end(),buf.str()) == SubNames.end())
+                {
+                    SubNames.push_back(buf.str());
+                }
+
+            }
+
+            SubNames.erase(SubNames.begin()+i);
+        }
+        // empty name or any other sub-element
+        else {
+            SubNames.erase(SubNames.begin()+i);
+        }
+    }
+
+    if (SubNames.size() == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        QObject::tr("No chamfer possible on selected faces/edges"));
+        return;
+    }
+
+    std::string SelString;
+    SelString += "(App.";
+    SelString += "ActiveDocument";//getObject()->getDocument()->getName();
+    SelString += ".";
+    SelString += selection[0].getFeatName();
+    SelString += ",[";
+    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
+        SelString += "\"";
+        SelString += *it;
+        SelString += "\"";
+        if(it != --SubNames.end())
+            SelString += ",";
+    }
+    SelString += "])";
+
     std::string FeatName = getUniqueObjectName("Chamfer");
 
     openCommand("Make Chamfer");
@@ -425,6 +704,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
+    rcCmdMgr.addCommand(new CmdPartDesignGroove());
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     //rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());

@@ -55,7 +55,7 @@ open(PyObject *self, PyObject *args)
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
             QString fileName = QString::fromUtf8(Name);
             // Displaying the image in a view
-            DrawingView* view = new DrawingView(Gui::getMainWindow());
+            DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
             view->setWindowTitle(QObject::tr("Drawing viewer"));
@@ -85,7 +85,7 @@ importer(PyObject *self, PyObject *args)
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
             QString fileName = QString::fromUtf8(Name);
             // Displaying the image in a view
-            DrawingView* view = new DrawingView(Gui::getMainWindow());
+            DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
             view->setWindowTitle(QObject::tr("Drawing viewer"));
@@ -138,6 +138,10 @@ exporter(PyObject *self, PyObject *args)
                     str_in.close();
                     str_out.close();
                     break;
+                }
+                else {
+                    PyErr_SetString(PyExc_TypeError, "Export as SVG of this object type is not supported by Drawing module");
+                    return 0;
                 }
             }
         }

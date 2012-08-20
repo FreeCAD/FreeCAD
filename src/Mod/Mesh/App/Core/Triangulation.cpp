@@ -158,7 +158,7 @@ MeshGeomFacet AbstractPolygonTriangulator::GetTriangle(const MeshPointArray& poi
 bool AbstractPolygonTriangulator::TriangulatePolygon()
 {
     try {
-        if (this->_points.size() != this->_indices.size()) {
+        if (!this->_indices.empty() && this->_points.size() != this->_indices.size()) {
             Base::Console().Log("Triangulation: %d points <> %d indices\n", _points.size(), _indices.size());
             return false;
         }

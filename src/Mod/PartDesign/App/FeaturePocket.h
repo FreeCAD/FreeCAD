@@ -39,6 +39,7 @@ public:
 
     App::PropertyEnumeration    Type;
     App::PropertyLength         Length;
+    App::PropertyString         FaceName;
 
     /** @name methods override feature */
     //@{

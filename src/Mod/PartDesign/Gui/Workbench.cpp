@@ -86,6 +86,7 @@ void Workbench::activated()
         "PartDesign_Pad",
         "PartDesign_Pocket",
         "PartDesign_Revolution",
+        "PartDesign_Groove",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -124,7 +125,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
-    *geom /*<< "Sketcher_CreatePoint"*/
+    *geom << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
@@ -169,6 +170,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer";
 
@@ -186,12 +188,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Sketcher geometries");
-    *part /*<< "Sketcher_CreatePoint" */
+    *part << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"

@@ -16,9 +16,10 @@ libCamGui_la_SOURCES=\
 
 # the library search path.
 libCamGui_la_LDFLAGS = -L../../../Base -L../../../App -L../../../Gui -L../App $(QT_LIBS) $(sim_ac_coin_ldflags) \
-		$(sim_ac_coin_libs) $(sim_ac_soqt_ldflags) $(sim_ac_soqt_libs) -L$(OCC_LIB) $(all_libraries) \
+                -L../../Part/Gui \
+                $(sim_ac_coin_libs) $(sim_ac_soqt_ldflags) $(sim_ac_soqt_libs) -L$(OCC_LIB) $(all_libraries) \
 		-version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
-libCamGui_la_CPPFLAGS = -DAppCamExport= -DAppCamGuiExport=
+libCamGui_la_CPPFLAGS = $(sim_ac_coin_cppflags) -DAppCamExport= -DAppCamGuiExport=
 
 libCamGui_la_LIBADD   = \
 		-lxerces-c \
@@ -27,6 +28,7 @@ libCamGui_la_LIBADD   = \
 		-lFreeCADApp \
 		-lFreeCADGui \
 		-lTKernel \
+		-lPartGui \
 		-lCam 
 
 #--------------------------------------------------------------------------------------

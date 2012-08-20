@@ -140,7 +140,7 @@
     </message>
     <message>
       <location filename="StartPage.py" line="41"/>
-      <source>FreeCAD default workbench</source>
+      <source>FreeCAD Complete workbench</source>
       <translation>FreeCAD alapértelmezett munkafelület</translation>
     </message>
     <message>

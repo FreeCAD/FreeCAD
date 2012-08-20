@@ -15,6 +15,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(PartDesign_LIBS
+    ${OCC_LIBRARIES}
     Part
     FreeCADApp
 )
@@ -50,6 +51,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePocket.h
     FeatureRevolution.cpp
     FeatureRevolution.h
+    FeatureGroove.cpp
+    FeatureGroove.h
     FeatureAdditive.cpp
     FeatureAdditive.h
     FeatureSubtractive.h

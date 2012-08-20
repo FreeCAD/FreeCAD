@@ -140,6 +140,8 @@ public:
     void onRelabel(void);
     /// returns a list of all attached MDI views
     std::list<MDIView*> getMDIViews() const;
+    /// returns a list of all MDI views of a certain type
+    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
     //@}
 
     /** @name View provider handling  */

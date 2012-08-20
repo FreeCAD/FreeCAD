@@ -51,6 +51,7 @@ public:
     int getSketchAxisCount(void) const;
 
 protected:
+    void onChanged(const App::Property* prop);
     TopoDS_Face validateFace(const TopoDS_Face&) const;
     TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
     TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only

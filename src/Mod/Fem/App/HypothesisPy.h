@@ -208,6 +208,8 @@ public:
     static void init_type(PyObject*);
     StdMeshers_Deflection1DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_Deflection1DPy();
+
+    Py::Object setDeflection(const Py::Tuple& args);
 };
 
 class StdMeshers_Hexa_3DPy : public SMESH_HypothesisPy<StdMeshers_Hexa_3DPy>

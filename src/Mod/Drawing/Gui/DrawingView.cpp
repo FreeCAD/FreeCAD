@@ -57,6 +57,7 @@
 #include "DrawingView.h"
 #include <Base/Stream.h>
 #include <Base/gzstream.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/FileDialog.h>
 #include <Gui/WaitCursor.h>
 
@@ -200,8 +201,8 @@ void SvgView::wheelEvent(QWheelEvent *event)
 
 /* TRANSLATOR DrawingGui::DrawingView */
 
-DrawingView::DrawingView(QWidget* parent)
-  : Gui::MDIView(0, parent), m_view(new SvgView)
+DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
+  : Gui::MDIView(doc, parent), m_view(new SvgView)
 {
     m_backgroundAction = new QAction(tr("&Background"), this);
     m_backgroundAction->setEnabled(false);
@@ -432,6 +433,11 @@ void DrawingView::print(QPrinter* printer)
 void DrawingView::viewAll()
 {
     m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
+}
+
+PyObject* DrawingView::getPyObject()
+{
+    Py_Return;
 }
 
 #include "moc_DrawingView.cpp"

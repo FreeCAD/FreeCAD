@@ -114,7 +114,7 @@ BrowserView::BrowserView(QWidget* parent)
     connect(view, SIGNAL(loadProgress(int)),
             this, SLOT(onLoadProgress(int)));
     connect(view, SIGNAL(loadFinished(bool)),
-            this, SLOT(onLoadFinished()));
+            this, SLOT(onLoadFinished(bool)));
     connect(view, SIGNAL(linkClicked(const QUrl &)),
             this, SLOT(onLinkClicked(const QUrl &)));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
@@ -182,7 +182,7 @@ bool BrowserView::chckHostAllowed(const QString& host)
 void BrowserView::onDownloadRequested(const QNetworkRequest & request)
 {
     Dialog::DownloadDialog dlg (request.url(),this);
-    int result = dlg.exec();
+    dlg.exec();
 }
 
 void BrowserView::load(const char* URL)
@@ -242,12 +242,14 @@ void BrowserView::onLoadProgress(int step)
     bar->setValue(step);
 }
 
-void BrowserView::onLoadFinished()
+void BrowserView::onLoadFinished(bool ok)
 {
-    QProgressBar* bar = Sequencer::instance()->getProgressBar();
-    bar->setValue(100);
-    bar->hide();
-    getMainWindow()->statusBar()->showMessage(QString());
+    if (ok) {
+        QProgressBar* bar = Sequencer::instance()->getProgressBar();
+        bar->setValue(100);
+        bar->hide();
+        getMainWindow()->statusBar()->showMessage(QString());
+    }
     isLoading = false;
 }
 

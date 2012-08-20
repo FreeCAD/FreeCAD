@@ -47,14 +47,14 @@ class ViewProviderSketch;
 // A Simple data type to hold basic information for suggested constraints
 struct AutoConstraint
 {
+    enum TargetType
+    {
+        VERTEX,
+        CURVE
+    };
     Sketcher::ConstraintType Type;
-    int Index;
-};
-
-enum Type
-{
-    VERTEX,
-    CURVE
+    int GeoId;
+    Sketcher::PointPos PosId;
 };
 
 /** Handler to create new sketch geometry
@@ -72,6 +72,7 @@ public:
     virtual bool pressButton(Base::Vector2D onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2D onSketchPos)=0;
     virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) { return false; };
+    virtual void registerPressedKey(bool pressed, int key){};
 
     virtual void quit(void);
 
@@ -83,10 +84,12 @@ public:
     int getHighestCurveIndex(void);
 
     int seekAutoConstraint(std::vector<AutoConstraint> &suggestedConstraints,
-                           const Base::Vector2D &Pos, const Base::Vector2D &Dir, Type selType = VERTEX);
+                           const Base::Vector2D &Pos, const Base::Vector2D &Dir,
+                           AutoConstraint::TargetType type = AutoConstraint::VERTEX);
     void createAutoConstraints(const std::vector<AutoConstraint> &autoConstrs,
                                int geoId, Sketcher::PointPos pointPos=Sketcher::none);
 
+    void setPositionText(const Base::Vector2D &Pos, const SbString &text);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);

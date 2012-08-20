@@ -68,7 +68,7 @@ if(SWIG_FOUND)
     add_definitions(-DHAVE_SWIG=1)
 endif(SWIG_FOUND)
 
-if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_BUILD_DEBIAN)
+if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_USE_EXTERNAL_ZIPIOS)
 SET(zipios_SRCS
     ../zipios++/backbuffer.h
     ../zipios++/basicentry.cpp
@@ -122,12 +122,7 @@ SET(zipios_SRCS
     ../zipios++/zipoutputstream.h
 )
 SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
-else (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_BUILD_DEBIAN)
-    set(FreeCADBase_LIBS
-        ${FreeCADBase_LIBS}
-        -lzipios
-    )
-endif (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_BUILD_DEBIAN)
+endif ()
 
 SET(pycxx_SRCS
     ../CXX/Config.hxx
@@ -157,6 +152,7 @@ SET(FreeCADBase_XML_SRCS
 SOURCE_GROUP("XML" FILES ${FreeCADBase_XML_SRCS})
 
 set(FreeCADBase_MOC_HDRS
+    Debugger.h
     FutureWatcherProgress.h
 )
 fc_wrap_cpp(FreeCADBase_MOC_SRCS ${FreeCADBase_MOC_HDRS})
@@ -187,6 +183,7 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    Debugger.cpp
     Exception.cpp
     Factory.cpp
     FileInfo.cpp
@@ -239,6 +236,7 @@ SET(FreeCADBase_HPP_SRCS
     BoundBox.h
     Builder3D.h
     Console.h
+    Debugger.h
     Exception.h
     Factory.h
     FileInfo.h
@@ -281,7 +279,6 @@ SET(FreeCADBase_HPP_SRCS
 )
 
 SET(FreeCADBase_SRCS
-    ${zipios_SRCS}
     ${pycxx_SRCS}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
@@ -292,6 +289,27 @@ SET(FreeCADBase_SRCS
     PreCompiled.cpp
     PreCompiled.h
 )
+
+# Use external zipios++ if specified.
+if(FREECAD_USE_EXTERNAL_ZIPIOS)
+    find_library(ZIPIOS_LIBRARY zipios)
+    find_path(ZIPIOS_INCLUDES zipios++/zipios-config.h)
+    if(ZIPIOS_LIBRARY)
+        message(STATUS "Found zipios++: ${ZIPIOS}")
+    endif()
+    if(ZIPIOS_INCLUDES)
+        message(STATUS "Found zipios++ headers.")
+    endif()
+    if(ZIPIOS_LIBRARY AND ZIPIOS_INCLUDES)
+        list(APPEND FreeCADBase_LIBS ${ZIPIOS_LIBRARY})
+        include_directories(${ZIPIOS_INCLUDES})
+    else()
+        message(FATAL_ERROR "Using external zipios++ was specified but was not found.")
+    endif()
+else(FREECAD_USE_EXTERNAL_ZIPIOS)
+    list(APPEND FreeCADBase_SRCS ${zipios_SRCS})
+endif(FREECAD_USE_EXTERNAL_ZIPIOS)
+
 
 if(MSVC)
 add_definitions(-D_PreComp_)

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QClipboard>
 # include <QDockWidget>
 # include <QGridLayout>
@@ -700,12 +701,17 @@ void PythonConsole::runSource(const QString& line)
     catch (const Base::SystemExitException&) {
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         bool check = hPrefGrp->GetBool("CheckSystemExit",true);
-        if (!check)  Base::Interpreter().systemExit();
-        int ret = QMessageBox::question(this, tr("System exit"), tr("The application is still running.\nDo you want to exit without saving your data?"),
-        QMessageBox::Yes, QMessageBox::No|QMessageBox::Escape|QMessageBox::Default);
+        int ret = QMessageBox::Yes;
+        if (check) {
+            ret = QMessageBox::question(this, tr("System exit"),
+                tr("The application is still running.\nDo you want to exit without saving your data?"),
+                QMessageBox::Yes, QMessageBox::No|QMessageBox::Escape|QMessageBox::Default);
+        }
         if (ret == QMessageBox::Yes) {
-            Base::Interpreter().systemExit();
-        } else {
+            PyErr_Clear();
+            throw;
+        }
+        else {
             PyErr_Clear();
         }
     }

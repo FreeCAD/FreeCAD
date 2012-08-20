@@ -39,3 +39,4 @@ from ArchCommands import *
 from ArchSectionPlane import *
 from ArchWindow import *
 from ArchAxis import *
+from ArchRoof import *

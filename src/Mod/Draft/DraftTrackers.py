@@ -25,18 +25,16 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD,FreeCADGui,math,Draft
+import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
 from FreeCAD import Vector
-from draftlibs import fcvec
 from pivy import coin
 from DraftGui import todo
 
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
     def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False):
-        global Part, fcgeo
-        import Part
-        from draftlibs import fcgeo
+        global Part, DraftGeomUtils
+        import Part, DraftGeomUtils
         self.ontop = ontop
         color = coin.SoBaseColor()
         color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("ui")
@@ -63,7 +61,7 @@ class Tracker:
     def _insertSwitch(self, switch):
         '''insert self.switch into the scene graph.  Must not be called
         from an event handler (or other scene graph traversal).'''
-        sg=FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg=Draft.get3DView().getSceneGraph()
         if self.ontop:
             sg.insertChild(switch,0)
         else:
@@ -72,7 +70,7 @@ class Tracker:
     def _removeSwitch(self, switch):
         '''remove self.switch from the scene graph.  As with _insertSwitch,
         must not be called during scene graph traversal).'''
-        sg=FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg=Draft.get3DView().getSceneGraph()
         sg.removeChild(switch)
 
     def on(self):
@@ -82,7 +80,23 @@ class Tracker:
     def off(self):
         self.switch.whichChild = -1
         self.Visible = False
-				
+
+    def lowerTracker(self):
+        '''lowers the tracker to the bottom of the scenegraph, so
+        it doesn't obscure the other objects'''
+        if self.switch:
+            sg=Draft.get3DView().getSceneGraph()
+            sg.removeChild(self.switch)
+            sg.addChild(self.switch)
+
+    def raiseTracker(self):
+        '''raises the tracker to the top of the scenegraph, so
+        it obscures the other objects'''
+        if self.switch:
+            sg=Draft.get3DView().getSceneGraph()
+            sg.removeChild(self.switch)
+            sg.insertChild(self.switch,0)
+        
 class snapTracker(Tracker):
     "A Snap Mark tracker, used by tools that support snapping"
     def __init__(self):
@@ -161,8 +175,8 @@ class rectangleTracker(Tracker):
     def update(self,point):
         "sets the opposite (diagonal) point of the rectangle"
         diagonal = point.sub(self.origin)
-        inpoint1 = self.origin.add(fcvec.project(diagonal,self.v))
-        inpoint2 = self.origin.add(fcvec.project(diagonal,self.u))
+        inpoint1 = self.origin.add(DraftVecUtils.project(diagonal,self.v))
+        inpoint2 = self.origin.add(DraftVecUtils.project(diagonal,self.u))
         self.coords.point.set1Value(1,inpoint1.x,inpoint1.y,inpoint1.z)
         self.coords.point.set1Value(2,point.x,point.y,point.z)
         self.coords.point.set1Value(3,inpoint2.x,inpoint2.y,inpoint2.z)
@@ -204,7 +218,7 @@ class rectangleTracker(Tracker):
         p1 = Vector(self.coords.point.getValues()[0].getValue())
         p2 = Vector(self.coords.point.getValues()[2].getValue())
         diag = p2.sub(p1)
-        return ((fcvec.project(diag,self.u)).Length,(fcvec.project(diag,self.v)).Length)
+        return ((DraftVecUtils.project(diag,self.u)).Length,(DraftVecUtils.project(diag,self.v)).Length)
 
     def getNormal(self):
         "returns the normal of the rectangle"
@@ -233,23 +247,23 @@ class dimTracker(Tracker):
     def calc(self):
         import Part
         if (self.p1 != None) and (self.p2 != None):
-            points = [fcvec.tup(self.p1,True),fcvec.tup(self.p2,True),\
-                          fcvec.tup(self.p1,True),fcvec.tup(self.p2,True)]
+            points = [DraftVecUtils.tup(self.p1,True),DraftVecUtils.tup(self.p2,True),\
+                          DraftVecUtils.tup(self.p1,True),DraftVecUtils.tup(self.p2,True)]
             if self.p3 != None:
                 p1 = self.p1
                 p4 = self.p2
-                if fcvec.equals(p1,p4):
+                if DraftVecUtils.equals(p1,p4):
                     proj = None
                 else:
                     base = Part.Line(p1,p4).toShape()
-                    proj = fcgeo.findDistance(self.p3,base)
+                    proj = DraftGeomUtils.findDistance(self.p3,base)
                 if not proj:
                     p2 = p1
                     p3 = p4
                 else:
-                    p2 = p1.add(fcvec.neg(proj))
-                    p3 = p4.add(fcvec.neg(proj))
-                points = [fcvec.tup(p1),fcvec.tup(p2),fcvec.tup(p3),fcvec.tup(p4)]
+                    p2 = p1.add(DraftVecUtils.neg(proj))
+                    p3 = p4.add(DraftVecUtils.neg(proj))
+                points = [DraftVecUtils.tup(p1),DraftVecUtils.tup(p2),DraftVecUtils.tup(p3),DraftVecUtils.tup(p4)]
             self.coords.point.setValues(0,4,points)
 
 class bsplineTracker(Tracker):
@@ -340,7 +354,7 @@ class arcTracker(Tracker):
         center = Vector(c[0],c[1],c[2])
         base = FreeCAD.DraftWorkingPlane.u
         rad = pt.sub(center)
-        return(fcvec.angle(rad,base,FreeCAD.DraftWorkingPlane.axis))
+        return(DraftVecUtils.angle(rad,base,FreeCAD.DraftWorkingPlane.axis))
 
     def getAngles(self):
         "returns the start and end angles"
@@ -451,9 +465,11 @@ class PlaneTracker(Tracker):
     "A working plane tracker"
     def __init__(self):
         # getting screen distance
-        p1 = FreeCADGui.ActiveDocument.ActiveView.getPoint((100,100))
-        p2 = FreeCADGui.ActiveDocument.ActiveView.getPoint((110,100))
+        p1 = Draft.get3DView().getPoint((100,100))
+        p2 = Draft.get3DView().getPoint((110,100))
         bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange")/2)
+        pick = coin.SoPickStyle()
+        pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         m1 = coin.SoMaterial()
@@ -472,6 +488,7 @@ class PlaneTracker(Tracker):
         l = coin.SoLineSet()
         l.numVertices.setValues([3,3,3])
         s = coin.SoSeparator()
+        s.addChild(pick)
         s.addChild(self.trans)
         s.addChild(m1)
         s.addChild(c1)
@@ -496,7 +513,7 @@ class wireTracker(Tracker):
     "A wire tracker"
     def __init__(self,wire):
         self.line = coin.SoLineSet()
-        self.closed = fcgeo.isReallyClosed(wire)
+        self.closed = DraftGeomUtils.isReallyClosed(wire)
         if self.closed:
             self.line.numVertices.setValue(len(wire.Vertexes)+1)
         else:
@@ -528,6 +545,9 @@ class gridTracker(Tracker):
         self.mainlines = Draft.getParam("gridEvery")
         self.numlines = 100
         col = [0.2,0.2,0.3]
+
+        pick = coin.SoPickStyle()
+        pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
@@ -535,22 +555,30 @@ class gridTracker(Tracker):
         bound = (self.numlines/2)*self.space
         pts = []
         mpts = []
+        apts = []
         for i in range(self.numlines+1):
             curr = -bound + i*self.space
             z = 0
             if i/float(self.mainlines) == i/self.mainlines:
-                mpts.extend([[-bound,curr,z],[bound,curr,z]])
-                mpts.extend([[curr,-bound,z],[curr,bound,z]])
+                if round(curr,4) == 0:
+                    apts.extend([[-bound,curr,z],[bound,curr,z]])
+                    apts.extend([[curr,-bound,z],[curr,bound,z]])
+                else:
+                    mpts.extend([[-bound,curr,z],[bound,curr,z]])
+                    mpts.extend([[curr,-bound,z],[curr,bound,z]])
             else:
                 pts.extend([[-bound,curr,z],[bound,curr,z]])
                 pts.extend([[curr,-bound,z],[curr,bound,z]])
         idx = []
         midx = []
+        aidx = []
         for p in range(0,len(pts),2):
             idx.append(2)
         for mp in range(0,len(mpts),2):
             midx.append(2)
-
+        for ap in range(0,len(apts),2):
+            aidx.append(2)
+            
         mat1 = coin.SoMaterial()
         mat1.transparency.setValue(0.7)
         mat1.diffuseColor.setValue(col)
@@ -565,7 +593,15 @@ class gridTracker(Tracker):
         self.coords2.point.setValues(mpts)
         lines2 = coin.SoLineSet()
         lines2.numVertices.setValues(midx)
+        mat3 = coin.SoMaterial()
+        mat3.transparency.setValue(0)
+        mat3.diffuseColor.setValue(col)
+        self.coords3 = coin.SoCoordinate3()
+        self.coords3.point.setValues(apts)
+        lines3 = coin.SoLineSet()
+        lines3.numVertices.setValues(aidx)
         s = coin.SoSeparator()
+        s.addChild(pick)
         s.addChild(self.trans)
         s.addChild(mat1)
         s.addChild(self.coords1)
@@ -573,6 +609,9 @@ class gridTracker(Tracker):
         s.addChild(mat2)
         s.addChild(self.coords2)
         s.addChild(lines2)
+        s.addChild(mat3)
+        s.addChild(self.coords3)
+        s.addChild(lines3)
         Tracker.__init__(self,children=[s])
         self.update()
 
@@ -601,29 +640,21 @@ class gridTracker(Tracker):
 
     def set(self):
         Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
+        P = FreeCAD.DraftWorkingPlane.position
         self.trans.rotation.setValue([Q[0],Q[1],Q[2],Q[3]])
+        self.trans.translation.setValue([P.x,P.y,P.z])
         self.on()
 
     def getClosestNode(self,point):
         "returns the closest node from the given point"
         # get the 2D coords.
-        point = FreeCAD.DraftWorkingPlane.projectPoint(point)
-        u = fcvec.project(point,FreeCAD.DraftWorkingPlane.u)
-        lu = u.Length
-        if u.getAngle(FreeCAD.DraftWorkingPlane.u) > 1.5:
-            lu  = -lu
-        v = fcvec.project(point,FreeCAD.DraftWorkingPlane.v)
-        lv = v.Length
-        if v.getAngle(FreeCAD.DraftWorkingPlane.v) > 1.5:
-            lv = -lv
-        # print "u = ",u," v = ",v
-        # find nearest grid node
-        pu = (round(lu/self.space,0))*self.space
-        pv = (round(lv/self.space,0))*self.space
-        rot = FreeCAD.Rotation()
-        rot.Q = self.trans.rotation.getValue().getValue()
-        return rot.multVec(Vector(pu,pv,0))
-
+        # point = FreeCAD.DraftWorkingPlane.projectPoint(point)
+        pt = FreeCAD.DraftWorkingPlane.getLocalCoords(point)
+        pu = (round(pt.x/self.space,0))*self.space
+        pv = (round(pt.y/self.space,0))*self.space
+        pt = FreeCAD.DraftWorkingPlane.getGlobalCoords(Vector(pu,pv,0))
+        return pt
+    
 class boxTracker(Tracker):                
     "A box tracker, can be based on a line object"
     def __init__(self,line=None,width=0.1,height=1):
@@ -641,8 +672,7 @@ class boxTracker(Tracker):
         Tracker.__init__(self,children=[self.trans,m,self.cube])
 
     def update(self,line=None,normal=None):
-        import WorkingPlane
-        from draftlibs import fcgeo
+        import WorkingPlane, DraftGeomUtils
         if not normal:
             normal = FreeCAD.DraftWorkingPlane.axis
         if line:
@@ -650,10 +680,10 @@ class boxTracker(Tracker):
                 bp = line[0]
                 lvec = line[1].sub(line[0])
             else:
-                lvec = fcgeo.vec(line.Shape.Edges[0])
+                lvec = DraftGeomUtils.vec(line.Shape.Edges[0])
                 bp = line.Shape.Edges[0].Vertexes[0].Point
         elif self.baseline:
-            lvec = fcgeo.vec(self.baseline.Shape.Edges[0])
+            lvec = DraftGeomUtils.vec(self.baseline.Shape.Edges[0])
             bp = self.baseline.Shape.Edges[0].Vertexes[0].Point
         else:
             return
@@ -661,12 +691,12 @@ class boxTracker(Tracker):
         self.cube.width.setValue(lvec.Length)
         p = WorkingPlane.getPlacementFromPoints([bp,bp.add(lvec),bp.add(right)])
         self.trans.rotation.setValue(p.Rotation.Q)
-        bp = bp.add(fcvec.scale(lvec,0.5))
-        bp = bp.add(fcvec.scaleTo(normal,self.cube.depth.getValue()/2))
+        bp = bp.add(DraftVecUtils.scale(lvec,0.5))
+        bp = bp.add(DraftVecUtils.scaleTo(normal,self.cube.depth.getValue()/2))
         self.pos(bp)
 
     def pos(self,p):
-        self.trans.translation.setValue(fcvec.tup(p))
+        self.trans.translation.setValue(DraftVecUtils.tup(p))
 
     def width(self,w=None):
         if w:
@@ -686,3 +716,27 @@ class boxTracker(Tracker):
             self.update()
         else:
             return self.cube.depth.getValue()
+
+class radiusTracker(Tracker):
+    "A tracker that displays a transparent sphere to inicate a radius"
+    def __init__(self,position=FreeCAD.Vector(0,0,0),radius=1):
+        self.trans = coin.SoTransform()
+        self.trans.translation.setValue([position.x,position.y,position.z])
+        m = coin.SoMaterial()
+        m.transparency.setValue(0.9)
+        m.diffuseColor.setValue([0,1,0])
+        self.sphere = coin.SoSphere()
+        self.sphere.radius.setValue(radius)
+        self.baseline = None
+        Tracker.__init__(self,children=[self.trans,m,self.sphere])
+
+    def update(self,arg1,arg2=None):
+        if isinstance(arg1,FreeCAD.Vector):
+            self.trans.translation.setValue([arg1.x,arg1.y,arg1.z])
+        else:
+            self.sphere.radius.setValue(arg1)
+        if arg2 != None:
+            if isinstance(arg2,FreeCAD.Vector):
+                self.trans.translation.setValue([arg2.x,arg2.y,arg2.z])
+            else:
+                self.sphere.radius.setValue(arg2)

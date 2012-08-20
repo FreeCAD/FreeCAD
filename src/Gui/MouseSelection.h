@@ -88,8 +88,6 @@ protected:
     int  m_iXnew, m_iYnew;
     SbBool m_bInner;
     SbBool mustRedraw;
-
-private:
     std::vector<SbVec2s> _clPoly;
 };
 

@@ -32,6 +32,7 @@ set(PartDesignGui_MOC_HDRS
     TaskFilletParameters.h
     TaskHoleParameters.h
     TaskRevolutionParameters.h
+    TaskGrooveParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
@@ -46,6 +47,7 @@ set(PartDesignGui_UIC_SRCS
     TaskFilletParameters.ui
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
+    TaskGrooveParameters.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
@@ -64,6 +66,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderFillet.h
     ViewProviderRevolution.cpp
     ViewProviderRevolution.h
+    ViewProviderGroove.cpp
+    ViewProviderGroove.h
     ViewProviderPatternRectangular.cpp
     ViewProviderPatternRectangular.h
 )
@@ -88,6 +92,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskRevolutionParameters.ui
     TaskRevolutionParameters.cpp
     TaskRevolutionParameters.h
+    TaskGrooveParameters.ui
+    TaskGrooveParameters.cpp
+    TaskGrooveParameters.h
     TaskHoleParameters.ui
     TaskHoleParameters.cpp
     TaskHoleParameters.h

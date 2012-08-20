@@ -30,7 +30,6 @@ from PyQt4 import QtGui,QtCore
 import Preview, Plot
 import Instance
 from shipUtils import Paths, Translator
-from surfUtils import Geometry
 
 class TaskPanel:
     def __init__(self):
@@ -116,7 +115,7 @@ class TaskPanel:
         """ Set initial values for fields
         """
         # Get selected objects
-        selObjs  = Geometry.getSelectedObjs()
+        selObjs  = Gui.Selection.getSelection()
         if not selObjs:
             msg = Translator.translate("Ship instance must be selected (no object selected)\n")
             App.Console.PrintError(msg)
