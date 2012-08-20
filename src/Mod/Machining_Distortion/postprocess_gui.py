@@ -42,7 +42,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         ltc_coeff = []
         sigini = True
         for root, dirs, files in os.walk(str(self.dirname)):
-           if 'geometry_fe_input.frd' in files:
+           if 'final_fe_input.frd' in files:
                 bbox_orig,\
                 bbox_distorted,\
                 relationship,\
@@ -51,7 +51,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                 max_disp_y,\
                 min_disp_y,\
                 max_disp_z,\
-                min_disp_z = calculix_postprocess(os.path.join(root,'geometry_fe_input.frd'))
+                min_disp_z = calculix_postprocess(os.path.join(root,'final_fe_input.frd'))
                 if sigini:
                     sigini = False
                     lc_coeff,ltc_coeff = get_sigini_values(os.path.join(root,'sigini_input.txt'))
@@ -102,35 +102,86 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         
         
     def start_gnu_plot(self,list,lc_coeff,ltc_coeff):
+        filename = "graph"
+        title = "Absolut Displacement in "
+        x_axis_label =""
+        y_axis_label=""
+        z_axis_label=""
+        #define all the different variations that could occur and assign proper variable names
+        if self.check_abs_disp_x.isChecked():
+            filename = filename + "_max_disp_x"
+            title = title + "X vs. "
+            z_axis_label = "Abs Displacement in X-Direction"
+            abs_disp_column = 12
+        if self.check_abs_disp_y.isChecked():
+            filename = filename + "_max_disp_y"
+            title = title + "Y vs. "
+            z_axis_label = "Abs Displacement in Y-Direction"
+            abs_disp_column = 13
+        if self.check_abs_disp_z.isChecked():
+            filename = filename + "_max_disp_z"
+            title = title + "Z vs. "
+            z_axis_label = "Abs Displacement in Z-Direction"
+            abs_disp_column = 14
+
+        #The Z-Level Offset is fix and therefore the corresponding variables are predefined:
+        filename = filename + "_offset_z"
+        title = title + "Z-Level Offset "
+        x_axis_label = "Z-Offset"
+        offset_column = 1
+
+        if self.check_rot_x.isChecked():
+            filename = filename + "_rotation_x"
+            title = title + "and Rotation around X-Axis"
+            y_axis_label = "Rotation around X-Axis"
+            rot_column = 2
+        if self.check_rot_y.isChecked():
+            filename = filename + "_rotation_y"
+            title = title + "and Rotation around Y-Axis"
+            y_axis_label = "Rotation around Y-Axis"
+            rot_column = 3
+        if self.check_rot_z.isChecked():
+            filename = filename + "_rotation_z"
+            title = title + "and Rotation around Z-Axis"
+            y_axis_label = "Rotation around Z-Axis"
+            rot_column = 4
+            
+                        
+    
         gnu_plot_input_file = open(str(self.dirname + "/gnu_plot_input.txt"),"wb")
         gnu_plot_input_file.write(
                                     "set term png\n" +
-                                    "set output \"max_disp_z.png\"\n"+
+                                    "set output \"" + filename + ".png\"\n"+
                                     "set surface\n" +
                                     "set grid\n"+
                                     "set hidden3d\n"+
                                     "set dgrid3d " + str(len(list)-1) + "," + str(len(list)-1) + ",100\n" +
                                     "set view 80,05,1.3,1.0\n"+
-                                    "set title \"Abs Displacement in Z vs. Z-Level Offset and Rotation around Z-Axis\" 0,-2\n"+
+                                    "set title \"" + title + "\" offset 0,-2\n"+
                                     "show title\n"+
-				    "set pm3d\n"+
-                                    "set label \"L Coefficients used for the calculation:" + lc_coeff[0] + "," + lc_coeff[1] + "," + lc_coeff[2] + "," + lc_coeff[3] + "," + lc_coeff[4] + "," + lc_coeff[5][:-1] + "\" at screen 0.1, screen 0.95 left\n"+ 
-                                    "set label \"LT Coefficients used for the calculation:" + ltc_coeff[0] + "," + ltc_coeff[1] + "," + ltc_coeff[2] + "," + ltc_coeff[3] + "," + ltc_coeff[4] + "," + ltc_coeff[5][:-1] + "\" at screen 0.1, screen 0.93 left\n"+
-                                    "set label \"Z-Offset\\nin [mm]\" at screen 0.5, screen 0.1 center rotate by 0\n"+ 
-                                    "set label \"Rotation around Z-Axis\\nin [" + str(chr(248)) +"]\" at screen 0.91, screen 0.2 center rotate by 50\n"+ 
-                                    "set label \"Max Displacement Z direction\\nin [mm]\" at screen 0.03, screen 0.5 center rotate by 90\n"+ 
-                                    "set xtics nomirror\n"+
-                                    "splot \"postprocessing_input.txt\" u 1:4:14 with pm3d title \"\"\n" + 
+									"set label \"Fly to Buy Ratio = " + str(
+                                    "set label \"L Coefficients used for the calculation:" + lc_coeff[0] + "," + lc_coeff[1] + "," + lc_coeff[2] + "," + lc_coeff[3] + "," + lc_coeff[4] + "," + lc_coeff[5][:-1] + "\" at screen 0.1, screen 0.95 left font \"Arial,8\"\n"+ 
+                                    "set label \"LT Coefficients used for the calculation:" + ltc_coeff[0] + "," + ltc_coeff[1] + "," + ltc_coeff[2] + "," + ltc_coeff[3] + "," + ltc_coeff[4] + "," + ltc_coeff[5][:-1] + "\" at screen 0.1, screen 0.93 left font \"Arial,8\"\n"+
+                                    "set label \"" + x_axis_label + "\\nin [mm]\" at screen 0.5, screen 0.1 center rotate by 0\n"+ 
+                                    "set label \"" + y_axis_label +"\\nin [" + str(chr(248)) +"]\" at screen 0.91, screen 0.2 center rotate by 50\n"+ 
+                                    "set label \"" + z_axis_label + "\\nin [mm]\" at screen 0.03, screen 0.5 center rotate by 90\n"+ 
+                                    "set xtics in nomirror offset character 0,-0.5\n"+
+                                    "splot \"postprocessing_input.txt\" u " + str(offset_column) + ":" + str(rot_column) + ":" + str(abs_disp_column) + " with pm3d title \"\"\n" + 
                                     "exit" )
-                                    
-
-                                    
+                                           
         gnu_plot_input_file.close()
         os.chdir(str(self.dirname))
         fnull = open(os.devnull, 'w')
-        commandline = "gnuplot gnu_plot_input.txt"
+        commandline = FreeCAD.getHomePath() + "gnuplot gnu_plot_input.txt"
         result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
         fnull.close()
-
+        self.button_start_postprocessing.setEnabled(False)
+        #Reset all radio buttons
+        self.check_rot_x.setChecked(False) 
+        self.check_rot_y.setChecked(False) 
+        self.check_rot_z.setChecked(False)
+        self.check_abs_disp_x.setChecked(False) 		
+        self.check_abs_disp_y.setChecked(False) 		
+        self.check_abs_disp_z.setChecked(False)
 
 
