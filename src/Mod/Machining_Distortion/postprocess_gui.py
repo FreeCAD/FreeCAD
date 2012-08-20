@@ -6,7 +6,7 @@ from os.path import join
 from PyQt4 import QtCore, QtGui
 from postprocess import Ui_dialog
 ##------------------------------------------------
-
+#Necessary file for postprocessing to png files
 
 from calculix_postprocess import calculix_postprocess
 from calculix_postprocess import get_sigini_values
