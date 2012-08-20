@@ -587,6 +587,16 @@ void Matrix_invert (Matrix a, Matrix inva)
   Matrix_gauss(temp,inva);
 }
 
+void  Matrix4D::inverseOrthogonal(void)
+{
+    Base::Vector3d c(dMtrx4D[0][3],dMtrx4D[1][3],dMtrx4D[2][3]);
+    transpose();
+    c = this->operator * (c);
+    dMtrx4D[0][3] = -c.x; dMtrx4D[3][0] = 0;
+    dMtrx4D[1][3] = -c.y; dMtrx4D[3][1] = 0;
+    dMtrx4D[2][3] = -c.z; dMtrx4D[3][2] = 0;
+}
+
 void Matrix4D::inverseGauss (void)
 {
   double matrix        [16]; 
@@ -690,4 +700,99 @@ void Matrix4D::fromString(const std::string &str)
     for (int j = 0; j < 4; j++)
       input >> dMtrx4D[i][j];
   }    
+}
+
+// Analyse the a transformation Matrix and describe the transformation
+std::string Matrix4D::analyse(void) const
+{
+    const double eps=1.0e-06;
+    bool hastranslation = (dMtrx4D[0][3] != 0.0 ||
+            dMtrx4D[1][3] != 0.0 || dMtrx4D[2][3] != 0.0);
+    const Base::Matrix4D unityMatrix = Base::Matrix4D();
+    std::string text;
+    if (*this == unityMatrix)
+    {
+        text = "Unity Matrix";
+    }
+    else
+    {
+        if (dMtrx4D[3][0] != 0.0 || dMtrx4D[3][1] != 0.0 ||
+            dMtrx4D[3][2] != 0.0 || dMtrx4D[3][3] != 1.0)
+        {
+            text = "Projection";
+        }
+        else //translation and affine 
+        {
+            if (dMtrx4D[0][1] == 0.0 &&  dMtrx4D[0][2] == 0.0 &&
+                dMtrx4D[1][0] == 0.0 &&  dMtrx4D[1][2] == 0.0 &&
+                dMtrx4D[2][0] == 0.0 &&  dMtrx4D[2][1] == 0.0) //scaling
+            {
+                std::ostringstream stringStream;
+                stringStream << "Scale [" << dMtrx4D[0][0] << ", "  <<
+                    dMtrx4D[1][1] << ", " << dMtrx4D[2][2] << "]";
+                text = stringStream.str();
+            }
+            else
+            {
+                Base::Matrix4D sub;
+                sub[0][0] = dMtrx4D[0][0]; sub[0][1] = dMtrx4D[0][1];
+                sub[0][2] = dMtrx4D[0][2]; sub[1][0] = dMtrx4D[1][0];
+                sub[1][1] = dMtrx4D[1][1]; sub[1][2] = dMtrx4D[1][2];
+                sub[2][0] = dMtrx4D[2][0]; sub[2][1] = dMtrx4D[2][1];
+                sub[2][2] = dMtrx4D[2][2];
+
+                Base::Matrix4D trp = sub;
+                trp.transpose();
+                trp = trp * sub;
+                bool ortho = true;
+                for (int i=0; i<4 && ortho; i++) {
+                    for (int j=0; j<4 && ortho; j++) {
+                        if (i != j) {
+                            if (fabs(trp[i][j]) > eps) {
+                                ortho = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                double determinant = sub.determinant();
+                if (ortho)
+                {
+                    if (fabs(determinant-1.0)<eps ) //rotation
+                    {
+                        text = "Rotation Matrix";
+                    }
+                    else
+                    {
+                        if (fabs(determinant+1.0)<eps ) //rotation
+                        {
+                            text = "Rotinversion Matrix";
+                        }
+                        else //scaling with rotation
+                        {
+                            std::ostringstream stringStream;
+                            stringStream << "Scale and Rotate ";
+                            if (determinant<0.0 )
+                                stringStream << "and Invert ";
+                            stringStream << "[ " <<
+            sqrt(trp[0][0]) << ", "  << sqrt(trp[1][1]) << ", " <<
+            sqrt(trp[2][2]) << "]";
+                                text = stringStream.str();
+                        }
+                    }
+                }
+                else
+                {
+                    std::ostringstream stringStream;
+                    stringStream << "Affine with det= " <<
+                        determinant;
+                    text = stringStream.str();
+                }
+            }
+        }
+        if (hastranslation)
+            text += " with Translation";
+    }
+    return text;
 }

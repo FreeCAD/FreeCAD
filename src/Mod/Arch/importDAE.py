@@ -22,6 +22,7 @@
 #***************************************************************************
 
 import FreeCAD, Mesh, os, numpy
+from DraftTools import translate
 
 __title__="FreeCAD Collada importer"
 __author__ = "Yorik van Havre"
@@ -36,7 +37,7 @@ def checkCollada():
     try:
         import collada
     except:
-        FreeCAD.Console.PrintError("pycollada not found, no collada support.\n")
+        FreeCAD.Console.PrintError(str(translate("Arch","pycollada not found, no collada support.\n")))
         return False
     else:
         return True
@@ -51,6 +52,17 @@ def open(filename):
     read(filename)
     return doc
 
+def insert(filename,docname):
+    "called when freecad wants to import a file"
+    if not checkCollada(): return
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    read(filename)
+    return doc
+
 def decode(name):
     "decodes encoded strings"
     try:
@@ -59,7 +71,7 @@ def decode(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            print "ifc: error: couldn't determine character encoding"
+            FreeCAD.Console.PrintError(str(translate("Arch","Error: Couldn't determine character encoding")))
             decodedName = name
     return decodedName
 
@@ -137,4 +149,4 @@ def export(exportList,filename):
     colmesh.scenes.append(myscene)
     colmesh.scene = myscene
     colmesh.write(filename)
-    print "file ",filename," successfully created."
+    FreeCAD.Console.PrintMessage(str(translate("Arch","file %s successfully created.")) % filename)

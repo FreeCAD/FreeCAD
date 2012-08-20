@@ -76,10 +76,9 @@ bool TaskDlgEditSketch::accept()
 
 bool TaskDlgEditSketch::reject()
 {
-//    Gui::Command::openCommand("Sketch changed");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-//    Gui::Command::commitCommand();
+    std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').recompute()", document.c_str());
 
     return true;
 }

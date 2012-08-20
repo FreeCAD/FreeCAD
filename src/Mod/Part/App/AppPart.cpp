@@ -13,6 +13,7 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <Interface_Static.hxx>
+# include <sstream>
 #endif
 
 #include <Base/Console.h>
@@ -54,6 +55,7 @@
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeShellPy.h"
 #include "LinePy.h"
+#include "PointPy.h"
 #include "CirclePy.h"
 #include "EllipsePy.h"
 #include "ArcPy.h"
@@ -74,6 +76,7 @@
 #include "SurfaceOfExtrusionPy.h"
 #include "SurfaceOfRevolutionPy.h"
 #include "ToroidPy.h"
+#include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
 #include "PropertyGeometryList.h"
 
@@ -85,6 +88,10 @@ PyDoc_STRVAR(module_part_doc,
 extern "C" {
 void PartExport initPart()
 {
+    std::stringstream str;
+    str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
+    App::Application::Config()["OCC_VERSION"] = str.str();
+
     PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading Part module... done\n");
 
@@ -100,6 +107,7 @@ void PartExport initPart()
     Base::Interpreter().addType(&Part::TopoShapeShellPy     ::Type,partModule,"Shell");
 
     Base::Interpreter().addType(&Part::LinePy               ::Type,partModule,"Line");
+    Base::Interpreter().addType(&Part::PointPy              ::Type,partModule,"Point");
     Base::Interpreter().addType(&Part::CirclePy             ::Type,partModule,"Circle");
     Base::Interpreter().addType(&Part::EllipsePy            ::Type,partModule,"Ellipse");
     Base::Interpreter().addType(&Part::HyperbolaPy          ::Type,partModule,"Hyperbola");
@@ -125,9 +133,15 @@ void PartExport initPart()
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
 
+    PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
+    Py_INCREF(brepModule);
+    PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
+    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
     Part::PropertyGeometryList  ::init();
+    Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
 
     Part::Feature               ::init();
@@ -172,6 +186,7 @@ void PartExport initPart()
     Part::Part2DObjectPython    ::init();
     Part::RuledSurface          ::init();
     Part::Loft                  ::init();
+    Part::Sweep                 ::init();
 
     // Geometry types
     Part::Geometry                ::init();

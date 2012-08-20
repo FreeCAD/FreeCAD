@@ -52,6 +52,7 @@
 #include <Base/Factory.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 
@@ -328,6 +329,10 @@ Application::Application(bool GUIenabled)
         Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str());
         GetWidgetFactorySupplier();
 
+        ParameterGrp::handle hUnits = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Units");
+        Base::UnitsApi::setDecimals(hUnits->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+
         // setting up Python binding
         Base::PyGILStateLocker lock;
         PyObject* module = Py_InitModule3("FreeCADGui", Application::Methods,
@@ -340,6 +345,10 @@ Application::Application(bool GUIenabled)
             "The FreeCADGui module also provides a set of functions to work with so called\n"
             "workbenches.");
         Py::Module(module).setAttr(std::string("ActiveDocument"),Py::None());
+
+        UiLoaderPy::init_type();
+        Base::Interpreter().addType(UiLoaderPy::type_object(),
+            module,"UiLoader");
 
         //insert Selection module
         PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,
@@ -860,8 +869,13 @@ void Application::tryClose(QCloseEvent * e)
         // ask all documents if closable
         std::map<const App::Document*, Gui::Document*>::iterator It;
         for (It = d->documents.begin();It!=d->documents.end();It++) {
+            // a document may have several views attached, so ask it directly
+#if 0
             MDIView* active = It->second->getActiveView();
             e->setAccepted(active->canClose());
+#else
+            e->setAccepted(It->second->canClose());
+#endif
             if (!e->isAccepted())
                 return;
         }
@@ -1352,13 +1366,13 @@ void messageHandlerCoin(const SoError * error, void * userdata)
         switch (dbg->getSeverity())
         {
         case SoDebugError::INFO:
-            Base::Console().Message( msg );
+            Base::Console().Message("%s\n", msg);
             break;
         case SoDebugError::WARNING:
-            Base::Console().Warning( msg );
+            Base::Console().Warning("%s\n", msg);
             break;
         default: // error
-            Base::Console().Error( msg );
+            Base::Console().Error("%s\n", msg);
             break;
         }
 #ifdef FC_OS_WIN32
@@ -1415,6 +1429,7 @@ void Application::initTypes(void)
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();
     Gui::ViewProviderDocumentObjectGroup        ::init();
+    Gui::ViewProviderDocumentObjectGroupPython  ::init();
     Gui::ViewProviderGeometryObject             ::init();
     Gui::ViewProviderInventorObject             ::init();
     Gui::ViewProviderVRMLObject                 ::init();
@@ -1442,9 +1457,10 @@ namespace Gui {
  */
 class GUIApplication : public GUIApplicationNativeEventAware
 {
+    int systemExit;
 public:
-    GUIApplication(int & argc, char ** argv)
-        : GUIApplicationNativeEventAware(argc, argv)
+    GUIApplication(int & argc, char ** argv, int exitcode)
+        : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
     {
     }
 
@@ -1464,6 +1480,10 @@ public:
                 return processSpaceballEvent(receiver, event);
             else
                 return QApplication::notify(receiver, event);
+        }
+        catch (const Base::SystemExitException&) {
+            qApp->exit(systemExit);
+            return true;
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
@@ -1528,10 +1548,19 @@ void Application::runApplication(void)
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
-    GUIApplication mainApp(argc, App::Application::GetARGV());
+    int systemExit = 1000;
+    GUIApplication mainApp(argc, App::Application::GetARGV(), systemExit);
     // set application icon and window title
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it;
+    it = cfg.find("Application");
+    if (it != cfg.end()) {
+        mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
+    }
+    else {
+        mainApp.setApplicationName(QString::fromUtf8(App::GetApplication().getExecutableName()));
+    }
     mainApp.setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
-    mainApp.setApplicationName(QString::fromAscii(App::GetApplication().getExecutableName()));
     QString plugin;
     plugin = QString::fromUtf8(App::GetApplication().GetHomePath());
     plugin += QLatin1String("/plugins");
@@ -1591,8 +1620,6 @@ void Application::runApplication(void)
 
     QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
 
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
     it = cfg.find("WindowTitle");
     if (it != cfg.end()) {
         QString title = QString::fromUtf8(it->second.c_str());
@@ -1620,9 +1647,15 @@ void Application::runApplication(void)
             logo->setFrameShape(QFrame::NoFrame);
         }
     }
+    bool hidden = false;
+    it = cfg.find("StartHidden");
+    if (it != cfg.end()) {
+        hidden = true;
+    }
 
     // show splasher while initializing the GUI
-    mw.startSplasher();
+    if (!hidden)
+        mw.startSplasher();
 
     // running the GUI init script
     try {
@@ -1656,8 +1689,10 @@ void Application::runApplication(void)
     app.activateWorkbench(start.c_str());
 
     // show the main window
-    Base::Console().Log("Init: Showing main window\n");
-    mw.loadWindowSettings();
+    if (!hidden) {
+        Base::Console().Log("Init: Showing main window\n");
+        mw.loadWindowSettings();
+    }
 
     //initialize spaceball.
     mainApp.initSpaceball(&mw);
@@ -1687,9 +1722,15 @@ void Application::runApplication(void)
     Base::Console().Log("Init: Entering event loop\n");
 
     try {
-        mainApp.exec();
+        int ret = mainApp.exec();
+        if (ret == systemExit)
+            throw Base::SystemExitException();
     }
-    catch(...) {
+    catch (const Base::SystemExitException&) {
+        Base::Console().Message("System exit\n");
+        throw;
+    }
+    catch (...) {
         // catching nasty stuff coming out of the event loop
         App::Application::destructObserver();
         Base::Console().Error("Event loop left through unhandled exception\n");

@@ -252,6 +252,12 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
 std::string SoFCOffscreenRenderer::createMIBA() const
 {
     std::stringstream com;
+    const std::map<std::string, std::string>& cfg = App::Application::Config();
+    std::map<std::string, std::string>::const_iterator it;
+    it = cfg.find("BuildVersionMajor");
+    std::string major = (it != cfg.end() ? it->second : "");
+    it = cfg.find("BuildVersionMinor");
+    std::string minor = (it != cfg.end() ? it->second : "");
 
     com << setw(7) << setfill(' ') << fixed;
     com << "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" ;
@@ -266,8 +272,8 @@ std::string SoFCOffscreenRenderer::createMIBA() const
     com << " </View>\n" ; 
     com << " <Source>\n" ; 
     com << "  <Creator>Unknown</Creator>\n" ;  
-    com << "  <CreationDate>2006-07-05T01:11:00</CreationDate>\n" ;  
-    com << "  <CreatingSystem>FreeCAD 0.5</CreatingSystem>\n" ;
+    com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toAscii().constData() << "</CreationDate>\n" ;  
+    com << "  <CreatingSystem>" << App::GetApplication().getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
     com << "  <PartNumber>Unknown</PartNumber>\n";
     com << "  <Revision>1.0</Revision>\n";
     com << " </Source>\n" ;

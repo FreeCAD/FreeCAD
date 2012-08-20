@@ -59,13 +59,19 @@ int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         *getPointKernelPtr() = *(static_cast<PointsPy*>(pcObj)->getPointKernelPtr());
     }
     else if (PyList_Check(pcObj)) {
-        addPoints(args);
+        if (!addPoints(args))
+            return -1;
     }
     else if (PyTuple_Check(pcObj)) {
-        addPoints(args);
+        if (!addPoints(args))
+            return -1;
     }
     else if (PyString_Check(pcObj)) {
         getPointKernelPtr()->load(PyString_AsString(pcObj));
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "optional argument must be list, tuple or string");
+        return -1;
     }
 
     return 0;

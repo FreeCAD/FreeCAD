@@ -61,6 +61,7 @@
 #include "ViewProvider.h"
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
+#include "TaskSweep.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -441,7 +442,6 @@ CmdPartImport::CmdPartImport()
     sPixmap       = "Part_Import";
 }
 
-
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
@@ -470,6 +470,11 @@ void CmdPartImport::activated(int iMsg)
             doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
         commitCommand();
+
+        std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+            (*it)->viewAll();
+        }
     }
 }
 
@@ -511,7 +516,6 @@ void CmdPartExport::activated(int iMsg)
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
-        openCommand("Import Part");
         QString ext = QFileInfo(fn).suffix().toLower();
         if (ext == QLatin1String("step") || 
             ext == QLatin1String("stp")  ||
@@ -522,7 +526,6 @@ void CmdPartExport::activated(int iMsg)
         else {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"Part");
         }
-        commitCommand();
     }
 }
 
@@ -661,6 +664,7 @@ DEF_STD_CMD_A(CmdPartReverseShape);
 CmdPartReverseShape::CmdPartReverseShape()
   :Command("Part_ReverseShape")
 {
+
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Reverse shapes");
@@ -945,9 +949,10 @@ CmdPartLoft::CmdPartLoft()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Loft...");
-    sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
+    sToolTipText  = QT_TR_NOOP("Utility to loft");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Loft";
 }
 
 void CmdPartLoft::activated(int iMsg)
@@ -956,6 +961,32 @@ void CmdPartLoft::activated(int iMsg)
 }
 
 bool CmdPartLoft::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdPartSweep);
+
+CmdPartSweep::CmdPartSweep()
+  : Command("Part_Sweep")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Sweep...");
+    sToolTipText  = QT_TR_NOOP("Utility to sweep");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Sweep";
+}
+
+void CmdPartSweep::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskSweep());
+}
+
+bool CmdPartSweep::isActive(void)
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -978,6 +1009,7 @@ CmdShapeInfo::CmdShapeInfo()
 
 void CmdShapeInfo::activated(int iMsg)
 {
+#if 0
     static const char * const part_pipette[]={
         "32 32 17 1",
         "# c #000000",
@@ -1032,6 +1064,7 @@ void CmdShapeInfo::activated(int iMsg)
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+#endif
     //if (view) {
     //    Gui::View3DInventorViewer* viewer = view->getViewer();
     //    viewer->setEditing(true);
@@ -1196,5 +1229,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRuledSurface());
     rcCmdMgr.addCommand(new CmdPartBuilder());
     rcCmdMgr.addCommand(new CmdPartLoft());
+    rcCmdMgr.addCommand(new CmdPartSweep());
 } 
 

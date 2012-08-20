@@ -24,6 +24,11 @@
         <file>icons/Arch_Window_Tree.svg</file>
         <file>icons/Arch_Axis.svg</file>
         <file>icons/Arch_Axis_Tree.svg</file>
+        <file>icons/Arch_Roof.svg</file>
+        <file>icons/Arch_Roof_Tree.svg</file>
+        <file>icons/Arch_CloseHoles.svg</file>
+        <file>icons/Arch_Check.svg</file>
+        <file>icons/Arch_SelectNonManifold.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>

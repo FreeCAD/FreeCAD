@@ -193,13 +193,7 @@ Action * StdCmdAbout::createAction(void)
 {
     Action *pcAction;
 
-    QString exe;
-    std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::iterator it = cfg.find("Application");
-    if (it != cfg.end())
-        exe = QString::fromUtf8(it->second.c_str());
-    else
-        exe = QString::fromUtf8(App::GetApplication().getExecutableName());
+    QString exe = qApp->applicationName();
     pcAction = new Action(this,getMainWindow());
     pcAction->setText(QCoreApplication::translate(
         this->className(), sMenuText, 0,
@@ -235,13 +229,7 @@ void StdCmdAbout::activated(int iMsg)
 void StdCmdAbout::languageChange()
 {
     if (_pcAction) {
-        QString exe;
-        std::map<std::string,std::string>& cfg = App::Application::Config();
-        std::map<std::string,std::string>::iterator it = cfg.find("Application");
-        if (it != cfg.end())
-            exe = QString::fromUtf8(it->second.c_str());
-        else
-            exe = QString::fromUtf8(App::GetApplication().getExecutableName());
+        QString exe = qApp->applicationName();
         _pcAction->setText(QCoreApplication::translate(
             this->className(), sMenuText, 0,
             QCoreApplication::CodecForTr).arg(exe));
@@ -588,7 +576,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
-    rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
+    //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
 }

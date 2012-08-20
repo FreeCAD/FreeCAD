@@ -63,6 +63,11 @@
 
 #include "SMESHDS_Mesh.hxx"
 #include "SMESHDS_GroupBase.hxx"
+#include <cmath>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 /*
                             AUXILIARY METHODS

@@ -1,45 +1,48 @@
 noinst_LTLIBRARIES=libResources.la
 
 BUILT_SOURCES=\
-		qrc_Drawing.cpp 
+		qrc_Assembly.cpp 
 
 nodist_libResources_la_SOURCES=\
-		qrc_Drawing.cpp 
+		qrc_Assembly.cpp 
 
 EXTRA_DIST = \
-		icons/actions/document-new.png \
-		icons/actions/document-new.svg \
-		icons/actions/drawing-landscape-A0.svg \
-		icons/actions/drawing-landscape-A1.svg \
-		icons/actions/drawing-landscape-A2.svg \
-		icons/actions/drawing-landscape.svg \
-		icons/actions/drawing-view.svg \
-		icons/actions/drawing-landscape-A3.svg \
-		icons/actions/drawing-landscape-A4.svg \
-		icons/actions/drawing-landscape-new.svg \
-		icons/actions/drawing-portrait-A4.svg \
-		icons/Page.svg \
-		icons/Pages.svg \
-		icons/View.svg \
+		icons/actions/Axle_constraint.svg \
 		translations/Assembly_af.qm \
 		translations/Assembly_de.qm \
+		translations/Assembly_es.qm \
 		translations/Assembly_fi.qm \
 		translations/Assembly_fr.qm \
+		translations/Assembly_hr.qm \
+		translations/Assembly_hu.qm \
 		translations/Assembly_it.qm \
+		translations/Assembly_ja.qm \
 		translations/Assembly_nl.qm \
 		translations/Assembly_no.qm \
+		translations/Assembly_pl.qm \
+		translations/Assembly_pt.qm \
 		translations/Assembly_ru.qm \
+		translations/Assembly_se.qm \
 		translations/Assembly_uk.qm \
+		translations/Assembly_zh.qm \
 		translations/Assembly_af.ts \
 		translations/Assembly_de.ts \
+		translations/Assembly_es.ts \
 		translations/Assembly_fi.ts \
 		translations/Assembly_fr.ts \
+		translations/Assembly_hr.ts \
+		translations/Assembly_hu.ts \
+		translations/Assembly_ja.ts \
 		translations/Assembly_it.ts \
 		translations/Assembly_nl.ts \
 		translations/Assembly_no.ts \
+		translations/Assembly_pl.ts \
+		translations/Assembly_pt.ts \
 		translations/Assembly_ru.ts \
+		translations/Assembly_se.ts \
 		translations/Assembly_uk.ts \
-		Drawing.qrc \
+		translations/Assembly_zh.ts \
+		Assembly.qrc \
 		UpdateResources.bat
 
 

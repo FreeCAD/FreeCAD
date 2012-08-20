@@ -4,7 +4,9 @@ datadir = $(prefix)/Mod/Ship
 data_DATA = \
 	InitGui.py \
 	ShipGui.py \
-	Instance.py
+	Instance.py \
+	SimInstance.py \
+	TankInstance.py
 
 nobase_data_DATA = \
 	Icons/AreaCurveIco.png \
@@ -33,9 +35,27 @@ nobase_data_DATA = \
 	Icons/ReparametrizeIco.xpm \
 	Icons/Ship.xcf \
 	Icons/Ship.xpm \
+	Icons/Weight.png \
+	Icons/Weight.xcf \
+	Icons/Weight.xpm \
+	Icons/SimIco.xcf \
+	Icons/Sim.xpm \
+	Icons/SimCreateIco.png \
+	Icons/SimCreateIco.xpm \
+	Icons/SimRunIco.png \
+	Icons/SimRunIco.xpm \
+	Icons/SimStopIco.png \
+	Icons/SimStopIco.xpm \
+	Icons/SimPostIco.png \
+	Icons/SimPostIco.xpm \
+	Icons/Tank.png \
+	Icons/Tank.xcf \
+	Icons/Tank.xpm \
 	Examples/s60.fcstd \
-	Examples/barehull5415.fcstd \
 	Examples/s60_katamaran.fcstd \
+	Examples/wigley.fcstd \
+	Examples/wigley_katamaran.fcstd \
+	OpenCL/simInit.cl \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \
@@ -61,7 +81,36 @@ nobase_data_DATA = \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
 	shipUtils/Paths.py \
-	shipUtils/Translator.py
+	shipUtils/Translator.py \
+	tankWeights/__init__.py \
+	tankWeights/Preview.py \
+	tankWeights/TaskPanel.py \
+	tankWeights/TaskPanel.ui \
+	tankCreateTank/__init__.py \
+	tankCreateTank/TaskPanel.py \
+	tankCreateTank/TaskPanel.ui \
+	tankGZ/__init__.py \
+	tankGZ/Plot.py \
+	tankGZ/TaskPanel.py \
+	tankGZ/TaskPanel.ui \
+	simCreate/__init__.py \
+	simCreate/TaskPanel.py \
+	simCreate/TaskPanel.ui \
+	simRun/__init__.py \
+	simRun/Simulation.py \
+	simRun/TaskPanel.py \
+	simRun/TaskPanel.ui \
+	simRun/clSim/__init__.py \
+	simRun/clSim/initialization.py \
+	simRun/clSim/Utils.py \
+	simRun/Sim/__init__.py \
+	simRun/Sim/initialization.py \
+	simRun/Sim/matrixGen.py \
+	simRun/Sim/computeSources.py \
+	simRun/Sim/fsEvolution.py \
+	simPost/__init__.py \
+	simPost/TaskPanel.py \
+	simPost/TaskPanel.ui
 
 CLEANFILES = $(BUILT_SOURCES)
 

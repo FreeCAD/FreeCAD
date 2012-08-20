@@ -91,5 +91,6 @@ libdir = $(prefix)/Mod/Drawing
 CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
+		$(libDrawingGui_la_UI) \
 		CMakeLists.txt
 

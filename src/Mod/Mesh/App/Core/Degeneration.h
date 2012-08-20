@@ -139,6 +139,54 @@ public:
 };
 
 /**
+ * The MeshEvalNaNPoints class searches for points with a coordinate that is NaN.
+ * @see MeshFixNaNPoints
+ * @author Werner Mayer
+ */
+class MeshExport MeshEvalNaNPoints : public MeshEvaluation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshEvalNaNPoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  /** 
+   * Destruction.
+   */
+  ~MeshEvalNaNPoints () { }
+  /**
+   * Returns false if a point with NaN coordinate is found.
+   */
+  bool Evaluate ();
+  /**
+   * Returns the indices of all NaN points.
+   */
+  std::vector<unsigned long> GetIndices() const;
+};
+
+/**
+ * The MeshFixNaNPoints class removes all points with a coordinate that is NaN.
+ * @see MeshEvalNaNPoints
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixNaNPoints : public MeshValidation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshFixNaNPoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  /** 
+   * Destruction.
+   */
+  ~MeshFixNaNPoints () { }
+  /** 
+   * Merges duplicated points.
+   */
+  bool Fixup ();
+};
+
+/**
  * The MeshEvalDuplicateFacets class searches for duplicated facets.
  * A facet is regarded as duplicated if all its point indices refer to the same location in the point array of the mesh kernel. 
  * The actual geometric points are not taken into consideration.

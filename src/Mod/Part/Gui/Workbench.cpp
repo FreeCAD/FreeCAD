@@ -58,28 +58,21 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    Gui::MenuItem* prim = new Gui::MenuItem;
+    prim->setCommand("Primitives");
+    *prim << "Part_Box" << "Part_Cylinder" << "Part_Sphere"
+          << "Part_Cone" << "Part_Torus";
+
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part");
     *part << "Part_Import" << "Part_Export" << "Separator";
-    *part << "Part_Primitives" << "Part_ShapeFromMesh"
-          << "Part_MakeSolid" << "Part_ReverseShape" << "Part_SimpleCopy"
-          << "Part_RefineShape" << "Separator"
+    *part << prim << "Part_Primitives" << "Part_Builder" << "Separator"
+          << "Part_ShapeFromMesh" << "Part_MakeSolid" << "Part_ReverseShape"
+          << "Part_SimpleCopy" << "Part_RefineShape" << "Separator"
           << "Part_Boolean" << "Part_CrossSections" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
-          << "Part_RuledSurface" << "Part_Loft"
-          << "Part_Builder";
-
-    Gui::MenuItem* partSimple = new Gui::MenuItem;
-    root->insertItem(item, partSimple);
-    partSimple->setCommand("&Simple");
-    *partSimple << "Part_SimpleCylinder";
-
-    Gui::MenuItem* solids = new Gui::MenuItem;
-    root->insertItem(item, solids);
-    solids->setCommand("&Parametric");
-    *solids << "Part_Box" << "Part_Cylinder" << "Part_Sphere" << "Part_Cone"
-            << "Part_Torus" << "Separator" << "Part_Primitives";
+          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep";
 
     return root;
 }
@@ -90,15 +83,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solids = new Gui::ToolBarItem(root);
     solids->setCommand("Solids");
-    *solids << "Part_Box" << "Part_Cylinder" << "Part_Sphere" << "Part_Cone" << "Part_Torus" << "Part_Primitives";
+    *solids << "Part_Box" << "Part_Cylinder" << "Part_Sphere" << "Part_Cone"
+            << "Part_Torus" << "Part_Primitives" << "Part_Builder";
 
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
     tool->setCommand("Part tools");
-    *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer" << "Part_RuledSurface";
+    *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet"
+          << "Part_Chamfer" << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
-    *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common" << "Part_Section";
+    *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common"
+            << "Part_Section" << "Part_CrossSections";
 
     return root;
 }

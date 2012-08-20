@@ -441,7 +441,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_SelectAll" << "Std_Delete"
           << "Std_Placement" << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 
@@ -490,8 +490,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
     MenuItem* tool = new MenuItem( menuBar );
     tool->setCommand("&Tools");
     *tool << "Std_DlgParameter" << "Separator"
-          << "Std_ViewScreenShot" << "Std_SceneInspector" << "Std_DemoMode" 
-          << "Separator" << "Std_DlgCustomize";
+          << "Std_ViewScreenShot" << "Std_SceneInspector" 
+          << "Std_ExportGraphviz" << "Std_ProjectUtil"
+          << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
 
     // Macro
     MenuItem* macro = new MenuItem( menuBar );

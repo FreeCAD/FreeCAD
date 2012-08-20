@@ -57,42 +57,61 @@ class ArchWorkbench(Workbench):
     ToolTip = "Architecture workbench"
 	
     def Initialize(self):
-        import DraftTools,DraftGui,Arch_rc,Arch
-        self.archtools = ["Arch_Wall","Arch_Structure","Arch_Cell",
+        import DraftTools,DraftGui,Arch_rc,Arch,Draft_rc
+
+        # arch tools
+        self.archtools = ["Arch_Wall","Arch_Structure",
                      "Arch_Floor","Arch_Building","Arch_Site",
-                     "Arch_Window","Arch_Axis",
+                     "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Add","Arch_Remove"]
-        self.drafttools = ["Draft_Line","Draft_Wire","Draft_Rectangle",
-                      "Draft_Polygon","Draft_Arc",
-                      "Draft_Circle","Draft_Dimension",
-                      "Draft_Move","Draft_Rotate",
-                      "Draft_Offset","Draft_Upgrade",
-                      "Draft_Downgrade","Draft_Trimex"]
-        self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode",
-                             "Draft_AddToGroup","Draft_SelectGroup",
-                             "Draft_SelectPlane","Draft_ToggleSnap"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
-                     "Arch_SelectNonSolidMeshes","Arch_RemoveShape"]
+                     "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
+                     "Arch_CloseHoles"]
+        self.calctools = ["Arch_Check"]
+
+        # draft tools
+        self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
+                        "Draft_Polygon","Draft_Rectangle", "Draft_Text",
+                        "Draft_Dimension", "Draft_BSpline","Draft_Point"]
+        self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
+                        "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
+                        "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
+                        "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
+                        "Draft_Clone"]
+        self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
+                            "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
+                            "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
+                            "Draft_FinishLine","Draft_CloseLine"]
+
         self.appendToolbar(str(DraftTools.translate("arch","Arch tools")),self.archtools)
         self.appendToolbar(str(DraftTools.translate("arch","Draft tools")),self.drafttools)
-        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Tools"))],self.meshtools)
+        self.appendToolbar(str(DraftTools.translate("arch","Draft mod tools")),self.draftmodtools)
+        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Conversion Tools"))],self.meshtools)
+        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Calculation Tools"))],self.calctools)
         self.appendMenu(str(DraftTools.translate("arch","&Architecture")),self.archtools)
-        self.appendMenu(str(DraftTools.translate("arch","&Draft")),self.drafttools+self.draftcontexttools)
+        self.appendMenu(str(DraftTools.translate("arch","&Draft")),self.drafttools+self.draftmodtools)
+        self.appendMenu([str(DraftTools.translate("arch","&Draft")),str(DraftTools.translate("arch","Context Tools"))],self.draftcontexttools)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
+        FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+        FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
         Log ('Loading Arch module... done\n')
                 
     def Activated(self):
-        FreeCADGui.draftToolBar.Activated()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Activated()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.show()
         Msg("Arch workbench activated\n")
                 
     def Deactivated(self):
-        FreeCADGui.draftToolBar.Deactivated()
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.Deactivated()
         Msg("Arch workbench deactivated\n")
                 
     def ContextMenu(self, recipient):
-        self.appendContextMenu("Display tools",self.draftcontexttools)
+        self.appendContextMenu("Draft context tools",self.draftcontexttools)
 
     def GetClassName(self): 
         return "Gui::PythonWorkbench"
@@ -100,6 +119,13 @@ class ArchWorkbench(Workbench):
 FreeCADGui.addWorkbench(ArchWorkbench)
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
-FreeCAD.addImportType("Collada (*.dae)","importDAE")
-FreeCAD.addExportType("Collada (*.dae)","importDAE")
+# check for pycollada
+try:
+    import collada
+except:
+    from DraftTools import translate
+    FreeCAD.Console.PrintMessage(str(translate("arch","pycollada not found, collada support will be disabled.\n")))
+else:
+    FreeCAD.addImportType("Collada (*.dae)","importDAE")
+    FreeCAD.addExportType("Collada (*.dae)","importDAE")
 

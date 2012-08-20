@@ -231,6 +231,8 @@ public:
     PYFUNCDEF_S(sActiveDocument);
     PYFUNCDEF_S(sGetDocument);
 
+    PYFUNCDEF_S(sDoCommand);
+
     static PyMethodDef    Methods[]; 
 
 private:

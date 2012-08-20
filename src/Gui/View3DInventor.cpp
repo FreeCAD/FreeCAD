@@ -32,6 +32,8 @@
 # include <QDropEvent>
 # include <QDragEnterEvent>
 # include <QFileDialog>
+# include <QGLFormat>
+# include <QGLWidget>
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
@@ -138,6 +140,8 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     OnChange(*hGrp,"BacklightIntensity");
     OnChange(*hGrp,"NavigationStyle");
     OnChange(*hGrp,"OrbitStyle");
+    OnChange(*hGrp,"Sensitivity");
+    OnChange(*hGrp,"ResetCursorPosition");
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -272,6 +276,14 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         int style = rGrp.GetInt("OrbitStyle",1);
         _viewer->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
     }
+    else if (strcmp(Reason,"Sensitivity") == 0) {
+        float val = rGrp.GetFloat("Sensitivity",2.0f);
+        _viewer->navigationStyle()->setSensitivity(val);
+    }
+    else if (strcmp(Reason,"ResetCursorPosition") == 0) {
+        bool on = rGrp.GetBool("ResetCursorPosition",false);
+        _viewer->navigationStyle()->setResetCursorPosition(on);
+    }
     else if (strcmp(Reason,"InvertZoom") == 0) {
         bool on = rGrp.GetBool("InvertZoom", false);
         _viewer->navigationStyle()->setZoomInverted(on);
@@ -298,6 +310,29 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"UseAntialiasing") == 0) {
         _viewer->getGLRenderAction()->setSmoothing(rGrp.GetBool("UseAntialiasing",false));
+    }
+    else if (strcmp(Reason,"SampleBuffers") == 0) {
+#if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 5)
+        _viewer->setSampleBuffers(rGrp.GetInt("SampleBuffers",4));
+#else
+        // http://stackoverflow.com/questions/4207506/where-is-gl-multisample-defined
+        //int sb = rGrp.GetInt("SampleBuffers",4);
+        //QGLWidget* gl = static_cast<QGLWidget*>(_viewer->getGLWidget());
+        //QGLFormat fmt = gl->format();
+        //if (sb > 0) {
+        //    fmt.setSampleBuffers(true);
+        //    fmt.setSamples(sb);
+        //    gl->setFormat(fmt);
+        //    gl->makeCurrent();
+        //    //glEnable(GL_MULTISAMPLE);
+        //}
+        //else {
+        //    fmt.setSampleBuffers(false);
+        //    gl->setFormat(fmt);
+        //    gl->makeCurrent();
+        //    //glDisable(GL_MULTISAMPLE);
+        //}
+#endif
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
@@ -937,7 +972,12 @@ void View3DInventor::customEvent(QEvent * e)
 {
     if (e->type() == QEvent::User) {
         NavigationStyleEvent* se = static_cast<NavigationStyleEvent*>(e);
-        _viewer->setNavigationType(se->style());
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        if (hGrp->GetBool("SameStyleForAllViews", true))
+            hGrp->SetASCII("NavigationStyle", se->style().getName());
+        else
+            _viewer->setNavigationType(se->style());
     }
 }
 

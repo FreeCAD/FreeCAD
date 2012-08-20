@@ -187,6 +187,9 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
         d->_pcInEdit = p;
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        if (dlg)
+            dlg->setDocumentName(this->getDocument()->getName());
         if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
             signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
     }
@@ -405,6 +408,9 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
   
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
+#if 0 // With this we can show child objects again if this method was called by undo
+    viewProvider->onDelete(std::vector<std::string>());
+#endif
     if (viewProvider && viewProvider->getTypeId().isDerivedFrom
         (ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views
@@ -504,7 +510,7 @@ bool Document::saveAs(void)
 {
     getMainWindow()->statusBar()->showMessage(QObject::tr("Save document under new filename..."));
 
-    QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
+    QString exe = qApp->applicationName();
     QString fn = QFileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
                  FileDialog::getWorkingDirectory(), QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
@@ -642,8 +648,13 @@ void Document::RestoreDocFile(Base::Reader &reader)
         std::string sMsg = "SetCamera ";
         sMsg += ppReturn;
         if (strcmp(ppReturn, "") != 0) { // non-empty attribute
-            if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
-                d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            try {
+                if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
+                    d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+            }
         }
     }
 
@@ -743,7 +754,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
                     << views.size() <<"\">" << std::endl;
 
     bool xml = writer.isForceXML();
-    writer.setForceXML(true);
+    //writer.setForceXML(true);
     writer.incInd(); // indention for 'ViewProvider name'
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
     for (jt = views.begin(); jt != views.end(); ++jt) {
@@ -826,6 +837,7 @@ void Document::createView(const char* sType)
         .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
 
     view3D->setWindowTitle(title);
+    view3D->setWindowModified(this->isModified());
     view3D->setWindowIcon(QApplication::windowIcon());
     view3D->resize(400, 300);
     getMainWindow()->addWindow(view3D);
@@ -921,13 +933,16 @@ bool Document::canClose ()
         return false;
     }
     else if (!Gui::Control().isAllowedAlterDocument()) {
-        QMessageBox::warning(getActiveView(),
-            QObject::tr("Document not closable"),
-            QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
-                        "You either have to finish or cancel the editing in the task panel."));
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        if (dlg) Gui::Control().showDialog(dlg);
-        return false;
+        std::string name = Gui::Control().activeDialog()->getDocumentName();
+        if (name == this->getDocument()->getName()) {
+            QMessageBox::warning(getActiveView(),
+                QObject::tr("Document not closable"),
+                QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
+                            "You either have to finish or cancel the editing in the task panel."));
+            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+            if (dlg) Gui::Control().showDialog(dlg);
+            return false;
+        }
     }
 
     if (!isModified())
@@ -961,6 +976,19 @@ std::list<MDIView*> Document::getMDIViews() const
          it != d->baseViews.end(); ++it) {
         MDIView* view = dynamic_cast<MDIView*>(*it);
         if (view)
+            views.push_back(view);
+    }
+
+    return views;
+}
+
+std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId) const
+{
+    std::list<MDIView*> views;
+    for (std::list<BaseView*>::const_iterator it = d->baseViews.begin();
+         it != d->baseViews.end(); ++it) {
+        MDIView* view = dynamic_cast<MDIView*>(*it);
+        if (view && view->isDerivedFrom(typeId))
             views.push_back(view);
     }
 
@@ -1006,9 +1034,9 @@ MDIView* Document::getActiveView(void) const
         }
     }
 
-    // the active view is not part of this document, just use the first view
+    // the active view is not part of this document, just use the last view
     if (!ok && !mdis.empty())
-        active = mdis.front();
+        active = mdis.back();
 
     return active;
 }

@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <stdio.h>
+# include <QApplication>
 # include <QFile>
 # include <QTextStream>
 #endif
@@ -71,6 +72,7 @@ void MacroManager::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     this->recordGui         = this->params->GetBool("RecordGui", true);
     this->guiAsComment      = this->params->GetBool("GuiAsComment", true);
     this->scriptToPyConsole = this->params->GetBool("ScriptToPyConsole", true);
+    this->localEnv          = this->params->GetBool("LocalEnvironment", true);
 }
 
 void MacroManager::open(MacroType eType,const char *sName)
@@ -228,12 +230,10 @@ void MacroManager::run(MacroType eType,const char *sName)
         PythonRedirector std_out("stdout",pyout);
         PythonRedirector std_err("stderr",pyerr);
         //The given path name is expected to be Utf-8
-        Base::Interpreter().runFile(sName, true);
+        Base::Interpreter().runFile(sName, this->localEnv);
     }
     catch (const Base::SystemExitException&) {
-        Base::PyGILStateLocker lock;
-        PyErr_Clear();
-        Base::Interpreter().systemExit();
+        throw;
     }
     catch (const Base::PyException& e) {
         Base::Console().Error("%s%s: %s\n",

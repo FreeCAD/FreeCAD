@@ -85,15 +85,15 @@ void SMESH_HypothesisPy<T>::init_type(PyObject* module)
     SMESH_HypothesisPy<T>::behaviors().supportSetattr();
     SMESH_HypothesisPy<T>::behaviors().type_object()->tp_new = &PyMake;
 
-    add_varargs_method("setLibName", &SMESH_HypothesisPy<T>::setLibName, "setLibName(String)");
-    add_varargs_method("getLibName", &SMESH_HypothesisPy<T>::getLibName, "String getLibName()");
-    add_varargs_method("setParameters", &SMESH_HypothesisPy<T>::setParameters, "setParameters(String)");
-    add_varargs_method("getParameters", &SMESH_HypothesisPy<T>::getParameters, "String getParameters()");
-    add_varargs_method("setLastParameters", &SMESH_HypothesisPy<T>::setLastParameters, "setLastParameters(String)");
-    add_varargs_method("getLastParameters", &SMESH_HypothesisPy<T>::getLastParameters, "String getLastParameters()");
-    add_varargs_method("clearParameters", &SMESH_HypothesisPy<T>::clearParameters, "clearParameters()");
-    add_varargs_method("isAuxiliary", &SMESH_HypothesisPy<T>::isAuxiliary, "Bool isAuxiliary()");
-    add_varargs_method("setParametersByMesh", &SMESH_HypothesisPy<T>::setParametersByMesh, "setParametersByMesh(Mesh,Shape)");
+    SMESH_HypothesisPy::add_varargs_method("setLibName", &SMESH_HypothesisPy<T>::setLibName, "setLibName(String)");
+    SMESH_HypothesisPy::add_varargs_method("getLibName", &SMESH_HypothesisPy<T>::getLibName, "String getLibName()");
+    SMESH_HypothesisPy::add_varargs_method("setParameters", &SMESH_HypothesisPy<T>::setParameters, "setParameters(String)");
+    SMESH_HypothesisPy::add_varargs_method("getParameters", &SMESH_HypothesisPy<T>::getParameters, "String getParameters()");
+    SMESH_HypothesisPy::add_varargs_method("setLastParameters", &SMESH_HypothesisPy<T>::setLastParameters, "setLastParameters(String)");
+    SMESH_HypothesisPy::add_varargs_method("getLastParameters", &SMESH_HypothesisPy<T>::getLastParameters, "String getLastParameters()");
+    SMESH_HypothesisPy::add_varargs_method("clearParameters", &SMESH_HypothesisPy<T>::clearParameters, "clearParameters()");
+    SMESH_HypothesisPy::add_varargs_method("isAuxiliary", &SMESH_HypothesisPy<T>::isAuxiliary, "Bool isAuxiliary()");
+    SMESH_HypothesisPy::add_varargs_method("setParametersByMesh", &SMESH_HypothesisPy<T>::setParametersByMesh, "setParametersByMesh(Mesh,Shape)");
     Base::Interpreter().addType(SMESH_HypothesisPy<T>::behaviors().type_object(),
         module,SMESH_HypothesisPy<T>::behaviors().getName());
 }
@@ -579,6 +579,8 @@ void StdMeshers_Deflection1DPy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_Deflection1D");
     behaviors().doc("StdMeshers_Deflection1D");
+
+    add_varargs_method("setDeflection", &StdMeshers_Deflection1DPy::setDeflection, "setDeflection()");
     SMESH_HypothesisPyBase::init_type(module);
 }
 
@@ -589,6 +591,13 @@ StdMeshers_Deflection1DPy::StdMeshers_Deflection1DPy(int hypId, int studyId, SME
 
 StdMeshers_Deflection1DPy::~StdMeshers_Deflection1DPy()
 {
+}
+
+Py::Object StdMeshers_Deflection1DPy::setDeflection(const Py::Tuple& args)
+{
+    double fine = (double)Py::Float(args[0]);
+    hypothesis<StdMeshers_Deflection1D>()->SetDeflection(fine);
+    return Py::None();
 }
 
 // ----------------------------------------------------------------------------

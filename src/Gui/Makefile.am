@@ -48,6 +48,7 @@ BUILT_SOURCES=\
 		moc_HelpView.cpp \
 		moc_InputVector.cpp \
 		moc_MainWindow.cpp \
+		moc_ManualAlignment.cpp \
 		moc_NetworkRetriever.cpp \
 		moc_OnlineDocumentation.cpp \
 		moc_Placement.cpp \
@@ -282,6 +283,8 @@ libFreeCADGui_la_SOURCES=\
 		Placement.h \
 		Macro.cpp \
 		MainWindow.cpp \
+		ManualAlignment.cpp \
+		ManualAlignment.h \
 		MDIView.cpp \
 		MenuManager.cpp \
 		MergeDocuments.cpp \

@@ -54,6 +54,11 @@
 #include <TColgp_SequenceOfPnt2d.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <cmath>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 
 using namespace std;

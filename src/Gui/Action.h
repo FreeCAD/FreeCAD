@@ -124,6 +124,7 @@ class GuiExport WorkbenchComboBox : public QComboBox
 public:
     WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=0);
     virtual ~WorkbenchComboBox();
+    void showPopup();
 
 public Q_SLOTS:
     void onActivated(int);

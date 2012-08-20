@@ -59,30 +59,117 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
 
     connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
-    connect(ui->checkBoxMirrored, SIGNAL(toggled(bool)),
-            this, SLOT(onMirrored(bool)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplane(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
             this, SLOT(onReversed(bool)));
+    connect(ui->doubleSpinBox2, SIGNAL(valueChanged(double)),
+            this, SLOT(onLength2Changed(double)));
+    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
+            this, SLOT(onFaceName(QString)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
+    // Get the feature data
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
     double l = pcPad->Length.getValue();
-    bool mirrored = pcPad->MirroredExtent.getValue();
+    bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
+    double l2 = pcPad->Length2.getValue();
+    int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
+    const char* upToFace = pcPad->FaceName.getValue();
 
+    // Fill data into dialog elements
     ui->doubleSpinBox->setMinimum(0);
+    ui->doubleSpinBox->setMaximum(INT_MAX);
     ui->doubleSpinBox->setValue(l);
-    ui->doubleSpinBox->selectAll();
-    ui->checkBoxMirrored->setChecked(mirrored);
+    ui->doubleSpinBox2->setMinimum(0);
+    ui->doubleSpinBox2->setMaximum(INT_MAX);
+    ui->doubleSpinBox2->setValue(l2);
+    ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
+    ui->lineFaceName->setText(pcPad->FaceName.isEmpty() ? tr("No face selected") : tr(upToFace));
+    ui->changeMode->clear();
+    ui->changeMode->insertItem(0, tr("Dimension"));
+    ui->changeMode->insertItem(1, tr("To last"));
+    ui->changeMode->insertItem(2, tr("To first"));
+    ui->changeMode->insertItem(3, tr("Up to face"));
+    ui->changeMode->insertItem(4, tr("Two dimensions"));
+    ui->changeMode->setCurrentIndex(index);
 
-    // Make sure that the spin box has the focus to get key events
-    // Calling setFocus() directly doesn't work because the spin box is not
-    // yet visible. 
-    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+    // activate and de-activate dialog elements as appropriate
+    updateUI(index);
+}
+
+void TaskPadParameters::updateUI(int index)
+{
+    if (index == 0) {  // dimension
+        ui->doubleSpinBox->setEnabled(true);
+        ui->doubleSpinBox->selectAll();
+        // Make sure that the spin box has the focus to get key events
+        // Calling setFocus() directly doesn't work because the spin box is not
+        // yet visible.
+        QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+        ui->checkBoxMidplane->setEnabled(true);
+        ui->checkBoxReversed->setEnabled(true);
+        ui->doubleSpinBox2->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+    } else if ((index == 1) || (index == 2)) { // up to first/last
+        ui->doubleSpinBox->setEnabled(false);
+        ui->checkBoxMidplane->setEnabled(false);
+        ui->checkBoxReversed->setEnabled(false);
+        ui->doubleSpinBox2->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+    } else if (index == 3) { // up to face
+        ui->doubleSpinBox->setEnabled(false);
+        ui->checkBoxMidplane->setEnabled(false);
+        ui->checkBoxReversed->setEnabled(false);
+        ui->doubleSpinBox2->setEnabled(false);
+        ui->lineFaceName->setEnabled(true);
+        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
+    } else { // two dimensions
+        ui->doubleSpinBox->setEnabled(true);
+        ui->doubleSpinBox->selectAll();
+        QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+        ui->checkBoxMidplane->setEnabled(false);
+        ui->checkBoxReversed->setEnabled(false);
+        ui->doubleSpinBox2->setEnabled(true);
+        ui->lineFaceName->setEnabled(false);
+    }
+}
+
+void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    if (pcPad->Type.getValue() != 3) // ignore user selections if mode is not upToFace
+        return;
+
+    if (!msg.pSubName || msg.pSubName[0] == '\0')
+        return;
+    std::string element(msg.pSubName);
+    if (element.substr(0,4) != "Face")
+      return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        pcPad->FaceName.setValue(element);
+        pcPad->getDocument()->recomputeFeature(pcPad);
+        ui->lineFaceName->setText(tr(element.c_str()));
+    }
+}
+
+void TaskPadParameters::onUpdateView(bool on)
+{
+    ui->changeMode->blockSignals(!on);
+    ui->doubleSpinBox->blockSignals(!on);
+    ui->checkBoxMidplane->blockSignals(!on);
+    ui->checkBoxReversed->blockSignals(!on);
+    ui->doubleSpinBox2->blockSignals(!on);
 }
 
 void TaskPadParameters::onLengthChanged(double len)
@@ -92,10 +179,10 @@ void TaskPadParameters::onLengthChanged(double len)
     pcPad->getDocument()->recomputeFeature(pcPad);
 }
 
-void TaskPadParameters::onMirrored(bool on)
+void TaskPadParameters::onMidplane(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    pcPad->MirroredExtent.setValue(on);
+    pcPad->Midplane.setValue(on);
     pcPad->getDocument()->recomputeFeature(pcPad);
 }
 
@@ -103,6 +190,40 @@ void TaskPadParameters::onReversed(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
     pcPad->Reversed.setValue(on);
+    pcPad->getDocument()->recomputeFeature(pcPad);
+}
+
+void TaskPadParameters::onLength2Changed(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    pcPad->Length2.setValue((float)len);
+    pcPad->getDocument()->recomputeFeature(pcPad);
+}
+
+void TaskPadParameters::onModeChanged(int index)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+
+    switch (index) {
+        case 0: pcPad->Type.setValue("Length"); break;
+        case 1: pcPad->Type.setValue("UpToLast"); break;
+        case 2: pcPad->Type.setValue("UpToFirst"); break;
+        case 3: pcPad->Type.setValue("UpToFace"); break;
+        default: pcPad->Type.setValue("TwoLengths");
+    }
+
+    updateUI(index);
+
+    pcPad->getDocument()->recomputeFeature(pcPad);
+}
+
+void TaskPadParameters::onFaceName(const QString& text)
+{
+    if (text.left(4) != tr("Face"))
+      return;
+
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    pcPad->FaceName.setValue(text.toUtf8());
     pcPad->getDocument()->recomputeFeature(pcPad);
 }
 
@@ -116,9 +237,24 @@ bool   TaskPadParameters::getReversed(void) const
     return ui->checkBoxReversed->isChecked();
 }
 
-bool   TaskPadParameters::getMirroredExtent(void) const
+bool   TaskPadParameters::getMidplane(void) const
 {
-    return ui->checkBoxMirrored->isChecked();
+    return ui->checkBoxMidplane->isChecked();
+}
+
+double TaskPadParameters::getLength2(void) const
+{
+    return ui->doubleSpinBox2->value();
+}
+
+int TaskPadParameters::getMode(void) const
+{
+    return ui->changeMode->currentIndex();
+}
+
+const QString TaskPadParameters::getFaceName(void) const
+{
+    return ui->lineFaceName->text();
 }
 
 TaskPadParameters::~TaskPadParameters()
@@ -174,7 +310,10 @@ bool TaskDlgPadParameters::accept()
         //Gui::Command::openCommand("Pad changed");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirroredExtent = %i",name.c_str(),parameter->getMirroredExtent()?1:0);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length2 = %f",name.c_str(),parameter->getLength2());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceName = \"%s\"",name.c_str(),parameter->getFaceName().toAscii().data());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!PadView->getObject()->isValid())
             throw Base::Exception(PadView->getObject()->getStatusString());

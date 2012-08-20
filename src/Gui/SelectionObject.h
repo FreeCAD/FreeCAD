@@ -55,11 +55,11 @@ public:
     /// are there any SubNames selected
     bool hasSubNames(void)const { return SubNames.size() != 0; }
     /// get the name of the Document of this SelctionObject
-    inline const char* getDocName(void) { return DocName.c_str(); }
+    inline const char* getDocName(void) const { return DocName.c_str(); }
     /// get the name of the Document Object of this SelectionObject
-    inline const char* getFeatName(void) { return FeatName.c_str(); }
+    inline const char* getFeatName(void) const { return FeatName.c_str(); }
     /// get the Type of the selcted Object
-    inline const char* getTypeName(void) { return TypeName.c_str(); }
+    inline const char* getTypeName(void) const { return TypeName.c_str(); }
 
     /// returns the selected DocumentObject or NULL if the object is already deleted
     const App::DocumentObject *getObject(void) const;

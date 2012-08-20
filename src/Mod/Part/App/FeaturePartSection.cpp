@@ -39,12 +39,8 @@ Section::Section(void)
 {
 }
 
-TopoDS_Shape Section::runOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:
-    BRepAlgoAPI_Section mkSection(base, tool);
-    // Let's check if the section has been successful
-    if (!mkSection.IsDone()) 
-        throw Base::Exception("Section failed");
-    return mkSection.Shape();
+    return new BRepAlgoAPI_Section(base, tool);
 }

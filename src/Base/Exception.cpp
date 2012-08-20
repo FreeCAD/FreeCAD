@@ -202,6 +202,40 @@ AbnormalProgramTermination::AbnormalProgramTermination(const AbnormalProgramTerm
 
 // ---------------------------------------------------------
 
+UnknownProgramOption::UnknownProgramOption(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnknownProgramOption::UnknownProgramOption(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+UnknownProgramOption::UnknownProgramOption(const UnknownProgramOption &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+ProgramInformation::ProgramInformation(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ProgramInformation::ProgramInformation(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ProgramInformation::ProgramInformation(const ProgramInformation &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
 #include <stdexcept>
 #include <iostream>

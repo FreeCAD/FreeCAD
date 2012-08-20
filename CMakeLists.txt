@@ -52,6 +52,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-Wno-write-strings)
     add_definitions(-Wno-deprecated)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+    # get linker errors as soon as possible and not at runtime e.g. for modules
+    if(UNIX)
+    #    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+    endif(UNIX)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
@@ -96,7 +100,21 @@ OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3
 OPTION(FREECAD_BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
 OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
 OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
+OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
+OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
+if(MSVC)
+OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+else(MSVC)
+set(FREECAD_USE_3DCONNEXION OFF)
+endif(MSVC)
+
+# if this is set override some options
+if (FREECAD_BUILD_DEBIAN)
+    set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
+    set(FREECAD_USE_EXTERNAL_PIVY ON)
+endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
 
@@ -104,6 +122,7 @@ if(FREECAD_LIBPACK_USE)
     # checking for a unique file in LibPack location to make sure the right version of the LibPack is there
     find_file(FREECAD_LIBPACK_CHECKFILE6X boost_program_options-vc80-mt-gd.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE7X boost_program_options-vc90-mt-gd-1_39.lib ${FREECAD_LIBPACK_DIR}/lib )
+    find_file(FREECAD_LIBPACK_CHECKFILE8X boost_program_options-vc90-mt-gd-1_48.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKCUSTOM boost_program_options-vc90-mt-gd-1_41.lib ${FREECAD_LIBPACK_DIR}/lib )
     IF(FREECAD_LIBPACK_CHECKFILE6X)
         include(cMake/UseLibPack6x.cmake)
@@ -115,6 +134,13 @@ if(FREECAD_LIBPACK_USE)
         set(FREECAD_LIBPACK6 NOTFOUND CACHE STRING "Displays if the libpack has been found")
         MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK6)
         set(FREECAD_LIBPACK7 FOUND CACHE STRING "Displays if the libpack has been found")	
+    ELSEIF(FREECAD_LIBPACK_CHECKFILE8X)
+        include(cMake/UseLibPack8x.cmake)
+        set(FREECAD_LIBPACK6 NOTFOUND CACHE STRING "Displays if the libpack has been found")
+        set(FREECAD_LIBPACK7 NOTFOUND CACHE STRING "Displays if the libpack has been found")
+        set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-1.3.40/swig.exe)
+        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK6)
+        set(FREECAD_LIBPACK8 FOUND CACHE STRING "Displays if the libpack has been found")	
     ELSEIF(FREECAD_LIBPACK_CHECKCUSTOM)
         include(cMake/UseLibPackCustom.cmake)
         set(FREECAD_LIBPACKX FOUND CACHE STRING "Displays if the libpack has been found")	
@@ -185,7 +211,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 	if( ${OCE_FOUND} )
 		message("-- OpenCASCADE Community Edition has been found.")
 		add_definitions ( -DHAVE_CONFIG_H )
-		set( OCC_LIBRARIES "TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
+		set( OCC_LIBRARIES "TKFeat;TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
 		set( OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS} )
 		set( OCC_FOUND ${OCE_FOUND} )
 	else() #look for OpenCASCADE
@@ -198,12 +224,6 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 		ENDIF()
 	endif()
 
-# -------------------------------- f2c ----------------------------------
-
-    IF(OCC_FOUND)
-        find_package(F2C REQUIRED)
-    ENDIF(OCC_FOUND)
-	
 # -------------------------------- Salome SMESH --------------------------
 
     # Salome SMESH sources are under src/3rdParty now
@@ -247,22 +267,22 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- ODE ----------------------------------
 
-    find_package(ODE)
-	
+#    find_package(ODE)
+
 # -------------------------------- Qt --------------------------------
 
 # sets ${QT_LIBRARIES}
 
-    SET(QT_MIN_VERSION 4.1.4)
+    SET(QT_MIN_VERSION 4.5.0)
     set(QT_USE_QTNETWORK TRUE)
     set(QT_USE_QTXML TRUE)
-	if(FREECAD_BUILD_GUI)
-		set(QT_USE_QTOPENGL TRUE)
-		set(QT_USE_QTSVG TRUE)
-		set(QT_USE_QTUITOOLS TRUE)
-		set(QT_USE_QTWEBKIT TRUE)
-	endif(FREECAD_BUILD_GUI)
-    find_package(Qt4)
+    if(FREECAD_BUILD_GUI)
+        set(QT_USE_QTOPENGL TRUE)
+        set(QT_USE_QTSVG TRUE)
+        set(QT_USE_QTUITOOLS TRUE)
+        set(QT_USE_QTWEBKIT TRUE)
+    endif(FREECAD_BUILD_GUI)
+    find_package(Qt4 REQUIRED)
 
     include(${QT_USE_FILE})
 
@@ -271,7 +291,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("QT Webkit not found, will not build browser integration!")
+        MESSAGE("Qt Webkit not found, will not build browser integration!")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 
@@ -282,22 +302,24 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     # There is probably a cleaner solution than this
     macro(fc_wrap_cpp outfiles )
         # get include dirs
-        QT4_GET_MOC_FLAGS(moc_includes)
+        QT4_GET_MOC_FLAGS(moc_flags)
         QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+        # fixes bug 0000585: bug with boost 1.48
+        SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
         foreach(it ${moc_files})
             get_filename_component(it ${it} ABSOLUTE)
             QT4_MAKE_OUTPUT_FILE(${it} moc_ cpp outfile)
-            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_includes}" "${moc_options}")
+            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}")
             set(${outfiles} ${${outfiles}} ${outfile})
             add_file_dependencies(${it} ${outfile})
         endforeach(it)
     endmacro(fc_wrap_cpp)
-	
+
     if(FREECAD_BUILD_GUI)	
 # -------------------------------- OpenGL --------------------------------
 
-		find_package(OpenGL)
+        find_package(OpenGL)
                 include(FindPackageMessage)
                 if(OPENGL_GLU_FOUND)
                     find_package_message(OPENGL_GLU
@@ -309,16 +331,16 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- Coin3D --------------------------------
 
-		find_package(Coin3D REQUIRED)
-		find_package(SoQt REQUIRED)
+        find_package(Coin3D REQUIRED)
+        find_package(SoQt REQUIRED)
 
 # ------------------------------ Spaceball -------------------------------
 
-                if (WIN32)
-                    #future
-                else(WIN32)
-                    find_package(Spnav)
-                endif(WIN32)
+        if (WIN32)
+            #future
+        else(WIN32)
+            find_package(Spnav)
+        endif(WIN32)
 
 # ------------------------------------------------------------------------
 
@@ -330,7 +352,9 @@ endif(FREECAD_LIBPACK_USE)
 
 # copy build convenient files for M$
 if(WIN32)
-    configure_file(BuildAll.bat ${CMAKE_BINARY_DIR}/BuildAll.bat COPYONLY)
+    if (EXISTS BuildAll.bat)
+        configure_file(BuildAll.bat ${CMAKE_BINARY_DIR}/BuildAll.bat COPYONLY)
+    endif (EXISTS BuildAll.bat)
     #configure_file(BuildAllNice.bat ${CMAKE_BINARY_DIR}/BuildAllNice.bat COPYONLY)
 endif(WIN32)
 
@@ -383,6 +407,10 @@ IF(MINGW)
 	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
 	LINK_LIBRARIES(-lgdi32)
 ENDIF(MINGW)
+# 0000661: cmake build on Mac OS: dealing with dylib versus so
+IF(APPLE)
+	SET(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+ENDIF(APPLE)
 
 add_subdirectory(src)
 add_subdirectory(data)
@@ -410,7 +438,7 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 		set(PKG_ARCH amd64)
 	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 	set(CPACK_DEBIAN_PACKAGE_SECTION "science")
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libode1, libsoqt4-20, libxerces-c3.1, libgts-0.7-5, zlib1g, libboost-dev, libeigen2-dev")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libsoqt4-20, libxerces-c3.1, zlib1g, libboost-dev, libeigen2-dev")
 	set(CPACK_PACKAGE_CONTACT "<root@localhost>")
 	set(CPACK_PACKAGE_FILE_NAME "${PACKAGE_NAME}-${PACKAGE_VERSION}_${PKG_ARCH}")
 	

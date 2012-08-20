@@ -257,13 +257,18 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
 void PropertyFileIncluded::Save (Base::Writer &writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FileIncluded file=\"\">" << endl;
-
-        // write the file in the XML stream
-        if (!_cValue.empty())
+        if (!_cValue.empty()) {
+            Base::FileInfo file(_cValue.c_str());
+            writer.Stream() << writer.ind() << "<FileIncluded data=\"" << 
+            file.fileName() << "\">" << std::endl;
+            // write the file in the XML stream
+            writer.incInd();
             writer.insertBinFile(_cValue.c_str());
-
-        writer.Stream() << writer.ind() <<"</FileIncluded>" << endl ;
+            writer.decInd();
+            writer.Stream() << writer.ind() <<"</FileIncluded>" << endl;
+        }
+        else
+            writer.Stream() << writer.ind() << "<FileIncluded data=\"\"/>" << std::endl;
     }
     else {
         // instead initiate an extra file 
@@ -280,23 +285,36 @@ void PropertyFileIncluded::Save (Base::Writer &writer) const
 void PropertyFileIncluded::Restore(Base::XMLReader &reader)
 {
     reader.readElement("FileIncluded");
-    string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initate a file read
-        reader.addFile(file.c_str(),this);
-
-        // is in the document transient path
-        aboutToSetValue();
-        _cValue = getDocTransientPath() + "/" + file;
-        _BaseFileName = file;
-        hasSetValue();
+    if (reader.hasAttribute("file")) {
+        string file (reader.getAttribute("file") );
+        if (!file.empty()) {
+            // initate a file read
+            reader.addFile(file.c_str(),this);
+            // is in the document transient path
+            aboutToSetValue();
+            _cValue = getDocTransientPath() + "/" + file;
+            _BaseFileName = file;
+            hasSetValue();
+        }
+    }
+    // section is XML stream
+    else if (reader.hasAttribute("data")) {
+        string file (reader.getAttribute("data") );
+        if (!file.empty()) {
+            // is in the document transient path
+            aboutToSetValue();
+            _cValue = getDocTransientPath() + "/" + file;
+            reader.readBinFile(_cValue.c_str());
+            reader.readEndElement("FileIncluded");
+            _BaseFileName = file;
+            hasSetValue();
+        }
     }
 }
 
 void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 {
-    std::ifstream from(_cValue.c_str());
+    Base::ifstream from(Base::FileInfo(_cValue.c_str()));
     if (!from)
         throw Base::Exception("PropertyFileIncluded::SaveDocFile() "
         "File in document transient dir deleted");
@@ -311,7 +329,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 
 void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
-    std::ofstream to(_cValue.c_str());
+    Base::ofstream to(Base::FileInfo(_cValue.c_str()));
     if (!to) 
         throw Base::Exception("PropertyFileIncluded::RestoreDocFile() "
         "File in document transient dir deleted");
@@ -328,10 +346,10 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 
 Property *PropertyFileIncluded::Copy(void) const
 {
-    PropertyFileIncluded *p= new PropertyFileIncluded();
+    PropertyFileIncluded *prop = new PropertyFileIncluded();
 
     // remember the base name
-    p->_BaseFileName = _BaseFileName;
+    prop->_BaseFileName = _BaseFileName;
 
     if (!_cValue.empty()) {
         Base::FileInfo file(_cValue);
@@ -343,11 +361,11 @@ Property *PropertyFileIncluded::Copy(void) const
         bool done = file.renameFile(NewName.filePath().c_str());
         assert(done);
         // remember the new name for the Undo
-        Base::Console().Log("Copy this=%p Befor=%s After=%s\n",p,p->_cValue.c_str(),NewName.filePath().c_str());
-        p->_cValue = NewName.filePath().c_str();
+        Base::Console().Log("Copy this=%p Before=%s After=%s\n",prop,prop->_cValue.c_str(),NewName.filePath().c_str());
+        prop->_cValue = NewName.filePath().c_str();
     }
 
-    return p;
+    return prop;
 }
 
 void PropertyFileIncluded::Paste(const Property &from)
@@ -357,6 +375,9 @@ void PropertyFileIncluded::Paste(const Property &from)
     // delete old file (if still there)
     file.deleteFile();
     const PropertyFileIncluded &fileInc = dynamic_cast<const PropertyFileIncluded&>(from);
+
+    // set the base name
+    _BaseFileName = fileInc._BaseFileName;
 
     if (!fileInc._cValue.empty()) {
         // move the saved files back in place

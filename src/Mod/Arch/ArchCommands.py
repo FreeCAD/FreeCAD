@@ -21,16 +21,43 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent
-from draftlibs import fcvec
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
+from DraftTools import translate
 
 __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 # module functions ###############################################
+
+def getStringList(objects):
+    '''getStringList(objects): returns a string defining a list
+    of objects'''
+    result = "["
+    for o in objects:
+        if len(result) > 1:
+            result += ","
+        result += "FreeCAD.ActiveDocument." + o.Name
+    result += "]"
+    return result
+
+def getDefaultColor(objectType):
+    '''getDefaultColor(string): returns a color value for the given object
+    type (Wall, Structure, Window)'''
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    if objectType == "Wall":
+        c = p.GetUnsigned("WallColor")
+    elif objectType == "Structure":
+        c = p.GetUnsigned("StructureColor")
+    else:
+        c = p.GetUnsigned("WindowsColor")
+    r = float((c>>24)&0xFF)/255.0
+    g = float((c>>16)&0xFF)/255.0
+    b = float((c>>8)&0xFF)/255.0
+    result = (r,g,b,1.0)
+    return result
 
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
@@ -39,19 +66,32 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     tp = Draft.getType(host)
-    if tp in ["Cell","Floor","Building","Site"]:
+    if tp in ["Cell"]:
         c = host.Components
         for o in objectsList:
             if not o in c:
                 c.append(o)
         host.Components = c
+    elif tp in ["Floor","Building","Site"]:
+        c = host.Group
+        for o in objectsList:
+            if not o in c:
+                c.append(o)
+        host.Group = c
     elif tp in ["Wall","Structure"]:
         a = host.Additions
+        if hasattr(host,"Axes"):
+            x = host.Axes
         for o in objectsList:
-            if not o in a:
+            if Draft.getType(o) == "Axis":
+                if not o in x:
+                    x.append(o) 
+            elif not o in a:
                 if hasattr(o,"Shape"):
                     a.append(o)
         host.Additions = a
+        if hasattr(host,"Axes"):
+            host.Axes = x
     elif tp in ["SectionPlane"]:
         a = host.Objects
         for o in objectsList:
@@ -69,10 +109,27 @@ def removeComponents(objectsList,host=None):
         objectsList = [objectsList]
     if host:
         if Draft.getType(host) in ["Wall","Structure"]:
+            if hasattr(host,"Axes"):
+                a = host.Axes
+                for o in objectsList[:]:
+                    if o in a:
+                        a.remove(o)
+                        objectsList.remove(o)
             s = host.Subtractions
             for o in objectsList:
                 if not o in s:
                     s.append(o)
+                    if Draft.getType(o) == "Window":
+                        # fix for sketch-based windows
+                        if o.Base:
+                            if o.Base.Support:
+                                if isinstance(o.Base.Support,tuple):
+                                   if o.Base.Support[0].Name == host.Name:
+                                       FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                                       o.Base.Support = None
+                                elif o.Base.Support.Name == host.Name:
+                                    FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                                    o.Base.Support = None
             host.Subtractions = s
     else:
         for o in objectsList:
@@ -135,67 +192,190 @@ def splitMesh(obj,mark=True):
         return nlist
     return [obj]
 
+def makeFace(wires,method=2,cleanup=False):
+    '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
+    #print "makeFace: start:", wires
+    import Part
+    
+    if not isinstance(wires,list):
+        if len(wires.Vertexes) < 3:
+            raise
+        return Part.Face(wires)
+    elif len(wires) == 1:
+        #import Draft;Draft.printShape(wires[0])
+        if len(wires[0].Vertexes) < 3:
+            raise
+        return Part.Face(wires[0])
+
+    wires = wires[:]
+    
+    #print "makeFace: inner wires found"
+    ext = None
+    max_length = 0
+    # cleaning up rubbish in wires
+    if cleanup:
+        for i in range(len(wires)):
+            wires[i] = DraftGeomUtils.removeInterVertices(wires[i])
+        #print "makeFace: garbage removed"
+    for w in wires:
+        # we assume that the exterior boundary is that one with
+        # the biggest bounding box
+        if w.BoundBox.DiagonalLength > max_length:
+            max_length = w.BoundBox.DiagonalLength
+            ext = w
+    #print "makeFace: exterior wire",ext
+    wires.remove(ext)
+
+    if method == 1:
+        # method 1: reverse inner wires
+        # all interior wires mark a hole and must reverse
+        # their orientation, otherwise Part.Face fails
+        for w in wires:
+            #print "makeFace: reversing",w
+            w.reverse()
+            # make sure that the exterior wires comes as first in the list
+            wires.insert(0, ext)
+            #print "makeFace: done sorting", wires
+        if wires:
+            return Part.Face(wires)
+    else:
+        # method 2: use the cut method
+        mf = Part.Face(ext)
+        #print "makeFace: external face:",mf
+        for w in wires:
+            f = Part.Face(w)
+            #print "makeFace: internal face:",f
+            mf = mf.cut(f)
+        #print "makeFace: final face:",mf.Faces
+        return mf.Faces[0]
+
+def closeHole(shape):
+    '''closeHole(shape): closes a hole in an open shape'''
+    import DraftGeomUtils, Part
+    # creating an edges lookup table
+    lut = {}
+    for face in shape.Faces:
+        for edge in face.Edges:
+            hc = edge.hashCode()
+            if lut.has_key(hc):
+                lut[hc] = lut[hc] + 1
+            else:
+                lut[hc] = 1
+    # filter out the edges shared by more than one face
+    bound = []
+    for e in shape.Edges:
+        if lut[e.hashCode()] == 1:
+            bound.append(e)
+    bound = DraftGeomUtils.sortEdges(bound)
+    try:
+        nface = Part.Face(Part.Wire(bound))
+        shell = Part.makeShell(shape.Faces+[nface])
+        solid = Part.Solid(shell)
+    except:
+        raise
+    else:
+        return solid
+
+def getCutVolume(cutplane,shapes):
+    """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
+    from the given shapes and the given cutting plane"""
+    import Part
+    placement = FreeCAD.Placement(cutplane.Placement)
+    # building boundbox
+    bb = shapes[0].BoundBox 
+    for sh in shapes[1:]:
+        bb.add(sh.BoundBox)
+    bb.enlarge(1)
+    um = vm = wm = 0
+    ax = placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+    v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+    if not bb.isCutPlane(placement.Base,ax):
+        FreeCAD.Console.PrintMessage(str(translate("Arch","No objects are cut by the plane")))
+        return None,None,None
+    else:
+        corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
+        for c in corners:
+            dv = c.sub(placement.Base)
+            um1 = DraftVecUtils.project(dv,u).Length
+            um = max(um,um1)
+            vm1 = DraftVecUtils.project(dv,v).Length
+            vm = max(vm,vm1)
+            wm1 = DraftVecUtils.project(dv,ax).Length
+            wm = max(wm,wm1)
+        p1 = FreeCAD.Vector(-um,vm,0)
+        p2 = FreeCAD.Vector(um,vm,0)
+        p3 = FreeCAD.Vector(um,-vm,0)
+        p4 = FreeCAD.Vector(-um,-vm,0)
+        cutface = Part.makePolygon([p1,p2,p3,p4,p1])
+        cutface = Part.Face(cutface)
+        cutface.Placement = placement
+        cutnormal = DraftVecUtils.scaleTo(ax,wm)
+        cutvolume = cutface.extrude(cutnormal)
+        cutnormal = DraftVecUtils.neg(cutnormal)
+        invcutvolume = cutface.extrude(cutnormal)
+        return cutface,cutvolume,invcutvolume
+
+def getShapeFromMesh(mesh):
+    import Part, MeshPart
+    if mesh.isSolid() and (mesh.countComponents() == 1):
+        # use the best method
+        faces = []
+        for f in mesh.Facets:
+            p=f.Points+[f.Points[0]]
+            pts = []
+            for pp in p:
+                pts.append(FreeCAD.Vector(pp[0],pp[1],pp[2]))
+            faces.append(Part.Face(Part.makePolygon(pts)))
+        shell = Part.makeShell(faces)
+        solid = Part.Solid(shell)
+        solid = solid.removeSplitter()
+        return solid
+
+    faces = []  
+    segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
+    for i in segments:
+        if len(i) > 0:
+            wires = MeshPart.wireFromSegment(mesh, i)
+            if wires:
+                faces.append(makeFace(wires))
+    try:
+        se = Part.makeShell(faces)
+    except:
+        return None
+    else:
+        try:
+            solid = Part.Solid(se)
+        except:
+            return se
+        else:
+            return solid
+  
+
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
 
     name = obj.Name
-    import Part,MeshPart
-    from draftlibs import fcgeo
     if "Mesh" in obj.PropertiesList:
-        faces = []	
+        faces = []  
         mesh = obj.Mesh
         plac = obj.Placement
-        segments = mesh.getPlanes(0.001) # use rather strict tolerance here
-        print len(segments)," segments ",segments
-        for i in segments:
-            print "treating",segments.index(i),i
-            if len(i) > 0:
-                wires = MeshPart.wireFromSegment(mesh, i)
-                print "wire done"
-                print wires
-                if len(wires) > 1:
-                    # a segment can have inner holes
-                    print "inner wires found"
-                    ext = None
-                    max_length = 0
-                    # cleaning up rubbish in wires
-                    for i in range(len(wires)):
-                        wires[i] = fcgeo.removeInterVertices(wires[i])
-                    for w in wires:
-                        # we assume that the exterior boundary is that one with
-                        # the biggest bounding box
-                        if w.BoundBox.DiagonalLength > max_length:
-                            max_length = w.BoundBox.DiagonalLength
-                            ext = w
-                    print "exterior wire",ext
-                    wires.remove(ext)
-                    # all interior wires mark a hole and must reverse
-                    # their orientation, otherwise Part.Face fails
-                    for w in wires:
-                        print "reversing",w
-                        #w.reverse()
-                        print "reversed"
-                    # make sure that the exterior wires comes as first in the list
-                    wires.insert(0, ext)
-                    print "done sorting", wires
-                if wires:
-                    faces.append(Part.Face(wires))
-                print "done facing"
-            print "faces",faces
-
-        try:
-            se = Part.makeShell(faces)
-            solid = Part.Solid(se)
-        except:
-            pass
-        else:
-            if solid.isClosed():
+        solid = getShapeFromMesh(mesh)
+        if solid:
+            if solid.isClosed() and solid.isValid():
                 FreeCAD.ActiveDocument.removeObject(name)
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             newobj.Shape = solid
             newobj.Placement = plac
-            if not solid.isClosed():
+            if (not solid.isClosed()) or (not solid.isValid()):
                 if mark:
                     newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
             return newobj
@@ -204,12 +384,12 @@ def meshToShape(obj,mark=True):
 def removeShape(objs,mark=True):
     '''takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters.'''
-    from draftlibs import fcgeo
+    import DraftGeomUtils
     if not isinstance(objs,list):
         objs = [objs]
     for obj in objs:
-        if fcgeo.isCubic(obj.Shape):
-            dims = fcgeo.getCubicDimensions(obj.Shape)
+        if DraftGeomUtils.isCubic(obj.Shape):
+            dims = DraftGeomUtils.getCubicDimensions(obj.Shape)
             if dims:
                 name = obj.Name
                 tp = Draft.getType(obj)
@@ -225,7 +405,7 @@ def removeShape(objs,mark=True):
                     length = dims[1]
                     width = dims[2]
                     v1 = Vector(length/2,0,0)
-                    v2 = fcvec.neg(v1)
+                    v2 = DraftVecUtils.neg(v1)
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)
@@ -280,6 +460,34 @@ def download(url):
         return None
     else:
         return filepath
+
+def check(objectslist,includehidden=False):
+    """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
+    objs = Draft.getGroupContents(objectslist)
+    if not includehidden:
+        objs = Draft.removeHidden(objs)
+    bad = []
+    for o in objs:
+        if not o.isDerivedFrom("Part::Feature"):
+            bad.append([o,"is not a Part-based object"])
+        else:
+            s = o.Shape
+            if (not s.isClosed()) and (not (Draft.getType(o) == "Axis")):
+                bad.append([o,str(translate("Arch","is not closed"))])
+            elif not s.isValid():
+                bad.append([o,str(translate("Arch","is not valid"))])
+            elif (not s.Solids) and (not (Draft.getType(o) == "Axis")):
+                bad.append([o,str(translate("Arch","doesn't contain any solid"))])
+            else:
+                f = 0
+                for sol in s.Solids:
+                    f += len(sol.Faces)
+                    if not sol.isClosed():
+                        bad.append([o,str(translate("Arch","contains a non-closed solid"))])
+                if len(s.Faces) != f:
+                    bad.append([o,str(translate("Arch","contains faces that are not part of any solid"))])
+    return bad
+
     
 # command definitions ###############################################
                        
@@ -298,11 +506,20 @@ class _CommandAdd:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Grouping")
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
         if not mergeCells(sel):
             host = sel.pop()
-            addComponents(sel,host)
+            ss = "["
+            for o in sel:
+                if len(ss) > 1:
+                    ss += ","
+                ss += "FreeCAD.ActiveDocument."+o.Name
+            ss += "]"
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        
         
 class _CommandRemove:
     "the Arch Add command definition"
@@ -319,13 +536,22 @@ class _CommandRemove:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Ungrouping")
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
         if Draft.getType(sel[-1]) in ["Wall","Structure"]:
             host = sel.pop()
-            removeComponents(sel,host)
+            ss = "["
+            for o in sel:
+                if len(ss) > 1:
+                    ss += ","
+                ss += "FreeCAD.ActiveDocument."+o.Name
+            ss += "]"
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         else:
-            removeComponents(sel)
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.removeComponents("+ss+")")
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 
 class _CommandSplitMesh:
@@ -344,7 +570,7 @@ class _CommandSplitMesh:
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
             sel = FreeCADGui.Selection.getSelection()
-            FreeCAD.ActiveDocument.openTransaction("Split Mesh")
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Split Mesh")))
             for obj in sel:
                 n = obj.Name
                 nobjs = splitMesh(obj)
@@ -353,6 +579,7 @@ class _CommandSplitMesh:
                     for o in nobjs:
                         g.addObject(o)
             FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
 
             
 class _CommandMeshToShape:
@@ -360,7 +587,7 @@ class _CommandMeshToShape:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_MeshToShape',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToShape","Mesh to Shape"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToPart","Turns selected meshes into Part Shape objects")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -381,7 +608,7 @@ class _CommandMeshToShape:
                 if f.InList:
                     if f.InList[0].isDerivedFrom("App::DocumentObjectGroup"):
                         g = f.InList[0]
-            FreeCAD.ActiveDocument.openTransaction("Mesh to Shape")
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Mesh to Shape")))
             for obj in FreeCADGui.Selection.getSelection():
                 newobj = meshToShape(obj)
                 if g and newobj:
@@ -391,7 +618,8 @@ class _CommandMeshToShape:
 class _CommandSelectNonSolidMeshes:
     "the Arch SelectNonSolidMeshes command definition"
     def GetResources(self):
-        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
+        return {'Pixmap': 'Arch_SelectNonManifold.svg',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
         
     def Activated(self):
@@ -429,9 +657,54 @@ class _CommandRemoveShape:
         sel = FreeCADGui.Selection.getSelection()
         removeShape(sel)
 
+class _CommandCloseHoles:
+    "the Arch CloseHoles command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_CloseHoles',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CloseHoles","Close holes"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        for o in FreeCADGui.Selection.getSelection():
+            s = closeHole(o.Shape)
+            if s:
+                o.Shape = s
+
+class _CommandCheck:
+    "the Arch Check command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Check',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Check"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Checks the selected objects for problems")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        result = check(FreeCADGui.Selection.getSelection())
+        if not result:
+            FreeCAD.Console.PrintMessage(str(translate("Arch","All good! no problems found")))
+        else:
+            FreeCADGui.Selection.clearSelection()
+            for i in result:
+                FreeCAD.Console.PrintWarning("Object "+i[0].Name+" ("+i[0].Label+") "+i[1])
+                FreeCADGui.Selection.addSelection(i[0])
+
+
 FreeCADGui.addCommand('Arch_Add',_CommandAdd())
 FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
 FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
 FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
 FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())
 FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
+FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
+FreeCADGui.addCommand('Arch_Check',_CommandCheck())

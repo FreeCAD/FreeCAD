@@ -190,7 +190,6 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
     presult = PyRun_String(sCmd, Py_single_input, dict, dict); /* eval direct */
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
-            //systemExit();
             throw SystemExitException();
         }
         /* get latest python exception information */

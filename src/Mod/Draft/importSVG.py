@@ -1,7 +1,7 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2009 Yorik van Havre <yorik@gmx.fr>                     * 
+#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              * 
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -38,8 +38,7 @@ currently unsupported: use, image
 # implement inherting fill style from group
 # handle relative units
 
-import xml.sax, string, FreeCAD, os, math, re, Draft
-from draftlibs import fcvec
+import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 
 try: import FreeCADGui
@@ -52,8 +51,8 @@ if open.__module__ == '__builtin__':
   pythonopen = open
 
 svgcolors = {
-	  'Pink': (255, 192, 203), 
-	  'Blue': (0, 0, 255), 
+          'Pink': (255, 192, 203),
+          'Blue': (0, 0, 255),
           'Honeydew': (240, 255, 240),
           'Purple': (128, 0, 128),
           'Fuchsia': (255, 0, 255),
@@ -217,7 +216,7 @@ def getcolor(color):
 				b = float(v[2]/255.0)
 				return (r,g,b,0.0)
 
-def getsize(length,mode='discard',base=None):
+def getsize(length,mode='discard',base=1):
         """parses length values containing number and unit
         with mode 'discard': extracts a number from the given string (removes unit suffixes)
         with mode 'tuple': return number and unit as a tuple
@@ -254,13 +253,15 @@ def getsize(length,mode='discard',base=None):
                 return float(number)
         elif mode == 'tuple':
                 return float(number),unit
+        elif mode == 'isabsolute':
+                return unit in ('mm','cm','in','px','pt')
         elif mode == 'mm':
                 return float(number)*tomm[unit]
         elif mode == 'css':
                 if unit != '%':
                         return float(number)*topx[unit]
                 else:
-                        return float(number)*(base or 1)
+                        return float(number)*base
 
 def makewire(path,checkclosed=False,donttry=False):
         '''try to make a wire out of the list of edges. If the 'Wire' functions fails or the wire is not
@@ -268,7 +269,8 @@ def makewire(path,checkclosed=False,donttry=False):
         #ToDo Do not catch all exceptions
         if not donttry:
                 try:
-                        sh = Part.Wire(path)
+                        sh = Part.Wire(DraftGeomUtils.sortEdges(path))
+                        #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
                 except:# BRep_API:command not done
                         isok = False
@@ -330,13 +332,13 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
             m2=FreeCAD.Matrix()
             m2.rotateZ(xrotation)
             centeroff = currentvec.add(lastvec)
-            centeroff = fcvec.scale(centeroff,.5)
+            centeroff = DraftVecUtils.scale(centeroff,.5)
             vcenter = m2.multiply(vcx1).add(centeroff) # Step3 F.6.5.3
             #angle1 = Vector(1,0,0).getAngle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
             #angledelta = Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0).getAngle(Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
             #we need the right sign for the angle 
-            angle1 = fcvec.angle(Vector(1,0,0),Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
-            angledelta = fcvec.angle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0),Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
+            angle1 = DraftVecUtils.angle(Vector(1,0,0),Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
+            angledelta = DraftVecUtils.angle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0),Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
             results.append((vcenter,angle1,angledelta))
         return results,(rx,ry)
 
@@ -429,23 +431,38 @@ class svgHandler(xml.sax.ContentHandler):
                 if name == 'svg':
                         m=FreeCAD.Matrix()
                         if 'width' in data and 'height' in data and \
-                                'viewBox' in data:
-                                x0,y0,x1,y1=[float(n) for n in data['viewBox']]
-                                vbw = x1-x0
-                                vbh = y1-y0
+                            'viewBox' in data and\
+                            (getsize(attrs.getValue('width'),'isabsolute') and\
+                            getsize(attrs.getValue('height'),'isabsolute') or\
+                            len(self.grouptransform)!=0):
+                                vbw=float(data['viewBox'][2])
+                                vbh=float(data['viewBox'][3])
+                                w=attrs.getValue('width')
+                                h=attrs.getValue('height')
                                 self.viewbox=(vbw,vbh)
-                                abw = getsize(attrs.getValue('width'),'mm')
-                                abh = getsize(attrs.getValue('height'),'mm')
+                                if len(self.grouptransform)==0:
+                                    unitmode='mm'
+                                else: #nested svg element
+                                    unitmode='css'
+                                abw = getsize(w,unitmode)
+                                abh = getsize(h,unitmode)
                                 sx=abw/vbw
                                 sy=abh/vbh
-                                m.scale(Vector(sx,sy,1))
-                                if round(sx/sy,5) != 1:
-                                        FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
-
-                                #FreeCAD.Console.PrintMessage('attrs: %s %s\n'%(attrs.getValue('width'),attrs.getValue('height')))
-                                #FreeCAD.Console.PrintMessage('vb: %f %f %f %f\n'%(x0,y0,x1,y1))
-                                #FreeCAD.Console.PrintMessage('absolute: %f %f\n'%(abw,abh))
-                        else:
+                                preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
+                                uniformscaling = round(sx/sy,5) == 1
+                                if uniformscaling:
+                                    m.scale(Vector(sx,sy,1))
+                                else:
+                                    FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
+                                    if preservearstr.startswith('none'):
+                                        m.scale(Vector(sx,sy,1))
+                                    else: #preserve the aspect ratio
+                                        if preservearstr.endswith('slice'):
+                                            sxy=max(sx,sy)
+                                        else:
+                                            sxy=min(sx,sy)
+                                        m.scale(Vector(sxy,sxy,1))
+                        elif len(self.grouptransform)==0:
                                 #fallback to 90 dpi
                                 m.scale(Vector(25.4/90.0,25.4/90.0,1))
                         self.grouptransform.append(m) 
@@ -505,16 +522,19 @@ class svgHandler(xml.sax.ContentHandler):
                                 self.lastdim = obj
                                 data['d']=[]
                         pathcommandsre=re.compile('\s*?([mMlLhHvVaAcCqQsStTzZ])\s*?([^mMlLhHvVaAcCqQsStTzZ]*)\s*?',re.DOTALL)
+                        pointsre=re.compile('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)',re.DOTALL)
                         for d,pointsstr in pathcommandsre.findall(' '.join(data['d'])):
                                 relative = d.islower()
-                                pointlist = [float(str1) for str1 in pointsstr.replace(',',' ').split()]
+                                pointlist = [float(number) for number,exponent in pointsre.findall(pointsstr.replace(',',' '))]
+
                                 if (d == "M" or d == "m"):
                                         x = pointlist.pop(0)
                                         y = pointlist.pop(0)
                                         if path:
                                                 #sh = Part.Wire(path)
                                                 sh = makewire(path)
-                                                if self.fill: sh = Part.Face(sh)
+                                                if self.fill and sh.isClosed():
+                                                    sh = Part.Face(sh)
                                                 sh = self.applyTrans(sh)
                                                 obj = self.doc.addObject("Part::Feature",pathname)
                                                 obj.Shape = sh
@@ -536,7 +556,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = lastvec.add(Vector(x,-y,0))
                                                 else:
                                                         currentvec = Vector(x,-y,0)
-                                                if not fcvec.equals(lastvec,currentvec):
+                                                if not DraftVecUtils.equals(lastvec,currentvec):
                                                         seg = Part.Line(lastvec,currentvec).toShape()
                                                         FreeCAD.Console.PrintMessage("line %s %s\n" %(lastvec,currentvec))
                                                         lastvec = currentvec
@@ -577,15 +597,15 @@ class svgHandler(xml.sax.ContentHandler):
                                                         # here is a better way to find the perpendicular
                                                         if sweepflag == 1:
                                                                 # clockwise
-                                                                perp = fcvec.rotate2D(chord,-math.pi/2)
+                                                                perp = DraftVecUtils.rotate2D(chord,-math.pi/2)
                                                         else:
                                                                 # anticlockwise
-                                                                perp = fcvec.rotate2D(chord,math.pi/2)
-                                                        chord = fcvec.scale(chord,.5)
+                                                                perp = DraftVecUtils.rotate2D(chord,math.pi/2)
+                                                        chord = DraftVecUtils.scale(chord,.5)
                                                         if chord.Length > rx: a = 0
                                                         else: a = math.sqrt(rx**2-chord.Length**2)
                                                         s = rx - a
-                                                        perp = fcvec.scale(perp,s/perp.Length)
+                                                        perp = DraftVecUtils.scale(perp,s/perp.Length)
                                                         midpoint = lastvec.add(chord.add(perp))
                                                         seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
                                                 else:# big arc or elliptical arc
@@ -604,7 +624,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                         if sweepflag:
                                                                 #angledelta=-(-angledelta % (math.pi *2)) # Step4
                                                                 #angledelta=(-angledelta % (math.pi *2)) # Step4
-                                                                angle1  = angle1-angledelta
+                                                                angle1  = angle1+angledelta
+                                                                angledelta = -angledelta
                                                                 #angle1 = math.pi - angle1 
 
                                                         e1a = Part.Arc(e1,angle1-swapaxis*math.radians(90),\
@@ -654,7 +675,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = Vector(x,-y,0)
                                                         pole2 = Vector(p2x,-p2y,0)
 
-                                                if not fcvec.equals(currentvec,lastvec):
+                                                if not DraftVecUtils.equals(currentvec,lastvec):
                                                         mainv = currentvec.sub(lastvec)
                                                         pole1v = lastvec.add(pole1)
                                                         pole2v = currentvec.add(pole2)
@@ -696,7 +717,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 else:
                                                         currentvec = Vector(x,-y,0)
 
-                                                if not fcvec.equals(currentvec,lastvec):
+                                                if not DraftVecUtils.equals(currentvec,lastvec):
                                                         if True and \
                                                         pole.distanceToLine(lastvec,currentvec) < 20**(-1*(2+Draft.precision())):
                                                                 #print "straight segment"
@@ -711,12 +732,12 @@ class svgHandler(xml.sax.ContentHandler):
                                                         lastpole = ('quadratic',pole)
                                                         path.append(seg)
                                 elif (d == "Z") or (d == "z"):
-                                        if not fcvec.equals(lastvec,firstvec):
+                                        if not DraftVecUtils.equals(lastvec,firstvec):
                                                 seg = Part.Line(lastvec,firstvec).toShape()
                                                 path.append(seg)
                                         if path: #the path should be closed by now
                                                 #sh=makewire(path,True)
-                                                sh=makewire(path,donttry=True)
+                                                sh=makewire(path,donttry=False)
                                                 if self.fill: sh = Part.Face(sh)
                                                 sh = self.applyTrans(sh)
                                                 obj = self.doc.addObject("Part::Feature",pathname)
@@ -730,7 +751,8 @@ class svgHandler(xml.sax.ContentHandler):
                         if path:
                                 sh=makewire(path,checkclosed=False)
                                 #sh = Part.Wire(path)
-                                if self.fill: sh = Part.Face(sh)
+                                if self.fill and sh.isClosed():
+                                    sh = Part.Face(sh)
                                 sh = self.applyTrans(sh)
                                 obj = self.doc.addObject("Part::Feature",pathname)
                                 obj.Shape = sh
@@ -799,7 +821,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 esh.append(arc.toShape())
                                 for esh1,esh2 in zip(esh[-1:]+esh[:-1],esh):
                                         p1,p2 = esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point
-                                        if not fcvec.equals(p1,p2):
+                                        if not DraftVecUtils.equals(p1,p2):
                                             edges.append(Part.Line(esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point).toShape()) #straight segments
                                         edges.append(esh2) # elliptical segments
                         sh = Part.Wire(edges)
@@ -808,7 +830,6 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
-				     
                 # processing lines
 
 		if name == "line":
@@ -837,14 +858,15 @@ class svgHandler(xml.sax.ContentHandler):
                                         points=points+points[:2] # emulate closepath
 				for svgx,svgy in zip(points[2::2],points[3::2]):
 					currentvec = Vector(svgx,-svgy,0)
-					if not fcvec.equals(lastvec,currentvec):
+					if not DraftVecUtils.equals(lastvec,currentvec):
 						seg = Part.Line(lastvec,currentvec).toShape()
 						#print "polyline seg ",lastvec,currentvec
 						lastvec = currentvec
 						path.append(seg)
                                 if path:
                                         sh = Part.Wire(path)
-                                        if self.fill: sh = Part.Face(sh)
+                                        if self.fill and sh.isClosed():
+                                            sh = Part.Face(sh)
                                         sh = self.applyTrans(sh)
                                         obj = self.doc.addObject("Part::Feature",pathname)
                                         obj.Shape = sh

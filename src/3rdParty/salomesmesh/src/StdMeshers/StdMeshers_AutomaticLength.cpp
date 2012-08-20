@@ -37,6 +37,11 @@
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <cmath>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 using namespace std;
 

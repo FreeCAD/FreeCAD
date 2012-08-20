@@ -1198,7 +1198,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two lines from the sketch."));
+            QObject::tr("Select two entities from the sketch."));
         return;
     }
 
@@ -1208,7 +1208,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
     if (SubNames.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly two lines from the sketch."));
+            QObject::tr("Select exactly two entities from the sketch."));
         return;
     }
 
@@ -1216,37 +1216,102 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     getIdsFromName(SubNames[0], GeoId1, VtId1);
     getIdsFromName(SubNames[1], GeoId2, VtId2);
 
-    if (checkBothExternal(GeoId1, GeoId2))
-        return;
-    else if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly two lines from the sketch."));
+    Sketcher::PointPos PosId1,PosId2;
+    if (VtId1 >= 0 && VtId2 >= 0) { // perpendicularity at common point
+        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+        Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
+
+        if (checkBothExternal(GeoId1, GeoId2))
+            return;
+
+        const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+        if ((PosId1 != Sketcher::start && PosId1 != Sketcher::end) ||
+            (PosId2 != Sketcher::start && PosId2 != Sketcher::end) ||
+            (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+             geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()) ||
+            (geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+             geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())) {
+
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected points should be end points of arcs and lines."));
+            return;
+        }
+
+        openCommand("add perpendicular constraint");
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d,%d)) ",
+            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+        commitCommand();
+        updateActive();
+        getSelection().clearSelection();
         return;
     }
+    else if ((VtId1 >= 0 && GeoId2 != Constraint::GeoUndef) ||
+             (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef)) { // VtId1 is a connecting point
+        if (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef) {
+            VtId1 = VtId2;
+            VtId2 = -1;
+            GeoId2 = GeoId1;
+            GeoId1 = -1;
+        }
+        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
 
-    const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
-    const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+        if (checkBothExternal(GeoId1, GeoId2))
+            return;
 
-    if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
-        geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+        const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+        if ((PosId1 != Sketcher::start && PosId1 != Sketcher::end) ||
+            (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+             geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected point should be an end point of an arc or line."));
+            return;
+        }
+        else if (geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+                 geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId() &&
+                 geo2->getTypeId() != Part::GeomCircle::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected edge should be an arc, line or circle."));
+            return;
+        }
 
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select exactly two lines from the sketch."));
+        openCommand("add perpendicularity constraint");
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d)) ",
+            selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
+        commitCommand();
+        updateActive();
+        getSelection().clearSelection();
         return;
     }
+    else if (GeoId1 != Constraint::GeoUndef && GeoId2 != Constraint::GeoUndef) { // simple perpendicularity between GeoId1 and GeoId2
 
-    // undo command open
-    openCommand("add perpendicular constraint");
-    Gui::Command::doCommand(
-        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
-        selection[0].getFeatName(),GeoId1,GeoId2);
+        if (checkBothExternal(GeoId1, GeoId2))
+            return;
 
-    // finish the transaction and update
-    commitCommand();
-    updateActive();
+        const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+        if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+            geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("One of the selected edges should be a line."));
+            return;
+        }
 
-    // clear the selection (convenience)
-    getSelection().clearSelection();
+        openCommand("add perpendicular constraint");
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
+            selection[0].getFeatName(),GeoId1,GeoId2);
+        commitCommand();
+        updateActive();
+        getSelection().clearSelection();
+        return;
+    }
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        QObject::tr("Select exactly two entities from the sketch."));
+    return;
 }
 
 bool CmdSketcherConstrainPerpendicular::isActive(void)
@@ -1571,15 +1636,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
             Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
 
-            float sf = 1.f;
-            Gui::Document *doc = getActiveGuiDocument();
-            if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-                SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-                sf = vp->getScaleFactor();
-
-                constr->LabelDistance = 2. * sf;
-                vp->draw(); // Redraw
-            }
+            updateDatumDistance(getActiveGuiDocument(), constr);
 
             //updateActive();
             getSelection().clearSelection();
@@ -1674,7 +1731,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             circSel = true;
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two or more edges of similar type"));
+                QObject::tr("Select two or more edges of similar type"));
             return;
         }
 
@@ -1683,7 +1740,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     if (lineSel && (arcSel || circSel)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select two or more edges of similar type"));
+            QObject::tr("Select two or more edges of similar type"));
         return;
     }
 
@@ -1766,7 +1823,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
         if ((GeoId1 < 0 && GeoId2 < 0) || (GeoId1 < 0 && GeoId3 < 0) || (GeoId2 < 0 && GeoId3 < 0)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Cannot add a constraint between external geometries!"));
+                                 QObject::tr("Cannot add a constraint between external geometries!"));
             return;
         }
 
