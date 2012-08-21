@@ -410,6 +410,56 @@ static PyObject * checkBB(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+static PyObject * getBB(PyObject *self, PyObject *args)
+{
+	PyObject *input;
+        Py::List bounding_box;
+
+        if (!PyArg_ParseTuple(args, "O",&input))
+                return NULL;
+
+        PY_TRY {
+
+                FemMeshPy *inputMesh = static_cast<FemMeshPy*>(input);
+                MeshCore::MeshKernel aMesh;
+                MeshCore::MeshPointArray vertices;
+                vertices.clear();
+                MeshCore::MeshFacetArray faces;
+                faces.clear();
+                MeshCore::MeshPoint current_node;
+                SMDS_NodeIteratorPtr aNodeIter = inputMesh->getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();
+                for (;aNodeIter->more();) 
+		{
+                        const SMDS_MeshNode* aNode = aNodeIter->next();
+                        current_node.Set(float(aNode->X()),float(aNode->Y()),float(aNode->Z()));
+                        vertices.push_back(current_node);
+                }
+                MeshCore::MeshFacet aFacet;
+		//Insert just one face to please the mesh kernel
+                aFacet._aulPoints[0] = 0;aFacet._aulPoints[1] = 1;aFacet._aulPoints[2] = 2;
+                faces.push_back(aFacet);
+                //Fill the Kernel with the temp smesh structure and delete the current containers
+                aMesh.Adopt(vertices,faces);
+                Base::BoundBox3f aBBox;
+                aBBox = aMesh.GetBoundBox();
+		//bounding_box.append(Py::Float(aBBox.Volume);
+		bounding_box.append(Py::Float(aBBox.MaxX));
+		bounding_box.append(Py::Float(aBBox.MinX));
+		bounding_box.append(Py::Float(aBBox.MaxY));
+		bounding_box.append(Py::Float(aBBox.MinY));
+		bounding_box.append(Py::Float(aBBox.MaxZ));
+		bounding_box.append(Py::Float(aBBox.MinZ));
+		
+
+                return Py::new_reference_to(bounding_box);
+
+
+        	} 
+	PY_CATCH;
+
+        Py_Return;
+	
+}
 
 
 
@@ -1074,15 +1124,16 @@ PyDoc_STRVAR(export_doc,
 
 /* registration table  */
 struct PyMethodDef Fem_methods[] = {
-    {"open"       ,open ,       METH_VARARGS, open_doc},
-    {"insert"     ,importer,    METH_VARARGS, inst_doc},
-    {"export"     ,exporter,    METH_VARARGS, export_doc},
-    {"read"       ,read,        Py_NEWARGS,   "Read a mesh from a file and returns a Mesh object."},
-{"calcMeshVolume", calcMeshVolume, Py_NEWARGS, "Calculate Mesh Volume for C3D10"},	
-{"getBoundary_Conditions" , getBoundary_Conditions, Py_NEWARGS, "Get Boundary Conditions for Residual Stress Calculation"},
+    	{"open"       ,open ,       METH_VARARGS, open_doc},
+    	{"insert"     ,importer,    METH_VARARGS, inst_doc},
+    	{"export"     ,exporter,    METH_VARARGS, export_doc},
+    	{"read"       ,read,        Py_NEWARGS,   "Read a mesh from a file and returns a Mesh object."},
+	{"calcMeshVolume", calcMeshVolume, Py_NEWARGS, "Calculate Mesh Volume for C3D10"},	
+	{"getBoundary_Conditions" , getBoundary_Conditions, Py_NEWARGS, "Get Boundary Conditions for Residual Stress Calculation"},
 	{"SMESH_PCA" , SMESH_PCA, Py_NEWARGS, "Get a Matrix4D related to the PCA of a Mesh Object"},
 	{"import_NASTRAN",import_NASTRAN, Py_NEWARGS, "Test"},
 	{"minBoundingBox",minBoundingBox,Py_NEWARGS,"Minimize the Bounding Box and reorient the mesh to the 1st Quadrant"},
 	{"checkBB",checkBB,Py_NEWARGS,"Check if the nodal z-values are still in the prescribed range"},
-    {NULL, NULL}  /* sentinel */
+	{"getBB",getBB,Py_NEWARGS,"Get current Bounding_Box as Min-Max Values for X,Y,Z"},    
+	{NULL, NULL}  /* sentinel */
 };

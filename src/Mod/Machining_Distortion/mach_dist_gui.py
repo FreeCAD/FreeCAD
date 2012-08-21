@@ -5,6 +5,7 @@ from os.path import join
 ##GUI related stuff
 from PyQt4 import QtCore, QtGui
 from User_Interface_Mach_Dist import Ui_dialog
+from plate_parameters import Ui_DialogPlateDimensions
 ##------------------------------------------------
 
 #from read_generalINFOS  import  read_generalINFOS
@@ -15,6 +16,44 @@ from calculix_postprocess import calculix_postprocess
 
 import FreeCAD,Fem,Part
 homepath = os.path.expanduser("~")
+
+
+class BoundingBoxDialog(QtGui.QDialog, Ui_DialogPlateDimensions):
+    def __init__(self,parent=None):
+        QtGui.QDialog.__init__(self,parent)
+        self.setupUi(self)
+        self.volume_of_part = 1.0
+        self.minimum_thickness = 0.0
+        self.minimum_length = 0.0
+        self.minimum_width = 0.0
+        QtCore.QObject.connect(self.thickness, QtCore.SIGNAL("editingFinished()"), self.updateFlytoBuyRatio)
+        QtCore.QObject.connect(self.length, QtCore.SIGNAL("editingFinished()"), self.updateFlytoBuyRatio)
+        QtCore.QObject.connect(self.width, QtCore.SIGNAL("editingFinished()"), self.updateFlytoBuyRatio)
+
+
+    def getValues(self):
+        return self.thickness.value(),self.length.value(),self.width.value()
+
+
+    def setValues(self,width,length,thickness,volume):
+        self.thickness.setValue(thickness)
+        self.minimum_thickness = thickness
+        self.length.setValue(length)
+        self.minimum_length = length
+        self.width.setValue(width)
+        self.minimum_width = width
+        self.volume_of_part = volume
+        self.flytobuyratio.display((width*length*thickness)/volume)
+
+    def updateFlytoBuyRatio(self):
+        if (self.width.value()<self.minimum_width):
+           self.width.setValue(self.minimum_width)
+        if (self.thickness.value()<self.minimum_thickness):
+           self.thickness.setValue(self.minimum_thickness)
+        if (self.length.value()<self.minimum_length):
+           self.length.setValue(self.minimum_length)
+        self.flytobuyratio.display((self.width.value()*self.length.value()*self.thickness.value())/self.volume_of_part)
+
 
 class MyForm(QtGui.QDialog,Ui_dialog):
     def __init__(self, parent=None):
@@ -134,10 +173,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         self.button_add_to_table.setEnabled(False)
         self.filename.clear()
         self.button_start_calculation.setEnabled(True)
-        
 
-            
-        
     def add_L_data(self):
         l_filename = QtGui.QFileDialog.getOpenFileName(None, 'Open file','','R-Script File for L Coefficients (*.txt)')
         values = self.parse_R_output(l_filename)
@@ -188,6 +224,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         self.button_select_file.setEnabled(False)
         self.button_select_output.setEnabled(False)
         self.button_start_calculation.setEnabled(False)
+        how_many_jobs = 0
         os.chdir(homepath)
         ##Get values from the GUI
         if ( os.path.exists(str(self.dirname)) ):
@@ -234,15 +271,25 @@ class MyForm(QtGui.QDialog,Ui_dialog):
             ltc4 = self.JobTable.item(job,25).data(QtCore.Qt.DisplayRole).toDouble()[0]
             ltc5 = self.JobTable.item(job,26).data(QtCore.Qt.DisplayRole).toDouble()[0]
             ltc6 = self.JobTable.item(job,27).data(QtCore.Qt.DisplayRole).toDouble()[0]
-            plate_thickness = self.JobTable.item(job,28).data(QtCore.Qt.DisplayRole).toDouble()[0]
             filename_without_suffix = self.JobTable.item(job,0).text().split("/").takeLast().split(".")[0]
-            print current_file_name
             meshobject = Fem.read(str(current_file_name))
             #Perform PCA
             Fem.SMESH_PCA(meshobject)
             #Do min routine
             Fem.minBoundingBox(meshobject)
-            #Now get the Node Numbers for the Boundary Conditions
+            volume_part = Fem.calcMeshVolume(meshobject)
+            #Get current bounding box to calculate the actual volume
+            bounding_box = []
+            bounding_box = Fem.getBB(meshobject)
+            width = bounding_box[0] - bounding_box[1]
+            length = bounding_box[2] - bounding_box[3]
+            thickness = bounding_box[4] - bounding_box[5]
+            #Check bounding_box_parameter  window now
+            dlg = BoundingBoxDialog()
+            dlg.setValues(width,length,thickness,volume_part)
+            if dlg.exec_():
+               width,length,thickness = dlg.getValues()
+            #Now get the Node Numbers for the Boundary konditions
             node_numbers = []
             node_numbers = Fem.getBoundary_Conditions(meshobject)
 
@@ -269,13 +316,13 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                             translate = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,i),FreeCAD.Base.Vector(0,0,0),0.0)
                             translation = rotation_around_x.multiply(rotation_around_y).multiply(rotation_around_z).multiply(translate)
                             #Now lets check if the part is still in the billet due to the rotation. If not, we directly skip to the next rotation value
-                            if(Fem.checkBB(meshobject,translation,plate_thickness)):
-                                print "Too heavy rotations"
-                                print str(plate_thickness)
-                                l= l + z_rot_intervall
-                                continue
-                            print "it seems that nothing changed"
-                            print str(plate_thickness)
+                            if(Fem.checkBB(meshobject,translation,thickness)):
+                                reply = QtGui.QMessageBox.question(self, 'Warning',"Too high rotation found. Would you like to continue and neglect the parameter set that led to this message?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+                                if reply == QtGui.QMessageBox.Yes:
+                                   l= l + z_rot_intervall
+                                   continue
+                                else:
+                                   return
                             #Use the placedment as optional argument for the write() method
                             #translated_mesh.setTransform(translation)
                             Case_Dir = str(self.dirname) + "/" + filename_without_suffix + "/" + filename_without_suffix +\
@@ -294,7 +341,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                             sigini_input = open (str(Case_Dir + "/" + "sigini_input.txt"),'wb')
                             
                             #Write plate thickness to the sigini_file
-                            sigini_input.write(str(plate_thickness) + "\n")
+                            sigini_input.write(str(thickness) + "\n")
                             #Now write the Interpolation coefficients, first the L and then the LC ones
                             sigini_input.write(\
                             str(lc1) + "," + \
@@ -313,6 +360,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                             sigini_input.close()
                             #Check if the 
                             meshobject.writeABAQUS(str(Case_Dir + "/" + "geometry_fe_input.inp"), translation)
+                            how_many_jobs +=1
                             ApplyingBC_IC(Case_Dir, young_modulus,poisson_ratio,node_numbers[0],node_numbers[1],node_numbers[2])
                             #Now lets generate a LSF Job-File to be used by the Airbus Clusters
                             #lsf_input = open (str(Case_Dir + "/" + "job.lsf"),"wb")
@@ -324,7 +372,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                             #lsf_input.write("#BSUB -e %J.err\n")
                             #lsf_input.write("#BSUB -J calculix\n")
                             #lsf_input.write("#BSUB -q loc_dev_par\n")
-                            #lsf_input.write(str("datadir=\"" + homepath + "/" + self.dirname[str(self.dirname).rfind("/")+1:] + "/" + filename_without_suffix + "/" + filename_without_suffix + 
+                            #lsf_input.write(str("datadir=\"/projects/MateriauxProcedes/" + self.dirname[str(self.dirname).rfind("/")+1:] + "/" + filename_without_suffix + "/" + filename_without_suffix + 
                             #"_"+"x_rot"+ str(int(j))+
                             #"_"+"y_rot"+ str(int(k))+
                             #"_"+"z_rot"+ str(int(l))+
@@ -347,6 +395,11 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         #batch.write("tar cf \"" + str(self.dirname[str(self.dirname).rfind("/")+1:]  + ".tar\" \"" + str(self.dirname[str(self.dirname).rfind("/")+1:] + "/") + "\"\n"))
         #batch.write("rm -rf \"" + str(self.dirname[str(self.dirname).rfind("/")+1:] + "/") + "\"\n")
         batch.close()
+        reply = QtGui.QMessageBox.question(self, 'Information',"Would you like to start with the submission of the job?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+        if reply == QtGui.QMessageBox.No:
+           return
+    def start_LSF_submission(self):
+        
 
         os.chdir(homepath)
         fnull = open(os.devnull, 'w')
@@ -436,7 +489,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
 
         fnull.close()
         #Reset the GUI
-        os.chdir(homepath)
+        os.chdir("/projects/MateriauxProcedes")
         #Reset the table to be fully empty
         i = self.JobTable.rowCount()
         while i > 0:
