@@ -10,14 +10,16 @@ from lsf_submission_gui import Ui_DialogSubmitwithLSF
 
 
 
-class submission(QtGui.QDialog, Ui_DialogSubmitwithLSF):
-    def __init__(self,parent=None,working_directory):
+class Submission(QtGui.QDialog, Ui_DialogSubmitwithLSF):
+    def __init__(self,working_dir,parent=None):
         QtGui.QDialog.__init__(self,parent)
+        print "we are in"
         self.setupUi(self)
-        self.working_directory = working_directory
+        self.working_directory = working_dir
         self.number_of_jobs=0
+        self.progressBar.setValue(0.0)
         QtCore.QObject.connect(self.start_calculation, QtCore.SIGNAL("clicked()"), self.launch_calculation)
-        QtCore.QObject.connect(self.close, QtCore.SIGNAL("clicked()"), self.quit)
+        QtCore.QObject.connect(self.close_dialog, QtCore.SIGNAL("clicked()"), self.quit_dialog)
 
 
     def build_lsf_script(self,current_dir):
@@ -31,7 +33,7 @@ class submission(QtGui.QDialog, Ui_DialogSubmitwithLSF):
         lsf_input.write("#BSUB -e %J.err\n")
         lsf_input.write("#BSUB -J calculix\n")
         lsf_input.write("#BSUB -q loc_dev_par\n")
-        lsf_input.write(str("datadir=\" + current_dir + "\""))
+        lsf_input.write(str("datadir=\"" + current_dir + "\""))
         lsf_input.write("cd $datadir\n")
         lsf_input.write("ccx -i geometry_fe_input\n")
         lsf_input.close()
@@ -46,21 +48,24 @@ class submission(QtGui.QDialog, Ui_DialogSubmitwithLSF):
         self.progressBar.setMaximum(number_of_jobs)
 
     def launch_job(self,current_dir):
+        fnull = open(os.devnull, 'w')
         commandline = "bsub < " + os.path.join(current_dir,"job.lsf")
         print commandline
         result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
-        
+        fnull.close()
+
     def checkJob(self,current_dir):
         #Check if the current job is finished or still running
         running = True
-        file_to_check = #Probably use glob to get the LSF output file right
-        if (proper ending  in file):
-            running = False
+        #file_to_check = #Probably use glob to get the LSF output file right
+        #if (proper ending  in file):
+        #    running = False
         
         return running
 
     def launch_calculation(self):
         current_job_number = 0
+        print self.working_directory
         for root,dirs,files in os.walk(str(self.working_directory)):
             if 'final_fe_input.inp' in files:
                 build_lsf_script(root)
@@ -78,7 +83,7 @@ class submission(QtGui.QDialog, Ui_DialogSubmitwithLSF):
                 current_job_number += 1
                 updateProgressbar(current_job_number)
                 
-    def quit(self):
+    def quit_dialog(self):
         self.close()
 
     def updateProgressbar(self,current_job_number):

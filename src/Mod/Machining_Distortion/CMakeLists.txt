@@ -4,14 +4,14 @@ SET(MachDist_SRCS
     InitGui.py
     ApplyingBC_IC.py
     mach_dist_gui.py
-   # machdist_rc.py
     plate_parameters.py
+    submission.py    
     postprocess.py
+    lsf_submission_gui.py
     postprocess_gui.py
     calculix_postprocess.py
     MachiningDistortionCommands.py
     User_Interface_Mach_Dist.py
-   # machdist_rc.py
     
 )
 SOURCE_GROUP("" FILES ${MachDist_SRCS})

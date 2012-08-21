@@ -13,7 +13,7 @@ from plate_parameters import Ui_DialogPlateDimensions
 #from mesh_bdf2inp  import mesh_bdf2inp
 from ApplyingBC_IC  import ApplyingBC_IC
 from calculix_postprocess import calculix_postprocess
-
+from submission import Submission
 import FreeCAD,Fem,Part
 homepath = os.path.expanduser("~")
 
@@ -395,11 +395,13 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         #batch.write("tar cf \"" + str(self.dirname[str(self.dirname).rfind("/")+1:]  + ".tar\" \"" + str(self.dirname[str(self.dirname).rfind("/")+1:] + "/") + "\"\n"))
         #batch.write("rm -rf \"" + str(self.dirname[str(self.dirname).rfind("/")+1:] + "/") + "\"\n")
         batch.close()
-        reply = QtGui.QMessageBox.question(self, 'Information',"Would you like to start with the submission of the job?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+        reply = QtGui.QMessageBox.question(self, 'Information',"Would you like to continue with job submission?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
         if reply == QtGui.QMessageBox.No:
            return
-    def start_LSF_submission(self):
         
+        dlg = Submission(self.dirname)
+        if dlg.exec_():
+           print "we are done"
 
         os.chdir(homepath)
         fnull = open(os.devnull, 'w')
