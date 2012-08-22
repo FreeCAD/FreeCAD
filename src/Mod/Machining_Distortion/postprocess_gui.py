@@ -159,8 +159,8 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                                     "set view 80,05,1.3,1.0\n"+
                                     "set title \"" + title + "\" offset 0,-2\n"+
                                     "show title\n"+
-                                    "set label \"L Coefficients used for the calculation:" + lc_coeff[0] + "," + lc_coeff[1] + "," + lc_coeff[2] + "," + lc_coeff[3] + "," + lc_coeff[4] + "," + lc_coeff[5][:-1] + "\" at screen 0.1, screen 0.95 left font \"Arial,8\"\n"+ 
-                                    "set label \"LT Coefficients used for the calculation:" + ltc_coeff[0] + "," + ltc_coeff[1] + "," + ltc_coeff[2] + "," + ltc_coeff[3] + "," + ltc_coeff[4] + "," + ltc_coeff[5][:-1] + "\" at screen 0.1, screen 0.93 left font \"Arial,8\"\n"+
+                                    "set label \"L Coefficients used for the calculation:" + lc_coeff[0] + "," + lc_coeff[1] + "," + lc_coeff[2] + "," + lc_coeff[3] + "," + lc_coeff[4] + "," + lc_coeff[5][:-1] + "\" at screen 0.1, screen 0.95 left \n"+ 
+                                    "set label \"LT Coefficients used for the calculation:" + ltc_coeff[0] + "," + ltc_coeff[1] + "," + ltc_coeff[2] + "," + ltc_coeff[3] + "," + ltc_coeff[4] + "," + ltc_coeff[5][:-1] + "\" at screen 0.1, screen 0.93 left \n"+
                                     "set label \"" + x_axis_label + "\\nin [mm]\" at screen 0.5, screen 0.1 center rotate by 0\n"+ 
                                     "set label \"" + y_axis_label +"\\nin [" + str(chr(248)) +"]\" at screen 0.91, screen 0.2 center rotate by 50\n"+ 
                                     "set label \"" + z_axis_label + "\\nin [mm]\" at screen 0.03, screen 0.5 center rotate by 90\n"+ 
@@ -170,16 +170,9 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         gnu_plot_input_file.close()
         os.chdir(str(self.dirname))
         fnull = open(os.devnull, 'w')
-        commandline = FreeCAD.getHomePath() + "gnuplot gnu_plot_input.txt"
+        commandline = "gnuplot gnu_plot_input.txt"
         result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
         fnull.close()
         self.button_start_postprocessing.setEnabled(False)
-        #Reset all radio buttons
-        #self.check_rot_x.setChecked(False) 
-        #self.check_rot_y.setChecked(False) 
-        #self.check_rot_z.setChecked(False)
-        #self.check_abs_disp_x.setChecked(False) 		
-        #self.check_abs_disp_y.setChecked(False) 		
-        #self.check_abs_disp_z.setChecked(False)
 
 

@@ -39,7 +39,7 @@ class ThreadWorker(QtCore.QThread):
         try:
            file_to_check = open(str(os.path.join(current_dir,"output.txt")),"r")
         except IOError:
-           print "file not yet ready"
+           #print "file not yet ready"
            return running
 	find_str = " Job finished\n"
         file_to_check.seek (0, 2) # Put the file position pointer to the end of file
@@ -61,9 +61,9 @@ class ThreadWorker(QtCore.QThread):
                 emergency_exit = 0
                 while(self.checkJob(root)):
                     #Check if the job is still running or already finished and wait 30s between calls
-                    time.sleep(1)
+                    time.sleep(10)
                     emergency_exit +=1
-                    if emergency_exit > 10:
+                    if emergency_exit > 180:
                         #Lets continue to the next job as this job seems to have problems
                         current_job_number += 1
 			print "No convergence found . Skipping over to next job"
