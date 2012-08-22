@@ -288,8 +288,9 @@ class MyForm(QtGui.QDialog,Ui_dialog):
             dlg = BoundingBoxDialog()
             dlg.setValues(width,length,thickness,volume_part)
             if dlg.exec_():
-               width,length,thickness = dlg.getValues()
-            #Now get the Node Numbers for the Boundary konditions
+               thickness,length,width = dlg.getValues()
+	    
+	    #Now get the Node Numbers for the Boundary konditions
             node_numbers = []
             node_numbers = Fem.getBoundary_Conditions(meshobject)
 
@@ -399,12 +400,12 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         if reply == QtGui.QMessageBox.No:
            return
         
-        dlg = Submission(self.dirname)
+        dlg = Submission(str(self.dirname) + "/" + filename_without_suffix)
         if dlg.exec_():
            print "we are done"
 
         os.chdir(homepath)
-        fnull = open(os.devnull, 'w')
+        #fnull = open(os.devnull, 'w')
   #      #Generate the full tar name:
   #      tarname = homepath + "/" + str(self.dirname)[str(self.dirname).rfind("/")+1:] + ".tar"
   #      #Check if the tar file already exists. If yes, then we have to remove it
@@ -442,13 +443,13 @@ class MyForm(QtGui.QDialog,Ui_dialog):
   #      result = subprocess.call(commandline, shell = False, stdout = fnull, stderr = fnull)
   #      
         #Set proper rights on the batch file
-        commandline = "chmod +x \"" + str(self.dirname) + "/lcmt_CALCULIX_Calculation_batch.bat\""
-        print commandline
-        result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
+        #commandline = "chmod +x \"" + str(self.dirname) + "/lcmt_CALCULIX_Calculation_batch.bat\""
+        #print commandline
+        #result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
         #Start the Batch-File
-        commandline = "\"" + str(self.dirname) + "/lcmt_CALCULIX_Calculation_batch.bat\""
-        print commandline 
-        result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
+        #commandline = "\"" + str(self.dirname) + "/lcmt_CALCULIX_Calculation_batch.bat\""
+        #print commandline 
+        #result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
   #     
 
 
@@ -489,9 +490,9 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         #commandline = "del /Q \"" + str(self.dirname)[0:3] + str(self.dirname)[str(self.dirname).rfind("/")+1:] + ".zip\""
         #result = subprocess.call(commandline, shell = False, stdout = fnull, stderr = fnull)
 
-        fnull.close()
+        #fnull.close()
         #Reset the GUI
-        os.chdir("/projects/MateriauxProcedes")
+        #os.chdir("/projects/MateriauxProcedes")
         #Reset the table to be fully empty
         i = self.JobTable.rowCount()
         while i > 0:
@@ -499,7 +500,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
             self.JobTable.removeRow(i-1)
             i = i-1
 
-        print "after"
+        #print "after"
         self.JobTable.setHorizontalHeaderLabels(
         ["Input File","Output Folder","Z-Offset From","Z-Offset To","Z-Intervall","X-Rot From","X-Rot To","X-Rot Intervall",
         "Y-Rot From","Y-Rot To","Y-Rot Intervall","Z-Rot From","Z-Rot To","Z-Rot Intervall","Young Modulus","Poisson Ratio",

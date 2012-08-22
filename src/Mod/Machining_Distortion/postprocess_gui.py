@@ -42,7 +42,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
         ltc_coeff = []
         sigini = True
         for root, dirs, files in os.walk(str(self.dirname)):
-           if 'final_fe_input.frd' in files:
+           if 'geometry_fe_input.frd' in files:
                 bbox_orig,\
                 bbox_distorted,\
                 relationship,\
@@ -51,7 +51,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                 max_disp_y,\
                 min_disp_y,\
                 max_disp_z,\
-                min_disp_z = calculix_postprocess(os.path.join(root,'final_fe_input.frd'))
+                min_disp_z = calculix_postprocess(os.path.join(root,'geometry_fe_input.frd'))
                 if sigini:
                     sigini = False
                     lc_coeff,ltc_coeff = get_sigini_values(os.path.join(root,'sigini_input.txt'))

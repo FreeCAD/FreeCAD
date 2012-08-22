@@ -1,28 +1,33 @@
-import os,sys,string,math,shutil,glob,subprocess,tempfile
-from time import sleep
+import os,sys,string,math,shutil,glob,subprocess,tempfile,time
 from os.path import join
 
 
 ##GUI related stuff
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import QObject, pyqtSignal,pyqtSlot
 from lsf_submission_gui import Ui_DialogSubmitwithLSF
 ##------------------------------------------------
 
 
 
 class Submission(QtGui.QDialog, Ui_DialogSubmitwithLSF):
+    
+    
     def __init__(self,working_dir,parent=None):
         QtGui.QDialog.__init__(self,parent)
-        print "we are in"
         self.setupUi(self)
         self.working_directory = working_dir
-        self.number_of_jobs=0
+	self.number_of_jobs=0
+	self.jobFolders = []
+	self.setValues()
         self.progressBar.setValue(0.0)
+	QtCore.QObject.connect(self, QtCore.SIGNAL("testSIGNAL"), self.progressBar.setValue)
+	
         QtCore.QObject.connect(self.start_calculation, QtCore.SIGNAL("clicked()"), self.launch_calculation)
         QtCore.QObject.connect(self.close_dialog, QtCore.SIGNAL("clicked()"), self.quit_dialog)
 
 
-    def build_lsf_script(self,current_dir):
+    def build_launch_script(self,current_dir):
         #Now lets generate a LSF Job-File to be used by the Airbus Clusters
         lsf_input = open (str(os.path.join(current_dir,"job.lsf")),"wb")
         lsf_input.write("#!/bin/bash\n")
@@ -42,54 +47,68 @@ class Submission(QtGui.QDialog, Ui_DialogSubmitwithLSF):
     def setValues(self):
         #Get an Idea of how many jobs we have to calculate
         for root,dirs,files in os.walk(str(self.working_directory)):
-            number_of_jobs += 1
-        print number_of_jobs
+            self.number_of_jobs += 1
+        #Subtract one job as the root itself is also printed 
+	self.number_of_jobs -=1
         self.progressBar.setMinimum(0)
-        self.progressBar.setMaximum(number_of_jobs)
+        self.progressBar.setMaximum(self.number_of_jobs)
 
     def launch_job(self,current_dir):
-        fnull = open(os.devnull, 'w')
-        commandline = "bsub < " + os.path.join(current_dir,"job.lsf")
-        print commandline
-        result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
-        fnull.close()
+	initial_directory = os.getcwd()
+        #print initial_directory
+	#Now change to the current folder to make it easier for calculix
+	os.chdir(current_dir)
+        #print current_dir
+        commandline = "/projects/MateriauxProcedes/FreeCAD/freecad_build/bin/ccx -i geometry_fe_input >& output.txt"
+        result = subprocess.Popen(commandline, shell = True)
+	os.chdir(initial_directory)
+        #print os.getcwd()
 
     def checkJob(self,current_dir):
         #Check if the current job is finished or still running
         running = True
-        #file_to_check = #Probably use glob to get the LSF output file right
-        #if (proper ending  in file):
-        #    running = False
-        
-        return running
+        #try to open the output_file now
+        try:
+           file_to_check = open(str(os.path.join(current_dir,"output.txt")),"r")
+        except IOError:
+           print "file not yet ready"
+           return running
+	find_str = " Job finished\n"
+        file_to_check.seek (0, 2) # Put the file position pointer to the end of file
+        fsize = file_to_check.tell() # Get current position
+    	file_to_check.seek (max (fsize-500, 0), 0) # Set pos @ last 500 chars
+        lines = file_to_check.readlines()       # Read to end
+	file_to_check.close()
+        if find_str in lines:
+	   running = False
+	   
+	return running
 
     def launch_calculation(self):
+	#inactivate the buttons to avoid errors
+	self.start_calculation.setEnabled(False)
+	self.close_dialog.setEnabled(False)
         current_job_number = 0
-        print self.working_directory
         for root,dirs,files in os.walk(str(self.working_directory)):
-            if 'final_fe_input.inp' in files:
-                build_lsf_script(root)
-                launch_job(root)
+            if 'geometry_fe_input.inp' in files:
+                #build_launch_script(root) Not necessary for the moment
+                self.launch_job(root)
                 emergency_exit = 0
-                while(check_job(root)):
+                while(self.checkJob(root)):
                     #Check if the job is still running or already finished and wait 30s between calls
-                    time.sleep(30)
+                    time.sleep(1)
                     emergency_exit +=1
-                    if emergency_exit > 60:
+                    if emergency_exit > 10:
                         #Lets continue to the next job as this job seems to have problems
                         current_job_number += 1
-                        updateProgressbar(current_job_number)
-                        continue
+			print "No convergence found . Skipping over to next job"
+			self.emit(QtCore.SIGNAL("testSIGNAL"),current_job_number)
+                        break
                 current_job_number += 1
-                updateProgressbar(current_job_number)
+                self.emit(QtCore.SIGNAL("testSIGNAL"),current_job_number)
+		
+	self.close_dialog.setEnabled(True)
                 
     def quit_dialog(self):
         self.close()
-
-    def updateProgressbar(self,current_job_number):
-        self.progressbar.setValue(current_job_number/self.number_of_jobs)   
-
-
-
-
 
