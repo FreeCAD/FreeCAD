@@ -23,6 +23,7 @@
 #ifndef PARTGUI_DLGREVOLUTION_H
 #define PARTGUI_DLGREVOLUTION_H
 
+#include <Gui/Selection.h>
 #include <Gui/InputVector.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -30,7 +31,7 @@
 namespace PartGui {
 
 class Ui_DlgRevolution;
-class DlgRevolution : public Gui::LocationDialog
+class DlgRevolution : public Gui::LocationDialog, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -44,13 +45,19 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private Q_SLOTS:
+    void on_selectLine_clicked();
+
 private:
     void findShapes();
     void directionActivated(int);
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
     typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
     Ui_RevolutionComp* ui;
+    class EdgeSelection;
+    EdgeSelection* filter;
 };
 
 class TaskRevolution : public Gui::TaskView::TaskDialog

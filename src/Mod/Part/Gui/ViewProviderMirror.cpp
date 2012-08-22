@@ -243,6 +243,17 @@ std::vector<App::DocumentObject*> ViewProviderFillet::claimChildren() const
     return temp;
 }
 
+bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Fillet* pFillet = static_cast<Part::Fillet*>(getObject()); 
+    App::DocumentObject *pBase = pFillet->Base.getValue();
+    if (pBase)
+        Gui::Application::Instance->showViewProvider(pBase);
+
+    return true;
+}
+
 // ---------------------------------------
 
 PROPERTY_SOURCE(PartGui::ViewProviderChamfer, PartGui::ViewProviderPart)
@@ -296,6 +307,17 @@ std::vector<App::DocumentObject*> ViewProviderChamfer::claimChildren() const
     return temp;
 }
 
+bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Chamfer* pChamfer = static_cast<Part::Chamfer*>(getObject()); 
+    App::DocumentObject *pBase = pChamfer->Base.getValue();
+    if (pBase)
+        Gui::Application::Instance->showViewProvider(pBase);
+
+    return true;
+}
+
 // ---------------------------------------
 
 PROPERTY_SOURCE(PartGui::ViewProviderRevolution, PartGui::ViewProviderPart)
@@ -314,4 +336,15 @@ std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Part::Revolution*>(getObject())->Source.getValue());
     return temp;
+}
+
+bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Revolution* pRevolve = static_cast<Part::Revolution*>(getObject()); 
+    App::DocumentObject *pBase = pRevolve->Source.getValue();
+    if (pBase)
+        Gui::Application::Instance->showViewProvider(pBase);
+
+    return true;
 }

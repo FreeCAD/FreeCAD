@@ -795,6 +795,26 @@ AC_ARG_ENABLE([sandbox],
 
 AM_CONDITIONAL(BUILD_SANDBOX, test x"$fc_set_sandbox" = xtrue)
 
+AC_ARG_ENABLE([assembly],
+  AC_HELP_STRING([--enable-assembly], [Enable the build of the Assembly module (disabled by default)]),
+  [case $enableval in
+    no | false) fc_set_assembly=false ;;
+    *)          fc_set_assembly=true ;;
+  esac],
+  [fc_set_assembly=false])
+
+AM_CONDITIONAL(BUILD_ASSEMBLY, test x"$fc_set_assembly" = xtrue)
+
+AC_ARG_ENABLE([cam],
+  AC_HELP_STRING([--enable-cam], [Enable the build of the Cam module (disabled by default)]),
+  [case $enableval in
+    no | false) fc_set_cam=false ;;
+    *)          fc_set_cam=true ;;
+  esac],
+  [fc_set_cam=false])
+
+AM_CONDITIONAL(BUILD_CAM, test x"$fc_set_cam" = xtrue)
+
 dnl Check if you want debug information enabled, or not
 dnl **************************************************************************
 
@@ -952,6 +972,13 @@ src/Main/Makefile
 src/Doc/Makefile
 src/Doc/BuildDevDoc.cfg
 src/Mod/Makefile
+src/Mod/Assembly/App/Makefile
+src/Mod/Assembly/Gui/Resources/Makefile
+src/Mod/Assembly/Gui/Makefile
+src/Mod/Assembly/Makefile
+src/Mod/Cam/App/Makefile
+src/Mod/Cam/Gui/Makefile
+src/Mod/Cam/Makefile
 src/Mod/Part/Makefile
 src/Mod/Part/App/Makefile
 src/Mod/Part/Gui/Makefile
@@ -1055,7 +1082,10 @@ AC_MSG_NOTICE([
   RTTI enabled (forced):     true
   Compiler warnings enabled: $fc_set_warn
   installation prefix:       $prefix
-
+  enable-assembly:           $fc_set_assembly
+  enable-cam:                $fc_set_cam
+  enable-sandbox:            $fc_set_sandbox
+  enable-template:           $fc_set_template
   Now, run 'make' to build FreeCAD.
 
   **************************************************************************

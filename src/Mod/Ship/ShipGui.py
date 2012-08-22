@@ -84,8 +84,100 @@ class Hydrostatics:
         ToolTip  = str(Translator.translate('Plot ship hydrostatics'))
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
       
+class SetWeights: 
+    def Activated(self):
+        import tankWeights
+        tankWeights.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/Weight.png"
+        MenuText = str(Translator.translate('Set ship weights'))
+        ToolTip  = str(Translator.translate('Set ship weights, tanks must be added later'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class CreateTank: 
+    def Activated(self):
+        import tankCreateTank
+        tankCreateTank.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/Tank.png"
+        MenuText = str(Translator.translate('Create a new tank'))
+        ToolTip  = str(Translator.translate('Create a new ship tank'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class GZ: 
+    def Activated(self):
+        import tankGZ
+        tankGZ.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/HydrostaticsIco.png"
+        MenuText = str(Translator.translate('GZ curve'))
+        ToolTip  = str(Translator.translate('Transversal stability GZ curve computation'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class CreateSim: 
+    def Activated(self):
+        import simCreate
+        simCreate.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimCreateIco.png"
+        MenuText = str(Translator.translate('Create a new simulation'))
+        ToolTip  = str(Translator.translate('Create a new simulation in order to process later'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class RunSim: 
+    def Activated(self):
+        import simRun
+        simRun.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimRunIco.png"
+        MenuText = str(Translator.translate('Run a simulation'))
+        ToolTip  = str(Translator.translate('Run a simulation'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class StopSim: 
+    def Activated(self):
+        import simRun
+        simRun.stop()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimStopIco.png"
+        MenuText = str(Translator.translate('Stop active simulation'))
+        ToolTip  = str(Translator.translate('Stop active simulation'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+class TrackSim: 
+    def Activated(self):
+        import simPost
+        simPost.load()
+
+    def GetResources(self):
+        from shipUtils import Paths, Translator
+        IconPath = Paths.iconsPath() + "/SimPostIco.png"
+        MenuText = str(Translator.translate('Track simulation'))
+        ToolTip  = str(Translator.translate('Track simulation'))
+        return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+
+
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
 FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
+FreeCADGui.addCommand('Ship_Weights', SetWeights())
+FreeCADGui.addCommand('Ship_CreateTank', CreateTank())
+FreeCADGui.addCommand('Ship_GZ', GZ())
+FreeCADGui.addCommand('Ship_CreateSim', CreateSim())
+FreeCADGui.addCommand('Ship_RunSim', RunSim())
+FreeCADGui.addCommand('Ship_StopSim', StopSim())
+FreeCADGui.addCommand('Ship_TrackSim', TrackSim())

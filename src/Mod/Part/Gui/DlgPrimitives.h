@@ -39,7 +39,7 @@ namespace PartGui {
 class Picker
 {
 public:
-    Picker()
+    Picker() : exitCode(-1)
     {
     }
     virtual ~Picker()
@@ -51,6 +51,7 @@ public:
     void createPrimitive(QWidget* widget, const QString&, Gui::Document*);
     QString toPlacement(const gp_Ax2&) const;
 
+    int exitCode;
     QEventLoop loop;
 };
 
@@ -88,6 +89,7 @@ private Q_SLOTS:
 
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
+    int mode;
     QPointer<QWidget> activeView;
     Ui_Location ui;
 };

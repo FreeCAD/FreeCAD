@@ -24,12 +24,15 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
 
 #include "FeaturePartFuse.h"
-
+#include "modelRefine.h"
+#include <App/Application.h>
+#include <Base/Parameter.h>
 #include <Base/Exception.h>
 
 using namespace Part;
@@ -41,14 +44,10 @@ Fuse::Fuse(void)
 {
 }
 
-TopoDS_Shape Fuse::runOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a fuse operation:
-    BRepAlgoAPI_Fuse mkFuse(base, tool);
-    // Let's check if the fusion has been successful
-    if (!mkFuse.IsDone()) 
-        throw Base::Exception("Fusion failed");
-    return mkFuse.Shape();
+    return new BRepAlgoAPI_Fuse(base, tool);
 }
 
 // ----------------------------------------------------
@@ -60,6 +59,9 @@ MultiFuse::MultiFuse(void)
 {
     ADD_PROPERTY(Shapes,(0));
     Shapes.setSize(0);
+    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
+        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    History.setSize(0);
 }
 
 short MultiFuse::mustExecute() const
@@ -83,18 +85,50 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 
     if (s.size() >= 2) {
         try {
-            TopoDS_Shape res = s.front();
+            std::vector<ShapeHistory> history;
+            TopoDS_Shape resShape = s.front();
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(res, *it);
+                BRepAlgoAPI_Fuse mkFuse(resShape, *it);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone()) 
                     throw Base::Exception("Fusion failed");
-                res = mkFuse.Shape();
+                resShape = mkFuse.Shape();
+
+                ShapeHistory hist1 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape1());
+                ShapeHistory hist2 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape2());
+                if (history.empty()) {
+                    history.push_back(hist1);
+                    history.push_back(hist2);
+                }
+                else {
+                    for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                        *jt = joinHistory(*jt, hist1);
+                    history.push_back(hist2);
+                }
             }
-            if (res.IsNull())
+            if (resShape.IsNull())
                 throw Base::Exception("Resulting shape is invalid");
-            this->Shape.setValue(res);
+
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+            if (hGrp->GetBool("CheckModel", false)) {
+                BRepCheck_Analyzer aChecker(resShape);
+                if (! aChecker.IsValid() ) {
+                    return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+                }
+            }
+            if (hGrp->GetBool("RefineModel", false)) {
+                TopoDS_Shape oldShape = resShape;
+                BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                resShape = mkRefine.Shape();
+                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
+                    *jt = joinHistory(*jt, hist);
+            }
+
+            this->Shape.setValue(resShape);
+            this->History.setValues(history);
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();

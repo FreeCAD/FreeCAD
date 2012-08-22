@@ -88,6 +88,8 @@ public:
   inline const double*    operator[] (unsigned short usNdx) const;
   /// Compute the determinant of the matrix
   double determinant() const;
+  /// Analyse the transformation
+  std::string analyse(void) const;
   //@}
 
   void getMatrix  (double dMtrx[16]) const;
@@ -133,6 +135,8 @@ public:
   void transform    (const Vector3f& rclVct, const Matrix4D& rclMtrx);
   void transform    (const Vector3d& rclVct, const Matrix4D& rclMtrx);
   void inverse      (void);
+  /// if matrix is orthogonal a special way of getting the inverse is used
+  void inverseOrthogonal(void);
   void inverseGauss (void);
   void transpose    (void);
   //@}

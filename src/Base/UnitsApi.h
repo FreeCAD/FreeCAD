@@ -101,6 +101,10 @@ public:
     static const QString getQuantityName(QuantityType t);
     /// get the translation factor for the default unit of a quantity
     static const double getPrefFactorOf(QuantityType t);
+    // set the number of decimals
+    static void setDecimals(int);
+    // fet the number of decimals
+    static int getDecimals();
     /// set the application defaults
     static void setDefaults(void);
     //@}
@@ -119,6 +123,8 @@ protected:
     static double   UserPrefFactor [50] ;
     /// name of the unit the user wants to use as quantities
     static QString  UserPrefUnit   [50] ;
+    /// number of decimals for floats
+    static int      UserPrefDecimals;
 
     // do the real work
     static double parse(const char*,bool &UsedUnit);

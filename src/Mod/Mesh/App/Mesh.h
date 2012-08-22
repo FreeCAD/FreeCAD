@@ -66,7 +66,8 @@ class MeshExport MeshObject : public Data::ComplexGeoData
     TYPESYSTEM_HEADER();
 
 public:
-    enum Type {PLANE, CYLINDER, SPHERE};
+    enum GeometryType {PLANE, CYLINDER, SPHERE};
+    enum CutType {INNER, OUTER};
 
     // typedef needed for cross-section
     typedef std::pair<Base::Vector3f, Base::Vector3f> TPlane;
@@ -198,6 +199,8 @@ public:
     Base::Vector3d getPointNormal(unsigned long) const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
+    void cut(const std::vector<Base::Vector3f>& polygon, CutType);
+    void trim(const std::vector<Base::Vector3f>& polygon, CutType);
     //@}
 
     /** @name Selection */
@@ -256,6 +259,7 @@ public:
     void removeSelfIntersections(const std::vector<unsigned long>&);
     void removeFoldsOnSurface();
     void removeFullBoundaryFacets();
+    void removeInvalidPoints();
     //@}
 
     /** @name Mesh segments */
@@ -265,7 +269,7 @@ public:
     const Segment& getSegment(unsigned long) const;
     Segment& getSegment(unsigned long);
     MeshObject* meshFromSegment(const std::vector<unsigned long>&) const;
-    std::vector<Segment> getSegmentsFromType(Type, const Segment& aSegment, float dev) const;
+    std::vector<Segment> getSegmentsFromType(GeometryType, const Segment& aSegment, float dev, unsigned long minFacets) const;
     //@}
 
     /** @name Primitives */

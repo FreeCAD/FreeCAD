@@ -23,12 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Python.h>
 # include <QApplication>
 # include <QClipboard>
+# include <QDialogButtonBox>
 # include <QMutex>
+# include <QProcess> 
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
+# include <Inventor/C/basic.h>
+# include <Inventor/Qt/SoQtBasic.h>
 #endif
 
 #include "Splashscreen.h"
@@ -84,23 +89,31 @@ public:
                 textColor = col;
         }
     }
-
     virtual ~SplashObserver()
     {
         Base::Console().DetachObserver(this);
     }
-
+    const char* Name()
+    {
+        return "SplashObserver";
+    }
     void Warning(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Message(const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Error  (const char * s)
     {
+#ifdef FC_DEBUG
         Log(s);
+#endif
     }
     void Log (const char * s)
     {
@@ -170,7 +183,11 @@ AboutDialogFactory::~AboutDialogFactory()
 
 QDialog *AboutDialogFactory::create(QWidget *parent) const
 {
+#ifdef _USE_3DCONNEXION_SDK
+    return new AboutDialog(true, parent);
+#else
     return new AboutDialog(false, parent);
+#endif
 }
 
 const AboutDialogFactory *AboutDialogFactory::defaultFactory()
@@ -218,7 +235,7 @@ AboutDialog::~AboutDialog()
     delete ui;
 }
 
-static QString getPlatform()
+static QString getOperatingSystem()
 {
 #if defined (Q_OS_WIN32)
     switch(QSysInfo::windowsVersion())
@@ -241,6 +258,18 @@ static QString getPlatform()
 #elif defined (Q_OS_MAC)
     return QString::fromAscii("Mac OS X");
 #elif defined (Q_OS_LINUX)
+    QString exe(QLatin1String("lsb_release"));
+    QStringList args;
+    args << QLatin1String("-ds");
+    QProcess proc;
+    proc.setEnvironment(QProcess::systemEnvironment());
+    proc.start(exe, args);
+    if (proc.waitForStarted() && proc.waitForFinished()) {
+        QByteArray info = proc.readAll();
+        info.replace('\n',"");
+        return QString::fromAscii((const char*)info);
+    }
+
     return QString::fromAscii("Linux");
 #elif defined (Q_OS_UNIX)
     return QString::fromAscii("UNIX");
@@ -251,11 +280,9 @@ static QString getPlatform()
 
 void AboutDialog::setupLabels()
 {
+    QString exeName = qApp->applicationName();
     std::map<std::string, std::string>& config = App::Application::Config();
-    QString exeName = QString::fromAscii(config["ExeName"].c_str());
-    std::map<std::string,std::string>::iterator it = config.find("WindowTitle");
-    if (it != config.end())
-        exeName = QString::fromUtf8(it->second.c_str());
+    std::map<std::string,std::string>::iterator it;
     QString banner  = QString::fromUtf8(config["CopyrightInfo"].c_str());
     banner = banner.left( banner.indexOf(QLatin1Char('\n')) );
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
@@ -282,9 +309,13 @@ void AboutDialog::setupLabels()
     date.replace(QString::fromAscii("Unknown"), disda);
     ui->labelBuildDate->setText(date);
 
+    QString os = ui->labelBuildOS->text();
+    os.replace(QString::fromAscii("Unknown"), getOperatingSystem());
+    ui->labelBuildOS->setText(os);
+
     QString platform = ui->labelBuildPlatform->text();
     platform.replace(QString::fromAscii("Unknown"),
-        QString::fromAscii("%1 (%2-bit)").arg(getPlatform()).arg(QSysInfo::WordSize));
+        QString::fromAscii("%1-bit").arg(QSysInfo::WordSize));
     ui->labelBuildPlatform->setText(platform);
 
     // branch name
@@ -312,8 +343,54 @@ void AboutDialog::setupLabels()
     }
 }
 
+namespace Gui {
+namespace Dialog {
+
+class GuiExport LicenseDialog : public QDialog
+{
+public:
+    LicenseDialog(QWidget *parent = 0) : QDialog(parent, Qt::FramelessWindowHint)
+    {
+        QString info;
+#ifdef _USE_3DCONNEXION_SDK
+        info = QString::fromAscii(
+            "3D Mouse Support:\n"
+            "Development tools and related technology provided under license from 3Dconnexion.\n"
+            "(c) 1992 - 2012 3Dconnexion. All rights reserved");
+#endif
+        statusLabel = new QLabel(info);
+        buttonBox = new QDialogButtonBox;
+        buttonBox->setStandardButtons(QDialogButtonBox::Ok);
+        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+
+        QHBoxLayout *topLayout = new QHBoxLayout;
+        topLayout->addWidget(statusLabel);
+
+        QVBoxLayout *mainLayout = new QVBoxLayout;
+        mainLayout->addLayout(topLayout);
+        mainLayout->addWidget(buttonBox);
+        setLayout(mainLayout);
+
+        setWindowTitle(tr("Copyright"));
+    }
+    ~LicenseDialog()
+    {
+    }
+
+private:
+    QLabel *statusLabel;
+    QDialogButtonBox *buttonBox;
+};
+
+} // namespace Dialog
+} // namespace Gui
+
 void AboutDialog::on_licenseButton_clicked()
 {
+#ifdef _USE_3DCONNEXION_SDK
+    LicenseDialog dlg(this);
+    dlg.exec();
+#endif
 }
 
 void AboutDialog::on_copyButton_clicked()
@@ -326,6 +403,8 @@ void AboutDialog::on_copyButton_clicked()
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromAscii(config["BuildRevision"].c_str());
+    str << "OS: " << getOperatingSystem() << endl;
+    str << "Platform: " << QSysInfo::WordSize << "-bit" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
@@ -333,6 +412,14 @@ void AboutDialog::on_copyButton_clicked()
     it = config.find("BuildRevisionHash");
     if (it != config.end())
         str << "Hash: " << it->second.c_str() << endl;
+    // report also the version numbers of the most important libraries in FreeCAD
+    str << "Python version: " << PY_VERSION << endl;
+    str << "Qt version: " << QT_VERSION_STR << endl;
+    str << "Coin version: " << COIN_VERSION << endl;
+    str << "SoQt version: " << SOQT_VERSION << endl;
+    it = config.find("OCC_VERSION");
+    if (it != config.end())
+        str << "OCC version: " << it->second.c_str() << endl;
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

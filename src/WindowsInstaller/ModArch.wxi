@@ -44,6 +44,8 @@
             <File Id="ArchSectionPlanePy" Name="ArchSectionPlane.py" DiskId="1" />
             <File Id="ArchWindowPy" Name="ArchWindow.py" DiskId="1" />
             <File Id="ArchAxisPy" Name="ArchAxis.py" DiskId="1" />
+            <File Id="ArchVRMPy" Name="ArchVRM.py" DiskId="1" />
+            <File Id="ArchRoofPy" Name="ArchRoof.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>

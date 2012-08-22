@@ -2,14 +2,11 @@ SUBDIRS=Resources
 
 lib_LTLIBRARIES=libAssemblyGui.la AssemblyGui.la
 
-BUILT_SOURCES=\
-		moc_AssemblyView.cpp
+#BUILT_SOURCES
 
 libAssemblyGui_la_SOURCES=\
 		AppAssemblyGuiPy.cpp \
 		Command.cpp \
-		AssemblyView.cpp \
-		AssemblyView.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		Workbench.cpp \

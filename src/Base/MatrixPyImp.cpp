@@ -474,6 +474,18 @@ PyObject* MatrixPy::transpose(PyObject * args)
     PY_CATCH;
 }
 
+PyObject* MatrixPy::analyze(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        std::string type = getMatrixPtr()->analyse();
+        return PyString_FromString(type.c_str());
+    }
+    PY_CATCH;
+}
+
 Py::Float MatrixPy::getA11(void) const
 {
     double val = (*this->getMatrixPtr())[0][0];

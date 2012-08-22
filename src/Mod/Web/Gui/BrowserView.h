@@ -92,10 +92,10 @@ public:
 protected Q_SLOTS:
     void onLoadStarted();
     void onLoadProgress(int);
-    void onLoadFinished();
-    void onLinkClicked ( const QUrl & url ) ;
+    void onLoadFinished(bool);
+    void onLinkClicked (const QUrl& url);
     bool chckHostAllowed(const QString& host);
-    void onDownloadRequested(const QNetworkRequest & request);
+    void onDownloadRequested(const QNetworkRequest& request);
 
 private:
     WebView* view;

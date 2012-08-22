@@ -110,16 +110,24 @@ public:
     void stopAnimating(void);
     SbBool isAnimating(void) const;
 
+    void setSensitivity(float);
+    float getSensitivity() const;
+
+    void setResetCursorPosition(SbBool);
+    SbBool isResetCursorPosition() const;
+
     void setZoomInverted(SbBool);
     SbBool isZoomInverted() const;
     void setZoomStep(float);
     void setZoomAtCursor(SbBool);
     SbBool isZoomAtCursor() const;
+    void zoomIn();
+    void zoomOut();
 
     void updateAnimation();
     void redraw();
 
-    void setCameraOrientation(const SbRotation& rot);
+    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
     void lookAtPoint(const SbVec3f&);
     void boxZoom(const SbBox2s& box);
     virtual void viewAll();
@@ -170,9 +178,12 @@ protected:
     void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
     SbBool doSpin();
+    void moveCursorPosition();
+    void saveCursorPosition(const SoEvent * const ev);
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent * const ev);
+    void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
     void clearLog(void);
@@ -189,6 +200,8 @@ protected:
     View3DInventorViewer* viewer;
     ViewerMode currentmode;
     SbVec2f lastmouseposition;
+    SbVec2s globalPos;
+    SbVec2s localPos;
     SbPlane panningplane;
     SbTime prevRedrawTime;
     SbTime centerTime;

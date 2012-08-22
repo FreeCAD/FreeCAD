@@ -3,7 +3,7 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2009 Yorik van Havre <yorik@gmx.fr>                     *
+#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (GPL)     *
@@ -24,7 +24,7 @@
 #***************************************************************************
 
 __title__="FreeCAD Draft Workbench - DXF importer/exporter"
-__author__ = "Yorik van Havre <yorik@gmx.fr>"
+__author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://yorik.orgfree.com","http://free-cad.sourceforge.net"]
 
 '''
@@ -40,8 +40,8 @@ lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
 '''
 
-import FreeCAD, os, Part, math, re, string, Mesh, Draft
-from draftlibs import fcvec, dxfColorMap, dxfLibrary, fcgeo
+import FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
+from draftlibs import dxfColorMap, dxfLibrary
 from draftlibs.dxfReader import readDXF
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
@@ -134,10 +134,10 @@ def calcBulge(v1,bulge,v2):
     '''
     chord = v2.sub(v1)
     sagitta = (bulge * chord.Length)/2
-    startpoint = v1.add(fcvec.scale(chord,0.5))
+    startpoint = v1.add(DraftVecUtils.scale(chord,0.5))
     perp = chord.cross(Vector(0,0,1))
-    if not fcvec.isNull(perp): perp.normalize()
-    endpoint = fcvec.scale(perp,sagitta)
+    if not DraftVecUtils.isNull(perp): perp.normalize()
+    endpoint = DraftVecUtils.scale(perp,sagitta)
     return startpoint.add(endpoint)
 
 def getGroup(ob,exportList):
@@ -202,6 +202,7 @@ class fcformat:
         self.makeBlocks = params.GetBool("groupLayers")
         self.stdSize = params.GetBool("dxfStdSize")
         self.importDxfHatches = params.GetBool("importDxfHatches")
+        self.renderPolylineWidth = params.GetBool("renderPolylineWidth")
         bparams = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
 
         if self.paramstyle > 1:
@@ -218,7 +219,7 @@ class fcformat:
                 v1 = FreeCAD.Vector(r1,g1,b1)
                 v2 = FreeCAD.Vector(r2,g2,b2)
                 v = v2.sub(v1)
-                v = fcvec.scale(v,0.5)
+                v = DraftVecUtils.scale(v,0.5)
                 cv = v1.add(v)
             else:
                 c1 = bparams.GetUnsigned("BackgroundColor")
@@ -348,7 +349,7 @@ def drawLine(line,shapemode=False):
     if (len(line.points) > 1):
         v1=vec(line.points[0])
         v2=vec(line.points[1])
-        if not fcvec.equals(v1,v2):
+        if not DraftVecUtils.equals(v1,v2):
             try:
                 if (fmt.paramstyle >= 4) and (not shapemode):
                     return Draft.makeWire([v1,v2])
@@ -370,11 +371,11 @@ def drawPolyline(polyline,shapemode=False,num=None):
             v1 = vec(p1)
             v2 = vec(p2)
             verts.append(v1)
-            if not fcvec.equals(v1,v2):
+            if not DraftVecUtils.equals(v1,v2):
                 if polyline.points[p].bulge:
                     curves = True
                     cv = calcBulge(v1,polyline.points[p].bulge,v2)
-                    if fcvec.isColinear([v1,cv,v2]):
+                    if DraftVecUtils.isColinear([v1,cv,v2]):
                         try: edges.append(Part.Line(v1,v2).toShape())
                         except: warn(polyline,num)
                     else:
@@ -390,8 +391,8 @@ def drawPolyline(polyline,shapemode=False,num=None):
             v1 = vec(p1)
             v2 = vec(p2)
             cv = calcBulge(v1,polyline.points[-1].bulge,v2)
-            if not fcvec.equals(v1,v2):
-                if fcvec.isColinear([v1,cv,v2]):
+            if not DraftVecUtils.equals(v1,v2):
+                if DraftVecUtils.isColinear([v1,cv,v2]):
                     try:
                         edges.append(Part.Line(v1,v2).toShape())
                     except:
@@ -403,7 +404,21 @@ def drawPolyline(polyline,shapemode=False,num=None):
                         warn(polyline,num)
         if edges:
             try:
-                if (fmt.paramstyle >= 4) and (not curves) and (not shapemode):
+                width = rawValue(polyline,43)
+                if width and fmt.renderPolylineWidth:
+                    w = Part.Wire(edges)
+                    w1 = w.makeOffset(width/2) 
+                    if polyline.closed:
+                        w2 = w.makeOffset(-width/2)
+                        w1 = Part.Face(w1)
+                        w2 = Part.Face(w2)
+                        if w1.BoundBox.DiagonalLength > w2.BoundBox.DiagonalLength:
+                            return w1.cut(w2)
+                        else:
+                            return w2.cut(w1)
+                    else:
+                        return Part.Face(w1)
+                elif (fmt.paramstyle >= 4) and (not curves) and (not shapemode):
                     ob = Draft.makeWire(verts)
                     ob.Closed = polyline.closed
                     return ob
@@ -526,7 +541,7 @@ def drawSolid(solid):
     if p4x != None: p4 = FreeCAD.Vector(p4x,p4y,p4z)
     if p4 and (p4 != p3) and (p4 != p2) and (p4 != p1):
         try:
-            return Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
+            return Part.Face(Part.makePolygon([p1,p2,p4,p3,p1]))
         except:
             warn(solid)
     else:
@@ -722,11 +737,11 @@ def addText(text,attrib=False):
         rz = rawValue(text,31)
         if rx or ry or rz:
             xv = Vector(rx,ry,rz)
-            if not fcvec.isNull(xv):
-                ax = fcvec.neg(xv.cross(Vector(1,0,0)))
-                if fcvec.isNull(ax):
+            if not DraftVecUtils.isNull(xv):
+                ax = DraftVecUtils.neg(xv.cross(Vector(1,0,0)))
+                if DraftVecUtils.isNull(ax):
                     ax = Vector(0,0,1)
-                ang = -math.degrees(fcvec.angle(xv,Vector(1,0,0),ax))
+                ang = -math.degrees(DraftVecUtils.angle(xv,Vector(1,0,0),ax))
                 Draft.rotate(newob,ang,axis=ax)
         elif hasattr(text,"rotation"):
             if text.rotation:
@@ -885,7 +900,7 @@ def processdxf(document,filename):
         edges = []
         for s in shapes:
             edges.extend(s.Edges)
-        shapes = fcgeo.findWires(edges)
+        shapes = DraftGeomUtils.findWires(edges)
         for s in shapes:
             newob = addObject(s)
 
@@ -1198,13 +1213,13 @@ def getArcData(edge):
         # check the midpoint seems more reliable
         ve1 = edge.Vertexes[0].Point
         ve2 = edge.Vertexes[-1].Point
-        ang1 = -math.degrees(fcvec.angle(ve1.sub(ce)))
-        ang2 = -math.degrees(fcvec.angle(ve2.sub(ce)))
-        ve3 = fcgeo.findMidpoint(edge)
-        ang3 = -math.degrees(fcvec.angle(ve3.sub(ce)))
+        ang1 = -math.degrees(DraftVecUtils.angle(ve1.sub(ce)))
+        ang2 = -math.degrees(DraftVecUtils.angle(ve2.sub(ce)))
+        ve3 = DraftGeomUtils.findMidpoint(edge)
+        ang3 = -math.degrees(DraftVecUtils.angle(ve3.sub(ce)))
         if (ang3 < ang1) and (ang2 < ang3):
             ang1, ang2 = ang2, ang1
-        return fcvec.tup(ce), radius, ang1, ang2
+        return DraftVecUtils.tup(ce), radius, ang1, ang2
 
 def getSplineSegs(edge):
     "returns an array of vectors from a bSpline edge"
@@ -1228,16 +1243,18 @@ def getSplineSegs(edge):
 
 def getWire(wire,nospline=False):
     "returns an array of dxf-ready points and bulges from a wire"
-    edges = fcgeo.sortEdges(wire.Edges)
+    edges = DraftGeomUtils.sortEdges(wire.Edges)
     points = []
     for edge in edges:
         v1 = edge.Vertexes[0].Point
-        if (isinstance(edge.Curve,Part.Circle)):
-            mp = fcgeo.findMidpoint(edge)
+        if len(edge.Vertexes) < 2:
+            points.append((v1.x,v1.y,v1.z,None,None,0.0))
+        elif (isinstance(edge.Curve,Part.Circle)):
+            mp = DraftGeomUtils.findMidpoint(edge)
             v2 = edge.Vertexes[-1].Point
             c = edge.Curve.Center
-            angle = abs(fcvec.angle(v1.sub(c),v2.sub(c)))
-            # if (fcvec.angle(v2.sub(c)) < fcvec.angle(v1.sub(c))):
+            angle = abs(DraftVecUtils.angle(v1.sub(c),v2.sub(c)))
+            # if (DraftVecUtils.angle(v2.sub(c)) < DraftVecUtils.angle(v1.sub(c))):
             #    angle = -angle
             # polyline bulge -> negative makes the arc go clockwise
             bul = math.tan(angle/4)
@@ -1251,17 +1268,15 @@ def getWire(wire,nospline=False):
                 bul = -bul
             points.append((v1.x,v1.y,v1.z,None,None,bul))
         elif (isinstance(edge.Curve,Part.BSplineCurve)) and (not nospline):
-            bul = 0.0
             spline = getSplineSegs(edge)
             spline.pop()
             for p in spline:
-                points.append((p.x,p.y,p.z,None,None,bul))
+                points.append((p.x,p.y,p.z,None,None,0.0))
         else:
-            bul = 0.0
-            points.append((v1.x,v1.y,v1.z,None,None,bul))
-    if not fcgeo.isReallyClosed(wire):
+            points.append((v1.x,v1.y,v1.z,None,None,0.0))
+    if not DraftGeomUtils.isReallyClosed(wire):
         v = edges[-1].Vertexes[-1].Point
-        points.append(fcvec.tup(v))
+        points.append(DraftVecUtils.tup(v))
     # print "wire verts: ",points
     return points
 
@@ -1289,7 +1304,7 @@ def writeShape(ob,dxfobject,nospline=False):
                                                 layer=getGroup(ob,exportList)))                
         else:
             dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
-                                                 int(fcgeo.isReallyClosed(wire)), color=getACI(ob),
+                                                 int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
                                                  layer=getGroup(ob,exportList)))
     if len(processededges) < len(ob.Shape.Edges): # lone edges
         loneedges = []
@@ -1318,7 +1333,7 @@ def writeShape(ob,dxfobject,nospline=False):
             else: # anything else is treated as lines
                 ve1=edge.Vertexes[0].Point
                 ve2=edge.Vertexes[1].Point
-                dxfobject.append(dxfLibrary.Line([fcvec.tup(ve1), fcvec.tup(ve2)],
+                dxfobject.append(dxfLibrary.Line([DraftVecUtils.tup(ve1), DraftVecUtils.tup(ve2)],
                                                  color=getACI(ob),
                                                  layer=getGroup(ob,exportList)))
 
@@ -1341,65 +1356,76 @@ def export(objectslist,filename,nospline=False):
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs"
     global exportList
     exportList = objectslist
-    dxf = dxfLibrary.Drawing()
-    if (len(exportList) == 1) and (exportList[0].isDerivedFrom("Drawing::FeaturePage")):
+
+    if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
+        # arch view: export it "as is"
+        dxf = exportList[0].Proxy.getDXF()
+        if dxf:
+            f = open(filename,"w")
+            f.write(dxf)
+            f.close()
+
+    elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("Drawing::FeaturePage")):
+        # page: special hack-export! (see below)
         exportPage(exportList[0],filename)
-        return
-    for ob in exportList:
-        print "processing ",ob.Name
-        if ob.isDerivedFrom("Part::Feature"):
-            if not ob.Shape.isNull():
-                if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
-                    writeMesh(ob,dxf)
-                else:
-                    if ob.Shape.ShapeType == 'Compound':
-                        if (len(ob.Shape.Wires) == 1):
-                            # only one wire in this compound, no lone edge -> polyline
-                            if (len(ob.Shape.Wires[0].Edges) == len(ob.Shape.Edges)):
-                                writeShape(ob,dxf,nospline)
+
+    else:
+        # other cases, treat edges
+        dxf = dxfLibrary.Drawing()
+        for ob in exportList:
+            print "processing ",ob.Name
+            if ob.isDerivedFrom("Part::Feature"):
+                if not ob.Shape.isNull():
+                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
+                        writeMesh(ob,dxf)
+                    else:
+                        if ob.Shape.ShapeType == 'Compound':
+                            if (len(ob.Shape.Wires) == 1):
+                                # only one wire in this compound, no lone edge -> polyline
+                                if (len(ob.Shape.Wires[0].Edges) == len(ob.Shape.Edges)):
+                                    writeShape(ob,dxf,nospline)
+                                else:
+                                    # 1 wire + lone edges -> block
+                                    block = getBlock(ob)
+                                    dxf.blocks.append(block)
+                                    dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                             else:
-                                # 1 wire + lone edges -> block
+                                # all other cases: block
                                 block = getBlock(ob)
                                 dxf.blocks.append(block)
                                 dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                         else:
-                            # all other cases: block
-                            block = getBlock(ob)
-                            dxf.blocks.append(block)
-                            dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
-                    else:
-                        writeShape(ob,dxf,nospline)
-				
-        elif (ob.Type == "App::Annotation"):
-
-            # texts
-
-            # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
-            # well, anyway, at the moment, Draft only writes single-line texts, so...
-            for text in ob.LabelText:
-                point = fcvec.tup(FreeCAD.Vector(ob.Position.x,
-                                                 ob.Position.y-ob.LabelText.index(text),
-                                                 ob.Position.z))
-                if gui: height = float(ob.ViewObject.FontSize)
-                else: height = 1
-                dxf.append(dxfLibrary.Text(text,point,height=height,
-                                           color=getACI(ob,text=True),
-                                           style='STANDARD',
-                                           layer=getGroup(ob,exportList)))
-
-        elif 'Dimline' in ob.PropertiesList:
-            p1 = fcvec.tup(ob.Start)
-            p2 = fcvec.tup(ob.End)
-            base = Part.Line(ob.Start,ob.End).toShape()
-            proj = fcgeo.findDistance(ob.Dimline,base)
-            if not proj:
-                pbase = fcvec.tup(ob.End)
-            else:
-                pbase = fcvec.tup(ob.End.add(fcvec.neg(proj)))
-            dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
-                                            layer=getGroup(ob,exportList)))
-					
-    dxf.saveas(filename)
+                            writeShape(ob,dxf,nospline)
+                    
+            elif Draft.getType(ob) == "Annotation":
+                # texts
+    
+                # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
+                # well, anyway, at the moment, Draft only writes single-line texts, so...
+                for text in ob.LabelText:
+                    point = DraftVecUtils.tup(FreeCAD.Vector(ob.Position.x,
+                                                     ob.Position.y-ob.LabelText.index(text),
+                                                     ob.Position.z))
+                    if gui: height = float(ob.ViewObject.FontSize)
+                    else: height = 1
+                    dxf.append(dxfLibrary.Text(text,point,height=height,
+                                               color=getACI(ob,text=True),
+                                               style='STANDARD',
+                                               layer=getGroup(ob,exportList)))
+    
+            elif Draft.getType(ob) == "Dimension":
+                p1 = DraftVecUtils.tup(ob.Start)
+                p2 = DraftVecUtils.tup(ob.End)
+                base = Part.Line(ob.Start,ob.End).toShape()
+                proj = DraftGeomUtils.findDistance(ob.Dimline,base)
+                if not proj:
+                    pbase = DraftVecUtils.tup(ob.End)
+                else:
+                    pbase = DraftVecUtils.tup(ob.End.add(DraftVecUtils.neg(proj)))
+                dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
+                                                layer=getGroup(ob,exportList)))
+                        
+        dxf.saveas(filename)
     FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
 
 def exportPage(page,filename):

@@ -32,7 +32,7 @@
 namespace Part
 {
 
-class Box :public Part::Primitive
+class PartExport Box :public Part::Primitive
 {
     PROPERTY_HEADER(Part::Box);
 

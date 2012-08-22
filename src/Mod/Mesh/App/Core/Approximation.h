@@ -27,6 +27,7 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Eigen.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4ImplicitSurface.h>
 #include <list>
 #include <set>
 #include <vector>
@@ -34,8 +35,64 @@
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 
-namespace MeshCore {
+namespace Wm4
+{
 
+/**
+ * An implicit surface is defined by F(x,y,z) = 0.
+ * This polynomial surface is actually defined as z = f(x,y) = ax^2 + by^2 + cx + dy + exy + g.
+ * To use Wm3 routines for implicit surfaces we can write the surface also as F(x,y,z) = f(x,y) - z = 0.
+ * @author Werner Mayer
+ */
+template <class Real>
+class PolynomialSurface : public ImplicitSurface<Real>
+{
+public:
+  PolynomialSurface (const Real afCoeff[6])
+  { for (int i=0; i<6; i++) m_afCoeff[i] = afCoeff[i]; }
+
+  virtual ~PolynomialSurface () {}
+
+  // the function
+  virtual Real F (const Vector3<Real>& rkP) const
+  { 
+    return ( m_afCoeff[0]*rkP.X()*rkP.X() + 
+             m_afCoeff[1]*rkP.Y()*rkP.Y() + 
+             m_afCoeff[2]*rkP.X()         + 
+             m_afCoeff[3]*rkP.Y()         + 
+             m_afCoeff[4]*rkP.X()*rkP.Y() + 
+             m_afCoeff[5]-rkP.Z())        ;
+  }
+
+  // first-order partial derivatives
+  virtual Real FX (const Vector3<Real>& rkP) const
+  { return (Real)(2.0*m_afCoeff[0]*rkP.X() + m_afCoeff[2] + m_afCoeff[4]*rkP.Y()); }
+  virtual Real FY (const Vector3<Real>& rkP) const
+  { return (Real)(2.0*m_afCoeff[1]*rkP.Y() + m_afCoeff[3] + m_afCoeff[4]*rkP.X()); }
+  virtual Real FZ (const Vector3<Real>& rkP) const
+  { return (Real)-1.0; }
+
+  // second-order partial derivatives
+  virtual Real FXX (const Vector3<Real>& rkP) const
+  { return (Real)(2.0*m_afCoeff[0]); }
+  virtual Real FXY (const Vector3<Real>& rkP) const
+  { return (Real)(m_afCoeff[4]); }
+  virtual Real FXZ (const Vector3<Real>& rkP) const
+  { return (Real)0.0; }
+  virtual Real FYY (const Vector3<Real>& rkP) const
+  { return (Real)(2.0*m_afCoeff[1]); }
+  virtual Real FYZ (const Vector3<Real>& rkP) const
+  { return (Real)0.0; }
+  virtual Real FZZ (const Vector3<Real>& rkP) const
+  { return (Real)0.0; }
+
+protected:
+  Real m_afCoeff[6];
+};
+
+}
+
+namespace MeshCore {
 
 /**
  * Abstract base class for approximation of a geometry to a given set of points.
@@ -104,15 +161,15 @@ protected:
     /**
      * Converts point from Wm4::Vector3 to Base::Vector3f.
      */
-    static void Convert( const Wm4::Vector3<float>&, Base::Vector3f&);
+    static void Convert( const Wm4::Vector3<double>&, Base::Vector3f&);
     /**
      * Converts point from Base::Vector3f to Wm4::Vector3.
      */
-    static void Convert( const Base::Vector3f&, Wm4::Vector3<float>&);
+    static void Convert( const Base::Vector3f&, Wm4::Vector3<double>&);
     /**
      * Creates a vector of Wm4::Vector3 elements.
      */
-    void GetMgcVectorArray( std::vector< Wm4::Vector3<float> >& rcPts ) const;
+    void GetMgcVectorArray( std::vector< Wm4::Vector3<double> >& rcPts ) const;
 
 protected:
     std::list< Base::Vector3f > _vPoints; /**< Holds the points for the fit algorithm.  */
@@ -201,22 +258,22 @@ public:
     /**
      * Übertragen der Quadric-Koeffizienten
      * @param ulIndex Nummer des Koeffizienten (0..9)
-     * @return float Wert des Koeffizienten
+     * @return double Wert des Koeffizienten
      */
-    float GetCoeff(unsigned long ulIndex) const;
+    double GetCoeff(unsigned long ulIndex) const;
     /**
      * Übertragen der Koeffizientan als Referenz
      * auf das interne Array
-     * @return const float& Referenz auf das float-Array
+     * @return const double& Referenz auf das double-Array
      */
-    const float& GetCoeffArray() const;
+    const double& GetCoeffArray() const;
     /**
      * Aufruf des Fit-Algorithmus
      * @return float Qualität des Fits.
      */
     float Fit();
 
-    void CalcZValues(float x, float y, float &dZ1, float &dZ2) const;
+    void CalcZValues(double x, double y, double &dZ1, double &dZ2) const;
     /**
      * Berechnen der Krümmungswerte der Quadric in einem bestimmten Punkt.
      * @param x X-Koordinate
@@ -229,12 +286,12 @@ public:
      * @param dDistance
      * @return bool Fehlerfreie Ausfürhung = true, ansonsten false
      */
-    bool GetCurvatureInfo(float x, float y, float z,
-                          float &rfCurv0, float &rfCurv1,
-                          Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, float &dDistance);
+    bool GetCurvatureInfo(double x, double y, double z,
+                          double &rfCurv0, double &rfCurv1,
+                          Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance);
 
-    bool GetCurvatureInfo(float x, float y, float z,
-                          float &rfCurv0, float &rfcurv1);
+    bool GetCurvatureInfo(double x, double y, double z,
+                          double &rfCurv0, double &rfcurv1);
     /**
      * Aufstellen der Formanmatrix A und Berechnen der Eigenwerte.
      * @param dLambda1 Eigenwert 1
@@ -244,11 +301,11 @@ public:
      * @param clEV2    Eigenvektor 2
      * @param clEV3    Eigenvektor 3
      */
-    void CalcEigenValues(float &dLambda1, float &dLambda2, float &dLambda3,
+    void CalcEigenValues(double &dLambda1, double &dLambda2, double &dLambda3,
                          Base::Vector3f &clEV1, Base::Vector3f &clEV2, Base::Vector3f &clEV3) const;
 
 protected:
-    float _fCoeff[ 10 ];  /**< Ziel der Koeffizienten aus dem Fit */
+    double _fCoeff[ 10 ];  /**< Ziel der Koeffizienten aus dem Fit */
 };
 
 // -------------------------------------------------------------------------------
@@ -275,15 +332,15 @@ public:
      */
     virtual ~SurfaceFit(){};
 
-    bool GetCurvatureInfo(float x, float y, float z, float &rfCurv0, float &rfCurv1,
-                          Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, float &dDistance);
-    bool GetCurvatureInfo(float x, float y, float z, float &rfCurv0, float &rfcurv1);
+    bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1,
+                          Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance);
+    bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfcurv1);
     float Fit();
-    float Value(float x, float y) const;
+    double Value(double x, double y) const;
 
 protected:
-    float PolynomFit();
-    float _fCoeff[ 10 ];  /**< Ziel der Koeffizienten aus dem Fit */
+    double PolynomFit();
+    double _fCoeff[ 10 ];  /**< Ziel der Koeffizienten aus dem Fit */
 };
 
 // -------------------------------------------------------------------------------
@@ -300,42 +357,24 @@ public:
      * Die MGC-Algorithmen arbeiten mit Funktionen dieses
      * Types
      */
-    typedef float (*Function)(float,float,float);
+    typedef double (*Function)(double,double,double);
     /**
      * Der parametrisierte Konstruktor. Erwartet ein Array
      * mit den Quadric-Koeffizienten.
      * @param pKoef Zeiger auf die Quadric-Parameter
-     *        (float [10])
+     *        (double [10])
      */
-    FunctionContainer(const float *pKoef)
+    FunctionContainer(const double *pKoef)
     {
         Assign( pKoef );
-/*
-        Function oF;     
-        Function aoDF[3];
-        Function aoD2F[6];
-
-        oF = &F;
-        aoDF[0] = &Fx;
-        aoDF[1] = &Fy;
-        aoDF[2] = &Fz;
-        aoD2F[0] = &Fxx;
-        aoD2F[1] = &Fxy;
-        aoD2F[2] = &Fxz;
-        aoD2F[3] = &Fyy;
-        aoD2F[4] = &Fyz;
-        aoD2F[5] = &Fzz;
-
-        pImplSurf = new Wm4::QuadricSurface<float>( oF, aoDF, aoD2F );*/
-
-        pImplSurf = new Wm4::QuadricSurface<float>( dKoeff );
+        pImplSurf = new Wm4::QuadricSurface<double>( dKoeff );
     }
     /**
      * Übernehmen der Quadric-Parameter
      * @param pKoef Zeiger auf die Quadric-Parameter
-     *        (doube [10])
+     *        (double [10])
      */
-    void Assign( const float *pKoef )
+    void Assign( const double *pKoef )
     {
         for (long ct=0; ct < 10; ct++)
             dKoeff[ ct ] = pKoef[ ct ];
@@ -344,13 +383,13 @@ public:
      * Destruktor. Löscht die ImpicitSurface Klasse
      * der MGC-Bibliothek wieder
      */
-    virtual ~FunctionContainer(){ delete pImplSurf; }
+    ~FunctionContainer(){ delete pImplSurf; }
     /** 
      * Zugriff auf die Koeffizienten der Quadric
      * @param idx Index des Parameters
-     * @return float& Der Koeffizient
+     * @return double& Der Koeffizient
      */
-    float& operator[](int idx){ return dKoeff[ idx ]; }
+    double& operator[](int idx){ return dKoeff[ idx ]; }
     /**
      * Redirector auf eine Methode der MGC Bibliothek. Ermittelt
      * die Hauptkrümmungen und ihre Richtungen im angegebenen Punkt.
@@ -364,22 +403,22 @@ public:
      * @param dDistance Ergebnis das die Entfernung des Punktes von der Quadrik angibt.
      * @return bool Fehlerfreie Ausfürhung = true, ansonsten false
      */
-    bool CurvatureInfo(float x, float y, float z, 
-                       float &rfCurv0, float &rfCurv1,
-                       Wm4::Vector3<float> &rkDir0,  Wm4::Vector3<float> &rkDir1, float &dDistance)
+    bool CurvatureInfo(double x, double y, double z, 
+                       double &rfCurv0, double &rfCurv1,
+                       Wm4::Vector3<double> &rkDir0,  Wm4::Vector3<double> &rkDir1, double &dDistance)
     {
-        return pImplSurf->ComputePrincipalCurvatureInfo( Wm4::Vector3<float>(x, y, z),rfCurv0, rfCurv1, rkDir0, rkDir1 );
+        return pImplSurf->ComputePrincipalCurvatureInfo( Wm4::Vector3<double>(x, y, z),rfCurv0, rfCurv1, rkDir0, rkDir1 );
     }
 
-    Base::Vector3f GetGradient( float x, float y, float z ) const
+    Base::Vector3f GetGradient( double x, double y, double z ) const
     {
-        Wm4::Vector3<float> grad = pImplSurf->GetGradient( Wm4::Vector3<float>(x, y, z) );
+        Wm4::Vector3<double> grad = pImplSurf->GetGradient( Wm4::Vector3<double>(x, y, z) );
         return Base::Vector3f( grad.X(), grad.Y(), grad.Z() );
     }
 
-    Base::Matrix4D GetHessian( float x, float y, float z ) const
+    Base::Matrix4D GetHessian( double x, double y, double z ) const
     {
-        Wm4::Matrix3<float> hess = pImplSurf->GetHessian( Wm4::Vector3<float>(x, y, z) );
+        Wm4::Matrix3<double> hess = pImplSurf->GetHessian( Wm4::Vector3<double>(x, y, z) );
         Base::Matrix4D cMat; cMat.setToUnity();
         cMat[0][0] = hess[0][0]; cMat[0][1] = hess[0][1]; cMat[0][2] = hess[0][2];
         cMat[1][0] = hess[1][0]; cMat[1][1] = hess[1][1]; cMat[1][2] = hess[1][2];
@@ -387,23 +426,23 @@ public:
         return cMat;
     }
 
-    bool CurvatureInfo(float x, float y, float z,
-                       float &rfCurv0, float &rfCurv1)
+    bool CurvatureInfo(double x, double y, double z,
+                       double &rfCurv0, double &rfCurv1)
     {
-        float dQuot = Fz(x,y,z);
-        float zx = - ( Fx(x,y,z) / dQuot );
-        float zy = - ( Fy(x,y,z) / dQuot );
+        double dQuot = Fz(x,y,z);
+        double zx = - ( Fx(x,y,z) / dQuot );
+        double zy = - ( Fy(x,y,z) / dQuot );
         
-        float zxx = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zx * zx + dKoeff[8] * zx ) ) / dQuot;
-        float zyy = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zy * zy + dKoeff[9] * zy ) ) / dQuot;
-        float zxy = - ( dKoeff[6] * zx * zy + dKoeff[7] + dKoeff[8] * zy + dKoeff[9] * zx ) / dQuot;
+        double zxx = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zx * zx + dKoeff[8] * zx ) ) / dQuot;
+        double zyy = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zy * zy + dKoeff[9] * zy ) ) / dQuot;
+        double zxy = - ( dKoeff[6] * zx * zy + dKoeff[7] + dKoeff[8] * zy + dKoeff[9] * zx ) / dQuot;
 
-        float dNen = 1 + zx*zx + zy*zy;
-        float dNenSqrt = (float)sqrt( dNen );
-        float K = ( zxx * zyy - zxy * zxy ) / ( dNen * dNen );
-        float H = 0.5f * ( ( 1.0f+zx*zx - 2*zx*zy*zxy + (1.0f+zy*zy)*zxx ) / ( dNenSqrt * dNenSqrt * dNenSqrt ) ) ;
+        double dNen = 1 + zx*zx + zy*zy;
+        double dNenSqrt = (double)sqrt( dNen );
+        double K = ( zxx * zyy - zxy * zxy ) / ( dNen * dNen );
+        double H = 0.5f * ( ( 1.0f+zx*zx - 2*zx*zy*zxy + (1.0f+zy*zy)*zxx ) / ( dNenSqrt * dNenSqrt * dNenSqrt ) ) ;
 
-        float dDiscr = (float)sqrt(fabs(H*H-K));
+        double dDiscr = (double)sqrt(fabs(H*H-K));
         rfCurv0 = H - dDiscr;
         rfCurv1 = H + dDiscr;
 
@@ -411,7 +450,7 @@ public:
     }
 
     //+++++++++ Quadric +++++++++++++++++++++++++++++++++++++++
-    static float F  ( float x, float y, float z ) 
+    double F  ( double x, double y, double z ) 
     {
         return (dKoeff[0] + dKoeff[1]*x + dKoeff[2]*y + dKoeff[3]*z +
                 dKoeff[4]*x*x + dKoeff[5]*y*y + dKoeff[6]*z*z +
@@ -419,48 +458,48 @@ public:
     }
   
     //+++++++++ 1. derivations ++++++++++++++++++++++++++++++++
-    static float Fx ( float x, float y, float z )
+    double Fx ( double x, double y, double z )
     {
         return( dKoeff[1] + 2.0f*dKoeff[4]*x + dKoeff[7]*y + dKoeff[8]*z );
     }
-    static float Fy ( float x, float y, float z ) 
+    double Fy ( double x, double y, double z ) 
     {
         return( dKoeff[2] + 2.0f*dKoeff[5]*y + dKoeff[7]*x + dKoeff[9]*z );
     }
-    static float Fz ( float x, float y, float z ) 
+    double Fz ( double x, double y, double z ) 
     {
         return( dKoeff[3] + 2.0f*dKoeff[6]*z + dKoeff[8]*x + dKoeff[9]*y );
     }
 
     //+++++++++ 2. derivations ++++++++++++++++++++++++++++++++
-    static float Fxx( float x, float y, float z ) 
+    double Fxx( double x, double y, double z ) 
     {
         return( 2.0f*dKoeff[4] );
     }
-    static float Fxy( float x, float y, float z ) 
+    double Fxy( double x, double y, double z ) 
     {
         return( dKoeff[7] );
     }
-    static float Fxz( float x, float y, float z ) 
+    double Fxz( double x, double y, double z ) 
     {
         return( dKoeff[8] );
     }
-    static float Fyy( float x, float y, float z ) 
+    double Fyy( double x, double y, double z ) 
     {
         return( 2.0f*dKoeff[5] );
     }
-    static float Fyz( float x, float y, float z ) 
+    double Fyz( double x, double y, double z ) 
     {
         return( dKoeff[9] );
     }
-    static float Fzz( float x, float y, float z ) 
+    double Fzz( double x, double y, double z ) 
     {
         return( 2.0f*dKoeff[6] );
     }
    
 protected:
-    static float dKoeff[ 10 ];     /**< Koeffizienten der Quadric */
-    Wm4::ImplicitSurface<float> *pImplSurf;  /**< Zugriff auf die MGC-Bibliothek */
+    double dKoeff[ 10 ];     /**< Koeffizienten der Quadric */
+    Wm4::ImplicitSurface<double> *pImplSurf;  /**< Zugriff auf die MGC-Bibliothek */
 
 private:
     /**

@@ -311,7 +311,7 @@ void LightManip(SoSeparator * root)
   in.setBuffer((void *)scenegraph, std::strlen(scenegraph));
   SoSeparator * _root = SoDB::readAll( &in );
   root->addChild(_root);
-  if ( root == NULL ) exit( 1 ); // Shouldn't happen.
+  if ( root == NULL ) return; // Shouldn't happen.
   root->ref();
 
   const char * pointlightnames[3] = { "RedLight", "GreenLight", "BlueLight" };
@@ -323,7 +323,7 @@ void LightManip(SoSeparator * root)
     sa.setSearchingAll( FALSE );
     sa.apply( root );
     SoPath * path = sa.getPath();
-    if ( path == NULL) exit( 1 ); // Shouldn't happen.
+    if ( path == NULL) return; // Shouldn't happen.
 
     SoPointLightManip * manip = new SoPointLightManip;
     manip->replaceNode( path );
@@ -446,7 +446,7 @@ void AnimationTexture(SoSeparator * root)
   texturetimer->schedule();
 
   // Scene graph
-  if ( root == NULL ) exit( 1 ); // Shouldn't happen.
+  if ( root == NULL ) return; // Shouldn't happen.
   root->ref(); // prevent from being deleted because of the still running timer sensor
 //  SoSeparator * root = new SoSeparator;
 //  root->ref();

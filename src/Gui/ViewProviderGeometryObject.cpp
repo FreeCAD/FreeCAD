@@ -63,14 +63,17 @@
 
 using namespace Gui;
 
-
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDocumentObject)
 
 const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
 {
-    ADD_PROPERTY(ShapeColor,(0.8f,0.8f,0.8f));
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
+    float r,g,b;
+    r = ((shcol >> 24) & 0xff) / 255.0; g = ((shcol >> 16) & 0xff) / 255.0; b = ((shcol >> 8) & 0xff) / 255.0;
+    ADD_PROPERTY(ShapeColor,(r, g, b));
     ADD_PROPERTY(Transparency,(0));
     Transparency.setConstraints(&intPercent);
     App::Material mat(App::Material::DEFAULT);
@@ -86,7 +89,8 @@ ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
 
     pcShapeMaterial = new SoMaterial;
     pcShapeMaterial->ref();
-    ShapeMaterial.touch();
+    //ShapeMaterial.touch(); materials are rarely used, so better to initialize with default shape color
+    ShapeColor.touch();
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
@@ -172,7 +176,8 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
             trf->setMatrix(m.inverse());
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
+             strcmp(prop->getName(), "Placement") == 0) {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t
         // In FreeCAD a placement only has a rotation and a translation part but

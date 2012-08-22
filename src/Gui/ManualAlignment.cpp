@@ -892,10 +892,12 @@ void ManualAlignment::align()
 
         // Compute alignment
         bool ok = computeAlignment(myAlignModel.activeGroup().getPoints(), myFixedGroup.getPoints());
-        if (ok) {
+        if (ok && myDocument) {
             // Align views
+            myDocument->openCommand("Align");
             for (std::vector<App::DocumentObject*>::iterator it = pViews.begin(); it != pViews.end(); ++it)
                 alignObject(*it);
+            myDocument->commitCommand();
 
             // the alignment was successful so show it in the right view now
             //myAlignModel.activeGroup().setRandomColor();

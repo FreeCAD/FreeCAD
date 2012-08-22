@@ -21,12 +21,49 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,Drawing,math
+import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from pivy import coin
-from draftlibs import fcvec
+from DraftTools import translate
 
+def makeSectionPlane(objectslist=None):
+    """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
+    given objects. If no object is given, the whole document will be considered."""
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Section")
+    _SectionPlane(obj)
+    _ViewProviderSectionPlane(obj.ViewObject)
+    if objectslist:
+        g = []
+        for o in objectslist:
+            if o.isDerivedFrom("Part::Feature"):
+                g.append(o)
+            elif o.isDerivedFrom("App::DocumentObjectGroup"):
+                g.append(o)
+        obj.Objects = g
+    return obj
+
+def makeSectionView(section):
+    """makeSectionView(section) : Creates a Drawing view of the given Section Plane
+    in the active Page object (a new page will be created if none exists"""
+    page = None
+    for o in FreeCAD.ActiveDocument.Objects:
+        if o.isDerivedFrom("Drawing::FeaturePage"):
+            page = o
+            break
+    if not page:
+        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",str(translate("Arch","Page")))
+        template = Draft.getParam("template")
+        if not template:
+            template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
+        page.Template = template
+        
+    view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
+    page.addObject(view)
+    _ArchDrawingView(view)
+    view.Source = section
+    view.Label = str(translate("Arch","View of"))+" "+section.Name
+    return view
 
 class _CommandSectionPlane:
     "the Arch SectionPlane command definition"
@@ -34,30 +71,21 @@ class _CommandSectionPlane:
         return {'Pixmap'  : 'Arch_SectionPlane',
                 'Accel': "S, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Adds a section plane object to the document")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Section Plane")
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Section")
-        _SectionPlane(obj)
-        _ViewProviderSectionPlane(obj.ViewObject)
-        FreeCAD.ActiveDocument.commitTransaction()
-        g = []
+        ss = "["
         for o in sel:
-            if o.isDerivedFrom("Part::Feature"):
-                g.append(o)
-        obj.Objects = g
-        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage","Page")
-        template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
-        page.ViewObject.HintOffsetX = 200
-        page.ViewObject.HintOffsetY = 100
-        page.ViewObject.HintScale = 20
-        page.Template = template
-        view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
-        page.addObject(view)
-        _ArchDrawingView(view)
-        view.Source = obj
+            if len(ss) > 1:
+                ss += ","
+            ss += "FreeCAD.ActiveDocument."+o.Name
+        ss += "]"
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Section Plane")))
+        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
+        FreeCADGui.doCommand("Arch.makeSectionView(section)")
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 class _SectionPlane:
@@ -65,7 +93,7 @@ class _SectionPlane:
     def __init__(self,obj):
         obj.Proxy = self
         obj.addProperty("App::PropertyLinkList","Objects","Base",
-                        "The objects that must be considered by this section plane. Empty means all document")
+                        str(translate("Arch","The objects that must be considered by this section plane. Empty means all document")))
         self.Type = "SectionPlane"
         
     def execute(self,obj):
@@ -86,7 +114,7 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","DisplaySize","Base",
-                        "The display size of the section plane")
+                        str(translate("Arch","The display size of this section plane")))
         vobj.DisplaySize = 1
         vobj.Transparency = 85
         vobj.LineWidth = 1
@@ -95,6 +123,7 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
 
     def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):
@@ -120,7 +149,6 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         self.setVerts()
 
     def setColor(self):
-        print self.Object.ViewObject.LineColor
         self.col.rgb.setValue(self.Object.ViewObject.LineColor[0],
                               self.Object.ViewObject.LineColor[1],
                               self.Object.ViewObject.LineColor[2])
@@ -155,11 +183,15 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
 class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","RenderingMode","Base","The rendering mode to use")
-        obj.RenderingMode = ["Z-sorted","Wireframe","Wireframe + shade"]
-        obj.RenderingMode = "Z-sorted"
+        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing View","The rendering mode to use")
+        obj.addProperty("App::PropertyBool","ShowCut","Drawing View","If cut geometry is shown or not")
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The line width of the rendered objects")
+        obj.RenderingMode = ["Solid","Wireframe"]
+        obj.RenderingMode = "Wireframe"
+        obj.LineWidth = 0.35
+        obj.ShowCut = False
         obj.Proxy = self
-        self.Type = "DrawingView"
+        self.Type = "ArchSectionView"
 
     def execute(self, obj):
         if obj.Source:
@@ -167,252 +199,162 @@ class _ArchDrawingView:
             
     def onChanged(self, obj, prop):
         if prop in ["Source","RenderingMode"]:
+            self.buildSVG(obj)
             obj.ViewResult = self.updateSVG(obj)
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+    def getDisplayModes(self,vobj):
+        modes=["Default"]
+        return modes
+
+    def setDisplayMode(self,mode):
+        return mode
+
+    def getFlatShape(self):
+        "returns a flat shape representation of the view"
+        if hasattr(self,"baseshape"):
+            import Drawing
+            [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
+            return V0.Edges+V1.Edges
+        else:
+            FreeCAD.Console.PrintMessage(str(translate("Arch","No shape has been computed yet, select wireframe rendering and render again")))
+            return None
+
+    def getDXF(self):
+        "returns a flat shape representation of the view"
+        if hasattr(self,"baseshape"):
+            import Drawing
+            [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
+            DxfOutput = Drawing.projectToDXF(self.baseshape,self.direction)
+            return DxfOutput
+        else:
+            FreeCAD.Console.PrintMessage(str(translate("Arch","No shape has been computed yet, select wireframe rendering and render again")))
+            return None
+
+    def buildSVG(self, obj,join=False):
+        "creates a svg representation"
+        import Part, DraftGeomUtils
+        if hasattr(obj,"Source"):
+            if obj.Source:
+                if obj.Source.Objects:
+                    objs = Draft.getGroupContents(obj.Source.Objects,walls=True)
+                    objs = Draft.removeHidden(objs)
+                    self.svg = ''
+
+                    # generating SVG
+                    if obj.RenderingMode == "Solid":
+                        # render using the Arch Vector Renderer                        
+                        import ArchVRM
+                        render = ArchVRM.Renderer()
+                        render.setWorkingPlane(obj.Source.Placement)
+                        render.addObjects(objs)
+                        if hasattr(obj,"ShowCut"):
+                            render.cut(obj.Source.Shape,obj.ShowCut)
+                        else:
+                            render.cut(obj.Source.Shape)
+                        self.svg += render.getViewSVG(linewidth="LWPlaceholder")
+                        self.svg += render.getSectionSVG(linewidth="SWPLaceholder")
+                        if hasattr(obj,"ShowCut"):
+                            if obj.ShowCut:
+                                self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
+                        # print render.info()
+                        
+                    else:
+                        # render using the Drawing module
+                        import Drawing, Part
+                        shapes = []
+                        hshapes = []
+                        sshapes = []
+                        p = FreeCAD.Placement(obj.Source.Placement)
+                        self.direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
+                        for o in objs:
+                            if o.isDerivedFrom("Part::Feature"):
+                                if o.Shape.isValid():
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    FreeCAD.Console.PrintWarning(str(translate("Arch","Skipping invalid object: "))+o.Name)
+                        cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
+                        if cutvolume:
+                            nsh = []
+                            for sh in shapes:
+                                for sol in sh.Solids:
+                                    if sol.Volume < 0:
+                                        sol.reverse()
+                                    c = sol.cut(cutvolume)
+                                    s = sol.section(cutface)
+                                    nsh.extend(c.Solids)
+                                    sshapes.append(s)
+                                    if hasattr(obj,"ShowCut"):
+                                        if obj.ShowCut:
+                                            c = sol.cut(invcutvolume)
+                                            hshapes.append(c)
+                            shapes = nsh
+                        if shapes:
+                            self.shapes = shapes
+                            self.baseshape = Part.makeCompound(shapes)
+                            svgf = Drawing.projectToSVG(self.baseshape,self.direction)
+                            if svgf:
+                                svgf = svgf.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
+                                svgf = svgf.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
+                                svgf = svgf.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
+                                self.svg += svgf
+                        if hshapes:
+                            hshapes = Part.makeCompound(hshapes)
+                            svgh = Drawing.projectToSVG(hshapes,self.direction)
+                            if svgh:
+                                svgh = svgh.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
+                                svgh = svgh.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
+                                svgh = svgh.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
+                                svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="0.09,0.05"')                              
+                                self.svg += svgh
+                        if sshapes:
+                            edges = []
+                            for s in sshapes:
+                                edges.extend(s.Edges)
+                            wires = DraftGeomUtils.findWires(edges)
+                            faces = []
+                            for w in wires:
+                                if (w.ShapeType == "Wire") and w.isClosed():
+                                    faces.append(Part.Face(w))
+                            sshapes = Part.makeCompound(faces)
+                            svgs = Drawing.projectToSVG(sshapes,self.direction)
+                            if svgs:
+                                svgs = svgs.replace('stroke-width="0.35"','stroke-width="SWPlaceholder"')
+                                svgs = svgs.replace('stroke-width="1"','stroke-width="SWPlaceholder"')
+                                svgs = svgs.replace('stroke-width:0.01','stroke-width:SWPlaceholder')
+                                self.svg += svgs
+
     def updateSVG(self, obj):
-        "encapsulates a svg fragment into a transformation node"
-        if obj.Source:
-            if obj.Source.Objects:
-                svg = ''
-                if obj.RenderingMode == "Z-sorted":
-                    svg += self.renderClassicSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
-                elif obj.RenderingMode == "Wireframe":
-                    svg += self.renderWireframeSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
-                elif obj.RenderingMode == "Wireframe + shade":
-                    svg += self.renderOutlineSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
-                    svg += self.renderWireframeSVG(obj.Source.Objects,obj.Source.Proxy.getNormal(obj.Source))
-                result = ''
-                result += '<g id="' + obj.Name + '"'
-                result += ' transform="'
-                result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
-                result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
-                result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
-                result += '">\n'
-                result += svg
-                result += '</g>\n'
-                print "complete node:",result
-                return result
-        return ''
-
-    def getProj(self,vec,plane):
-        "returns a vector in working plane space from the given vector"
-        if not plane:
-            return vec
-        nx = fcvec.project(vec,plane.u)
-        lx = nx.Length
-        if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
-        ny = fcvec.project(vec,plane.v)
-        ly = ny.Length
-        if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
-        return Vector(lx,ly,0)
-
-    def getPath(self,face,plane):
-        import Part
-        from draftlibs import fcgeo
-        "returns a svg path from a face"
-        svg ='<path '
-        edges = fcgeo.sortEdges(face.Edges)
-        v = self.getProj(edges[0].Vertexes[0].Point,plane)
-        svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
-        for e in edges:
-            if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
-                v = self.getProj(e.Vertexes[-1].Point,plane)
-                svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            elif isinstance(e.Curve,Part.Circle):
-                r = e.Curve.Radius
-                v = self.getProj(e.Vertexes[-1].Point,plane)
-                svg += 'A '+ str(r) + ' '+ str(r) +' 0 0 1 '+ str(v.x) +' '
-                svg += str(v.y) + ' '
-        svg += '" '
-        svg += 'stroke="#000000" '
-        svg += 'stroke-width="0.01 px" '
-        svg += 'style="stroke-width:0.01;'
-        svg += 'stroke-miterlimit:1;'
-        svg += 'stroke-dasharray:none;'
-        svg += 'fill:#aaaaaa"'
-        svg += '/>\n'
-        return svg
-
-    def renderWireframeSVG(self,objs,direction):
-        os = objs[:]
-        if os:
-            sh = os.pop().Shape
-            for o in os:
-                sh = sh.fuse(o.Shape)
-        result = Drawing.projectToSVG(sh,fcvec.neg(direction))
-        if result:
-            result = result.replace('stroke-width="0.35"','stroke-width="0.01 px"')
-            return result
-        return ''
-
-    def renderOutlineSVG(self,objs,direction):
-        plane = None
-        plane = WorkingPlane.plane()
-        if direction != Vector(0,0,0):
-            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
+        "Formats and places the calculated svg stuff on the page"
+        if not hasattr(self,"svg"):
+            self.buildSVG(obj)
         else:
-            direction = Vector(0,0,-1)
-        faces = []
-        for obj in objs:
-            for face in obj.Shape.Faces:
-                normal = face.normalAt(0,0)
-                if normal.getAngle(direction) > math.pi/2:
-                    faces.append(face)
-        print "faces:",faces
-        if faces:
-            base = faces.pop()
-            for face in faces:
-                base = base.oldFuse(face)
-        result = self.getPath(base,plane)
-        return result        
-
-    def renderClassicSVG(self,objs,direction,base=None):
-        """returns an svg fragment from a SectionPlane object,
-        a direction vector and optionally a base point"""
-
-        def intersection(p1,p2,p3,p4):
-            "returns the intersection of line (p1,p2) with plane (p3,p4)"
-            # http://paulbourke.net/geometry/planeline/
-            dn = p4.dot(p2.sub(p1))
-            if dn != 0:
-                u = (p4.dot(p3.sub(p1))) / dn 
-                p = p1.add((p2.sub(p1)).scale(u,u,u))
-                return p
-            else:
-                # line is parallel to normal
-                vp = fcvec.project(p3.sub(p1),p2.sub(p1))
-                l = vp.Length
-                if vp.getAngle(p2.sub(p1)) > 1:
-                    l = -l
-                return fcvec.scaleTo(p2.sub(p1),l)
-
-        def getFirstIndex(list1,list2):
-            "returns the first index from list2 where there is an item of list1"
-            for i1 in range(len(list1)):
-                for i2 in range(len(list2)):
-                            if list1[i1].hashCode() == list2[i2].hashCode():
-                                return i2
-            return None
-
-        def getLastIndex(list1,list2):
-            "returns the last index from list2 where there is an item of list1"
-            i = None
-            for i1 in range(len(list1)):
-                for i2 in range(len(list2)):
-                            if list1[i1].hashCode() == list2[i2].hashCode():
-                                i = i2
-            return i
-
-        def findPrevious(base,dir,faces):
-            "returns the highest index in faces that is crossed by the given line"
-            for i in range(len(faces)-1,-1,-1):
-                print "p1:",base," p2: ",base.add(dir)
-                obb = faces[i].BoundBox
-                print "bo: ",obb
-                op = intersection(base,base.add(dir),faces[i].CenterOfMass,faces[i].normalAt(0,0))
-                print "int:", op
-                if obb.isInside(op):
-                    dv = op.sub(base)
-                    if dv.getAngle(dir) < math.pi/2:
-                        return i
-            return None
+            if not self.svg:
+                self.buildSVG(obj)
+        if not hasattr(self,"svg"):
+            return ''
+        linewidth = obj.LineWidth/obj.Scale
+        st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness")
+        if not st:
+            st = 2
+        svg = self.svg.replace('LWPlaceholder', str(linewidth) + 'px')
+        svg = svg.replace('SWPlaceholder', str(linewidth*st) + 'px')                
             
-        def findNext(base,dir,faces):
-            "returns the lowest index in faces that is crossed by the given line"
-            for i in range(len(faces)):
-                obb = faces[i].BoundBox
-                op = intersection(base,base.add(dir),faces[i].CenterOfMass,faces[i].normalAt(0,0))
-                if obb.isInside(op):
-                    dv = op.sub(base)
-                    if dv.getAngle(dir) > math.pi/2:
-                        return i
-            return None
-       
-        print "getting representation at ",direction," =======================================>"
-
-        # using Draft WorkingPlane
-        plane = None
-        plane = WorkingPlane.plane()
-        if direction != Vector(0,0,0):
-            plane.alignToPointAndAxis(Vector(0,0,0),fcvec.neg(direction),0)
-        else:
-            direction = Vector(0,0,-1)
-        print "plane:",plane
+        result = ''
+        result += '<g id="' + obj.Name + '"'
+        result += ' transform="'
+        result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
+        result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
+        result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
+        result += '">\n'
+        result += svg
+        result += '</g>\n'
+        # print "complete node:",result
+        return result
                 
-        sortedFaces = []
-
-        if not base:
-            # getting the base point = first point from the bounding box
-            bb = FreeCAD.BoundBox()
-            for o in objs:
-                bb.add(o.Shape.BoundBox)
-            rad = bb.DiagonalLength/2
-            rv = bb.Center.add(direction)
-            rv = fcvec.scaleTo(rv,rad)
-            rv = fcvec.neg(rv)
-            base = bb.Center.add(rv)
-
-        print "base:",base
-
-        # getting faces
-        unsortedFaces = []
-        notFoundFaces = []
-        for o in objs:
-            unsortedFaces.append(o.Name)
-            unsortedFaces.extend(o.Shape.Faces[:])
-        print "analyzing ",len(unsortedFaces)," faces"
-        
-        for face in unsortedFaces:
-
-            if isinstance(face,str):
-                print "OBJECT ",face," =======================================>"
-                continue
-
-            print "testing face ",unsortedFaces.index(face)
-
-            # testing if normal points outwards
-            normal = face.normalAt(0,0)
-            if normal.getAngle(direction) <= math.pi/2:
-                print "normal pointing outwards"
-                continue
-
-            fprev = 0
-            fnext = len(sortedFaces)
-            notFound = True
-
-            print "checking ",len(face.Vertexes)," verts"
-
-            for v in face.Vertexes:
-                vprev = findPrevious(v.Point,direction,sortedFaces)
-                vnext = findNext(v.Point,direction,sortedFaces)
-                print "temp indexes:",vprev,vnext
-                if (vprev != None):
-                    notfound = False
-                    if (vprev > fprev):
-                        fprev = vprev
-                if (vnext != None):
-                    notfound = False
-                    if (vnext < fnext):
-                        fnext = vnext
-
-            print "fprev:",fprev
-            print "fnext:",fnext
-            print "notFound",notFound
-
-            if fnext < fprev:
-                raise "Error, impossible index"
-            elif fnext == fprev:
-                sortedFaces.insert(fnext,face)
-            else:
-                sortedFaces.insert(fnext,face)
-
-            print len(sortedFaces)," sorted faces:",sortedFaces
-
-        # building SVG representation in correct order
-        svg = ''
-        for f in sortedFaces:
-            svg += self.getPath(f,plane)
-            
-        return svg
-
 FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

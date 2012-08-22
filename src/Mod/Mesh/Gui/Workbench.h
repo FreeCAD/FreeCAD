@@ -39,6 +39,8 @@ public:
   Workbench();
   virtual ~Workbench();
 
+  void activated();
+  void deactivated();
   void setupContextMenu(const char* recipient, Gui::MenuItem*) const;
 
 protected:

@@ -52,6 +52,7 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 #include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Reader.h>
@@ -272,9 +273,12 @@ MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
     d->mdiArea->setTabPosition(QTabWidget::South);
     d->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = d->mdiArea->findChild<QTabBar*>();
-    if (tab) { 
+    if (tab) {
+        // 0000636: Two documents close
+#if QT_VERSION < 0x040800
         connect(tab, SIGNAL(tabCloseRequested(int)),
                 this, SLOT(tabCloseRequested(int)));
+#endif
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
@@ -1149,7 +1153,19 @@ void MainWindow::showMainWindow()
 void MainWindow::delayedStartup()
 {
     // processing all command line files
-    App::Application::processCmdLineFiles();
+    try {
+        App::Application::processCmdLineFiles();
+    }
+    catch (const Base::SystemExitException&) {
+        throw;
+    }
+
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it = cfg.find("StartHidden");
+    if (it != cfg.end()) {
+        QApplication::quit();
+        return;
+    }
 
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
@@ -1308,10 +1324,7 @@ QPixmap MainWindow::splashImage() const
     // include application name and version number
     std::map<std::string,std::string>::const_iterator tc = App::Application::Config().find("SplashInfoColor");
     if (tc != App::Application::Config().end()) {
-        QString title   = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-        std::map<std::string,std::string>::iterator it = App::Application::Config().find("Application");
-        if (it != App::Application::Config().end())
-            title = QString::fromUtf8(it->second.c_str());
+        QString title = qApp->applicationName();
         QString major   = QString::fromAscii(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromAscii(App::Application::Config()["BuildVersionMinor"].c_str());
         QString version = QString::fromAscii("%1.%2").arg(major).arg(minor);
