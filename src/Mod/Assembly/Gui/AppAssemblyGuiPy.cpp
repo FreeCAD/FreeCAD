@@ -39,13 +39,29 @@
 // pointer to the active assembly object
 Assembly::Item                  *ActiveAsmObject =0;
 Gui::Document                   *ActiveGuiDoc    =0;
+App::Document                   *ActiveAppDoc    =0;
 Gui::ViewProviderDocumentObject *ActiveVp        =0;
 
 
 
 /* module functions */
 static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
-{
+{   
+    if(ActiveAsmObject){
+        // check if the document not already closed
+        std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+        for(std::vector<App::Document*>::const_iterator it=docs.begin();it!=docs.end();++it)
+            if(*it == ActiveAppDoc){
+                ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
+                break;
+            }
+                
+        ActiveAsmObject = 0;
+        ActiveGuiDoc    =0;
+        ActiveAppDoc    =0;
+        ActiveVp        =0;
+    }
+
     PyObject *object=0;
     if (PyArg_ParseTuple(args,"|O!",&(Assembly::ItemPy::Type), &object)&& object) {
         Assembly::Item* Item = static_cast<Assembly::ItemPy*>(object)->getItemPtr();
@@ -53,20 +69,11 @@ static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
         assert(Item);    
 
         // get the gui document of the Assembly Item 
-        if(ActiveAsmObject){
-
-            ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
-            ActiveAsmObject = 0;
-
-        }
         ActiveAsmObject = Item;
-        ActiveGuiDoc = Gui::Application::Instance->getDocument(Item->getDocument());
+        ActiveAppDoc = Item->getDocument();
+        ActiveGuiDoc = Gui::Application::Instance->getDocument(ActiveAppDoc);
         ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
         ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,true);
-       
-    }else{
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
-        ActiveAsmObject = 0;
     }
 
     Py_Return;
