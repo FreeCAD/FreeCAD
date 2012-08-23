@@ -373,20 +373,22 @@ def p_difference_action(p):
     print "difference"
     print len(p[5])
     print p[5]
-       
     mycut = doc.addObject('Part::Cut',p[1])
-# Cut using Fuse    
     mycut.Base = p[5][0]
-#    Can only Cut two objects do we need to fuse extras
-    if (len(p[5]) > 2 ):
-       print "Need to Fuse Extra First"
-       mycut.Tool = fuse(p[5][1:],'union') 
-    else :   
-       mycut.Tool = p[5][1]
-    mycut.Base.ViewObject.hide()
-    mycut.Tool.ViewObject.hide()       
-    print "Push Resulting Cut"
-    p[0] = [mycut]
+    if (len(p[5]) == 1 ): #single object
+        p[0] = p[5]
+    else:
+# Cut using Fuse    
+#       Can only Cut two objects do we need to fuse extras
+        if (len(p[5]) > 2 ):
+           print "Need to Fuse Extra First"
+           mycut.Tool = fuse(p[5][1:],'union')
+        else :
+           mycut.Tool = p[5][1]
+        mycut.Base.ViewObject.hide()
+        mycut.Tool.ViewObject.hide()
+        print "Push Resulting Cut"
+        p[0] = [mycut]
     print "End Cut"    
 
 def p_intersection_action(p):
