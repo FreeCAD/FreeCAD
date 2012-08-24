@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoGroup.h>
 #endif
 
 #include "ViewProviderBody.h"
@@ -38,10 +39,15 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
 
 ViewProviderBody::ViewProviderBody()
 {
+    pcBodyChildren = new SoGroup();
+    pcBodyChildren->ref();
+
 }
 
 ViewProviderBody::~ViewProviderBody()
 {
+    pcBodyChildren->unref();
+    pcBodyChildren = 0;
 }
 
 bool ViewProviderBody::doubleClicked(void)
@@ -75,3 +81,10 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
     return std::vector<App::DocumentObject*>(Result.begin(),it);
 }
 
+
+std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
+{
+
+    return static_cast<PartDesign::Body*>(getObject())->Model.getValues();
+
+}

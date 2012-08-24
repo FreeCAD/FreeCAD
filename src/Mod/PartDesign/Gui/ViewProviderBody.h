@@ -42,6 +42,12 @@ public:
     virtual bool doubleClicked(void);
     std::vector<App::DocumentObject*> claimChildren(void)const;
 
+    // returns the root node where the children gets collected(3D)
+    virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
+    std::vector<App::DocumentObject*> claimChildren3D(void)const;
+
+private:
+    SoGroup *pcBodyChildren;
 
 };
 
