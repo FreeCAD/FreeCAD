@@ -45,9 +45,8 @@ Body::Body()
 
 short Body::mustExecute() const
 {
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
+    if (Tip.isTouched() )
+        return 1;
     return 0;
 }
 
