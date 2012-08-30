@@ -104,6 +104,7 @@ set(Gui_MOC_HDRS
     DlgCommandsImp.h
     DlgCustomizeImp.h
     DlgCustomizeSpaceball.h
+	DlgCustomizeSpNavSettings.h
     DlgDisplayPropertiesImp.h
     DlgEditorImp.h
     DlgGeneralImp.h
@@ -190,6 +191,7 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCommands.ui
+	DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
     DlgEditor.ui
     DlgGeneral.ui
@@ -338,6 +340,7 @@ SET(Dialog_Customize_CPP_SRCS
     DlgCommandsImp.cpp
     DlgCustomizeImp.cpp
     DlgCustomizeSpaceball.cpp
+	DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
 )
@@ -346,6 +349,7 @@ SET(Dialog_Customize_HPP_SRCS
     DlgCommandsImp.h
     DlgCustomizeImp.h
     DlgCustomizeSpaceball.h
+	DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
 )
@@ -355,6 +359,7 @@ SET(Dialog_Customize_SRCS
     DlgActions.ui
     DlgChooseIcon.ui
     DlgCommands.ui
+	DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
 )

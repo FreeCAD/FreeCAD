@@ -56,6 +56,7 @@ namespace Spaceball
         int rotationY(){return yRot;}
         int rotationZ(){return zRot;}
 
+        void setMotionData(int &xTransOut, int &yTransOut, int &zTransOut, int &xRotOut, int &yRotOut, int &zRotOut);
         static int MotionEventType;
 
     private:
@@ -66,6 +67,8 @@ namespace Spaceball
         int yRot;
         int zRot;
         bool handled;
+        void importSettings(int* motionDataArray);
+        float convertPrefToSensitivity(int value);
     };
 
     class ButtonEvent : public EventBase
