@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #include "SpaceballEvent.h"
+#include "Application.h"
 
 using namespace Spaceball;
 
@@ -40,13 +41,130 @@ MotionEvent::MotionEvent() : EventBase(static_cast<QEvent::Type>(MotionEventType
 
 MotionEvent::MotionEvent(const MotionEvent& in) : EventBase(static_cast<QEvent::Type>(MotionEventType))
 {
-    xTrans = in.xTrans;
-    yTrans = in.yTrans;
-    zTrans = in.zTrans;
-    xRot = in.xRot;
-    yRot = in.yRot;
-    zRot = in.zRot;
+    int motionDataArray[6] = {in.xTrans, in.yTrans, in.zTrans, in.xRot, in.yRot, in.zRot};
+    importSettings(motionDataArray);
     handled = in.handled;
+}
+
+float MotionEvent::convertPrefToSensitivity(int value)
+{
+    if (value < 0)
+    {
+        return ((0.6/50)*float(value) + 1);
+    }
+    else
+    {
+        return ((1.1/50)*float(value) + 1);
+    }
+}
+
+void MotionEvent::importSettings(int* motionDataArray)
+{
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Spaceball")->GetGroup("Motion");
+    
+    // here I import settings from a dialog. For now they are set as is
+    bool  dominant           = group->GetBool("Dominant"); // Is dominant checked
+    bool  flipXY             = group->GetBool("FlipYZ");; // Is Flip X/Y checked
+    float generalSensitivity = convertPrefToSensitivity(group->GetInt("GlobalSensitivity"));
+  
+    // array that has stored info about "Enabled" checkboxes of all axes    
+    bool enabled[6];
+    enabled[0] = group->GetBool("Translations", true) && group->GetBool("PanLREnable", true);
+    enabled[1] = group->GetBool("Translations", true) && group->GetBool("PanUDEnable", true);
+    enabled[2] = group->GetBool("Translations", true) && group->GetBool("ZoomEnable", true);
+    enabled[3] = group->GetBool("Rotations", true) && group->GetBool("TiltEnable", true);
+    enabled[4] = group->GetBool("Rotations", true) && group->GetBool("RollEnable", true);
+    enabled[5] = group->GetBool("Rotations", true) && group->GetBool("SpinEnable", true);
+    
+    // array that has stored info about "Reversed" checkboxes of all axes 
+    bool  reversed[6];
+    reversed[0] = group->GetBool("PanLRReverse");
+    reversed[1] = group->GetBool("PanUDReverse");
+    reversed[2] = group->GetBool("ZoomReverse");
+    reversed[3] = group->GetBool("TiltReverse");
+    reversed[4] = group->GetBool("RollReverse");
+    reversed[5] = group->GetBool("SpinReverse");
+
+    // array that has stored info about sliders - on each slider you need to use method DlgSpaceballSettings::GetValuefromSlider
+    // which will convert <-50, 50> linear integers from slider to <0.1, 10> exponential floating values 
+    float sensitivity[6];
+    sensitivity[0] = convertPrefToSensitivity(group->GetInt("PanLRSensitivity"));
+    sensitivity[1] = convertPrefToSensitivity(group->GetInt("PanUDSensitivity"));
+    sensitivity[2] = convertPrefToSensitivity(group->GetInt("ZoomSensitivity"));
+    sensitivity[3] = convertPrefToSensitivity(group->GetInt("TiltSensitivity"));
+    sensitivity[4] = convertPrefToSensitivity(group->GetInt("RollSensitivity"));
+    sensitivity[5] = convertPrefToSensitivity(group->GetInt("SpinSensitivity"));
+    
+    int i;
+
+    if (group->GetBool("Calibrate"))
+    {
+        group->SetInt("CalibrationX",motionDataArray[0]);
+        group->SetInt("CalibrationY",motionDataArray[1]);
+        group->SetInt("CalibrationZ",motionDataArray[2]);
+        group->SetInt("CalibrationXr",motionDataArray[3]);
+        group->SetInt("CalibrationYr",motionDataArray[4]);
+        group->SetInt("CalibrationZr",motionDataArray[5]);
+
+        group->RemoveBool("Calibrate");
+
+        return;
+    }
+    else
+    {
+        motionDataArray[0] = motionDataArray[0] - group->GetInt("CalibrationX");
+        motionDataArray[1] = motionDataArray[1] - group->GetInt("CalibrationY");
+        motionDataArray[2] = motionDataArray[2] - group->GetInt("CalibrationZ");
+        motionDataArray[3] = motionDataArray[3] - group->GetInt("CalibrationXr");
+        motionDataArray[4] = motionDataArray[4] - group->GetInt("CalibrationYr");
+        motionDataArray[5] = motionDataArray[5] - group->GetInt("CalibrationZr");        
+    }
+    
+    if (dominant) { // if dominant is checked
+        int max = 0;
+        bool flag = false;
+        for (i = 0; i < 6; ++i) {
+            if (abs(motionDataArray[i]) > abs(max)) max = motionDataArray[i];
+        }
+        for (i = 0; i < 6; ++i) {
+            if ((motionDataArray[i] != max) || (flag)) {
+                motionDataArray[i] = 0;
+            } else if (motionDataArray[i] == max){
+                flag = true;
+            }
+        }
+    }
+
+    if (flipXY) {
+        int temp = motionDataArray[1];
+        motionDataArray[1] = motionDataArray[2];
+        motionDataArray[2] = - temp;
+    }
+    
+    for (i = 0; i < 6; ++i) {
+        if (motionDataArray[i] != 0) {
+            if (enabled[i] == false) 
+                motionDataArray[i] = 0;
+            else { 
+                if (reversed[i] == true) 
+                    motionDataArray[i] = - motionDataArray[i];
+                motionDataArray[i] = (int)((float)(motionDataArray[i]) * sensitivity[i] * generalSensitivity);
+            }
+        }
+    }
+
+    xTrans  = motionDataArray[0];
+    yTrans  = motionDataArray[1];
+    zTrans  = motionDataArray[2];
+    xRot    = motionDataArray[3];
+    yRot    = motionDataArray[4];
+    zRot    = motionDataArray[5];
+}
+
+
+void MotionEvent::setMotionData(int &xTransIn, int &yTransIn, int &zTransIn, int &xRotIn, int &yRotIn, int &zRotIn){
+    int motionDataArray[6] = {xTransIn, yTransIn, zTransIn, xRotIn, yRotIn, zRotIn};
+    importSettings(motionDataArray);
 }
 
 void MotionEvent::translations(int &xTransOut, int &yTransOut, int &zTransOut)
@@ -58,9 +176,8 @@ void MotionEvent::translations(int &xTransOut, int &yTransOut, int &zTransOut)
 
 void MotionEvent::setTranslations(const int &xTransIn, const int &yTransIn, const int &zTransIn)
 {
-    xTrans = xTransIn;
-    yTrans = yTransIn;
-    zTrans = zTransIn;
+    int motionDataArray[6] = {xTransIn, yTransIn, zTransIn, xRot, yRot, zRot};
+    importSettings(motionDataArray);
 }
 
 void MotionEvent::rotations(int &xRotOut, int &yRotOut, int &zRotOut)
@@ -72,9 +189,8 @@ void MotionEvent::rotations(int &xRotOut, int &yRotOut, int &zRotOut)
 
 void MotionEvent::setRotations(const int &xRotIn, const int &yRotIn, const int &zRotIn)
 {
-    xRot = xRotIn;
-    yRot = yRotIn;
-    zRot = zRotIn;
+    int motionDataArray[6] = {xTrans, yTrans, zTrans, xRotIn, yRotIn, zRotIn};
+    importSettings(motionDataArray);
 }
 
 

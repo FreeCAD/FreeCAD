@@ -525,7 +525,7 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
   : CustomizeActionPage(parent), buttonView(0), buttonModel(0),
     commandView(0), commandModel(0), clearButton(0), printReference(0)
 {
-    this->setWindowTitle(tr("Spaceball"));
+    this->setWindowTitle(tr("Spaceball Buttons"));
     GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
     if (!app)
         return;
