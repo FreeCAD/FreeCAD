@@ -99,6 +99,12 @@ def addComponents(objectsList,host):
                 if hasattr(o,"Shape"):
                     a.append(o)
         host.Objects = a
+    elif host.isDerivedFrom("App::DocumentObjectGroup"):
+        c = host.Group
+        for o in objectsList:
+            if not o in c:
+                c.append(o)
+        host.Group = c       
 
 def removeComponents(objectsList,host=None):
     '''removeComponents(objectsList,[hostObject]): removes the given component or
