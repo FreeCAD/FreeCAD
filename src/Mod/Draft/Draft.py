@@ -1245,6 +1245,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     svg = ""
     linewidth = linewidth/scale
     fontsize = (fontsize/scale)/2
+    pointratio = 4 # the number of times the dots are smaller than the font size
     plane = None
     if direction:
         if isinstance(direction,FreeCAD.Vector):
@@ -1388,13 +1389,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
         svg += '/>\n'
         svg += '<circle cx="'+str(p2.x)+'" cy="'+str(p2.y)
-        svg += '" r="'+str(fontsize)+'" '
+        svg += '" r="'+str(fontsize/pointratio)+'" '
         svg += 'fill="'+ getrgb(obj.ViewObject.LineColor) +'" stroke="none" '
         svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
         svg += 'freecad:skip="1"'
         svg += '/>\n'
         svg += '<circle cx="'+str(p3.x)+'" cy="'+str(p3.y)
-        svg += '" r="'+str(fontsize)+'" '
+        svg += '" r="'+str(fontsize/pointratio)+'" '
         svg += 'fill="#000000" stroke="none" '
         svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
         svg += 'freecad:skip="1"'
