@@ -3752,6 +3752,9 @@ class Point:
     def Activated(self):
         self.view = Draft.get3DView()
         self.stack = []
+        rot = self.view.getCameraNode().getField("orientation").getValue()
+        upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+        plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
         self.point = None
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.click)
@@ -3772,7 +3775,7 @@ class Point:
                     self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
                     self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
                     FreeCAD.ActiveDocument.openTransaction("Create Point")
-                    Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),0.0)
+                    Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),self.stack[0][2])
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCADGui.Snapper.off()
 
