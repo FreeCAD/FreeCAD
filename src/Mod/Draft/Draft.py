@@ -1538,7 +1538,7 @@ def makeShape2DView(baseobj,projectionVector=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Shape2DView")
     _Shape2DView(obj)
     if gui:
-        _ViewProviderDraft(obj.ViewObject)
+        _ViewProviderDraftAlt(obj.ViewObject)
     obj.Base = baseobj
     if projectionVector:
         obj.Projection = projectionVector
@@ -2732,7 +2732,7 @@ class _Shape2DView:
                         "The base object this 2D view must represent")
         obj.addProperty("App::PropertyVector","Projection","Base",
                         "The projection vector of this object")
-        obj.Projection = Vector(0,0,-1)
+        obj.Projection = Vector(0,0,1)
         obj.Proxy = self
         self.Type = "2DShapeView"
 
@@ -2979,29 +2979,33 @@ class _Clone:
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
-class _ViewProviderDraftPart(_ViewProviderDraft):
-    "a view provider that displays a Part icon instead of a Draft icon"
+class _ViewProviderDraftAlt(_ViewProviderDraft):
+    "a view provider that doesn't swallow its base object"
     
     def __init__(self,vobj):
         _ViewProviderDraft.__init__(self,vobj)
+
+    def claimChildren(self):
+        return []
+
+class _ViewProviderDraftPart(_ViewProviderDraftAlt):
+    "a view provider that displays a Part icon instead of a Draft icon"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraftAlt.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Tree_Part.svg"
 
-    def claimChildren(self):
-        return []
-
-class _ViewProviderClone(_ViewProviderDraft):
+class _ViewProviderClone(_ViewProviderDraftAlt):
     "a view provider that displays a Part icon instead of a Draft icon"
     
     def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
+        _ViewProviderDraftAlt.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
 
-    def claimChildren(self):
-        return []
     
 if not hasattr(FreeCADGui,"Snapper"):
     import DraftSnap
