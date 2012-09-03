@@ -3658,15 +3658,27 @@ class Shape2DView():
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Creates Shape 2D views of selected objects")}
 
     def IsActive(self):
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
         
     def Activated(self):
-        sellist = []
-        for ob in Draft.getSelection():
-            Draft.makeShape2DView(ob)
+        faces = []
+        objs = []
+        sel = FreeCADGui.Selection.getSelectionEx()
+        for s in sel:
+            objs.append(s.Object)
+            for e in s.SubElementNames:
+                if "Face" in e:
+                    faces.append(int(e[4:])-1)
+        print objs,faces
+        if len(objs) == 1:
+            if faces:
+                Draft.makeShape2DView(objs[0],facenumbers=faces)
+                return
+        for o in objs:
+            Draft.makeShape2DView(o)
 
 class Draft2Sketch():
     "The Draft2Sketch FreeCAD command definition"
