@@ -1530,10 +1530,11 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
         if tmod: viewobj.TextModifier = tmod
     return viewobj
 
-def makeShape2DView(baseobj,projectionVector=None):
+def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     '''
-    makeShape2DView(object,[projectionVector]) - adds a 2D shape to the document, which is a
-    2D projection of the given object. A specific projection vector can also be given.
+    makeShape2DView(object,[projectionVector,facenumbers]) - adds a 2D shape to the document, which is a
+    2D projection of the given object. A specific projection vector can also be given. You can also
+    specify a list of face numbers to be considered in individual faces mode.
     '''
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Shape2DView")
     _Shape2DView(obj)
@@ -1542,6 +1543,8 @@ def makeShape2DView(baseobj,projectionVector=None):
     obj.Base = baseobj
     if projectionVector:
         obj.Projection = projectionVector
+    if facenumbers:
+        obj.FaceNumbers = facenumbers
     select(obj)
     return obj
 
@@ -2732,15 +2735,20 @@ class _Shape2DView:
                         "The base object this 2D view must represent")
         obj.addProperty("App::PropertyVector","Projection","Base",
                         "The projection vector of this object")
+        obj.addProperty("App::PropertyEnumeration","ProjectionMode","Base",
+                        "The way the viewed object must be projected")
+        obj.addProperty("App::PropertyIntegerList","FaceNumbers","Base",
+                        "The indices of the faces to be projected in Individual Faces mode")
         obj.Projection = Vector(0,0,1)
         obj.Proxy = self
+        obj.ProjectionMode = ["Solid","Individual Faces","Cutlines"]
         self.Type = "2DShapeView"
 
     def execute(self,obj):
         self.createGeometry(obj)
 
     def onChanged(self,obj,prop):
-        if prop in ["Projection","Base"]:
+        if prop in ["Projection","Base","ProjectionMode","FaceNumbers"]:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
@@ -2758,22 +2766,51 @@ class _Shape2DView:
                             shapes.extend(o.Shape.Solids)
                     cutp,cutv,iv =Arch.getCutVolume(obj.Base.Shape,shapes)
                     cuts = []
-                    for sh in shapes:
-                        if sh.Volume < 0:
-                            sh.reverse()
-                        c = sh.cut(cutv)
-                        cuts.extend(c.Solids)
-                    comp = Part.makeCompound(cuts)
-                    opl = FreeCAD.Placement(obj.Base.Placement)
-                    proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
-                    [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(comp,proj)
-                    if visibleG0:
-                        obj.Shape = visibleG0
+                    if obj.ProjectionMode == "Solid":
+                        for sh in shapes:
+                            if sh.Volume < 0:
+                                sh.reverse()
+                            c = sh.cut(cutv)
+                            cuts.extend(c.Solids)
+                        comp = Part.makeCompound(cuts)
+                        opl = FreeCAD.Placement(obj.Base.Placement)
+                        proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
+                        [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(comp,proj)
+                        print visibleG0
+                        if visibleG0:
+                            obj.Shape = visibleG0
+                    elif obj.ProjectionMode == "Cutlines":
+                        for sh in shapes:
+                            if sh.Volume < 0:
+                                sh.reverse()
+                            c = sh.section(cutp)
+                            cuts.append(c)
+                        comp = Part.makeCompound(cuts)
+                        opl = FreeCAD.Placement(obj.Base.Placement)
+                        comp.Placement = opl.inverse()
+                        if comp:
+                            obj.Shape = comp
+                            
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not DraftVecUtils.isNull(obj.Projection):
-                    [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
-                    if visibleG0:
-                        obj.Shape = visibleG0
+                    if obj.ProjectionMode == "Solid":
+                        [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
+                        if visibleG0:
+                            obj.Shape = visibleG0
+                    elif obj.ProjectionMode == "Individual Faces":
+                        import Part
+                        if obj.FaceNumbers:
+                            faces = []
+                            for i in obj.FaceNumbers:
+                                if len(obj.Base.Shape.Faces) > i:
+                                    faces.append(obj.Base.Shape.Faces[i])
+                            views = []
+                            for f in faces:
+                                [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(f,obj.Projection)
+                                if visibleG0:
+                                    views.append(visibleG0)
+                            if views:
+                                obj.Shape = Part.makeCompound(views)
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
