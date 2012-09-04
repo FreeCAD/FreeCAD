@@ -1732,12 +1732,37 @@ def heal(objlist=None,delete=True,reparent=True):
 # Python Features definitions
 #---------------------------------------------------------------------------
 
+class _DraftObject:
+    "The base class for Draft objects"
+    def __init__(self,obj,tp="Unknown"):
+        obj.Proxy = self
+        self.Type = tp
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state   
+
+    def execute(self,obj):
+        pass
+
+    def onChanged(self, fp, prop):
+        pass 
+
 class _ViewProviderDraft:
-    "A generic View Provider for Draft objects"
+    "The base class for Draft Viewproviders"
         
     def __init__(self, obj):
         obj.Proxy = self
         self.Object = obj.Object
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
         
     def attach(self, obj):
         self.Object = obj.Object
@@ -1756,11 +1781,8 @@ class _ViewProviderDraft:
     def onChanged(self, vp, prop):
         return
 
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None
+    def execute(self,obj):
+        return
 
     def setEdit(self,vp,mode):
         FreeCADGui.runCommand("Draft_Edit")
@@ -1783,10 +1805,30 @@ class _ViewProviderDraft:
         if hasattr(self.Object,"Components"):
             objs.extend(self.Object.Components)
         return objs
+
+class _ViewProviderDraftAlt(_ViewProviderDraft):
+    "a view provider that doesn't swallow its base object"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+
+    def claimChildren(self):
+        return []
+
+class _ViewProviderDraftPart(_ViewProviderDraftAlt):
+    "a view provider that displays a Part icon instead of a Draft icon"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraftAlt.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Tree_Part.svg"
+
 		
-class _Dimension:
-    "The Dimension object"
+class _Dimension(_DraftObject):
+    "The Draft Dimension object"
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Dimension")
         obj.addProperty("App::PropertyVector","Start","Base",
                         "Startpoint of dimension")
         obj.addProperty("App::PropertyVector","End","Base",
@@ -1801,8 +1843,6 @@ class _Dimension:
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
-        obj.Proxy = self
-        self.Type = "Dimension"
 		
     def onChanged(self, obj, prop):
         obj.setEditorMode('Distance',1)
@@ -1811,8 +1851,8 @@ class _Dimension:
         if obj.ViewObject:
             obj.ViewObject.update()
         
-class _ViewProviderDimension:
-    "A View Provider for the Dimension object"
+class _ViewProviderDimension(_ViewProviderDraft):
+    "A View Provider for the Draft Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Base","Font size")
         obj.addProperty("App::PropertyString","FontName","Base","Font name")
@@ -1821,11 +1861,11 @@ class _ViewProviderDimension:
         obj.addProperty("App::PropertyLength","ExtLines","Base","Ext lines")
         obj.addProperty("App::PropertyVector","TextPosition","Base","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Base","Text override. Use 'dim' to insert the dimension length")
-        obj.Proxy = self
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
         obj.ExtLines=0.3
         obj.Override = ''
+        _ViewProviderDraft.__init__(self,obj)
 
     def calcGeom(self,obj):
         import Part, DraftGeomUtils
@@ -2013,17 +2053,23 @@ class _ViewProviderDimension:
     def onChanged(self, vp, prop):
         self.Object = vp.Object
         if prop == "FontSize":
-            self.font.size = vp.FontSize
-            self.font3d.size = vp.FontSize*100
+            if hasattr(self,"font"):
+                self.font.size = vp.FontSize
+            if hasattr(self,"font3d"):
+                self.font3d.size = vp.FontSize*100
         elif prop == "FontName":
-            self.font.name = self.font3d.name = str(vp.FontName)
+            if hasattr(self,"font") and hasattr(self,"font3d"):
+                self.font.name = self.font3d.name = str(vp.FontName)
         elif prop == "LineColor":
             c = vp.LineColor
-            self.color.rgb.setValue(c[0],c[1],c[2])
+            if hasattr(self,"color"):
+                self.color.rgb.setValue(c[0],c[1],c[2])
         elif prop == "LineWidth":
-            self.drawstyle.lineWidth = vp.LineWidth
+            if hasattr(self,"drawstyle"):
+                self.drawstyle.lineWidth = vp.LineWidth
         else:
-            self.drawstyle.lineWidth = vp.LineWidth
+            if hasattr(self,"drawstyle"):
+                self.drawstyle.lineWidth = vp.LineWidth
             self.updateData(vp.Object, None)
 
     def getDisplayModes(self,obj):
@@ -2102,9 +2148,10 @@ class _ViewProviderDimension:
             self.defaultmode = state
             self.setDisplayMode(state)
 
-class _AngularDimension:
-    "The AngularDimension object"
+class _AngularDimension(_DraftObject):
+    "The Draft AngularDimension object"
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"AngularDimension")
         obj.addProperty("App::PropertyAngle","FirstAngle","Base",
                         "Start angle of the dimension")
         obj.addProperty("App::PropertyAngle","LastAngle","Base",
@@ -2117,18 +2164,13 @@ class _AngularDimension:
         obj.LastAngle = 90
         obj.Dimline = FreeCAD.Vector(0,1,0)
         obj.Center = FreeCAD.Vector(0,0,0)
-        obj.Proxy = self
-        self.Type = "AngularDimension"
         
-    def onChanged(self, fp, prop):
-        pass
-
     def execute(self, fp):
         if fp.ViewObject:
             fp.ViewObject.update()
 
-class _ViewProviderAngularDimension:
-    "A View Provider for the Angular Dimension object"
+class _ViewProviderAngularDimension(_ViewProviderDraft):
+    "A View Provider for the Draft Angular Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Base","Font size")
         obj.addProperty("App::PropertyString","FontName","Base","Font name")
@@ -2136,10 +2178,10 @@ class _ViewProviderAngularDimension:
         obj.addProperty("App::PropertyColor","LineColor","Base","Line color")
         obj.addProperty("App::PropertyVector","TextPosition","Base","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Base","Text override. Use 'dim' to insert the dimension length")
-        obj.Proxy = self
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
         obj.Override = ''
+        _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
         from pivy import coin
@@ -2313,17 +2355,16 @@ class _ViewProviderAngularDimension:
                         "                "};
                         """
 
-class _Rectangle:
+class _Rectangle(_DraftObject):
     "The Rectangle object"
         
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Rectangle")
         obj.addProperty("App::PropertyDistance","Length","Base","Length of the rectangle")
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the rectange")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
-        obj.Proxy = self
         obj.Length=1
         obj.Height=1
-        self.Type = "Rectangle"
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -2375,18 +2416,17 @@ class _ViewProviderRectangle(_ViewProviderDraft):
                     self.texture = None
         return
         
-class _Circle:
+class _Circle(_DraftObject):
     "The Circle object"
         
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Circle")
         obj.addProperty("App::PropertyAngle","FirstAngle","Base",
                         "Start angle of the arc")
         obj.addProperty("App::PropertyAngle","LastAngle","Base",
                         "End angle of the arc (for a full circle, give it same value as First Angle)")
         obj.addProperty("App::PropertyDistance","Radius","Base",
                         "Radius of the circle")
-        obj.Proxy = self
-        self.Type = "Circle"
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -2406,10 +2446,11 @@ class _Circle:
         fp.Shape = shape
         fp.Placement = plm
 
-class _Wire:
+class _Wire(_DraftObject):
     "The Wire object"
         
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Wire")
         obj.addProperty("App::PropertyVectorList","Points","Base",
                         "The vertices of the wire")
         obj.addProperty("App::PropertyBool","Closed","Base",
@@ -2423,9 +2464,7 @@ class _Wire:
         obj.addProperty("App::PropertyVector","End","Base",
                         "The end point of this line")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
-        obj.Proxy = self
         obj.Closed = False
-        self.Type = "Wire"
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -2545,10 +2584,11 @@ class _ViewProviderWire(_ViewProviderDraft):
     def claimChildren(self):
         return [self.Object.Base,self.Object.Tool]
         
-class _Polygon:
+class _Polygon(_DraftObject):
     "The Polygon object"
         
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Polygon")
         obj.addProperty("App::PropertyInteger","FacesNumber","Base","Number of faces")
         obj.addProperty("App::PropertyDistance","Radius","Base","Radius of the control circle")
         obj.addProperty("App::PropertyEnumeration","DrawMode","Base","How the polygon must be drawn from the control circle")
@@ -2556,8 +2596,6 @@ class _Polygon:
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 3
         obj.Radius = 1
-        obj.Proxy = self
-        self.Type = "Polygon"
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -2589,8 +2627,10 @@ class _Polygon:
         fp.Shape = shape
         fp.Placement = plm
 
-class _DrawingView:
+class _DrawingView(_DraftObject):
+    "The Draft DrawingView object"
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"DrawingView")
         obj.addProperty("App::PropertyVector","Direction","Shape View","Projection direction")
         obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The width of the lines inside this object")
         obj.addProperty("App::PropertyFloat","FontSize","Drawing View","The size of the texts inside this object")
@@ -2600,10 +2640,8 @@ class _DrawingView:
         for f in FreeCAD.svgpatterns.keys():
             fills.append(f)
         obj.FillStyle = fills
-        obj.Proxy = self
         obj.LineWidth = 0.35
         obj.FontSize = 12
-        self.Type = "DrawingView"
 
     def execute(self, obj):
         if obj.Source:
@@ -2627,17 +2665,16 @@ class _DrawingView:
         result += '</g>'
         return result
 
-class _BSpline:
+class _BSpline(_DraftObject):
     "The BSpline object"
         
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"BSpline")
         obj.addProperty("App::PropertyVectorList","Points","Base",
                         "The points of the b-spline")
         obj.addProperty("App::PropertyBool","Closed","Base",
                         "If the b-spline is closed or not")
-        obj.Proxy = self
         obj.Closed = False
-        self.Type = "BSpline"
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -2700,14 +2737,13 @@ class _ViewProviderBSpline(_ViewProviderDraft):
                 rn.removeChild(self.pt)
         return
 
-class _Block:
+class _Block(_DraftObject):
     "The Block object"
     
     def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Block")
         obj.addProperty("App::PropertyLinkList","Components","Base",
                         "The components of this block")
-        obj.Proxy = self
-        self.Type = "Block"
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -2727,7 +2763,7 @@ class _Block:
             fp.Shape = shape
         fp.Placement = plm
 
-class _Shape2DView:
+class _Shape2DView(_DraftObject):
     "The Shape2DView object"
 
     def __init__(self,obj):
@@ -2740,9 +2776,8 @@ class _Shape2DView:
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Base",
                         "The indices of the faces to be projected in Individual Faces mode")
         obj.Projection = Vector(0,0,1)
-        obj.Proxy = self
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines"]
-        self.Type = "2DShapeView"
+        _DraftObject.__init__(self,obj,"Shape2DView")
 
     def execute(self,obj):
         self.createGeometry(obj)
@@ -2750,6 +2785,15 @@ class _Shape2DView:
     def onChanged(self,obj,prop):
         if prop in ["Projection","Base","ProjectionMode","FaceNumbers"]:
             self.createGeometry(obj)
+
+    def clean(self,shape):
+        "returns a valid compound of edges"
+        import Part
+        oldedges = shape.Edges
+        newedges = []
+        for e in oldedges:
+            newedges.append(e.Curve.toShape())
+        return Part.makeCompound(newedges)
 
     def createGeometry(self,obj):
         import Drawing, DraftGeomUtils
@@ -2778,7 +2822,7 @@ class _Shape2DView:
                         [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(comp,proj)
                         print visibleG0
                         if visibleG0:
-                            obj.Shape = visibleG0
+                            obj.Shape = self.clean(visibleG0)
                     elif obj.ProjectionMode == "Cutlines":
                         for sh in shapes:
                             if sh.Volume < 0:
@@ -2796,7 +2840,7 @@ class _Shape2DView:
                     if obj.ProjectionMode == "Solid":
                         [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
                         if visibleG0:
-                            obj.Shape = visibleG0
+                            obj.Shape = self.clean(visibleG0)
                     elif obj.ProjectionMode == "Individual Faces":
                         import Part
                         if obj.FaceNumbers:
@@ -2814,10 +2858,11 @@ class _Shape2DView:
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
-class _Array:
+class _Array(_DraftObject):
     "The Draft Array object"
 
     def __init__(self,obj):
+        _DraftObject.__init__(self,obj,"Array")
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that must be duplicated")
         obj.addProperty("App::PropertyEnumeration","ArrayType","Base",
@@ -2842,8 +2887,6 @@ class _Array:
                         "Center point")
         obj.addProperty("App::PropertyAngle","Angle","Base",
                         "Angle to cover with copies")
-        obj.Proxy = self
-        self.Type = "Array"
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
         obj.NumberY = 1
@@ -2936,15 +2979,15 @@ class _Array:
             base.append(nshape)
         return Part.makeCompound(base)
 
-class _Point:
+class _Point(_DraftObject):
+    "The Draft Point object"
     def __init__(self, obj,x,y,z):
+        _DraftObject.__init__(self,obj,"Point")
         obj.addProperty("App::PropertyFloat","X","Point","Location").X = x
         obj.addProperty("App::PropertyFloat","Y","Point","Location").Y = y
         obj.addProperty("App::PropertyFloat","Z","Point","Location").Z = z
         mode = 2
         obj.setEditorMode('Placement',mode)
-        obj.Proxy = self
-        self.Type = "Point"
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -2954,9 +2997,10 @@ class _Point:
         shape = Part.Vertex(Vector(fp.X,fp.Y,fp.Z))
         fp.Shape = shape
 
-class _ViewProviderPoint:
+class _ViewProviderPoint(_ViewProviderDraft):
+    "A viewprovider for the Draft Point object"
     def __init__(self, obj):
-        obj.Proxy = self
+        _ViewProviderDraft.__init__(self,obj)
 
     def onChanged(self, vp, prop):
         mode = 2
@@ -2976,17 +3020,16 @@ class _ViewProviderPoint:
     def getIcon(self):
         return ":/icons/Draft_Dot.svg"
 
-class _Clone:
+class _Clone(_DraftObject):
     "The Clone object"
 
     def __init__(self,obj):
+        _DraftObject.__init__(self,obj,"Clone")
         obj.addProperty("App::PropertyLinkList","Objects","Base",
                         "The objects included in this scale object")
         obj.addProperty("App::PropertyVector","Scale","Base",
                         "The scale vector of this object")
         obj.Scale = Vector(1,1,1)
-        obj.Proxy = self
-        self.Type = "Clone"
 
     def execute(self,obj):
         self.createGeometry(obj)
@@ -3015,24 +3058,6 @@ class _Clone:
                 obj.Shape = Part.makeCompound(shapes)   
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
-
-class _ViewProviderDraftAlt(_ViewProviderDraft):
-    "a view provider that doesn't swallow its base object"
-    
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-
-    def claimChildren(self):
-        return []
-
-class _ViewProviderDraftPart(_ViewProviderDraftAlt):
-    "a view provider that displays a Part icon instead of a Draft icon"
-    
-    def __init__(self,vobj):
-        _ViewProviderDraftAlt.__init__(self,vobj)
-
-    def getIcon(self):
-        return ":/icons/Tree_Part.svg"
 
 class _ViewProviderClone(_ViewProviderDraftAlt):
     "a view provider that displays a Part icon instead of a Draft icon"

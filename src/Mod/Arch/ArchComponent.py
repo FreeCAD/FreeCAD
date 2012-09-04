@@ -265,6 +265,13 @@ class Component:
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
               
 class ViewProviderComponent:
     "A default View Provider for Component objects"
