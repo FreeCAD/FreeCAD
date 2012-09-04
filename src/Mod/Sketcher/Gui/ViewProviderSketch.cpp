@@ -874,16 +874,17 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     Constraint *Constr = constrlist[constNum];
 
+    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
+    int extGeoCount = getSketchObject()->getExternalGeometryCount();
+    // with memory allocation
+    const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
+
+    assert(int(geomlist.size()) == extGeoCount + intGeoCount);
+    assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
+           || Constr->First != Constraint::GeoUndef);
+
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
         Constr->Type == Radius) {
-
-        int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-        int extGeoCount = getSketchObject()->getExternalGeometryCount();
-        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
-
-        assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-        assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-               || Constr->First != Constraint::GeoUndef);
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -954,13 +955,6 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         }
     }
     else if (Constr->Type == Angle) {
-        int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-        int extGeoCount = getSketchObject()->getExternalGeometryCount();
-        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
-
-        assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-        assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-               || Constr->First != Constraint::GeoUndef);
 
         Base::Vector3d p0(0.,0.,0.);
         if (Constr->Second != Constraint::GeoUndef) { // line to line angle
@@ -1002,6 +996,11 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         Base::Vector3d vec = Base::Vector3d(toPos.fX, toPos.fY, 0) - p0;
         Constr->LabelDistance = vec.Length()/2;
     }
+
+    // delete the cloned objects
+    for (std::vector<Part::Geometry *>::const_iterator it=geomlist.begin(); it != geomlist.end(); ++it)
+        if (*it) delete *it;
+
     draw(true);
 }
 
