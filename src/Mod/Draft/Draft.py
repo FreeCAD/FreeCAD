@@ -2792,7 +2792,10 @@ class _Shape2DView(_DraftObject):
         oldedges = shape.Edges
         newedges = []
         for e in oldedges:
-            newedges.append(e.Curve.toShape())
+            try:
+                newedges.append(e.Curve.toShape())
+            except:
+                print "Debug: error cleaning edge ",e
         return Part.makeCompound(newedges)
 
     def createGeometry(self,obj):
@@ -2820,7 +2823,6 @@ class _Shape2DView(_DraftObject):
                         opl = FreeCAD.Placement(obj.Base.Placement)
                         proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(comp,proj)
-                        print visibleG0
                         if visibleG0:
                             obj.Shape = self.clean(visibleG0)
                     elif obj.ProjectionMode == "Cutlines":

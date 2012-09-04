@@ -1331,11 +1331,12 @@ def writeShape(ob,dxfobject,nospline=False):
                                                     ang1, ang2, color=getACI(ob),
                                                     layer=getGroup(ob,exportList)))
             else: # anything else is treated as lines
-                ve1=edge.Vertexes[0].Point
-                ve2=edge.Vertexes[1].Point
-                dxfobject.append(dxfLibrary.Line([DraftVecUtils.tup(ve1), DraftVecUtils.tup(ve2)],
-                                                 color=getACI(ob),
-                                                 layer=getGroup(ob,exportList)))
+                if len(edge.Vertexes) > 1:
+                    ve1=edge.Vertexes[0].Point
+                    ve2=edge.Vertexes[1].Point
+                    dxfobject.append(dxfLibrary.Line([DraftVecUtils.tup(ve1), DraftVecUtils.tup(ve2)],
+                                                     color=getACI(ob),
+                                                     layer=getGroup(ob,exportList)))
 
 def writeMesh(ob,dxfobject):
     "export a shape as a polyface mesh"
