@@ -83,10 +83,11 @@ class _Floor:
         self.Object = obj
 
     def __getstate__(self):
-        return None
+        return self.Type
 
     def __setstate__(self,state):
-        return None
+        if state:
+            self.Type = state
 
     def execute(self,obj):
         pass
