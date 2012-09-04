@@ -202,8 +202,9 @@ void Gui::GUIApplicationNativeEventAware::Move3d(HANDLE device, std::vector<floa
 	rz = ceil(motionData[5]);
 	
     Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-    motionEvent->setTranslations(x, y, z);
-    motionEvent->setRotations(rx, ry, rz);
+    //motionEvent->setTranslations(x, y, z);
+    //motionEvent->setRotations(rx, ry, rz);
+    motionEvent->setMotionData(x, y, z, rx, ry, rz);        
     this->postEvent(currentWidget, motionEvent);
 }
 

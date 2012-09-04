@@ -78,5 +78,11 @@
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
         <file>spaceball_button.svg</file>
+        <file>SpNav-PanLR.png</file>
+        <file>SpNav-PanUD.png</file>
+        <file>SpNav-Roll.png</file>
+        <file>SpNav-Spin.png</file>
+        <file>SpNav-Tilt.png</file>
+        <file>SpNav-Zoom.png</file>
     </qresource>
 </RCC>

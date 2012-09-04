@@ -420,7 +420,8 @@ def getShape(obj):
                          m[1], m[4], m[7], m[10],
                          m[2], m[5], m[8], m[11],
                          0, 0, 0, 1)
-    sh.Placement = FreeCAD.Placement(mat)  
+    sh.Placement = FreeCAD.Placement(mat)
+    if DEBUG: print "getting Shape from ",obj 
     return sh
         
 def getWire(entity,placement=None):
