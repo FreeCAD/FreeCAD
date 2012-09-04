@@ -30,6 +30,7 @@
 #include <QIcon>
 #include <boost/signals.hpp>
 
+class SbVec2s;
 class SbVec3f;
 class SoNode;
 class SoPath;
@@ -220,11 +221,12 @@ public:
     /// is called by the tree if the user double click on the object
     virtual bool doubleClicked(void) { return false; }
     /// is called when the provider is in edit and the mouse is moved
-    virtual bool mouseMove(const SbVec3f &pos, const SbVec3f &norm, const SoPickedPoint* pp)
+    virtual bool mouseMove(const SbVec2s &cursorPos,
+                           View3DInventorViewer* viewer)
     { return false; }
     /// is called when the Provider is in edit and the mouse is clicked 
-    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec3f &pos,
-                                    const SbVec3f &norm, const SoPickedPoint* pp)
+    virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
+                                    const View3DInventorViewer* viewer)
     { return false; }
     /// set up the context-menu with the supported edit modes
     virtual void setupContextMenu(QMenu*, QObject*, const char*) {}
@@ -264,8 +266,11 @@ protected:
     void setDefaultMode(int);
     //@}
     /// Helper method to get picked entities while editing
-    SoPickedPoint* getPointOnRay(const SbVec3f& pos,const SbVec3f& dir,
-        const View3DInventorViewer& viewer) const;
+    SoPickedPoint* getPointOnRay(const SbVec2s& pos,
+                                 const View3DInventorViewer* viewer) const;
+    /// Helper method to get picked entities while editing
+    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir,
+                                 const View3DInventorViewer* viewer) const;
     /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
 
