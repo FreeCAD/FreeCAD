@@ -740,7 +740,7 @@ public:
                          sugConstr1[i].PosId == Sketcher::end)) {
                         previousCurve = sugConstr1[i].GeoId;
                         previousPosId = sugConstr1[i].PosId;
-                        updateTransitionData(previousCurve,previousPosId); // -> dirVec, EditMode[0]
+                        updateTransitionData(previousCurve,previousPosId); // -> dirVec, EditCurve[0]
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
                             TransitionMode = TRANSITION_MODE_Tangent;
                         sugConstr1.erase(sugConstr1.begin()+i); // actually we should clear the vector completely
@@ -923,12 +923,15 @@ protected:
         const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geom);
-            EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
             dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
                        lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
                        0.f);
-            if (PosId == Sketcher::start)
+            if (PosId == Sketcher::start) {
                 dirVec *= -1;
+                EditCurve[0] = Base::Vector2D(lineSeg->getStartPoint().x, lineSeg->getStartPoint().y);
+            }
+            else
+                EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
         }
         else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arcSeg = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
