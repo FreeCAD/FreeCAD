@@ -1,0 +1,18 @@
+Version History
+===============
+
+0.01a -  First Version
+
+0.01b -  Added support for polyhedron ( Thanks shoogen )
+         Some support for Torus
+	 Some support for extruded regular polygon
+
+0.01c -  Support for extruded polygon, square, circle
+	 bug fix for polyhydron floating point - Thanks shoogen
+
+					
+
+Thanks to shoogen and Peter Li for their advice, code, support and expertise.
+
+Keith Sloan
+keith@sloan-home.co.uk		       
