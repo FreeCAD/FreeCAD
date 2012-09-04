@@ -134,11 +134,11 @@
     <linearGradient
        id="linearGradient3602-58">
       <stop
-         style="stop-color:#c51900;stop-opacity:1;"
+         style="stop-color:#d82b1e;stop-opacity:1;"
          offset="0"
          id="stop3604-2" />
       <stop
-         style="stop-color:#ff5f00;stop-opacity:1;"
+         style="stop-color:#840000;stop-opacity:1;"
          offset="1"
          id="stop3606-2" />
     </linearGradient>
@@ -486,6 +486,15 @@
        id="linearGradient3698-9"
        xlink:href="#linearGradient3669-0"
        inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3602-58"
+       id="linearGradient3842"
+       x1="46.661926"
+       y1="20.954174"
+       x2="44.890423"
+       y2="20.88888"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -494,17 +503,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="60.53903"
-     inkscape:cy="-18.846351"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="22.947278"
+     inkscape:cy="25.479766"
      inkscape:current-layer="text3796"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:window-width="1280"
      inkscape:window-height="750"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="147"
+     inkscape:window-y="15"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata2821">
@@ -514,7 +523,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -542,16 +551,16 @@
          id="path3679"
          sodipodi:nodetypes="czc" />
       <path
-         style="font-size:54.21519089000000236px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#00064a;stroke-width:2.00550841999999996;stroke-linecap:butt;stroke-linejoin:round;marker:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Arial;-inkscape-font-specification:Arial"
-         d="M 46.11778,23.951832 C 46.11778,23.951832 46.265682,24.21101 46.179991,24.045353 C 46.13785,23.963885 46.242201,23.942045 46.242201,23.942045 L 46.164287,15.189386"
-         id="path3231"
-         sodipodi:nodetypes="czcc" />
-      <path
-         style="fill:none;stroke:#ff0000;stroke-width:2.02300000000000013;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="fill:url(#linearGradient3842);stroke:#ff0000;stroke-width:2.02300000000000010;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1.0"
          d="m 62.544233,20.047443 c 0,0 -7.5477,1.859314 -11.152339,2.927483 -3.60464,1.068169 -11.152341,3.019825 -11.152341,3.019825 L 24.700732,20.421907 c 0,0 7.461409,-1.894539 10.952814,-2.776513 3.491405,-0.881975 10.474215,-2.645924 10.474215,-2.645924 l 16.416472,4.955632 z"
          id="path3736"
          sodipodi:nodetypes="czcczccc"
          inkscape:connector-curvature="0" />
+      <path
+         style="font-size:54.21519088999999500px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:#ff0600;stroke-width:2.00550842000000000;stroke-linecap:butt;stroke-linejoin:round;marker:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Arial;-inkscape-font-specification:Arial"
+         d="M 46.11778,23.951832 C 46.11778,23.951832 46.265682,24.21101 46.179991,24.045353 C 46.13785,23.963885 46.242201,23.942045 46.242201,23.942045 L 46.164287,15.189386"
+         id="path3231"
+         sodipodi:nodetypes="czcc" />
     </g>
   </g>
 </svg>

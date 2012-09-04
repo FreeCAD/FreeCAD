@@ -101,6 +101,13 @@ class _Axis:
         if geoms:
             obj.Shape = Part.Compound(geoms)
         obj.Placement = pl
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
         
 class _ViewProviderAxis:
     "A View Provider for the Axis object"
@@ -252,7 +259,6 @@ class _ViewProviderAxis:
         return None
 
 
-            
 class _AxisTaskPanel:
     '''The editmode TaskPanel for Axis objects'''
     def __init__(self):

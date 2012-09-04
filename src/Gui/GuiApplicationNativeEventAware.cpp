@@ -143,8 +143,9 @@ bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
     if (navEvent.type == SPNAV_EVENT_MOTION)
     {
         Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-        motionEvent->setTranslations(navEvent.motion.x, navEvent.motion.y, navEvent.motion.z);
-        motionEvent->setRotations(navEvent.motion.rx, navEvent.motion.ry, navEvent.motion.rz);
+     //   motionEvent->setTranslations(navEvent.motion.x, navEvent.motion.y, navEvent.motion.z);
+     //   motionEvent->setRotations(navEvent.motion.rx, navEvent.motion.ry, navEvent.motion.rz);
+        motionEvent->setMotionData(navEvent.motion.x, navEvent.motion.y, navEvent.motion.z, navEvent.motion.rx, navEvent.motion.ry, navEvent.motion.rz);
         this->postEvent(currentWidget, motionEvent);
         return true;
     }

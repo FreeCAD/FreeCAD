@@ -296,7 +296,12 @@ The parameter is a list of shapes.</UserDocu>
     </Methode>
     <Methode Name="isInside" Const="true">
       <Documentation>
-        <UserDocu>Checks whether a point is inside or outside a given shape</UserDocu>
+        <UserDocu>Checks whether a point is inside or outside the shape.
+isInside(App.Vector, float, Boolean) => Boolean
+The App.Vector is the point you want to check if it's inside or not
+float gives the tolerance
+Boolean indicates if the point lying directly on a face is considered to be inside or not 
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeSplitter" Const="true">

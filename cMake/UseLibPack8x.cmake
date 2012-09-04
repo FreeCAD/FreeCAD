@@ -314,6 +314,7 @@ set(OCC_LIBRARIES
     TKSTEPBase
     TKSTEPAttr
     TKHLR
+    TKFeat
 )
 set(OCC_LIBRARY_DIR
     ${FREECAD_LIBPACK_DIR}/lib

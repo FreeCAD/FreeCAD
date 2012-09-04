@@ -44,7 +44,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPatternRectangularParameters */
 
 TaskPatternRectangularParameters::TaskPatternRectangularParameters(QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("TaskPatternRectangularParameters"),true, parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Parameters rectangular pattern"),true, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);

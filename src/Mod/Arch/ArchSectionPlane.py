@@ -110,6 +110,13 @@ class _SectionPlane:
     def getNormal(self,obj):
         return obj.Shape.Faces[0].normalAt(0,0)
 
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+
 class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
@@ -180,6 +187,12 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
             vobj.Object.Proxy.execute(vobj.Object)
         return
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
 class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
@@ -203,10 +216,11 @@ class _ArchDrawingView:
             obj.ViewResult = self.updateSVG(obj)
 
     def __getstate__(self):
-        return None
+        return self.Type
 
     def __setstate__(self,state):
-        return None
+        if state:
+            self.Type = state
 
     def getDisplayModes(self,vobj):
         modes=["Default"]
