@@ -77,10 +77,10 @@ SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and 
 SET(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")
 SET(DOCDIR "${CMAKE_INSTALL_DOCDIR}")
 
-MESSAGE("prefix: ${CMAKE_INSTALL_PREFIX}")
-MESSAGE("datadir: ${CMAKE_INSTALL_DATADIR}")
-MESSAGE("docdir: ${CMAKE_INSTALL_DOCDIR}")
-MESSAGE("includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
+MESSAGE( STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")
+MESSAGE(STATUS "datadir: ${CMAKE_INSTALL_DATADIR}")
+MESSAGE(STATUS "docdir: ${CMAKE_INSTALL_DOCDIR}")
+MESSAGE(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
 
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
