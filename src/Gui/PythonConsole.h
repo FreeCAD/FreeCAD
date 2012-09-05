@@ -126,6 +126,7 @@ protected:
     void dragEnterEvent ( QDragEnterEvent   * e );
     void dragMoveEvent  ( QDragMoveEvent    * e );
     void changeEvent    ( QEvent            * e );
+    void mouseReleaseEvent( QMouseEvent       * e );
 
     void overrideCursor(const QString& txt);
 
@@ -134,6 +135,7 @@ protected:
     bool canInsertFromMimeData ( const QMimeData * source ) const;
     QMimeData * createMimeDataFromSelection () const;
     void insertFromMimeData ( const QMimeData * source );
+    QTextCursor inputBegin( void ) const;
 
 private:
     void runSource(const QString&);
