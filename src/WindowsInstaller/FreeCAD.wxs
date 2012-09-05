@@ -159,6 +159,8 @@
             <ComponentRef Id="CompModStartLibStartPage" />
             <ComponentRef Id="CompModStartDataStartPage" />
             <ComponentRef Id="CompModWeb" />
+            <ComponentRef Id="CompModOpenSCAD" />
+            <ComponentRef Id="CompModOpenSCADPly" />
             <ComponentRef Id="CompExampleData" />
 		
             <Feature Id="FeatModImage" Title="The Image module" Description="Module to handle pictures" Level="1">
