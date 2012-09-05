@@ -52,6 +52,7 @@
             <?include ModStart.wxi ?>
             <?include ModWeb.wxi ?>
             <?include ModArch.wxi ?>
+            <?include ModOpenSCAD.wxi ?>
         </DirectoryRef>
     </Fragment>
 </Wix>
