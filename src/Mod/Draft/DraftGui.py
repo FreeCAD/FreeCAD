@@ -490,7 +490,7 @@ class DraftToolBar:
 # Interface modes
 #---------------------------------------------------------------------------
 
-    def taskUi(self,title,extra=None):
+    def taskUi(self,title,extra=None,icon="Draft_Draft"):
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
@@ -529,9 +529,9 @@ class DraftToolBar:
 
     def lineUi(self,title=None):
         if title:
-            self.pointUi(title)
+            self.pointUi(title,icon="Draft_Line")
         else:
-            self.pointUi(translate("draft", "Line"))
+            self.pointUi(translate("draft", "Line"),icon="Draft_Line")
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
@@ -542,7 +542,7 @@ class DraftToolBar:
         if title:
             self.pointUi(title)
         else:
-            self.pointUi(translate("draft", "DWire"))
+            self.pointUi(translate("draft", "DWire"),icon="Draft_Wire")
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
@@ -554,20 +554,20 @@ class DraftToolBar:
         self.continueCmd.show()
         
     def circleUi(self):
-        self.pointUi(translate("draft", "Circle"))
+        self.pointUi(translate("draft", "Circle"),icon="Draft_Circle")
         self.continueCmd.show()
         self.labelx.setText(translate("draft", "Center X"))
         self.hasFill.show()
 
     def arcUi(self):
-        self.pointUi(translate("draft", "Arc"))
+        self.pointUi(translate("draft", "Arc"),icon="Draft_Arc")
         self.labelx.setText(translate("draft", "Center X"))
         self.continueCmd.show()
 
-    def pointUi(self,title=translate("draft","Point"),cancel=None,extra=None,getcoords=None,rel=False):
+    def pointUi(self,title=translate("draft","Point"),cancel=None,extra=None,getcoords=None,rel=False,icon="Draft_Draft"):
         if cancel: self.cancel = cancel
         if getcoords: self.pointcallback = getcoords
-        self.taskUi(title,extra)
+        self.taskUi(title,extra,icon)
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.labelx.setText(translate("draft", "X"))
@@ -691,9 +691,10 @@ class DraftToolBar:
                 if self.state[5]:self.zValue.show()
                 self.state = None
 
-    def setTitle(self,title):
+    def setTitle(self,title,icon="Draft_Draft"):
         if self.taskmode:
             self.baseWidget.setWindowTitle(title)
+            self.baseWidget.setWindowIcon(QtGui.QIcon(":/icons/"+icon+".svg"))
         else:
             self.cmdlabel.setText(title)
 
