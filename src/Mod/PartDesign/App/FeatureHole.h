@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class Hole : public Subtractive
+class PartDesignExport Hole : public Subtractive
 {
     PROPERTY_HEADER(PartDesign::Hole);
 
