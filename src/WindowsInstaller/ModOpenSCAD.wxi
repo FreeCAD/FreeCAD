@@ -32,7 +32,7 @@
             <File Id="importCSGpy" Name="importCSG.py" DiskId="1" />
             <File Id="OpenSCAD_rcpy" Name="OpenSCAD_rc.py" DiskId="1" />
             <File Id="OpenSCAD2Dgeompy" Name="OpenSCAD2Dgeom.py" DiskId="1" />
-            <File Id="OpenSCADCommandspy" Name="OpenSCADCommandspy" DiskId="1" />
+            <File Id="OpenSCADCommandspy" Name="OpenSCADCommands.py" DiskId="1" />
             <File Id="OpenSCADFeaturespy" Name="OpenSCADFeatures.py" DiskId="1" />
             <File Id="OpenSCADUtilspy" Name="OpenSCADUtils.py" DiskId="1" />
             <File Id="prototypepy" Name="prototype.py" DiskId="1" />

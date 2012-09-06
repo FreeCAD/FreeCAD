@@ -193,18 +193,21 @@ void Gui::GUIApplicationNativeEventAware::Move3d(HANDLE device, std::vector<floa
     if (!currentWidget)
         currentWidget = mainWindow;
 
-	int x, y, z, rx, ry, rz;
-	x  = ceil(motionData[0])*(-1);
-	y  = ceil(motionData[1]);
-	z  = ceil(motionData[2]);
-	rx = ceil(motionData[3])*(-1);
-	ry = ceil(motionData[4]);
-	rz = ceil(motionData[5]);
-	
+    motionDataArray[0] = ceil(motionData[0]);
+    motionDataArray[1] = ceil(motionData[1]);
+    motionDataArray[2] = ceil(motionData[2]);
+    motionDataArray[3] = ceil(motionData[3]);
+    motionDataArray[4] = ceil(motionData[4]);
+    motionDataArray[5] = ceil(motionData[5]);
+
+    if (!setOSIndependentMotionData()) return;
+    importSettings();
+
     Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-    //motionEvent->setTranslations(x, y, z);
-    //motionEvent->setRotations(rx, ry, rz);
-    motionEvent->setMotionData(x, y, z, rx, ry, rz);        
+
+    motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
+    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
+
     this->postEvent(currentWidget, motionEvent);
 }
 
