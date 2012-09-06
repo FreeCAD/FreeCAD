@@ -31,7 +31,7 @@
 namespace PartDesign
 {
 
-class Pad : public Additive
+class PartDesignExport Pad : public Additive
 {
     PROPERTY_HEADER(PartDesign::Pad);
 
