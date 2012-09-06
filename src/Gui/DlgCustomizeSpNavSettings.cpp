@@ -31,7 +31,7 @@ using namespace Gui::Dialog;
 
 DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget *parent) :
     CustomizeActionPage(parent)
-{    
+{
     GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
 
     if (!app)
@@ -62,9 +62,11 @@ void DlgCustomizeSpNavSettings::setMessage(const QString& message)
     this->setLayout(layout);
 }
 
-
 void DlgCustomizeSpNavSettings::changeEvent(QEvent *e)
 {
+    if (e->type() == QEvent::LanguageChange) {
+        this->retranslateUi(this);
+    }
     QWidget::changeEvent(e);
 }
 
@@ -195,12 +197,12 @@ void DlgCustomizeSpNavSettings::on_CBEnablePanLR_clicked()
 void DlgCustomizeSpNavSettings::on_CBReversePanLR_clicked()           
 {
     spaceballMotionGroup()->SetBool("PanLRReverse", CBReversePanLR->isChecked());
-} 
+}
 
 void DlgCustomizeSpNavSettings::on_SliderPanLR_sliderReleased() 
 {
     spaceballMotionGroup()->SetInt("PanLRSensitivity", SliderPanLR->value());
-}     
+}
 
 void DlgCustomizeSpNavSettings::on_CBEnablePanUD_clicked()           
 {
@@ -208,17 +210,17 @@ void DlgCustomizeSpNavSettings::on_CBEnablePanUD_clicked()
 
     CBReversePanUD->setEnabled(CBEnablePanUD->isChecked());
     SliderPanUD   ->setEnabled(CBEnablePanUD->isChecked());
-} 
+}
 
 void DlgCustomizeSpNavSettings::on_CBReversePanUD_clicked()          
 {
     spaceballMotionGroup()->SetBool("PanUDReverse", CBReversePanUD->isChecked());
-}  
+}
 
 void DlgCustomizeSpNavSettings::on_SliderPanUD_sliderReleased()
 {
     spaceballMotionGroup()->SetInt("PanUDSensitivity", SliderPanUD->value());
-}   
+}
 
 void DlgCustomizeSpNavSettings::on_CBEnableZoom_clicked()        
 {    
@@ -226,17 +228,17 @@ void DlgCustomizeSpNavSettings::on_CBEnableZoom_clicked()
 
     CBReverseZoom ->setEnabled(CBEnableZoom->isChecked());
     SliderZoom    ->setEnabled(CBEnableZoom->isChecked());
-}    
+}
 
 void DlgCustomizeSpNavSettings::on_CBReverseZoom_clicked()          
 {
     spaceballMotionGroup()->SetBool("ZoomReverse", CBReverseZoom->isChecked());
-}  
+}
 
 void DlgCustomizeSpNavSettings::on_SliderZoom_sliderReleased()
 {
     spaceballMotionGroup()->SetInt("ZoomSensitivity", SliderZoom->value());
-}   
+}
 
 void DlgCustomizeSpNavSettings::on_CBEnableTilt_clicked()      
 {
@@ -244,17 +246,17 @@ void DlgCustomizeSpNavSettings::on_CBEnableTilt_clicked()
 
     CBReverseTilt->setEnabled(CBEnableTilt->isChecked()); 
     SliderTilt   ->setEnabled(CBEnableTilt->isChecked());
-}     
+}
 
 void DlgCustomizeSpNavSettings::on_CBReverseTilt_clicked()        
 {
     spaceballMotionGroup()->SetBool("TiltReverse", CBReverseTilt->isChecked());
-}    
+}
 
 void DlgCustomizeSpNavSettings::on_SliderTilt_sliderReleased() 
 {
     spaceballMotionGroup()->SetInt("TiltSensitivity", SliderTilt->value());
-}   
+}
 
 void DlgCustomizeSpNavSettings::on_CBEnableRoll_clicked()  
 {
@@ -262,17 +264,17 @@ void DlgCustomizeSpNavSettings::on_CBEnableRoll_clicked()
 
     CBReverseRoll->setEnabled(CBEnableRoll->isChecked());
     SliderRoll   ->setEnabled(CBEnableRoll->isChecked());
-}   
+}
 
 void DlgCustomizeSpNavSettings::on_CBReverseRoll_clicked()   
 {
     spaceballMotionGroup()->SetBool("RollReverse", CBReverseRoll->isChecked());
-}     
+}
 
 void DlgCustomizeSpNavSettings::on_SliderRoll_sliderReleased()
 {
     spaceballMotionGroup()->SetInt("RollSensitivity", SliderRoll->value());
-}     
+}
 
 void DlgCustomizeSpNavSettings::on_CBEnableSpin_clicked()
 {
@@ -280,12 +282,12 @@ void DlgCustomizeSpNavSettings::on_CBEnableSpin_clicked()
 
     CBReverseSpin->setEnabled(CBEnableSpin->isChecked());
     SliderSpin   ->setEnabled(CBEnableSpin->isChecked());
-}      
+}
 
 void DlgCustomizeSpNavSettings::on_CBReverseSpin_clicked()
 {
     spaceballMotionGroup()->SetBool("SpinReverse", CBReverseSpin->isChecked());
-}       
+}
 
 void DlgCustomizeSpNavSettings::on_SliderSpin_sliderReleased()
 {
@@ -294,17 +296,17 @@ void DlgCustomizeSpNavSettings::on_SliderSpin_sliderReleased()
 
 void DlgCustomizeSpNavSettings::onAddMacroAction(const QByteArray &macroName)
 {
-    //don't think I need to do anything here.
+    //don't need to do anything here.
 }
 
 void DlgCustomizeSpNavSettings::onRemoveMacroAction(const QByteArray &macroName)
 {
-    //don't think I need to do anything here.
+    //don't need to do anything here.
 }
 
 void DlgCustomizeSpNavSettings::onModifyMacroAction(const QByteArray &macroName)
 {
-    //don't think I need to do anything here.
+    //don't need to do anything here.
 }
 
 #include "moc_DlgCustomizeSpNavSettings.cpp"
