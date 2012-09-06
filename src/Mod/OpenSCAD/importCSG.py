@@ -290,8 +290,9 @@ def p_operation(p):
 
 def p_not_supported(p):
     '''
-    not_supported : hull
-                  | minkowski
+    not_supported : hull LPAREN RPAREN OBRACE block_list EBRACE
+                  | minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
+                  | glide LPAREN RPAREN OBRACE block_list EBRACE
                   '''
     from PyQt4 import QtGui
     QtGui.QMessageBox.critical(None, "Unsupported Function : "+p[1], "Press OK")
