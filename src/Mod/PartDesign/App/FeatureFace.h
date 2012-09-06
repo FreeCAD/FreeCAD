@@ -29,7 +29,7 @@
 namespace PartDesign
 {
 
-class Face : public Part::Part2DObject
+class PartDesignExport Face : public Part::Part2DObject
 {
     PROPERTY_HEADER(PartDesign::Face);
 

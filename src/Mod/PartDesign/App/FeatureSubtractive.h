@@ -32,7 +32,7 @@
 namespace PartDesign
 {
 
-class Subtractive : public SketchBased
+class PartDesignExport Subtractive : public SketchBased
 {
     PROPERTY_HEADER(PartDesign::Subtractive);
 
