@@ -520,10 +520,10 @@ def makeDimension(p1,p2,p3=None,p4=None):
         obj.Base = p1
         if p3 == "radius":
             obj.LinkedVertices = [p2,1,1]
-            obj.ViewObject.Override = "rdim"
+            obj.ViewObject.Override = "Rdim"
         elif p3 == "diameter":
             obj.LinkedVertices = [p2,2,1]
-            obj.ViewObject.Override = "ddim"
+            obj.ViewObject.Override = "Ddim"
         p3 = p4
         if not p3:
             p3 = obj.Base.Shape.Edges[0].Curve.Center.add(Vector(1,0,0))
