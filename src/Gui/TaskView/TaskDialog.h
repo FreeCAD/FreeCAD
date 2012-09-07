@@ -69,6 +69,8 @@ public:
 
     const std::string& getDocumentName() const
     { return documentName; }
+    void setDocumentName(const std::string& doc)
+    { documentName = doc; }
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
     virtual bool isAllowedAlterView(void) const
@@ -94,6 +96,8 @@ protected:
     /// List of TaskBoxes of that dialog
     std::vector<QWidget*> Content;
     ButtonPosition pos;
+
+private:
     std::string documentName;
 };
 

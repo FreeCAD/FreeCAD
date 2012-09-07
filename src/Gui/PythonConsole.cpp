@@ -442,13 +442,8 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
 void PythonConsole::keyPressEvent(QKeyEvent * e)
 {
     bool restartHistory = true;
-    QTextCursor  cursor = this->textCursor();
-
-    // construct reference cursor at begin of input line ...
-    QTextCursor inputLineBegin = cursor;
-    inputLineBegin.movePosition( QTextCursor::End );
-    inputLineBegin.movePosition( QTextCursor::StartOfLine );
-    inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength );
+    QTextCursor cursor = this->textCursor();
+    QTextCursor inputLineBegin = this->inputBegin();
 
     if (cursor < inputLineBegin)
     {
@@ -579,6 +574,9 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
         // the event and afterwards update the list widget
         if (d->callTipsList->isVisible())
             { d->callTipsList->validateCursor(); }
+
+        // disable history restart if input line changed
+        restartHistory &= (inputLine != inputBlock.text().mid(promptLength));
     }
     // any cursor move resets the history to its latest item.
     if (restartHistory)
@@ -709,7 +707,7 @@ void PythonConsole::runSource(const QString& line)
         }
         if (ret == QMessageBox::Yes) {
             PyErr_Clear();
-            qApp->quit();
+            throw;
         }
         else {
             PyErr_Clear();
@@ -804,6 +802,21 @@ void PythonConsole::changeEvent(QEvent *e)
         }
     }
     TextEdit::changeEvent(e);
+}
+
+void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
+{
+  TextEdit::mouseReleaseEvent( e );
+  if (e->button() == Qt::LeftButton)
+  {
+    QTextCursor cursor   = this->textCursor();
+    if (cursor.hasSelection() == false
+     && cursor < this->inputBegin())
+    {
+      cursor.movePosition( QTextCursor::End );
+      this->setTextCursor( cursor );
+    }
+  }
 }
 
 /**
@@ -902,6 +915,16 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
         runSourceFromMimeData(source->text());
         return;
     }
+}
+
+QTextCursor PythonConsole::inputBegin( void ) const
+{
+  // construct cursor at begin of input line ...
+  QTextCursor inputLineBegin( this->textCursor() );
+  inputLineBegin.movePosition( QTextCursor::End );
+  inputLineBegin.movePosition( QTextCursor::StartOfLine );
+  inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength );
+  return inputLineBegin;
 }
 
 QMimeData * PythonConsole::createMimeDataFromSelection () const

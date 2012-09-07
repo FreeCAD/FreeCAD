@@ -89,7 +89,7 @@ public:
     void createAutoConstraints(const std::vector<AutoConstraint> &autoConstrs,
                                int geoId, Sketcher::PointPos pointPos=Sketcher::none);
 
-    void setPositionText(const Base::Vector2D &Pos, const std::string &text);
+    void setPositionText(const Base::Vector2D &Pos, const SbString &text);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);

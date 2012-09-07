@@ -43,6 +43,7 @@ class SoMarkerSet;
 
 class SoText2;
 class SoTranslation;
+class SbString;
 class SbTime;
 
 struct EditData;
@@ -111,7 +112,9 @@ public:
         STATUS_SKETCH_DragPoint,  /**< enum value while dragging a point. */
         STATUS_SKETCH_DragCurve,  /**< enum value while dragging a curve. */
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
-        STATUS_SKETCH_UseHandler  /**< enum value a DrawSketchHandler is in control. */
+        STATUS_SKETCH_UseHandler, /**< enum value a DrawSketchHandler is in control. */
+        STATUS_SKETCH_StartRubberBand, /**< enum value for initiating a rubber band selection */
+        STATUS_SKETCH_UseRubberBand /**< enum value when making a rubber band selection *//**< enum value a DrawSketchHandler is in control. */
     };
     /// is called by GuiCommands to set the drawing mode
     void setSketchMode(SketchMode mode) {Mode = mode;}
@@ -123,10 +126,14 @@ public:
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
     void getCoordsOnSketchPlane(double &u, double &v,const SbVec3f &point, const SbVec3f &normal);
-    /// helper to detect preselection
-    //bool handlePreselection(const SoPickedPoint *pp);
+
     /// helper to detect preselection
     bool detectPreselection(const SoPickedPoint *Point, int &PtIndex,int &GeoIndex, int &ConstrIndex, int &CrossIndex);
+
+    /// box selection method
+    void doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
+                        const Gui::View3DInventorViewer *viewer);
+
     /// helper change the color of the sketch according to selection and solver status
     void updateColor(void);
     /// get the pointer to the sketch document object
@@ -137,10 +144,9 @@ public:
 
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2D &toPos);
-    /// checks if there is a constraint object at position vector
-    bool isConstraintAtPosition(const Base::Vector3d &constrPos, const SoNode *constraint);
     /// finds a free position for placing a constraint icon
-    Base::Vector3d seekConstraintPosition(const Base::Vector3d &suggestedPos,
+    Base::Vector3d seekConstraintPosition(const Base::Vector3d &origPos,
+                                          const Base::Vector3d &norm,
                                           const Base::Vector3d &dir, float step,
                                           const SoNode *constraint);
 
@@ -161,12 +167,12 @@ public:
     /// is called by the tree if the user double click on the object
     virtual bool doubleClicked(void);
     /// is called when the Provider is in edit and the mouse is moved
-    virtual bool mouseMove(const SbVec3f &pNear, const SbVec3f &pFar, const SoPickedPoint *pp);
+    virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer);
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
     /// is called when the Provider is in edit and the mouse is clicked
-    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec3f &point,
-                                    const SbVec3f &normal, const SoPickedPoint *pp);
+    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s &pos,
+                                    const Gui::View3DInventorViewer *viewer);
     //@}
 
     friend class DrawSketchHandler;
@@ -200,7 +206,7 @@ protected:
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
 
-    void setPositionText(const Base::Vector2D &Pos, const std::string &txt);
+    void setPositionText(const Base::Vector2D &Pos, const SbString &txt);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
 
@@ -229,6 +235,7 @@ protected:
 
     static SbTime prvClickTime;
     static SbVec3f prvClickPoint;
+    static SbVec2s prvCursorPos;
 
     float zCross;
     float zLines;

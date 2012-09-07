@@ -36,7 +36,7 @@ class QMainWindow;
 #include <vector>
 #include <map>
 
-// #define _WIN32_WINNT 0x0501  //target at least windows XP
+//#define _WIN32_WINNT 0x0501  //target at least windows XP
 
 #include <Windows.h>
 
@@ -56,6 +56,10 @@ namespace Gui
     private:
         bool spaceballPresent;
         QMainWindow *mainWindow;
+        int  motionDataArray[6];
+        bool setOSIndependentMotionData();
+        void importSettings();
+        float convertPrefToSensitivity(int value);
 
 // For X11
 #ifdef Q_WS_X11

@@ -587,6 +587,16 @@ void Matrix_invert (Matrix a, Matrix inva)
   Matrix_gauss(temp,inva);
 }
 
+void  Matrix4D::inverseOrthogonal(void)
+{
+    Base::Vector3d c(dMtrx4D[0][3],dMtrx4D[1][3],dMtrx4D[2][3]);
+    transpose();
+    c = this->operator * (c);
+    dMtrx4D[0][3] = -c.x; dMtrx4D[3][0] = 0;
+    dMtrx4D[1][3] = -c.y; dMtrx4D[3][1] = 0;
+    dMtrx4D[2][3] = -c.z; dMtrx4D[3][2] = 0;
+}
+
 void Matrix4D::inverseGauss (void)
 {
   double matrix        [16]; 

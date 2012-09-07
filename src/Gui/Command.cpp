@@ -281,6 +281,9 @@ void Command::invoke(int i)
         if (isActive())
             activated( i );
     }
+    catch (const Base::SystemExitException&) {
+        throw;
+    }
     catch (Base::PyException &e) {
         e.ReportException();
         Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());

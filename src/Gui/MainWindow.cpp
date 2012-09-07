@@ -1157,8 +1157,7 @@ void MainWindow::delayedStartup()
         App::Application::processCmdLineFiles();
     }
     catch (const Base::SystemExitException&) {
-        QApplication::quit();
-        return;
+        throw;
     }
 
     const std::map<std::string,std::string>& cfg = App::Application::Config();

@@ -1457,9 +1457,10 @@ namespace Gui {
  */
 class GUIApplication : public GUIApplicationNativeEventAware
 {
+    int systemExit;
 public:
-    GUIApplication(int & argc, char ** argv)
-        : GUIApplicationNativeEventAware(argc, argv)
+    GUIApplication(int & argc, char ** argv, int exitcode)
+        : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
     {
     }
 
@@ -1479,6 +1480,10 @@ public:
                 return processSpaceballEvent(receiver, event);
             else
                 return QApplication::notify(receiver, event);
+        }
+        catch (const Base::SystemExitException&) {
+            qApp->exit(systemExit);
+            return true;
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
@@ -1543,7 +1548,8 @@ void Application::runApplication(void)
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
-    GUIApplication mainApp(argc, App::Application::GetARGV());
+    int systemExit = 1000;
+    GUIApplication mainApp(argc, App::Application::GetARGV(), systemExit);
     // set application icon and window title
     const std::map<std::string,std::string>& cfg = App::Application::Config();
     std::map<std::string,std::string>::const_iterator it;
@@ -1716,9 +1722,15 @@ void Application::runApplication(void)
     Base::Console().Log("Init: Entering event loop\n");
 
     try {
-        mainApp.exec();
+        int ret = mainApp.exec();
+        if (ret == systemExit)
+            throw Base::SystemExitException();
     }
-    catch(...) {
+    catch (const Base::SystemExitException&) {
+        Base::Console().Message("System exit\n");
+        throw;
+    }
+    catch (...) {
         // catching nasty stuff coming out of the event loop
         App::Application::destructObserver();
         Base::Console().Error("Event loop left through unhandled exception\n");
