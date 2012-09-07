@@ -1131,10 +1131,16 @@ int  ParameterManager::LoadDocument(const char* sFileName)
         errorsOccured = true;
     }
 
-    if (errorsOccured)
+    if (errorsOccured) {
+        delete parser;
+        delete errReporter;
         return 0;
+    }
 
-    _pDocument = parser->getDocument();
+    _pDocument = parser->adoptDocument();
+    delete parser;
+    delete errReporter;
+
     if (!_pDocument)
         throw Exception("Malformed Parameter document: Invalid document");
 

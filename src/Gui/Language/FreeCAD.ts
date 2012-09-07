@@ -64,6 +64,44 @@
     </message>
 </context>
 <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+        <source>Available:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::AlignmentView</name>
+    <message>
+        <source>Movable object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fixed object</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
@@ -158,6 +196,10 @@
     </message>
     <message>
         <source>License...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -709,10 +751,6 @@ Please define another shortcut.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Plot mode:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -734,6 +772,10 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Color plot:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document window:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1482,6 +1524,14 @@ Specify another directory, please.</source>
         <source>Invert zoom</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Zoom at cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom step</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -1722,6 +1772,10 @@ Specify another directory, please.</source>
         <source>Items</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Current line highlight</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
@@ -1956,6 +2010,14 @@ Specify another directory, please.</source>
         <source>Macro path</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>General macro settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run macros in local environment</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -2047,19 +2109,47 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The color of construction geometry in editmode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The color of fully constrained geometry in editmode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The color of vertices being edited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The color of edges being edited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The color of construction geometry in edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The color of fully constrained geometry in edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cursor text color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default shape color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The default color for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default line width and color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The default line color for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The default line thickness for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2124,7 +2214,39 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-        <source>Canceled.</source>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to save the file %1: %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download canceled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download failed: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded %1 to current directory.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2159,6 +2281,13 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+        <source>Copyright</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2848,6 +2977,25 @@ Do you want to save your changes?</source>
     </message>
 </context>
 <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+        <source>X:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Z:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Direction:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::MacroCommand</name>
     <message>
         <source>Macros</source>
@@ -2874,6 +3022,88 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Close All</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+        <source>Manual alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The alignment is already in progress.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alignment[*]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, select at least one point in the left and the right view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, select at least %1 points in the left and the right view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please pick points in the left and right view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The alignment has finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The alignment has been canceled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too few points picked in the left view. At least %1 points are needed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too few points picked in the right view. At least %1 points are needed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Try to align group of views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The alignment failed.
+How do you want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Point picked at (%1,%2,%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No point was picked</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3020,6 +3250,10 @@ Do you want to exit without saving your data?</source>
         <source>Select All</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear console</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::PythonEditor</name>
@@ -3159,10 +3393,6 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-        <source>Display mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Plot mode:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3180,6 +3410,10 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document window:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3206,9 +3440,21 @@ Do you want to specify another directory?</source>
     </message>
 </context>
 <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-        <source>English</source>
+        <source>Press left mouse button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press SHIFT button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press ALT button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press PgUp/PgDown button</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3462,14 +3708,6 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>A general error occurred while loading the workbench</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot open file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3770,6 +4008,17 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdBoxSelection</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdAbout</name>
     <message>
         <source>Help</source>
@@ -3826,6 +4075,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Activate previous window</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdAlignment</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alignment...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align the selected objects</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3942,21 +4206,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cut out</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Put duplicates of the selected objects to the active document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4107,6 +4356,40 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Put duplicates of the selected objects to the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdEdit</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle &amp;Edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggles the selected object&apos;s edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enters or leaves the selected object&apos;s edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdExport</name>
     <message>
         <source>File</source>
@@ -4121,7 +4404,26 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Supported formats</source>
+        <source>No selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select first the objects you want to export.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dependency graph...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show the dependency graph of the objects in the active document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4297,11 +4599,11 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mesure distance</source>
+        <source>Measures distance between two selected objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Measures distance between two selected objects</source>
+        <source>Measure distance</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4351,21 +4653,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Show help to the application</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Python Manuals</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show the Python documentation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5184,6 +5471,36 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate the view by 90Â° counter-clockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate the view by 90Â° clockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdViewTop</name>
     <message>
         <source>Standard-View</source>
@@ -5363,6 +5680,34 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Wireframe mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+        <source>Graphviz not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz couldn&apos;t be found on your system.
+Do you want to specify its installation path if it&apos;s already installed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz installation path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dependency graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphviz failed to create an image file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -79,6 +79,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
+#include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
 #include <Gui/View3DInventor.h>
@@ -115,6 +116,7 @@ SbColor ViewProviderSketch::SelectColor           (0.11f,0.68f,0.11f);  // #1CAD
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec3f ViewProviderSketch::prvClickPoint;
+SbVec2s ViewProviderSketch::prvCursorPos;
 
 //**************************************************************************
 // Edit data structure
@@ -182,8 +184,8 @@ struct EditData {
     SoCoordinate3 *RootCrossCoordinate;
     SoCoordinate3 *EditCurvesCoordinate;
     SoLineSet     *CurveSet;
-    SoLineSet     *EditCurveSet;
     SoLineSet     *RootCrossSet;
+    SoLineSet     *EditCurveSet;
     SoMarkerSet   *PointSet;
 
     SoText2       *textX;
@@ -348,10 +350,16 @@ void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec
     v = S.y;
 }
 
-bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVec3f &point,
-                                            const SbVec3f &normal, const SoPickedPoint *pp)
+bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVec2s &cursorPos,
+                                            const Gui::View3DInventorViewer *viewer)
 {
     assert(edit);
+
+    // Calculate 3d point to the mouse position
+    SbVec3f point = viewer->getPointOnScreen(cursorPos);
+    SbVec3f normal = viewer->getViewDirection();
+
+    SoPickedPoint *pp = this->getPointOnRay(cursorPos, viewer);
 
     // Radius maximum to allow double click event
     const int dblClickRadius = 5;
@@ -375,11 +383,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             switch (Mode) {
                 case STATUS_NONE:{
                     bool done=false;
-                    // Double click events variables
-                    SbTime tmp = (SbTime::getTimeOfDay() - prvClickTime);
-                    float dci = (float) QApplication::doubleClickInterval()/1000.0f;
-                    float length = (point - prvClickPoint).length();
-
                     if (edit->PreselectPoint != -1) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Point;
@@ -398,7 +401,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         done = true;
                     }
 
-                    if (done && length <  dblClickRadius && tmp.getValue() < dci) {
+                    // Double click events variables
+                    float dci = (float) QApplication::doubleClickInterval()/1000.0f;
+
+                    if (done &&
+                        (point - prvClickPoint).length() <  dblClickRadius &&
+                        (SbTime::getTimeOfDay() - prvClickTime).getValue() < dci) {
+
                         // Double Click Event Occured
                         editDoubleClicked();
                         // Reset Double Click Static Variables
@@ -409,6 +418,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     } else {
                         prvClickTime = SbTime::getTimeOfDay();
                         prvClickPoint = point;
+                        prvCursorPos = cursorPos;
+                        if (!done)
+                            Mode = STATUS_SKETCH_StartRubberBand;
                     }
 
                     return done;
@@ -418,7 +430,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 default:
                     return false;
             }
-        } else {
+        } else { // released
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_SELECT_Point:
@@ -582,6 +594,16 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     Mode = STATUS_NONE;
                     return true;
+                case STATUS_SKETCH_StartRubberBand: // a single click happened, so clear selection
+                    Mode = STATUS_NONE;
+                    Gui::Selection().clearSelection();
+                    return true;
+                case STATUS_SKETCH_UseRubberBand:
+                    doBoxSelection(prvCursorPos, cursorPos, viewer);
+                    // a redraw is required in order to clear the rubberband
+                    draw(true);
+                    Mode = STATUS_NONE;
+                    return true;
                 case STATUS_SKETCH_UseHandler:
                     return edit->sketchHandler->releaseButton(Base::Vector2D(x,y));
                 case STATUS_NONE:
@@ -740,11 +762,15 @@ void ViewProviderSketch::editDoubleClicked(void)
     }
 }
 
-bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, const SoPickedPoint *pp)
+bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventorViewer *viewer)
 {
     if (!edit)
         return false;
     assert(edit);
+
+    // Calculate 3d point to the mouse position
+    SbVec3f point = viewer->getPointOnScreen(cursorPos);
+    SbVec3f normal = viewer->getViewDirection();
 
     double x,y;
     getCoordsOnSketchPlane(x,y,point,normal);
@@ -753,6 +779,9 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
     bool preselectChanged;
     if (Mode!=STATUS_SKETCH_DragPoint && Mode!=STATUS_SKETCH_DragCurve &&
         Mode!=STATUS_SKETCH_DragConstraint) {
+
+        SoPickedPoint *pp = this->getPointOnRay(cursorPos, viewer);
+
         int PtIndex,GeoIndex,ConstrIndex,CrossIndex;
         preselectChanged = detectPreselection(pp,PtIndex,GeoIndex,ConstrIndex,CrossIndex);
     }
@@ -858,6 +887,19 @@ bool ViewProviderSketch::mouseMove(const SbVec3f &point, const SbVec3f &normal, 
                 this->updateColor();
             }
             return true;
+        case STATUS_SKETCH_StartRubberBand: {
+            Mode = STATUS_SKETCH_UseRubberBand;
+            return true;
+        }
+        case STATUS_SKETCH_UseRubberBand: {
+            // a redraw is required in order to clear any previous rubberband
+            draw(true);
+            viewer->drawRect(prvCursorPos.getValue()[0],
+                             viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                             cursorPos.getValue()[0],
+                             viewer->getGLWidget()->height() - cursorPos.getValue()[1]);
+            return true;
+        }
         default:
             return false;
     }
@@ -874,16 +916,17 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     Constraint *Constr = constrlist[constNum];
 
+    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
+    int extGeoCount = getSketchObject()->getExternalGeometryCount();
+    // with memory allocation
+    const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
+
+    assert(int(geomlist.size()) == extGeoCount + intGeoCount);
+    assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
+           || Constr->First != Constraint::GeoUndef);
+
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
         Constr->Type == Radius) {
-
-        int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-        int extGeoCount = getSketchObject()->getExternalGeometryCount();
-        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
-
-        assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-        assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-               || Constr->First != Constraint::GeoUndef);
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -954,13 +997,6 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         }
     }
     else if (Constr->Type == Angle) {
-        int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-        int extGeoCount = getSketchObject()->getExternalGeometryCount();
-        const std::vector<Part::Geometry *> geomlist = edit->ActSketch.extractGeometry(true, true);
-
-        assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-        assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-               || Constr->First != Constraint::GeoUndef);
 
         Base::Vector3d p0(0.,0.,0.);
         if (Constr->Second != Constraint::GeoUndef) { // line to line angle
@@ -1002,58 +1038,63 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         Base::Vector3d vec = Base::Vector3d(toPos.fX, toPos.fY, 0) - p0;
         Constr->LabelDistance = vec.Length()/2;
     }
+
+    // delete the cloned objects
+    for (std::vector<Part::Geometry *>::const_iterator it=geomlist.begin(); it != geomlist.end(); ++it)
+        if (*it) delete *it;
+
     draw(true);
 }
 
-bool ViewProviderSketch::isConstraintAtPosition(const Base::Vector3d &constrPos, const SoNode *constraint)
+Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &origPos,
+                                                          const Base::Vector3d &norm,
+                                                          const Base::Vector3d &dir, float step,
+                                                          const SoNode *constraint)
 {
     assert(edit);
     Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
     SoRayPickAction rp(viewer->getViewportRegion());
-    rp.setRadius(0.1f);
-    rp.setPickAll(true);
-    rp.setRay(SbVec3f(constrPos.x, constrPos.y, -1.f), SbVec3f(0, 0, 1) );
-    //problem
-    rp.apply(edit->constrGroup); // We could narrow it down to just the SoGroup containing the constraints
 
-    // returns a copy of the point
-    SoPickedPoint *pp = rp.getPickedPoint();
-    const SoPickedPointList ppl = rp.getPickedPointList();
+    float scaled_step = step * getScaleFactor();
 
-    if(ppl.getLength() > 1)
-      return true;
-    if (pp) {
-        SoPath *path = pp->getPath();
-        int length = path->getLength();
-        SoNode *tailFather1 = path->getNode(length-2);
-        SoNode *tailFather2 = path->getNode(length-3);
-
-        // checking if a constraint is the same as the one selected
-        if (tailFather1 == constraint || tailFather2 == constraint) {
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
-}
-
-Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &suggestedPos,
-                                                          const Base::Vector3d &dir, float step,
-                                                          const SoNode *constraint)
-{
     int multiplier = 0;
-    Base::Vector3d freePos;
-    do {
+    Base::Vector3d relPos, freePos;
+    bool isConstraintAtPosition = true;
+    while (isConstraintAtPosition && multiplier < 10) {
         // Calculate new position of constraint
-        freePos = suggestedPos + (dir * (multiplier * step));
-        multiplier++; // Increment the multiplier
+        relPos = norm * 0.5f + dir * multiplier;
+        freePos = origPos + relPos * scaled_step;
+
+        rp.setRadius(0.1f);
+        rp.setPickAll(true);
+        rp.setRay(SbVec3f(freePos.x, freePos.y, -1.f), SbVec3f(0, 0, 1) );
+        //problem
+        rp.apply(edit->constrGroup); // We could narrow it down to just the SoGroup containing the constraints
+
+        // returns a copy of the point
+        SoPickedPoint *pp = rp.getPickedPoint();
+        const SoPickedPointList ppl = rp.getPickedPointList();
+
+        if (ppl.getLength() <= 1 && pp) {
+            SoPath *path = pp->getPath();
+            int length = path->getLength();
+            SoNode *tailFather1 = path->getNode(length-2);
+            SoNode *tailFather2 = path->getNode(length-3);
+
+            // checking if a constraint is the same as the one selected
+            if (tailFather1 == constraint || tailFather2 == constraint)
+                isConstraintAtPosition = false;
+        } else
+            isConstraintAtPosition = false;
+
+        multiplier *= -1; // search in both sides
+        if  (multiplier >= 0)
+            multiplier++; // Increment the multiplier
     }
-    while (isConstraintAtPosition(freePos, constraint));
-    return freePos;
+    if (multiplier == 10)
+        relPos = norm * 0.5f; // no free position found
+    return relPos * step;
 }
 
 bool ViewProviderSketch::isSelectable(void) const
@@ -1361,6 +1402,214 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
     }
 
     return false;
+}
+
+void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
+                                        const Gui::View3DInventorViewer *viewer)
+{
+    std::vector<SbVec2s> corners0;
+    corners0.push_back(startPos);
+    corners0.push_back(endPos);
+    std::vector<SbVec2f> corners = viewer->getGLPolygon(corners0);
+
+    // all calculations with polygon and proj are in dimensionless [0 1] screen coordinates
+    Base::Polygon2D polygon;
+    polygon.Add(Base::Vector2D(corners[0].getValue()[0], corners[0].getValue()[1]));
+    polygon.Add(Base::Vector2D(corners[0].getValue()[0], corners[1].getValue()[1]));
+    polygon.Add(Base::Vector2D(corners[1].getValue()[0], corners[1].getValue()[1]));
+    polygon.Add(Base::Vector2D(corners[1].getValue()[0], corners[0].getValue()[1]));
+
+    Gui::ViewVolumeProjection proj(viewer->getCamera()->getViewVolume());
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    Sketcher::SketchObject *sketchObject = NULL;
+    if (doc)
+        sketchObject = dynamic_cast<Sketcher::SketchObject *>(doc->getActiveObject());
+    if (!sketchObject)
+        return;
+
+    Base::Placement Plm = sketchObject->Placement.getValue();
+
+    int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
+    int extGeoCount = sketchObject->getExternalGeometryCount();
+
+    const std::vector<Part::Geometry *> geomlist = sketchObject->getCompleteGeometry(); // without memory allocation
+    assert(int(geomlist.size()) == extGeoCount + intGeoCount);
+    assert(int(geomlist.size()) >= 2);
+
+    Base::Vector3d pnt0, pnt1, pnt2, pnt;
+    int VertexId = -1; // the loop below should be in sync with the main loop in ViewProviderSketch::draw
+                       // so that the vertex indices are calculated correctly
+    int GeoId = 0;
+    for (std::vector<Part::Geometry *>::const_iterator it = geomlist.begin(); it != geomlist.end()-2; ++it, ++GeoId) {
+
+        if (GeoId >= intGeoCount)
+            GeoId = -extGeoCount;
+
+        if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            // ----- Check if single point lies inside box selection -----/
+            const Part::GeomPoint *point = dynamic_cast<const Part::GeomPoint *>(*it);
+            Plm.multVec(point->getPoint(), pnt0);
+            pnt0 = proj(pnt0);
+            VertexId += 1;
+
+            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+        } else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            // ----- Check if line segment lies inside box selection -----/
+            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(*it);
+            Plm.multVec(lineSeg->getStartPoint(), pnt1);
+            Plm.multVec(lineSeg->getEndPoint(), pnt2);
+            pnt1 = proj(pnt1);
+            pnt2 = proj(pnt2);
+            VertexId += 2;
+
+            bool pnt1Inside = polygon.Contains(Base::Vector2D(pnt1.x, pnt1.y));
+            bool pnt2Inside = polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y));
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (pnt2Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (pnt1Inside && pnt2Inside) {
+                std::stringstream ss;
+                ss << "Edge" << GeoId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+        } else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            // ----- Check if circle lies inside box selection -----/
+            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(*it);
+            pnt0 = circle->getCenter();
+            VertexId += 1;
+
+            Plm.multVec(pnt0, pnt0);
+            pnt0 = proj(pnt0);
+
+            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+
+                int countSegments = 12;
+                float segment = float(2 * M_PI) / countSegments;
+
+                // circumscribed polygon radius
+                float radius = float(circle->getRadius()) / cos(segment/2);
+
+                bool bpolyInside = true;
+                pnt0 = circle->getCenter();
+                float angle = 0.f;
+                for (int i = 0; i < countSegments; ++i, angle += segment) {
+                    pnt = Base::Vector3d(pnt0.x + radius * cos(angle),
+                                         pnt0.y + radius * sin(angle),
+                                         0.f);
+                    Plm.multVec(pnt, pnt);
+                    pnt = proj(pnt);
+                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                        bpolyInside = false;
+                        break;
+                    }
+                }
+
+                if (bpolyInside) {
+                    ss.clear();
+                    ss.str("");
+                    ss << "Edge" << GeoId;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(),ss.str().c_str());
+                }
+            }
+
+        } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            // Check if arc lies inside box selection
+            const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle *>(*it);
+
+            pnt0 = aoc->getCenter();
+            pnt1 = aoc->getStartPoint();
+            pnt2 = aoc->getEndPoint();
+            VertexId += 3;
+
+            Plm.multVec(pnt0, pnt0);
+            Plm.multVec(pnt1, pnt1);
+            Plm.multVec(pnt2, pnt2);
+            pnt0 = proj(pnt0);
+            pnt1 = proj(pnt1);
+            pnt2 = proj(pnt2);
+
+            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 2;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            bool pnt1Inside = polygon.Contains(Base::Vector2D(pnt1.x, pnt1.y));
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            bool pnt2Inside = polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y));
+            if (pnt2Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (pnt1Inside && pnt2Inside) {
+                double startangle, endangle;
+                aoc->getRange(startangle, endangle);
+                if (startangle > endangle) // if arc is reversed
+                    std::swap(startangle, endangle);
+
+                double range = endangle-startangle;
+                int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+                float segment = float(range) / countSegments;
+
+                // circumscribed polygon radius
+                float radius = float(aoc->getRadius()) / cos(segment/2);
+
+                bool bpolyInside = true;
+                pnt0 = aoc->getCenter();
+                float angle = float(startangle) + segment/2;
+                for (int i = 0; i < countSegments; ++i, angle += segment) {
+                    pnt = Base::Vector3d(pnt0.x + radius * cos(angle),
+                                         pnt0.y + radius * sin(angle),
+                                         0.f);
+                    Plm.multVec(pnt, pnt);
+                    pnt = proj(pnt);
+                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                        bpolyInside = false;
+                        break;
+                    }
+                }
+
+                if (bpolyInside) {
+                    std::stringstream ss;
+                    ss << "Edge" << GeoId;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+            }
+
+        } else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            const Part::GeomBSplineCurve *spline = dynamic_cast<const Part::GeomBSplineCurve *>(*it);
+            std::vector<Base::Vector3d> poles = spline->getPoles();
+            VertexId += poles.size();
+            // TODO
+        }
+    }
+
 }
 
 void ViewProviderSketch::updateColor(void)
@@ -1716,7 +1965,7 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(start);
             Points.push_back(end);
         }
-        else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a circle
+        else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
             const Part::GeomBSplineCurve *spline = dynamic_cast<const Part::GeomBSplineCurve *>(*it);
             Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(spline->handle());
 
@@ -1842,19 +2091,12 @@ Restart:
                     Base::Vector3d dir = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Normalize();
                     Base::Vector3d norm(-dir.y,dir.x,0);
 
-                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-                    Base::Vector3d constrPos = midpos + (norm * 2.5 * scale);
-
-                    constrPos = seekConstraintPosition(constrPos, dir, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                    // Translate the Icon based on calculated position
-                    Base::Vector3d relPos = constrPos - midpos; // Relative Position of Icons to Midpoint
-                    relPos = relPos / scale; // Must Divide by Scale Factor
+                    Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
 
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos.x, relPos.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos.x, relpos.y, 0);
 
                 }
                 break;
@@ -1921,25 +2163,16 @@ Restart:
                         dir1 = Base::Vector3d(1,0,0);
                     }
 
-                    // Get Current Scale Factor
-                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-
-                    Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
-                    constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
-
-                    // Translate the Icon based on calculated position
-                    Base::Vector3d relPos1 = (constrPos1 - midpos1) / scale ; // Relative Position of Icons to Midpoint1
+                    Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                     if (Constr->FirstPos == Sketcher::none) {
-                        Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
-                        constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
-                        Base::Vector3d relPos2 = (constrPos2 - midpos2) / scale ; // Relative Position of Icons to Midpoint2
                         Base::Vector3d secondPos = midpos2 - midpos1;
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
                     }
 
                 }
@@ -2012,32 +2245,19 @@ Restart:
                         norm2 = Base::Vector3d(-dir2.y,dir2.x,0.);
                     }
 
-                    // Get Current Scale Factor
-                    float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-
-                    Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
-                    constrPos1 = seekConstraintPosition(constrPos1, dir1, scale * 2.5, edit->constrGroup->getChild(i));
-
-                    Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
-                    constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                    // Translate the Icon based on calculated position
-                    Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1
-                    Base::Vector3d relPos2 = constrPos2 - midpos2 ; // Relative Position of Icons to Midpoint2
-
-                    relPos1 = relPos1 / scale;
-                    relPos2 = relPos2 / scale;
+                    Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                    Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                     Base::Vector3d secondPos = midpos2 - midpos1;
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y -relpos1.y, 0);
 
                 }
                 break;
@@ -2148,32 +2368,19 @@ Restart:
                             Base::Vector3d norm1 = Base::Vector3d(-dir1.y,dir1.x,0.f);
                             Base::Vector3d norm2 = Base::Vector3d(-dir2.y,dir2.x,0.f);
 
-                            // Get Current Scale Factor
-                            float scale = dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->getScaleFactor();
-
-                            Base::Vector3d constrPos1 = midpos1 + (norm1 * 2.5 * scale);
-                            constrPos1 = seekConstraintPosition(constrPos1, dir1, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                            Base::Vector3d constrPos2 = midpos2 + (norm2 * 2.5 * scale);
-                            constrPos2 = seekConstraintPosition(constrPos2, dir2, 2.5 * scale, edit->constrGroup->getChild(i));
-
-                            // Translate the Icon based on calculated position
-                            Base::Vector3d relPos1 = constrPos1 - midpos1 ; // Relative Position of Icons to Midpoint1
-                            Base::Vector3d relPos2 = constrPos2 - midpos2 ; // Relative Position of Icons to Midpoint2
-
-                            relPos1 = relPos1 / scale;
-                            relPos2 = relPos2 / scale;
+                            Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
                             dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                             //Reference Position that is scaled according to zoom
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos1.x, relPos1.y, 0);
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
                             dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                             //Reference Position that is scaled according to zoom
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relPos2.x -relPos1.x, relPos2.y -relPos1.y, 0);
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
 
                             break;
                         }
@@ -2586,7 +2793,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    // create the container for the addtitional edit data
+    // create the container for the additional edit data
     assert(!edit);
     edit = new EditData();
 
@@ -2777,10 +2984,15 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditCurveSet = new SoLineSet;
     edit->EditRoot->addChild(edit->EditCurveSet);
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    float transparency;
+    SbColor cursorTextColor(0,0,1);
+    cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
+
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
-    SoMaterial *EditMaterials = new SoMaterial;
-    EditMaterials->diffuseColor = SbColor(0,0,1);
-    edit->EditRoot->addChild(EditMaterials);
+    SoMaterial *CoordTextMaterials = new SoMaterial;
+    CoordTextMaterials->diffuseColor = cursorTextColor;
+    edit->EditRoot->addChild(CoordTextMaterials);
 
     SoSeparator *Coordsep = new SoSeparator();
     // no caching for fluctuand data structures
@@ -2797,6 +3009,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->textX->justification = SoText2::LEFT;
     edit->textX->string = "";
     Coordsep->addChild(edit->textX);
+
     edit->EditRoot->addChild(Coordsep);
 
     // group node for the Constraint visual +++++++++++++++++++++++++++++++++++
@@ -2867,17 +3080,17 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
 }
 
-void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const std::string &text)
+void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbString &text)
 {
-    edit->textX->string = text.c_str();
+    edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
   
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
 {
-    char buf[40];
-    sprintf( buf, " (%.1f,%.1f)", Pos.fX,Pos.fY );
-    edit->textX->string = buf;
+    SbString text;
+    text.sprintf(" (%.1f,%.1f)", Pos.fX, Pos.fY);
+    edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
 

@@ -142,28 +142,9 @@ void ViewProvider::setUpdatesEnabled (bool enable)
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 {
     const SoEvent * ev = node->getEvent();
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(node->getUserData());
+    Gui::View3DInventorViewer* viewer = reinterpret_cast<Gui::View3DInventorViewer*>(node->getUserData());
     ViewProvider *self = reinterpret_cast<ViewProvider*>(ud);
     assert(self);
-
-    // Calculate 3d point to the mouse position
-    SbVec3f point, norm;
-    point = view->getPointOnScreen(ev->getPosition());
-    norm = view->getViewDirection();
-
-    // for convenience make a pick ray action to get the (potentially) picked entity in the provider
-    //SoPickedPoint* Point = self->getPointOnRay(point,norm,*view);
-    SoSeparator* root = new SoSeparator;
-    root->ref();
-    root->addChild(view->getCamera());
-    root->addChild(self->pcRoot);
-
-    SoRayPickAction rp(view->getViewportRegion());
-    rp.setPoint(ev->getPosition());
-    rp.apply(root);
-    root->unref();
-
-    SoPickedPoint* pp = rp.getPickedPoint();
 
     try {
         // Keyboard events
@@ -192,12 +173,12 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
 
             // call the virtual method
-            if (self->mouseButtonPressed(button,press,point,norm,pp))
+            if (self->mouseButtonPressed(button,press,ev->getPosition(),viewer))
                 node->setHandled();
         }
         // Mouse Movement handling
         else if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
-            if (self->mouseMove(point,norm,pp))
+            if (self->mouseMove(ev->getPosition(),viewer))
                 node->setHandled();
         }
     }
@@ -352,11 +333,28 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
-SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, const View3DInventorViewer& viewer) const
+SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const
+{
+    // for convenience make a pick ray action to get the (potentially) picked entity in the provider
+    SoSeparator* root = new SoSeparator;
+    root->ref();
+    root->addChild(viewer->getCamera());
+    root->addChild(pcRoot);
+
+    SoRayPickAction rp(viewer->getViewportRegion());
+    rp.setPoint(pos);
+    rp.apply(root);
+    root->unref();
+
+    SoPickedPoint* pick = rp.getPickedPoint();
+    return (pick ? new SoPickedPoint(*pick) : 0);
+}
+
+SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, const View3DInventorViewer* viewer) const
 {
     // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
-    SoRayPickAction rp(viewer.getViewportRegion());
+    SoRayPickAction rp(viewer->getViewportRegion());
     rp.setRay(pos,dir);
     rp.apply(pcRoot);
 

@@ -144,6 +144,30 @@ Py::List FacetPy::getPoints(void) const
     return pts;
 }
 
+Py::Tuple FacetPy::getPointIndices(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound())
+      { return Py::Tuple(); }
+
+    Py::Tuple idxTuple(3);
+    for (int i=0; i<3; i++)
+      { idxTuple.setItem( i, Py::Int( (long)face->PIndex[i] ) ); }
+    return idxTuple;
+}
+
+Py::Tuple FacetPy::getNeighbourIndices(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound())
+      { return Py::Tuple(); }
+
+    Py::Tuple idxTuple(3);
+    for (int i=0; i<3; i++)
+      { idxTuple.setItem( i, Py::Int( (long)face->NIndex[i] ) ); }
+    return idxTuple;
+}
+
 PyObject *FacetPy::getCustomAttributes(const char* attr) const
 {
     return 0;

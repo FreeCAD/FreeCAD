@@ -235,7 +235,7 @@ AboutDialog::~AboutDialog()
     delete ui;
 }
 
-static QString getPlatform()
+static QString getOperatingSystem()
 {
 #if defined (Q_OS_WIN32)
     switch(QSysInfo::windowsVersion())
@@ -309,9 +309,13 @@ void AboutDialog::setupLabels()
     date.replace(QString::fromAscii("Unknown"), disda);
     ui->labelBuildDate->setText(date);
 
+    QString os = ui->labelBuildOS->text();
+    os.replace(QString::fromAscii("Unknown"), getOperatingSystem());
+    ui->labelBuildOS->setText(os);
+
     QString platform = ui->labelBuildPlatform->text();
     platform.replace(QString::fromAscii("Unknown"),
-        QString::fromAscii("%1 (%2-bit)").arg(getPlatform()).arg(QSysInfo::WordSize));
+        QString::fromAscii("%1-bit").arg(QSysInfo::WordSize));
     ui->labelBuildPlatform->setText(platform);
 
     // branch name
@@ -399,7 +403,8 @@ void AboutDialog::on_copyButton_clicked()
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromAscii(config["BuildRevision"].c_str());
-    str << "Platform: " << getPlatform() << " (" << QSysInfo::WordSize << "-bit)" << endl;
+    str << "OS: " << getOperatingSystem() << endl;
+    str << "Platform: " << QSysInfo::WordSize << "-bit" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
     it = config.find("BuildRevisionBranch");
     if (it != config.end())

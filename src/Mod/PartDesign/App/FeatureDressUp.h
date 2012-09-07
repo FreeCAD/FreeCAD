@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class DressUp : public PartDesign::Feature
+class PartDesignExport DressUp : public PartDesign::Feature
 {
     PROPERTY_HEADER(PartDesign::DressUp);
 

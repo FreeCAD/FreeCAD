@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class Groove : public SketchBased
+class PartDesignExport Groove : public SketchBased
 {
     PROPERTY_HEADER(PartDesign::Groove);
 

@@ -498,6 +498,8 @@ const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
                 Py::Callable method(vp.getAttr(std::string("getDefaultDisplayMode")));
                 Py::Tuple args(0);
                 Py::String str(method.apply(args));
+                if (str.isUnicode())
+                    str = str.encode("ascii"); // json converts strings into unicode
                 mode = str.as_std_string();
                 return mode.c_str();
             }

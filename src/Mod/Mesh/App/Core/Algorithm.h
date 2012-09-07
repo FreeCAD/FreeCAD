@@ -116,6 +116,10 @@ public:
    */
   float GetAverageEdgeLength() const;
   /**
+   * Calculates the gravity point of the mesh.
+   */
+  Base::Vector3f GetGravityPoint() const;
+  /**
    * Returns all boundaries of the mesh.
    */
   void GetMeshBorders (std::list<std::vector<Base::Vector3f> > &rclBorders) const;

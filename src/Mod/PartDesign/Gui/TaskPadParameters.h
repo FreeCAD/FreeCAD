@@ -66,6 +66,7 @@ private Q_SLOTS:
     void onLength2Changed(double);
     void onModeChanged(int);
     void onFaceName(const QString& text);
+    void onUpdateView(bool);
 
 protected:
     void changeEvent(QEvent *e);

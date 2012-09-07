@@ -27,6 +27,7 @@ __url__ = "http://free-cad.sourceforge.net"
 
 import FreeCAD,FreeCADGui
 from PyQt4 import QtGui,QtCore
+from DraftTools import translate
 
 def addToComponent(compobject,addobject,mod=None):
     '''addToComponent(compobject,addobject,mod): adds addobject
@@ -264,6 +265,13 @@ class Component:
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
               
 class ViewProviderComponent:
     "A default View Provider for Component objects"
@@ -317,7 +325,7 @@ class ArchSelectionObserver:
     def addSelection(self,document, object, element, position):
         if object == self.watched.Name:
             if not element:
-                print "closing Sketch edit"
+                FreeCAD.Console.PrintMessage(str(translate("Arch","closing Sketch edit")))
                 if self.hide:
                     self.origin.ViewObject.Transparency = 0
                     self.origin.ViewObject.Selectable = True

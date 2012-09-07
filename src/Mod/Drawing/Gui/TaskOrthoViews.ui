@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>259</width>
-    <height>491</height>
+    <height>496</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -122,22 +122,22 @@
       <widget class="QComboBox" name="rotate">
        <item>
         <property name="text">
-         <string>0</string>
+         <string notr="true">0</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>90</string>
+         <string notr="true">90</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>180</string>
+         <string notr="true">180</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>270</string>
+         <string notr="true">270</string>
         </property>
        </item>
       </widget>

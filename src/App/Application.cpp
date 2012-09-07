@@ -1339,7 +1339,7 @@ void Application::LoadParameters(void)
 // fix weird error while linking boost (all versions of VC)
 // VS2010: https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
-#if (defined (BOOST_VERSION) && (BOOST_VERSION == 104100))
+#if (defined (BOOST_VERSION) && (BOOST_VERSION >= 104100))
 namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
 } }

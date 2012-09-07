@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class Revolution : public SketchBased
+class PartDesignExport Revolution : public SketchBased
 {
     PROPERTY_HEADER(PartDesign::Revolution);
 

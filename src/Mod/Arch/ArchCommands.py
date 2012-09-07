@@ -43,6 +43,22 @@ def getStringList(objects):
     result += "]"
     return result
 
+def getDefaultColor(objectType):
+    '''getDefaultColor(string): returns a color value for the given object
+    type (Wall, Structure, Window)'''
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    if objectType == "Wall":
+        c = p.GetUnsigned("WallColor")
+    elif objectType == "Structure":
+        c = p.GetUnsigned("StructureColor")
+    else:
+        c = p.GetUnsigned("WindowsColor")
+    r = float((c>>24)&0xFF)/255.0
+    g = float((c>>16)&0xFF)/255.0
+    b = float((c>>8)&0xFF)/255.0
+    result = (r,g,b,1.0)
+    return result
+
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
     from the given list as components to the given host Object. Use this for
@@ -83,6 +99,12 @@ def addComponents(objectsList,host):
                 if hasattr(o,"Shape"):
                     a.append(o)
         host.Objects = a
+    elif host.isDerivedFrom("App::DocumentObjectGroup"):
+        c = host.Group
+        for o in objectsList:
+            if not o in c:
+                c.append(o)
+        host.Group = c       
 
 def removeComponents(objectsList,host=None):
     '''removeComponents(objectsList,[hostObject]): removes the given component or
@@ -95,9 +117,7 @@ def removeComponents(objectsList,host=None):
         if Draft.getType(host) in ["Wall","Structure"]:
             if hasattr(host,"Axes"):
                 a = host.Axes
-                print a
                 for o in objectsList[:]:
-                    print o.Name
                     if o in a:
                         a.remove(o)
                         objectsList.remove(o)
@@ -111,10 +131,10 @@ def removeComponents(objectsList,host=None):
                             if o.Base.Support:
                                 if isinstance(o.Base.Support,tuple):
                                    if o.Base.Support[0].Name == host.Name:
-                                       print "removing sketch support to avoid cross-referencing"
+                                       FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
                                        o.Base.Support = None
                                 elif o.Base.Support.Name == host.Name:
-                                    print "removing sketch support to avoid cross-referencing"
+                                    FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
                                     o.Base.Support = None
             host.Subtractions = s
     else:
@@ -262,41 +282,106 @@ def closeHole(shape):
     else:
         return solid
 
+def getCutVolume(cutplane,shapes):
+    """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
+    from the given shapes and the given cutting plane"""
+    import Part
+    placement = FreeCAD.Placement(cutplane.Placement)
+    # building boundbox
+    bb = shapes[0].BoundBox 
+    for sh in shapes[1:]:
+        bb.add(sh.BoundBox)
+    bb.enlarge(1)
+    um = vm = wm = 0
+    ax = placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
+    v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+    if not bb.isCutPlane(placement.Base,ax):
+        FreeCAD.Console.PrintMessage(str(translate("Arch","No objects are cut by the plane")))
+        return None,None,None
+    else:
+        corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMin),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMin),
+                   FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMin,bb.YMax,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
+                   FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
+        for c in corners:
+            dv = c.sub(placement.Base)
+            um1 = DraftVecUtils.project(dv,u).Length
+            um = max(um,um1)
+            vm1 = DraftVecUtils.project(dv,v).Length
+            vm = max(vm,vm1)
+            wm1 = DraftVecUtils.project(dv,ax).Length
+            wm = max(wm,wm1)
+        p1 = FreeCAD.Vector(-um,vm,0)
+        p2 = FreeCAD.Vector(um,vm,0)
+        p3 = FreeCAD.Vector(um,-vm,0)
+        p4 = FreeCAD.Vector(-um,-vm,0)
+        cutface = Part.makePolygon([p1,p2,p3,p4,p1])
+        cutface = Part.Face(cutface)
+        cutface.Placement = placement
+        cutnormal = DraftVecUtils.scaleTo(ax,wm)
+        cutvolume = cutface.extrude(cutnormal)
+        cutnormal = DraftVecUtils.neg(cutnormal)
+        invcutvolume = cutface.extrude(cutnormal)
+        return cutface,cutvolume,invcutvolume
+
+def getShapeFromMesh(mesh):
+    import Part, MeshPart
+    if mesh.isSolid() and (mesh.countComponents() == 1):
+        # use the best method
+        faces = []
+        for f in mesh.Facets:
+            p=f.Points+[f.Points[0]]
+            pts = []
+            for pp in p:
+                pts.append(FreeCAD.Vector(pp[0],pp[1],pp[2]))
+            faces.append(Part.Face(Part.makePolygon(pts)))
+        shell = Part.makeShell(faces)
+        solid = Part.Solid(shell)
+        solid = solid.removeSplitter()
+        return solid
+
+    faces = []  
+    segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
+    for i in segments:
+        if len(i) > 0:
+            wires = MeshPart.wireFromSegment(mesh, i)
+            if wires:
+                faces.append(makeFace(wires))
+    try:
+        se = Part.makeShell(faces)
+    except:
+        return None
+    else:
+        try:
+            solid = Part.Solid(se)
+        except:
+            return se
+        else:
+            return solid
+  
+
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red'''
 
     name = obj.Name
-    import Part, MeshPart, DraftGeomUtils
     if "Mesh" in obj.PropertiesList:
         faces = []  
         mesh = obj.Mesh
         plac = obj.Placement
-        segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
-        print len(segments)," segments ",segments
-        for i in segments:
-            print "treating",segments.index(i),i
-            if len(i) > 0:
-                wires = MeshPart.wireFromSegment(mesh, i)
-                print "wire done"
-                print wires
-                if wires:
-                    faces.append(makeFace(wires))
-                print "done facing"
-            print "faces",faces
-
-        try:
-            se = Part.makeShell(faces)
-            solid = Part.Solid(se)
-        except:
-            raise
-        else:
-            if solid.isClosed():
+        solid = getShapeFromMesh(mesh)
+        if solid:
+            if solid.isClosed() and solid.isValid():
                 FreeCAD.ActiveDocument.removeObject(name)
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             newobj.Shape = solid
             newobj.Placement = plac
-            if not solid.isClosed():
+            if (not solid.isClosed()) or (not solid.isValid()):
                 if mark:
                     newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
             return newobj
@@ -382,8 +467,8 @@ def download(url):
     else:
         return filepath
 
-def check(objectslist,includehidden=True):
-    """check(objectslist,includehidden=True): checks if the given objects contain only solids"""
+def check(objectslist,includehidden=False):
+    """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
     objs = Draft.getGroupContents(objectslist)
     if not includehidden:
         objs = Draft.removeHidden(objs)
@@ -393,20 +478,20 @@ def check(objectslist,includehidden=True):
             bad.append([o,"is not a Part-based object"])
         else:
             s = o.Shape
-            if not s.isClosed():
-                bad.append([o,"is not closed"])
+            if (not s.isClosed()) and (not (Draft.getType(o) == "Axis")):
+                bad.append([o,str(translate("Arch","is not closed"))])
             elif not s.isValid():
-                bad.append([o,"is not valid"])
-            elif not s.Solids:
-                bad.append([o,"doesn't contain any solid"])
+                bad.append([o,str(translate("Arch","is not valid"))])
+            elif (not s.Solids) and (not (Draft.getType(o) == "Axis")):
+                bad.append([o,str(translate("Arch","doesn't contain any solid"))])
             else:
                 f = 0
                 for sol in s.Solids:
                     f += len(sol.Faces)
                     if not sol.isClosed():
-                        bad.append([o,"contains a non-closed solid"])
+                        bad.append([o,str(translate("Arch","contains a non-closed solid"))])
                 if len(s.Faces) != f:
-                    bad.append([o,"contains faces that are not part of any solid"])
+                    bad.append([o,str(translate("Arch","contains faces that are not part of any solid"))])
     return bad
 
     
@@ -508,7 +593,7 @@ class _CommandMeshToShape:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_MeshToShape',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToShape","Mesh to Shape"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToPart","Turns selected meshes into Part Shape objects")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
 
     def IsActive(self):
         if FreeCADGui.Selection.getSelection():
@@ -613,7 +698,7 @@ class _CommandCheck:
     def Activated(self):
         result = check(FreeCADGui.Selection.getSelection())
         if not result:
-            FreeCAD.Console.PrintMessage("All good! no problems found")
+            FreeCAD.Console.PrintMessage(str(translate("Arch","All good! no problems found")))
         else:
             FreeCADGui.Selection.clearSelection()
             for i in result:

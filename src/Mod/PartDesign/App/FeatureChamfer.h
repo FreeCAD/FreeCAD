@@ -31,7 +31,7 @@
 namespace PartDesign
 {
 
-class Chamfer : public DressUp
+class PartDesignExport Chamfer : public DressUp
 {
     PROPERTY_HEADER(PartDesign::Chamfer);
 

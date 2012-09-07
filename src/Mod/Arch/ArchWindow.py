@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore,QtGui
 from DraftTools import translate
@@ -49,12 +49,7 @@ def makeWindow(baseobj=None,width=None,name=str(translate("Arch","Window"))):
     if obj.Base:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    c = p.GetUnsigned("WindowColor")
-    r = float((c>>24)&0xFF)/255.0
-    g = float((c>>16)&0xFF)/255.0
-    b = float((c>>8)&0xFF)/255.0
-    obj.ViewObject.ShapeColor = (r,g,b,1.0)
+    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Window")
     return obj
 
 def makeDefaultWindowPart(obj):
@@ -166,7 +161,6 @@ class _Window(ArchComponent.Component):
                                     if zof:
                                         zov = DraftVecUtils.scaleTo(norm,zof)
                                         shape.translate(zov)
-                                print shape
                                 shapes.append(shape)
                         if shapes:
                             obj.Shape = Part.makeCompound(shapes)
@@ -445,10 +439,7 @@ class _ArchWindowTaskPanel:
                 self.obj.WindowParts = parts
                 self.update()
         else:
-            FreeCAD.Console.PrintWarning(str(
-                    QtGui.QApplication.translate(
-                        "Arch", "Unable to create component",
-                        None, QtGui.QApplication.UnicodeUTF8)))
+            FreeCAD.Console.PrintWarning(str(translate("Arch", "Unable to create component")))
         
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)

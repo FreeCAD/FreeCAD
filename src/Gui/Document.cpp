@@ -187,6 +187,9 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
         d->_pcInEdit = p;
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        if (dlg)
+            dlg->setDocumentName(this->getDocument()->getName());
         if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
             signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
     }

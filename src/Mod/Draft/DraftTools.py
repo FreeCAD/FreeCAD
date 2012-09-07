@@ -3658,15 +3658,27 @@ class Shape2DView():
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Creates Shape 2D views of selected objects")}
 
     def IsActive(self):
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
         
     def Activated(self):
-        sellist = []
-        for ob in Draft.getSelection():
-            Draft.makeShape2DView(ob)
+        faces = []
+        objs = []
+        sel = FreeCADGui.Selection.getSelectionEx()
+        for s in sel:
+            objs.append(s.Object)
+            for e in s.SubElementNames:
+                if "Face" in e:
+                    faces.append(int(e[4:])-1)
+        print objs,faces
+        if len(objs) == 1:
+            if faces:
+                Draft.makeShape2DView(objs[0],facenumbers=faces)
+                return
+        for o in objs:
+            Draft.makeShape2DView(o)
 
 class Draft2Sketch():
     "The Draft2Sketch FreeCAD command definition"
@@ -3711,7 +3723,7 @@ class Draft2Sketch():
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
                     Draft.makeSketch(obj,autoconstraints=True)
                 elif obj.isDerivedFrom("Part::Feature"):
-                    if len(obj.Shape.Wires) == 1:
+                    if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
                         Draft.makeSketch(obj,autoconstraints=False)
             FreeCAD.ActiveDocument.commitTransaction()
 
@@ -3752,6 +3764,9 @@ class Point:
     def Activated(self):
         self.view = Draft.get3DView()
         self.stack = []
+        rot = self.view.getCameraNode().getField("orientation").getValue()
+        upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+        plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
         self.point = None
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.click)
@@ -3772,7 +3787,7 @@ class Point:
                     self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
                     self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
                     FreeCAD.ActiveDocument.openTransaction("Create Point")
-                    Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),0.0)
+                    Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),self.stack[0][2])
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCADGui.Snapper.off()
 

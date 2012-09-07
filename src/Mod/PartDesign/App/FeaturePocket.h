@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class Pocket : public Subtractive
+class PartDesignExport Pocket : public Subtractive
 {
     PROPERTY_HEADER(PartDesign::Pocket);
 

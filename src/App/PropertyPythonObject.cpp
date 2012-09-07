@@ -294,6 +294,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
     else {
         bool load_json=false;
         bool load_pickle=false;
+        bool load_failed=false;
         std::string buffer = reader.getAttribute("value");
         if (reader.hasAttribute("encoded") &&
             strcmp(reader.getAttribute("encoded"),"yes") == 0) {
@@ -312,7 +313,16 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
             end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
                 Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
-                this->object = PyInstance_NewRaw(mod.getAttr(reader.getAttribute("class")).ptr(), 0);
+                PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
+                if (PyClass_Check(cls)) {
+                    this->object = PyInstance_NewRaw(cls, 0);
+                }
+                else if (PyType_Check(cls)) {
+                    this->object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
+                }
+                else {
+                    throw Py::TypeError("neither class nor type object");
+                }
                 load_json = true;
             }
             else if (boost::regex_search(start, end, what, pickle)) {
@@ -327,6 +337,8 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         catch (Py::Exception&) {
             Base::PyException e; // extract the Python error text
             Base::Console().Warning("PropertyPythonObject::Restore: %s\n", e.what());
+            this->object = Py::None();
+            load_failed = true;
         }
 
         aboutToSetValue();
@@ -334,7 +346,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
             this->fromString(buffer);
         else if (load_pickle)
             this->loadPickle(buffer);
-        else
+        else if (!load_failed)
             Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer.c_str());
         restoreObject(reader);
         hasSetValue();

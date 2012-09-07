@@ -1331,11 +1331,12 @@ def writeShape(ob,dxfobject,nospline=False):
                                                     ang1, ang2, color=getACI(ob),
                                                     layer=getGroup(ob,exportList)))
             else: # anything else is treated as lines
-                ve1=edge.Vertexes[0].Point
-                ve2=edge.Vertexes[1].Point
-                dxfobject.append(dxfLibrary.Line([DraftVecUtils.tup(ve1), DraftVecUtils.tup(ve2)],
-                                                 color=getACI(ob),
-                                                 layer=getGroup(ob,exportList)))
+                if len(edge.Vertexes) > 1:
+                    ve1=edge.Vertexes[0].Point
+                    ve2=edge.Vertexes[1].Point
+                    dxfobject.append(dxfLibrary.Line([DraftVecUtils.tup(ve1), DraftVecUtils.tup(ve2)],
+                                                     color=getACI(ob),
+                                                     layer=getGroup(ob,exportList)))
 
 def writeMesh(ob,dxfobject):
     "export a shape as a polyface mesh"
@@ -1356,65 +1357,76 @@ def export(objectslist,filename,nospline=False):
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs"
     global exportList
     exportList = objectslist
-    dxf = dxfLibrary.Drawing()
-    if (len(exportList) == 1) and (exportList[0].isDerivedFrom("Drawing::FeaturePage")):
+
+    if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
+        # arch view: export it "as is"
+        dxf = exportList[0].Proxy.getDXF()
+        if dxf:
+            f = open(filename,"w")
+            f.write(dxf)
+            f.close()
+
+    elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("Drawing::FeaturePage")):
+        # page: special hack-export! (see below)
         exportPage(exportList[0],filename)
-        return
-    for ob in exportList:
-        print "processing ",ob.Name
-        if ob.isDerivedFrom("Part::Feature"):
-            if not ob.Shape.isNull():
-                if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
-                    writeMesh(ob,dxf)
-                else:
-                    if ob.Shape.ShapeType == 'Compound':
-                        if (len(ob.Shape.Wires) == 1):
-                            # only one wire in this compound, no lone edge -> polyline
-                            if (len(ob.Shape.Wires[0].Edges) == len(ob.Shape.Edges)):
-                                writeShape(ob,dxf,nospline)
+
+    else:
+        # other cases, treat edges
+        dxf = dxfLibrary.Drawing()
+        for ob in exportList:
+            print "processing ",ob.Name
+            if ob.isDerivedFrom("Part::Feature"):
+                if not ob.Shape.isNull():
+                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
+                        writeMesh(ob,dxf)
+                    else:
+                        if ob.Shape.ShapeType == 'Compound':
+                            if (len(ob.Shape.Wires) == 1):
+                                # only one wire in this compound, no lone edge -> polyline
+                                if (len(ob.Shape.Wires[0].Edges) == len(ob.Shape.Edges)):
+                                    writeShape(ob,dxf,nospline)
+                                else:
+                                    # 1 wire + lone edges -> block
+                                    block = getBlock(ob)
+                                    dxf.blocks.append(block)
+                                    dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                             else:
-                                # 1 wire + lone edges -> block
+                                # all other cases: block
                                 block = getBlock(ob)
                                 dxf.blocks.append(block)
                                 dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                         else:
-                            # all other cases: block
-                            block = getBlock(ob)
-                            dxf.blocks.append(block)
-                            dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
-                    else:
-                        writeShape(ob,dxf,nospline)
-				
-        elif (ob.Type == "App::Annotation"):
-
-            # texts
-
-            # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
-            # well, anyway, at the moment, Draft only writes single-line texts, so...
-            for text in ob.LabelText:
-                point = DraftVecUtils.tup(FreeCAD.Vector(ob.Position.x,
-                                                 ob.Position.y-ob.LabelText.index(text),
-                                                 ob.Position.z))
-                if gui: height = float(ob.ViewObject.FontSize)
-                else: height = 1
-                dxf.append(dxfLibrary.Text(text,point,height=height,
-                                           color=getACI(ob,text=True),
-                                           style='STANDARD',
-                                           layer=getGroup(ob,exportList)))
-
-        elif 'Dimline' in ob.PropertiesList:
-            p1 = DraftVecUtils.tup(ob.Start)
-            p2 = DraftVecUtils.tup(ob.End)
-            base = Part.Line(ob.Start,ob.End).toShape()
-            proj = DraftGeomUtils.findDistance(ob.Dimline,base)
-            if not proj:
-                pbase = DraftVecUtils.tup(ob.End)
-            else:
-                pbase = DraftVecUtils.tup(ob.End.add(DraftVecUtils.neg(proj)))
-            dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
-                                            layer=getGroup(ob,exportList)))
-					
-    dxf.saveas(filename)
+                            writeShape(ob,dxf,nospline)
+                    
+            elif Draft.getType(ob) == "Annotation":
+                # texts
+    
+                # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
+                # well, anyway, at the moment, Draft only writes single-line texts, so...
+                for text in ob.LabelText:
+                    point = DraftVecUtils.tup(FreeCAD.Vector(ob.Position.x,
+                                                     ob.Position.y-ob.LabelText.index(text),
+                                                     ob.Position.z))
+                    if gui: height = float(ob.ViewObject.FontSize)
+                    else: height = 1
+                    dxf.append(dxfLibrary.Text(text,point,height=height,
+                                               color=getACI(ob,text=True),
+                                               style='STANDARD',
+                                               layer=getGroup(ob,exportList)))
+    
+            elif Draft.getType(ob) == "Dimension":
+                p1 = DraftVecUtils.tup(ob.Start)
+                p2 = DraftVecUtils.tup(ob.End)
+                base = Part.Line(ob.Start,ob.End).toShape()
+                proj = DraftGeomUtils.findDistance(ob.Dimline,base)
+                if not proj:
+                    pbase = DraftVecUtils.tup(ob.End)
+                else:
+                    pbase = DraftVecUtils.tup(ob.End.add(DraftVecUtils.neg(proj)))
+                dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
+                                                layer=getGroup(ob,exportList)))
+                        
+        dxf.saveas(filename)
     FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
 
 def exportPage(page,filename):
