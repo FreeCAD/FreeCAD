@@ -16,14 +16,11 @@ if(FREECAD_BUILD_TEMPLATE)
 	add_subdirectory(Tools/_TEMPLATE_)
 endif(FREECAD_BUILD_TEMPLATE)
 
-if(FREECAD_MAINTAINERS_BUILD)
-	add_subdirectory(Doc)
-endif(FREECAD_MAINTAINERS_BUILD)
+add_subdirectory(Doc)
 
 if(FREECAD_MAINTAINERS_BUILD AND WIN32)
 	#add_subdirectory(WindowsInstaller)
 endif(FREECAD_MAINTAINERS_BUILD AND WIN32)
-
 INSTALL(FILES Doc/Start_Page.html Doc/freecad.qhc Doc/freecad.qch
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
