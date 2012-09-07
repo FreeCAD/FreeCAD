@@ -94,14 +94,16 @@ static char * openscadlogo_xpm[] = {
     ToolTip = "OpenSCAD workbench"
     def Initialize(self):
         import OpenSCAD_rc,OpenSCADCommands
-        commands=["ColorCodeShape",'RefineShapeFeature','ReplaceObject',"Edgestofaces",'ExpandPlacements','RemoveSubtree']
+        commands=['ReplaceObject','RemoveSubtree','RefineShapeFeature',"ColorCodeShape","Edgestofaces",'ExpandPlacements']
+        toolbarcommands=['ReplaceObject','RemoveSubtree','RefineShapeFeature','ColorCodeShape']
         import FreeCAD
         param = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
         openscadfilename = param.GetString('openscadexecutable')
         if openscadfilename:
             commands.extend(['AddOpenSCADElement'])
-        self.appendToolbar("OpenSCADTools",["ColorCodeShape",'RefineShapeFeature','ReplaceObject','RemoveSubtree'])
+            toolbarcommands.extend(['AddOpenSCADElement'])
+        self.appendToolbar("OpenSCADTools",toolbarcommands)
         self.appendMenu('OpenSCAD',commands)
         #self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
         ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])

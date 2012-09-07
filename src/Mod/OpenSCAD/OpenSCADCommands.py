@@ -67,11 +67,11 @@ class ReplaceObject:
         if len(objs)==3:
             replaceobj.replaceobjfromselection(objs)
         else:
-            FreeCAD.Console.PrintError('please select 3 objects first')
+            FreeCAD.Console.PrintError('Please select 3 objects first')
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ReplaceObject', 'MenuText': \
                 'Replace Object', 'ToolTip': \
-                'Replace an object in the Feature Tree select old, new and parent object'}
+                'Replace an object in the Feature Tree. Please select old, new and parent object'}
 
 
 class RemoveSubtree:
@@ -98,8 +98,8 @@ class RemoveSubtree:
             obj.Document.removeObject(obj.Name)
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_RemoveSubtree', 'MenuText': \
-                'Remove Objects and thier Children', 'ToolTip': \
-                'Removes the selected Objects and all Children that are not referenced from other objects'}
+                'Remove Objects and their Children', 'ToolTip': \
+                'Removes the selected objects and all children that are not referenced from other objects'}
 
 class AddSCADWidget(QtGui.QWidget):
     def __init__(self,*args):
@@ -159,9 +159,9 @@ class AddOpenSCADElement:
         panel = AddSCADTask()
         FreeCADGui.Control.showDialog(panel)
     def GetResources(self):
-        return {'Pixmap'  : 'python', 'MenuText': \
+        return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement', 'MenuText': \
                 'Add OpenSCAD Element...', 'ToolTip': \
-                'Add an OpenSCAD Element by entering OpenSCAD Code and executing the OpenSCAD binary'}
+                'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary'}
 
 
 FreeCADGui.addCommand('ColorCodeShape',ColorCodeShape())
