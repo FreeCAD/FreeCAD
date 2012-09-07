@@ -13,6 +13,7 @@ BUILT_SOURCES=\
 		moc_DlgCommandsImp.cpp \
 		moc_DlgCustomizeImp.cpp \
 		moc_DlgCustomizeSpaceball.cpp \
+		moc_DlgCustomizeSpNavSettings.cpp \
 		moc_DlgDisplayPropertiesImp.cpp \
 		moc_DlgEditorImp.cpp \
 		moc_DlgGeneralImp.cpp \
@@ -84,6 +85,7 @@ BUILT_SOURCES=\
 		ui_DlgAuthorization.h \
 		ui_DlgChooseIcon.h \
 		ui_DlgCommands.h \
+		ui_DlgCustomizeSpNavSettings.h \
 		ui_DlgDisplayProperties.h \
 		ui_DlgEditor.h \
 		ui_DlgInputDialog.h \
@@ -133,6 +135,7 @@ libFreeCADGui_la_UI=\
 		DlgAuthorization.ui \
 		DlgChooseIcon.ui \
 		DlgCommands.ui \
+		DlgCustomizeSpNavSettings.ui \
 		DlgDisplayProperties.ui \
 		DlgEditor.ui \
 		DlgGeneral.ui \
@@ -208,6 +211,8 @@ libFreeCADGui_la_SOURCES=\
 		DlgCustomizeImp.h \
 		DlgCustomizeSpaceball.cpp \
 		DlgCustomizeSpaceball.h \
+		DlgCustomizeSpNavSettings.cpp \
+		DlgCustomizeSpNavSettings.h \
 		DlgDisplayPropertiesImp.cpp \
 		DlgDisplayPropertiesImp.h \
 		DlgEditorImp.cpp \
