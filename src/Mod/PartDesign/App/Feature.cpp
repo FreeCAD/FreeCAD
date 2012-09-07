@@ -26,6 +26,9 @@
 # include <Standard_Failure.hxx>
 # include <TopoDS_Solid.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <BRep_Tool.hxx>
+# include <gp_Pnt.hxx>
 #endif
 
 
@@ -53,6 +56,21 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape) const
     }
 
     return TopoDS_Shape();
+}
+
+const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f) const
+{
+    if (!f.Infinite()) {
+        TopExp_Explorer exp;
+        exp.Init(f, TopAbs_VERTEX);
+        if (exp.More())
+            return BRep_Tool::Pnt(TopoDS::Vertex(exp.Current()));
+        // Else try the other method
+    }
+
+    // TODO: Other method, e.g. intersect X,Y,Z axis with the (unlimited?) face?
+    // Or get a "corner" point if the face is limited?
+    throw Base::Exception("getPointFromFace(): Not implemented yet for this case");
 }
 
 }

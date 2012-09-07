@@ -38,6 +38,11 @@
 #include "ViewProviderFillet.h"
 #include "ViewProviderRevolution.h"
 #include "ViewProviderGroove.h"
+#include "ViewProviderMirrored.h"
+#include "ViewProviderLinearPattern.h"
+#include "ViewProviderPolarPattern.h"
+//#include "ViewProviderScaled.h"
+#include "ViewProviderMultiTransform.h"
 
 //#include "resources/qrc_PartDesign.cpp"
 
@@ -79,14 +84,19 @@ void PartDesignGuiExport initPartDesignGui()
     // instantiating the commands
     CreatePartDesignCommands();
 
-    PartDesignGui::Workbench             ::init();
-    PartDesignGui::ViewProvider          ::init();
-    PartDesignGui::ViewProviderPocket    ::init();
-    PartDesignGui::ViewProviderPad       ::init();
-    PartDesignGui::ViewProviderRevolution::init();
-    PartDesignGui::ViewProviderGroove    ::init();
-    PartDesignGui::ViewProviderChamfer   ::init();
-    PartDesignGui::ViewProviderFillet    ::init();
+    PartDesignGui::Workbench                 ::init();
+    PartDesignGui::ViewProvider              ::init();
+    PartDesignGui::ViewProviderPocket        ::init();
+    PartDesignGui::ViewProviderPad           ::init();
+    PartDesignGui::ViewProviderRevolution    ::init();
+    PartDesignGui::ViewProviderGroove        ::init();
+    PartDesignGui::ViewProviderChamfer       ::init();
+    PartDesignGui::ViewProviderFillet        ::init();
+    PartDesignGui::ViewProviderMirrored      ::init();
+    PartDesignGui::ViewProviderLinearPattern ::init();
+    PartDesignGui::ViewProviderPolarPattern  ::init();
+//    PartDesignGui::ViewProviderScaled        ::init();
+    PartDesignGui::ViewProviderMultiTransform::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();
