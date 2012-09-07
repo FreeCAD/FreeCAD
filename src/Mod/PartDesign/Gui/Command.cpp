@@ -47,7 +47,8 @@
 #include <Gui/FileDialog.h>
 
 #include <Mod/Part/App/Part2DObject.h>
-
+#include <Mod/PartDesign/App/FeatureAdditive.h>
+#include <Mod/PartDesign/App/FeatureSubtractive.h>
 
 using namespace std;
 
@@ -696,6 +697,319 @@ bool CmdPartDesignChamfer::isActive(void)
     return hasActiveDocument();
 }
 
+//===========================================================================
+// PartDesign_Mirrored
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignMirrored);
+
+CmdPartDesignMirrored::CmdPartDesignMirrored()
+  : Command("PartDesign_Mirrored")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Mirrored");
+    sToolTipText  = QT_TR_NOOP("create a mirrored feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Mirrored";
+}
+
+void CmdPartDesignMirrored::activated(int iMsg)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    if (n < 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one or more additive/subtractive features, please."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("Mirrored");
+
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    std::stringstream str;
+    std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Originals = [";
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
+        str << "App.activeDocument()." << it->FeatName << ",";
+        tempSelNames.push_back(it->FeatName);
+    }
+    str << "]";
+
+    openCommand("Mirrored");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Mirrored\",\"%s\")",FeatName.c_str());
+    // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
+    // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
+    updateActive(); // Helps to ensure that the object already exists when the next command comes up
+    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,"App.activeDocument().%s.StdMirrorPlane = \"XY\"", FeatName.c_str());
+    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
+
+    updateActive();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+}
+
+bool CmdPartDesignMirrored::isActive(void)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    return n >= 1;
+}
+
+//===========================================================================
+// PartDesign_LinearPattern
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignLinearPattern);
+
+CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
+  : Command("PartDesign_LinearPattern")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("LinearPattern");
+    sToolTipText  = QT_TR_NOOP("create a linear pattern feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_LinearPattern";
+}
+
+void CmdPartDesignLinearPattern::activated(int iMsg)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    if (n < 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one or more additive/subtractive features, please."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("LinearPattern");
+
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    std::stringstream str;
+    std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Originals = [";
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
+        str << "App.activeDocument()." << it->FeatName << ",";
+        tempSelNames.push_back(it->FeatName);
+    }
+    str << "]";
+
+    openCommand("LinearPattern");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",FeatName.c_str());
+    updateActive();
+    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,"App.activeDocument().%s.StdDirection = \"X\"", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Length = 100", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
+    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
+
+    updateActive();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+}
+
+bool CmdPartDesignLinearPattern::isActive(void)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    return n >= 1;
+}
+
+//===========================================================================
+// PartDesign_PolarPattern
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignPolarPattern);
+
+CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
+  : Command("PartDesign_PolarPattern")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("PolarPattern");
+    sToolTipText  = QT_TR_NOOP("create a polar pattern feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_PolarPattern";
+}
+
+void CmdPartDesignPolarPattern::activated(int iMsg)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    if (n < 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one or more additive/subtractive features, please."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("PolarPattern");
+
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    std::stringstream str;
+    std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Originals = [";
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
+        str << "App.activeDocument()." << it->FeatName << ",";
+        tempSelNames.push_back(it->FeatName);
+    }
+    str << "]";
+
+    openCommand("PolarPattern");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",FeatName.c_str());
+    updateActive();
+    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,"App.activeDocument().%s.StdAxis = \"X\"", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Angle = 360", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
+    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
+
+    updateActive();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+}
+
+bool CmdPartDesignPolarPattern::isActive(void)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    return n >= 1;
+}
+
+//===========================================================================
+// PartDesign_Scaled
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignScaled);
+
+CmdPartDesignScaled::CmdPartDesignScaled()
+  : Command("PartDesign_Scaled")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Scaled");
+    sToolTipText  = QT_TR_NOOP("create a scaled feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Scaled";
+}
+
+void CmdPartDesignScaled::activated(int iMsg)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    if (n < 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one or more additive/subtractive features, please."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("Scaled");
+
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    std::stringstream str;
+    std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Originals = [";
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
+        str << "App.activeDocument()." << it->FeatName << ",";
+        tempSelNames.push_back(it->FeatName);
+    }
+    str << "]";
+
+    openCommand("Scaled");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Scaled\",\"%s\")",FeatName.c_str());
+    updateActive();
+    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,"App.activeDocument().%s.Factor = 2", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
+    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
+
+    updateActive();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+}
+
+bool CmdPartDesignScaled::isActive(void)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    return n >= 1;
+}
+
+//===========================================================================
+// PartDesign_MultiTransform
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignMultiTransform);
+
+CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
+  : Command("PartDesign_MultiTransform")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("MultiTransform");
+    sToolTipText  = QT_TR_NOOP("create a multitransform feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_MultiTransform";
+}
+
+void CmdPartDesignMultiTransform::activated(int iMsg)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    if (n < 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one or more additive/subtractive features, please."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("MultiTransform");
+
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    std::stringstream str;
+    std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Originals = [";
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
+        str << "App.activeDocument()." << it->FeatName << ",";
+        tempSelNames.push_back(it->FeatName);
+    }
+    str << "]";
+
+    openCommand("MultiTransform");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::MultiTransform\",\"%s\")",FeatName.c_str());
+    updateActive();
+    doCommand(Doc,str.str().c_str());
+
+    updateActive();
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+}
+
+bool CmdPartDesignMultiTransform::isActive(void)
+{
+    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
+                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    return n >= 1;
+}
+
+
+//===========================================================================
+// Initialization
+//===========================================================================
 
 void CreatePartDesignCommands(void)
 {
@@ -708,4 +1022,9 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     //rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
+    rcCmdMgr.addCommand(new CmdPartDesignMirrored());
+    rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
+    rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
+    //rcCmdMgr.addCommand(new CmdPartDesignScaled());
+    rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
  }

@@ -23,12 +23,26 @@ set(PartDesign_LIBS
 SET(Features_SRCS
     Feature.cpp
     Feature.h
-    FeaturePatternRectangular.h
-    FeaturePatternRectangular.cpp
     Body.cpp
     Body.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
+
+SET(FeaturesTransformed_SRCS
+    FeatureTransformed.h
+    FeatureTransformed.cpp
+    FeatureMirrored.h
+    FeatureMirrored.cpp
+    FeatureLinearPattern.h
+    FeatureLinearPattern.cpp
+    FeaturePolarPattern.h
+    FeaturePolarPattern.cpp
+    FeatureScaled.h
+    FeatureScaled.cpp
+    FeatureMultiTransform.h
+    FeatureMultiTransform.cpp
+)
+SOURCE_GROUP("FeaturesTransformed" FILES ${FeaturesTransformed_SRCS})
 
 SET(FeaturesDressUp_SRCS
     FeatureDressUp.cpp
@@ -73,6 +87,7 @@ SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
 SET(PartDesign_SRCS
     ${Features_SRCS}
+    ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
