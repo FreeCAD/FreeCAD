@@ -24,7 +24,8 @@
 import os
 # FreeCAD modules
 import FreeCAD,FreeCADGui
-from FreeCAD import Base, Image, ImageGui
+from FreeCAD import Base
+import Image, ImageGui
 # FreeCADShip modules
 from shipUtils import Paths, Translator
 
