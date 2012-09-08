@@ -317,16 +317,5 @@ Py::Object PythonStdin::repr()
 
 Py::Object PythonStdin::readline(const Py::Tuple& args)
 {
-    if (console)
-        console->onFlush();
-    timer->stop();
-    QEventLoop loop;
-    QObject::connect(editField, SIGNAL(textEntered()), &loop, SLOT(quit()));
-    editField->clear();
-    editField->show();
-    editField->setFocus();
-    loop.exec();
-    QString txt = editField->getText();
-    timer->start();
-    return Py::String((const char*)txt.toAscii());
+    return Py::String( (const char *)console->readline().toAscii() );
 }
