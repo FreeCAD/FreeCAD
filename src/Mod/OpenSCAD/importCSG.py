@@ -122,8 +122,10 @@ def processcsg(filename):
     
 def p_block_list_(p):
     '''
-    block_list : statement 
-               | block_list statement 
+    block_list : statement
+               | block_list statement
+               | statementwithmod
+               | block_list statementwithmod
     '''
     print "Block List"
     print p[1]
@@ -175,6 +177,18 @@ def p_statement(p):
                  | not_supported
     '''
     p[0] = p[1]
+
+def p_anymodifier(p):
+    '''anymodifier : MODIFIERBACK
+                   | MODIFIERDEBUG
+                   | MODIFIERROOT
+                   | MODIFIERDISABLE
+    '''
+    p[0] = p[1]
+
+def p_statementwithmod(p):
+    '''statementwithmod : anymodifier statement'''
+    p[0] = p[2]
 
 def p_part(p):
     '''
