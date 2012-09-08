@@ -42,6 +42,7 @@ set(PartGui_MOC_HDRS
     TaskShapeBuilder.h
     TaskLoft.h
     TaskSweep.h
+    TaskCheckGeometry.h
 )
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
@@ -160,6 +161,8 @@ SET(PartGui_SRCS
     TaskSweep.cpp
     TaskSweep.h
     TaskSweep.ui
+    TaskCheckGeometry.cpp
+    TaskCheckGeometry.h
 )
 
 SET(PartGui_Scripts
