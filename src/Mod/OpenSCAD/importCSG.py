@@ -358,13 +358,15 @@ def fuse(list,name):
     global doc
     print "Fuse"
     print list
+    if len(list) == 1:
+       return list[0]
     # Is this Multi Fuse
-    if ( len(list) > 2):
+    elif ( len(list) > 2):
        print "Multi Fuse"
        myfuse = doc.addObject('Part::MultiFuse',name)
        myfuse.Shapes = list
        for subobj in myfuse.Shapes:
-           subobj.ViewObject.hide()    
+           subobj.ViewObject.hide()
     else :
        print "Single Fuse"
        myfuse = doc.addObject('Part::Fuse',name)
