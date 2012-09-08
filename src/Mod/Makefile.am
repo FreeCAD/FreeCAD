@@ -1,5 +1,5 @@
 #SUBDIRS=Part Mesh Points Raytracing Image Drawing Complete Draft Test TemplatePyMod
-SUBDIRS=Points Complete Draft Test TemplatePyMod Web Start Idf Arch Surfaces Ship OpenSCAD
+SUBDIRS=Points Complete Draft Test TemplatePyMod Web Start Idf
 
 #if HAVE_OPENCV
 SUBDIRS += Image
@@ -10,7 +10,7 @@ SUBDIRS += Mesh
 #endif
 
 if HAVE_OPENCASCADE
-SUBDIRS += Part Import PartDesign Raytracing Drawing
+SUBDIRS += Part Import PartDesign Raytracing Drawing Arch Surfaces Ship OpenSCAD
 endif
 
 if HAVE_EIGEN3
