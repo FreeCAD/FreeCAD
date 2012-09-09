@@ -41,6 +41,14 @@ DressUp::DressUp()
     ADD_PROPERTY(Base,(0));
 }
 
+short DressUp::mustExecute() const
+{
+    if (Base.getValue() && Base.getValue()->isTouched())
+        return 1;
+    return PartDesign::Feature::mustExecute();
+}
+
+
 void DressUp::positionByBase(void)
 {
     Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());

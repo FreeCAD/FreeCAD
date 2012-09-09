@@ -49,11 +49,9 @@ Fillet::Fillet()
 
 short Fillet::mustExecute() const
 {
-    if (Placement.isTouched() || Base.isTouched() || Radius.isTouched())
+    if (Placement.isTouched() || Radius.isTouched())
         return 1;
-    if (Base.getValue() && Base.getValue()->isTouched())
-        return 1;
-    return 0;
+    return DressUp::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Fillet::execute(void)

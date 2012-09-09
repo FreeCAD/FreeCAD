@@ -53,7 +53,7 @@ const char* Hole::TypeEnums[]    = {"Dimension","UpToLast","UpToFirst",NULL};
 const char* Hole::HoleTypeEnums[]= {"Simple","Counterbore","Countersunk",NULL};
 const char* Hole::ThreadEnums[]  = {"None","Metric","MetricFine",NULL};
 
-PROPERTY_SOURCE(PartDesign::Hole, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Hole, PartDesign::Subtractive)
 
 Hole::Hole()
 {
@@ -72,7 +72,7 @@ Hole::Hole()
 //    if (Sketch.isTouched() ||
 //        Length.isTouched())
 //        return 1;
-//    return 0;
+//    return Subtractive::mustExecute();
 //}
 
 App::DocumentObjectExecReturn *Hole::execute(void)
@@ -134,6 +134,8 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //if (PrismMaker.IsDone()) {
     //    // if the sketch has a support fuse them to get one result object (PAD!)
     //    if (SupportObject) {
+    //        // Set the subtractive shape property for later usage in e.g. pattern
+    //        this->SubShape.setValue(PrismMaker.Shape());
     //        const TopoDS_Shape& support = SupportObject->Shape.getValue();
     //        if (support.IsNull())
     //            return new App::DocumentObjectExecReturn("Support shape is invalid");
