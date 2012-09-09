@@ -56,7 +56,7 @@ using namespace PartDesign;
 
 const char* Pocket::TypeEnums[]= {"Length","UpToLast","UpToFirst","ThroughAll","UpToFace",NULL};
 
-PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::Subtractive)
 
 Pocket::Pocket()
 {
@@ -69,11 +69,10 @@ Pocket::Pocket()
 short Pocket::mustExecute() const
 {
     if (Placement.isTouched() ||
-        Sketch.isTouched() ||
         Length.isTouched() ||
         FaceName.isTouched())
         return 1;
-    return 0;
+    return Subtractive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pocket::execute(void)
@@ -255,8 +254,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             return new App::DocumentObjectExecReturn("Internal error: Unknown type for Pocket feature");
         }
 
-        // TODO: Set the subtractive shape property for later usage in e.g. pattern
-        //this->SubShape.setValue(prism); // This crashes with "Illegal storage access". Why?
+        this->SubShape.setValue(prism);
 
         // Cut out the pocket
         BRepAlgoAPI_Cut mkCut(support.Moved(invObjLoc), prism);

@@ -68,14 +68,13 @@ Pad::Pad()
 short Pad::mustExecute() const
 {
     if (Placement.isTouched() ||
-        Sketch.isTouched() ||
         Length.isTouched() ||
         Midplane.isTouched() ||
         Reversed.isTouched() ||
         Length2.isTouched() ||
         FaceName.isTouched())
         return 1;
-    return 0;
+    return Additive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pad::execute(void)
