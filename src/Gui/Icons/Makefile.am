@@ -69,6 +69,12 @@ EXTRA_DIST = \
 		accessories-text-editor.svg \
 		help-browser.svg \
 		spaceball_button.svg \
+		SpNav-PanLR.png \
+		SpNav-PanUD.png \
+		SpNav-Roll.png \
+		SpNav-Spin.png \
+		SpNav-Tilt.png \
+		SpNav-Zoom.png \
 		view-unselectable.svg \
 		view-refresh.svg \
 		view-measurement.svg \

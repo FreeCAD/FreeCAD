@@ -79,10 +79,13 @@ public:
     void append(const QString &inputLine);
     const QStringList& values() const;
     void restart();
+		void markScratch( void );
+		void doScratch( void );
 
 private:
     QStringList                _history;
     QStringList::ConstIterator _it;
+		int                        _scratchBegin;
     QString                    _prefix;
 };
 
@@ -99,7 +102,8 @@ public:
     enum Prompt {
         Complete   = 0,
         Incomplete = 1,
-        Flush      = 2
+        Flush      = 2,
+        Special    = 3
     };
 
     PythonConsole(QWidget *parent = 0);
@@ -107,6 +111,7 @@ public:
 
     void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason );
     void printStatement( const QString& cmd );
+    QString readline( void );
 
 public Q_SLOTS:
     void onSaveHistoryAs();
@@ -126,7 +131,7 @@ protected:
     void dragEnterEvent ( QDragEnterEvent   * e );
     void dragMoveEvent  ( QDragMoveEvent    * e );
     void changeEvent    ( QEvent            * e );
-    void mouseReleaseEvent( QMouseEvent       * e );
+    void mouseReleaseEvent( QMouseEvent     * e );
 
     void overrideCursor(const QString& txt);
 
@@ -146,6 +151,9 @@ private:
     void runSourceFromMimeData(const QString&);
     void appendOutput(const QString&, int);
 
+Q_SIGNALS:
+    void pendingSource( void );
+
 private:
     struct PythonConsoleP* d;
 
@@ -154,6 +162,7 @@ private:
 
 private:
     PythonConsoleHighlighter* pythonSyntax;
+    QString                 *_sourceDrain;
 };
 
 /**

@@ -39,6 +39,7 @@ public:
 
     App::PropertyLinkSub Base;
 
+    short mustExecute() const;
     /// updates the Placement property from the Placement of Base
     void positionByBase(void);
 

@@ -42,6 +42,8 @@ public:
 
     App::PropertyLink   Sketch;
 
+    short mustExecute() const;
+
     /** calculates and updates the Placement property based on the Sketch
      *  or its support if it has one
       */

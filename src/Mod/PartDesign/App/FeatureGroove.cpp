@@ -48,7 +48,7 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::Groove, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Groove, PartDesign::Subtractive)
 
 Groove::Groove()
 {
@@ -63,7 +63,6 @@ Groove::Groove()
 short Groove::mustExecute() const
 {
     if (Placement.isTouched() ||
-        Sketch.isTouched() ||
         ReferenceAxis.isTouched() ||
         Axis.isTouched() ||
         Base.isTouched() ||
@@ -71,7 +70,7 @@ short Groove::mustExecute() const
         Midplane.isTouched() ||
         Reversed.isTouched())
         return 1;
-    return 0;
+    return Subtractive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Groove::execute(void)

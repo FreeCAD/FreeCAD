@@ -51,7 +51,7 @@ def Plot(scale, sections, shape):
     x0 = xMid - 0.5*xTot
     y0 = 297.0 - yMid - 0.5*yTot # 297 = A3_width
     # Get border
-    edges = self.getEdges([shape])
+    edges = getEdges([shape])
     border = edges[0]
     for i in range(0,len(edges)):
         border = border.oldFuse(edges[i])   # Only group objects, don't try to build more complex entities
@@ -95,7 +95,7 @@ def Plot(scale, sections, shape):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def getEdges(self, objs=None):
+def getEdges(objs=None):
     """ Returns object edges (list of them)
     @param objs Object to get the faces, none if selected
     object may used.

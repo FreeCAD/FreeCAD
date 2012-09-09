@@ -52,11 +52,9 @@ Chamfer::Chamfer()
 
 short Chamfer::mustExecute() const
 {
-    if (Placement.isTouched() || Base.isTouched() || Size.isTouched())
+    if (Placement.isTouched() || Size.isTouched())
         return 1;
-    if (Base.getValue() && Base.getValue()->isTouched())
-        return 1;
-    return 0;
+    return DressUp::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Chamfer::execute(void)
