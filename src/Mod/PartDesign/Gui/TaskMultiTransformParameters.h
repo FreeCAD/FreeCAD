@@ -93,7 +93,7 @@ private:
     void updateUI();
     void closeSubTask();
     void moveTransformFeature(const int increment);
-    void finishAdd(App::DocumentObject *newFeature);
+    void finishAdd(std::string &newFeatName);
 
 private:
     Ui_TaskMultiTransformParameters* ui;

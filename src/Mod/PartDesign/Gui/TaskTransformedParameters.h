@@ -81,6 +81,11 @@ protected:
     /// Get the original object either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getOriginalObject() const;
 
+    void hideObject();
+    void showObject();
+    void hideOriginals();
+    void showOriginals();
+
 protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;

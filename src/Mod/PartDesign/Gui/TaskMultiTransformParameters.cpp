@@ -214,24 +214,20 @@ void TaskMultiTransformParameters::onTransformEdit()
     int row = ui->listTransformFeatures->currentIndex().row();
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
-    App::DocumentObject* transformObject = *(transformFeatures.begin() + row);
-    subFeature = static_cast<PartDesign::Transformed*>(transformObject);
 
-    if (transformObject->getTypeId() == PartDesign::Mirrored::getClassTypeId())
+    subFeature = static_cast<PartDesign::Transformed*>(transformFeatures[row]);
+    if (transformFeatures[row]->getTypeId() == PartDesign::Mirrored::getClassTypeId())
         subTask = new TaskMirroredParameters(ui->widgetFeature, this);
-    else if (transformObject->getTypeId() == PartDesign::LinearPattern::getClassTypeId())
+    else if (transformFeatures[row]->getTypeId() == PartDesign::LinearPattern::getClassTypeId())
         subTask = new TaskLinearPatternParameters(ui->widgetFeature, this);
-    else if (transformObject->getTypeId() == PartDesign::PolarPattern::getClassTypeId())
+    else if (transformFeatures[row]->getTypeId() == PartDesign::PolarPattern::getClassTypeId())
         subTask = new TaskPolarPatternParameters(ui->widgetFeature, this);
-    else if (transformObject->getTypeId() == PartDesign::Scaled::getClassTypeId())
+    else if (transformFeatures[row]->getTypeId() == PartDesign::Scaled::getClassTypeId())
         subTask = new TaskScaledParameters(ui->widgetFeature, this);
     else
         return; // TODO: Show an error?
 
     ui->widgetFeature->show();
-
-    transformFeatures[row] = subFeature;
-    pcMultiTransform->Transformations.setValues(transformFeatures);
 }
 
 void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index) {
@@ -241,89 +237,66 @@ void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index
 void TaskMultiTransformParameters::onTransformAddMirrored()
 {
     closeSubTask();
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirrored");
 
-    App::DocumentObject* newFeature = pcMultiTransform->getDocument()->addObject("PartDesign::Mirrored");
-    if (newFeature == NULL)
-        return;
-    PartDesign::Mirrored* newMirrored = static_cast<PartDesign::Mirrored*>(newFeature);
-    newMirrored->StdMirrorPlane.setValue("XY");
-    newMirrored->InsideMultiTransform.setValue(true);
-    newMirrored->Label.setValue("Mirrored"); // To avoid things like PartDesign__Mirrored001
+    Gui::Command::openCommand("Mirrored");
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Mirrored\",\"%s\")",newFeatName.c_str());
+    Gui::Command::updateActive();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdMirrorPlane = \"XY\"", newFeatName.c_str());
 
-    subFeature = newMirrored;
-    subTask = new TaskMirroredParameters(ui->widgetFeature, this);
-    ui->widgetFeature->show();
-
-    finishAdd(newFeature);
+    finishAdd(newFeatName);
 }
 
 void TaskMultiTransformParameters::onTransformAddLinearPattern()
 {
     closeSubTask();
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
 
-    App::DocumentObject* newFeature = pcMultiTransform->getDocument()->addObject("PartDesign::LinearPattern");
-    if (newFeature == NULL)
-        return;
-    PartDesign::LinearPattern* newLinearPattern = static_cast<PartDesign::LinearPattern*>(newFeature);
-    newLinearPattern->StdDirection.setValue("X");
-    newLinearPattern->Length.setValue(100);
-    newLinearPattern->Occurrences.setValue(2);
-    newLinearPattern->InsideMultiTransform.setValue(true);
-    newLinearPattern->Label.setValue("LinearPattern");
+    Gui::Command::openCommand("LinearPattern");
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",newFeatName.c_str());
+    Gui::Command::updateActive();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdDirection = \"X\"", newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Length = 100", newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 
-    subFeature = newLinearPattern;
-    subTask = new TaskLinearPatternParameters(ui->widgetFeature, this);
-    ui->widgetFeature->show();
-
-    finishAdd(newFeature);
+    finishAdd(newFeatName);
 }
 
 void TaskMultiTransformParameters::onTransformAddPolarPattern()
 {
     closeSubTask();
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("PolarPattern");
 
-    App::DocumentObject* newFeature = pcMultiTransform->getDocument()->addObject("PartDesign::PolarPattern");
-    if (newFeature == NULL)
-        return;
-    PartDesign::PolarPattern* newPolarPattern = static_cast<PartDesign::PolarPattern*>(newFeature);
-    newPolarPattern->StdAxis.setValue("Z");
-    newPolarPattern->Angle.setValue(360);
-    newPolarPattern->Occurrences.setValue(2);
-    newPolarPattern->InsideMultiTransform.setValue(true);
-    newPolarPattern->Label.setValue("PolarPattern");
+    Gui::Command::openCommand("PolarPattern");
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",newFeatName.c_str());
+    Gui::Command::updateActive();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdAxis = \"X\"", newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Angle = 360", newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 
-    subFeature = newPolarPattern;
-    subTask = new TaskPolarPatternParameters(ui->widgetFeature, this);
-    ui->widgetFeature->show();
-
-    finishAdd(newFeature);
+    finishAdd(newFeatName);
 }
 
 void TaskMultiTransformParameters::onTransformAddScaled()
 {
     closeSubTask();
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Scaled");
 
-    App::DocumentObject* newFeature = pcMultiTransform->getDocument()->addObject("PartDesign::Scaled");
-    if (newFeature == NULL)
-        return;
-    PartDesign::Scaled* newScaled = static_cast<PartDesign::Scaled*>(newFeature);
-    newScaled->Occurrences.setValue(2);
-    newScaled->InsideMultiTransform.setValue(true);
-    newScaled->Label.setValue("Scaled"); // To avoid things like PartDesign__Mirrored001
+    Gui::Command::openCommand("Scaled");
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Scaled\",\"%s\")",newFeatName.c_str());
+    Gui::Command::updateActive();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Factor = 2", newFeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 
-    subFeature = newScaled;
-    subTask = new TaskScaledParameters(ui->widgetFeature, this);
-    ui->widgetFeature->show();
-
-    finishAdd(newFeature);
+    finishAdd(newFeatName);
 }
 
-void TaskMultiTransformParameters::finishAdd(App::DocumentObject* newFeature)
+void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
 {
+    //Gui::Command::updateActive();
+    //Gui::Command::copyVisual(newFeatName.c_str(), "ShapeColor", getOriginals().front()->getNameInDocument().c_str());
+    //Gui::Command::copyVisual(newFeatName.c_str(), "DisplayMode", getOriginals().front()->getNameInDocument().c_str());
+
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     if (editHint) {
         // Remove hint, first feature is being added
@@ -334,13 +307,11 @@ void TaskMultiTransformParameters::finishAdd(App::DocumentObject* newFeature)
         // Happens when first row (first transformation) is created
         row = 0;
         // Hide all the originals now (hiding them in Command.cpp presents the user with an empty screen!)
-        std::vector<App::DocumentObject*> originals = pcMultiTransform->getOriginals();
-        for (std::vector<App::DocumentObject*>::iterator it = originals.begin(); it != originals.end(); ++it)
-            Gui::Command::doCommand(
-                Gui::Command::Doc,"Gui.activeDocument().getObject(\"%s\").Visibility=False",(*it)->getNameInDocument());
+        hideOriginals();
     }
-    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
+    App::DocumentObject* newFeature = pcMultiTransform->getDocument()->getObject(newFeatName.c_str());
+    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
     if (row == ui->listTransformFeatures->model()->rowCount() - 1) {
         // Note: Inserts always happen before the specified iterator so in order to append at the
         // end we need to use push_back() and append()
@@ -353,13 +324,16 @@ void TaskMultiTransformParameters::finishAdd(App::DocumentObject* newFeature)
         ui->listTransformFeatures->setCurrentRow(row, QItemSelectionModel::ClearAndSelect);
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);
+
     if (ui->checkBoxUpdateView->isChecked())
         pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
 
     // Set state to hidden - only the MultiTransform should be visible
     Gui::Command::doCommand(
-        Gui::Command::Doc,"Gui.activeDocument().getObject(\"%s\").Visibility=False", newFeature->getNameInDocument());
+        Gui::Command::Doc,"Gui.activeDocument().getObject(\"%s\").Visibility=False", newFeatName.c_str());
     editHint = false;
+
+    onTransformEdit();
 }
 
 void TaskMultiTransformParameters::moveTransformFeature(const int increment)
