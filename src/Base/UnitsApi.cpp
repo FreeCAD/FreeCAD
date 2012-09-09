@@ -155,10 +155,7 @@ double UnitsApi::toDblWithUserPrefs(QuantityType t,const char* Str)
 {
     UnitsSignature Value = parse( Str ); 
 
-    if (Value.UsedUnit())
-        return Value;
-    else
-        return toDblWithUserPrefs(t,Value);
+    return toDblWithUserPrefs(t,Value.Value);
 }
 
 double UnitsApi::toDblWithUserPrefs(QuantityType t,double UserVal)
@@ -180,9 +177,9 @@ double UnitsApi::toDblWithUserPrefs(QuantityType t,PyObject *ArgObj)
 
 void UnitsApi::setPrefOf(QuantityType t,const char* Str)
 {
-    double Factor = translateUnit(Str);
-    UserPrefUnit[t] = QString::fromLatin1(Str);
-    UserPrefFactor[t] = Factor;
+    //double Factor = translateUnit(Str);
+    //UserPrefUnit[t] = QString::fromLatin1(Str);
+    //UserPrefFactor[t] = Factor;
 }
 
 const QString & UnitsApi::getPrefUnitOf(QuantityType t)
@@ -363,7 +360,7 @@ UnitsSignature UnitsApi::parse(const char* buffer)
     // free the scan buffer
     UnitParser::UnitsApi_delete_buffer (my_string_buffer);
 
-    if (ScanResult == DOUBLE_MIN)
-        throw Base::Exception("Unknown error in Unit expression");
+    //if (ScanResult == DOUBLE_MIN)
+        //throw Base::Exception("Unknown error in Unit expression");
     return ScanResult;
 }
