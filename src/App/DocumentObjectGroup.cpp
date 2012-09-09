@@ -37,7 +37,7 @@ PROPERTY_SOURCE(App::DocumentObjectGroup, App::DocumentObject)
 
 DocumentObjectGroup::DocumentObjectGroup() 
 {
-    ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_ReadOnly|Prop_Output),"List of referenced objects");
+    ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
 }
 
 DocumentObjectGroup::~DocumentObjectGroup()
@@ -179,13 +179,13 @@ PyObject *DocumentObjectGroup::getPyObject()
     return Py::new_reference_to(PythonObject); 
 }
 
-// Python Sketcher feature ---------------------------------------------------------
+// Python feature ---------------------------------------------------------
 
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
 template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {
-    return "Gui::ViewProviderDocumentObjectGroup";
+    return "Gui::ViewProviderDocumentObjectGroupPython";
 }
 /// @endcond
 

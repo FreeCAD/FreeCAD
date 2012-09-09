@@ -31,6 +31,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Cylinder.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopoDS.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -39,16 +40,15 @@
 #include <BRepLib_FuseEdges.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeFix_Face.hxx>
 #include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <BRepTools.hxx>
+#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
 #include <BRep_Builder.hxx>
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include <ShapeAnalysis_Edge.hxx>
 #include "modelRefine.h"
 
 using namespace ModelRefine;
@@ -116,49 +116,6 @@ namespace ModelRefine
     };
 }
 
-void BoundaryEdgeSplitter::split(const EdgeVectorType &edgesIn)
-{
-    std::list<TopoDS_Edge> edges;
-    std::copy(edgesIn.begin(), edgesIn.end(), back_inserter(edges));
-    while(!edges.empty())
-    {
-        TopoDS_Vertex destination = TopExp::FirstVertex(edges.front(), Standard_True);
-        TopoDS_Vertex lastVertex = TopExp::LastVertex(edges.front(), Standard_True);
-        EdgeVectorType boundary;
-        boundary.push_back(edges.front());
-        edges.pop_front();
-        //single edge closed check.
-        if (destination.IsSame(lastVertex))
-        {
-            groupedEdges.push_back(boundary);
-            continue;
-        }
-
-        bool closedSignal(false);
-        std::list<TopoDS_Edge>::iterator it;
-        for (it = edges.begin(); it != edges.end();)
-        {
-            TopoDS_Vertex currentVertex = TopExp::FirstVertex(*it, Standard_True);
-            if (lastVertex.IsSame(currentVertex))
-            {
-                boundary.push_back(*it);
-                lastVertex = TopExp::LastVertex(*it, Standard_True);
-                edges.erase(it);
-                it = edges.begin();
-                if (lastVertex.IsSame(destination))
-                {
-                    closedSignal = true;
-                    break;
-                }
-                continue;
-            }
-            ++it;
-        }
-        if (closedSignal)
-            groupedEdges.push_back(boundary);
-    }
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 void FaceTypeSplitter::addShell(const TopoDS_Shell &shellIn)
@@ -201,18 +158,38 @@ const FaceVectorType& FaceTypeSplitter::getTypedFaceVector(const GeomAbs_Surface
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+FaceAdjacencySplitter::FaceAdjacencySplitter(const TopoDS_Shell &shell)
+{
+    TopExp_Explorer shellIt;
+    for (shellIt.Init(shell, TopAbs_FACE); shellIt.More(); shellIt.Next())
+    {
+        TopTools_ListOfShape shapeList;
+        TopExp_Explorer it;
+        for (it.Init(shellIt.Current(), TopAbs_EDGE); it.More(); it.Next())
+            shapeList.Append(it.Current());
+        faceToEdgeMap.Add(shellIt.Current(), shapeList);
+    }
+    TopExp::MapShapesAndAncestors(shell, TopAbs_EDGE, TopAbs_FACE, edgeToFaceMap);
+}
+
+
 void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
 {
+    facesInMap.Clear();
+    processedMap.Clear();
+    adjacencyArray.clear();
+
+    FaceVectorType::const_iterator it;
+    for (it = facesIn.begin(); it != facesIn.end(); ++it)
+        facesInMap.Add(*it);
     //the reserve call guarantees the vector will never get "pushed back" in the
     //recursiveFind calls, thus invalidating the iterators. We can be sure of this as any one
     //matched set can't be bigger than the set passed in. if we have seg faults, we will
     //want to turn this tempFaces vector back into a std::list ensuring valid iterators
     //at the expense of std::find speed.
-    buildMap(facesIn);
     FaceVectorType tempFaces;
     tempFaces.reserve(facesIn.size() + 1);
 
-    FaceVectorType::const_iterator it;
     for (it = facesIn.begin(); it != facesIn.end(); ++it)
     {
         //skip already processed shapes.
@@ -220,9 +197,8 @@ void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
             continue;
 
         tempFaces.clear();
-        tempFaces.push_back(*it);
         processedMap.Add(*it);
-        recursiveFind(tempFaces, facesIn);
+        recursiveFind(*it, tempFaces);
         if (tempFaces.size() > 1)
         {
             adjacencyArray.push_back(tempFaces);
@@ -230,68 +206,26 @@ void FaceAdjacencySplitter::split(const FaceVectorType &facesIn)
     }
 }
 
-void FaceAdjacencySplitter::recursiveFind(FaceVectorType &tempFaces, const FaceVectorType &facesIn)
+void FaceAdjacencySplitter::recursiveFind(const TopoDS_Face &face, FaceVectorType &outVector)
 {
-    FaceVectorType::iterator tempIt;
-    FaceVectorType::const_iterator faceIt;
+    outVector.push_back(face);
 
-    for (tempIt = tempFaces.begin(); tempIt != tempFaces.end(); ++tempIt)
+    const TopTools_ListOfShape &edges = faceToEdgeMap.FindFromKey(face);
+    TopTools_ListIteratorOfListOfShape edgeIt;
+    for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
     {
-        for(faceIt = facesIn.begin(); faceIt != facesIn.end(); ++faceIt)
+        const TopTools_ListOfShape &faces = edgeToFaceMap.FindFromKey(edgeIt.Value());
+        TopTools_ListIteratorOfListOfShape faceIt;
+        for (faceIt.Initialize(faces); faceIt.More(); faceIt.Next())
         {
-            if ((*tempIt).IsSame(*faceIt))
+            if (!facesInMap.Contains(faceIt.Value()))
                 continue;
-            if (processedMap.Contains(*faceIt))
+            if (processedMap.Contains(faceIt.Value()))
                 continue;
-            if (adjacentTest(*tempIt, *faceIt))
-            {
-                tempFaces.push_back(*faceIt);
-                processedMap.Add(*faceIt);
-                recursiveFind(tempFaces, facesIn);
-            }
+            processedMap.Add(faceIt.Value());
+            recursiveFind(TopoDS::Face(faceIt.Value()), outVector);
         }
     }
-}
-
-bool FaceAdjacencySplitter::hasBeenMapped(const TopoDS_Face &shape)
-{
-    for (std::vector<FaceVectorType>::iterator it(adjacencyArray.begin()); it != adjacencyArray.end(); ++it)
-    {
-        if (std::find((*it).begin(), (*it).end(), shape) != (*it).end())
-            return true;
-    }
-    return false;
-}
-
-void FaceAdjacencySplitter::buildMap(const FaceVectorType &facesIn)
-{
-    FaceVectorType::const_iterator vit;
-    for (vit = facesIn.begin(); vit != facesIn.end(); ++vit)
-    {
-        TopTools_ListOfShape shapeList;
-        TopExp_Explorer it;
-        for (it.Init(*vit, TopAbs_EDGE); it.More(); it.Next())
-            shapeList.Append(it.Current());
-        faceEdgeMap.Bind((*vit), shapeList);
-    }
-}
-
-bool FaceAdjacencySplitter::adjacentTest(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo)
-{
-    const TopTools_ListOfShape &faceOneEdges = faceEdgeMap.Find(faceOne);
-    const TopTools_ListOfShape &faceTwoEdges = faceEdgeMap.Find(faceTwo);
-    TopTools_ListIteratorOfListOfShape itOne, itTwo;
-
-    for (itOne.Initialize(faceOneEdges); itOne.More(); itOne.Next())
-    {
-        for (itTwo.Initialize(faceTwoEdges); itTwo.More(); itTwo.Next())
-        {
-            if ((itOne.Value()).IsSame(itTwo.Value()))
-                return true;
-        }
-    }
-
-    return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -340,6 +274,53 @@ GeomAbs_SurfaceType FaceTypedBase::getFaceType(const TopoDS_Face &faceIn)
     return surfaceTest.GetType();
 }
 
+void FaceTypedBase::boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const
+{
+    EdgeVectorType bEdges;
+    boundaryEdges(facesIn, bEdges);
+
+    std::list<TopoDS_Edge> edges;
+    std::copy(bEdges.begin(), bEdges.end(), back_inserter(edges));
+    while(!edges.empty())
+    {
+        TopoDS_Vertex destination = TopExp::FirstVertex(edges.front(), Standard_True);
+        TopoDS_Vertex lastVertex = TopExp::LastVertex(edges.front(), Standard_True);
+        EdgeVectorType boundary;
+        boundary.push_back(edges.front());
+        edges.pop_front();
+        //single edge closed check.
+        if (destination.IsSame(lastVertex))
+        {
+            boundariesOut.push_back(boundary);
+            continue;
+        }
+
+        bool closedSignal(false);
+        std::list<TopoDS_Edge>::iterator it;
+        for (it = edges.begin(); it != edges.end();)
+        {
+            TopoDS_Vertex currentVertex = TopExp::FirstVertex(*it, Standard_True);
+            if (lastVertex.IsSame(currentVertex))
+            {
+                boundary.push_back(*it);
+                lastVertex = TopExp::LastVertex(*it, Standard_True);
+                edges.erase(it);
+                it = edges.begin();
+                if (lastVertex.IsSame(destination))
+                {
+                    closedSignal = true;
+                    break;
+                }
+                continue;
+            }
+            ++it;
+        }
+        if (closedSignal)
+            boundariesOut.push_back(boundary);
+    }
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 FaceTypedPlane::FaceTypedPlane() : FaceTypedBase(GeomAbs_Plane)
@@ -365,15 +346,10 @@ GeomAbs_SurfaceType FaceTypedPlane::getType() const
 
 TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
 {
-    EdgeVectorType bEdges;
-    boundaryEdges(faces, bEdges);
-
-    BoundaryEdgeSplitter bSplitter;
-    bSplitter.split(bEdges);
-
     std::vector<TopoDS_Wire> wires;
 
-    std::vector<EdgeVectorType> splitEdges = bSplitter.getGroupedEdges();
+    std::vector<EdgeVectorType> splitEdges;
+    this->boundarySplit(faces, splitEdges);
     if (splitEdges.empty())
         return TopoDS_Face();
     std::vector<EdgeVectorType>::iterator splitIt;
@@ -389,7 +365,7 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
 
     std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
 
-    TopoDS_Face current = BRepLib_MakeFace(wires.at(0));
+    TopoDS_Face current = BRepLib_MakeFace(wires.at(0), Standard_True);
     if (wires.size() > 1)
     {
         ShapeFix_Face faceFix(current);
@@ -406,8 +382,7 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
         current = faceFix.Face();
     }
 
-    BRepLib_FuseEdges edgeFuse(current, Standard_True);
-    return TopoDS::Face(edgeFuse.Shape());
+    return current;
 }
 
 FaceTypedPlane& ModelRefine::getPlaneObject()
@@ -446,8 +421,114 @@ GeomAbs_SurfaceType FaceTypedCylinder::getType() const
 
 TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
 {
-    //to do.
-    return TopoDS_Face();
+    std::vector<EdgeVectorType> boundaries;
+    boundarySplit(faces, boundaries);
+    static TopoDS_Face dummy;
+    if (boundaries.size() < 1)
+        return dummy;
+
+    //take one face and remove all the wires.
+    TopoDS_Face workFace = faces.at(0);
+    ShapeBuild_ReShape reshaper;
+    TopExp_Explorer it;
+    for (it.Init(workFace, TopAbs_WIRE); it.More(); it.Next())
+        reshaper.Remove(it.Current());
+    workFace = TopoDS::Face(reshaper.Apply(workFace));
+    if (workFace.IsNull())
+        return TopoDS_Face();
+
+    ShapeFix_Face faceFixer(workFace);
+
+    //makes wires
+    std::vector<EdgeVectorType>::iterator boundaryIt;
+    for (boundaryIt = boundaries.begin(); boundaryIt != boundaries.end(); ++boundaryIt)
+    {
+        BRepLib_MakeWire wireMaker;
+        EdgeVectorType::iterator it;
+        for (it = (*boundaryIt).begin(); it != (*boundaryIt).end(); ++it)
+            wireMaker.Add(*it);
+        if (wireMaker.Error() != BRepLib_WireDone)
+            continue;
+        faceFixer.Add(wireMaker.Wire());
+    }
+    if (faceFixer.Perform() > ShapeExtend_DONE5)
+        return TopoDS_Face();
+    faceFixer.FixOrientation();
+    if (faceFixer.Perform() > ShapeExtend_DONE5)
+        return TopoDS_Face();
+    return faceFixer.Face();
+}
+
+void FaceTypedCylinder::boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const
+{
+    //get all the seam edges
+    EdgeVectorType seamEdges;
+    FaceVectorType::const_iterator faceIt;
+    for (faceIt = facesIn.begin(); faceIt != facesIn.end(); ++faceIt)
+    {
+        TopExp_Explorer explorer;
+        for (explorer.Init(*faceIt, TopAbs_EDGE); explorer.More(); explorer.Next())
+        {
+            ShapeAnalysis_Edge edgeCheck;
+            if(edgeCheck.IsSeam(TopoDS::Edge(explorer.Current()), *faceIt))
+                seamEdges.push_back(TopoDS::Edge(explorer.Current()));
+        }
+    }
+
+    //normal edges.
+    EdgeVectorType normalEdges;
+    ModelRefine::boundaryEdges(facesIn, normalEdges);
+
+    //put seam edges in front.the idea is that we always want to traverse along a seam edge if possible.
+    std::list<TopoDS_Edge> sortedEdges;
+    std::copy(normalEdges.begin(), normalEdges.end(), back_inserter(sortedEdges));
+    std::copy(seamEdges.begin(), seamEdges.end(), front_inserter(sortedEdges));
+
+    while (!sortedEdges.empty())
+    {
+        //detecting closed boundary works best if we start off of the seam edges.
+        TopoDS_Vertex destination = TopExp::FirstVertex(sortedEdges.back(), Standard_True);
+        TopoDS_Vertex lastVertex = TopExp::LastVertex(sortedEdges.back(), Standard_True);
+        bool closedSignal(false);
+        std::list<TopoDS_Edge> boundary;
+        boundary.push_back(sortedEdges.back());
+        sortedEdges.pop_back();
+
+        std::list<TopoDS_Edge>::iterator sortedIt;
+        for (sortedIt = sortedEdges.begin(); sortedIt != sortedEdges.end();)
+        {
+            TopoDS_Vertex currentVertex = TopExp::FirstVertex(*sortedIt, Standard_True);
+
+            //Seam edges lie on top of each other. i.e. same. and we remove every match from the list
+            //so we don't actually ever compare the same edge.
+            if ((*sortedIt).IsSame(boundary.back()))
+            {
+                ++sortedIt;
+                continue;
+            }
+            if (lastVertex.IsSame(currentVertex))
+            {
+                boundary.push_back(*sortedIt);
+                lastVertex = TopExp::LastVertex(*sortedIt, Standard_True);
+                if (lastVertex.IsSame(destination))
+                {
+                    closedSignal = true;
+                    sortedEdges.erase(sortedIt);
+                    break;
+                }
+                sortedEdges.erase(sortedIt);
+                sortedIt = sortedEdges.begin();
+                continue;
+            }
+            ++sortedIt;
+        }
+        if (closedSignal)
+        {
+            EdgeVectorType temp;
+            std::copy(boundary.begin(), boundary.end(), std::back_inserter(temp));
+            boundariesOut.push_back(temp);
+        }
+    }
 }
 
 FaceTypedCylinder& ModelRefine::getCylinderObject()
@@ -458,25 +539,19 @@ FaceTypedCylinder& ModelRefine::getCylinderObject()
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-FaceUniter::FaceUniter(const TopoDS_Shell &shellIn)
+FaceUniter::FaceUniter(const TopoDS_Shell &shellIn) : modifiedSignal(false)
 {
     workShell = shellIn;
-}
-
-FaceUniter::FaceUniter(const TopoDS_Solid &solidIn)
-{
-    //get first shell
-    TopExp_Explorer it;
-    it.Init(solidIn, TopAbs_SHELL);
-    workShell = TopoDS::Shell(it.Current());
 }
 
 bool FaceUniter::process()
 {
     if (workShell.IsNull())
         return false;
+    modifiedShapes.clear();
+    deletedShapes.clear();
     typeObjects.push_back(&getPlaneObject());
-//    typeObjects.push_back(&getCylinderObject());
+    typeObjects.push_back(&getCylinderObject());
     //add more face types.
 
     ModelRefine::FaceTypeSplitter splitter;
@@ -489,6 +564,8 @@ bool FaceUniter::process()
     ModelRefine::FaceVectorType facesToRemove;
     ModelRefine::FaceVectorType facesToSew;
 
+    ModelRefine::FaceAdjacencySplitter adjacencySplitter(workShell);
+
     for(typeIt = typeObjects.begin(); typeIt != typeObjects.end(); ++typeIt)
     {
         ModelRefine::FaceVectorType typedFaces = splitter.getTypedFaceVector((*typeIt)->getType());
@@ -496,7 +573,6 @@ bool FaceUniter::process()
         equalitySplitter.split(typedFaces, *typeIt);
         for (std::size_t indexEquality(0); indexEquality < equalitySplitter.getGroupCount(); ++indexEquality)
         {
-            ModelRefine::FaceAdjacencySplitter adjacencySplitter;
             adjacencySplitter.split(equalitySplitter.getGroup(indexEquality));
 //            std::cout << "      adjacency group count: " << adjacencySplitter.getGroupCount() << std::endl;
             for (std::size_t adjacentIndex(0); adjacentIndex < adjacencySplitter.getGroupCount(); ++adjacentIndex)
@@ -510,12 +586,19 @@ bool FaceUniter::process()
                         facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());
                     FaceVectorType temp = adjacencySplitter.getGroup(adjacentIndex);
                     facesToRemove.insert(facesToRemove.end(), temp.begin(), temp.end());
+                    // the first shape will be marked as modified, i.e. replaced by newFace, all others are marked as deleted
+                    if (!temp.empty())
+                    {
+                        modifiedShapes.push_back(std::make_pair(temp.front(), newFace));
+                        deletedShapes.insert(deletedShapes.end(), temp.begin()+1, temp.end());
+                    }
                 }
             }
         }
     }
     if (facesToSew.size() > 0)
     {
+        modifiedSignal = true;
         workShell = ModelRefine::removeFaces(workShell, facesToRemove);
         TopExp_Explorer xp;
         bool emptyShell = true;
@@ -534,6 +617,15 @@ bool FaceUniter::process()
                 sew.Add(*sewIt);
             sew.Perform();
             workShell = TopoDS::Shell(sew.SewedShape());
+            // update the list of modifications
+            for (std::vector<ShapePairType>::iterator it = modifiedShapes.begin(); it != modifiedShapes.end(); ++it)
+            {
+                if (sew.IsModified(it->second))
+                {
+                    it->second = sew.Modified(it->second);
+                    break;
+                }
+            }
         }
         else
         {
@@ -544,14 +636,167 @@ bool FaceUniter::process()
             for(sewIt = facesToSew.begin(); sewIt != facesToSew.end(); ++sewIt)
                 builder.Add(workShell, *sewIt);
         }
+
+        BRepLib_FuseEdges edgeFuse(workShell, Standard_True);
+        TopTools_DataMapOfShapeShape affectedFaces;
+        edgeFuse.Faces(affectedFaces);
+        TopTools_DataMapIteratorOfDataMapOfShapeShape mapIt;
+        for (mapIt.Initialize(affectedFaces); mapIt.More(); mapIt.Next())
+        {
+            ShapeFix_Face faceFixer(TopoDS::Face(mapIt.Value()));
+            faceFixer.Perform();
+        }
+        workShell = TopoDS::Shell(edgeFuse.Shape());
+        // update the list of modifications
+        TopTools_DataMapOfShapeShape faceMap;
+        edgeFuse.Faces(faceMap);
+        for (std::vector<ShapePairType>::iterator it = modifiedShapes.begin(); it != modifiedShapes.end(); ++it)
+        {
+            if (faceMap.IsBound(it->second))
+            {
+                const TopoDS_Shape& value = faceMap.Find(it->second);
+                if (!value.IsSame(it->second))
+                    it->second = value;
+            }
+        }
     }
     return true;
 }
 
-bool FaceUniter::getSolid(TopoDS_Solid &outSolid) const
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//BRepBuilderAPI_RefineModel implement a way to log all modifications on the faces
+
+Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape& shape)
 {
-    BRepBuilderAPI_MakeSolid solidMaker;
-    solidMaker.Add(workShell);
-    outSolid = solidMaker.Solid();
-    return solidMaker.IsDone() ? true : false;
+    myShape = shape;
+    Build();
 }
+
+void Part::BRepBuilderAPI_RefineModel::Build()
+{
+    if (myShape.IsNull())
+        Standard_Failure::Raise("Cannot remove splitter from empty shape");
+
+    if (myShape.ShapeType() == TopAbs_SOLID) {
+        const TopoDS_Solid &solid = TopoDS::Solid(myShape);
+        BRepTools_ReShape reshape;
+        TopExp_Explorer it;
+        for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
+            const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
+            ModelRefine::FaceUniter uniter(currentShell);
+            if (uniter.process()) {
+                if (uniter.isModified()) {
+                    const TopoDS_Shell &newShell = uniter.getShell();
+                    reshape.Replace(currentShell, newShell);
+                    LogModifications(uniter);
+                }
+            }
+            else {
+                Standard_Failure::Raise("Removing splitter failed");
+            }
+        }
+        myShape = reshape.Apply(solid);
+    }
+    else if (myShape.ShapeType() == TopAbs_SHELL) {
+        const TopoDS_Shell& shell = TopoDS::Shell(myShape);
+        ModelRefine::FaceUniter uniter(shell);
+        if (uniter.process()) {
+            myShape = uniter.getShell();
+            LogModifications(uniter);
+        }
+        else {
+            Standard_Failure::Raise("Removing splitter failed");
+        }
+    }
+    else if (myShape.ShapeType() == TopAbs_COMPOUND) {
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+
+        TopExp_Explorer xp;
+        // solids
+        for (xp.Init(myShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+            const TopoDS_Solid &solid = TopoDS::Solid(xp.Current());
+            BRepTools_ReShape reshape;
+            TopExp_Explorer it;
+            for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
+                const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
+                ModelRefine::FaceUniter uniter(currentShell);
+                if (uniter.process()) {
+                    if (uniter.isModified()) {
+                        const TopoDS_Shell &newShell = uniter.getShell();
+                        reshape.Replace(currentShell, newShell);
+                        LogModifications(uniter);
+                    }
+                }
+            }
+            builder.Add(comp, reshape.Apply(solid));
+        }
+        // free shells
+        for (xp.Init(myShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+            const TopoDS_Shell& shell = TopoDS::Shell(xp.Current());
+            ModelRefine::FaceUniter uniter(shell);
+            if (uniter.process()) {
+                builder.Add(comp, uniter.getShell());
+                LogModifications(uniter);
+            }
+        }
+        // the rest
+        for (xp.Init(myShape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(myShape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(myShape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+        for (xp.Init(myShape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+            if (!xp.Current().IsNull())
+                builder.Add(comp, xp.Current());
+        }
+
+        myShape = comp;
+    }
+
+    Done();
+}
+
+void Part::BRepBuilderAPI_RefineModel::LogModifications(const ModelRefine::FaceUniter& uniter)
+{
+    const std::vector<ShapePairType>& modShapes = uniter.getModifiedShapes();
+    for (std::vector<ShapePairType>::const_iterator it = modShapes.begin(); it != modShapes.end(); ++it) {
+        TopTools_ListOfShape list;
+        list.Append(it->second);
+        myModified.Bind(it->first, list);
+    }
+    const ShapeVectorType& delShapes = uniter.getDeletedShapes();
+    for (ShapeVectorType::const_iterator it = delShapes.begin(); it != delShapes.end(); ++it) {
+        myDeleted.Append(*it);
+    }
+}
+
+const TopTools_ListOfShape& Part::BRepBuilderAPI_RefineModel::Modified(const TopoDS_Shape& S)
+{
+    if (myModified.IsBound(S))
+        return myModified.Find(S);
+    else
+        return myEmptyList;
+}
+
+Standard_Boolean Part::BRepBuilderAPI_RefineModel::IsDeleted(const TopoDS_Shape& S)
+{
+    TopTools_ListIteratorOfListOfShape it;
+    for (it.Initialize(myDeleted); it.More(); it.Next())
+    {
+        if (it.Value().IsSame(S))
+            return Standard_True;
+    }
+
+    return Standard_False;
+}
+

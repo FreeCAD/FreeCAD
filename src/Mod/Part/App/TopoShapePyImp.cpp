@@ -208,8 +208,7 @@ PyObject* TopoShapePy::removeShape(PyObject *args)
         Py::List list(l);
         std::vector<TopoDS_Shape> shapes;
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
-            Py::Tuple tuple(*it);
-            Py::TopoShape sh(tuple[0]);
+            Py::TopoShape sh(*it);
             shapes.push_back(
                 sh.extensionObject()->getTopoShapePtr()->_Shape
             );
@@ -312,6 +311,84 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::exportBrepToString(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    try {
+        // write brep file
+        std::stringstream str;
+        getTopoShapePtr()->exportBrep(str);
+        return Py::new_reference_to(Py::String(str.str()));
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject*  TopoShapePy::importBrep(PyObject *args)
+{
+    PyObject* input;
+    if (!PyArg_ParseTuple(args, "O", &input))
+    //char* input;
+    //if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read brep
+        Base::PyStreambuf buf(input);
+        std::istream str(0);
+        str.rdbuf(&buf);
+        //std::stringstream str(input);
+        getTopoShapePtr()->importBrep(str);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+
+    Py_Return;
+}
+
+PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+
+    try {
+        // read brep
+        std::stringstream str(input);
+        getTopoShapePtr()->importBrep(str);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return NULL;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    Py_Return;
+}
+
 PyObject*  TopoShapePy::exportStl(PyObject *args)
 {
     char* filename;
@@ -324,7 +401,12 @@ PyObject*  TopoShapePy::exportStl(PyObject *args)
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception,e.what());
-        return NULL;
+        return 0;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
     }
 
     Py_Return;
@@ -1030,6 +1112,8 @@ PyObject*  TopoShapePy::isClosed(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     try {
+        if (getTopoShapePtr()->_Shape.IsNull())
+            Standard_Failure::Raise("Cannot determine the 'Closed'' flag of an empty shape");
         return Py_BuildValue("O", (getTopoShapePtr()->isClosed() ? Py_True : Py_False));
     }
     catch (...) {

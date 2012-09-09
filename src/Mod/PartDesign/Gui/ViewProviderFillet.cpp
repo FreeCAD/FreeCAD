@@ -115,7 +115,7 @@ bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(getObject()); 
-    App::DocumentObject    *pcSupport;
+    App::DocumentObject    *pcSupport = 0;
     if (pcFillet->Base.getValue()){
         pcSupport = static_cast<Sketcher::SketchObject*>(pcFillet->Base.getValue()); 
     }

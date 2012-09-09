@@ -71,6 +71,69 @@ void UrlLabel::setUrl(const QString& u)
     setToolTip(this->_url);
 }
 
+LocationWidget::LocationWidget (QWidget * parent)
+  : QWidget(parent)
+{
+    box = new QGridLayout();
+
+    xValue = new QDoubleSpinBox(this);
+    xValue->setMinimum(-2.14748e+09);
+    xValue->setMaximum(2.14748e+09);
+    xLabel = new QLabel(this);
+    box->addWidget(xLabel, 0, 0, 1, 1);
+    box->addWidget(xValue, 0, 1, 1, 1);
+
+    yValue = new QDoubleSpinBox(this);
+    yValue->setMinimum(-2.14748e+09);
+    yValue->setMaximum(2.14748e+09);
+    yLabel = new QLabel(this);
+    box->addWidget(yLabel, 1, 0, 1, 1);
+    box->addWidget(yValue, 1, 1, 1, 1);
+
+    zValue = new QDoubleSpinBox(this);
+    zValue->setMinimum(-2.14748e+09);
+    zValue->setMaximum(2.14748e+09);
+    zLabel = new QLabel(this);
+    box->addWidget(zLabel, 2, 0, 1, 1);
+    box->addWidget(zValue, 2, 1, 1, 1);
+
+    dLabel = new QLabel(this);
+    dValue = new QComboBox(this);
+    dValue->setCurrentIndex(-1);
+    box->addWidget(dLabel, 3, 0, 1, 1);
+    box->addWidget(dValue, 3, 1, 1, 1);
+
+    QGridLayout* gridLayout = new QGridLayout(this);
+    gridLayout->addLayout(box, 0, 0, 1, 2);
+
+    retranslateUi();
+}
+
+LocationWidget::~LocationWidget()
+{
+}
+
+QSize LocationWidget::sizeHint() const
+{
+    return QSize(150,100);
+}
+
+void LocationWidget::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        this->retranslateUi();
+    }
+    QWidget::changeEvent(e);
+}
+
+void LocationWidget::retranslateUi()
+{
+    xLabel->setText(QApplication::translate("Gui::LocationWidget", "X:"));
+    yLabel->setText(QApplication::translate("Gui::LocationWidget", "Y:"));
+    zLabel->setText(QApplication::translate("Gui::LocationWidget", "Z:"));
+    dLabel->setText(QApplication::translate("Gui::LocationWidget", "Direction:"));
+} 
+
 FileChooser::FileChooser( QWidget *parent )
   : QWidget( parent ), md( File ), _filter( QString::null )
 {
@@ -266,6 +329,94 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 }
 
 // ------------------------------------------------------------------------------
+
+ActionSelector::ActionSelector(QWidget* parent)
+  : QWidget(parent)
+{
+    addButton = new QPushButton(this);
+    addButton->setMinimumSize(QSize(30, 30));
+    QIcon icon;
+    icon.addFile(QString::fromUtf8(":/icons/button_right.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    addButton->setIcon(icon);
+    gridLayout = new QGridLayout(this);
+    gridLayout->addWidget(addButton, 1, 1, 1, 1);
+
+    spacerItem = new QSpacerItem(33, 57, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    gridLayout->addItem(spacerItem, 5, 1, 1, 1);
+    spacerItem1 = new QSpacerItem(33, 58, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    gridLayout->addItem(spacerItem1, 0, 1, 1, 1);
+
+    removeButton = new QPushButton(this);
+    removeButton->setMinimumSize(QSize(30, 30));
+    QIcon icon1;
+    icon1.addFile(QString::fromUtf8(":/icons/button_left.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    removeButton->setIcon(icon1);
+    removeButton->setAutoDefault(true);
+    removeButton->setDefault(false);
+
+    gridLayout->addWidget(removeButton, 2, 1, 1, 1);
+
+    upButton = new QPushButton(this);
+    upButton->setMinimumSize(QSize(30, 30));
+    QIcon icon3;
+    icon3.addFile(QString::fromUtf8(":/icons/button_up.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    upButton->setIcon(icon3);
+
+    gridLayout->addWidget(upButton, 3, 1, 1, 1);
+
+    downButton = new QPushButton(this);
+    downButton->setMinimumSize(QSize(30, 30));
+    QIcon icon2;
+    icon2.addFile(QString::fromUtf8(":/icons/button_down.xpm"), QSize(), QIcon::Normal, QIcon::Off);
+    downButton->setIcon(icon2);
+    downButton->setAutoDefault(true);
+
+    gridLayout->addWidget(downButton, 4, 1, 1, 1);
+
+    vboxLayout = new QVBoxLayout();
+    vboxLayout->setContentsMargins(0, 0, 0, 0);
+    labelAvailable = new QLabel(this);
+    vboxLayout->addWidget(labelAvailable);
+
+    availableWidget = new QTreeWidget(this);
+    availableWidget->setRootIsDecorated(false);
+    availableWidget->setHeaderLabels(QStringList() << QString());
+    availableWidget->header()->hide();
+    vboxLayout->addWidget(availableWidget);
+
+    gridLayout->addLayout(vboxLayout, 0, 0, 6, 1);
+
+    vboxLayout1 = new QVBoxLayout();
+    vboxLayout1->setContentsMargins(0, 0, 0, 0);
+    labelSelected = new QLabel(this);
+    vboxLayout1->addWidget(labelSelected);
+
+    selectedWidget = new QTreeWidget(this);
+    selectedWidget->setRootIsDecorated(false);
+    selectedWidget->setHeaderLabels(QStringList() << QString());
+    selectedWidget->header()->hide();
+    vboxLayout1->addWidget(selectedWidget);
+
+    gridLayout->addLayout(vboxLayout1, 0, 2, 6, 1);
+
+    addButton->setText(QString());
+    removeButton->setText(QString());
+    upButton->setText(QString());
+    downButton->setText(QString());
+
+    labelAvailable->setText(QApplication::translate("Gui::ActionSelector", "Available:", 0, QApplication::UnicodeUTF8));
+    labelSelected->setText(QApplication::translate("Gui::ActionSelector", "Selected:", 0, QApplication::UnicodeUTF8));
+    addButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Add", 0, QApplication::UnicodeUTF8));
+    removeButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Remove", 0, QApplication::UnicodeUTF8));
+    upButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Move up", 0, QApplication::UnicodeUTF8));
+    downButton->setToolTip(QApplication::translate("Gui::ActionSelector", "Move down", 0, QApplication::UnicodeUTF8));
+}
+
+ActionSelector::~ActionSelector()
+{
+}
+
+// --------------------------------------------------------------------
 
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)

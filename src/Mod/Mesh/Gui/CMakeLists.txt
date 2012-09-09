@@ -34,6 +34,7 @@ set(Dialogs_UIC_SRCS
     DlgSettingsMeshView.ui
     DlgSmoothing.ui
     RemoveComponents.ui
+    Segmentation.ui
 )
 qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
 SET(Dialogs_SRCS
@@ -53,6 +54,9 @@ SET(Dialogs_SRCS
     RemoveComponents.ui
     RemoveComponents.cpp
     RemoveComponents.h
+    Segmentation.ui
+    Segmentation.cpp
+    Segmentation.h
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
@@ -109,7 +113,12 @@ SET(MeshGui_SRCS
 
 add_library(MeshGui SHARED ${MeshGui_SRCS})
 target_link_libraries(MeshGui ${MeshGui_LIBS})
-fc_copy_script("Mod/Mesh" "MeshGui" InitGui.py)
+
+
+fc_target_copy_resource(MeshGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
+    ${CMAKE_BINARY_DIR}/Mod/Mesh
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(MeshGui PROPERTIES SUFFIX ".pyd")

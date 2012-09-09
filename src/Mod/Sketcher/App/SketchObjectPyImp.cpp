@@ -143,7 +143,7 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
-    // check if its belong to the sketch support
+    // check if it belongs to the sketch support
     if (this->getSketchObjectPtr()->Support.getValue() != Obj) {
         std::stringstream str;
         str << ObjectName << "is not supported by this sketch";
@@ -152,7 +152,7 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
     }
 
     // add the external
-    if (this->getSketchObjectPtr()->addExternal(Obj,SubName)) {
+    if (this->getSketchObjectPtr()->addExternal(Obj,SubName) < 0) {
         std::stringstream str;
         str << "Not able to add external shape element";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -164,8 +164,18 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
 
 PyObject* SketchObjectPy::delExternal(PyObject *args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    int Index;
+    if (!PyArg_ParseTuple(args, "i", &Index))
+        return 0;
+
+    if (this->getSketchObjectPtr()->delExternal(Index)) {
+        std::stringstream str;
+        str << "Not able to delete an external geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
 }
 
 PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)

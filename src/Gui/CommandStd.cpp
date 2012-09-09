@@ -33,6 +33,8 @@
 #endif
 #endif
 
+#include <boost/scoped_ptr.hpp>
+
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -191,13 +193,7 @@ Action * StdCmdAbout::createAction(void)
 {
     Action *pcAction;
 
-    QString exe;
-    std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::iterator it = cfg.find("WindowTitle");
-    if (it != cfg.end())
-        exe = QString::fromUtf8(it->second.c_str());
-    else
-        exe = QString::fromUtf8(App::GetApplication().getExecutableName());
+    QString exe = qApp->applicationName();
     pcAction = new Action(this,getMainWindow());
     pcAction->setText(QCoreApplication::translate(
         this->className(), sMenuText, 0,
@@ -210,7 +206,7 @@ Action * StdCmdAbout::createAction(void)
         QCoreApplication::CodecForTr).arg(exe));
     pcAction->setWhatsThis(QLatin1String(sWhatsThis));
     pcAction->setIcon(QApplication::windowIcon());
-      pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromAscii(sAccel));
 
     return pcAction;
 }
@@ -226,20 +222,14 @@ bool StdCmdAbout::isActive()
 void StdCmdAbout::activated(int iMsg)
 {
     const Gui::Dialog::AboutDialogFactory* f = Gui::Dialog::AboutDialogFactory::defaultFactory();
-    QSharedPointer <QDialog> dlg(f->create(getMainWindow()));
+    boost::scoped_ptr<QDialog> dlg(f->create(getMainWindow()));
     dlg->exec();
 }
 
 void StdCmdAbout::languageChange()
 {
     if (_pcAction) {
-        QString exe;
-        std::map<std::string,std::string>& cfg = App::Application::Config();
-        std::map<std::string,std::string>::iterator it = cfg.find("WindowTitle");
-        if (it != cfg.end())
-            exe = QString::fromUtf8(it->second.c_str());
-        else
-            exe = QString::fromUtf8(App::GetApplication().getExecutableName());
+        QString exe = qApp->applicationName();
         _pcAction->setText(QCoreApplication::translate(
             this->className(), sMenuText, 0,
             QCoreApplication::CodecForTr).arg(exe));
@@ -441,42 +431,6 @@ void StdCmdOnlineHelp::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_OnlineHelpPython
-//===========================================================================
-
-DEF_STD_CMD(StdCmdOnlineHelpPython);
-
-StdCmdOnlineHelpPython::StdCmdOnlineHelpPython()
-  :Command("Std_OnlineHelpPython")
-{
-    sGroup        = QT_TR_NOOP("Help");
-    sMenuText     = QT_TR_NOOP("Python Manuals");
-    sToolTipText  = QT_TR_NOOP("Show the Python documentation");
-    sWhatsThis    = "Std_OnlineHelpPython";
-    sStatusTip    = QT_TR_NOOP("Show the Python documentation");
-    sPixmap       = "python";
-    eType         = 0;
-}
-
-void StdCmdOnlineHelpPython::activated(int iMsg)
-{
-    std::string url = App::Application::getHelpDir() + "Python25.chm";
-#if QT_VERSION >= 0x040200
-    bool ok = QDesktopServices::openUrl(QString::fromUtf8(url.c_str()));
-#elif defined(Q_WS_WIN)
-    std::wstring wstr = Base::FileInfo(url).toStdWString();
-    bool ok = (reinterpret_cast<int>(ShellExecuteW(NULL, NULL, wstr.c_str(), NULL,
-                                                   NULL, SW_SHOWNORMAL)) > 32);
-#else
-
-#endif
-    if (!ok) {
-        QMessageBox::critical(getMainWindow(), QObject::tr("File not found"),
-            QObject::tr("Cannot open file %1").arg(QString::fromUtf8(url.c_str())));
-    }
-}
-
-//===========================================================================
 // Std_OnlineHelpWebsite
 //===========================================================================
 
@@ -555,7 +509,7 @@ StdCmdMeasurementSimple::StdCmdMeasurementSimple()
   :Command("Std_MeasurementSimple")
 {
     sGroup        = QT_TR_NOOP("Tools");
-    sMenuText     = QT_TR_NOOP("Mesure distance");
+    sMenuText     = QT_TR_NOOP("Measure distance");
     sToolTipText  = QT_TR_NOOP("Measures distance between two selected objects");
     sWhatsThis    = QT_TR_NOOP("Measures distance between two selected objects");
     sStatusTip    = QT_TR_NOOP("Measures distance between two selected objects");
@@ -619,11 +573,10 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdWhatsThis());
     rcCmdMgr.addCommand(new StdCmdPythonHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
-    rcCmdMgr.addCommand(new StdCmdOnlineHelpPython());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
-    rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
+    //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
 }

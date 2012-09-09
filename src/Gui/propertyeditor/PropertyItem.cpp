@@ -57,6 +57,7 @@ TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyItem, Base::BaseClass);
 
 PropertyItem::PropertyItem() : parentItem(0), readonly(false)
 {
+    precision = Base::UnitsApi::getDecimals();
 }
 
 PropertyItem::~PropertyItem()
@@ -121,11 +122,23 @@ int PropertyItem::columnCount() const
 void PropertyItem::setReadOnly(bool ro)
 {
     readonly = ro;
+    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
+        (*it)->setReadOnly(ro);
 }
 
 bool PropertyItem::isReadOnly() const
 {
     return readonly;
+}
+
+void PropertyItem::setDecimals(int prec)
+{
+    precision = prec;
+}
+
+int PropertyItem::decimals() const
+{
+    return precision;
 }
 
 QVariant PropertyItem::toolTip(const App::Property* prop) const
@@ -531,7 +544,7 @@ PropertyFloatItem::PropertyFloatItem()
 QVariant PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale::system().toString(value, 'f', 2);
+    QString data = QLocale::system().toString(value, 'f', decimals());
     const std::vector<App::Property*>& props = getPropertyData();
     if (!props.empty()) {
         if (props.front()->getTypeId().isDerivedFrom(App::PropertyDistance::getClassTypeId())) {
@@ -572,7 +585,7 @@ void PropertyFloatItem::setValue(const QVariant& value)
     if (!value.canConvert(QVariant::Double))
         return;
     double val = value.toDouble();
-    QString data = QString::fromAscii("%1").arg(val,0,'f',2);
+    QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -580,6 +593,7 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receive
 {
     QDoubleSpinBox *sb = new QDoubleSpinBox(parent);
     sb->setFrame(false);
+    sb->setDecimals(decimals());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
     return sb;
 }
@@ -684,7 +698,7 @@ PropertyFloatConstraintItem::PropertyFloatConstraintItem()
 QVariant PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale::system().toString(value, 'f', 2);
+    QString data = QLocale::system().toString(value, 'f', decimals());
     return QVariant(data);
 }
 
@@ -701,13 +715,14 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
     if (!value.canConvert(QVariant::Double))
         return;
     double val = value.toDouble();
-    QString data = QString::fromAscii("%1").arg(val,0,'f',2);
+    QString data = QString::fromAscii("%1").arg(val,0,'f',decimals());
     setPropertyValue(data);
 }
 
 QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
     QDoubleSpinBox *sb = new QDoubleSpinBox(parent);
+    sb->setDecimals(decimals());
     sb->setFrame(false);
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
     return sb;
@@ -776,7 +791,7 @@ QVariant PropertyAngleItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
     QString data = QString::fromUtf8("%1 \xc2\xb0")
-        .arg(QLocale::system().toString(value, 'f', 2));
+        .arg(QLocale::system().toString(value, 'f', decimals()));
     return QVariant(data);
 }
 
@@ -871,9 +886,9 @@ void PropertyVectorItem::setValue(const QVariant& value)
         return;
     const Base::Vector3f& val = value.value<Base::Vector3f>();
     QString data = QString::fromAscii("(%1, %2, %3)")
-                    .arg(val.x,0,'f',2)
-                    .arg(val.y,0,'f',2)
-                    .arg(val.z,0,'f',2);
+                    .arg(val.x,0,'f',decimals())
+                    .arg(val.y,0,'f',decimals())
+                    .arg(val.z,0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -974,9 +989,9 @@ void PropertyDoubleVectorItem::setValue(const QVariant& value)
         return;
     const Base::Vector3d& val = value.value<Base::Vector3d>();
     QString data = QString::fromAscii("(%1, %2, %3)")
-                    .arg(val.x,0,'f',2)
-                    .arg(val.y,0,'f',2)
-                    .arg(val.z,0,'f',2);
+                    .arg(val.x,0,'f',decimals())
+                    .arg(val.y,0,'f',decimals())
+                    .arg(val.z,0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -1033,6 +1048,358 @@ double PropertyDoubleVectorItem::z() const
 void PropertyDoubleVectorItem::setZ(double z)
 {
     setData(QVariant::fromValue(Base::Vector3d(x(), y(), z)));
+}
+
+// ---------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyMatrixItem, Gui::PropertyEditor::PropertyItem);
+
+PropertyMatrixItem::PropertyMatrixItem()
+{
+    const int decimals=16;
+    m_a11 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a11->setParent(this);
+    m_a11->setPropertyName(QLatin1String("A11"));
+    m_a11->setDecimals(decimals);
+    this->appendChild(m_a11);
+    m_a12 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a12->setParent(this);
+    m_a12->setPropertyName(QLatin1String("A12"));
+    m_a12->setDecimals(decimals);
+    this->appendChild(m_a12);
+    m_a13 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a13->setParent(this);
+    m_a13->setPropertyName(QLatin1String("A13"));
+    m_a13->setDecimals(decimals);
+    this->appendChild(m_a13);
+    m_a14 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a14->setParent(this);
+    m_a14->setPropertyName(QLatin1String("A14"));
+    m_a14->setDecimals(decimals);
+    this->appendChild(m_a14);
+    m_a21 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a21->setParent(this);
+    m_a21->setPropertyName(QLatin1String("A21"));
+    m_a21->setDecimals(decimals);
+    this->appendChild(m_a21);
+    m_a22 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a22->setParent(this);
+    m_a22->setPropertyName(QLatin1String("A22"));
+    m_a22->setDecimals(decimals);
+    this->appendChild(m_a22);
+    m_a23 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a23->setParent(this);
+    m_a23->setPropertyName(QLatin1String("A23"));
+    m_a23->setDecimals(decimals);
+    this->appendChild(m_a23);
+    m_a24 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a24->setParent(this);
+    m_a24->setPropertyName(QLatin1String("A24"));
+    m_a24->setDecimals(decimals);
+    this->appendChild(m_a24);
+    m_a31 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a31->setParent(this);
+    m_a31->setPropertyName(QLatin1String("A31"));
+    m_a31->setDecimals(decimals);
+    this->appendChild(m_a31);
+    m_a32 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a32->setParent(this);
+    m_a32->setPropertyName(QLatin1String("A32"));
+    m_a32->setDecimals(decimals);
+    this->appendChild(m_a32);
+    m_a33 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a33->setParent(this);
+    m_a33->setPropertyName(QLatin1String("A33"));
+    m_a33->setDecimals(decimals);
+    this->appendChild(m_a33);
+    m_a34 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a34->setParent(this);
+    m_a34->setPropertyName(QLatin1String("A34"));
+    m_a34->setDecimals(decimals);
+    this->appendChild(m_a34);
+    m_a41 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a41->setParent(this);
+    m_a41->setPropertyName(QLatin1String("A41"));
+    m_a41->setDecimals(decimals);
+    this->appendChild(m_a41);
+    m_a42 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a42->setParent(this);
+    m_a42->setPropertyName(QLatin1String("A42"));
+    m_a42->setDecimals(decimals);
+    this->appendChild(m_a42);
+    m_a43 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a43->setParent(this);
+    m_a43->setPropertyName(QLatin1String("A43"));
+    m_a43->setDecimals(decimals);
+    this->appendChild(m_a43);
+    m_a44 = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    m_a44->setParent(this);
+    m_a44->setPropertyName(QLatin1String("A44"));
+    m_a44->setDecimals(decimals);
+    this->appendChild(m_a44);
+}
+
+QVariant PropertyMatrixItem::toString(const QVariant& prop) const
+{
+    const Base::Matrix4D& value = prop.value<Base::Matrix4D>();
+    QString text = QString::fromAscii("[%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14 %15 %16]")
+        .arg(QLocale::system().toString(value[0][0], 'f', 2)) //(unsigned short usNdx)
+        .arg(QLocale::system().toString(value[0][1], 'f', 2))
+        .arg(QLocale::system().toString(value[0][2], 'f', 2))
+        .arg(QLocale::system().toString(value[0][3], 'f', 2))
+        .arg(QLocale::system().toString(value[1][0], 'f', 2))
+        .arg(QLocale::system().toString(value[1][1], 'f', 2))
+        .arg(QLocale::system().toString(value[1][2], 'f', 2))
+        .arg(QLocale::system().toString(value[1][3], 'f', 2))
+        .arg(QLocale::system().toString(value[2][0], 'f', 2))
+        .arg(QLocale::system().toString(value[2][1], 'f', 2))
+        .arg(QLocale::system().toString(value[2][2], 'f', 2))
+        .arg(QLocale::system().toString(value[2][3], 'f', 2))
+        .arg(QLocale::system().toString(value[3][0], 'f', 2))
+        .arg(QLocale::system().toString(value[3][1], 'f', 2))
+        .arg(QLocale::system().toString(value[3][2], 'f', 2))
+        .arg(QLocale::system().toString(value[3][3], 'f', 2));
+    return QVariant(text);
+}
+
+QVariant PropertyMatrixItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMatrix::getClassTypeId()));
+
+    const Base::Matrix4D& value = static_cast<const App::PropertyMatrix*>(prop)->getValue();
+    return QVariant::fromValue<Base::Matrix4D>(value);
+}
+
+QVariant PropertyMatrixItem::toolTip(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMatrix::getClassTypeId()));
+
+    const Base::Matrix4D& value = static_cast<const App::PropertyMatrix*>(prop)->getValue();
+    return QVariant(QString::fromStdString(value.analyse()));
+}
+
+void PropertyMatrixItem::setValue(const QVariant& value)
+{
+    if (!value.canConvert<Base::Matrix4D>())
+        return;
+    const Base::Matrix4D& val = value.value<Base::Matrix4D>();
+    const int decimals=16;
+    QString data = QString::fromAscii("FreeCAD.Matrix(%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16)")
+        .arg(val[0][0],0, 'f', decimals)
+        .arg(val[0][1],0, 'f', decimals)
+        .arg(val[0][2],0, 'f', decimals)
+        .arg(val[0][3],0, 'f', decimals)
+        .arg(val[1][0],0, 'f', decimals)
+        .arg(val[1][1],0, 'f', decimals)
+        .arg(val[1][2],0, 'f', decimals)
+        .arg(val[1][3],0, 'f', decimals)
+        .arg(val[2][0],0, 'f', decimals)
+        .arg(val[2][1],0, 'f', decimals)
+        .arg(val[2][2],0, 'f', decimals)
+        .arg(val[2][3],0, 'f', decimals)
+        .arg(val[3][0],0, 'f', decimals)
+        .arg(val[3][1],0, 'f', decimals)
+        .arg(val[3][2],0, 'f', decimals)
+        .arg(val[3][3],0, 'f', decimals);
+    setPropertyValue(data);
+}
+
+QWidget* PropertyMatrixItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
+{
+    QLineEdit *le = new QLineEdit(parent);
+    le->setFrame(false);
+    le->setReadOnly(true);
+    return le;
+}
+
+void PropertyMatrixItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    QLineEdit* le = qobject_cast<QLineEdit*>(editor);
+    const Base::Matrix4D& value = data.value<Base::Matrix4D>();
+    QString text = QString::fromAscii("[%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14 %15 %16]")
+        .arg(QLocale::system().toString(value[0][0], 'f', 2)) //(unsigned short usNdx)
+        .arg(QLocale::system().toString(value[0][1], 'f', 2))
+        .arg(QLocale::system().toString(value[0][2], 'f', 2))
+        .arg(QLocale::system().toString(value[0][3], 'f', 2))
+        .arg(QLocale::system().toString(value[1][0], 'f', 2))
+        .arg(QLocale::system().toString(value[1][1], 'f', 2))
+        .arg(QLocale::system().toString(value[1][2], 'f', 2))
+        .arg(QLocale::system().toString(value[1][3], 'f', 2))
+        .arg(QLocale::system().toString(value[2][0], 'f', 2))
+        .arg(QLocale::system().toString(value[2][1], 'f', 2))
+        .arg(QLocale::system().toString(value[2][2], 'f', 2))
+        .arg(QLocale::system().toString(value[2][3], 'f', 2))
+        .arg(QLocale::system().toString(value[3][0], 'f', 2))
+        .arg(QLocale::system().toString(value[3][1], 'f', 2))
+        .arg(QLocale::system().toString(value[3][2], 'f', 2))
+        .arg(QLocale::system().toString(value[3][3], 'f', 2));
+    le->setText(text);
+}
+
+QVariant PropertyMatrixItem::editorData(QWidget *editor) const
+{
+    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
+    return QVariant(le->text());
+}
+
+double PropertyMatrixItem::getA11() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][0];
+}
+
+void PropertyMatrixItem::setA11(double A11)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(A11,getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA12() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][1];
+}
+
+void PropertyMatrixItem::setA12(double A12)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),A12,getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA13() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][2];
+}
+
+void PropertyMatrixItem::setA13(double A13)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),A13,getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA14() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[0][3];
+}
+
+void PropertyMatrixItem::setA14(double A14)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),A14,getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA21() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][0];
+}
+
+void PropertyMatrixItem::setA21(double A21)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),A21,getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA22() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][1];
+}
+
+void PropertyMatrixItem::setA22(double A22)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),A22,getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA23() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][2];
+}
+
+void PropertyMatrixItem::setA23(double A23)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),A23,getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA24() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[1][3];
+}
+
+void PropertyMatrixItem::setA24(double A24)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),A24,getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA31() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][0];
+}
+
+void PropertyMatrixItem::setA31(double A31)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),A31,getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA32() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][1];
+}
+
+void PropertyMatrixItem::setA32(double A32)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),A32,getA33(),getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA33() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][2];
+}
+
+void PropertyMatrixItem::setA33(double A33)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),A33,getA34(),getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA34() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[2][3];
+}
+
+void PropertyMatrixItem::setA34(double A34)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),A34,getA41(),getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA41() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][0];
+}
+
+void PropertyMatrixItem::setA41(double A41)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),A41,getA42(),getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA42() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][1];
+}
+
+void PropertyMatrixItem::setA42(double A42)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),A42,getA43(),getA44() )));
+}
+
+double PropertyMatrixItem::getA43() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][2];
+}
+
+void PropertyMatrixItem::setA43(double A43)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),A43,getA44() )));
+}
+
+double PropertyMatrixItem::getA44() const
+{
+    return data(1,Qt::EditRole).value<Base::Matrix4D>()[3][3];
+}
+
+void PropertyMatrixItem::setA44(double A44)
+{
+    setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),A44 )));
 }
 
 // --------------------------------------------------------------------
@@ -1231,13 +1598,13 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     QString data = QString::fromAscii("Axis: (%1 %2 %3)\n"
                                       "Angle: %4\n"
                                       "Move: (%5 %6 %7)")
-                    .arg(QLocale::system().toString(dir.x,'f',2))
-                    .arg(QLocale::system().toString(dir.y,'f',2))
-                    .arg(QLocale::system().toString(dir.z,'f',2))
-                    .arg(QLocale::system().toString(angle,'f',2))
-                    .arg(QLocale::system().toString(pos.x,'f',2))
-                    .arg(QLocale::system().toString(pos.y,'f',2))
-                    .arg(QLocale::system().toString(pos.z,'f',2));
+                    .arg(QLocale::system().toString(dir.x,'f',decimals()))
+                    .arg(QLocale::system().toString(dir.y,'f',decimals()))
+                    .arg(QLocale::system().toString(dir.z,'f',decimals()))
+                    .arg(QLocale::system().toString(angle,'f',decimals()))
+                    .arg(QLocale::system().toString(pos.x,'f',decimals()))
+                    .arg(QLocale::system().toString(pos.y,'f',decimals()))
+                    .arg(QLocale::system().toString(pos.z,'f',decimals()));
     return QVariant(data);
 }
 
@@ -1501,9 +1868,9 @@ void PropertyColorItem::setValue(const QVariant& value)
     val.g = (float)col.green()/255.0f;
     val.b = (float)col.blue()/255.0f;
     QString data = QString::fromAscii("(%1,%2,%3)")
-                    .arg(val.r,0,'f',2)
-                    .arg(val.g,0,'f',2)
-                    .arg(val.b,0,'f',2);
+                    .arg(val.r,0,'f',decimals())
+                    .arg(val.g,0,'f',decimals())
+                    .arg(val.b,0,'f',decimals());
     setPropertyValue(data);
 }
 

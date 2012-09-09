@@ -23,22 +23,65 @@
 #ifndef PARTGUI_DLGPRIMITIVES_H
 #define PARTGUI_DLGPRIMITIVES_H
 
+#include <QEventLoop>
 #include <QPointer>
-#include <Gui/InputVector.h>
+#include <Gui/TaskView/TaskDialog.h>
 #include "ui_DlgPrimitives.h"
+#include "ui_Location.h"
 
+class gp_Ax2;
 class SoEventCallback;
 
+namespace App { class Document; }
+namespace Gui { class Document; }
 namespace PartGui {
 
-class DlgPrimitives : public Gui::LocationDialogComp<Ui_DlgPrimitives>
+class Picker
+{
+public:
+    Picker() : exitCode(-1)
+    {
+    }
+    virtual ~Picker()
+    {
+    }
+
+    virtual bool pickedPoint(const SoPickedPoint * point) = 0;
+    virtual QString command(App::Document*) const = 0;
+    void createPrimitive(QWidget* widget, const QString&, Gui::Document*);
+    QString toPlacement(const gp_Ax2&) const;
+
+    int exitCode;
+    QEventLoop loop;
+};
+
+class DlgPrimitives : public QWidget
 {
     Q_OBJECT
 
 public:
-    DlgPrimitives(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgPrimitives(QWidget* parent = 0);
     ~DlgPrimitives();
-    void accept();
+    void createPrimitive(const QString&);
+
+private Q_SLOTS:
+    void on_buttonCircleFromThreePoints_clicked();
+
+private:
+    static void pickCallback(void * ud, SoEventCallback * n);
+    void executeCallback(Picker*);
+
+private:
+    Ui_DlgPrimitives ui;
+};
+
+class Location : public QWidget
+{
+    Q_OBJECT
+
+public:
+    Location(QWidget* parent = 0);
+    ~Location();
     QString toPlacement() const;
 
 private Q_SLOTS:
@@ -46,7 +89,29 @@ private Q_SLOTS:
 
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
+    int mode;
     QPointer<QWidget> activeView;
+    Ui_Location ui;
+};
+
+class TaskPrimitives : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskPrimitives();
+    ~TaskPrimitives();
+
+public:
+    bool accept();
+    bool reject();
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    void modifyStandardButtons(QDialogButtonBox*);
+
+private:
+    DlgPrimitives* widget;
+    Location* location;
 };
 
 } // namespace PartGui

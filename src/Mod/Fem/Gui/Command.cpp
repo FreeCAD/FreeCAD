@@ -30,6 +30,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
@@ -38,6 +39,7 @@
 
 #include <Mod/Fem/App/FemMeshObject.h>
 
+#include "Hypothesis.h"
 
 using namespace std;
 
@@ -57,46 +59,14 @@ CmdFemCreateFromShape::CmdFemCreateFromShape()
 
 void CmdFemCreateFromShape::activated(int iMsg)
 {
-    Base::Type type = Base::Type::fromName("Part::Feature");
-    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(type);
-
-    openCommand("Create FEM");
-    doCommand(Doc, "import Fem");
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-        App::Document* doc = (*it)->getDocument();
-        QString name = QString::fromAscii((*it)->getNameInDocument());
-        QString cmd = QString::fromAscii(
-            "__fem__=Fem.FemMesh()\n"
-            "__fem__.setShape(FreeCAD.getDocument(\"%1\").%2.Shape)\n"
-            "h1=Fem.StdMeshers_MaxLength(0,__fem__)\n"
-            "h1.setLength(1.0)\n"
-            "h2=Fem.StdMeshers_LocalLength(1,__fem__)\n"
-            "h2.setLength(1.0)\n"
-            "h3=Fem.StdMeshers_QuadranglePreference(2,__fem__)\n"
-            "h4=Fem.StdMeshers_Quadrangle_2D(3,__fem__)\n"
-            "h5=Fem.StdMeshers_MaxElementArea(4,__fem__)\n"
-            "h5.setMaxArea(1.0)\n"
-            "h6=Fem.StdMeshers_Regular_1D(5,__fem__)\n"
-            "__fem__.addHypothesis(h1)\n"
-            "__fem__.addHypothesis(h2)\n"
-            "__fem__.addHypothesis(h3)\n"
-            "__fem__.addHypothesis(h4)\n"
-            "__fem__.addHypothesis(h5)\n"
-            "__fem__.addHypothesis(h6)\n"
-            "__fem__.compute()\n"
-            "FreeCAD.getDocument(\"%1\").addObject"
-            "(\"Fem::FemMeshObject\",\"%2\").FemMesh=__fem__\n"
-            "del __fem__,h1,h2,h3,h4,h5,h6\n"
-        )
-        .arg(QString::fromAscii(doc->getName()))
-        .arg(name);
-        doCommand(Doc, "%s", (const char*)cmd.toAscii());
-    }
-    commitCommand();
+    FemGui::TaskHypothesis* dlg = new FemGui::TaskHypothesis();
+    Gui::Control().showDialog(dlg);
 }
 
 bool CmdFemCreateFromShape::isActive(void)
 {
+    if (Gui::Control().activeDialog())
+        return false;
     Base::Type type = Base::Type::fromName("Part::Feature");
     return Gui::Selection().countObjectsOfType(type) > 0;
 }

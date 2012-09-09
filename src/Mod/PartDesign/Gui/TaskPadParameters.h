@@ -44,7 +44,7 @@ namespace PartDesignGui {
 
 
 
-class TaskPadParameters : public Gui::TaskView::TaskBox
+class TaskPadParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -52,19 +52,28 @@ public:
     TaskPadParameters(ViewProviderPad *PadView,QWidget *parent = 0);
     ~TaskPadParameters();
 
+    int getMode(void) const;
     double getLength(void) const;
+    double getLength2(void) const;
     bool   getReversed(void) const;
-    bool   getMirroredExtent(void) const;
+    bool   getMidplane(void) const;
+    const QString getFaceName(void) const;
 
 private Q_SLOTS:
     void onLengthChanged(double);
-    void onMirrored(bool);
+    void onMidplane(bool);
     void onReversed(bool);
+    void onLength2Changed(double);
+    void onModeChanged(int);
+    void onFaceName(const QString& text);
+    void onUpdateView(bool);
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void updateUI(int index);
 
 private:
     QWidget* proxy;

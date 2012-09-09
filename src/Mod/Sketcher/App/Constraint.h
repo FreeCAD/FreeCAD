@@ -83,6 +83,7 @@ public:
     int Third;
     PointPos ThirdPos;
     float LabelDistance;
+    float LabelPosition;
 };
 
 } //namespace Sketcher

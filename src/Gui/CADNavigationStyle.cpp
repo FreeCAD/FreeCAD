@@ -210,6 +210,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             else if (press && (this->currentmode == NavigationStyle::PANNING ||
                                this->currentmode == NavigationStyle::ZOOMING)) {
                 newmode = NavigationStyle::DRAGGING;
+                saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
                 processed = TRUE;
             }
@@ -250,6 +251,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (press && (this->currentmode == NavigationStyle::PANNING ||
                           this->currentmode == NavigationStyle::ZOOMING)) {
                 newmode = NavigationStyle::DRAGGING;
+                saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
                 processed = TRUE;
             }
@@ -286,17 +288,11 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->button3down = press;
             break;
         case SoMouseButtonEvent::BUTTON4:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), -0.05f);
-            else
-                zoom(viewer->getCamera(), 0.05f);
+            doZoom(viewer->getCamera(), TRUE, posn);
             processed = TRUE;
             break;
         case SoMouseButtonEvent::BUTTON5:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), 0.05f);
-            else
-                zoom(viewer->getCamera(), -0.05f);
+            doZoom(viewer->getCamera(), FALSE, posn);
             processed = TRUE;
             break;
         default:
@@ -320,26 +316,16 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         else if (this->currentmode == NavigationStyle::DRAGGING) {
             this->addToLog(event->getPosition(), event->getTime());
             this->spin(posn);
+            moveCursorPosition();
             processed = TRUE;
         }
     }
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        SoMotion3Event * const event = (SoMotion3Event *) ev;
-        SoCamera * const camera = viewer->getCamera();
-
-        SbVec3f dir = event->getTranslation();
-        if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())){
-            static float zoomConstant(-.03f);
-            dir[2] = 0.0;//don't move the cam for z translation.
-
-            SoOrthographicCamera *oCam = static_cast<SoOrthographicCamera *>(camera);
-            oCam->scaleHeight(1.0-event->getTranslation()[2] * zoomConstant);
-        }
-        camera->orientation.getValue().multVec(dir,dir);
-        camera->position = camera->position.getValue() + dir;
-        camera->orientation = event->getRotation() * camera->orientation.getValue();
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        if (event)
+            this->processMotionEvent(event);
         processed = TRUE;
     }
 
@@ -396,6 +382,9 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::PANNING;
         break;
     case SHIFTDOWN|BUTTON2DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:

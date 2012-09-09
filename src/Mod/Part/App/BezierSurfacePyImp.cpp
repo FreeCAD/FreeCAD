@@ -190,10 +190,17 @@ PyObject* BezierSurfacePy::increase(PyObject *args)
     int udegree,vdegree;
     if (!PyArg_ParseTuple(args, "ii", &udegree, &vdegree))
         return 0;
-    Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
-        (getGeometryPtr()->handle());
-    surf->Increase(udegree, vdegree);
-    Py_Return;
+    try {
+        Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
+            (getGeometryPtr()->handle());
+        surf->Increase(udegree, vdegree);
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* BezierSurfacePy::insertPoleColAfter(PyObject *args)
@@ -528,6 +535,9 @@ PyObject* BezierSurfacePy::getPole(PyObject *args)
     try {
         Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
             (getGeometryPtr()->handle());
+        Standard_OutOfRange_Raise_if
+            (uindex < 1 || uindex > surf->NbUPoles() ||
+             vindex < 1 || vindex > surf->NbVPoles(), "Pole index out of range");
         gp_Pnt p = surf->Pole(uindex,vindex);
         return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
     }
@@ -645,6 +655,9 @@ PyObject* BezierSurfacePy::getWeight(PyObject *args)
     try {
         Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
             (getGeometryPtr()->handle());
+        Standard_OutOfRange_Raise_if
+            (uindex < 1 || uindex > surf->NbUPoles() ||
+             vindex < 1 || vindex > surf->NbVPoles(), "Weight index out of range");
         double w = surf->Weight(uindex,vindex);
         return Py_BuildValue("d", w);
     }

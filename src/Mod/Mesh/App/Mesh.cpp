@@ -34,6 +34,8 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>
+#include <Base/Sequencer.h>
+#include <Base/ViewProj.h>
 
 #include "Core/Builder.h"
 #include "Core/MeshKernel.h"
@@ -43,7 +45,10 @@
 #include "Core/TopoAlgorithm.h"
 #include "Core/Evaluation.h"
 #include "Core/Degeneration.h"
+#include "Core/Segmentation.h"
 #include "Core/SetOperations.h"
+#include "Core/Triangulation.h"
+#include "Core/Trim.h"
 #include "Core/Visitor.h"
 
 #include "Mesh.h"
@@ -310,10 +315,10 @@ void MeshObject::save(std::ostream& out) const
     _kernel.Write(out);
 }
 
-bool MeshObject::load(const char* file)
+bool MeshObject::load(const char* file, MeshCore::Material* mat)
 {
     MeshCore::MeshKernel kernel;
-    MeshCore::MeshInput aReader(kernel);
+    MeshCore::MeshInput aReader(kernel, mat);
     if (!aReader.LoadAny(file))
         return false;
 
@@ -630,6 +635,32 @@ void MeshObject::removeComponents(unsigned long count)
     deletedFacets(removeIndices);
 }
 
+unsigned long MeshObject::getPointDegree(const std::vector<unsigned long>& indices,
+                                         std::vector<unsigned long>& point_degree) const
+{
+    const MeshCore::MeshFacetArray& faces = _kernel.GetFacets();
+    std::vector<unsigned long> pointDeg(_kernel.CountPoints());
+
+    for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
+        pointDeg[it->_aulPoints[0]]++;
+        pointDeg[it->_aulPoints[1]]++;
+        pointDeg[it->_aulPoints[2]]++;
+    }
+
+    for (std::vector<unsigned long>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
+        const MeshCore::MeshFacet& face = faces[*it];
+        pointDeg[face._aulPoints[0]]--;
+        pointDeg[face._aulPoints[1]]--;
+        pointDeg[face._aulPoints[2]]--;
+    }
+
+    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(),
+        std::bind2nd(std::equal_to<unsigned long>(), 0));
+
+    point_degree = pointDeg;
+    return countInvalids;
+}
+
 void MeshObject::fillupHoles(unsigned long length, int level,
                              MeshCore::AbstractPolygonTriangulator& cTria)
 {
@@ -782,6 +813,80 @@ void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, st
         algo.CutWithPlane(it->first, it->second, grid, polylines, fMinEps, bConnectPolygons);
         sections.push_back(polylines);
     }
+}
+
+void MeshObject::cut(const std::vector<Base::Vector3f>& polygon, MeshObject::CutType type)
+{
+    MeshCore::FlatTriangulator tria;
+    tria.SetPolygon(polygon);
+    // this gives us the inverse matrix
+    Base::Matrix4D inv = tria.GetTransformToFitPlane();
+    // compute the matrix for the coordinate transformation
+    Base::Matrix4D mat = inv;
+    mat.inverseOrthogonal();
+
+    std::vector<Base::Vector3f> poly = tria.ProjectToFitPlane();
+
+    Base::ViewProjMatrix proj(mat);
+    Base::Polygon2D polygon2d;
+    for (std::vector<Base::Vector3f>::const_iterator it = poly.begin(); it != poly.end(); ++it)
+        polygon2d.Add(Base::Vector2D(it->x, it->y));
+
+    MeshCore::MeshAlgorithm meshAlg(this->_kernel);
+    std::vector<unsigned long> check;
+
+    bool inner;
+    switch (type) {
+    case INNER:
+        inner = true;
+        break;
+    case OUTER:
+        inner = false;
+        break;
+    }
+
+    MeshCore::MeshFacetGrid meshGrid(this->_kernel);
+    meshAlg.CheckFacets(meshGrid, &proj, polygon2d, inner, check);
+    if (!check.empty())
+        this->deleteFacets(check);
+}
+
+void MeshObject::trim(const std::vector<Base::Vector3f>& polygon, MeshObject::CutType type)
+{
+    MeshCore::FlatTriangulator tria;
+    tria.SetPolygon(polygon);
+    // this gives us the inverse matrix
+    Base::Matrix4D inv = tria.GetTransformToFitPlane();
+    // compute the matrix for the coordinate transformation
+    Base::Matrix4D mat = inv;
+    mat.inverseOrthogonal();
+
+    std::vector<Base::Vector3f> poly = tria.ProjectToFitPlane();
+
+    Base::ViewProjMatrix proj(mat);
+    Base::Polygon2D polygon2d;
+    for (std::vector<Base::Vector3f>::const_iterator it = poly.begin(); it != poly.end(); ++it)
+        polygon2d.Add(Base::Vector2D(it->x, it->y));
+    MeshCore::MeshTrimming trim(this->_kernel, &proj, polygon2d);
+    std::vector<unsigned long> check;
+    std::vector<MeshCore::MeshGeomFacet> triangle;
+
+    switch (type) {
+    case INNER:
+        trim.SetInnerOrOuter(MeshCore::MeshTrimming::INNER);
+        break;
+    case OUTER:
+        trim.SetInnerOrOuter(MeshCore::MeshTrimming::OUTER);
+        break;
+    }
+
+    MeshCore::MeshFacetGrid meshGrid(this->_kernel);
+    trim.CheckFacets(meshGrid, check);
+    trim.TrimFacets(check, triangle);
+    if (!check.empty())
+        this->deleteFacets(check);
+    if (!triangle.empty())
+        this->_kernel.AddFacets(triangle);
 }
 
 MeshObject* MeshObject::unite(const MeshObject& mesh) const
@@ -1096,6 +1201,12 @@ void MeshObject::removeFullBoundaryFacets()
     }
 }
 
+void MeshObject::removeInvalidPoints()
+{
+    MeshCore::MeshEvalNaNPoints nan(_kernel);
+    deletePoints(nan.GetIndices());
+}
+
 void MeshObject::validateIndices()
 {
     unsigned long count = _kernel.CountFacets();
@@ -1181,6 +1292,7 @@ MeshObject* MeshObject::createMeshFromList(Py::List& list)
         }
     }
 
+    Base::EmptySequencer seq;
     std::auto_ptr<MeshObject> mesh(new MeshObject);
     //mesh->addFacets(facets);
     mesh->getKernel() = facets;
@@ -1388,50 +1500,25 @@ MeshObject* MeshObject::meshFromSegment(const std::vector<unsigned long>& indice
     return new MeshObject(kernel, _Mtrx);
 }
 
-std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::Type type, const Segment& aSegment, float dev) const
+std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::GeometryType type, const Segment& aSegment,
+                                                     float dev, unsigned long minFacets) const
 {
     std::vector<Segment> segm;
-    unsigned long startFacet, visited;
     if (this->_kernel.CountFacets() == 0)
         return segm;
 
-    // reset VISIT flags
-    MeshCore::MeshAlgorithm cAlgo(this->_kernel);
-    if (aSegment.isEmpty()) {
-        cAlgo.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
+    MeshCore::MeshSegmentAlgorithm finder(this->_kernel);
+    MeshCore::MeshDistanceSurfaceSegment* surf;
+    surf = new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev);
+    std::vector<MeshCore::MeshSurfaceSegment*> surfaces;
+    surfaces.push_back(surf);
+    finder.FindSegments(surfaces);
+
+    const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
+    for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
+        segm.push_back(Segment(const_cast<MeshObject*>(this), *it, false));
     }
-    else {
-        cAlgo.SetFacetFlag(MeshCore::MeshFacet::VISIT);
-        cAlgo.ResetFacetsFlag(aSegment.getIndices(), MeshCore::MeshFacet::VISIT);
-    }
-
-    const MeshCore::MeshFacetArray& rFAry = this->_kernel.GetFacets();
-    MeshCore::MeshFacetArray::_TConstIterator iTri = rFAry.begin();
-    MeshCore::MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
-    MeshCore::MeshFacetArray::_TConstIterator iEnd = rFAry.end();
-
-    // start from the first not visited facet
-    visited = cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
-    iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-        MeshCore::MeshFacet::VISIT));
-    startFacet = iTri - iBeg;
-
-    while (startFacet != ULONG_MAX) {
-        // collect all facets of the same geometry
-        std::vector<unsigned long> indices;
-        indices.push_back(startFacet);
-        MeshCore::MeshPlaneVisitor pv(this->_kernel, startFacet, dev, indices);
-        visited += this->_kernel.VisitNeighbourFacets(pv, startFacet);
-
-        iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-            MeshCore::MeshFacet::VISIT));
-        if (iTri < iEnd)
-            startFacet = iTri - iBeg;
-        else
-            startFacet = ULONG_MAX;
-        segm.push_back(Segment(const_cast<MeshObject*>(this), indices, false));
-    }
-
+    delete surf;
     return segm;
 }
 

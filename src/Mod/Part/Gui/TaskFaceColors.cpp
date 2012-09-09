@@ -26,14 +26,19 @@
 #ifndef _PreComp_
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <QMessageBox>
 # include <QSet>
 #endif
+
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include "ui_TaskFaceColors.h"
 #include "TaskFaceColors.h"
 #include "ViewProviderExt.h"
 
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 
@@ -68,15 +73,20 @@ namespace PartGui {
 class FaceColors::Private
 {
 public:
+    typedef boost::signals::connection Connection;
     Ui_TaskFaceColors* ui;
     ViewProviderPartExt* vp;
     App::DocumentObject* obj;
+    Gui::Document* doc;
     std::vector<App::Color> current,perface;
     QSet<int> index;
+    Connection connectDelDoc;
+    Connection connectDelObj;
 
     Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), vp(vp)
     {
         obj = vp->getObject();
+        doc = Gui::Application::Instance->getDocument(obj->getDocument());
 
         // build up map edge->face
         TopTools_IndexedMapOfShape mapOfShape;
@@ -109,12 +119,31 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
 
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
+
+    d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
+        (&FaceColors::slotDeleteDocument, this, _1));
+    d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(boost::bind
+        (&FaceColors::slotDeleteObject, this, _1));
 }
 
 FaceColors::~FaceColors()
 {
     Gui::Selection().rmvSelectionGate();
+    d->connectDelDoc.disconnect();
+    d->connectDelObj.disconnect();
     delete d;
+}
+
+void FaceColors::slotDeleteDocument(const Gui::Document& Doc)
+{
+    if (d->doc == &Doc)
+        Gui::Control().closeDialog();
+}
+
+void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
+{
+    if (d->vp == &obj)
+        Gui::Control().closeDialog();
 }
 
 void FaceColors::on_defaultButton_clicked()
@@ -194,10 +223,17 @@ bool FaceColors::accept()
 
 bool FaceColors::reject()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
-    doc->resetEdit();
-    d->vp->DiffuseColor.setValues(d->current);
-    return true;
+    int ret = QMessageBox::question(this, tr("Face colors"), tr("Do you really want to cancel?"),
+        QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape);
+    if (ret == QMessageBox::Yes) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+        doc->resetEdit();
+        d->vp->DiffuseColor.setValues(d->current);
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void FaceColors::changeEvent(QEvent *e)

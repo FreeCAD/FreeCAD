@@ -54,7 +54,12 @@ SET(MeshPartGui_SRCS
 
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
-fc_copy_script("Mod/MeshPart" "MeshPartGui" InitGui.py)
+
+
+fc_target_copy_resource(MeshPartGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/MeshPart
+    ${CMAKE_BINARY_DIR}/Mod/MeshPart
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(MeshPartGui PROPERTIES SUFFIX ".pyd")

@@ -38,6 +38,12 @@
 		  </Documentation>
 		  <Parameter Name="Point" Type="Object"/>
 	  </Attribute>
+		<Attribute Name="Tolerance">
+			<Documentation>
+				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
+			</Documentation>
+			<Parameter Name="Tolerance" Type="Float"/>
+		</Attribute>
 		<Methode Name="setTolerance">
 			<Documentation>
 				<UserDocu>Set the tolerance for the vertex.</UserDocu>

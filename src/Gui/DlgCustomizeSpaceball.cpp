@@ -525,7 +525,7 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
   : CustomizeActionPage(parent), buttonView(0), buttonModel(0),
     commandView(0), commandModel(0), clearButton(0), printReference(0)
 {
-    this->setWindowTitle(tr("Spaceball"));
+    this->setWindowTitle(tr("Spaceball Buttons"));
     GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
     if (!app)
         return;
@@ -555,7 +555,11 @@ void DlgCustomizeSpaceball::setMessage(const QString& message)
 {
     QLabel *messageLabel = new QLabel(message,this);
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(messageLabel);
+    QHBoxLayout *layout2 = new QHBoxLayout();
+    layout2->addStretch();
+    layout2->addWidget(messageLabel);
+    layout2->addStretch();
+    layout->addItem(layout2);
     this->setLayout(layout);
 }
 

@@ -28,6 +28,8 @@
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
+# include <Precision.hxx>
+# include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <gp_Ax1.hxx>
@@ -35,6 +37,7 @@
 
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
+#include <GCPnts_UniformAbscissa.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -42,6 +45,8 @@
 #include "BSplineCurvePy.h"
 #include "TopoShape.h"
 #include "TopoShapeShellPy.h"
+#include "TopoShapeFacePy.h"
+#include "TopoShapeEdgePy.h"
 #include "TopoShapeWirePy.h"
 #include "TopoShapeWirePy.cpp"
 
@@ -133,6 +138,73 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_SetString(PyExc_Exception, "edge or wire or list of edges and wires expected");
     return -1;
+}
+
+PyObject* TopoShapeWirePy::add(PyObject *args)
+{
+    PyObject* edge;
+    if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type), &edge))
+        return 0;
+    const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->_Shape);
+    BRepBuilderAPI_MakeWire mkWire(w);
+
+    const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(edge)->getTopoShapePtr()->_Shape;
+    if (sh.IsNull()) {
+        PyErr_SetString(PyExc_TypeError, "given shape is invalid");
+        return 0;
+    }
+    if (sh.ShapeType() == TopAbs_EDGE)
+        mkWire.Add(TopoDS::Edge(sh));
+    else if (sh.ShapeType() == TopAbs_WIRE)
+        mkWire.Add(TopoDS::Wire(sh));
+    else {
+        PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
+        return 0;
+    }
+
+    try {
+        getTopoShapePtr()->_Shape = mkWire.Wire();
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* TopoShapeWirePy::fixWire(PyObject *args)
+{
+    PyObject* face=0;
+    double tol = Precision::Confusion();
+    if (!PyArg_ParseTuple(args, "|O!d",&(TopoShapeFacePy::Type), &face, &tol))
+        return 0;
+
+    try {
+        ShapeFix_Wire aFix;
+        const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->_Shape);
+
+        if (face) {
+            const TopoDS_Face& f = TopoDS::Face(static_cast<TopoShapePy*>(face)->getTopoShapePtr()->_Shape);
+            aFix.Init(w, f, tol);
+        }
+        else {
+            aFix.SetPrecision(tol);
+            aFix.Load(w);
+        }
+
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        getTopoShapePtr()->_Shape = aFix.Wire();
+
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
@@ -247,6 +319,52 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args)
         PyErr_SetString(PyExc_Exception, "failed to approximate wire");
         return 0;
     }
+}
+
+PyObject* TopoShapeWirePy::discretize(PyObject *args)
+{
+    PyObject* defl_or_num;
+    if (!PyArg_ParseTuple(args, "O", &defl_or_num))
+        return 0;
+
+    try {
+        BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->_Shape));
+        GCPnts_UniformAbscissa discretizer;
+        if (PyInt_Check(defl_or_num)) {
+            int num = PyInt_AsLong(defl_or_num);
+            discretizer.Initialize (adapt, num);
+        }
+        else if (PyFloat_Check(defl_or_num)) {
+            double defl = PyFloat_AsDouble(defl_or_num);
+            discretizer.Initialize (adapt, defl);
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Either int or float expected");
+            return 0;
+        }
+        if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            Py::List points;
+            int nbPoints = discretizer.NbPoints ();
+            for (int i=1; i<=nbPoints; i++) {
+                gp_Pnt p = adapt.Value (discretizer.Parameter (i));
+                points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+            }
+
+            return Py::new_reference_to(points);
+        }
+        else {
+            PyErr_SetString(PyExc_Exception, "Descretization of wire failed");
+            return 0;
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
 }
 
 Py::Object TopoShapeWirePy::getCenterOfMass(void) const

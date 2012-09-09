@@ -76,11 +76,13 @@ PROPERTY_SOURCE(Drawing::FeatureViewPart, Drawing::FeatureView)
 FeatureViewPart::FeatureViewPart(void) 
 {
     static const char *group = "Shape view";
+    static const char *vgroup = "Drawing view";
 
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0),group,App::Prop_None,"Projection direction");
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Shape to view");
     ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Control the appearance of the dashed hidden lines");
     ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Control the appearance of the smooth lines");
+    ADD_PROPERTY_TYPE(LineWidth,(0.35f),vgroup,App::Prop_None,"The thickness of the resulting lines");
 }
 
 FeatureViewPart::~FeatureViewPart()
@@ -196,7 +198,7 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
         ProjectionAlgos::SvgExtractionType type = ProjectionAlgos::Plain;
         if (hidden) type = (ProjectionAlgos::SvgExtractionType)(type|ProjectionAlgos::WithHidden);
         if (smooth) type = (ProjectionAlgos::SvgExtractionType)(type|ProjectionAlgos::WithSmooth);
-        result << Alg.getSVG(type, this->Scale.getValue());
+        result << Alg.getSVG(type, this->LineWidth.getValue() / this->Scale.getValue());
 
         result << "</g>" << endl;
 

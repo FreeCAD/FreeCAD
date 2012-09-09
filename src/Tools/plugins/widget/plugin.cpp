@@ -108,6 +108,47 @@ public:
     }
 };
 
+class LocationWidgetPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    LocationWidgetPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::LocationWidget(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Display Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( urllabel_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/InputVector.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Location");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("A widget to define a location.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::LocationWidget");
+    }
+};
+
 static const char *filechooser_pixmap[] = {
     "22 22 8 1",
     "  c Gray100",
@@ -296,6 +337,79 @@ public:
     QString name() const
     {
         return QLatin1String("Gui::AccelLineEdit");
+    }
+};
+
+/* XPM */
+static const char *actionselector_pixmap[]={
+"22 22 6 1",
+"a c #000000",
+"# c #000080",
+"b c #008080",
+"c c #808080",
+"d c #c0c0c0",
+". c #ffffff",
+"......................",
+"......................",
+"......................",
+"...#aaaaaaaaaaaaaa#...",
+".baccccccccccccccccab.",
+".acccddddddddddddddca.",
+"#ccd................d#",
+"acc.................da",
+"acd.......d....ca.ac.a",
+"acd......db......a...a",
+"acd.dbbb.dbbbd...a...a",
+"acd.ccdbddb.db...a...a",
+"acd.dbbbddb..b...a...a",
+"acd.bd.bddb..b...a...a",
+"acd.bbbbddbbbc...a...a",
+"acd..d.....dd..ca.acda",
+"#cd.................d#",
+".ac................da.",
+".badd............dda#.",
+"...#aaaaaaaaaaaaaa#...",
+"......................",
+"......................"};
+
+class ActionSelectorPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    ActionSelectorPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::ActionSelector(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Input Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( actionselector_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/Widgets.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Action Selector");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("A widget to select actions.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::ActionSelector");
     }
 };
 
@@ -1017,8 +1131,10 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
 {
     QList<QDesignerCustomWidgetInterface *> cw;
     cw.append(new UrlLabelPlugin);
+    cw.append(new LocationWidgetPlugin);
     cw.append(new FileChooserPlugin);
     cw.append(new AccelLineEditPlugin);
+    cw.append(new ActionSelectorPlugin);
     cw.append(new CommandIconViewPlugin);
     cw.append(new UIntSpinBoxPlugin);
     cw.append(new ColorButtonPlugin);

@@ -280,6 +280,66 @@ If color mapping is choosed, you must choose a color mapping file containing a t
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
+          <property name="toolTip">
+           <string>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</string>
+          </property>
+          <property name="text">
+           <string>Use standard font size for texts</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfStdSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
+          <property name="toolTip">
+           <string>If this is checked, hatches will be converted into simple wires</string>
+          </property>
+          <property name="text">
+           <string>Import hatch boundaries as wires</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>importDxfHatches</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
+          <property name="toolTip">
+           <string>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</string>
+          </property>
+          <property name="text">
+           <string>Render polylines with width</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>renderPolylineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -352,6 +412,66 @@ If color mapping is choosed, you must choose a color mapping file containing a t
             <string>Original color and linewidth</string>
            </property>
           </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Export Style</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="svg_export_style_combobox">
+          <property name="toolTip">
+           <string>Style of SVG file to write when exporting a Sketch.</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svg_export_style</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Translated (for print &amp; display)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Raw (for CAM)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
+          <property name="toolTip">
+           <string>When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</string>
+          </property>
+          <property name="text">
+           <string>Translate white line color to black</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SvgLinesBlack</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
          </widget>
         </item>
        </layout>

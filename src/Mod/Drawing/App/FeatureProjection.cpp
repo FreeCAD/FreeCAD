@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
 # include <TopoDS_Compound.hxx>
 #endif
 

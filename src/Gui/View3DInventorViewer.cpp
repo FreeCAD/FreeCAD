@@ -74,6 +74,7 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
 # include <QKeyEvent>
+# include <QWheelEvent>
 # include <QMessageBox>
 # include <QTimer>
 # include <QStatusBar>
@@ -1033,6 +1034,14 @@ void View3DInventorViewer::selectAll()
  */
 void View3DInventorViewer::processEvent(QEvent * event)
 {
+    // Bug #0000607: Some mices also support horizontal scrolling which however might
+    // lead to some unwanted zooming when pressing the MMB for panning.
+    // Thus, we filter out horizontal scrolling.
+    if (event->type() == QEvent::Wheel) {
+        QWheelEvent* we = static_cast<QWheelEvent*>(event);
+        if (we->orientation() == Qt::Horizontal)
+            return;
+    }
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent* ke = static_cast<QKeyEvent*>(event);
         if (ke->matches(QKeySequence::SelectAll)) {
@@ -1061,18 +1070,16 @@ void View3DInventorViewer::processEvent(QEvent * event)
 
         motionEvent->setHandled(true);
 
-        static float translationConstant(-.001f);
         float xTrans, yTrans, zTrans;
         xTrans = static_cast<float>(motionEvent->translationX());
         yTrans = static_cast<float>(motionEvent->translationY());
         zTrans = static_cast<float>(motionEvent->translationZ());
-        SbVec3f translationVector(xTrans, yTrans, zTrans * -1.0);
-        translationVector *= translationConstant;
+        SbVec3f translationVector(xTrans, yTrans, zTrans);
 
         static float rotationConstant(.0001f);
         SbRotation xRot, yRot, zRot;
-        xRot.setValue(SbVec3f(-1.0, 0.0, 0.0), static_cast<float>(motionEvent->rotationX()) * rotationConstant);
-        yRot.setValue(SbVec3f(0.0, -1.0, 0.0), static_cast<float>(motionEvent->rotationY()) * rotationConstant);
+        xRot.setValue(SbVec3f(1.0, 0.0, 0.0), static_cast<float>(motionEvent->rotationX()) * rotationConstant);
+        yRot.setValue(SbVec3f(0.0, 1.0, 0.0), static_cast<float>(motionEvent->rotationY()) * rotationConstant);
         zRot.setValue(SbVec3f(0.0, 0.0, 1.0), static_cast<float>(motionEvent->rotationZ()) * rotationConstant);
 
         SoMotion3Event motion3Event;
@@ -1302,9 +1309,9 @@ void View3DInventorViewer::pubSeekToPoint(const SbVec3f& pos)
     this->seekToPoint(pos);
 }
 
-void View3DInventorViewer::setCameraOrientation(const SbRotation& rot)
+void View3DInventorViewer::setCameraOrientation(const SbRotation& rot, SbBool moveTocenter)
 {
-    navigation->setCameraOrientation(rot);
+    navigation->setCameraOrientation(rot, moveTocenter);
 }
 
 void View3DInventorViewer::setCameraType(SoType t)
@@ -1625,6 +1632,16 @@ void View3DInventorViewer::startAnimating(const SbVec3f& axis, float velocity)
 void View3DInventorViewer::stopAnimating(void)
 {
     navigation->stopAnimating();
+}
+
+void View3DInventorViewer::setPopupMenuEnabled(const SbBool on)
+{
+    navigation->setPopupMenuEnabled(on);
+}
+
+SbBool View3DInventorViewer::isPopupMenuEnabled(void) const
+{
+    return navigation->isPopupMenuEnabled();
 }
 
 /*!

@@ -231,6 +231,8 @@ PyObject* BezierCurvePy::getPole(PyObject * args)
     try {
         Handle_Geom_BezierCurve curve = Handle_Geom_BezierCurve::DownCast
             (getGeometryPtr()->handle());
+        Standard_OutOfRange_Raise_if
+            (index < 1 || index > curve->NbPoles(), "Pole index out of range");
         gp_Pnt pnt = curve->Pole(index);
         Base::VectorPy* vec = new Base::VectorPy(Base::Vector3d(
             pnt.X(), pnt.Y(), pnt.Z()));
@@ -321,6 +323,8 @@ PyObject* BezierCurvePy::getWeight(PyObject * args)
     try {
         Handle_Geom_BezierCurve curve = Handle_Geom_BezierCurve::DownCast
             (getGeometryPtr()->handle());
+        Standard_OutOfRange_Raise_if
+            (index < 1 || index > curve->NbPoles() , "Weight index out of range");
         double weight = curve->Weight(index);
         return Py_BuildValue("d", weight);
     }

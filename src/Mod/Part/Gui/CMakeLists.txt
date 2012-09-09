@@ -41,6 +41,7 @@ set(PartGui_MOC_HDRS
     TaskFaceColors.h
     TaskShapeBuilder.h
     TaskLoft.h
+    TaskSweep.h
 )
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
@@ -58,12 +59,14 @@ set(PartGui_UIC_SRCS
     DlgPartImportIges.ui
     DlgPartImportStep.ui
     DlgPrimitives.ui
+    Location.ui
     DlgRevolution.ui
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
     TaskFaceColors.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
+    TaskSweep.ui
 )
 qt4_wrap_ui(PartGui_UIC_HDRS ${PartGui_UIC_SRCS})
 
@@ -104,6 +107,7 @@ SET(PartGui_SRCS
     DlgPrimitives.cpp
     DlgPrimitives.h
     DlgPrimitives.ui
+    Location.ui
     DlgRevolution.cpp
     DlgRevolution.h
     DlgRevolution.ui
@@ -153,6 +157,9 @@ SET(PartGui_SRCS
     TaskLoft.cpp
     TaskLoft.h
     TaskLoft.ui
+    TaskSweep.cpp
+    TaskSweep.h
+    TaskSweep.ui
 )
 
 SET(PartGui_Scripts
@@ -163,7 +170,12 @@ SET(PartGui_Scripts
 
 add_library(PartGui SHARED ${PartGui_SRCS})
 target_link_libraries(PartGui ${PartGui_LIBS})
-fc_copy_script("Mod/Part" "PartGui" ${PartGui_Scripts})
+
+
+fc_target_copy_resource(PartGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Part
+    ${CMAKE_BINARY_DIR}/Mod/Part
+    ${PartGui_Scripts})
 
 if(MSVC)
     set_target_properties(PartGui PROPERTIES SUFFIX ".pyd")

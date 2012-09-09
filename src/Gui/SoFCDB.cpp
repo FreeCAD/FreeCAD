@@ -95,6 +95,7 @@ void Gui::SoFCDB::init()
     TranslateManip                  ::initClass();
     SoShapeScale                    ::initClass();
     SoAxisCrossKit                  ::initClass();
+    SoRegPoint                      ::initClass();
     SoDrawingGrid                   ::initClass();
 
     PropertyItem                    ::init();
@@ -110,6 +111,7 @@ void Gui::SoFCDB::init()
     PropertyBoolItem                ::init();
     PropertyVectorItem              ::init();
     PropertyDoubleVectorItem        ::init();
+    PropertyMatrixItem              ::init();
     PropertyPlacementItem           ::init();
     PropertyEnumItem                ::init();
     PropertyStringListItem          ::init();
@@ -123,6 +125,7 @@ void Gui::SoFCDB::init()
     InventorNavigationStyle         ::init();
     CADNavigationStyle              ::init();
     BlenderNavigationStyle          ::init();
+    TouchpadNavigationStyle         ::init();
 
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");

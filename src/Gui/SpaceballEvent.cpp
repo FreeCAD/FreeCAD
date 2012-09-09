@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #include "SpaceballEvent.h"
+#include "Application.h"
 
 using namespace Spaceball;
 
@@ -40,12 +41,12 @@ MotionEvent::MotionEvent() : EventBase(static_cast<QEvent::Type>(MotionEventType
 
 MotionEvent::MotionEvent(const MotionEvent& in) : EventBase(static_cast<QEvent::Type>(MotionEventType))
 {
-    xTrans = in.xTrans;
-    yTrans = in.yTrans;
-    zTrans = in.zTrans;
-    xRot = in.xRot;
-    yRot = in.yRot;
-    zRot = in.zRot;
+    xTrans  = in.xTrans;
+    yTrans  = in.yTrans;
+    zTrans  = in.zTrans;
+    xRot    = in.xRot;
+    yRot    = in.yRot;
+    zRot    = in.zRot;
     handled = in.handled;
 }
 

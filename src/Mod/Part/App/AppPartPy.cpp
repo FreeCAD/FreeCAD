@@ -596,8 +596,9 @@ static PyObject * makeWedge(PyObject *self, PyObject *args)
             d.SetCoord(vec.x, vec.y, vec.z);
         }
         BRepPrim_Wedge mkWedge(gp_Ax2(p,d), xmin, ymin, zmin, z2min, x2min, xmax, ymax, zmax, z2max, x2max);
-        TopoDS_Shape resultShape = mkWedge.Shell();
-        return new TopoShapeShellPy(new TopoShape(resultShape)); 
+        BRepBuilderAPI_MakeSolid mkSolid;
+        mkSolid.Add(mkWedge.Shell());
+        return new TopoShapeSolidPy(new TopoShape(mkSolid.Solid())); 
     }
     catch (Standard_DomainError) {
         PyErr_SetString(PyExc_Exception, "creation of wedge failed");
@@ -775,6 +776,24 @@ static PyObject * makeHelix(PyObject *self, PyObject *args)
     try {
         TopoShape helix;
         TopoDS_Shape wire = helix.makeHelix(pitch, height, radius, angle);
+        return new TopoShapeWirePy(new TopoShape(wire));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+static PyObject * makeThread(PyObject *self, PyObject *args)
+{
+    double pitch, height, depth, radius;
+    if (!PyArg_ParseTuple(args, "dddd", &pitch, &height, &depth, &radius))
+        return 0;
+
+    try {
+        TopoShape helix;
+        TopoDS_Shape wire = helix.makeThread(pitch, height, depth, radius);
         return new TopoShapeWirePy(new TopoShape(wire));
     }
     catch (Standard_Failure) {
@@ -1042,14 +1061,36 @@ static PyObject * makeTube(PyObject *self, PyObject *args)
     PyObject *pshape;
     double radius;
     double tolerance=0.001;
+    char* scont = "C0";
+    int maxdegree = 3;
+    int maxsegment = 30;
 
     // Path + radius
-    if (!PyArg_ParseTuple(args, "O!d", &(TopoShapePy::Type), &pshape, &radius))
+    if (!PyArg_ParseTuple(args, "O!d|sii", &(TopoShapePy::Type), &pshape, &radius, &scont, &maxdegree, &maxsegment))
         return 0;
+    std::string str_cont = scont;
+    int cont;
+    if (str_cont == "C0")
+        cont = (int)GeomAbs_C0;
+    else if (str_cont == "C1")
+        cont = (int)GeomAbs_C1;
+    else if (str_cont == "C2")
+        cont = (int)GeomAbs_C2;
+    else if (str_cont == "C3")
+        cont = (int)GeomAbs_C3;
+    else if (str_cont == "CN")
+        cont = (int)GeomAbs_CN;
+    else if (str_cont == "G1")
+        cont = (int)GeomAbs_G1;
+    else if (str_cont == "G2")
+        cont = (int)GeomAbs_G2;
+    else
+        cont = (int)GeomAbs_C0;
+
     try {
         const TopoDS_Shape& path_shape = static_cast<TopoShapePy*>(pshape)->getTopoShapePtr()->_Shape;
         TopoShape myShape(path_shape);
-        TopoDS_Shape face = myShape.makeTube(radius, tolerance);
+        TopoDS_Shape face = myShape.makeTube(radius, tolerance, cont, maxdegree, maxsegment);
         return new TopoShapeFacePy(new TopoShape(face));
     }
     catch (Standard_Failure) {
@@ -1320,14 +1361,21 @@ static PyObject * sortEdges(PyObject *self, PyObject *args)
         }
     }
 
-    std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
+    try {
+        std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
 
-    Py::List sorted_list;
-    for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-        sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+        Py::List sorted_list;
+        for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
+            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+        }
+
+        return Py::new_reference_to(sorted_list);
     }
-
-    return Py::new_reference_to(sorted_list);
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 static PyObject * cast_to_shape(PyObject *self, PyObject *args)
@@ -1445,6 +1493,9 @@ struct PyMethodDef Part_methods[] = {
      "By default a cylindrical surface is used to create the helix. If the fourth parameter is set\n"
      "(the apex given in degree) a conical surface is used instead"},
 
+    {"makeThread" ,makeThread,METH_VARARGS,
+     "makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"},
+
     {"makeRevolution" ,makeRevolution,METH_VARARGS,
      "makeRevolution(Curve,[vmin,vmax,angle,pnt,dir]) -- Make a revolved shape\n"
      "by rotating the curve or a portion of it around an axis given by (pnt,dir).\n"
@@ -1457,7 +1508,8 @@ struct PyMethodDef Part_methods[] = {
      "these must have the same number of edges."},
 
     {"makeTube" ,makeTube,METH_VARARGS,
-     "makeTube(edge,float) -- Create a tube."},
+     "makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.\n"
+     "continuity is a string which must be 'C0','C1','C2','C3','CN','G1' or 'G1',"},
 
     {"makeSweepSurface" ,makeSweepSurface,METH_VARARGS,
      "makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."},

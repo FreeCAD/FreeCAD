@@ -35,6 +35,10 @@
 #   include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <map>
+#include <vector>
+#include <algorithm>
+
 #include <cstdio>
 #include <QApplication>
 #include <QFile>
@@ -74,16 +78,31 @@ const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2
 class Branding
 {
 public:
-    struct UserDefines
-    {
-        std::string windowTitle;
-        std::string windowIcon;
-        std::string programLogo;
-        std::string splashScreen;
-    };
-
+    typedef std::map<std::string, std::string> XmlConfig;
     Branding()
     {
+        filter.push_back("Application");
+        filter.push_back("WindowTitle");
+        filter.push_back("CopyrightInfo");
+        filter.push_back("MaintainerUrl");
+        filter.push_back("WindowIcon");
+        filter.push_back("ProgramLogo");
+        filter.push_back("ProgramIcons");
+
+        filter.push_back("BuildVersionMajor");
+        filter.push_back("BuildVersionMinor");
+        filter.push_back("BuildRevision");
+        filter.push_back("BuildRevisionDate");
+
+        filter.push_back("SplashScreen");
+        filter.push_back("SplashAlignment");
+        filter.push_back("SplashTextColor");
+        filter.push_back("SplashInfoColor");
+
+        filter.push_back("StartWorkbench");
+
+        filter.push_back("ExeName");
+        filter.push_back("ExeVendor");
     }
 
     bool readFile(const QString& fn)
@@ -96,29 +115,26 @@ public:
         file.close();
         return true;
     }
-    UserDefines getUserDefines() const
+    XmlConfig getUserDefines() const
     {
-        UserDefines ud;
+        XmlConfig cfg;
         QDomElement root = domDocument.documentElement();
         QDomElement child;
         if (!root.isNull()) {
-            child = root.firstChildElement(QLatin1String("WindowTitle"));
-            if (!child.isNull())
-                ud.windowTitle = (const char*)child.text().toUtf8();
-            child = root.firstChildElement(QLatin1String("WindowIcon"));
-            if (!child.isNull())
-                ud.windowIcon = (const char*)child.text().toUtf8();
-            child = root.firstChildElement(QLatin1String("ProgramLogo"));
-            if (!child.isNull())
-                ud.programLogo = (const char*)child.text().toUtf8();
-            child = root.firstChildElement(QLatin1String("SplashScreen"));
-            if (!child.isNull())
-                ud.splashScreen = (const char*)child.text().toUtf8();
+            child = root.firstChildElement();
+            while (!child.isNull()) {
+                std::string name = (const char*)child.localName().toAscii();
+                std::string value = (const char*)child.text().toUtf8();
+                if (std::find(filter.begin(), filter.end(), name) != filter.end())
+                    cfg[name] = value;
+                child = child.nextSiblingElement();
+            }
         }
-        return ud;
+        return cfg;
     }
 
 private:
+    std::vector<std::string> filter;
     bool evaluateXML(QIODevice *device, QDomDocument& xmlDocument)
     {
         QString errorStr;
@@ -144,83 +160,6 @@ private:
     }
     QDomDocument domDocument;
 };
-
-class ProgramOptions
-{
-public:
-    ProgramOptions()
-    {
-        newcout = new ProgramOptionsStream(out);
-        oldcout = std::cout.rdbuf(newcout);
-        out.reserve(80);
-        newcerr = new ProgramOptionsStream(err);
-        oldcerr = std::cerr.rdbuf(newcerr);
-        err.reserve(80);
-
-        error = true;
-        ::atexit(ProgramOptions::failure);
-    }
-    ~ProgramOptions()
-    {
-        std::cout.rdbuf(oldcout);
-        delete newcout;
-        std::cerr.rdbuf(oldcerr);
-        delete newcerr;
-        error = false;
-    }
-    static void failure()
-    {
-        if (error) {
-            int argc=0;
-            QApplication app(argc,0);
-            QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-            if (!err.empty()) {
-                QString msg = QString::fromAscii(err.c_str());
-                QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-                QMessageBox::critical(0, appName, s);
-            }
-            else if (!out.empty()) {
-                QString msg = QString::fromAscii(out.c_str());
-                QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-                QMessageBox::information(0, appName, s);
-            }
-        }
-    }
-
-private:
-    class ProgramOptionsStream : public std::streambuf
-    {
-    public:
-        ProgramOptionsStream(std::string& s) : buf(s)
-        {
-        }
-        int overflow(int c = EOF)
-        {
-            if (c != EOF)
-                buf.push_back((char)c);
-            return c;
-        }
-        int sync()
-        {
-            return 0;
-        }
-    private:
-        std::string& buf;
-    };
-
-private:
-    friend class ProgramOptionsStream;
-    std::streambuf* oldcout;
-    std::streambuf* newcout;
-    std::streambuf* oldcerr;
-    std::streambuf* newcerr;
-    static std::string out, err;
-    static bool error;
-};
-
-bool ProgramOptions::error = false;
-std::string ProgramOptions::out;
-std::string ProgramOptions::err;
 
 #if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
 QString myDecoderFunc(const QByteArray &localFileName)
@@ -269,13 +208,14 @@ int main( int argc, char ** argv )
     App::Application::Config()["MaintainerUrl"] = "http://apps.sourceforge.net/mediawiki/free-cad/index.php?title=Main_Page";
 
     // set the banner (for logging and console)
-    App::Application::Config()["ConsoleBanner"] = sBanner;
+    App::Application::Config()["CopyrightInfo"] = sBanner;
     App::Application::Config()["AppIcon"] = "freecad";
-    App::Application::Config()["SplashPicture"] = "freecadsplash";
+    App::Application::Config()["SplashScreen"] = "freecadsplash";
     App::Application::Config()["StartWorkbench"] = "StartWorkbench";
     //App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment" ] = "Bottom|Left";
     App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
+    App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
 
     try {
         // Init phase ===========================================================
@@ -283,9 +223,24 @@ int main( int argc, char ** argv )
         App::Application::Config()["RunMode"] = "Gui";
 
         // Inits the Application 
-        ProgramOptions po;
         App::Application::init(argc,argv);
         Gui::Application::initApplication();
+    }
+    catch (const Base::UnknownProgramOption& e) {
+        QApplication app(argc,argv);
+        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromAscii(e.what());
+        QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
+        QMessageBox::critical(0, appName, s);
+        exit(1);
+    }
+    catch (const Base::ProgramInformation& e) {
+        QApplication app(argc,argv);
+        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromAscii(e.what());
+        QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
+        QMessageBox::information(0, appName, s);
+        exit(0);
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
@@ -325,15 +280,10 @@ int main( int argc, char ** argv )
     QString path = QString::fromUtf8(App::GetApplication().GetHomePath());
     QFileInfo fi(path, QString::fromAscii("branding.xml"));
     if (brand.readFile(fi.absoluteFilePath())) {
-        Branding::UserDefines ud = brand.getUserDefines();
-        if (!ud.windowTitle.empty())
-            App::Application::Config()["WindowTitle"] = ud.windowTitle;
-        if (!ud.windowIcon.empty())
-            App::Application::Config()["WindowIcon"] = ud.windowIcon;
-        if (!ud.programLogo.empty())
-            App::Application::Config()["ProgramLogo"] = ud.programLogo;
-        if (!ud.splashScreen.empty())
-            App::Application::Config()["SplashPicture"] = ud.splashScreen;
+        Branding::XmlConfig cfg = brand.getUserDefines();
+        for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
+            App::Application::Config()[it->first] = it->second;
+        }
     }
 
     // Run phase ===========================================================
@@ -349,6 +299,9 @@ int main( int argc, char ** argv )
             Gui::Application::runApplication();
         else
             App::Application::runApplication();
+    }
+    catch (const Base::SystemExitException&) {
+        exit(0);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());

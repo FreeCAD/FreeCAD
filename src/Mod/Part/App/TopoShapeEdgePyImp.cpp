@@ -23,10 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepLProp_CurveTool.hxx>
 # include <GProp_GProps.hxx>
@@ -47,19 +50,23 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Edge.hxx>
+# include <TopoDS_Vertex.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
+#include <GCPnts_UniformAbscissa.hxx>
 
+#include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
 #include "TopoShape.h"
 #include "TopoShapeFacePy.h"
 #include "TopoShapeVertexPy.h"
+#include "TopoShapeWirePy.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeEdgePy.cpp"
 
@@ -123,7 +130,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
-        if (shape && shape->_Shape.ShapeType() == TopAbs_EDGE) {
+        if (shape && !shape->_Shape.IsNull() && shape->_Shape.ShapeType() == TopAbs_EDGE) {
             this->getTopoShapePtr()->_Shape = shape->_Shape;
             return 0;
         }
@@ -182,6 +189,35 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
     BRepLProp_CLProps prop(adapt,u,0,Precision::Confusion());
     const gp_Pnt& V = prop.Value();
     return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+}
+
+PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
+{
+    PyObject* pnt;
+    PyObject* face=0;
+    if (!PyArg_ParseTuple(args, "O!|O!",&TopoShapeVertexPy::Type,&pnt,
+                                        &TopoShapeFacePy::Type,&face))
+        return 0;
+
+    try {
+        const TopoDS_Shape& v = static_cast<TopoShapePy*>(pnt)->getTopoShapePtr()->_Shape;
+        const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+
+        if (face) {
+            const TopoDS_Shape& f = static_cast<TopoShapeFacePy*>(face)->getTopoShapePtr()->_Shape;
+            Standard_Real par = BRep_Tool::Parameter(TopoDS::Vertex(v), e, TopoDS::Face(f));
+            return PyFloat_FromDouble(par);
+        }
+        else {
+            Standard_Real par = BRep_Tool::Parameter(TopoDS::Vertex(v), e);
+            return PyFloat_FromDouble(par);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
@@ -396,6 +432,120 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
     }
 }
 
+PyObject* TopoShapeEdgePy::discretize(PyObject *args)
+{
+    PyObject* defl_or_num;
+    if (!PyArg_ParseTuple(args, "O", &defl_or_num))
+        return 0;
+
+    try {
+        BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->_Shape));
+        GCPnts_UniformAbscissa discretizer;
+        if (PyInt_Check(defl_or_num)) {
+            int num = PyInt_AsLong(defl_or_num);
+            discretizer.Initialize (adapt, num);
+        }
+        else if (PyFloat_Check(defl_or_num)) {
+            double defl = PyFloat_AsDouble(defl_or_num);
+            discretizer.Initialize (adapt, defl);
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Either int or float expected");
+            return 0;
+        }
+        if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            Py::List points;
+            int nbPoints = discretizer.NbPoints ();
+            for (int i=1; i<=nbPoints; i++) {
+                gp_Pnt p = adapt.Value (discretizer.Parameter (i));
+                points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+            }
+
+            return Py::new_reference_to(points);
+        }
+        else {
+            PyErr_SetString(PyExc_Exception, "Descretization of curve failed");
+            return 0;
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* TopoShapeEdgePy::split(PyObject *args)
+{
+    PyObject* float_or_list;
+    if (!PyArg_ParseTuple(args, "O", &float_or_list))
+        return 0;
+
+    try {
+        BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->_Shape));
+        Standard_Real f = adapt.FirstParameter();
+        Standard_Real l = adapt.LastParameter();
+
+        std::vector<Standard_Real> par;
+        par.push_back(f);
+        if (PyFloat_Check(float_or_list)) {
+            double val = PyFloat_AsDouble(float_or_list);
+            if (val == f || val == l) {
+                PyErr_SetString(PyExc_ValueError, "Cannot split edge at start or end point");
+                return 0;
+            }
+            else if (val < f || val > l) {
+                PyErr_SetString(PyExc_ValueError, "Value out of parameter range");
+                return 0;
+            }
+            par.push_back(val);
+        }
+        else if (PyList_Check(float_or_list)) {
+            Py::List list(float_or_list);
+            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                double val = (double)Py::Float(*it);
+                if (val == f || val == l) {
+                    PyErr_SetString(PyExc_ValueError, "Cannot split edge at start or end point");
+                    return 0;
+                }
+                else if (val < f || val > l) {
+                    PyErr_SetString(PyExc_ValueError, "Value out of parameter range");
+                    return 0;
+                }
+                par.push_back(val);
+            }
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Either float or list of floats expected");
+            return 0;
+        }
+
+        par.push_back(l);
+        std::sort(par.begin(), par.end());
+
+        BRepBuilderAPI_MakeWire mkWire;
+        Handle_Geom_Curve c = adapt.Curve().Curve();
+        std::vector<Standard_Real>::iterator end = par.end() - 1;
+        for (std::vector<Standard_Real>::iterator it = par.begin(); it != end; ++it) {
+            BRepBuilderAPI_MakeEdge mkBuilder(c, it[0], it[1]);
+            mkWire.Add(mkBuilder.Edge());
+        }
+
+        return new TopoShapeWirePy(new TopoShape(mkWire.Shape()));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
+}
+
 PyObject* TopoShapeEdgePy::setTolerance(PyObject *args)
 {
     double tol;
@@ -408,6 +558,19 @@ PyObject* TopoShapeEdgePy::setTolerance(PyObject *args)
 }
 
 // ====== Attributes ======================================================================
+
+Py::Float TopoShapeEdgePy::getTolerance(void) const
+{
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    return Py::Float(BRep_Tool::Tolerance(e));
+}
+
+void TopoShapeEdgePy::setTolerance(Py::Float tol)
+{
+    BRep_Builder aBuilder;
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    aBuilder.UpdateEdge(e, (double)tol);
+}
 
 Py::Float TopoShapeEdgePy::getLength(void) const
 {
@@ -497,6 +660,22 @@ Py::Tuple TopoShapeEdgePy::getParameterRange(void) const
     return t;
 }
 
+Py::Float TopoShapeEdgePy::getFirstParameter(void) const
+{
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    BRepAdaptor_Curve adapt(e);
+    double t = adapt.FirstParameter();
+    return Py::Float(t);
+}
+
+Py::Float TopoShapeEdgePy::getLastParameter(void) const
+{
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    BRepAdaptor_Curve adapt(e);
+    double t = adapt.LastParameter();
+    return Py::Float(t);
+}
+
 Py::Object TopoShapeEdgePy::getCenterOfMass(void) const
 {
     GProp_GProps props;
@@ -507,6 +686,8 @@ Py::Object TopoShapeEdgePy::getCenterOfMass(void) const
 
 Py::Boolean TopoShapeEdgePy::getClosed(void) const
 {
+    if (getTopoShapePtr()->_Shape.IsNull())
+        throw Py::Exception("Cannot determine the 'Closed'' flag of an empty shape");
     Standard_Boolean ok = BRep_Tool::IsClosed(getTopoShapePtr()->_Shape);
     return Py::Boolean(ok ? true : false);
 }

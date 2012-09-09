@@ -35,6 +35,9 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLabel>
+#include <QGroupBox>
+#include <QGridLayout>
+#include <QTreeWidget>
 
 namespace Gui
 {
@@ -60,6 +63,33 @@ protected:
 
 private:
     QString _url;
+};
+
+class LocationWidget : public QWidget
+{
+    Q_OBJECT
+ 
+public:
+    LocationWidget (QWidget * parent = 0);
+    virtual ~LocationWidget();
+    QSize sizeHint() const;
+
+public Q_SLOTS:
+
+private:
+    void changeEvent(QEvent*);
+    void retranslateUi();
+
+private:
+    QGridLayout *box;
+    QLabel *xLabel;
+    QLabel *yLabel;
+    QLabel *zLabel;
+    QLabel *dLabel;
+    QDoubleSpinBox *xValue;
+    QDoubleSpinBox *yValue;
+    QDoubleSpinBox *zValue;
+    QComboBox *dValue;
 };
 
 /**
@@ -143,6 +173,32 @@ public:
 
 protected:
     void keyPressEvent ( QKeyEvent * e);
+};
+
+// ------------------------------------------------------------------------------
+
+class ActionSelector : public QWidget
+{
+    Q_OBJECT
+
+public:
+    ActionSelector(QWidget* parent=0);
+    ~ActionSelector();
+
+private:
+    QGridLayout *gridLayout;
+    QVBoxLayout *vboxLayout;
+    QVBoxLayout *vboxLayout1;
+    QPushButton *addButton;
+    QPushButton *removeButton;
+    QPushButton *upButton;
+    QPushButton *downButton;
+    QLabel      *labelAvailable;
+    QLabel      *labelSelected;
+    QTreeWidget *availableWidget;
+    QTreeWidget *selectedWidget;
+    QSpacerItem *spacerItem;
+    QSpacerItem *spacerItem1;
 };
 
 // ------------------------------------------------------------------------------

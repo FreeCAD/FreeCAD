@@ -56,8 +56,10 @@ EXTRA_DIST = \
 		edit-copy.svg \
 		edit-cut.svg \
 		edit-delete.svg \
+		edit-edit.svg \
 		edit-paste.svg \
 		edit-select-all.svg \
+		edit-select-box.svg \
 		edit-redo.svg \
 		edit-undo.svg \
 		preferences-system.svg \
@@ -86,6 +88,8 @@ EXTRA_DIST = \
 		view-zoom-in.svg \
 		view-zoom-out.svg \
 		view-zoom-selection.svg \
+		view-rotate-left.svg \
+		view-rotate-right.svg \
 		Tree_Annotation.svg \
 		Tree_Dimension.svg \
 		Tree_Python.svg \

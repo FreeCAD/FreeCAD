@@ -91,49 +91,49 @@ povViewCamera(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     PY_TRY {
-		std::string out;
-		const char* ppReturn=0;
+        std::string out;
+        const char* ppReturn=0;
 
-		Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
+        Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
 
-		SoNode* rootNode;
-		SoInput in;
-		in.setBuffer((void*)ppReturn,std::strlen(ppReturn));
-	    SoDB::read(&in,rootNode);
+        SoNode* rootNode;
+        SoInput in;
+        in.setBuffer((void*)ppReturn,std::strlen(ppReturn));
+        SoDB::read(&in,rootNode);
 
-		if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()))
-			throw Base::Exception("CmdRaytracingWriteCamera::activated(): Could not read "
-								  "camera information from ASCII stream....\n");
+        if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()))
+            throw Base::Exception("CmdRaytracingWriteCamera::activated(): Could not read "
+                                  "camera information from ASCII stream....\n");
 
-		// root-node returned from SoDB::readAll() has initial zero
-		// ref-count, so reference it before we start using it to
-		// avoid premature destruction.
-		SoCamera * Cam = static_cast<SoCamera*>(rootNode);
-		Cam->ref();
+        // root-node returned from SoDB::readAll() has initial zero
+        // ref-count, so reference it before we start using it to
+        // avoid premature destruction.
+        SoCamera * Cam = static_cast<SoCamera*>(rootNode);
+        Cam->ref();
 
-		SbRotation camrot = Cam->orientation.getValue();
+        SbRotation camrot = Cam->orientation.getValue();
 
-		SbVec3f upvec(0, 1, 0); // init to default up vector
-		camrot.multVec(upvec, upvec);
+        SbVec3f upvec(0, 1, 0); // init to default up vector
+        camrot.multVec(upvec, upvec);
 
-		SbVec3f lookat(0, 0, -1); // init to default view direction vector
-		camrot.multVec(lookat, lookat);
+        SbVec3f lookat(0, 0, -1); // init to default view direction vector
+        camrot.multVec(lookat, lookat);
 
-		SbVec3f pos = Cam->position.getValue();
-		float Dist = Cam->focalDistance.getValue();
+        SbVec3f pos = Cam->position.getValue();
+        float Dist = Cam->focalDistance.getValue();
 
-		// making gp out of the Coin stuff
-		gp_Vec gpPos(pos.getValue()[0],pos.getValue()[1],pos.getValue()[2]);
-		gp_Vec gpDir(lookat.getValue()[0],lookat.getValue()[1],lookat.getValue()[2]);
-		lookat *= Dist;
-		lookat += pos;
-		gp_Vec gpLookAt(lookat.getValue()[0],lookat.getValue()[1],lookat.getValue()[2]);
-		gp_Vec gpUp(upvec.getValue()[0],upvec.getValue()[1],upvec.getValue()[2]);
+        // making gp out of the Coin stuff
+        gp_Vec gpPos(pos.getValue()[0],pos.getValue()[1],pos.getValue()[2]);
+        gp_Vec gpDir(lookat.getValue()[0],lookat.getValue()[1],lookat.getValue()[2]);
+        lookat *= Dist;
+        lookat += pos;
+        gp_Vec gpLookAt(lookat.getValue()[0],lookat.getValue()[1],lookat.getValue()[2]);
+        gp_Vec gpUp(upvec.getValue()[0],upvec.getValue()[1],upvec.getValue()[2]);
 
-		// call the write method of PovTools....
-		out = PovTools::getCamera(CamDef(gpPos,gpDir,gpLookAt,gpUp));
+        // call the write method of PovTools....
+        out = PovTools::getCamera(CamDef(gpPos,gpDir,gpLookAt,gpUp));
 
-		return Py::new_reference_to(Py::String(out));
+        return Py::new_reference_to(Py::String(out));
     } PY_CATCH;
 }
 

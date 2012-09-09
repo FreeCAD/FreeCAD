@@ -49,7 +49,7 @@ if(DOXYGEN_FOUND)
 
     STRING(REGEX REPLACE ";" " " DOXYGEN_EXCLUDE_LIST "${DOXYGEN_EXCLUDE_DIR}")
 
-    SET(DOXYGEN_OUTPUT_DIR ${CMAKE_BINARY_DIR}/Doc/SourceDocu)
+    SET(DOXYGEN_OUTPUT_DIR ${CMAKE_BINARY_DIR}/doc/SourceDocu)
     SET(DOXYGEN_IMAGE_PATH ${CMAKE_SOURCE_DIR}/src/Gui/Icons)
     SET(DOXYGEN_LAYOUT_FILE ${CMAKE_SOURCE_DIR}/src/Doc/FreecadDoxygenLayout.xml)
 
@@ -66,8 +66,8 @@ if(DOXYGEN_FOUND)
     if( FREECAD_MAINTAINERS_BUILD )
         ADD_CUSTOM_TARGET(SourceDocu 
             ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg 
-            COMMAND ${QT_HELPCOMPILER_EXECUTABLE} "\"${CMAKE_BINARY_DIR}/Doc/SourceDocu/html/index.qhp\""
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/Doc/SourceDocu/html/index.qch ${CMAKE_BINARY_DIR}/Doc/FreeCADSource.qch
+            COMMAND ${QT_HELPCOMPILER_EXECUTABLE} "\"${CMAKE_BINARY_DIR}/doc/SourceDocu/html/index.qhp\""
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/doc/SourceDocu/html/index.qch ${CMAKE_BINARY_DIR}/doc/FreeCADSource.qch
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg
         )
@@ -77,7 +77,7 @@ if(DOXYGEN_FOUND)
             ${CMAKE_SOURCE_DIR}/src/Tools/wiki2qhelp.py 
          -c ${QT_HELPCOMPILER_EXECUTABLE}   
          -g ${QT_COLLECTIOMGENERATOR_EXECUTABLE}   
-         -o ${CMAKE_BINARY_DIR}/Doc   
+         -o ${CMAKE_BINARY_DIR}/doc   
         )
 
     else( FREECAD_MAINTAINERS_BUILD )

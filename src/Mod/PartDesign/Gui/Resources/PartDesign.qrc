@@ -1,5 +1,6 @@
 <RCC>
     <qresource> 
+        <file>icons/PartDesign_Groove.svg</file>
         <file>icons/PartDesign_Pad.svg</file>
         <file>icons/PartDesign_Pocket.svg</file>
         <file>icons/PartDesign_Revolution.svg</file>
@@ -12,6 +13,7 @@
         <file>translations/PartDesign_it.qm</file>
         <file>translations/PartDesign_nl.qm</file>
         <file>translations/PartDesign_no.qm</file>
+        <file>translations/PartDesign_pl.qm</file>
         <file>translations/PartDesign_pt.qm</file>
         <file>translations/PartDesign_ru.qm</file>
         <file>translations/PartDesign_se.qm</file>

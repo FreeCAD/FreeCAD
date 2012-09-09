@@ -61,6 +61,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << "Drawing_NewPage";
     *part << "Drawing_NewView";
     *part << "Drawing_OrthoViews";
+    *part << "Drawing_OpenBrowserView";
+    *part << "Drawing_Annotation";
+    *part << "Drawing_Clip";
     *part << "Drawing_ExportPage";
 
     return root;
@@ -76,6 +79,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "Drawing_NewPage";
     *part << "Drawing_NewView";
     *part << "Drawing_OrthoViews";
+    *part << "Drawing_OpenBrowserView";
+    *part << "Drawing_Annotation";
+    *part << "Drawing_Clip";
     *part << "Drawing_ExportPage";
     return root;
 }
@@ -92,6 +98,9 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
   //*img << "Drawing_NewA3Landscape";
     *img << "Drawing_NewPage";
     *img << "Drawing_OrthoViews";
+    *img << "Drawing_OpenBrowserView";
+    *img << "Drawing_Annotation";
+    *img << "Drawing_Clip";
     img = new Gui::ToolBarItem(root);
     img->setCommand("Views");
     *img << "Drawing_NewView";

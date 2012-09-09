@@ -57,10 +57,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* sketch = new Gui::MenuItem;
     root->insertItem(item, sketch);
-    sketch->setCommand("Ske&tch");
+    sketch->setCommand("S&ketch");
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
-    *geom /*<< "Sketcher_CreatePoint"*/
+    *geom << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
@@ -68,6 +68,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
+          << "Sketcher_External"
           << "Sketcher_ToggleConstruction"
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;
@@ -88,14 +89,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_ConstrainTangent"
           << "Sketcher_ConstrainEqual"
           << "Sketcher_ConstrainSymmetric";
-    *sketch 
+    *sketch
         << "Sketcher_NewSketch"
         << "Sketcher_LeaveSketch"
         << "Sketcher_ViewSketch"
         << "Sketcher_MapSketch"
         << geom
         << cons
-        << "Separator" 
+        << "Separator"
     ;
 
     return root;
@@ -111,7 +112,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Sketcher geometries");
-    *part /*<< "Sketcher_CreatePoint" */
+    *part << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
@@ -119,6 +120,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Sketcher_CreateRectangle"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
+          << "Sketcher_External"
           << "Sketcher_ToggleConstruction"
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;

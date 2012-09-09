@@ -31,17 +31,20 @@
 namespace PartDesign
 {
 
-class Pad : public Additive
+class PartDesignExport Pad : public Additive
 {
     PROPERTY_HEADER(PartDesign::Pad);
 
 public:
     Pad();
 
-    App::PropertyLength Length;
+    App::PropertyEnumeration    Type;
+    App::PropertyLength         Length;
     //App::PropertyEnumeration Side;
-    App::PropertyBool Reversed;
-    App::PropertyBool MirroredExtent;
+    App::PropertyBool           Reversed;
+    App::PropertyBool           Midplane;
+    App::PropertyLength         Length2;
+    App::PropertyString         FaceName;
 
     /** @name methods override feature */
     //@{
@@ -54,7 +57,8 @@ public:
     }
     //@}
 private:
-    static const char* SideEnums[];
+    static const char* TypeEnums[];
+    //static const char* SideEnums[];
 };
 
 } //namespace PartDesign

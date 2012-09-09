@@ -35,11 +35,14 @@
 #include "MeshPy.cpp"
 #include "MeshProperties.h"
 #include "Core/Algorithm.h"
+#include "Core/Triangulation.h"
 #include "Core/Iterator.h"
+#include "Core/Degeneration.h"
 #include "Core/Elements.h"
 #include "Core/Grid.h"
 #include "Core/MeshKernel.h"
-#include "Core/Triangulation.h"
+#include "Core/Segmentation.h"
+#include "Core/Curvature.h"
 
 using namespace Mesh;
 
@@ -164,6 +167,7 @@ PyObject*  MeshPy::write(PyObject *args)
         ext["NAS" ] = MeshCore::MeshIO::NAS;
         ext["BDF" ] = MeshCore::MeshIO::NAS;
         ext["PLY" ] = MeshCore::MeshIO::PLY;
+        ext["APLY"] = MeshCore::MeshIO::APLY;
         ext["PY"  ] = MeshCore::MeshIO::PY;
         if (ext.find(Ext) != ext.end())
             format = ext[Ext];
@@ -489,29 +493,36 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                 Py::Sequence seq(*it);
                 if (seq.size() == 3) {
                     if (PyFloat_Check(seq[0].ptr())) {
-                        // always three triple build a triangle
+                        // every three triples build a triangle
                         facet._aclPoints[0] = Base::getVectorFromTuple<float>((*it).ptr());
                         ++it;
                         facet._aclPoints[1] = Base::getVectorFromTuple<float>((*it).ptr());
                         ++it;
                         facet._aclPoints[2] = Base::getVectorFromTuple<float>((*it).ptr());
                     }
-                    else {
+                    else if (seq[0].isSequence()) {
+                        // a sequence of sequence of flots
                         for (int i=0; i<3; i++) {
-                            if (PyObject_TypeCheck(seq[i].ptr(), &(Base::VectorPy::Type))) {
-                                Base::Vector3d p = Py::Vector(seq[i]).toVector();
-                                facet._aclPoints[i].Set((float)p.x,(float)p.y,(float)p.z);
-                            }
-                            else if (seq[i].isSequence()){
-                                facet._aclPoints[i] = Base::getVectorFromTuple<float>(seq[i].ptr());
-                            }
+                            facet._aclPoints[i] = Base::getVectorFromTuple<float>(seq[i].ptr());
                         }
+                    }
+                    else if (PyObject_TypeCheck(seq[0].ptr(), &(Base::VectorPy::Type))) {
+                        // a sequence of vectors
+                        for (int i=0; i<3; i++) {
+                            Base::Vector3d p = Py::Vector(seq[i]).toVector();
+                            facet._aclPoints[i].Set((float)p.x,(float)p.y,(float)p.z);
+                        }
+                    }
+                    else {
+                        PyErr_SetString(PyExc_Exception, "expect a sequence of floats or Vector");
+                        return NULL;
                     }
 
                     facet.CalcNormal();
                     facets.push_back(facet);
                 }
                 else {
+                    // 9 consecutive floats expected
                     int index=0;
                     for (int i=0; i<3; i++) {
                         facet._aclPoints[i].x = (float)(double)Py::Float(seq[index++]);
@@ -521,7 +532,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                     facet.CalcNormal();
                     facets.push_back(facet);
                 }
-            }
+            } // sequence
         }
 
         getMeshObjectPtr()->addFacets(facets);
@@ -578,6 +589,35 @@ PyObject* MeshPy::removeFacets(PyObject *args)
     }
 
     getMeshObjectPtr()->deleteFacets(indices);
+    Py_Return;
+}
+
+PyObject* MeshPy::getInternalFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshEvalInternalFacets eval(kernel);
+    eval.Evaluate();
+
+    const std::vector<unsigned long>& indices = eval.GetIndices();
+    Py::List ary(indices.size());
+    Py::List::size_type pos=0;
+    for (std::vector<unsigned long>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
+        ary[pos++] = Py::Long(*it);
+    }
+
+    return Py::new_reference_to(ary);
+}
+
+PyObject* MeshPy::rebuildNeighbourHood(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    kernel.RebuildNeighbours();
     Py_Return;
 }
 
@@ -1240,6 +1280,46 @@ PyObject*  MeshPy::foraminate(PyObject *args)
     }
 }
 
+PyObject*  MeshPy::cut(PyObject *args)
+{
+    PyObject* poly;
+    int mode;
+    if (!PyArg_ParseTuple(args, "O!i", &PyList_Type, &poly, &mode))
+        return NULL;
+
+    Py::List list(poly);
+    std::vector<Base::Vector3f> polygon;
+    polygon.reserve(list.size());
+    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Base::Vector3d pnt = Py::Vector(*it).toVector();
+        polygon.push_back(Base::convertTo<Base::Vector3f>(pnt));
+    }
+
+    getMeshObjectPtr()->cut(polygon, MeshObject::CutType(mode));
+
+    Py_Return; 
+}
+
+PyObject*  MeshPy::trim(PyObject *args)
+{
+    PyObject* poly;
+    int mode;
+    if (!PyArg_ParseTuple(args, "O!i", &PyList_Type, &poly, &mode))
+        return NULL;
+
+    Py::List list(poly);
+    std::vector<Base::Vector3f> polygon;
+    polygon.reserve(list.size());
+    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Base::Vector3d pnt = Py::Vector(*it).toVector();
+        polygon.push_back(Base::convertTo<Base::Vector3f>(pnt));
+    }
+
+    getMeshObjectPtr()->trim(polygon, MeshObject::CutType(mode));
+
+    Py_Return; 
+}
+
 PyObject*  MeshPy::smooth(PyObject *args)
 {
     int iter=1;
@@ -1318,15 +1398,16 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
     }
 }
 
-PyObject*  MeshPy::getPlanes(PyObject *args)
+PyObject*  MeshPy::getPlanarSegments(PyObject *args)
 {
     float dev;
-    if (!PyArg_ParseTuple(args, "f",&dev))
+    unsigned long minFacets=0;
+    if (!PyArg_ParseTuple(args, "f|k",&dev,&minFacets))
         return NULL;
 
     Mesh::MeshObject* mesh = getMeshObjectPtr();
     std::vector<Mesh::Segment> segments = mesh->getSegmentsFromType
-        (Mesh::MeshObject::PLANE, Mesh::Segment(mesh,false), dev);
+        (Mesh::MeshObject::PLANE, Mesh::Segment(mesh,false), dev, minFacets);
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
@@ -1339,6 +1420,47 @@ PyObject*  MeshPy::getPlanes(PyObject *args)
     }
 
     return Py::new_reference_to(s);
+}
+
+PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
+{
+    PyObject* l;
+    if (!PyArg_ParseTuple(args, "O!",&PyList_Type,&l))
+        return NULL;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshSegmentAlgorithm finder(kernel);
+    MeshCore::MeshCurvature meshCurv(kernel);
+    meshCurv.ComputePerVertex();
+
+    Py::List func(l);
+    std::vector<MeshCore::MeshSurfaceSegment*> segm;
+    for (Py::List::iterator it = func.begin(); it != func.end(); ++it) {
+        Py::Tuple t(*it);
+        float c1 = (float)Py::Float(t[0]);
+        float c2 = (float)Py::Float(t[1]);
+        float tol1 = (float)Py::Float(t[2]);
+        float tol2 = (float)Py::Float(t[3]);
+        int num = (int)Py::Int(t[4]);
+        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+    }
+
+    finder.FindSegments(segm);
+
+    Py::List list;
+    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
+        const std::vector<MeshCore::MeshSegment>& data = (*segmIt)->GetSegments();
+        for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
+            Py::List ary;
+            for (MeshCore::MeshSegment::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
+                ary.append(Py::Int((int)*jt));
+            }
+            list.append(ary);
+        }
+        delete (*segmIt);
+    }
+
+    return Py::new_reference_to(list);
 }
 
 Py::Int MeshPy::getCountPoints(void) const

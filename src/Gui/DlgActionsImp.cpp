@@ -66,6 +66,9 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
     QStringList labels; labels << tr("Icons") << tr("Macros");
     actionListWidget->setHeaderLabels(labels);
     actionListWidget->header()->hide();
+    actionListWidget->setIconSize(QSize(32, 32));
+    actionListWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+
     showActions();
 }
 
@@ -149,12 +152,9 @@ void DlgCustomActionsImp::showActions()
         item->setData(1, Qt::UserRole, actionName);
         item->setText(1, QString::fromUtf8((*it)->getMenuText()));
         item->setSizeHint(0, QSize(32, 32));
-        item->setBackgroundColor(0, Qt::lightGray);
         if ( (*it)->getPixmap() )
             item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
     }
-
-    actionListWidget->resizeColumnToContents(0);
 }
 
 void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *item)
@@ -232,7 +232,6 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     item->setData(1, Qt::UserRole, actionName);
     item->setText(1, actionMenu->text());
     item->setSizeHint(0, QSize(32, 32));
-    item->setBackgroundColor(0, Qt::lightGray);
     if (pixmapLabel->pixmap())
         item->setIcon(0, *pixmapLabel->pixmap());
 

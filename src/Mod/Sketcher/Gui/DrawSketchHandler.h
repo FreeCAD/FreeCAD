@@ -26,6 +26,7 @@
 
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/Constraint.h>
+#include <Gui/Selection.h>
 
 class QPixmap;
 
@@ -46,14 +47,14 @@ class ViewProviderSketch;
 // A Simple data type to hold basic information for suggested constraints
 struct AutoConstraint
 {
+    enum TargetType
+    {
+        VERTEX,
+        CURVE
+    };
     Sketcher::ConstraintType Type;
-    int Index;
-};
-
-enum Type
-{
-    VERTEX,
-    CURVE
+    int GeoId;
+    Sketcher::PointPos PosId;
 };
 
 /** Handler to create new sketch geometry
@@ -70,22 +71,25 @@ public:
     virtual void mouseMove(Base::Vector2D onSketchPos)=0;
     virtual bool pressButton(Base::Vector2D onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2D onSketchPos)=0;
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) { return false; };
+    virtual void registerPressedKey(bool pressed, int key){};
 
     virtual void quit(void);
 
     friend class ViewProviderSketch;
 
-    Sketcher::SketchObject* getObject(void);
     // get the actual highest vertex index, the next use will be +1
     int getHighestVertexIndex(void);
     // get the actual highest edge index, the next use will be +1
     int getHighestCurveIndex(void);
 
     int seekAutoConstraint(std::vector<AutoConstraint> &suggestedConstraints,
-                           const Base::Vector2D &Pos, const Base::Vector2D &Dir, Type selType = VERTEX);
+                           const Base::Vector2D &Pos, const Base::Vector2D &Dir,
+                           AutoConstraint::TargetType type = AutoConstraint::VERTEX);
     void createAutoConstraints(const std::vector<AutoConstraint> &autoConstrs,
                                int geoId, Sketcher::PointPos pointPos=Sketcher::none);
 
+    void setPositionText(const Base::Vector2D &Pos, const SbString &text);
     void setPositionText(const Base::Vector2D &Pos);
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);
@@ -94,8 +98,8 @@ protected:
     // helpers
     void setCursor( const QPixmap &p,int x,int y );
     void unsetCursor(void);
-	void applyCursor(void);
-	void applyCursor(QCursor &newCursor);
+    void applyCursor(void);
+    void applyCursor(QCursor &newCursor);
 
     ViewProviderSketch *sketchgui;
     QCursor oldCursor;

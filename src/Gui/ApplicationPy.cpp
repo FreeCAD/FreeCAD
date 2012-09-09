@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <qfileinfo.h>
 # include <qdir.h>
+# include <QPrinter>
 #endif
 
 
@@ -36,6 +37,7 @@
 #include "MainWindow.h"
 #include "EditorView.h"
 #include "PythonEditor.h"
+#include "View3DInventor.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -126,6 +128,9 @@ PyMethodDef Application::Methods[] = {
   {"getDocument",             (PyCFunction) Application::sGetDocument,      1,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
+  {"doCommand",               (PyCFunction) Application::sDoCommand,        1,
+   "doCommand(string) -> None\n\n"
+   "Prints the given string in the python console and runs it"},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -357,10 +362,33 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
             if (ext == QLatin1String("iv") || ext == QLatin1String("wrl") ||
                 ext == QLatin1String("vrml") || ext == QLatin1String("wrz") ||
                 ext == QLatin1String("svg") || ext == QLatin1String("idtf")) {
-                QString cmd = QString::fromLatin1(
-                    "Gui.getDocument(\"%1\").ActiveView.dump(\"%2\")"
-                    ).arg(QLatin1String(doc->getName())).arg(fi.absoluteFilePath());
-                Base::Interpreter().runString(cmd.toUtf8());
+                Gui::Document* gui_doc = Application::Instance->getDocument(doc);
+                std::list<MDIView*> view3d = gui_doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
+                if (view3d.empty()) {
+                    PyErr_SetString(PyExc_Exception, "Cannot export to SVG because document doesn't have a 3d view");
+                    return 0;
+                }
+                else {
+                    QString cmd = QString::fromLatin1(
+                        "Gui.getDocument(\"%1\").mdiViewsOfType('Gui::View3DInventor')[0].dump(\"%2\")"
+                        ).arg(QLatin1String(doc->getName())).arg(fi.absoluteFilePath());
+                    Base::Interpreter().runString(cmd.toUtf8());
+                }
+            }
+            else if (ext == QLatin1String("pdf")) {
+                Gui::Document* gui_doc = Application::Instance->getDocument(doc);
+                if (gui_doc) {
+                    Gui::MDIView* view = gui_doc->getActiveView();
+                    if (view) {
+                        View3DInventor* view3d = qobject_cast<View3DInventor*>(view);
+                        if (view3d)
+                            view3d->viewAll();
+                        QPrinter printer(QPrinter::ScreenResolution);
+                        printer.setOutputFormat(QPrinter::PdfFormat);
+                        printer.setOutputFileName(fileName);
+                        view->print(&printer);
+                    }
+                }
             }
         }
     } PY_CATCH;
@@ -748,3 +776,12 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject 
         return 0;
     }
 } 
+
+PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception
+    Command::doCommand(Command::Doc,pstr);
+    return Py_None;
+}

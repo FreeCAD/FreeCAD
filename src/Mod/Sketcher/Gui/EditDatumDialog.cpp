@@ -103,7 +103,7 @@ void EditDatumDialog::exec(bool atCursor)
 
         if (dlg.exec()) {
             bool ok;
-            double newDatum = ui_ins_datum.lineEdit->text().toDouble(&ok);
+            double newDatum = QLocale::system().toDouble(ui_ins_datum.lineEdit->text(), &ok);
             if (ok) {
                 if (Constr->Type == Sketcher::Angle)
                     newDatum = Base::toRadians<double>(newDatum);

@@ -1,20 +1,26 @@
 if(WIN32)
-    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
+    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT -DEIGEN2_SUPPORT)
+else (Win32)
+    add_definitions(-DEIGEN2_SUPPORT)
 endif(WIN32)
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/3rdParty
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
+    ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${EIGEN2_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
 )
 
 
 set(Mesh_LIBS
     ${Boost_LIBRARIES}
+    ${QT_QTCORE_LIBRARY}
+    ${QT_QTCORE_LIBRARY_DEBUG}
     FreeCADBase
     FreeCADApp
 )
@@ -41,6 +47,8 @@ SET(Core_SRCS
     Core/Approximation.h
     Core/Builder.cpp
     Core/Builder.h
+    Core/Curvature.cpp
+    Core/Curvature.h
     Core/Definitions.cpp
     Core/Definitions.h
     Core/Degeneration.cpp
@@ -61,6 +69,8 @@ SET(Core_SRCS
     Core/MeshKernel.h
     Core/Projection.cpp
     Core/Projection.h
+    Core/Segmentation.cpp
+    Core/Segmentation.h
     Core/SetOperations.cpp
     Core/SetOperations.h
     Core/Smoothing.cpp
@@ -71,6 +81,8 @@ SET(Core_SRCS
     Core/TopoAlgorithm.h
     Core/Triangulation.cpp
     Core/Triangulation.h
+    Core/Trim.cpp
+    Core/Trim.h
     Core/tritritest.h
     Core/Visitor.cpp
     Core/Visitor.h
@@ -331,8 +343,16 @@ endif(MSVC)
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
 
-fc_copy_script ("Mod/Mesh" "Mesh" Init.py BuildRegularGeoms.py)
-fc_copy_sources("Mod/Mesh" "Mesh" MeshTestsApp.py)
+
+fc_target_copy_resource(Mesh 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
+    ${CMAKE_BINARY_DIR}/Mod/Mesh
+    Init.py BuildRegularGeoms.py)
+
+fc_target_copy_resource(Mesh 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Mesh
+    MeshTestsApp.py)
 
 if(MSVC)
     set_target_properties(Mesh PROPERTIES SUFFIX ".pyd")

@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef FEATURE_MESH_SEGMENT_H
-#define FEATURE_MESH_SEGMENT_H
+#ifndef FEATURE_MESH_SEGMENTBYMESH_H
+#define FEATURE_MESH_SEGMENTBYMESH_H
 
 #include <App/PropertyStandard.h>
 
@@ -63,4 +63,4 @@ public:
 
 }
 
-#endif // FEATURE_MESH_SEGMENT_H 
+#endif // FEATURE_MESH_SEGMENTBYMESH_H 

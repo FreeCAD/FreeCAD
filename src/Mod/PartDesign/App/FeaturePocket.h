@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class Pocket : public Subtractive
+class PartDesignExport Pocket : public Subtractive
 {
     PROPERTY_HEADER(PartDesign::Pocket);
 
@@ -39,6 +39,7 @@ public:
 
     App::PropertyEnumeration    Type;
     App::PropertyLength         Length;
+    App::PropertyString         FaceName;
 
     /** @name methods override feature */
     //@{

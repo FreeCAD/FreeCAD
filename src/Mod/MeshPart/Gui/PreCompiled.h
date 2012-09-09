@@ -28,15 +28,21 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-# define PartExport     __declspec(dllimport)
+# define MeshExport        __declspec(dllimport)
+# define PartExport        __declspec(dllimport)
 # define MeshPartAppExport __declspec(dllimport)
 # define MeshPartGuiExport __declspec(dllexport)
 #else // for Linux
+# define MeshExport
 # define PartExport
 # define MeshPartAppExport
 # define MeshPartGuiExport
 #endif
 
+#ifdef _MSC_VER
+# pragma warning(disable : 4290)
+# pragma warning(disable : 4275)
+#endif
 
 #ifdef _PreComp_
 

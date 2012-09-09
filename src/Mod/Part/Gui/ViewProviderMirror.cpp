@@ -38,6 +38,8 @@
 
 #include <Mod/Part/App/FeatureMirroring.h>
 #include <Mod/Part/App/FeatureFillet.h>
+#include <Mod/Part/App/FeatureChamfer.h>
+#include <Mod/Part/App/FeatureRevolution.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -241,6 +243,17 @@ std::vector<App::DocumentObject*> ViewProviderFillet::claimChildren() const
     return temp;
 }
 
+bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Fillet* pFillet = static_cast<Part::Fillet*>(getObject()); 
+    App::DocumentObject *pBase = pFillet->Base.getValue();
+    if (pBase)
+        Gui::Application::Instance->showViewProvider(pBase);
+
+    return true;
+}
+
 // ---------------------------------------
 
 PROPERTY_SOURCE(PartGui::ViewProviderChamfer, PartGui::ViewProviderPart)
@@ -252,4 +265,86 @@ ViewProviderChamfer::ViewProviderChamfer()
 
 ViewProviderChamfer::~ViewProviderChamfer()
 {
+}
+
+void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit chamfer edges"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderChamfer::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default ) {
+        if (Gui::Control().activeDialog())
+            return false;
+        Part::Chamfer* chamfer = static_cast<Part::Chamfer*>(getObject());
+        Gui::Control().showDialog(new PartGui::TaskChamferEdges(chamfer));
+        return true;
+    }
+    else {
+        ViewProviderPart::setEdit(ModNum);
+        return true;
+    }
+}
+
+void ViewProviderChamfer::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderPart::unsetEdit(ModNum);
+    }
+}
+
+std::vector<App::DocumentObject*> ViewProviderChamfer::claimChildren() const
+{
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(static_cast<Part::Chamfer*>(getObject())->Base.getValue());
+    return temp;
+}
+
+bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Chamfer* pChamfer = static_cast<Part::Chamfer*>(getObject()); 
+    App::DocumentObject *pBase = pChamfer->Base.getValue();
+    if (pBase)
+        Gui::Application::Instance->showViewProvider(pBase);
+
+    return true;
+}
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderRevolution, PartGui::ViewProviderPart)
+
+ViewProviderRevolution::ViewProviderRevolution()
+{
+    sPixmap = "Part_Revolve";
+}
+
+ViewProviderRevolution::~ViewProviderRevolution()
+{
+}
+
+std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
+{
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(static_cast<Part::Revolution*>(getObject())->Source.getValue());
+    return temp;
+}
+
+bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Revolution* pRevolve = static_cast<Part::Revolution*>(getObject()); 
+    App::DocumentObject *pBase = pRevolve->Source.getValue();
+    if (pBase)
+        Gui::Application::Instance->showViewProvider(pBase);
+
+    return true;
 }

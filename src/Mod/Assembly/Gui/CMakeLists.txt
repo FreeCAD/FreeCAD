@@ -33,7 +33,12 @@ SET(AssemblyGui_SRCS
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS})
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
-fc_copy_script("Mod/Assembly" "AssemblyGui" InitGui.py)
+
+
+fc_target_copy_resource(AssemblyGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly
+    ${CMAKE_BINARY_DIR}/Mod/Assembly
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(AssemblyGui PROPERTIES SUFFIX ".pyd")

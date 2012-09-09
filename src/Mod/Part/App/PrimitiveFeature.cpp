@@ -38,6 +38,7 @@
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <gp_Circ.hxx>
+# include <gp_Elips.hxx>
 # include <gp_GTrsf.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <Geom_Plane.hxx>
@@ -99,7 +100,7 @@ void Primitive::onChanged(const App::Property* prop)
         // Do not support sphere, ellipsoid and torus because the creation
         // takes too long and thus is not feasible
         std::string grp = (prop->getGroup() ? prop->getGroup() : "");
-        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone"){
+        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone") {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -163,9 +164,9 @@ void Vertex::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-PROPERTY_SOURCE(Part::Edge, Part::Primitive)
+PROPERTY_SOURCE(Part::Line, Part::Primitive)
 
-Edge::Edge()
+Line::Line()
 {
     ADD_PROPERTY_TYPE(X1,(0.0f),"Vertex 1 - Start",App::Prop_None,"X value of the start vertex");
     ADD_PROPERTY_TYPE(Y1,(0.0f),"Vertex 1 - Start",App::Prop_None,"Y value of the Start vertex");
@@ -175,11 +176,11 @@ Edge::Edge()
     ADD_PROPERTY_TYPE(Z2,(1.0f),"Vertex 2 - Finish",App::Prop_None,"Z value of the finish vertex");
 }
 
-Edge::~Edge()
+Line::~Line()
 {
 }
 
-short Edge::mustExecute() const
+short Line::mustExecute() const
 {
     if (X1.isTouched() ||
         Y1.isTouched() ||
@@ -191,7 +192,7 @@ short Edge::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Edge::execute(void)
+App::DocumentObjectExecReturn *Line::execute(void)
 {
     gp_Pnt point1;
     point1.SetX(this->X1.getValue());
@@ -212,7 +213,7 @@ App::DocumentObjectExecReturn *Edge::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void Edge::onChanged(const App::Property* prop)
+void Line::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if (prop == &X1 || prop == &Y1 || prop == &Z1 || prop == &X2 || prop == &Y2 || prop == &Z2){
@@ -332,9 +333,9 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
         return new App::DocumentObjectExecReturn("Radius of sphere too small");
     try {
         BRepPrimAPI_MakeSphere mkSphere(Radius.getValue(),
-                                        Angle1.getValue()/180.0f*Standard_PI,
-                                        Angle2.getValue()/180.0f*Standard_PI,
-                                        Angle3.getValue()/180.0f*Standard_PI);
+                                        Angle1.getValue()/180.0f*M_PI,
+                                        Angle2.getValue()/180.0f*M_PI,
+                                        Angle3.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkSphere.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -390,9 +391,9 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         gp_Ax2 ax2(pnt,dir);
         BRepPrimAPI_MakeSphere mkSphere(ax2,
                                         Radius2.getValue(), 
-                                        Angle1.getValue()/180.0f*Standard_PI,
-                                        Angle2.getValue()/180.0f*Standard_PI,
-                                        Angle3.getValue()/180.0f*Standard_PI);
+                                        Angle1.getValue()/180.0f*M_PI,
+                                        Angle2.getValue()/180.0f*M_PI,
+                                        Angle3.getValue()/180.0f*M_PI);
         Standard_Real scale = Radius1.getValue()/Radius2.getValue();
         gp_Dir xDir = ax2.XDirection();
         gp_Dir yDir = ax2.YDirection();
@@ -449,7 +450,7 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
     try {
         BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
                                         Height.getValue(),
-                                        Angle.getValue()/180.0f*Standard_PI);
+                                        Angle.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkCylr.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -498,7 +499,7 @@ App::DocumentObjectExecReturn *Cone::execute(void)
         BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
                                     Radius2.getValue(),
                                     Height.getValue(),
-                                    Angle.getValue()/180.0f*Standard_PI);
+                                    Angle.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkCone.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -584,6 +585,8 @@ App::DocumentObjectExecReturn *Torus::execute(void)
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 
+const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",NULL};
+
 Helix::Helix(void)
 {
     ADD_PROPERTY_TYPE(Pitch, (1.0),"Helix",App::Prop_None,"The pitch of the helix");
@@ -594,6 +597,24 @@ Helix::Helix(void)
     Radius.setConstraints(&floatRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is > 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
+    ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
+    LocalCoord.setEnums(LocalCSEnums);
+}
+
+void Helix::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &Pitch || prop == &Height || prop == &Radius ||
+            prop == &Angle || prop == &LocalCoord) {
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
 }
 
 short Helix::mustExecute() const
@@ -606,6 +627,8 @@ short Helix::mustExecute() const
         return 1;
     if (Angle.isTouched())
         return 1;
+    if (LocalCoord.isTouched())
+        return 1;
     return Primitive::mustExecute();
 }
 
@@ -616,8 +639,9 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myHeight = Height.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
+        Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
-        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle));
+        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -724,4 +748,62 @@ void Wedge::onChanged(const App::Property* prop)
         }
     }
     Part::Primitive::onChanged(prop);
+}
+
+App::PropertyFloatConstraint::Constraints Ellipse::angleRange = {0.0,360.0,1.0};
+
+PROPERTY_SOURCE(Part::Ellipse, Part::Primitive)
+
+
+Ellipse::Ellipse()
+{
+    ADD_PROPERTY(MajorRadius,(4.0f));
+    ADD_PROPERTY(MinorRadius,(4.0f));
+    ADD_PROPERTY(Angle0,(0.0f));
+    Angle0.setConstraints(&angleRange);
+    ADD_PROPERTY(Angle1,(360.0f));
+    Angle1.setConstraints(&angleRange);
+}
+
+Ellipse::~Ellipse()
+{
+}
+
+short Ellipse::mustExecute() const
+{
+    if (Angle0.isTouched() ||
+        Angle1.isTouched() ||
+        MajorRadius.isTouched() ||
+        MinorRadius.isTouched())
+        return 1;
+    return Part::Feature::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Ellipse::execute(void)
+{
+    gp_Elips ellipse;
+    ellipse.SetMajorRadius(this->MajorRadius.getValue());
+    ellipse.SetMinorRadius(this->MinorRadius.getValue());
+    
+    BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle0.getValue()),
+                                                Base::toRadians<double>(this->Angle1.getValue()));
+    const TopoDS_Edge& edge = clMakeEdge.Edge();
+    this->Shape.setValue(edge);
+
+    return App::DocumentObject::StdReturn;
+}
+
+void Ellipse::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &MajorRadius || prop == &MinorRadius || prop == &Angle0 || prop == &Angle1){
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
 }

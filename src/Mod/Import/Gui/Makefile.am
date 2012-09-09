@@ -18,7 +18,7 @@ libImportGui_la_LDFLAGS = \
 		-L../../../Gui  \
 		-L../../Part/App \
 		-L../../Part/Gui \
-		-L$(OCC_LIB) $(QT4_CORE_LIBS) $(all_libraries) \
+		-L$(OCC_LIB) $(QT_LIBS) $(all_libraries) \
 		-version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
 
 libImportGui_la_CPPFLAGS = -DAppPartExport= -DAppPartGuiExport=

@@ -23,7 +23,12 @@ SET(Assembly_SRCS
 
 add_library(Assembly SHARED ${Assembly_SRCS})
 target_link_libraries(Assembly ${Assembly_LIBS})
-fc_copy_script("Mod/Assembly" "Assembly" Init.py)
+
+
+fc_target_copy_resource(Assembly 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly
+    ${CMAKE_BINARY_DIR}/Mod/Assembly
+    Init.py)
 
 if(MSVC)
     set_target_properties(Assembly PROPERTIES SUFFIX ".pyd")

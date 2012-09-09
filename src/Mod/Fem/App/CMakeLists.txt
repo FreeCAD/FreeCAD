@@ -64,7 +64,12 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS})
-fc_copy_script("Mod/Fem" "Fem" Init.py convert2TetGen.py)
+
+
+fc_target_copy_resource(Fem 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Fem
+    ${CMAKE_BINARY_DIR}/Mod/Fem
+    Init.py convert2TetGen.py)
 
 if(MSVC)
     set_target_properties(Fem PROPERTIES SUFFIX ".pyd")

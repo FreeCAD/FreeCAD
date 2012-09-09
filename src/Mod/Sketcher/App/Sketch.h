@@ -53,31 +53,9 @@ public:
     int solve(void);
     /// delete all geometry and constraints, leave an empty sketch
     void clear(void);
-    /// set the sketch up with geoms and constraints
-    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
-                    bool withDiagnose=true);
-    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Part::Geometry *> &FixedGeoList,
-                    const std::vector<Constraint *> &ConstraintList, bool withDiagnose=true);
-    /// return the actual geometry of the sketch a TopoShape
-    Part::TopoShape toShape(void) const;
-    /// add unspecified geometry
-    int addGeometry(const Part::Geometry *geo, bool fixed=false);
-    /// add unspecified geometry
-    void addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
-    /// returns the actual geometry
-    std::vector<Part::Geometry *> getGeometry(bool withConstrucionElements = true) const;
-    /// get the geometry as python objects
-    Py::Tuple getPyGeometry(void) const;
-    /// set a geometric element to a construction element
-    void setConstruction(int geoIndex,bool isConstruction=true);
-    bool getConstruction(int geoIndex) const;
-
-    /// retrieves the index of a point
-    int getPointId(int geoId, PointPos pos) const;
-    /// retrieves a point
-    Base::Vector3d getPoint(int geoId, PointPos pos);
-
-    /** returns the degree of freedom of a sketch and calculates a list of
+    /** set the sketch up with geoms and constraints
+      * 
+      * returns the degree of freedom of a sketch and calculates a list of
       * conflicting constraints
       *
       * 0 degrees of freedom correspond to a fully constrained sketch
@@ -88,9 +66,27 @@ public:
       * a fully constrained or under-constrained sketch may contain conflicting
       * constraints or may not
       */
-    int diagnose(void);
-    bool hasConflicts(void) const { return (Conflicting.size() > 0); };
-    const std::vector<int> &getConflicting(void) const { return Conflicting; };
+    int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
+                    int extGeoCount=0);
+    /// return the actual geometry of the sketch a TopoShape
+    Part::TopoShape toShape(void) const;
+    /// add unspecified geometry
+    int addGeometry(const Part::Geometry *geo, bool fixed=false);
+    /// add unspecified geometry
+    void addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
+    /// returns the actual geometry
+    std::vector<Part::Geometry *> extractGeometry(bool withConstrucionElements=true,
+                                                  bool withExternalElements=false) const;
+    /// get the geometry as python objects
+    Py::Tuple getPyGeometry(void) const;
+
+    /// retrieves a point
+    Base::Vector3d getPoint(int geoId, PointPos pos);
+
+    bool hasConflicts(void) const { return (Conflicting.size() > 0); }
+    const std::vector<int> &getConflicting(void) const { return Conflicting; }
+    bool hasRedundancies(void) const { return (Redundant.size() > 0); }
+    const std::vector<int> &getRedundant(void) const { return Redundant; }
 
     /** set the datum of a distance or angle constraint to a certain value and solve
       * This can cause the solving to fail!
@@ -100,19 +96,19 @@ public:
     /** initializes a point (or curve) drag by setting the current
       * sketch status as a reference
       */
-    int initMove(int geoIndex, PointPos pos);
+    int initMove(int geoId, PointPos pos, bool fine=true);
 
     /** move this point (or curve) to a new location and solve.
       * This will introduce some additional weak constraints expressing
       * a condition for satisfying the new point location!
       * The relative flag permits moving relatively to the current position
       */
-    int movePoint(int geoIndex, PointPos pos, Base::Vector3d toPoint, bool relative=false);
+    int movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false);
 
     /// add dedicated geometry
     //@{
     /// add a point
-    int addPoint(const Base::Vector3d &point, bool fixed=false);
+    int addPoint(const Part::GeomPoint &point, bool fixed=false);
     /// add an infinite line
     int addLine(const Part::GeomLineSegment &line, bool fixed=false);
     /// add a line segment
@@ -133,8 +129,8 @@ public:
     /// add one constraint to the sketch
     int addConstraint(const Constraint *constraint);
     /// add a fixed coordinate constraint to a point
-    int addCoordinateXConstraint(int geoIndex, PointPos pos, double value);
-    int addCoordinateYConstraint(int geoIndex, PointPos pos, double value);
+    int addCoordinateXConstraint(int geoId, PointPos pos, double value);
+    int addCoordinateYConstraint(int geoId, PointPos pos, double value);
     /// add a horizontal distance constraint to two points or line ends
     int addDistanceXConstraint(int geoId, double value);
     int addDistanceXConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
@@ -142,34 +138,36 @@ public:
     int addDistanceYConstraint(int geoId, double value);
     int addDistanceYConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
     /// add a horizontal constraint to a geometry
-    int addHorizontalConstraint(int geoIndex);
-    int addHorizontalConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addHorizontalConstraint(int geoId);
+    int addHorizontalConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a vertical constraint to a geometry
-    int addVerticalConstraint(int geoIndex);
-    int addVerticalConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addVerticalConstraint(int geoId);
+    int addVerticalConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a coincident constraint to two points of two geometries
-    int addPointCoincidentConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addPointCoincidentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a length or distance constraint
-    int addDistanceConstraint(int geoIndex1, double value);
-    int addDistanceConstraint(int geoIndex1, int geoIndex2, double value);
-    int addDistanceConstraint(int geoIndex1, PointPos pos1, int geoIndex2, double value);
-    int addDistanceConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2, double value);
+    int addDistanceConstraint(int geoId1, double value);
+    int addDistanceConstraint(int geoId1, int geoId2, double value);
+    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double value);
+    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
     /// add a parallel constraint between two lines
-    int addParallelConstraint(int geoIndex1, int geoIndex2);
+    int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
-    int addPerpendicularConstraint(int geoIndex1, int geoIndex2);
+    int addPerpendicularConstraint(int geoId1, int geoId2);
+    int addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2);
+    int addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a tangency constraint between two geometries
-    int addTangentConstraint(int geoIndex1, int geoIndex2);
-    int addTangentConstraint(int geoIndex1, PointPos pos1, int geoIndex2);
-    int addTangentConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2);
+    int addTangentConstraint(int geoId1, int geoId2);
+    int addTangentConstraint(int geoId1, PointPos pos1, int geoId2);
+    int addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a radius constraint on a circle or an arc
-    int addRadiusConstraint(int geoIndex, double value);
+    int addRadiusConstraint(int geoId, double value);
     /// add an angle constraint on a line or between two lines
-    int addAngleConstraint(int geoIndex, double value);
-    int addAngleConstraint(int geoIndex1, int geoIndex2, double value);
-    int addAngleConstraint(int geoIndex1, PointPos pos1, int geoIndex2, PointPos pos2, double value);
+    int addAngleConstraint(int geoId, double value);
+    int addAngleConstraint(int geoId1, int geoId2, double value);
+    int addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double value);
     /// add an equal length or radius constraints between two lines or between circles and arcs
-    int addEqualConstraint(int geoIndex1, int geoIndex2);
+    int addEqualConstraint(int geoId1, int geoId2);
     /// add a point on line constraint
     int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2);
     /// add a symmetric constraint between two points with respect to a line
@@ -190,11 +188,11 @@ public:
 protected:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef {
-        GeoDef() : geo(0),type(None),construction(false),index(-1),
+        GeoDef() : geo(0),type(None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
         Part::Geometry  * geo;             // pointer to the geometry
         GeoType           type;            // type of the geometry
-        bool              construction;    // defines if this element is a construction element
+        bool              external;        // flag for external geometries
         int               index;           // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
         int               startPointId;    // index in Points of the start point of this geometry
         int               midPointId;      // index in Points of the start point of this geometry
@@ -205,6 +203,7 @@ protected:
     GCS::System GCSsys;
     int ConstraintsCounter;
     std::vector<int> Conflicting;
+    std::vector<int> Redundant;
 
     // solving parameters
     std::vector<double*> Parameters;    // with memory allocation
@@ -216,10 +215,16 @@ protected:
     std::vector<GCS::Circle> Circles;
 
     bool isInitMove;
+    bool isFine;
 
 private:
+    /// retrieves the index of a point
+    int getPointId(int geoId, PointPos pos) const;
+
     bool updateGeometry(void);
 
+    /// checks if the index bounds and converts negative indices to positive
+    int checkGeoId(int geoId);
 };
 
 } //namespace Part

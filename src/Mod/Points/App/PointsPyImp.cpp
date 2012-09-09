@@ -59,13 +59,19 @@ int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         *getPointKernelPtr() = *(static_cast<PointsPy*>(pcObj)->getPointKernelPtr());
     }
     else if (PyList_Check(pcObj)) {
-        addPoints(args);
+        if (!addPoints(args))
+            return -1;
     }
     else if (PyTuple_Check(pcObj)) {
-        addPoints(args);
+        if (!addPoints(args))
+            return -1;
     }
     else if (PyString_Check(pcObj)) {
         getPointKernelPtr()->load(PyString_AsString(pcObj));
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "optional argument must be list, tuple or string");
+        return -1;
     }
 
     return 0;
@@ -120,6 +126,7 @@ PyObject* PointsPy::writeInventor(PyObject * args)
     for (Points::PointKernel::const_iterator it = kernel->begin(); it != kernel->end(); ++it)
         builder.addPoint((float)it->x,(float)it->y,(float)it->z);
     builder.endPoints();
+    builder.addPointSet();
     builder.close();
 
     return Py::new_reference_to(Py::String(result.str()));

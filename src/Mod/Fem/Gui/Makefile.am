@@ -2,9 +2,15 @@ SUBDIRS=Resources
 
 lib_LTLIBRARIES=libFemGui.la FemGui.la
 
+BUILT_SOURCES=\
+		ui_Hypothesis.h \
+		moc_Hypothesis.cpp
+
 libFemGui_la_SOURCES=\
 		AppFemGuiPy.cpp \
 		Command.cpp \
+		Hypothesis.cpp \
+		Hypothesis.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		ViewProviderFemMesh.cpp \
@@ -78,5 +84,6 @@ libdir = $(prefix)/Mod/Fem
 CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
-		CMakeLists.txt
+		CMakeLists.txt \
+		Hypothesis.ui
 

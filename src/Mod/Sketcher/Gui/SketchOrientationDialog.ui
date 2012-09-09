@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SketchOrientationDialog</class>
- <widget class="QDialog" name="SketchOrientationDialog">
+ <class>SketcherGui::SketchOrientationDialog</class>
+ <widget class="QDialog" name="SketcherGui::SketchOrientationDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Choose orientation</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Sketch orientation</string>
@@ -47,14 +47,33 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="previewLabel">
+     <property name="minimumSize">
+      <size>
+       <width>48</width>
+       <height>48</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>48</width>
+       <height>48</height>
+      </size>
+     </property>
+     <property name="text">
+      <string notr="true">Preview</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
     <widget class="QCheckBox" name="Reverse_checkBox">
      <property name="text">
       <string>Reverse direction</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
@@ -81,7 +100,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="3" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -98,7 +117,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SketchOrientationDialog</receiver>
+   <receiver>SketcherGui::SketchOrientationDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -114,7 +133,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SketchOrientationDialog</receiver>
+   <receiver>SketcherGui::SketchOrientationDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

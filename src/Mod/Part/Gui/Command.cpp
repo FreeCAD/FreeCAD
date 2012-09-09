@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
 # include <QString>
 # include <QDir>
 # include <QFileInfo>
@@ -46,6 +47,7 @@
 #include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/WaitCursor.h>
 
 #include "../App/PartFeature.h"
 #include "DlgPartImportStepImp.h"
@@ -59,6 +61,7 @@
 #include "ViewProvider.h"
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
+#include "TaskSweep.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -208,16 +211,13 @@ CmdPartPrimitives::CmdPartPrimitives()
 
 void CmdPartPrimitives::activated(int iMsg)
 {
-    static QPointer<QDialog> dlg = 0;
-    if (!dlg)
-        dlg = new PartGui::DlgPrimitives(Gui::getMainWindow());
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->show();
+    PartGui::TaskPrimitives* dlg = new PartGui::TaskPrimitives();
+    Gui::Control().showDialog(dlg);
 }
 
 bool CmdPartPrimitives::isActive(void)
 {
-    return hasActiveDocument();
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 //===========================================================================
@@ -298,17 +298,18 @@ void CmdPartCommon::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Common");
 
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    std::string ObjectBuf;
+    std::stringstream str;
     std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        ObjectBuf += std::string("App.activeDocument().") + it->FeatName + ",";
+        str << "App.activeDocument()." << it->FeatName << ",";
         tempSelNames.push_back(it->FeatName);
     }
-    ObjectBuf.erase(--ObjectBuf.end());
+    str << "]";
 
     openCommand("Common");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiCommon\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Shapes = [%s]",FeatName.c_str(),ObjectBuf.c_str());
+    runCommand(Doc,str.str().c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -351,17 +352,18 @@ void CmdPartFuse::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Fusion");
 
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    std::string ObjectBuf;
+    std::stringstream str;
     std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        ObjectBuf += std::string("App.activeDocument().") + it->FeatName + ",";
+        str << "App.activeDocument()." << it->FeatName << ",";
         tempSelNames.push_back(it->FeatName);
     }
-    ObjectBuf.erase(--ObjectBuf.end());
+    str << "]";
 
     openCommand("Fusion");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiFuse\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Shapes = [%s]",FeatName.c_str(),ObjectBuf.c_str());
+    runCommand(Doc,str.str().c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -440,7 +442,6 @@ CmdPartImport::CmdPartImport()
     sPixmap       = "Part_Import";
 }
 
-
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
@@ -452,6 +453,7 @@ void CmdPartImport::activated(int iMsg)
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
+        Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
         openCommand("Import Part");
@@ -468,6 +470,11 @@ void CmdPartImport::activated(int iMsg)
             doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
         commitCommand();
+
+        std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+            (*it)->viewAll();
+        }
     }
 }
 
@@ -509,7 +516,6 @@ void CmdPartExport::activated(int iMsg)
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
-        openCommand("Import Part");
         QString ext = QFileInfo(fn).suffix().toLower();
         if (ext == QLatin1String("step") || 
             ext == QLatin1String("stp")  ||
@@ -520,7 +526,6 @@ void CmdPartExport::activated(int iMsg)
         else {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"Part");
         }
-        commitCommand();
     }
 }
 
@@ -659,6 +664,7 @@ DEF_STD_CMD_A(CmdPartReverseShape);
 CmdPartReverseShape::CmdPartReverseShape()
   :Command("Part_ReverseShape")
 {
+
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Reverse shapes");
@@ -816,6 +822,33 @@ bool CmdPartFillet::isActive(void)
 }
 
 //===========================================================================
+// Part_Chamfer
+//===========================================================================
+DEF_STD_CMD_A(CmdPartChamfer);
+
+CmdPartChamfer::CmdPartChamfer()
+  :Command("Part_Chamfer")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Chamfer...");
+    sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Chamfer";
+}
+
+void CmdPartChamfer::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskChamferEdges(0));
+}
+
+bool CmdPartChamfer::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//===========================================================================
 // Part_Mirror
 //===========================================================================
 DEF_STD_CMD_A(CmdPartMirror);
@@ -916,9 +949,10 @@ CmdPartLoft::CmdPartLoft()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Loft...");
-    sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
+    sToolTipText  = QT_TR_NOOP("Utility to loft");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Loft";
 }
 
 void CmdPartLoft::activated(int iMsg)
@@ -927,6 +961,32 @@ void CmdPartLoft::activated(int iMsg)
 }
 
 bool CmdPartLoft::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdPartSweep);
+
+CmdPartSweep::CmdPartSweep()
+  : Command("Part_Sweep")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Sweep...");
+    sToolTipText  = QT_TR_NOOP("Utility to sweep");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Sweep";
+}
+
+void CmdPartSweep::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskSweep());
+}
+
+bool CmdPartSweep::isActive(void)
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -949,6 +1009,7 @@ CmdShapeInfo::CmdShapeInfo()
 
 void CmdShapeInfo::activated(int iMsg)
 {
+#if 0
     static const char * const part_pipette[]={
         "32 32 17 1",
         "# c #000000",
@@ -1003,6 +1064,7 @@ void CmdShapeInfo::activated(int iMsg)
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+#endif
     //if (view) {
     //    Gui::View3DInventorViewer* viewer = view->getViewer();
     //    viewer->setEditing(true);
@@ -1150,6 +1212,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRevolve());
     rcCmdMgr.addCommand(new CmdPartCrossSections());
     rcCmdMgr.addCommand(new CmdPartFillet());
+    rcCmdMgr.addCommand(new CmdPartChamfer());
     rcCmdMgr.addCommand(new CmdPartCommon());
     rcCmdMgr.addCommand(new CmdPartCut());
     rcCmdMgr.addCommand(new CmdPartFuse());
@@ -1166,5 +1229,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRuledSurface());
     rcCmdMgr.addCommand(new CmdPartBuilder());
     rcCmdMgr.addCommand(new CmdPartLoft());
+    rcCmdMgr.addCommand(new CmdPartSweep());
 } 
 

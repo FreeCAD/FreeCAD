@@ -174,6 +174,38 @@ public:
   virtual ~AbnormalProgramTermination() throw() {}
 };
 
+/**
+ * The UnknownProgramOption can be used to indicate an unknown program option.
+ * @author Werner Mayer
+ */
+class BaseExport UnknownProgramOption : public Exception
+{
+public:
+  /// Construction
+  UnknownProgramOption(const char * sMessage);
+  UnknownProgramOption(const std::string& sMessage);
+  /// Construction
+  UnknownProgramOption(const UnknownProgramOption &inst);
+  /// Destruction
+  virtual ~UnknownProgramOption() throw() {}
+};
+
+/**
+ * The ProgramInformation can be used to show information about the program.
+ * @author Werner Mayer
+ */
+class BaseExport ProgramInformation : public Exception
+{
+public:
+  /// Construction
+  ProgramInformation(const char * sMessage);
+  ProgramInformation(const std::string& sMessage);
+  /// Construction
+  ProgramInformation(const ProgramInformation &inst);
+  /// Destruction
+  virtual ~ProgramInformation() throw() {}
+};
+
 
 inline void Exception::setMessage(const char * sMessage)
 {

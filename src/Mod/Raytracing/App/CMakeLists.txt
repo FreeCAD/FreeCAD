@@ -51,15 +51,27 @@ SET(Raytracing_SRCS
     RaySegment.h
 )
 
+SET(Raytracing_Scripts
+    Init.py
+    RaytracingExample.py
+)
+
 SET(Raytracing_Templates
     Templates/ProjectStd.pov
 )
 
 add_library(Raytracing SHARED ${Raytracing_SRCS})
 target_link_libraries(Raytracing ${Raytracing_LIBS})
-fc_copy_script("Mod/Raytracing" "Raytracing" Init.py)
-fc_copy_script("Mod/Raytracing" "Raytracing" RaytracingExample.py)
-fc_copy_script("Mod/Raytracing" "Raytracing" ${Raytracing_Templates})
+
+fc_target_copy_resource(Raytracing 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Raytracing
+    ${CMAKE_BINARY_DIR}/Mod/Raytracing
+    ${Raytracing_Scripts})
+
+fc_target_copy_resource(Raytracing 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Raytracing
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Raytracing
+    ${Raytracing_Templates})
 
 if(MSVC)
     set_target_properties(Raytracing PROPERTIES SUFFIX ".pyd")

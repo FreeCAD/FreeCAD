@@ -38,6 +38,7 @@
 
 // forward declarations
 class SoEvent;
+class SoMotion3Event;
 class SoQtViewer;
 class SoCamera;
 class SoSensor;
@@ -109,13 +110,24 @@ public:
     void stopAnimating(void);
     SbBool isAnimating(void) const;
 
+    void setSensitivity(float);
+    float getSensitivity() const;
+
+    void setResetCursorPosition(SbBool);
+    SbBool isResetCursorPosition() const;
+
     void setZoomInverted(SbBool);
     SbBool isZoomInverted() const;
+    void setZoomStep(float);
+    void setZoomAtCursor(SbBool);
+    SbBool isZoomAtCursor() const;
+    void zoomIn();
+    void zoomOut();
 
     void updateAnimation();
     void redraw();
 
-    void setCameraOrientation(const SbRotation& rot);
+    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
     void lookAtPoint(const SbVec3f&);
     void boxZoom(const SbBox2s& box);
     virtual void viewAll();
@@ -123,6 +135,7 @@ public:
     void setViewingMode(const ViewerMode newmode);
     int getViewingMode() const;
     virtual SbBool processEvent(const SoEvent * const ev);
+    virtual SbBool processMotionEvent(const SoMotion3Event * const ev);
 
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled(void) const;
@@ -162,11 +175,15 @@ protected:
     void panToCenter(const SbPlane & pplane, const SbVec2f & currpos);
     void zoom(SoCamera * camera, float diffvalue);
     void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
+    void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
     SbBool doSpin();
+    void moveCursorPosition();
+    void saveCursorPosition(const SoEvent * const ev);
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent * const ev);
+    void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
     void clearLog(void);
@@ -183,6 +200,8 @@ protected:
     View3DInventorViewer* viewer;
     ViewerMode currentmode;
     SbVec2f lastmouseposition;
+    SbVec2s globalPos;
+    SbVec2s localPos;
     SbPlane panningplane;
     SbTime prevRedrawTime;
     SbTime centerTime;
@@ -191,6 +210,8 @@ protected:
     SbBool ctrldown, shiftdown, altdown;
     SbBool button1down, button2down, button3down;
     SbBool invertZoom;
+    SbBool zoomAtCursor;
+    float zoomStep;
 
     /** @name Mouse model */
     //@{
@@ -277,6 +298,20 @@ protected:
 
 private:
     SbBool lockButton1;
+};
+
+class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    TouchpadNavigationStyle();
+    ~TouchpadNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
 };
 
 } // namespace Gui

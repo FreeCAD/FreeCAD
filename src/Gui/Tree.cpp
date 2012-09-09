@@ -253,6 +253,8 @@ void TreeWidget::onStartEditing()
             App::DocumentObject* obj = objitem->object()->getObject();
             if (!obj) return;
             Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
+            MDIView *view = doc->getActiveView();
+            if (view) getMainWindow()->setActiveWindow(view);
             doc->setEdit(objitem->object(), edit);
         }
     }
@@ -306,7 +308,12 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         getMainWindow()->setActiveWindow(view);
     }
     else if (item->type() == TreeWidget::ObjectType) {
-        if (!(static_cast<DocumentObjectItem*>(item)->object())->doubleClicked())
+        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
+        App::DocumentObject* obj = objitem->object()->getObject();
+        Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
+        MDIView *view = doc->getActiveView();
+        if (view) getMainWindow()->setActiveWindow(view);
+        if (!objitem->object()->doubleClicked())
             QTreeWidget::mouseDoubleClickEvent(event);
     }
 }
@@ -424,6 +431,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // Open command
         App::Document* doc = grp->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+        Base::Type DOGPython = Base::Type::fromName("App::DocumentObjectGroupPython");
         gui->openCommand("Move object");
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             // get document object
@@ -433,20 +441,39 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 ::getGroupOfObject(obj);
             if (par) {
                 // allow an object to be in one group only
-                QString cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+                QString cmd;
+                if (par->getTypeId().isDerivedFrom(DOGPython)) {
+                    // if this is a python group, call the method of its Proxy
+                    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").Proxy.removeObject("
                                       "App.getDocument(\"%1\").getObject(\"%3\"))")
                                       .arg(QString::fromAscii(doc->getName()))
                                       .arg(QString::fromAscii(par->getNameInDocument()))
                                       .arg(QString::fromAscii(obj->getNameInDocument()));
+                } else {
+                    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+                                      "App.getDocument(\"%1\").getObject(\"%3\"))")
+                                      .arg(QString::fromAscii(doc->getName()))
+                                      .arg(QString::fromAscii(par->getNameInDocument()))
+                                      .arg(QString::fromAscii(obj->getNameInDocument()));
+                }
                 Gui::Application::Instance->runPythonCode(cmd.toUtf8());
             }
 
             // build Python command for execution
-            QString cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+            QString cmd;
+            if (grp->getTypeId().isDerivedFrom(DOGPython)) {
+                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").Proxy.addObject("
                                   "App.getDocument(\"%1\").getObject(\"%3\"))")
                                   .arg(QString::fromAscii(doc->getName()))
                                   .arg(QString::fromAscii(grp->getNameInDocument()))
                                   .arg(QString::fromAscii(obj->getNameInDocument()));
+            } else {
+                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
+                                  .arg(QString::fromAscii(doc->getName()))
+                                  .arg(QString::fromAscii(grp->getNameInDocument()))
+                                  .arg(QString::fromAscii(obj->getNameInDocument()));
+            }
             Gui::Application::Instance->runPythonCode(cmd.toUtf8());
         }
         gui->commitCommand();
@@ -699,6 +726,8 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
     setWindowTitle(tr("Tree view"));
     this->treeWidget = new TreeWidget(this);
     this->treeWidget->setRootIsDecorated(false);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
 
     QGridLayout* pLayout = new QGridLayout(this); 
     pLayout->setSpacing(0);
@@ -803,9 +832,14 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                             children.insert(kt->second);
                             QTreeWidgetItem* parent = kt->second->parent();
                             if (parent && parent != it->second) {
-                                int index = parent->indexOfChild(kt->second);
-                                parent->takeChild(index);
-                                it->second->addChild(kt->second);
+                                if (it->second != kt->second) {
+                                    int index = parent->indexOfChild(kt->second);
+                                    parent->takeChild(index);
+                                    it->second->addChild(kt->second);
+                                }
+                                else {
+                                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                }
                             }
                         }
                         else {

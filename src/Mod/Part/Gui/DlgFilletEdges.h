@@ -29,7 +29,11 @@
 #include <QStandardItemModel>
 #include <QItemDelegate>
 
-namespace Part { class Fillet; }
+namespace Part { 
+    class FilletBase;
+    class Fillet;
+    class Chamfer;
+}
 
 namespace PartGui {
 
@@ -72,7 +76,7 @@ class DlgFilletEdges : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgFilletEdges(Part::Fillet*, QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgFilletEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
     ~DlgFilletEdges();
     bool accept();
 
@@ -80,6 +84,7 @@ protected:
     void findShapes();
     void setupFillet(const std::vector<App::DocumentObject*>&);
     void changeEvent(QEvent *e);
+    virtual const char* getFilletType() const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
@@ -105,12 +110,24 @@ class FilletEdgesDialog : public QDialog
     Q_OBJECT
 
 public:
-    FilletEdgesDialog(Part::Fillet* fillet, QWidget* parent = 0, Qt::WFlags fl = 0);
+    FilletEdgesDialog(Part::FilletBase* fillet, QWidget* parent = 0, Qt::WFlags fl = 0);
     ~FilletEdgesDialog();
     void accept();
 
 private:
     DlgFilletEdges* widget;
+};
+
+class DlgChamferEdges : public DlgFilletEdges
+{
+    Q_OBJECT
+
+public:
+    DlgChamferEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
+    ~DlgChamferEdges();
+
+protected:
+    virtual const char* getFilletType() const;
 };
 
 class TaskFilletEdges : public Gui::TaskView::TaskDialog
@@ -132,6 +149,28 @@ public:
 
 private:
     DlgFilletEdges* widget;
+    Gui::TaskView::TaskBox* taskbox;
+};
+
+class TaskChamferEdges : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskChamferEdges(Part::Chamfer*);
+    ~TaskChamferEdges();
+
+public:
+    virtual void open();
+    virtual void clicked(int);
+    virtual bool accept();
+    virtual bool reject();
+
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+
+private:
+    DlgChamferEdges* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 

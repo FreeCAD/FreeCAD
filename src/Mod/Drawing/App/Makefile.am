@@ -13,6 +13,10 @@ libDrawing_la_SOURCES=\
 		FeatureView.h \
 		FeatureViewPart.cpp \
 		FeatureViewPart.h \
+		FeatureViewAnnotation.cpp \
+		FeatureViewAnnotation.h \
+		FeatureClip.cpp \
+		FeatureClip.h \
 		PageGroup.cpp \
 		PageGroup.h \
 		ProjectionAlgos.cpp \

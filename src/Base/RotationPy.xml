@@ -48,6 +48,14 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="isNull">
+			<Documentation>
+				<UserDocu>
+					isNull() -> Bool
+					returns True if the rotation equals the unity matrix
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Q" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation elements (as quaternion)</UserDocu>

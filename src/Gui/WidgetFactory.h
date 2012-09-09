@@ -32,6 +32,7 @@
 #include "DlgPreferencesImp.h"
 #include "DlgCustomizeImp.h"
 #include "PropertyPage.h"
+#include <CXX/Extensions.hxx>
 
 namespace Gui {
   namespace Dialog{
@@ -85,9 +86,29 @@ public:
      * Fore more details see the documentation to QWidgetFactory.
      */
     QWidget* createWidget(const QString & className, QWidget * parent=0, 
-                          const QString& name =QString());
+                          const QString& name = QString());
 private:
     QStringList cw;
+};
+
+// --------------------------------------------------------------------
+
+class UiLoaderPy : public Py::PythonExtension<UiLoaderPy> 
+{
+public:
+    static void init_type(void);    // announce properties and methods
+
+    UiLoaderPy();
+    ~UiLoaderPy();
+
+    Py::Object repr();
+    Py::Object createWidget(const Py::Tuple&);
+
+private:
+    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+
+private:
+    UiLoader loader;
 };
 
 // --------------------------------------------------------------------

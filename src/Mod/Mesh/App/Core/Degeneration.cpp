@@ -38,6 +38,7 @@
 #include "Grid.h"
 #include "TopoAlgorithm.h"
 
+#include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Sequencer.h>
 
 using namespace MeshCore;
@@ -228,6 +229,47 @@ bool MeshFixDuplicatePoints::Fixup()
 
 // ----------------------------------------------------------------------
 
+bool MeshEvalNaNPoints::Evaluate()
+{
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
+    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+        if (boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z))
+            return false;
+    }
+
+    return true;
+}
+
+std::vector<unsigned long> MeshEvalNaNPoints::GetIndices() const
+{
+    std::vector<unsigned long> aInds;
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
+    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+        if (boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z))
+            aInds.push_back(it - rPoints.begin());
+    }
+
+    return aInds;
+}
+
+bool MeshFixNaNPoints::Fixup()
+{
+    std::vector<unsigned long> aInds;
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
+    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+        if (boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z))
+            aInds.push_back(it - rPoints.begin());
+    }
+
+    // remove invalid indices
+    _rclMesh.DeletePoints(aInds);
+    _rclMesh.RebuildNeighbours();
+    
+    return true;
+}
+
+// ----------------------------------------------------------------------
+
 namespace MeshCore {
 
 typedef MeshFacetArray::_TConstIterator FaceIterator;
@@ -376,6 +418,30 @@ bool MeshFixDuplicateFacets::Fixup()
     _rclMesh.RebuildNeighbours(); // needs to be done here
 
     return true;
+}
+
+// ----------------------------------------------------------------------
+
+bool MeshEvalInternalFacets::Evaluate()
+{
+    _indices.clear();
+    unsigned long uIndex=0;
+    const MeshFacetArray& rFaces = _rclMesh.GetFacets();
+
+    // get all facets
+    std::set<FaceIterator, MeshFacet_Less > aFaceSet;
+    MeshFacetArray::_TConstIterator first = rFaces.begin();
+    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, uIndex++) {
+        std::pair<std::set<FaceIterator, MeshFacet_Less>::iterator, bool>
+        pI = aFaceSet.insert(it);
+        if (!pI.second) {
+            // collect both elements
+            _indices.push_back(*pI.first - first);
+            _indices.push_back(uIndex);
+        }
+    }
+
+    return _indices.empty();
 }
 
 // ----------------------------------------------------------------------

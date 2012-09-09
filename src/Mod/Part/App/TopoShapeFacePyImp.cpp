@@ -417,17 +417,6 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args)
     }
 }
 
-PyObject* TopoShapeFacePy::setTolerance(PyObject *args)
-{
-    double tol;
-    if (!PyArg_ParseTuple(args, "d", &tol))
-        return 0;
-    BRep_Builder aBuilder;
-    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
-    aBuilder.UpdateFace(f, tol);
-    Py_Return;
-}
-
 Py::Object TopoShapeFacePy::getSurface() const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
@@ -518,6 +507,30 @@ Py::Object TopoShapeFacePy::getSurface() const
     throw Py::TypeError("undefined surface type");
 }
 
+PyObject* TopoShapeFacePy::setTolerance(PyObject *args)
+{
+    double tol;
+    if (!PyArg_ParseTuple(args, "d", &tol))
+        return 0;
+    BRep_Builder aBuilder;
+    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
+    aBuilder.UpdateFace(f, tol);
+    Py_Return;
+}
+
+Py::Float TopoShapeFacePy::getTolerance(void) const
+{
+    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
+    return Py::Float(BRep_Tool::Tolerance(f));
+}
+
+void TopoShapeFacePy::setTolerance(Py::Float tol)
+{
+    BRep_Builder aBuilder;
+    const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
+    aBuilder.UpdateFace(f, (double)tol);
+}
+
 Py::Tuple TopoShapeFacePy::getParameterRange(void) const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
@@ -537,14 +550,16 @@ Py::Tuple TopoShapeFacePy::getParameterRange(void) const
 
 Py::Object TopoShapeFacePy::getWire(void) const
 {
-    TopoDS_Shape clSh = getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& clSh = getTopoShapePtr()->_Shape;
+    if (clSh.IsNull())
+        throw Py::Exception("Null shape");
     if (clSh.ShapeType() == TopAbs_FACE) {
         TopoDS_Face clFace = (TopoDS_Face&)clSh;
         TopoDS_Wire clWire = ShapeAnalysis::OuterWire(clFace);
         return Py::Object(new TopoShapeWirePy(new TopoShape(clWire)),true);
     }
     else
-        throw "Internal error, TopoDS_Shape is not a face!";
+        throw Py::Exception("Internal error, TopoDS_Shape is not a face!");
 
     return Py::Object();
 }

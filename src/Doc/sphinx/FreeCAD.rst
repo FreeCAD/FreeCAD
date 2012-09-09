@@ -6,7 +6,6 @@ The FreeCAD module
 
 .. automodule:: FreeCAD
    :members:
-   :show-inheritance:
 
    .. autoclass:: Vector
       :members:
@@ -15,4 +14,7 @@ The FreeCAD module
       :members:
 
    .. autoclass:: Placement
+      :members:
+
+   .. autoclass:: Console
       :members:

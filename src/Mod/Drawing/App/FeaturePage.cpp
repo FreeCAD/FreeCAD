@@ -34,9 +34,11 @@
 #include <App/Application.h>
 #include <boost/regex.hpp>
 #include <iostream>
+#include <iterator>
 
 #include "FeaturePage.h"
 #include "FeatureView.h"
+#include "FeatureClip.h"
 
 using namespace Drawing;
 using namespace std;
@@ -56,6 +58,7 @@ FeaturePage::FeaturePage(void)
 
     ADD_PROPERTY_TYPE(PageResult ,(0),group,App::Prop_Output,"Resulting SVG document of that page");
     ADD_PROPERTY_TYPE(Template   ,(""),group,App::Prop_None  ,"Template for the page");
+    ADD_PROPERTY_TYPE(EditableTexts,(""),group,App::Prop_None,"Substitution values for the editable strings in the template");
 }
 
 FeaturePage::~FeaturePage()
@@ -74,15 +77,21 @@ void FeaturePage::onChanged(const App::Property* prop)
                 return;
         }
     }
+    if (prop == &Template) {
+        if (!this->isRestoring()) {
+            EditableTexts.setValues(getEditableTextsFromTemplate());
+        }
+    }
     App::DocumentObjectGroup::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)
 {
-    if(Template.getValue() == "")
+    std::string temp = Template.getValue();
+    if (temp.empty())
         return App::DocumentObject::StdReturn;
 
-    Base::FileInfo fi(Template.getValue());
+    Base::FileInfo fi(temp);
     if (!fi.isReadable()) {
         // if there is a old absolute template file set use a redirect
         fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
@@ -103,7 +112,8 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
 
     // make a temp file for FileIncluded Property
     string tempName = PageResult.getExchangeTempFile();
-    ofstream ofile(tempName.c_str());
+    ostringstream ofile;
+    string tempendl = "--endOfLine--";
 
     while (!file.eof())
     {
@@ -111,23 +121,55 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
         // check if the marker in the template is found
         if(line.find("<!-- DrawingContent -->") == string::npos)
             // if not -  write through
-            ofile << line << endl;
+            ofile << line << tempendl;
         else
         {
             // get through the children and collect all the views
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
-                if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
+                if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
                     Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
                     ofile << View->ViewResult.getValue();
-                    ofile << endl << endl << endl;
+                    ofile << tempendl << tempendl << tempendl;
+                } else if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId()) ) {
+                    Drawing::FeatureClip *Clip = dynamic_cast<Drawing::FeatureClip *>(*It);
+                    ofile << Clip->ViewResult.getValue();
+                    ofile << tempendl << tempendl << tempendl;
                 }
             }
         }
     }
 
     file.close();
-    ofile.close();
+
+    // checking for freecad editable texts
+    string outfragment(ofile.str());
+    if (EditableTexts.getSize() > 0) {
+        boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        string::const_iterator begin, end;
+        begin = outfragment.begin();
+        end = outfragment.end();
+        boost::match_results<std::string::const_iterator> what;
+        int count = 0;
+
+        while (boost::regex_search(begin, end, what, e1)) {
+            if (count < EditableTexts.getSize()) {
+                // change values of editable texts
+                boost::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
+                outfragment = boost::regex_replace(outfragment, e2, "$1>"+EditableTexts.getValues()[count]+"$3");
+            }
+            count ++;
+            begin = what[0].second;
+        }
+    }
+
+    // restoring linebreaks and saving the file
+    boost::regex e3 ("--endOfLine--");
+    string fmt = "\\n";
+    outfragment = boost::regex_replace(outfragment, e3, fmt);
+    ofstream outfinal(tempName.c_str());
+    outfinal << outfragment;
+    outfinal.close();
 
     PageResult.setValue(tempName.c_str());
 
@@ -139,4 +181,41 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
     //{
     //}
     return App::DocumentObject::StdReturn;
+}
+
+std::vector<std::string> FeaturePage::getEditableTextsFromTemplate(void) const {
+    //getting editable texts from "freecad:editable" attributes in SVG template
+
+    std::vector<string> eds;
+
+    std::string temp = Template.getValue();
+    if (!temp.empty()) {
+        Base::FileInfo tfi(temp);
+        if (!tfi.isReadable()) {
+            // if there is a old absolute template file set use a redirect
+            tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
+            // try the redirect
+            if (!tfi.isReadable()) {
+                return eds;
+            }
+        }
+        string tline, tfrag;
+        ifstream tfile (tfi.filePath().c_str());
+        while (!tfile.eof()) {
+            getline (tfile,tline);
+            tfrag += tline;
+            tfrag += "--endOfLine--";
+        }
+        tfile.close();
+        boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        string::const_iterator tbegin, tend;
+        tbegin = tfrag.begin();
+        tend = tfrag.end();
+        boost::match_results<std::string::const_iterator> twhat;
+        while (boost::regex_search(tbegin, tend, twhat, e)) {
+            eds.push_back(twhat[2]);
+            tbegin = twhat[0].second;
+        }
+    }
+    return eds;
 }

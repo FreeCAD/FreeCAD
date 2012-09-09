@@ -30,21 +30,17 @@
 namespace Part
 {
 
-class Chamfer : public Part::Feature
+class Chamfer : public Part::FilletBase
 {
     PROPERTY_HEADER(Part::Chamfer);
 
 public:
     Chamfer();
 
-    App::PropertyLink   Base;
-    PropertyFilletEdges Edges;
-
     /** @name methods override feature */
     //@{
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderChamfer";

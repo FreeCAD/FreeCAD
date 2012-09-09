@@ -76,6 +76,8 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewRight",&View3DInventorPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&View3DInventorPy::viewTop,"viewTop()");
     add_varargs_method("viewAxometric",&View3DInventorPy::viewAxometric,"viewAxometric()");
+    add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
+    add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
     add_varargs_method("viewPosition",&View3DInventorPy::viewPosition,"viewPosition()");
     add_varargs_method("startAnimating",&View3DInventorPy::startAnimating,"startAnimating()");
     add_varargs_method("stopAnimating",&View3DInventorPy::stopAnimating,"stopAnimating()");
@@ -407,10 +409,63 @@ Py::Object View3DInventorPy::viewAxometric(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+      SoCamera* cam = _view->getViewer()->getCamera();
+      SbRotation rot = cam->orientation.getValue();
+      SbVec3f vdir(0, 0, -1);
+      rot.multVec(vdir, vdir);
+      SbRotation nrot(vdir,float( M_PI/2));
+      cam->orientation.setValue(rot*nrot);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+      SoCamera* cam = _view->getViewer()->getCamera();
+      SbRotation rot = cam->orientation.getValue();
+      SbVec3f vdir(0, 0, -1);
+      rot.multVec(vdir, vdir);
+      SbRotation nrot(vdir, float(-M_PI/2));
+      cam->orientation.setValue(rot*nrot);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
 Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyTuple_Type, &o))
+    PyObject* m=0;
+    if (!PyArg_ParseTuple(args.ptr(), "O!|O!", &PyTuple_Type, &o, &PyBool_Type, &m))
         throw Py::Exception();
 
     try {
@@ -419,7 +474,7 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
         float q1 = (float)Py::Float(tuple[1]);
         float q2 = (float)Py::Float(tuple[2]);
         float q3 = (float)Py::Float(tuple[3]);
-        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3));
+        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), m==Py_True);
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());

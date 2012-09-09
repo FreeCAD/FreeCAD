@@ -54,7 +54,12 @@ SET(PointsGui_SRCS
 
 add_library(PointsGui SHARED ${PointsGui_SRCS})
 target_link_libraries(PointsGui ${PointsGui_LIBS})
-fc_copy_script("Mod/Points" "PointsGui" InitGui.py)
+
+
+fc_target_copy_resource(PointsGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Points
+    ${CMAKE_BINARY_DIR}/Mod/Points
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(PointsGui PROPERTIES SUFFIX ".pyd")

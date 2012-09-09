@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -21,7 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, collada, Mesh, os, numpy
+import FreeCAD, Mesh, os, numpy
+from DraftTools import translate
 
 __title__="FreeCAD Collada importer"
 __author__ = "Yorik van Havre"
@@ -29,11 +30,35 @@ __url__ = "http://free-cad.sourceforge.net"
 
 DEBUG = True
 
+def checkCollada():
+    "checks if collada if available"
+    global collada
+    COLLADA = None
+    try:
+        import collada
+    except:
+        FreeCAD.Console.PrintError(str(translate("Arch","pycollada not found, no collada support.\n")))
+        return False
+    else:
+        return True
+    
 def open(filename):
     "called when freecad wants to open a file"
+    if not checkCollada(): return
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = decode(docname)
+    FreeCAD.ActiveDocument = doc
+    read(filename)
+    return doc
+
+def insert(filename,docname):
+    "called when freecad wants to import a file"
+    if not checkCollada(): return
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except:
+        doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
@@ -46,7 +71,7 @@ def decode(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            print "ifc: error: couldn't determine character encoding"
+            FreeCAD.Console.PrintError(str(translate("Arch","Error: Couldn't determine character encoding")))
             decodedName = name
     return decodedName
 
@@ -76,6 +101,7 @@ def read(filename):
 
 def export(exportList,filename):
     "called when freecad exports a file"
+    if not checkCollada(): return
     colmesh = collada.Collada()
     effect = collada.material.Effect("effect0", [], "phong", diffuse=(.7,.7,.7), specular=(1,1,1))
     mat = collada.material.Material("material0", "mymaterial", effect)
@@ -123,4 +149,4 @@ def export(exportList,filename):
     colmesh.scenes.append(myscene)
     colmesh.scene = myscene
     colmesh.write(filename)
-    print "file ",filename," successfully created."
+    FreeCAD.Console.PrintMessage(str(translate("Arch","file %s successfully created.")) % filename)

@@ -105,6 +105,8 @@
 // QtCore
 #include <QBuffer>
 #include <QByteArray>
+#include <QCoreApplication>
+#include <QEvent>
 #include <QIODevice>
 #include <QDataStream>
 #include <QWriteLocker>

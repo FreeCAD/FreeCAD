@@ -87,6 +87,26 @@ void Std_TestQM::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_TestReloadQM
+//===========================================================================
+DEF_STD_CMD(Std_TestReloadQM);
+
+Std_TestReloadQM::Std_TestReloadQM()
+  : Command("Std_TestReloadQM")
+{
+    sGroup        = "Standard-Test";
+    sMenuText     = "Reload translation files";
+    sToolTipText  = "Test function to check .qm translation files";
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void Std_TestReloadQM::activated(int iMsg)
+{
+    Translator::instance()->activateLanguage(Translator::instance()->activeLanguage().c_str());
+}
+
+//===========================================================================
 // Std_Test1
 //===========================================================================
 DEF_STD_CMD_A(FCCmdTest1);
@@ -626,6 +646,7 @@ void CreateTestCommands(void)
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new Std_TestQM());
+    rcCmdMgr.addCommand(new Std_TestReloadQM());
     rcCmdMgr.addCommand(new FCCmdTest1());
     rcCmdMgr.addCommand(new FCCmdTest2());
     rcCmdMgr.addCommand(new FCCmdTest3());

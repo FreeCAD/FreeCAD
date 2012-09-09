@@ -96,6 +96,12 @@ class GuiExport PythonConsole : public TextEdit, public WindowParameter
     Q_OBJECT
 
 public:
+    enum Prompt {
+        Complete   = 0,
+        Incomplete = 1,
+        Flush      = 2
+    };
+
     PythonConsole(QWidget *parent = 0);
     ~PythonConsole();
 
@@ -108,6 +114,7 @@ public Q_SLOTS:
     void onCopyHistory();
     void onCopyCommand();
     void onClearConsole();
+    void onFlush();
 
 private Q_SLOTS:
     void visibilityChanged (bool visible);
@@ -119,6 +126,7 @@ protected:
     void dragEnterEvent ( QDragEnterEvent   * e );
     void dragMoveEvent  ( QDragMoveEvent    * e );
     void changeEvent    ( QEvent            * e );
+    void mouseReleaseEvent( QMouseEvent       * e );
 
     void overrideCursor(const QString& txt);
 
@@ -127,11 +135,12 @@ protected:
     bool canInsertFromMimeData ( const QMimeData * source ) const;
     QMimeData * createMimeDataFromSelection () const;
     void insertFromMimeData ( const QMimeData * source );
+    QTextCursor inputBegin( void ) const;
 
 private:
     void runSource(const QString&);
     bool isComment(const QString&) const;
-    void printPrompt(bool);
+    void printPrompt(Prompt);
     void insertPythonOutput(const QString&);
     void insertPythonError (const QString&);
     void runSourceFromMimeData(const QString&);

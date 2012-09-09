@@ -147,34 +147,40 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 
 PyObject *PropertyPartShape::getPyObject(void)
 {
+    Base::PyObjectBase* prop;
     const TopoDS_Shape& sh = _Shape._Shape;
-    if (sh.IsNull())
-        return new TopoShapePy(new TopoShape(sh));
-
-    TopAbs_ShapeEnum type = sh.ShapeType();
-    switch (type)
-    {
-    case TopAbs_COMPOUND:
-        return new TopoShapeCompoundPy(new TopoShape(sh));
-    case TopAbs_COMPSOLID:
-        return new TopoShapeCompSolidPy(new TopoShape(sh));
-    case TopAbs_SOLID:
-        return new TopoShapeSolidPy(new TopoShape(sh));
-    case TopAbs_SHELL:
-        return new TopoShapeShellPy(new TopoShape(sh));
-    case TopAbs_FACE:
-        return new TopoShapeFacePy(new TopoShape(sh));
-    case TopAbs_WIRE:
-        return new TopoShapeWirePy(new TopoShape(sh));
-    case TopAbs_EDGE:
-        return new TopoShapeEdgePy(new TopoShape(sh));
-    case TopAbs_VERTEX:
-        return new TopoShapeVertexPy(new TopoShape(sh));
-    case TopAbs_SHAPE:
-    default:
-        return new TopoShapePy(new TopoShape(sh));
-        break;
+    if (sh.IsNull()) {
+        prop = new TopoShapePy(new TopoShape(sh));
     }
+    else {
+        TopAbs_ShapeEnum type = sh.ShapeType();
+        switch (type)
+        {
+        case TopAbs_COMPOUND:
+            prop = new TopoShapeCompoundPy(new TopoShape(sh));
+        case TopAbs_COMPSOLID:
+            prop = new TopoShapeCompSolidPy(new TopoShape(sh));
+        case TopAbs_SOLID:
+            prop = new TopoShapeSolidPy(new TopoShape(sh));
+        case TopAbs_SHELL:
+            prop = new TopoShapeShellPy(new TopoShape(sh));
+        case TopAbs_FACE:
+            prop = new TopoShapeFacePy(new TopoShape(sh));
+        case TopAbs_WIRE:
+            prop = new TopoShapeWirePy(new TopoShape(sh));
+        case TopAbs_EDGE:
+            prop = new TopoShapeEdgePy(new TopoShape(sh));
+        case TopAbs_VERTEX:
+            prop = new TopoShapeVertexPy(new TopoShape(sh));
+        case TopAbs_SHAPE:
+        default:
+            prop = new TopoShapePy(new TopoShape(sh));
+            break;
+        }
+    }
+
+    if (prop) prop->setConst();
+    return prop;
 }
 
 void PropertyPartShape::setPyObject(PyObject *value)
@@ -333,6 +339,72 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
     fi.deleteFile();
 
     setValue(shape);
+}
+
+// -------------------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::PropertyShapeHistory , App::PropertyLists);
+
+PropertyShapeHistory::PropertyShapeHistory()
+{
+}
+
+PropertyShapeHistory::~PropertyShapeHistory()
+{
+}
+
+void PropertyShapeHistory::setValue(const ShapeHistory& sh)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0] = sh;
+    hasSetValue();
+}
+
+void PropertyShapeHistory::setValues(const std::vector<ShapeHistory>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyShapeHistory::getPyObject(void)
+{
+    return Py::new_reference_to(Py::None());
+}
+
+void PropertyShapeHistory::setPyObject(PyObject *value)
+{
+}
+
+void PropertyShapeHistory::Save (Base::Writer &writer) const
+{
+}
+
+void PropertyShapeHistory::Restore(Base::XMLReader &reader)
+{
+}
+
+void PropertyShapeHistory::SaveDocFile (Base::Writer &writer) const
+{
+}
+
+void PropertyShapeHistory::RestoreDocFile(Base::Reader &reader)
+{
+}
+
+App::Property *PropertyShapeHistory::Copy(void) const
+{
+    PropertyShapeHistory *p= new PropertyShapeHistory();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyShapeHistory::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyShapeHistory&>(from)._lValueList;
+    hasSetValue();
 }
 
 // -------------------------------------------------------------------------

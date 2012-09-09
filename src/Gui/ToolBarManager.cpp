@@ -232,6 +232,16 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
     // hide all unneeded toolbars
     for (QList<QToolBar*>::Iterator it = toolbars.begin(); it != toolbars.end(); ++it) {
+        // make sure that the main window has the focus when hiding the toolbar with
+        // the combo box inside
+        QWidget *fw = QApplication::focusWidget();
+        while (fw &&  !fw->isWindow()) {
+            if (fw == *it) {
+                getMainWindow()->setFocus();
+                break;
+            }
+            fw = fw->parentWidget();
+        }
         // ignore toolbars which do not belong to the previously active workbench
         QByteArray toolbarName = (*it)->objectName().toUtf8();
         if (!(*it)->toggleViewAction()->isVisible())

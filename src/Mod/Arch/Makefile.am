@@ -14,7 +14,6 @@ data_DATA = \
 		ArchBuilding.py \
 		ArchCell.py \
 		ArchFloor.py \
-        IFC2X3_TC1.exp \
 		ifcReader.py \
 		importDAE.py \
 		importIFC.py \
@@ -27,7 +26,9 @@ data_DATA = \
 		ArchSectionPlane.py \
 		ArchWindow.py \
 		ArchCommands.py \
-		ArchAxis.py
+		ArchAxis.py \
+		ArchVRM.py \
+		ArchRoof.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
@@ -59,6 +60,11 @@ EXTRA_DIST = \
         Resources/icons/Arch_Structure_Tree.svg \
         Resources/icons/Arch_Window_Tree.svg \
 		Resources/icons/Arch_Axis.svg \
-		Resources/icons/Arch_Axis_Tree.svg
+		Resources/icons/Arch_Axis_Tree.svg \
+		Resources/icons/Arch_Roof.svg \
+		Resources/icons/Arch_Roof_Tree.svg \
+		Resources/icons/Arch_CloseHoles.svg \
+		Resources/icons/Arch_Check.svg \
+		Resources/icons/Arch_SelectNonManifold.svg \
 		Resources/ui/archprefs-base.ui
 

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QClipboard>
 # include <QDockWidget>
 # include <QGridLayout>
@@ -392,7 +393,7 @@ PythonConsole::PythonConsole(QWidget *parent)
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromAscii(version)).arg(QString::fromAscii(platform));
     d->output = d->info;
-    printPrompt(false);
+    printPrompt(PythonConsole::Complete);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -441,13 +442,8 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
 void PythonConsole::keyPressEvent(QKeyEvent * e)
 {
     bool restartHistory = true;
-    QTextCursor  cursor = this->textCursor();
-
-    // construct reference cursor at begin of input line ...
-    QTextCursor inputLineBegin = cursor;
-    inputLineBegin.movePosition( QTextCursor::End );
-    inputLineBegin.movePosition( QTextCursor::StartOfLine );
-    inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength );
+    QTextCursor cursor = this->textCursor();
+    QTextCursor inputLineBegin = this->inputBegin();
 
     if (cursor < inputLineBegin)
     {
@@ -504,7 +500,9 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
                   d->history.append( QLatin1String("# ") + inputLine );  //< put line to history ...
                   inputLineBegin.insertText( QString::fromAscii("# ") ); //< but comment it on console
                   setTextCursor( inputLineBegin );
-                  printPrompt( d->interpreter->hasPendingInput() );      //< print adequate prompt
+                  printPrompt(d->interpreter->hasPendingInput()      //< print adequate prompt
+                      ? PythonConsole::Incomplete
+                      : PythonConsole::Complete);
               }
           }   break;
 
@@ -548,8 +546,20 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               restartHistory = false;
           }   break;
 
-          case Qt::Key_Backspace:
           case Qt::Key_Left:
+          {
+              if (cursor > inputLineBegin)
+                  { TextEdit::keyPressEvent(e); }
+              restartHistory = false;
+          }   break;
+
+          case Qt::Key_Right:
+          {
+              TextEdit::keyPressEvent(e);
+              restartHistory = false;
+          }   break;
+
+          case Qt::Key_Backspace:
           {
               if (cursor > inputLineBegin)
                   { TextEdit::keyPressEvent(e); }
@@ -564,6 +574,9 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
         // the event and afterwards update the list widget
         if (d->callTipsList->isVisible())
             { d->callTipsList->validateCursor(); }
+
+        // disable history restart if input line changed
+        restartHistory &= (inputLine != inputBlock.text().mid(promptLength));
     }
     // any cursor move resets the history to its latest item.
     if (restartHistory)
@@ -588,10 +601,15 @@ void PythonConsole::insertPythonError ( const QString& err )
     d->error += err;
 }
 
+void PythonConsole::onFlush()
+{
+    printPrompt(PythonConsole::Flush);
+}
+
 /** Prints the ps1 prompt (>>> ) for complete and ps2 prompt (... ) for
  * incomplete commands to the console window. 
  */ 
-void PythonConsole::printPrompt(bool incomplete)
+void PythonConsole::printPrompt(PythonConsole::Prompt mode)
 {
     // write normal messages
     if (!d->output.isEmpty()) {
@@ -620,8 +638,17 @@ void PythonConsole::printPrompt(bool incomplete)
     else
         block.setUserState(0);
 
-    incomplete ? cursor.insertText(QString::fromAscii("... "))
-               : cursor.insertText(QString::fromAscii(">>> "));
+    switch (mode)
+    {
+    case PythonConsole::Incomplete:
+        cursor.insertText(QString::fromAscii("... "));
+        break;
+    case PythonConsole::Complete:
+        cursor.insertText(QString::fromAscii(">>> "));
+        break;
+    default:
+        break;
+    }
     cursor.endEditBlock();
 
     // move cursor to the end
@@ -672,12 +699,17 @@ void PythonConsole::runSource(const QString& line)
     catch (const Base::SystemExitException&) {
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         bool check = hPrefGrp->GetBool("CheckSystemExit",true);
-        if (!check)  Base::Interpreter().systemExit();
-        int ret = QMessageBox::question(this, tr("System exit"), tr("The application is still running.\nDo you want to exit without saving your data?"),
-        QMessageBox::Yes, QMessageBox::No|QMessageBox::Escape|QMessageBox::Default);
+        int ret = QMessageBox::Yes;
+        if (check) {
+            ret = QMessageBox::question(this, tr("System exit"),
+                tr("The application is still running.\nDo you want to exit without saving your data?"),
+                QMessageBox::Yes, QMessageBox::No|QMessageBox::Escape|QMessageBox::Default);
+        }
         if (ret == QMessageBox::Yes) {
-            Base::Interpreter().systemExit();
-        } else {
+            PyErr_Clear();
+            throw;
+        }
+        else {
             PyErr_Clear();
         }
     }
@@ -694,9 +726,10 @@ void PythonConsole::runSource(const QString& line)
         QMessageBox::critical(this, tr("Python console"), tr("Unhandled unknown C++ exception."));
     }
 
+    printPrompt(incomplete ? PythonConsole::Incomplete
+                           : PythonConsole::Complete);
     PySys_SetObject("stdout", default_stdout);
     PySys_SetObject("stderr", default_stderr);
-    printPrompt(incomplete);
     d->interactive = false;
     for (QStringList::Iterator it = d->statements.begin(); it != d->statements.end(); ++it)
         printStatement(*it);
@@ -739,7 +772,7 @@ void PythonConsole::printStatement( const QString& cmd )
         cursor.movePosition(QTextCursor::End);
         cursor.insertText( *it );
         d->history.append( *it );
-        printPrompt(false);
+        printPrompt(PythonConsole::Complete);
     }
 }
 
@@ -769,6 +802,21 @@ void PythonConsole::changeEvent(QEvent *e)
         }
     }
     TextEdit::changeEvent(e);
+}
+
+void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
+{
+  TextEdit::mouseReleaseEvent( e );
+  if (e->button() == Qt::LeftButton)
+  {
+    QTextCursor cursor   = this->textCursor();
+    if (cursor.hasSelection() == false
+     && cursor < this->inputBegin())
+    {
+      cursor.movePosition( QTextCursor::End );
+      this->setTextCursor( cursor );
+    }
+  }
 }
 
 /**
@@ -867,6 +915,16 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
         runSourceFromMimeData(source->text());
         return;
     }
+}
+
+QTextCursor PythonConsole::inputBegin( void ) const
+{
+  // construct cursor at begin of input line ...
+  QTextCursor inputLineBegin( this->textCursor() );
+  inputLineBegin.movePosition( QTextCursor::End );
+  inputLineBegin.movePosition( QTextCursor::StartOfLine );
+  inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength );
+  return inputLineBegin;
 }
 
 QMimeData * PythonConsole::createMimeDataFromSelection () const
@@ -972,7 +1030,7 @@ void PythonConsole::runSourceFromMimeData(const QString& source)
         buffer.append(line);
         int ret = d->interpreter->compileCommand(buffer.join(QLatin1String("\n")).toUtf8());
         if (ret == 1) { // incomplete
-            printPrompt(true);
+            printPrompt(PythonConsole::Incomplete);
         }
         else if (ret == 0) { // complete
             // check if the following lines belong to the previous block
@@ -989,7 +1047,7 @@ void PythonConsole::runSourceFromMimeData(const QString& source)
             // is finished
             if (ret == -1) {
                 // the command is not finished yet
-                printPrompt(true);
+                printPrompt(PythonConsole::Incomplete);
             }
             else {
                 runSource(buffer.join(QLatin1String("\n")));
@@ -1082,7 +1140,7 @@ void PythonConsole::onClearConsole()
 {
     clear();
     d->output = d->info;
-    printPrompt(false);
+    printPrompt(PythonConsole::Complete);
 }
 
 void PythonConsole::onSaveHistoryAs()
@@ -1300,6 +1358,7 @@ PythonInputField::PythonInputField(QWidget* parent)
 
     editField = new PythonEditor(this);
     gridLayout->addWidget(editField, 0, 0, 1, 1);
+    setFocusProxy(editField);
 
     QHBoxLayout* hboxLayout = new QHBoxLayout();
     hboxLayout->setSpacing(6);

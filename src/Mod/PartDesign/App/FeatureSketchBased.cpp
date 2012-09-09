@@ -89,6 +89,16 @@ void SketchBased::positionBySketch(void)
     }
 }
 
+void SketchBased::onChanged(const App::Property* prop)
+{
+    if (prop == &Sketch) {
+        // if attached to a sketch then mark it as read-only
+        this->Placement.StatusBits.set(2, Sketch.getValue() != 0);
+    }
+
+    Feature::onChanged(prop);
+}
+
 bool SketchBased::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) const
 {
     Bnd_Box box1;

@@ -69,6 +69,7 @@
 #include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
 #include "MeshEditor.h"
+#include "Segmentation.h"
 
 using namespace Mesh;
 
@@ -289,11 +290,12 @@ void CmdMeshImport::activated(int iMsg)
 {
     // use current path as default
     QStringList filter;
-    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.ply)");
+    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)");
     filter << QObject::tr("Binary STL (*.stl)");
     filter << QObject::tr("ASCII STL (*.ast)");
     filter << QObject::tr("Binary Mesh (*.bms)");
     filter << QObject::tr("Alias Mesh (*.obj)");
+    filter << QObject::tr("Object File Format (*.off)");
     filter << QObject::tr("Inventor V2.1 ascii (*.iv)");
     filter << QObject::tr("Stanford Polygon (*.ply)");
     //filter << "Nastran (*.nas *.bdf)";
@@ -727,6 +729,61 @@ void CmdMeshPolyCut::activated(int iMsg)
 }
 
 bool CmdMeshPolyCut::isActive(void)
+{
+    // Check for the selected mesh feature (all Mesh types)
+    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
+        return false;
+
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        return !viewer->isEditing();
+    }
+
+    return false;
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdMeshPolyTrim);
+
+CmdMeshPolyTrim::CmdMeshPolyTrim()
+  : Command("Mesh_PolyTrim")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Trim mesh");
+    sToolTipText  = QT_TR_NOOP("Trims a mesh with a picked polygon");
+    sWhatsThis    = "Mesh_PolyTrim";
+    sStatusTip    = QT_TR_NOOP("Trims a mesh with a picked polygon");
+}
+
+void CmdMeshPolyTrim::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+        if (it == docObj.begin()) {
+            Gui::Document* doc = getActiveGuiDocument();
+            Gui::MDIView* view = doc->getActiveView();
+            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+                Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
+                viewer->setEditing(true);
+                viewer->startSelection(Gui::View3DInventorViewer::Clip);
+                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
+                    MeshGui::ViewProviderMeshFaceSet::trimMeshCallback);
+            }
+            else {
+                return;
+            }
+        }
+
+        Gui::ViewProvider* pVP = getActiveGuiDocument()->getViewProvider(*it);
+        if (pVP->isVisible())
+            pVP->startEditing();
+    }
+}
+
+bool CmdMeshPolyTrim::isActive(void)
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -1312,6 +1369,39 @@ bool CmdMeshFillInteractiveHole::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdMeshSegmentation);
+
+CmdMeshSegmentation::CmdMeshSegmentation()
+  : Command("Mesh_Segmentation")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Create mesh segments...");
+    sToolTipText  = QT_TR_NOOP("Create mesh segments");
+    sWhatsThis    = "Mesh_Segmentation";
+    sStatusTip    = QT_TR_NOOP("Create mesh segments");
+}
+
+void CmdMeshSegmentation::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
+        (Mesh::Feature::getClassTypeId());
+    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(objs.front());
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        dlg = new MeshGui::TaskSegmentation(mesh);
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdMeshSegmentation::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+    return Gui::Selection().countObjectsOfType
+        (Mesh::Feature::getClassTypeId()) == 1;
+}
+
 void CreateMeshCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1328,6 +1418,7 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshAddFacet());
     rcCmdMgr.addCommand(new CmdMeshPolyCut());
     rcCmdMgr.addCommand(new CmdMeshPolySplit());
+    rcCmdMgr.addCommand(new CmdMeshPolyTrim());
     rcCmdMgr.addCommand(new CmdMeshToolMesh());
     rcCmdMgr.addCommand(new CmdMeshTransform());
     rcCmdMgr.addCommand(new CmdMeshEvaluation());
@@ -1343,4 +1434,5 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFillInteractiveHole());
     rcCmdMgr.addCommand(new CmdMeshRemoveCompByHand());
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
+    rcCmdMgr.addCommand(new CmdMeshSegmentation());
 }

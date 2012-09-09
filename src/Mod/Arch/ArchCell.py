@@ -4,7 +4,7 @@
 #*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Part,Draft,ArchComponent,ArchCommands
+import FreeCAD,FreeCADGui,Draft,ArchComponent,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore
 
@@ -58,7 +58,7 @@ class _CommandCell:
             if Draft.getType(sel[0]) in ["Floor","Site","Building"]:
                 FreeCAD.ActiveDocument.openTransaction("Type conversion")
                 nobj = makeCell()
-                Commands.copyProperties(sel[0],nobj)
+                ArchCommands.copyProperties(sel[0],nobj)
                 FreeCAD.ActiveDocument.removeObject(sel[0].Name)
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
@@ -86,32 +86,31 @@ class _Cell(ArchComponent.Component):
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
+        import Part
         pl = obj.Placement
         if obj.Components:
+            shapes = []
             if obj.JoinMode:
                 walls = []
                 structs = []
-                compshapes = []
-                for comp in obj.Components:
-                    if Draft.getType(comp) == "Wall":
-                        walls.append(comp.Shape)
-                    elif Draft.getType(comp) == "Structure":
-                        structs.append(comp.Shape)
+                for c in obj.Components:
+                    if Draft.getType(c) == "Wall":
+                        walls.append(c.Shape)
+                    elif Draft.getType(c) == "Structure":
+                        structs.append(c.Shape)
                     else:
-                        compshapes.append(comp.Shape)
-                for gr in [walls,structs]:
-                    if gr:
-                        sh = gr.pop(0)
-                        for csh in gr:
-                            sh = sh.oldFuse(csh)
-                        compshapes.append(sh)
-                baseShape = Part.makeCompound(compshapes)
+                        shapes.append(c.Shape)
+                for group in [walls,structs]:
+                    if group:
+                        sh = group.pop(0).copy()
+                        for subsh in group:
+                            sh = sh.oldFuse(subsh)
+                        shapes.append(sh)
             else:
-                compshapes = []
-                for o in obj.Components:
-                    compshapes.append(o.Shape)
-                baseShape = Part.makeCompound(compshapes)
-            obj.Shape = baseShape
+                for c in obj.Components:
+                    shapes.append(c.Shape)
+            if shapes:
+                obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
 
 class _ViewProviderCell(ArchComponent.ViewProviderComponent):
@@ -122,6 +121,7 @@ class _ViewProviderCell(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
 
     def getIcon(self):
+        import Arch_rc
         return ":/icons/Arch_Cell_Tree.svg"
        
     def updateData(self,obj,prop):

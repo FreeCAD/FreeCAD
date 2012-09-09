@@ -55,6 +55,8 @@ public:
     Py::Object viewTop(const Py::Tuple&);
     Py::Object viewAxometric(const Py::Tuple&);
     Py::Object viewPosition(const Py::Tuple&);
+    Py::Object viewRotateLeft(const Py::Tuple&);
+    Py::Object viewRotateRight(const Py::Tuple&);
     Py::Object startAnimating(const Py::Tuple&);
     Py::Object stopAnimating(const Py::Tuple&);
     Py::Object setAnimationEnabled(const Py::Tuple&);
