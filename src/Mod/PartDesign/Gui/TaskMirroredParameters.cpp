@@ -200,6 +200,9 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
 
             if (!insideMultiTransform)
                 featureSelectionMode = true; // Jump back to selection of originals
+
+            showObject();
+            hideOriginals();
             updateUI();
         }
     }
@@ -242,6 +245,8 @@ void TaskMirroredParameters::onButtonReference()
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     pcMirrored->StdMirrorPlane.setValue("");
     featureSelectionMode = false;
+    hideObject();
+    showOriginals();
     updateUI();
 }
 

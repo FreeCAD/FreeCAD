@@ -221,6 +221,9 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
 
             if (!insideMultiTransform)
                 featureSelectionMode = true; // Jump back to selection of originals
+
+            showObject();
+            hideOriginals();
             updateUI();
         }
     }
@@ -293,6 +296,8 @@ void TaskLinearPatternParameters::onButtonReference()
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->StdDirection.setValue("");
     featureSelectionMode = false;
+    hideObject();
+    showOriginals();
     updateUI();
 }
 

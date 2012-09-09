@@ -224,6 +224,9 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
 
             if (!insideMultiTransform)
                 featureSelectionMode = true; // Jump back to selection of originals
+
+            showObject();
+            hideOriginals();
             updateUI();
         }
     }
@@ -296,6 +299,8 @@ void TaskPolarPatternParameters::onButtonReference()
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->StdAxis.setValue("");
     featureSelectionMode = false;
+    hideObject();
+    showOriginals();
     updateUI();
 }
 

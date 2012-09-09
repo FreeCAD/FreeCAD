@@ -54,7 +54,6 @@ Transformed::Transformed()
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
-    ADD_PROPERTY(InsideMultiTransform,(0));
 }
 
 void Transformed::positionBySupport(void)
@@ -81,12 +80,9 @@ short Transformed::mustExecute() const
 
 App::DocumentObjectExecReturn *Transformed::execute(void)
 {
-    if (InsideMultiTransform.getValue())
-        return App::DocumentObject::StdReturn;
-
     std::vector<App::DocumentObject*> originals = Originals.getValues();
-    if (originals.empty())
-        return new App::DocumentObjectExecReturn("No originals defined");
+    if (originals.empty()) // typically InsideMultiTransform
+        return App::DocumentObject::StdReturn;
 
     this->positionBySupport();
 
@@ -99,7 +95,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     }
 
     if (transformations.empty())
-        return new App::DocumentObjectExecReturn("No transformations defined");
+        return App::DocumentObject::StdReturn; // No transformations defined, exit silently
 
     // Get the support
     // NOTE: Because of the way we define the support, FeatureTransformed can only work on

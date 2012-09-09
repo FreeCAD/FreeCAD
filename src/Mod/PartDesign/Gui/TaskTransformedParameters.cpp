@@ -106,14 +106,6 @@ void TaskTransformedParameters::onOriginalDeleted(const int row)
     pcTransformed->getDocument()->recomputeFeature(pcTransformed);
 }
 
-const std::vector<App::DocumentObject*> TaskTransformedParameters::getOriginals(void) const
-{
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-
-    return originals;
-}
-
 PartDesign::Transformed *TaskTransformedParameters::getObject() const
 {
 
@@ -133,6 +125,18 @@ void TaskTransformedParameters::recomputeFeature()
     }
 }
 
+const std::vector<App::DocumentObject*> TaskTransformedParameters::getOriginals(void) const
+{
+    if (insideMultiTransform) {
+        return parentTask->getOriginals();
+    } else {
+        PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
+        std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+
+        return originals;
+    }
+}
+
 App::DocumentObject* TaskTransformedParameters::getOriginalObject() const
 {
     if (insideMultiTransform) {
@@ -140,6 +144,48 @@ App::DocumentObject* TaskTransformedParameters::getOriginalObject() const
     } else {
         PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
         return pcTransformed->getOriginalObject();
+    }
+}
+
+void TaskTransformedParameters::hideObject()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc)
+        if (insideMultiTransform) {
+            doc->setHide(parentTask->TransformedView->getObject()->getNameInDocument());
+        } else {
+            doc->setHide(TransformedView->getObject()->getNameInDocument());
+        }
+}
+
+void TaskTransformedParameters::showObject()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc)
+        if (insideMultiTransform) {
+            doc->setShow(parentTask->TransformedView->getObject()->getNameInDocument());
+        } else {
+            doc->setShow(TransformedView->getObject()->getNameInDocument());
+        }
+}
+
+void TaskTransformedParameters::hideOriginals()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        std::vector<App::DocumentObject*> originals = getOriginals();
+        for (std::vector<App::DocumentObject*>::iterator it = originals.begin(); it != originals.end(); ++it)
+            doc->setHide((*it)->getNameInDocument());
+    }
+}
+
+void TaskTransformedParameters::showOriginals()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        std::vector<App::DocumentObject*> originals = getOriginals();
+        for (std::vector<App::DocumentObject*>::iterator it = originals.begin(); it != originals.end(); ++it)
+            doc->setShow((*it)->getNameInDocument());
     }
 }
 

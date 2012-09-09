@@ -44,10 +44,9 @@ class PartDesignExport Transformed : public PartDesign::Feature
 public:
     Transformed();
 
-    /// The shapes to be transformed
+    /** The shapes to be transformed
+        if Originals is empty the instance is just a container for storing transformation data */
     App::PropertyLinkList Originals;
-    /// Flag indicating that the associated FeatureTransformed instance is just a container for storing transformation data
-    App::PropertyBool InsideMultiTransform;
 
     /// Return first original, which serves as "Support" until Body feature becomes functional
     App::DocumentObject* getOriginalObject() const;
@@ -64,7 +63,7 @@ public:
       * Gets the transformations from the virtual getTransformations() method of the sub class
       * and applies them to every member of Originals. The total number of copies including
       * the untransformed Originals will be sizeof(Originals) times sizeof(getTransformations())
-      * If InsideMultiTransform is true, execute() returns immediately without doing anything as
+      * If Originals is empty, execute() returns immediately without doing anything as
       * the actual processing will happen in the MultiTransform feature
       */
     App::DocumentObjectExecReturn *execute(void);
