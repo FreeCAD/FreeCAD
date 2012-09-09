@@ -77,6 +77,13 @@ SketchBased::SketchBased()
     ADD_PROPERTY(Sketch,(0));
 }
 
+short SketchBased::mustExecute() const
+{
+    if (Sketch.isTouched())
+        return 1;
+    return 0; // PartDesign::Feature::mustExecute();
+}
+
 void SketchBased::positionBySketch(void)
 {
     Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());

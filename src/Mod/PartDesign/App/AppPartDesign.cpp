@@ -83,7 +83,7 @@ void PartDesignExport initPartDesign()
     PartDesign::Pocket             ::init();
     PartDesign::Fillet             ::init();
     PartDesign::Revolution         ::init();
-    PartDesign::Groove		   ::init();
+    PartDesign::Groove             ::init();
     PartDesign::Chamfer            ::init();
     PartDesign::Face               ::init();
 }

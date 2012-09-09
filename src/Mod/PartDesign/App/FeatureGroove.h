@@ -25,12 +25,12 @@
 #define PARTDESIGN_Groove_H
 
 #include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+#include "FeatureSubtractive.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Groove : public SketchBased
+class PartDesignExport Groove : public Subtractive
 {
     PROPERTY_HEADER(PartDesign::Groove);
 

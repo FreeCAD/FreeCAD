@@ -48,7 +48,7 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::SketchBased)
+PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::Additive)
 
 Revolution::Revolution()
 {
@@ -63,7 +63,6 @@ Revolution::Revolution()
 short Revolution::mustExecute() const
 {
     if (Placement.isTouched() ||
-        Sketch.isTouched() ||
         ReferenceAxis.isTouched() ||
         Axis.isTouched() ||
         Base.isTouched() ||
@@ -71,7 +70,7 @@ short Revolution::mustExecute() const
         Midplane.isTouched() ||
         Reversed.isTouched())
         return 1;
-    return 0;
+    return Additive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Revolution::execute(void)
@@ -183,6 +182,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             if (SupportObject) {
                 const TopoDS_Shape& support = SupportObject->Shape.getValue();
                 if (!support.IsNull() && support.ShapeType() == TopAbs_SOLID) {
+                    // set the additive shape property for later usage in e.g. pattern
+                    this->AddShape.setValue(result);
                     // Let's call algorithm computing a fuse operation:
                     BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
                     // Let's check if the fusion has been successful
