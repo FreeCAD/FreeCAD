@@ -171,19 +171,10 @@ void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChange
 
 void TaskMultiTransformParameters::closeSubTask()
 {
-    if (subTask == NULL)
-        return; // e.g. if user OKs a new subTask and then immediately deletes it
-    delete subTask;
-    subTask = NULL;
-    ui->widgetFeature->close();
-    // FIXME: If the layout of the UI changes this code needs to be adapted
-    // But I couldn't find any other way to free the widget to have a different dialog attached to it
-    ui->verticalLayout->removeWidget(ui->widgetFeature);
-    delete ui->widgetFeature;
-    ui->widgetFeature = new QWidget(this);
-    ui->widgetFeature->setObjectName(QString::fromUtf8("widgetFeature"));
-    ui->widgetFeature->setMinimumSize(QSize(0, 180));
-    ui->verticalLayout->addWidget(ui->widgetFeature);
+    if (subTask) {
+        delete subTask;
+        subTask = NULL;
+    }
 }
 
 void TaskMultiTransformParameters::onTransformDelete()
@@ -217,17 +208,15 @@ void TaskMultiTransformParameters::onTransformEdit()
 
     subFeature = static_cast<PartDesign::Transformed*>(transformFeatures[row]);
     if (transformFeatures[row]->getTypeId() == PartDesign::Mirrored::getClassTypeId())
-        subTask = new TaskMirroredParameters(ui->widgetFeature, this);
+        subTask = new TaskMirroredParameters(this, ui->verticalLayout);
     else if (transformFeatures[row]->getTypeId() == PartDesign::LinearPattern::getClassTypeId())
-        subTask = new TaskLinearPatternParameters(ui->widgetFeature, this);
+        subTask = new TaskLinearPatternParameters(this, ui->verticalLayout);
     else if (transformFeatures[row]->getTypeId() == PartDesign::PolarPattern::getClassTypeId())
-        subTask = new TaskPolarPatternParameters(ui->widgetFeature, this);
+        subTask = new TaskPolarPatternParameters(this, ui->verticalLayout);
     else if (transformFeatures[row]->getTypeId() == PartDesign::Scaled::getClassTypeId())
-        subTask = new TaskScaledParameters(ui->widgetFeature, this);
+        subTask = new TaskScaledParameters(this, ui->verticalLayout);
     else
         return; // TODO: Show an error?
-
-    ui->widgetFeature->show();
 }
 
 void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index) {
@@ -407,6 +396,8 @@ TaskMultiTransformParameters::~TaskMultiTransformParameters()
 {
     closeSubTask();
     delete ui;
+    if (proxy)
+        delete proxy;
 }
 
 void TaskMultiTransformParameters::changeEvent(QEvent *e)

@@ -66,14 +66,17 @@ TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *Transfor
     setupUI();
 }
 
-TaskMirroredParameters::TaskMirroredParameters(QWidget *parent, TaskMultiTransformParameters *parentTask)
-        : TaskTransformedParameters(parent, parentTask)
+TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
+        : TaskTransformedParameters(parentTask)
 {
+    proxy = new QWidget(parentTask);
     ui = new Ui_TaskMirroredParameters();
-    ui->setupUi(parent);
+    ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
     QMetaObject::connectSlotsByName(this);
+
+    layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
     ui->listFeatures->hide();
@@ -298,6 +301,8 @@ const QString TaskMirroredParameters::getMirrorPlane(void) const
 TaskMirroredParameters::~TaskMirroredParameters()
 {
     delete ui;
+    if (proxy)
+        delete proxy;
 }
 
 void TaskMirroredParameters::changeEvent(QEvent *e)

@@ -66,14 +66,17 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *
     setupUI();
 }
 
-TaskPolarPatternParameters::TaskPolarPatternParameters(QWidget *parent, TaskMultiTransformParameters *parentTask)
-        : TaskTransformedParameters(parent, parentTask)
+TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
+        : TaskTransformedParameters(parentTask)
 {
+    proxy = new QWidget(parentTask);
     ui = new Ui_TaskPolarPatternParameters();
-    ui->setupUi(parent);
+    ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
     QMetaObject::connectSlotsByName(this);
+
+    layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
     ui->listFeatures->hide();
@@ -370,6 +373,8 @@ const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 TaskPolarPatternParameters::~TaskPolarPatternParameters()
 {
     delete ui;
+    if (proxy)
+        delete proxy;
 }
 
 void TaskPolarPatternParameters::changeEvent(QEvent *e)

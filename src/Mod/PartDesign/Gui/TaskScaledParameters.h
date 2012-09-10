@@ -53,7 +53,7 @@ public:
     /// Constructor for task with ViewProvider
     TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskScaledParameters(QWidget *parent, TaskMultiTransformParameters *parentTask);
+    TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskScaledParameters();
 
     const double getFactor(void) const;

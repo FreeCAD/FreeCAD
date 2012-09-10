@@ -53,7 +53,7 @@ public:
     /// Constructor for task with ViewProvider
     TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskPolarPatternParameters(QWidget *parent, TaskMultiTransformParameters *parentTask);
+    TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskPolarPatternParameters();
 
     const QString getAxis(void) const;

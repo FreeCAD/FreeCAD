@@ -44,16 +44,6 @@
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QWidget" name="widgetFeature" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>180</height>
-      </size>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources/>

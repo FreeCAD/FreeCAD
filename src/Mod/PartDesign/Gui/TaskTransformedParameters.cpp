@@ -61,8 +61,8 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
     featureSelectionMode = true;
 }
 
-TaskTransformedParameters::TaskTransformedParameters(QWidget *parent, TaskMultiTransformParameters *parentTask)
-    : TaskBox(QPixmap(), tr(""), true, parent),
+TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
+    : TaskBox(QPixmap(), tr(""), true, parentTask),
       TransformedView(NULL),
       parentTask(parentTask),
       insideMultiTransform(true),
