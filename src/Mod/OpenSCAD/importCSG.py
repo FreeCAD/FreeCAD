@@ -101,7 +101,6 @@ def processcsg(filename):
     # Build the parser   
     print 'Load Parser'
     # No debug out otherwise Linux has protection exception
-    #parser = yacc.yacc(debug=0)
     parser = yacc.yacc(debug=0)
     print 'Parser Loaded'
     # Give the lexer some input
@@ -117,9 +116,7 @@ def processcsg(filename):
     print result  
     FreeCAD.Console.PrintMessage('End processing CSG file')
     doc.recompute()
-    #import colorcodeshapes
-    #colorcodeshapes.colorcodeshapes(doc.Objects)
-    
+
 def p_block_list_(p):
     '''
     block_list : statement
@@ -348,30 +345,30 @@ def p_color_action(p):
         obj.ViewObject.ShapeColor =color
         obj.ViewObject.Transparency = transp
     p[0] = p[6]
-    
+
 # Error rule for syntax errors
 def p_error(p):
     print "Syntax error in input!"
     print p    
 
-def fuse(list,name):
+def fuse(lst,name):
     global doc
     print "Fuse"
-    print list
-    if len(list) == 1:
-       return list[0]
+    print lst
+    if len(lst) == 1:
+       return lst[0]
     # Is this Multi Fuse
-    elif ( len(list) > 2):
+    elif len(lst) > 2:
        print "Multi Fuse"
        myfuse = doc.addObject('Part::MultiFuse',name)
-       myfuse.Shapes = list
+       myfuse.Shapes = lst
        for subobj in myfuse.Shapes:
            subobj.ViewObject.hide()
-    else :
+    else:
        print "Single Fuse"
        myfuse = doc.addObject('Part::Fuse',name)
-       myfuse.Base = list[0]
-       myfuse.Tool = list[1]
+       myfuse.Base = lst[0]
+       myfuse.Tool = lst[1]
        myfuse.Base.ViewObject.hide()
        myfuse.Tool.ViewObject.hide()
     return(myfuse)
@@ -410,15 +407,15 @@ def p_difference_action(p):
 
 def p_intersection_action(p):
     'intersection_action : intersection LPAREN RPAREN OBRACE block_list EBRACE'
-    
+
     print "intersection"
     # Is this Multi Common
-    if (len(p[5]) > 2):    
+    if (len(p[5]) > 2):
        print "Multi Common"
        mycommon = doc.addObject('Part::MultiCommon',p[1])
        mycommon.Shapes = p[5]
        for subobj in mycommon.Shapes:
-           subobj.ViewObject.hide()    
+           subobj.ViewObject.hide()
     else :
        print "Single Common"
        mycommon = doc.addObject('Part::Common',p[1])
@@ -751,10 +748,9 @@ def p_cylinder_action(p):
 
             else :
                 pass
-                    
             mycyl.Base.ViewObject.hide()
             # mycyl.Solid = True
-            
+
     else:
         print "Make Cone"
         mycyl=doc.addObject("Part::Cone",p[1])
@@ -763,7 +759,7 @@ def p_cylinder_action(p):
         mycyl.Radius2 = r2
     print "Center = ",center
     if tocenter=='true' :
-       center(mycyl,0,0,h)  
+       center(mycyl,0,0,h)
     if False :  
 #   Does not fix problemfile or beltTighener although later is closer       
         newobj=doc.addObject("Part::FeaturePython",'RefineCylinder')
@@ -774,13 +770,12 @@ def p_cylinder_action(p):
             ViewProviderTree(newobj.ViewObject)
         else:
             newobj.ViewObject.Proxy = 0
-        mycyl.ViewObject.hide()   
+        mycyl.ViewObject.hide()
         p[0] = [newobj]
     else :
         p[0] = [mycyl]
     print "End Cylinder"
-    
-    
+
 def p_cube_action(p):
     'cube_action : cube LPAREN keywordargument_list RPAREN SEMICOL'
     global doc
@@ -791,7 +786,7 @@ def p_cube_action(p):
     mycube.Width=w
     mycube.Height=h
     if p[3]['center']=='true' :
-       center(mycube,l,w,h);                                   
+       center(mycube,l,w,h);
     p[0] = [mycube]
     print "End Cube"
 
@@ -810,7 +805,7 @@ def p_circle_action(p) :
        #mycircle.Radius = r
     else :
        mycircle = Draft.makePolygon(n,r)
-    print "Push Circle"   
+    print "Push Circle"
     p[0] = [mycircle]
 
 def p_square_action(p) :
@@ -847,7 +842,7 @@ def p_polygon_action_nopath(p) :
     parts = Part.makePolygon(v)
     print "update object"
     mypolygon.Shape = Part.Face(parts)
-    p[0] = [mypolygon]       
+    p[0] = [mypolygon]
 
 def p_polygon_action_plus_path(p) :
     'polygon_action_plus_path : polygon LPAREN points EQ OSQUARE points_list_2d ESQUARE COMMA paths EQ OSQUARE path_set ESQUARE COMMA keywordargument_list RPAREN SEMICOL'
@@ -896,7 +891,7 @@ def p_polyhedron_action(p) :
         faces_list.append(f)
     shell=Part.makeShell(faces_list)
     mypolyhed.Shape=Part.Solid(shell) 
-    p[0] = [mypolyhed]       
+    p[0] = [mypolyhed]
 
 def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
