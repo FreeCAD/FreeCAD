@@ -29,6 +29,7 @@
 #include <TopTools_MapOfShape.hxx>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <QAbstractItemModel>
 
 class SoSeparator;
 class SoSwitch;
