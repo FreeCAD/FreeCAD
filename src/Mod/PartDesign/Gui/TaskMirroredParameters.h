@@ -53,7 +53,7 @@ public:
     /// Constructor for task with ViewProvider
     TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskMirroredParameters(QWidget *parent, TaskMultiTransformParameters *parentTask);
+    TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
 
     virtual ~TaskMirroredParameters();
 

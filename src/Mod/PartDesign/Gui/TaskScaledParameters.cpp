@@ -66,14 +66,17 @@ TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed *TransformedV
     setupUI();
 }
 
-TaskScaledParameters::TaskScaledParameters(QWidget *parent, TaskMultiTransformParameters *parentTask)
-        : TaskTransformedParameters(parent, parentTask)
+TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
+        : TaskTransformedParameters(parentTask)
 {
+    proxy = new QWidget(parentTask);
     ui = new Ui_TaskScaledParameters();
-    ui->setupUi(parent);
+    ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
     QMetaObject::connectSlotsByName(this);
+
+    layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
     ui->listFeatures->hide();
@@ -202,6 +205,8 @@ const unsigned TaskScaledParameters::getOccurrences(void) const
 TaskScaledParameters::~TaskScaledParameters()
 {
     delete ui;
+    if (proxy)
+        delete proxy;
 }
 
 void TaskScaledParameters::changeEvent(QEvent *e)

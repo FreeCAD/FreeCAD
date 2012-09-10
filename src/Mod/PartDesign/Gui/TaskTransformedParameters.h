@@ -54,7 +54,7 @@ public:
     /// Constructor for task with ViewProvider
     TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskTransformedParameters(QWidget *parent, TaskMultiTransformParameters* parentTask);
+    TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
     virtual ~TaskTransformedParameters()
         {}
 
