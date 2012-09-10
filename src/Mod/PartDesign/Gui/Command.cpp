@@ -564,7 +564,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Chamfer";
+    sPixmap       = "PartDesign_Chamfer";
 }
 
 void CmdPartDesignChamfer::activated(int iMsg)
