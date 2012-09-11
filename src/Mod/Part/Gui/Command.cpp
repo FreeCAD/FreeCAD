@@ -62,6 +62,7 @@
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
 #include "TaskSweep.h"
+#include "TaskCheckGeometry.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1199,6 +1200,39 @@ bool CmdPartRuledSurface::isActive(void)
     return getActiveGuiDocument();
 }
 
+//===========================================================================
+// Part_CheckGeometry
+//===========================================================================
+
+DEF_STD_CMD_A(CmdCheckGeometry);
+
+CmdCheckGeometry::CmdCheckGeometry()
+  : Command("Part_CheckGeometry")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Check Geometry");
+    sToolTipText  = QT_TR_NOOP("Analyzes Geometry For Errors");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_CheckGeometry";
+}
+
+void CmdCheckGeometry::activated(int iMsg)
+{
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg)
+        dlg = new PartGui::TaskCheckGeometryDialog();
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdCheckGeometry::isActive(void)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid) > 0;
+    return (hasActiveDocument() && !Gui::Control().activeDialog() && objectsSelected);
+}
+
 
 void CreatePartCommands(void)
 {
@@ -1230,5 +1264,5 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartBuilder());
     rcCmdMgr.addCommand(new CmdPartLoft());
     rcCmdMgr.addCommand(new CmdPartSweep());
+    rcCmdMgr.addCommand(new CmdCheckGeometry());
 } 
-

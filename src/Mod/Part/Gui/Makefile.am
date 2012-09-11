@@ -33,6 +33,7 @@ BUILT_SOURCES=\
 		moc_DlgSettings3DViewPartImp.cpp \
 		moc_DlgSettingsGeneral.cpp \
 		moc_Mirroring.cpp \
+		moc_TaskCheckGeometry.cpp \
 		moc_TaskFaceColors.cpp \
 		moc_TaskShapeBuilder.cpp \
 		moc_TaskLoft.cpp \
@@ -69,6 +70,8 @@ libPartGui_la_SOURCES=\
 		DlgSettingsGeneral.h \
 		Mirroring.cpp \
 		Mirroring.h \
+		TaskCheckGeometry.cpp \
+		TaskCheckGeometry.h \
 		TaskFaceColors.cpp \
 		TaskFaceColors.h \
 		TaskShapeBuilder.cpp \
@@ -194,6 +197,7 @@ EXTRA_DIST = \
 		Resources/icons/Part_Sphere.svg \
 		Resources/icons/Part_Booleans.svg \
 		Resources/icons/Part_Chamfer.svg \
+		Resources/icons/Part_CheckGeometry.svg \
 		Resources/icons/Part_Cut.svg \
 		Resources/icons/Part_Common.svg \
 		Resources/icons/Part_CreatePrimitives.png \
