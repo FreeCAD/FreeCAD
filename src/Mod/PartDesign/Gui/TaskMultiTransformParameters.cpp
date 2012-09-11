@@ -68,35 +68,35 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     this->groupLayout()->addWidget(proxy);
 
     // Create a context menu for the listview of transformation features
-    QAction* action = new QAction(tr("Edit"), ui->listFeatures);
+    QAction* action = new QAction(tr("Edit"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformEdit()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Delete"), ui->listFeatures);
+    action = new QAction(tr("Delete"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformDelete()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add mirrored transformation"), ui->listFeatures);
+    action = new QAction(tr("Add mirrored transformation"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddMirrored()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add linear pattern"), ui->listFeatures);
+    action = new QAction(tr("Add linear pattern"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddLinearPattern()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add polar pattern"), ui->listFeatures);
+    action = new QAction(tr("Add polar pattern"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddPolarPattern()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add scaled transformation"), ui->listFeatures);
+    action = new QAction(tr("Add scaled transformation"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddScaled()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Move up"), ui->listFeatures);
+    action = new QAction(tr("Move up"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onMoveUp()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Move down"), ui->listFeatures);
+    action = new QAction(tr("Move down"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onMoveDown()));
     ui->listTransformFeatures->addAction(action);
@@ -127,29 +127,18 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         editHint = true;
     }
 
-    // TODO: The following code could be generic in TaskTransformedParameters
-    // if it were possible to make ui_TaskMultiTransformParameters a subclass of
-    // ui_TaskTransformedParameters
-    // ---------------------
-    // Add a context menu to the listview of the originals to delete items
-    action = new QAction(tr("Delete"), ui->listFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onOriginalDeleted()));
-    ui->listFeatures->addAction(action);
-    ui->listFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     // Get the Originals data
     std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->listFeatures->setEnabled(true);
-    ui->listFeatures->clear();
+    ui->lineOriginal->setEnabled(false); // This is never enabled since it is for optical feed-back only
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL)
-            ui->listFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
+        if ((*i) != NULL) { // find the first valid original
+            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            break;
+        }
     }
-    QMetaObject::invokeMethod(ui->listFeatures, "setFocus", Qt::QueuedConnection);
     // ---------------------
 }
 
@@ -160,12 +149,9 @@ void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChange
     if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
         return;
 
-    if (featureSelectionMode) {
+    if (originalSelectionMode) {
         if (originalSelected(msg))
-            ui->listFeatures->addItem(QString::fromAscii(selectedObject->getNameInDocument()));
-    } else {
-        // There is no reference that could be selected... must be an error to arrive here at all!
-        featureSelectionMode = true;
+            ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
     }
 }
 
@@ -184,7 +170,7 @@ void TaskMultiTransformParameters::onTransformDelete()
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
-    App::DocumentObject* feature = *(transformFeatures.begin() + row);
+    App::DocumentObject* feature = transformFeatures[row];
     pcMultiTransform->getDocument()->remObject(feature->getNameInDocument());
     closeSubTask();
 
@@ -331,7 +317,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
-    App::DocumentObject* feature = *(transformFeatures.begin() + row);
+    App::DocumentObject* feature = transformFeatures[row];
     transformFeatures.erase(transformFeatures.begin() + row);
     QListWidgetItem* item = new QListWidgetItem(*(ui->listTransformFeatures->item(row)));
     ui->listTransformFeatures->model()->removeRow(row);
@@ -373,18 +359,9 @@ void TaskMultiTransformParameters::onSubTaskButtonOK() {
     closeSubTask();
 }
 
-void TaskMultiTransformParameters::onOriginalDeleted()
-{
-    int row = ui->listFeatures->currentIndex().row();
-    TaskTransformedParameters::onOriginalDeleted(row);
-    ui->listFeatures->model()->removeRow(row);
-}
-
 void TaskMultiTransformParameters::onUpdateView(bool on)
 {
-    ui->listFeatures->blockSignals(!on);
 }
-
 
 const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures(void) const
 {

@@ -57,8 +57,7 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
       insideMultiTransform(false),
       updateUIinProgress(false)
 {
-    // Start in feature selection mode
-    featureSelectionMode = true;
+    originalSelectionMode = false;
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
@@ -68,14 +67,13 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
       insideMultiTransform(true),
       updateUIinProgress(false)
 {
-    // Start in reference selection mode and stay there! Feature selection makes
-    // no sense inside a MultiTransform
-    featureSelectionMode = false;
+    // Original feature selection makes no sense inside a MultiTransform
+    originalSelectionMode = false;
 }
 
 const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
-    if (featureSelectionMode && (msg.Type == Gui::SelectionChanges::AddSelection)) {
+    if (originalSelectionMode && (msg.Type == Gui::SelectionChanges::AddSelection)) {
         PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
         App::DocumentObject* selectedObject = pcTransformed->getDocument()->getActiveObject();
         if (!selectedObject->isDerivedFrom(PartDesign::Additive::getClassTypeId()) &&
@@ -87,23 +85,16 @@ const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChang
         std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
 
         if (std::find(originals.begin(), originals.end(), selectedObject) == originals.end()) {
-            originals.push_back(selectedObject);
-            pcTransformed->Originals.setValues(originals);
-            pcTransformed->getDocument()->recomputeFeature(pcTransformed);
+            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.Originals = [App.activeDocument().%s]",
+                                    getObject()->getNameInDocument(),
+                                    selectedObject->getNameInDocument() );
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+            originalSelectionMode = false;
             return true;
         }
     }
 
     return false;
-}
-
-void TaskTransformedParameters::onOriginalDeleted(const int row)
-{
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + row);
-    pcTransformed->Originals.setValues(originals);
-    pcTransformed->getDocument()->recomputeFeature(pcTransformed);
 }
 
 PartDesign::Transformed *TaskTransformedParameters::getObject() const

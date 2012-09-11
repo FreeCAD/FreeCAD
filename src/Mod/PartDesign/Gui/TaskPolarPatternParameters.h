@@ -61,6 +61,7 @@ public:
     const bool getReverse(void) const;
     const double getAngle(void) const;
     const unsigned getOccurrences(void) const;
+    const bool updateView() const;
 
 private Q_SLOTS:
     void onStdAxis(const std::string& axis);
@@ -70,17 +71,19 @@ private Q_SLOTS:
     void onCheckReverse(const bool on);
     void onAngle(const double a);
     void onOccurrences(const int n);
-    virtual void onButtonReference();
-    virtual void onOriginalDeleted();
+    void onButtonReference(const bool checked);
     virtual void onUpdateView(bool);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
+    bool referenceSelectionMode;
+
 private:
-    void updateUI();
     void setupUI();
+    void updateUI();
+    void exitSelectionMode();
 
 private:
     Ui_TaskPolarPatternParameters* ui;

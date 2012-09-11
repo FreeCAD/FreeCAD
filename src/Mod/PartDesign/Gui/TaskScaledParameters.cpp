@@ -79,7 +79,8 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->listFeatures->hide();
+    ui->labelOriginal->hide();
+    ui->lineOriginal->hide();
     ui->checkBoxUpdateView->hide();
 
     updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
@@ -95,30 +96,19 @@ void TaskScaledParameters::setupUI()
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
-    // TODO: The following code could be generic in TaskTransformedParameters
-    // if it were possible to make ui_TaskScaledParameters a subclass of
-    // ui_TaskTransformedParameters
-    // ---------------------
-    // Add a context menu to the listview of the originals to delete items
-    QAction* action = new QAction(tr("Delete"), ui->listFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onOriginalDeleted()));
-    ui->listFeatures->addAction(action);
-    ui->listFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     // Get the feature data
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     std::vector<App::DocumentObject*> originals = pcScaled->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->listFeatures->setEnabled(true);
-    ui->listFeatures->clear();
+    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL)
-            ui->listFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
+        if ((*i) != NULL) { // find the first valid original
+            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            break;
+        }
     }
-    QMetaObject::invokeMethod(ui->listFeatures, "setFocus", Qt::QueuedConnection);
     // ---------------------
 
     ui->spinFactor->setEnabled(true);
@@ -150,19 +140,10 @@ void TaskScaledParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
         return;
 
-    if (featureSelectionMode) {
+    if (originalSelectionMode) {
         if (originalSelected(msg))
-            ui->listFeatures->addItem(QString::fromAscii(selectedObject->getNameInDocument()));
-    } else {
-        return;
+            ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
     }
-}
-
-void TaskScaledParameters::onOriginalDeleted()
-{
-    int row = ui->listFeatures->currentIndex().row();
-    TaskTransformedParameters::onOriginalDeleted(row);
-    ui->listFeatures->model()->removeRow(row);
 }
 
 void TaskScaledParameters::onFactor(const double f) {
@@ -170,9 +151,8 @@ void TaskScaledParameters::onFactor(const double f) {
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Factor.setValue(f);
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
-    recomputeFeature();
+    if (updateView())
+        recomputeFeature();
 }
 
 void TaskScaledParameters::onOccurrences(const int n) {
@@ -180,14 +160,12 @@ void TaskScaledParameters::onOccurrences(const int n) {
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Occurrences.setValue(n);
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
-    recomputeFeature();
+    if (updateView())
+        recomputeFeature();
 }
 
 void TaskScaledParameters::onUpdateView(bool on)
 {
-    ui->listFeatures->blockSignals(!on);
     ui->spinFactor->blockSignals(!on);
     ui->spinOccurrences->blockSignals(!on);
 }
@@ -200,6 +178,14 @@ const double TaskScaledParameters::getFactor(void) const
 const unsigned TaskScaledParameters::getOccurrences(void) const
 {
     return ui->spinOccurrences->value();
+}
+
+const bool TaskScaledParameters::updateView() const
+{
+    if (insideMultiTransform)
+        return parentTask->updateView();
+    else
+        return ui->checkBoxUpdateView->isChecked();
 }
 
 TaskScaledParameters::~TaskScaledParameters()

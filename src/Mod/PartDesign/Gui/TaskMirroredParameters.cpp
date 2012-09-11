@@ -57,10 +57,13 @@ TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *Transfor
     ui = new Ui_TaskMirroredParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
+
     this->groupLayout()->addWidget(proxy);
 
     ui->buttonOK->hide();
     ui->checkBoxUpdateView->setEnabled(true);
+
+    referenceSelectionMode = false;
 
     updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -79,8 +82,11 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->listFeatures->hide();
+    ui->labelOriginal->hide();
+    ui->lineOriginal->hide();
     ui->checkBoxUpdateView->hide();
+
+    referenceSelectionMode = false;
 
     updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -94,35 +100,24 @@ void TaskMirroredParameters::setupUI()
             this, SLOT(onButtonXZ()));
     connect(ui->buttonYZ, SIGNAL(pressed()),
             this, SLOT(onButtonYZ()));
-    connect(ui->buttonReference, SIGNAL(pressed()),
-            this, SLOT(onButtonReference()));
+    connect(ui->buttonReference, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonReference(bool)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
-
-    // TODO: The following code could be generic in TaskTransformedParameters
-    // if it were possible to make ui_TaskMirroredParameters a subclass of
-    // ui_TaskTransformedParameters
-    // ---------------------
-    // Add a context menu to the listview of the originals to delete items
-    QAction* action = new QAction(tr("Delete"), ui->listFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onOriginalDeleted()));
-    ui->listFeatures->addAction(action);
-    ui->listFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     // Get the feature data
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     std::vector<App::DocumentObject*> originals = pcMirrored->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->listFeatures->setEnabled(true);
-    ui->listFeatures->clear();
+    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL)
-            ui->listFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
+        if ((*i) != NULL) { // find the first valid original
+            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            break;
+        }
     }
-    QMetaObject::invokeMethod(ui->listFeatures, "setFocus", Qt::QueuedConnection);
     // ---------------------
 
     ui->buttonXY->setEnabled(true);
@@ -130,22 +125,22 @@ void TaskMirroredParameters::setupUI()
     ui->buttonYZ->setEnabled(true);
     ui->buttonReference->setEnabled(true);
     ui->lineReference->setEnabled(false); // This is never enabled since it is for optical feed-back only
-
     updateUI();
 }
 
 void TaskMirroredParameters::updateUI()
 {
-    if (updateUIinProgress) return;
+    if (updateUIinProgress)
+        return;
     updateUIinProgress = true;
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     App::DocumentObject* mirrorPlaneFeature = pcMirrored->MirrorPlane.getValue();
     std::vector<std::string> mirrorPlanes = pcMirrored->MirrorPlane.getSubValues();
     std::string stdMirrorPlane = pcMirrored->StdMirrorPlane.getValue();
 
-    if ((featureSelectionMode || insideMultiTransform) && !stdMirrorPlane.empty())
+    ui->buttonReference->setChecked(referenceSelectionMode);
+    if (!stdMirrorPlane.empty())
     {
-        ui->buttonReference->setDown(false);
         ui->buttonXY->setAutoExclusive(true);
         ui->buttonXZ->setAutoExclusive(true);
         ui->buttonYZ->setAutoExclusive(true);
@@ -153,82 +148,63 @@ void TaskMirroredParameters::updateUI()
         ui->buttonXZ->setChecked(stdMirrorPlane == "XZ");
         ui->buttonYZ->setChecked(stdMirrorPlane == "YZ");
         ui->lineReference->setText(tr(""));
-    } else if ((mirrorPlaneFeature != NULL) && !mirrorPlanes.empty()) {
+    } else if (mirrorPlaneFeature != NULL && !mirrorPlanes.empty()) {
         ui->buttonXY->setAutoExclusive(false);
         ui->buttonXZ->setAutoExclusive(false);
         ui->buttonYZ->setAutoExclusive(false);
         ui->buttonXY->setChecked(false);
         ui->buttonXZ->setChecked(false);
         ui->buttonYZ->setChecked(false);
-        ui->buttonReference->setDown(!featureSelectionMode);
         ui->lineReference->setText(QString::fromAscii(mirrorPlanes.front().c_str()));
     } else {
         // Error message?
         ui->lineReference->setText(tr(""));
     }
+    if (referenceSelectionMode)
+        ui->lineReference->setText(tr("Select a plane"));
 
     updateUIinProgress = false;
 }
 
 void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-    App::DocumentObject* selectedObject = pcMirrored->getDocument()->getActiveObject();
-    if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        std::string subName(msg.pSubName);
+        PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+        if (originalSelectionMode) {
+            App::DocumentObject* selectedObject = pcMirrored->getDocument()->getActiveObject();
+            if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
+                return;
+            if (originalSelected(msg))
+                ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
+        } else if (referenceSelectionMode &&
+                   (subName.size() > 4 && subName.substr(0,4) == "Face")) {
 
-    if (featureSelectionMode) {
-        if (originalSelected(msg))
-            ui->listFeatures->addItem(QString::fromAscii(selectedObject->getNameInDocument()));
-    } else {
-        if (!msg.pSubName || msg.pSubName[0] == '\0')
-            return;
-
-        std::string element(msg.pSubName);
-
-        if (element.substr(0,4) != "Face")
-            return;
-
-        if (msg.Type == Gui::SelectionChanges::AddSelection) {
             std::vector<std::string> mirrorPlanes;
-            mirrorPlanes.push_back(element.c_str());
+            mirrorPlanes.push_back(subName.c_str());
             pcMirrored->MirrorPlane.setValue(getOriginalObject(), mirrorPlanes);
+            pcMirrored->StdMirrorPlane.setValue("");
 
-            if (insideMultiTransform) {
-                if (parentTask->updateView())
-                    recomputeFeature();
-            } else
-                if (ui->checkBoxUpdateView->isChecked())
-                    recomputeFeature();
+            if (updateView())
+                recomputeFeature();
 
-            if (!insideMultiTransform)
-                featureSelectionMode = true; // Jump back to selection of originals
-
-            showObject();
-            hideOriginals();
+            exitSelectionMode();
             updateUI();
         }
     }
 }
 
-void TaskMirroredParameters::onOriginalDeleted()
-{
-    int row = ui->listFeatures->currentIndex().row();
-    TaskTransformedParameters::onOriginalDeleted(row);
-    ui->listFeatures->model()->removeRow(row);
-}
-
 void TaskMirroredParameters::onStdMirrorPlane(const std::string &plane) {
-    if (updateUIinProgress) return;
+    if (updateUIinProgress)
+        return;
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     pcMirrored->StdMirrorPlane.setValue(plane.c_str());
     pcMirrored->MirrorPlane.setValue(NULL);
-    if (!insideMultiTransform)
-        featureSelectionMode = true;
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
-    recomputeFeature();
+    if (updateView())
+        recomputeFeature();
 }
 
 void TaskMirroredParameters::onButtonXY() {
@@ -243,13 +219,18 @@ void TaskMirroredParameters::onButtonYZ() {
     onStdMirrorPlane("YZ");
 }
 
-void TaskMirroredParameters::onButtonReference()
+void TaskMirroredParameters::onButtonReference(bool checked)
 {
-    PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-    pcMirrored->StdMirrorPlane.setValue("");
-    featureSelectionMode = false;
-    hideObject();
-    showOriginals();
+    if (updateUIinProgress)
+        return;
+    if (checked ) {
+        hideObject();
+        showOriginals();
+        referenceSelectionMode = true;
+        Gui::Selection().clearSelection();
+    } else {
+        exitSelectionMode();
+    }
     updateUI();
 }
 
@@ -258,7 +239,6 @@ void TaskMirroredParameters::onUpdateView(bool on)
     ui->buttonXY->blockSignals(!on);
     ui->buttonYZ->blockSignals(!on);
     ui->buttonXZ->blockSignals(!on);
-    ui->listFeatures->blockSignals(!on);
 }
 
 const std::string TaskMirroredParameters::getStdMirrorPlane(void) const
@@ -297,6 +277,23 @@ const QString TaskMirroredParameters::getMirrorPlane(void) const
 
     return buf;
 }
+
+const bool TaskMirroredParameters::updateView() const
+{
+    if (insideMultiTransform)
+        return parentTask->updateView();
+    else
+        return ui->checkBoxUpdateView->isChecked();
+}
+
+void TaskMirroredParameters::exitSelectionMode()
+{
+    originalSelectionMode = false;
+    referenceSelectionMode = false;
+    showObject();
+    hideOriginals();
+}
+
 
 TaskMirroredParameters::~TaskMirroredParameters()
 {

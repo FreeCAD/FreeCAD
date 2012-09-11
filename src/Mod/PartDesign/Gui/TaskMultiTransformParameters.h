@@ -77,8 +77,6 @@ private Q_SLOTS:
     void onTransformAddScaled();
     void onMoveUp();
     void onMoveDown();
-    virtual void onButtonReference() {}
-    virtual void onOriginalDeleted();
     virtual void onUpdateView(bool);
     /// User finished editing a subFeature
     virtual void onSubTaskButtonOK();

@@ -41,7 +41,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 class TaskMultiTransformParameters;
 
@@ -61,6 +61,7 @@ public:
     const bool getReverse(void) const;
     const double getLength(void) const;
     const unsigned getOccurrences(void) const;
+    const bool updateView() const;
 
 private Q_SLOTS:
     void onStdDirection(const std::string& dir);
@@ -70,17 +71,19 @@ private Q_SLOTS:
     void onCheckReverse(const bool on);
     void onLength(const double l);
     void onOccurrences(const int n);
-    virtual void onButtonReference();
-    virtual void onOriginalDeleted();
+    void onButtonReference(const bool checked);
     virtual void onUpdateView(bool);
 
-protected:    
+protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
+    bool referenceSelectionMode;
+
 private:
-    void updateUI();
     void setupUI();
+    void updateUI();
+    void exitSelectionMode();
 
 private:
     Ui_TaskLinearPatternParameters* ui;
