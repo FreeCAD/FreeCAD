@@ -404,6 +404,7 @@ bool CmdPartDesignGroove::isActive(void)
 {
     return hasActiveDocument();
 }
+
 //===========================================================================
 // PartDesign_Fillet
 //===========================================================================
@@ -418,7 +419,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sToolTipText  = QT_TR_NOOP("Make a fillet on an edge, face or body");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Fillet";
+    sPixmap       = "PartDesign_Fillet";
 }
 
 void CmdPartDesignFillet::activated(int iMsg)
@@ -564,7 +565,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Chamfer";
+    sPixmap       = "PartDesign_Chamfer";
 }
 
 void CmdPartDesignChamfer::activated(int iMsg)

@@ -647,10 +647,11 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
         d->error = QString::null;
     }
 
+    // Append the prompt string
+    QTextCursor cursor = textCursor();
+
     if (mode != PythonConsole::Special)
     {
-      // Append the prompt string
-      QTextCursor cursor = textCursor();
       cursor.beginEditBlock();
       cursor.movePosition(QTextCursor::End);
       QTextBlock block = cursor.block();
@@ -676,11 +677,10 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
           break;
       }
       cursor.endEditBlock();
-
-      // move cursor to the end
-      cursor.movePosition(QTextCursor::End);
-      setTextCursor(cursor);
     }
+    // move cursor to the end
+    cursor.movePosition(QTextCursor::End);
+    setTextCursor(cursor);
 }
 
 /**
@@ -1228,16 +1228,18 @@ void PythonConsole::onCopyCommand()
 
 QString PythonConsole::readline( void )
 {
-  QEventLoop loop;
-  QString    inputBuffer;
+    QEventLoop loop;
+    QString    inputBuffer;
 
-  printPrompt( PythonConsole::Special );
-  this->_sourceDrain = &inputBuffer;     //< enable source drain ...
+    printPrompt( PythonConsole::Special );
+    this->_sourceDrain = &inputBuffer;     //< enable source drain ...
     // ... and wait until we get notified about pendingSource
     QObject::connect( this, SIGNAL(pendingSource()), &loop, SLOT(quit()) );
-    loop.exec();
-  this->_sourceDrain = NULL;             //< disable source drain
-  return inputBuffer.append(QChar::fromAscii('\n')); //< pass a newline here, since the readline-caller may need it!
+    // application is about to quit
+    if (loop.exec() < 0)
+        inputBuffer = QLatin1String("quit()");
+    this->_sourceDrain = NULL;             //< disable source drain
+    return inputBuffer.append(QChar::fromAscii('\n')); //< pass a newline here, since the readline-caller may need it!
 }
 
 // ---------------------------------------------------------------------

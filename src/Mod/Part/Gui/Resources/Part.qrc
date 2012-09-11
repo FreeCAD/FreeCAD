@@ -29,6 +29,7 @@
         <file>icons/Part_Torus.svg</file>
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
+        <file>icons/Part_CheckGeometry.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_es.qm</file>

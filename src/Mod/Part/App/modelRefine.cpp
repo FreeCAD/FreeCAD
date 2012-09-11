@@ -214,6 +214,11 @@ void FaceAdjacencySplitter::recursiveFind(const TopoDS_Face &face, FaceVectorTyp
     TopTools_ListIteratorOfListOfShape edgeIt;
     for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
     {
+        //don't try to join across seams.
+        ShapeAnalysis_Edge edgeCheck;
+        if(edgeCheck.IsSeam(TopoDS::Edge(edgeIt.Value()), face))
+            continue;
+
         const TopTools_ListOfShape &faces = edgeToFaceMap.FindFromKey(edgeIt.Value());
         TopTools_ListIteratorOfListOfShape faceIt;
         for (faceIt.Initialize(faces); faceIt.More(); faceIt.Next())
@@ -421,25 +426,14 @@ GeomAbs_SurfaceType FaceTypedCylinder::getType() const
 
 TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
 {
+    static TopoDS_Face dummy;
     std::vector<EdgeVectorType> boundaries;
     boundarySplit(faces, boundaries);
-    static TopoDS_Face dummy;
     if (boundaries.size() < 1)
         return dummy;
 
-    //take one face and remove all the wires.
-    TopoDS_Face workFace = faces.at(0);
-    ShapeBuild_ReShape reshaper;
-    TopExp_Explorer it;
-    for (it.Init(workFace, TopAbs_WIRE); it.More(); it.Next())
-        reshaper.Remove(it.Current());
-    workFace = TopoDS::Face(reshaper.Apply(workFace));
-    if (workFace.IsNull())
-        return TopoDS_Face();
-
-    ShapeFix_Face faceFixer(workFace);
-
-    //makes wires
+    //make wires
+    std::vector<TopoDS_Wire> wires;
     std::vector<EdgeVectorType>::iterator boundaryIt;
     for (boundaryIt = boundaries.begin(); boundaryIt != boundaries.end(); ++boundaryIt)
     {
@@ -448,14 +442,38 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
         for (it = (*boundaryIt).begin(); it != (*boundaryIt).end(); ++it)
             wireMaker.Add(*it);
         if (wireMaker.Error() != BRepLib_WireDone)
-            continue;
-        faceFixer.Add(wireMaker.Wire());
+            return dummy;
+        wires.push_back(wireMaker.Wire());
     }
+    if (wires.size() < 1)
+        return dummy;
+    std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
+
+    //make face from surface and outer wire.
+    Handle(Geom_CylindricalSurface) surface = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
+    std::vector<TopoDS_Wire>::iterator wireIt;
+    wireIt = wires.begin();
+    BRepBuilderAPI_MakeFace faceMaker(surface, *wireIt);
+    if (!faceMaker.IsDone())
+        return dummy;
+
+    //add additional boundaries.
+    for (wireIt++; wireIt != wires.end(); ++wireIt)
+    {
+        faceMaker.Add(*wireIt);
+        if (!faceMaker.IsDone())
+            return dummy;
+    }
+
+    //fix newly constructed face. Orientation doesn't seem to get fixed the first call.
+    ShapeFix_Face faceFixer(faceMaker.Face());
+    faceFixer.SetContext(new ShapeBuild_ReShape());
     if (faceFixer.Perform() > ShapeExtend_DONE5)
-        return TopoDS_Face();
+        return dummy;
     faceFixer.FixOrientation();
     if (faceFixer.Perform() > ShapeExtend_DONE5)
-        return TopoDS_Face();
+        return dummy;
+
     return faceFixer.Face();
 }
 
