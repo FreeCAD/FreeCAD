@@ -166,6 +166,9 @@ QStringList BitmapFactoryInst::findIconFiles() const
             files << it->absoluteFilePath();
     }
 
+#if QT_VERSION >= 0x040500
+    files.removeDuplicates();
+#endif
     return files;
 }
 
