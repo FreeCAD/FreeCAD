@@ -43,6 +43,11 @@ EXTRA_DIST = \
 		icons/PartDesign_Pad.svg \
 		icons/PartDesign_Pocket.svg \
 		icons/PartDesign_Revolution.svg \
+		icons/PartDesign_Mirrored.svg \
+		icons/PartDesign_LinearPattern.svg \
+		icons/PartDesign_PolarPattern.svg \
+		icons/PartDesign_Scaled.svg \
+		icons/PartDesign_MultiTransform.svg \
 		PartDesign.qrc
 
 
