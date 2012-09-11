@@ -26,13 +26,18 @@ set(PartDesignGui_LIBS
 
 set(PartDesignGui_MOC_HDRS
     TaskPadParameters.h
-    TaskPatternRectangularParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h
     TaskFilletParameters.h
     TaskHoleParameters.h
     TaskRevolutionParameters.h
     TaskGrooveParameters.h
+    TaskTransformedParameters.h
+    TaskMirroredParameters.h
+    TaskLinearPatternParameters.h
+    TaskPolarPatternParameters.h
+    TaskScaledParameters.h
+    TaskMultiTransformParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
@@ -41,13 +46,17 @@ qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
 
 set(PartDesignGui_UIC_SRCS
     TaskPadParameters.ui
-    TaskPatternRectangularParameters.ui
     TaskPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
     TaskGrooveParameters.ui
+    TaskMirroredParameters.ui
+    TaskLinearPatternParameters.ui
+    TaskPolarPatternParameters.ui
+    TaskScaledParameters.ui
+    TaskMultiTransformParameters.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
@@ -68,8 +77,18 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderRevolution.h
     ViewProviderGroove.cpp
     ViewProviderGroove.h
-    ViewProviderPatternRectangular.cpp
-    ViewProviderPatternRectangular.h
+    ViewProviderTransformed.cpp
+    ViewProviderTransformed.h
+    ViewProviderMirrored.cpp
+    ViewProviderMirrored.h
+    ViewProviderLinearPattern.cpp
+    ViewProviderLinearPattern.h
+    ViewProviderPolarPattern.cpp
+    ViewProviderPolarPattern.h
+    ViewProviderScaled.cpp
+    ViewProviderScaled.h
+    ViewProviderMultiTransform.cpp
+    ViewProviderMultiTransform.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
@@ -77,9 +96,6 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
-    TaskPatternRectangularParameters.ui
-    TaskPatternRectangularParameters.cpp
-    TaskPatternRectangularParameters.h
     TaskPocketParameters.ui
     TaskPocketParameters.cpp
     TaskPocketParameters.h
@@ -95,6 +111,23 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskGrooveParameters.ui
     TaskGrooveParameters.cpp
     TaskGrooveParameters.h
+    TaskTransformedParameters.h
+    TaskTransformedParameters.cpp
+    TaskMirroredParameters.ui
+    TaskMirroredParameters.cpp
+    TaskMirroredParameters.h
+    TaskLinearPatternParameters.ui
+    TaskLinearPatternParameters.cpp
+    TaskLinearPatternParameters.h
+    TaskPolarPatternParameters.ui
+    TaskPolarPatternParameters.cpp
+    TaskPolarPatternParameters.h
+    TaskScaledParameters.ui
+    TaskScaledParameters.cpp
+    TaskScaledParameters.h
+    TaskMultiTransformParameters.ui
+    TaskMultiTransformParameters.cpp
+    TaskMultiTransformParameters.h
     TaskHoleParameters.ui
     TaskHoleParameters.cpp
     TaskHoleParameters.h

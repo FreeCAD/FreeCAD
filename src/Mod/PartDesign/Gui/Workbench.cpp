@@ -95,6 +95,20 @@ void Workbench::activated()
         "Part_Box"
     ));
 
+    const char* Transformed[] = {
+        "PartDesign_Mirrored",
+        "PartDesign_LinearPattern",
+        "PartDesign_PolarPattern",
+//        "PartDesign_Scaled",
+        "PartDesign_MultiTransform",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Part::Feature",
+        Transformed,
+        "Transformation tools",
+        "PartDesign_Mirrored"
+    ));
+
     const char* Empty[] = {
         "Sketcher_NewSketch",
         "Part_Box",
@@ -172,7 +186,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Revolution"
           << "PartDesign_Groove"
           << "PartDesign_Fillet"
-          << "PartDesign_Chamfer";
+          << "PartDesign_Chamfer"
+          << "PartDesign_Mirrored"
+          << "PartDesign_LinearPattern"
+          << "PartDesign_PolarPattern"
+//          << "PartDesign_Scaled"
+          << "PartDesign_MultiTransform";
 
     return root;
 }
@@ -190,7 +209,12 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Revolution"
           << "PartDesign_Groove"
           << "PartDesign_Fillet"
-          << "PartDesign_Chamfer";
+          << "PartDesign_Chamfer"
+          << "PartDesign_Mirrored"
+          << "PartDesign_LinearPattern"
+          << "PartDesign_PolarPattern"
+//          << "PartDesign_Scaled"
+          << "PartDesign_MultiTransform";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Sketcher geometries");

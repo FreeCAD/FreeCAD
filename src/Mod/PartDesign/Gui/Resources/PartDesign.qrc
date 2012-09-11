@@ -6,6 +6,11 @@
         <file>icons/PartDesign_Pad.svg</file>
         <file>icons/PartDesign_Pocket.svg</file>
         <file>icons/PartDesign_Revolution.svg</file>
+        <file>icons/PartDesign_Mirrored.svg</file>
+        <file>icons/PartDesign_LinearPattern.svg</file>
+        <file>icons/PartDesign_PolarPattern.svg</file>
+        <file>icons/PartDesign_Scaled.svg</file>
+        <file>icons/PartDesign_MultiTransform.svg</file>
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_de.qm</file>
         <file>translations/PartDesign_es.qm</file>
