@@ -62,24 +62,19 @@ public:
 
 
 protected Q_SLOTS:
-    virtual void onButtonReference() = 0;
-    virtual void onOriginalDeleted() = 0;
-    virtual void onUpdateView(bool) = 0;
-
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}
 
 protected:
-    void onOriginalDeleted(const int row);
     const bool originalSelected(const Gui::SelectionChanges& msg);
 
     /// Get the TransformedFeature object associated with this task
     // Either through the ViewProvider or the currently active subFeature of the parentTask
     PartDesign::Transformed *getObject() const;
-    /// Recompute either this feature or the parent feature (MultiTransform mode)
-    void recomputeFeature();
     /// Get the original object either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getOriginalObject() const;
+    /// Recompute either this feature or the parent feature (MultiTransform mode)
+    void recomputeFeature();
 
     void hideObject();
     void showObject();
@@ -93,7 +88,7 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
-    bool featureSelectionMode;
+    bool originalSelectionMode;
 
     /// The MultiTransform parent task of this task
     TaskMultiTransformParameters* parentTask;

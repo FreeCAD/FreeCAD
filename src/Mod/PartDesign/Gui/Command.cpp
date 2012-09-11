@@ -716,23 +716,24 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 
 void CmdPartDesignMirrored::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1 ||
+        (!selection[0].isObjectTypeOf(PartDesign::Additive::getClassTypeId()) &&
+         !selection[0].isObjectTypeOf(PartDesign::Subtractive::getClassTypeId()))) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
+            QObject::tr("Select only one additive or subtractive feature, please."));
         return;
     }
 
     std::string FeatName = getUniqueObjectName("Mirrored");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){
+        str << "App.activeDocument()." << it->getFeatName() << ",";
+        tempSelNames.push_back(it->getFeatName());
     }
     str << "]";
 
@@ -755,9 +756,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
 
 bool CmdPartDesignMirrored::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -779,23 +778,24 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 
 void CmdPartDesignLinearPattern::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1 ||
+        (!selection[0].isObjectTypeOf(PartDesign::Additive::getClassTypeId()) &&
+         !selection[0].isObjectTypeOf(PartDesign::Subtractive::getClassTypeId()))) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
+            QObject::tr("Select only one additive or subtractive feature, please."));
         return;
     }
 
     std::string FeatName = getUniqueObjectName("LinearPattern");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){
+        str << "App.activeDocument()." << it->getFeatName() << ",";
+        tempSelNames.push_back(it->getFeatName());
     }
     str << "]";
 
@@ -818,9 +818,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 
 bool CmdPartDesignLinearPattern::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -842,23 +840,24 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 
 void CmdPartDesignPolarPattern::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1 ||
+        (!selection[0].isObjectTypeOf(PartDesign::Additive::getClassTypeId()) &&
+         !selection[0].isObjectTypeOf(PartDesign::Subtractive::getClassTypeId()))) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
+            QObject::tr("Select only one additive or subtractive feature, please."));
         return;
     }
 
     std::string FeatName = getUniqueObjectName("PolarPattern");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){
+        str << "App.activeDocument()." << it->getFeatName() << ",";
+        tempSelNames.push_back(it->getFeatName());
     }
     str << "]";
 
@@ -881,9 +880,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
 
 bool CmdPartDesignPolarPattern::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -905,23 +902,24 @@ CmdPartDesignScaled::CmdPartDesignScaled()
 
 void CmdPartDesignScaled::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1 ||
+        (!selection[0].isObjectTypeOf(PartDesign::Additive::getClassTypeId()) &&
+         !selection[0].isObjectTypeOf(PartDesign::Subtractive::getClassTypeId()))) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
+            QObject::tr("Select only one additive or subtractive feature, please."));
         return;
     }
 
     std::string FeatName = getUniqueObjectName("Scaled");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){
+        str << "App.activeDocument()." << it->getFeatName() << ",";
+        tempSelNames.push_back(it->getFeatName());
     }
     str << "]";
 
@@ -943,9 +941,7 @@ void CmdPartDesignScaled::activated(int iMsg)
 
 bool CmdPartDesignScaled::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -967,23 +963,24 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1 ||
+        (!selection[0].isObjectTypeOf(PartDesign::Additive::getClassTypeId()) &&
+         !selection[0].isObjectTypeOf(PartDesign::Subtractive::getClassTypeId()))) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
+            QObject::tr("Select only one additive or subtractive feature, please."));
         return;
     }
 
     std::string FeatName = getUniqueObjectName("MultiTransform");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){
+        str << "App.activeDocument()." << it->getFeatName() << ",";
+        tempSelNames.push_back(it->getFeatName());
     }
     str << "]";
 
@@ -1001,9 +998,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
 bool CmdPartDesignMultiTransform::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 
