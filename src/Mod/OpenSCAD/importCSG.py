@@ -32,6 +32,14 @@ __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 import FreeCAD, os, sys
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    gui = True
+else:
+    print "FreeCAD Gui not present."
+    gui = False
+
+
 import ply.lex as lex
 import ply.yacc as yacc
 import Part
@@ -305,8 +313,9 @@ def p_not_supported(p):
                   | minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | glide LPAREN RPAREN OBRACE block_list EBRACE
                   '''
-    from PyQt4 import QtGui
-    QtGui.QMessageBox.critical(None, "Unsupported Function : "+p[1], "Press OK")
+    if gui:
+        from PyQt4 import QtGui
+        QtGui.QMessageBox.critical(None, "Unsupported Function : "+p[1], "Press OK")
     
 def p_size_vector(p):
     'size_vector : OSQUARE NUMBER COMMA NUMBER COMMA NUMBER ESQUARE'
@@ -341,9 +350,10 @@ def p_color_action(p):
     print "Color"
     color = tuple([float(f) for f in p[3][:3]]) #RGB
     transp = 100 - int(math.floor(100*float(p[3][3]))) #Alpha
-    for obj in p[6]:
-        obj.ViewObject.ShapeColor =color
-        obj.ViewObject.Transparency = transp
+    if gui:
+        for obj in p[6]:
+            obj.ViewObject.ShapeColor =color
+            obj.ViewObject.Transparency = transp
     p[0] = p[6]
 
 # Error rule for syntax errors
@@ -362,15 +372,17 @@ def fuse(lst,name):
        print "Multi Fuse"
        myfuse = doc.addObject('Part::MultiFuse',name)
        myfuse.Shapes = lst
-       for subobj in myfuse.Shapes:
-           subobj.ViewObject.hide()
+       if gui:
+           for subobj in myfuse.Shapes:
+               subobj.ViewObject.hide()
     else:
        print "Single Fuse"
        myfuse = doc.addObject('Part::Fuse',name)
        myfuse.Base = lst[0]
        myfuse.Tool = lst[1]
-       myfuse.Base.ViewObject.hide()
-       myfuse.Tool.ViewObject.hide()
+       if gui:
+           myfuse.Base.ViewObject.hide()
+           myfuse.Tool.ViewObject.hide()
     return(myfuse)
 
 def p_union_action(p):
@@ -399,8 +411,9 @@ def p_difference_action(p):
            mycut.Tool = fuse(p[5][1:],'union')
         else :
            mycut.Tool = p[5][1]
-        mycut.Base.ViewObject.hide()
-        mycut.Tool.ViewObject.hide()
+        if gui:
+            mycut.Base.ViewObject.hide()
+            mycut.Tool.ViewObject.hide()
         print "Push Resulting Cut"
         p[0] = [mycut]
     print "End Cut"    
@@ -414,15 +427,17 @@ def p_intersection_action(p):
        print "Multi Common"
        mycommon = doc.addObject('Part::MultiCommon',p[1])
        mycommon.Shapes = p[5]
-       for subobj in mycommon.Shapes:
-           subobj.ViewObject.hide()
+       if gui:
+           for subobj in mycommon.Shapes:
+               subobj.ViewObject.hide()
     else :
        print "Single Common"
        mycommon = doc.addObject('Part::Common',p[1])
        mycommon.Base = p[5][0]
        mycommon.Tool = p[5][1]
-       mycommon.Base.ViewObject.hide()
-       mycommon.Tool.ViewObject.hide()
+       if gui:
+           mycommon.Base.ViewObject.hide()
+           mycommon.Tool.ViewObject.hide()
 
     p[0] = [mycommon]
     print "End Intersection"
@@ -434,15 +449,17 @@ def process_rotate_extrude(obj):
     myrev.Base = (0.00,0.00,0.00)
     myrev.Angle = 360.00
     myrev.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
-    obj.ViewObject.hide()
+    if gui:
+        obj.ViewObject.hide()
     newobj=doc.addObject("Part::FeaturePython",'RefineRotateExtrude')
     RefineShape(newobj,myrev)
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetBool('useViewProviderTree'):
-        from OpenSCADFeatures import ViewProviderTree
-        ViewProviderTree(newobj.ViewObject)
-    else:
-        newobj.ViewObject.Proxy = 0
+    if gui:
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(newobj.ViewObject)
+        else:
+            newobj.ViewObject.Proxy = 0
     myrev.ViewObject.hide()
     return(newobj)
 
@@ -473,27 +490,30 @@ def process_linear_extrude(obj,h) :
         mylinear.Solid = True
     except:
         a = 1 # Any old null statement
-    obj.ViewObject.hide()
+    if gui:
+        obj.ViewObject.hide()
     newobj=doc.addObject("Part::FeaturePython",'RefineLinearExtrude')
     RefineShape(newobj,mylinear)
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetBool('useViewProviderTree'):
-        from OpenSCADFeatures import ViewProviderTree
-        ViewProviderTree(newobj.ViewObject)
-    else:
-        newobj.ViewObject.Proxy = 0
-    mylinear.ViewObject.hide()
+    if gui:
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(newobj.ViewObject)
+        else:
+            newobj.ViewObject.Proxy = 0
+        mylinear.ViewObject.hide()
     return(newobj)
 
 def process_linear_extrude_with_twist(base,height,twist) :   
     newobj=doc.addObject("Part::FeaturePython",'twist_extrude')
     Twist(newobj,base,height,-twist) #base is an FreeCAD Object, heigth and twist are floats
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetBool('useViewProviderTree'):
-        from OpenSCADFeatures import ViewProviderTree
-        ViewProviderTree(newobj.ViewObject)
-    else:
-        newobj.ViewObject.Proxy = 0
+    if gui:
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(newobj.ViewObject)
+        else:
+            newobj.ViewObject.Proxy = 0
     #import ViewProviderTree from OpenSCADFeatures
     #ViewProviderTree(obj.ViewObject)
     return(newobj)
@@ -503,7 +523,7 @@ def p_linear_extrude_with_twist(p):
     print "Linear Extrude With Twist"
     h = float(p[3]['height'])
     print "Twist : ",p[3]
-    t = float(p[11]['twist'])
+    t = float(p[3]['twist'])
     if (len(p[6]) > 1) :
         obj = fuse(p[6],"Linear Extrude Union")
     else :
@@ -512,7 +532,7 @@ def p_linear_extrude_with_twist(p):
         p[0] = [process_linear_extrude_with_twist(obj,h,t)]
     else:
         p[0] = [process_linear_extrude(obj,h)]
-    if p[2]['center']=='true' :
+    if p[3]['center']=='true' :
        center(obj,0,0,h)
     print "End Linear Extrude with twist"
 
@@ -541,7 +561,8 @@ def process_mesh_file(fname,ext):
     if not mesh1:
         Mesh.insert(filename)
         mesh1=doc.getObject(fname)
-    mesh1.ViewObject.hide()
+    if gui:
+        mesh1.ViewObject.hide()
     sh=Part.Shape()
     sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
     solid = Part.Solid(sh)
@@ -585,9 +606,10 @@ def processDXF(fname,layer):
         layers = importDXF.processdxf(doc,filename) or importDXF.layers
         dxfcache[id(doc)] = layers[:]
         for l in layers:
-            for o in l.Group:
-                o.ViewObject.hide()
-            l.ViewObject.hide()
+            if gui:
+                for o in l.Group:
+                    o.ViewObject.hide()
+                l.ViewObject.hide()
         groupobj=[go for go in layers if (not layer) or go.Label == layer]
     edges=[]
     if not groupobj:
@@ -647,13 +669,14 @@ def p_multmatrix_action(p):
         from OpenSCADFeatures import MatrixTransform
         new_part=doc.addObject("Part::FeaturePython",'Matrix Deformation')
         MatrixTransform(new_part,transform_matrix,part)
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-            GetBool('useViewProviderTree'):
-            from OpenSCADFeatures import ViewProviderTree
-            ViewProviderTree(new_part.ViewObject)
-        else:
-            new_part.ViewObject.Proxy = 0
-        part.ViewObject.hide()
+        if gui:
+            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+                GetBool('useViewProviderTree'):
+                from OpenSCADFeatures import ViewProviderTree
+                ViewProviderTree(new_part.ViewObject)
+            else:
+                new_part.ViewObject.Proxy = 0
+            part.ViewObject.hide()
     else :
         print "Transform Geometry"
 #       Need to recompute to stop transformGeometry causing a crash        
@@ -661,13 +684,15 @@ def p_multmatrix_action(p):
         new_part = doc.addObject("Part::Feature","Matrix Deformation")
       #  new_part.Shape = part.Base.Shape.transformGeometry(transform_matrix)
         new_part.Shape = part.Shape.transformGeometry(transform_matrix) 
-        part.ViewObject.hide()
+        if gui:
+            part.ViewObject.hide()
     if False :  
 #   Does not fix problemfile or beltTighener although later is closer       
         newobj=doc.addObject("Part::FeaturePython",'RefineMultMatrix')
         RefineShape(newobj,new_part)
-        newobj.ViewObject.Proxy = 0
-        new_part.ViewObject.hide()   
+        if gui:
+            newobj.ViewObject.Proxy = 0
+            new_part.ViewObject.hide()   
         p[0] = [newobj]
     else :
         p[0] = [new_part]
@@ -748,7 +773,8 @@ def p_cylinder_action(p):
 
             else :
                 pass
-            mycyl.Base.ViewObject.hide()
+            if gui:
+                mycyl.Base.ViewObject.hide()
             # mycyl.Solid = True
 
     else:
@@ -764,13 +790,14 @@ def p_cylinder_action(p):
 #   Does not fix problemfile or beltTighener although later is closer       
         newobj=doc.addObject("Part::FeaturePython",'RefineCylinder')
         RefineShape(newobj,mycyl)
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-            GetBool('useViewProviderTree'):
-            from OpenSCADFeatures import ViewProviderTree
-            ViewProviderTree(newobj.ViewObject)
-        else:
-            newobj.ViewObject.Proxy = 0
-        mycyl.ViewObject.hide()
+        if gui:
+            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+                GetBool('useViewProviderTree'):
+                from OpenSCADFeatures import ViewProviderTree
+                ViewProviderTree(newobj.ViewObject)
+            else:
+                newobj.ViewObject.Proxy = 0
+            mycyl.ViewObject.hide()
         p[0] = [newobj]
     else :
         p[0] = [mycyl]
@@ -896,6 +923,7 @@ def p_polyhedron_action(p) :
 def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     print 'Projection'
-    from PyQt4 import QtGui
-    QtGui.QMessageBox.critical(None, "Projection Not yet Coded waiting for Peter Li"," Press OK")
+    if gui:
+        from PyQt4 import QtGui
+        QtGui.QMessageBox.critical(None, "Projection Not yet Coded waiting for Peter Li"," Press OK")
 
