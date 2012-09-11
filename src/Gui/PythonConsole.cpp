@@ -647,10 +647,11 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
         d->error = QString::null;
     }
 
+    // Append the prompt string
+    QTextCursor cursor = textCursor();
+
     if (mode != PythonConsole::Special)
     {
-      // Append the prompt string
-      QTextCursor cursor = textCursor();
       cursor.beginEditBlock();
       cursor.movePosition(QTextCursor::End);
       QTextBlock block = cursor.block();
@@ -676,11 +677,10 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
           break;
       }
       cursor.endEditBlock();
-
-      // move cursor to the end
-      cursor.movePosition(QTextCursor::End);
-      setTextCursor(cursor);
     }
+    // move cursor to the end
+    cursor.movePosition(QTextCursor::End);
+    setTextCursor(cursor);
 }
 
 /**
