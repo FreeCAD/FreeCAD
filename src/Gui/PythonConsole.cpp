@@ -1236,8 +1236,8 @@ QString PythonConsole::readline( void )
     // ... and wait until we get notified about pendingSource
     QObject::connect( this, SIGNAL(pendingSource()), &loop, SLOT(quit()) );
     // application is about to quit
-    if (loop.exec() < 0)
-        inputBuffer = QLatin1String("quit()");
+    if (loop.exec() != 0)
+      { PyErr_SetInterrupt(); }            //< send SIGINT to python
     this->_sourceDrain = NULL;             //< disable source drain
     return inputBuffer.append(QChar::fromAscii('\n')); //< pass a newline here, since the readline-caller may need it!
 }
