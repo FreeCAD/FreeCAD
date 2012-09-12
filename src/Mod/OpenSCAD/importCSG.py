@@ -189,11 +189,19 @@ def p_anymodifier(p):
                    | MODIFIERROOT
                    | MODIFIERDISABLE
     '''
+    #just return the plain modifier for now
+    #has to be changed when the modifiers are inplemented
+    #please note that disabled objects usualy are stript of the CSG ouput during compilation
     p[0] = p[1]
 
 def p_statementwithmod(p):
     '''statementwithmod : anymodifier statement'''
-    p[0] = p[2]
+    #ignore the modifiers but add them to the label
+    modifier = p[1]
+    obj = p[2]
+    if hasattr(obj,'Label'):
+        obj.Label = modifier + obj.Label
+    p[0] = obj
 
 def p_part(p):
     '''
@@ -838,7 +846,7 @@ def p_circle_action(p) :
 def p_square_action(p) :
     'square_action : square LPAREN keywordargument_list RPAREN SEMICOL'
     print "Square"
-    size = P[3]['size']
+    size = p[3]['size']
     x = float(size[0])
     y = float(size[1])
     mysquare = doc.addObject('Part::Plane',p[1])
