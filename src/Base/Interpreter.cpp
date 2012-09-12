@@ -38,6 +38,7 @@
 #include "PyTools.h"
 #include "Exception.h"
 #include "PyObjectBase.h"
+#include <CXX/Extensions.hxx>
 
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!
@@ -89,6 +90,36 @@ SystemExitException::SystemExitException(const SystemExitException &inst)
 
 // ---------------------------------------------------------
 
+// Fixes #0000831: python print causes File descriptor error on windows
+class PythonStdOutput : public Py::PythonExtension<PythonStdOutput>
+{
+public:
+    static void init_type(void)
+    {
+        behaviors().name("PythonStdOutput");
+        behaviors().doc("Python standard output");
+        add_varargs_method("write",&PythonStdOutput::write,"write()");
+        add_varargs_method("flush",&PythonStdOutput::flush,"flush()");
+    }
+
+    PythonStdOutput()
+    {
+    }
+    ~PythonStdOutput()
+    {
+    }
+
+    Py::Object write(const Py::Tuple&)
+    {
+        return Py::None();
+    }
+    Py::Object flush(const Py::Tuple&)
+    {
+        return Py::None();
+    }
+};
+
+// ---------------------------------------------------------
 
 InterpreterSingleton::InterpreterSingleton()
 {
@@ -311,6 +342,10 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         PyEval_InitThreads();
         Py_Initialize();
         PySys_SetArgv(argc, argv);
+        PythonStdOutput::init_type();
+        PythonStdOutput* out = new PythonStdOutput();
+        PySys_SetObject("stdout", out);
+        PySys_SetObject("stderr", out);
         this->_global = PyEval_SaveThread();
     }
 
