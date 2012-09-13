@@ -101,6 +101,8 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
                     this, SLOT(onMoveDown()));
     ui->listTransformFeatures->addAction(action);
     ui->listTransformFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 
     connect(ui->listTransformFeatures, SIGNAL(activated(QModelIndex)),
             this, SLOT(onTransformActivated(QModelIndex)));
@@ -214,7 +216,7 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
 
     Gui::Command::openCommand("Mirrored");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Mirrored\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdMirrorPlane = \"XY\"", newFeatName.c_str());
 
     finishAdd(newFeatName);
@@ -227,7 +229,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
 
     Gui::Command::openCommand("LinearPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdDirection = \"X\"", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Length = 100", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
@@ -242,7 +244,7 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
 
     Gui::Command::openCommand("PolarPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdAxis = \"X\"", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Angle = 360", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
@@ -257,7 +259,7 @@ void TaskMultiTransformParameters::onTransformAddScaled()
 
     Gui::Command::openCommand("Scaled");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Scaled\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Factor = 2", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 
@@ -355,6 +357,13 @@ void TaskMultiTransformParameters::onMoveDown()
 
 void TaskMultiTransformParameters::onSubTaskButtonOK() {
     closeSubTask();
+}
+
+void TaskMultiTransformParameters::onUpdateView(bool on)
+{
+    blockUpdate = !on;
+    if (on)
+        recomputeFeature();
 }
 
 const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures(void) const
