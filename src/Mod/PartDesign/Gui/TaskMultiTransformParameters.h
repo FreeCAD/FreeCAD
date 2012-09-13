@@ -76,6 +76,7 @@ private Q_SLOTS:
     virtual void onSubTaskButtonOK();
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
+    virtual void onUpdateView(bool);
 
 protected:
     virtual void changeEvent(QEvent *e);

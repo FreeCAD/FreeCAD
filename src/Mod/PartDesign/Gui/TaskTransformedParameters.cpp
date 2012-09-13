@@ -110,7 +110,7 @@ void TaskTransformedParameters::recomputeFeature()
     if (insideMultiTransform) {
         // redirect recompute and let the parent decide if recompute has to be blocked
         parentTask->recomputeFeature();
-    } else if (!blockRecompute) {
+    } else if (!blockUpdate) {
         PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
         pcTransformed->getDocument()->recomputeFeature(pcTransformed);
     }

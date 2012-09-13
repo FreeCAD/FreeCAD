@@ -94,10 +94,8 @@ protected:
     TaskMultiTransformParameters* parentTask;
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
-    /// Lock updateUI() and applying changes to the underlying feature
+    /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate;
-    /// Lock recomputeFeature()
-    bool blockRecompute;
 };
 
 /// simulation dialog for the TaskView
