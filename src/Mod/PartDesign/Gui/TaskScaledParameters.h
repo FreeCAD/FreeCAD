@@ -58,7 +58,6 @@ public:
 
     const double getFactor(void) const;
     const unsigned getOccurrences(void) const;
-    const bool updateView() const;
 
 private Q_SLOTS:
     void onFactor(const double f);

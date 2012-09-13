@@ -59,6 +59,8 @@ public:
         {}
 
     const std::vector<App::DocumentObject*> getOriginals(void) const;
+    /// Get the support object either of the object associated with this feature or with the parent feature (MultiTransform mode)
+    App::DocumentObject* getSupportObject() const;
 
 
 protected Q_SLOTS:
@@ -71,8 +73,6 @@ protected:
     /// Get the TransformedFeature object associated with this task
     // Either through the ViewProvider or the currently active subFeature of the parentTask
     PartDesign::Transformed *getObject() const;
-    /// Get the original object either of the object associated with this feature or with the parent feature (MultiTransform mode)
-    App::DocumentObject* getOriginalObject() const;
     /// Recompute either this feature or the parent feature (MultiTransform mode)
     void recomputeFeature();
 
@@ -94,8 +94,10 @@ protected:
     TaskMultiTransformParameters* parentTask;
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
-    /// Lock updateUI() so that no unnecessary recomputeFeatures() are triggered
-    bool updateUIinProgress;
+    /// Lock updateUI() and applying changes to the underlying feature
+    bool blockUpdate;
+    /// Lock recomputeFeature()
+    bool blockRecompute;
 };
 
 /// simulation dialog for the TaskView

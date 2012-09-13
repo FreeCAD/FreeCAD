@@ -55,7 +55,7 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
       TransformedView(TransformedView),
       parentTask(NULL),
       insideMultiTransform(false),
-      updateUIinProgress(false)
+      blockUpdate(false)
 {
     originalSelectionMode = false;
 }
@@ -65,7 +65,7 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
       TransformedView(NULL),
       parentTask(parentTask),
       insideMultiTransform(true),
-      updateUIinProgress(false)
+      blockUpdate(false)
 {
     // Original feature selection makes no sense inside a MultiTransform
     originalSelectionMode = false;
@@ -73,22 +73,21 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
 
 const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
-    if (originalSelectionMode && (msg.Type == Gui::SelectionChanges::AddSelection)) {
-        PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-        App::DocumentObject* selectedObject = pcTransformed->getDocument()->getActiveObject();
-        if (!selectedObject->isDerivedFrom(PartDesign::Additive::getClassTypeId()) &&
-            !selectedObject->isDerivedFrom(PartDesign::Subtractive::getClassTypeId()))
-            return false;
-        if (TransformedView->getObject() == pcTransformed)
+    if (msg.Type == Gui::SelectionChanges::AddSelection && originalSelectionMode) {
+
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
-        std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+        PartDesign::Transformed* pcTransformed = getObject();
+        App::DocumentObject* selectedObject = pcTransformed->getDocument()->getObject(msg.pObjectName);
+        if (selectedObject->isDerivedFrom(PartDesign::Additive::getClassTypeId()) ||
+            selectedObject->isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
 
-        if (std::find(originals.begin(), originals.end(), selectedObject) == originals.end()) {
-            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.Originals = [App.activeDocument().%s]",
-                                    getObject()->getNameInDocument(),
-                                    selectedObject->getNameInDocument() );
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+            // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
+            std::vector<App::DocumentObject*> originals(1,selectedObject);
+            pcTransformed->Originals.setValues(originals);
+            recomputeFeature();
+
             originalSelectionMode = false;
             return true;
         }
@@ -109,8 +108,9 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const
 void TaskTransformedParameters::recomputeFeature()
 {
     if (insideMultiTransform) {
+        // redirect recompute and let the parent decide if recompute has to be blocked
         parentTask->recomputeFeature();
-    } else {
+    } else if (!blockRecompute) {
         PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
         pcTransformed->getDocument()->recomputeFeature(pcTransformed);
     }
@@ -128,10 +128,10 @@ const std::vector<App::DocumentObject*> TaskTransformedParameters::getOriginals(
     }
 }
 
-App::DocumentObject* TaskTransformedParameters::getOriginalObject() const
+App::DocumentObject* TaskTransformedParameters::getSupportObject() const
 {
     if (insideMultiTransform) {
-        return parentTask->getOriginalObject();
+        return parentTask->getSupportObject();
     } else {
         PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
         return pcTransformed->getOriginalObject();

@@ -101,8 +101,6 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
                     this, SLOT(onMoveDown()));
     ui->listTransformFeatures->addAction(action);
     ui->listTransformFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
 
     connect(ui->listTransformFeatures, SIGNAL(activated(QModelIndex)),
             this, SLOT(onTransformActivated(QModelIndex)));
@@ -144,20 +142,16 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
 
 void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
-    App::DocumentObject* selectedObject = pcMultiTransform->getDocument()->getActiveObject();
-    if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
-
-    if (originalSelectionMode) {
-        if (originalSelected(msg))
-            ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
+    if (originalSelected(msg)) {
+        App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
+        ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
     }
 }
 
 void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
+        disconnect(ui->checkBoxUpdateView, 0, subTask, 0);
         delete subTask;
         subTask = NULL;
     }
@@ -175,9 +169,10 @@ void TaskMultiTransformParameters::onTransformDelete()
     closeSubTask();
 
     transformFeatures.erase(transformFeatures.begin() + row);
-    pcMultiTransform->Transformations.setValues(transformFeatures);    
-    if (ui->checkBoxUpdateView->isChecked())
-        pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
+    pcMultiTransform->Transformations.setValues(transformFeatures);
+    // Note: When the last transformation is deleted, recomputeFeature does nothing, because Transformed::execute()
+    // says: "No transformations defined, exit silently"
+    recomputeFeature();
 
     ui->listTransformFeatures->model()->removeRow(row);
     ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -203,6 +198,9 @@ void TaskMultiTransformParameters::onTransformEdit()
         subTask = new TaskScaledParameters(this, ui->verticalLayout);
     else
         return; // TODO: Show an error?
+
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            subTask, SLOT(onUpdateView(bool)));
 }
 
 void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index) {
@@ -300,8 +298,7 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);
 
-    if (ui->checkBoxUpdateView->isChecked())
-        pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
+    recomputeFeature();
 
     // Set state to hidden - only the MultiTransform should be visible
     Gui::Command::doCommand(
@@ -341,8 +338,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     }
 
     pcMultiTransform->Transformations.setValues(transformFeatures);
-    if (ui->checkBoxUpdateView->isChecked())
-        pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
+    recomputeFeature();
 }
 
 void TaskMultiTransformParameters::onMoveUp()
@@ -357,10 +353,6 @@ void TaskMultiTransformParameters::onMoveDown()
 
 void TaskMultiTransformParameters::onSubTaskButtonOK() {
     closeSubTask();
-}
-
-void TaskMultiTransformParameters::onUpdateView(bool on)
-{
 }
 
 const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures(void) const
@@ -383,16 +375,6 @@ void TaskMultiTransformParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
-}
-
-void TaskMultiTransformParameters::recomputeFeature() {
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
-    pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
-}
-
-const bool TaskMultiTransformParameters::updateView() const
-{
-    return ui->checkBoxUpdateView->isChecked();
 }
 
 //**************************************************************************

@@ -56,12 +56,11 @@ public:
     TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskPolarPatternParameters();
 
-    const QString getAxis(void) const;
     const std::string getStdAxis(void) const;
+    const std::string getAxis(void) const;
     const bool getReverse(void) const;
     const double getAngle(void) const;
     const unsigned getOccurrences(void) const;
-    const bool updateView() const;
 
 private Q_SLOTS:
     void onStdAxis(const std::string& axis);
