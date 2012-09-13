@@ -278,11 +278,12 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
     int row = ui->listTransformFeatures->currentIndex().row();
     if (row < 0) {
         // Happens when first row (first transformation) is created
-        row = 0;
         // Hide all the originals now (hiding them in Command.cpp presents the user with an empty screen!)
         hideOriginals();
     }
 
+    // Insert new transformation after the selected row
+    // This means that in order to insert at the beginning, the user has to use "Move Up" in the menu
     App::DocumentObject* newFeature = pcMultiTransform->getDocument()->getObject(newFeatName.c_str());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
     if (row == ui->listTransformFeatures->model()->rowCount() - 1) {
@@ -292,9 +293,10 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
         ui->listTransformFeatures->addItem(QString::fromAscii(newFeature->Label.getValue()));
         ui->listTransformFeatures->setCurrentRow(row+1, QItemSelectionModel::ClearAndSelect);
     } else {
-        transformFeatures.insert(transformFeatures.begin() + row, newFeature);
-        ui->listTransformFeatures->insertItem(row, QString::fromAscii(newFeature->Label.getValue()));
-        ui->listTransformFeatures->setCurrentRow(row, QItemSelectionModel::ClearAndSelect);
+        // Note: The feature tree always seems to append to the end, no matter what we say here
+        transformFeatures.insert(transformFeatures.begin() + row + 1, newFeature);
+        ui->listTransformFeatures->insertItem(row + 1, QString::fromAscii(newFeature->Label.getValue()));
+        ui->listTransformFeatures->setCurrentRow(row + 1, QItemSelectionModel::ClearAndSelect);
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);
 
