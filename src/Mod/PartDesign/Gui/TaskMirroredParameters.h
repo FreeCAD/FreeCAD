@@ -57,9 +57,8 @@ public:
 
     virtual ~TaskMirroredParameters();
 
-    const QString getMirrorPlane(void) const;
     const std::string getStdMirrorPlane(void) const;
-    const bool updateView() const;
+    const std::string getMirrorPlane(void) const;
 
 private Q_SLOTS:
     void onButtonXY();

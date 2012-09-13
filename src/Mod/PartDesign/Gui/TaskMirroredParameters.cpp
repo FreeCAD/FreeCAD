@@ -43,7 +43,6 @@
 #include <Mod/PartDesign/App/FeatureMirrored.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-
 using namespace PartDesignGui;
 using namespace Gui;
 
@@ -65,7 +64,7 @@ TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *Transfor
 
     referenceSelectionMode = false;
 
-    updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
@@ -88,7 +87,7 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
 
     referenceSelectionMode = false;
 
-    updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
@@ -130,9 +129,9 @@ void TaskMirroredParameters::setupUI()
 
 void TaskMirroredParameters::updateUI()
 {
-    if (updateUIinProgress)
+    if (blockUpdate)
         return;
-    updateUIinProgress = true;
+    blockUpdate = true;
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     App::DocumentObject* mirrorPlaneFeature = pcMirrored->MirrorPlane.getValue();
     std::vector<std::string> mirrorPlanes = pcMirrored->MirrorPlane.getSubValues();
@@ -163,39 +162,45 @@ void TaskMirroredParameters::updateUI()
     if (referenceSelectionMode)
         ui->lineReference->setText(tr("Select a plane"));
 
-    updateUIinProgress = false;
+    blockUpdate = false;
 }
 
 void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
+
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
+            return;
+
         std::string subName(msg.pSubName);
-        PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-        if (originalSelectionMode) {
-            App::DocumentObject* selectedObject = pcMirrored->getDocument()->getActiveObject();
-            if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return;
-            if (originalSelected(msg))
-                ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
+        if (originalSelected(msg)) {
+            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
         } else if (referenceSelectionMode &&
                    (subName.size() > 4 && subName.substr(0,4) == "Face")) {
 
-            std::vector<std::string> mirrorPlanes;
-            mirrorPlanes.push_back(subName.c_str());
-            pcMirrored->MirrorPlane.setValue(getOriginalObject(), mirrorPlanes);
-            pcMirrored->StdMirrorPlane.setValue("");
-
-            if (updateView())
-                recomputeFeature();
+            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
+                return;
 
             exitSelectionMode();
-            updateUI();
+            if (!blockUpdate) {
+                PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+                std::vector<std::string> mirrorPlanes(1,subName);
+                pcMirrored->MirrorPlane.setValue(getSupportObject(), mirrorPlanes);
+                pcMirrored->StdMirrorPlane.setValue("");
+
+                recomputeFeature();
+                updateUI();
+            }
+            else {
+                ui->buttonReference->setChecked(referenceSelectionMode);
+                ui->lineReference->setText(QString::fromAscii(subName.c_str()));
+            }
         }
     }
 }
 
 void TaskMirroredParameters::onStdMirrorPlane(const std::string &plane) {
-    if (updateUIinProgress)
+    if (blockUpdate)
         return;
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     pcMirrored->StdMirrorPlane.setValue(plane.c_str());
@@ -203,8 +208,7 @@ void TaskMirroredParameters::onStdMirrorPlane(const std::string &plane) {
 
     exitSelectionMode();
     updateUI();
-    if (updateView())
-        recomputeFeature();
+    recomputeFeature();
 }
 
 void TaskMirroredParameters::onButtonXY() {
@@ -221,8 +225,6 @@ void TaskMirroredParameters::onButtonYZ() {
 
 void TaskMirroredParameters::onButtonReference(bool checked)
 {
-    if (updateUIinProgress)
-        return;
     if (checked ) {
         hideObject();
         showOriginals();
@@ -236,54 +238,42 @@ void TaskMirroredParameters::onButtonReference(bool checked)
 
 void TaskMirroredParameters::onUpdateView(bool on)
 {
-    ui->buttonXY->blockSignals(!on);
-    ui->buttonYZ->blockSignals(!on);
-    ui->buttonXZ->blockSignals(!on);
+    blockUpdate = !on;
+    if (on) {
+        // Do the same like in TaskDlgMirroredParameters::accept() but without doCommand
+        PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+
+        std::string mirrorPlane = getMirrorPlane();
+        if (!mirrorPlane.empty()) {
+            std::vector<std::string> planes(1,mirrorPlane);
+            pcMirrored->MirrorPlane.setValue(getSupportObject(),planes);
+        } else
+            pcMirrored->MirrorPlane.setValue(NULL);
+
+        std::string stdMirrorPlane = getStdMirrorPlane();
+        if (!stdMirrorPlane.empty())
+            pcMirrored->StdMirrorPlane.setValue(stdMirrorPlane.c_str());
+        else
+            pcMirrored->StdMirrorPlane.setValue(NULL);
+
+        recomputeFeature();
+    }
 }
 
 const std::string TaskMirroredParameters::getStdMirrorPlane(void) const
 {
-    std::string stdMirrorPlane;
-
     if (ui->buttonXY->isChecked())
-        stdMirrorPlane = "XY";
+        return std::string("XY");
     else if (ui->buttonYZ->isChecked())
-        stdMirrorPlane = "YZ";
+        return std::string("YZ");
     else if (ui->buttonXZ->isChecked())
-        stdMirrorPlane = "XZ";
-
-    if (!stdMirrorPlane.empty())
-        return std::string("\"") + stdMirrorPlane + "\"";
-    else
-        return std::string("");
+        return std::string("XZ");
+    return std::string("");
 }
 
-const QString TaskMirroredParameters::getMirrorPlane(void) const
+const std::string TaskMirroredParameters::getMirrorPlane(void) const
 {
-    PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-    App::DocumentObject* feature = pcMirrored->MirrorPlane.getValue();
-    if (feature == NULL)
-        return QString::fromUtf8("");
-    std::vector<std::string> mirrorPlanes = pcMirrored->MirrorPlane.getSubValues();
-    QString buf;
-
-    if ((feature != NULL) && !mirrorPlanes.empty()) {
-        buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(feature->getNameInDocument()));
-        buf = buf.arg(QString::fromUtf8(mirrorPlanes.front().c_str()));
-    }
-    else
-        buf = QString::fromUtf8("");
-
-    return buf;
-}
-
-const bool TaskMirroredParameters::updateView() const
-{
-    if (insideMultiTransform)
-        return parentTask->updateView();
-    else
-        return ui->checkBoxUpdateView->isChecked();
+    return ui->lineReference->text().toStdString();
 }
 
 void TaskMirroredParameters::exitSelectionMode()
@@ -335,12 +325,16 @@ bool TaskDlgMirroredParameters::accept()
             return false;
 
         TaskMirroredParameters* mirrorParameter = static_cast<TaskMirroredParameters*>(parameter);
-        std::string mirrorPlane = mirrorParameter->getMirrorPlane().toStdString();
-        if (!mirrorPlane.empty())
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), mirrorPlane.c_str());
+        std::string mirrorPlane = mirrorParameter->getMirrorPlane();
+        if (!mirrorPlane.empty()) {
+            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            buf = buf.arg(QString::fromUtf8(mirrorParameter->getSupportObject()->getNameInDocument()));
+            buf = buf.arg(QString::fromUtf8(mirrorPlane.c_str()));
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), buf.toStdString().c_str());
+        } else
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = None", name.c_str());
         std::string stdMirrorPlane = mirrorParameter->getStdMirrorPlane();
-        if (!stdMirrorPlane.empty())
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.StdMirrorPlane = %s",name.c_str(),stdMirrorPlane.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.StdMirrorPlane = \"%s\"",name.c_str(),stdMirrorPlane.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!TransformedView->getObject()->isValid())
             throw Base::Exception(TransformedView->getObject()->getStatusString());

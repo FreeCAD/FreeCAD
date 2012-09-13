@@ -56,12 +56,11 @@ public:
     TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskLinearPatternParameters();
 
-    const QString getDirection(void) const;
     const std::string getStdDirection(void) const;
+    const std::string getDirection(void) const;
     const bool getReverse(void) const;
     const double getLength(void) const;
     const unsigned getOccurrences(void) const;
-    const bool updateView() const;
 
 private Q_SLOTS:
     void onStdDirection(const std::string& dir);

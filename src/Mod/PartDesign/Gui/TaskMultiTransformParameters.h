@@ -62,11 +62,6 @@ public:
     /// Return the currently active subFeature
     PartDesign::Transformed* getSubFeature(void) { return subFeature; }
 
-    /// Recompute the feature associated with this task
-    void recomputeFeature();
-    /// Tell the subtask whether the view should be updated
-    const bool updateView() const;
-
 private Q_SLOTS:
     void onTransformDelete();
     void onTransformEdit();
@@ -77,7 +72,6 @@ private Q_SLOTS:
     void onTransformAddScaled();
     void onMoveUp();
     void onMoveDown();
-    virtual void onUpdateView(bool);
     /// User finished editing a subFeature
     virtual void onSubTaskButtonOK();
     // Note: There is no Cancel button because I couldn't work out how to save the state of
