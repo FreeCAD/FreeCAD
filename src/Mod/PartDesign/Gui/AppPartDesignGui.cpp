@@ -41,7 +41,7 @@
 #include "ViewProviderMirrored.h"
 #include "ViewProviderLinearPattern.h"
 #include "ViewProviderPolarPattern.h"
-//#include "ViewProviderScaled.h"
+#include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
 
 //#include "resources/qrc_PartDesign.cpp"
@@ -95,7 +95,7 @@ void PartDesignGuiExport initPartDesignGui()
     PartDesignGui::ViewProviderMirrored      ::init();
     PartDesignGui::ViewProviderLinearPattern ::init();
     PartDesignGui::ViewProviderPolarPattern  ::init();
-//    PartDesignGui::ViewProviderScaled        ::init();
+    PartDesignGui::ViewProviderScaled        ::init();
     PartDesignGui::ViewProviderMultiTransform::init();
 
      // add resources and reloads the translators
