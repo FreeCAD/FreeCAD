@@ -281,6 +281,29 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         ViewProviderGeometryObject::onChanged(prop);
         DiffuseColor.setValue(ShapeColor.getValue());
     }
+    else if (prop == &Transparency) {
+        const App::Material& Mat = ShapeMaterial.getValue();
+        long value = (long)(100*Mat.transparency);
+        if (value != Transparency.getValue()) {
+            float trans = Transparency.getValue()/100.0f;
+            if (pcShapeBind->value.getValue() == SoMaterialBinding::PER_PART) {
+                int cnt = pcShapeMaterial->diffuseColor.getNum();
+                pcShapeMaterial->transparency.setNum(cnt);
+                float *t = pcShapeMaterial->transparency.startEditing();
+                for (int i=0; i<cnt; i++)
+                    t[i] = trans;
+                pcShapeMaterial->transparency.finishEditing();
+            }
+            else {
+                pcShapeMaterial->transparency = trans;
+            }
+
+            App::PropertyContainer* parent = ShapeMaterial.getContainer();
+            ShapeMaterial.setContainer(0);
+            ShapeMaterial.setTransparency(trans);
+            ShapeMaterial.setContainer(parent);
+        }
+    }
     else if (prop == &Lighting) {
         if (Lighting.getValue() == 0)
             pShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
