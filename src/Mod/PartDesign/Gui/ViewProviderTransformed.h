@@ -48,6 +48,9 @@ public:
 
     virtual bool onDelete(const std::vector<std::string> &);
 
+    /// signals if the transformation contains errors
+    boost::signal<void (QString msg)> signalDiagnosis;
+
     // The feature name of the subclass
     std::string featureName;
 
@@ -56,6 +59,8 @@ protected:
     virtual void unsetEdit(int ModNum);
 
     const bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
+public:
+    void recomputeFeature();
 };
 
 

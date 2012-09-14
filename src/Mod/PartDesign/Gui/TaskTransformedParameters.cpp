@@ -111,8 +111,7 @@ void TaskTransformedParameters::recomputeFeature()
         // redirect recompute and let the parent decide if recompute has to be blocked
         parentTask->recomputeFeature();
     } else if (!blockUpdate) {
-        PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-        pcTransformed->getDocument()->recomputeFeature(pcTransformed);
+        TransformedView->recomputeFeature();
     }
 }
 
@@ -134,7 +133,7 @@ App::DocumentObject* TaskTransformedParameters::getSupportObject() const
         return parentTask->getSupportObject();
     } else {
         PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-        return pcTransformed->getOriginalObject();
+        return pcTransformed->getSupportObject();
     }
 }
 
@@ -186,10 +185,13 @@ void TaskTransformedParameters::showOriginals()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView)
-    : TaskDialog(),TransformedView(TransformedView)
+TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView_)
+    : TaskDialog(), TransformedView(TransformedView_)
 {
     assert(TransformedView);
+    message = new TaskTransformedMessages(TransformedView);
+
+    Content.push_back(message);
 }
 
 //==== calls from the TaskView ===============================================================

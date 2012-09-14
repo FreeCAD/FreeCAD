@@ -28,6 +28,7 @@
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRep_Builder.hxx>
 # include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
@@ -50,7 +51,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
 
-Transformed::Transformed()
+Transformed::Transformed() : rejected(0)
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
@@ -58,12 +59,12 @@ Transformed::Transformed()
 
 void Transformed::positionBySupport(void)
 {
-    Part::Feature *support = static_cast<Part::Feature*>(getOriginalObject());
+    Part::Feature *support = static_cast<Part::Feature*>(getSupportObject());
     if ((support != NULL) && support->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         this->Placement.setValue(support->Placement.getValue());
 }
 
-App::DocumentObject* Transformed::getOriginalObject() const
+App::DocumentObject* Transformed::getSupportObject() const
 {
     if (!Originals.getValues().empty())
         return Originals.getValues().front();
@@ -80,6 +81,8 @@ short Transformed::mustExecute() const
 
 App::DocumentObjectExecReturn *Transformed::execute(void)
 {
+    rejected.clear();
+
     std::vector<App::DocumentObject*> originals = Originals.getValues();
     if (originals.empty()) // typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
@@ -101,10 +104,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     // NOTE: Because of the way we define the support, FeatureTransformed can only work on
     // one Body feature at a time
     // TODO: Currently, the support is simply the first Original. Change this to the Body feature later
-    Part::Feature* supportFeature = static_cast<Part::Feature*>(originals.front());
+    Part::Feature* supportFeature = static_cast<Part::Feature*>(getSupportObject());
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape._Shape.IsNull())
-        return new App::DocumentObjectExecReturn("Cannot transform invalid shape");
+        return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
 
     // create an untransformed copy of the support shape
     Part::TopoShape supportShape(supportTopShape);
@@ -162,9 +165,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             Bnd_Box transformed_bb;
             BRepBndLib::Add(mkTrf.Shape(), transformed_bb);
             if (support_bb.Distance(transformed_bb) > Precision::Confusion()) {
-                Base::Console().Warning("Transformed shape does not intersect original %s: Removed\n", (*o)->getNameInDocument());
+                Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
                 // Note: The removal happens in getSolid() after the fuse. If we remove here,
                 // the histories get messed up and we get a crash
+                rejected.push_back(*t);
             }
             builder.Add(transformedShapes, mkTrf.Shape());
             v_transformedShapes.push_back(mkTrf.Shape());
@@ -178,7 +182,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             Bnd_Box transformed_bb;
             BRepBndLib::Add(trfShape, transformed_bb);
             if (support_bb.Distance(transformed_bb) > Precision::Confusion()) {
-                Base::Console().Warning("Transformed shape does not intersect original %s: Removed\n", (*o)->getNameInDocument());
+                Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
                 // Note: The removal happens in getSolid() after the fuse. If we remove here,
                 // the histories get messed up and we get a crash
             }
@@ -231,8 +235,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             result = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
             if (result.IsNull())
-                return new App::DocumentObjectExecReturn("Transformed: Resulting shape is not a solid", *o);
-
+                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+            // check if mkFuse created more than one solids
+            TopExp_Explorer xp;
+            xp.Init(mkFuse.Shape(),TopAbs_SOLID);
+            if (xp.More())
+                xp.Next();
+            if (!xp.More())        // There are no rejected transformations even
+                rejected.clear();  // if the bb check guessed that there would be
         } else {
             BRepAlgoAPI_Cut mkCut(support, transformedShapes);
             if (!mkCut.IsDone())
