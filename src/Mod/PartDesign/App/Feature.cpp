@@ -45,7 +45,7 @@ Feature::Feature()
 {
 }
 
-TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape) const
+TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
 {
     if (shape.IsNull())
         Standard_Failure::Raise("Shape is null");
@@ -58,7 +58,7 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape) const
     return TopoDS_Shape();
 }
 
-const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f) const
+const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 {
     if (!f.Infinite()) {
         TopExp_Explorer exp;

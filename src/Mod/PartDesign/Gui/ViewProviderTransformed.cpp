@@ -112,3 +112,30 @@ const bool ViewProviderTransformed::checkDlgOpen(TaskDlgTransformedParameters* t
     // Continue (usually in virtual method setEdit())
     return true;
 }
+
+void ViewProviderTransformed::recomputeFeature(void)
+{
+    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    pcTransformed->getDocument()->recomputeFeature(pcTransformed);
+    const std::vector<App::DocumentObjectExecReturn*> log = pcTransformed->getDocument()->getRecomputeLog();
+    unsigned rejected = pcTransformed->getRejectedTransformations().size();
+    QString msg = QString::fromAscii("%1");
+    if (rejected > 0) {
+        msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
+        if (rejected == 1)
+            msg = msg.arg(QObject::tr("One transformed shape does not intersect support"));
+        else {
+            msg = msg.arg(QObject::tr("%1 transformed shapes do not intersect support"));
+            msg = msg.arg(rejected);
+        }
+    }
+    if (log.size() > 0) {
+        msg = msg.arg(QString::fromLatin1("<font color='red'>%1<br/></font>"));
+        msg = msg.arg(QString::fromStdString(log.back()->Why));
+    } else {
+        msg = msg.arg(QString::fromLatin1("<font color='green'>%1<br/></font>"));
+        msg = msg.arg(QObject::tr("Transformation succeeded"));
+    }
+    signalDiagnosis(msg);
+}
+

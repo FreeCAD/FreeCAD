@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskTransformedMessages.h"
 #include "ViewProviderTransformed.h"
 
 namespace PartDesign {
@@ -133,6 +134,7 @@ protected:
     ViewProviderTransformed   *TransformedView;
 
     TaskTransformedParameters  *parameter;
+    TaskTransformedMessages  *message;
 };
 
 } //namespace PartDesignGui
