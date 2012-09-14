@@ -1,6 +1,13 @@
 import FreeCAD,FreeCADGui
 from PyQt4 import QtGui, QtCore
 
+def translate(context,text):
+    "convenience function for Qt translator"
+    return QtGui.QApplication.translate(context, text, None, \
+        QtGui.QApplication.UnicodeUTF8)
+def utf8(unio):
+    return unicode(unio).encode('UTF8')
+
 class ColorCodeShape:
     "Change the Color of selected or all Shapes based on their validity"
     def Activated(self):
@@ -13,7 +20,11 @@ class ColorCodeShape:
             objs=FreeCAD.ActiveDocument.Objects
         colorcodeshapes.colorcodeshapes(objs)
     def GetResources(self):
-        return {'Pixmap'  : 'OpenSCAD_ColorCodeShape', 'MenuText': 'Color Shapes', 'ToolTip': 'Color Shapes by validity and type'}
+        return {'Pixmap'  : 'OpenSCAD_ColorCodeShape', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape',\
+                'Color Shapes'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape',\
+                'Color Shapes by validity and type')}
 
 class Edgestofaces:
     def Activated(self):
@@ -28,7 +39,10 @@ class Edgestofaces:
         FreeCAD.ActiveDocument.recompute()
 
     def GetResources(self):
-        return {'Pixmap'  : 'python', 'MenuText': 'EdgesToFaces', 'ToolTip': 'Convert Edges to Faces'}
+        return {'Pixmap'  : 'python', 'MenuText': QtCore.QT_TRANSLATE_NOOP(\
+                'OpenSCAD_Edgestofaces','Convert Edges To Faces'),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP('OpenSCAD',\
+                'Convert Edges to Faces')}
 
 class RefineShapeFeature:
     def Activated(self):
@@ -44,7 +58,10 @@ class RefineShapeFeature:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_RefineShapeFeature', 'MenuText': \
-                'Refine Shape Feature', 'ToolTip': 'Create Refine Shape Feature'}
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature',\
+                'Refine Shape Feature'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature',\
+                'Create Refine Shape Feature')}
 
 
 class ExpandPlacements:
@@ -57,7 +74,10 @@ class ExpandPlacements:
         expandplacements.expandplacements(selobj.Object,FreeCAD.Placement())
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
-        return {'Pixmap'  : 'python', 'MenuText': 'Expand Placements', 'ToolTip': 'Expand all placements downwards the FeatureTree'}
+        return {'Pixmap'  : 'python', 'MenuText': QtCore.QT_TRANSLATE_NOOP(\
+                'OpenSCAD_ExpandPlacements','Expand Placements'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements',\
+                'Expand all placements downwards the FeatureTree')}
 
 class ReplaceObject:
     def Activated(self):
@@ -67,11 +87,14 @@ class ReplaceObject:
         if len(objs)==3:
             replaceobj.replaceobjfromselection(objs)
         else:
-            FreeCAD.Console.PrintError('Please select 3 objects first')
+            FreeCAD.Console.PrintError(unicode(translate('OpenSCAD',\
+                    'Please select 3 objects first'))+u'\n')
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ReplaceObject', 'MenuText': \
-                'Replace Object', 'ToolTip': \
-                'Replace an object in the Feature Tree. Please select old, new and parent object'}
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject',\
+                'Replace Object'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject',\
+                'Replace an object in the Feature Tree. Please select old, new and parent object')}
 
 
 class RemoveSubtree:
@@ -98,16 +121,18 @@ class RemoveSubtree:
             obj.Document.removeObject(obj.Name)
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_RemoveSubtree', 'MenuText': \
-                'Remove Objects and their Children', 'ToolTip': \
-                'Removes the selected objects and all children that are not referenced from other objects'}
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree',\
+                'Remove Objects and their Children'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree',\
+                'Removes the selected objects and all children that are not referenced from other objects')}
 
 class AddSCADWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
         self.textEdit=QtGui.QTextEdit()
-        self.buttonadd = QtGui.QPushButton(u'Add')
-        self.buttonclear = QtGui.QPushButton(u'Clear')
-        self.checkboxmesh = QtGui.QCheckBox(u'as Mesh')
+        self.buttonadd = QtGui.QPushButton(translate('OpenSCAD',u'Add'))
+        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD',u'Clear'))
+        self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD',u'as Mesh'))
         layouth=QtGui.QHBoxLayout()
         layouth.addWidget(self.buttonadd)
         layouth.addWidget(self.buttonclear)
@@ -116,9 +141,15 @@ class AddSCADWidget(QtGui.QWidget):
         layout.addWidget(self.checkboxmesh)
         layout.addWidget(self.textEdit)
         self.setLayout(layout)
-        self.setWindowTitle(u'Add OpenSCAD Element')
+        self.setWindowTitle(translate('OpenSCAD',u'Add OpenSCAD Element'))
         self.textEdit.setText(u'cube();')
         self.buttonclear.clicked.connect(self.textEdit.clear)
+
+    def retranslateUi(self, widget=None):
+        self.buttonadd.setText(translate('OpenSCAD',u'Add'))
+        self.buttonclear.setText(translate('OpenSCAD',u'Clear'))
+        self.checkboxmesh.setText(translate('OpenSCAD',u'as Mesh'))
+        self.setWindowTitle(translate('OpenSCAD',u'Add OpenSCAD Element'))
 
 class AddSCADTask:
     def __init__(self):
@@ -152,7 +183,7 @@ class AddSCADTask:
                 importCSG.insert(tmpfilename,doc.Name)
             os.unlink(tmpfilename)
         else:
-            FreeCAD.Console.PrintError('Running OpenSCAD failed\n')
+            FreeCAD.Console.PrintError(unicode(translate('OpenSCAD','Running OpenSCAD failed'))+u'\n')
 
 class AddOpenSCADElement:
     def Activated(self):
@@ -160,8 +191,10 @@ class AddOpenSCADElement:
         FreeCADGui.Control.showDialog(panel)
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement', 'MenuText': \
-                'Add OpenSCAD Element...', 'ToolTip': \
-                'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary'}
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement',\
+                'Add OpenSCAD Element...'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement',\
+                'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
 
 
 FreeCADGui.addCommand('ColorCodeShape',ColorCodeShape())

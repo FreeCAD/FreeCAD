@@ -108,7 +108,7 @@ static char * openscadlogo_xpm[] = {
         #self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
         ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])
         FreeCADGui.addIconPath(":/icons")
-        #FreeCADGui.addLanguagePath(":/translations")
+        FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/openscadprefs-base.ui","OpenSCAD")
     def GetClassName(self):
         #return "OpenSCADGui::Workbench"

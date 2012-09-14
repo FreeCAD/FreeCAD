@@ -59,6 +59,10 @@ from tokrules import tokens
 
 #Globals
 dxfcache = {}
+def translate(context,text):
+    "convenience function for Qt translator"
+    return QtGui.QApplication.translate(context, text, None, \
+        QtGui.QApplication.UnicodeUTF8)
 
 def open(filename):
     "called when freecad opens a file."
@@ -323,7 +327,7 @@ def p_not_supported(p):
                   '''
     if gui:
         from PyQt4 import QtGui
-        QtGui.QMessageBox.critical(None, "Unsupported Function : "+p[1], "Press OK")
+        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
     
 def p_size_vector(p):
     'size_vector : OSQUARE NUMBER COMMA NUMBER COMMA NUMBER ESQUARE'
@@ -933,5 +937,5 @@ def p_projection_action(p) :
     print 'Projection'
     if gui:
         from PyQt4 import QtGui
-        QtGui.QMessageBox.critical(None, "Projection Not yet Coded waiting for Peter Li"," Press OK")
+        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Projection Not yet Coded waiting for Peter Li")),unicode(translate('OpenSCAD'," Press OK")))
 
