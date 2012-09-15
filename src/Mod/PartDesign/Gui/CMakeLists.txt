@@ -25,6 +25,7 @@ set(PartDesignGui_LIBS
 )
 
 set(PartDesignGui_MOC_HDRS
+    FeaturePickDialog.h
     TaskPadParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h
@@ -46,6 +47,7 @@ SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
 qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
 
 set(PartDesignGui_UIC_SRCS
+    FeaturePickDialog.ui
     TaskPadParameters.ui
     TaskPocketParameters.ui
     TaskChamferParameters.ui
@@ -95,6 +97,9 @@ SET(PartDesignGuiViewProvider_SRCS
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
 SET(PartDesignGuiTaskDlgs_SRCS
+    FeaturePickDialog.ui
+    FeaturePickDialog.cpp
+    FeaturePickDialog.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
