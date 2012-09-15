@@ -281,6 +281,7 @@ void TaskPolarPatternParameters::onButtonReference(bool checked)
         showOriginals();
         referenceSelectionMode = true;
         Gui::Selection().clearSelection();
+        addReferenceSelectionGate(true, false);
     } else {
         exitSelectionMode();
     }
@@ -344,14 +345,6 @@ const double TaskPolarPatternParameters::getAngle(void) const
 const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 {
     return ui->spinOccurrences->value();
-}
-
-void TaskPolarPatternParameters::exitSelectionMode()
-{
-    originalSelectionMode = false;
-    referenceSelectionMode = false;
-    showObject();
-    hideOriginals();
 }
 
 

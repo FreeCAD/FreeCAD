@@ -81,7 +81,9 @@ protected:
     void showObject();
     void hideOriginals();
     void showOriginals();
+    void exitSelectionMode();
 
+    void addReferenceSelectionGate(bool edge, bool face);
 protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
@@ -89,7 +91,9 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
+
     bool originalSelectionMode;
+    bool referenceSelectionMode;
 
     /// The MultiTransform parent task of this task
     TaskMultiTransformParameters* parentTask;

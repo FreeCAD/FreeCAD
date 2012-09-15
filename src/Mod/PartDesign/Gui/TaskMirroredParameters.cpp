@@ -230,6 +230,7 @@ void TaskMirroredParameters::onButtonReference(bool checked)
         showOriginals();
         referenceSelectionMode = true;
         Gui::Selection().clearSelection();
+        addReferenceSelectionGate(false, true);
     } else {
         exitSelectionMode();
     }
@@ -274,14 +275,6 @@ const std::string TaskMirroredParameters::getStdMirrorPlane(void) const
 const std::string TaskMirroredParameters::getMirrorPlane(void) const
 {
     return ui->lineReference->text().toStdString();
-}
-
-void TaskMirroredParameters::exitSelectionMode()
-{
-    originalSelectionMode = false;
-    referenceSelectionMode = false;
-    showObject();
-    hideOriginals();
 }
 
 

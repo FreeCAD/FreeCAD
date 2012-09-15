@@ -71,13 +71,10 @@ protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
-    bool referenceSelectionMode;
-
 private:
     void onStdMirrorPlane(const std::string& plane);
     void setupUI();
     void updateUI();
-    void exitSelectionMode();
 
 private:
     Ui_TaskMirroredParameters* ui;

@@ -24,6 +24,10 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS.hxx>
+# include <BRepAdaptor_Surface.hxx>
 #endif
 
 #include "TaskTransformedParameters.h"
@@ -177,6 +181,53 @@ void TaskTransformedParameters::showOriginals()
         for (std::vector<App::DocumentObject*>::iterator it = originals.begin(); it != originals.end(); ++it)
             doc->setShow((*it)->getNameInDocument());
     }
+}
+
+void TaskTransformedParameters::exitSelectionMode()
+{
+    originalSelectionMode = false;
+    referenceSelectionMode = false;
+    Gui::Selection().rmvSelectionGate();
+    showObject();
+    hideOriginals();
+}
+
+class ReferenceSelection : public Gui::SelectionFilterGate
+{
+    const App::DocumentObject* support;
+    bool edge, plane;
+public:
+    ReferenceSelection(const App::DocumentObject* support_, bool edge_, bool plane_)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),
+          support(support_), edge(edge_), plane(plane_)
+    {
+    }
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+    {
+        if (!sSubName || sSubName[0] == '\0')
+            return false;
+        if (pObj != support)
+            return false;
+        std::string subName(sSubName);
+        if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge")
+            return true;
+        if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(support)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Face& face = TopoDS::Face(sh);
+            if (!face.IsNull()) {
+                BRepAdaptor_Surface adapt(face);
+                if (adapt.GetType() == GeomAbs_Plane)
+                    return true;
+            }
+        }
+        return false;
+    }
+};
+
+void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
+{
+    Gui::Selection().addSelectionGate(new ReferenceSelection(getSupportObject(), edge, face));
 }
 
 
