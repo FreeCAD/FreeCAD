@@ -153,6 +153,7 @@ void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChange
 void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
+        exitSelectionMode();
         disconnect(ui->checkBoxUpdateView, 0, subTask, 0);
         delete subTask;
         subTask = NULL;
