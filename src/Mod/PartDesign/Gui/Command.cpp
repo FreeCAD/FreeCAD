@@ -729,17 +729,16 @@ void CmdPartDesignMirrored::activated(int iMsg)
         features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
         subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
         features.insert(features.end(), subtractive.begin(), subtractive.end());
-        if (features.size() == 0) {
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
                 QObject::tr("Please create a subtractive or additive feature first, please"));
             return;
         }
-    }
-    // If there is more than one selected or eligible object, show dialog and let user pick one
-    if (features.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(features);
-        if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
     }
 
     std::string FeatName = getUniqueObjectName("Mirrored");
@@ -804,19 +803,17 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
         subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
         features.insert(features.end(), subtractive.begin(), subtractive.end());
-        if (features.size() == 0) {
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
                 QObject::tr("Please create a subtractive or additive feature first, please"));
             return;
         }
     }
-    // If there is more than one selected or eligible object, show dialog and let user pick one
-    if (features.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(features);
-        if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
-    }
-
 
     std::string FeatName = getUniqueObjectName("LinearPattern");
 
@@ -880,17 +877,16 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
         subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
         features.insert(features.end(), subtractive.begin(), subtractive.end());
-        if (features.size() == 0) {
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
                 QObject::tr("Please create a subtractive or additive feature first, please"));
             return;
         }
-    }
-    // If there is more than one selected or eligible object, show dialog and let user pick one
-    if (features.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(features);
-        if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
     }
 
     std::string FeatName = getUniqueObjectName("PolarPattern");
@@ -955,17 +951,16 @@ void CmdPartDesignScaled::activated(int iMsg)
         features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
         subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
         features.insert(features.end(), subtractive.begin(), subtractive.end());
-        if (features.size() == 0) {
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
                 QObject::tr("Please create a subtractive or additive feature first, please"));
             return;
         }
-    }
-    // If there is more than one selected or eligible object, show dialog and let user pick one
-    if (features.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(features);
-        if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
     }
 
     std::string FeatName = getUniqueObjectName("Scaled");
@@ -1029,17 +1024,16 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
         subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
         features.insert(features.end(), subtractive.begin(), subtractive.end());
-        if (features.size() == 0) {
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
                 QObject::tr("Please create a subtractive or additive feature first, please"));
             return;
         }
-    }
-    // If there is more than one selected or eligible object, show dialog and let user pick one
-    if (features.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(features);
-        if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
     }
 
     std::string FeatName = getUniqueObjectName("MultiTransform");
