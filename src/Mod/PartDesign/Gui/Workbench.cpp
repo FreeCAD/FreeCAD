@@ -69,6 +69,17 @@ void Workbench::activated()
 
     //Watcher.push_back(new TaskWatcherRobot);
 
+    const char* Edge[] = {
+        "PartDesign_Fillet",
+        "PartDesign_Chamfer",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
+        Edge,
+        "Edge tools",
+        "Part_Box"
+    ));
+
     const char* Face[] = {
         "Sketcher_NewSketch",
         "PartDesign_Fillet",
@@ -77,6 +88,17 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
         Face,
+        "Face tools",
+        "Part_Box"
+    ));
+
+    const char* Faces[] = {
+        "PartDesign_Fillet",
+        "PartDesign_Chamfer",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
+        Faces,
         "Face tools",
         "Part_Box"
     ));
