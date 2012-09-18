@@ -35,6 +35,7 @@
 # include <float.h>
 # include <algorithm>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoCallbackAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -154,6 +155,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderSelection(action);
     if (this->highlightIndex.getValue() >= 0)
         renderHighlight(action);
+    // When setting transparency shouldGLRender() handles the rendering and returns false.
+    // Therefore generatePrimitives() needs to be re-implemented to handle the materials
+    // correctly.
     if (!this->shouldGLRender(action))
         return;
 
@@ -209,6 +213,276 @@ void SoBrepFaceSet::GLRenderBelowPath(SoGLRenderAction * action)
 {
     inherited::GLRenderBelowPath(action);
 }
+
+  // this macro actually makes the code below more readable  :-)
+#define DO_VERTEX(idx) \
+  if (mbind == PER_VERTEX) {                  \
+    pointDetail.setMaterialIndex(matnr);      \
+    vertex.setMaterialIndex(matnr++);         \
+  }                                           \
+  else if (mbind == PER_VERTEX_INDEXED) {     \
+    pointDetail.setMaterialIndex(*mindices); \
+    vertex.setMaterialIndex(*mindices++); \
+  }                                         \
+  if (nbind == PER_VERTEX) {                \
+    pointDetail.setNormalIndex(normnr);     \
+    currnormal = &normals[normnr++];        \
+    vertex.setNormal(*currnormal);          \
+  }                                         \
+  else if (nbind == PER_VERTEX_INDEXED) {   \
+    pointDetail.setNormalIndex(*nindices);  \
+    currnormal = &normals[*nindices++];     \
+    vertex.setNormal(*currnormal);          \
+  }                                        \
+  if (tb.isFunction()) {                 \
+    vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal)); \
+    if (tb.needIndices()) pointDetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++); \
+  }                                         \
+  else if (tbind != NONE) {                      \
+    pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx); \
+    vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++)); \
+  }                                         \
+  vertex.setPoint(coords->get3(idx));        \
+  pointDetail.setCoordinateIndex(idx);      \
+  this->shapeVertex(&vertex);
+
+void SoBrepFaceSet::generatePrimitives(SoAction * action)
+{
+    //TODO
+#if 0
+    inherited::generatePrimitives(action);
+#else
+    //This is highly experimental!!!
+
+    if (this->coordIndex.getNum() < 3) return;
+
+    SoState * state = action->getState();
+
+    if (this->vertexProperty.getValue()) {
+        state->push();
+        this->vertexProperty.getValue()->doAction(action);
+    }
+
+    Binding mbind = this->findMaterialBinding(state);
+    Binding nbind = this->findNormalBinding(state);
+
+    const SoCoordinateElement * coords;
+    const SbVec3f * normals;
+    const int32_t * cindices;
+    int numindices;
+    const int32_t * nindices;
+    const int32_t * tindices;
+    const int32_t * mindices;
+    SbBool doTextures;
+    SbBool sendNormals;
+    SbBool normalCacheUsed;
+
+    sendNormals = TRUE; // always generate normals
+
+    this->getVertexData(state, coords, normals, cindices,
+                        nindices, tindices, mindices, numindices,
+                        sendNormals, normalCacheUsed);
+
+    SoTextureCoordinateBundle tb(action, FALSE, FALSE);
+    doTextures = tb.needCoordinates();
+
+    if (!sendNormals) nbind = OVERALL;
+    else if (normalCacheUsed && nbind == PER_VERTEX) {
+        nbind = PER_VERTEX_INDEXED;
+    }
+    else if (normalCacheUsed && nbind == PER_FACE_INDEXED) {
+        nbind = PER_FACE;
+    }
+
+    if (this->getNodeType() == SoNode::VRML1) {
+        // For VRML1, PER_VERTEX means per vertex in shape, not PER_VERTEX
+        // on the state.
+        if (mbind == PER_VERTEX) {
+            mbind = PER_VERTEX_INDEXED;
+            mindices = cindices;
+        }
+        if (nbind == PER_VERTEX) {
+            nbind = PER_VERTEX_INDEXED;
+            nindices = cindices;
+        }
+    }
+
+    Binding tbind = NONE;
+    if (doTextures) {
+        if (tb.isFunction() && !tb.needIndices()) {
+            tbind = NONE;
+            tindices = NULL;
+        }
+        // FIXME: just call inherited::areTexCoordsIndexed() instead of
+        // the if-check? 20020110 mortene.
+        else if (SoTextureCoordinateBindingElement::get(state) ==
+                 SoTextureCoordinateBindingElement::PER_VERTEX) {
+            tbind = PER_VERTEX;
+            tindices = NULL;
+        }
+        else {
+            tbind = PER_VERTEX_INDEXED;
+            if (tindices == NULL) tindices = cindices;
+        }
+    }
+
+    if (nbind == PER_VERTEX_INDEXED && nindices == NULL) {
+        nindices = cindices;
+    }
+    if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
+        mindices = cindices;
+    }
+
+    int texidx = 0;
+    TriangleShape mode = POLYGON;
+    TriangleShape newmode;
+    const int32_t *viptr = cindices;
+    const int32_t *viendptr = viptr + numindices;
+    const int32_t *piptr = this->partIndex.getValues(0);
+    int num_partindices = this->partIndex.getNum();
+    const int32_t *piendptr = piptr + num_partindices;
+    int32_t v1, v2, v3, v4, v5 = 0, pi; // v5 init unnecessary, but kills a compiler warning.
+
+    SoPrimitiveVertex vertex;
+    SoPointDetail pointDetail;
+    SoFaceDetail faceDetail;
+
+    vertex.setDetail(&pointDetail);
+
+    SbVec3f dummynormal(0,0,1);
+    const SbVec3f *currnormal = &dummynormal;
+    if (normals) currnormal = normals;
+    vertex.setNormal(*currnormal);
+
+    int matnr = 0;
+    int normnr = 0;
+    int trinr = 0;
+    pi = piptr < piendptr ? *piptr++ : -1;
+    while (pi == 0) {
+        // It may happen that a part has no triangles
+        pi = piptr < piendptr ? *piptr++ : -1;
+        if (mbind == PER_PART)
+            matnr++;
+        else if (mbind == PER_PART_INDEXED)
+            mindices++;
+    }
+
+    while (viptr + 2 < viendptr) {
+        v1 = *viptr++;
+        v2 = *viptr++;
+        v3 = *viptr++;
+        if (v1 < 0 || v2 < 0 || v3 < 0) {
+            break;
+        }
+        v4 = viptr < viendptr ? *viptr++ : -1;
+        if (v4  < 0) newmode = TRIANGLES;
+        else {
+            v5 = viptr < viendptr ? *viptr++ : -1;
+            if (v5 < 0) newmode = QUADS;
+            else newmode = POLYGON;
+        }
+        if (newmode != mode) {
+            if (mode != POLYGON) this->endShape();
+            mode = newmode;
+            this->beginShape(action, mode, &faceDetail);
+        }
+        else if (mode == POLYGON) this->beginShape(action, POLYGON, &faceDetail);
+
+        // vertex 1 can't use DO_VERTEX
+        if (mbind == PER_PART) {
+            if (trinr == 0) {
+                pointDetail.setMaterialIndex(matnr);
+                vertex.setMaterialIndex(matnr++);
+            }
+        }
+        else if (mbind == PER_PART_INDEXED) {
+            if (trinr == 0) {
+                pointDetail.setMaterialIndex(*mindices);
+                vertex.setMaterialIndex(*mindices++);
+            }
+        }
+        else if (mbind == PER_VERTEX || mbind == PER_FACE) {
+            pointDetail.setMaterialIndex(matnr);
+            vertex.setMaterialIndex(matnr++);
+        }
+        else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
+            pointDetail.setMaterialIndex(*mindices);
+            vertex.setMaterialIndex(*mindices++);
+        }
+        if (nbind == PER_VERTEX || nbind == PER_FACE) {
+            pointDetail.setNormalIndex(normnr);
+            currnormal = &normals[normnr++];
+            vertex.setNormal(*currnormal);
+        }
+        else if (nbind == PER_FACE_INDEXED || nbind == PER_VERTEX_INDEXED) {
+            pointDetail.setNormalIndex(*nindices);
+            currnormal = &normals[*nindices++];
+            vertex.setNormal(*currnormal);
+        }
+
+        if (tb.isFunction()) {
+            vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
+            if (tb.needIndices()) pointDetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++); 
+        }
+        else if (tbind != NONE) {
+            pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx);
+            vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
+        }
+        pointDetail.setCoordinateIndex(v1);
+        vertex.setPoint(coords->get3(v1));
+        this->shapeVertex(&vertex);
+
+        DO_VERTEX(v2);
+        DO_VERTEX(v3);
+
+        if (mode != TRIANGLES) {
+            DO_VERTEX(v4);
+            if (mode == POLYGON) {
+                DO_VERTEX(v5);
+                v1 = viptr < viendptr ? *viptr++ : -1;
+                while (v1 >= 0) {
+                    DO_VERTEX(v1);
+                    v1 = viptr < viendptr ? *viptr++ : -1;
+                }
+                this->endShape();
+            }
+        }
+        faceDetail.incFaceIndex();
+        if (mbind == PER_VERTEX_INDEXED) {
+            mindices++;
+        }
+        if (nbind == PER_VERTEX_INDEXED) {
+            nindices++;
+        }
+        if (tindices) tindices++;
+
+        trinr++;
+        if (pi == trinr) {
+            pi = piptr < piendptr ? *piptr++ : -1;
+            while (pi == 0) {
+                // It may happen that a part has no triangles
+                pi = piptr < piendptr ? *piptr++ : -1;
+                if (mbind == PER_PART)
+                    matnr++;
+                else if (mbind == PER_PART_INDEXED)
+                    mindices++;
+            }
+            trinr = 0;
+        }
+    }
+    if (mode != POLYGON) this->endShape();
+
+    if (normalCacheUsed) {
+        this->readUnlockNormalCache();
+    }
+
+    if (this->vertexProperty.getValue()) {
+        state->pop();
+    }
+#endif
+}
+
+#undef DO_VERTEX
 
 void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
 {

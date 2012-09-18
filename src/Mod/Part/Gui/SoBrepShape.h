@@ -63,6 +63,7 @@ protected:
         const SoPrimitiveVertex * v2,
         const SoPrimitiveVertex * v3,
         SoPickedPoint * pp);
+    virtual void generatePrimitives(SoAction * action);
 
 private:
     enum Binding {

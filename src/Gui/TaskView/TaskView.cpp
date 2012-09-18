@@ -132,6 +132,9 @@ public:
                   const QString &title,
                   QWidget *parent = 0)
       : iisIconLabel(icon, title, parent) {
+          // do not allow to get the focus because when hiding the task box
+          // it could cause to activate another MDI view.
+          setFocusPolicy(Qt::NoFocus);
     }
     void setTitle(const QString &text) {
         myText = text;
