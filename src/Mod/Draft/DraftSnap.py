@@ -288,8 +288,8 @@ class Snapper:
             origin = Vector(self.snapInfo['x'],self.snapInfo['y'],self.snapInfo['z'])
             winner = [Vector(0,0,0),None,Vector(0,0,0)]
             for snap in snaps:
-                if snap[0] == None:
-                    print "debug: Snapper: snap point = ",snap
+                if (not snap) or (snap[0] == None):
+                    print "debug: Snapper: invalid snap point: ",snaps
                 else:
                     delta = snap[0].sub(origin)
                     if delta.Length < shortest:

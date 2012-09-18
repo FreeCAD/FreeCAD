@@ -70,6 +70,9 @@ text45 = translate("StartPage","This is the official user manual of FreeCAD, bui
 text46 = translate("StartPage","The tutorials section on the FreeCAD website")
 text47 = translate("StartPage","The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.")
 text48 = translate("StartPage","A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community")
+text49 = translate("StartPage","Getting started")
+text50 = translate("StartPage","The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.")
+text51 = translate("StartPage","http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept")
 
 # here is the html page skeleton
 
@@ -342,7 +345,13 @@ def getLinks():
 
 def getWorkbenches():
     return """
-    <ul>    
+    <ul>
+        <li><img src="blank.png">&nbsp;
+            <a onMouseover="show('<h3>""" + text49 + """</h3> \
+            <p>""" + text50 + """</p>')" 
+            onMouseout="show('')" 
+            href=""" + text51 + """>""" + text49 + """</a>
+        </li>
         <li><img src="PartDesign.png">&nbsp;
             <a onMouseover="show('<h3>""" + text19 + """</h3> \
             <p>""" + text20 + """</p><p><small>""" + text21 + """ \
