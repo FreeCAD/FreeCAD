@@ -103,10 +103,10 @@ void Workbench::activated()
         "PartDesign_MultiTransform",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT Part::Feature",
+        "SELECT PartDesign::SketchBased",
         Transformed,
         "Transformation tools",
-        "PartDesign_Mirrored"
+        "PartDesign_MultiTransform"
     ));
 
     const char* Empty[] = {
