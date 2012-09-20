@@ -145,7 +145,10 @@ def convert(code, value):
 	elif 9 < code < 60 or 109 < code < 150 or 209 < code < 240 or 459 < code < 470 or 1009 < code < 1060:
 		value = float(value)
 	elif code == 105 or 309 < code < 380 or 389 < code < 400:
-		value = int(value, 16) # should be left as string?
+		try:
+			value = int(value, 16) # should be left as string?
+		except:
+			pass
 	else: # it's already a string so do nothing
 		pass
 	return value
