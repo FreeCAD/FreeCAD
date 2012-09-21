@@ -94,8 +94,8 @@ static char * openscadlogo_xpm[] = {
     ToolTip = "OpenSCAD workbench"
     def Initialize(self):
         import OpenSCAD_rc,OpenSCADCommands
-        commands=['ReplaceObject','RemoveSubtree','RefineShapeFeature',"ColorCodeShape","Edgestofaces",'ExpandPlacements']
-        toolbarcommands=['ReplaceObject','RemoveSubtree','RefineShapeFeature','ColorCodeShape']
+        commands=['ReplaceObject','RemoveSubtree','RefineShapeFeature',"Edgestofaces",'ExpandPlacements']
+        toolbarcommands=['ReplaceObject','RemoveSubtree','RefineShapeFeature']
         import FreeCAD
         param = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
