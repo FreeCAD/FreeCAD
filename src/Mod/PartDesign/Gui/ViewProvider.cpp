@@ -58,5 +58,9 @@ void ViewProvider::updateData(const App::Property* prop)
         strcmp(prop->getName(),"AddShape") == 0) {
         return;
     }
+    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && 
+        strcmp(prop->getName(),"SubShape") == 0) {
+        return;
+    }
     inherited::updateData(prop);
 }
