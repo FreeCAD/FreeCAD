@@ -45,11 +45,12 @@ public:
     Transformed();
 
     /** The shapes to be transformed
-        if Originals is empty the instance is just a container for storing transformation data */
+      * if Originals is empty the instance is just a container for storing transformation data
+      */
     App::PropertyLinkList Originals;
 
     /// Return first original, which serves as "Support" until Body feature becomes functional
-    App::DocumentObject* getOriginalObject() const;
+    App::DocumentObject* getSupportObject() const;
 
     /// Get the list of transformations describing the members of the pattern
     // Note: Only the Scaled feature requires the originals
@@ -72,11 +73,13 @@ public:
 
     void positionBySupport(void);
 
+    /** returns a list of the transformations that where rejected during the last execute
+      * because they did not ovelap with the support
+      */
+    const std::list<gp_Trsf> getRejectedTransformations(void) { return rejected; }
+
 protected:
-    void buildTransformHistory(BRepBuilderAPI_MakeShape& mkFuse,
-                               const TopoDS_Shape& newShape,
-                               const TopoDS_Shape& oldShape,
-                               const int index);
+    std::list<gp_Trsf> rejected;
 };
 
 } //namespace PartDesign

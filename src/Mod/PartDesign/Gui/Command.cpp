@@ -52,6 +52,8 @@
 
 using namespace std;
 
+#include "FeaturePickDialog.h"
+
 //===========================================================================
 // Part_Pad
 //===========================================================================
@@ -717,23 +719,36 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 
 void CmdPartDesignMirrored::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
-        return;
+    // Get a valid original from the user
+    // First check selections
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
+    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    features.insert(features.end(), subtractive.begin(), subtractive.end());
+    // Next create a list of all eligible objects
+    if (features.size() == 0) {
+        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
+        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+        features.insert(features.end(), subtractive.begin(), subtractive.end());
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
+                QObject::tr("Please create a subtractive or additive feature first, please"));
+            return;
+        }
     }
 
     std::string FeatName = getUniqueObjectName("Mirrored");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
+        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
+        tempSelNames.push_back((*it)->getNameInDocument());
     }
     str << "]";
 
@@ -756,9 +771,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
 
 bool CmdPartDesignMirrored::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -780,23 +793,36 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 
 void CmdPartDesignLinearPattern::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
-        return;
+    // Get a valid original from the user
+    // First check selections
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
+    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    features.insert(features.end(), subtractive.begin(), subtractive.end());
+    // Next create a list of all eligible objects
+    if (features.size() == 0) {
+        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
+        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+        features.insert(features.end(), subtractive.begin(), subtractive.end());
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
+                QObject::tr("Please create a subtractive or additive feature first, please"));
+            return;
+        }
     }
 
     std::string FeatName = getUniqueObjectName("LinearPattern");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
+        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
+        tempSelNames.push_back((*it)->getNameInDocument());
     }
     str << "]";
 
@@ -819,9 +845,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 
 bool CmdPartDesignLinearPattern::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -843,23 +867,36 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 
 void CmdPartDesignPolarPattern::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
-        return;
+    // Get a valid original from the user
+    // First check selections
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
+    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    features.insert(features.end(), subtractive.begin(), subtractive.end());
+    // Next create a list of all eligible objects
+    if (features.size() == 0) {
+        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
+        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+        features.insert(features.end(), subtractive.begin(), subtractive.end());
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
+                QObject::tr("Please create a subtractive or additive feature first, please"));
+            return;
+        }
     }
 
     std::string FeatName = getUniqueObjectName("PolarPattern");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
+        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
+        tempSelNames.push_back((*it)->getNameInDocument());
     }
     str << "]";
 
@@ -882,9 +919,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
 
 bool CmdPartDesignPolarPattern::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -906,23 +941,36 @@ CmdPartDesignScaled::CmdPartDesignScaled()
 
 void CmdPartDesignScaled::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
-        return;
+    // Get a valid original from the user
+    // First check selections
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
+    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    features.insert(features.end(), subtractive.begin(), subtractive.end());
+    // Next create a list of all eligible objects
+    if (features.size() == 0) {
+        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
+        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+        features.insert(features.end(), subtractive.begin(), subtractive.end());
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
+                QObject::tr("Please create a subtractive or additive feature first, please"));
+            return;
+        }
     }
 
     std::string FeatName = getUniqueObjectName("Scaled");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
+        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
+        tempSelNames.push_back((*it)->getNameInDocument());
     }
     str << "]";
 
@@ -944,9 +992,7 @@ void CmdPartDesignScaled::activated(int iMsg)
 
 bool CmdPartDesignScaled::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -968,23 +1014,36 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    if (n < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one or more additive/subtractive features, please."));
-        return;
+    // Get a valid original from the user
+    // First check selections
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
+    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    features.insert(features.end(), subtractive.begin(), subtractive.end());
+    // Next create a list of all eligible objects
+    if (features.size() == 0) {
+        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
+        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+        features.insert(features.end(), subtractive.begin(), subtractive.end());
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(features);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
+                QObject::tr("Please create a subtractive or additive feature first, please"));
+            return;
+        }
     }
 
     std::string FeatName = getUniqueObjectName("MultiTransform");
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
+        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
+        tempSelNames.push_back((*it)->getNameInDocument());
     }
     str << "]";
 
@@ -1002,9 +1061,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
 bool CmdPartDesignMultiTransform::isActive(void)
 {
-    unsigned n = getSelection().countObjectsOfType(PartDesign::Additive::getClassTypeId()) +
-                 getSelection().countObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    return n >= 1;
+    return hasActiveDocument();
 }
 
 

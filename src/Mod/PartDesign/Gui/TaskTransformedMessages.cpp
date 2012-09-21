@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,42 +21,48 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Feature_H
-#define PARTDESIGN_Feature_H
+#include "PreCompiled.h"
 
-#include <App/PropertyStandard.h>
-#include <Mod/Part/App/PartFeature.h>
+#ifndef _PreComp_
+#endif
 
-class gp_Pnt;
+#include "ui_TaskTransformedMessages.h"
+#include "TaskTransformedMessages.h"
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
 
+#include <boost/bind.hpp>
 
-/// Base class of all additive features in PartDesign
-namespace PartDesign
+#include "ViewProviderTransformed.h"
+
+using namespace PartDesignGui;
+using namespace Gui::TaskView;
+
+TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Transformed feature messages"),true, 0),
+      transformedView(transformedView_)
 {
+    // we need a separate container widget to add all controls to
+    proxy = new QWidget(this);
+    ui = new Ui_TaskTransformedMessages();
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
 
- /** PartDesign feature
- *   Base class of all PartDesign features.
- *   This kind of features only produce solids or fail.
- */
-class PartDesignExport Feature : public Part::Feature
+    this->groupLayout()->addWidget(proxy);
+
+    connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this,_1));
+}
+
+TaskTransformedMessages::~TaskTransformedMessages()
 {
-    PROPERTY_HEADER(PartDesign::Feature);
+    connectionDiagnosis.disconnect();
+    delete ui;
+}
 
-public:
-    Feature();
+void TaskTransformedMessages::slotDiagnosis(QString msg)
+{
+    ui->labelTransformationStatus->setText(msg);
+}
 
-protected:
-    /**
-     * Get a solid of the given shape. If no solid is found an exception is raised.
-     */
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);
-
-    /// Grab any point from the given face
-    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
-
-};
-
-} //namespace PartDesign
-
-
-#endif // PARTDESIGN_Feature_H
+#include "moc_TaskTransformedMessages.cpp"

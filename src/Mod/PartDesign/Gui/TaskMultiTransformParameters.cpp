@@ -68,35 +68,35 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     this->groupLayout()->addWidget(proxy);
 
     // Create a context menu for the listview of transformation features
-    QAction* action = new QAction(tr("Edit"), ui->listFeatures);
+    QAction* action = new QAction(tr("Edit"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformEdit()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Delete"), ui->listFeatures);
+    action = new QAction(tr("Delete"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformDelete()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add mirrored transformation"), ui->listFeatures);
+    action = new QAction(tr("Add mirrored transformation"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddMirrored()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add linear pattern"), ui->listFeatures);
+    action = new QAction(tr("Add linear pattern"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddLinearPattern()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add polar pattern"), ui->listFeatures);
+    action = new QAction(tr("Add polar pattern"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddPolarPattern()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add scaled transformation"), ui->listFeatures);
+    action = new QAction(tr("Add scaled transformation"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformAddScaled()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Move up"), ui->listFeatures);
+    action = new QAction(tr("Move up"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onMoveUp()));
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Move down"), ui->listFeatures);
+    action = new QAction(tr("Move down"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onMoveDown()));
     ui->listTransformFeatures->addAction(action);
@@ -127,51 +127,34 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         editHint = true;
     }
 
-    // TODO: The following code could be generic in TaskTransformedParameters
-    // if it were possible to make ui_TaskMultiTransformParameters a subclass of
-    // ui_TaskTransformedParameters
-    // ---------------------
-    // Add a context menu to the listview of the originals to delete items
-    action = new QAction(tr("Delete"), ui->listFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onOriginalDeleted()));
-    ui->listFeatures->addAction(action);
-    ui->listFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     // Get the Originals data
     std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->listFeatures->setEnabled(true);
-    ui->listFeatures->clear();
+    ui->lineOriginal->setEnabled(false); // This is never enabled since it is for optical feed-back only
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL)
-            ui->listFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
+        if ((*i) != NULL) { // find the first valid original
+            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            break;
+        }
     }
-    QMetaObject::invokeMethod(ui->listFeatures, "setFocus", Qt::QueuedConnection);
     // ---------------------
 }
 
 void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
-    App::DocumentObject* selectedObject = pcMultiTransform->getDocument()->getActiveObject();
-    if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
-
-    if (featureSelectionMode) {
-        if (originalSelected(msg))
-            ui->listFeatures->addItem(QString::fromAscii(selectedObject->getNameInDocument()));
-    } else {
-        // There is no reference that could be selected... must be an error to arrive here at all!
-        featureSelectionMode = true;
+    if (originalSelected(msg)) {
+        App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
+        ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
     }
 }
 
 void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
+        exitSelectionMode();
+        disconnect(ui->checkBoxUpdateView, 0, subTask, 0);
         delete subTask;
         subTask = NULL;
     }
@@ -184,14 +167,15 @@ void TaskMultiTransformParameters::onTransformDelete()
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
-    App::DocumentObject* feature = *(transformFeatures.begin() + row);
+    App::DocumentObject* feature = transformFeatures[row];
     pcMultiTransform->getDocument()->remObject(feature->getNameInDocument());
     closeSubTask();
 
     transformFeatures.erase(transformFeatures.begin() + row);
-    pcMultiTransform->Transformations.setValues(transformFeatures);    
-    if (ui->checkBoxUpdateView->isChecked())
-        pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
+    pcMultiTransform->Transformations.setValues(transformFeatures);
+    // Note: When the last transformation is deleted, recomputeFeature does nothing, because Transformed::execute()
+    // says: "No transformations defined, exit silently"
+    recomputeFeature();
 
     ui->listTransformFeatures->model()->removeRow(row);
     ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -217,6 +201,9 @@ void TaskMultiTransformParameters::onTransformEdit()
         subTask = new TaskScaledParameters(this, ui->verticalLayout);
     else
         return; // TODO: Show an error?
+
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            subTask, SLOT(onUpdateView(bool)));
 }
 
 void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index) {
@@ -230,7 +217,7 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
 
     Gui::Command::openCommand("Mirrored");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Mirrored\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdMirrorPlane = \"XY\"", newFeatName.c_str());
 
     finishAdd(newFeatName);
@@ -243,7 +230,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
 
     Gui::Command::openCommand("LinearPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdDirection = \"X\"", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Length = 100", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
@@ -258,7 +245,7 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
 
     Gui::Command::openCommand("PolarPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdAxis = \"X\"", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Angle = 360", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
@@ -273,7 +260,7 @@ void TaskMultiTransformParameters::onTransformAddScaled()
 
     Gui::Command::openCommand("Scaled");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Scaled\",\"%s\")",newFeatName.c_str());
-    Gui::Command::updateActive();
+    //Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Factor = 2", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 
@@ -294,11 +281,12 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
     int row = ui->listTransformFeatures->currentIndex().row();
     if (row < 0) {
         // Happens when first row (first transformation) is created
-        row = 0;
         // Hide all the originals now (hiding them in Command.cpp presents the user with an empty screen!)
         hideOriginals();
     }
 
+    // Insert new transformation after the selected row
+    // This means that in order to insert at the beginning, the user has to use "Move Up" in the menu
     App::DocumentObject* newFeature = pcMultiTransform->getDocument()->getObject(newFeatName.c_str());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
     if (row == ui->listTransformFeatures->model()->rowCount() - 1) {
@@ -308,14 +296,14 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
         ui->listTransformFeatures->addItem(QString::fromAscii(newFeature->Label.getValue()));
         ui->listTransformFeatures->setCurrentRow(row+1, QItemSelectionModel::ClearAndSelect);
     } else {
-        transformFeatures.insert(transformFeatures.begin() + row, newFeature);
-        ui->listTransformFeatures->insertItem(row, QString::fromAscii(newFeature->Label.getValue()));
-        ui->listTransformFeatures->setCurrentRow(row, QItemSelectionModel::ClearAndSelect);
+        // Note: The feature tree always seems to append to the end, no matter what we say here
+        transformFeatures.insert(transformFeatures.begin() + row + 1, newFeature);
+        ui->listTransformFeatures->insertItem(row + 1, QString::fromAscii(newFeature->Label.getValue()));
+        ui->listTransformFeatures->setCurrentRow(row + 1, QItemSelectionModel::ClearAndSelect);
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);
 
-    if (ui->checkBoxUpdateView->isChecked())
-        pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
+    recomputeFeature();
 
     // Set state to hidden - only the MultiTransform should be visible
     Gui::Command::doCommand(
@@ -331,7 +319,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
-    App::DocumentObject* feature = *(transformFeatures.begin() + row);
+    App::DocumentObject* feature = transformFeatures[row];
     transformFeatures.erase(transformFeatures.begin() + row);
     QListWidgetItem* item = new QListWidgetItem(*(ui->listTransformFeatures->item(row)));
     ui->listTransformFeatures->model()->removeRow(row);
@@ -355,8 +343,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     }
 
     pcMultiTransform->Transformations.setValues(transformFeatures);
-    if (ui->checkBoxUpdateView->isChecked())
-        pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
+    recomputeFeature();
 }
 
 void TaskMultiTransformParameters::onMoveUp()
@@ -373,18 +360,12 @@ void TaskMultiTransformParameters::onSubTaskButtonOK() {
     closeSubTask();
 }
 
-void TaskMultiTransformParameters::onOriginalDeleted()
-{
-    int row = ui->listFeatures->currentIndex().row();
-    TaskTransformedParameters::onOriginalDeleted(row);
-    ui->listFeatures->model()->removeRow(row);
-}
-
 void TaskMultiTransformParameters::onUpdateView(bool on)
 {
-    ui->listFeatures->blockSignals(!on);
+    blockUpdate = !on;
+    if (on)
+        recomputeFeature();
 }
-
 
 const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures(void) const
 {
@@ -406,16 +387,6 @@ void TaskMultiTransformParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
-}
-
-void TaskMultiTransformParameters::recomputeFeature() {
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
-    pcMultiTransform->getDocument()->recomputeFeature(pcMultiTransform);
-}
-
-const bool TaskMultiTransformParameters::updateView() const
-{
-    return ui->checkBoxUpdateView->isChecked();
 }
 
 //**************************************************************************

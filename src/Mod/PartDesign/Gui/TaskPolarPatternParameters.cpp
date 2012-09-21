@@ -29,6 +29,7 @@
 
 #include "ui_TaskPolarPatternParameters.h"
 #include "TaskPolarPatternParameters.h"
+#include "TaskMultiTransformParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -41,7 +42,6 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include "TaskMultiTransformParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -62,7 +62,9 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *
     ui->buttonOK->hide();
     ui->checkBoxUpdateView->setEnabled(true);
 
-    updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    referenceSelectionMode = false;
+
+    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
@@ -79,10 +81,13 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->listFeatures->hide();
+    ui->labelOriginal->hide();
+    ui->lineOriginal->hide();
     ui->checkBoxUpdateView->hide();
 
-    updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    referenceSelectionMode = false;
+
+    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
@@ -100,35 +105,24 @@ void TaskPolarPatternParameters::setupUI()
             this, SLOT(onAngle(double)));
     connect(ui->spinOccurrences, SIGNAL(valueChanged(int)),
             this, SLOT(onOccurrences(int)));
-    connect(ui->buttonReference, SIGNAL(pressed()),
-            this, SLOT(onButtonReference()));
+    connect(ui->buttonReference, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonReference(bool)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
-
-    // TODO: The following code could be generic in TaskTransformedParameters
-    // if it were possible to make ui_TaskPolarPatternParameters a subclass of
-    // ui_TaskTransformedParameters
-    // ---------------------
-    // Add a context menu to the listview of the originals to delete items
-    QAction* action = new QAction(tr("Delete"), ui->listFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onOriginalDeleted()));
-    ui->listFeatures->addAction(action);
-    ui->listFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     // Get the feature data
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->listFeatures->setEnabled(true);
-    ui->listFeatures->clear();
+    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL)
-            ui->listFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
+        if ((*i) != NULL) { // find the first valid original
+            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            break;
+        }
     }
-    QMetaObject::invokeMethod(ui->listFeatures, "setFocus", Qt::QueuedConnection);
     // ---------------------
 
     ui->buttonX->setEnabled(true);
@@ -144,8 +138,9 @@ void TaskPolarPatternParameters::setupUI()
 
 void TaskPolarPatternParameters::updateUI()
 {
-    if (updateUIinProgress) return;
-    updateUIinProgress = true;
+    if (blockUpdate)
+        return;
+    blockUpdate = true;
 
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
@@ -156,9 +151,9 @@ void TaskPolarPatternParameters::updateUI()
     double angle = pcPolarPattern->Angle.getValue();
     unsigned occurrences = pcPolarPattern->Occurrences.getValue();
 
-    if ((featureSelectionMode || insideMultiTransform) && !stdAxis.empty())
+    ui->buttonReference->setChecked(referenceSelectionMode);
+    if (!stdAxis.empty())
     {
-        ui->buttonReference->setDown(false);
         ui->buttonX->setAutoExclusive(true);
         ui->buttonY->setAutoExclusive(true);
         ui->buttonZ->setAutoExclusive(true);
@@ -166,80 +161,60 @@ void TaskPolarPatternParameters::updateUI()
         ui->buttonY->setChecked(stdAxis == "Y");
         ui->buttonZ->setChecked(stdAxis == "Z");
         ui->lineReference->setText(tr(""));
-    } else if ((axisFeature != NULL) && !axes.empty()) {
+    } else if (axisFeature != NULL && !axes.empty()) {
         ui->buttonX->setAutoExclusive(false);
         ui->buttonY->setAutoExclusive(false);
         ui->buttonZ->setAutoExclusive(false);
         ui->buttonX->setChecked(false);
         ui->buttonY->setChecked(false);
         ui->buttonZ->setChecked(false);
-        ui->buttonReference->setDown(!featureSelectionMode);
         ui->lineReference->setText(QString::fromAscii(axes.front().c_str()));
     } else {
         // Error message?
         ui->lineReference->setText(tr(""));
     }
+    if (referenceSelectionMode)
+        ui->lineReference->setText(tr("Select an edge"));
 
     ui->checkReverse->setChecked(reverse);
     ui->spinAngle->setValue(angle);
     ui->spinOccurrences->setValue(occurrences);
 
-    updateUIinProgress = false;
+    blockUpdate = false;
 }
 
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    App::DocumentObject* selectedObject = pcPolarPattern->getDocument()->getActiveObject();
-    if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
 
-    if (featureSelectionMode) {
-        if (originalSelected(msg))
-            ui->listFeatures->addItem(QString::fromAscii(selectedObject->getNameInDocument()));
-    } else {
-        if (!msg.pSubName || msg.pSubName[0] == '\0')
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return;
 
-        std::string element(msg.pSubName);
+        std::string subName(msg.pSubName);
+        if (originalSelected(msg)) {
+            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
+        } else if (referenceSelectionMode &&
+                   (subName.size() > 4 && subName.substr(0,4) == "Edge")) {
 
-        if (msg.Type == Gui::SelectionChanges::AddSelection) {
-
-            if (element.substr(0,4) != "Edge")
+            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
                 return;
 
-            // TODO
-//            if (originalElementName == "") {
-//                Base::Console().Error("Element created by this pattern cannot be used for axis\n");
-//                return;
-//            }
+            exitSelectionMode();
+            if (!blockUpdate) {
+                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+                std::vector<std::string> axes(1,subName);
+                pcPolarPattern->Axis.setValue(getSupportObject(), axes);
+                pcPolarPattern->StdAxis.setValue("");
 
-            std::vector<std::string> axes;
-            axes.push_back(element.c_str());
-            pcPolarPattern->Axis.setValue(getOriginalObject(), axes);
-
-            if (insideMultiTransform) {
-                if (parentTask->updateView())
-                    recomputeFeature();
-            } else
-                if (ui->checkBoxUpdateView->isChecked())
-                    recomputeFeature();
-
-            if (!insideMultiTransform)
-                featureSelectionMode = true; // Jump back to selection of originals
-
-            showObject();
-            hideOriginals();
-            updateUI();
+                recomputeFeature();
+                updateUI();
+            }
+            else {
+                ui->buttonReference->setChecked(referenceSelectionMode);
+                ui->lineReference->setText(QString::fromAscii(subName.c_str()));
+            }
         }
     }
-}
-
-void TaskPolarPatternParameters::onOriginalDeleted()
-{
-    int row = ui->listFeatures->currentIndex().row();
-    TaskTransformedParameters::onOriginalDeleted(row);
-    ui->listFeatures->model()->removeRow(row);
 }
 
 void TaskPolarPatternParameters::onButtonX() {
@@ -255,104 +230,106 @@ void TaskPolarPatternParameters::onButtonZ() {
 }
 
 void TaskPolarPatternParameters::onCheckReverse(const bool on) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->Reversed.setValue(on);
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
 void TaskPolarPatternParameters::onAngle(const double a) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->Angle.setValue(a);
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
 void TaskPolarPatternParameters::onOccurrences(const int n) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->Occurrences.setValue(n);
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
 void TaskPolarPatternParameters::onStdAxis(const std::string& axis) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->StdAxis.setValue(axis.c_str());
     pcPolarPattern->Axis.setValue(NULL);
-    if (!insideMultiTransform)
-        featureSelectionMode = true;
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
-void TaskPolarPatternParameters::onButtonReference()
+void TaskPolarPatternParameters::onButtonReference(bool checked)
 {
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    pcPolarPattern->StdAxis.setValue("");
-    featureSelectionMode = false;
-    hideObject();
-    showOriginals();
+    if (checked ) {
+        hideObject();
+        showOriginals();
+        referenceSelectionMode = true;
+        Gui::Selection().clearSelection();
+        addReferenceSelectionGate(true, false);
+    } else {
+        exitSelectionMode();
+    }
     updateUI();
 }
 
 void TaskPolarPatternParameters::onUpdateView(bool on)
 {
-    ui->buttonX->blockSignals(!on);
-    ui->buttonY->blockSignals(!on);
-    ui->buttonZ->blockSignals(!on);
-    ui->listFeatures->blockSignals(!on);
-    ui->checkReverse->blockSignals(!on);
-    ui->spinAngle->blockSignals(!on);
-    ui->spinOccurrences->blockSignals(!on);
+    blockUpdate = !on;
+    if (on) {
+        // Do the same like in TaskDlgPolarPatternParameters::accept() but without doCommand
+        PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+
+        std::string axis = getAxis();
+        if (!axis.empty()) {
+            std::vector<std::string> axes(1,axis);
+            pcPolarPattern->Axis.setValue(getSupportObject(),axes);
+        } else
+            pcPolarPattern->Axis.setValue(NULL);
+
+        std::string stdAxis = getStdAxis();
+        if (!stdAxis.empty())
+            pcPolarPattern->StdAxis.setValue(stdAxis.c_str());
+        else
+            pcPolarPattern->StdAxis.setValue(NULL);
+
+        pcPolarPattern->Reversed.setValue(getReverse());
+        pcPolarPattern->Angle.setValue(getAngle());
+        pcPolarPattern->Occurrences.setValue(getOccurrences());
+
+        recomputeFeature();
+    }
 }
 
 const std::string TaskPolarPatternParameters::getStdAxis(void) const
 {
-    std::string stdAxis;
-
     if (ui->buttonX->isChecked())
-        stdAxis = "X";
+        return std::string("X");
     else if (ui->buttonY->isChecked())
-        stdAxis = "Y";
+        return std::string("Y");
     else if (ui->buttonZ->isChecked())
-        stdAxis = "Z";
-
-    if (!stdAxis.empty())
-        return std::string("\"") + stdAxis + "\"";
-    else
-        return std::string("");
+        return std::string("Z");
+    return std::string("");
 }
 
-const QString TaskPolarPatternParameters::getAxis(void) const
+const std::string TaskPolarPatternParameters::getAxis(void) const
 {
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    App::DocumentObject* feature = pcPolarPattern->Axis.getValue();
-    if (feature == NULL)
-        return QString::fromUtf8("");
-    std::vector<std::string> axes = pcPolarPattern->Axis.getSubValues();
-    QString buf;
-
-    if ((feature != NULL) && !axes.empty()) {
-        buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(feature->getNameInDocument()));
-        buf = buf.arg(QString::fromUtf8(axes.front().c_str()));
-    }
-    else
-        buf = QString::fromUtf8("");
-
-    return buf;
+    return ui->lineReference->text().toStdString();
 }
 
 const bool TaskPolarPatternParameters::getReverse(void) const
@@ -369,6 +346,7 @@ const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 {
     return ui->spinOccurrences->value();
 }
+
 
 TaskPolarPatternParameters::~TaskPolarPatternParameters()
 {
@@ -410,12 +388,16 @@ bool TaskDlgPolarPatternParameters::accept()
             return false;
 
         TaskPolarPatternParameters* polarpatternParameter = static_cast<TaskPolarPatternParameters*>(parameter);
-        std::string axis = polarpatternParameter->getAxis().toStdString();
-        if (!axis.empty())
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), axis.c_str());
+        std::string axis = polarpatternParameter->getAxis();
+        if (!axis.empty()) {
+            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            buf = buf.arg(QString::fromUtf8(polarpatternParameter->getSupportObject()->getNameInDocument()));
+            buf = buf.arg(QString::fromUtf8(axis.c_str()));
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), buf.toStdString().c_str());
+        } else
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = None", name.c_str());
         std::string stdAxis = polarpatternParameter->getStdAxis();
-        if (!stdAxis.empty())
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.StdAxis = %s",name.c_str(),stdAxis.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.StdAxis = \"%s\"",name.c_str(),stdAxis.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),polarpatternParameter->getReverse());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),polarpatternParameter->getAngle());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(),polarpatternParameter->getOccurrences());

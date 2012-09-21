@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>225</width>
-    <height>559</height>
+    <height>182</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,14 +15,18 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Originals</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QListWidget" name="listFeatures"/>
+    <layout class="QHBoxLayout" name="horizontalLayoutOriginal">
+     <item>
+      <widget class="QLabel" name="labelOriginal">
+       <property name="text">
+        <string>Original feature</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineOriginal"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
@@ -32,7 +36,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="listTransformFeatures"/>
+    <widget class="QListWidget" name="listTransformFeatures">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>80</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxUpdateView">

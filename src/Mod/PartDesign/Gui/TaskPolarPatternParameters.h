@@ -56,8 +56,8 @@ public:
     TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskPolarPatternParameters();
 
-    const QString getAxis(void) const;
     const std::string getStdAxis(void) const;
+    const std::string getAxis(void) const;
     const bool getReverse(void) const;
     const double getAngle(void) const;
     const unsigned getOccurrences(void) const;
@@ -70,8 +70,7 @@ private Q_SLOTS:
     void onCheckReverse(const bool on);
     void onAngle(const double a);
     void onOccurrences(const int n);
-    virtual void onButtonReference();
-    virtual void onOriginalDeleted();
+    void onButtonReference(const bool checked);
     virtual void onUpdateView(bool);
 
 protected:
@@ -79,8 +78,8 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    void updateUI();
     void setupUI();
+    void updateUI();
 
 private:
     Ui_TaskPolarPatternParameters* ui;

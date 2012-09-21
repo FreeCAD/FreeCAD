@@ -41,7 +41,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 class TaskMultiTransformParameters;
 
@@ -56,8 +56,8 @@ public:
     TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskLinearPatternParameters();
 
-    const QString getDirection(void) const;
     const std::string getStdDirection(void) const;
+    const std::string getDirection(void) const;
     const bool getReverse(void) const;
     const double getLength(void) const;
     const unsigned getOccurrences(void) const;
@@ -70,17 +70,16 @@ private Q_SLOTS:
     void onCheckReverse(const bool on);
     void onLength(const double l);
     void onOccurrences(const int n);
-    virtual void onButtonReference();
-    virtual void onOriginalDeleted();
+    void onButtonReference(const bool checked);
     virtual void onUpdateView(bool);
 
-protected:    
+protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    void updateUI();
     void setupUI();
+    void updateUI();
 
 private:
     Ui_TaskLinearPatternParameters* ui;

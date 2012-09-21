@@ -25,6 +25,7 @@ set(PartDesignGui_LIBS
 )
 
 set(PartDesignGui_MOC_HDRS
+    FeaturePickDialog.h
     TaskPadParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h
@@ -32,6 +33,7 @@ set(PartDesignGui_MOC_HDRS
     TaskHoleParameters.h
     TaskRevolutionParameters.h
     TaskGrooveParameters.h
+    TaskTransformedMessages.h
     TaskTransformedParameters.h
     TaskMirroredParameters.h
     TaskLinearPatternParameters.h
@@ -45,6 +47,7 @@ SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
 qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
 
 set(PartDesignGui_UIC_SRCS
+    FeaturePickDialog.ui
     TaskPadParameters.ui
     TaskPocketParameters.ui
     TaskChamferParameters.ui
@@ -52,6 +55,7 @@ set(PartDesignGui_UIC_SRCS
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
     TaskGrooveParameters.ui
+    TaskTransformedMessages.ui
     TaskMirroredParameters.ui
     TaskLinearPatternParameters.ui
     TaskPolarPatternParameters.ui
@@ -93,6 +97,9 @@ SET(PartDesignGuiViewProvider_SRCS
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
 SET(PartDesignGuiTaskDlgs_SRCS
+    FeaturePickDialog.ui
+    FeaturePickDialog.cpp
+    FeaturePickDialog.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
@@ -111,8 +118,11 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskGrooveParameters.ui
     TaskGrooveParameters.cpp
     TaskGrooveParameters.h
-    TaskTransformedParameters.h
+    TaskTransformedMessages.ui
+    TaskTransformedMessages.cpp
+    TaskTransformedMessages.h
     TaskTransformedParameters.cpp
+    TaskTransformedParameters.h
     TaskMirroredParameters.ui
     TaskMirroredParameters.cpp
     TaskMirroredParameters.h

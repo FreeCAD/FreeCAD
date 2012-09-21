@@ -29,6 +29,7 @@
 
 #include "ui_TaskLinearPatternParameters.h"
 #include "TaskLinearPatternParameters.h"
+#include "TaskMultiTransformParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -41,7 +42,6 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include "TaskMultiTransformParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -62,7 +62,9 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed
     ui->buttonOK->hide();
     ui->checkBoxUpdateView->setEnabled(true);
 
-    updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    referenceSelectionMode = false;
+
+    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
@@ -79,10 +81,13 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->listFeatures->hide();
+    ui->labelOriginal->hide();
+    ui->lineOriginal->hide();
     ui->checkBoxUpdateView->hide();
 
-    updateUIinProgress = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    referenceSelectionMode = false;
+
+    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
@@ -100,35 +105,24 @@ void TaskLinearPatternParameters::setupUI()
             this, SLOT(onLength(double)));
     connect(ui->spinOccurrences, SIGNAL(valueChanged(int)),
             this, SLOT(onOccurrences(int)));
-    connect(ui->buttonReference, SIGNAL(pressed()),
-            this, SLOT(onButtonReference()));
+    connect(ui->buttonReference, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonReference(bool)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
-
-    // TODO: The following code could be generic in TaskTransformedParameters
-    // if it were possible to make ui_TaskLinearPatternParameters a subclass of
-    // ui_TaskTransformedParameters
-    // ---------------------
-    // Add a context menu to the listview of the originals to delete items
-    QAction* action = new QAction(tr("Delete"), ui->listFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onOriginalDeleted()));
-    ui->listFeatures->addAction(action);
-    ui->listFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     // Get the feature data
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     std::vector<App::DocumentObject*> originals = pcLinearPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->listFeatures->setEnabled(true);
-    ui->listFeatures->clear();
+    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL)
-            ui->listFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
+        if ((*i) != NULL) { // find the first valid original
+            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
+            break;
+        }
     }
-    QMetaObject::invokeMethod(ui->listFeatures, "setFocus", Qt::QueuedConnection);
     // ---------------------
 
     ui->buttonX->setEnabled(true);
@@ -144,8 +138,10 @@ void TaskLinearPatternParameters::setupUI()
 
 void TaskLinearPatternParameters::updateUI()
 {
-    if (updateUIinProgress) return;
-    updateUIinProgress = true;
+    if (blockUpdate)
+        return;
+    blockUpdate = true;
+
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
     App::DocumentObject* directionFeature = pcLinearPattern->Direction.getValue();
@@ -155,9 +151,9 @@ void TaskLinearPatternParameters::updateUI()
     double length = pcLinearPattern->Length.getValue();
     unsigned occurrences = pcLinearPattern->Occurrences.getValue();
 
-    if ((featureSelectionMode || insideMultiTransform) && !stdDirection.empty())
+    ui->buttonReference->setChecked(referenceSelectionMode);
+    if (!stdDirection.empty())
     {
-        ui->buttonReference->setDown(false);
         ui->buttonX->setAutoExclusive(true);
         ui->buttonY->setAutoExclusive(true);
         ui->buttonZ->setAutoExclusive(true);
@@ -165,78 +161,63 @@ void TaskLinearPatternParameters::updateUI()
         ui->buttonY->setChecked(stdDirection == "Y");
         ui->buttonZ->setChecked(stdDirection == "Z");
         ui->lineReference->setText(tr(""));
-    } else if ((directionFeature != NULL) && !directions.empty()) {
+    } else if (directionFeature != NULL && !directions.empty()) {
         ui->buttonX->setAutoExclusive(false);
         ui->buttonY->setAutoExclusive(false);
         ui->buttonZ->setAutoExclusive(false);
         ui->buttonX->setChecked(false);
         ui->buttonY->setChecked(false);
         ui->buttonZ->setChecked(false);
-        ui->buttonReference->setDown(!featureSelectionMode);
         ui->lineReference->setText(QString::fromAscii(directions.front().c_str()));
     } else {
         // Error message?
         ui->lineReference->setText(tr(""));
     }
+    if (referenceSelectionMode)
+        ui->lineReference->setText(tr("Select an edge or a face"));
 
     // Note: These three lines would trigger onLength(), on Occurrences() and another updateUI() if we
-    // didn't check for updateUIinProgress
+    // didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
     ui->spinLength->setValue(length);
     ui->spinOccurrences->setValue(occurrences);
 
-    updateUIinProgress = false;
+    blockUpdate = false;
 }
 
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    App::DocumentObject* selectedObject = pcLinearPattern->getDocument()->getActiveObject();
-    if ((selectedObject == NULL) || !selectedObject->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
 
-    if (featureSelectionMode) {
-        if (originalSelected(msg))
-            ui->listFeatures->addItem(QString::fromAscii(selectedObject->getNameInDocument()));
-    } else {
-        if (!msg.pSubName || msg.pSubName[0] == '\0')
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return;
 
-        std::string element(msg.pSubName);
+        std::string subName(msg.pSubName);
+        if (originalSelected(msg)) {
+            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
+        } else if (referenceSelectionMode &&
+                   ((subName.size() > 4 && subName.substr(0,4) == "Edge") ||
+                    (subName.size() > 4 && subName.substr(0,4) == "Face"))) {
 
-        if (msg.Type == Gui::SelectionChanges::AddSelection) {
-            // TODO
-//            if (originalElementName == "") {
-//                Base::Console().Error("Element created by this pattern cannot be used for direction\n");
-//                return;
-//            }
+            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
+                return;
 
-            std::vector<std::string> directions;
-            directions.push_back(element.c_str());
-            pcLinearPattern->Direction.setValue(getOriginalObject(), directions);
+            exitSelectionMode();
+            if (!blockUpdate) {
+                PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+                std::vector<std::string> directions(1,subName);
+                pcLinearPattern->Direction.setValue(getSupportObject(), directions);
+                pcLinearPattern->StdDirection.setValue("");
 
-            if (insideMultiTransform) {
-                if (parentTask->updateView())
-                    recomputeFeature();
-            } else
-                if (ui->checkBoxUpdateView->isChecked())
-                    recomputeFeature();
-
-            if (!insideMultiTransform)
-                featureSelectionMode = true; // Jump back to selection of originals
-
-            showObject();
-            hideOriginals();
-            updateUI();
+                recomputeFeature();
+                updateUI();
+            }
+            else {
+                ui->buttonReference->setChecked(referenceSelectionMode);
+                ui->lineReference->setText(QString::fromAscii(subName.c_str()));
+            }
         }
     }
-}
-
-void TaskLinearPatternParameters::onOriginalDeleted()
-{
-    int row = ui->listFeatures->currentIndex().row();
-    TaskTransformedParameters::onOriginalDeleted(row);
-    ui->listFeatures->model()->removeRow(row);
 }
 
 void TaskLinearPatternParameters::onButtonX() {
@@ -252,117 +233,123 @@ void TaskLinearPatternParameters::onButtonZ() {
 }
 
 void TaskLinearPatternParameters::onCheckReverse(const bool on) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->Reversed.setValue(on);
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
 void TaskLinearPatternParameters::onLength(const double l) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->Length.setValue(l);
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
 void TaskLinearPatternParameters::onOccurrences(const int n) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->Occurrences.setValue(n);
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
 void TaskLinearPatternParameters::onStdDirection(const std::string& dir) {
-    if (updateUIinProgress) return;
+    if (blockUpdate)
+        return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->StdDirection.setValue(dir.c_str());
     pcLinearPattern->Direction.setValue(NULL);
-    if (!insideMultiTransform)
-        featureSelectionMode = true;
+
+    exitSelectionMode();
     updateUI();
-    if (insideMultiTransform && !parentTask->updateView())
-        return;
     recomputeFeature();
 }
 
-void TaskLinearPatternParameters::onButtonReference()
+void TaskLinearPatternParameters::onButtonReference(bool checked)
 {
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->StdDirection.setValue("");
-    featureSelectionMode = false;
-    hideObject();
-    showOriginals();
+    if (checked ) {
+        hideObject();
+        showOriginals();
+        referenceSelectionMode = true;
+        Gui::Selection().clearSelection();
+        addReferenceSelectionGate(true, true);
+    } else {
+        exitSelectionMode();
+    }
     updateUI();
 }
 
 void TaskLinearPatternParameters::onUpdateView(bool on)
 {
-    ui->buttonX->blockSignals(!on);
-    ui->buttonY->blockSignals(!on);
-    ui->buttonZ->blockSignals(!on);
-    ui->listFeatures->blockSignals(!on);
-    ui->checkReverse->blockSignals(!on);
-    ui->spinLength->blockSignals(!on);
-    ui->spinOccurrences->blockSignals(!on);
+    blockUpdate = !on;
+    if (on) {
+        // Do the same like in TaskDlgLinearPatternParameters::accept() but without doCommand
+        PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+
+        std::string direction = getDirection();
+        if (!direction.empty()) {
+            std::vector<std::string> directions(1,direction);
+            pcLinearPattern->Direction.setValue(getSupportObject(), directions);
+        } else
+            pcLinearPattern->Direction.setValue(NULL);
+
+        std::string stdDirection = getStdDirection();
+        if (!stdDirection.empty())
+            pcLinearPattern->StdDirection.setValue(stdDirection.c_str());
+        else
+            pcLinearPattern->StdDirection.setValue(NULL);
+
+        pcLinearPattern->Reversed.setValue(getReverse());
+        pcLinearPattern->Length.setValue(getLength());
+        pcLinearPattern->Occurrences.setValue(getOccurrences());
+
+        recomputeFeature();
+    }
 }
 
 const std::string TaskLinearPatternParameters::getStdDirection(void) const
 {
-    std::string stdDirection;
-
     if (ui->buttonX->isChecked())
-        stdDirection = "X";
+        return std::string("X");
     else if (ui->buttonY->isChecked())
-        stdDirection = "Y";
+        return std::string("Y");
     else if (ui->buttonZ->isChecked())
-        stdDirection = "Z";
-
-    if (!stdDirection.empty())
-        return std::string("\"") + stdDirection + "\"";
-    else
-        return std::string("");
+        return std::string("Z");
+    return std::string("");
 }
 
-const QString TaskLinearPatternParameters::getDirection(void) const
+const std::string TaskLinearPatternParameters::getDirection(void) const
 {
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    App::DocumentObject* feature = pcLinearPattern->Direction.getValue();
-    if (feature == NULL)
-        return QString::fromUtf8("");
-    std::vector<std::string> directions = pcLinearPattern->Direction.getSubValues();
-    QString buf;
-
-    if ((feature != NULL) && !directions.empty()) {
-        buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(feature->getNameInDocument()));
-        buf = buf.arg(QString::fromUtf8(directions.front().c_str()));
-    }
-    else
-        buf = QString::fromUtf8("");
-
-    return buf;
+    return ui->lineReference->text().toStdString();
 }
 
-const bool TaskLinearPatternParameters::getReverse(void) const {
+const bool TaskLinearPatternParameters::getReverse(void) const
+{
     return ui->checkReverse->isChecked();
 }
 
-const double TaskLinearPatternParameters::getLength(void) const {
+const double TaskLinearPatternParameters::getLength(void) const
+{
     return ui->spinLength->value();
 }
 
-const unsigned TaskLinearPatternParameters::getOccurrences(void) const {
+const unsigned TaskLinearPatternParameters::getOccurrences(void) const
+{
     return ui->spinOccurrences->value();
 }
+
 
 TaskLinearPatternParameters::~TaskLinearPatternParameters()
 {
@@ -404,12 +391,16 @@ bool TaskDlgLinearPatternParameters::accept()
             return false;
 
         TaskLinearPatternParameters* linearpatternParameter = static_cast<TaskLinearPatternParameters*>(parameter);
-        std::string direction = linearpatternParameter->getDirection().toStdString();
-        if (!direction.empty())
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), direction.c_str());
+        std::string direction = linearpatternParameter->getDirection();
+        if (!direction.empty()) {
+            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            buf = buf.arg(QString::fromUtf8(linearpatternParameter->getSupportObject()->getNameInDocument()));
+            buf = buf.arg(QString::fromUtf8(direction.c_str()));
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), buf.toStdString().c_str());
+        } else
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = None", name.c_str());
         std::string stdDirection = linearpatternParameter->getStdDirection();
-        if (!stdDirection.empty())
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.StdDirection = %s",name.c_str(),stdDirection.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.StdDirection = \"%s\"",name.c_str(),stdDirection.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),linearpatternParameter->getReverse());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),linearpatternParameter->getLength());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(),linearpatternParameter->getOccurrences());
