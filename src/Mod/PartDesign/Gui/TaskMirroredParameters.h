@@ -41,7 +41,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 class TaskMultiTransformParameters;
 
@@ -57,18 +57,17 @@ public:
 
     virtual ~TaskMirroredParameters();
 
-    const QString getMirrorPlane(void) const;
     const std::string getStdMirrorPlane(void) const;
+    const std::string getMirrorPlane(void) const;
 
 private Q_SLOTS:
     void onButtonXY();
     void onButtonXZ();
     void onButtonYZ();
-    virtual void onButtonReference();
-    virtual void onOriginalDeleted();
+    void onButtonReference(const bool checked);
     virtual void onUpdateView(bool);
 
-protected:    
+protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 

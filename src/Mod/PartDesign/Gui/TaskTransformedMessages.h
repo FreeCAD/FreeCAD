@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,42 +21,44 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Feature_H
-#define PARTDESIGN_Feature_H
+#ifndef GUI_TASKVIEW_TaskTransformedMessages_H
+#define GUI_TASKVIEW_TaskTransformedMessages_H
 
-#include <App/PropertyStandard.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Gui/TaskView/TaskView.h>
+#include <boost/signals.hpp>
 
-class gp_Pnt;
+class Ui_TaskTransformedMessages;
+typedef boost::signals::connection Connection;
 
+namespace App {
+class Property;
+}
 
-/// Base class of all additive features in PartDesign
-namespace PartDesign
+namespace PartDesignGui { 
+
+class ViewProviderTransformed;
+
+class TaskTransformedMessages : public Gui::TaskView::TaskBox
 {
-
- /** PartDesign feature
- *   Base class of all PartDesign features.
- *   This kind of features only produce solids or fail.
- */
-class PartDesignExport Feature : public Part::Feature
-{
-    PROPERTY_HEADER(PartDesign::Feature);
+    Q_OBJECT
 
 public:
-    Feature();
+    TaskTransformedMessages(ViewProviderTransformed *transformedView);
+    ~TaskTransformedMessages();
 
+    void slotDiagnosis(QString msg);
+
+private Q_SLOTS:
+    
 protected:
-    /**
-     * Get a solid of the given shape. If no solid is found an exception is raised.
-     */
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);
+    ViewProviderTransformed *transformedView;
+    Connection connectionDiagnosis;
 
-    /// Grab any point from the given face
-    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
-
+private:
+    QWidget* proxy;
+    Ui_TaskTransformedMessages* ui;
 };
 
-} //namespace PartDesign
+} //namespace PartDesignGui
 
-
-#endif // PARTDESIGN_Feature_H
+#endif // GUI_TASKVIEW_TaskTransformedMessages_H

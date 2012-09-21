@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskTransformedMessages.h"
 #include "ViewProviderTransformed.h"
 
 namespace PartDesign {
@@ -59,18 +60,15 @@ public:
         {}
 
     const std::vector<App::DocumentObject*> getOriginals(void) const;
+    /// Get the support object either of the object associated with this feature or with the parent feature (MultiTransform mode)
+    App::DocumentObject* getSupportObject() const;
 
 
 protected Q_SLOTS:
-    virtual void onButtonReference() = 0;
-    virtual void onOriginalDeleted() = 0;
-    virtual void onUpdateView(bool) = 0;
-
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}
 
 protected:
-    void onOriginalDeleted(const int row);
     const bool originalSelected(const Gui::SelectionChanges& msg);
 
     /// Get the TransformedFeature object associated with this task
@@ -78,14 +76,14 @@ protected:
     PartDesign::Transformed *getObject() const;
     /// Recompute either this feature or the parent feature (MultiTransform mode)
     void recomputeFeature();
-    /// Get the original object either of the object associated with this feature or with the parent feature (MultiTransform mode)
-    App::DocumentObject* getOriginalObject() const;
 
     void hideObject();
     void showObject();
     void hideOriginals();
     void showOriginals();
+    void exitSelectionMode();
 
+    void addReferenceSelectionGate(bool edge, bool face);
 protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
@@ -93,14 +91,16 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
-    bool featureSelectionMode;
+
+    bool originalSelectionMode;
+    bool referenceSelectionMode;
 
     /// The MultiTransform parent task of this task
     TaskMultiTransformParameters* parentTask;
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
-    /// Lock updateUI() so that no unnecessary recomputeFeatures() are triggered
-    bool updateUIinProgress;
+    /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
+    bool blockUpdate;
 };
 
 /// simulation dialog for the TaskView
@@ -138,6 +138,7 @@ protected:
     ViewProviderTransformed   *TransformedView;
 
     TaskTransformedParameters  *parameter;
+    TaskTransformedMessages  *message;
 };
 
 } //namespace PartDesignGui

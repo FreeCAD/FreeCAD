@@ -62,8 +62,6 @@ public:
 private Q_SLOTS:
     void onFactor(const double f);
     void onOccurrences(const int n);
-    virtual void onButtonReference() {}
-    virtual void onOriginalDeleted();
     virtual void onUpdateView(bool);
 
 protected:
@@ -71,8 +69,8 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    void updateUI();
     void setupUI();
+    void updateUI();
 
 private:
     Ui_TaskScaledParameters* ui;

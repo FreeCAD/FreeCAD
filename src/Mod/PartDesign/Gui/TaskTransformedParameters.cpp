@@ -24,6 +24,10 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS.hxx>
+# include <BRepAdaptor_Surface.hxx>
 #endif
 
 #include "TaskTransformedParameters.h"
@@ -55,10 +59,9 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
       TransformedView(TransformedView),
       parentTask(NULL),
       insideMultiTransform(false),
-      updateUIinProgress(false)
+      blockUpdate(false)
 {
-    // Start in feature selection mode
-    featureSelectionMode = true;
+    originalSelectionMode = false;
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
@@ -66,44 +69,35 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
       TransformedView(NULL),
       parentTask(parentTask),
       insideMultiTransform(true),
-      updateUIinProgress(false)
+      blockUpdate(false)
 {
-    // Start in reference selection mode and stay there! Feature selection makes
-    // no sense inside a MultiTransform
-    featureSelectionMode = false;
+    // Original feature selection makes no sense inside a MultiTransform
+    originalSelectionMode = false;
 }
 
 const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
-    if (featureSelectionMode && (msg.Type == Gui::SelectionChanges::AddSelection)) {
-        PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-        App::DocumentObject* selectedObject = pcTransformed->getDocument()->getActiveObject();
-        if (!selectedObject->isDerivedFrom(PartDesign::Additive::getClassTypeId()) &&
-            !selectedObject->isDerivedFrom(PartDesign::Subtractive::getClassTypeId()))
-            return false;
-        if (TransformedView->getObject() == pcTransformed)
+    if (msg.Type == Gui::SelectionChanges::AddSelection && originalSelectionMode) {
+
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
-        std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+        PartDesign::Transformed* pcTransformed = getObject();
+        App::DocumentObject* selectedObject = pcTransformed->getDocument()->getObject(msg.pObjectName);
+        if (selectedObject->isDerivedFrom(PartDesign::Additive::getClassTypeId()) ||
+            selectedObject->isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
 
-        if (std::find(originals.begin(), originals.end(), selectedObject) == originals.end()) {
-            originals.push_back(selectedObject);
+            // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
+            std::vector<App::DocumentObject*> originals(1,selectedObject);
             pcTransformed->Originals.setValues(originals);
-            pcTransformed->getDocument()->recomputeFeature(pcTransformed);
+            recomputeFeature();
+
+            originalSelectionMode = false;
             return true;
         }
     }
 
     return false;
-}
-
-void TaskTransformedParameters::onOriginalDeleted(const int row)
-{
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + row);
-    pcTransformed->Originals.setValues(originals);
-    pcTransformed->getDocument()->recomputeFeature(pcTransformed);
 }
 
 PartDesign::Transformed *TaskTransformedParameters::getObject() const
@@ -118,10 +112,10 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const
 void TaskTransformedParameters::recomputeFeature()
 {
     if (insideMultiTransform) {
+        // redirect recompute and let the parent decide if recompute has to be blocked
         parentTask->recomputeFeature();
-    } else {
-        PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-        pcTransformed->getDocument()->recomputeFeature(pcTransformed);
+    } else if (!blockUpdate) {
+        TransformedView->recomputeFeature();
     }
 }
 
@@ -137,13 +131,13 @@ const std::vector<App::DocumentObject*> TaskTransformedParameters::getOriginals(
     }
 }
 
-App::DocumentObject* TaskTransformedParameters::getOriginalObject() const
+App::DocumentObject* TaskTransformedParameters::getSupportObject() const
 {
     if (insideMultiTransform) {
-        return parentTask->getOriginalObject();
+        return parentTask->getSupportObject();
     } else {
         PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-        return pcTransformed->getOriginalObject();
+        return pcTransformed->getSupportObject();
     }
 }
 
@@ -189,16 +183,66 @@ void TaskTransformedParameters::showOriginals()
     }
 }
 
+void TaskTransformedParameters::exitSelectionMode()
+{
+    originalSelectionMode = false;
+    referenceSelectionMode = false;
+    Gui::Selection().rmvSelectionGate();
+    showObject();
+    hideOriginals();
+}
+
+class ReferenceSelection : public Gui::SelectionFilterGate
+{
+    const App::DocumentObject* support;
+    bool edge, plane;
+public:
+    ReferenceSelection(const App::DocumentObject* support_, bool edge_, bool plane_)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),
+          support(support_), edge(edge_), plane(plane_)
+    {
+    }
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+    {
+        if (!sSubName || sSubName[0] == '\0')
+            return false;
+        if (pObj != support)
+            return false;
+        std::string subName(sSubName);
+        if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge")
+            return true;
+        if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(support)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Face& face = TopoDS::Face(sh);
+            if (!face.IsNull()) {
+                BRepAdaptor_Surface adapt(face);
+                if (adapt.GetType() == GeomAbs_Plane)
+                    return true;
+            }
+        }
+        return false;
+    }
+};
+
+void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
+{
+    Gui::Selection().addSelectionGate(new ReferenceSelection(getSupportObject(), edge, face));
+}
+
 
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView)
-    : TaskDialog(),TransformedView(TransformedView)
+TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView_)
+    : TaskDialog(), TransformedView(TransformedView_)
 {
     assert(TransformedView);
+    message = new TaskTransformedMessages(TransformedView);
+
+    Content.push_back(message);
 }
 
 //==== calls from the TaskView ===============================================================
