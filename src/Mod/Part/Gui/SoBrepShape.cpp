@@ -1178,6 +1178,12 @@ SoBrepPointSet::SoBrepPointSet()
 
 void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 {
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    int num = coords->getNum() - this->startIndex.getValue();
+    if (num < 0) {
+        // Fixes: #0000545: Undo revolve causes crash 'illegal storage'
+        return;
+    }
     if (this->selectionIndex.getNum() > 0)
         renderSelection(action);
     if (this->highlightIndex.getValue() >= 0)
