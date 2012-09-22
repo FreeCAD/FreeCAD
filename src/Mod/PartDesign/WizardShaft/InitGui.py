@@ -73,3 +73,4 @@ class PartDesignWorkbench ( Workbench ):
                 return "PartDesignGui::Workbench"
 
 Gui.addWorkbench(PartDesignWorkbench())
+
