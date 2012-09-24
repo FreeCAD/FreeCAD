@@ -51,7 +51,7 @@ ViewProviderChamfer::~ViewProviderChamfer()
 void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit pocket"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit chamfer"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
