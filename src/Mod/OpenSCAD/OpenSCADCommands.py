@@ -27,6 +27,9 @@ class ColorCodeShape:
                 'Color Shapes by validity and type')}
 
 class Edgestofaces:
+    def IsActive(self):
+        return bool(FreeCADGui.Selection.getSelectionEx())
+
     def Activated(self):
         from OpenSCAD2Dgeom import edgestofaces,Overlappingfaces
         selection=FreeCADGui.Selection.getSelectionEx()
@@ -45,6 +48,9 @@ class Edgestofaces:
                 'Convert Edges to Faces')}
 
 class RefineShapeFeature:
+    def IsActive(self):
+        return bool(FreeCADGui.Selection.getSelectionEx())
+
     def Activated(self):
         import Part,OpenSCADFeatures
         selection=FreeCADGui.Selection.getSelectionEx()
@@ -68,10 +74,13 @@ class ExpandPlacements:
     '''This should aid interactive repair in the future
     but currently it breaks extrusions, as axis, base and so on have to be
     recalculated'''
+    def IsActive(self):
+        return bool(FreeCADGui.Selection.getSelectionEx())
+
     def Activated(self):
         import expandplacements
-        selobj=FreeCADGui.Selection.getSelectionEx()[0]
-        expandplacements.expandplacements(selobj.Object,FreeCAD.Placement())
+        for selobj in FreeCADGui.Selection.getSelectionEx():
+            expandplacements.expandplacements(selobj.Object,FreeCAD.Placement())
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'python', 'MenuText': QtCore.QT_TRANSLATE_NOOP(\
@@ -80,6 +89,8 @@ class ExpandPlacements:
                 'Expand all placements downwards the FeatureTree')}
 
 class ReplaceObject:
+    def IsActive(self):
+        return len(FreeCADGui.Selection.getSelection()) == 3
     def Activated(self):
         import replaceobj
         #objs=[selobj.Object for selobj in FreeCADGui.Selection.getSelectionEx()]
@@ -98,6 +109,8 @@ class ReplaceObject:
 
 
 class RemoveSubtree:
+    def IsActive(self):
+        return bool(FreeCADGui.Selection.getSelectionEx())
     def Activated(self):
         def addsubobjs(obj,toremoveset):
             toremove.add(obj)

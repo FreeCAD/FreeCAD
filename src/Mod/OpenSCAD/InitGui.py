@@ -96,6 +96,10 @@ static char * openscadlogo_xpm[] = {
         import OpenSCAD_rc,OpenSCADCommands
         commands=['ReplaceObject','RemoveSubtree','RefineShapeFeature',"Edgestofaces",'ExpandPlacements']
         toolbarcommands=['ReplaceObject','RemoveSubtree','RefineShapeFeature']
+        import PartGui
+        parttoolbarcommands = ['Part_CheckGeometry',"Part_Primitives",\
+            "Part_Builder",'Part_Cut','Part_Fuse','Part_Common',\
+            'Part_Extrude',"Part_Revolve"]
         import FreeCAD
         param = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
@@ -105,6 +109,7 @@ static char * openscadlogo_xpm[] = {
             toolbarcommands.extend(['AddOpenSCADElement'])
         self.appendToolbar("OpenSCADTools",toolbarcommands)
         self.appendMenu('OpenSCAD',commands)
+        self.appendToolbar('OpenSCAD Part tools',parttoolbarcommands)
         #self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
         ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])
         FreeCADGui.addIconPath(":/icons")
