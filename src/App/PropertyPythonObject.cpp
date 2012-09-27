@@ -94,6 +94,9 @@ std::string PropertyPythonObject::toString() const
         else if (this->object.hasAttr("__dict__")) {
             dump = this->object.getAttr("__dict__");
         }
+        else {
+            dump = this->object;
+        }
 
         Py::Tuple args(1);
         args.setItem(0, dump);
@@ -125,8 +128,11 @@ void PropertyPythonObject::fromString(const std::string& repr)
             Py::Callable state(this->object.getAttr("__setstate__"));
             state.apply(args);
         }
-        else {
+        else if (this->object.hasAttr("__dict__")) {
             this->object.setAttr("__dict__", res);
+        }
+        else {
+            this->object = res;
         }
     }
     catch (Py::Exception&) {
@@ -269,6 +275,9 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
                                     << " class=\"" << (std::string)name << "\"";
                 }
             }
+            else {
+                writer.Stream() << " json=\"yes\"";
+            }
         }
         catch (Py::Exception&) {
             Base::PyException e; // extract the Python error text
@@ -332,6 +341,9 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 this->object = PyInstance_NewRaw(mod.getAttr(cls).ptr(), 0);
                 load_pickle = true;
                 buffer = std::string(what[2].second, end);
+            }
+            else if (reader.hasAttribute("json")) {
+                load_json = true;
             }
         }
         catch (Py::Exception&) {
