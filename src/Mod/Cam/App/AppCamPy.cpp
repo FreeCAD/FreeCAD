@@ -26,6 +26,11 @@
 # if defined (_POSIX_C_SOURCE)
 #   undef  _POSIX_C_SOURCE
 # endif // (re-)defined in pyconfig.h
+#include <cmath>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 //Basic Stuff
 #include <Base/Console.h>
@@ -91,9 +96,6 @@
 #include "cutting_tools.h"
 #include "best_fit.h"
 #include "SpringbackCorrection.h"
-
-
-
 
 
 using namespace Part;
