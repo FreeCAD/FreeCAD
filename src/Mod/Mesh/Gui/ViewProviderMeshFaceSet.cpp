@@ -160,7 +160,12 @@ void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
         }
 
         showOpenEdges(OpenEdges.getValue());
-        highlightSelection();
+        std::vector<unsigned long> selection;
+        mesh->getFacetsFromSelection(selection);
+        if (selection.empty())
+            unhighlightSelection();
+        else
+            highlightSelection();
     }
 }
 
