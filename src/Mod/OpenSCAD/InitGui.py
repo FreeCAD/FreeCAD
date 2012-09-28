@@ -123,10 +123,3 @@ static char * openscadlogo_xpm[] = {
 Gui.addWorkbench(OpenSCADWorkbench())
 App.addExportType("OpenSCAD CSG Format (*.csg)","exportCSG") 
 App.addExportType("OpenSCAD Format (*.scad)","exportCSG")
-import os
-if param.GetBool('debugRegisterPrototype'):
-    App.addImportType("OpenSCAD CSG prototype (*.csg)","prototype") #prototype
-    openscadbin = openscadfilename and os.path.isfile(openscadfilename)
-    if openscadbin:
-        App.addImportType("OpenSCAD prototype (*.scad)","prototype") #prototype
-
