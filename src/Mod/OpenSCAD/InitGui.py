@@ -94,19 +94,26 @@ static char * openscadlogo_xpm[] = {
     ToolTip = "OpenSCAD workbench"
     def Initialize(self):
         import OpenSCAD_rc,OpenSCADCommands
-        commands=["ColorCodeShape",'RefineShapeFeature','ReplaceObject',"Edgestofaces",'ExpandPlacements','RemoveSubtree']
+        commands=['ReplaceObject','RemoveSubtree','RefineShapeFeature',"Edgestofaces",'ExpandPlacements']
+        toolbarcommands=['ReplaceObject','RemoveSubtree','RefineShapeFeature']
+        import PartGui
+        parttoolbarcommands = ['Part_CheckGeometry',"Part_Primitives",\
+            "Part_Builder",'Part_Cut','Part_Fuse','Part_Common',\
+            'Part_Extrude',"Part_Revolve"]
         import FreeCAD
         param = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
         openscadfilename = param.GetString('openscadexecutable')
         if openscadfilename:
             commands.extend(['AddOpenSCADElement'])
-        self.appendToolbar("OpenSCADTools",["ColorCodeShape",'RefineShapeFeature','ReplaceObject','RemoveSubtree'])
+            toolbarcommands.extend(['AddOpenSCADElement'])
+        self.appendToolbar("OpenSCADTools",toolbarcommands)
         self.appendMenu('OpenSCAD',commands)
+        self.appendToolbar('OpenSCAD Part tools',parttoolbarcommands)
         #self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
         ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])
         FreeCADGui.addIconPath(":/icons")
-        #FreeCADGui.addLanguagePath(":/translations")
+        FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/openscadprefs-base.ui","OpenSCAD")
     def GetClassName(self):
         #return "OpenSCADGui::Workbench"
@@ -114,16 +121,5 @@ static char * openscadlogo_xpm[] = {
 
 
 Gui.addWorkbench(OpenSCADWorkbench())
-App.addImportType("OpenSCAD CSG Format (*.csg)","importCSG")
 App.addExportType("OpenSCAD CSG Format (*.csg)","exportCSG") 
 App.addExportType("OpenSCAD Format (*.scad)","exportCSG")
-import os
-openscadbin = openscadfilename and os.path.isfile(openscadfilename)
-if openscadbin:
-    App.addImportType("OpenSCAD Format (*.scad)","importCSG")
-
-if param.GetBool('debugRegisterPrototype'):
-    App.addImportType("OpenSCAD CSG prototype (*.csg)","prototype") #prototype
-    if openscadbin:
-        App.addImportType("OpenSCAD prototype (*.scad)","prototype") #prototype
-

@@ -53,6 +53,7 @@ DirFilter = ["^Attic$",
              "src/Mod/TemplatePyMod",
              "src/Mod/Draft",
              "src/Mod/Arch",
+             "src/Mod/OpenSCAD",
              "src/Mod/Start"]
 
 # folders that need a special pylupdate command
@@ -60,6 +61,8 @@ PyCommands = [["src/Mod/Draft",
                "pylupdate *.py draftlibs/*.py Resources/ui/*.ui -ts Resources/translations/Draft.ts"],
               ["src/Mod/Arch",
                "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/Arch.ts"],
+              ["src/Mod/OpenSCAD",
+               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
               ["src/Mod/Start",
                "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPage.ts"]]
              

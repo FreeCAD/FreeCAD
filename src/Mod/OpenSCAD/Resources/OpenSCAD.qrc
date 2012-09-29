@@ -1,6 +1,7 @@
 <RCC>
     <qresource> 
         <file>icons/preferences-openscad.svg</file>
+        <file>icons/OpenSCAD_AddOpenSCADElement.svg</file>
         <file>icons/OpenSCAD_ColorCodeShape.svg</file>
         <file>icons/OpenSCAD_RefineShapeFeature.svg</file>
         <file>icons/OpenSCAD_ReplaceObject.svg</file>
