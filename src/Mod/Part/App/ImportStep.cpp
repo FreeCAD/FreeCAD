@@ -125,7 +125,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         //Handle_XSControl_TransferReader tr = ws->TransferReader();
 
         std::map<int, Quantity_Color> hash_col;
-        ReadColors(aReader.WS(), hash_col);
+        //ReadColors(aReader.WS(), hash_col);
         //ReadNames(aReader.WS());
 
         for (Standard_Integer i=1; i<=nbs; i++) {
