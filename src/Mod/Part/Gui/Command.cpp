@@ -446,11 +446,9 @@ CmdPartImport::CmdPartImport()
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)");
-    filter << QObject::tr("STEP (*.stp *.step)");
+    filter << QObject::tr("STEP AP203 (*.stp *.step)");
     filter << QObject::tr("IGES (*.igs *.iges)");
     filter << QObject::tr("BREP (*.brp *.brep)");
-    filter << QObject::tr("All Files (*.*)");
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
@@ -459,9 +457,7 @@ void CmdPartImport::activated(int iMsg)
         if (!pDoc) return; // no document
         openCommand("Import Part");
         QString ext = QFileInfo(fn).suffix().toLower();
-        if (ext == QLatin1String("step") || 
-            ext == QLatin1String("stp")  ||
-            ext == QLatin1String("iges") ||
+        if (ext == QLatin1String("iges") ||
             ext == QLatin1String("igs")) {
             doCommand(Doc, "import ImportGui");
             doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
@@ -507,20 +503,16 @@ CmdPartExport::CmdPartExport()
 void CmdPartExport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)");
-    filter << QObject::tr("STEP (*.stp *.step)");
+    filter << QObject::tr("STEP AP203 (*.stp *.step)");
     filter << QObject::tr("IGES (*.igs *.iges)");
     filter << QObject::tr("BREP (*.brp *.brep)");
-    filter << QObject::tr("All Files (*.*)");
 
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
         QString ext = QFileInfo(fn).suffix().toLower();
-        if (ext == QLatin1String("step") || 
-            ext == QLatin1String("stp")  ||
-            ext == QLatin1String("iges") ||
+        if (ext == QLatin1String("iges") ||
             ext == QLatin1String("igs")) {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"ImportGui");
         }
