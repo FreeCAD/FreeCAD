@@ -136,7 +136,10 @@ private:
     std::vector<int32_t> hl, sl;
     SbColor selectionColor;
     SbColor highlightColor;
-    SoColorPacker colorpacker;
+    //#0000834: Minor preselection color bug
+    //To solve this we need a seprate color packer for highlighting and selection
+    SoColorPacker colorpacker1;
+    SoColorPacker colorpacker2;
 };
 
 // ---------------------------------------------------------------------
