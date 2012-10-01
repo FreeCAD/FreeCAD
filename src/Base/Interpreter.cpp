@@ -343,13 +343,18 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         Py_Initialize();
         PySys_SetArgv(argc, argv);
         PythonStdOutput::init_type();
-        PythonStdOutput* out = new PythonStdOutput();
-        PySys_SetObject("stdout", out);
-        PySys_SetObject("stderr", out);
         this->_global = PyEval_SaveThread();
     }
 
     return Py_GetPath();
+}
+
+void InterpreterSingleton::replaceStdOutput()
+{
+    PyGILStateLocker locker;
+    PythonStdOutput* out = new PythonStdOutput();
+    PySys_SetObject("stdout", out);
+    PySys_SetObject("stderr", out);
 }
 
 int InterpreterSingleton::cleanup(void (*func)(void))
