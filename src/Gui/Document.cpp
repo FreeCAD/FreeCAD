@@ -508,7 +508,7 @@ bool Document::save(void)
 /// Save the document under a new file name
 bool Document::saveAs(void)
 {
-    getMainWindow()->statusBar()->showMessage(QObject::tr("Save document under new filename..."));
+    getMainWindow()->showMessage(QObject::tr("Save document under new filename..."));
 
     QString exe = qApp->applicationName();
     QString fn = QFileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
@@ -554,7 +554,7 @@ bool Document::saveAs(void)
         return true;
     }
     else {
-        getMainWindow()->statusBar()->showMessage(QObject::tr("Saving aborted"), 2000);
+        getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
         return false;
     }
 }
