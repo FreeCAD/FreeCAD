@@ -615,7 +615,7 @@ StdCmdPrint::StdCmdPrint()
 void StdCmdPrint::activated(int iMsg)
 {
     if (getMainWindow()->activeWindow()) {
-        getMainWindow()->statusBar()->showMessage(QObject::tr("Printing..."));
+        getMainWindow()->showMessage(QObject::tr("Printing..."));
         getMainWindow()->activeWindow()->print();
     }
 }
@@ -670,7 +670,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
 void StdCmdPrintPdf::activated(int iMsg)
 {
     if (getMainWindow()->activeWindow()) {
-        getMainWindow()->statusBar()->showMessage(QObject::tr("Exporting PDF..."));
+        getMainWindow()->showMessage(QObject::tr("Exporting PDF..."));
         getMainWindow()->activeWindow()->printPdf();
     }
 }

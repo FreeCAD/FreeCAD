@@ -734,7 +734,7 @@ void MainWindow::addWindow(MDIView* view)
 #endif
 #endif
     connect(view, SIGNAL(message(const QString&, int)),
-            statusBar(), SLOT(showMessage(const QString&, int)));
+            this, SLOT(showMessage(const QString&, int)));
     connect(this, SIGNAL(windowStateChanged(MDIView*)),
             view, SLOT(windowStateChanged(MDIView*)));
 
@@ -799,7 +799,7 @@ void MainWindow::removeWindow(Gui::MDIView* view)
 {
     // free all connections
     disconnect(view, SIGNAL(message(const QString&, int)),
-               statusBar(), SLOT(message(const QString&, int )));
+               this, SLOT(showMessage(const QString&, int )));
     disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
                view, SLOT(windowStateChanged(MDIView*)));
     view->removeEventFilter(this);
@@ -1552,7 +1552,16 @@ void MainWindow::showMessage (const QString& message, int timeout)
 {
     QFontMetrics fm(statusBar()->font());
     QString msg = fm.elidedText(message, Qt::ElideMiddle, this->width()/2);
+#if QT_VERSION != 0x040801
     this->statusBar()->showMessage(msg, timeout);
+#else
+    //#0000665: There is a crash under Ubuntu 12.04 (Qt 4.8.1)
+    QMetaObject::invokeMethod(statusBar(), "showMessage",
+        Qt::QueuedConnection,
+        QGenericReturnArgument(),
+        Q_ARG(QString,msg),
+        Q_ARG(int, timeout));
+#endif
 }
 
 // -------------------------------------------------------------
