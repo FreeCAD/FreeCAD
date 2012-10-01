@@ -49,6 +49,13 @@ FreeCAD.addImportType("BREP format (*.brep *.brp)","Part")
 FreeCAD.addExportType("BREP format (*.brep *.brp)","Part")
 FreeCAD.addImportType("IGES format (*.iges *.igs)","Part")
 FreeCAD.addExportType("IGES format (*.iges *.igs)","Part")
-FreeCAD.addImportType("STEP AP214 format (*.step *.stp)","ImportGui")
-FreeCAD.addExportType("STEP AP214 format (*.step *.stp)","ImportGui")
+
+# There is a bug in OCC 6.5.3 (and older which leads to a crash)
+import platform
+if platform.architecture()[0]=='64bit':
+    FreeCAD.addImportType("STEP AP203 format (*.step *.stp)","Part")
+    FreeCAD.addExportType("STEP AP203 format (*.step *.stp)","Part")
+else:
+    FreeCAD.addImportType("STEP AP214 format (*.step *.stp)","ImportGui")
+    FreeCAD.addExportType("STEP AP214 format (*.step *.stp)","ImportGui")
 
