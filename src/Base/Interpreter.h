@@ -193,6 +193,7 @@ public:
     /// init the interpreter and returns the module search path
     const char* init(int argc,char *argv[]);
     int  runCommandLine(const char *prompt);
+    void replaceStdOutput();
     static InterpreterSingleton &Instance(void);
     static void Destruct(void);
     //@}

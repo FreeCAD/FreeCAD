@@ -232,7 +232,7 @@ void BrowserView::onLoadStarted()
     QProgressBar* bar = Gui::Sequencer::instance()->getProgressBar();
     bar->setRange(0, 100);
     bar->show();
-    Gui::getMainWindow()->statusBar()->showMessage(tr("Loading %1...").arg(view->url().toString()));
+    Gui::getMainWindow()->showMessage(tr("Loading %1...").arg(view->url().toString()));
     isLoading = true;
 }
 
@@ -248,7 +248,7 @@ void BrowserView::onLoadFinished(bool ok)
         QProgressBar* bar = Sequencer::instance()->getProgressBar();
         bar->setValue(100);
         bar->hide();
-        getMainWindow()->statusBar()->showMessage(QString());
+        getMainWindow()->showMessage(QString());
     }
     isLoading = false;
 }

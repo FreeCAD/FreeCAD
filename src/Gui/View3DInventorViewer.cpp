@@ -2081,7 +2081,7 @@ SoPath * View3DInventorViewer::pickFilterCB(void *viewer, const SoPickedPoint * 
                                    ,pp->getPoint()[1]
                                    ,pp->getPoint()[2]);
 
-        getMainWindow()->statusBar()->showMessage(QString::fromAscii(buf),3000);
+        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
     }
     return pp->getPath();
 }

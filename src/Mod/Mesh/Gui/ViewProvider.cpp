@@ -1562,7 +1562,10 @@ void ViewProviderMesh::setSelection(const std::vector<unsigned long>& indices)
     rMesh.addFacetsToSelection(indices);
 
     // Colorize the selection
-    highlightSelection();
+    if (indices.empty())
+        unhighlightSelection();
+    else
+        highlightSelection();
 }
 
 void ViewProviderMesh::addSelection(const std::vector<unsigned long>& indices)
@@ -1627,7 +1630,7 @@ void ViewProviderMesh::highlightSelection()
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     rMesh.getFacetsFromSelection(selection);
     if (selection.empty()) {
-        // If no faces are selected then simply return even without
+        // If no faces are selected then simply return even
         // without calling unhighlightSelection()
         return;
     }

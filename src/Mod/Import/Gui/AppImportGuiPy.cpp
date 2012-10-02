@@ -480,20 +480,24 @@ private:
 };
 
 /* module functions */
+
 static PyObject * importer(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    const char* DocName;
-    if (!PyArg_ParseTuple(args, "ss",&Name,&DocName))
+    char* Name;
+    char* DocName=0;
+    if (!PyArg_ParseTuple(args, "s|s",&Name,&DocName))
         return 0;
 
     PY_TRY {
         //Base::Console().Log("Insert in Part with %s",Name);
         Base::FileInfo file(Name);
 
-        App::Document *pcDoc = App::GetApplication().getDocument(DocName);
+        App::Document *pcDoc = 0;
+        if (DocName) {
+            pcDoc = App::GetApplication().getDocument(DocName);
+        }
         if (!pcDoc) {
-            pcDoc = App::GetApplication().newDocument(DocName);
+            pcDoc = App::GetApplication().newDocument("Unnamed");
         }
 
         Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
@@ -559,6 +563,11 @@ static PyObject * importer(PyObject *self, PyObject *args)
     PY_CATCH
 
     Py_Return;
+}
+
+static PyObject * open(PyObject *self, PyObject *args)
+{
+    return importer(self, args);
 }
 
 static PyObject * exporter(PyObject *self, PyObject *args)
@@ -946,6 +955,8 @@ static PyObject * ocaf(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef ImportGui_Import_methods[] = {
+    {"open"     ,open  ,METH_VARARGS,
+     "open(string) -- Open the file and create a new document."},
     {"insert"     ,importer  ,METH_VARARGS,
      "insert(string,string) -- Insert the file into the given document."},
     {"export"     ,exporter  ,METH_VARARGS,

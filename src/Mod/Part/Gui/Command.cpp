@@ -446,23 +446,20 @@ CmdPartImport::CmdPartImport()
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)");
-    filter << QObject::tr("STEP (*.stp *.step)");
-    filter << QObject::tr("IGES (*.igs *.iges)");
-    filter << QObject::tr("BREP (*.brp *.brep)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromAscii("STEP AP203 (*.stp *.step)");
+    filter << QString::fromAscii("STEP AP214 (*.stp *.step)");
+    filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("BREP (*.brp *.brep)");
 
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
+    QString select;
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
     if (!fn.isEmpty()) {
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
         openCommand("Import Part");
-        QString ext = QFileInfo(fn).suffix().toLower();
-        if (ext == QLatin1String("step") || 
-            ext == QLatin1String("stp")  ||
-            ext == QLatin1String("iges") ||
-            ext == QLatin1String("igs")) {
+        if (select == filter[1] ||
+            select == filter[2]) {
             doCommand(Doc, "import ImportGui");
             doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
@@ -507,21 +504,18 @@ CmdPartExport::CmdPartExport()
 void CmdPartExport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)");
-    filter << QObject::tr("STEP (*.stp *.step)");
-    filter << QObject::tr("IGES (*.igs *.iges)");
-    filter << QObject::tr("BREP (*.brp *.brep)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromAscii("STEP AP203 (*.stp *.step)");
+    filter << QString::fromAscii("STEP AP214 (*.stp *.step)");
+    filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("BREP (*.brp *.brep)");
 
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
+    QString select;
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
-        QString ext = QFileInfo(fn).suffix().toLower();
-        if (ext == QLatin1String("step") || 
-            ext == QLatin1String("stp")  ||
-            ext == QLatin1String("iges") ||
-            ext == QLatin1String("igs")) {
+        if (select == filter[1] ||
+            select == filter[2]) {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"ImportGui");
         }
         else {

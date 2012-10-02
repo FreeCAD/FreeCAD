@@ -306,12 +306,13 @@ protected:
     static PyObject *sRemoveSelection     (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sClearSelection      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sIsSelected          (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sCountObjectsOfType  (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetSelection        (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetSelectionEx      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sAddSelObserver      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sRemSelObserver      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *saddSelectionGate    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sremoveSelectionGate (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sAddSelectionGate    (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sRemoveSelectionGate (PyObject *self,PyObject *args,PyObject *kwd);
 
 protected:
     /// Construction
