@@ -77,6 +77,7 @@ ELSE (WIN32)
   FIND_LIBRARY(COIN3D_LIBRARY Coin
     /usr/lib
     /usr/local/lib
+    PATH_SUFFIXES Coin2 Coin3
   )   
   ENDIF(APPLE)
 

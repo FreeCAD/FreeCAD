@@ -963,7 +963,7 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action)
 
     SoLazyElement::setEmissive(state, &this->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
-    SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker);
+    SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker1);
     SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
@@ -1000,7 +1000,7 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
 
     SoLazyElement::setEmissive(state, &this->selectionColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
-    SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker);
+    SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker2);
     SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
@@ -1178,6 +1178,12 @@ SoBrepPointSet::SoBrepPointSet()
 
 void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 {
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    int num = coords->getNum() - this->startIndex.getValue();
+    if (num < 0) {
+        // Fixes: #0000545: Undo revolve causes crash 'illegal storage'
+        return;
+    }
     if (this->selectionIndex.getNum() > 0)
         renderSelection(action);
     if (this->highlightIndex.getValue() >= 0)

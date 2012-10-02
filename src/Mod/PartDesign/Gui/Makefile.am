@@ -3,62 +3,103 @@ SUBDIRS=Resources
 lib_LTLIBRARIES=libPartDesignGui.la PartDesignGui.la
 
 BUILT_SOURCES=\
+		moc_FeaturePickDialog.cpp \
 		moc_TaskPadParameters.cpp \
-		moc_TaskPatternRectangularParameters.cpp \
 		moc_TaskPocketParameters.cpp \
 		moc_TaskChamferParameters.cpp \
 		moc_TaskFilletParameters.cpp \
 		moc_TaskGrooveParameters.cpp \
 		moc_TaskHoleParameters.cpp \
+		moc_TaskLinearPatternParameters.cpp \
+		moc_TaskMirroredParameters.cpp \
+		moc_TaskMultiTransformParameters.cpp \
+		moc_TaskPolarPatternParameters.cpp \
 		moc_TaskRevolutionParameters.cpp \
+		moc_TaskScaledParameters.cpp \
+		moc_TaskTransformedMessages.cpp \
+		moc_TaskTransformedParameters.cpp \
+		ui_FeaturePickDialog.h \
 		ui_TaskGrooveParameters.h \
 		ui_TaskPadParameters.h \
-		ui_TaskPatternRectangularParameters.h \
 		ui_TaskPocketParameters.h \
 		ui_TaskChamferParameters.h \
 		ui_TaskFilletParameters.h \
 		ui_TaskHoleParameters.h \
-		ui_TaskRevolutionParameters.h
+		ui_TaskLinearPatternParameters.h \
+		ui_TaskMirroredParameters.h \
+		ui_TaskMultiTransformParameters.h \
+		ui_TaskPolarPatternParameters.h \
+		ui_TaskRevolutionParameters.h \
+		ui_TaskScaledParameters.h \
+		ui_TaskTransformedMessages.h
 
 libPartDesignGui_la_UI=\
+		FeaturePickDialog.ui \
 		TaskGrooveParameters.ui \
 		TaskPadParameters.ui \
-		TaskPatternRectangularParameters.ui \
 		TaskPocketParameters.ui \
 		TaskChamferParameters.ui \
 		TaskFilletParameters.ui \
 		TaskHoleParameters.ui \
-		TaskRevolutionParameters.ui
+		TaskLinearPatternParameters.ui \
+		TaskMirroredParameters.ui \
+		TaskMultiTransformParameters.ui \
+		TaskPolarPatternParameters.ui \
+		TaskRevolutionParameters.ui \
+		TaskScaledParameters.ui \
+		TaskTransformedMessages.ui
 
 libPartDesignGui_la_SOURCES=\
 		AppPartDesignGuiPy.cpp \
 		Command.cpp \
 		PreCompiled.cpp \
 		PreCompiled.h \
+		FeaturePickDialog.cpp \
+		FeaturePickDialog.h \
 		TaskGrooveParameters.cpp \
 		TaskGrooveParameters.h \
 		TaskPadParameters.cpp \
 		TaskPadParameters.h \
-		TaskPatternRectangularParameters.cpp \
-		TaskPatternRectangularParameters.h \
 		TaskPocketParameters.cpp \
 		TaskPocketParameters.h \
 		TaskChamferParameters.cpp \
 		TaskChamferParameters.h \
 		TaskFilletParameters.cpp \
 		TaskFilletParameters.h \
+		TaskLinearPatternParameters.cpp \
+		TaskLinearPatternParameters.h \
+		TaskMirroredParameters.cpp \
+		TaskMirroredParameters.h \
+		TaskMultiTransformParameters.cpp \
+		TaskMultiTransformParameters.h \
+		TaskPolarPatternParameters.cpp \
+		TaskPolarPatternParameters.h \
 		TaskRevolutionParameters.cpp \
 		TaskRevolutionParameters.h \
 		TaskHoleParameters.cpp \
 		TaskHoleParameters.h \
+		TaskScaledParameters.cpp \
+		TaskScaledParameters.h \
+		TaskTransformedParameters.cpp \
+		TaskTransformedParameters.h \
+		TaskTransformedMessages.cpp \
+		TaskTransformedMessages.h \
 		ViewProvider.cpp \
 		ViewProvider.h \
 		ViewProviderHole.cpp \
 		ViewProviderHole.h \
+		ViewProviderLinearPattern.cpp \
+		ViewProviderLinearPattern.h \
+		ViewProviderMirrored.cpp \
+		ViewProviderMirrored.h \
+		ViewProviderMultiTransform.cpp \
+		ViewProviderMultiTransform.h \
 		ViewProviderPad.cpp \
 		ViewProviderPad.h \
 		ViewProviderPocket.cpp \
 		ViewProviderPocket.h \
+		ViewProviderPolarPattern.cpp \
+		ViewProviderPolarPattern.h \
 		ViewProviderChamfer.cpp \
 		ViewProviderChamfer.h \
 		ViewProviderFillet.cpp \
@@ -67,8 +108,10 @@ libPartDesignGui_la_SOURCES=\
 		ViewProviderGroove.h \
 		ViewProviderRevolution.cpp \
 		ViewProviderRevolution.h \
-		ViewProviderPatternRectangular.cpp \
-		ViewProviderPatternRectangular.h \
+		ViewProviderScaled.cpp \
+		ViewProviderScaled.h \
+		ViewProviderTransformed.cpp \
+		ViewProviderTransformed.h \
 		Workbench.cpp \
 		Workbench.h
 
@@ -95,6 +138,10 @@ libPartDesignGui_la_LIBADD   = \
 		-lTKXSBase \
 		-lTKBRep \
 		-lTKTopAlgo \
+		-lTKG2d \
+		-lTKG3d \
+		-lTKGeomAlgo \
+		-lTKGeomBase \
 		-lPartDesign
 
 #--------------------------------------------------------------------------------------

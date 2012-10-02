@@ -521,6 +521,9 @@ QString SetupResultBase::selectionName(ResultEntry *entry, const TopoDS_Shape &s
         TopExp::MapShapes(parentEntry->shape, TopAbs_VERTEX, shapeMap);
         stream << "Vertex";
         break;
+    default:
+        stream << "Unexpected shape type";
+        break;
     }
 
     index = shapeMap.FindIndex(shape);

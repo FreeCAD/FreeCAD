@@ -92,6 +92,17 @@ void PartExport initPart()
     str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
     App::Application::Config()["OCC_VERSION"] = str.str();
 
+    // see Init.py
+#if defined (_OCC64)
+#if OCC_VERSION_HEX < 0x060503
+    App::GetApplication().addImportType("STEP AP203 format (*.step *.stp)","Part");
+    App::GetApplication().addExportType("STEP AP203 format (*.step *.stp)","Part");
+#else
+    App::GetApplication().addImportType("STEP AP214 format (*.step *.stp)","ImportGui");
+    App::GetApplication().addExportType("STEP AP214 format (*.step *.stp)","ImportGui");
+#endif
+#endif
+
     PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading Part module... done\n");
 

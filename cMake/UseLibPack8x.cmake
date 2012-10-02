@@ -283,6 +283,9 @@ set(OPENCV_FOUND TRUE)
 
 # OCC
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/OpenCascade)
+set(OCC_LIBRARY_DIR
+    ${FREECAD_LIBPACK_DIR}/lib
+)
 set(OCC_LIBRARIES
     TKFillet
     TKMesh
@@ -295,14 +298,7 @@ set(OCC_LIBRARIES
     TKShHealing
     TKXSBase
     TKBool
-	TKXSBase 
-	TKXCAF 
-	TKLCAF 
-	TKCAF 
-	TKSTEP 
-	TKIGES 
-	TKXDESTEP 
-	TKXDEIGES 
+    TKXSBase 
     TKBO
     TKBRep
     TKTopAlgo
@@ -316,8 +312,12 @@ set(OCC_LIBRARIES
     TKHLR
     TKFeat
 )
-set(OCC_LIBRARY_DIR
-    ${FREECAD_LIBPACK_DIR}/lib
+set(OCC_OCAF_LIBRARIES
+    TKCAF
+    TKXCAF
+    TKLCAF
+    TKXDESTEP
+    TKXDEIGES
 )
 set(OCC_FOUND TRUE) 
 

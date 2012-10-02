@@ -29,5 +29,5 @@
 
 # Append the open handler
 #FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
-FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
+#FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
 #FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")

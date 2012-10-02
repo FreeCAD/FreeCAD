@@ -578,6 +578,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         faceset ->coordIndex .setNum(0);
         faceset ->partIndex  .setNum(0);
         lineset ->coordIndex .setNum(0);
+        nodeset ->startIndex .setValue(0);
         VisualTouched = false;
         return;
     }

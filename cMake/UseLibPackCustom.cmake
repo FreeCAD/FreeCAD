@@ -305,7 +305,42 @@ set(OPENCV_LIBRARIES  cv.lib cvaux.lib cxcore.lib cxts.lib highgui.lib)
 set(OPENCV_FOUND TRUE) 
 
 # OCC
+#set(OCC_INCLUDE_DIR C:/Projects/LibPack/oce-0.10.0/include/oce)
+#set(OCC_LIBRARY_DIR C:/Projects/LibPack/oce-0.10.0/Win64/lib)
+#set(OCC_LIBRARIES
+#    ${OCC_LIBRARY_DIR}/TKFillet.lib
+#    ${OCC_LIBRARY_DIR}/TKMesh.lib
+#    ${OCC_LIBRARY_DIR}/TKernel.lib
+#    ${OCC_LIBRARY_DIR}/TKG2d.lib
+#    ${OCC_LIBRARY_DIR}/TKG3d.lib
+#    ${OCC_LIBRARY_DIR}/TKMath.lib
+#    ${OCC_LIBRARY_DIR}/TKIGES.lib
+#    ${OCC_LIBRARY_DIR}/TKSTL.lib
+#    ${OCC_LIBRARY_DIR}/TKShHealing.lib
+#    ${OCC_LIBRARY_DIR}/TKXSBase.lib
+#    ${OCC_LIBRARY_DIR}/TKBool.lib
+#    ${OCC_LIBRARY_DIR}/TKBO.lib
+#    ${OCC_LIBRARY_DIR}/TKBRep.lib
+#    ${OCC_LIBRARY_DIR}/TKTopAlgo.lib
+#    ${OCC_LIBRARY_DIR}/TKGeomAlgo.lib
+#    ${OCC_LIBRARY_DIR}/TKGeomBase.lib
+#    ${OCC_LIBRARY_DIR}/TKOffset.lib
+#    ${OCC_LIBRARY_DIR}/TKPrim.lib
+#    ${OCC_LIBRARY_DIR}/TKSTEP.lib
+#    ${OCC_LIBRARY_DIR}/TKSTEPBase.lib
+#    ${OCC_LIBRARY_DIR}/TKSTEPAttr.lib
+#    ${OCC_LIBRARY_DIR}/TKHLR.lib
+#    ${OCC_LIBRARY_DIR}/TKFeat.lib
+#)
+#set(OCC_OCAF_LIBRARIES
+#    ${OCC_LIBRARY_DIR}/TKCAF.lib
+#    ${OCC_LIBRARY_DIR}/TKXCAF.lib
+#    ${OCC_LIBRARY_DIR}/TKLCAF.lib
+#    ${OCC_LIBRARY_DIR}/TKXDESTEP.lib
+#    ${OCC_LIBRARY_DIR}/TKXDEIGES.lib
+#)
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/OpenCascade-6.3.0)
+set(OCC_LIBRARY_DIR ${FREECAD_LIBPACK_DIR}/lib)
 set(OCC_LIBRARIES
     TKFillet
     TKMesh
@@ -331,8 +366,12 @@ set(OCC_LIBRARIES
     TKHLR
     TKFeat
 )
-set(OCC_LIBRARY_DIR
-    ${FREECAD_LIBPACK_DIR}/lib
+set(OCC_OCAF_LIBRARIES
+    TKCAF
+    TKXCAF
+    TKLCAF
+    TKXDESTEP
+    TKXDEIGES
 )
 set(OCC_FOUND TRUE) 
 

@@ -1201,7 +1201,7 @@ void DocumentObjectItem::displayStatusInfo()
     QString info = QString::fromAscii(Obj->getStatusString());
     if ( Obj->mustExecute() == 1 )
         info += QString::fromAscii(" (but must be executed)");
-    getMainWindow()->statusBar()->showMessage( info );
+    getMainWindow()->showMessage( info );
    
 }
 
