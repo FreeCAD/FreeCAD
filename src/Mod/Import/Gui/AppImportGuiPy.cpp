@@ -55,6 +55,7 @@
 # include <TopTools_MapOfShape.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Iterator.hxx>
+# include <APIHeaderSection_MakeHeader.hxx>
 #if OCC_VERSION_HEX >= 0x060500
 # include <TDataXtd_Shape.hxx>
 # else
@@ -664,8 +665,17 @@ static PyObject * exporter(PyObject *self, PyObject *args)
 
         Base::FileInfo file(filename);
         if (file.hasExtension("stp") || file.hasExtension("step")) {
+            //Interface_Static::SetCVal("write.step.schema", "AP214IS");
             STEPCAFControl_Writer writer;
             writer.Transfer(hDoc, STEPControl_AsIs);
+
+            // edit STEP header
+            APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
+            makeHeader.SetName(new TCollection_HAsciiString((const Standard_CString)filename));
+            makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
+            makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
+            makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
+            makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
             writer.Write(filename);
         }
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
