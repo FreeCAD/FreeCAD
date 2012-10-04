@@ -95,11 +95,11 @@ void PartExport initPart()
     // see Init.py
 #if defined (_OCC64)
 #if OCC_VERSION_HEX < 0x060503
-    App::GetApplication().addImportType("STEP AP203 format (*.step *.stp)","Part");
-    App::GetApplication().addExportType("STEP AP203 format (*.step *.stp)","Part");
+    App::GetApplication().addImportType("STEP (*.step *.stp)","Part");
+    App::GetApplication().addExportType("STEP (*.step *.stp)","Part");
 #else
-    App::GetApplication().addImportType("STEP AP214 format (*.step *.stp)","ImportGui");
-    App::GetApplication().addExportType("STEP AP214 format (*.step *.stp)","ImportGui");
+    App::GetApplication().addImportType("STEP with colors (*.step *.stp)","ImportGui");
+    App::GetApplication().addExportType("STEP with colors (*.step *.stp)","ImportGui");
 #endif
 #endif
 

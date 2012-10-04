@@ -446,9 +446,10 @@ CmdPartImport::CmdPartImport()
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QString::fromAscii("STEP AP203 (*.stp *.step)");
-    filter << QString::fromAscii("STEP AP214 (*.stp *.step)");
+    filter << QString::fromAscii("STEP (*.stp *.step)");
+    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
     filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
     filter << QString::fromAscii("BREP (*.brp *.brep)");
 
     QString select;
@@ -459,7 +460,7 @@ void CmdPartImport::activated(int iMsg)
         if (!pDoc) return; // no document
         openCommand("Import Part");
         if (select == filter[1] ||
-            select == filter[2]) {
+            select == filter[3]) {
             doCommand(Doc, "import ImportGui");
             doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
@@ -504,9 +505,10 @@ CmdPartExport::CmdPartExport()
 void CmdPartExport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QString::fromAscii("STEP AP203 (*.stp *.step)");
-    filter << QString::fromAscii("STEP AP214 (*.stp *.step)");
+    filter << QString::fromAscii("STEP (*.stp *.step)");
+    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
     filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
     filter << QString::fromAscii("BREP (*.brp *.brep)");
 
     QString select;
@@ -515,7 +517,7 @@ void CmdPartExport::activated(int iMsg)
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
         if (select == filter[1] ||
-            select == filter[2]) {
+            select == filter[3]) {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"ImportGui");
         }
         else {
