@@ -2402,6 +2402,7 @@ class _ViewProviderRectangle(_ViewProviderDraft):
         self.Object = vobj.Object
 
     def onChanged(self, vp, prop):
+        from pivy import coin
         if prop == "TextureImage":
             r = vp.RootNode
             if os.path.exists(vp.TextureImage):

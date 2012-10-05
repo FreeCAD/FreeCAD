@@ -1,12 +1,12 @@
 # Try to find OCC
 # Once done this will define
 #
-# OCC_FOUND        - system has OCC - OpenCASCADE
-# OCC_INCLUDE_DIR  - where the OCC include directory can be found
-# OCC_LIBRARY_DIR  - where the OCC library directory can be found
-# OCC_LIBRARIES    - Link this to use OCC
-#
- 
+# OCC_FOUND          - system has OCC - OpenCASCADE
+# OCC_INCLUDE_DIR    - where the OCC include directory can be found
+# OCC_LIBRARY_DIR    - where the OCC library directory can be found
+# OCC_LIBRARIES      - Link this to use OCC
+# OCC_OCAF_LIBRARIES - Link this to use OCC OCAF framework
+
 
 IF (WIN32)
   IF (CYGWIN OR MINGW)
@@ -79,6 +79,13 @@ IF(OCC_LIBRARY)
     TKSTEPAttr
     TKHLR
     TKFeat
+  )
+  set(OCC_OCAF_LIBRARIES
+    TKCAF
+    TKXCAF
+    TKLCAF
+    TKXDESTEP
+    TKXDEIGES
   )
 ENDIF(OCC_LIBRARY)
 
