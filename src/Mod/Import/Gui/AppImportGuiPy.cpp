@@ -671,7 +671,11 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             writer.Transfer(hDoc, STEPControl_AsIs);
 
             // edit STEP header
+#if OCC_VERSION_HEX > 0x060500
+            APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
+#else
             APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
+#endif
             makeHeader.SetName(new TCollection_HAsciiString((const Standard_CString)filename));
             makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
             makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
