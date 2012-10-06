@@ -671,7 +671,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             writer.Transfer(hDoc, STEPControl_AsIs);
 
             // edit STEP header
-#if OCC_VERSION_HEX > 0x060500
+#if OCC_VERSION_HEX >= 0x060500
             APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
 #else
             APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
