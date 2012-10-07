@@ -53,7 +53,8 @@ public:
     App::PropertyBool   ShowHiddenLines;
     App::PropertyBool   ShowSmoothLines;
     App::PropertyFloat  LineWidth;
- 
+    App::PropertyFloatConstraint  Tolerance;
+
 
     /** @name methods overide Feature */
     //@{
@@ -65,6 +66,9 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "DrawingGui::ViewProviderDrawingView";
     }
+
+private:
+    static App::PropertyFloatConstraint::Constraints floatRange;
 };
 
 typedef App::FeaturePythonT<FeatureViewPart> FeatureViewPartPython;
