@@ -55,7 +55,6 @@ nobase_data_DATA = \
 	Examples/s60_katamaran.fcstd \
 	Examples/wigley.fcstd \
 	Examples/wigley_katamaran.fcstd \
-	OpenCL/simInit.cl \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \

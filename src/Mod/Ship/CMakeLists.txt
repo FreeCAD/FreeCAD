@@ -58,7 +58,6 @@ SET(ShipExamples_SRCS
 	Examples/s60_katamaran.fcstd
 	Examples/wigley.fcstd
 	Examples/wigley_katamaran.fcstd
-	OpenCL/simInit.cl
 )
 SOURCE_GROUP("shipexamples" FILES ${ShipExamples_SRCS})
 
