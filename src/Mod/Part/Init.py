@@ -54,9 +54,9 @@ FreeCAD.addExportType("IGES format (*.iges *.igs)","Part")
 # The registration of the STEP filetype for 64-bit is handled in initPart()
 import platform
 if platform.architecture()[0]=='32bit':
-   FreeCAD.addImportType("STEP AP214 format (*.step *.stp)","ImportGui")
-   FreeCAD.addExportType("STEP AP214 format (*.step *.stp)","ImportGui")
+   FreeCAD.addImportType("STEP with colors (*.step *.stp)","ImportGui")
+   FreeCAD.addExportType("STEP with colors (*.step *.stp)","ImportGui")
 #else:
-#    FreeCAD.addImportType("STEP AP203 format (*.step *.stp)","Part")
-#    FreeCAD.addExportType("STEP AP203 format (*.step *.stp)","Part")
+#    FreeCAD.addImportType("STEP (*.step *.stp)","Part")
+#    FreeCAD.addExportType("STEP (*.step *.stp)","Part")
 

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+   (c) Jose Luis Cercos Pita (jlcercos@gmail.com) 2012                       
+                                                                        
+   This file is part of the FreeCAD CAx development system.             
+                                                                        
+   This program is free software; you can redistribute it and/or modify 
+   it under the terms of the GNU Library General Public License (LGPL)  
+   as published by the Free Software Foundation; either version 2 of    
+   the License, or (at your option) any later version.                  
+   for detail see the LICENCE text file.                                
+                                                                        
+   FreeCAD is distributed in the hope that it will be useful,           
+   but WITHOUT ANY WARRANTY; without even the implied warranty of       
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        
+   GNU Library General Public License for more details.                 
+                                                                        
+   You should have received a copy of the GNU Library General Public    
+   License along with FreeCAD; if not, write to the Free Software       
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 
+   USA                                                                  
+                                                                        
+   Jose Luis Cercos Pita 2012
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Directory Id="ModShip" Name="Ship" FileSource="../../Mod/Ship">
+        <Component Id="CompModShip" Guid="4ddaaa92-1ccc-4462-ab58-606082aa277e" Win64='$(var.Win_64)' KeyPath="yes">
+            <File Id="ShipGuiPy" Name="ShipGui.py" DiskId="1" />
+            <File Id="ShipInitGuiPy" Name="InitGui.py" DiskId="1" />
+            <File Id="ShipInstance" Name="Instance.py" DiskId="1" />
+            <File Id="ShipTankInstance" Name="TankInstance.py" DiskId="1" />
+            <File Id="ShipSimInstance" Name="SimInstance.py" DiskId="1" />
+        </Component>
+		<Directory Id="ModShipExamples" Name="Examples" FileSource="../../Mod/Ship/Examples" >
+			<Component Id="CompModShipExamples"  Guid="b5f1ae58-728b-4c0a-9b09-263cd63cdfd1" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="ShipExampleS60" Name="s60.fcstd"   />
+				<File Id="ShipExampleS60Katamaran" Name="s60_katamaran.fcstd"   />
+				<File Id="ShipExampleWigley" Name="wigley.fcstd"   />
+				<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModShipIcons" Name="ShipIcons" FileSource="../../Mod/Ship/Icons" >
+			<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="ShipIcons01" Name="AreaCurveIco.png"   />
+				<File Id="ShipIcons02" Name="DataIco.png"   />
+				<File Id="ShipIcons03" Name="DiscretizeIco.png"   />
+				<File Id="ShipIcons04" Name="HydrostaticsIco.png"   />
+				<File Id="ShipIcons05" Name="Ico.png"   />
+				<File Id="ShipIcons06" Name="LoadIco.png"   />
+				<File Id="ShipIcons07" Name="OutlineDrawIco.png"   />
+				<File Id="ShipIcons08" Name="ReparametrizeIco.png"   />
+				<File Id="ShipIcons09" Name="SimCreateIco.png"   />
+				<File Id="ShipIcons10" Name="SimPostIco.png"   />
+				<File Id="ShipIcons11" Name="SimRunIco.png"   />
+				<File Id="ShipIcons12" Name="SimStopIco.png"   />
+				<File Id="ShipIcons13" Name="Tank.png"   />
+				<File Id="ShipIcons14" Name="Weight.png"   />
+				<File Id="ShipIcons15" Name="Ship.xpm"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipAreasCurve" Name="shipAreasCurve" FileSource="../../Mod/Ship/shipAreasCurve" >
+			<Component Id="CompModshipAreasCurve"  Guid="49b32e4c-d861-4968-9c5c-8191ce6fa6c4" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipAreasCurve01" Name="__init__.py"   />
+				<File Id="shipAreasCurve02" Name="Plot.py"   />
+				<File Id="shipAreasCurve03" Name="Preview.py"   />
+				<File Id="shipAreasCurve04" Name="TaskPanel.py"   />
+				<File Id="shipAreasCurve05" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipCreateShip" Name="shipCreateShip" FileSource="../../Mod/Ship/shipCreateShip" >
+			<Component Id="CompModshipCreateShip"  Guid="7492bfb5-96d8-4555-8cc0-682c79a779ac" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipCreateShip01" Name="__init__.py"   />
+				<File Id="shipCreateShip02" Name="Preview.py"   />
+				<File Id="shipCreateShip03" Name="TaskPanel.py"   />
+				<File Id="shipCreateShip04" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipHydrostatics" Name="shipHydrostatics" FileSource="../../Mod/Ship/shipHydrostatics" >
+			<Component Id="CompModshipHydrostatics"  Guid="c76a6ae1-8533-4382-950b-bde2733603a8" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipHydrostatics01" Name="__init__.py"   />
+				<File Id="shipHydrostatics02" Name="Plot.py"   />
+				<File Id="shipHydrostatics03" Name="TaskPanel.py"   />
+				<File Id="shipHydrostatics04" Name="TaskPanel.ui"   />
+				<File Id="shipHydrostatics05" Name="Tools.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipLoadExample" Name="shipLoadExample" FileSource="../../Mod/Ship/shipLoadExample" >
+			<Component Id="CompModshipLoadExample"  Guid="3c66c63a-7967-4fe7-8138-73ef98a1b233" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipLoadExample01" Name="__init__.py"   />
+				<File Id="shipLoadExample02" Name="TaskPanel.py"   />
+				<File Id="shipLoadExample03" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipOutlineDraw" Name="shipOutlineDraw" FileSource="../../Mod/Ship/shipOutlineDraw" >
+			<Component Id="CompModshipOutlineDraw"  Guid="a81ec2de-3620-4b33-beaa-2ef14ac642c5" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipOutlineDraw01" Name="__init__.py"   />
+				<File Id="shipOutlineDraw02" Name="Plot.py"   />
+				<File Id="shipOutlineDraw03" Name="Preview.py"   />
+				<File Id="shipOutlineDraw04" Name="TaskPanel.py"   />
+				<File Id="shipOutlineDraw05" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModshipUtils" Name="shipUtils" FileSource="../../Mod/Ship/shipUtils" >
+			<Component Id="CompModshipUtils"  Guid="7fca3f4d-861a-44fb-ab2e-cd256e3ba9b3" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="shipUtils01" Name="__init__.py"   />
+				<File Id="shipUtils02" Name="Math.py"   />
+				<File Id="shipUtils03" Name="Paths.py"   />
+				<File Id="shipUtils04" Name="Translator.py"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModsimCreate" Name="simCreate" FileSource="../../Mod/Ship/simCreate" >
+			<Component Id="CompModsimCreate"  Guid="b56debf6-3221-4bd6-9799-f1c1928878fc" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="simCreate01" Name="__init__.py"   />
+				<File Id="simCreate02" Name="TaskPanel.py"   />
+				<File Id="simCreate03" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModsimPost" Name="simPost" FileSource="../../Mod/Ship/simPost" >
+			<Component Id="CompModsimPost"  Guid="137caeea-fc08-49d7-ad75-29147e122617" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="simPost01" Name="__init__.py"   />
+				<File Id="simPost02" Name="TaskPanel.py"   />
+				<File Id="simPost03" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModsimRun" Name="simRun" FileSource="../../Mod/Ship/simRun" >
+			<Component Id="CompModsimRun"  Guid="8a7ad993-1006-4837-9d55-315e3721dd39" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="simRun01" Name="__init__.py"   />
+				<File Id="simRun02" Name="Simulation.py"   />
+				<File Id="simRun03" Name="TaskPanel.py"   />
+				<File Id="simRun04" Name="TaskPanel.ui"   />
+			</Component>
+			<Directory Id="ModsimRunCL" Name="clSim" FileSource="../../Mod/Ship/simRun/clSim" >
+				<Component Id="CompModsimRunCL"  Guid="577e944a-9f25-4279-ab3a-dd464f60c229" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="clSim01" Name="__init__.py"   />
+					<File Id="clSim02" Name="initialization.py"   />
+					<File Id="clSim03" Name="Utils.py"   />
+				</Component>
+			</Directory>
+			<Directory Id="ModsimRunNoCL" Name="Sim" FileSource="../../Mod/Ship/simRun/Sim" >
+				<Component Id="CompModsimRunNoCL"  Guid="c8655a85-20de-4f30-9924-de34a79ffa2e" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="Sim02" Name="computeSources.py"   />
+					<File Id="Sim02" Name="fsEvolution.py"   />
+					<File Id="Sim01" Name="__init__.py"   />
+					<File Id="Sim02" Name="initialization.py"   />
+					<File Id="Sim03" Name="matrixGen.py"   />
+				</Component>
+			</Directory>
+		</Directory>
+		<Directory Id="ModtankCreateTank" Name="tankCreateTank" FileSource="../../Mod/Ship/tankCreateTank" >
+			<Component Id="CompModtankCreateTank"  Guid="1cc53994-9e82-4731-bd37-2705a31388c6" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="tankCreateTank01" Name="__init__.py"   />
+				<File Id="tankCreateTank02" Name="TaskPanel.py"   />
+				<File Id="tankCreateTank03" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModtankGZ" Name="tankGZ" FileSource="../../Mod/Ship/tankGZ" >
+			<Component Id="CompModtankGZ"  Guid="ef798f90-0c85-4c5e-a637-22b97bf05303" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="tankGZ01" Name="__init__.py"   />
+				<File Id="tankGZ02" Name="Plot.py"   />
+				<File Id="tankGZ03" Name="TaskPanel.py"   />
+				<File Id="tankGZ04" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+		<Directory Id="ModtankWeights" Name="tankWeights" FileSource="../../Mod/Ship/tankWeights" >
+			<Component Id="CompModtankWeights"  Guid="77f12d48-58b0-4c95-8bee-7c4f709379d8" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="tankWeights01" Name="__init__.py"   />
+				<File Id="tankWeights03" Name="Preview.py"   />
+				<File Id="tankWeights04" Name="TaskPanel.py"   />
+				<File Id="tankWeights05" Name="TaskPanel.ui"   />
+			</Component>
+		</Directory>
+	</Directory>
+</Include>

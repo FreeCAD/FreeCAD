@@ -70,6 +70,8 @@ using namespace std;
 // FeatureViewPart
 //===========================================================================
 
+App::PropertyFloatConstraint::Constraints FeatureViewPart::floatRange = {0.01f,5.0f,0.05f};
+
 PROPERTY_SOURCE(Drawing::FeatureViewPart, Drawing::FeatureView)
 
 
@@ -83,6 +85,8 @@ FeatureViewPart::FeatureViewPart(void)
     ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Control the appearance of the dashed hidden lines");
     ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Control the appearance of the smooth lines");
     ADD_PROPERTY_TYPE(LineWidth,(0.35f),vgroup,App::Prop_None,"The thickness of the resulting lines");
+    ADD_PROPERTY_TYPE(Tolerance,(0.05f),vgroup,App::Prop_None,"The tessellation tolerance");
+    Tolerance.setConstraints(&floatRange);
 }
 
 FeatureViewPart::~FeatureViewPart()
@@ -198,7 +202,7 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
         ProjectionAlgos::SvgExtractionType type = ProjectionAlgos::Plain;
         if (hidden) type = (ProjectionAlgos::SvgExtractionType)(type|ProjectionAlgos::WithHidden);
         if (smooth) type = (ProjectionAlgos::SvgExtractionType)(type|ProjectionAlgos::WithSmooth);
-        result << Alg.getSVG(type, this->LineWidth.getValue() / this->Scale.getValue());
+        result << Alg.getSVG(type, this->LineWidth.getValue() / this->Scale.getValue(), this->Tolerance.getValue());
 
         result << "</g>" << endl;
 
