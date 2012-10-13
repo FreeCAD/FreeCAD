@@ -38,7 +38,7 @@
 				<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
 			</Component>
 		</Directory>
-		<Directory Id="ModShipIcons" Name="ShipIcons" FileSource="../../Mod/Ship/Icons" >
+		<Directory Id="ModShipIcons" Name="Icons" FileSource="../../Mod/Ship/Icons" >
 			<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="ShipIcons01" Name="AreaCurveIco.png"   />
 				<File Id="ShipIcons02" Name="DataIco.png"   />
