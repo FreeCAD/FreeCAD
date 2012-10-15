@@ -26,6 +26,9 @@ SET(StartPage_DATA
     web.png
     blank.png
     complete.jpg
+    Ship.py
+    Ship.png
+    ShipExample.png
 )
 
 INSTALL(FILES ${StartPage_SRCS}
