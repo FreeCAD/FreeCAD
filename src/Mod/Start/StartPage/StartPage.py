@@ -73,6 +73,9 @@ text48 = translate("StartPage","A blog dedicated to teaching FreeCAD, maintained
 text49 = translate("StartPage","Getting started")
 text50 = translate("StartPage","The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.")
 text51 = translate("StartPage","http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept")
+text52 = translate("StartPage","Ship Design")
+text53 = translate("StartPage","Designing and calculating ships")
+text54 = translate("StartPage","The <b>Ship Design</b> module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.")
 
 # here is the html page skeleton
 
@@ -365,6 +368,13 @@ def getWorkbenches():
             :</small></p><img src=ArchExample.png>')" 
             onMouseout="show('')"
             href="ArchDesign.py">""" + text25 + """</a>
+        </li>
+        <li><img src="Ship.png">&nbsp;
+          <a onMouseover="show('<h3>""" + text53 + """</h3> \
+            <p>""" + text54 + """</p><p><small>""" + text21 + """ \
+            :</small></p><img src=ShipExample.png>')" 
+            onMouseout="show('')"
+            href="Ship.py">""" + text52 + """</a>
         </li>
         <li><img src="Mesh.png">&nbsp;
             <a onMouseover="show('<h3>""" + text26 + """</h3> \
