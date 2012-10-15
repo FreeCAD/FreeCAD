@@ -92,6 +92,9 @@
 							<File Id="StartPage21" Name="LoadMRU1.py"   />
 							<File Id="StartPage22" Name="LoadMRU2.py"   />
 							<File Id="StartPage23" Name="ArchExample.png"   />
+                            <File Id="StartPage24" Name="ShipExample.png"   />
+                            <File Id="StartPage25" Name="Ship.png"   />
+                            <File Id="StartPage26" Name="Ship.py"   />
 						</Component>
 					</Directory>
 				</Directory>
