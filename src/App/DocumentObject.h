@@ -183,6 +183,8 @@ protected:
     virtual void onDocumentRestored() {}
     /// get called after duplicating an object
     virtual void onFinishDuplicating() {}
+    /// get called after setting the document
+    virtual void onSettingDocument() {}
 
      /// python object of this class and all descendend
 protected: // attributes
