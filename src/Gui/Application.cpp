@@ -1403,7 +1403,6 @@ static void init_resources()
 void Application::initApplication(void)
 {
     try {
-        Base::Interpreter().replaceStdOutput();
         initTypes();
         new Base::ScriptProducer( "FreeCADGuiInit", FreeCADGuiInit );
         init_resources();

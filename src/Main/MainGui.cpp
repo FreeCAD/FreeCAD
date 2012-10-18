@@ -225,6 +225,7 @@ int main( int argc, char ** argv )
         // Inits the Application 
         App::Application::init(argc,argv);
         Gui::Application::initApplication();
+        Base::Interpreter().replaceStdOutput();
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc,argv);
