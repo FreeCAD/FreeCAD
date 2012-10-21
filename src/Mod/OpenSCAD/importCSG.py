@@ -153,7 +153,11 @@ def p_render_action(p):
 def p_group_action1(p):
     'group_action1 : group LPAREN RPAREN OBRACE block_list EBRACE'
     print "Group"
-    p[0] = p[5]
+# Test if need for implicit fuse
+    if (len(p[5]) > 1) :
+        p[0] = [fuse(p[5],"Group")]
+    else :
+        p[0] = p[5]
 
 def p_group_action2(p) :
     'group_action2 : group LPAREN RPAREN SEMICOL'
@@ -765,7 +769,7 @@ def p_cylinder_action(p):
         fnmax = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetInt('useMaxFN')
-        if n < 3 or fnmax != 0 and n > fnmax:
+        if n < 3 or fnmax != 0 and n >= fnmax:
             mycyl=doc.addObject("Part::Cylinder",p[1])
             mycyl.Height = h
             mycyl.Radius = r1
@@ -836,9 +840,11 @@ def p_circle_action(p) :
     n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN')
+        GetInt('useMaxFN',50)
+    # Alter Max polygon to control if polygons are circles or polygons
+    # in the modules preferences
     import Draft
-    if n == 0 or fnmax != 0 and n > fnmax:
+    if n == 0 or fnmax != 0 and n >= fnmax:
        mycircle = Draft.makeCircle(r)
        #mycircle = doc.addObject('Part::Circle',p[1])
        #mycircle.Radius = r
