@@ -30,6 +30,7 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <Standard_Failure.hxx>
 // includes for findAllFacesCutBy()
 # include <TopoDS_Face.hxx>
 # include <gp_Dir.hxx>
@@ -69,6 +70,19 @@ Feature::~Feature()
 short Feature::mustExecute(void) const
 {
     return GeoFeature::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Feature::recompute(void)
+{
+    try {
+        return App::GeoFeature::recompute();
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e->GetMessageString());
+        if (ret->Why.empty()) ret->Why = "Unknown OCC exception";
+        return ret;
+    }
 }
 
 App::DocumentObjectExecReturn *Feature::execute(void)

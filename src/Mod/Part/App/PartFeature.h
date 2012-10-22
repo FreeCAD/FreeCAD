@@ -60,6 +60,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
+    /// recompute only this object
+    virtual App::DocumentObjectExecReturn *recompute(void);
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual short mustExecute(void) const;
     //@}
