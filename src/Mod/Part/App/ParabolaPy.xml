@@ -14,6 +14,14 @@
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>Describes a parabola in 3D space</UserDocu>
 		</Documentation>
+		<Methode Name="compute">
+			<Documentation>
+				<UserDocu>
+					compute(p1,p2,p3)
+					The three points must lie on a plane parallel to xy plane and must not be collinear
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Eccentricity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns 1. (which is the eccentricity of any parabola).</UserDocu>
