@@ -138,7 +138,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         BRep_Builder builder;
         TopoDS_Compound transformedShapes;
         builder.MakeCompound(transformedShapes);
-        std::vector<TopoDS_Shape> v_transformedShapes; // collect all the transformed shapes for history building
+        std::vector<TopoDS_Shape> v_transformedShapes; // collect all the transformed shapes for intersection testing
         std::list<gp_Trsf>::const_iterator t = transformations.begin();
         t++; // Skip first transformation, which is always the identity transformation
 
@@ -158,8 +158,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // Check for intersection with support
             if (!Part::checkIntersection(support, mkTrf.Shape(), false)) {
                 Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
-                // Note: The removal happens in getSolid() after the fuse. If we remove here,
-                // the histories get messed up and we get a crash
+                // Note: The removal happens in getSolid() after the fuse
                 rejected.push_back(*t);
             }
             builder.Add(transformedShapes, mkTrf.Shape());
@@ -175,12 +174,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             BRepBndLib::Add(trfShape, transformed_bb);
             if (support_bb.Distance(transformed_bb) > Precision::Confusion()) {
                 Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
-                // Note: The removal happens in getSolid() after the fuse. If we remove here,
-                // the histories get messed up and we get a crash
+                // Note: The removal happens in getSolid() after the fuse
             }
             builder.Add(transformedShapes, trfShape);
             v_transformedShapes.push_back(trfShape);
-
             */
         }
 
