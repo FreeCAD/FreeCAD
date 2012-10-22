@@ -134,9 +134,11 @@ public:
   /// transform (move,scale,rotate) around a point
   void transform    (const Vector3f& rclVct, const Matrix4D& rclMtrx);
   void transform    (const Vector3d& rclVct, const Matrix4D& rclMtrx);
+  /// Matrix is expected to have a 3x3 rotation matrix.
   void inverse      (void);
-  /// if matrix is orthogonal a special way of getting the inverse is used
+  /// Matrix is expected to have a 3x3 rotation matrix.
   void inverseOrthogonal(void);
+  /// Arbitrary, non-singular matrix
   void inverseGauss (void);
   void transpose    (void);
   //@}
