@@ -135,6 +135,16 @@ PartExport
 std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
                                         const TopoDS_Shape& face, const gp_Dir& dir);
 
+/**
+  * Check for intersection between the two shapes. Only solids are guaranteed to work properly
+  * There are two modes:
+  * 1. Bounding box check only - quick but inaccurate
+  * 2. Bounding box check plus (if necessary) boolean operation - costly but accurate
+  * Return true if the shapes intersect, false if they don't
+  */
+PartExport
+const bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second, const bool quick = true);
+
 } //namespace Part
 
 
