@@ -59,8 +59,6 @@ Pad::Pad()
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Length,(100.0));
-    ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY(Midplane,(0));
     ADD_PROPERTY(Length2,(100.0));
     ADD_PROPERTY(FaceName,(""));
 }
@@ -69,8 +67,6 @@ short Pad::mustExecute() const
 {
     if (Placement.isTouched() ||
         Length.isTouched() ||
-        Midplane.isTouched() ||
-        Reversed.isTouched() ||
         Length2.isTouched() ||
         FaceName.isTouched())
         return 1;
