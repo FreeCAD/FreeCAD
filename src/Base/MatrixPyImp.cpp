@@ -342,7 +342,7 @@ PyObject* MatrixPy::invert(PyObject * args)
 
     PY_TRY {
         if (getMatrixPtr()->determinant() > DBL_EPSILON)
-            getMatrixPtr()->inverse();
+            getMatrixPtr()->inverseGauss();
         else {
             PyErr_SetString(PyExc_Exception, "Cannot invert singular matrix");
             return 0;
@@ -361,7 +361,7 @@ PyObject* MatrixPy::inverse(PyObject * args)
     PY_TRY {
         if (getMatrixPtr()->determinant() > DBL_EPSILON) {
             Base::Matrix4D m = *getMatrixPtr();
-            m.inverse();
+            m.inverseGauss();
             return new MatrixPy(m);
         }
         else {

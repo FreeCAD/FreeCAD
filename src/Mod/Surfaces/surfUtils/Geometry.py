@@ -25,7 +25,8 @@ import math
 # FreeCAD
 import FreeCAD, FreeCADGui
 from FreeCAD import Base
-from FreeCAD import Part
+#from FreeCAD import Part
+import Part
 # FreeCAD ship
 from surfUtils import Math
 

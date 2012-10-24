@@ -161,6 +161,25 @@
             <ComponentRef Id="CompModWeb" />
             <ComponentRef Id="CompModOpenSCAD" />
             <ComponentRef Id="CompModOpenSCADPly" />
+            <!-- Ship module -->
+            <ComponentRef Id="CompModShip" />
+            <ComponentRef Id="CompModShipExamples" />
+            <ComponentRef Id="CompModShipIcons" />
+            <ComponentRef Id="CompModshipAreasCurve" />
+            <ComponentRef Id="CompModshipCreateShip" />
+            <ComponentRef Id="CompModshipHydrostatics" />
+            <ComponentRef Id="CompModshipLoadExample" />
+            <ComponentRef Id="CompModshipOutlineDraw" />
+            <ComponentRef Id="CompModshipUtils" />
+            <ComponentRef Id="CompModsimCreate" />
+            <ComponentRef Id="CompModsimPost" />
+            <ComponentRef Id="CompModsimRun" />
+            <ComponentRef Id="CompModsimRunCL" />
+            <ComponentRef Id="CompModsimRunNoCL" />
+            <ComponentRef Id="CompModtankCreateTank" />
+            <ComponentRef Id="CompModtankGZ" />
+            <ComponentRef Id="CompModtankWeights" />
+            <!-- Ship module -->
             <ComponentRef Id="CompExampleData" />
 		
             <Feature Id="FeatModImage" Title="The Image module" Description="Module to handle pictures" Level="1">

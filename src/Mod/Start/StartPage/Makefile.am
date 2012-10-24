@@ -30,7 +30,10 @@ data_DATA = \
 		ArchExample.png \
 		web.png \
 		blank.png \
-        complete.jpg
+        complete.jpg \
+        Ship.py \
+        Ship.png \
+        ShipExample.png
 
 EXTRA_DIST = \
 		$(data_DATA) $(python_DATA)

@@ -40,7 +40,12 @@ class PartDesignExport SketchBased : public PartDesign::Feature
 public:
     SketchBased();
 
+    /// Common properties for all sketch based features
     App::PropertyLink   Sketch;
+    /// Reverse extrusion direction
+    App::PropertyBool       Reversed;
+    /// Make extrusion symmetric to sketch plane
+    App::PropertyBool       Midplane;
 
     short mustExecute() const;
 

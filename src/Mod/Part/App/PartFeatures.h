@@ -67,6 +67,9 @@ public:
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderLoft";
+    }
     //@}
 
 protected:
@@ -91,6 +94,9 @@ public:
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderSweep";
+    }
     //@}
 
 protected:

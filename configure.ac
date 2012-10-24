@@ -193,7 +193,7 @@ fc_py_ac_save_ldflags=$LDFLAGS
 fc_py_ac_save_libs=$LIBS
 CPPFLAGS="$CPPFLAGS -I$fc_py_incs"
 LDFLAGS="$LDFLAGS -L$fc_py_libs"
-LIBS="-lpython$PYTHON_VERSION"
+LIBS="-lpython$PYTHON_VERSION -lpthread -ldl -lutil -lm"
 
 dnl Small test program that only works with Python 2.5 and higher
 fc_cv_lib_py_avail=no

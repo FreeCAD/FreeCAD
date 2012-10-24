@@ -56,8 +56,6 @@ Revolution::Revolution()
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::Prop_None),"Reference axis of revolution");
-    ADD_PROPERTY_TYPE(Midplane,(0),"Revolution", App::Prop_None, "Mid plane");
-    ADD_PROPERTY_TYPE(Reversed, (0),"Revolution", App::Prop_None, "Reversed");
 }
 
 short Revolution::mustExecute() const
@@ -66,9 +64,7 @@ short Revolution::mustExecute() const
         ReferenceAxis.isTouched() ||
         Axis.isTouched() ||
         Base.isTouched() ||
-        Angle.isTouched() ||
-        Midplane.isTouched() ||
-        Reversed.isTouched())
+        Angle.isTouched())
         return 1;
     return Additive::mustExecute();
 }

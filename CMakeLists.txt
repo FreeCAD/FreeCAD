@@ -170,6 +170,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 # -------------------------------- Python --------------------------------
 
 
+    set(Python_ADDITIONAL_VERSIONS "2.3" "2.4" "2.5" "2.6" "2.7" "2.8" "2.9")
     find_package(PythonLibs REQUIRED)
     find_package(PythonInterp REQUIRED)
 
