@@ -60,6 +60,51 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
+PyObject* ParabolaPy::compute(PyObject *args)
+{
+    PyObject *p1, *p2, *p3;
+    if (!PyArg_ParseTuple(args, "O!O!O!",
+        &Base::VectorPy::Type,&p1,
+        &Base::VectorPy::Type,&p2,
+        &Base::VectorPy::Type,&p3))
+        return 0;
+    Base::Vector3d v1 = Py::Vector(p1,false).toVector();
+    Base::Vector3d v2 = Py::Vector(p2,false).toVector();
+    Base::Vector3d v3 = Py::Vector(p3,false).toVector();
+    Base::Vector3d c = (v1-v2) % (v3-v2);
+    double zValue = v1.z;
+    if (fabs(c.Length()) < 0.0001) {
+        PyErr_SetString(PyExc_Exception, "Points are collinear");
+        return 0;
+    }
+
+    Base::Matrix4D m;
+    Base::Vector3f v;
+    m[0][0] = v1.y * v1.y;
+    m[0][1] = v1.y;
+    m[0][2] = 1;
+    m[1][0] = v2.y * v2.y;
+    m[1][1] = v2.y;
+    m[1][2] = 1;
+    m[2][0] = v3.y * v3.y;
+    m[2][1] = v3.y;
+    m[2][2] = 1.0;
+    v.x = v1.x;
+    v.y = v2.x;
+    v.z = v3.x;
+    m.inverseGauss();
+    v = m * v;
+    double a22 = v.x;
+    double a10 = -0.5;
+    double a20 = v.y/2.0;
+    double a00 = v.z;
+    Handle_Geom_Parabola curve = Handle_Geom_Parabola::DownCast(getGeometryPtr()->handle());
+    curve->SetFocal(0.5*fabs(a10/a22));
+    curve->SetLocation(gp_Pnt((a20*a20-a22*a00)/(2*a22*a10), -a20/a22, zValue));
+
+    Py_Return;
+}
+
 Py::Float ParabolaPy::getEccentricity(void) const
 {
     Handle_Geom_Parabola curve = Handle_Geom_Parabola::DownCast(getGeometryPtr()->handle());

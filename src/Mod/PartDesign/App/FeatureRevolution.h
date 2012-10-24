@@ -40,8 +40,6 @@ public:
     App::PropertyVector Base;
     App::PropertyVector Axis;
     App::PropertyAngle  Angle;
-    App::PropertyBool   Midplane;
-    App::PropertyBool   Reversed;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -50,7 +48,13 @@ public:
 
     /** @name methods override feature */
     //@{
-    /// recalculate the feature
+    /** Recalculate the feature
+      * Revolves the Sketch around the given Axis (with basepoint Base)
+      * The angle of the revolution is given by Angle.
+      * If Midplane is true, then the revolution will extend for half of Angle on both sides of the sketch plane.
+      * If Reversed is true then the direction of revolution will be reversed.
+      * The created material will be fused with the sketch support (if there is one)
+      */
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     /// returns the type name of the view provider

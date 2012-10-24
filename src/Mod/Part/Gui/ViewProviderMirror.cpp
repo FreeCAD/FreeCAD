@@ -40,6 +40,7 @@
 #include <Mod/Part/App/FeatureFillet.h>
 #include <Mod/Part/App/FeatureChamfer.h>
 #include <Mod/Part/App/FeatureRevolution.h>
+#include <Mod/Part/App/PartFeatures.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -346,5 +347,51 @@ bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
 
+    return true;
+}
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderLoft, PartGui::ViewProviderPart)
+
+ViewProviderLoft::ViewProviderLoft()
+{
+    sPixmap = "Part_Loft";
+}
+
+ViewProviderLoft::~ViewProviderLoft()
+{
+}
+
+std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
+{
+    return static_cast<Part::Loft*>(getObject())->Sections.getValues();
+}
+
+bool ViewProviderLoft::onDelete(const std::vector<std::string> &)
+{
+    return true;
+}
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderSweep, PartGui::ViewProviderPart)
+
+ViewProviderSweep::ViewProviderSweep()
+{
+    sPixmap = "Part_Sweep";
+}
+
+ViewProviderSweep::~ViewProviderSweep()
+{
+}
+
+std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
+{
+    return static_cast<Part::Sweep*>(getObject())->Sections.getValues();
+}
+
+bool ViewProviderSweep::onDelete(const std::vector<std::string> &)
+{
     return true;
 }

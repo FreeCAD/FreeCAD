@@ -30,8 +30,6 @@
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
 # include <Precision.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 #endif
@@ -114,10 +112,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     supportShape.setTransform(Base::Matrix4D());
     TopoDS_Shape support = supportShape._Shape;
 
-    // Prepare a bounding box for intersection tests
-    Bnd_Box support_bb;
-    BRepBndLib::Add(support, support_bb);
-
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
@@ -144,7 +138,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         BRep_Builder builder;
         TopoDS_Compound transformedShapes;
         builder.MakeCompound(transformedShapes);
-        std::vector<TopoDS_Shape> v_transformedShapes; // collect all the transformed shapes for history building
+        std::vector<TopoDS_Shape> v_transformedShapes; // collect all the transformed shapes for intersection testing
         std::list<gp_Trsf>::const_iterator t = transformations.begin();
         t++; // Skip first transformation, which is always the identity transformation
 
@@ -162,12 +156,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
 
             // Check for intersection with support
-            Bnd_Box transformed_bb;
-            BRepBndLib::Add(mkTrf.Shape(), transformed_bb);
-            if (support_bb.Distance(transformed_bb) > Precision::Confusion()) {
+            if (!Part::checkIntersection(support, mkTrf.Shape(), false)) {
                 Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
-                // Note: The removal happens in getSolid() after the fuse. If we remove here,
-                // the histories get messed up and we get a crash
+                // Note: The removal happens in getSolid() after the fuse
                 rejected.push_back(*t);
             }
             builder.Add(transformedShapes, mkTrf.Shape());
@@ -183,21 +174,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             BRepBndLib::Add(trfShape, transformed_bb);
             if (support_bb.Distance(transformed_bb) > Precision::Confusion()) {
                 Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
-                // Note: The removal happens in getSolid() after the fuse. If we remove here,
-                // the histories get messed up and we get a crash
+                // Note: The removal happens in getSolid() after the fuse
             }
             builder.Add(transformedShapes, trfShape);
             v_transformedShapes.push_back(trfShape);
-
             */
         }
 
         // Check for intersection of the original and the transformed shape
-        // Note: For performance reasons, we only check for intersection of bounding boxes
-        Bnd_Box original_bb;
-        BRepBndLib::Add(shape, original_bb);
-        original_bb.SetGap(0);
-
         for (std::vector<TopoDS_Shape>::const_iterator s = v_transformedShapes.begin(); s != v_transformedShapes.end(); s++)
         {
             // If there is only one transformed feature, this check is not necessary (though it might seem
@@ -205,12 +189,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             if (v_transformedShapes.size() == 1)
                 break;
 
-            Bnd_Box transformed_bb;
-            BRepBndLib::Add(*s, transformed_bb);
-            transformed_bb.SetGap(0);
-            if (!original_bb.IsOut(transformed_bb))
-                // if (original_bb.Distance(transformed_bb) < Precision::Confusion())
-                // FIXME: Both tests fail if the objects are touching one another at zero distance
+            if (Part::checkIntersection(shape, *s, false))
                 return new App::DocumentObjectExecReturn("Transformed objects are overlapping, try using a higher length or reducing the number of occurrences", (*o));
                 // Note: This limitation could be overcome by fusing the transformed features instead of
                 // compounding them, probably at the expense of quite a bit of performance and complexity
@@ -220,6 +199,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // features might overlap, even if the original and the first shape don't overlap!
             if (this->getTypeId() != PartDesign::MultiTransform::getClassTypeId())
                 break;
+            else {
+                // Check intersection with all other transformed shapes as well
+                std::vector<TopoDS_Shape>::const_iterator s2 = s;
+                s2++;
+                for (; s2 != v_transformedShapes.end(); s2++)
+                    if (Part::checkIntersection(*s, *s2, false))
+                        return new App::DocumentObjectExecReturn("Transformed objects are overlapping, try using a higher length or reducing the number of occurrences", (*o));
+            }
         }
 
         // Fuse/Cut the compounded transformed shapes with the support

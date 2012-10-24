@@ -193,6 +193,12 @@ int Part2DObject::getAxisCount(void) const
 
 Base::Axis Part2DObject::getAxis(int axId) const
 {
+    if (axId == H_Axis) {
+        return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(1,0,0));
+    }
+    else if (axId == V_Axis) {
+        return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,1,0));
+    }
     return Base::Axis();
 }
 

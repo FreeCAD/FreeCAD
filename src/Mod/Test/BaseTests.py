@@ -149,6 +149,11 @@ class ParameterTestCase(unittest.TestCase):
         self.TestPar.RemString("44")
         self.failUnless(self.TestPar.GetString("44","hallo") == "hallo","Deletion error at String")
 
+    def testMatrix(self):
+        m=FreeCAD.Matrix(4,2,1,0,1,1,1,0,0,0,1,0,0,0,0,1)
+        u=m.multiply(m.inverse())
+        self.failUnless(u==FreeCAD.Matrix(),"Invalid inverse of matrix")
+
     def testNesting(self):
         # Parameter testing
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")

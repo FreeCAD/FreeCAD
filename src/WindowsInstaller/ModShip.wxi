@@ -38,7 +38,7 @@
 				<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
 			</Component>
 		</Directory>
-		<Directory Id="ModShipIcons" Name="ShipIcons" FileSource="../../Mod/Ship/Icons" >
+		<Directory Id="ModShipIcons" Name="Icons" FileSource="../../Mod/Ship/Icons" >
 			<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="ShipIcons01" Name="AreaCurveIco.png"   />
 				<File Id="ShipIcons02" Name="DataIco.png"   />
@@ -80,7 +80,7 @@
 				<File Id="shipHydrostatics02" Name="Plot.py"   />
 				<File Id="shipHydrostatics03" Name="TaskPanel.py"   />
 				<File Id="shipHydrostatics04" Name="TaskPanel.ui"   />
-				<File Id="shipHydrostatics05" Name="Tools.ui"   />
+				<File Id="shipHydrostatics05" Name="Tools.py"   />
 			</Component>
 		</Directory>
 		<Directory Id="ModshipLoadExample" Name="shipLoadExample" FileSource="../../Mod/Ship/shipLoadExample" >
@@ -137,11 +137,11 @@
 			</Directory>
 			<Directory Id="ModsimRunNoCL" Name="Sim" FileSource="../../Mod/Ship/simRun/Sim" >
 				<Component Id="CompModsimRunNoCL"  Guid="c8655a85-20de-4f30-9924-de34a79ffa2e" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="Sim02" Name="computeSources.py"   />
+					<File Id="Sim01" Name="computeSources.py"   />
 					<File Id="Sim02" Name="fsEvolution.py"   />
-					<File Id="Sim01" Name="__init__.py"   />
-					<File Id="Sim02" Name="initialization.py"   />
-					<File Id="Sim03" Name="matrixGen.py"   />
+					<File Id="Sim03" Name="__init__.py"   />
+					<File Id="Sim04" Name="initialization.py"   />
+					<File Id="Sim05" Name="matrixGen.py"   />
 				</Component>
 			</Directory>
 		</Directory>

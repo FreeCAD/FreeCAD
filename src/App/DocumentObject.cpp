@@ -171,6 +171,7 @@ App::Document *DocumentObject::getDocument(void) const
 void DocumentObject::setDocument(App::Document* doc)
 {
     _pDoc=doc;
+    onSettingDocument();
 }
 
 void DocumentObject::onBeforeChange(const Property* prop)

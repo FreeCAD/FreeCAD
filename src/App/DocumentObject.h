@@ -102,7 +102,7 @@ public:
     /// returns true if this objects is currently restoring from file
     bool isRestoring() const {return StatusBits.test(4);}
     /// recompute only this object
-    App::DocumentObjectExecReturn *recompute(void);
+    virtual App::DocumentObjectExecReturn *recompute(void);
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     //@}
@@ -183,6 +183,8 @@ protected:
     virtual void onDocumentRestored() {}
     /// get called after duplicating an object
     virtual void onFinishDuplicating() {}
+    /// get called after setting the document
+    virtual void onSettingDocument() {}
 
      /// python object of this class and all descendend
 protected: // attributes
