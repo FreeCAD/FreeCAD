@@ -21,7 +21,7 @@
 # ******************************************************************************/
 
 import os, tempfile
-import FreeCADGui
+import FreeCAD, FreeCADGui # FreeCAD just required for debug printing to the console...
 import WebGui
 from SegmentFunction import SegmentFunction
 from ShaftFeature import ShaftFeature
@@ -115,7 +115,7 @@ class Shaft:
                 self.segments[index].loadLocation = loadLocation
             else:
                 # TODO: Show warning
-                print "Load location must be inside segment"
+                FreeCAD.Console.PrintMessage("Load location must be inside segment\n")
 
         #self.feature.updateForces() graphical representation of the forces
         self.equilibrium()
@@ -187,7 +187,7 @@ class Shaft:
                     coefficientsMbz.append(1)
                 else:
                     # TODO: Better error message
-                    print "Fixed constraint must be at beginning or end of shaft"
+                    FreeCAD.Console.PrintMessage("Fixed constraint must be at beginning or end of shaft\n")
                     return
 
                 locations["Fy%u" % i] = location
@@ -203,7 +203,7 @@ class Shaft:
             #elif lType == "None":
             #    # No loads on segment
 
-            print "Segment: %u, type: %s, load: %f, location: %f" % (i, lType, load, location)
+            FreeCAD.Console.PrintMessage("Segment: %u, type: %s, load: %f, location: %f\n" % (i, lType, load, location))
 
         self.printEquilibrium(variableNames, coefficientsFy)
         self.printEquilibrium(variableNames, coefficientsMbz)
@@ -227,8 +227,8 @@ class Shaft:
         else:
             moments[locations[variableNames[2]]] = solution[1]
 
-        print forces
-        print moments
+        FreeCAD.Console.PrintMessage(forces)
+        FreeCAD.Console.PrintMessage(moments)
         self.Qy = SegmentFunction("Qy")
         self.Qy.buildFromDict("x", forces)
         self.Qy.output()
@@ -241,12 +241,12 @@ class Shaft:
         # Auxiliary method for debugging purposes
         for i in range(len(var)):
             if i == 0:
-                print "%f = " % coeff[i],
+                FreeCAD.Console.PrintMessage("%f = " % coeff[i])
             else:
-                print "%f * %s" % (coeff[i], var[i]),
+                FreeCAD.Console.PrintMessage("%f * %s" % (coeff[i], var[i]))
             if (i < len(var) - 1) and (i != 0):
-                print " + ",
-        print ""
+                FreeCAD.Console.PrintMessage(" + ")
+        FreeCAD.Console.PrintMessage("\n")
 
     def __del__(self):
         "Remove the temporary directory"

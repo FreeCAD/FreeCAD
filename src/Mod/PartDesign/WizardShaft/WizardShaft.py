@@ -74,7 +74,7 @@ class WizardShaft:
         #self.shaft.htmlWindow = htmlWindow
 
     def updateEdge(self, column, start):
-        print "Not implemented yet - waiting for robust references..."
+        App.Console.PrintMessage("Not implemented yet - waiting for robust references...")
         return
         if self.sketchClosed is not True:
             return
@@ -116,3 +116,6 @@ class WizardShaftGui:
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip}
 
 FreeCADGui.addCommand('PartDesign_WizardShaft', WizardShaftGui())
+
+#Note: Start wizard in Python Console with
+# Gui.runCommand('PartDesign_WizardShaft')
