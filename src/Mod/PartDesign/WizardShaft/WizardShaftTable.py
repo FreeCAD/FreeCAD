@@ -21,6 +21,7 @@
 # ******************************************************************************/
 
 from PyQt4 import QtCore, QtGui
+import FreeCAD # Just for debug printing...
 
 class WizardShaftTable:
     "The table widget that contains all the data of the shaft"
@@ -119,7 +120,7 @@ class WizardShaftTable:
         widget = QtGui.QDoubleSpinBox(self.widget)
         widget.setMinimum(0)
         widget.setMaximum(1E9)
-        self.widget.setCellWidget(self.rowDict["Length"],index, widget)
+        self.widget.setCellWidget(self.rowDict["Length"], index, widget)
         widget.setValue(length)
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
@@ -127,25 +128,25 @@ class WizardShaftTable:
         widget = QtGui.QDoubleSpinBox(self.widget)
         widget.setMinimum(0)
         widget.setMaximum(1E9)
-        self.widget.setCellWidget(self.rowDict["Diameter"],index, widget)
+        self.widget.setCellWidget(self.rowDict["Diameter"], index, widget)
         widget.setValue(diameter)
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
         # Load type
-        widget = QtGui.QListWidget(self.widget)
-        widget.insertItem(0, QtGui.QListWidgetItem("None", widget))
-        widget.insertItem(1, QtGui.QListWidgetItem("Fixed", widget))
-        widget.insertItem(2, QtGui.QListWidgetItem("Static", widget))
-        widget.insertItem(3, QtGui.QListWidgetItem("Bearing", widget))
-        widget.insertItem(4, QtGui.QListWidgetItem("Pulley", widget))
-        self.widget.setCellWidget(self.rowDict["LoadType"],index, widget)
-        widget.setCurrentRow(0)
-        widget.currentItemChanged.connect(self.slotLoadType)
+        widget = QtGui.QComboBox(self.widget)
+        widget.insertItem(0, "None")
+        widget.insertItem(1, "Fixed")
+        widget.insertItem(2, "Static")
+        widget.insertItem(3, "Bearing")
+        widget.insertItem(4, "Pulley")
+        self.widget.setCellWidget(self.rowDict["LoadType"], index, widget)
+        widget.setCurrentIndex(0)
+        self.widget.connect(widget, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.slotLoadType)
         # Load size
         widget = QtGui.QDoubleSpinBox(self.widget)
         widget.setMinimum(-1E9)
         widget.setMaximum(1E9)
-        self.widget.setCellWidget(self.rowDict["LoadSize"],index, widget)
+        self.widget.setCellWidget(self.rowDict["LoadSize"], index, widget)
         widget.setValue(0)
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
@@ -153,18 +154,18 @@ class WizardShaftTable:
         widget = QtGui.QDoubleSpinBox(self.widget)
         widget.setMinimum(0)
         widget.setMaximum(1E9)
-        self.widget.setCellWidget(self.rowDict["LoadLocation"],index, widget)
+        self.widget.setCellWidget(self.rowDict["LoadLocation"], index, widget)
         widget.setValue(0)
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
         # Start edge type
-        widget = QtGui.QListWidget(self.widget)
-        widget.insertItem(0, QtGui.QListWidgetItem("None", widget))
-        widget.insertItem(1, QtGui.QListWidgetItem("Chamfer", widget))
-        widget.insertItem(2, QtGui.QListWidgetItem("Fillet", widget))
+        widget = QtGui.QComboBox(self.widget)
+        widget.insertItem(0, "None",)
+        widget.insertItem(1, "Chamfer")
+        widget.insertItem(2, "Fillet")
         self.widget.setCellWidget(self.rowDict["StartEdgeType"],index, widget)
-        widget.setCurrentRow(0)
-        widget.currentItemChanged.connect(self.slotStartEdgeType)
+        widget.setCurrentIndex(0)
+        self.widget.connect(widget, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.slotLoadType)
         # Start edge size
         widget = QtGui.QDoubleSpinBox(self.widget)
         widget.setMinimum(0)
@@ -174,13 +175,13 @@ class WizardShaftTable:
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
         # End edge type
-        widget = QtGui.QListWidget(self.widget)
-        widget.insertItem(0, QtGui.QListWidgetItem("None", widget))
-        widget.insertItem(1, QtGui.QListWidgetItem("Chamfer", widget))
-        widget.insertItem(2, QtGui.QListWidgetItem("Fillet", widget))
+        widget = QtGui.QComboBox(self.widget)
+        widget.insertItem(0, "None",)
+        widget.insertItem(1, "Chamfer")
+        widget.insertItem(2, "Fillet")
         self.widget.setCellWidget(self.rowDict["EndEdgeType"],index, widget)
-        widget.setCurrentRow(0)
-        widget.currentItemChanged.connect(self.slotEndEdgeType)
+        widget.setCurrentIndex(0)
+        self.widget.connect(widget, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.slotLoadType)
         # End edge size
         widget = QtGui.QDoubleSpinBox(self.widget)
         widget.setMinimum(0)
@@ -231,11 +232,12 @@ class WizardShaftTable:
     def getDiameter(self, column):
         return self.getDoubleValue("Diameter", column)
 
-    def slotLoadType(self, new, old):
-        if new.text() != "Fixed":
+    @QtCore.pyqtSlot('QString')
+    def slotLoadType(self, text):
+        if text != "Fixed":
             if (self.getLoadSize is None) or (self.getLoadLocation is None):
                 return
-        self.shaft.updateLoad(self.getFocusedColumn(), loadType = new.text())
+        self.shaft.updateLoad(self.getFocusedColumn(), loadType = text)
 
     def setLoadType(self, column, t):
         self.setListValue("LoadType", column, t)
@@ -305,13 +307,13 @@ class WizardShaftTable:
     def setListValue(self, row, column, v):
         widget = self.widget.cellWidget(self.rowDict[row], column)
         widget.blockSignals(True)
-        widget.setCurrentItem(widget.findItems(v, QtCore.Qt.MatchExactly)[0])
+        widget.setCurrentIndex(widget.findText(v, QtCore.Qt.MatchExactly))
         widget.blockSignals(False)
 
     def getListValue(self, row, column):
         widget = self.widget.cellWidget(self.rowDict[row], column)
         if widget is not None:
-            return widget.currentItem().text().toAscii()[0].upper()
+            return widget.currentText().toAscii()[0].upper()
         else:
             return None
 

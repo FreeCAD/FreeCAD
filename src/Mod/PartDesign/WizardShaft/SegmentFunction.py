@@ -20,6 +20,8 @@
 # *                                                                            *
 # ******************************************************************************/
 
+import FreeCAD # just for debug printing to console...
+
 class SegmentFunctionSegment:
     "One segment of a segment function"
     start = 0
@@ -143,10 +145,10 @@ class SegmentFunction:
         return result
 
     def output(self):
-        print self.name, " = ",
+        FreeCAD.Console.PrintMessage(self.name + " = ")
         for i in range(len(self.segments)):
-            print self.segments[i].asString(),
+            FreeCAD.Console.PrintMessage(self.segments[i].asString())
             if i < len(self.segments) - 1:
-                print " + ",
-        print ""
+                FreeCAD.Console.PrintMessage(" + ")
+        FreeCAD.Console.PrintMessage("\n")
 
