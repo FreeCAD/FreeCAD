@@ -8,7 +8,6 @@ SET(OpenSCAD_SRCS
         OpenSCADCommands.py
         exportCSG.py
         importCSG.py
-        prototype.py
         tokrules.py
         colorcodeshapes.py
         expandplacements.py

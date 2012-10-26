@@ -49,6 +49,9 @@ Version History
 
 0.05c - Fix for polygon with path - Changes to Polygon and polyhdron - parse projection
 
+0.05d - Fix for implicit fuse for groups
+        global max_polygon parameter to control cylinder or prism
+
 There appear to be problems with some files and these maybe as a result of bugs in FreeCAD that corrupt
 the model. If you find problem files please email them to keith@sloan-home.co.uk 				
 
