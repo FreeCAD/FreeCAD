@@ -1,5 +1,0 @@
-Makefiles (get the python files included)
-Copyright notices (Ply is BSD, everything Keith did is GPL, most of the stuff from freecad is LGPL)
-Make filenames unique, e.g. prepepend module name
-Add a gui command for the Refine Shape feature.
-Add a gui command for subtractfaces2.

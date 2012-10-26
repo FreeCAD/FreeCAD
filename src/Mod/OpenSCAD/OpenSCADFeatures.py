@@ -431,3 +431,35 @@ class OffsetShape:
     def createGeometry(self,fp):
         if fp.Base and fp.Offset:
             fp.Shape=fp.Base.Shape.makeOffsetShape(self.Offset,1e-6)
+
+def makeSurfaceVolume(filename):
+    import FreeCAD,Part
+    f1=open(filename)
+    coords=[]
+    miny=1
+    for line in f1.readlines():
+        sline=line.strip()
+        if sline and not sline.startswith('#'):
+            ycoord=len(coords)
+            lcoords=[]
+            for xcoord, num in enumerate(sline.split()):
+                fnum=float(num)
+                lcoords.append(FreeCAD.Vector(float(xcoord),float(ycoord),fnum))
+                miny=min(fnum,miny)
+            coords.append(lcoords)
+    s=Part.BSplineSurface()
+    s.interpolate(coords)
+    plane=Part.makePlane(len(coords[0])-1,len(coords)-1,FreeCAD.Vector(0,0,miny-1))
+    l1=Part.makeLine(plane.Vertexes[0].Point,s.value(0,0))
+    l2=Part.makeLine(plane.Vertexes[1].Point,s.value(1,0))
+    l3=Part.makeLine(plane.Vertexes[2].Point,s.value(0,1))
+    l4=Part.makeLine(plane.Vertexes[3].Point,s.value(1,1))
+    f0=plane.Faces[0]
+    f0.reverse()
+    f1=Part.Face(Part.Wire([plane.Edges[0],l1.Edges[0],s.vIso(0).toShape(),l2.Edges[0]]))
+    f2=Part.Face(Part.Wire([plane.Edges[1],l3.Edges[0],s.uIso(0).toShape(),l1.Edges[0]]))
+    f3=Part.Face(Part.Wire([plane.Edges[2],l4.Edges[0],s.vIso(1).toShape(),l3.Edges[0]]))
+    f4=Part.Face(Part.Wire([plane.Edges[3],l2.Edges[0],s.uIso(1).toShape(),l4.Edges[0]]))
+    f5=s.toShape().Faces[0]
+    solid=Part.Solid(Part.Shell([f0,f1,f2,f3,f4,f5]))
+    return solid,(len(coords[0])-1)/2.0,(len(choords)-1)/2.0

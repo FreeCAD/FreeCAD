@@ -31,14 +31,12 @@ reserved = (
     'sphere',
     'cylinder',
     'cube',
-    'size',
     'multmatrix',
     'intersection',
     'difference',
     'union',
     'rotate_extrude',
     'linear_extrude',
-    'center',
     'true',
     'false',
     'circle',
@@ -59,9 +57,6 @@ reserved = (
     'import_stl',
     'import_dxf',
     'import',
-    'origin',
-    'layer',
-    'file',
     'color',
     'cut',
     )
@@ -81,7 +76,11 @@ tokens = reserved + (
    'EQ',
    'STRING',
    'ID',
-   'DOT'
+   'DOT',
+   'MODIFIERBACK',
+   'MODIFIERDEBUG',
+   'MODIFIERROOT',
+   'MODIFIERDISABLE'
 )
 
 # Regular expression rules for simple tokens
@@ -99,6 +98,10 @@ t_EQ      = r'='
 t_DOT     = r'\.'
 t_STRING  = r'"[^"]*"'
 #t_STRING  = r'["]+[a-zA-Z.]+["]+'
+t_MODIFIERBACK    = r'%'
+t_MODIFIERDEBUG   = r'\#'
+t_MODIFIERROOT    = r'!'
+t_MODIFIERDISABLE = r'\*'
 # Deal with Reserved words
 reserved_map = { }
 for r in reserved:
