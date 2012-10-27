@@ -26,6 +26,7 @@
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepCheck_Analyzer.hxx>
@@ -98,6 +99,41 @@ void SketchBased::positionBySketch(void)
         else
             this->Placement.setValue(sketch->Placement.getValue());
     }
+}
+
+Part::Part2DObject* SketchBased::getVerifiedSketch() const {
+    App::DocumentObject* result = Sketch.getValue();
+    if (!result)
+        throw Base::Exception("No sketch linked");
+    if (!result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        throw Base::Exception("Linked object is not a Sketch or Part2DObject");
+    return static_cast<Part::Part2DObject*>(result);
+}
+
+std::vector<TopoDS_Wire> SketchBased::getSketchWires() const {
+    std::vector<TopoDS_Wire> result;
+
+    TopoDS_Shape shape = getVerifiedSketch()->Shape.getShape()._Shape;
+    if (shape.IsNull())
+        throw Base::Exception("Linked shape object is empty");
+
+    // this is a workaround for an obscure OCC bug which leads to empty tessellations
+    // for some faces. Making an explicit copy of the linked shape seems to fix it.
+    // The error almost happens when re-computing the shape but sometimes also for the
+    // first time
+    BRepBuilderAPI_Copy copy(shape);
+    shape = copy.Shape();
+    if (shape.IsNull())
+        throw Base::Exception("Linked shape object is empty");
+
+    TopExp_Explorer ex;
+    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
+        result.push_back(TopoDS::Wire(ex.Current()));
+    }
+    if (result.empty()) // there can be several wires
+        throw Base::Exception("Linked shape object is not a wire");
+
+    return result;
 }
 
 void SketchBased::onChanged(const App::Property* prop)

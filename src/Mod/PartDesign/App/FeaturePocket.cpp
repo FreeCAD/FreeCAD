@@ -31,7 +31,6 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <Geom_Plane.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -46,7 +45,6 @@
 #endif
 
 #include <Base/Placement.h>
-#include <Mod/Part/App/Part2DObject.h>
 #include <App/Document.h>
 
 #include "FeaturePocket.h"
@@ -77,40 +75,28 @@ short Pocket::mustExecute() const
 
 App::DocumentObjectExecReturn *Pocket::execute(void)
 {
-    App::DocumentObject* link = Sketch.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No sketch linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-    TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape()._Shape;
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
+    // Validate parameters
+    double L = Length.getValue();
+    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
+        return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
 
-    // this is a workaround for an obscure OCC bug which leads to empty tessellations
-    // for some faces. Making an explicit copy of the linked shape seems to fix it.
-    // The error almost happens when re-computing the shape but sometimes also for the
-    // first time
-    BRepBuilderAPI_Copy copy(shape);
-    shape = copy.Shape();
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
-
-    TopExp_Explorer ex;
+    Part::Part2DObject* pcSketch = 0;
     std::vector<TopoDS_Wire> wires;
-    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-        wires.push_back(TopoDS::Wire(ex.Current()));
+    try {
+        pcSketch = getVerifiedSketch();
+        wires = getSketchWires();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-    if (wires.empty()) // there can be several wires
-        return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
 
     // get the Sketch plane
-    Base::Placement SketchPos = static_cast<Part::Part2DObject*>(link)->Placement.getValue();
+    Base::Placement SketchPos = pcSketch->Placement.getValue();
     Base::Rotation SketchOrientation = SketchPos.getRotation();
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
 
     // get the support of the Sketch if any
-    App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(link)->Support.getValue();
+    App::DocumentObject* SupportLink = pcSketch->Support.getValue();
     Part::Feature *SupportObject = 0;
     if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         SupportObject = static_cast<Part::Feature*>(SupportLink);

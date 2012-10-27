@@ -25,6 +25,7 @@
 #define PARTDESIGN_SketchBased_H
 
 #include <App/PropertyStandard.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include "Feature.h"
 
 class TopoDS_Face;
@@ -54,6 +55,10 @@ public:
       */
     void positionBySketch(void);
 
+    /// Verifies the linked Sketch object
+    Part::Part2DObject* getVerifiedSketch() const;
+    /// Returns the wires the sketch is composed of
+    std::vector<TopoDS_Wire> getSketchWires() const;
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;
 
