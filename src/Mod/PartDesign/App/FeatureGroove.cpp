@@ -26,19 +26,18 @@
 # include <BRep_Builder.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <Precision.hxx>
 #endif
 
 #include <Base/Axis.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
-#include <Mod/Part/App/Part2DObject.h>
 
 #include "FeatureGroove.h"
 
@@ -71,35 +70,26 @@ short Groove::mustExecute() const
 
 App::DocumentObjectExecReturn *Groove::execute(void)
 {
-    App::DocumentObject* link = Sketch.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No sketch linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
+    // Validate parameters
+    double angle = Angle.getValue();
+    if (angle < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Angle of groove too small");
+    if (angle > 360.0)
+        return new App::DocumentObjectExecReturn("Angle of groove too large");
 
-    Part::Part2DObject* pcSketch=static_cast<Part::Part2DObject*>(link);
+    angle = Base::toRadians<double>(angle);
+    // Reverse angle if selected
+    if (Reversed.getValue() && !Midplane.getValue())
+        angle *= (-1.0);
 
-    TopoDS_Shape shape = pcSketch->Shape.getShape()._Shape;
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
-
-    // this is a workaround for an obscure OCC bug which leads to empty tessellations
-    // for some faces. Making an explicit copy of the linked shape seems to fix it.
-    // The error only happens when re-computing the shape.
-    if (!this->Shape.getValue().IsNull()) {
-        BRepBuilderAPI_Copy copy(shape);
-        shape = copy.Shape();
-        if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Linked shape object is empty");
-    }
-
-    TopExp_Explorer ex;
+    Part::Part2DObject* pcSketch = 0;
     std::vector<TopoDS_Wire> wires;
-    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-        wires.push_back(TopoDS::Wire(ex.Current()));
+    try {
+        pcSketch = getVerifiedSketch();
+        wires = getSketchWires();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-    if (wires.empty()) // there can be several wires
-        return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
 
     // get the Sketch plane
     Base::Placement SketchPlm = pcSketch->Placement.getValue();
@@ -163,17 +153,16 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     pnt.Transform(invObjLoc.Transformation());
     dir.Transform(invObjLoc.Transformation());
 
-    // Reverse angle if selected
-    double angle = Base::toRadians<double>(Angle.getValue());
-    if (Reversed.getValue() && !Midplane.getValue())
-        angle *= (-1.0);
-
     try {
         // revolve the face to a solid
         BRepPrimAPI_MakeRevol RevolMaker(aFace.Moved(invObjLoc), gp_Ax1(pnt, dir), angle);
 
         if (RevolMaker.IsDone()) {
             TopoDS_Shape result = RevolMaker.Shape();
+
+            // Set the subtractive shape property for later usage in e.g. pattern
+            this->SubShape.setValue(result);
+
             // if the sketch has a support fuse them to get one result object (PAD!)
             if (SupportObject) {
                 const TopoDS_Shape& support = SupportObject->Shape.getValue();

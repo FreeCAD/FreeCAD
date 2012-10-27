@@ -27,7 +27,6 @@
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <Handle_Geom_Surface.hxx>
 # include <TopoDS.hxx>
@@ -42,7 +41,6 @@
 #endif
 
 #include <Base/Placement.h>
-#include <Mod/Part/App/Part2DObject.h>
 #include <App/Document.h>
 
 #include "FeaturePad.h"
@@ -75,47 +73,31 @@ short Pad::mustExecute() const
 
 App::DocumentObjectExecReturn *Pad::execute(void)
 {
+    // Validate parameters
     double L = Length.getValue();
-    if (L < Precision::Confusion())
+    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Length of pad too small");
     double L2 = Length2.getValue();
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Second length of pad too small");
 
-    App::DocumentObject* link = Sketch.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No sketch linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-    TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape()._Shape;
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
-
-    // this is a workaround for an obscure OCC bug which leads to empty tessellations
-    // for some faces. Making an explicit copy of the linked shape seems to fix it.
-    // The error almost happens when re-computing the shape but sometimes also for the
-    // first time
-    BRepBuilderAPI_Copy copy(shape);
-    shape = copy.Shape();
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
-
-    TopExp_Explorer ex;
+    Part::Part2DObject* pcSketch = 0;
     std::vector<TopoDS_Wire> wires;
-    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-        wires.push_back(TopoDS::Wire(ex.Current()));
+    try {
+        pcSketch = getVerifiedSketch();
+        wires = getSketchWires();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-    if (/*shape.ShapeType() != TopAbs_WIRE*/wires.empty()) // there can be several wires
-        return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
 
     // get the Sketch plane
-    Base::Placement SketchPos = static_cast<Part::Part2DObject*>(link)->Placement.getValue();
+    Base::Placement SketchPos = pcSketch->Placement.getValue();
     Base::Rotation SketchOrientation = SketchPos.getRotation();
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
 
     // get the support of the Sketch if any
-    App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(link)->Support.getValue();
+    App::DocumentObject* SupportLink = pcSketch->Support.getValue();
     Part::Feature *SupportObject = 0;
     if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         SupportObject = static_cast<Part::Feature*>(SupportLink);
@@ -294,13 +276,13 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), prism);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Fusion with support failed");
+                return new App::DocumentObjectExecReturn("Pad: Fusion with support failed");
             TopoDS_Shape result = mkFuse.Shape();
             // we have to get the solids (fuse create seldomly compounds)
             TopoDS_Shape solRes = this->getSolid(result);
             // lets check if the result is a solid
             if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
             this->Shape.setValue(solRes);
         }
         else {
