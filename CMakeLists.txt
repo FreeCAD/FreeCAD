@@ -344,6 +344,15 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
             find_package(Spnav)
         endif(WIN32)
 
+# ------------------------------ Matplotlib ------------------------------
+
+        find_package(Matplotlib)
+        IF(MATPLOTLIB_FOUND)
+            message("-- matplotlib-${MATPLOTLIB_VERSION} has been found.")
+        ELSE(MATPLOTLIB_FOUND)
+            message("matplotlib not found, Plot module will not available until matplotlib is installed!")
+        ENDIF(MATPLOTLIB_FOUND)
+
 # ------------------------------------------------------------------------
 
 
