@@ -25,6 +25,10 @@
 #define BASE_STREAM_H
 
 
+#ifdef __GNUC__
+# include <stdint.h>
+#endif
+
 #include <fstream>
 #include <ios>
 #include <iostream>
