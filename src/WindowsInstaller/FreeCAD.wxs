@@ -181,6 +181,15 @@
             <ComponentRef Id="CompModtankWeights" />
             <!-- Ship module -->
             <ComponentRef Id="CompExampleData" />
+            <!-- Plot module -->
+            <ComponentRef Id="CompModPlot" />
+            <ComponentRef Id="CompModPlotIcons" />
+            <ComponentRef Id="CompModplotAxes" />
+            <ComponentRef Id="CompModplotLabels" />
+            <ComponentRef Id="CompModplotPositions" />
+            <ComponentRef Id="CompModplotSave" />
+            <ComponentRef Id="CompModplotSeries" />
+            <ComponentRef Id="CompModplotUtils" />
 		
             <Feature Id="FeatModImage" Title="The Image module" Description="Module to handle pictures" Level="1">
                 <ComponentRef Id="CompModImage" />
