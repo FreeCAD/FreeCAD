@@ -43,6 +43,8 @@ if BUILD_CAM
 SUBDIRS += Cam
 endif
 
+SUBDIRS += Plot
+
 EXTRA_DIST = \
 		__init__.py \
 		CMakeLists.txt \
