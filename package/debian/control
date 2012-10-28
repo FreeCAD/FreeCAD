@@ -21,7 +21,7 @@ Standards-Version: 3.9.2
 Package: freecad
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
-Recommends: python-pivy
+Recommends: python-pivy python-matplotlib
 Suggests: freecad-doc
 Description: Extensible Open Source CAx program (alpha)
  FreeCAD is an Open Source CAx RAD based on OpenCasCade, Qt and Python.
