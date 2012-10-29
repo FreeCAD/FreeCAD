@@ -59,6 +59,8 @@ public:
     Part::Part2DObject* getVerifiedSketch() const;
     /// Returns the wires the sketch is composed of
     std::vector<TopoDS_Wire> getSketchWires() const;
+    /// Returns the sketch support shape (if any)
+    const TopoDS_Shape& getSupportShape() const;
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;
 
