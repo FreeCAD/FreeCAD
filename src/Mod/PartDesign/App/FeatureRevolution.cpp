@@ -77,37 +77,45 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     if (a > 360.0)
         return new App::DocumentObjectExecReturn("Angle of groove too large");
 
-    Part::Part2DObject* pcSketch = 0;
+    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
     try {
-        pcSketch = getVerifiedSketch();
+        sketch = getVerifiedSketch();
         wires = getSketchWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+    TopoDS_Shape support;
+    try {
+        support = getSupportShape();
+    } catch (const Base::Exception&) {
+        // ignore, because support isn't mandatory
+        support = TopoDS_Shape();
+    }
+
     // get the Sketch plane
-    Base::Placement SketchPlm = pcSketch->Placement.getValue();
+    Base::Placement SketchPlm = sketch->Placement.getValue();
 
     // get reference axis
     App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
-    if (pcReferenceAxis && pcReferenceAxis == pcSketch) {
+    if (pcReferenceAxis && pcReferenceAxis == sketch) {
         bool hasValidAxis=false;
         Base::Axis axis;
         if (subReferenceAxis[0] == "V_Axis") {
             hasValidAxis = true;
-            axis = pcSketch->getAxis(Part::Part2DObject::V_Axis);
+            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
         }
         else if (subReferenceAxis[0] == "H_Axis") {
             hasValidAxis = true;
-            axis = pcSketch->getAxis(Part::Part2DObject::H_Axis);
+            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
         }
         else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
             int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < pcSketch->getAxisCount()) {
+            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
                 hasValidAxis = true;
-                axis = pcSketch->getAxis(AxId);
+                axis = sketch->getAxis(AxId);
             }
         }
         if (hasValidAxis) {
@@ -124,12 +132,6 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     gp_Pnt pnt(b.x,b.y,b.z);
     Base::Vector3f v = Axis.getValue();
     gp_Dir dir(v.x,v.y,v.z);
-
-    // get the support of the Sketch if any
-    App::DocumentObject* pcSupport = pcSketch->Support.getValue();
-    Part::Feature *SupportObject = 0;
-    if (pcSupport && pcSupport->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        SupportObject = static_cast<Part::Feature*>(pcSupport);
 
     TopoDS_Shape aFace = makeFace(wires);
     if (aFace.IsNull())
@@ -163,18 +165,13 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             this->AddShape.setValue(result);
 
             // if the sketch has a support fuse them to get one result object (PAD!)
-            if (SupportObject) {
-                const TopoDS_Shape& support = SupportObject->Shape.getValue();
-                if (!support.IsNull() && support.ShapeType() == TopAbs_SOLID) {
-                    // set the additive shape property for later usage in e.g. pattern
-                    this->AddShape.setValue(result);
-                    // Let's call algorithm computing a fuse operation:
-                    BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
-                    // Let's check if the fusion has been successful
-                    if (!mkFuse.IsDone())
-                        throw Base::Exception("Fusion with support failed");
-                    result = mkFuse.Shape();
-                }
+            if (!support.IsNull()) {
+                // Let's call algorithm computing a fuse operation:
+                BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
+                // Let's check if the fusion has been successful
+                if (!mkFuse.IsDone())
+                    throw Base::Exception("Fusion with support failed");
+                result = mkFuse.Shape();
             }
 
             this->Shape.setValue(result);
