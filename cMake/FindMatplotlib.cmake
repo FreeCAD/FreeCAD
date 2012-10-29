@@ -7,8 +7,7 @@
 #  MATPLOTLIB_VERSION_MAJOR    - the major version number of matplotlib
 #  MATPLOTLIB_VERSION_MINOR    - the minor version number of matplotlib
 #  MATPLOTLIB_VERSION_PATCH    - the patch version number of matplotlib
-#  MATPLOTLIB_VERSION_DECIMAL  - e.g. version 1.1.1r is 10101
-#  MATPLOTLIB_PATH_DIRS     - path to the matplotlib include files
+#  MATPLOTLIB_PATH_DIRS        - path to the matplotlib include files
 
 IF(PYTHONINTERP_FOUND)
     # Try to import matplotlib into Python interpreter. Python
@@ -38,8 +37,6 @@ IF(PYTHONINTERP_FOUND)
         list(GET _MATPLOTLIB_VERSION_LIST 0 MATPLOTLIB_VERSION_MAJOR)
         list(GET _MATPLOTLIB_VERSION_LIST 1 MATPLOTLIB_VERSION_MINOR)
         list(GET _MATPLOTLIB_VERSION_LIST 2 MATPLOTLIB_VERSION_PATCH)
-        math(EXPR MATPLOTLIB_VERSION_DECIMAL
-            "(${MATPLOTLIB_VERSION_MAJOR} * 10000) + (${MATPLOTLIB_VERSION_MINOR} * 100) + ${MATPLOTLIB_VERSION_PATCH}")
     ELSE()
         set(MATPLOTLIB_FOUND FALSE)
     ENDIF()
