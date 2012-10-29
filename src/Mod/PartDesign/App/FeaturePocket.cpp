@@ -80,36 +80,22 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
 
-    Part::Part2DObject* pcSketch = 0;
+    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
+    TopoDS_Shape support;
     try {
-        pcSketch = getVerifiedSketch();
+        sketch = getVerifiedSketch();
         wires = getSketchWires();
+        support = getSupportShape();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     // get the Sketch plane
-    Base::Placement SketchPos = pcSketch->Placement.getValue();
+    Base::Placement SketchPos = sketch->Placement.getValue();
     Base::Rotation SketchOrientation = SketchPos.getRotation();
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
-
-    // get the support of the Sketch if any
-    App::DocumentObject* SupportLink = pcSketch->Support.getValue();
-    Part::Feature *SupportObject = 0;
-    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        SupportObject = static_cast<Part::Feature*>(SupportLink);
-
-    if (!SupportObject)
-        return new App::DocumentObjectExecReturn("No support in Sketch!");
-
-    const TopoDS_Shape& support = SupportObject->Shape.getValue();
-    if (support.IsNull())
-        return new App::DocumentObjectExecReturn("Support shape is invalid");
-    TopExp_Explorer xp (support, TopAbs_SOLID);
-    if (!xp.More())
-        return new App::DocumentObjectExecReturn("Support shape is not a solid");
 
     TopoDS_Shape aFace = makeFace(wires);
     if (aFace.IsNull())

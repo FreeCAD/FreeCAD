@@ -81,26 +81,28 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Second length of pad too small");
 
-    Part::Part2DObject* pcSketch = 0;
+    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
     try {
-        pcSketch = getVerifiedSketch();
+        sketch = getVerifiedSketch();
         wires = getSketchWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+    TopoDS_Shape support;
+    try {
+        support = getSupportShape();
+    } catch (const Base::Exception&) {
+        // ignore, because support isn't mandatory
+        support = TopoDS_Shape();
+    }
+
     // get the Sketch plane
-    Base::Placement SketchPos = pcSketch->Placement.getValue();
+    Base::Placement SketchPos = sketch->Placement.getValue();
     Base::Rotation SketchOrientation = SketchPos.getRotation();
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
-
-    // get the support of the Sketch if any
-    App::DocumentObject* SupportLink = pcSketch->Support.getValue();
-    Part::Feature *SupportObject = 0;
-    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        SupportObject = static_cast<Part::Feature*>(SupportLink);
 
     TopoDS_Shape aFace = makeFace(wires);
     if (aFace.IsNull())
@@ -126,12 +128,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 (std::string(Type.getValueAsString()) == "UpToFirst"))
             {
                 // Check for valid support object
-                if (!SupportObject)
-                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: No support in Sketch!");
-
-                const TopoDS_Shape& support = SupportObject->Shape.getValue();
                 if (support.IsNull())
-                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: Support shape is invalid");
+                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: No valid support in Sketch");
                 TopExp_Explorer xp (support, TopAbs_SOLID);
                 if (!xp.More())
                     return new App::DocumentObjectExecReturn("Cannot extrude up to face: Support shape is not a solid");
@@ -251,12 +249,11 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             return new App::DocumentObjectExecReturn("Internal error: Unknown type for Pad feature");
         }
 
-        // if the sketch has a support fuse them to get one result object (PAD!)
-        if (SupportObject) {
-            // set the additive shape property for later usage in e.g. pattern
-            this->AddShape.setValue(prism);
+        // set the additive shape property for later usage in e.g. pattern
+        this->AddShape.setValue(prism);
 
-            const TopoDS_Shape& support = SupportObject->Shape.getValue();
+        // if the sketch has a support fuse them to get one result object (PAD!)
+        if (!support.IsNull()) {
 
             if (!isSolidChecked) { // we haven't checked for solid, yet
                 if (!support.IsNull()) {

@@ -136,6 +136,26 @@ std::vector<TopoDS_Wire> SketchBased::getSketchWires() const {
     return result;
 }
 
+const TopoDS_Shape& SketchBased::getSupportShape() const {
+    // get the support of the Sketch if any
+    App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support.getValue();
+    Part::Feature* SupportObject = NULL;
+    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        SupportObject = static_cast<Part::Feature*>(SupportLink);
+
+    if (SupportObject == NULL)
+        throw Base::Exception("No support in Sketch!");
+
+    const TopoDS_Shape& result = SupportObject->Shape.getValue();
+    if (result.IsNull())
+        throw Base::Exception("Support shape is invalid");
+    TopExp_Explorer xp (result, TopAbs_SOLID);
+    if (!xp.More())
+        throw Base::Exception("Support shape is not a solid");
+
+    return result;
+}
+
 void SketchBased::onChanged(const App::Property* prop)
 {
     if (prop == &Sketch) {
