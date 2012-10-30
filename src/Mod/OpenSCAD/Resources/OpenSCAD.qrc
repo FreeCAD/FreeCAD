@@ -7,5 +7,27 @@
         <file>icons/OpenSCAD_ReplaceObject.svg</file>
         <file>icons/OpenSCAD_RemoveSubtree.svg</file>
         <file>ui/openscadprefs-base.ui</file>
+        <file>translations/OpenSCAD_tr.qm</file>
+        <file>translations/OpenSCAD_sv-SE.qm</file>
+        <file>translations/OpenSCAD_de.qm</file>
+        <file>translations/OpenSCAD_pl.qm</file>
+        <file>translations/OpenSCAD_fi.qm</file>
+        <file>translations/OpenSCAD_zh-TW.qm</file>
+        <file>translations/OpenSCAD_no.qm</file>
+        <file>translations/OpenSCAD_nl.qm</file>
+        <file>translations/OpenSCAD_pt-BR.qm</file>
+        <file>translations/OpenSCAD_uk.qm</file>
+        <file>translations/OpenSCAD_cs.qm</file>
+        <file>translations/OpenSCAD_sk.qm</file>
+        <file>translations/OpenSCAD_fr.qm</file>
+        <file>translations/OpenSCAD_ru.qm</file>
+        <file>translations/OpenSCAD_af.qm</file>
+        <file>translations/OpenSCAD_hr.qm</file>
+        <file>translations/OpenSCAD_es-ES.qm</file>
+        <file>translations/OpenSCAD_zh-CN.qm</file>
+        <file>translations/OpenSCAD_ja.qm</file>
+        <file>translations/OpenSCAD_ro.qm</file>
+        <file>translations/OpenSCAD_hu.qm</file>
+        <file>translations/OpenSCAD_it.qm</file>
     </qresource>
 </RCC> 

@@ -67,7 +67,6 @@
         <file>icons/Sketcher_AlterConstruction.svg</file>
         <file>translations/Sketcher_af.qm</file>
         <file>translations/Sketcher_de.qm</file>
-        <file>translations/Sketcher_es.qm</file>
         <file>translations/Sketcher_fi.qm</file>
         <file>translations/Sketcher_fr.qm</file>
         <file>translations/Sketcher_hr.qm</file>
@@ -75,10 +74,18 @@
         <file>translations/Sketcher_nl.qm</file>
         <file>translations/Sketcher_no.qm</file>
         <file>translations/Sketcher_pl.qm</file>
-        <file>translations/Sketcher_pt.qm</file>
         <file>translations/Sketcher_ru.qm</file>
-        <file>translations/Sketcher_se.qm</file>
         <file>translations/Sketcher_uk.qm</file>
-        <file>translations/Sketcher_zh.qm</file>
+        <file>translations/Sketcher_tr.qm</file>
+        <file>translations/Sketcher_sv-SE.qm</file>
+        <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_pt-BR.qm</file>
+        <file>translations/Sketcher_cs.qm</file>
+        <file>translations/Sketcher_sk.qm</file>
+        <file>translations/Sketcher_es-ES.qm</file>
+        <file>translations/Sketcher_zh-CN.qm</file>
+        <file>translations/Sketcher_ja.qm</file>
+        <file>translations/Sketcher_ro.qm</file>
+        <file>translations/Sketcher_hu.qm</file>
     </qresource>
 </RCC> 
