@@ -10,7 +10,7 @@
     </message>
     <message>
       <source>Constrain angle</source>
-      <translation>Winkel beschränken</translation>
+      <translation>Winkel festlegen</translation>
     </message>
     <message>
       <source>Fix the angle of a line or the angle between two lines</source>
@@ -40,7 +40,7 @@
     </message>
     <message>
       <source>Constrain distance</source>
-        <translation>Distanz festlegen</translation>
+      <translation>Distanz festlegen</translation>
     </message>
     <message>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
@@ -55,15 +55,15 @@
     </message>
     <message>
       <source>Constrain horizontal distance</source>
-      <translation>Lege horizontalen Abstand fest</translation>
+      <translation>Horizontalen Abstand festlegen</translation>
     </message>
     <message>
       <source>Constrain vertical distance</source>
-      <translation>Constrain vertical distance</translation>
+      <translation>Vertikalen Abstand festlegen</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Setze den horizontalen Abstand zwischen zwei Punkten oder Linienenden</translation>
+      <translation>Den horizontalen Abstand zwischen zwei Punkten Streckenenden festlegen</translation>
     </message>
   </context>
   <context>
@@ -74,15 +74,15 @@
     </message>
     <message>
       <source>Constrain vertical distance</source>
-      <translation>Constrain vertical distance</translation>
+      <translation>Vertikalen Abstand festlegen</translation>
     </message>
     <message>
       <source>Constrain horizontal distance</source>
-      <translation>Lege horizontalen Abstand fest</translation>
+      <translation>Horizontalen Abstand festlegen</translation>
     </message>
     <message>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Setze den vertikalen Abstand zwischen zwei Punkten oder Linienenden</translation>
+      <translation>Den vertikalen Abstand zwischen zwei Punkten oder Streckenenden festlegen</translation>
     </message>
   </context>
   <context>
@@ -93,11 +93,11 @@
     </message>
     <message>
       <source>Constrain equal</source>
-      <translation>Lege gleich fest</translation>
+      <translation>Gleichheit festlegen</translation>
     </message>
     <message>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Erzeuge Identität zwischen zwei Linien oder zwischen Kreisen und Bögen</translation>
+      <translation>Eine Gleichheitsbeschränkung zwischen zwei Linien oder zwischen Kreisen und Bögen festlegen</translation>
     </message>
   </context>
   <context>
@@ -153,11 +153,11 @@
     </message>
     <message>
       <source>Constrain perpendicular</source>
-      <translation>Lege senkrecht fest</translation>
+      <translation>Orthogonalität festlegen</translation>
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
-      <translation>Erzeuge senkrechte Bedingung zwischen zwei Linien</translation>
+      <translation>Orthogonalität zwischen zwei Geraden festlegen</translation>
     </message>
   </context>
   <context>
@@ -168,11 +168,11 @@
     </message>
     <message>
       <source>Constrain point onto object</source>
-      <translation>Lege Punkt auf Objekt fest</translation>
+      <translation>Punkt auf Objekt festlegen</translation>
     </message>
     <message>
       <source>Fix a point onto an object</source>
-      <translation>Setze Punkt auf ein Objekt</translation>
+      <translation>Punkt auf ein Objekt festlegen</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     </message>
     <message>
       <source>Constrain radius</source>
-      <translation>Lege Radius fest</translation>
+      <translation>Radius festlegen</translation>
     </message>
     <message>
       <source>Fix the radius of a circle or an arc</source>
@@ -198,11 +198,11 @@
     </message>
     <message>
       <source>Constrain symmetrical</source>
-      <translation>Lege symmetrisch fest</translation>
+      <translation>Symmetrie festlegen</translation>
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
-      <translation>Erzeuge eine Symmetriebedingung zwischen zwei Punkt in Bezug auf eine Linie</translation>
+      <translation>Die Symetrie zwischen zwei Punkten im Bezug auf eine Linie festlegen</translation>
     </message>
   </context>
   <context>
@@ -293,11 +293,11 @@
     </message>
     <message>
       <source>Create a fillet between two lines or at a coincidental point</source>
-      <translation>Erzeugen einer Abrundung zwischen zwei Geraden oder an einem anliegenden Punkt</translation>
+      <translation>Erstellen einer Abrundung zwischen zwei Geraden oder an einem anliegenden Punkt</translation>
     </message>
     <message>
       <source>Create a fillet between two lines or at a coincident point</source>
-      <translation>Create a fillet between two lines or at a coincident point</translation>
+      <translation>Erstellen einer Abrundung zwischen zwei Geraden oder an einem anliegenden Punkt</translation>
     </message>
   </context>
   <context>
@@ -414,11 +414,11 @@
     </message>
     <message>
       <source>Map sketch to face...</source>
-      <translation>Bilde Skizze zu Oberfläche ab...</translation>
+      <translation>Skizze einer Fläche zuordnen...</translation>
     </message>
     <message>
       <source>Map a sketch to a face</source>
-      <translation>Bilde Skizze auf eine Oberfläche ab</translation>
+      <translation>Eine Skizze einer Fläche zuordnen</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Erzeuge eine neue oder bearbeite die ausgewählte Skizze</translation>
+      <translation>Eine neue Skizze erstellen oder die ausgewählte Skizze bearbeiten</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -464,11 +464,11 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Schalte Konstruktionslinie um</translation>
+      <translation>Konstruktionslinie umschalten</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
-      <translation>Schalte von/nach Konstruktionsmodus für ausgewählte Linien</translation>
+      <translation>Konstruktionsmodus für ausgewählte Kurven ein/ausschalten</translation>
     </message>
   </context>
   <context>
@@ -500,11 +500,11 @@
     </message>
     <message>
       <source>View sketch</source>
-      <translation>Betrachte Skizze</translation>
+      <translation>Skizze anzeigen</translation>
     </message>
     <message>
       <source>View sketch perpendicular to sketch plane</source>
-      <translation>Betrachte Skizze senkrecht zur Skizzenebene</translation>
+      <translation>Skizze senkrecht zur Skizzenebene anzeigen</translation>
     </message>
   </context>
   <context>
@@ -524,7 +524,7 @@
     </message>
     <message>
       <source>Select edge(s) from the sketch.</source>
-      <translation>Wähle Kante(n) aus der Skizze.</translation>
+      <translation>Wählen Sie Kante(n) aus der Skizze.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="-1637"/>
@@ -589,7 +589,7 @@
     </message>
     <message>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Wähle exakt eine Linie oder einen Punkt und eine Linie oder zwei Punkte aus der Skizze.</translation>
+      <translation>Wählen Sie genau eine Linie oder einen Punkt und eine Linie oder zwei Punkte aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Cannot add a length constraint on an external geometry!</source>
@@ -597,11 +597,11 @@
     </message>
     <message>
       <source>Select exactly one point and one object from the sketch.</source>
-      <translation>Wähle exakt einen Punkt und ein Objekt aus der Skizze.</translation>
+      <translation>Wählen Sie genau einen Punkt und ein Objekt aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Wähle exakt eine Linie oder bis zu zwei Punkte aus der Skizze.</translation>
+      <translation>Wählen Sie genau eine Linie oder bis zu zwei Punkte aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Cannot add a horizontal length constraint on an external geometry!</source>
@@ -613,15 +613,15 @@
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
-      <translation>Wähle zwei oder mehr Linien aus der Skizze.</translation>
+      <translation>Wählen Sie zwei oder mehr Linien aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select at least two lines from the sketch.</source>
-      <translation>Wähle mindestens zwei Linien aus der Skizze.</translation>
+      <translation>Wählen Sie mindestens zwei Linien aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select a valid line</source>
-      <translation>Wähle eine gültige Linie</translation>
+      <translation>Wählen Sie eine gültige Linie aus</translation>
     </message>
     <message>
       <source>The selected edge is not a valid line</source>
@@ -629,7 +629,7 @@
     </message>
     <message>
       <source>The selected points should be end points of arcs and lines.</source>
-      <translation>Die ausgewählten Punkte sollten Endpunkte von Kreisbögen und Geraden sein.</translation>
+      <translation>Die ausgewählten Punkte sollten Endpunkte von Kreisbögen oder Geraden sein.</translation>
     </message>
     <message>
       <source>The selected point should be an end point of an arc or line.</source>
@@ -645,7 +645,7 @@
     </message>
     <message>
       <source>Select exactly one arc or circle from the sketch.</source>
-      <translation>Wähle exakt einen Bogen oder Kreis aus der Skizze.</translation>
+      <translation>Wählen Sie genau einen Bogen oder Kreis aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select one or two lines from the sketch.</source>
@@ -657,15 +657,15 @@
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
-      <translation>Wähle exakt eine oder zwei Linien aus der Skizze.</translation>
+      <translation>Wählen Sie genau eine oder zwei Linien aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select two edges from the sketch.</source>
-      <translation>Wähle zwei Kanten aus der Skizze.</translation>
+      <translation>Wählen Sie zwei Kanten aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select atleast two lines from the sketch.</source>
-      <translation>Wähle mindestens zwei Linien aus der Skizze aus.</translation>
+      <translation>Wählen Sie mindestens zwei Linien aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select two or more compatible edges</source>
@@ -697,7 +697,7 @@
     </message>
     <message>
       <source>Select two points and one line from the sketch.</source>
-      <translation>Wähle zwei Punkte oder eine Linie aus der Skizze.</translation>
+      <translation>Wählen Sie zwei Punkte oder eine Linie aus der Skizze aus.</translation>
     </message>
     <message>
       <source>Select exactly one line from the sketch.</source>
@@ -764,7 +764,7 @@
     </message>
     <message>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Editieren nicht möglich, da Skizze Randbedingungskonflikte enthält</translation>
+      <translation>Der Wert kann nicht geändert werden, da die Skizze Randbedingungskonflikte enthält</translation>
     </message>
     <message>
       <source>Dimensional constraint</source>
@@ -775,7 +775,7 @@
     <name>SketchOrientationDialog</name>
     <message>
       <source>Choose orientation</source>
-      <translation>Wähle Orientierung</translation>
+      <translation>Orientierung wählen</translation>
     </message>
     <message>
       <source>Sketch orientation</source>
@@ -819,7 +819,7 @@
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
-      <translation>Wähle Orientierung</translation>
+      <translation>Orientierung wählen</translation>
     </message>
     <message>
       <source>Sketch orientation</source>
@@ -888,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Raster-Größe:</translation>
+      <translation>Rastergröße:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Am Gitter einrasten</translation>
+      <translation>Am Gitter ausrichten</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -1026,7 +1026,7 @@
     </message>
     <message>
       <source>Not solved yet</source>
-      <translation>Noch nicht aufgelöst</translation>
+      <translation>Noch nicht gelöst</translation>
     </message>
   </context>
   <context>
