@@ -676,7 +676,7 @@ void Document::slotStartRestoreDocument(const App::Document& doc)
 {
     if (d->_pcDocument != &doc)
         return;
-    // disable this singal while loading a document
+    // disable this signal while loading a document
     d->connectActObject.block();
 }
 
