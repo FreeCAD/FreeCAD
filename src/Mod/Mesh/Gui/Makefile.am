@@ -136,8 +136,8 @@ EXTRA_DIST = \
 		Resources/translations/Mesh_af.ts \
 		Resources/translations/Mesh_de.qm \
 		Resources/translations/Mesh_de.ts \
-		Resources/translations/Mesh_es.qm \
-		Resources/translations/Mesh_es.ts \
+		Resources/translations/Mesh_es-ES.qm \
+		Resources/translations/Mesh_es-ES.ts \
 		Resources/translations/Mesh_fi.qm \
 		Resources/translations/Mesh_fi.ts \
 		Resources/translations/Mesh_fr.qm \
@@ -152,14 +152,28 @@ EXTRA_DIST = \
 		Resources/translations/Mesh_no.ts \
 		Resources/translations/Mesh_pl.qm \
 		Resources/translations/Mesh_pl.ts \
-		Resources/translations/Mesh_pt.qm \
-		Resources/translations/Mesh_pt.ts \
+		Resources/translations/Mesh_pt-BR.qm \
+		Resources/translations/Mesh_pt-BR.ts \
 		Resources/translations/Mesh_ru.qm \
 		Resources/translations/Mesh_ru.ts \
-		Resources/translations/Mesh_se.qm \
-		Resources/translations/Mesh_se.ts \
+		Resources/translations/Mesh_sv-SE.qm \
+		Resources/translations/Mesh_sv-SE.ts \
 		Resources/translations/Mesh_uk.qm \
 		Resources/translations/Mesh_uk.ts \
-		Resources/translations/Mesh_zh.qm \
-		Resources/translations/Mesh_zh.ts \
+		Resources/translations/Mesh_zh-CN.qm \
+		Resources/translations/Mesh_zh-CN.ts \
+		Resources/translations/Mesh_zh-TW.qm \
+		Resources/translations/Mesh_zh-TW.ts \
+		Resources/translations/Mesh_ja.qm \
+		Resources/translations/Mesh_ja.ts \
+		Resources/translations/Mesh_ro.qm \
+		Resources/translations/Mesh_ro.ts \
+		Resources/translations/Mesh_tr.qm \
+		Resources/translations/Mesh_tr.ts \
+		Resources/translations/Mesh_hu.qm \
+		Resources/translations/Mesh_hu.ts \
+		Resources/translations/Mesh_sk.qm \
+		Resources/translations/Mesh_sk.ts \
+		Resources/translations/Mesh_cs.qm \
+		Resources/translations/Mesh_cs.ts \
 		images.h

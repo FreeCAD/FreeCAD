@@ -11,8 +11,8 @@ EXTRA_DIST = \
 		translations/PartDesign_af.ts \
 		translations/PartDesign_de.qm \
 		translations/PartDesign_de.ts \
-		translations/PartDesign_es.qm \
-		translations/PartDesign_es.ts \
+		translations/PartDesign_es-ES.qm \
+		translations/PartDesign_es-ES.ts \
 		translations/PartDesign_fi.qm \
 		translations/PartDesign_fi.ts \
 		translations/PartDesign_fr.qm \
@@ -27,16 +27,30 @@ EXTRA_DIST = \
 		translations/PartDesign_no.ts \
 		translations/PartDesign_pl.qm \
 		translations/PartDesign_pl.ts \
-		translations/PartDesign_pt.qm \
-		translations/PartDesign_pt.ts \
+		translations/PartDesign_pt-BR.qm \
+		translations/PartDesign_pt-BR.ts \
 		translations/PartDesign_ru.qm \
 		translations/PartDesign_ru.ts \
-		translations/PartDesign_se.qm \
-		translations/PartDesign_se.ts \
+		translations/PartDesign_sv-SE.qm \
+		translations/PartDesign_sv-SE.ts \
 		translations/PartDesign_uk.qm \
 		translations/PartDesign_uk.ts \
-		translations/PartDesign_zh.qm \
-		translations/PartDesign_zh.ts \
+		translations/PartDesign_zh-CN.qm \
+		translations/PartDesign_zh-CN.ts \
+		translations/PartDesign_zh-TW.qm \
+		translations/PartDesign_zh-TW.ts \
+		translations/PartDesign_ja.qm \
+		translations/PartDesign_ja.ts \
+		translations/PartDesign_ro.qm \
+		translations/PartDesign_ro.ts \
+		translations/PartDesign_hu.qm \
+		translations/PartDesign_hu.ts \
+		translations/PartDesign_cs.qm \
+		translations/PartDesign_cs.ts \
+		translations/PartDesign_sk.qm \
+		translations/PartDesign_sk.ts \
+		translations/PartDesign_tr.qm \
+		translations/PartDesign_tr.ts \
 		icons/PartDesign_Chamfer.svg \
 		icons/PartDesign_Fillet.svg \
 		icons/PartDesign_Groove.svg \

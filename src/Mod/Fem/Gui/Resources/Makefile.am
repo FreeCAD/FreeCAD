@@ -12,8 +12,8 @@ EXTRA_DIST = \
 		translations/Fem_af.ts \
 		translations/Fem_de.qm \
 		translations/Fem_de.ts \
-		translations/Fem_es.qm \
-		translations/Fem_es.ts \
+		translations/Fem_es-ES.qm \
+		translations/Fem_es-ES.ts \
 		translations/Fem_fi.qm \
 		translations/Fem_fi.ts \
 		translations/Fem_fr.qm \
@@ -28,16 +28,30 @@ EXTRA_DIST = \
 		translations/Fem_no.ts \
 		translations/Fem_pl.qm \
 		translations/Fem_pl.ts \
-		translations/Fem_pt.qm \
-		translations/Fem_pt.ts \
+		translations/Fem_pt-BR.qm \
+		translations/Fem_pt-BR.ts \
 		translations/Fem_ru.qm \
 		translations/Fem_ru.ts \
-		translations/Fem_se.qm \
-		translations/Fem_se.ts \
+		translations/Fem_sv-SE.qm \
+		translations/Fem_sv-SE.ts \
 		translations/Fem_uk.qm \
 		translations/Fem_uk.ts \
-		translations/Fem_zh.qm \
-		translations/Fem_zh.ts \
+		translations/Fem_zh-CN.qm \
+		translations/Fem_zh-CN.ts \
+		translations/Fem_zh-TW.qm \
+		translations/Fem_zh-TW.ts \
+		translations/Fem_ro.qm \
+		translations/Fem_ro.ts \
+		translations/Fem_cs.qm \
+		translations/Fem_cs.ts \
+		translations/Fem_sk.qm \
+		translations/Fem_sk.ts \
+		translations/Fem_tr.qm \
+		translations/Fem_tr.ts \
+		translations/Fem_hu.qm \
+		translations/Fem_hu.ts \
+		translations/Fem_ja.qm \
+		translations/Fem_ja.ts \
 		Fem.qrc \
 		UpdateResources.bat
 

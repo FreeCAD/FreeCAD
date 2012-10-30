@@ -78,8 +78,8 @@ icons/Constraint_PointOnObject.svg \
 		translations/Sketcher_af.ts \
 		translations/Sketcher_de.qm \
 		translations/Sketcher_de.ts \
-		translations/Sketcher_es.qm \
-		translations/Sketcher_es.ts \
+		translations/Sketcher_es-ES.qm \
+		translations/Sketcher_es-ES.ts \
 		translations/Sketcher_fi.qm \
 		translations/Sketcher_fi.ts \
 		translations/Sketcher_fr.qm \
@@ -94,16 +94,30 @@ icons/Constraint_PointOnObject.svg \
 		translations/Sketcher_no.ts \
 		translations/Sketcher_pl.qm \
 		translations/Sketcher_pl.ts \
-		translations/Sketcher_pt.qm \
-		translations/Sketcher_pt.ts \
+		translations/Sketcher_pt-BR.qm \
+		translations/Sketcher_pt-BR.ts \
 		translations/Sketcher_ru.qm \
 		translations/Sketcher_ru.ts \
-		translations/Sketcher_se.qm \
-		translations/Sketcher_se.ts \
+		translations/Sketcher_sv-SE.qm \
+		translations/Sketcher_sv-SE.ts \
 		translations/Sketcher_uk.qm \
 		translations/Sketcher_uk.ts \
-		translations/Sketcher_zh.qm \
-		translations/Sketcher_zh.ts \
+		translations/Sketcher_zh-CN.qm \
+		translations/Sketcher_zh-CN.ts \
+		translations/Sketcher_zh-TW.qm \
+		translations/Sketcher_zh-TW.ts \
+		translations/Sketcher_cs.qm \
+		translations/Sketcher_cs.ts \
+		translations/Sketcher_sk.qm \
+		translations/Sketcher_sk.ts \
+		translations/Sketcher_hu.qm \
+		translations/Sketcher_hu.ts \
+		translations/Sketcher_ro.qm \
+		translations/Sketcher_ro.ts \
+		translations/Sketcher_tr.qm \
+		translations/Sketcher_tr.ts \
+		translations/Sketcher_ja.qm \
+		translations/Sketcher_ja.ts \
 		Sketcher.qrc
 
 
