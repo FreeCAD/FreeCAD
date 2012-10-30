@@ -89,7 +89,8 @@ struct DocumentP
     Connection connectActObject;
     Connection connectSaveDocument;
     Connection connectRestDocument;
-    Connection connectLoadDocument;
+    Connection connectStartLoadDocument;
+    Connection connectFinishLoadDocument;
 };
 
 } // namespace Gui
@@ -127,8 +128,10 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::Save, this, _1));
     d->connectRestDocument = pcDocument->signalRestoreDocument.connect
         (boost::bind(&Gui::Document::Restore, this, _1));
-    d->connectLoadDocument = App::GetApplication().signalRestoreDocument.connect
-        (boost::bind(&Gui::Document::slotRestoredDocument, this, _1));
+    d->connectStartLoadDocument = App::GetApplication().signalStartRestoreDocument.connect
+        (boost::bind(&Gui::Document::slotStartRestoreDocument, this, _1));
+    d->connectFinishLoadDocument = App::GetApplication().signalFinishRestoreDocument.connect
+        (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
@@ -154,7 +157,8 @@ Document::~Document()
     d->connectActObject.disconnect();
     d->connectSaveDocument.disconnect();
     d->connectRestDocument.disconnect();
-    d->connectLoadDocument.disconnect();
+    d->connectStartLoadDocument.disconnect();
+    d->connectFinishLoadDocument.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -668,8 +672,26 @@ void Document::RestoreDocFile(Base::Reader &reader)
     setModified(false);
 }
 
-void Document::slotRestoredDocument(const App::Document&)
+void Document::slotStartRestoreDocument(const App::Document& doc)
 {
+    if (d->_pcDocument != &doc)
+        return;
+    // disable this singal while loading a document
+    d->connectActObject.block();
+}
+
+void Document::slotFinishRestoreDocument(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    d->connectActObject.unblock();
+    App::DocumentObject* act = doc.getActiveObject();
+    if (act) {
+        ViewProvider* viewProvider = getViewProvider(act);
+        if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        }
+    }
     // some post-processing of view providers
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {

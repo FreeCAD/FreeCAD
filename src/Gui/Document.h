@@ -68,7 +68,8 @@ protected:
     void slotChangedObject(const App::DocumentObject&, const App::Property&);
     void slotRenamedObject(const App::DocumentObject&);
     void slotActivatedObject(const App::DocumentObject&);
-    void slotRestoredDocument(const App::Document&);
+    void slotStartRestoreDocument(const App::Document&);
+    void slotFinishRestoreDocument(const App::Document&);
     //@}
 
 public:
@@ -86,9 +87,9 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalRenamedObject;
     /// signal on activated Object
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
-    /// signal on goes in edti mode
+    /// signal on entering in edit mode
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
-   /// signal on leave edit mode
+    /// signal on leaving edit mode
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     //@}
 
