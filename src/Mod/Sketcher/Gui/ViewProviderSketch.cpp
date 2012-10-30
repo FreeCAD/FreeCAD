@@ -64,6 +64,7 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QPainter>
+# include <QTextStream>
 #endif
 
 #include <Inventor/SbTime.h>
@@ -206,6 +207,8 @@ const Part::Geometry* GeoById(const std::vector<Part::Geometry*> GeoList, int Id
 
 //**************************************************************************
 // Construction/Destruction
+
+/* TRANSLATOR SketcherGui::ViewProviderSketch */
 
 PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
 
@@ -2851,6 +2854,42 @@ bool ViewProviderSketch::setEdit(int ModNum)
     return true;
 }
 
+QString ViewProviderSketch::appendConflictMsg(const std::vector<int> &conflicting)
+{
+    QString msg;
+    QTextStream ss(&msg);
+    if (conflicting.size() > 0) {
+        if (conflicting.size() == 1)
+            ss << tr("Please remove the following constraint:");
+        else
+            ss << tr("Please remove at least one of the following constraints:");
+        ss << "\n";
+        ss << conflicting[0];
+        for (unsigned int i=1; i < conflicting.size(); i++)
+            ss << ", " << conflicting[i];
+        ss << "\n";
+    }
+    return msg;
+}
+
+QString ViewProviderSketch::appendRedundantMsg(const std::vector<int> &redundant)
+{
+    QString msg;
+    QTextStream ss(&msg);
+    if (redundant.size() > 0) {
+        if (redundant.size() == 1)
+            ss << tr("Please remove the following redundant constraint:");
+        else
+            ss << tr("Please remove the following redundant constraints:");
+        ss << "\n";
+        ss << redundant[0];
+        for (unsigned int i=1; i < redundant.size(); i++)
+            ss << ", " << redundant[i];
+        ss << "\n";
+    }
+    return msg;
+}
+
 void ViewProviderSketch::solveSketch(void)
 {
     // set up the sketch and diagnose possible conflicts
@@ -2858,47 +2897,46 @@ void ViewProviderSketch::solveSketch(void)
                                            getSketchObject()->Constraints.getValues(),
                                            getSketchObject()->getExternalGeometryCount());
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(QString::fromLatin1("Empty sketch"));
+        signalSetUp(tr("Empty sketch"));
         signalSolved(QString());
     }
     else if (dofs < 0) { // over-constrained sketch
         std::string msg;
         SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-        signalSetUp(QString::fromLatin1("<font color='red'>Over-constrained sketch<br/>%1</font>")
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<br/>%2</font>")
+                    .arg(tr("Over-constrained sketch"))
                     .arg(QString::fromStdString(msg)));
         signalSolved(QString());
     }
     else if (edit->ActSketch.hasConflicts()) { // conflicting constraints
-        std::string msg;
-        SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-        signalSetUp(QString::fromLatin1("<font color='red'>Sketch contains conflicting constraints<br/>%1</font>")
-                    .arg(QString::fromStdString(msg)));
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<br/>%2</font>")
+                    .arg(tr("Sketch contains conflicting constraints"))
+                    .arg(appendConflictMsg(edit->ActSketch.getConflicting())));
         signalSolved(QString());
     }
     else {
         if (edit->ActSketch.hasRedundancies()) { // redundant constraints
-            std::string msg;
-            SketchObject::appendRedundantMsg(edit->ActSketch.getRedundant(), msg);
-            signalSetUp(QString::fromLatin1("<font color='orange'>Sketch contains redundant constraints<br/>%1</font>")
-                        .arg(QString::fromStdString(msg)));
+            signalSetUp(QString::fromLatin1("<font color='orange'>%1<br/>%2</font>")
+                        .arg(tr("Sketch contains redundant constraints"))
+                        .arg(appendRedundantMsg(edit->ActSketch.getRedundant())));
         }
         if (edit->ActSketch.solve() == 0) { // solving the sketch
             if (dofs == 0) {
                 // color the sketch as fully constrained
                 edit->FullyConstrained = true;
                 if (!edit->ActSketch.hasRedundancies())
-                    signalSetUp(QString::fromLatin1("<font color='green'>Fully constrained sketch </font>"));
+                    signalSetUp(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Fully constrained sketch")));
             }
             else if (!edit->ActSketch.hasRedundancies()) {
                 if (dofs == 1)
-                    signalSetUp(QString::fromLatin1("Under-constrained sketch with 1 degree of freedom"));
+                    signalSetUp(tr("Under-constrained sketch with 1 degree of freedom"));
                 else
-                    signalSetUp(QString::fromLatin1("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
+                    signalSetUp(tr("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
             }
-            signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
+            signalSolved(tr("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
         }
         else {
-            signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
+            signalSolved(tr("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
         }
     }
 }
