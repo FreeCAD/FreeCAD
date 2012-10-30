@@ -15,7 +15,6 @@
         <file>icons/Robot_TrajectoryDressUp.svg</file>
         <file>translations/Robot_af.qm</file>
         <file>translations/Robot_de.qm</file>
-        <file>translations/Robot_es.qm</file>
         <file>translations/Robot_fi.qm</file>
         <file>translations/Robot_fr.qm</file>
         <file>translations/Robot_hr.qm</file>
@@ -23,10 +22,18 @@
         <file>translations/Robot_nl.qm</file>
         <file>translations/Robot_no.qm</file>
         <file>translations/Robot_pl.qm</file>
-        <file>translations/Robot_pt.qm</file>
         <file>translations/Robot_ru.qm</file>
-        <file>translations/Robot_se.qm</file>
         <file>translations/Robot_uk.qm</file>
-        <file>translations/Robot_zh.qm</file>
+        <file>translations/Robot_tr.qm</file>
+        <file>translations/Robot_sv-SE.qm</file>
+        <file>translations/Robot_zh-TW.qm</file>
+        <file>translations/Robot_pt-BR.qm</file>
+        <file>translations/Robot_cs.qm</file>
+        <file>translations/Robot_sk.qm</file>
+        <file>translations/Robot_es-ES.qm</file>
+        <file>translations/Robot_zh-CN.qm</file>
+        <file>translations/Robot_ja.qm</file>
+        <file>translations/Robot_ro.qm</file>
+        <file>translations/Robot_hu.qm</file>
     </qresource>
 </RCC> 

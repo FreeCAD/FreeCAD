@@ -3,7 +3,6 @@
         <file>icons/Fem_FemMesh.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
-        <file>translations/Fem_es.qm</file>
         <file>translations/Fem_fi.qm</file>
         <file>translations/Fem_fr.qm</file>
         <file>translations/Fem_hr.qm</file>
@@ -11,10 +10,18 @@
         <file>translations/Fem_nl.qm</file>
         <file>translations/Fem_no.qm</file>
         <file>translations/Fem_pl.qm</file>
-        <file>translations/Fem_pt.qm</file>
         <file>translations/Fem_ru.qm</file>
-        <file>translations/Fem_se.qm</file>
         <file>translations/Fem_uk.qm</file>
-        <file>translations/Fem_zh.qm</file>
+        <file>translations/Fem_tr.qm</file>
+        <file>translations/Fem_sv-SE.qm</file>
+        <file>translations/Fem_zh-TW.qm</file>
+        <file>translations/Fem_pt-BR.qm</file>
+        <file>translations/Fem_cs.qm</file>
+        <file>translations/Fem_sk.qm</file>
+        <file>translations/Fem_es-ES.qm</file>
+        <file>translations/Fem_zh-CN.qm</file>
+        <file>translations/Fem_ja.qm</file>
+        <file>translations/Fem_ro.qm</file>
+        <file>translations/Fem_hu.qm</file>
     </qresource>
 </RCC> 

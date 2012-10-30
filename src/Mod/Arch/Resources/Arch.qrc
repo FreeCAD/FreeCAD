@@ -32,20 +32,25 @@
         <file>ui/archprefs-base.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
-        <file>translations/Arch_es.qm</file>
         <file>translations/Arch_fi.qm</file>
         <file>translations/Arch_fr.qm</file>
         <file>translations/Arch_it.qm</file>
         <file>translations/Arch_nl.qm</file>
         <file>translations/Arch_no.qm</file>
         <file>translations/Arch_ru.qm</file>
-        <file>translations/Arch_se.qm</file>
         <file>translations/Arch_uk.qm</file>
         <file>translations/Arch_pl.qm</file>
-        <file>translations/Arch_pt.qm</file>
         <file>translations/Arch_hr.qm</file>
-        <file>translations/Arch_zh.qm</file>
         <file>translations/Arch_ja.qm</file>
         <file>translations/Arch_hu.qm</file>
+        <file>translations/Arch_tr.qm</file>
+        <file>translations/Arch_sv-SE.qm</file>
+        <file>translations/Arch_zh-TW.qm</file>
+        <file>translations/Arch_pt-BR.qm</file>
+        <file>translations/Arch_cs.qm</file>
+        <file>translations/Arch_sk.qm</file>
+        <file>translations/Arch_es-ES.qm</file>
+        <file>translations/Arch_zh-CN.qm</file>
+        <file>translations/Arch_ro.qm</file>
     </qresource>
 </RCC> 
