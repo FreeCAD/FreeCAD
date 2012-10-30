@@ -27,7 +27,7 @@ EXTRA_DIST = \
 		icons/View.svg \
 		translations/Drawing_af.qm \
 		translations/Drawing_de.qm \
-		translations/Drawing_es.qm \
+		translations/Drawing_es-ES.qm \
 		translations/Drawing_fi.qm \
 		translations/Drawing_fr.qm \
 		translations/Drawing_hr.qm \
@@ -35,14 +35,21 @@ EXTRA_DIST = \
 		translations/Drawing_nl.qm \
 		translations/Drawing_no.qm \
 		translations/Drawing_pl.qm \
-		translations/Drawing_pt.qm \
+		translations/Drawing_pt-BR.qm \
 		translations/Drawing_ru.qm \
-		translations/Drawing_se.qm \
+		translations/Drawing_sv-SE.qm \
 		translations/Drawing_uk.qm \
-		translations/Drawing_zh.qm \
+		translations/Drawing_zh-CN.qm \
+		translations/Drawing_zh-TW.qm \
+		translations/Drawing_cs.qm \
+		translations/Drawing_tr.qm \
+		translations/Drawing_ro.qm \
+		translations/Drawing_sk.qm \
+		translations/Drawing_ja.qm \
+		translations/Drawing_hu.qm \
 		translations/Drawing_af.ts \
 		translations/Drawing_de.ts \
-		translations/Drawing_es.ts \
+		translations/Drawing_es-ES.ts \
 		translations/Drawing_fi.ts \
 		translations/Drawing_fr.ts \
 		translations/Drawing_hr.ts \
@@ -50,11 +57,18 @@ EXTRA_DIST = \
 		translations/Drawing_nl.ts \
 		translations/Drawing_no.ts \
 		translations/Drawing_pl.ts \
-		translations/Drawing_pt.ts \
+		translations/Drawing_pt-BR.ts \
 		translations/Drawing_ru.ts \
-		translations/Drawing_se.ts \
+		translations/Drawing_sv-SE.ts \
 		translations/Drawing_uk.ts \
-		translations/Drawing_zh.ts \
+		translations/Drawing_zh-CN.ts \
+		translations/Drawing_zh-TW.ts \
+		translations/Drawing_cs.ts \
+		translations/Drawing_tr.ts \
+		translations/Drawing_ro.ts \
+		translations/Drawing_sk.ts \
+		translations/Drawing_ja.ts \
+		translations/Drawing_hu.ts \
 		Drawing.qrc \
 		UpdateResources.bat
 

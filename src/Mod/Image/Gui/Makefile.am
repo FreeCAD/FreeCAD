@@ -93,8 +93,8 @@ EXTRA_DIST = \
 		Resources/translations/Image_af.ts \
 		Resources/translations/Image_de.qm \
 		Resources/translations/Image_de.ts \
-		Resources/translations/Image_es.qm \
-		Resources/translations/Image_es.ts \
+		Resources/translations/Image_es-ES.qm \
+		Resources/translations/Image_es-ES.ts \
 		Resources/translations/Image_fi.qm \
 		Resources/translations/Image_fi.ts \
 		Resources/translations/Image_fr.qm \
@@ -109,15 +109,29 @@ EXTRA_DIST = \
 		Resources/translations/Image_no.ts \
 		Resources/translations/Image_pl.qm \
 		Resources/translations/Image_pl.ts \
-		Resources/translations/Image_pt.qm \
-		Resources/translations/Image_pt.ts \
+		Resources/translations/Image_pt-BR.qm \
+		Resources/translations/Image_pt-BR.ts \
 		Resources/translations/Image_ru.qm \
 		Resources/translations/Image_ru.ts \
-		Resources/translations/Image_se.qm \
-		Resources/translations/Image_se.ts \
+		Resources/translations/Image_sv-SE.qm \
+		Resources/translations/Image_sv-SE.ts \
 		Resources/translations/Image_uk.qm \
 		Resources/translations/Image_uk.ts \
-		Resources/translations/Image_zh.qm \
-		Resources/translations/Image_zh.ts \
+		Resources/translations/Image_zh-CN.qm \
+		Resources/translations/Image_zh-CN.ts \
+		Resources/translations/Image_hu.qm \
+		Resources/translations/Image_hu.ts \
+		Resources/translations/Image_ja.qm \
+		Resources/translations/Image_ja.ts \
+		Resources/translations/Image_ro.qm \
+		Resources/translations/Image_ro.ts \
+		Resources/translations/Image_zh-TW.qm \
+		Resources/translations/Image_zh-TW.ts \
+		Resources/translations/Image_cs.qm \
+		Resources/translations/Image_cs.ts \
+		Resources/translations/Image_tr.qm \
+		Resources/translations/Image_tr.ts \
+		Resources/translations/Image_sk.qm \
+		Resources/translations/Image_sk.ts \
 		Resources/icons/image-import.svg
 

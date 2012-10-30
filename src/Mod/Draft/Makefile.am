@@ -100,8 +100,8 @@ EXTRA_DIST = \
 		Resources/translations/Draft_af.ts \
 		Resources/translations/Draft_de.qm \
 		Resources/translations/Draft_de.ts \
-		Resources/translations/Draft_es.qm \
-		Resources/translations/Draft_es.ts \
+		Resources/translations/Draft_es-ES.qm \
+		Resources/translations/Draft_es-ES.ts \
 		Resources/translations/Draft_fi.qm \
 		Resources/translations/Draft_fi.ts \
 		Resources/translations/Draft_fr.qm \
@@ -120,16 +120,26 @@ EXTRA_DIST = \
 		Resources/translations/Draft_no.ts \
 		Resources/translations/Draft_pl.qm \
 		Resources/translations/Draft_pl.ts \
-		Resources/translations/Draft_pt.qm \
-		Resources/translations/Draft_pt.ts \
+		Resources/translations/Draft_pt-BR.qm \
+		Resources/translations/Draft_pt-BR.ts \
 		Resources/translations/Draft_ru.qm \
 		Resources/translations/Draft_ru.ts \
-		Resources/translations/Draft_se.qm \
-		Resources/translations/Draft_se.ts \
+		Resources/translations/Draft_sv-SE.qm \
+		Resources/translations/Draft_sv-SE.ts \
 		Resources/translations/Draft_uk.qm \
 		Resources/translations/Draft_uk.ts \
-		Resources/translations/Draft_zh.qm \
-		Resources/translations/Draft_zh.ts \
+		Resources/translations/Draft_zh-CN.qm \
+		Resources/translations/Draft_zh-CN.ts \
+		Resources/translations/Draft_zh-TW.qm \
+		Resources/translations/Draft_zh-TW.ts \
+		Resources/translations/Draft_cs.qm \
+		Resources/translations/Draft_cs.ts \
+		Resources/translations/Draft_sk.qm \
+		Resources/translations/Draft_sk.ts \
+		Resources/translations/Draft_tr.qm \
+		Resources/translations/Draft_tr.ts \
+		Resources/translations/Draft_ro.qm \
+		Resources/translations/Draft_ro.ts \
 		Resources/ui/userprefs-base.ui \
 		Resources/ui/userprefs-import.ui
 

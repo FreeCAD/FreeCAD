@@ -86,8 +86,8 @@ EXTRA_DIST = \
 		Resources/translations/Points_af.ts \
 		Resources/translations/Points_de.qm \
 		Resources/translations/Points_de.ts \
-		Resources/translations/Points_es.qm \
-		Resources/translations/Points_es.ts \
+		Resources/translations/Points_es-ES.qm \
+		Resources/translations/Points_es-ES.ts \
 		Resources/translations/Points_fi.qm \
 		Resources/translations/Points_fi.ts \
 		Resources/translations/Points_fr.qm \
@@ -102,14 +102,28 @@ EXTRA_DIST = \
 		Resources/translations/Points_no.ts \
 		Resources/translations/Points_pl.qm \
 		Resources/translations/Points_pl.ts \
-		Resources/translations/Points_pt.qm \
-		Resources/translations/Points_pt.ts \
+		Resources/translations/Points_pt-BR.qm \
+		Resources/translations/Points_pt-BR.ts \
 		Resources/translations/Points_ru.qm \
 		Resources/translations/Points_ru.ts \
-		Resources/translations/Points_se.qm \
-		Resources/translations/Points_se.ts \
+		Resources/translations/Points_sv-SE.qm \
+		Resources/translations/Points_sv-SE.ts \
 		Resources/translations/Points_uk.qm \
 		Resources/translations/Points_uk.ts \
-		Resources/translations/Points_zh.qm \
-		Resources/translations/Points_zh.ts
+		Resources/translations/Points_zh-TW.qm \
+		Resources/translations/Points_zh-TW.ts \
+		Resources/translations/Points_ro.qm \
+		Resources/translations/Points_ro.ts \
+		Resources/translations/Points_ja.qm \
+		Resources/translations/Points_ja.ts \
+		Resources/translations/Points_tr.qm \
+		Resources/translations/Points_tr.ts \
+		Resources/translations/Points_cs.qm \
+		Resources/translations/Points_cs.ts \
+		Resources/translations/Points_sk.qm \
+		Resources/translations/Points_sk.ts \
+		Resources/translations/Points_hu.qm \
+		Resources/translations/Points_hu.ts \
+		Resources/translations/Points_zh-CN.qm \
+		Resources/translations/Points_zh-CN.ts
 		

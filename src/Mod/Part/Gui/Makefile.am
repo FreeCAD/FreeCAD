@@ -244,8 +244,8 @@ EXTRA_DIST = \
 		Resources/translations/Part_af.ts \
 		Resources/translations/Part_de.qm \
 		Resources/translations/Part_de.ts \
-		Resources/translations/Part_es.qm \
-		Resources/translations/Part_es.ts \
+		Resources/translations/Part_es-ES.qm \
+		Resources/translations/Part_es-ES.ts \
 		Resources/translations/Part_fi.qm \
 		Resources/translations/Part_fi.ts \
 		Resources/translations/Part_fr.qm \
@@ -260,14 +260,28 @@ EXTRA_DIST = \
 		Resources/translations/Part_no.ts \
 		Resources/translations/Part_pl.qm \
 		Resources/translations/Part_pl.ts \
-		Resources/translations/Part_pt.qm \
-		Resources/translations/Part_pt.ts \
+		Resources/translations/Part_pt-BR.qm \
+		Resources/translations/Part_pt-BR.ts \
 		Resources/translations/Part_ru.qm \
 		Resources/translations/Part_ru.ts \
-		Resources/translations/Part_se.qm \
-		Resources/translations/Part_se.ts \
+		Resources/translations/Part_sv-SE.qm \
+		Resources/translations/Part_sv-SE.ts \
 		Resources/translations/Part_uk.qm \
 		Resources/translations/Part_uk.ts \
-		Resources/translations/Part_zh.qm \
-		Resources/translations/Part_zh.ts \
+		Resources/translations/Part_zh-CN.qm \
+		Resources/translations/Part_zh-CN.ts \
+		Resources/translations/Part_zh-TW.qm \
+		Resources/translations/Part_zh-TW.ts \
+		Resources/translations/Part_ro.qm \
+		Resources/translations/Part_ro.ts \
+		Resources/translations/Part_ja.qm \
+		Resources/translations/Part_ja.ts \
+		Resources/translations/Part_hu.qm \
+		Resources/translations/Part_hu.ts \
+		Resources/translations/Part_cs.qm \
+		Resources/translations/Part_cs.ts \
+		Resources/translations/Part_sk.qm \
+		Resources/translations/Part_sk.ts \
+		Resources/translations/Part_tr.qm \
+		Resources/translations/Part_tr.ts \
 		CMakeLists.txt
