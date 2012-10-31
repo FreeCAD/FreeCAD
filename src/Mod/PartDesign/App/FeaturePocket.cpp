@@ -97,30 +97,29 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
 
-    TopoDS_Shape aFace = makeFace(wires);
-    if (aFace.IsNull())
-        return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
-
-    // This is a trick to avoid problems with the cut operation. Sometimes a cut doesn't
-    // work as expected if faces are coincident. Thus, we move the face in normal direction
-    // but make it longer by one unit in the opposite direction.
-    // TODO: Isn't one unit (one millimeter) a lot, assuming someone models a really tiny solid?
-    // What about using 2 * Precision::Confusion() ?
-    gp_Trsf mov;
-    mov.SetTranslation(gp_Vec(SketchVector.x,SketchVector.y,SketchVector.z));
-    TopLoc_Location loc(mov);
-    aFace.Move(loc);
-
-    // lengthen the vector
-    SketchVector *= (Length.getValue()+1);
-
-    // turn around for pockets
-    SketchVector *= -1;
-
     this->positionBySketch();
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
     try {
+        TopoDS_Face aFace = TopoDS::Face(makeFace(wires));
+        if (aFace.IsNull())
+            return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
+        // This is a trick to avoid problems with the cut operation. Sometimes a cut doesn't
+        // work as expected if faces are coincident. Thus, we move the face in normal direction
+        // but make it longer by one unit in the opposite direction.
+        // TODO: Isn't one unit (one millimeter) a lot, assuming someone models a really tiny solid?
+        // What about using 2 * Precision::Confusion() ?
+        gp_Trsf mov;
+        mov.SetTranslation(gp_Vec(SketchVector.x,SketchVector.y,SketchVector.z));
+        TopLoc_Location loc(mov);
+        aFace.Move(loc);
+
+        // lengthen the vector
+        SketchVector *= (Length.getValue()+1);
+
+        // turn around for pockets
+        SketchVector *= -1;
+
         // extrude the face to a solid
         TopoDS_Shape prism;
 
@@ -245,7 +244,14 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return App::DocumentObject::StdReturn;
     } catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+        if (std::string(e->GetMessageString()) == "TopoDS::Face")
+            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
+                "Intersecting sketch entities or multiple faces in a sketch are not allowed.");
+        else
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
 }
 

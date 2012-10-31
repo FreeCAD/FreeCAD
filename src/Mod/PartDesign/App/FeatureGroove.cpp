@@ -132,24 +132,26 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     Base::Vector3f v = Axis.getValue();
     gp_Dir dir(v.x,v.y,v.z);
 
-    TopoDS_Shape aFace = makeFace(wires);
-    if (aFace.IsNull())
-        return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
-
-    // Rotate the face by half the angle to get Groove symmetric to sketch plane
-    if (Midplane.getValue()) {
-        gp_Trsf mov;
-        mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
-        TopLoc_Location loc(mov);
-        aFace.Move(loc);
-    }
-
-    this->positionBySketch();
-    TopLoc_Location invObjLoc = this->getLocation().Inverted();
-    pnt.Transform(invObjLoc.Transformation());
-    dir.Transform(invObjLoc.Transformation());
-
     try {
+        // TopoDS::Face is not strictly necessary, but it will through an exception for
+        // invalid wires e.g. intersections or multiple separate wires
+        TopoDS_Shape aFace = TopoDS::Face(makeFace(wires));
+        if (aFace.IsNull())
+            return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
+
+        // Rotate the face by half the angle to get Groove symmetric to sketch plane
+        if (Midplane.getValue()) {
+            gp_Trsf mov;
+            mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
+            TopLoc_Location loc(mov);
+            aFace.Move(loc);
+        }
+
+        this->positionBySketch();
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+        pnt.Transform(invObjLoc.Transformation());
+        dir.Transform(invObjLoc.Transformation());
+
         // revolve the face to a solid
         BRepPrimAPI_MakeRevol RevolMaker(aFace.Moved(invObjLoc), gp_Ax1(pnt, dir), angle);
 
@@ -179,7 +181,11 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+        if (std::string(e->GetMessageString()) == "TopoDS::Face")
+            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
+                "Intersecting sketch entities or multiple faces in a sketch are not allowed.");
+        else
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 }
 

@@ -104,14 +104,16 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
 
-    TopoDS_Shape aFace = makeFace(wires);
-    if (aFace.IsNull())
-        return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
-
     this->positionBySketch();
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
     try {
+        // TopoDS::Face is not strictly necessary, but it will through an exception for
+        // invalid wires e.g. intersections or multiple separate wires
+        TopoDS_Shape aFace = TopoDS::Face(makeFace(wires));
+        if (aFace.IsNull())
+            return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
+
         // extrude the face to a solid
         TopoDS_Shape prism;
         bool isSolid = false; // support is a solid?
@@ -252,7 +254,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         // set the additive shape property for later usage in e.g. pattern
         this->AddShape.setValue(prism);
 
-        // if the sketch has a support fuse them to get one result object (PAD!)
+        // if the sketch has a support fuse them to get one result object
         if (!support.IsNull()) {
 
             if (!isSolidChecked) { // we haven't checked for solid, yet
@@ -275,7 +277,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Pad: Fusion with support failed");
             TopoDS_Shape result = mkFuse.Shape();
-            // we have to get the solids (fuse create seldomly compounds)
+            // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
             // lets check if the result is a solid
             if (solRes.IsNull())
@@ -293,7 +295,14 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+        if (std::string(e->GetMessageString()) == "TopoDS::Face")
+            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
+                "Intersecting sketch entities or multiple faces in a sketch are not allowed.");
+        else
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
 }
 
