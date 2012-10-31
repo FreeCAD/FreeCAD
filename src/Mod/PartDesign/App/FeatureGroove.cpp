@@ -135,8 +135,8 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     try {
         // TopoDS::Face is not strictly necessary, but it will through an exception for
         // invalid wires e.g. intersections or multiple separate wires
-        TopoDS_Shape aFace = TopoDS::Face(makeFace(wires));
-        if (aFace.IsNull())
+        TopoDS_Shape sketchshape = TopoDS::Face(makeFace(wires));
+        if (sketchshape.IsNull())
             return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
         // Rotate the face by half the angle to get Groove symmetric to sketch plane
@@ -144,25 +144,26 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             gp_Trsf mov;
             mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
             TopLoc_Location loc(mov);
-            aFace.Move(loc);
+            sketchshape.Move(loc);
         }
 
         this->positionBySketch();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
+        support.Move(invObjLoc);
+        sketchshape.Move(invObjLoc);
 
         // revolve the face to a solid
-        BRepPrimAPI_MakeRevol RevolMaker(aFace.Moved(invObjLoc), gp_Ax1(pnt, dir), angle);
+        BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
 
         if (RevolMaker.IsDone()) {
             TopoDS_Shape result = RevolMaker.Shape();
-
-            // Set the subtractive shape property for later usage in e.g. pattern
+            // set the subtractive shape property for later usage in e.g. pattern
             this->SubShape.setValue(result);
 
             // cut out groove to get one result object
-            BRepAlgoAPI_Cut mkCut(support.Moved(invObjLoc), result);
+            BRepAlgoAPI_Cut mkCut(support, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
                 throw Base::Exception("Cut out of support failed");
@@ -186,6 +187,9 @@ App::DocumentObjectExecReturn *Groove::execute(void)
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed.");
         else
             return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
 }
 

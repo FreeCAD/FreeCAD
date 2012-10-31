@@ -71,11 +71,16 @@ short Revolution::mustExecute() const
 App::DocumentObjectExecReturn *Revolution::execute(void)
 {
     // Validate parameters
-    double a = Angle.getValue();
-    if (a < Precision::Confusion())
+    double angle = Angle.getValue();
+    if (angle < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Angle of groove too small");
-    if (a > 360.0)
+    if (angle > 360.0)
         return new App::DocumentObjectExecReturn("Angle of groove too large");
+
+    angle = Base::toRadians<double>(angle);
+    // Reverse angle if selected
+    if (Reversed.getValue() && !Midplane.getValue())
+        angle *= (-1.0);
 
     Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
@@ -136,30 +141,27 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     try {
         // TopoDS::Face is not strictly necessary, but it will through an exception for
         // invalid wires e.g. intersections or multiple separate wires
-        TopoDS_Shape aFace = TopoDS::Face(makeFace(wires));
-        if (aFace.IsNull())
+        TopoDS_Shape sketchshape = TopoDS::Face(makeFace(wires));
+        if (sketchshape.IsNull())
             return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
-        // Rotate the face by half the angle to get revolution symmetric to sketch plane
+        // Rotate the face by half the angle to get Revolution symmetric to sketch plane
         if (Midplane.getValue()) {
             gp_Trsf mov;
             mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
             TopLoc_Location loc(mov);
-            aFace.Move(loc);
+            sketchshape.Move(loc);
         }
 
         this->positionBySketch();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-
-        // Reverse angle if selected
-        double angle = Base::toRadians<double>(Angle.getValue());
-        if (Reversed.getValue() && !Midplane.getValue())
-            angle *= (-1.0);
+        support.Move(invObjLoc);
+        sketchshape.Move(invObjLoc);
 
         // revolve the face to a solid
-        BRepPrimAPI_MakeRevol RevolMaker(aFace.Moved(invObjLoc), gp_Ax1(pnt, dir), angle);
+        BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
 
         if (RevolMaker.IsDone()) {
             TopoDS_Shape result = RevolMaker.Shape();
@@ -169,7 +171,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             // if the sketch has a support fuse them to get one result object (PAD!)
             if (!support.IsNull()) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
+                BRepAlgoAPI_Fuse mkFuse(support, result);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone())
                     throw Base::Exception("Fusion with support failed");
