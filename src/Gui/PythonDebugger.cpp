@@ -184,9 +184,10 @@ Py::Object PythonDebugStdout::repr()
 Py::Object PythonDebugStdout::write(const Py::Tuple& args)
 {
     char *msg;
-    PyObject* pObj;
-    //args contains a single parameter which is the string to write.
-    if (!PyArg_ParseTuple(args.ptr(), "Os:OutputString", &pObj, &msg))
+    //PyObject* pObj;
+    ////args contains a single parameter which is the string to write.
+    //if (!PyArg_ParseTuple(args.ptr(), "Os:OutputString", &pObj, &msg))
+    if (!PyArg_ParseTuple(args.ptr(), "s:OutputString", &msg))
         throw Py::Exception();
 
     if (strlen(msg) > 0)
@@ -340,6 +341,7 @@ struct PythonDebuggerP {
     PyObject* out_n;
     PyObject* err_n;
     PyObject* exc_n;
+    PythonDebugExcept* pypde;
     bool init, trystop, running;
     QEventLoop loop;
     PyObject* pydbg;
@@ -351,10 +353,9 @@ struct PythonDebuggerP {
         Base::PyGILStateLocker lock;
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();
-        PythonDebugExcept* err = new PythonDebugExcept();
-        Py::Object func = err->getattr("fc_excepthook");
+        pypde = new PythonDebugExcept();
+        Py::Object func = pypde->getattr("fc_excepthook");
         exc_n = Py::new_reference_to(func);
-        Py_DECREF(err);
         pydbg = new PythonDebuggerPy(that);
     }
     ~PythonDebuggerP()
@@ -362,6 +363,7 @@ struct PythonDebuggerP {
         Py_DECREF(out_n);
         Py_DECREF(err_n);
         Py_DECREF(exc_n);
+        Py_DECREF(pypde);
         Py_DECREF(pydbg);
     }
 };
