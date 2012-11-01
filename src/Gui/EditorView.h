@@ -50,8 +50,6 @@ public:
     ~EditorView();
 
     QPlainTextEdit* getEditor() const;
-    //todo: remove
-    virtual void drawMarker(int line, int x, int y, QPainter*);
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
     const char *getName(void) const {return "EditorView";}
@@ -90,6 +88,9 @@ private Q_SLOTS:
     void undoAvailable(bool);
     void redoAvailable(bool);
 
+Q_SIGNALS:
+    void changeFileName(const QString&);
+
 private:
     void setCurrentFileName(const QString &fileName);
     bool saveFile();
@@ -98,21 +99,18 @@ private:
     EditorViewP* d;
 };
 
-class PythonDebugger;
+class PythonEditor;
 class GuiExport PythonEditorView : public EditorView
 {
     Q_OBJECT
 
 public:
-    PythonEditorView(QPlainTextEdit* editor, QWidget* parent);
+    PythonEditorView(PythonEditor* editor, QWidget* parent);
     ~PythonEditorView();
 
-    //todo: remove
-    void drawMarker(int line, int x, int y, QPainter*);
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
-    //todo: move to PythonEditor
 public Q_SLOTS:
     void executeScript();
     void startDebug();
@@ -120,13 +118,8 @@ public Q_SLOTS:
     void showDebugMarker(int line);
     void hideDebugMarker();
 
-    //todo: move to PythonEditor
 private:
-    int m_debugLine;
-    QRect debugRect;
-    QPixmap breakpoint;
-    QPixmap debugMarker;
-    PythonDebugger* _dbg;
+    PythonEditor* _pye;
 };
 
 } // namespace Gui
