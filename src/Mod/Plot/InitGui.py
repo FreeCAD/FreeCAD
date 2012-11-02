@@ -23,15 +23,14 @@
 
 class PlotWorkbench ( Workbench ):
 	""" @brief Workbench of Plot module. Here toolbars & icons are append. """
-	from plotUtils import Paths, Translator
+	from plotUtils import Paths
 	import PlotGui
 
 	Icon = Paths.iconsPath() + "/Icon.svg"
-	MenuText = str(Translator.translate("Plot"))
-	ToolTip = str(Translator.translate("Plot"))
+	MenuText = "Plot"
+	ToolTip = "The Plot module is used to edit/save output plots performed by other tools"
 
 	def Initialize(self):
-		from plotUtils import Translator
 		# ToolBar
 		list = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
 		self.appendToolbar("Plot",list)
@@ -44,7 +43,6 @@ try:
 	import matplotlib
 	Gui.addWorkbench(PlotWorkbench())
 except ImportError:
-	from plotUtils import Translator
-	msg = Translator.translate("matplotlib not found, Plot module will be disabled.\n")
-	FreeCAD.Console.PrintMessage(msg)
+	msg = QtCore.QT_TRANSLATE_NOOP("plot", "matplotlib not found, Plot module will be disabled")
+	FreeCAD.Console.PrintMessage(msg + '\n')
 
