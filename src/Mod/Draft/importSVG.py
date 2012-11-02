@@ -370,7 +370,7 @@ class svgHandler(xml.sax.ContentHandler):
 			r = float(draftui.color.red()/255.0)
 			g = float(draftui.color.green()/255.0)
 			b = float(draftui.color.blue()/255.0)
-			self.lw = float(draftui.widthButton.value())
+			self.lw = float(draftui.linewidth)
 		else:
 			self.lw = float(params.GetInt("linewidth"))
 			c = params.GetUnsigned("color")
