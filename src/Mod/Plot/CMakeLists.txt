@@ -6,16 +6,24 @@ SET(PlotMain_SRCS
 SOURCE_GROUP("" FILES ${PlotMain_SRCS})
 
 SET(PlotIcons_SRCS
-	Icons/Axes.svg
-	Icons/Grid.svg
-	Icons/Icon.svg
-	Icons/Labels.svg
-	Icons/Legend.svg
-	Icons/Positions.svg
-	Icons/Save.svg
-	Icons/Series.svg
+	resources/icons/Axes.svg
+	resources/icons/Grid.svg
+	resources/icons/Icon.svg
+	resources/icons/Labels.svg
+	resources/icons/Legend.svg
+	resources/icons/Positions.svg
+	resources/icons/Save.svg
+	resources/icons/Series.svg
 )
 SOURCE_GROUP("ploticons" FILES ${PlotIcons_SRCS})
+
+SET(PlotTranslations_SRCS
+	resources/translations/Plot.ts
+	resources/translations/Plot.qm
+	resources/translations/Plot_es-ES.ts
+	resources/translations/Plot_es-ES.qm
+)
+SOURCE_GROUP("plottranslations" FILES ${PlotTranslations_SRCS})
 
 SET(PlotAxes_SRCS
 	plotAxes/__init__.py
@@ -59,7 +67,7 @@ SET(PlotUtils_SRCS
 )
 SOURCE_GROUP("plotutils" FILES ${PlotUtils_SRCS})
 
-SET(all_files ${PlotMain_SRCS} ${PlotAxes_SRCS} ${PlotLabels_SRCS} ${PlotPositions_SRCS} ${PlotSave_SRCS} ${PlotSeries_SRCS} ${PlotIcons_SRCS} ${PlotUtils_SRCS})
+SET(all_files ${PlotMain_SRCS} ${PlotAxes_SRCS} ${PlotLabels_SRCS} ${PlotPositions_SRCS} ${PlotSave_SRCS} ${PlotSeries_SRCS} ${PlotIcons_SRCS} ${PlotTranslations_SRCS} ${PlotUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Plot ALL
     SOURCES ${all_files}
@@ -71,7 +79,13 @@ INSTALL(
     FILES
         ${PlotIcons_SRCS}
     DESTINATION
-        Mod/Plot/Icons
+        Mod/Plot/resources/icons
+)
+INSTALL(
+    FILES
+        ${PlotTranslations_SRCS}
+    DESTINATION
+        Mod/Plot/resources/translations
 )
 INSTALL(
     FILES

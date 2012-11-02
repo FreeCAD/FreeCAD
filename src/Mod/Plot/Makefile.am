@@ -7,14 +7,18 @@ data_DATA = \
 	PlotGui.py
 
 nobase_data_DATA = \
-	Icons/Axes.svg \
-	Icons/Grid.svg \
-	Icons/Icon.svg \
-	Icons/Labels.svg \
-	Icons/Legend.svg \
-	Icons/Positions.svg \
-	Icons/Save.svg \
-	Icons/Series.svg \
+	resources/icons/Axes.svg \
+	resources/icons/Grid.svg \
+	resources/icons/Icon.svg \
+	resources/icons/Labels.svg \
+	resources/icons/Legend.svg \
+	resources/icons/Positions.svg \
+	resources/icons/Save.svg \
+	resources/icons/Series.svg \
+	resources/translations/Plot.ts \
+	resources/translations/Plot.qm \
+	resources/translations/Plot_es-ES.ts \
+	resources/translations/Plot_es-ES.qm \
 	plotAxes/__init__.py \
 	plotAxes/TaskPanel.py \
 	plotAxes/TaskPanel.ui \
