@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QMessageBox>
+# include <QRegExp>
 # include <QTextStream>
 #endif
 
@@ -165,6 +166,10 @@ void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         pcPad->getDocument()->recomputeFeature(pcPad);
         ui->lineFaceName->setText(tr("Face") + QString::number(index));
         ui->lineFaceName->setProperty("FaceName", QByteArray(element.c_str()));
+    }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        ui->lineFaceName->setText(tr("No face selected"));
+        ui->lineFaceName->setProperty("FaceName", QByteArray());
     }
 }
 

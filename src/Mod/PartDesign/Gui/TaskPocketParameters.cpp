@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QRegExp>
 # include <QTextStream>
 #endif
 
@@ -125,6 +126,10 @@ void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         pcPocket->getDocument()->recomputeFeature(pcPocket);
         ui->lineFaceName->setText(tr("Face") + QString::number(index));
         ui->lineFaceName->setProperty("FaceName", QByteArray(element.c_str()));
+    }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        ui->lineFaceName->setText(tr("No face selected"));
+        ui->lineFaceName->setProperty("FaceName", QByteArray());
     }
 }
 
