@@ -193,8 +193,7 @@ inline bool DOMTreeErrorReporter::getSawErrors() const
 // Construction/Destruction
 
 
-/** Defauld construction
-  * Does not much
+/** Default construction
   */
 ParameterGrp::ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode,const char* sName)
         : Base::Handled(), Subject<const char*>(),_pGroupNode(GroupNode)
@@ -967,10 +966,10 @@ static XercesDOMParser::ValSchemes    gValScheme       = XercesDOMParser::Val_Au
 //**************************************************************************
 // Construction/Destruction
 
-/** Defauld construction
-  * Does not much
+/** Default construction
   */
-ParameterManager::ParameterManager()	: ParameterGrp()
+ParameterManager::ParameterManager()
+  : ParameterGrp(), _pDocument(0)
 {
     // initialize the XML system
     Init();
@@ -1035,6 +1034,7 @@ ParameterManager::ParameterManager()	: ParameterGrp()
   */
 ParameterManager::~ParameterManager()
 {
+    delete _pDocument;
 }
 
 void ParameterManager::Init(void)
@@ -1044,7 +1044,6 @@ void ParameterManager::Init(void)
         try {
             XMLPlatformUtils::Initialize();
         }
-
         catch (const XMLException& toCatch) {
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN)
             std::ostringstream err;
@@ -1056,11 +1055,7 @@ void ParameterManager::Init(void)
             << "  Exception message:"
             << pMsg;
             delete [] pMsg;
-//#ifdef FC_OS_LINUX
             throw Exception(err.str().c_str());
-//#else
-//			throw FCException(err.str());
-//#endif
         }
         Init = true;
     }
