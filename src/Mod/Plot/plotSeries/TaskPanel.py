@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 # matplotlib
 import matplotlib
 from matplotlib.lines import Line2D
@@ -110,11 +110,11 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Set positions and sizes"))
-		self.form.isLabel.setText(Translator.translate("No label"))
-		self.form.remove.setText(Translator.translate("Remove serie"))
-		self.form.findChild(QtGui.QLabel, "styleLabel").setText(Translator.translate("Line style"))
-		self.form.findChild(QtGui.QLabel, "markerLabel").setText(Translator.translate("Marker"))
+		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_series", "Configure series").toAscii()))
+		self.form.isLabel.setText(str(QtGui.QApplication.translate("plot_series", "No label").toAscii()))
+		self.form.remove.setText(str(QtGui.QApplication.translate("plot_series", "Remove serie").toAscii()))
+		self.form.findChild(QtGui.QLabel, "styleLabel").setText(str(QtGui.QApplication.translate("plot_series", "Line style").toAscii()))
+		self.form.findChild(QtGui.QLabel, "markerLabel").setText(str(QtGui.QApplication.translate("plot_series", "Marker").toAscii()))
 
 	def fillStyles(self):
 		""" Fill style combo boxes. """
