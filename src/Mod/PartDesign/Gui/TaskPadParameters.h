@@ -57,7 +57,7 @@ public:
     double getLength2(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
-    const QString getFaceName(void) const;
+    QByteArray getFaceName(void) const;
 
 private Q_SLOTS:
     void onLengthChanged(double);

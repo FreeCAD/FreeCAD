@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
+# include <QTextStream>
 #endif
 
 #include "ui_TaskPocketParameters.h"
@@ -87,6 +89,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     } else if (index == 4) { // Only this option requires to select a face
         ui->doubleSpinBox->setEnabled(false);
         ui->lineFaceName->setText(pcPocket->FaceName.isEmpty() ? tr("No face selected") : tr(upToFace));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace));
     } else { // Neither value nor face required
         ui->doubleSpinBox->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
@@ -106,20 +109,22 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
 void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-    if (pcPocket->Type.getValue() != 4) // ignore user selections if mode is not upToFace
-        return;
-
-    if (!msg.pSubName || msg.pSubName[0] == '\0')
-        return;
-    std::string element(msg.pSubName);
-    if (element.substr(0,4) != "Face")
-      return;
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+        if (pcPocket->Type.getValue() != 4) // ignore user selections if mode is not upToFace
+            return;
+
+        if (!msg.pSubName || msg.pSubName[0] == '\0')
+            return;
+        std::string element(msg.pSubName);
+        if (element.substr(0,4) != "Face")
+            return;
+
+        int index=std::atoi(&element[4]);
         pcPocket->FaceName.setValue(element);
         pcPocket->getDocument()->recomputeFeature(pcPocket);
-        ui->lineFaceName->setText(tr(element.c_str()));
+        ui->lineFaceName->setText(tr("Face") + QString::number(index));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(element.c_str()));
     }
 }
 
@@ -161,11 +166,23 @@ void TaskPocketParameters::onModeChanged(int index)
 
 void TaskPocketParameters::onFaceName(const QString& text)
 {
-    if (text.left(4) != tr("Face"))
-      return;
+    // We must expect that "text" is the translation of "Face" followed by an ID.
+    QString name;
+    QTextStream str(&name);
+    str << "^" << tr("Face") << "(\\d+)$";
+    QRegExp rx(name);
+    if (text.indexOf(rx) < 0) {
+        ui->lineFaceName->setProperty("FaceName", QByteArray());
+        return;
+    }
+
+    int index = rx.cap(1).toInt();
+    std::stringstream ss;
+    ss << "Face" << index;
+    ui->lineFaceName->setProperty("FaceName", QByteArray(ss.str().c_str()));
 
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-    pcPocket->FaceName.setValue(text.toUtf8());
+    pcPocket->FaceName.setValue(ss.str().c_str());
     pcPocket->getDocument()->recomputeFeature(pcPocket);
 }
 
@@ -179,9 +196,9 @@ int TaskPocketParameters::getMode(void) const
     return ui->changeMode->currentIndex();
 }
 
-const QString TaskPocketParameters::getFaceName(void) const
+QByteArray TaskPocketParameters::getFaceName(void) const
 {
-    return ui->lineFaceName->text();
+    return ui->lineFaceName->property("FaceName").toByteArray();
 }
 
 TaskPocketParameters::~TaskPocketParameters()
@@ -236,7 +253,7 @@ bool TaskDlgPocketParameters::accept()
     //Gui::Command::openCommand("Pocket changed");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceName = \"%s\"",name.c_str(),parameter->getFaceName().toAscii().data());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceName = \"%s\"",name.c_str(),parameter->getFaceName().data());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();
