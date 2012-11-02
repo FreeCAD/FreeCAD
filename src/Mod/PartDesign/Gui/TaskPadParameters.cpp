@@ -24,7 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 # include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include "ui_TaskPadParameters.h"
@@ -95,6 +97,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
     ui->lineFaceName->setText(pcPad->FaceName.isEmpty() ? tr("No face selected") : tr(upToFace));
+    ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace));
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
     ui->changeMode->insertItem(1, tr("To last"));
@@ -146,20 +149,22 @@ void TaskPadParameters::updateUI(int index)
 
 void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    if (pcPad->Type.getValue() != 3) // ignore user selections if mode is not upToFace
-        return;
-
-    if (!msg.pSubName || msg.pSubName[0] == '\0')
-        return;
-    std::string element(msg.pSubName);
-    if (element.substr(0,4) != "Face")
-      return;
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+        if (pcPad->Type.getValue() != 3) // ignore user selections if mode is not upToFace
+            return;
+
+        if (!msg.pSubName || msg.pSubName[0] == '\0')
+            return;
+        std::string element(msg.pSubName);
+        if (element.substr(0,4) != "Face")
+            return;
+
+        int index=std::atoi(&element[4]);
         pcPad->FaceName.setValue(element);
         pcPad->getDocument()->recomputeFeature(pcPad);
-        ui->lineFaceName->setText(tr(element.c_str()));
+        ui->lineFaceName->setText(tr("Face") + QString::number(index));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(element.c_str()));
     }
 }
 
@@ -219,11 +224,23 @@ void TaskPadParameters::onModeChanged(int index)
 
 void TaskPadParameters::onFaceName(const QString& text)
 {
-    if (text.left(4) != tr("Face"))
-      return;
+    // We must expect that "text" is the translation of "Face" followed by an ID.
+    QString name;
+    QTextStream str(&name);
+    str << "^" << tr("Face") << "(\\d+)$";
+    QRegExp rx(name);
+    if (text.indexOf(rx) < 0) {
+        ui->lineFaceName->setProperty("FaceName", QByteArray());
+        return;
+    }
+
+    int index = rx.cap(1).toInt();
+    std::stringstream ss;
+    ss << "Face" << index;
+    ui->lineFaceName->setProperty("FaceName", QByteArray(ss.str().c_str()));
 
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    pcPad->FaceName.setValue(text.toUtf8());
+    pcPad->FaceName.setValue(ss.str().c_str());
     pcPad->getDocument()->recomputeFeature(pcPad);
 }
 
@@ -252,9 +269,9 @@ int TaskPadParameters::getMode(void) const
     return ui->changeMode->currentIndex();
 }
 
-const QString TaskPadParameters::getFaceName(void) const
+QByteArray TaskPadParameters::getFaceName(void) const
 {
-    return ui->lineFaceName->text();
+    return ui->lineFaceName->property("FaceName").toByteArray();
 }
 
 TaskPadParameters::~TaskPadParameters()
@@ -313,7 +330,7 @@ bool TaskDlgPadParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length2 = %f",name.c_str(),parameter->getLength2());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceName = \"%s\"",name.c_str(),parameter->getFaceName().toAscii().data());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceName = \"%s\"",name.c_str(),parameter->getFaceName().data());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!PadView->getObject()->isValid())
             throw Base::Exception(PadView->getObject()->getStatusString());

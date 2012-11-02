@@ -54,7 +54,7 @@ public:
 
     double getLength(void) const;
     int getMode(void) const;
-    const QString getFaceName(void) const;
+    QByteArray getFaceName(void) const;
 
 private Q_SLOTS:
     void onLengthChanged(double);
