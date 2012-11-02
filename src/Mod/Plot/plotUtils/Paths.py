@@ -24,7 +24,7 @@
 import FreeCAD, FreeCADGui, os
 
 def modulePath():
-    """returns the current Ship design module path
+    """returns the current Plot module path
     @return Module path"""
     path1 = FreeCAD.ConfigGet("AppHomePath") + "Mod/Plot"
     path2 = FreeCAD.ConfigGet("UserAppData") + "Mod/Plot"
@@ -34,9 +34,15 @@ def modulePath():
         return path1
 
 def iconsPath():
-    """returns the current Ship design module icons path
+    """returns the current Plot module icons path
     @return Icons path"""
-    path = modulePath() + "/Icons"
+    path = modulePath() + "/resources/icons"
+    return path
+
+def translationsPath():
+    """returns the current Plot module translations path
+    @return Icons path"""
+    path = modulePath() + "/resources/translations"
     return path
 
 def getPathFromFile(fileName):

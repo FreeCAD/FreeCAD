@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 
 class TaskPanel:
 	def __init__(self):
@@ -97,9 +97,9 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Set positions and sizes"))
-		self.form.findChild(QtGui.QLabel, "posLabel").setText(Translator.translate("Position"))
-		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(Translator.translate("Size"))
+		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_positions", "Set positions and sizes").toAscii()))
+		self.form.findChild(QtGui.QLabel, "posLabel").setText(str(QtGui.QApplication.translate("plot_positions", "Position").toAscii()))
+		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(str(QtGui.QApplication.translate("plot_positions", "Size").toAscii()))
 
 	def onItem(self, row):
 		""" Executed when selected item is modified. """
