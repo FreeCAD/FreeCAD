@@ -24,9 +24,6 @@
 # FreeCAD
 import FreeCAD
 
-# Plot module
-from plotUtils import Paths, Translator
-
 # PyQt4
 from PyQt4 import QtCore, QtGui
 
@@ -38,8 +35,8 @@ try:
 	from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 	from matplotlib.figure import Figure
 except ImportError:
-	msg = Translator.translate("matplotlib not installed, so Plot module is disabled.\n")
-	FreeCAD.Console.PrintError(msg)
+	msg = QtCore.QT_TRANSLATE_NOOP("plot", "matplotlib not found, so Plot module can not be loaded")
+	FreeCAD.Console.PrintMessage(msg + '\n')
 	raise ImportError("matplotlib not installed")
 
 def getMainWindow():

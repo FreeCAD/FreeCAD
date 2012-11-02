@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 
 class TaskPanel:
 	def __init__(self):
@@ -106,11 +106,11 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Set labels"))
-		self.form.findChild(QtGui.QLabel, "axesLabel").setText(Translator.translate("Active axes"))
-		self.form.findChild(QtGui.QLabel, "titleLabel").setText(Translator.translate("Title"))
-		self.form.findChild(QtGui.QLabel, "xLabel").setText(Translator.translate("X label"))
-		self.form.findChild(QtGui.QLabel, "yLabel").setText(Translator.translate("Y label"))
+		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_labels", "Set labels").toAscii()))
+		self.form.findChild(QtGui.QLabel, "axesLabel").setText(str(QtGui.QApplication.translate("plot_labels", "Active axes").toAscii()))
+		self.form.findChild(QtGui.QLabel, "titleLabel").setText(str(QtGui.QApplication.translate("plot_labels", "Title").toAscii()))
+		self.form.findChild(QtGui.QLabel, "xLabel").setText(str(QtGui.QApplication.translate("plot_labels", "X label").toAscii()))
+		self.form.findChild(QtGui.QLabel, "yLabel").setText(str(QtGui.QApplication.translate("plot_labels", "Y label").toAscii()))
 
 	def onAxesId(self, value):
 		""" Executed when axes index is modified. """

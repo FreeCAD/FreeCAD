@@ -29,7 +29,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 
 class TaskPanel:
 	def __init__(self):
@@ -38,7 +38,7 @@ class TaskPanel:
 	def accept(self):
 		plt = Plot.getPlot()
 		if not plt:
-			msg = Translator.translate("Plot document must be selected in order to save it.")
+			msg = str(QtGui.QApplication.translate("plot_save", "Plot document must be selected in order to save it").toAscii())
 			App.Console.PrintError(msg+"\n")
 			return False
 		path = unicode(self.form.path.text())
@@ -102,9 +102,9 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Save figure"))
-		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(Translator.translate("Inches"))
-		self.form.findChild(QtGui.QLabel, "dpiLabel").setText(Translator.translate("Dots per Inch"))
+		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_save", "Save figure").toAscii()))
+		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(str(QtGui.QApplication.translate("plot_save", "Inches").toAscii()))
+		self.form.findChild(QtGui.QLabel, "dpiLabel").setText(str(QtGui.QApplication.translate("plot_save", "Dots per Inch").toAscii()))
 
 	def updateUI(self):
 		""" Setup UI controls values if possible """

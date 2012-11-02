@@ -24,16 +24,29 @@
 from PyQt4 import QtCore, QtGui
 import FreeCAD, FreeCADGui, os
 
+# Setup tranlations
+from plotUtils import Paths
+path = Paths.translationsPath()
+FreeCADGui.addLanguagePath(path)
+import os
+import FreeCAD
+translator = QtCore.QTranslator()
+dirList=os.listdir(path)
+for fname in dirList:
+	valid = translator.load(os.path.join(path, fname))
+	if valid:
+		QtGui.QApplication.installTranslator(translator)
+
 class Save: 
 	def Activated(self):
 		import plotSave
 		plotSave.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
+		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Save.svg"
-		MenuText = str(Translator.translate('Save plot'))
-		ToolTip  = str(Translator.translate('Save plot as image file.'))
+		MenuText = str(QtGui.QApplication.translate("plot", "Save plot").toAscii())
+		ToolTip  = str(QtGui.QApplication.translate("plot", "Save plot as image file").toAscii())
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Axes: 
@@ -42,10 +55,10 @@ class Axes:
 		plotAxes.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
+		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Axes.svg"
-		MenuText = str(Translator.translate('Configure axes'))
-		ToolTip  = str(Translator.translate('Configure axes parameters.'))
+		MenuText = str(QtGui.QApplication.translate("plot", "Configure axes").toAscii())
+		ToolTip  = str(QtGui.QApplication.translate("plot", "Configure axes parameters").toAscii())
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Series: 
@@ -54,48 +67,46 @@ class Series:
 		plotSeries.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
+		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Series.svg"
-		MenuText = str(Translator.translate('Configure series'))
-		ToolTip  = str(Translator.translate('Configure series drawing style and label.'))
+		MenuText = str(QtGui.QApplication.translate("plot", "Configure series").toAscii())
+		ToolTip  = str(QtGui.QApplication.translate("plot", "Configure series drawing style and label").toAscii())
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Grid: 
 	def Activated(self):
 		import Plot
-		from plotUtils import Translator
 		plt = Plot.getPlot()
 		if not plt:
-			msg = Translator.translate("Grid must be activated on top of a plot document.")
+			msg = str(QtGui.QApplication.translate("plot", "Grid must be activated on top of a plot document").toAscii())
 			FreeCAD.Console.PrintError(msg+"\n")
 			return
 		flag = plt.isGrid()
 		Plot.grid(not flag)
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
+		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Grid.svg"
-		MenuText = str(Translator.translate('Show/Hide grid'))
-		ToolTip  = str(Translator.translate('Show/Hide grid on selected plot'))
+		MenuText = str(QtGui.QApplication.translate("plot", "Show/Hide grid").toAscii())
+		ToolTip  = str(QtGui.QApplication.translate("plot", "Show/Hide grid on selected plot").toAscii())
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Legend: 
 	def Activated(self):
 		import Plot
-		from plotUtils import Translator
 		plt = Plot.getPlot()
 		if not plt:
-			msg = Translator.translate("Legend must be activated on top of a plot document.")
+			msg = str(QtGui.QApplication.translate("plot", "Legend must be activated on top of a plot document").toAscii())
 			FreeCAD.Console.PrintError(msg+"\n")
 			return
 		flag = plt.isLegend()
 		Plot.legend(not flag)
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
+		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Legend.svg"
-		MenuText = str(Translator.translate('Show/Hide legend'))
-		ToolTip  = str(Translator.translate('Show/Hide legend on selected plot'))
+		MenuText = str(QtGui.QApplication.translate("plot", "Show/Hide legend").toAscii())
+		ToolTip  = str(QtGui.QApplication.translate("plot", "Show/Hide legend on selected plot").toAscii())
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Labels: 
@@ -104,10 +115,10 @@ class Labels:
 		plotLabels.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
+		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Labels.svg"
-		MenuText = str(Translator.translate('Set labels'))
-		ToolTip  = str(Translator.translate('Set title and axes labels'))
+		MenuText = str(QtGui.QApplication.translate("plot", "Set labels").toAscii())
+		ToolTip  = str(QtGui.QApplication.translate("plot", "Set title and axes labels").toAscii())
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Positions: 
@@ -116,10 +127,10 @@ class Positions:
 		plotPositions.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
+		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Positions.svg"
-		MenuText = str(Translator.translate('Set positions and sizes'))
-		ToolTip  = str(Translator.translate('Set labels and legend positions and sizes.'))
+		MenuText = str(QtGui.QApplication.translate("plot", "Set positions and sizes").toAscii())
+		ToolTip  = str(QtGui.QApplication.translate("plot", "Set labels and legend positions and sizes").toAscii())
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 FreeCADGui.addCommand('Plot_SaveFig', Save())
