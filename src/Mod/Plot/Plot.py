@@ -35,7 +35,8 @@ try:
 	from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 	from matplotlib.figure import Figure
 except ImportError:
-	msg = QtCore.QT_TRANSLATE_NOOP("plot", "matplotlib not found, so Plot module can not be loaded")
+	msg = QtGui.QApplication.translate("plot_console", "matplotlib not found, so Plot module can not be loaded",
+                                       None,QtGui.QApplication.UnicodeUTF8)
 	FreeCAD.Console.PrintMessage(msg + '\n')
 	raise ImportError("matplotlib not installed")
 

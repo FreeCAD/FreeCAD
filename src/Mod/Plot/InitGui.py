@@ -43,6 +43,8 @@ try:
 	import matplotlib
 	Gui.addWorkbench(PlotWorkbench())
 except ImportError:
-	msg = QtCore.QT_TRANSLATE_NOOP("plot", "matplotlib not found, Plot module will be disabled")
+	from PyQt4 import QtCore, QtGui
+	msg = QtGui.QApplication.translate("plot_console", "matplotlib not found, Plot module will be disabled",
+                                       None,QtGui.QApplication.UnicodeUTF8)
 	FreeCAD.Console.PrintMessage(msg + '\n')
 
