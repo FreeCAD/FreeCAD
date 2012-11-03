@@ -79,7 +79,7 @@
 			<Component Id="CompModplotUtils"  Guid="861945d1-6105-4063-8cbb-93235876e15b" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="plotUtils01" Name="__init__.py"   />
 				<File Id="plotUtils02" Name="Paths.py"   />
-				<File Id="plotUtils03" Name="Translator.ui"   />
+				<File Id="plotUtils03" Name="Translator.py"   />
 			</Component>
 		</Directory>
 	</Directory>
