@@ -28,68 +28,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="81"/>
-        <source>Grid must be activated on top of a plot document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PlotGui.py" line="90"/>
+        <location filename="PlotGui.py" line="91"/>
         <source>Show/Hide grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="91"/>
+        <location filename="PlotGui.py" line="92"/>
         <source>Show/Hide grid on selected plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="99"/>
-        <source>Legend must be activated on top of a plot document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PlotGui.py" line="108"/>
+        <location filename="PlotGui.py" line="110"/>
         <source>Show/Hide legend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="109"/>
+        <location filename="PlotGui.py" line="111"/>
         <source>Show/Hide legend on selected plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="120"/>
+        <location filename="PlotGui.py" line="122"/>
         <source>Set labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="121"/>
+        <location filename="PlotGui.py" line="123"/>
         <source>Set title and axes labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="132"/>
+        <location filename="PlotGui.py" line="134"/>
         <source>Set positions and sizes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="133"/>
+        <location filename="PlotGui.py" line="135"/>
         <source>Set labels and legend positions and sizes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="46"/>
-        <source>matplotlib not found, Plot module will be disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="PlotGui.py" line="49"/>
         <source>Save plot as image file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Plot.py" line="38"/>
-        <source>matplotlib not found, so Plot module can not be loaded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -101,43 +81,76 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="131"/>
+        <location filename="TaskPanel.py" line="132"/>
         <source>Active axes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="139"/>
+        <location filename="TaskPanel.py" line="148"/>
         <source>Apply to all axes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="140"/>
+        <location filename="TaskPanel.py" line="150"/>
         <source>Dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="141"/>
+        <location filename="TaskPanel.py" line="152"/>
         <source>X axis position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="142"/>
+        <location filename="TaskPanel.py" line="154"/>
         <source>Y axis position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="136"/>
+        <location filename="TaskPanel.py" line="142"/>
         <source>Scales</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="137"/>
+        <location filename="TaskPanel.py" line="144"/>
         <source>X auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="138"/>
+        <location filename="TaskPanel.py" line="146"/>
         <source>Y auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>plot_console</name>
+    <message>
+        <location filename="Plot.py" line="38"/>
+        <source>matplotlib not found, so Plot module can not be loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="47"/>
+        <source>matplotlib not found, Plot module will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="41"/>
+        <source>Plot document must be selected in order to save it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="194"/>
+        <source>Axes 0 can not be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PlotGui.py" line="81"/>
+        <source>Grid must be activated on top of a plot document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PlotGui.py" line="100"/>
+        <source>Legend must be activated on top of a plot document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -149,22 +162,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="110"/>
+        <location filename="TaskPanel.py" line="111"/>
         <source>Active axes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="111"/>
+        <location filename="TaskPanel.py" line="113"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="112"/>
+        <location filename="TaskPanel.py" line="115"/>
         <source>X label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="113"/>
+        <location filename="TaskPanel.py" line="117"/>
         <source>Y label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -177,12 +190,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="101"/>
+        <location filename="TaskPanel.py" line="102"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="102"/>
+        <location filename="TaskPanel.py" line="104"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -190,45 +203,40 @@
 <context>
     <name>plot_save</name>
     <message>
-        <location filename="TaskPanel.py" line="105"/>
+        <location filename="TaskPanel.py" line="106"/>
         <source>Save figure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="106"/>
+        <location filename="TaskPanel.py" line="108"/>
         <source>Inches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="107"/>
+        <location filename="TaskPanel.py" line="110"/>
         <source>Dots per Inch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="TaskPanel.py" line="41"/>
-        <source>Plot document must be selected in order to save it</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>plot_series</name>
     <message>
-        <location filename="TaskPanel.py" line="114"/>
+        <location filename="TaskPanel.py" line="115"/>
         <source>No label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="115"/>
+        <location filename="TaskPanel.py" line="117"/>
         <source>Remove serie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="116"/>
+        <location filename="TaskPanel.py" line="119"/>
         <source>Line style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="117"/>
+        <location filename="TaskPanel.py" line="121"/>
         <source>Marker</source>
         <translation type="unfinished"></translation>
     </message>

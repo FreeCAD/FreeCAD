@@ -106,11 +106,16 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_labels", "Set labels").toAscii()))
-		self.form.findChild(QtGui.QLabel, "axesLabel").setText(str(QtGui.QApplication.translate("plot_labels", "Active axes").toAscii()))
-		self.form.findChild(QtGui.QLabel, "titleLabel").setText(str(QtGui.QApplication.translate("plot_labels", "Title").toAscii()))
-		self.form.findChild(QtGui.QLabel, "xLabel").setText(str(QtGui.QApplication.translate("plot_labels", "X label").toAscii()))
-		self.form.findChild(QtGui.QLabel, "yLabel").setText(str(QtGui.QApplication.translate("plot_labels", "Y label").toAscii()))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_labels", "Set labels",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "axesLabel").setText(QtGui.QApplication.translate("plot_labels", "Active axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "titleLabel").setText(QtGui.QApplication.translate("plot_labels", "Title",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "xLabel").setText(QtGui.QApplication.translate("plot_labels", "X label",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "yLabel").setText(QtGui.QApplication.translate("plot_labels", "Y label",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def onAxesId(self, value):
 		""" Executed when axes index is modified. """
