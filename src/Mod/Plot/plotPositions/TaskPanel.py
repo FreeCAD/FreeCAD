@@ -97,9 +97,12 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_positions", "Set positions and sizes").toAscii()))
-		self.form.findChild(QtGui.QLabel, "posLabel").setText(str(QtGui.QApplication.translate("plot_positions", "Position").toAscii()))
-		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(str(QtGui.QApplication.translate("plot_positions", "Size").toAscii()))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_positions", "Set positions and sizes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "posLabel").setText(QtGui.QApplication.translate("plot_positions", "Position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(QtGui.QApplication.translate("plot_positions", "Size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def onItem(self, row):
 		""" Executed when selected item is modified. """

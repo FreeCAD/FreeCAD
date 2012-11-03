@@ -38,7 +38,8 @@ class TaskPanel:
 	def accept(self):
 		plt = Plot.getPlot()
 		if not plt:
-			msg = str(QtGui.QApplication.translate("plot_save", "Plot document must be selected in order to save it").toAscii())
+			msg = QtGui.QApplication.translate("plot_console", "Plot document must be selected in order to save it",
+                                 None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg+"\n")
 			return False
 		path = unicode(self.form.path.text())
@@ -102,9 +103,12 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_save", "Save figure").toAscii()))
-		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(str(QtGui.QApplication.translate("plot_save", "Inches").toAscii()))
-		self.form.findChild(QtGui.QLabel, "dpiLabel").setText(str(QtGui.QApplication.translate("plot_save", "Dots per Inch").toAscii()))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_save", "Save figure",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(QtGui.QApplication.translate("plot_save", "Inches",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "dpiLabel").setText(QtGui.QApplication.translate("plot_save", "Dots per Inch",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def updateUI(self):
 		""" Setup UI controls values if possible """
