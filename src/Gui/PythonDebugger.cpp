@@ -360,6 +360,7 @@ struct PythonDebuggerP {
     }
     ~PythonDebuggerP()
     {
+        Base::PyGILStateLocker lock;
         Py_DECREF(out_n);
         Py_DECREF(err_n);
         Py_DECREF(exc_n);
