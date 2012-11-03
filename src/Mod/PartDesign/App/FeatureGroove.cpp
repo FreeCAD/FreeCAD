@@ -133,9 +133,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
-        // TopoDS::Face is not strictly necessary, but it will throw an exception for
-        // invalid wires e.g. intersections or multiple separate wires
-        TopoDS_Shape sketchshape = TopoDS::Face(makeFace(wires));
+        TopoDS_Shape sketchshape = makeFace(wires);
         if (sketchshape.IsNull())
             return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
