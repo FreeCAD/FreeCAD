@@ -58,6 +58,7 @@ public:
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
     QByteArray getFaceName(void) const;
+    const bool updateView() const;
 
 private Q_SLOTS:
     void onLengthChanged(double);
@@ -65,6 +66,7 @@ private Q_SLOTS:
     void onReversed(bool);
     void onLength2Changed(double);
     void onModeChanged(int);
+    void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
     void onUpdateView(bool);
 
