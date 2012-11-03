@@ -45,8 +45,8 @@ class Save:
 	def GetResources(self):
 		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Save.svg"
-		MenuText = str(QtGui.QApplication.translate("plot", "Save plot").toAscii())
-		ToolTip  = str(QtGui.QApplication.translate("plot", "Save plot as image file").toAscii())
+		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Save plot")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Save plot as image file")
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Axes: 
@@ -57,8 +57,8 @@ class Axes:
 	def GetResources(self):
 		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Axes.svg"
-		MenuText = str(QtGui.QApplication.translate("plot", "Configure axes").toAscii())
-		ToolTip  = str(QtGui.QApplication.translate("plot", "Configure axes parameters").toAscii())
+		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Configure axes")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Configure axes parameters")
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Series: 
@@ -69,8 +69,8 @@ class Series:
 	def GetResources(self):
 		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Series.svg"
-		MenuText = str(QtGui.QApplication.translate("plot", "Configure series").toAscii())
-		ToolTip  = str(QtGui.QApplication.translate("plot", "Configure series drawing style and label").toAscii())
+		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Configure series")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Configure series drawing style and label")
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Grid: 
@@ -78,7 +78,8 @@ class Grid:
 		import Plot
 		plt = Plot.getPlot()
 		if not plt:
-			msg = str(QtGui.QApplication.translate("plot", "Grid must be activated on top of a plot document").toAscii())
+			msg = QtGui.QApplication.translate("plot_console", "Grid must be activated on top of a plot document",
+                                               None,QtGui.QApplication.UnicodeUTF8)
 			FreeCAD.Console.PrintError(msg+"\n")
 			return
 		flag = plt.isGrid()
@@ -87,8 +88,8 @@ class Grid:
 	def GetResources(self):
 		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Grid.svg"
-		MenuText = str(QtGui.QApplication.translate("plot", "Show/Hide grid").toAscii())
-		ToolTip  = str(QtGui.QApplication.translate("plot", "Show/Hide grid on selected plot").toAscii())
+		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide grid")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide grid on selected plot")
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Legend: 
@@ -96,7 +97,8 @@ class Legend:
 		import Plot
 		plt = Plot.getPlot()
 		if not plt:
-			msg = str(QtGui.QApplication.translate("plot", "Legend must be activated on top of a plot document").toAscii())
+			msg = QtGui.QApplication.translate("plot_console", "Legend must be activated on top of a plot document",
+                                               None,QtGui.QApplication.UnicodeUTF8)
 			FreeCAD.Console.PrintError(msg+"\n")
 			return
 		flag = plt.isLegend()
@@ -105,8 +107,8 @@ class Legend:
 	def GetResources(self):
 		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Legend.svg"
-		MenuText = str(QtGui.QApplication.translate("plot", "Show/Hide legend").toAscii())
-		ToolTip  = str(QtGui.QApplication.translate("plot", "Show/Hide legend on selected plot").toAscii())
+		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide legend")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide legend on selected plot")
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Labels: 
@@ -117,8 +119,8 @@ class Labels:
 	def GetResources(self):
 		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Labels.svg"
-		MenuText = str(QtGui.QApplication.translate("plot", "Set labels").toAscii())
-		ToolTip  = str(QtGui.QApplication.translate("plot", "Set title and axes labels").toAscii())
+		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Set labels")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Set title and axes labels")
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Positions: 
@@ -129,8 +131,8 @@ class Positions:
 	def GetResources(self):
 		from plotUtils import Paths
 		IconPath = Paths.iconsPath() + "/Positions.svg"
-		MenuText = str(QtGui.QApplication.translate("plot", "Set positions and sizes").toAscii())
-		ToolTip  = str(QtGui.QApplication.translate("plot", "Set labels and legend positions and sizes").toAscii())
+		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Set positions and sizes")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Set labels and legend positions and sizes")
 		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 FreeCADGui.addCommand('Plot_SaveFig', Save())

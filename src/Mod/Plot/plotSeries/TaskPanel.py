@@ -110,11 +110,16 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(str(QtGui.QApplication.translate("plot_series", "Configure series").toAscii()))
-		self.form.isLabel.setText(str(QtGui.QApplication.translate("plot_series", "No label").toAscii()))
-		self.form.remove.setText(str(QtGui.QApplication.translate("plot_series", "Remove serie").toAscii()))
-		self.form.findChild(QtGui.QLabel, "styleLabel").setText(str(QtGui.QApplication.translate("plot_series", "Line style").toAscii()))
-		self.form.findChild(QtGui.QLabel, "markerLabel").setText(str(QtGui.QApplication.translate("plot_series", "Marker").toAscii()))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_series", "Configure series",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.isLabel.setText(QtGui.QApplication.translate("plot_series", "No label",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.remove.setText(QtGui.QApplication.translate("plot_series", "Remove serie",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "styleLabel").setText(QtGui.QApplication.translate("plot_series", "Line style",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "markerLabel").setText(QtGui.QApplication.translate("plot_series", "Marker",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def fillStyles(self):
 		""" Fill style combo boxes. """
