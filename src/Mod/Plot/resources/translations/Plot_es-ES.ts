@@ -72,6 +72,16 @@
         <source>Set labels and legend positions and sizes</source>
         <translation>Modifique la posición y tamaño de títulos y legenda</translation>
     </message>
+    <message>
+        <location filename="InitGui.py" line="36"/>
+        <source>Plot edition tools</source>
+        <translation>Herramientas de edicion de graficas</translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="39"/>
+        <source>Plot</source>
+        <translation>Grafica</translation>
+    </message>
 </context>
 <context>
     <name>plot_axes</name>
@@ -129,7 +139,7 @@
         <translation>No se puede encontrar matplotlib, y por tanto no se puede cargar el modulo de graficado</translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="47"/>
+        <location filename="InitGui.py" line="48"/>
         <source>matplotlib not found, Plot module will be disabled</source>
         <translation>No se puede encontrar matplotlib, el modulo de graficado sera desactivado</translation>
     </message>
