@@ -72,6 +72,16 @@
         <source>Save plot as image file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="InitGui.py" line="36"/>
+        <source>Plot edition tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="39"/>
+        <source>Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>plot_axes</name>
@@ -129,7 +139,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="47"/>
+        <location filename="InitGui.py" line="48"/>
         <source>matplotlib not found, Plot module will be disabled</source>
         <translation type="unfinished"></translation>
     </message>
