@@ -4,21 +4,10 @@ datadir = $(prefix)/Mod/Plot
 data_DATA = \
 	Plot.py \
 	InitGui.py \
-	PlotGui.py
+	PlotGui.py \
+	Plot_rc.py
 
 nobase_data_DATA = \
-	resources/icons/Axes.svg \
-	resources/icons/Grid.svg \
-	resources/icons/Icon.svg \
-	resources/icons/Labels.svg \
-	resources/icons/Legend.svg \
-	resources/icons/Positions.svg \
-	resources/icons/Save.svg \
-	resources/icons/Series.svg \
-	resources/translations/Plot.ts \
-	resources/translations/Plot.qm \
-	resources/translations/Plot_es-ES.ts \
-	resources/translations/Plot_es-ES.qm \
 	plotAxes/__init__.py \
 	plotAxes/TaskPanel.py \
 	plotAxes/TaskPanel.ui \
@@ -35,8 +24,7 @@ nobase_data_DATA = \
 	plotSeries/TaskPanel.py \
 	plotSeries/TaskPanel.ui \
 	plotUtils/__init__.py \
-	plotUtils/Paths.py \
-	plotUtils/Translator.py
+	plotUtils/Paths.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
