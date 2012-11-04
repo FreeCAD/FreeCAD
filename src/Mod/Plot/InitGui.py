@@ -31,13 +31,14 @@ class PlotWorkbench ( Workbench ):
 	ToolTip = "The Plot module is used to edit/save output plots performed by other tools"
 
 	def Initialize(self):
-		# ToolBar
-		list = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
-		self.appendToolbar("Plot",list)
-
-		# Menu
-		list = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
-		self.appendMenu("Plot",list)
+		from PyQt4 import QtCore, QtGui
+		cmdlst = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
+		self.appendToolbar(str(QtGui.QApplication.translate("plot", "Plot edition tools",
+                           None,QtGui.QApplication.UnicodeUTF8)),
+                           cmdlst)
+		self.appendMenu(str(QtGui.QApplication.translate("plot", "Plot",
+                        None,QtGui.QApplication.UnicodeUTF8)),
+                        cmdlst)
 
 try:
 	import matplotlib
