@@ -168,6 +168,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape solRes = this->getSolid(result);
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+            remapSupportShape(solRes);
             this->Shape.setValue(solRes);
         }
 
