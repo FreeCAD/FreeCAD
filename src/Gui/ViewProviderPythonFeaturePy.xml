@@ -27,6 +27,14 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="removeProperty">
+			<Documentation>
+				<UserDocu>
+					removeProperty(string) -- Remove a generic property.
+					Note, you can only remove user-defined properties but not built-in ones.
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="supportedProperties">
 			<Documentation>
 				<UserDocu>A list of supported property types</UserDocu>
