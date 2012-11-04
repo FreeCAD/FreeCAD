@@ -70,6 +70,7 @@ public:
     Property *getDynamicPropertyByName(const char* name) const;
     Property* addDynamicProperty(const char* type, const char* name=0, const char* group=0,
                                  const char* doc=0, short attr=0, bool ro=false, bool hidden=false);
+    bool removeDynamicProperty(const char* name);
     std::vector<std::string> getDynamicPropertyNames() const;
     void addDynamicProperties(const PropertyContainer*);
     /// get the name of a property

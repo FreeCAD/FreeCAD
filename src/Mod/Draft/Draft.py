@@ -1548,12 +1548,12 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     select(obj)
     return obj
 
-def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
-    '''makeSketch(objectslist,[autoconstraints],[addTo],[name]): makes a Sketch
+def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="Sketch"):
+    '''makeSketch(objectslist,[autoconstraints],[addTo],[delete],[name]): makes a Sketch
     objectslist with the given Draft objects. If autoconstraints is True,
     constraints will be automatically added to wire nodes, rectangles
     and circles. If addTo is an existing sketch, geometry will be added to it instead of
-    creating a new one.'''
+    creating a new one. If delete is True, the original object will be deleted'''
     import Part, DraftGeomUtils
     from Sketcher import Constraint
 
@@ -1620,6 +1620,10 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
             if not DraftGeomUtils.isPlanar(obj.Shape):
                 print "Error: The given object is not planar and cannot be converted into a sketch."
                 return None
+            for e in obj.Shape.Edges:
+                if isinstance(e.Curve,Part.BSplineCurve):
+                    print "Error: One of the selected object contains BSplines, unable to convert"
+                    return None
             if not addTo:
                 nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
             edges = []
@@ -1628,7 +1632,8 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,name="Sketch"):
                 if g:
                     nobj.addGeometry(g)
             ok = True
-        if ok:
+        formatObject(nobj,obj)
+        if ok and delete:
             FreeCAD.ActiveDocument.removeObject(obj.Name)
     FreeCAD.ActiveDocument.recompute()
     return nobj

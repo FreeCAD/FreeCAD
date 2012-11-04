@@ -999,6 +999,8 @@ void Document::restore (void)
     if (!reader.isValid())
         throw Base::FileException("Error reading compression file",FileName.getValue());
 
+    GetApplication().signalStartRestoreDocument(*this);
+
     try {
         Document::Restore(reader);
     }
@@ -1019,7 +1021,7 @@ void Document::restore (void)
         It->second->purgeTouched();
     }
 
-    GetApplication().signalRestoreDocument(*this);
+    GetApplication().signalFinishRestoreDocument(*this);
 }
 
 bool Document::isSaved() const

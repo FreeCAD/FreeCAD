@@ -53,15 +53,17 @@ public:
     ~TaskRevolutionParameters();
 
     QString getReferenceAxis(void) const;
-    double  getAngle(void) const;
-    bool   getMidplane(void) const;
-    bool   getReversed(void) const;
+    double getAngle(void) const;
+    bool getMidplane(void) const;
+    bool getReversed(void) const;
+    const bool updateView() const;
 
 private Q_SLOTS:
     void onAngleChanged(double);
     void onAxisChanged(int);
     void onMidplane(bool);
     void onReversed(bool);
+    void onUpdateView(bool);
 
 protected:
     void changeEvent(QEvent *e);

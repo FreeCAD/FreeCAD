@@ -81,8 +81,8 @@ EXTRA_DIST = \
 		Resources/translations/Test_af.ts \
 		Resources/translations/Test_de.qm \
 		Resources/translations/Test_de.ts \
-		Resources/translations/Test_es.qm \
-		Resources/translations/Test_es.ts \
+		Resources/translations/Test_es-ES.qm \
+		Resources/translations/Test_es-ES.ts \
 		Resources/translations/Test_fi.qm \
 		Resources/translations/Test_fi.ts \
 		Resources/translations/Test_fr.qm \
@@ -101,14 +101,24 @@ EXTRA_DIST = \
 		Resources/translations/Test_no.ts \
 		Resources/translations/Test_pl.qm \
 		Resources/translations/Test_pl.ts \
-		Resources/translations/Test_pt.qm \
-		Resources/translations/Test_pt.ts \
+		Resources/translations/Test_pt-BR.qm \
+		Resources/translations/Test_pt-BR.ts \
 		Resources/translations/Test_ru.qm \
 		Resources/translations/Test_ru.ts \
-		Resources/translations/Test_se.qm \
-		Resources/translations/Test_se.ts \
+		Resources/translations/Test_sv-SE.qm \
+		Resources/translations/Test_sv-SE.ts \
 		Resources/translations/Test_uk.qm \
 		Resources/translations/Test_uk.ts \
-		Resources/translations/Test_zh.qm \
-		Resources/translations/Test_zh.ts \
+		Resources/translations/Test_zh-CN.qm \
+		Resources/translations/Test_zh-CN.ts \
+		Resources/translations/Test_zh-TW.qm \
+		Resources/translations/Test_zh-TW.ts \
+		Resources/translations/Test_ro.qm \
+		Resources/translations/Test_ro.ts \
+		Resources/translations/Test_cs.qm \
+		Resources/translations/Test_cs.ts \
+		Resources/translations/Test_sk.qm \
+		Resources/translations/Test_sk.ts \
+		Resources/translations/Test_tr.qm \
+		Resources/translations/Test_tr.ts \
 		qtunittest.py

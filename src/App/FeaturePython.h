@@ -100,6 +100,9 @@ public:
         short attr=0, bool ro=false, bool hidden=false) {
         return props->addDynamicProperty(type, name, group, doc, attr, ro, hidden);
     }
+    virtual bool removeDynamicProperty(const char* name) {
+        return props->removeDynamicProperty(name);
+    }
     std::vector<std::string> getDynamicPropertyNames() const {
         return props->getDynamicPropertyNames();
     }

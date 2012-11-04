@@ -53,24 +53,31 @@ public:
     ~TaskPocketParameters();
 
     double getLength(void) const;
+    bool getMidplane(void) const;
     int getMode(void) const;
-    const QString getFaceName(void) const;
+    QByteArray getFaceName(void) const;
+    const bool updateView() const;
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onMidplaneChanged(bool);
     void onModeChanged(int);
+    void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
+    void onUpdateView(bool);
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void updateUI(int index);
 
 private:
     QWidget* proxy;
     Ui_TaskPocketParameters* ui;
     ViewProviderPocket *PocketView;
+    double oldLength;
 };
 
 /// simulation dialog for the TaskView

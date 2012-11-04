@@ -220,10 +220,11 @@ case $host_os in
     QT_CXXFLAGS="$QT_CXXFLAGS -I$fc_qt4_frm/QtNetwork.framework/Headers"
     QT_CXXFLAGS="$QT_CXXFLAGS -I$fc_qt4_frm/QtSvg.framework/Headers"
     QT_CXXFLAGS="$QT_CXXFLAGS -I$fc_qt4_frm/QtXml.framework/Headers"
+    QT_CXXFLAGS="$QT_CXXFLAGS -I$fc_qt4_frm/QtUiTools.framework/Headers"
 	# Separated flags
 	QT4_CORE_CXXFLAGS="-F$fc_qt4_frm -I$fc_qt4_frm/QtCore.framework/Headers"
     # QtUiTools doesn't seem to be available as framework
-    QT_CXXFLAGS="$QT_CXXFLAGS -I/usr/include/QtUiTools"
+    #QT_CXXFLAGS="$QT_CXXFLAGS -I/usr/include/QtUiTools"
     # QtWebKit check
     fc_ac_save_cppflags=$CPPFLAGS
     CPPFLAGS="$QT_CXXFLAGS -I$fc_qt4_frm/QtWebKit.framework/Headers"

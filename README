@@ -1,0 +1,50 @@
+FreeCAD
+=======
+
+FreeCAD is a general purpose feature-based, parametric 3D modeler for CAD, MCAD,
+CAx, CAE and PLM, aimed directly at mechanical engineering and product design but
+also fits a wider range of uses in engineering, such as architecture or other engineering
+specialties. It is 100% Open Source (LGPL2+ license) and extremely modular, allowing
+for very advanced extension and customization.
+
+FreeCAD is based on OpenCasCade, a powerful geometry kernel, features an Open Inventor-compliant
+3D scene representation model provided by the Coin 3D library, and a broad Python API.
+The interface is built with Qt. FreeCAD runs exactly the same way on Windows, Mac OSX, BSD and
+Linux platforms.
+
+Home page and wiki documentation:      http://free-cad.sf.net
+Forum:                                 http://sourceforge.net/apps/phpbb/free-cad/
+Bug tracker:                           http://sourceforge.net/apps/mantisbt/free-cad/
+Official git link:                     git://free-cad.git.sourceforge.net/free-cad/free-cad
+
+Building
+========
+
+Compiling FreeCAD requires to install several heavyweight libraries and their development
+files such as OpenCasCADe, Coin and Qt, listed in the pages below. Once this is done,
+FreeCAD can be simply compiled with cMake. On windows, these libraries are bundled and
+offeredby the FreeCAD team in a convenience package, on Linux they are usually found
+in your distribution's repositories and on Mac OSX and other platforms you will usually
+need to compile them yourself.
+
+Note that autotools build system can still be used but will be obsoleted soon.
+
+The pages below contain up-to-date build instructions:
+
+For Linux: http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=CompileOnUnix
+For windows: http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=CompileOnWindows
+For Mac OSX: http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=CompileOnMac
+
+In this folder you will also find additional README files, specific for each platform.
+
+
+
+
+
+
+
+
+
+
+
+

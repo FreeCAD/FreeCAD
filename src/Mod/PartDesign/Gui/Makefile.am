@@ -56,6 +56,8 @@ libPartDesignGui_la_SOURCES=\
 		PreCompiled.h \
 		FeaturePickDialog.cpp \
 		FeaturePickDialog.h \
+		ReferenceSelection.cpp \
+		ReferenceSelection.h \
 		TaskGrooveParameters.cpp \
 		TaskGrooveParameters.h \
 		TaskPadParameters.cpp \

@@ -24,6 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
+# include <QRegExp>
+# include <QTextStream>
+# include <QMessageBox>
+# include <Precision.hxx>
 #endif
 
 #include "ui_TaskPocketParameters.h"
@@ -40,7 +45,7 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePocket.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-
+#include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -58,39 +63,63 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplaneChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
+    connect(ui->buttonFace, SIGNAL(pressed()),
+            this, SLOT(onButtonFace()));
     connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
             this, SLOT(onFaceName(QString)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
+    // Temporarily prevent unnecessary feature recomputes
+    ui->doubleSpinBox->blockSignals(true);
+    ui->checkBoxMidplane->blockSignals(true);
+    ui->buttonFace->blockSignals(true);
+    ui->lineFaceName->blockSignals(true);
+    ui->changeMode->blockSignals(true);
+
+    // Get the feature data
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
     double l = pcPocket->Length.getValue();
+    bool midplane = pcPocket->Midplane.getValue();
     int index = pcPocket->Type.getValue(); // must extract value here, clear() kills it!
-    const char* upToFace = pcPocket->FaceName.getValue();
+    std::vector<std::string> subStrings = pcPocket->UpToFace.getSubValues();
+    std::string upToFace;
+    int faceId = -1;
+    if (!subStrings.empty()) {
+        upToFace = subStrings.front();
+        if (upToFace.substr(0,4) == "Face")
+            faceId = std::atoi(&upToFace[4]);
+    }
 
+    // Fill data into dialog elements
+    ui->doubleSpinBox->setMinimum(0);
+    ui->doubleSpinBox->setMaximum(INT_MAX);
+    ui->doubleSpinBox->setValue(l);
+    ui->checkBoxMidplane->setChecked(midplane);
+    ui->lineFaceName->setText(faceId >= 0 ?
+                              tr("Face") + QString::number(faceId) :
+                              tr("No face selected"));
+    ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
-    ui->changeMode->insertItem(1, tr("To last"));
+    ui->changeMode->insertItem(1, tr("Through all"));
     ui->changeMode->insertItem(2, tr("To first"));
-    ui->changeMode->insertItem(3, tr("Through all"));
-    ui->changeMode->insertItem(4, tr("Up to face"));
+    ui->changeMode->insertItem(3, tr("Up to face"));
     ui->changeMode->setCurrentIndex(index);
+    ui->checkBoxMidplane->setChecked(midplane);
 
-    if (index == 0) { // Only this option requires a numeric value
-        ui->doubleSpinBox->setMaximum(INT_MAX);
-        ui->doubleSpinBox->setValue(l);
-        ui->doubleSpinBox->selectAll();
-        QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
-        ui->lineFaceName->setEnabled(false);
-    } else if (index == 4) { // Only this option requires to select a face
-        ui->doubleSpinBox->setEnabled(false);
-        ui->lineFaceName->setText(pcPocket->FaceName.isEmpty() ? tr("No face selected") : tr(upToFace));
-    } else { // Neither value nor face required
-        ui->doubleSpinBox->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-    }
+    ui->doubleSpinBox->blockSignals(false);
+    ui->checkBoxMidplane->blockSignals(false);
+    ui->buttonFace->blockSignals(false);
+    ui->lineFaceName->blockSignals(false);
+    ui->changeMode->blockSignals(false);
+    updateUI(index);
  
     //// check if the sketch has support
     //Sketcher::SketchObject *pcSketch;
@@ -104,22 +133,82 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     //}
 }
 
+void TaskPocketParameters::updateUI(int index)
+{
+    if (index == 0) { // Only this option requires a numeric value
+        ui->doubleSpinBox->setEnabled(true);
+        ui->doubleSpinBox->selectAll();
+        QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+        ui->checkBoxMidplane->setEnabled(true);
+        ui->buttonFace->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+        onButtonFace(false);
+    } else if (index == 1) {
+        ui->checkBoxMidplane->setEnabled(true);
+        ui->doubleSpinBox->setEnabled(false);
+        ui->buttonFace->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+        onButtonFace(false);
+    } else if (index == 2) { // Neither value nor face required
+        ui->doubleSpinBox->setEnabled(false);
+        ui->checkBoxMidplane->setEnabled(false);
+        ui->buttonFace->setEnabled(false);
+        ui->lineFaceName->setEnabled(false);
+        onButtonFace(false);
+    } else if (index == 3) { // Only this option requires to select a face
+        ui->doubleSpinBox->setEnabled(false);
+        ui->checkBoxMidplane->setEnabled(false);
+        ui->buttonFace->setEnabled(true);
+        ui->lineFaceName->setEnabled(true);
+        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
+        // Go into reference selection mode if no face has been selected yet
+        if (ui->lineFaceName->text().isEmpty())
+            onButtonFace(true);
+    }
+}
+
 void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-    if (pcPocket->Type.getValue() != 4) // ignore user selections if mode is not upToFace
-        return;
-
-    if (!msg.pSubName || msg.pSubName[0] == '\0')
-        return;
-    std::string element(msg.pSubName);
-    if (element.substr(0,4) != "Face")
-      return;
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        pcPocket->FaceName.setValue(element);
-        pcPocket->getDocument()->recomputeFeature(pcPocket);
-        ui->lineFaceName->setText(tr(element.c_str()));
+        // Don't allow selection in other document
+        if (strcmp(msg.pDocName, PocketView->getObject()->getDocument()->getName()) != 0)
+            return;
+
+        if (!msg.pSubName || msg.pSubName[0] == '\0')
+            return;
+        std::string subName(msg.pSubName);
+        if (subName.substr(0,4) != "Face")
+            return;
+        int faceId = std::atoi(&subName[4]);
+
+        // Don't allow selection outside of support
+        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+        Part::Feature* support = pcPocket->getSupport();
+        if (support == NULL) {
+            // There is no support, so we can't select from it...
+            // Turn off reference selection mode
+            onButtonFace(false);
+            return;
+        }
+        if (strcmp(msg.pObjectName, support->getNameInDocument()) != 0)
+            return;
+
+        std::vector<std::string> upToFaces(1,subName);
+        pcPocket->UpToFace.setValue(support, upToFaces);
+        if (updateView())
+            pcPocket->getDocument()->recomputeFeature(pcPocket);
+        ui->lineFaceName->blockSignals(true);
+        ui->lineFaceName->setText(tr("Face") + QString::number(faceId));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(subName.c_str()));
+        ui->lineFaceName->blockSignals(false);
+        // Turn off reference selection mode
+        onButtonFace(false);
+    }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        ui->lineFaceName->blockSignals(true);
+        ui->lineFaceName->setText(tr("No face selected"));
+        ui->lineFaceName->setProperty("FaceName", QByteArray());
+        ui->lineFaceName->blockSignals(false);
     }
 }
 
@@ -127,7 +216,16 @@ void TaskPocketParameters::onLengthChanged(double len)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
     pcPocket->Length.setValue((float)len);
-    pcPocket->getDocument()->recomputeFeature(pcPocket);
+    if (updateView())
+        pcPocket->getDocument()->recomputeFeature(pcPocket);
+}
+
+void TaskPocketParameters::onMidplaneChanged(bool on)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    pcPocket->Midplane.setValue(on);
+    if (updateView())
+        pcPocket->getDocument()->recomputeFeature(pcPocket);
 }
 
 void TaskPocketParameters::onModeChanged(int index)
@@ -135,38 +233,105 @@ void TaskPocketParameters::onModeChanged(int index)
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
 
     switch (index) {
-        case 0: pcPocket->Type.setValue("Length"); break;
-        case 1: pcPocket->Type.setValue("UpToLast"); break;
-        case 2: pcPocket->Type.setValue("UpToFirst"); break;
-        case 3: pcPocket->Type.setValue("ThroughAll"); break;
-        case 4: pcPocket->Type.setValue("UpToFace"); break;
-        default: pcPocket->Type.setValue("Length");
+        case 0:
+            // Why? See below for "UpToFace"
+            pcPocket->Type.setValue("Length");
+            if (oldLength < Precision::Confusion())
+                oldLength = 5.0;
+            pcPocket->Length.setValue(oldLength);
+            ui->doubleSpinBox->setValue(oldLength);
+            break;
+        case 1:
+            oldLength = pcPocket->Length.getValue();
+            pcPocket->Type.setValue("ThroughAll");
+            break;
+        case 2:
+            oldLength = pcPocket->Length.getValue();
+            pcPocket->Type.setValue("UpToFirst");
+            break;
+        case 3:
+            // Because of the code at the begining of Pocket::execute() which is used to detect
+            // broken legacy parts, we must set the length to zero here!
+            oldLength = pcPocket->Length.getValue();
+            pcPocket->Type.setValue("UpToFace");
+            pcPocket->Length.setValue(0.0);
+            ui->doubleSpinBox->setValue(0.0);
+            break;
+        default:
+            pcPocket->Type.setValue("Length");
     }
 
-    if (index == 0) {
-        ui->doubleSpinBox->setEnabled(true);
-        ui->lineFaceName->setEnabled(false);
-        ui->doubleSpinBox->setValue(pcPocket->Length.getValue());
-    } else if (index == 4) {
-        ui->lineFaceName->setEnabled(true);
-        ui->doubleSpinBox->setEnabled(false);
-        ui->lineFaceName->setText(tr(pcPocket->FaceName.getValue()));
+    updateUI(index);
+
+    if (updateView())
+        pcPocket->getDocument()->recomputeFeature(pcPocket);
+}
+
+void TaskPocketParameters::onButtonFace(const bool pressed) {
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    Part::Feature* support = pcPocket->getSupport();
+    if (support == NULL) {
+        // There is no support, so we can't select from it...
+        return;
+    }
+
+    if (pressed) {
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            doc->setHide(PocketView->getObject()->getNameInDocument());
+            doc->setShow(support->getNameInDocument());
+        }
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelectionGate
+            (new ReferenceSelection(support, false, true, false));
     } else {
-        ui->doubleSpinBox->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
+        Gui::Selection().rmvSelectionGate();
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            doc->setShow(PocketView->getObject()->getNameInDocument());
+            doc->setHide(support->getNameInDocument());
+        }
     }
 
-    pcPocket->getDocument()->recomputeFeature(pcPocket);
+    // Update button if onButtonFace() is called explicitly
+    ui->buttonFace->setChecked(pressed);
 }
 
 void TaskPocketParameters::onFaceName(const QString& text)
 {
-    if (text.left(4) != tr("Face"))
-      return;
+    // We must expect that "text" is the translation of "Face" followed by an ID.
+    QString name;
+    QTextStream str(&name);
+    str << "^" << tr("Face") << "(\\d+)$";
+    QRegExp rx(name);
+    if (text.indexOf(rx) < 0) {
+        ui->lineFaceName->setProperty("FaceName", QByteArray());
+        return;
+    }
+
+    int faceId = rx.cap(1).toInt();
+    std::stringstream ss;
+    ss << "Face" << faceId;
+    ui->lineFaceName->setProperty("FaceName", QByteArray(ss.str().c_str()));
 
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-    pcPocket->FaceName.setValue(text.toUtf8());
-    pcPocket->getDocument()->recomputeFeature(pcPocket);
+    Part::Feature* support = pcPocket->getSupport();
+    if (support == NULL) {
+        // There is no support, so we can't select from it...
+        return;
+    }
+    std::vector<std::string> upToFaces(1,ss.str());
+    pcPocket->UpToFace.setValue(support, upToFaces);
+    if (updateView())
+        pcPocket->getDocument()->recomputeFeature(pcPocket);
+}
+
+void TaskPocketParameters::onUpdateView(bool on)
+{
+    if (on) {
+        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+        pcPocket->getDocument()->recomputeFeature(pcPocket);
+    }
 }
 
 double TaskPocketParameters::getLength(void) const
@@ -179,9 +344,14 @@ int TaskPocketParameters::getMode(void) const
     return ui->changeMode->currentIndex();
 }
 
-const QString TaskPocketParameters::getFaceName(void) const
+QByteArray TaskPocketParameters::getFaceName(void) const
 {
-    return ui->lineFaceName->text();
+    return ui->lineFaceName->property("FaceName").toByteArray();
+}
+
+const bool TaskPocketParameters::updateView() const
+{
+    return ui->checkBoxUpdateView->isChecked();
 }
 
 TaskPocketParameters::~TaskPocketParameters()
@@ -233,13 +403,30 @@ bool TaskDlgPocketParameters::accept()
 {
     std::string name = PocketView->getObject()->getNameInDocument();
 
-    //Gui::Command::openCommand("Pocket changed");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceName = \"%s\"",name.c_str(),parameter->getFaceName().toAscii().data());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
+    try {
+        //Gui::Command::openCommand("Pocket changed");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
+        const char* facename = parameter->getFaceName().data();
+        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+        Part::Feature* support = pcPocket->getSupport();
+        if (support != NULL && facename && facename[0] != '\0') {
+            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
+            buf = buf.arg(QString::fromUtf8(facename));
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
+        } else
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        if (!PocketView->getObject()->isValid())
+            throw Base::Exception(PocketView->getObject()->getStatusString());
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::Command::commitCommand();
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        return false;
+    }
 
     return true;
 }

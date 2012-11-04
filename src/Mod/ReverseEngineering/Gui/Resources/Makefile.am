@@ -12,8 +12,8 @@ EXTRA_DIST = \
 		translations/ReverseEngineering_af.ts \
 		translations/ReverseEngineering_de.qm \
 		translations/ReverseEngineering_de.ts \
-		translations/ReverseEngineering_es.qm \
-		translations/ReverseEngineering_es.ts \
+		translations/ReverseEngineering_es-ES.qm \
+		translations/ReverseEngineering_es-ES.ts \
 		translations/ReverseEngineering_fi.qm \
 		translations/ReverseEngineering_fi.ts \
 		translations/ReverseEngineering_fr.qm \
@@ -28,16 +28,30 @@ EXTRA_DIST = \
 		translations/ReverseEngineering_no.ts \
 		translations/ReverseEngineering_pl.qm \
 		translations/ReverseEngineering_pl.ts \
-		translations/ReverseEngineering_pt.qm \
-		translations/ReverseEngineering_pt.ts \
+		translations/ReverseEngineering_pt-BR.qm \
+		translations/ReverseEngineering_pt-BR.ts \
 		translations/ReverseEngineering_ru.qm \
 		translations/ReverseEngineering_ru.ts \
-		translations/ReverseEngineering_se.qm \
-		translations/ReverseEngineering_se.ts \
+		translations/ReverseEngineering_sv-SE.qm \
+		translations/ReverseEngineering_sv-SE.ts \
 		translations/ReverseEngineering_uk.qm \
 		translations/ReverseEngineering_uk.ts \
-		translations/ReverseEngineering_zh.qm \
-		translations/ReverseEngineering_zh.ts \
+		translations/ReverseEngineering_hu.qm \
+		translations/ReverseEngineering_hu.ts \
+		translations/ReverseEngineering_cs.qm \
+		translations/ReverseEngineering_cs.ts \
+		translations/ReverseEngineering_sk.qm \
+		translations/ReverseEngineering_sk.ts \
+		translations/ReverseEngineering_tr.qm \
+		translations/ReverseEngineering_tr.ts \
+		translations/ReverseEngineering_ro.qm \
+		translations/ReverseEngineering_ro.ts \
+		translations/ReverseEngineering_ja.qm \
+		translations/ReverseEngineering_ja.ts \
+		translations/ReverseEngineering_zh-TW.qm \
+		translations/ReverseEngineering_zh-TW.ts \
+		translations/ReverseEngineering_zh-CN.qm \
+		translations/ReverseEngineering_zh-CN.ts \
 		ReverseEngineering.qrc \
 		UpdateResources.bat
 

@@ -138,6 +138,9 @@ public:
         short attr=0, bool ro=false, bool hidden=false){
         return 0;
   }
+  virtual bool removeDynamicProperty(const char* name) {
+      return false;
+  }
   virtual std::vector<std::string> getDynamicPropertyNames() const {
       return std::vector<std::string>();
   }

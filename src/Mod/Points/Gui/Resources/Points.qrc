@@ -2,7 +2,6 @@
     <qresource> 
         <file>translations/Points_af.qm</file>
         <file>translations/Points_de.qm</file>
-        <file>translations/Points_es.qm</file>
         <file>translations/Points_fi.qm</file>
         <file>translations/Points_fr.qm</file>
         <file>translations/Points_hr.qm</file>
@@ -10,10 +9,18 @@
         <file>translations/Points_nl.qm</file>
         <file>translations/Points_no.qm</file>
         <file>translations/Points_pl.qm</file>
-        <file>translations/Points_pt.qm</file>
         <file>translations/Points_ru.qm</file>
-        <file>translations/Points_se.qm</file>
         <file>translations/Points_uk.qm</file>
-        <file>translations/Points_zh.qm</file>
+        <file>translations/Points_tr.qm</file>
+        <file>translations/Points_sv-SE.qm</file>
+        <file>translations/Points_zh-TW.qm</file>
+        <file>translations/Points_pt-BR.qm</file>
+        <file>translations/Points_cs.qm</file>
+        <file>translations/Points_sk.qm</file>
+        <file>translations/Points_es-ES.qm</file>
+        <file>translations/Points_zh-CN.qm</file>
+        <file>translations/Points_ja.qm</file>
+        <file>translations/Points_ro.qm</file>
+        <file>translations/Points_hu.qm</file>
     </qresource>
 </RCC> 

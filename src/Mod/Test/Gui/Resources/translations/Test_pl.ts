@@ -1,112 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>TestGui::UnitTest</name>
     <message>
-        <source>FreeCAD UnitTest</source>
-        <translation>FreeCAD UnitTest</translation>
+      <source>FreeCAD UnitTest</source>
+      <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
-        <source>Failures and errors</source>
-        <translation>Awarie i błędy</translation>
+      <source>Failures and errors</source>
+      <translation>Awarie i błędy</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>Opis</translation>
+      <source>Description</source>
+      <translation>Opis</translation>
     </message>
     <message>
-        <source>&amp;Start</source>
-        <translation>&amp;Uruchom</translation>
+      <source>&amp;Start</source>
+      <translation>&amp;Uruchom</translation>
     </message>
     <message>
-        <source>Alt+S</source>
-        <translation>Alt + S</translation>
+      <source>Alt+S</source>
+      <translation>Alt + S</translation>
     </message>
     <message>
-        <source>&amp;Help</source>
-        <translation>&amp;Pomoc</translation>
+      <source>&amp;Help</source>
+      <translation>&amp;Pomoc</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
+      <source>F1</source>
+      <translation>F1</translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;O programie</translation>
+      <source>&amp;About</source>
+      <translation>&amp;O programie</translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation>ALT + A</translation>
+      <source>Alt+A</source>
+      <translation>ALT + A</translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Zamknij</translation>
+      <source>&amp;Close</source>
+      <translation>&amp;Zamknij</translation>
     </message>
     <message>
-        <source>Alt+C</source>
-        <translation>Alt + C</translation>
+      <source>Alt+C</source>
+      <translation>Alt + C</translation>
     </message>
     <message>
-        <source>Idle</source>
-        <translation>Bezczynny</translation>
+      <source>Idle</source>
+      <translation>Bezczynny</translation>
     </message>
     <message>
-        <source>Progress</source>
-        <translation>Postęp</translation>
+      <source>Progress</source>
+      <translation>Postęp</translation>
     </message>
     <message>
-        <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+      <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
+      <translation>&lt;font color="#0000ff"&gt; 0&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Remaining:</source>
-        <translation>Pozostało:</translation>
+      <source>Remaining:</source>
+      <translation>Pozostało:</translation>
     </message>
     <message>
-        <source>Errors:</source>
-        <translation>Błędy:</translation>
+      <source>Errors:</source>
+      <translation>Błędy:</translation>
     </message>
     <message>
-        <source>Failures:</source>
-        <translation>Awarie:</translation>
+      <source>Failures:</source>
+      <translation>Awarie:</translation>
     </message>
     <message>
-        <source>Run:</source>
-        <translation>Uruchom:</translation>
+      <source>Run:</source>
+      <translation>Uruchom:</translation>
     </message>
     <message>
-        <source>Test</source>
-        <translation>Test</translation>
+      <source>Test</source>
+      <translation>Test</translation>
     </message>
     <message>
-        <source>Select test name:</source>
-        <translation>Wybierz nazwę testu:</translation>
+      <source>Select test name:</source>
+      <translation>Wybierz nazwę testu:</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-        <source>Help</source>
-        <translation>Pomoc</translation>
+      <source>Help</source>
+      <translation>Pomoc</translation>
     </message>
     <message>
-        <source>About FreeCAD UnitTest</source>
-        <translation>O FreeCAD UnitTest</translation>
+      <source>About FreeCAD UnitTest</source>
+      <translation>O FreeCAD UnitTest</translation>
     </message>
     <message>
-        <source>Copyright (c) Werner Mayer
+      <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-        <translation>Copyright (c) Werner Mayer FreeCAD unittest jest częścią FreeCAD i wspiera pisanie testów jednostkowych dla własnych modułów.</translation>
+      <translation>Copyright (c) Werner Mayer FreeCAD unittest jest częścią FreeCAD i wspiera pisanie testów jednostkowych dla własnych modułów.</translation>
     </message>
     <message>
-        <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
+      <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
+      <translation>Wprowadź nazwę obiektu, który po odwołaniu się do niego zwróci TestCase.Click 'start' i utworzony w ten sposób test zostanie uruchomiony.
 
-Double click on an error in the tree view to see more information about it,including the stack trace.</translation>
+Kliknij dwukrotnie na błąd w widoku drzewa, aby uzyskać więcej informacji, w tym zapis stosu.</translation>
     </message>
-</context>
+  </context>
 </TS>
