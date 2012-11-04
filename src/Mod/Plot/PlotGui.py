@@ -24,6 +24,12 @@
 from PyQt4 import QtCore, QtGui
 import FreeCAD, FreeCADGui, os
 
+# Load resources
+import Plot_rc
+FreeCADGui.addLanguagePath(":/Plot/translations")
+FreeCADGui.addIconPath(":/Plot/icons")
+
+"""
 # Setup tranlations
 from plotUtils import Paths
 path = Paths.translationsPath()
@@ -36,6 +42,7 @@ for fname in dirList:
 	valid = translator.load(os.path.join(path, fname))
 	if valid:
 		QtGui.QApplication.installTranslator(translator)
+"""
 
 class Save: 
 	def Activated(self):
@@ -43,11 +50,11 @@ class Save:
 		plotSave.load()
 
 	def GetResources(self):
-		from plotUtils import Paths
-		IconPath = Paths.iconsPath() + "/Save.svg"
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Save.svg"
 		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Save plot")
 		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Save plot as image file")
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		return {'Pixmap' : 'Save', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Axes: 
 	def Activated(self):
@@ -55,11 +62,11 @@ class Axes:
 		plotAxes.load()
 
 	def GetResources(self):
-		from plotUtils import Paths
-		IconPath = Paths.iconsPath() + "/Axes.svg"
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Axes.svg"
 		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Configure axes")
 		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Configure axes parameters")
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		return {'Pixmap' : 'Axes', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Series: 
 	def Activated(self):
@@ -67,11 +74,11 @@ class Series:
 		plotSeries.load()
 
 	def GetResources(self):
-		from plotUtils import Paths
-		IconPath = Paths.iconsPath() + "/Series.svg"
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Series.svg"
 		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Configure series")
 		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Configure series drawing style and label")
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		return {'Pixmap' : 'Series', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Grid: 
 	def Activated(self):
@@ -86,11 +93,11 @@ class Grid:
 		Plot.grid(not flag)
 
 	def GetResources(self):
-		from plotUtils import Paths
-		IconPath = Paths.iconsPath() + "/Grid.svg"
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Grid.svg"
 		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide grid")
 		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide grid on selected plot")
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		return {'Pixmap' : 'Grid', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Legend: 
 	def Activated(self):
@@ -105,11 +112,11 @@ class Legend:
 		Plot.legend(not flag)
 
 	def GetResources(self):
-		from plotUtils import Paths
-		IconPath = Paths.iconsPath() + "/Legend.svg"
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Legend.svg"
 		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide legend")
 		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide legend on selected plot")
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		return {'Pixmap' : 'Legend', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Labels: 
 	def Activated(self):
@@ -117,11 +124,11 @@ class Labels:
 		plotLabels.load()
 
 	def GetResources(self):
-		from plotUtils import Paths
-		IconPath = Paths.iconsPath() + "/Labels.svg"
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Labels.svg"
 		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Set labels")
 		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Set title and axes labels")
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		return {'Pixmap' : 'Labels', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Positions: 
 	def Activated(self):
@@ -129,11 +136,11 @@ class Positions:
 		plotPositions.load()
 
 	def GetResources(self):
-		from plotUtils import Paths
-		IconPath = Paths.iconsPath() + "/Positions.svg"
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Positions.svg"
 		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Set positions and sizes")
 		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Set labels and legend positions and sizes")
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		return {'Pixmap' : 'Positions', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 FreeCADGui.addCommand('Plot_SaveFig', Save())
 FreeCADGui.addCommand('Plot_Axes', Axes())
