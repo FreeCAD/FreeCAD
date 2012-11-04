@@ -99,6 +99,8 @@ protected:
     /** Draw a beam in the line where the cursor is. */
     void paintEvent (QPaintEvent * e);
     void resizeEvent(QResizeEvent* e);
+    QWidget* getMarker() const
+    { return lineNumberArea; }
     virtual void drawMarker(int line, int x, int y, QPainter*);
 
 private:

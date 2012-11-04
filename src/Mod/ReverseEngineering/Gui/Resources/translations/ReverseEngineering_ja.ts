@@ -1,48 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdApproxPlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+111"/>
-        <source>Reverse Engineering</source>
-        <translation>リバースエンジニアリング</translation>
+      <location filename="../../Command.cpp" line="+111"/>
+      <source>Reverse Engineering</source>
+      <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate plane...</source>
-        <translation>Approximate plane...</translation>
+      <source>Approximate plane...</source>
+      <translation>Approximate plane...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate a plane</source>
-        <translation>Approximate a plane</translation>
+      <source>Approximate a plane</source>
+      <translation>Approximate a plane</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdApproxSurface</name>
     <message>
-        <location line="-62"/>
-        <source>Reverse Engineering</source>
-        <translation>リバースエンジニアリング</translation>
+      <source>Reverse Engineering</source>
+      <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate surface...</source>
-        <translation>おおよその表面...</translation>
+      <source>Approximate surface...</source>
+      <translation>おおよその表面...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate a B-Spline surface</source>
-        <translation>B-スプライン曲面を近似</translation>
+      <source>Approximate a B-Spline surface</source>
+      <translation>B-スプライン曲面を近似</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+37"/>
-        <source>Reverse Engineering</source>
-        <translation>リバースエンジニアリング</translation>
+      <location filename="../../Workbench.cpp" line="+37"/>
+      <source>Reverse Engineering</source>
+      <translation>リバースエンジニアリング</translation>
     </message>
-</context>
+  </context>
 </TS>

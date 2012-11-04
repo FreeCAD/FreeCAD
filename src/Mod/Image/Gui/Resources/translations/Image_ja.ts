@@ -1,183 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+93"/>
-        <source>Image</source>
-        <translation>画像</translation>
+      <location filename="../../Command.cpp" line="+93"/>
+      <source>Image</source>
+      <translation>画像</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create image plane...</source>
-        <translation>Create image plane...</translation>
+      <source>Create image plane...</source>
+      <translation>イメージプレーンを作成します...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a planar image in the 3D space</source>
-        <translation>Create a planar image in the 3D space</translation>
+      <source>Create a planar image in the 3D space</source>
+      <translation>3D空間に平面画像を作成します。</translation>
     </message>
     <message>
-        <source>create a planar image in the 3D space</source>
-        <translation type="obsolete">create a planar image in the 3D space</translation>
+      <source>create a planar image in the 3D space</source>
+      <translation>create a planar image in the 3D space</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdImageOpen</name>
     <message>
-        <location line="-44"/>
-        <source>Image</source>
-        <translation>画像</translation>
+      <source>Image</source>
+      <translation>画像</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Open...</source>
-        <translation>開く...</translation>
+      <source>Open...</source>
+      <translation>開く...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Open image view</source>
-        <translation>画像ビューを開く</translation>
+      <source>Open image view</source>
+      <translation>画像ビューを開く</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+318"/>
-        <source>Undefined type of colour space for image viewing</source>
-        <translation>表示中の画像の色空間は未定義です</translation>
+      <location filename="../../GLImageBox.cpp" line="+318"/>
+      <source>Undefined type of colour space for image viewing</source>
+      <translation>表示中の画像の色空間は未定義です</translation>
     </message>
     <message>
-        <location line="-1"/>
-        <source>Image pixel format</source>
-        <translation>画像のピクセルフォーマット</translation>
+      <source>Image pixel format</source>
+      <translation>画像のピクセルフォーマット</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>ImageGui::ImageView</name>
     <message>
-        <location filename="../../ImageView.cpp" line="+77"/>
-        <source>&amp;Fit image</source>
-        <translation>画像に合わせる(&amp;F)</translation>
+      <location filename="../../ImageView.cpp" line="+77"/>
+      <source>&amp;Fit image</source>
+      <translation>画像に合わせる(&amp;F)</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Stretch the image to fit the view</source>
-        <translation>画像ビューサイズに合わせて画像を拡大</translation>
+      <source>Stretch the image to fit the view</source>
+      <translation>画像ビューサイズに合わせて画像を拡大</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>&amp;1:1 scale</source>
-        <translation>1:1スケール(&amp;1)</translation>
+      <source>&amp;1:1 scale</source>
+      <translation>1:1スケール(&amp;1)</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display the image at a 1:1 scale</source>
-        <translation>1:1のスケールで画像を表示する</translation>
+      <source>Display the image at a 1:1 scale</source>
+      <translation>1:1のスケールで画像を表示する</translation>
     </message>
     <message>
-        <source>&amp;Original color</source>
-        <translation type="obsolete">元の色 (&amp;O)</translation>
+      <source>&amp;Original color</source>
+      <translation>元の色 (&amp;O)</translation>
     </message>
     <message>
-        <source>Display the image with its original color(s)</source>
-        <translation type="obsolete">元の色で画像を表示する</translation>
+      <source>Display the image with its original color(s)</source>
+      <translation>元の色で画像を表示する</translation>
     </message>
     <message>
-        <source>&amp;Brightened color</source>
-        <translation type="obsolete">&amp;Brightened color</translation>
+      <source>&amp;Brightened color</source>
+      <translation>&amp;Brightened color</translation>
     </message>
     <message>
-        <source>Display the image with brightened color(s)</source>
-        <translation type="obsolete">Display the image with brightened color(s)</translation>
+      <source>Display the image with brightened color(s)</source>
+      <translation>Display the image with brightened color(s)</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Standard</source>
-        <translation>標準</translation>
+      <source>Standard</source>
+      <translation>標準</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Ready...</source>
-        <translation>Ready...</translation>
+      <source>Ready...</source>
+      <translation>Ready...</translation>
     </message>
     <message>
-        <location line="+375"/>
-        <source>grey</source>
-        <translation>グレー</translation>
+      <source>grey</source>
+      <translation>グレー</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+11"/>
-        <location line="+5"/>
-        <location line="+11"/>
-        <location line="+5"/>
-        <source>zoom</source>
-        <translation>ズーム</translation>
+      <source>zoom</source>
+      <translation>ズーム</translation>
     </message>
     <message>
-        <location line="-62"/>
-        <location line="+10"/>
-        <location line="+15"/>
-        <location line="+16"/>
-        <location line="+16"/>
-        <source>outside image</source>
-        <translation>outside image</translation>
+      <source>outside image</source>
+      <translation>outside image</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-        <source>Image viewer</source>
-        <translation type="obsolete">画像ビューア</translation>
+      <source>Image viewer</source>
+      <translation>画像ビューア</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+106"/>
-        <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-        <translation>Images (*.png *.xpm *.jpg *.bmp)</translation>
+      <location filename="../../Command.cpp" line="+106"/>
+      <source>Images (*.png *.xpm *.jpg *.bmp)</source>
+      <translation>画像（*.png, *.xpm, *.JPG, *.BMP）</translation>
     </message>
     <message>
-        <location line="-88"/>
-        <location line="+41"/>
-        <location line="+46"/>
-        <source>Choose an image file to open</source>
-        <translation>Choose an image file to open</translation>
+      <source>Choose an image file to open</source>
+      <translation>開く画像ファイルを選択します。</translation>
     </message>
     <message>
-        <location line="-94"/>
-        <location line="+41"/>
-        <source>Images</source>
-        <translation>Images</translation>
+      <source>Images</source>
+      <translation>画像</translation>
     </message>
     <message>
-        <location line="-36"/>
-        <location line="+41"/>
-        <source>All files</source>
-        <translation>All files</translation>
+      <source>All files</source>
+      <translation>すべてのファイル</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Error open image</translation>
+      <source>Error open image</source>
+      <translation>画像が開けません</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Could not load the choosen image</source>
-        <translation>Could not load the choosen image</translation>
+      <source>Could not load the choosen image</source>
+      <translation>選択されたイメージが読み込めませんでした</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+36"/>
-        <source>Image</source>
-        <translation>画像</translation>
+      <location filename="../../Workbench.cpp" line="+36"/>
+      <source>Image</source>
+      <translation>画像</translation>
     </message>
-</context>
+  </context>
 </TS>

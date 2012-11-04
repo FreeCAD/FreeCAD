@@ -1,48 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdApproxPlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+111"/>
-        <source>Reverse Engineering</source>
-        <translation>Rétro-ingénierie</translation>
+      <location filename="../../Command.cpp" line="+111"/>
+      <source>Reverse Engineering</source>
+      <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate plane...</source>
-        <translation>Approximer un plan...</translation>
+      <source>Approximate plane...</source>
+      <translation>Approximer un plan...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate a plane</source>
-        <translation>Approximer un plan</translation>
+      <source>Approximate a plane</source>
+      <translation>Approximer un plan</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdApproxSurface</name>
     <message>
-        <location line="-62"/>
-        <source>Reverse Engineering</source>
-        <translation>Rétro-ingénierie</translation>
+      <source>Reverse Engineering</source>
+      <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate surface...</source>
-        <translation>Approximer une surface...</translation>
+      <source>Approximate surface...</source>
+      <translation>Approximer une surface...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Approximate a B-Spline surface</source>
-        <translation>Approximer une surface B-Spline</translation>
+      <source>Approximate a B-Spline surface</source>
+      <translation>Approximer une surface B-Spline</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+37"/>
-        <source>Reverse Engineering</source>
-        <translation>Rétro-ingénierie</translation>
+      <location filename="../../Workbench.cpp" line="+37"/>
+      <source>Reverse Engineering</source>
+      <translation>Rétro-ingénierie</translation>
     </message>
-</context>
+  </context>
 </TS>

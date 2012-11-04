@@ -47,6 +47,7 @@
 #include "FileDialog.h"
 #include "Macro.h"
 #include "PythonDebugger.h"
+#include "PythonEditor.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
@@ -122,10 +123,6 @@ EditorView::~EditorView()
     delete d->activityTimer;
     delete d;
     getWindowParameter()->Detach( this );
-}
-
-void EditorView::drawMarker(int line, int x, int y, QPainter*)
-{
 }
 
 QPlainTextEdit* EditorView::getEditor() const
@@ -293,7 +290,7 @@ bool EditorView::open(const QString& fileName)
     QFileInfo fi(fileName);
     d->timeStamp =  fi.lastModified().toTime_t();
     d->activityTimer->setSingleShot(true);
-    d->activityTimer->start(3000);	
+    d->activityTimer->start(3000);
 
     setCurrentFileName(fileName);
     return true;
@@ -399,6 +396,7 @@ void EditorView::printPdf()
 void EditorView::setCurrentFileName(const QString &fileName)
 {
     d->fileName = fileName;
+    /*emit*/ changeFileName(d->fileName);
     d->textEdit->document()->setModified(false);
 
     QString shownName;
@@ -488,12 +486,11 @@ void EditorView::focusInEvent (QFocusEvent * e)
 
 // ---------------------------------------------------------
 
-PythonEditorView::PythonEditorView(QPlainTextEdit* editor, QWidget* parent)
-  : EditorView(editor, parent), m_debugLine(-1),
-    breakpoint(QLatin1String(":/icons/breakpoint.png")),
-    debugMarker(QLatin1String(":/icons/debug-marker.png"))
+PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
+  : EditorView(editor, parent), _pye(editor)
 {
-    _dbg = Application::Instance->macroManager()->debugger();
+    connect(this, SIGNAL(changeFileName(const QString&)),
+            editor, SLOT(setFileName(const QString&)));
 }
 
 PythonEditorView::~PythonEditorView()
@@ -532,18 +529,6 @@ bool PythonEditorView::onHasMsg(const char* pMsg) const
     return EditorView::onHasMsg(pMsg);
 }
 
-void PythonEditorView::drawMarker(int line, int x, int y, QPainter* p)
-{
-    Breakpoint bp = _dbg->getBreakpoint(fileName());
-    if (bp.checkLine(line)) {
-        p->drawPixmap(x, y, breakpoint);
-    }
-    if (m_debugLine == line) {
-        p->drawPixmap(x, y+2, debugMarker);
-        debugRect = QRect(x, y+2, debugMarker.width(), debugMarker.height());
-    }
-}
-
 /**
  * Runs the opened script in the macro manager.
  */
@@ -554,42 +539,22 @@ void PythonEditorView::executeScript()
 
 void PythonEditorView::startDebug()
 {
-    if (_dbg->start()) {
-        _dbg->runFile(fileName());
-        _dbg->stop();
-    }
+    _pye->startDebug();
 }
 
 void PythonEditorView::toggleBreakpoint()
 {
-    QTextCursor cursor = getEditor()->textCursor();
-    int line = cursor.blockNumber() + 1;
-    _dbg->toggleBreakpoint(line, fileName());
-//    getMarker()->update();
+    _pye->toggleBreakpoint();
 }
 
 void PythonEditorView::showDebugMarker(int line)
 {
-    m_debugLine = line;
-//    getMarker()->update();
-    QTextCursor cursor = getEditor()->textCursor();
-    cursor.movePosition(QTextCursor::StartOfBlock);
-    int cur = cursor.blockNumber() + 1;
-    if (cur > line) {
-        for (int i=line; i<cur; i++)
-            cursor.movePosition(QTextCursor::Up);
-    }
-    else if (cur < line) {
-        for (int i=cur; i<line; i++)
-            cursor.movePosition(QTextCursor::Down);
-    }
-    getEditor()->setTextCursor(cursor);
+    _pye->showDebugMarker(line);
 }
 
 void PythonEditorView::hideDebugMarker()
 {
-    m_debugLine = -1;
-//    getMarker()->update();
+    _pye->hideDebugMarker();
 }
 
 #include "moc_EditorView.cpp"

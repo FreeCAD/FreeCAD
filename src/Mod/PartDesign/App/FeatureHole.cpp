@@ -42,7 +42,6 @@
 #endif
 
 #include <Base/Placement.h>
-#include <Mod/Part/App/Part2DObject.h>
 
 #include "FeatureHole.h"
 

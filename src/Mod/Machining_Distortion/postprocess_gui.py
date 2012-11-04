@@ -167,7 +167,7 @@ class MyForm(QtGui.QDialog,Ui_dialog):
                                     "set label \"" + z_axis_label + "\\nin [mm]\" at screen 0.03, screen 0.5 center rotate by 90\n"+ 
                                     "set xtics in nomirror offset character 0,-0.5\n"+
                                     "splot \"postprocessing_input.txt\" u " + str(offset_column) + ":" + str(rot_column) + ":" + str(abs_disp_column) + " with pm3d title \"\"\n" + 
-                                    "exit" )
+                                    "exit" ))
                                            
         gnu_plot_input_file.close()
         os.chdir(str(self.dirname))

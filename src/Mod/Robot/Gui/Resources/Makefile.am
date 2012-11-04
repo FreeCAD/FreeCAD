@@ -24,8 +24,8 @@ EXTRA_DIST = \
 		translations/Robot_af.ts \
 		translations/Robot_de.qm \
 		translations/Robot_de.ts \
-		translations/Robot_es.qm \
-		translations/Robot_es.ts \
+		translations/Robot_es-ES.qm \
+		translations/Robot_es-ES.ts \
 		translations/Robot_fi.qm \
 		translations/Robot_fi.ts \
 		translations/Robot_fr.qm \
@@ -40,16 +40,30 @@ EXTRA_DIST = \
 		translations/Robot_no.ts \
 		translations/Robot_pl.qm \
 		translations/Robot_pl.ts \
-		translations/Robot_pt.qm \
-		translations/Robot_pt.ts \
+		translations/Robot_pt-BR.qm \
+		translations/Robot_pt-BR.ts \
 		translations/Robot_ru.qm \
 		translations/Robot_ru.ts \
-		translations/Robot_se.qm \
-		translations/Robot_se.ts \
+		translations/Robot_sv-SE.qm \
+		translations/Robot_sv-SE.ts \
 		translations/Robot_uk.qm \
 		translations/Robot_uk.ts \
-		translations/Robot_zh.qm \
-		translations/Robot_zh.ts \
+		translations/Robot_zh-CN.qm \
+		translations/Robot_zh-CN.ts \
+		translations/Robot_zh-TW.qm \
+		translations/Robot_zh-TW.ts \
+		translations/Robot_cs.qm \
+		translations/Robot_cs.ts \
+		translations/Robot_ro.qm \
+		translations/Robot_ro.ts \
+		translations/Robot_ja.qm \
+		translations/Robot_ja.ts \
+		translations/Robot_hu.qm \
+		translations/Robot_hu.ts \
+		translations/Robot_sk.qm \
+		translations/Robot_sk.ts \
+		translations/Robot_tr.qm \
+		translations/Robot_tr.ts \
 		Robot.qrc \
 		UpdateResources.bat
 

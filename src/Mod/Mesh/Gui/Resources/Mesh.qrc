@@ -5,7 +5,6 @@
         <file>icons/Tree_Mesh.svg</file>
         <file>translations/Mesh_af.qm</file>
         <file>translations/Mesh_de.qm</file>
-        <file>translations/Mesh_es.qm</file>
         <file>translations/Mesh_fi.qm</file>
         <file>translations/Mesh_fr.qm</file>
         <file>translations/Mesh_hr.qm</file>
@@ -13,10 +12,18 @@
         <file>translations/Mesh_nl.qm</file>
         <file>translations/Mesh_no.qm</file>
         <file>translations/Mesh_pl.qm</file>
-        <file>translations/Mesh_pt.qm</file>
         <file>translations/Mesh_ru.qm</file>
-        <file>translations/Mesh_se.qm</file>
         <file>translations/Mesh_uk.qm</file>
-        <file>translations/Mesh_zh.qm</file>
+        <file>translations/Mesh_tr.qm</file>
+        <file>translations/Mesh_sv-SE.qm</file>
+        <file>translations/Mesh_zh-TW.qm</file>
+        <file>translations/Mesh_pt-BR.qm</file>
+        <file>translations/Mesh_cs.qm</file>
+        <file>translations/Mesh_sk.qm</file>
+        <file>translations/Mesh_es-ES.qm</file>
+        <file>translations/Mesh_zh-CN.qm</file>
+        <file>translations/Mesh_ja.qm</file>
+        <file>translations/Mesh_ro.qm</file>
+        <file>translations/Mesh_hu.qm</file>
     </qresource>
 </RCC> 

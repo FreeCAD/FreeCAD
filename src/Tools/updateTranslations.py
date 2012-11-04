@@ -34,117 +34,116 @@ Example:
 
 Options:
 
-    -h : prints this help text
-    -d : specifies a directory containing the freecad.zip file.
-    -m : specifies a single module name to be updated, instead of all modules
+    -h or --help : prints this help text
+    -d or --directory : specifies a directory containing unzipped translation folders
+    -z or --zipfile : specifies a path to the freecad.zip file
+    -m or --module : specifies a single module name to be updated, instead of all modules
     
 This command must be run from its current source tree location (/src/Tools)
-so it can find the correct places to put the translation files. The
-latest translations from crowdin will be downloaded, unzipped and put to
-the correct locations. The necessary renaming of files and .qm generation
-will be taken care of, but no resource file or other stuff will be done,
-only the correct copying of .ts and .qm files.
+so it can find the correct places to put the translation files.  If run with
+no arguments, the latest translations from crowdin will be downloaded, unzipped
+and put to the correct locations. The necessary renaming of files and .qm generation
+will be taken care of. The qrc files will also be updated when new
+translations are added.
 
 NOTE! The crowdin site only allows to download "builds" (zipped archives)
 which must be built prior to downloading. This means a build might not
-reflect the latest state of the translations. Better make a build before
+reflect the latest state of the translations. Better always make a build before
 using this script!
 
 You can specify a directory with the -d option if you already downloaded
-and the build, or you can specify a single module to update with -m.
+and extracted the build, or you can specify a single module to update with -m.
 
-You can also run the script without any language code, in which case the
-default ones specified inside this script will be used.
+You can also run the script without any language code, in which case all the
+languages contained in the archive or directory will be added.
 '''
 
-import sys, os, shutil, tempfile, zipfile, getopt, StringIO
-import xml.sax, xml.sax.handler, xml.sax.xmlreader
-
-defaultLanguages = ["af","de","es-ES","fi","fr","hr","hu","it","ja","nl",
-                    "no","pl","pt-BR","ru","sv-SE","uk","zh-CN"]
+import sys, os, shutil, tempfile, zipfile, getopt, StringIO, re
 
 crowdinpath = "http://crowdin.net/download/project/freecad.zip"
 
-locations = [["Assembly","../Mod/Assembly/Gui/Resources/translations"],
-             ["Complete","../Mod/Complete/Gui/Resources/translations"],
-             ["draft","../Mod/Draft/Resources/translations"],
-             ["Drawing","../Mod/Drawing/Gui/Resources/translations"],
-             ["Fem","../Mod/Fem/Gui/Resources/translations"],
-             ["FreeCAD","../Gui/Language"],
-             ["Image","../Mod/Image/Gui/Resources/translations"],
-             ["Mesh","../Mod/Mesh/Gui/Resources/translations"],
-             ["MeshPart","../Mod/MeshPart/Gui/Resources/translations"],
-             ["Part","../Mod/Part/Gui/Resources/translations"],
-             ["PartDesign","../Mod/PartDesign/Gui/Resources/translations"],
-             ["Points","../Mod/Points/Gui/Resources/translations"],
-             ["Raytracing","../Mod/Raytracing/Gui/Resources/translations"],
-             ["ReverseEngineering","../Mod/ReverseEngineering/Gui/Resources/translations"],
-             ["Robot","../Mod/Robot/Gui/Resources/translations"],
-             ["Sketcher","../Mod/Sketcher/Gui/Resources/translations"],
-             ["Arch","../Mod/Arch/Resources/translations"],
-             ["StartPage","../Mod/Start/Gui/Resources/translations"],
-             ["Test","../Mod/Test/Gui/Resources/translations"]]
+# locations list contains Module name, relative path to translation folder, relative path to qrc file, and optionally
+# a python rc file
 
-tweaks = [["pt-BR","pt"],["es-ES","es"],["sv-SE","se"],["zh-CN","zh"]]
+locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources/Arch.qrc"],
+             ["Assembly","../Mod/Assembly/Gui/Resources/translations","../Mod/Assembly/Gui/Resources/Assembly.qrc"],
+             ["Complete","../Mod/Complete/Gui/Resources/translations","../Mod/Complete/Gui/Resources/Complete.qrc"],
+             ["draft","../Mod/Draft/Resources/translations","../Mod/Draft/Resources/Draft.qrc"],
+             ["Drawing","../Mod/Drawing/Gui/Resources/translations","../Mod/Drawing/Gui/Resources/Drawing.qrc"],
+             ["Fem","../Mod/Fem/Gui/Resources/translations","../Mod/Fem/Gui/Resources/Fem.qrc"],
+             ["FreeCAD","../Gui/Language","../Gui/Language/translation.qrc"],
+             ["Image","../Mod/Image/Gui/Resources/translations","../Mod/Image/Gui/Resources/Image.qrc"],
+             ["Mesh","../Mod/Mesh/Gui/Resources/translations","../Mod/Mesh/Gui/Resources/Mesh.qrc"],
+             ["MeshPart","../Mod/MeshPart/Gui/Resources/translations","../Mod/MeshPart/Gui/Resources/MeshPart.qrc"],
+             ["OpenSCAD","../Mod/OpenSCAD/Resources/translations","../Mod/OpenSCAD/Resources/OpenSCAD.qrc"],
+             ["Part","../Mod/Part/Gui/Resources/translations","../Mod/Part/Gui/Resources/Part.qrc"],
+             ["PartDesign","../Mod/PartDesign/Gui/Resources/translations","../Mod/PartDesign/Gui/Resources/PartDesign.qrc"],
+             ["Points","../Mod/Points/Gui/Resources/translations","../Mod/Points/Gui/Resources/Points.qrc"],
+             ["Raytracing","../Mod/Raytracing/Gui/Resources/translations","../Mod/Raytracing/Gui/Resources/Raytracing.qrc"],
+             ["ReverseEngineering","../Mod/ReverseEngineering/Gui/Resources/translations","../Mod/ReverseEngineering/Gui/Resources/ReverseEngineering.qrc"],
+             ["Robot","../Mod/Robot/Gui/Resources/translations","../Mod/Robot/Gui/Resources/Robot.qrc"],
+             ["Sketcher","../Mod/Sketcher/Gui/Resources/translations","../Mod/Sketcher/Gui/Resources/Sketcher.qrc"],
+             ["StartPage","../Mod/Start/Gui/Resources/translations","../Mod/Start/Gui/Resources/Start.qrc"],
+             ["Test","../Mod/Test/Gui/Resources/translations","../Mod/Test/Gui/Resources/Test.qrc"]]
 
-# SAX handler to parse the subversion output
-class SvnHandler(xml.sax.handler.ContentHandler):
-    def __init__(self):
-        self.is_versioned = True
+def updateqrc(qrcpath,lncode):
+    "updates a qrc file with the given translation entry"
 
-    def startElement(self, name, attributes):
-        if name == "wc-status":
-            if attributes["item"] == "unversioned":
-                self.is_versioned = False
+    print "opening " + qrcpath + "..."
+    
+    # getting qrc file contents
+    if not os.path.exists(qrcpath):
+        print "ERROR: Resource file " + qrcpath + " doesn't exist"
+        sys.exit()
+    f = open(qrcpath,"ro")
+    resources = []
+    for l in f.readlines():
+        resources.append(l)
+    f.close()
 
-def doFile(tsfilepath,targetpath,lncode):
-    "treats a single file"
+    # checking for existing entry
+    name = "_" + lncode + ".qm"
+    for r in resources:
+        if name in r:
+            print "language already exists in qrc file"
+            return
+
+    # find the latest qm line
+    pos = None
+    for i in range(len(resources)):
+        if ".qm" in resources[i]:
+            pos = i
+    if pos == None:
+        print "ERROR: couldn't find any qm file entry in this resource: " + qrcpath
+        sys.exit()
+
+    # inserting new entry just after the last one
+    line = resources[pos]
+    line = re.sub("_.*\.qm","_"+lncode+".qm",line)
+    print "inserting line: ",line
+    resources.insert(pos+1,line)
+
+    # writing the file
+    f = open(qrcpath,"wb")
+    for r in resources:
+        f.write(r)
+    f.close()
+    print "successfully updated ",qrcpath
+
+def doFile(tsfilepath,targetpath,lncode,qrcpath):
+    "updates a single ts file, and creates a corresponding qm file"
     basename = os.path.basename(tsfilepath)[:-3]
     # special fix of the draft filename...
     if basename == "draft": basename = "Draft"
-    # tweak of the final name...
-    for t in tweaks:
-        if lncode == t[0]:
-            lncode = t[1]
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
     shutil.copyfile(tsfilepath, newpath)
     os.system("lrelease " + newpath)
     newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
     if not os.path.exists(newqm):
-        print "ERROR: " + newqm + "not released"
-
-    # handle .ts file
-    parser=xml.sax.make_parser()
-    handler=SvnHandler()
-    parser.setContentHandler(handler)
-    info=os.popen("svn status %s --xml" % (newpath)).read()
-    try:
-        inpsrc = xml.sax.InputSource()
-        strio=StringIO.StringIO(info)
-        inpsrc.setByteStream(strio)
-        parser.parse(inpsrc)
-        if not handler.is_versioned:
-            print "Add file %s to subversion" % (newpath)
-            os.system("svn add %s" % (newpath))
-    except:
-        pass
-
-    # handle .qm file
-    parser=xml.sax.make_parser()
-    handler=SvnHandler()
-    parser.setContentHandler(handler)
-    info=os.popen("svn status %s --xml" % (newqm)).read()
-    try:
-        inpsrc = xml.sax.InputSource()
-        strio=StringIO.StringIO(info)
-        inpsrc.setByteStream(strio)
-        parser.parse(inpsrc)
-        if not handler.is_versioned:
-            print "Add file %s to subversion" % (newqm)
-            os.system("svn add %s" % (newqm))
-    except:
-        pass
+        print "ERROR: impossible to create " + newqm + ", aborting"
+        sys.exit()
+    updateqrc(qrcpath,lncode)
 
 def doLanguage(lncode,fmodule=""):
     " treats a single language"
@@ -161,7 +160,8 @@ def doLanguage(lncode,fmodule=""):
     for target in mods:
         basefilepath = tempfolder + os.sep + lncode + os.sep + target[0] + ".ts"
         targetpath = os.path.abspath(target[1])
-        doFile(basefilepath,targetpath,lncode)
+        qrcpath = os.path.abspath(target[2])
+        doFile(basefilepath,targetpath,lncode,qrcpath)
     print lncode + " done!"
 
 if __name__ == "__main__":
@@ -170,13 +170,14 @@ if __name__ == "__main__":
         print __doc__
         sys.exit()
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hd:m:", ["help", "directory=","module="])
+        opts, args = getopt.getopt(sys.argv[1:], "hd:z:m:", ["help", "directory=","zipfile=", "module="])
     except getopt.GetoptError:
         print __doc__
         sys.exit()
         
     # checking on the options
     inputdir = ""
+    inputzip = ""
     fmodule = ""
     for o, a in opts:
         if o in ("-h", "--help"):
@@ -184,34 +185,46 @@ if __name__ == "__main__":
             sys.exit()
         if o in ("-d", "--directory"):
             inputdir = a
+        if o in ("-z", "--zipfile"):
+            inputzip = a
         if o in ("-m", "--module"):
             fmodule = a
 
-    tempfolder = tempfile.mkdtemp()
-    print "creating temp folder " + tempfolder
     currentfolder = os.getcwd()
-    os.chdir(tempfolder)
-    if len(inputdir) > 0:
-        inputdir=os.path.realpath(inputdir)
-        inputdir=os.sep.join((inputdir,"freecad.zip"))
-        if not os.path.exists(inputdir):
-            print "freecad.zip does not exist!"
+    if inputdir:
+        tempfolder = os.path.realpath(inputdir)
+        if not os.path.exists(tempfolder):
+            print "ERROR: " + tempfolder + " not found"
             sys.exit()
-        shutil.copy(inputdir,tempfolder)
+    elif inputzip:
+        tempfolder = tempfile.mkdtemp()
+        print "creating temp folder " + tempfolder
+        os.chdir(tempfolder)
+        inputzip=os.path.realpath(inputzip)
+        if not os.path.exists(inputzip):
+            print "ERROR: " + inputzip + " not found"
+            sys.exit()
+        shutil.copy(inputzip,tempfolder)
+        zfile=zipfile.ZipFile("freecad.zip")
+        print "extracting freecad.zip..."
+        zfile.extractall()
     else:
+        tempfolder = tempfile.mkdtemp()
+        print "creating temp folder " + tempfolder
+        os.chdir(tempfolder)
         os.system("wget "+crowdinpath)
         if not os.path.exists("freecad.zip"):
             print "download failed!"
             sys.exit()
-    zfile=zipfile.ZipFile("freecad.zip")
-    print "extracting freecad.zip..."
-    zfile.extractall()
+        zfile=zipfile.ZipFile("freecad.zip")
+        print "extracting freecad.zip..."
+        zfile.extractall()
     os.chdir(currentfolder)
     if not args:
-        args = defaultLanguages
+        args = [o for o in os.listdir(tempfolder) if o != "freecad.zip"]
     for ln in args:
         if not os.path.exists(tempfolder + os.sep + ln):
-            print "language path for " + ln + " not found!"
+            print "ERROR: language path for " + ln + " not found!"
         else:
             doLanguage(ln,fmodule)
 

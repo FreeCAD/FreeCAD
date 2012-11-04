@@ -27,11 +27,9 @@
 # include <gp_Dir.hxx>
 # include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <Geom_Plane.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -46,7 +44,6 @@
 #endif
 
 #include <Base/Placement.h>
-#include <Mod/Part/App/Part2DObject.h>
 #include <App/Document.h>
 
 #include "FeaturePocket.h"
@@ -54,7 +51,7 @@
 
 using namespace PartDesign;
 
-const char* Pocket::TypeEnums[]= {"Length","UpToLast","UpToFirst","ThroughAll","UpToFace",NULL};
+const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace",NULL};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::Subtractive)
 
@@ -63,84 +60,47 @@ Pocket::Pocket()
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Length,(100.0));
-    ADD_PROPERTY(FaceName,(""));
+    ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",(App::PropertyType)(App::Prop_None),"Face where feature will end");
 }
 
 short Pocket::mustExecute() const
 {
     if (Placement.isTouched() ||
         Length.isTouched() ||
-        FaceName.isTouched())
+        UpToFace.isTouched())
         return 1;
     return Subtractive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pocket::execute(void)
 {
-    App::DocumentObject* link = Sketch.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No sketch linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-    TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape()._Shape;
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
+    // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
+    // empty FaceName (because it didn't exist) and a value for Length
+    if (std::string(Type.getValueAsString()) == "UpToFace" &&
+        (UpToFace.getValue() == NULL && Length.getValue() > Precision::Confusion()))
+        Type.setValue("Length");
 
-    // this is a workaround for an obscure OCC bug which leads to empty tessellations
-    // for some faces. Making an explicit copy of the linked shape seems to fix it.
-    // The error almost happens when re-computing the shape but sometimes also for the
-    // first time
-    BRepBuilderAPI_Copy copy(shape);
-    shape = copy.Shape();
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
+    // Validate parameters
+    double L = Length.getValue();
+    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
+        return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
 
-    TopExp_Explorer ex;
+    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
-    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-        wires.push_back(TopoDS::Wire(ex.Current()));
+    TopoDS_Shape support;
+    try {
+        sketch = getVerifiedSketch();
+        wires = getSketchWires();
+        support = getSupportShape();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-    if (wires.empty()) // there can be several wires
-        return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
 
     // get the Sketch plane
-    Base::Placement SketchPos = static_cast<Part::Part2DObject*>(link)->Placement.getValue();
+    Base::Placement SketchPos = sketch->Placement.getValue();
     Base::Rotation SketchOrientation = SketchPos.getRotation();
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
-
-    // get the support of the Sketch if any
-    App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(link)->Support.getValue();
-    Part::Feature *SupportObject = 0;
-    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        SupportObject = static_cast<Part::Feature*>(SupportLink);
-
-    if (!SupportObject)
-        return new App::DocumentObjectExecReturn("No support in Sketch!");
-
-    const TopoDS_Shape& support = SupportObject->Shape.getValue();
-    if (support.IsNull())
-        return new App::DocumentObjectExecReturn("Support shape is invalid");
-    TopExp_Explorer xp (support, TopAbs_SOLID);
-    if (!xp.More())
-        return new App::DocumentObjectExecReturn("Support shape is not a solid");
-
-    TopoDS_Shape aFace = makeFace(wires);
-    if (aFace.IsNull())
-        return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
-
-    // This is a trick to avoid problems with the cut operation. Sometimes a cut doesn't
-    // work as expected if faces are coincident. Thus, we move the face in normal direction
-    // but make it longer by one unit in the opposite direction.
-    // TODO: Isn't one unit (one millimeter) a lot, assuming someone models a really tiny solid?
-    // What about using 2 * Precision::Confusion() ?
-    gp_Trsf mov;
-    mov.SetTranslation(gp_Vec(SketchVector.x,SketchVector.y,SketchVector.z));
-    TopLoc_Location loc(mov);
-    aFace.Move(loc);
-
-    // lengthen the vector
-    SketchVector *= (Length.getValue()+1);
 
     // turn around for pockets
     SketchVector *= -1;
@@ -149,131 +109,82 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
     try {
-        // extrude the face to a solid
-        TopoDS_Shape prism;
+        support.Move(invObjLoc);
 
-        if ((std::string(Type.getValueAsString()) == "UpToLast") ||
-            (std::string(Type.getValueAsString()) == "UpToFirst") ||
-            (std::string(Type.getValueAsString()) == "UpToFace"))
-        {
+        gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
+        dir.Transform(invObjLoc.Transformation());
+
+        TopoDS_Shape sketchshape = makeFace(wires);
+        if (sketchshape.IsNull())
+            return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
+        sketchshape.Move(invObjLoc);
+
+        std::string method(Type.getValueAsString());
+        if (method == "UpToFirst" || method == "UpToFace") {
+            TopoDS_Face supportface = getSupportFace();
+            supportface.Move(invObjLoc);
+
+            // Find a valid face to extrude up to
             TopoDS_Face upToFace;
-            gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
-
-            if ((std::string(Type.getValueAsString()) == "UpToLast") ||
-                (std::string(Type.getValueAsString()) == "UpToFirst"))
-            {
-                TopoDS_Shape origFace = makeFace(wires); // original sketch face before moving one unit
-                std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, origFace, dir);
-                if (cfaces.empty())
-                      return new App::DocumentObjectExecReturn("No faces found in this direction");
-
-                // Find nearest/furthest face
-                std::vector<Part::cutFaces>::const_iterator it, it_near, it_far;
-                it_near = it_far = cfaces.begin();
-                for (it = cfaces.begin(); it != cfaces.end(); it++)
-                    if (it->distsq > it_far->distsq)
-                        it_far = it;
-                    else if (it->distsq < it_near->distsq)
-                        it_near = it;
-                upToFace = (std::string(Type.getValueAsString()) == "UpToLast" ? it_far->face : it_near->face);
-            } else {
-                if (FaceName.isEmpty())
-                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: No face selected");
-
-                // Get active object, this is the object that the user referenced when he clicked on the face!
-                App::DocumentObject* baseLink = this->getDocument()->getActiveObject();
-
-                if (!baseLink)
-                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: No object linked");
-                if (!baseLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: Linked object is not a Part object");
-                Part::Feature *base = static_cast<Part::Feature*>(baseLink);
-                const Part::TopoShape& baseShape = base->Shape.getShape();
-                if (baseShape._Shape.IsNull())
-                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: Cannot work on invalid shape");
-
-                TopoDS_Shape sub = baseShape.getSubShape(FaceName.getValue());
-                if (!sub.IsNull() && sub.ShapeType() == TopAbs_FACE)
-                    upToFace = TopoDS::Face(sub);
-                else
-                    return new App::DocumentObjectExecReturn("Cannot extrude up to face: Selection is not a face");
-
-                // Find the origin of this face (i.e. a vertex or a edge in a sketch)
-                TopoDS_Shape origin = base->findOriginOf(sub);
-
-                // Validate face
-                // TODO: This would also exclude faces that are valid but not cut by the line
-                // So for now we trust to the intelligence of the user when picking the face
-                /*std::vector<cutFaces> cfaces = findAllFacesCutBy(upToFace, origFace, dir);
-                if (cfaces.empty())
-                      return new App::DocumentObjectExecReturn("No faces found in this direction");*/
+            if (method == "UpToFace") {
+                getUpToFaceFromLinkSub(upToFace, UpToFace);
+                upToFace.Move(invObjLoc);
             }
+            getUpToFace(upToFace, support, supportface, sketchshape, method, dir);
 
-            // Create semi-infinite prism from sketch in direction dir
-            dir.Transform(invObjLoc.Transformation());
-            BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),dir,0,0,1);
+            // Special treatment because often the created stand-alone prism is invalid (empty) because
+            // BRepFeat_MakePrism(..., 2, 1) is buggy
+            BRepFeat_MakePrism PrismMaker;
+            PrismMaker.Init(support, sketchshape, supportface, dir, 0, 1);
+            PrismMaker.Perform(upToFace);
+
             if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Cannot extrude up to face: Could not extrude the sketch!");
+                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
+            TopoDS_Shape prism = PrismMaker.Shape();
 
-            // Cut off the prism at the face we found
-            // Grab any point from the sketch
-            TopExp_Explorer exp;
-            exp.Init(aFace, TopAbs_VERTEX);
-            if (!exp.More())
-                return new App::DocumentObjectExecReturn("Cannot extrude up to face: Sketch without points?");
-            gp_Pnt aPnt = BRep_Tool::Pnt(TopoDS::Vertex(exp.Current()));
-
-            // Create a halfspace from the face, extending in direction of sketch plane
-            BRepPrimAPI_MakeHalfSpace mkHalfSpace(upToFace, aPnt);
-            if (!mkHalfSpace.IsDone())
-                return new App::DocumentObjectExecReturn("Cannot extrude up to face: HalfSpace creation failed");
-
-            // Find common material between halfspace and prism
-            BRepAlgoAPI_Common mkCommon(PrismMaker.Shape(), mkHalfSpace.Solid().Moved(invObjLoc));
-            if (!mkCommon.IsDone())
-                return new App::DocumentObjectExecReturn("Cannot extrude up to face: Common creation failed");
-
-            prism = this->getSolid(mkCommon.Shape());
-            if (prism.IsNull())
-                return new App::DocumentObjectExecReturn("Cannot extrude up to face: Resulting shape is not a solid");
-        } else if (std::string(Type.getValueAsString()) == "ThroughAll") {
-            gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
-            dir.Transform(invObjLoc.Transformation());
-            BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),dir,1,0,1); // infinite prism (in both directions!)
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
-            prism = PrismMaker.Shape();
-        } else if (std::string(Type.getValueAsString()) == "Length") {
-            gp_Vec vec(SketchVector.x,SketchVector.y,SketchVector.z);
-            vec.Transform(invObjLoc.Transformation());
-            BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),vec,0,1); // finite prism
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
-            prism = PrismMaker.Shape();
+            // And the really expensive way to get the SubShape...
+            BRepAlgoAPI_Cut mkCut(support, prism);
+            if (!mkCut.IsDone())
+                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
+            // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
+            this->SubShape.setValue(mkCut.Shape());
+            this->Shape.setValue(prism);
         } else {
-            return new App::DocumentObjectExecReturn("Internal error: Unknown type for Pocket feature");
+            TopoDS_Shape prism;
+            generatePrism(prism, sketchshape, method, dir, L, 0.0,
+                          Midplane.getValue(), Reversed.getValue());
+            if (prism.IsNull())
+                return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
+
+            // set the subtractive shape property for later usage in e.g. pattern
+            this->SubShape.setValue(prism);
+
+            // Cut the SubShape out of the support
+            BRepAlgoAPI_Cut mkCut(support, prism);
+            if (!mkCut.IsDone())
+                return new App::DocumentObjectExecReturn("Pocket: Cut out of support failed");
+            TopoDS_Shape result = mkCut.Shape();
+            // we have to get the solids (fuse sometimes creates compounds)
+            TopoDS_Shape solRes = this->getSolid(result);
+            if (solRes.IsNull())
+                return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+            this->Shape.setValue(solRes);
         }
 
-        this->SubShape.setValue(prism);
-
-        // Cut out the pocket
-        BRepAlgoAPI_Cut mkCut(support.Moved(invObjLoc), prism);
-
-        // Let's check if the fusion has been successful
-        if (!mkCut.IsDone())
-            return new App::DocumentObjectExecReturn("Cut with support failed");
-
-        // we have to get the solids (fuse sometimes creates compounds)
-        TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
-        if (solRes.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-        this->Shape.setValue(solRes);
-
         return App::DocumentObject::StdReturn;
-    } catch (Standard_Failure) {
+    }
+    catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+        if (std::string(e->GetMessageString()) == "TopoDS::Face" &&
+            (Type.getValueAsString() == "UpToFirst" || Type.getValueAsString() == "UpToFace"))
+            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
+                "Intersecting sketch entities or multiple faces in a sketch are not allowed "
+                "for making a pocket up to a face.");
+        else
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
 }
 

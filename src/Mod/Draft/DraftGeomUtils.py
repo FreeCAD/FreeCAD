@@ -381,7 +381,6 @@ def geom(edge,plac=FreeCAD.Placement()):
             p= Part.ArcOfCircle(cu,a1,a2)
             return p
     else:
-        print edge.Curve
         return edge.Curve
 
 def mirror (point, edge):
