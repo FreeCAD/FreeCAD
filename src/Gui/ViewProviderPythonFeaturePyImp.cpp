@@ -84,6 +84,16 @@ PyObject*  ViewProviderPythonFeaturePy::addProperty(PyObject *args)
     return Py::new_reference_to(this);
 }
 
+PyObject*  ViewProviderPythonFeaturePy::removeProperty(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return NULL;
+
+    bool ok = getViewProviderPythonFeaturePtr()->removeDynamicProperty(sName);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
 PyObject*  ViewProviderPythonFeaturePy::supportedProperties(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 

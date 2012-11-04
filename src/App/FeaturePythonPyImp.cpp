@@ -62,6 +62,16 @@ PyObject*  FeaturePythonPy::addProperty(PyObject *args)
     return Py::new_reference_to(this);
 }
 
+PyObject*  FeaturePythonPy::removeProperty(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return NULL;
+
+    bool ok = getFeaturePythonPtr()->removeDynamicProperty(sName);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
 PyObject*  FeaturePythonPy::supportedProperties(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
