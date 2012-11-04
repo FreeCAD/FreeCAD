@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="Plot"> 
+        <file>icons/Axes.svg</file>
+        <file>icons/Grid.svg</file>
+        <file>icons/Icon.svg</file>
+        <file>icons/Labels.svg</file>
+        <file>icons/Legend.svg</file>
+        <file>icons/Positions.svg</file>
+        <file>icons/Save.svg</file>
+        <file>icons/Series.svg</file>
+        <file>translations/Plot_es-ES.qm</file>
+    </qresource>
+</RCC> 

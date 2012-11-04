@@ -3,72 +3,72 @@
 <context>
     <name>plot</name>
     <message>
-        <location filename="PlotGui.py" line="48"/>
+        <location filename="PlotGui.py" line="55"/>
         <source>Save plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="60"/>
+        <location filename="PlotGui.py" line="67"/>
         <source>Configure axes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="61"/>
+        <location filename="PlotGui.py" line="68"/>
         <source>Configure axes parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="72"/>
+        <location filename="PlotGui.py" line="79"/>
         <source>Configure series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="73"/>
+        <location filename="PlotGui.py" line="80"/>
         <source>Configure series drawing style and label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="91"/>
+        <location filename="PlotGui.py" line="98"/>
         <source>Show/Hide grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="92"/>
+        <location filename="PlotGui.py" line="99"/>
         <source>Show/Hide grid on selected plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="110"/>
+        <location filename="PlotGui.py" line="117"/>
         <source>Show/Hide legend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="111"/>
+        <location filename="PlotGui.py" line="118"/>
         <source>Show/Hide legend on selected plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="122"/>
+        <location filename="PlotGui.py" line="129"/>
         <source>Set labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="123"/>
+        <location filename="PlotGui.py" line="130"/>
         <source>Set title and axes labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="134"/>
+        <location filename="PlotGui.py" line="141"/>
         <source>Set positions and sizes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="135"/>
+        <location filename="PlotGui.py" line="142"/>
         <source>Set labels and legend positions and sizes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="49"/>
+        <location filename="PlotGui.py" line="56"/>
         <source>Save plot as image file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -154,12 +154,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="81"/>
+        <location filename="PlotGui.py" line="88"/>
         <source>Grid must be activated on top of a plot document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotGui.py" line="100"/>
+        <location filename="PlotGui.py" line="107"/>
         <source>Legend must be activated on top of a plot document</source>
         <translation type="unfinished"></translation>
     </message>

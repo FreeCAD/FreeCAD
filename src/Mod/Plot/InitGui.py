@@ -26,7 +26,7 @@ class PlotWorkbench ( Workbench ):
 	from plotUtils import Paths
 	import PlotGui
 
-	Icon = Paths.iconsPath() + "/Icon.svg"
+	Icon = 'Icon.svg'
 	MenuText = "Plot"
 	ToolTip = "The Plot module is used to edit/save output plots performed by other tools"
 
