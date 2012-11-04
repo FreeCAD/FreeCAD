@@ -407,13 +407,13 @@ bool TaskDlgPocketParameters::accept()
         //Gui::Command::openCommand("Pocket changed");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-        const char* facename = parameter->getFaceName().data();
+        QByteArray facename = parameter->getFaceName();
         PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
         Part::Feature* support = pcPocket->getSupport();
-        if (support != NULL && facename && facename[0] != '\0') {
+        if (support != NULL && !facename.isEmpty()) {
             QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-            buf = buf.arg(QString::fromUtf8(facename));
+            buf = buf.arg(QString::fromUtf8(facename.data()));
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
         } else
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());

@@ -46,6 +46,7 @@
 # include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <TopExp.hxx>
 # include <IntTools_FClass2d.hxx>
 # include <ShapeAnalysis_Surface.hxx>
 # include <ShapeFix_Shape.hxx>
@@ -517,6 +518,109 @@ const bool SketchBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoD
     // Check again after introduction of "robust" reference for upToFace
     BRepProj_Projection proj(wire, face, dir);
     return (proj.More() && proj.Current().Closed());
+}
+
+void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
+{
+    std::vector<App::DocumentObject*> refs = this->getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = refs.begin(); it != refs.end(); ++it) {
+        if ((*it)->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            Part::Part2DObject* part = static_cast<Part::Part2DObject*>(*it);
+            Part::TopoShape shape = this->Shape.getValue();
+            // here we must reset the placement otherwise the geometric matching doesn't work
+            shape._Shape.Location(TopLoc_Location());
+            std::vector<std::string> subValues = part->Support.getSubValues();
+            std::vector<std::string> newSubValues;
+            TopTools_IndexedMapOfShape faceMap;
+            TopExp::MapShapes(newShape, TopAbs_FACE, faceMap);
+
+            for (std::vector<std::string>::iterator it = subValues.begin(); it != subValues.end(); ++it) {
+                std::string shapetype;
+                if (it->size() > 4 && it->substr(0,4) == "Face") {
+                    shapetype = "Face";
+                }
+                else if (it->size() > 4 && it->substr(0,4) == "Edge") {
+                    shapetype = "Edge";
+                }
+                else if (it->size() > 6 && it->substr(0,6) == "Vertex") {
+                    shapetype = "Vertex";
+                }
+                else {
+                    continue;
+                }
+
+                TopoDS_Shape element = shape.getSubShape(it->c_str());
+                bool success = false;
+                for (int i=1; i<faceMap.Extent(); i++) {
+                    if (isQuasiEqual(element, faceMap.FindKey(i))) {
+                        std::stringstream str;
+                        str << shapetype << i;
+                        newSubValues.push_back(str.str());
+                        success = true;
+                        break;
+                    }
+                }
+
+                // the new shape couldn't be found so keep the old sub-name
+                if (!success)
+                    newSubValues.push_back(*it);
+            }
+
+            part->Support.setValue(this, newSubValues);
+        }
+    }
+}
+
+struct gp_Pnt_Less  : public std::binary_function<const gp_Pnt&,
+                                                  const gp_Pnt&, bool>
+{
+    bool operator()(const gp_Pnt& p1,
+                    const gp_Pnt& p2) const
+    {
+        if (fabs(p1.X() - p2.X()) > Precision::Confusion())
+            return p1.X() < p2.X();
+        if (fabs(p1.Y() - p2.Y()) > Precision::Confusion())
+            return p1.Y() < p2.Y();
+        if (fabs(p1.Z() - p2.Z()) > Precision::Confusion())
+            return p1.Z() < p2.Z();
+        return false; // points are considered to be equal
+    }
+};
+
+bool SketchBased::isQuasiEqual(const TopoDS_Shape& s1, const TopoDS_Shape& s2) const
+{
+    if (s1.ShapeType() != s2.ShapeType())
+        return false;
+    TopTools_IndexedMapOfShape map1, map2;
+    TopExp::MapShapes(s1, TopAbs_VERTEX, map1);
+    TopExp::MapShapes(s2, TopAbs_VERTEX, map2);
+    if (map1.Extent() != map2.Extent())
+        return false;
+
+    std::vector<gp_Pnt> p1;
+    for (int i=1; i<=map1.Extent(); i++) {
+        const TopoDS_Vertex& v = TopoDS::Vertex(map1.FindKey(i));
+        p1.push_back(BRep_Tool::Pnt(v));
+    }
+    std::vector<gp_Pnt> p2;
+    for (int i=1; i<=map2.Extent(); i++) {
+        const TopoDS_Vertex& v = TopoDS::Vertex(map2.FindKey(i));
+        p2.push_back(BRep_Tool::Pnt(v));
+    }
+
+    std::sort(p1.begin(), p1.end(), gp_Pnt_Less());
+    std::sort(p2.begin(), p2.end(), gp_Pnt_Less());
+
+    if (p1.size() != p2.size())
+        return false;
+
+    std::vector<gp_Pnt>::iterator it = p1.begin(), jt = p2.begin();
+    for (; it != p1.end(); ++it, ++jt) {
+        if (!(*it).IsEqual(*jt, Precision::Confusion()))
+            return false;
+    }
+
+    return true;
 }
 
 }
