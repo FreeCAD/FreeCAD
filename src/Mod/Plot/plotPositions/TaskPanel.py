@@ -103,6 +103,14 @@ class TaskPanel:
                                  None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(QtGui.QApplication.translate("plot_positions", "Size",
                                  None,QtGui.QApplication.UnicodeUTF8))
+		self.form.items.setToolTip(QtGui.QApplication.translate("plot_positions", "List of modificable items",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.x.setToolTip(QtGui.QApplication.translate("plot_positions", "X item position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.y.setToolTip(QtGui.QApplication.translate("plot_positions", "Y item position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.s.setToolTip(QtGui.QApplication.translate("plot_positions", "Item size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def onItem(self, row):
 		""" Executed when selected item is modified. """

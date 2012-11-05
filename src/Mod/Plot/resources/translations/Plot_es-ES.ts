@@ -151,6 +151,66 @@
         <source>Y auto</source>
         <translation>Automática en Y</translation>
     </message>
+    <message>
+        <location filename="TaskPanel.py" line="156"/>
+        <source>Index of the active axes</source>
+        <translation>Identificador de los ejes activos</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="158"/>
+        <source>Add new axes to the plot</source>
+        <translation>Agrega un nuevo juego de ejes al gráfico</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="160"/>
+        <source>Remove selected axes</source>
+        <translation>Elimina el juego de ejes seleccionado</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="162"/>
+        <source>Check it to apply transformations to all axes</source>
+        <translation>Marcar para aplicar las transformaciones a todos los ejes</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="164"/>
+        <source>Left bound of axes</source>
+        <translation>Límite izquierdo del juego de ejes</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="166"/>
+        <source>Right bound of axes</source>
+        <translation>Límite derecho del juego de ejes</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="168"/>
+        <source>Bottom bound of axes</source>
+        <translation>Límite inferior del juego de ejes</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="170"/>
+        <source>Top bound of axes</source>
+        <translation>Límite superior del juego de ejes</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="172"/>
+        <source>Outward offset of X axis</source>
+        <translation>Desplazamiento al exterior del eje X</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="174"/>
+        <source>Outward offset of Y axis</source>
+        <translation>Desplazamiento al exterior del eje Y</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="176"/>
+        <source>X axis scale autoselection</source>
+        <translation>Escala automática en el eje X</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="178"/>
+        <source>Y axis scale autoselection</source>
+        <translation>Escala automática en el eje Y</translation>
+    </message>
 </context>
 <context>
     <name>plot_console</name>
@@ -170,7 +230,7 @@
         <translation>Debe seleccionar una grafica primero</translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="194"/>
+        <location filename="TaskPanel.py" line="218"/>
         <source>Axes 0 can not be deleted</source>
         <translation>El juego ejes 0 no puede ser eliminado</translation>
     </message>
@@ -212,6 +272,41 @@
         <source>Y label</source>
         <translation>Título del eje Y</translation>
     </message>
+    <message>
+        <location filename="TaskPanel.py" line="119"/>
+        <source>Index of the active axes</source>
+        <translation>Identificador de los ejes activos</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="121"/>
+        <source>Title (associated to active axes)</source>
+        <translation>Título (asociado a los ejes seleccionados)</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="123"/>
+        <source>Title font size</source>
+        <translation>Tamaño de fuente del título</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="125"/>
+        <source>X axis title</source>
+        <translation>Título del eje X</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="127"/>
+        <source>X axis title font size</source>
+        <translation>Tamaño de fuente del título del eje X</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="129"/>
+        <source>Y axis title</source>
+        <translation>Título del eje Y</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="131"/>
+        <source>Y axis title font size</source>
+        <translation>Tamaño de fuente del título del eje Y</translation>
+    </message>
 </context>
 <context>
     <name>plot_positions</name>
@@ -230,6 +325,26 @@
         <source>Size</source>
         <translation>Tamaño</translation>
     </message>
+    <message>
+        <location filename="TaskPanel.py" line="106"/>
+        <source>List of modificable items</source>
+        <translation>Lista de objetos configurables</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="108"/>
+        <source>X item position</source>
+        <translation>Posición del objeto en la dirección X</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="110"/>
+        <source>Y item position</source>
+        <translation>Posición del objeto en la dirección Y</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="112"/>
+        <source>Item size</source>
+        <translation>Tamaño del objeto</translation>
+    </message>
 </context>
 <context>
     <name>plot_save</name>
@@ -247,6 +362,31 @@
         <location filename="TaskPanel.py" line="110"/>
         <source>Dots per Inch</source>
         <translation>Puntos por pulgada</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="112"/>
+        <source>Output image file path</source>
+        <translation>Ruta del archivo de imagen a guardar</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="114"/>
+        <source>Show a file selection dialog</source>
+        <translation>Muestra un cuadro de diálogo de selección de archivo</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="116"/>
+        <source>X image size</source>
+        <translation>Tamaño en X de la imagen</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="118"/>
+        <source>Y image size</source>
+        <translation>Tamaño en Y de la imagen</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="120"/>
+        <source>Dots per point, with size will define output image resolution</source>
+        <translation>Puntos por pulgada de la imagen, multiplicando este valor por el tamaño se obtiene la resolución</translation>
     </message>
 </context>
 <context>
@@ -267,7 +407,7 @@
         <translation>Eliminar serie</translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="119"/>
+        <location filename="TaskPanel.py" line="129"/>
         <source>Line style</source>
         <translation>Estilo de línea</translation>
     </message>
@@ -275,6 +415,46 @@
         <location filename="TaskPanel.py" line="121"/>
         <source>Marker</source>
         <translation>Marcador</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="123"/>
+        <source>List of available series</source>
+        <translation>Lista de series de datos disponibles</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="125"/>
+        <source>Line title</source>
+        <translation>Título de la serie</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="127"/>
+        <source>If checked serie will not considered for legend</source>
+        <translation>Si se marca, la serie será ignorada en la legenda</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="131"/>
+        <source>Marker style</source>
+        <translation>Estilo del marcador</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="133"/>
+        <source>Line width</source>
+        <translation>Ancho de la línea</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="135"/>
+        <source>Marker size</source>
+        <translation>Tamaño del marcador</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="137"/>
+        <source>Line and marker color</source>
+        <translation>Color de la línea y del marcador</translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="139"/>
+        <source>Removes this serie</source>
+        <translation>Elimina la serie seleccionada</translation>
     </message>
 </context>
 </TS>
