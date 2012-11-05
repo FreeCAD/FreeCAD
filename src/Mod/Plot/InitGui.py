@@ -33,12 +33,8 @@ class PlotWorkbench ( Workbench ):
 	def Initialize(self):
 		from PyQt4 import QtCore, QtGui
 		cmdlst = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
-		self.appendToolbar(str(QtGui.QApplication.translate("plot", "Plot edition tools",
-                           None,QtGui.QApplication.UnicodeUTF8)),
-                           cmdlst)
-		self.appendMenu(str(QtGui.QApplication.translate("plot", "Plot",
-                        None,QtGui.QApplication.UnicodeUTF8)),
-                        cmdlst)
+		self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot edition tools")),cmdlst)
+		self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot")),cmdlst)
 
 try:
 	import matplotlib
