@@ -124,6 +124,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
+            if (Reversed.getValue())
+                dir.Reverse();
+
             // Find a valid face to extrude up to
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
