@@ -399,7 +399,33 @@ void TaskPadParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
+        ui->doubleSpinBox->blockSignals(true);
+        ui->doubleSpinBox2->blockSignals(true);
+        ui->lineFaceName->blockSignals(true);
+        ui->changeMode->blockSignals(true);
+        int index = ui->changeMode->currentIndex();
         ui->retranslateUi(proxy);
+        ui->changeMode->clear();
+        ui->changeMode->addItem(tr("Dimension"));
+        ui->changeMode->addItem(tr("To last"));
+        ui->changeMode->addItem(tr("To first"));
+        ui->changeMode->addItem(tr("Up to face"));
+        ui->changeMode->addItem(tr("Two dimensions"));
+        ui->changeMode->setCurrentIndex(index);
+
+        QByteArray upToFace = this->getFaceName();
+        int faceId = -1;
+        bool ok = false;
+        if (upToFace.indexOf("Face") == 0) {
+            faceId = upToFace.remove(0,4).toInt(&ok);
+        }
+        ui->lineFaceName->setText(ok ?
+                                  tr("Face") + QString::number(faceId) :
+                                  tr("No face selected"));
+        ui->doubleSpinBox->blockSignals(false);
+        ui->doubleSpinBox2->blockSignals(false);
+        ui->lineFaceName->blockSignals(false);
+        ui->changeMode->blockSignals(false);
     }
 }
 
