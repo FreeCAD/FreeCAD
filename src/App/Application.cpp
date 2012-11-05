@@ -941,10 +941,12 @@ void Application::init(int argc, char ** argv)
 #endif
         // if an unexpected crash occurs we can install a handler function to
         // write some additional information
+#ifdef _MSC_VER // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
         std::set_terminate(unhandled_exception_handler);
         std::set_unexpected(unexpection_error_handler);
+#endif
 
         initTypes();
 
