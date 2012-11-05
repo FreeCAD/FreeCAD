@@ -151,6 +151,66 @@
         <source>Y auto</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="TaskPanel.py" line="156"/>
+        <source>Index of the active axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="158"/>
+        <source>Add new axes to the plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="160"/>
+        <source>Remove selected axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="162"/>
+        <source>Check it to apply transformations to all axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="164"/>
+        <source>Left bound of axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="166"/>
+        <source>Right bound of axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="168"/>
+        <source>Bottom bound of axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="170"/>
+        <source>Top bound of axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="172"/>
+        <source>Outward offset of X axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="174"/>
+        <source>Outward offset of Y axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="176"/>
+        <source>X axis scale autoselection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="178"/>
+        <source>Y axis scale autoselection</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>plot_console</name>
@@ -170,7 +230,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="194"/>
+        <location filename="TaskPanel.py" line="218"/>
         <source>Axes 0 can not be deleted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -212,6 +272,41 @@
         <source>Y label</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="TaskPanel.py" line="119"/>
+        <source>Index of the active axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="121"/>
+        <source>Title (associated to active axes)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="123"/>
+        <source>Title font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="125"/>
+        <source>X axis title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="127"/>
+        <source>X axis title font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="129"/>
+        <source>Y axis title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="131"/>
+        <source>Y axis title font size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>plot_positions</name>
@@ -228,6 +323,26 @@
     <message>
         <location filename="TaskPanel.py" line="104"/>
         <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="106"/>
+        <source>List of modificable items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="108"/>
+        <source>X item position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="110"/>
+        <source>Y item position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="112"/>
+        <source>Item size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -248,6 +363,31 @@
         <source>Dots per Inch</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="TaskPanel.py" line="112"/>
+        <source>Output image file path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="114"/>
+        <source>Show a file selection dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="116"/>
+        <source>X image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="118"/>
+        <source>Y image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="120"/>
+        <source>Dots per point, with size will define output image resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>plot_series</name>
@@ -262,7 +402,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="119"/>
+        <location filename="TaskPanel.py" line="129"/>
         <source>Line style</source>
         <translation type="unfinished"></translation>
     </message>
@@ -274,6 +414,46 @@
     <message>
         <location filename="TaskPanel.py" line="113"/>
         <source>Configure series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="123"/>
+        <source>List of available series</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="125"/>
+        <source>Line title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="127"/>
+        <source>If checked serie will not considered for legend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="131"/>
+        <source>Marker style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="133"/>
+        <source>Line width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="135"/>
+        <source>Marker size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="137"/>
+        <source>Line and marker color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="139"/>
+        <source>Removes this serie</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

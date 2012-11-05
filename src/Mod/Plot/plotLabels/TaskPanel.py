@@ -116,6 +116,20 @@ class TaskPanel:
                                  None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QLabel, "yLabel").setText(QtGui.QApplication.translate("plot_labels", "Y label",
                                  None,QtGui.QApplication.UnicodeUTF8))
+		self.form.axId.setToolTip(QtGui.QApplication.translate("plot_labels", "Index of the active axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.title.setToolTip(QtGui.QApplication.translate("plot_labels", "Title (associated to active axes)",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.titleSize.setToolTip(QtGui.QApplication.translate("plot_labels", "Title font size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.xLabel.setToolTip(QtGui.QApplication.translate("plot_labels", "X axis title",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.xSize.setToolTip(QtGui.QApplication.translate("plot_labels", "X axis title font size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.yLabel.setToolTip(QtGui.QApplication.translate("plot_labels", "Y axis title",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.ySize.setToolTip(QtGui.QApplication.translate("plot_labels", "Y axis title font size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def onAxesId(self, value):
 		""" Executed when axes index is modified. """
