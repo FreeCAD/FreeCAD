@@ -472,14 +472,14 @@ bool TaskDlgPadParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length2 = %f",name.c_str(),parameter->getLength2());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-        QByteArray facename = parameter->getFaceName();
+        std::string facename = parameter->getFaceName().data();
         PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
         Part::Feature* support = pcPad->getSupport();
 
-        if (support != NULL && !facename.isEmpty()) {
+        if (support != NULL && !facename.empty()) {
             QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-            buf = buf.arg(QString::fromUtf8(facename.data()));
+            buf = buf.arg(QString::fromStdString(facename));
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
         } else
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
