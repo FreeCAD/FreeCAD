@@ -27,8 +27,12 @@
             <File Id="PlotGuiPy" Name="PlotGui.py" DiskId="1" />
             <File Id="PlotInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="PlotInstance" Name="Plot.py" DiskId="1" />
+            <File Id="PlotResources" Name="Plot_rc.py" DiskId="1" />
         </Component>
 		<Directory Id="ModPlotResources" Name="resources" FileSource="../../Mod/Plot/resources" >
+			<Component Id="CompModPlotResources"  Guid="9e540692-dbee-4cc7-994d-3a8153de53bc" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="PlotResources01" Name="Plot.qrc"   />
+			</Component>
 			<Directory Id="ModPlotIcons" Name="icons" FileSource="../../Mod/Plot/resources/icons" >
 				<Component Id="CompModPlotIcons"  Guid="a176d6d9-755c-4b09-824a-af56c45f08c0" Win64='$(var.Win_64)' KeyPath="yes">
 					<File Id="PlotIcons01" Name="Axes.svg"   />
