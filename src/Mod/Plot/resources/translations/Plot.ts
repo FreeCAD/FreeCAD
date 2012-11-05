@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="2.0">
 <context>
+    <name>Plot</name>
+    <message>
+        <location filename="InitGui.py" line="36"/>
+        <source>Plot edition tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="37"/>
+        <source>Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Plot_Axes</name>
     <message>
         <location filename="PlotGui.py" line="67"/>
@@ -92,19 +105,6 @@
     </message>
 </context>
 <context>
-    <name>plot</name>
-    <message>
-        <location filename="InitGui.py" line="36"/>
-        <source>Plot edition tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="39"/>
-        <source>Plot</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>plot_axes</name>
     <message>
         <location filename="TaskPanel.py" line="130"/>
@@ -160,7 +160,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="48"/>
+        <location filename="InitGui.py" line="44"/>
         <source>matplotlib not found, Plot module will be disabled</source>
         <translation type="unfinished"></translation>
     </message>

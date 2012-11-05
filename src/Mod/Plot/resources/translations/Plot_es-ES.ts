@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="2.0">
 <context>
+    <name>Plot</name>
+    <message>
+        <location filename="InitGui.py" line="36"/>
+        <source>Plot edition tools</source>
+        <translation>Herramientas de edición de gráficas</translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="37"/>
+        <source>Plot</source>
+        <translation>Gráfica</translation>
+    </message>
+</context>
+<context>
     <name>Plot_Axes</name>
     <message>
         <location filename="PlotGui.py" line="67"/>
@@ -92,19 +105,6 @@
     </message>
 </context>
 <context>
-    <name>plot</name>
-    <message>
-        <location filename="InitGui.py" line="36"/>
-        <source>Plot edition tools</source>
-        <translation>Herramientas de edicion de graficas</translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="39"/>
-        <source>Plot</source>
-        <translation>Grafica</translation>
-    </message>
-</context>
-<context>
     <name>plot_axes</name>
     <message>
         <location filename="TaskPanel.py" line="130"/>
@@ -160,7 +160,7 @@
         <translation>No se puede encontrar matplotlib, y por tanto no se puede cargar el modulo de graficado</translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="48"/>
+        <location filename="InitGui.py" line="44"/>
         <source>matplotlib not found, Plot module will be disabled</source>
         <translation>No se puede encontrar matplotlib, el modulo de graficado sera desactivado</translation>
     </message>
