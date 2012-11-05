@@ -158,7 +158,7 @@ void TaskPadParameters::updateUI(int index)
     } else if (index == 1 || index == 2) { // up to first/last
         ui->doubleSpinBox->setEnabled(false);
         ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(false);
+        ui->checkBoxReversed->setEnabled(true);
         ui->doubleSpinBox2->setEnabled(false);
         ui->buttonFace->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
