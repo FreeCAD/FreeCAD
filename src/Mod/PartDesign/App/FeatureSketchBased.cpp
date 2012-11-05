@@ -484,12 +484,13 @@ void SketchBased::generatePrism(TopoDS_Shape& prism,
             // Note: 1E6 created problems once...
             Ltotal = 1E4;
 
-        if (midplane)
-            Loffset = -Ltotal/2;
-        else if (method == "TwoLengths") {
+
+        if (method == "TwoLengths") {
+            // midplane makes no sense here
             Loffset = -L2;
             Ltotal += L2;
-        }
+        } else if (midplane)
+            Loffset = -Ltotal/2;
 
         TopoDS_Shape from = sketchshape;
         if (method == "TwoLengths" || midplane) {
