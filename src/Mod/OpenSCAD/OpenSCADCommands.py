@@ -143,9 +143,9 @@ class AddSCADWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
         self.textEdit=QtGui.QTextEdit()
-        self.buttonadd = QtGui.QPushButton(translate('OpenSCAD',u'Add'))
-        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD',u'Clear'))
-        self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD',u'as Mesh'))
+        self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
+        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear'))
+        self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as Mesh'))
         layouth=QtGui.QHBoxLayout()
         layouth.addWidget(self.buttonadd)
         layouth.addWidget(self.buttonclear)
@@ -154,15 +154,15 @@ class AddSCADWidget(QtGui.QWidget):
         layout.addWidget(self.checkboxmesh)
         layout.addWidget(self.textEdit)
         self.setLayout(layout)
-        self.setWindowTitle(translate('OpenSCAD',u'Add OpenSCAD Element'))
+        self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
         self.textEdit.setText(u'cube();')
         self.buttonclear.clicked.connect(self.textEdit.clear)
 
     def retranslateUi(self, widget=None):
-        self.buttonadd.setText(translate('OpenSCAD',u'Add'))
-        self.buttonclear.setText(translate('OpenSCAD',u'Clear'))
-        self.checkboxmesh.setText(translate('OpenSCAD',u'as Mesh'))
-        self.setWindowTitle(translate('OpenSCAD',u'Add OpenSCAD Element'))
+        self.buttonadd.setText(translate('OpenSCAD','Add'))
+        self.buttonclear.setText(translate('OpenSCAD','Clear'))
+        self.checkboxmesh.setText(translate('OpenSCAD','as Mesh'))
+        self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
 
 class AddSCADTask:
     def __init__(self):
@@ -210,10 +210,10 @@ class AddOpenSCADElement:
                 'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
 
 
-FreeCADGui.addCommand('ColorCodeShape',ColorCodeShape())
-FreeCADGui.addCommand('Edgestofaces',Edgestofaces())
-FreeCADGui.addCommand('RefineShapeFeature',RefineShapeFeature())
-FreeCADGui.addCommand('ExpandPlacements',ExpandPlacements())
-FreeCADGui.addCommand('ReplaceObject',ReplaceObject())
-FreeCADGui.addCommand('RemoveSubtree',RemoveSubtree())
-FreeCADGui.addCommand('AddOpenSCADElement',AddOpenSCADElement())
+FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
+FreeCADGui.addCommand('OpenSCAD_Edgestofaces',Edgestofaces())
+FreeCADGui.addCommand('OpenSCAD_RefineShapeFeature',RefineShapeFeature())
+FreeCADGui.addCommand('OpenSCAD_ExpandPlacements',ExpandPlacements())
+FreeCADGui.addCommand('OpenSCAD_ReplaceObject',ReplaceObject())
+FreeCADGui.addCommand('OpenSCAD_RemoveSubtree',RemoveSubtree())
+FreeCADGui.addCommand('OpenSCAD_AddOpenSCADElement',AddOpenSCADElement())

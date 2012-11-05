@@ -38,7 +38,7 @@
             <File Id="replaceobjpy" Name="replaceobj.py" DiskId="1" />
             <File Id="tokrulespy" Name="tokrules.py" DiskId="1" />
         </Component>
-		<Directory Id="ModOpenSCADPly" Name="OpenSCADPly" FileSource="../../Mod/OpenSCAD/ply">
+		<Directory Id="ModOpenSCADPly" Name="ply" FileSource="../../Mod/OpenSCAD/ply">
 	        <Component Id="CompModOpenSCADPly" Guid="870b896b-30f8-4d3b-b923-36536c0c2859" Win64='$(var.Win_64)' KeyPath="yes">
 	            <File Id="OpenSCADLibInitPy" Name="__init__.py" DiskId="1" />
 	            <File Id="OpenSCADLibREADME" Name="README" DiskId="1" />
