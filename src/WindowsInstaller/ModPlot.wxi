@@ -49,8 +49,50 @@
 				<Component Id="CompModPlotTranslations"  Guid="714534d7-ecf0-486c-9238-da6a06029499" Win64='$(var.Win_64)' KeyPath="yes">
 					<File Id="PlotTranslations01" Name="Plot.qm"   />
 					<File Id="PlotTranslations02" Name="Plot.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_af.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_af.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_cs.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_cs.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_de.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_de.ts"   />
 					<File Id="PlotTranslations03" Name="Plot_es-ES.qm"   />
 					<File Id="PlotTranslations04" Name="Plot_es-ES.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_fi.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_fi.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_fr.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_fr.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_hr.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_hr.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_hu.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_hu.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_it.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_it.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_ja.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_ja.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_nl.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_nl.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_no.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_no.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_pl.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_pl.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_pt-BR.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_pt-BR.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_ro.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_ro.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_ru.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_ru.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_sk.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_sk.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_sv-SE.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_sv-SE.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_tr.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_tr.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_uk.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_uk.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_zh-CN.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_zh-CN.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_zh-TW.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_zh-TW.ts"   />
 				</Component>
 			</Directory>
 		</Directory>
