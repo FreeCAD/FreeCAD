@@ -41,6 +41,7 @@
 # include <TopoDS_Wire.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopExp_Explorer.hxx>
+# include <gp_Ax1.hxx>
 # include <gp_Pln.hxx>
 # include <ShapeFix_Face.hxx>
 # include <ShapeFix_Wire.hxx>
@@ -551,6 +552,7 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
 
                 TopoDS_Shape element = shape.getSubShape(it->c_str());
                 bool success = false;
+                // first try an exact matching
                 for (int i=1; i<faceMap.Extent(); i++) {
                     if (isQuasiEqual(element, faceMap.FindKey(i))) {
                         std::stringstream str;
@@ -558,6 +560,18 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
                         newSubValues.push_back(str.str());
                         success = true;
                         break;
+                    }
+                }
+                // if an exact matching fails then try to compare only the geometries
+                if (!success) {
+                    for (int i=1; i<faceMap.Extent(); i++) {
+                        if (isEqualGeometry(element, faceMap.FindKey(i))) {
+                            std::stringstream str;
+                            str << shapetype << i;
+                            newSubValues.push_back(str.str());
+                            success = true;
+                            break;
+                        }
                     }
                 }
 
@@ -621,6 +635,33 @@ bool SketchBased::isQuasiEqual(const TopoDS_Shape& s1, const TopoDS_Shape& s2) c
     }
 
     return true;
+}
+
+bool SketchBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s2)
+{
+    if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
+        BRepAdaptor_Surface a1(TopoDS::Face(s1));
+        BRepAdaptor_Surface a2(TopoDS::Face(s2));
+        if (a1.GetType() == GeomAbs_Plane && a2.GetType() == GeomAbs_Plane) {
+            gp_Pln p1 = a1.Plane();
+            gp_Pln p2 = a2.Plane();
+            if (p1.Distance(p2.Location()) < Precision::Confusion()) {
+                const gp_Dir& d1 = p1.Axis().Direction();
+                const gp_Dir& d2 = p2.Axis().Direction();
+                if (d1.IsParallel(d2, Precision::Confusion()))
+                    return true;
+            }
+        }
+    }
+    else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
+    }
+    else if (s1.ShapeType() == TopAbs_VERTEX && s2.ShapeType() == TopAbs_VERTEX) {
+        gp_Pnt p1 = BRep_Tool::Pnt(TopoDS::Vertex(s1));
+        gp_Pnt p2 = BRep_Tool::Pnt(TopoDS::Vertex(s2));
+        return p1.Distance(p2) < Precision::Confusion();
+    }
+
+    return false;
 }
 
 }
