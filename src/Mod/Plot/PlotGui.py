@@ -52,8 +52,8 @@ class Save:
 	def GetResources(self):
 		# from plotUtils import Paths
 		# IconPath = Paths.iconsPath() + "/Save.svg"
-		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Save plot")
-		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Save plot as image file")
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_SaveFig", "Save plot")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_SaveFig", "Save plot as image file")
 		return {'Pixmap' : 'Save', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Axes: 
@@ -64,8 +64,8 @@ class Axes:
 	def GetResources(self):
 		# from plotUtils import Paths
 		# IconPath = Paths.iconsPath() + "/Axes.svg"
-		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Configure axes")
-		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Configure axes parameters")
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Axes", "Configure axes")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Axes", "Configure axes parameters")
 		return {'Pixmap' : 'Axes', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Series: 
@@ -76,8 +76,8 @@ class Series:
 	def GetResources(self):
 		# from plotUtils import Paths
 		# IconPath = Paths.iconsPath() + "/Series.svg"
-		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Configure series")
-		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Configure series drawing style and label")
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Series", "Configure series")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Series", "Configure series drawing style and label")
 		return {'Pixmap' : 'Series', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Grid: 
@@ -95,8 +95,8 @@ class Grid:
 	def GetResources(self):
 		# from plotUtils import Paths
 		# IconPath = Paths.iconsPath() + "/Grid.svg"
-		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide grid")
-		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide grid on selected plot")
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Grid", "Show/Hide grid")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Grid", "Show/Hide grid on selected plot")
 		return {'Pixmap' : 'Grid', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Legend: 
@@ -114,8 +114,8 @@ class Legend:
 	def GetResources(self):
 		# from plotUtils import Paths
 		# IconPath = Paths.iconsPath() + "/Legend.svg"
-		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide legend")
-		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Show/Hide legend on selected plot")
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Legend", "Show/Hide legend")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Legend", "Show/Hide legend on selected plot")
 		return {'Pixmap' : 'Legend', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Labels: 
@@ -126,8 +126,8 @@ class Labels:
 	def GetResources(self):
 		# from plotUtils import Paths
 		# IconPath = Paths.iconsPath() + "/Labels.svg"
-		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Set labels")
-		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Set title and axes labels")
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Labels", "Set labels")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Labels", "Set title and axes labels")
 		return {'Pixmap' : 'Labels', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Positions: 
@@ -138,8 +138,8 @@ class Positions:
 	def GetResources(self):
 		# from plotUtils import Paths
 		# IconPath = Paths.iconsPath() + "/Positions.svg"
-		MenuText = QtCore.QT_TRANSLATE_NOOP("plot", "Set positions and sizes")
-		ToolTip  = QtCore.QT_TRANSLATE_NOOP("plot", "Set labels and legend positions and sizes")
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Positions", "Set positions and sizes")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Positions", "Set labels and legend positions and sizes")
 		return {'Pixmap' : 'Positions', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 FreeCADGui.addCommand('Plot_SaveFig', Save())

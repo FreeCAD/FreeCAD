@@ -1,37 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="2.0">
 <context>
-    <name>plot</name>
-    <message>
-        <location filename="PlotGui.py" line="55"/>
-        <source>Save plot</source>
-        <translation>Guardar gráfica</translation>
-    </message>
-    <message>
-        <location filename="PlotGui.py" line="56"/>
-        <source>Save plot as image file</source>
-        <translation>Guarda la gráfica como archivo de imagen</translation>
-    </message>
+    <name>Plot_Axes</name>
     <message>
         <location filename="PlotGui.py" line="67"/>
         <source>Configure axes</source>
-        <translation>Configure los ejes</translation>
+        <translation>Configurar ejes</translation>
     </message>
     <message>
         <location filename="PlotGui.py" line="68"/>
         <source>Configure axes parameters</source>
         <translation>Establezca los parámetros de cada eje</translation>
     </message>
-    <message>
-        <location filename="PlotGui.py" line="79"/>
-        <source>Configure series</source>
-        <translation>Configure las series trazadas</translation>
-    </message>
-    <message>
-        <location filename="PlotGui.py" line="80"/>
-        <source>Configure series drawing style and label</source>
-        <translation>Establezca el título y el estilo de las curvas trazadas</translation>
-    </message>
+</context>
+<context>
+    <name>Plot_Grid</name>
     <message>
         <location filename="PlotGui.py" line="98"/>
         <source>Show/Hide grid</source>
@@ -42,16 +25,9 @@
         <source>Show/Hide grid on selected plot</source>
         <translation>Muestre/Oculte la malla del gráfico seleccionado</translation>
     </message>
-    <message>
-        <location filename="PlotGui.py" line="117"/>
-        <source>Show/Hide legend</source>
-        <translation>Mostrar/Ocultar la legenda</translation>
-    </message>
-    <message>
-        <location filename="PlotGui.py" line="118"/>
-        <source>Show/Hide legend on selected plot</source>
-        <translation>Muestre/Oculte la legenda del gráfico seleccionado</translation>
-    </message>
+</context>
+<context>
+    <name>Plot_Labels</name>
     <message>
         <location filename="PlotGui.py" line="129"/>
         <source>Set labels</source>
@@ -62,6 +38,22 @@
         <source>Set title and axes labels</source>
         <translation>Establezca los tñitulos de ejes y series de datos</translation>
     </message>
+</context>
+<context>
+    <name>Plot_Legend</name>
+    <message>
+        <location filename="PlotGui.py" line="117"/>
+        <source>Show/Hide legend</source>
+        <translation>Mostrar/Ocultar la legenda</translation>
+    </message>
+    <message>
+        <location filename="PlotGui.py" line="118"/>
+        <source>Show/Hide legend on selected plot</source>
+        <translation>Muestre/Oculte la legenda del gráfico seleccionado</translation>
+    </message>
+</context>
+<context>
+    <name>Plot_Positions</name>
     <message>
         <location filename="PlotGui.py" line="141"/>
         <source>Set positions and sizes</source>
@@ -72,6 +64,35 @@
         <source>Set labels and legend positions and sizes</source>
         <translation>Modifique la posición y tamaño de títulos y legenda</translation>
     </message>
+</context>
+<context>
+    <name>Plot_SaveFig</name>
+    <message>
+        <location filename="PlotGui.py" line="55"/>
+        <source>Save plot</source>
+        <translation>Guardar gráfica</translation>
+    </message>
+    <message>
+        <location filename="PlotGui.py" line="56"/>
+        <source>Save plot as image file</source>
+        <translation>Guarda la gráfica como archivo de imagen</translation>
+    </message>
+</context>
+<context>
+    <name>Plot_Series</name>
+    <message>
+        <location filename="PlotGui.py" line="79"/>
+        <source>Configure series</source>
+        <translation>Configurar las series trazadas</translation>
+    </message>
+    <message>
+        <location filename="PlotGui.py" line="80"/>
+        <source>Configure series drawing style and label</source>
+        <translation>Establezca el título y el estilo de las curvas trazadas</translation>
+    </message>
+</context>
+<context>
+    <name>plot</name>
     <message>
         <location filename="InitGui.py" line="36"/>
         <source>Plot edition tools</source>
