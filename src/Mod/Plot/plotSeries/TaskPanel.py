@@ -120,6 +120,24 @@ class TaskPanel:
                                  None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QLabel, "markerLabel").setText(QtGui.QApplication.translate("plot_series", "Marker",
                                  None,QtGui.QApplication.UnicodeUTF8))
+		self.form.items.setToolTip(QtGui.QApplication.translate("plot_series", "List of available series",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.label.setToolTip(QtGui.QApplication.translate("plot_series", "Line title",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.isLabel.setToolTip(QtGui.QApplication.translate("plot_series", "If checked serie will not considered for legend",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.style.setToolTip(QtGui.QApplication.translate("plot_series", "Line style",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.marker.setToolTip(QtGui.QApplication.translate("plot_series", "Marker style",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.width.setToolTip(QtGui.QApplication.translate("plot_series", "Line width",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.size.setToolTip(QtGui.QApplication.translate("plot_series", "Marker size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.color.setToolTip(QtGui.QApplication.translate("plot_series", "Line and marker color",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.remove.setToolTip(QtGui.QApplication.translate("plot_series", "Removes this serie",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def fillStyles(self):
 		""" Fill style combo boxes. """
