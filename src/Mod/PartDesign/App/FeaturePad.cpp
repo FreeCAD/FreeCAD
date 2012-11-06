@@ -64,6 +64,7 @@ Pad::Pad()
 short Pad::mustExecute() const
 {
     if (Placement.isTouched() ||
+        Type.isTouched() ||
         Length.isTouched() ||
         Length2.isTouched() ||
         UpToFace.isTouched())
