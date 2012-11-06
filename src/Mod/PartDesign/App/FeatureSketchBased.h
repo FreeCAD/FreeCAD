@@ -28,6 +28,7 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include "Feature.h"
 
+class TopoDS_Shape;
 class TopoDS_Face;
 class TopoDS_Wire;
 class gp_Dir;
@@ -76,6 +77,9 @@ protected:
     TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
     TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only
     bool isInside(const TopoDS_Wire&, const TopoDS_Wire&) const;
+    bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&);
+    bool isQuasiEqual(const TopoDS_Shape&, const TopoDS_Shape&) const;
+    void remapSupportShape(const TopoDS_Shape&);
 
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
