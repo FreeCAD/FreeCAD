@@ -444,11 +444,13 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
 
     if (remove_limits) {
         // Note: Using an unlimited face every time gives unnecessary failures for concave faces
+        TopLoc_Location loc = upToFace.Location();
         BRepAdaptor_Surface adapt(upToFace, Standard_False);
         BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface());
         if (!mkFace.IsDone())
             throw Base::Exception("SketchBased: Up To Face: Failed to create unlimited face");
         upToFace = TopoDS::Face(mkFace.Shape());
+        upToFace.Location(loc);
     }
 
     // Check that the upToFace does not intersect the sketch face and
@@ -462,7 +464,6 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
     }
 
     // We must measure from sketchshape, not supportface, here
-    // TODO: distSS() sometimes gives false positives for unlimited upToFaces!
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
     if (distSS.Value() < Precision::Confusion())
         throw Base::Exception("SketchBased: Up to face: Must not intersect sketch!");
