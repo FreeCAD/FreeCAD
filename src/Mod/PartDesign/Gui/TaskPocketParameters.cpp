@@ -363,7 +363,30 @@ void TaskPocketParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
+        ui->doubleSpinBox->blockSignals(true);
+        ui->lineFaceName->blockSignals(true);
+        ui->changeMode->blockSignals(true);
+        int index = ui->changeMode->currentIndex();
         ui->retranslateUi(proxy);
+        ui->changeMode->clear();
+        ui->changeMode->addItem(tr("Dimension"));
+        ui->changeMode->addItem(tr("Through all"));
+        ui->changeMode->addItem(tr("To first"));
+        ui->changeMode->addItem(tr("Up to face"));
+        ui->changeMode->setCurrentIndex(index);
+
+        QByteArray upToFace = this->getFaceName();
+        int faceId = -1;
+        bool ok = false;
+        if (upToFace.indexOf("Face") == 0) {
+            faceId = upToFace.remove(0,4).toInt(&ok);
+        }
+        ui->lineFaceName->setText(ok ?
+                                  tr("Face") + QString::number(faceId) :
+                                  tr("No face selected"));
+        ui->doubleSpinBox->blockSignals(false);
+        ui->lineFaceName->blockSignals(false);
+        ui->changeMode->blockSignals(false);
     }
 }
 
@@ -407,13 +430,13 @@ bool TaskDlgPocketParameters::accept()
         //Gui::Command::openCommand("Pocket changed");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-        const char* facename = parameter->getFaceName().data();
+        QByteArray facename = parameter->getFaceName();
         PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
         Part::Feature* support = pcPocket->getSupport();
-        if (support != NULL && facename && facename[0] != '\0') {
+        if (support != NULL && !facename.isEmpty()) {
             QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-            buf = buf.arg(QString::fromUtf8(facename));
+            buf = buf.arg(QString::fromUtf8(facename.data()));
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
         } else
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
