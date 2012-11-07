@@ -370,18 +370,27 @@ TopoDS_Shape TopoShape::getSubShape(const char* Type) const
         int index=std::atoi(&shapetype[4]);
         TopTools_IndexedMapOfShape anIndices;
         TopExp::MapShapes(this->_Shape, TopAbs_FACE, anIndices);
+        // To avoid a segmentation fault we have to check if container is empty
+        if (anIndices.IsEmpty())
+            Standard_Failure::Raise("Shape has no faces");
         return anIndices.FindKey(index);
     }
     else if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
         int index=std::atoi(&shapetype[4]);
         TopTools_IndexedMapOfShape anIndices;
         TopExp::MapShapes(this->_Shape, TopAbs_EDGE, anIndices);
+        // To avoid a segmentation fault we have to check if container is empty
+        if (anIndices.IsEmpty())
+            Standard_Failure::Raise("Shape has no edges");
         return anIndices.FindKey(index);
     }
     else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
         int index=std::atoi(&shapetype[6]);
         TopTools_IndexedMapOfShape anIndices;
         TopExp::MapShapes(this->_Shape, TopAbs_VERTEX, anIndices);
+        // To avoid a segmentation fault we have to check if container is empty
+        if (anIndices.IsEmpty())
+            Standard_Failure::Raise("Shape has no vertexes");
         return anIndices.FindKey(index);
     }
 
