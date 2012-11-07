@@ -66,6 +66,7 @@ Pocket::Pocket()
 short Pocket::mustExecute() const
 {
     if (Placement.isTouched() ||
+        Type.isTouched() ||
         Length.isTouched() ||
         UpToFace.isTouched())
         return 1;

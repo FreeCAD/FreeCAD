@@ -64,6 +64,7 @@ Pad::Pad()
 short Pad::mustExecute() const
 {
     if (Placement.isTouched() ||
+        Type.isTouched() ||
         Length.isTouched() ||
         Length2.isTouched() ||
         UpToFace.isTouched())
@@ -123,6 +124,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
+
+            if (Reversed.getValue())
+                dir.Reverse();
 
             // Find a valid face to extrude up to
             TopoDS_Face upToFace;
