@@ -668,7 +668,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
     if (!xmlReader.getFilenames().empty())
         xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader));
 
-    // reset modifeid flag
+    // reset modified flag
     setModified(false);
 }
 
@@ -697,6 +697,9 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         it->second->finishRestoring();
     }
+
+    // reset modified flag
+    setModified(false);
 }
 
 /**

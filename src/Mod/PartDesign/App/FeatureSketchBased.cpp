@@ -444,15 +444,17 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
 
     if (remove_limits) {
         // Note: Using an unlimited face every time gives unnecessary failures for concave faces
+        TopLoc_Location loc = upToFace.Location();
         BRepAdaptor_Surface adapt(upToFace, Standard_False);
         BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface());
         if (!mkFace.IsDone())
             throw Base::Exception("SketchBased: Up To Face: Failed to create unlimited face");
         upToFace = TopoDS::Face(mkFace.Shape());
+        upToFace.Location(loc);
     }
 
     // Check that the upToFace does not intersect the sketch face and
-    // is not parallel to the extrusion direction
+    // is not parallel to the extrusion direction (for simplicity, supportface is used instead of sketchshape)
     BRepAdaptor_Surface adapt1(TopoDS::Face(supportface));
     BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
 
@@ -461,7 +463,8 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
             throw Base::Exception("SketchBased: Up to face: Must not be parallel to extrusion direction!");
     }
 
-    BRepExtrema_DistShapeShape distSS(supportface, upToFace);
+    // We must measure from sketchshape, not supportface, here
+    BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
     if (distSS.Value() < Precision::Confusion())
         throw Base::Exception("SketchBased: Up to face: Must not intersect sketch!");
 
@@ -484,12 +487,13 @@ void SketchBased::generatePrism(TopoDS_Shape& prism,
             // Note: 1E6 created problems once...
             Ltotal = 1E4;
 
-        if (midplane)
-            Loffset = -Ltotal/2;
-        else if (method == "TwoLengths") {
+
+        if (method == "TwoLengths") {
+            // midplane makes no sense here
             Loffset = -L2;
             Ltotal += L2;
-        }
+        } else if (midplane)
+            Loffset = -Ltotal/2;
 
         TopoDS_Shape from = sketchshape;
         if (method == "TwoLengths" || midplane) {
