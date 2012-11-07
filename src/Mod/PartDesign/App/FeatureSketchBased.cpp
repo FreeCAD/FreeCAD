@@ -527,17 +527,19 @@ const bool SketchBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoD
 
 void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
 {
+    TopTools_IndexedMapOfShape faceMap;
+    TopExp::MapShapes(newShape, TopAbs_FACE, faceMap);
+
+    // here we must reset the placement otherwise the geometric matching doesn't work
+    Part::TopoShape shape = this->Shape.getValue();
+    shape._Shape.Location(TopLoc_Location());
+
     std::vector<App::DocumentObject*> refs = this->getInList();
     for (std::vector<App::DocumentObject*>::iterator it = refs.begin(); it != refs.end(); ++it) {
         if ((*it)->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Part::Part2DObject* part = static_cast<Part::Part2DObject*>(*it);
-            Part::TopoShape shape = this->Shape.getValue();
-            // here we must reset the placement otherwise the geometric matching doesn't work
-            shape._Shape.Location(TopLoc_Location());
             std::vector<std::string> subValues = part->Support.getSubValues();
             std::vector<std::string> newSubValues;
-            TopTools_IndexedMapOfShape faceMap;
-            TopExp::MapShapes(newShape, TopAbs_FACE, faceMap);
 
             for (std::vector<std::string>::iterator it = subValues.begin(); it != subValues.end(); ++it) {
                 std::string shapetype;
@@ -551,19 +553,32 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
                     shapetype = "Vertex";
                 }
                 else {
+                    newSubValues.push_back(*it);
                     continue;
                 }
 
-                TopoDS_Shape element = shape.getSubShape(it->c_str());
                 bool success = false;
-                // first try an exact matching
-                for (int i=1; i<faceMap.Extent(); i++) {
-                    if (isQuasiEqual(element, faceMap.FindKey(i))) {
-                        std::stringstream str;
-                        str << shapetype << i;
-                        newSubValues.push_back(str.str());
+                TopoDS_Shape element = shape.getSubShape(it->c_str());
+                try {
+                    // as very first test check if old face and new face are parallel planes
+                    TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(it->c_str());
+                    if (isParallelPlane(element, newElement)) {
+                        newSubValues.push_back(*it);
                         success = true;
-                        break;
+                    }
+                }
+                catch (Standard_Failure) {
+                }
+                // try an exact matching
+                if (!success) {
+                    for (int i=1; i<faceMap.Extent(); i++) {
+                        if (isQuasiEqual(element, faceMap.FindKey(i))) {
+                            std::stringstream str;
+                            str << shapetype << i;
+                            newSubValues.push_back(str.str());
+                            success = true;
+                            break;
+                        }
                     }
                 }
                 // if an exact matching fails then try to compare only the geometries
@@ -641,7 +656,7 @@ bool SketchBased::isQuasiEqual(const TopoDS_Shape& s1, const TopoDS_Shape& s2) c
     return true;
 }
 
-bool SketchBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s2)
+bool SketchBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s2) const
 {
     if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
         BRepAdaptor_Surface a1(TopoDS::Face(s1));
@@ -663,6 +678,24 @@ bool SketchBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s2
         gp_Pnt p1 = BRep_Tool::Pnt(TopoDS::Vertex(s1));
         gp_Pnt p2 = BRep_Tool::Pnt(TopoDS::Vertex(s2));
         return p1.Distance(p2) < Precision::Confusion();
+    }
+
+    return false;
+}
+
+bool SketchBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s2) const
+{
+    if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
+        BRepAdaptor_Surface a1(TopoDS::Face(s1));
+        BRepAdaptor_Surface a2(TopoDS::Face(s2));
+        if (a1.GetType() == GeomAbs_Plane && a2.GetType() == GeomAbs_Plane) {
+            gp_Pln p1 = a1.Plane();
+            gp_Pln p2 = a2.Plane();
+            const gp_Dir& d1 = p1.Axis().Direction();
+            const gp_Dir& d2 = p2.Axis().Direction();
+            if (d1.IsParallel(d2, Precision::Confusion()))
+                return true;
+        }
     }
 
     return false;
