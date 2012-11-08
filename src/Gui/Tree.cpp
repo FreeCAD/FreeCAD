@@ -985,9 +985,12 @@ void DocumentItem::setObjectSelected(const char* name, bool select)
 
 void DocumentItem::clearSelection(void)
 {
+    // Block signals here otherwise we get a recursion and quadratic runtime
+    bool ok = treeWidget()->blockSignals(true);
     for (std::map<std::string,DocumentObjectItem*>::iterator pos = ObjectMap.begin();pos!=ObjectMap.end();++pos) {
-        treeWidget()->setItemSelected(pos->second, false);
+        pos->second->setSelected(false);
     }
+    treeWidget()->blockSignals(ok);
 }
 
 void DocumentItem::updateSelection(void)
