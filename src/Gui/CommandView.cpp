@@ -1939,6 +1939,9 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
         cb->setHandled();
         std::vector<App::GeoFeature*> geom = doc->getObjectsOfType<App::GeoFeature>();
         for (std::vector<App::GeoFeature*>::iterator it = geom.begin(); it != geom.end(); ++it) {
+            Gui::ViewProvider* vp = Application::Instance->getViewProvider(*it);
+            if (!vp->isVisible())
+                continue;
             std::vector<App::Property*> props;
             (*it)->getPropertyList(props);
             for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
@@ -1960,7 +1963,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
 void StdBoxSelection::activated(int iMsg)
 {
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if ( view ) {
+    if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             viewer->startSelection(View3DInventorViewer::Rectangle);
