@@ -446,7 +446,11 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
         // Note: Using an unlimited face every time gives unnecessary failures for concave faces
         TopLoc_Location loc = upToFace.Location();
         BRepAdaptor_Surface adapt(upToFace, Standard_False);
-        BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface());
+        BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
+#if OCC_VERSION_HEX >= 0x060502
+              , Precision::Confusion()
+#endif
+        );
         if (!mkFace.IsDone())
             throw Base::Exception("SketchBased: Up To Face: Failed to create unlimited face");
         upToFace = TopoDS::Face(mkFace.Shape());
