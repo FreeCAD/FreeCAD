@@ -536,9 +536,15 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
 
     std::vector<App::DocumentObject*> refs = this->getInList();
     for (std::vector<App::DocumentObject*>::iterator it = refs.begin(); it != refs.end(); ++it) {
-        if ((*it)->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            Part::Part2DObject* part = static_cast<Part::Part2DObject*>(*it);
-            std::vector<std::string> subValues = part->Support.getSubValues();
+        std::vector<App::Property*> props;
+        (*it)->getPropertyList(props);
+        for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
+            if (!(*jt)->isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
+                continue;
+            App::PropertyLinkSub* link = static_cast<App::PropertyLinkSub*>(*jt);
+            if (link->getValue() != this)
+                continue;
+            std::vector<std::string> subValues = link->getSubValues();
             std::vector<std::string> newSubValues;
 
             for (std::vector<std::string>::iterator it = subValues.begin(); it != subValues.end(); ++it) {
@@ -599,7 +605,7 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
                     newSubValues.push_back(*it);
             }
 
-            part->Support.setValue(this, newSubValues);
+            link->setValue(this, newSubValues);
         }
     }
 }
