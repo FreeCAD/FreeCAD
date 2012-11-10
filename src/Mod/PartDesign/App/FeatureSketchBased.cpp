@@ -51,6 +51,7 @@
 # include <IntTools_FClass2d.hxx>
 # include <ShapeAnalysis_Surface.hxx>
 # include <ShapeFix_Shape.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 
