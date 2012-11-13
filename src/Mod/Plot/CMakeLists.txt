@@ -2,20 +2,9 @@ SET(PlotMain_SRCS
 	Plot.py
 	InitGui.py
 	PlotGui.py
+	Plot_rc.py
 )
 SOURCE_GROUP("" FILES ${PlotMain_SRCS})
-
-SET(PlotIcons_SRCS
-	Icons/Axes.svg
-	Icons/Grid.svg
-	Icons/Icon.svg
-	Icons/Labels.svg
-	Icons/Legend.svg
-	Icons/Positions.svg
-	Icons/Save.svg
-	Icons/Series.svg
-)
-SOURCE_GROUP("ploticons" FILES ${PlotIcons_SRCS})
 
 SET(PlotAxes_SRCS
 	plotAxes/__init__.py
@@ -55,11 +44,10 @@ SOURCE_GROUP("plotseries" FILES ${PlotSeries_SRCS})
 SET(PlotUtils_SRCS
 	plotUtils/__init__.py
 	plotUtils/Paths.py
-	plotUtils/Translator.py
 )
 SOURCE_GROUP("plotutils" FILES ${PlotUtils_SRCS})
 
-SET(all_files ${PlotMain_SRCS} ${PlotAxes_SRCS} ${PlotLabels_SRCS} ${PlotPositions_SRCS} ${PlotSave_SRCS} ${PlotSeries_SRCS} ${PlotIcons_SRCS} ${PlotUtils_SRCS})
+SET(all_files ${PlotMain_SRCS} ${PlotAxes_SRCS} ${PlotLabels_SRCS} ${PlotPositions_SRCS} ${PlotSave_SRCS} ${PlotSeries_SRCS} ${PlotUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Plot ALL
     SOURCES ${all_files}
@@ -67,12 +55,6 @@ ADD_CUSTOM_TARGET(Plot ALL
 
 fc_copy_sources(Mod/Plot "${CMAKE_BINARY_DIR}/Mod/Plot" ${all_files})
 
-INSTALL(
-    FILES
-        ${PlotIcons_SRCS}
-    DESTINATION
-        Mod/Plot/Icons
-)
 INSTALL(
     FILES
         ${PlotAxes_SRCS}

@@ -183,7 +183,9 @@
             <ComponentRef Id="CompExampleData" />
             <!-- Plot module -->
             <ComponentRef Id="CompModPlot" />
+            <ComponentRef Id="CompModPlotResources" />
             <ComponentRef Id="CompModPlotIcons" />
+            <ComponentRef Id="CompModPlotTranslations" />
             <ComponentRef Id="CompModplotAxes" />
             <ComponentRef Id="CompModplotLabels" />
             <ComponentRef Id="CompModplotPositions" />

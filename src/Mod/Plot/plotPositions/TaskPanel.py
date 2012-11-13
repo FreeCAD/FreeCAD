@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 
 class TaskPanel:
 	def __init__(self):
@@ -97,9 +97,20 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Set positions and sizes"))
-		self.form.findChild(QtGui.QLabel, "posLabel").setText(Translator.translate("Position"))
-		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(Translator.translate("Size"))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_positions", "Set positions and sizes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "posLabel").setText(QtGui.QApplication.translate("plot_positions", "Position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(QtGui.QApplication.translate("plot_positions", "Size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.items.setToolTip(QtGui.QApplication.translate("plot_positions", "List of modificable items",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.x.setToolTip(QtGui.QApplication.translate("plot_positions", "X item position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.y.setToolTip(QtGui.QApplication.translate("plot_positions", "Y item position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.s.setToolTip(QtGui.QApplication.translate("plot_positions", "Item size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def onItem(self, row):
 		""" Executed when selected item is modified. """
