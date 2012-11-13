@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 # matplotlib
 import matplotlib
 from matplotlib.lines import Line2D
@@ -110,11 +110,34 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Set positions and sizes"))
-		self.form.isLabel.setText(Translator.translate("No label"))
-		self.form.remove.setText(Translator.translate("Remove serie"))
-		self.form.findChild(QtGui.QLabel, "styleLabel").setText(Translator.translate("Line style"))
-		self.form.findChild(QtGui.QLabel, "markerLabel").setText(Translator.translate("Marker"))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_series", "Configure series",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.isLabel.setText(QtGui.QApplication.translate("plot_series", "No label",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.remove.setText(QtGui.QApplication.translate("plot_series", "Remove serie",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "styleLabel").setText(QtGui.QApplication.translate("plot_series", "Line style",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "markerLabel").setText(QtGui.QApplication.translate("plot_series", "Marker",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.items.setToolTip(QtGui.QApplication.translate("plot_series", "List of available series",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.label.setToolTip(QtGui.QApplication.translate("plot_series", "Line title",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.isLabel.setToolTip(QtGui.QApplication.translate("plot_series", "If checked serie will not considered for legend",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.style.setToolTip(QtGui.QApplication.translate("plot_series", "Line style",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.marker.setToolTip(QtGui.QApplication.translate("plot_series", "Marker style",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.width.setToolTip(QtGui.QApplication.translate("plot_series", "Line width",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.size.setToolTip(QtGui.QApplication.translate("plot_series", "Marker size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.color.setToolTip(QtGui.QApplication.translate("plot_series", "Line and marker color",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.remove.setToolTip(QtGui.QApplication.translate("plot_series", "Removes this serie",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def fillStyles(self):
 		""" Fill style combo boxes. """
