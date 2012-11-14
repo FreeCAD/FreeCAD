@@ -236,7 +236,7 @@ void DlgParameterImp::onChangeParameterSet(int index)
 {
     ParameterManager* rcParMngr = App::GetApplication().GetParameterSet(parameterSet->itemData(index).toByteArray());
     if (!rcParMngr)
-        return
+        return;
 
     // remove all labels
     paramGroup->clear();
