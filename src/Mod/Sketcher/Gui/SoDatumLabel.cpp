@@ -835,10 +835,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f z = vv.zVector();
         const SbViewportRegion & vpr = SoViewportRegionElement::get(state);
 
-        SoGetMatrixAction * getmatrixaction = new SoGetMatrixAction(vpr);
-        getmatrixaction->apply(action);
+        SoGetMatrixAction getmatrixaction(vpr);
+        getmatrixaction.apply(action);
 
-        SbMatrix transform = getmatrixaction->getMatrix();
+        SbMatrix transform = getmatrixaction.getMatrix();
         transform.multVecMatrix(surfNorm, surfNorm);
 
         bool flip = surfNorm.dot(z) > FLT_EPSILON;
