@@ -2658,12 +2658,14 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it) {
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
+        sep->ref();
         // no caching for fluctuand data structures
         sep->renderCaching = SoSeparator::OFF;
 
         // every constrained visual node gets its own material for preselection and selection
-        SoMaterial *Material = new SoMaterial;
-        Material->diffuseColor = ConstrDimColor;
+        SoMaterial *mat = new SoMaterial;
+        mat->ref();
+        mat->diffuseColor = ConstrDimColor;
 
         // distinguish different constraint types to build up
         switch ((*it)->Type) {
@@ -2683,17 +2685,15 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                     edit->constrGroup->addChild(anno);
                     edit->vConstrType.push_back((*it)->Type);
                     // nodes not needed
-                    sep->ref();
                     sep->unref();
-                    Material->ref();
-                    Material->unref();
+                    mat->unref();
                     continue; // jump to next constraint
                 }
                 break;
             case Horizontal:
             case Vertical:
                 {
-                    sep->addChild(Material);
+                    sep->addChild(mat);
                     sep->addChild(new SoZoomTranslation()); // 1.
                     sep->addChild(new SoImage());       // 2. constraint icon
 
@@ -2709,7 +2709,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case Equal:
                 {
                     // Add new nodes to Constraint Seperator
-                    sep->addChild(Material);
+                    sep->addChild(mat);
                     sep->addChild(new SoZoomTranslation()); // 1.
                     sep->addChild(new SoImage());           // 2. first constraint icon
                     sep->addChild(new SoZoomTranslation()); // 3.
@@ -2723,7 +2723,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case Tangent:
                 {
                     // Add new nodes to Constraint Seperator
-                    sep->addChild(Material);
+                    sep->addChild(mat);
                     sep->addChild(new SoZoomTranslation()); // 1.
                     sep->addChild(new SoImage());           // 2. constraint icon
 
@@ -2758,6 +2758,9 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         }
 
         edit->constrGroup->addChild(sep);
+        // decrement ref counter again
+        sep->unref();
+        mat->unref();
     }
 }
 
