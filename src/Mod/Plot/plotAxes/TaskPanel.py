@@ -28,7 +28,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 
 class TaskPanel:
 	def __init__(self):
@@ -127,19 +127,56 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Configure axes"))
-		self.form.findChild(QtGui.QLabel, "axesLabel").setText(Translator.translate("Active axes"))
-		self.form.all.setText(Translator.translate("Apply to all axes"))
-		self.form.findChild(QtGui.QLabel, "dimLabel").setText(Translator.translate("Dimensions"))
-		self.form.findChild(QtGui.QLabel, "xPosLabel").setText(Translator.translate("X axis position"))
-		self.form.findChild(QtGui.QLabel, "yPosLabel").setText(Translator.translate("Y axis position"))
-		self.form.findChild(QtGui.QLabel, "scalesLabel").setText(Translator.translate("Scales"))
-		self.form.xAuto.setText(Translator.translate("X auto"))
-		self.form.yAuto.setText(Translator.translate("Y auto"))
-		self.form.findChild(QtGui.QCheckBox, "allAxes").setText(Translator.translate("Apply to all axes"))
-		self.form.findChild(QtGui.QLabel, "dimLabel").setText(Translator.translate("Dimensions"))
-		self.form.findChild(QtGui.QLabel, "xPosLabel").setText(Translator.translate("X axis position"))
-		self.form.findChild(QtGui.QLabel, "yPosLabel").setText(Translator.translate("Y axis position"))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_axes", "Configure axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "axesLabel").setText(QtGui.QApplication.translate("plot_axes", "Active axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.all.setText(QtGui.QApplication.translate("plot_axes", "Apply to all axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "dimLabel").setText(QtGui.QApplication.translate("plot_axes", "Dimensions",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "xPosLabel").setText(QtGui.QApplication.translate("plot_axes", "X axis position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "yPosLabel").setText(QtGui.QApplication.translate("plot_axes", "Y axis position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "scalesLabel").setText(QtGui.QApplication.translate("plot_axes", "Scales",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.xAuto.setText(QtGui.QApplication.translate("plot_axes", "X auto",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.yAuto.setText(QtGui.QApplication.translate("plot_axes", "Y auto",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QCheckBox, "allAxes").setText(QtGui.QApplication.translate("plot_axes", "Apply to all axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "dimLabel").setText(QtGui.QApplication.translate("plot_axes", "Dimensions",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "xPosLabel").setText(QtGui.QApplication.translate("plot_axes", "X axis position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "yPosLabel").setText(QtGui.QApplication.translate("plot_axes", "Y axis position",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.axId.setToolTip(QtGui.QApplication.translate("plot_axes", "Index of the active axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.new.setToolTip(QtGui.QApplication.translate("plot_axes", "Add new axes to the plot",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.remove.setToolTip(QtGui.QApplication.translate("plot_axes", "Remove selected axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.all.setToolTip(QtGui.QApplication.translate("plot_axes", "Check it to apply transformations to all axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.xMin.setToolTip(QtGui.QApplication.translate("plot_axes", "Left bound of axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.xMax.setToolTip(QtGui.QApplication.translate("plot_axes", "Right bound of axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.yMin.setToolTip(QtGui.QApplication.translate("plot_axes", "Bottom bound of axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.yMax.setToolTip(QtGui.QApplication.translate("plot_axes", "Top bound of axes",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.xOffset.setToolTip(QtGui.QApplication.translate("plot_axes", "Outward offset of X axis",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.yOffset.setToolTip(QtGui.QApplication.translate("plot_axes", "Outward offset of Y axis",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.xAuto.setToolTip(QtGui.QApplication.translate("plot_axes", "X axis scale autoselection",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.yAuto.setToolTip(QtGui.QApplication.translate("plot_axes", "Y axis scale autoselection",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def onAxesId(self, value):
 		""" Executed when axes index is modified. """
@@ -178,7 +215,8 @@ class TaskPanel:
 			return
 		# Don't remove first axes
 		if not self.form.axId.value():
-			msg = Translator.translate("Axes 0 can't be deleted")
+			msg = QtGui.QApplication.translate("plot_console", "Axes 0 can not be deleted",
+                                 None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg+"\n")
 			return
 		# Remove axes

@@ -1057,30 +1057,31 @@ bool StdCmdDelete::isActive(void)
 DEF_STD_CMD_A(StdCmdRefresh);
 
 StdCmdRefresh::StdCmdRefresh()
-  :Command("Std_Refresh")
+  : Command("Std_Refresh")
 {
-  sGroup        = QT_TR_NOOP("Edit");
-  sMenuText     = QT_TR_NOOP("&Refresh");
-  sToolTipText  = QT_TR_NOOP("Recomputes the current active document");
-  sWhatsThis    = "Std_Refresh";
-  sStatusTip    = QT_TR_NOOP("Recomputes the current active document");
-  sPixmap       = "view-refresh";
-  sAccel        = keySequenceToAccel(QKeySequence::Refresh);
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("&Refresh");
+    sToolTipText  = QT_TR_NOOP("Recomputes the current active document");
+    sWhatsThis    = "Std_Refresh";
+    sStatusTip    = QT_TR_NOOP("Recomputes the current active document");
+    sPixmap       = "view-refresh";
+    sAccel        = keySequenceToAccel(QKeySequence::Refresh);
 }
 
 void StdCmdRefresh::activated(int iMsg)
 {
-  if ( getActiveGuiDocument() )
-  {
-    openCommand("Refresh active document");
-    doCommand(Doc,"App.activeDocument().recompute()");
-    commitCommand(); 
-  }
+    if (getActiveGuiDocument()) {
+        //Note: Don't add the recompute to undo/redo because it complicates
+        //testing the changes of properties.
+        //openCommand("Refresh active document");
+        doCommand(Doc,"App.activeDocument().recompute()");
+        //commitCommand(); 
+    }
 }
 
 bool StdCmdRefresh::isActive(void)
 {
-  return this->getDocument() && this->getDocument()->isTouched();
+    return this->getDocument() && this->getDocument()->isTouched();
 }
 
 //===========================================================================
@@ -1214,17 +1215,17 @@ bool StdCmdAlignment::isActive(void)
 DEF_STD_CMD_A(StdCmdEdit);
 
 StdCmdEdit::StdCmdEdit()
-  :Command("Std_Edit")
+  : Command("Std_Edit")
 {
-  sGroup        = QT_TR_NOOP("Edit");
-  sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
-  sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
-  sWhatsThis    = "Std_Edit";
-  sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
+    sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
+    sWhatsThis    = "Std_Edit";
+    sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
 #if QT_VERSION >= 0x040200
-  sPixmap       = "edit-edit";
+    sPixmap       = "edit-edit";
 #endif
-  eType         = ForEdit;
+    eType         = ForEdit;
 }
 
 void StdCmdEdit::activated(int iMsg)
