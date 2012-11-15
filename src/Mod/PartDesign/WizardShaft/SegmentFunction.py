@@ -137,12 +137,16 @@ class SegmentFunction:
         xvals = set([self.segments[0].start + s * offset for s in range(pointsX)])
         starts = set([self.segments[i].start for i in range(len(self.segments))])
         xvals = xvals.union(starts) # Make sure we have a point on each segment start
-        result = []
+        xresult = []
+        yresult = []
         for xval in sorted(xvals):
             if xval in starts:
-                result.append( (xval, self.lowervalue(xval)) ) # create double point at segment border
-            result.append( (xval, self.value(xval)) )
-        return result
+                # create double point at segment border
+                xresult.append(xval)
+                yresult.append(self.lowervalue(xval))
+            xresult.append(xval)
+            yresult.append(self.value(xval))
+        return (xresult, yresult)
 
     def output(self):
         FreeCAD.Console.PrintMessage(self.name + " = ")
