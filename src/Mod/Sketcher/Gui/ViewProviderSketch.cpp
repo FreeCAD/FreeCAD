@@ -2631,9 +2631,6 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
 
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial *Material = new SoMaterial;
-        // Not all kind of constraints need a material. So, increment its counter here and decrement
-        // it later to avoid a memory leak.
-        Material->ref();
         Material->diffuseColor = ConstrDimColor;
 
         // distinguish different constraint types to build up
@@ -2653,6 +2650,11 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                     sep->addChild(text);
                     edit->constrGroup->addChild(anno);
                     edit->vConstrType.push_back((*it)->Type);
+                    // nodes not needed
+                    sep->ref();
+                    sep->unref();
+                    Material->ref();
+                    Material->unref();
                     continue; // jump to next constraint
                 }
                 break;
@@ -2724,7 +2726,6 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         }
 
         edit->constrGroup->addChild(sep);
-        Material->unref();
     }
 }
 
