@@ -29,7 +29,7 @@ import FreeCADGui as Gui
 from PyQt4 import QtGui,QtCore
 # Module
 import Plot
-from plotUtils import Paths, Translator
+from plotUtils import Paths
 
 class TaskPanel:
 	def __init__(self):
@@ -38,7 +38,8 @@ class TaskPanel:
 	def accept(self):
 		plt = Plot.getPlot()
 		if not plt:
-			msg = Translator.translate("Plot document must be selected in order to save it.")
+			msg = QtGui.QApplication.translate("plot_console", "Plot document must be selected in order to save it",
+                                 None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg+"\n")
 			return False
 		path = unicode(self.form.path.text())
@@ -102,9 +103,22 @@ class TaskPanel:
 	def retranslateUi(self):
 		""" Set user interface locale strings. 
 		"""
-		self.form.setWindowTitle(Translator.translate("Save figure"))
-		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(Translator.translate("Inches"))
-		self.form.findChild(QtGui.QLabel, "dpiLabel").setText(Translator.translate("Dots per Inch"))
+		self.form.setWindowTitle(QtGui.QApplication.translate("plot_save", "Save figure",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "sizeLabel").setText(QtGui.QApplication.translate("plot_save", "Inches",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "dpiLabel").setText(QtGui.QApplication.translate("plot_save", "Dots per Inch",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.path.setToolTip(QtGui.QApplication.translate("plot_save", "Output image file path",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.pathButton.setToolTip(QtGui.QApplication.translate("plot_save", "Show a file selection dialog",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.sizeX.setToolTip(QtGui.QApplication.translate("plot_save", "X image size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.sizeY.setToolTip(QtGui.QApplication.translate("plot_save", "Y image size",
+                                 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.dpi.setToolTip(QtGui.QApplication.translate("plot_save", "Dots per point, with size will define output image resolution",
+                                 None,QtGui.QApplication.UnicodeUTF8))
 
 	def updateUI(self):
 		""" Setup UI controls values if possible """

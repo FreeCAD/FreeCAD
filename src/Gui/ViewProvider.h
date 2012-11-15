@@ -265,10 +265,14 @@ protected:
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
     //@}
-    /// Helper method to get picked entities while editing
+    /** Helper method to get picked entities while editing.
+     * It's in the responsibility of the caller to delete the returned instance.
+     */
     SoPickedPoint* getPointOnRay(const SbVec2s& pos,
                                  const View3DInventorViewer* viewer) const;
-    /// Helper method to get picked entities while editing
+    /** Helper method to get picked entities while editing.
+     * It's in the responsibility of the caller to delete the returned instance.
+     */
     SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir,
                                  const View3DInventorViewer* viewer) const;
     /// Reimplemented from subclass

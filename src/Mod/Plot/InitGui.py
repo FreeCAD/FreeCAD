@@ -23,28 +23,25 @@
 
 class PlotWorkbench ( Workbench ):
 	""" @brief Workbench of Plot module. Here toolbars & icons are append. """
-	from plotUtils import Paths, Translator
+	from plotUtils import Paths
 	import PlotGui
 
-	Icon = Paths.iconsPath() + "/Icon.svg"
-	MenuText = str(Translator.translate("Plot"))
-	ToolTip = str(Translator.translate("Plot"))
+	Icon = 'Icon.svg'
+	MenuText = "Plot"
+	ToolTip = "The Plot module is used to edit/save output plots performed by other tools"
 
 	def Initialize(self):
-		from plotUtils import Translator
-		# ToolBar
-		list = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
-		self.appendToolbar("Plot",list)
-
-		# Menu
-		list = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
-		self.appendMenu("Plot",list)
+		from PyQt4 import QtCore, QtGui
+		cmdlst = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
+		self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot edition tools")),cmdlst)
+		self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot")),cmdlst)
 
 try:
 	import matplotlib
 	Gui.addWorkbench(PlotWorkbench())
 except ImportError:
-	from plotUtils import Translator
-	msg = Translator.translate("matplotlib not found, Plot module will be disabled.\n")
-	FreeCAD.Console.PrintMessage(msg)
+	from PyQt4 import QtCore, QtGui
+	msg = QtGui.QApplication.translate("plot_console", "matplotlib not found, Plot module will be disabled",
+                                       None,QtGui.QApplication.UnicodeUTF8)
+	FreeCAD.Console.PrintMessage(msg + '\n')
 

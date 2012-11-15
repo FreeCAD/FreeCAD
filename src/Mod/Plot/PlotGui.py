@@ -24,17 +24,37 @@
 from PyQt4 import QtCore, QtGui
 import FreeCAD, FreeCADGui, os
 
+# Load resources
+import Plot_rc
+FreeCADGui.addLanguagePath(":/Plot/translations")
+FreeCADGui.addIconPath(":/Plot/icons")
+
+"""
+# Setup tranlations
+from plotUtils import Paths
+path = Paths.translationsPath()
+FreeCADGui.addLanguagePath(path)
+import os
+import FreeCAD
+translator = QtCore.QTranslator()
+dirList=os.listdir(path)
+for fname in dirList:
+	valid = translator.load(os.path.join(path, fname))
+	if valid:
+		QtGui.QApplication.installTranslator(translator)
+"""
+
 class Save: 
 	def Activated(self):
 		import plotSave
 		plotSave.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
-		IconPath = Paths.iconsPath() + "/Save.svg"
-		MenuText = str(Translator.translate('Save plot'))
-		ToolTip  = str(Translator.translate('Save plot as image file.'))
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Save.svg"
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_SaveFig", "Save plot")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_SaveFig", "Save plot as image file")
+		return {'Pixmap' : 'Save', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Axes: 
 	def Activated(self):
@@ -42,11 +62,11 @@ class Axes:
 		plotAxes.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
-		IconPath = Paths.iconsPath() + "/Axes.svg"
-		MenuText = str(Translator.translate('Configure axes'))
-		ToolTip  = str(Translator.translate('Configure axes parameters.'))
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Axes.svg"
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Axes", "Configure axes")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Axes", "Configure axes parameters")
+		return {'Pixmap' : 'Axes', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Series: 
 	def Activated(self):
@@ -54,49 +74,49 @@ class Series:
 		plotSeries.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
-		IconPath = Paths.iconsPath() + "/Series.svg"
-		MenuText = str(Translator.translate('Configure series'))
-		ToolTip  = str(Translator.translate('Configure series drawing style and label.'))
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Series.svg"
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Series", "Configure series")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Series", "Configure series drawing style and label")
+		return {'Pixmap' : 'Series', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Grid: 
 	def Activated(self):
 		import Plot
-		from plotUtils import Translator
 		plt = Plot.getPlot()
 		if not plt:
-			msg = Translator.translate("Grid must be activated on top of a plot document.")
+			msg = QtGui.QApplication.translate("plot_console", "Grid must be activated on top of a plot document",
+                                               None,QtGui.QApplication.UnicodeUTF8)
 			FreeCAD.Console.PrintError(msg+"\n")
 			return
 		flag = plt.isGrid()
 		Plot.grid(not flag)
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
-		IconPath = Paths.iconsPath() + "/Grid.svg"
-		MenuText = str(Translator.translate('Show/Hide grid'))
-		ToolTip  = str(Translator.translate('Show/Hide grid on selected plot'))
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Grid.svg"
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Grid", "Show/Hide grid")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Grid", "Show/Hide grid on selected plot")
+		return {'Pixmap' : 'Grid', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Legend: 
 	def Activated(self):
 		import Plot
-		from plotUtils import Translator
 		plt = Plot.getPlot()
 		if not plt:
-			msg = Translator.translate("Legend must be activated on top of a plot document.")
+			msg = QtGui.QApplication.translate("plot_console", "Legend must be activated on top of a plot document",
+                                               None,QtGui.QApplication.UnicodeUTF8)
 			FreeCAD.Console.PrintError(msg+"\n")
 			return
 		flag = plt.isLegend()
 		Plot.legend(not flag)
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
-		IconPath = Paths.iconsPath() + "/Legend.svg"
-		MenuText = str(Translator.translate('Show/Hide legend'))
-		ToolTip  = str(Translator.translate('Show/Hide legend on selected plot'))
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Legend.svg"
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Legend", "Show/Hide legend")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Legend", "Show/Hide legend on selected plot")
+		return {'Pixmap' : 'Legend', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Labels: 
 	def Activated(self):
@@ -104,11 +124,11 @@ class Labels:
 		plotLabels.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
-		IconPath = Paths.iconsPath() + "/Labels.svg"
-		MenuText = str(Translator.translate('Set labels'))
-		ToolTip  = str(Translator.translate('Set title and axes labels'))
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Labels.svg"
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Labels", "Set labels")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Labels", "Set title and axes labels")
+		return {'Pixmap' : 'Labels', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 class Positions: 
 	def Activated(self):
@@ -116,11 +136,11 @@ class Positions:
 		plotPositions.load()
 
 	def GetResources(self):
-		from plotUtils import Paths, Translator
-		IconPath = Paths.iconsPath() + "/Positions.svg"
-		MenuText = str(Translator.translate('Set positions and sizes'))
-		ToolTip  = str(Translator.translate('Set labels and legend positions and sizes.'))
-		return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip} 
+		# from plotUtils import Paths
+		# IconPath = Paths.iconsPath() + "/Positions.svg"
+		MenuText = QtCore.QT_TRANSLATE_NOOP("Plot_Positions", "Set positions and sizes")
+		ToolTip  = QtCore.QT_TRANSLATE_NOOP("Plot_Positions", "Set labels and legend positions and sizes")
+		return {'Pixmap' : 'Positions', 'MenuText': MenuText, 'ToolTip': ToolTip} 
 
 FreeCADGui.addCommand('Plot_SaveFig', Save())
 FreeCADGui.addCommand('Plot_Axes', Axes())

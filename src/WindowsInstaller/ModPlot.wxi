@@ -27,18 +27,74 @@
             <File Id="PlotGuiPy" Name="PlotGui.py" DiskId="1" />
             <File Id="PlotInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="PlotInstance" Name="Plot.py" DiskId="1" />
+            <File Id="PlotResources" Name="Plot_rc.py" DiskId="1" />
         </Component>
-		<Directory Id="ModPlotIcons" Name="Icons" FileSource="../../Mod/Plot/Icons" >
-			<Component Id="CompModPlotIcons"  Guid="a176d6d9-755c-4b09-824a-af56c45f08c0" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="PlotIcons01" Name="Axes.svg"   />
-				<File Id="PlotIcons02" Name="Grid.svg"   />
-				<File Id="PlotIcons03" Name="Icon.svg"   />
-				<File Id="PlotIcons04" Name="Labels.svg"   />
-				<File Id="PlotIcons05" Name="Legend.svg"   />
-				<File Id="PlotIcons06" Name="Positions.svg"   />
-				<File Id="PlotIcons07" Name="Save.svg"   />
-				<File Id="PlotIcons08" Name="Series.svg"   />
+		<Directory Id="ModPlotResources" Name="resources" FileSource="../../Mod/Plot/resources" >
+			<Component Id="CompModPlotResources"  Guid="9e540692-dbee-4cc7-994d-3a8153de53bc" Win64='$(var.Win_64)' KeyPath="yes">
+				<File Id="PlotResources01" Name="Plot.qrc"   />
 			</Component>
+			<Directory Id="ModPlotIcons" Name="icons" FileSource="../../Mod/Plot/resources/icons" >
+				<Component Id="CompModPlotIcons"  Guid="a176d6d9-755c-4b09-824a-af56c45f08c0" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="PlotIcons01" Name="Axes.svg"   />
+					<File Id="PlotIcons02" Name="Grid.svg"   />
+					<File Id="PlotIcons03" Name="Icon.svg"   />
+					<File Id="PlotIcons04" Name="Labels.svg"   />
+					<File Id="PlotIcons05" Name="Legend.svg"   />
+					<File Id="PlotIcons06" Name="Positions.svg"   />
+					<File Id="PlotIcons07" Name="Save.svg"   />
+					<File Id="PlotIcons08" Name="Series.svg"   />
+				</Component>
+			</Directory>
+			<Directory Id="ModPlotTranslations" Name="translations" FileSource="../../Mod/Plot/resources/translations" >
+				<Component Id="CompModPlotTranslations"  Guid="714534d7-ecf0-486c-9238-da6a06029499" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="PlotTranslations01" Name="Plot.qm"   />
+					<File Id="PlotTranslations02" Name="Plot.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_af.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_af.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_cs.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_cs.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_de.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_de.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_es-ES.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_es-ES.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_fi.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_fi.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_fr.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_fr.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_hr.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_hr.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_hu.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_hu.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_it.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_it.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_ja.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_ja.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_nl.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_nl.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_no.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_no.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_pl.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_pl.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_pt-BR.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_pt-BR.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_ro.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_ro.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_ru.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_ru.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_sk.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_sk.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_sv-SE.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_sv-SE.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_tr.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_tr.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_uk.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_uk.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_zh-CN.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_zh-CN.ts"   />
+					<File Id="PlotTranslations03" Name="Plot_zh-TW.qm"   />
+					<File Id="PlotTranslations04" Name="Plot_zh-TW.ts"   />
+				</Component>
+			</Directory>
 		</Directory>
 		<Directory Id="ModplotAxes" Name="plotAxes" FileSource="../../Mod/Plot/plotAxes" >
 			<Component Id="CompModplotAxes"  Guid="0dfd62d2-196b-45e8-ba6d-a51267233890" Win64='$(var.Win_64)' KeyPath="yes">
@@ -79,7 +135,6 @@
 			<Component Id="CompModplotUtils"  Guid="861945d1-6105-4063-8cbb-93235876e15b" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="plotUtils01" Name="__init__.py"   />
 				<File Id="plotUtils02" Name="Paths.py"   />
-				<File Id="plotUtils03" Name="Translator.py"   />
 			</Component>
 		</Directory>
 	</Directory>

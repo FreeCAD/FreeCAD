@@ -68,6 +68,7 @@
 #endif
 
 #include <Inventor/SbTime.h>
+#include <boost/scoped_ptr.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Tools.h>
@@ -362,7 +363,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     SbVec3f point = viewer->getPointOnScreen(cursorPos);
     SbVec3f normal = viewer->getViewDirection();
 
-    SoPickedPoint *pp = this->getPointOnRay(cursorPos, viewer);
+    // use scoped_ptr to make sure that instance gets deleted in all cases
+    boost::scoped_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
 
     // Radius maximum to allow double click event
     const int dblClickRadius = 5;
@@ -784,9 +786,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         Mode!=STATUS_SKETCH_DragConstraint) {
 
         SoPickedPoint *pp = this->getPointOnRay(cursorPos, viewer);
-
         int PtIndex,GeoIndex,ConstrIndex,CrossIndex;
         preselectChanged = detectPreselection(pp,PtIndex,GeoIndex,ConstrIndex,CrossIndex);
+        delete pp;
     }
 
     switch (Mode) {
@@ -2648,6 +2650,11 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                     sep->addChild(text);
                     edit->constrGroup->addChild(anno);
                     edit->vConstrType.push_back((*it)->Type);
+                    // nodes not needed
+                    sep->ref();
+                    sep->unref();
+                    Material->ref();
+                    Material->unref();
                     continue; // jump to next constraint
                 }
                 break;
@@ -2716,7 +2723,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 break;
             default:
                 edit->vConstrType.push_back(None);
-            }
+        }
 
         edit->constrGroup->addChild(sep);
     }
