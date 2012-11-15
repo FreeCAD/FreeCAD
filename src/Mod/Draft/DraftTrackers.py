@@ -401,31 +401,53 @@ class ghostTracker(Tracker):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         self.children = [self.trans]
-        self.ivsep = coin.SoSeparator()
-        try:
-            if isinstance(sel,Part.Shape):
-                ivin = coin.SoInput()
-                ivin.setBuffer(sel.writeInventor())
-                ivob = coin.SoDB.readAll(ivin)
-                self.ivsep.addChild(ivob.getChildren()[1])
-            else:
-                if not isinstance(sel,list):
-                    sel = [sel]
-                for obj in sel:
-                    self.ivsep.addChild(obj.ViewObject.RootNode.copy())
-        except:
-            print "draft: Couldn't create ghost"
-        self.children.append(self.ivsep)
+        rootsep = coin.SoSeparator()
+        if not isinstance(sel,list):
+            sel = [sel]
+        for obj in sel:
+            rootsep.addChild(self.getNode(obj))
+        self.children.append(rootsep)        
         Tracker.__init__(self,children=self.children)
 
     def update(self,obj):
         obj.ViewObject.show()
         self.finalize()
-        self.ivsep = coin.SoSeparator()
-        self.ivsep.addChild(obj.ViewObject.RootNode.copy())
-        Tracker.__init__(self,children=[self.ivsep])
+        sep = getNode(obj)
+        Tracker.__init__(self,children=[self.sep])
         self.on()
         obj.ViewObject.hide()
+
+    def getNode(self,obj):
+        "returns a coin node representing the given object"
+        if isinstance(obj,Part.Shape):
+            return self.getNodeLight(obj)
+        elif obj.isDerivedFrom("Part::Feature"):
+            return self.getNodeLight(obj.Shape)
+        else:
+            return self.getNodeFull(obj)
+
+    def getNodeFull(self,obj):
+        "gets a coin node which is a full copy of the current representation"
+        sep = coin.SoSeparator()
+        try:
+            sep.addChild(obj.ViewObject.RootNode.copy())
+        except:
+            pass
+        return sep
+
+    def getNodeLight(self,shape):
+        "extract a lighter version directly from a shape"
+        sep = coin.SoSeparator()
+        try:
+            inputstr = coin.SoInput()
+            inputstr.setBuffer(shape.writeInventor())
+            coinobj = coin.SoDB.readAll(inputstr)
+            # only add wireframe or full node?
+            sep.addChild(coinobj.getChildren()[1])
+            # sep.addChild(coinobj)
+        except:
+            pass
+        return sep
 
 class editTracker(Tracker):
     "A node edit tracker"

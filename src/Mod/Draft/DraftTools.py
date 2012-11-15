@@ -227,7 +227,8 @@ class DraftTool:
         
         self.ui = None
         self.call = None
-        self.support = None        
+        self.support = None
+        self.point = None      
         self.commitList = []
         self.doc = FreeCAD.ActiveDocument
         if not self.doc:
@@ -250,21 +251,16 @@ class DraftTool:
         self.extendedCopy = False
         self.ui.setTitle(name)
         self.featureName = name
-        #self.snap = snapTracker()
-        #self.extsnap = lineTracker(dotted=True)
         self.planetrack = None
         if Draft.getParam("showPlaneTracker"):
             self.planetrack = PlaneTracker()
 		
     def finish(self):
         self.node = []
-        #self.snap.finalize()
-        #self.extsnap.finalize()
         FreeCAD.activeDraftCommand = None
         if self.ui:
             self.ui.offUi()
             self.ui.sourceCmd = None
-            #self.ui.cross(False)
         msg("")
         if self.planetrack:
             self.planetrack.finalize()
@@ -451,8 +447,6 @@ class Line(Creator):
                 self.ui.wireUi(name)
             else:
                 self.ui.lineUi(name)
-            self.linetrack = lineTracker()
-            self.constraintrack = lineTracker(dotted=True)
             self.obj=self.doc.addObject("Part::Feature",self.featureName)
             # self.obj.ViewObject.Selectable = False
             Draft.formatObject(self.obj)
@@ -473,9 +467,6 @@ class Line(Creator):
                         ['import Draft',
                          'points='+pts,
                          'Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
-        if self.ui:
-            self.linetrack.finalize()
-            self.constraintrack.finalize()
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -490,8 +481,6 @@ class Line(Creator):
         elif arg["Type"] == "SoLocation2Event":
             # mouse movement detection
             point,ctrlPoint,info = getPoint(self,arg)
-            self.ui.cross(True)
-            self.linetrack.p2(point)
         elif arg["Type"] == "SoMouseButtonEvent":
             # mouse button detection
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -503,7 +492,6 @@ class Line(Creator):
                     point,ctrlPoint,info = getPoint(self,arg)
                     self.pos = arg["Position"]
                     self.node.append(point)
-                    self.linetrack.p1(point)
                     self.drawSegment(point)
                     if (not self.isWire and len(self.node) == 2):
                         self.finish(False,cont=True)
@@ -518,7 +506,6 @@ class Line(Creator):
         if (len(self.node) > 1):
             self.node.pop()
             last = self.node[len(self.node)-1]
-            self.linetrack.p1(last)
             if self.obj.Shape.Edges:
                 edges = self.obj.Shape.Edges
                 if len(edges) > 1:
@@ -533,7 +520,6 @@ class Line(Creator):
     def drawSegment(self,point):
         "draws a new segment"
         if (len(self.node) == 1):
-            self.linetrack.on()
             msg(translate("draft", "Pick next point:\n"))
             if self.planetrack:
                 self.planetrack.set(self.node[0])
@@ -558,7 +544,6 @@ class Line(Creator):
             # self.obj.Shape.nullify() - for some reason this fails
             self.obj.ViewObject.Visibility = False
             self.node = [self.node[-1]]
-            self.linetrack.p1(self.node[0])
             if self.planetrack:
                 self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
@@ -567,7 +552,6 @@ class Line(Creator):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
         point = Vector(numx,numy,numz)
         self.node.append(point)
-        self.linetrack.p1(point)
         self.drawSegment(point)
         if (not self.isWire and len(self.node) == 2):
             self.finish(False,cont=True)
@@ -610,14 +594,7 @@ class BSpline(Line):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             point,ctrlPoint,info = getPoint(self,arg)
-            self.ui.cross(True)
             self.bsplinetrack.update(self.node + [point])
-            # Draw constraint tracker line.
-            if hasMod(arg,MODCONSTRAIN):
-                self.constraintrack.p1(point)
-                self.constraintrack.p2(ctrlPoint)
-                self.constraintrack.on()
-            else: self.constraintrack.off()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if (arg["Position"] == self.pos):
@@ -681,7 +658,6 @@ class BSpline(Line):
                 print "Draft: error delaying commit"
         if self.ui:
 			self.bsplinetrack.finalize()
-			self.constraintrack.finalize()
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -808,7 +784,6 @@ class Rectangle(Creator):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             point,ctrlPoint,info = getPoint(self,arg,mobile=True)
             self.rect.update(point)
-            self.ui.cross(True)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if (arg["Position"] == self.pos):
@@ -865,7 +840,6 @@ class Arc(Creator):
             self.altdown = False
             self.ui.sourceCmd = self
             self.linetrack = lineTracker(dotted=True)
-            self.constraintrack = lineTracker(dotted=True)
             self.arctrack = arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             msg(translate("draft", "Pick center point:\n"))
@@ -875,7 +849,6 @@ class Arc(Creator):
         Creator.finish(self)
         if self.ui:
             self.linetrack.finalize()
-            self.constraintrack.finalize()
             self.arctrack.finalize()
             self.doc.recompute()
         if self.ui:
@@ -911,7 +884,6 @@ class Arc(Creator):
         elif arg["Type"] == "SoLocation2Event":
             point,ctrlPoint,info = getPoint(self,arg)
             # this is to make sure radius is what you see on screen
-            self.ui.cross(True)
             if self.center and DraftVecUtils.dist(point,self.center) > 0:
                 viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
                 if not DraftVecUtils.isNull(viewdelta):
@@ -919,12 +891,10 @@ class Arc(Creator):
             if (self.step == 0): # choose center
                 if hasMod(arg,MODALT):
                     if not self.altdown:
-                        self.ui.cross(False)
                         self.altdown = True
                         self.ui.switchUi(True)
                     else:
                         if self.altdown:
-                            self.ui.cross(True)
                             self.altdown = False
                             self.ui.switchUi(False)
             elif (self.step == 1): # choose radius
@@ -938,7 +908,6 @@ class Arc(Creator):
                     self.arctrack.setCenter(self.center)
                 if hasMod(arg,MODALT):
                     if not self.altdown:
-                        self.ui.cross(False)
                         self.altdown = True
                     if info:
                         ob = self.doc.getObject(info['Object'])
@@ -956,18 +925,10 @@ class Arc(Creator):
                         self.rad = DraftVecUtils.dist(point,self.center)
                 else:
                     if self.altdown:
-                        self.ui.cross(True)
                         self.altdown = False
                     self.rad = DraftVecUtils.dist(point,self.center)
                 self.ui.setRadiusValue(self.rad)
                 self.arctrack.setRadius(self.rad)
-                # Draw constraint tracker line.
-                if hasMod(arg,MODCONSTRAIN):
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
-                else:
-                    self.constraintrack.off()
                 self.linetrack.p1(self.center)
                 self.linetrack.p2(point)
                 self.linetrack.on()
@@ -977,13 +938,6 @@ class Arc(Creator):
                     angle = DraftVecUtils.angle(plane.u, point.sub(self.center), plane.axis)
                 else: angle = 0
                 self.linetrack.p2(DraftVecUtils.scaleTo(point.sub(self.center),self.rad).add(self.center))
-                # Draw constraint tracker line.
-                if hasMod(arg,MODCONSTRAIN):
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
-                else:
-                    self.constraintrack.off()
                 self.ui.setRadiusValue(math.degrees(angle))
                 self.firstangle = angle
             else: # choose second angle
@@ -992,13 +946,6 @@ class Arc(Creator):
                     angle = DraftVecUtils.angle(plane.u, point.sub(self.center), plane.axis)
                 else: angle = 0
                 self.linetrack.p2(DraftVecUtils.scaleTo(point.sub(self.center),self.rad).add(self.center))
-                # Draw constraint tracker line.
-                if hasMod(arg,MODCONSTRAIN):
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
-                else:
-                    self.constraintrack.off()
                 self.ui.setRadiusValue(math.degrees(angle))
                 self.updateAngle(angle)
                 self.arctrack.setApertureAngle(self.angle)
@@ -1045,7 +992,6 @@ class Arc(Creator):
                             self.planetrack.set(point)                        
                 elif (self.step == 1): # choose radius
                     if self.closedCircle:
-                        self.ui.cross(False)
                         self.drawArc()
                     else: 
                         self.ui.labelRadius.setText("Start angle")
@@ -1187,8 +1133,6 @@ class Polygon(Creator):
             self.ui.numFaces.show()
             self.altdown = False
             self.ui.sourceCmd = self
-            self.linetrack = lineTracker(dotted=True)
-            self.constraintrack = lineTracker(dotted=True)
             self.arctrack = arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             msg(translate("draft", "Pick center point:\n"))
@@ -1197,8 +1141,6 @@ class Polygon(Creator):
         "finishes the arc"
         Creator.finish(self)
         if self.ui:
-            self.linetrack.finalize()
-            self.constraintrack.finalize()
             self.arctrack.finalize()
             self.doc.recompute()
             if self.ui.continueMode:
@@ -1212,7 +1154,6 @@ class Polygon(Creator):
         elif arg["Type"] == "SoLocation2Event":
             point,ctrlPoint,info = getPoint(self,arg)
             # this is to make sure radius is what you see on screen
-            self.ui.cross(True)
             if self.center and DraftVecUtils.dist(point,self.center) > 0:
                 viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
                 if not DraftVecUtils.isNull(viewdelta):
@@ -1220,12 +1161,10 @@ class Polygon(Creator):
             if (self.step == 0): # choose center
                 if hasMod(arg,MODALT):
                     if not self.altdown:
-                        self.ui.cross(False)
                         self.altdown = True
                         self.ui.switchUi(True)
                 else:
                     if self.altdown:
-                        self.ui.cross(True)
                         self.altdown = False
                         self.ui.switchUi(False)
             else: # choose radius
@@ -1239,7 +1178,6 @@ class Polygon(Creator):
                     self.arctrack.setCenter(self.center)
                 if hasMod(arg,MODALT):
                     if not self.altdown:
-                        self.ui.cross(False)
                         self.altdown = True
                     snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
                     if snapped:
@@ -1258,20 +1196,10 @@ class Polygon(Creator):
                         self.rad = DraftVecUtils.dist(point,self.center)
                 else:
                     if self.altdown:
-                        self.ui.cross(True)
                         self.altdown = False
                     self.rad = DraftVecUtils.dist(point,self.center)
                 self.ui.setRadiusValue(self.rad)
                 self.arctrack.setRadius(self.rad)
-                # Draw constraint tracker line.
-                if hasMod(arg,MODCONSTRAIN):
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
-                else: self.constraintrack.off()
-                self.linetrack.p1(self.center)
-                self.linetrack.p2(point)
-                self.linetrack.on()
 
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -1295,7 +1223,6 @@ class Polygon(Creator):
                                 self.arctrack.on()
                                 self.ui.radiusUi()
                                 self.step = 1
-                                self.linetrack.on()
                                 msg(translate("draft", "Pick radius:\n"))
                     else:
                         if len(self.tangents) == 1:
@@ -1304,17 +1231,13 @@ class Polygon(Creator):
                             self.center = point
                             self.node = [point]
                             self.arctrack.setCenter(self.center)
-                            self.linetrack.p1(self.center)
-                            self.linetrack.p2(self.view.getPoint(arg["Position"][0],arg["Position"][1]))
                         self.arctrack.on()
                         self.ui.radiusUi()
                         self.step = 1
-                        self.linetrack.on()
                         msg(translate("draft", "Pick radius:\n"))
                         if self.planetrack:
                             self.planetrack.set(point)
                 elif (self.step == 1): # choose radius
-                    self.ui.cross(False)
                     self.drawPolygon()
 
     def drawPolygon(self):
@@ -1416,7 +1339,6 @@ class Text(Creator):
                 self.node.append(point)
                 self.ui.textUi()
                 self.ui.textValue.setFocus()
-                self.ui.cross(False)
 
     def numericInput(self,numx,numy,numz):
         '''this function gets called by the toolbar when valid
@@ -1425,9 +1347,8 @@ class Text(Creator):
         self.node.append(point)
         self.ui.textUi()
         self.ui.textValue.setFocus()
-        self.ui.cross(False)
 
-        
+
 class Dimension(Creator):
     "The Draft_Dimension FreeCAD command definition"
         
@@ -1450,7 +1371,6 @@ class Dimension(Creator):
             Creator.Activated(self,name)
             self.dimtrack = dimTracker()
             self.arctrack = arcTracker()
-            self.constraintrack = lineTracker(dotted=True)
             self.createOnMeasures()
             self.finish()
         else:
@@ -1471,7 +1391,6 @@ class Dimension(Creator):
                 self.arcmode = False
                 self.point2 = None
                 self.force = None
-                self.constraintrack = lineTracker(dotted=True)
                 msg(translate("draft", "Pick first point:\n"))
                 FreeCADGui.draftToolBar.show()
 
@@ -1493,7 +1412,6 @@ class Dimension(Creator):
         if self.ui:
             self.dimtrack.finalize()
             self.arctrack.finalize()
-            self.constraintrack.finalize()
 
     def createOnMeasures(self):
         for o in FreeCADGui.Selection.getSelection():
@@ -1546,9 +1464,7 @@ class Dimension(Creator):
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
             point,ctrlPoint,info = getPoint(self,arg)
-            self.ui.cross(True)
             if hasMod(arg,MODALT) and (len(self.node)<3):
-                self.ui.cross(False)
                 self.dimtrack.off()
                 if not self.altdown:
                     self.altdown = True
@@ -1563,7 +1479,6 @@ class Dimension(Creator):
                         v2 = ed.Vertexes[-1].Point
                         self.dimtrack.update([v1,v2,self.cont])
             else:
-                self.ui.cross(True)
                 if self.node and (len(self.edges) < 2):
                     self.dimtrack.on()
                 if len(self.edges) == 2:
@@ -1615,15 +1530,11 @@ class Dimension(Creator):
                             self.node[1] = Vector(self.node[0].x,self.node[1].y,self.node[0].z)
                         elif self.force == 2:
                             self.node[1] = Vector(self.node[1].x,self.node[0].y,self.node[0].z)
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
                 else:
                     self.force = None
                     if self.point2:
                         self.node[1] = self.point2
                         self.point2 = None
-                    self.constraintrack.off()
                 # update the dimline
                 if self.node and (not self.arcmode):
                     self.dimtrack.update(self.node+[point]+[self.cont])
@@ -1746,8 +1657,6 @@ class Move(Modifier):
         if self.ui:
             if not Draft.getSelection():
                 self.ghost = None
-                self.linetrack = None
-                self.constraintrack = None
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to move\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -1762,20 +1671,13 @@ class Move(Modifier):
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        self.linetrack = lineTracker()
-        self.constraintrack = lineTracker(dotted=True)
         self.ghost = ghostTracker(self.sel)
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick start point:\n"))
-        self.ui.cross(True)
 
     def finish(self,closed=False,cont=False):
         if self.ghost:
             self.ghost.finalize()
-        if self.linetrack:
-            self.linetrack.finalize()
-        if self.constraintrack:
-            self.constraintrack.finalize()
         Modifier.finish(self)
         if cont and self.ui:
             if self.ui.continueMode:
@@ -1806,53 +1708,41 @@ class Move(Modifier):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            point,ctrlPoint,info = getPoint(self,arg)
-            self.linetrack.p2(point)
-            self.ui.cross(True)
-            # Draw constraint tracker line.
-            if hasMod(arg,MODCONSTRAIN):
-                self.constraintrack.p1(point)
-                self.constraintrack.p2(ctrlPoint)
-                self.constraintrack.on()
-            else: self.constraintrack.off()
+            self.point,ctrlPoint,info = getPoint(self,arg)
             if (len(self.node) > 0):
                 last = self.node[len(self.node)-1]
-                delta = point.sub(last)
+                delta = self.point.sub(last)
                 self.ghost.trans.translation.setValue([delta.x,delta.y,delta.z])
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                point,ctrlPoint,info = getPoint(self,arg)
-                if (self.node == []):
-                    self.node.append(point)
-                    self.ui.isRelative.show()
-                    self.linetrack.on()
-                    self.ghost.on()
-                    self.linetrack.p1(point)
-                    msg(translate("draft", "Pick end point:\n"))
-                    if self.planetrack:
-                        self.planetrack.set(point)
-                else:
-                    last = self.node[0]
-                    if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
-                        self.move(point.sub(last),True)
+                if self.point:
+                    if (self.node == []):
+                        self.node.append(self.point)
+                        self.ui.isRelative.show()
+                        self.ghost.on()
+                        msg(translate("draft", "Pick end point:\n"))
+                        if self.planetrack:
+                            self.planetrack.set(self.point)
                     else:
-                        self.move(point.sub(last))
-                    if hasMod(arg,MODALT):
-                        self.extendedCopy = True
-                    else:
-                        self.finish(cont=True)
+                        last = self.node[0]
+                        if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
+                            self.move(self.point.sub(last),True)
+                        else:
+                            self.move(self.point.sub(last))
+                        if hasMod(arg,MODALT):
+                            self.extendedCopy = True
+                        else:
+                            self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
-        point = Vector(numx,numy,numz)
+        self.point = Vector(numx,numy,numz)
         if not self.node:
-            self.node.append(point)
+            self.node.append(self.point)
             self.ui.isRelative.show()
             self.ui.isCopy.show()
-            self.linetrack.p1(point)
-            self.linetrack.on()
             self.ghost.on()
             msg(translate("draft", "Pick end point:\n"))
         else:
@@ -1913,9 +1803,7 @@ class Rotate(Modifier):
         if self.ui:
             if not Draft.getSelection():
                 self.ghost = None
-                self.linetrack = None
                 self.arctrack = None
-                self.constraintrack = None
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to rotate\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -1931,21 +1819,14 @@ class Rotate(Modifier):
         self.ui.arcUi()
         self.ui.isCopy.show()
         self.ui.setTitle("Rotate")
-        self.linetrack = lineTracker()
-        self.constraintrack = lineTracker(dotted=True)
         self.arctrack = arcTracker()
         self.ghost = ghostTracker(self.sel)
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick rotation center:\n"))
-        self.ui.cross(True)
 				
     def finish(self,closed=False,cont=False):
         "finishes the arc"
         Modifier.finish(self)
-        if self.linetrack:
-            self.linetrack.finalize()
-        if self.constraintrack:
-            self.constraintrack.finalize()
         if self.arctrack:
             self.arctrack.finalize()
         if self.ghost:
@@ -1981,7 +1862,6 @@ class Rotate(Modifier):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
             point,ctrlPoint,info = getPoint(self,arg)
-            self.ui.cross(True)
             # this is to make sure radius is what you see on screen
             if self.center and DraftVecUtils.dist(point,self.center):
                 viewdelta = DraftVecUtils.project(point.sub(self.center), plane.axis)
@@ -1998,14 +1878,6 @@ class Rotate(Modifier):
                 if (currentrad != 0):
                     angle = DraftVecUtils.angle(plane.u, point.sub(self.center), plane.axis)
                 else: angle = 0
-                self.linetrack.p2(point)
-                # Draw constraint tracker line.
-                if hasMod(arg,MODCONSTRAIN):
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
-                else:
-                    self.constraintrack.off()
                 self.ui.radiusValue.setText("%.2f" % math.degrees(angle))
                 self.firstangle = angle
                 self.ui.radiusValue.setFocus()
@@ -2021,14 +1893,6 @@ class Rotate(Modifier):
                     sweep = angle - self.firstangle
                 self.arctrack.setApertureAngle(sweep)
                 self.ghost.trans.rotation.setValue(coin.SbVec3f(DraftVecUtils.tup(plane.axis)),sweep)
-                self.linetrack.p2(point)
-                # Draw constraint tracker line.
-                if hasMod(arg,MODCONSTRAIN):
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
-                else:
-                    self.constraintrack.off()
                 self.ui.radiusValue.setText("%.2f" % math.degrees(sweep))
                 self.ui.radiusValue.setFocus()
                 self.ui.radiusValue.selectAll()
@@ -2045,10 +1909,8 @@ class Rotate(Modifier):
                     self.ui.radiusUi()
                     self.ui.hasFill.hide()
                     self.ui.labelRadius.setText("Base angle")
-                    self.linetrack.p1(self.center)
                     self.arctrack.setCenter(self.center)
                     self.ghost.trans.center.setValue(self.center.x,self.center.y,self.center.z)
-                    self.linetrack.on()
                     self.step = 1
                     msg(translate("draft", "Pick base angle:\n"))
                     if self.planetrack:
@@ -2085,9 +1947,6 @@ class Rotate(Modifier):
         self.node = [self.center]
         self.arctrack.setCenter(self.center)
         self.ghost.trans.center.setValue(self.center.x,self.center.y,self.center.z)
-        self.linetrack.p1(self.center)
-        # self.arctrack.on()
-        self.linetrack.on()
         self.ui.radiusUi()
         self.ui.hasFill.hide()
         self.ui.labelRadius.setText("Base angle")
@@ -2126,7 +1985,6 @@ class Offset(Modifier):
                 self.ghost = None
                 self.linetrack = None
                 self.arctrack = None
-                self.constraintrack = None
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to offset\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -2148,7 +2006,6 @@ class Offset(Modifier):
             self.constrainSeg = None
             self.ui.offsetUi()
             self.linetrack = lineTracker()
-            self.constraintrack = lineTracker(dotted=True)
             self.faces = False
             self.shape = self.sel.Shape
             self.mode = None
@@ -2167,7 +2024,6 @@ class Offset(Modifier):
                 self.mode = "Wire"
             self.call = self.view.addEventCallback("SoEvent",self.action)
             msg(translate("draft", "Pick distance:\n"))
-            self.ui.cross(True)
             if self.planetrack:
                 self.planetrack.set(self.shape.Vertexes[0].Point)
             self.running = True
@@ -2178,17 +2034,11 @@ class Offset(Modifier):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
-            self.ui.cross(True)
             point,ctrlPoint,info = getPoint(self,arg)
             if hasMod(arg,MODCONSTRAIN) and self.constrainSeg:
                 dist = DraftGeomUtils.findPerpendicular(point,self.shape,self.constrainSeg[1])
-                e = self.shape.Edges[self.constrainSeg[1]]
-                self.constraintrack.p1(e.Vertexes[0].Point)
-                self.constraintrack.p2(point.add(dist[0]))
-                self.constraintrack.on()
             else:
                 dist = DraftGeomUtils.findPerpendicular(point,self.shape.Edges)
-                self.constraintrack.off()
             if dist:
                 self.ghost.on()
                 if self.mode == "Wire":
@@ -2256,8 +2106,6 @@ class Offset(Modifier):
         if self.running:
             if self.linetrack:
                 self.linetrack.finalize()
-            if self.constraintrack:
-                self.constraintrack.finalize()
             if self.ghost:
                 self.ghost.finalize()
         Modifier.finish(self)
@@ -2666,7 +2514,6 @@ class Trimex(Modifier):
         self.placement = None
         self.ghost = None
         self.linetrack = None
-        self.constraintrack = None
         if self.ui:
             if not Draft.getSelection():
                 self.ui.selectUi()
@@ -2680,7 +2527,7 @@ class Trimex(Modifier):
         self.obj = Draft.getSelection()[0]
         self.ui.trimUi()
         self.linetrack = lineTracker()
-        self.constraintrack = lineTracker(dotted=True)
+
         if not "Shape" in self.obj.PropertiesList: return
         if "Placement" in self.obj.PropertiesList:
             self.placement = self.obj.Placement
@@ -2731,15 +2578,13 @@ class Trimex(Modifier):
         self.cv = None
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick distance:\n"))
-        self.ui.cross(True)
-				
+
     def action(self,arg):
         "scene event handler"
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.ui.cross(True)
             self.shift = hasMod(arg,MODCONSTRAIN)
             self.alt = hasMod(arg,MODALT)
             if self.extrudeMode:
@@ -2752,9 +2597,6 @@ class Trimex(Modifier):
                 dist = self.extrude(self.shift)
             else:
                 dist = self.redraw(self.point,self.snapped,self.shift,self.alt)
-            self.constraintrack.p1(self.point)
-            self.constraintrack.p2(self.newpoint)
-            self.constraintrack.on()
             self.ui.radiusValue.setText("%.2f" % dist)
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
@@ -2934,8 +2776,6 @@ class Trimex(Modifier):
         if self.ui:
             if self.linetrack:
                 self.linetrack.finalize()
-            if self.constraintrack:
-                self.constraintrack.finalize()
             if self.ghost:
                 for g in self.ghost:
                     g.finalize()
@@ -2965,8 +2805,6 @@ class Scale(Modifier):
         if self.ui:
             if not Draft.getSelection():
                 self.ghost = None
-                self.linetrack = None
-                self.constraintrack = None
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to scale\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -2981,21 +2819,14 @@ class Scale(Modifier):
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        self.linetrack = lineTracker()
-        self.constraintrack = lineTracker(dotted=True)
         self.ghost = ghostTracker(self.sel)
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick base point:\n"))
-        self.ui.cross(True)
 
     def finish(self,closed=False,cont=False):
         Modifier.finish(self)
         if self.ghost:
             self.ghost.finalize()
-        if self.linetrack:
-            self.linetrack.finalize()
-        if self.constraintrack:
-            self.constraintrack.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
                 FreeCADGui.Selection.clearSelection()
@@ -3025,14 +2856,6 @@ class Scale(Modifier):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             point,ctrlPoint,info = getPoint(self,arg,sym=True)
-            self.linetrack.p2(point)
-            self.ui.cross(True)
-            # Draw constraint tracker line.
-            if hasMod(arg,MODCONSTRAIN):
-                self.constraintrack.p1(point)
-                self.constraintrack.p2(ctrlPoint)
-                self.constraintrack.on()
-            else: self.constraintrack.off()
             if (len(self.node) > 0):
                 last = self.node[len(self.node)-1]
                 delta = point.sub(last)
@@ -3050,9 +2873,7 @@ class Scale(Modifier):
                     self.node.append(point)
                     self.ui.isRelative.show()
                     self.ui.isCopy.show()
-                    self.linetrack.on()
                     self.ghost.on()
-                    self.linetrack.p1(point)
                     msg(translate("draft", "Pick scale factor:\n"))
                 else:
                     last = self.node[0]
@@ -3072,8 +2893,6 @@ class Scale(Modifier):
             self.node.append(point)
             self.ui.isRelative.show()
             self.ui.isCopy.show()
-            self.linetrack.p1(point)
-            self.linetrack.on()
             self.ghost.on()
             msg(translate("draft", "Pick scale factor:\n"))
         else:
@@ -3257,12 +3076,10 @@ class Edit(Modifier):
                         self.editpoints.append(self.obj.Dimline)
                         self.editpoints.append(Vector(p[0],p[1],p[2]))
                     self.trackers = []
-                    self.constraintrack = None
                     if self.editpoints:
                         for ep in range(len(self.editpoints)):
                             self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,
                                                              ep,self.obj.ViewObject.LineColor))
-                        self.constraintrack = lineTracker(dotted=True)
                         self.call = self.view.addEventCallback("SoEvent",self.action)
                         self.running = True
                         plane.save()
@@ -3286,8 +3103,6 @@ class Edit(Modifier):
             if self.trackers:
                 for t in self.trackers:
                     t.finalize()
-            if self.constraintrack:
-                self.constraintrack.finalize()
         if hasattr(self.obj.ViewObject,"Selectable"):
             self.obj.ViewObject.Selectable = self.selectstate
         Modifier.finish(self)
@@ -3302,13 +3117,7 @@ class Edit(Modifier):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             if self.editing != None:
                 point,ctrlPoint,info = getPoint(self,arg)
-                # Draw constraint tracker line.
-                if hasMod(arg,MODCONSTRAIN):
-                    self.constraintrack.p1(point)
-                    self.constraintrack.p2(ctrlPoint)
-                    self.constraintrack.on()
-                else:
-                    self.constraintrack.off()
+
                 self.trackers[self.editing].set(point)
                 self.update(self.trackers[self.editing].get())
         elif arg["Type"] == "SoMouseButtonEvent":
