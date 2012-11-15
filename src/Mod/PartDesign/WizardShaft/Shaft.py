@@ -20,29 +20,10 @@
 # *                                                                            *
 # ******************************************************************************/
 
-import os, tempfile
 import FreeCAD, FreeCADGui # FreeCAD just required for debug printing to the console...
-import WebGui
 from SegmentFunction import SegmentFunction
 from ShaftFeature import ShaftFeature
 from ShaftDiagram import Diagram
-
-htmlHeader = """
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
-        <TITLE></TITLE>
-        <META NAME="GENERATOR" CONTENT="FreeCAD shaft design wizard">
-</HEAD>
-<BODY LANG="en-US" DIR="A4">
-<P>
-"""
-htmlFooter = """
-</P>
-</BODY>
-</HTML>
-"""
 
 class ShaftSegment:
     length = 0.0
@@ -64,11 +45,6 @@ class Shaft:
     #featureWindow = None
     # The diagrams
     diagrams = {} # map of function name against Diagram object
-    # Directory for diagram files
-    tmpdir = ""
-    # HTML browser
-    haveBrowser = False
-    #htmlWindow = None
     # Calculation of shaft
     Qy = 0 # force in direction of y axis
     Qz = 0 # force in direction of z axis
@@ -77,8 +53,6 @@ class Shaft:
     Mtz = 0 # torsion moment around z axis
 
     def __init__(self, doc):
-        # Create a temporary directory
-        self.tmpdir = tempfile.mkdtemp()
         self.sketch = ShaftFeature(doc)
 
     def getLengthTo(self, index):
@@ -129,29 +103,15 @@ class Shaft:
             self.diagrams[self.Qy.name].update(self.Qy, self.getLengthTo(len(self.segments)) / 1000.0)
         else:
             # Create diagram
-            self.diagrams[self.Qy.name] = Diagram(self.tmpdir)
+            self.diagrams[self.Qy.name] = Diagram()
             self.diagrams[self.Qy.name].create("Shear force", self.Qy, self.getLengthTo(len(self.segments)) / 1000.0, "x", "mm", 1000.0, "Q_y", "N", 1.0, 10)
         if self.Mbz.name in self.diagrams:
             # Update diagram
             self.diagrams[self.Mbz.name].update(self.Mbz, self.getLengthTo(len(self.segments)) / 1000.0)
         else:
             # Create diagram
-            self.diagrams[self.Mbz.name] = Diagram(self.tmpdir)
+            self.diagrams[self.Mbz.name] = Diagram()
             self.diagrams[self.Mbz.name].create("Bending moment", self.Mbz, self.getLengthTo(len(self.segments)) / 1000.0, "x", "mm", 1000.0, "M_{b,z}", "Nm", 1.0, 10)
-
-        if self.haveBrowser is False:
-            # Create HTML file with the diagrams
-            htmlFile = os.path.join(self.tmpdir, "diagrams.html")
-            file = open(htmlFile, "w")
-            file.write(htmlHeader)
-            for fname in self.diagrams.iterkeys():
-                plotFile = os.path.join(self.tmpdir, (fname + ".png"))
-                file.write("<IMG SRC=\"%s\" NAME=\"%s\" ALIGN=MIDDLE WIDTH=450 HEIGHT=320 BORDER=0>\n" % (plotFile, fname))
-            file.write(htmlFooter)
-            file.close()
-            WebGui.openBrowser(htmlFile)
-            self.haveBrowser = True
-            # Once the diagram is created, it will take care of refreshing the HTML view
 
     def equilibrium(self):
         # Build equilibrium equations
@@ -247,12 +207,3 @@ class Shaft:
             if (i < len(var) - 1) and (i != 0):
                 FreeCAD.Console.PrintMessage(" + ")
         FreeCAD.Console.PrintMessage("\n")
-
-    def __del__(self):
-        "Remove the temporary directory"
-        for fname in self.diagrams.iterkeys():
-            os.remove(os.path.join(self.tmpdir, (fname + ".dat")))
-            os.remove(os.path.join(self.tmpdir, (fname + ".pyxplot")))
-            os.remove(os.path.join(self.tmpdir, (fname + ".png")))
-        os.remove(os.path.join(self.tmpdir, "diagrams.html"))
-        os.rmdir(self.tmpdir)
