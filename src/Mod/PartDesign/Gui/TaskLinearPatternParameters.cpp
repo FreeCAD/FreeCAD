@@ -93,12 +93,6 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
 
 void TaskLinearPatternParameters::setupUI()
 {
-    connect(ui->buttonX, SIGNAL(pressed()),
-            this, SLOT(onButtonX()));
-    connect(ui->buttonY, SIGNAL(pressed()),
-            this, SLOT(onButtonY()));
-    connect(ui->buttonZ, SIGNAL(pressed()),
-            this, SLOT(onButtonZ()));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
             this, SLOT(onCheckReverse(bool)));
     connect(ui->spinLength, SIGNAL(valueChanged(double)),
@@ -125,9 +119,9 @@ void TaskLinearPatternParameters::setupUI()
     }
     // ---------------------
 
-    ui->buttonX->setEnabled(true);
-    ui->buttonY->setEnabled(true);
-    ui->buttonZ->setEnabled(true);
+    //ui->buttonX->setEnabled(true);
+    //ui->buttonY->setEnabled(true);
+    //ui->buttonZ->setEnabled(true);
     ui->checkReverse->setEnabled(true);
     ui->spinLength->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
@@ -154,20 +148,20 @@ void TaskLinearPatternParameters::updateUI()
     ui->buttonReference->setChecked(referenceSelectionMode);
     if (!stdDirection.empty())
     {
-        ui->buttonX->setAutoExclusive(true);
-        ui->buttonY->setAutoExclusive(true);
-        ui->buttonZ->setAutoExclusive(true);
-        ui->buttonX->setChecked(stdDirection == "X");
-        ui->buttonY->setChecked(stdDirection == "Y");
-        ui->buttonZ->setChecked(stdDirection == "Z");
+        //ui->buttonX->setAutoExclusive(true);
+        //ui->buttonY->setAutoExclusive(true);
+        //ui->buttonZ->setAutoExclusive(true);
+        //ui->buttonX->setChecked(stdDirection == "X");
+        //ui->buttonY->setChecked(stdDirection == "Y");
+        //ui->buttonZ->setChecked(stdDirection == "Z");
         ui->lineReference->setText(tr(""));
     } else if (directionFeature != NULL && !directions.empty()) {
-        ui->buttonX->setAutoExclusive(false);
-        ui->buttonY->setAutoExclusive(false);
-        ui->buttonZ->setAutoExclusive(false);
-        ui->buttonX->setChecked(false);
-        ui->buttonY->setChecked(false);
-        ui->buttonZ->setChecked(false);
+        //ui->buttonX->setAutoExclusive(false);
+        //ui->buttonY->setAutoExclusive(false);
+        //ui->buttonZ->setAutoExclusive(false);
+        //ui->buttonX->setChecked(false);
+        //ui->buttonY->setChecked(false);
+        //ui->buttonZ->setChecked(false);
         ui->lineReference->setText(QString::fromAscii(directions.front().c_str()));
     } else {
         // Error message?
@@ -220,17 +214,17 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
     }
 }
 
-void TaskLinearPatternParameters::onButtonX() {
-    onStdDirection("X");
-}
-
-void TaskLinearPatternParameters::onButtonY() {
-    onStdDirection("Y");
-}
-
-void TaskLinearPatternParameters::onButtonZ() {
-    onStdDirection("Z");
-}
+//void TaskLinearPatternParameters::onButtonX() {
+//    onStdDirection("X");
+//}
+//
+//void TaskLinearPatternParameters::onButtonY() {
+//    onStdDirection("Y");
+//}
+//
+//void TaskLinearPatternParameters::onButtonZ() {
+//    onStdDirection("Z");
+//}
 
 void TaskLinearPatternParameters::onCheckReverse(const bool on) {
     if (blockUpdate)
@@ -321,12 +315,12 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
 
 const std::string TaskLinearPatternParameters::getStdDirection(void) const
 {
-    if (ui->buttonX->isChecked())
-        return std::string("X");
-    else if (ui->buttonY->isChecked())
-        return std::string("Y");
-    else if (ui->buttonZ->isChecked())
-        return std::string("Z");
+    //if (ui->buttonX->isChecked())
+    //    return std::string("X");
+    //else if (ui->buttonY->isChecked())
+    //    return std::string("Y");
+    //else if (ui->buttonZ->isChecked())
+    //    return std::string("Z");
     return std::string("");
 }
 
