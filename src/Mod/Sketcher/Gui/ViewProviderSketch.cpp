@@ -326,6 +326,36 @@ void ViewProviderSketch::snapToGrid(double &x, double &y)
     }
 }
 
+void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3DInventorViewer *viewer, SbLine& line) const
+{
+    const SbViewportRegion& vp = viewer->getViewportRegion();
+
+    short x,y; pnt.getValue(x,y);
+    SbVec2f siz = vp.getViewportSize();
+    float dX, dY; siz.getValue(dX, dY);
+
+    float fRatio = vp.getViewportAspectRatio();
+    float pX = (float)x / float(vp.getViewportSizePixels()[0]);
+    float pY = (float)y / float(vp.getViewportSizePixels()[1]);
+
+    // now calculate the real points respecting aspect ratio information
+    //
+    if (fRatio > 1.0f) {
+        pX = (pX - 0.5f*dX) * fRatio + 0.5f*dX;
+    }
+    else if (fRatio < 1.0f) {
+        pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
+    }
+
+    SoCamera* pCam = viewer->getCamera();
+    if (!pCam) return;
+    SbViewVolume  vol = pCam->getViewVolume();
+
+    float focalDist = pCam->focalDistance.getValue();
+
+    vol.projectPointToLine(SbVec2f(pX,pY), line);
+}
+
 void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec3f &point, const SbVec3f &normal)
 {
     // Plane form
@@ -360,8 +390,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     assert(edit);
 
     // Calculate 3d point to the mouse position
-    SbVec3f point = viewer->getPointOnScreen(cursorPos);
-    SbVec3f normal = viewer->getViewDirection();
+    SbLine line;
+    getProjectingLine(cursorPos, viewer, line);
+    SbVec3f point = line.getPosition();
+    SbVec3f normal = line.getDirection();
 
     // use scoped_ptr to make sure that instance gets deleted in all cases
     boost::scoped_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
@@ -774,11 +806,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
     assert(edit);
 
     // Calculate 3d point to the mouse position
-    SbVec3f point = viewer->getPointOnScreen(cursorPos);
-    SbVec3f normal = viewer->getViewDirection();
+    SbLine line;
+    getProjectingLine(cursorPos, viewer, line);
 
     double x,y;
-    getCoordsOnSketchPlane(x,y,point,normal);
+    getCoordsOnSketchPlane(x,y,line.getPosition(),line.getDirection());
     snapToGrid(x, y);
 
     bool preselectChanged;
