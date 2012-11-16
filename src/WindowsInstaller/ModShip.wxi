@@ -32,9 +32,6 @@
             <File Id="ShipResources" Name="Ship_rc.py" DiskId="1" />
         </Component>
 		<Directory Id="ModShipResources" Name="resources" FileSource="../../Mod/Ship/resources" >
-			<Component Id="CompModShipResources"  Guid="da49a645-b93c-4046-a538-64ca5306c21e" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="ShipQtResources" Name="Ship.qrc"   />
-			</Component>
 			<Directory Id="ModShipExamples" Name="examples" FileSource="../../Mod/Ship/resources/examples" >
 				<Component Id="CompModShipExamples"  Guid="b5f1ae58-728b-4c0a-9b09-263cd63cdfd1" Win64='$(var.Win_64)' KeyPath="yes">
 					<File Id="ShipExampleS60" Name="s60.fcstd"   />
@@ -45,71 +42,7 @@
 			</Directory>
 			<Directory Id="ModShipIcons" Name="icons" FileSource="../../Mod/Ship/resources/icons" >
 				<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="ShipIcons01" Name="AreaCurveIco.png"   />
-					<File Id="ShipIcons02" Name="DataIco.png"   />
-					<File Id="ShipIcons03" Name="DiscretizeIco.png"   />
-					<File Id="ShipIcons04" Name="HydrostaticsIco.png"   />
-					<File Id="ShipIcons05" Name="Ico.png"   />
-					<File Id="ShipIcons06" Name="LoadIco.png"   />
-					<File Id="ShipIcons07" Name="OutlineDrawIco.png"   />
-					<File Id="ShipIcons08" Name="ReparametrizeIco.png"   />
-					<File Id="ShipIcons09" Name="SimCreateIco.png"   />
-					<File Id="ShipIcons10" Name="SimPostIco.png"   />
-					<File Id="ShipIcons11" Name="SimRunIco.png"   />
-					<File Id="ShipIcons12" Name="SimStopIco.png"   />
-					<File Id="ShipIcons13" Name="Tank.png"   />
-					<File Id="ShipIcons14" Name="Weight.png"   />
-					<File Id="ShipIcons15" Name="Ship.xpm"   />
-				</Component>
-			</Directory>
-			<Directory Id="ModShipTranslations" Name="icons" FileSource="../../Mod/Ship/resources/translations" >
-				<Component Id="CompModShipTranlations"  Guid="85b95981-2e91-41c2-81ed-5aed17438710" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="ShipTranslations01" Name="Ship.qm"   />
-					<File Id="ShipTranslations02" Name="Ship.ts"   />
-					<File Id="ShipTranslations03" Name="Ship_af.qm"   />
-					<File Id="ShipTranslations04" Name="Ship_af.ts"   />
-					<File Id="ShipTranslations05" Name="Ship_cs.qm"   />
-					<File Id="ShipTranslations06" Name="Ship_cs.ts"   />
-					<File Id="ShipTranslations07" Name="Ship_de.qm"   />
-					<File Id="ShipTranslations08" Name="Ship_de.ts"   />
-					<File Id="ShipTranslations09" Name="Ship_es-ES.qm"   />
-					<File Id="ShipTranslations10" Name="Ship_es-ES.ts"   />
-					<File Id="ShipTranslations11" Name="Ship_fi.qm"   />
-					<File Id="ShipTranslations12" Name="Ship_fi.ts"   />
-					<File Id="ShipTranslations13" Name="Ship_fr.qm"   />
-					<File Id="ShipTranslations14" Name="Ship_fr.ts"   />
-					<File Id="ShipTranslations15" Name="Ship_hr.qm"   />
-					<File Id="ShipTranslations16" Name="Ship_hr.ts"   />
-					<File Id="ShipTranslations17" Name="Ship_hu.qm"   />
-					<File Id="ShipTranslations18" Name="Ship_hu.ts"   />
-					<File Id="ShipTranslations19" Name="Ship_it.qm"   />
-					<File Id="ShipTranslations20" Name="Ship_it.ts"   />
-					<File Id="ShipTranslations21" Name="Ship_ja.qm"   />
-					<File Id="ShipTranslations22" Name="Ship_ja.ts"   />
-					<File Id="ShipTranslations23" Name="Ship_nl.qm"   />
-					<File Id="ShipTranslations24" Name="Ship_nl.ts"   />
-					<File Id="ShipTranslations25" Name="Ship_no.qm"   />
-					<File Id="ShipTranslations26" Name="Ship_no.ts"   />
-					<File Id="ShipTranslations27" Name="Ship_pl.qm"   />
-					<File Id="ShipTranslations28" Name="Ship_pl.ts"   />
-					<File Id="ShipTranslations29" Name="Ship_pt-BR.qm"   />
-					<File Id="ShipTranslations30" Name="Ship_pt-BR.ts"   />
-					<File Id="ShipTranslations31" Name="Ship_ro.qm"   />
-					<File Id="ShipTranslations32" Name="Ship_ro.ts"   />
-					<File Id="ShipTranslations33" Name="Ship_ru.qm"   />
-					<File Id="ShipTranslations34" Name="Ship_ru.ts"   />
-					<File Id="ShipTranslations35" Name="Ship_sk.qm"   />
-					<File Id="ShipTranslations36" Name="Ship_sk.ts"   />
-					<File Id="ShipTranslations37" Name="Ship_sv-SE.qm"   />
-					<File Id="ShipTranslations38" Name="Ship_sv-SE.ts"   />
-					<File Id="ShipTranslations39" Name="Ship_tr.qm"   />
-					<File Id="ShipTranslations40" Name="Ship_tr.ts"   />
-					<File Id="ShipTranslations41" Name="Ship_uk.qm"   />
-					<File Id="ShipTranslations42" Name="Ship_uk.ts"   />
-					<File Id="ShipTranslations43" Name="Ship_zh-CN.qm"   />
-					<File Id="ShipTranslations44" Name="Ship_zh-CN.ts"   />
-					<File Id="ShipTranslations45" Name="Ship_zh-TW.qm"   />
-					<File Id="ShipTranslations46" Name="Ship_zh-TW.ts"   />
+					<File Id="ShipIcons01" Name="Ship.xpm"   />
 				</Component>
 			</Directory>
 		</Directory>
