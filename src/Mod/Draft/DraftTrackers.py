@@ -410,6 +410,7 @@ class ghostTracker(Tracker):
         Tracker.__init__(self,children=self.children)
 
     def update(self,obj):
+        "recreates the ghost from a new object"
         obj.ViewObject.show()
         self.finalize()
         sep = getNode(obj)
@@ -417,16 +418,32 @@ class ghostTracker(Tracker):
         self.on()
         obj.ViewObject.hide()
 
+    def move(self,delta):
+        "moves the ghost to a given position, relative from its start position"
+        self.trans.translation.setValue([delta.x,delta.y,delta.z])
+
+    def rotate(self,axis,angle):
+        "rotates the ghost of a given angle"
+        self.trans.rotation.setValue(coin.SbVec3f(DraftVecUtils.tup(axis)),angle)
+
+    def center(self,point):
+        "sets the rotation/scale center of the ghost"
+        self.trans.center.setValue(point.x,point.y,point.z)
+
+    def scale(self,delta):
+        "scales the ghost by the given factor"
+        self.trans.scaleFactor.setValue([delta.x,delta.y,delta.z])
+
     def getNode(self,obj):
         "returns a coin node representing the given object"
         if isinstance(obj,Part.Shape):
             return self.getNodeLight(obj)
         elif obj.isDerivedFrom("Part::Feature"):
-            return self.getNodeLight(obj.Shape)
+            return self.getNodeFull(obj)
         else:
             return self.getNodeFull(obj)
 
-    def getNodeFull(self,obj):
+    def getNode(self,obj):
         "gets a coin node which is a full copy of the current representation"
         sep = coin.SoSeparator()
         try:
@@ -437,6 +454,7 @@ class ghostTracker(Tracker):
 
     def getNodeLight(self,shape):
         "extract a lighter version directly from a shape"
+        # very error-prone, will be obsoleted ASAP
         sep = coin.SoSeparator()
         try:
             inputstr = coin.SoInput()
