@@ -150,6 +150,7 @@
 				<File Id="LibPack104" Name="TKXCAF.dll"   />
 				<File Id="LibPack105" Name="TKXDEIGES.dll"   />
 				<File Id="LibPack106" Name="TKXDESTEP.dll"   />
+				<File Id="LibPack107" Name="TKFeat.dll"   />
             </Component>
 			<Directory Id="ImageFormDir" Name="imageformats" FileSource="../../bin/imageformats" >
 				<Component Id="ImageForm"  Guid="2139da00-a109-11dd-ad8b-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
