@@ -64,9 +64,9 @@ public:
 
 private Q_SLOTS:
     void onStdDirection(const std::string& dir);
-    void onButtonX();
-    void onButtonY();
-    void onButtonZ();
+    //void onButtonX();
+    //void onButtonY();
+    //void onButtonZ();
     void onCheckReverse(const bool on);
     void onLength(const double l);
     void onOccurrences(const int n);
