@@ -30,11 +30,9 @@
             <File Id="PlotResources" Name="Plot_rc.py" DiskId="1" />
         </Component>
 		<Directory Id="ModPlotResources" Name="resources" FileSource="../../Mod/Plot/resources" >
-			<Component Id="CompModPlotResources"  Guid="9e540692-dbee-4cc7-994d-3a8153de53bc" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="PlotResources01" Name="Plot.qrc"   />
-			</Component>
 			<Directory Id="ModPlotIcons" Name="icons" FileSource="../../Mod/Plot/resources/icons" >
 				<Component Id="CompModPlotIcons"  Guid="a176d6d9-755c-4b09-824a-af56c45f08c0" Win64='$(var.Win_64)' KeyPath="yes">
+					<!-- Icons are not needed if a resource file is offered
 					<File Id="PlotIcons01" Name="Axes.svg"   />
 					<File Id="PlotIcons02" Name="Grid.svg"   />
 					<File Id="PlotIcons03" Name="Icon.svg"   />
@@ -43,56 +41,36 @@
 					<File Id="PlotIcons06" Name="Positions.svg"   />
 					<File Id="PlotIcons07" Name="Save.svg"   />
 					<File Id="PlotIcons08" Name="Series.svg"   />
+					-->
 				</Component>
 			</Directory>
 			<Directory Id="ModPlotTranslations" Name="translations" FileSource="../../Mod/Plot/resources/translations" >
 				<Component Id="CompModPlotTranslations"  Guid="714534d7-ecf0-486c-9238-da6a06029499" Win64='$(var.Win_64)' KeyPath="yes">
+					<!-- Translation files are not needed if a resource file is offered
 					<File Id="PlotTranslations01" Name="Plot.qm"   />
-					<File Id="PlotTranslations02" Name="Plot.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_af.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_af.ts"   />
+					<File Id="PlotTranslations02" Name="Plot_af.qm"   />
 					<File Id="PlotTranslations03" Name="Plot_cs.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_cs.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_de.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_de.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_es-ES.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_es-ES.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_fi.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_fi.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_fr.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_fr.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_hr.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_hr.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_hu.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_hu.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_it.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_it.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_ja.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_ja.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_nl.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_nl.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_no.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_no.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_pl.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_pl.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_pt-BR.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_pt-BR.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_ro.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_ro.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_ru.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_ru.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_sk.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_sk.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_sv-SE.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_sv-SE.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_tr.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_tr.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_uk.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_uk.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_zh-CN.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_zh-CN.ts"   />
-					<File Id="PlotTranslations03" Name="Plot_zh-TW.qm"   />
-					<File Id="PlotTranslations04" Name="Plot_zh-TW.ts"   />
+					<File Id="PlotTranslations04" Name="Plot_de.qm"   />
+					<File Id="PlotTranslations05" Name="Plot_es-ES.qm"   />
+					<File Id="PlotTranslations06" Name="Plot_fi.qm"   />
+					<File Id="PlotTranslations07" Name="Plot_fr.qm"   />
+					<File Id="PlotTranslations08" Name="Plot_hr.qm"   />
+					<File Id="PlotTranslations09" Name="Plot_hu.qm"   />
+					<File Id="PlotTranslations10" Name="Plot_it.qm"   />
+					<File Id="PlotTranslations11" Name="Plot_ja.qm"   />
+					<File Id="PlotTranslations12" Name="Plot_nl.qm"   />
+					<File Id="PlotTranslations13" Name="Plot_no.qm"   />
+					<File Id="PlotTranslations14" Name="Plot_pl.qm"   />
+					<File Id="PlotTranslations15" Name="Plot_pt-BR.qm"   />
+					<File Id="PlotTranslations16" Name="Plot_ro.qm"   />
+					<File Id="PlotTranslations17" Name="Plot_ru.qm"   />
+					<File Id="PlotTranslations18" Name="Plot_sk.qm"   />
+					<File Id="PlotTranslations19" Name="Plot_sv-SE.qm"   />
+					<File Id="PlotTranslations20" Name="Plot_tr.qm"   />
+					<File Id="PlotTranslations21" Name="Plot_uk.qm"   />
+					<File Id="PlotTranslations22" Name="Plot_zh-CN.qm"   />
+					<File Id="PlotTranslations23" Name="Plot_zh-TW.qm"   />
+					-->
 				</Component>
 			</Directory>
 		</Directory>
