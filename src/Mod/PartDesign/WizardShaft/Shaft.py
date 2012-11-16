@@ -95,6 +95,38 @@ class Shaft:
         self.equilibrium()
         self.updateDiagrams()
 
+    def updateEdge(self, column, start):
+        App.Console.PrintMessage("Not implemented yet - waiting for robust references...")
+        return
+        if self.sketchClosed is not True:
+            return
+        # Create a chamfer or fillet at the start or end edge of the segment
+        if start is True:
+            row = rowStartEdgeType
+            idx = 0
+        else:
+            row = rowEndEdgeType
+            idx = 1
+
+        edgeType = self.tableWidget.item(row, column).text().toAscii()[0].upper()
+        if not ((edgeType == "C") or (edgeType == "F")):
+            return # neither chamfer nor fillet defined
+
+        if edgeType == "C":
+            objName = self.doc.addObject("PartDesign::Chamfer","ChamferShaft%u" % (column * 2 + idx))
+        else:
+            objName = self.doc.addObject("PartDesign::Fillet","FilletShaft%u" % (column * 2 + idx))
+        if objName == "":
+            return
+
+        edgeName = "Edge%u" % self.getEdgeIndex(column, idx, edgeType)
+        self.doc.getObject(objName).Base = (self.doc.getObject("RevolutionShaft"),"[%s]" % edgeName)
+        # etc. etc.
+
+    def getEdgeIndex(self, column, startIdx):
+        # FIXME: This is impossible without robust references anchored in the sketch!!!
+        return
+
     def updateDiagrams(self):
         if (self.Qy == 0) or (self.Mbz == 0):
             return

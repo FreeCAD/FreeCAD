@@ -214,7 +214,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform";
+          << "PartDesign_MultiTransform"
+          << "Separator"
+          << "PartDesign_WizardShaft";
 
     return root;
 }
