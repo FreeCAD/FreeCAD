@@ -69,6 +69,7 @@ libPartDesign_la_LIBADD   = \
 		-lTKGeomBase \
 		-lTKOffset \
 		-lTKPrim \
+		-lTKFeat \
 		-lTKFillet \
 		-lTKShHealing \
 		-lTKBool \
