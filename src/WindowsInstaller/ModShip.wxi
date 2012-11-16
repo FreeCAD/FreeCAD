@@ -42,7 +42,7 @@
 			</Directory>
 			<Directory Id="ModShipIcons" Name="icons" FileSource="../../Mod/Ship/resources/icons" >
 				<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="ShipIcons01" Name="Ship.xpm"   />
+					<File Id="ShipIcons01" Name="Ico.xpm"   />
 				</Component>
 			</Directory>
 		</Directory>
