@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>298</width>
+    <width>316</width>
     <height>402</height>
    </rect>
   </property>
@@ -20,10 +20,16 @@
       <number>0</number>
      </property>
      <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
+      <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <item>
       <widget class="QComboBox" name="SectionType">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>142</width>
@@ -32,7 +38,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>160</width>
+         <width>16777215</width>
          <height>32</height>
         </size>
        </property>
@@ -61,6 +67,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="DeleteButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>142</width>
@@ -69,7 +81,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>160</width>
+         <width>16777215</width>
          <height>32</height>
         </size>
        </property>
@@ -80,9 +92,15 @@
      </item>
      <item>
       <widget class="QGroupBox" name="AutoCreateBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>142</width>
+         <width>0</width>
          <height>256</height>
         </size>
        </property>
@@ -95,53 +113,71 @@
        <property name="title">
         <string>Auto create</string>
        </property>
-       <widget class="QSpinBox" name="NSections">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>30</y>
-          <width>142</width>
-          <height>27</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>142</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>160</width>
-          <height>32</height>
-         </size>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="CreateButton">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>70</y>
-          <width>142</width>
-          <height>27</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>142</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>160</width>
-          <height>32</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Create sections</string>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QSpinBox" name="NSections">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>142</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="CreateButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>142</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Create sections</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>140</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
@@ -156,6 +192,12 @@
      </property>
      <item>
       <widget class="QTableWidget" name="Sections">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>128</width>
@@ -164,7 +206,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>128</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>
@@ -199,75 +241,69 @@
     <widget class="QGroupBox" name="ScaleBox">
      <property name="minimumSize">
       <size>
-       <width>128</width>
+       <width>0</width>
        <height>72</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>256</width>
+       <width>16777215</width>
        <height>96</height>
       </size>
      </property>
      <property name="title">
       <string>Plane scale</string>
      </property>
-     <widget class="QWidget" name="horizontalLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>30</y>
-        <width>251</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="ScaleLabel">
-         <property name="minimumSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>32</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>1:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="Scale">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>16</height>
-          </size>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>1000000</number>
-         </property>
-         <property name="singleStep">
-          <number>50</number>
-         </property>
-         <property name="value">
-          <number>250</number>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="ScaleLabel">
+          <property name="minimumSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>1:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="Scale">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>1000000</number>
+          </property>
+          <property name="singleStep">
+           <number>50</number>
+          </property>
+          <property name="value">
+           <number>250</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

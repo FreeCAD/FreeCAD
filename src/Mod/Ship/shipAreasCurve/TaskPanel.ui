@@ -11,19 +11,51 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create new ship</string>
+   <string>Transversal areas curve</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+    <widget class="QTextEdit" name="OutputData">
+     <property name="textInteractionFlags">
+      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
       <widget class="QLabel" name="DraftLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Draft</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="DraftUnits">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>m</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <widget class="QDoubleSpinBox" name="Draft">
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -36,31 +68,20 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="DraftUnits">
-       <property name="maximumSize">
-        <size>
-         <width>24</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>m</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+     <item row="1" column="0">
       <widget class="QLabel" name="TrimLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Trim</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1">
       <widget class="QDoubleSpinBox" name="Trim">
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -76,11 +97,17 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="2">
       <widget class="QLabel" name="TrimUnits">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="maximumSize">
         <size>
-         <width>24</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>
@@ -90,13 +117,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="3" column="0">
-    <widget class="QTextEdit" name="OutputData">
-     <property name="textInteractionFlags">
-      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

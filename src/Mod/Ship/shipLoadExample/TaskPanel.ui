@@ -62,58 +62,52 @@
        <property name="title">
         <string>Select ship example geometry</string>
        </property>
-       <widget class="QWidget" name="verticalLayoutWidget_3">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>20</y>
-          <width>241</width>
-          <height>101</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QComboBox" name="Ship">
-           <item>
-            <property name="text">
-             <string>Series 60 from Iowa University</string>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QComboBox" name="Ship">
+            <item>
+             <property name="text">
+              <string>Series 60 from Iowa University</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Wigley canonical ship</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Series 60 (Katamaran)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Wigley (Katamaran)</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Wigley canonical ship</string>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Series 60 (Katamaran)</string>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Wigley (Katamaran)</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
