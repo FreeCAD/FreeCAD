@@ -38,7 +38,6 @@ class TaskWizardShaft:
     # Shaft
     shaft = 0
     # Feature
-    sketch = 0
     featureWindow = 0
 
     def __init__(self):       
@@ -66,6 +65,15 @@ class TaskWizardShaft:
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
+
+    def accept(self):
+        if self.table:
+            del self.table
+        if self.shaft:
+            del self.shaft
+        if self.form:
+            del self.form
+        return True
 
 class WizardShaftGui:
     def Activated(self):
