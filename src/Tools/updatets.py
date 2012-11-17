@@ -50,13 +50,9 @@ DirFilter = ["^Attic$",
              "src/Mod/Import",
              "src/Mod/JtReader",
              "src/Mod/Sandbox",
-             "src/Mod/TemplatePyMod",
-             "src/Mod/Draft",
-             "src/Mod/Arch",
-             "src/Mod/OpenSCAD",
-             "src/Mod/Start"]
+             "src/Mod/TemplatePyMod"]
 
-# folders that need a special pylupdate command
+# python folders that need a special pylupdate command
 PyCommands = [["src/Mod/Draft",
                "pylupdate *.py draftlibs/*.py Resources/ui/*.ui -ts Resources/translations/Draft.ts"],
               ["src/Mod/Arch",
@@ -64,7 +60,15 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/OpenSCAD",
                "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
               ["src/Mod/Start",
-               "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPage.ts"]]
+               "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPage.ts"]
+              ["src/Mod/Ship",
+               'pylupdate4 `find ./ -name "*.py"` -ts resources/translations/Ship.ts']
+              ["src/Mod/Plot",
+               'pylupdate4 -verbose `find ./ -name "*.py"` -ts resources/translations/Plot.ts']]
+
+# add python folders to exclude list
+for c in PyCommands:
+    DirFilter.append(c[0])
              
 QMAKE = ""
 LUPDATE = ""
