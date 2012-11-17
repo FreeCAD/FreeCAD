@@ -6,55 +6,15 @@ data_DATA = \
 	ShipGui.py \
 	Instance.py \
 	SimInstance.py \
-	TankInstance.py
+	TankInstance.py \
+	Ship_rc.py
 
 nobase_data_DATA = \
-	Icons/AreaCurveIco.png \
-	Icons/AreaCurveIco.xcf \
-	Icons/AreaCurveIco.xpm \
-	Icons/DataIco.png \
-	Icons/DataIco.xcf \
-	Icons/DataIco.xpm \
-	Icons/DiscretizeIco.png \
-	Icons/DiscretizeIco.xcf \
-	Icons/DiscretizeIco.xpm \
-	Icons/HydrostaticsIco.png \
-	Icons/HydrostaticsIco.xcf \
-	Icons/HydrostaticsIco.xpm \
-	Icons/Ico.png \
-	Icons/Ico.xcf \
-	Icons/Ico.xpm \
-	Icons/LoadIco.png \
-	Icons/LoadIco.xcf \
-	Icons/LoadIco.xpm \
-	Icons/OutlineDrawIco.png \
-	Icons/OutlineDrawIco.xcf \
-	Icons/OutlineDrawIco.xpm \
-	Icons/ReparametrizeIco.png \
-	Icons/ReparametrizeIco.xcf \
-	Icons/ReparametrizeIco.xpm \
-	Icons/Ship.xcf \
-	Icons/Ship.xpm \
-	Icons/Weight.png \
-	Icons/Weight.xcf \
-	Icons/Weight.xpm \
-	Icons/SimIco.xcf \
-	Icons/Sim.xpm \
-	Icons/SimCreateIco.png \
-	Icons/SimCreateIco.xpm \
-	Icons/SimRunIco.png \
-	Icons/SimRunIco.xpm \
-	Icons/SimStopIco.png \
-	Icons/SimStopIco.xpm \
-	Icons/SimPostIco.png \
-	Icons/SimPostIco.xpm \
-	Icons/Tank.png \
-	Icons/Tank.xcf \
-	Icons/Tank.xpm \
-	Examples/s60.fcstd \
-	Examples/s60_katamaran.fcstd \
-	Examples/wigley.fcstd \
-	Examples/wigley_katamaran.fcstd \
+	resources/examples/s60.fcstd \
+	resources/examples/s60_katamaran.fcstd \
+	resources/examples/wigley.fcstd \
+	resources/examples/wigley_katamaran.fcstd \
+	resources/icons/Ico.xpm \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \
@@ -68,19 +28,18 @@ nobase_data_DATA = \
 	shipOutlineDraw/TaskPanel.py \
 	shipOutlineDraw/TaskPanel.ui \
 	shipAreasCurve/__init__.py \
-	shipAreasCurve/Plot.py \
+	shipAreasCurve/PlotAux.py \
 	shipAreasCurve/Preview.py \
 	shipAreasCurve/TaskPanel.py \
 	shipAreasCurve/TaskPanel.ui \
 	shipHydrostatics/__init__.py \
-	shipHydrostatics/Plot.py \
+	shipHydrostatics/PlotAux.py \
 	shipHydrostatics/TaskPanel.py \
 	shipHydrostatics/TaskPanel.ui \
 	shipHydrostatics/Tools.py \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
 	shipUtils/Paths.py \
-	shipUtils/Translator.py \
 	tankWeights/__init__.py \
 	tankWeights/Preview.py \
 	tankWeights/TaskPanel.py \
@@ -89,7 +48,7 @@ nobase_data_DATA = \
 	tankCreateTank/TaskPanel.py \
 	tankCreateTank/TaskPanel.ui \
 	tankGZ/__init__.py \
-	tankGZ/Plot.py \
+	tankGZ/PlotAux.py \
 	tankGZ/TaskPanel.py \
 	tankGZ/TaskPanel.ui \
 	simCreate/__init__.py \

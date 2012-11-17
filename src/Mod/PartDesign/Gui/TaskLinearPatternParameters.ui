@@ -29,34 +29,6 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QRadioButton" name="buttonX">
-       <property name="text">
-        <string>X</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="buttonY">
-       <property name="text">
-        <string>Y</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="buttonZ">
-       <property name="text">
-        <string>Z</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QToolButton" name="buttonReference">
@@ -96,6 +68,9 @@
        </property>
        <property name="maximum">
         <double>999999.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
        </property>
        <property name="value">
         <double>100.000000000000000</double>

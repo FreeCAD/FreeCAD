@@ -6,7 +6,8 @@ data_DATA = \
 		EngineBlock.FCStd \
 		PartDesignExample.FCStd \
 		RobotExample.FCStd \
-		Schenkel.stp
+		Schenkel.stp \
+		ArchDetail.FCStd
 
 EXTRA_DIST = \
 		$(data_DATA) \
