@@ -163,10 +163,8 @@
             <ComponentRef Id="CompModOpenSCADPly" />
             <!-- Ship module -->
             <ComponentRef Id="CompModShip" />
-            <ComponentRef Id="CompModShipResources" />
             <ComponentRef Id="CompModShipExamples" />
             <ComponentRef Id="CompModShipIcons" />
-            <ComponentRef Id="CompModShipTranslations" />
             <ComponentRef Id="CompModshipAreasCurve" />
             <ComponentRef Id="CompModshipCreateShip" />
             <ComponentRef Id="CompModshipHydrostatics" />
@@ -185,8 +183,6 @@
             <ComponentRef Id="CompExampleData" />
             <!-- Plot module -->
             <ComponentRef Id="CompModPlot" />
-            <ComponentRef Id="CompModPlotIcons" />
-            <ComponentRef Id="CompModPlotTranslations" />
             <ComponentRef Id="CompModplotAxes" />
             <ComponentRef Id="CompModplotLabels" />
             <ComponentRef Id="CompModplotPositions" />
