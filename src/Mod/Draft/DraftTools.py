@@ -1741,9 +1741,9 @@ class Move(Modifier):
         else:
             last = self.node[-1]
             if self.ui.isCopy.isChecked():
-                self.move(point.sub(last),True)
+                self.move(self.point.sub(last),True)
             else:
-                self.move(point.sub(last))
+                self.move(self.point.sub(last))
             self.finish()
 
 			
