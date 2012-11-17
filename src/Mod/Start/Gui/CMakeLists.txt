@@ -42,6 +42,7 @@ SET(StartPage_Resources
     StartPage/LoadPartDesignExample.py
     StartPage/LoadDrawingExample.py
     StartPage/LoadRobotExample.py
+    StartPage/LoadArchExample.py
     StartPage/Background.jpg
     StartPage/FreeCAD.png
     StartPage/ArchDesign.png
