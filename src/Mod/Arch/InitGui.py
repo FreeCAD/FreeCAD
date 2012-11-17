@@ -94,8 +94,10 @@ class ArchWorkbench(Workbench):
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
-        FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
-        FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
+        if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
+            FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+            FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
+            FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Arch module... done\n')
                 
     def Activated(self):
