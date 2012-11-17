@@ -170,14 +170,21 @@ class Snapper:
             self.tracker.off()
         if self.extLine:
             self.extLine.off()
+        if self.trackLine:
+            self.trackLine.off()
 
         point = self.getApparentPoint(screenpos[0],screenpos[1])
+
+        # setup a track line if we got a last point
+        if lastpoint:
+            if not self.trackLine:
+                self.trackLine = DraftTrackers.lineTracker()
+            self.trackLine.p1(lastpoint)
             
         # check if we snapped to something
         self.snapInfo = Draft.get3DView().getObjectInfo((screenpos[0],screenpos[1]))
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
-
         if active:
             eline = None
             point,eline = self.snapToPolar(point,lastpoint)
@@ -188,7 +195,11 @@ class Snapper:
             # nothing has been snapped, check fro grid snap
             if active:
                 point = self.snapToGrid(point)
-            return cstr(point)
+            fp = cstr(point)
+            if self.trackLine and lastpoint:
+                self.trackLine.p2(fp)
+                self.trackLine.on()
+            return fp
 
         else:
 
@@ -308,10 +319,16 @@ class Snapper:
                 self.tracker.setCoords(winner[2])
                 self.tracker.setMarker(self.mk[winner[1]])
                 self.tracker.on()
+            # setting the trackline
+            fp = cstr(winner[2])
+            if self.trackLine and lastpoint:
+                self.trackLine.p2(fp)
+                self.trackLine.on()
+            # set the cursor
             self.setCursor(winner[1])
-            
+
             # return the final point
-            return cstr(winner[2])
+            return fp
 
     def getApparentPoint(self,x,y):
         "returns a 3D point, projected on the current working plane"
@@ -439,15 +456,14 @@ class Snapper:
                 if self.isEnabled("grid"):
                     np = self.grid.getClosestNode(point)
                     if np:
-                        if self.radius != 0:
-                            dv = point.sub(np)
-                            if dv.Length <= self.radius:
-                                if self.tracker:
-                                    self.tracker.setCoords(np)
-                                    self.tracker.setMarker(self.mk['grid'])
-                                    self.tracker.on()
-                                self.setCursor('grid')
-                                return np
+                        dv = point.sub(np)
+                        if (self.radius == 0) or (dv.Length <= self.radius):
+                            if self.tracker:
+                                self.tracker.setCoords(np)
+                                self.tracker.setMarker(self.mk['grid'])
+                                self.tracker.on()
+                            self.setCursor('grid')
+                            return np
         return point
 
     def snapToEndpoints(self,shape):
@@ -663,6 +679,8 @@ class Snapper:
         "finishes snapping"
         if self.tracker:
             self.tracker.off()
+        if self.trackLine:
+            self.trackLine.off()
         if self.extLine:
             self.extLine.off()
         if self.radiusTracker:
@@ -777,13 +795,6 @@ class Snapper:
         self.ui = FreeCADGui.draftToolBar
         self.view = Draft.get3DView()
 
-        # setting a track line if we got an existing point
-        if last:
-            if not self.trackLine:
-                self.trackLine = DraftTrackers.lineTracker()
-            self.trackLine.p1(last)
-            self.trackLine.on()
-
         def move(event_cb):
             event = event_cb.getEvent()
             mousepos = event.getPosition()
@@ -792,8 +803,6 @@ class Snapper:
             self.pt = FreeCADGui.Snapper.snap(mousepos,lastpoint=last,active=ctrl,constrain=shift)
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
-            if self.trackLine:
-                self.trackLine.p2(self.pt)
             if movecallback:
                 movecallback(self.pt)
         
@@ -816,8 +825,6 @@ class Snapper:
             obj = FreeCADGui.Snapper.lastSnappedObject
             FreeCADGui.Snapper.off()
             self.ui.offUi()
-            if self.trackLine:
-                self.trackLine.off()
             if callback:
                 if len(inspect.getargspec(callback).args) > 2:
                     callback(self.pt,obj)
@@ -830,8 +837,6 @@ class Snapper:
             self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
             FreeCADGui.Snapper.off()
             self.ui.offUi()
-            if self.trackLine:
-                self.trackLine.off()
             if callback:
                 callback(None)
             

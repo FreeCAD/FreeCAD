@@ -18,6 +18,7 @@ data_DATA = \
 		LoadMRU0.py \
 		LoadMRU1.py \
 		LoadMRU2.py \
+		LoadArchExample.py \
 		Mesh.py \
 		PartDesign.py \
 		Background.jpg \

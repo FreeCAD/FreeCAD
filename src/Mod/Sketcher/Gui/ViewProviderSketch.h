@@ -35,6 +35,7 @@
 class TopoDS_Shape;
 class TopoDS_Face;
 class SoSeparator;
+class SbLine;
 class SbVec3f;
 class SoCoordinate3;
 class SoPointSet;
@@ -133,6 +134,9 @@ public:
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
     void getCoordsOnSketchPlane(double &u, double &v,const SbVec3f &point, const SbVec3f &normal);
+
+    /// give projecting line of position
+    void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer *viewer, SbLine&) const;
 
     /// helper to detect preselection
     bool detectPreselection(const SoPickedPoint *Point, int &PtIndex,int &GeoIndex, int &ConstrIndex, int &CrossIndex);

@@ -29,38 +29,27 @@
             <File Id="ShipInstance" Name="Instance.py" DiskId="1" />
             <File Id="ShipTankInstance" Name="TankInstance.py" DiskId="1" />
             <File Id="ShipSimInstance" Name="SimInstance.py" DiskId="1" />
+            <File Id="ShipResources" Name="Ship_rc.py" DiskId="1" />
         </Component>
-		<Directory Id="ModShipExamples" Name="Examples" FileSource="../../Mod/Ship/Examples" >
-			<Component Id="CompModShipExamples"  Guid="b5f1ae58-728b-4c0a-9b09-263cd63cdfd1" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="ShipExampleS60" Name="s60.fcstd"   />
-				<File Id="ShipExampleS60Katamaran" Name="s60_katamaran.fcstd"   />
-				<File Id="ShipExampleWigley" Name="wigley.fcstd"   />
-				<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
-			</Component>
-		</Directory>
-		<Directory Id="ModShipIcons" Name="Icons" FileSource="../../Mod/Ship/Icons" >
-			<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="ShipIcons01" Name="AreaCurveIco.png"   />
-				<File Id="ShipIcons02" Name="DataIco.png"   />
-				<File Id="ShipIcons03" Name="DiscretizeIco.png"   />
-				<File Id="ShipIcons04" Name="HydrostaticsIco.png"   />
-				<File Id="ShipIcons05" Name="Ico.png"   />
-				<File Id="ShipIcons06" Name="LoadIco.png"   />
-				<File Id="ShipIcons07" Name="OutlineDrawIco.png"   />
-				<File Id="ShipIcons08" Name="ReparametrizeIco.png"   />
-				<File Id="ShipIcons09" Name="SimCreateIco.png"   />
-				<File Id="ShipIcons10" Name="SimPostIco.png"   />
-				<File Id="ShipIcons11" Name="SimRunIco.png"   />
-				<File Id="ShipIcons12" Name="SimStopIco.png"   />
-				<File Id="ShipIcons13" Name="Tank.png"   />
-				<File Id="ShipIcons14" Name="Weight.png"   />
-				<File Id="ShipIcons15" Name="Ship.xpm"   />
-			</Component>
+		<Directory Id="ModShipResources" Name="resources" FileSource="../../Mod/Ship/resources" >
+			<Directory Id="ModShipExamples" Name="examples" FileSource="../../Mod/Ship/resources/examples" >
+				<Component Id="CompModShipExamples"  Guid="b5f1ae58-728b-4c0a-9b09-263cd63cdfd1" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="ShipExampleS60" Name="s60.fcstd"   />
+					<File Id="ShipExampleS60Katamaran" Name="s60_katamaran.fcstd"   />
+					<File Id="ShipExampleWigley" Name="wigley.fcstd"   />
+					<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
+				</Component>
+			</Directory>
+			<Directory Id="ModShipIcons" Name="icons" FileSource="../../Mod/Ship/resources/icons" >
+				<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="ShipIcons01" Name="Ico.xpm"   />
+				</Component>
+			</Directory>
 		</Directory>
 		<Directory Id="ModshipAreasCurve" Name="shipAreasCurve" FileSource="../../Mod/Ship/shipAreasCurve" >
 			<Component Id="CompModshipAreasCurve"  Guid="49b32e4c-d861-4968-9c5c-8191ce6fa6c4" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="shipAreasCurve01" Name="__init__.py"   />
-				<File Id="shipAreasCurve02" Name="Plot.py"   />
+				<File Id="shipAreasCurve02" Name="PlotAux.py"   />
 				<File Id="shipAreasCurve03" Name="Preview.py"   />
 				<File Id="shipAreasCurve04" Name="TaskPanel.py"   />
 				<File Id="shipAreasCurve05" Name="TaskPanel.ui"   />
@@ -77,7 +66,7 @@
 		<Directory Id="ModshipHydrostatics" Name="shipHydrostatics" FileSource="../../Mod/Ship/shipHydrostatics" >
 			<Component Id="CompModshipHydrostatics"  Guid="c76a6ae1-8533-4382-950b-bde2733603a8" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="shipHydrostatics01" Name="__init__.py"   />
-				<File Id="shipHydrostatics02" Name="Plot.py"   />
+				<File Id="shipHydrostatics02" Name="PlotAux.py"   />
 				<File Id="shipHydrostatics03" Name="TaskPanel.py"   />
 				<File Id="shipHydrostatics04" Name="TaskPanel.ui"   />
 				<File Id="shipHydrostatics05" Name="Tools.py"   />
@@ -155,7 +144,7 @@
 		<Directory Id="ModtankGZ" Name="tankGZ" FileSource="../../Mod/Ship/tankGZ" >
 			<Component Id="CompModtankGZ"  Guid="ef798f90-0c85-4c5e-a637-22b97bf05303" Win64='$(var.Win_64)' KeyPath="yes">
 				<File Id="tankGZ01" Name="__init__.py"   />
-				<File Id="tankGZ02" Name="Plot.py"   />
+				<File Id="tankGZ02" Name="PlotAux.py"   />
 				<File Id="tankGZ03" Name="TaskPanel.py"   />
 				<File Id="tankGZ04" Name="TaskPanel.ui"   />
 			</Component>

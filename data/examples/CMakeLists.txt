@@ -5,6 +5,7 @@ SET(Examples_Files
     EngineBlock.FCStd
     PartDesignExample.FCStd
     RobotExample.FCStd
+    ArchDetail.FCStd
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL
