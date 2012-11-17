@@ -39,6 +39,7 @@
 					<File Id="ExampleFile2" Name="PartDesignExample.FCStd"   />
 					<File Id="ExampleFile3" Name="RobotExample.FCStd"   />
 					<File Id="ExampleFile4" Name="Schenkel.stp"   />
+                    <File Id="ExampleFile5" Name="ArchDetail.FCStd" />
 				</Component>
 			</Directory>
 			<Directory Id="DataMod" Name="Mod" FileSource="../../data/Mod" >
@@ -95,6 +96,7 @@
                             <File Id="StartPage24" Name="ShipExample.png"   />
                             <File Id="StartPage25" Name="Ship.png"   />
                             <File Id="StartPage26" Name="Ship.py"   />
+                            <File Id="StartPage27" Name="LoadArchExample.py" />
 						</Component>
 					</Directory>
 				</Directory>

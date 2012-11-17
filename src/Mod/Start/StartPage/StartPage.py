@@ -76,6 +76,7 @@ text51 = translate("StartPage","http://sourceforge.net/apps/mediawiki/free-cad/i
 text52 = translate("StartPage","Ship Design")
 text53 = translate("StartPage","Designing and calculating ships")
 text54 = translate("StartPage","The <b>Ship Design</b> module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.")
+text55 = translate("StartPage","Load an Architectural example model")
 
 # here is the html page skeleton
 
@@ -319,6 +320,7 @@ def getExamples():
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadPartDesignExample.py">""" + text11 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
+        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
     </ul>"""
       
 def getLinks():
