@@ -167,17 +167,17 @@ class DraftWorkbench (Workbench):
                 FreeCAD.Console.PrintWarning("Error: PyQt4 not found, Draft workbench will be disabled.\n")
             else:
                 depsOK = True
-                
-        if depsOK:
-            import Draft_rc
+        if not depsOK:
+            return
+    
+        try:
+            import os,macros,DraftTools,DraftGui,Draft_rc
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
-            FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
-            FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
-        else:
-            return
-        try:
-            import os,macros,DraftTools,DraftGui
+            if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
+                FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
+                FreeCADGui.draftToolBar.loadedPreferences = True
             self.appendMenu(["&Macro",str(DraftTools.translate("draft","Installed Macros"))],macros.macrosList)
             Log ('Loading Draft module...done\n')
         except:

@@ -124,7 +124,7 @@ class TaskPanel:
                                  None,QtGui.QApplication.UnicodeUTF8))
 		self.form.label.setToolTip(QtGui.QApplication.translate("plot_series", "Line title",
                                  None,QtGui.QApplication.UnicodeUTF8))
-		self.form.isLabel.setToolTip(QtGui.QApplication.translate("plot_series", "If checked serie will not considered for legend",
+		self.form.isLabel.setToolTip(QtGui.QApplication.translate("plot_series", "If checked serie will not be considered for legend",
                                  None,QtGui.QApplication.UnicodeUTF8))
 		self.form.style.setToolTip(QtGui.QApplication.translate("plot_series", "Line style",
                                  None,QtGui.QApplication.UnicodeUTF8))
