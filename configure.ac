@@ -1071,7 +1071,6 @@ src/Mod/TemplatePyMod/Makefile
 src/Mod/Sandbox/Makefile
 src/Mod/Sandbox/App/Makefile
 src/Mod/Sandbox/Gui/Makefile
-src/Mod/Surfaces/Makefile
 src/Mod/Ship/Makefile
 src/Mod/OpenSCAD/Makefile
 src/Mod/Plot/Makefile
