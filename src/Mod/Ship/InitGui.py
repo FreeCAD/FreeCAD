@@ -36,7 +36,7 @@ class ShipWorkbench ( Workbench ):
 
 		# Print a warning if Plot module can't be used
 		try:
-			import matplotlib
+			import Plot
 		except ImportError:
 			msg = QtGui.QApplication.translate("ship_console", "Plot module is disabled, tools can't graph output curves",
                                        None,QtGui.QApplication.UnicodeUTF8)
