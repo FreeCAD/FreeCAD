@@ -25,6 +25,8 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QApplication>
+# include <QEvent>
 # include <QFileInfo>
 # include <QPixmap>
 # include <boost/signals.hpp>
@@ -68,7 +70,19 @@ using namespace Gui;
 
 namespace Gui {
 
-class ViewProviderPythonFeatureObserver
+class PropertyEvent : public QEvent
+{
+public:
+    PropertyEvent(App::Property* p1, App::Property* p2)
+        : QEvent(QEvent::Type(QEvent::User)), p1(p1), p2(p2)
+    {
+    }
+
+    App::Property* p1;
+    App::Property* p2;
+};
+
+class ViewProviderPythonFeatureObserver : public QObject
 {
 public:
     /// The one and only instance.
@@ -80,13 +94,19 @@ public:
     void slotDeleteDocument(const Gui::Document&);
 
 private:
+    void customEvent(QEvent* e)
+    {
+        PropertyEvent* pe = static_cast<PropertyEvent*>(e);
+        pe->p1->Paste(*pe->p2);
+        delete pe->p2;
+    }
     static ViewProviderPythonFeatureObserver* _singleton;
 
     ViewProviderPythonFeatureObserver();
     ~ViewProviderPythonFeatureObserver();
     typedef std::map<
                 const App::DocumentObject*,
-                std::string
+                App::Property*
             > ObjectProxy;
 
     std::map<const App::Document*, ObjectProxy> proxyMap;
@@ -133,8 +153,8 @@ void ViewProviderPythonFeatureObserver::slotAppendObject(const Gui::ViewProvider
             try {
                 App::Property* prop = vp.getPropertyByName("Proxy");
                 if (prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
-                    static_cast<App::PropertyPythonObject*>(prop)->fromString(jt->second);
-                    static_cast<App::PropertyPythonObject*>(prop)->touch();
+                    // make this delayed so that the corresponding item in the tree view is accessible
+                    QApplication::postEvent(this, new PropertyEvent(prop, jt->second));
                     it->second.erase(jt);
                 }
             }
@@ -162,8 +182,7 @@ void ViewProviderPythonFeatureObserver::slotDeleteObject(const Gui::ViewProvider
     try {
         App::Property* prop = vp.getPropertyByName("Proxy");
         if (prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
-            std::string proxy = static_cast<App::PropertyPythonObject*>(prop)->toString();
-            proxyMap[doc][docobj] = proxy;
+            proxyMap[doc][docobj] = prop->Copy();
         }
     }
     catch (Py::Exception& e) {
