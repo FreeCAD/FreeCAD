@@ -115,7 +115,7 @@ public:
     void restore (void);
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
     void exportGraphviz(std::ostream&);
-    std::vector<App::DocumentObject*> importObjects(std::istream&);
+    std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);
     /// Opens the document from its file name
     //void open (void);
     /// Is the document already saved to a file
@@ -266,6 +266,7 @@ protected:
     /// checks if a valid transaction is open
     void _checkTransaction(void);
     void breakDependency(DocumentObject* pcObject, bool clear);
+    std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed

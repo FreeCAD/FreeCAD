@@ -771,32 +771,28 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
 }
 
 std::vector<App::DocumentObject*>
-Document::importObjects(std::istream& input)
+Document::readObjects(Base::XMLReader& reader)
 {
     std::vector<App::DocumentObject*> objs;
-    zipios::ZipInputStream zipstream(input);
-    Base::XMLReader reader("<memory>", zipstream);
-
-    int i,Cnt;
-    reader.readElement("Document");
-    long scheme = reader.getAttributeAsInteger("SchemaVersion");
-    reader.DocumentSchema = scheme;
 
     // read the object types
-    std::map<std::string, std::string> nameMap;
     reader.readElement("Objects");
-    Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
+    int Cnt = reader.getAttributeAsInteger("Count");
+    for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
-        string type = reader.getAttribute("type");
-        string name = reader.getAttribute("name");
+        std::string type = reader.getAttribute("type");
+        std::string name = reader.getAttribute("name");
 
         try {
+            // Use name from XML as is and do NOT remove trailing digits because
+            // otherwise we may cause a dependency to itself
+            // Example: Object 'Cut001' references object 'Cut' and removing the
+            // digits we make an object 'Cut' referencing itself.
             App::DocumentObject* o = addObject(type.c_str(),name.c_str());
             objs.push_back(o);
             // use this name for the later access because an object with
             // the given name may already exist
-            nameMap[name] = o->getNameInDocument();
+            reader.addName(name.c_str(), o->getNameInDocument());
         }
         catch (Base::Exception&) {
             Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -807,9 +803,9 @@ Document::importObjects(std::istream& input)
     // read the features itself
     reader.readElement("ObjectData");
     Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
+    for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
-        std::string name = nameMap[reader.getAttribute("name")];
+        std::string name = reader.getName(reader.getAttribute("name"));
         DocumentObject* pObj = getObject(name.c_str());
         if (pObj) { // check if this feature has been registered
             pObj->StatusBits.set(4);
@@ -820,12 +816,26 @@ Document::importObjects(std::istream& input)
     }
     reader.readEndElement("ObjectData");
 
+    return objs;
+}
+
+std::vector<App::DocumentObject*>
+Document::importObjects(Base::XMLReader& reader)
+{
+    reader.readElement("Document");
+    long scheme = reader.getAttributeAsInteger("SchemaVersion");
+    reader.DocumentSchema = scheme;
+
+    std::vector<App::DocumentObject*> objs = readObjects(reader);
+
     reader.readEndElement("Document");
     signalImportObjects(objs, reader);
-    reader.readFiles(zipstream);
+
     // reset all touched
-    for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it)
+    for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it) {
+        (*it)->onDocumentRestored();
         (*it)->purgeTouched();
+    }
     return objs;
 }
 
