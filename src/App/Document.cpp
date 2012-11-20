@@ -579,34 +579,7 @@ void Document::Save (Base::Writer &writer) const
     PropertyContainer::Save(writer);
 
     // writing the features types
-    writer.incInd(); // indention for 'Objects count'
-    writer.Stream() << writer.ind() << "<Objects Count=\"" << d->objectArray.size() <<"\">" << endl;
-
-    writer.incInd(); // indention for 'Object type'
-    std::vector<DocumentObject*>::const_iterator it;
-    for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object "
-        << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument()       << "\" "
-        << "/>" << endl;
-    }
-
-    writer.decInd();  // indention for 'Object type'
-    writer.Stream() << writer.ind() << "</Objects>" << endl;
-
-    // writing the features itself
-    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << d->objectArray.size() <<"\">" << endl;
-
-    writer.incInd(); // indention for 'Object name'
-    for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\">" << endl;
-        (*it)->Save(writer);
-        writer.Stream() << writer.ind() << "</Object>" << endl;
-    }
-
-    writer.decInd(); // indention for 'Object name'
-    writer.Stream() << writer.ind() << "</ObjectData>" << endl;
-    writer.decInd();  // indention for 'Objects count'
+    writeObjects(d->objectArray, writer);
     writer.Stream() << "</Document>" << endl;
 }
 
@@ -685,37 +658,7 @@ void Document::Restore(Base::XMLReader &reader)
     } // SchemeVersion "3" or higher
     else if ( scheme >= 3 ) {
         // read the feature types
-        reader.readElement("Objects");
-        Cnt = reader.getAttributeAsInteger("Count");
-        for (i=0 ;i<Cnt ;i++) {
-            reader.readElement("Object");
-            string type = reader.getAttribute("type");
-            string name = reader.getAttribute("name");
-
-            try {
-                addObject(type.c_str(),name.c_str());
-            }
-            catch ( Base::Exception& ) {
-                Base::Console().Message("Cannot create object '%s'\n", name.c_str());
-            }
-        }
-        reader.readEndElement("Objects");
-
-        // read the features itself
-        reader.readElement("ObjectData");
-        Cnt = reader.getAttributeAsInteger("Count");
-        for (i=0 ;i<Cnt ;i++) {
-            reader.readElement("Object");
-            string name = reader.getAttribute("name");
-            DocumentObject* pObj = getObject(name.c_str());
-            if (pObj) { // check if this feature has been registered
-                pObj->StatusBits.set(4);
-                pObj->Restore(reader);
-                pObj->StatusBits.reset(4);
-            }
-            reader.readEndElement("Object");
-        }
-        reader.readEndElement("ObjectData");
+        readObjects(reader);
     }
 
     reader.readEndElement("Document");
@@ -732,6 +675,20 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     writer.Stream() << "<Properties Count=\"0\">" << endl;
     writer.Stream() << "</Properties>" << endl;
 
+    // writing the object types
+    writeObjects(obj, writer);
+    writer.Stream() << "</Document>" << endl;
+
+    // Hook for others to add further data.
+    signalExportObjects(obj, writer);
+
+    // write additional files
+    writer.writeFiles();
+}
+
+void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
+                            Base::Writer &writer) const
+{
     // writing the features types
     writer.incInd(); // indention for 'Objects count'
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size() <<"\">" << endl;
@@ -741,7 +698,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument() << "\" "
+        << "name=\"" << (*it)->getNameInDocument()       << "\" "
         << "/>" << endl;
     }
 
@@ -761,13 +718,6 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     writer.decInd(); // indention for 'Object name'
     writer.Stream() << writer.ind() << "</ObjectData>" << endl;
     writer.decInd();  // indention for 'Objects count'
-    writer.Stream() << "</Document>" << endl;
-
-    // Hook for others to add further data.
-    signalExportObjects(obj, writer);
-
-    // write additional files
-    writer.writeFiles();
 }
 
 std::vector<App::DocumentObject*>

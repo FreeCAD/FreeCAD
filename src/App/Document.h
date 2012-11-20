@@ -267,6 +267,7 @@ protected:
     void _checkTransaction(void);
     void breakDependency(DocumentObject* pcObject, bool clear);
     std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
+    void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer &writer) const;
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed
