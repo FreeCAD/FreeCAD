@@ -31,6 +31,7 @@
 # include <QDesktopWidget>
 # include <QEvent>
 # include <QMessageBox>
+# include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
 #endif
@@ -55,9 +56,17 @@ using namespace Gui::Dialog;
  * Constructs an action called \a name with parent \a parent. It also stores a pointer
  * to the command object.
  */
-Action::Action (Command* pcCmd,QObject * parent)
+Action::Action (Command* pcCmd, QObject * parent)
   : QObject(parent), _action(new QAction( this )), _pcCmd(pcCmd)
 {
+    _action->setObjectName(QString::fromAscii(_pcCmd->getName()));
+    connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
+}
+
+Action::Action (Command* pcCmd, QAction* action, QObject * parent)
+  : QObject(parent), _action(action), _pcCmd(pcCmd)
+{
+    _action->setParent(this);
     _action->setObjectName(QString::fromAscii(_pcCmd->getName()));
     connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
 }
@@ -257,6 +266,14 @@ void ActionGroup::setVisible( bool b )
     _group->setVisible(b);
 }
 
+QAction* ActionGroup::addAction(QAction* action)
+{
+    int index = _group->actions().size();
+    action = _group->addAction(action);
+    action->setData(QVariant(index));
+    return action;
+}
+
 QAction* ActionGroup::addAction(const QString& text)
 {
     int index = _group->actions().size();
@@ -287,6 +304,14 @@ void ActionGroup::setCheckedAction(int i)
 void ActionGroup::onActivated () 
 {
     _pcCmd->invoke(this->property("defaultAction").toInt());
+}
+
+/**
+ * Activates the command.
+ */
+void ActionGroup::onActivated (int index)
+{
+    _pcCmd->invoke(index);
 }
 
 /**
@@ -410,6 +435,8 @@ void WorkbenchComboBox::onActivated(int i)
     int index = itemData(i).toInt();
     WorkbenchActionEvent* ev = new WorkbenchActionEvent(this->actions()[index]);
     QApplication::postEvent(this->group, ev);
+    // TODO: Test if we can use this instead
+    //QTimer::singleShot(20, this->actions()[i], SLOT(trigger()));
 }
 
 void WorkbenchComboBox::onActivated(QAction* action)
