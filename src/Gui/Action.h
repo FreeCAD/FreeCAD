@@ -45,6 +45,8 @@ class GuiExport Action : public QObject
 
 public:
     Action (Command* pcCmd, QObject * parent = 0);
+    /// Action takes ownership of the 'action' object.
+    Action (Command* pcCmd, QAction* action, QObject * parent);
     virtual ~Action();
 
     virtual void addTo (QWidget * w);
@@ -100,6 +102,7 @@ public:
     void setVisible (bool);
 
     void setDropDownMenu(bool b) { _dropDown = b; }
+    QAction* addAction(QAction*);
     QAction* addAction(const QString&);
     QList<QAction*> actions() const;
     int checkedAction() const;
@@ -107,6 +110,7 @@ public:
 
 public Q_SLOTS:
     void onActivated ();
+    void onActivated (int);
     void onActivated (QAction*);
 
 protected:
