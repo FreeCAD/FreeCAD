@@ -579,34 +579,7 @@ void Document::Save (Base::Writer &writer) const
     PropertyContainer::Save(writer);
 
     // writing the features types
-    writer.incInd(); // indention for 'Objects count'
-    writer.Stream() << writer.ind() << "<Objects Count=\"" << d->objectArray.size() <<"\">" << endl;
-
-    writer.incInd(); // indention for 'Object type'
-    std::vector<DocumentObject*>::const_iterator it;
-    for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object "
-        << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument()       << "\" "
-        << "/>" << endl;
-    }
-
-    writer.decInd();  // indention for 'Object type'
-    writer.Stream() << writer.ind() << "</Objects>" << endl;
-
-    // writing the features itself
-    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << d->objectArray.size() <<"\">" << endl;
-
-    writer.incInd(); // indention for 'Object name'
-    for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\">" << endl;
-        (*it)->Save(writer);
-        writer.Stream() << writer.ind() << "</Object>" << endl;
-    }
-
-    writer.decInd(); // indention for 'Object name'
-    writer.Stream() << writer.ind() << "</ObjectData>" << endl;
-    writer.decInd();  // indention for 'Objects count'
+    writeObjects(d->objectArray, writer);
     writer.Stream() << "</Document>" << endl;
 }
 
@@ -685,37 +658,7 @@ void Document::Restore(Base::XMLReader &reader)
     } // SchemeVersion "3" or higher
     else if ( scheme >= 3 ) {
         // read the feature types
-        reader.readElement("Objects");
-        Cnt = reader.getAttributeAsInteger("Count");
-        for (i=0 ;i<Cnt ;i++) {
-            reader.readElement("Object");
-            string type = reader.getAttribute("type");
-            string name = reader.getAttribute("name");
-
-            try {
-                addObject(type.c_str(),name.c_str());
-            }
-            catch ( Base::Exception& ) {
-                Base::Console().Message("Cannot create object '%s'\n", name.c_str());
-            }
-        }
-        reader.readEndElement("Objects");
-
-        // read the features itself
-        reader.readElement("ObjectData");
-        Cnt = reader.getAttributeAsInteger("Count");
-        for (i=0 ;i<Cnt ;i++) {
-            reader.readElement("Object");
-            string name = reader.getAttribute("name");
-            DocumentObject* pObj = getObject(name.c_str());
-            if (pObj) { // check if this feature has been registered
-                pObj->StatusBits.set(4);
-                pObj->Restore(reader);
-                pObj->StatusBits.reset(4);
-            }
-            reader.readEndElement("Object");
-        }
-        reader.readEndElement("ObjectData");
+        readObjects(reader);
     }
 
     reader.readEndElement("Document");
@@ -732,6 +675,20 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     writer.Stream() << "<Properties Count=\"0\">" << endl;
     writer.Stream() << "</Properties>" << endl;
 
+    // writing the object types
+    writeObjects(obj, writer);
+    writer.Stream() << "</Document>" << endl;
+
+    // Hook for others to add further data.
+    signalExportObjects(obj, writer);
+
+    // write additional files
+    writer.writeFiles();
+}
+
+void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
+                            Base::Writer &writer) const
+{
     // writing the features types
     writer.incInd(); // indention for 'Objects count'
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size() <<"\">" << endl;
@@ -741,7 +698,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument() << "\" "
+        << "name=\"" << (*it)->getNameInDocument()       << "\" "
         << "/>" << endl;
     }
 
@@ -761,42 +718,31 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     writer.decInd(); // indention for 'Object name'
     writer.Stream() << writer.ind() << "</ObjectData>" << endl;
     writer.decInd();  // indention for 'Objects count'
-    writer.Stream() << "</Document>" << endl;
-
-    // Hook for others to add further data.
-    signalExportObjects(obj, writer);
-
-    // write additional files
-    writer.writeFiles();
 }
 
 std::vector<App::DocumentObject*>
-Document::importObjects(std::istream& input)
+Document::readObjects(Base::XMLReader& reader)
 {
     std::vector<App::DocumentObject*> objs;
-    zipios::ZipInputStream zipstream(input);
-    Base::XMLReader reader("<memory>", zipstream);
-
-    int i,Cnt;
-    reader.readElement("Document");
-    long scheme = reader.getAttributeAsInteger("SchemaVersion");
-    reader.DocumentSchema = scheme;
 
     // read the object types
-    std::map<std::string, std::string> nameMap;
     reader.readElement("Objects");
-    Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
+    int Cnt = reader.getAttributeAsInteger("Count");
+    for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
-        string type = reader.getAttribute("type");
-        string name = reader.getAttribute("name");
+        std::string type = reader.getAttribute("type");
+        std::string name = reader.getAttribute("name");
 
         try {
+            // Use name from XML as is and do NOT remove trailing digits because
+            // otherwise we may cause a dependency to itself
+            // Example: Object 'Cut001' references object 'Cut' and removing the
+            // digits we make an object 'Cut' referencing itself.
             App::DocumentObject* o = addObject(type.c_str(),name.c_str());
             objs.push_back(o);
             // use this name for the later access because an object with
             // the given name may already exist
-            nameMap[name] = o->getNameInDocument();
+            reader.addName(name.c_str(), o->getNameInDocument());
         }
         catch (Base::Exception&) {
             Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -807,9 +753,9 @@ Document::importObjects(std::istream& input)
     // read the features itself
     reader.readElement("ObjectData");
     Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
+    for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
-        std::string name = nameMap[reader.getAttribute("name")];
+        std::string name = reader.getName(reader.getAttribute("name"));
         DocumentObject* pObj = getObject(name.c_str());
         if (pObj) { // check if this feature has been registered
             pObj->StatusBits.set(4);
@@ -820,12 +766,26 @@ Document::importObjects(std::istream& input)
     }
     reader.readEndElement("ObjectData");
 
+    return objs;
+}
+
+std::vector<App::DocumentObject*>
+Document::importObjects(Base::XMLReader& reader)
+{
+    reader.readElement("Document");
+    long scheme = reader.getAttributeAsInteger("SchemaVersion");
+    reader.DocumentSchema = scheme;
+
+    std::vector<App::DocumentObject*> objs = readObjects(reader);
+
     reader.readEndElement("Document");
     signalImportObjects(objs, reader);
-    reader.readFiles(zipstream);
+
     // reset all touched
-    for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it)
+    for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it) {
+        (*it)->onDocumentRestored();
         (*it)->purgeTouched();
+    }
     return objs;
 }
 

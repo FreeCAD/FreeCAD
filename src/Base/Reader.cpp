@@ -360,6 +360,15 @@ bool Base::XMLReader::isRegistered(Base::Persistence *Object) const
     return false;
 }
 
+void Base::XMLReader::addName(const char*, const char*)
+{
+}
+
+const char* Base::XMLReader::getName(const char* name) const
+{
+    return name;
+}
+
 // ---------------------------------------------------------------------------
 //  Base::XMLReader: Implementation of the SAX DocumentHandler interface
 // ---------------------------------------------------------------------------
