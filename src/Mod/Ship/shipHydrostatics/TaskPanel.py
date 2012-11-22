@@ -25,6 +25,8 @@ import math
 # FreeCAD modules
 import FreeCAD as App
 import FreeCADGui as Gui
+from FreeCAD import Base, Vector
+import Part
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
@@ -48,7 +50,26 @@ class TaskPanel:
 		for i in range(1,self.form.nDraft.value()):
 			draft = draft + dDraft
 			drafts.append(draft)
-		PlotAux.Plot(self.ship, self.form.trim.value(), drafts)
+		# Compute data
+		# Get external faces
+		faces = self.externalFaces(self.ship.Shape)
+		if len(faces) == 0:
+			msg = QtGui.QApplication.translate("ship_console", "Can't detect external faces from ship object",
+                                       None,QtGui.QApplication.UnicodeUTF8)
+			App.Console.PrintError(msg + '\n')
+			return False
+		faces = Part.makeShell(faces)
+		# Get hydrostatics
+		msg = QtGui.QApplication.translate("ship_console", "Computing hydrostatics",
+                                   None,QtGui.QApplication.UnicodeUTF8)
+		App.Console.PrintMessage(msg + '...\n')
+		points = []
+		for i in range(0,len(drafts)):
+			App.Console.PrintMessage("\t%d / %d\n" % (i+1, len(drafts)))
+			draft = drafts[i]
+			point = Tools.Point(self.ship,faces,draft,self.form.trim.value())
+			points.append(point)
+		PlotAux.Plot(self.ship, self.form.trim.value(), drafts, points)
 		return True
 
 	def reject(self):
@@ -234,6 +255,91 @@ class TaskPanel:
                                  None,QtGui.QApplication.UnicodeUTF8))
 			self.ship.addProperty("App::PropertyInteger","HydrostaticsNDraft","Ship", tooltip)
 		self.ship.HydrostaticsNDraft = self.form.nDraft.value()
+
+	def lineFaceSection(self,line,surface):
+		""" Returns the point of section of a line with a face
+		@param line Line object, that can be a curve.
+		@param surface Surface object (must be a Part::Shape)
+		@return Section points array, [] if line don't cut surface
+		"""
+		# Get initial data
+		result = []
+		vertexes = line.Vertexes
+		nVertex = len(vertexes)
+		# Perform the cut
+		section = line.cut(surface)
+		# Filter all old points
+		points = section.Vertexes
+		return points
+
+	def externalFaces(self, shape):
+		""" Returns detected external faces.
+		@param shape Shape where external faces wanted.
+		@return List of external faces detected.
+		"""
+		result = []
+		faces  = shape.Faces
+		bbox   = shape.BoundBox
+		L	  = bbox.XMax - bbox.XMin
+		B	  = bbox.YMax - bbox.YMin
+		T	  = bbox.ZMax - bbox.ZMin
+		dist   = math.sqrt(L*L + B*B + T*T)
+		msg = QtGui.QApplication.translate("ship_console", "Computing external faces",
+                                   None,QtGui.QApplication.UnicodeUTF8)
+		App.Console.PrintMessage(msg + '...\n')
+		# Valid/unvalid faces detection loop
+		for i in range(0,len(faces)):
+			App.Console.PrintMessage("\t%d / %d\n" % (i+1, len(faces)))
+			f = faces[i]
+			# Create a line normal to surface at middle point
+			u = 0.0
+			v = 0.0
+			try:
+				surf	= f.Surface
+				u	   = 0.5*(surf.getUKnots()[0]+surf.getUKnots()[-1])
+				v	   = 0.5*(surf.getVKnots()[0]+surf.getVKnots()[-1])
+			except:
+				cog   = f.CenterOfMass
+				[u,v] = f.Surface.parameter(cog)
+			p0 = f.valueAt(u,v)
+			try:
+				n  = f.normalAt(u,v).normalize()
+			except:
+				continue
+			p1 = p0 + n.multiply(1.5*dist)
+			line = Part.makeLine(p0, p1)
+			# Look for faces in front of this
+			nPoints = 0
+			for j in range(0,len(faces)):
+				f2 = faces[j]
+				section = self.lineFaceSection(line, f2)
+				if len(section) <= 2:
+					continue
+				# Add points discarding start and end
+				nPoints = nPoints + len(section) - 2
+			# In order to avoid special directions we can modify line
+			# normal a little bit.
+			angle = 5
+			line.rotate(p0,Vector(1,0,0),angle)
+			line.rotate(p0,Vector(0,1,0),angle)
+			line.rotate(p0,Vector(0,0,1),angle)
+			nPoints2 = 0
+			for j in range(0,len(faces)):
+				if i == j:
+					continue
+				f2 = faces[j]
+				section = self.lineFaceSection(line, f2)
+				if len(section) <= 2:
+					continue
+				# Add points discarding start and end
+				nPoints2 = nPoints + len(section) - 2
+			# If the number of intersection points is pair, is a
+			# external face. So if we found an odd points intersection,
+			# face must be discarded.
+			if (nPoints % 2) or (nPoints2 % 2):
+				continue
+			result.append(f)
+		return result
 
 def createTask():
 	panel = TaskPanel()
