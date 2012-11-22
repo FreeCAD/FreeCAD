@@ -44,11 +44,10 @@ header = """ #################################################################
 """
 
 class Plot(object):
-	def __init__(self, ship, trim, drafts, points):
+	def __init__(self, ship, trim, points):
 		""" Constructor. performs plot and show it (Using pyxplot).
 		@param ship Selected ship instance
 		@param trim Trim in degrees.
-		@param drafts List of drafts to be performed.
 		@param points List of computed hydrostatics.
 		"""
 		self.points = points[:]
@@ -59,7 +58,7 @@ class Plot(object):
 		# Save data
 		if self.createDirectory():
 			return
-		if self.saveData(ship, trim, drafts):
+		if self.saveData(ship, trim):
 			return
 
 	def plotVolume(self):
@@ -324,11 +323,10 @@ class Plot(object):
 			FreeCAD.Console.PrintError(msg + ':\n\t' + "\'"+ self.path + "\'\n")
 		return False
 
-	def saveData(self, ship, trim, drafts):
+	def saveData(self, ship, trim):
 		""" Write data file.
 		@param ship Selected ship instance
 		@param trim Trim in degrees.
-		@param drafts List of drafts to be performed.
 		@return True if error happens.
 		"""
 		# Open the file
@@ -359,7 +357,7 @@ class Plot(object):
 		Output.write(" #\n")
 		Output.write(" #################################################################\n")
 		# Print data
-		for i in range(0,len(drafts)):
+		for i in range(0,len(self.points)):
 			point  = self.points[i]
 			string = "%f %f %f %f %f %f %f %f %f %f %f\n" % (point.disp, point.draft, point.wet, point.mom, point.xcb, point.farea, point.KBt, point.BMt, point.Cb, point.Cf, point.Cm)
 			Output.write(string)

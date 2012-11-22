@@ -39,10 +39,13 @@ class TaskPanel:
 	def __init__(self):
 		self.ui = Paths.modulePath() + "/shipHydrostatics/TaskPanel.ui"
 		self.ship = None
+		self.running  = False
 
 	def accept(self):
 		if not self.ship:
 			return False
+		if self.running:
+			return
 		self.save()
 		draft  = self.form.minDraft.value()
 		drafts = [draft]
@@ -52,7 +55,14 @@ class TaskPanel:
 			drafts.append(draft)
 		# Compute data
 		# Get external faces
+		self.loop=QtCore.QEventLoop()
+		self.timer=QtCore.QTimer()
+		self.timer.setSingleShot(True)
+		QtCore.QObject.connect(self.timer,QtCore.SIGNAL("timeout()"),self.loop,QtCore.SLOT("quit()"))
+		self.running = True
 		faces = self.externalFaces(self.ship.Shape)
+		if not self.running:
+			return False
 		if len(faces) == 0:
 			msg = QtGui.QApplication.translate("ship_console", "Can't detect external faces from ship object",
                                        None,QtGui.QApplication.UnicodeUTF8)
@@ -69,10 +79,19 @@ class TaskPanel:
 			draft = drafts[i]
 			point = Tools.Point(self.ship,faces,draft,self.form.trim.value())
 			points.append(point)
-		PlotAux.Plot(self.ship, self.form.trim.value(), drafts, points)
+			self.timer.start(0.0)
+			self.loop.exec_()
+			if(not self.running):
+				break
+		PlotAux.Plot(self.ship, self.form.trim.value(), points)
 		return True
 
 	def reject(self):
+		if not self.ship:
+			return False
+		if self.running:
+			self.running = False
+			return
 		return True
 
 	def clicked(self, index):
@@ -339,6 +358,10 @@ class TaskPanel:
 			if (nPoints % 2) or (nPoints2 % 2):
 				continue
 			result.append(f)
+			self.timer.start(0.0)
+			self.loop.exec_()
+			if(not self.running):
+				break
 		return result
 
 def createTask():
