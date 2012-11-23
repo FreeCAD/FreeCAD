@@ -2799,7 +2799,10 @@ class _Shape2DView(_DraftObject):
         newedges = []
         for e in oldedges:
             try:
-                newedges.append(e.Curve.toShape())
+                if isinstance(e.Curve,Part.Line):
+                    newedges.append(e.Curve.toShape())
+                else:
+                    newedges.append(e)
             except:
                 print "Debug: error cleaning edge ",e
         return Part.makeCompound(newedges)
