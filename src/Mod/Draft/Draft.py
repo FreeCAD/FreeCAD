@@ -3079,6 +3079,6 @@ class _ViewProviderClone(_ViewProviderDraftAlt):
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
 
-    
-if not hasattr(FreeCADGui,"Snapper"):
-    import DraftSnap
+if gui:    
+    if not hasattr(FreeCADGui,"Snapper"):
+        import DraftSnap
