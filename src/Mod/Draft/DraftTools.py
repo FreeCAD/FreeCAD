@@ -642,11 +642,13 @@ class BSpline(Line):
 	
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
+        if self.ui:
+			self.bsplinetrack.finalize()
         if not Draft.getParam("UiMode"):
             FreeCADGui.Control.closeDialog()
         if (len(self.node) > 1):
             old = self.obj.Name
-            self.doc.removeObject(old)
+            todo.delay(self.doc.removeObject,old)
             try:
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
@@ -656,8 +658,6 @@ class BSpline(Line):
                              'Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
             except:
                 print "Draft: error delaying commit"
-        if self.ui:
-			self.bsplinetrack.finalize()
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
