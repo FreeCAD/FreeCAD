@@ -2781,8 +2781,11 @@ class _Shape2DView(_DraftObject):
                         "The way the viewed object must be projected")
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Base",
                         "The indices of the faces to be projected in Individual Faces mode")
+        obj.addProperty("App::PropertyBool","HiddenLines","Base",
+                        "Show hidden lines")
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines"]
+        obj.HiddenLines = False
         _DraftObject.__init__(self,obj,"Shape2DView")
 
     def execute(self,obj):
@@ -2807,8 +2810,22 @@ class _Shape2DView(_DraftObject):
                 print "Debug: error cleaning edge ",e
         return Part.makeCompound(newedges)
 
+    def getProjected(self,obj,shape,direction):
+        "returns projected edges from a shape and a direction"
+        import Part,Drawing
+        edges = []
+        groups = Drawing.projectEx(shape,direction)
+        for g in groups[0:5]:
+            if g:
+                edges.append(g)
+        if hasattr(obj,"HiddenLines"):
+            if obj.HiddenLines:
+                for g in groups[5:]:
+                    edges.append(g)
+        return self.clean(Part.makeCompound(edges))
+
     def createGeometry(self,obj):
-        import Drawing, DraftGeomUtils
+        import DraftGeomUtils
         pl = obj.Placement
         if obj.Base:
             if getType(obj.Base) == "SectionPlane":
@@ -2831,9 +2848,7 @@ class _Shape2DView(_DraftObject):
                         comp = Part.makeCompound(cuts)
                         opl = FreeCAD.Placement(obj.Base.Placement)
                         proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
-                        [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(comp,proj)
-                        if visibleG0:
-                            obj.Shape = self.clean(visibleG0)
+                        obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode == "Cutlines":
                         for sh in shapes:
                             if sh.Volume < 0:
@@ -2849,9 +2864,7 @@ class _Shape2DView(_DraftObject):
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not DraftVecUtils.isNull(obj.Projection):
                     if obj.ProjectionMode == "Solid":
-                        [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(obj.Base.Shape,obj.Projection)
-                        if visibleG0:
-                            obj.Shape = self.clean(visibleG0)
+                        obj.Shape = self.getProjected(obj,obj.Base.Shape,obj.Projection)
                     elif obj.ProjectionMode == "Individual Faces":
                         import Part
                         if obj.FaceNumbers:
@@ -2861,9 +2874,7 @@ class _Shape2DView(_DraftObject):
                                     faces.append(obj.Base.Shape.Faces[i])
                             views = []
                             for f in faces:
-                                [visibleG0,visibleG1,hiddenG0,hiddenG1] = Drawing.project(f,obj.Projection)
-                                if visibleG0:
-                                    views.append(visibleG0)
+                                views.append(self.getProjected(obj,f,obj.Projection))
                             if views:
                                 obj.Shape = Part.makeCompound(views)
         if not DraftGeomUtils.isNull(pl):
