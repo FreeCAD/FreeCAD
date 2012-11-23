@@ -2796,14 +2796,24 @@ class _Shape2DView(_DraftObject):
             self.createGeometry(obj)
 
     def clean(self,shape):
-        "returns a valid compound of edges"
-        import Part
+        "returns a valid compound of edges, by recreating them"
+        # this is because the projection algorithm somehow creates wrong shapes.
+        # they dispay fine, but on loading the file the shape is invalid
+        import Part,DraftGeomUtils
         oldedges = shape.Edges
         newedges = []
         for e in oldedges:
             try:
                 if isinstance(e.Curve,Part.Line):
                     newedges.append(e.Curve.toShape())
+                elif isinstance(e.Curve,Part.Circle):
+                    if len(e.Vertexes) > 1:
+                        mp = DraftGeomUtils.findMidpoint(e)
+                        a = Part.Arc(e.Vertexes[0].Point,mp,e.Vertexes[-1].Point).toShape()
+                        newedges.append(a)
+                    else:
+                        newedges.append(e.Curve.toShape())
+                        # TODO: treat ellipses and bsplines
                 else:
                     newedges.append(e)
             except:
@@ -2822,6 +2832,7 @@ class _Shape2DView(_DraftObject):
             if obj.HiddenLines:
                 for g in groups[5:]:
                     edges.append(g)
+        #return Part.makeCompound(edges)
         return self.clean(Part.makeCompound(edges))
 
     def createGeometry(self,obj):
