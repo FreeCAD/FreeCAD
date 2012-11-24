@@ -1690,8 +1690,8 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d) const
     return mkRevol.Shape();
 }
 
-#include <BRepFill.hxx>
-#include <BRepTools_Quilt.hxx>
+//#include <BRepFill.hxx>
+//#include <BRepTools_Quilt.hxx>
 
 TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersection,
                                         bool selfInter, short offsetMode, short join,
@@ -1704,7 +1704,9 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
     const TopoDS_Shape& res = mkOffset.Shape();
     if (!fill)
         return res;
-#if 0
+#if 1
+    //s=Part.makePlane(10,10)
+    //s.makeOffsetShape(1.0,0.01,False,False,0,0,True)
     const BRepOffset_MakeOffset& off = mkOffset.MakeOffset();
     const BRepAlgo_Image& img = off.OffsetEdgesFromShapes();
 
@@ -1733,8 +1735,15 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
                 const TopTools_ListOfShape& edges = img.Image(edge);
                 TopTools_ListIteratorOfListOfShape it;
                 it.Initialize(edges);
-                TopoDS_Face face = BRepFill::Face(TopoDS::Edge(edge), TopoDS::Edge(it.Value()));
-                builder.Add(shell, face);
+                BRepOffsetAPI_ThruSections aGenerator (0,0);
+                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(edge)).Wire());
+                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(it.Value())).Wire());
+                aGenerator.Build();
+                for (xp.Init(aGenerator.Shape(),TopAbs_FACE); xp.More(); xp.Next()) {
+                    builder.Add(shell, xp.Current());
+                }
+                //TopoDS_Face face = BRepFill::Face(TopoDS::Edge(edge), TopoDS::Edge(it.Value()));
+                //builder.Add(shell, face);
             }
         }
     }
