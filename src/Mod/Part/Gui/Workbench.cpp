@@ -72,7 +72,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry" << "Separator"
           << "Part_Boolean" << "Part_CrossSections" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
-          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep";
+          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep" << "Part_Offset";
 
     return root;
 }
