@@ -62,6 +62,7 @@
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
 #include "TaskSweep.h"
+#include "TaskOffset.h"
 #include "TaskCheckGeometry.h"
 
 
@@ -990,6 +991,34 @@ bool CmdPartSweep::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdPartOffset);
+
+CmdPartOffset::CmdPartOffset()
+  : Command("Part_Offset")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Offset...");
+    sToolTipText  = QT_TR_NOOP("Utility to offset");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Offset";
+}
+
+void CmdPartOffset::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskOffset());
+}
+
+bool CmdPartOffset::isActive(void)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid) == 1;
+    return (objectsSelected && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdShapeInfo);
 
 CmdShapeInfo::CmdShapeInfo()
@@ -1260,5 +1289,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartBuilder());
     rcCmdMgr.addCommand(new CmdPartLoft());
     rcCmdMgr.addCommand(new CmdPartSweep());
+    rcCmdMgr.addCommand(new CmdPartOffset());
     rcCmdMgr.addCommand(new CmdCheckGeometry());
 } 
