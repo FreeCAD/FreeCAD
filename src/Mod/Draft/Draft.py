@@ -2813,7 +2813,18 @@ class _Shape2DView(_DraftObject):
                         newedges.append(a)
                     else:
                         newedges.append(e.Curve.toShape())
-                        # TODO: treat ellipses and bsplines
+                elif isinstance(e.Curve,Part.Ellipse):
+                    if len(e.Vertexes) > 1:
+                        a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
+                        newedges.append(a)
+                    else:
+                        newedges.append(e.Curve.toShape())
+                elif isinstance(e.Curve,Part.BSplineCurve):
+                    if DraftGeomUtils.isLine(e.Curve):
+                        l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
+                        newedges.append(l)
+                    else:
+                        newedges.append(e.Curve.toShape())
                 else:
                     newedges.append(e)
             except:
