@@ -235,7 +235,9 @@ class dimTracker(Tracker):
         self.p1 = self.p2 = self.p3 = None
 
     def update(self,pts):
-        if len(pts) == 1:
+        if not pts:
+            return
+        elif len(pts) == 1:
             self.p3 = pts[0]
         else:
             self.p1 = pts[0]
