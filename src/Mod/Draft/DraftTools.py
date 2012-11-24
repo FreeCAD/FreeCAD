@@ -1381,6 +1381,7 @@ class Dimension(Creator):
                 self.arcmode = False
                 self.point2 = None
                 self.force = None
+                self.info = None
                 msg(translate("draft", "Pick first point:\n"))
                 FreeCADGui.draftToolBar.show()
 
@@ -1451,9 +1452,9 @@ class Dimension(Creator):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             shift = hasMod(arg,MODCONSTRAIN)
+            self.point,ctrlPoint,self.info = getPoint(self,arg)
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
-            self.point,ctrlPoint,info = getPoint(self,arg)
             if hasMod(arg,MODALT) and (len(self.node)<3):
                 self.dimtrack.off()
                 if not self.altdown:
@@ -1534,11 +1535,11 @@ class Dimension(Creator):
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
                     if hasMod(arg,MODALT) and (len(self.node)<3):
-                        print "snapped: ",info
-                        if info:
-                            ob = self.doc.getObject(info['Object'])
-                            if 'Edge' in info['Component']:
-                                num = int(info['Component'].lstrip('Edge'))-1
+                        print "snapped: ",self.info
+                        if self.info:
+                            ob = self.doc.getObject(self.info['Object'])
+                            if 'Edge' in self.info['Component']:
+                                num = int(self.info['Component'].lstrip('Edge'))-1
                                 ed = ob.Shape.Edges[num]
                                 v1 = ed.Vertexes[0].Point
                                 v2 = ed.Vertexes[-1].Point
