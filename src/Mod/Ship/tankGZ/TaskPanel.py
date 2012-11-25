@@ -39,10 +39,13 @@ class TaskPanel:
 		self.ui = Paths.modulePath() + "/tankGZ/TaskPanel.ui"
 		self.ship  = None
 		self.tanks = {}
+		self.running  = False
 
 	def accept(self):
 		if not self.ship:
 			return False
+		if self.running:
+			return
 		# Get general data
 		disp  = self.computeDisplacement()
 		draft = self.computeDraft(disp[0], self.form.trim.value())
@@ -57,16 +60,28 @@ class TaskPanel:
 		msg = QtGui.QApplication.translate("ship_console","Computing GZ",
                                    None,QtGui.QApplication.UnicodeUTF8)
 		App.Console.PrintMessage(msg + "...\n")
+		loop=QtCore.QEventLoop()
+		timer=QtCore.QTimer()
+		timer.setSingleShot(True)
+		QtCore.QObject.connect(timer,QtCore.SIGNAL("timeout()"),loop,QtCore.SLOT("quit()"))
+		self.running = True
 		for i in range(0, nRoll):
 			App.Console.PrintMessage("\t%d/%d\n" % (i+1,nRoll))
 			roll.append(i*dRoll)
 			GZ.append(self.computeGZ(draft[0], trim, roll[-1]))
+			timer.start(0.0)
+			loop.exec_()
+			if(not self.running):
+				break
 		PlotAux.Plot(roll, GZ, disp[0]/1000.0, draft[0], trim)
 		return True
 
 	def reject(self):
 		if not self.ship:
 			return False
+		if self.running:
+			self.running = False
+			return
 		return True
 
 	def clicked(self, index):
