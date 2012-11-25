@@ -158,20 +158,28 @@ PyObject *PropertyPartShape::getPyObject(void)
         {
         case TopAbs_COMPOUND:
             prop = new TopoShapeCompoundPy(new TopoShape(sh));
+            break;
         case TopAbs_COMPSOLID:
             prop = new TopoShapeCompSolidPy(new TopoShape(sh));
+            break;
         case TopAbs_SOLID:
             prop = new TopoShapeSolidPy(new TopoShape(sh));
+            break;
         case TopAbs_SHELL:
             prop = new TopoShapeShellPy(new TopoShape(sh));
+            break;
         case TopAbs_FACE:
             prop = new TopoShapeFacePy(new TopoShape(sh));
+            break;
         case TopAbs_WIRE:
             prop = new TopoShapeWirePy(new TopoShape(sh));
+            break;
         case TopAbs_EDGE:
             prop = new TopoShapeEdgePy(new TopoShape(sh));
+            break;
         case TopAbs_VERTEX:
             prop = new TopoShapeVertexPy(new TopoShape(sh));
+            break;
         case TopAbs_SHAPE:
         default:
             prop = new TopoShapePy(new TopoShape(sh));

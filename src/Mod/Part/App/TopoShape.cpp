@@ -1690,21 +1690,107 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d) const
     return mkRevol.Shape();
 }
 
-TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
-                                       Standard_Real offset, Standard_Real tolerance) const
-{
-    BRepOffsetAPI_MakeThickSolid mkThick(this->_Shape, remFace, offset, tolerance);
-    return mkThick.Shape();
-}
+//#include <BRepFill.hxx>
+//#include <BRepTools_Quilt.hxx>
 
-TopoDS_Shape TopoShape::makeOffset(double offset, double tol, bool intersection,
-                                   bool selfInter, short offsetMode, short join)
+TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersection,
+                                        bool selfInter, short offsetMode, short join,
+                                        bool fill) const
 {
     BRepOffsetAPI_MakeOffsetShape mkOffset(this->_Shape, offset, tol, BRepOffset_Mode(offsetMode),
         intersection ? Standard_True : Standard_False,
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
-    return mkOffset.Shape();
+    const TopoDS_Shape& res = mkOffset.Shape();
+    if (!fill)
+        return res;
+#if 1
+    //s=Part.makePlane(10,10)
+    //s.makeOffsetShape(1.0,0.01,False,False,0,0,True)
+    const BRepOffset_MakeOffset& off = mkOffset.MakeOffset();
+    const BRepAlgo_Image& img = off.OffsetEdgesFromShapes();
+
+    // build up map edge->face
+    TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
+    TopExp::MapShapesAndAncestors(this->_Shape, TopAbs_EDGE, TopAbs_FACE, edge2Face);
+    TopTools_IndexedMapOfShape mapOfShape;
+    TopExp::MapShapes(this->_Shape, TopAbs_EDGE, mapOfShape);
+
+    TopoDS_Shell shell;
+    BRep_Builder builder;
+    TopExp_Explorer xp;
+    builder.MakeShell(shell);
+
+    for (xp.Init(this->_Shape,TopAbs_FACE); xp.More(); xp.Next()) {
+        builder.Add(shell, xp.Current());
+    } 
+
+    for (int i=1; i<= edge2Face.Extent(); ++i) {
+        const TopTools_ListOfShape& los = edge2Face.FindFromIndex(i);
+        if (los.Extent() == 1) {
+            // set the index value as user data to use it in accept()
+            const TopoDS_Shape& edge = edge2Face.FindKey(i);
+            Standard_Boolean ok = img.HasImage(edge);
+            if (ok) {
+                const TopTools_ListOfShape& edges = img.Image(edge);
+                TopTools_ListIteratorOfListOfShape it;
+                it.Initialize(edges);
+                BRepOffsetAPI_ThruSections aGenerator (0,0);
+                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(edge)).Wire());
+                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(it.Value())).Wire());
+                aGenerator.Build();
+                for (xp.Init(aGenerator.Shape(),TopAbs_FACE); xp.More(); xp.Next()) {
+                    builder.Add(shell, xp.Current());
+                }
+                //TopoDS_Face face = BRepFill::Face(TopoDS::Edge(edge), TopoDS::Edge(it.Value()));
+                //builder.Add(shell, face);
+            }
+        }
+    }
+
+    for (xp.Init(mkOffset.Shape(),TopAbs_FACE); xp.More(); xp.Next()) {
+        builder.Add(shell, xp.Current());
+    } 
+
+    //BRepBuilderAPI_Sewing sew(offset);
+    //sew.Load(this->_Shape);
+    //sew.Add(mkOffset.Shape());
+    //sew.Perform();
+
+    //shell.Closed(Standard_True);
+
+    return shell;
+#else
+    TopoDS_Solid    Res;
+    TopExp_Explorer exp;
+    BRep_Builder    B;
+    B.MakeSolid(Res);
+
+    BRepTools_Quilt Glue;
+    for (exp.Init(this->_Shape,TopAbs_FACE); exp.More(); exp.Next()) {
+      Glue.Add (exp.Current());
+    } 
+    for (exp.Init(mkOffset.Shape(),TopAbs_FACE);exp.More(); exp.Next()) {
+      Glue.Add (exp.Current().Reversed());
+    }
+    TopoDS_Shape S = Glue.Shells();
+    for (exp.Init(S,TopAbs_SHELL); exp.More(); exp.Next()) {
+      B.Add(Res,exp.Current());
+    }
+    Res.Closed(Standard_True);
+    return Res;
+#endif
+}
+
+TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
+                                       double offset, double tol, bool intersection,
+                                       bool selfInter, short offsetMode, short join) const
+{
+    BRepOffsetAPI_MakeThickSolid mkThick(this->_Shape, remFace, offset, tol, BRepOffset_Mode(offsetMode),
+        intersection ? Standard_True : Standard_False,
+        selfInter ? Standard_True : Standard_False,
+        GeomAbs_JoinType(join));
+    return mkThick.Shape();
 }
 
 void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)

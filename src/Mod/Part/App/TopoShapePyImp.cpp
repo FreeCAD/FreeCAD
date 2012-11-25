@@ -1024,7 +1024,15 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
 {
     PyObject *obj;
     double offset, tolerance;
-    if (!PyArg_ParseTuple(args, "O!dd", &(PyList_Type), &obj, &offset, &tolerance))
+    PyObject* inter = Py_False;
+    PyObject* self_inter = Py_False;
+    short offsetMode = 0, join = 0;
+    if (!PyArg_ParseTuple(args, "O!dd|O!O!hh",
+        &(PyList_Type), &obj,
+        &offset, &tolerance,
+        &(PyBool_Type), &inter,
+        &(PyBool_Type), &self_inter,
+        &offsetMode, &join))
         return 0;
 
     try {
@@ -1037,7 +1045,8 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
             }
         }
 
-        TopoDS_Shape shape = this->getTopoShapePtr()->makeThickSolid(facesToRemove, offset, tolerance);
+        TopoDS_Shape shape = this->getTopoShapePtr()->makeThickSolid(facesToRemove, offset, tolerance,
+            (inter == Py_True), (self_inter == Py_True), offsetMode, join);
         return new TopoShapeSolidPy(new TopoShape(shape));
     }
     catch (Standard_Failure) {
@@ -1052,17 +1061,19 @@ PyObject* TopoShapePy::makeOffsetShape(PyObject *args)
     double offset, tolerance;
     PyObject* inter = Py_False;
     PyObject* self_inter = Py_False;
+    PyObject* fill = Py_False;
     short offsetMode = 0, join = 0;
-    if (!PyArg_ParseTuple(args, "dd|O!O!hh",
+    if (!PyArg_ParseTuple(args, "dd|O!O!hhO!",
         &offset, &tolerance,
         &(PyBool_Type), &inter,
         &(PyBool_Type), &self_inter,
-        &offsetMode, &join))
+        &offsetMode, &join,
+        &(PyBool_Type), &fill))
         return 0;
 
     try {
-        TopoDS_Shape shape = this->getTopoShapePtr()->makeOffset(offset, tolerance,
-            (inter == Py_True), (self_inter == Py_True), offsetMode, join);
+        TopoDS_Shape shape = this->getTopoShapePtr()->makeOffsetShape(offset, tolerance,
+            (inter == Py_True), (self_inter == Py_True), offsetMode, join, (fill == Py_True));
         return new TopoShapePy(new TopoShape(shape));
     }
     catch (Standard_Failure) {
