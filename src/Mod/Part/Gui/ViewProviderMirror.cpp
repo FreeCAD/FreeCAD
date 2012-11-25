@@ -46,6 +46,7 @@
 #include <Gui/Document.h>
 #include "ViewProviderMirror.h"
 #include "DlgFilletEdges.h"
+#include "TaskOffset.h"
 
 using namespace PartGui;
 
@@ -393,5 +394,86 @@ std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
 
 bool ViewProviderSweep::onDelete(const std::vector<std::string> &)
 {
+    return true;
+}
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderOffset, PartGui::ViewProviderPart)
+
+ViewProviderOffset::ViewProviderOffset()
+{
+    sPixmap = "Part_Offset";
+}
+
+ViewProviderOffset::~ViewProviderOffset()
+{
+}
+
+void ViewProviderOffset::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit offset"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderOffset::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default ) {
+        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+        TaskOffset* offsetDlg = qobject_cast<TaskOffset*>(dlg);
+        if (offsetDlg && offsetDlg->getObject() != this->getObject())
+            offsetDlg = 0; // another pad left open its task panel
+        if (dlg && !offsetDlg) {
+            if (dlg->canClose())
+                Gui::Control().closeDialog();
+            else
+                return false;
+        }
+
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+
+        // start the edit dialog
+        if (offsetDlg)
+            Gui::Control().showDialog(offsetDlg);
+        else
+            Gui::Control().showDialog(new TaskOffset(static_cast<Part::Offset*>(getObject())));
+
+        return true;
+    }
+    else {
+        return ViewProviderPart::setEdit(ModNum);
+    }
+}
+
+void ViewProviderOffset::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        // when pressing ESC make sure to close the dialog
+        Gui::Control().closeDialog();
+    }
+    else {
+        PartGui::ViewProviderPart::unsetEdit(ModNum);
+    }
+}
+
+std::vector<App::DocumentObject*> ViewProviderOffset::claimChildren() const
+{
+    std::vector<App::DocumentObject*> child;
+    child.push_back(static_cast<Part::Offset*>(getObject())->Source.getValue());
+    return child;
+}
+
+bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
+{
+    // get the support and Sketch
+    Part::Offset* offset = static_cast<Part::Offset*>(getObject()); 
+    App::DocumentObject* source = offset->Source.getValue();
+    if (source){
+        Gui::Application::Instance->getViewProvider(source)->show();
+    }
+
     return true;
 }

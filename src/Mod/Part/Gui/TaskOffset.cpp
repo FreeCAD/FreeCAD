@@ -33,6 +33,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -43,7 +44,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PartFeatures.h>
 
 
 using namespace PartGui;
@@ -52,7 +53,7 @@ class OffsetWidget::Private
 {
 public:
     Ui_TaskOffset ui;
-    std::string document;
+    Part::Offset* offset;
     Private()
     {
     }
@@ -63,13 +64,17 @@ public:
 
 /* TRANSLATOR PartGui::OffsetWidget */
 
-OffsetWidget::OffsetWidget(QWidget* parent)
+OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
   : d(new Private())
 {
     Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
     Gui::Application::Instance->runPythonCode("import Part");
 
+    d->offset = offset;
     d->ui.setupUi(this);
+    d->ui.spinOffset->setValue(d->offset->Value.getValue());
+    d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
+    d->ui.spinOffset->setSingleStep(0.1);
 }
 
 OffsetWidget::~OffsetWidget()
@@ -77,13 +82,102 @@ OffsetWidget::~OffsetWidget()
     delete d;
 }
 
+Part::Offset* OffsetWidget::getObject() const
+{
+    return d->offset;
+}
+
+void OffsetWidget::on_spinOffset_valueChanged(double val)
+{
+    d->offset->Value.setValue((float)val);
+    if (d->ui.updateView->isChecked())
+        d->offset->getDocument()->recomputeFeature(d->offset);
+}
+
+void OffsetWidget::on_modeType_activated(int val)
+{
+    d->offset->Mode.setValue(val);
+    if (d->ui.updateView->isChecked())
+        d->offset->getDocument()->recomputeFeature(d->offset);
+}
+
+void OffsetWidget::on_joinType_activated(int val)
+{
+    d->offset->Join.setValue((float)val);
+    if (d->ui.updateView->isChecked())
+        d->offset->getDocument()->recomputeFeature(d->offset);
+}
+
+void OffsetWidget::on_intersection_toggled(bool on)
+{
+    d->offset->Intersection.setValue(on);
+    if (d->ui.updateView->isChecked())
+        d->offset->getDocument()->recomputeFeature(d->offset);
+}
+
+void OffsetWidget::on_selfIntersection_toggled(bool on)
+{
+    d->offset->SelfIntersection.setValue(on);
+    if (d->ui.updateView->isChecked())
+        d->offset->getDocument()->recomputeFeature(d->offset);
+}
+
+void OffsetWidget::on_fillOffset_toggled(bool on)
+{
+    d->offset->Fill.setValue(on);
+    if (d->ui.updateView->isChecked())
+        d->offset->getDocument()->recomputeFeature(d->offset);
+}
+
+void OffsetWidget::on_updateView_toggled(bool on)
+{
+    if (on) {
+        d->offset->getDocument()->recomputeFeature(d->offset);
+    }
+}
+
 bool OffsetWidget::accept()
 {
+    std::string name = d->offset->getNameInDocument();
+
+    try {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
+            name.c_str(),d->ui.spinOffset->value());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
+            name.c_str(),d->ui.modeType->currentIndex());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
+            name.c_str(),d->ui.joinType->currentIndex());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Intersection = %s",
+            name.c_str(),d->ui.intersection->isChecked() ? "True" : "False");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.SelfIntersection = %s",
+            name.c_str(),d->ui.selfIntersection->isChecked() ? "True" : "False");
+
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        if (!d->offset->isValid())
+            throw Base::Exception(d->offset->getStatusString());
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::commitCommand();
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
+        return false;
+    }
+
     return true;
 }
 
 bool OffsetWidget::reject()
 {
+    // get the support and Sketch
+    App::DocumentObject* source = d->offset->Source.getValue();
+    if (source){
+        Gui::Application::Instance->getViewProvider(source)->show();
+    }
+
+    // roll back the done things
+    Gui::Command::abortCommand();
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+
     return true;
 }
 
@@ -98,9 +192,9 @@ void OffsetWidget::changeEvent(QEvent *e)
 
 /* TRANSLATOR PartGui::TaskOffset */
 
-TaskOffset::TaskOffset()
+TaskOffset::TaskOffset(Part::Offset* offset)
 {
-    widget = new OffsetWidget();
+    widget = new OffsetWidget(offset);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Offset"),
         widget->windowTitle(), true, 0);
@@ -110,6 +204,11 @@ TaskOffset::TaskOffset()
 
 TaskOffset::~TaskOffset()
 {
+}
+
+Part::Offset* TaskOffset::getObject() const
+{
+    return widget->getObject();
 }
 
 void TaskOffset::open()
