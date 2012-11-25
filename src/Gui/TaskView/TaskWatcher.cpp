@@ -102,9 +102,6 @@ TaskWatcherCommands::TaskWatcherCommands(const char* Filter,const char* commands
     Content.push_back(tb);
 }
 
-TaskWatcherCommands::~TaskWatcherCommands()
-{
-}
 
 //==== implementer ===========================================================================
 
@@ -128,9 +125,7 @@ TaskWatcherCommandsEmptyDoc::TaskWatcherCommandsEmptyDoc(const char* commands[],
 {
 }
 
-TaskWatcherCommandsEmptyDoc::~TaskWatcherCommandsEmptyDoc()
-{
-}
+
 
 //==== implementer ===========================================================================
 
@@ -152,10 +147,6 @@ TaskWatcherCommandsNoSelection::TaskWatcherCommandsNoSelection(const char* comma
                                                                const char* name,
                                                                const char* pixmap )
     : TaskWatcherCommands(0,commands,name,pixmap)
-{
-}
-
-TaskWatcherCommandsNoSelection::~TaskWatcherCommandsNoSelection()
 {
 }
 

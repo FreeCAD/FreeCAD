@@ -363,8 +363,6 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
 
 SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
 {
-    if (_ViewProviderSet.find(p) == _ViewProviderSet.end())
-        return false;
     if (this->editViewProvider)
         return false; // only one view provider is editable at a time
     bool ok = p->startEditing(ModNum);

@@ -188,6 +188,10 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
 {
     if (d->_pcInEdit)
         resetEdit();
+    // is it really a ViewProvider of this document?
+    if (d->_ViewProviderMap.find(dynamic_cast<ViewProviderDocumentObject*>(p)->getObject()) == d->_ViewProviderMap.end())
+        return false;
+
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
         d->_pcInEdit = p;

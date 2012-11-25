@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
 #include <Gui/Application.h>
@@ -30,11 +31,58 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 
+#include <Mod/Assembly/App/ItemAssembly.h>
+#include <Mod/Assembly/App/ConstraintGroup.h>
+
 
 using namespace std;
 
+extern Assembly::Item *ActiveAsmObject;
 
+// Helper methods ===========================================================
 
+Assembly::ConstraintGroup * getConstraintGroup(Assembly::ItemAssembly *Asm)
+{
+    Assembly::ConstraintGroup *ConstGrp = 0;
+
+    std::vector<App::DocumentObject*> Ano = Asm->Annotations.getValues();
+    for(std::vector<App::DocumentObject*>::const_iterator it = Ano.begin();it!=Ano.end();++it){
+        if((*it)->getTypeId().isDerivedFrom(Assembly::ConstraintGroup::getClassTypeId() )){
+            ConstGrp = static_cast<Assembly::ConstraintGroup*>(*it);
+            break;
+        }
+    }
+    return ConstGrp;
+}
+
+bool getConstraintPrerequisits(Assembly::ItemAssembly **Asm,Assembly::ConstraintGroup **ConstGrp)
+{
+    if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
+                QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
+        return true;
+    }
+
+    *Asm = static_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+
+    // find the Constraint group of the active Assembly
+    *ConstGrp = getConstraintGroup(*Asm);
+    // if it hasen't aleardy one, create one:
+    if(!*ConstGrp){
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ConstraintGroup','ConstraintGroup')");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = 'ConstraintGroup'");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Annotations = App.activeDocument().%s.Annotations + [App.activeDocument().ActiveObject]",(*Asm)->getNameInDocument(),(*Asm)->getNameInDocument()); 
+
+    }
+    // find now
+    *ConstGrp = getConstraintGroup(*Asm);
+    if(!*ConstGrp)
+        throw Base::Exception("Could not create Assembly::ConstraintGroup in active Assembly");
+
+    // return with no error
+    return false;
+
+}
 //===========================================================================
 
 DEF_STD_CMD(CmdAssemblyConstraintAxle);
@@ -54,8 +102,17 @@ CmdAssemblyConstraintAxle::CmdAssemblyConstraintAxle()
 
 void CmdAssemblyConstraintAxle::activated(int iMsg)
 {
-    // load the file with the module
-    //Command::doCommand(Command::Gui, "import Assembly, AssemblyGui");
+    Assembly::ItemAssembly *Asm=0;
+    Assembly::ConstraintGroup *ConstGrp=0;
+
+    // retrive the standard objects needed
+    if(getConstraintPrerequisits(&Asm,&ConstGrp))
+        return;
+        
+    openCommand("Insert Constraint Axle");
+    std::string ConstrName = getUniqueObjectName("Axle");
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",ConstrName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]",ConstGrp->getNameInDocument(),ConstGrp->getNameInDocument());
       
 }
 
