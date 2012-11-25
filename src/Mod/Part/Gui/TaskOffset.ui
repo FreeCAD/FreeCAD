@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>256</width>
-    <height>217</height>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,24 +25,14 @@
     <widget class="QDoubleSpinBox" name="spinOffset"/>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Tolerance</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QDoubleSpinBox" name="spinTolerance"/>
-   </item>
-   <item row="2" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Mode</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="comboBox">
+   <item row="1" column="1">
+    <widget class="QComboBox" name="modeType">
      <item>
       <property name="text">
        <string>Skin</string>
@@ -60,15 +50,15 @@
      </item>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Join type</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="comboBox_2">
+   <item row="2" column="1">
+    <widget class="QComboBox" name="joinType">
      <item>
       <property name="text">
        <string>Arc</string>
@@ -86,17 +76,41 @@
      </item>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBox">
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="intersection">
      <property name="text">
       <string>Intersection</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBox_2">
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="selfIntersection">
      <property name="text">
       <string>Self-intersection</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QCheckBox" name="updateView">
+     <property name="text">
+      <string>Update view</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QCheckBox" name="fillOffset">
+     <property name="text">
+      <string>Fill offset</string>
      </property>
     </widget>
    </item>
@@ -104,11 +118,10 @@
  </widget>
  <tabstops>
   <tabstop>spinOffset</tabstop>
-  <tabstop>spinTolerance</tabstop>
-  <tabstop>comboBox</tabstop>
-  <tabstop>comboBox_2</tabstop>
-  <tabstop>checkBox</tabstop>
-  <tabstop>checkBox_2</tabstop>
+  <tabstop>modeType</tabstop>
+  <tabstop>joinType</tabstop>
+  <tabstop>intersection</tabstop>
+  <tabstop>selfIntersection</tabstop>
  </tabstops>
  <resources/>
  <connections/>

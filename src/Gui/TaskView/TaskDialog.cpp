@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
 #include "TaskDialog.h"
@@ -55,6 +56,20 @@ TaskDialog::~TaskDialog()
 const std::vector<QWidget*> &TaskDialog::getDialogContent(void) const
 {
     return Content;
+}
+
+bool TaskDialog::canClose() const
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("A dialog is already open in the task panel"));
+    msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    if (ret == QMessageBox::Yes)
+        return true;
+    else
+        return false;
 }
 
 //==== calls from the TaskView ===============================================================

@@ -27,6 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+namespace Part { class Offset; }
 namespace PartGui { 
 
 class OffsetWidget : public QWidget
@@ -34,11 +35,21 @@ class OffsetWidget : public QWidget
     Q_OBJECT
 
 public:
-    OffsetWidget(QWidget* parent = 0);
+    OffsetWidget(Part::Offset*, QWidget* parent = 0);
     ~OffsetWidget();
 
     bool accept();
     bool reject();
+    Part::Offset* getObject() const;
+
+private Q_SLOTS:
+    void on_spinOffset_valueChanged(double);
+    void on_modeType_activated(int);
+    void on_joinType_activated(int);
+    void on_intersection_toggled(bool);
+    void on_selfIntersection_toggled(bool);
+    void on_fillOffset_toggled(bool);
+    void on_updateView_toggled(bool);
 
 private:
     void changeEvent(QEvent *e);
@@ -53,7 +64,7 @@ class TaskOffset : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskOffset();
+    TaskOffset(Part::Offset*);
     ~TaskOffset();
 
 public:
@@ -61,6 +72,7 @@ public:
     bool accept();
     bool reject();
     void clicked(int);
+    Part::Offset* getObject() const;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }

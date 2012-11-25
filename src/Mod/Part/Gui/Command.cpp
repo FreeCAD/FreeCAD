@@ -62,7 +62,6 @@
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
 #include "TaskSweep.h"
-#include "TaskOffset.h"
 #include "TaskCheckGeometry.h"
 
 
@@ -1007,7 +1006,24 @@ CmdPartOffset::CmdPartOffset()
 
 void CmdPartOffset::activated(int iMsg)
 {
-    Gui::Control().showDialog(new PartGui::TaskOffset());
+    App::DocumentObject* shape = getSelection().getObjectsOfType(Part::Feature::getClassTypeId()).front();
+    std::string offset = getUniqueObjectName("Offset");
+
+    openCommand("Make Offset");
+    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset\",\"%s\")",offset.c_str());
+    doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
+    doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
+    updateActive();
+    //if (isActiveObjectValid())
+    //    doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
+    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
+
+    //commitCommand();
+    adjustCameraPosition();
+
+    copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
+    copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
+    copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
 }
 
 bool CmdPartOffset::isActive(void)
