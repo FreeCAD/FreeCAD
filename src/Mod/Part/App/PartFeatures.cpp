@@ -30,6 +30,7 @@
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <Precision.hxx>
 #endif
 
 
@@ -333,4 +334,68 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
+}
+
+// ----------------------------------------------------------------------------
+
+const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",NULL};
+const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",NULL};
+
+PROPERTY_SOURCE(Part::Offset, Part::Feature)
+
+Offset::Offset()
+{
+    ADD_PROPERTY_TYPE(Source,(0),"Offset",App::Prop_None,"Source shape");
+    ADD_PROPERTY_TYPE(Value,(1.0),"Offset",App::Prop_None,"Offset value");
+    ADD_PROPERTY_TYPE(Mode,(long(0)),"Offset",App::Prop_None,"Mode");
+    Mode.setEnums(ModeEnums);
+    ADD_PROPERTY_TYPE(Join,(long(0)),"Offset",App::Prop_None,"Join type");
+    Join.setEnums(JoinEnums);
+    ADD_PROPERTY_TYPE(Intersection,(false),"Offset",App::Prop_None,"Intersection");
+    ADD_PROPERTY_TYPE(SelfIntersection,(false),"Offset",App::Prop_None,"Self Intersection");
+    ADD_PROPERTY_TYPE(Fill,(false),"Offset",App::Prop_None,"Fill offset");
+}
+
+short Offset::mustExecute() const
+{
+    if (Source.isTouched())
+        return 1;
+    if (Value.isTouched())
+        return 1;
+    if (Mode.isTouched())
+        return 1;
+    if (Join.isTouched())
+        return 1;
+    if (Intersection.isTouched())
+        return 1;
+    if (SelfIntersection.isTouched())
+        return 1;
+    if (Fill.isTouched())
+        return 1;
+    return 0;
+}
+
+void Offset::onChanged(const App::Property* prop)
+{
+    Part::Feature::onChanged(prop);
+}
+
+App::DocumentObjectExecReturn *Offset::execute(void)
+{
+    App::DocumentObject* source = Source.getValue();
+    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+        return new App::DocumentObjectExecReturn("No source shape linked.");
+    double offset = Value.getValue();
+    double tol = Precision::Confusion();
+    bool inter = Intersection.getValue();
+    bool self = SelfIntersection.getValue();
+    short mode = (short)Mode.getValue();
+    short join = (short)Join.getValue();
+    bool fill = Fill.getValue();
+    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+    if (fabs(offset) > 2*tol)
+        this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
+    else
+        this->Shape.setValue(shape);
+    return App::DocumentObject::StdReturn;
 }

@@ -119,8 +119,6 @@ def legend(status=True, pos=None, fontsize=None):
 	if not plt:
 		return
 	plt.legend = status
-	if pos:
-		plt.legPos = pos
 	if fontsize:
 		plt.legSiz = fontsize
 	# Hide all legends
@@ -137,8 +135,19 @@ def legend(status=True, pos=None, fontsize=None):
 			if l.name != None:
 				handles.append(l.line)
 				names.append(l.name)
-		# Show the legend
-		l = axes.legend(handles, names, bbox_to_anchor=plt.legPos)
+		# Show the legend (at selected position or at best)
+		if pos:
+			l = axes.legend(handles, names, bbox_to_anchor=pos)
+			plt.legPos = pos
+		else:
+			l = axes.legend(handles, names, loc='best')
+			# Update canvas in order to compute legend data
+			plt.canvas.draw()
+			# Get resultant position
+			fax = axes.get_frame().get_extents()
+			fl  = l.get_frame()
+			plt.legPos = ((fl._x+fl._width-fax.x0) / fax.width, (fl._y+fl._height-fax.y0) / fax.height)
+		# Set fontsize
 		for t in l.get_texts():
 			t.set_fontsize(plt.legSiz)
 	plt.update()
@@ -276,7 +285,7 @@ class Plot(QtGui.QWidget):
 		# Indicators
 		self.skip   = False
 		self.legend = False
-		self.legPos = (1.0, 1.0)
+		self.legPos = (1.0,1.0)
 		self.legSiz = 14
 		self.grid   = False
 	
@@ -293,7 +302,7 @@ class Plot(QtGui.QWidget):
 		if not self.skip:
 			self.skip = True
 			if self.legend:
-				legend(self.legend)
+				legend(self.legend, self.legPos, self.legSiz)
 			self.canvas.draw()
 			self.skip = False
 

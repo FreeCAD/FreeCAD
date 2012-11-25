@@ -189,7 +189,7 @@ the underlying geometry.</UserDocu>
     </Methode>
     <Methode Name="makeThickness" Const="true">
       <Documentation> 
-        <UserDocu>makeThickness(List of shapes, Ofset (Float), Tolerance (Float)) -> Shape
+        <UserDocu>makeThickness(List of shapes, Offset (Float), Tolerance (Float)) -> Shape
 A hollowed solid is built from an initial solid and a set of faces on this solid,
 which are to be removed. The remaining faces of the solid become the walls of
 the hollowed solid, their thickness defined at the time of construction.</UserDocu>

@@ -60,6 +60,7 @@ public:
     ButtonPosition buttonPosition() const
     { return pos; }
     const std::vector<QWidget*> &getDialogContent(void) const;
+    bool canClose() const;
 
     /// tells the framework which buttons whisched for the dialog
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
