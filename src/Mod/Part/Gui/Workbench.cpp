@@ -72,7 +72,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry" << "Separator"
           << "Part_Boolean" << "Part_CrossSections" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
-          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep";
+          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep" << "Part_Offset";
 
     return root;
 }
@@ -89,7 +89,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
     tool->setCommand("Part tools");
     *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet"
-          << "Part_Chamfer" << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep";
+          << "Part_Chamfer" << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
+          << "Part_Offset";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");

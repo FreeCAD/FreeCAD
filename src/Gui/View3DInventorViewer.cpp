@@ -1378,6 +1378,11 @@ void View3DInventorViewer::viewAll()
         group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
     }
 
+    // Set the height angle to 45 deg
+    SoCamera* cam = this->getCamera();
+    if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()))
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
+
     // call the default implementation first to make sure everything is visible
     SoQtViewer::viewAll();
 

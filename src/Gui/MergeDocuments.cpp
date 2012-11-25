@@ -42,10 +42,22 @@ namespace Gui {
 class XMLMergeReader : public Base::XMLReader
 {
 public:
-    XMLMergeReader(const std::map<std::string, std::string>& name, const char* FileName, std::istream& str)
+    XMLMergeReader(std::map<std::string, std::string>& name, const char* FileName, std::istream& str)
       : Base::XMLReader(FileName, str), nameMap(name)
     {}
 
+    void addName(const char* s1, const char* s2)
+    {
+        nameMap[s1] = s2;
+    }
+    const char* getName(const char* name) const
+    {
+        std::map<std::string, std::string>::const_iterator it = nameMap.find(name);
+        if (it != nameMap.end())
+            return it->second.c_str();
+        else
+            return name;
+    }
 protected:
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,
@@ -75,7 +87,7 @@ protected:
     }
 
 private:
-    const std::map<std::string, std::string>& nameMap;
+    std::map<std::string, std::string>& nameMap;
     typedef std::pair<std::string, std::string> PropertyTag;
     std::stack<PropertyTag> propertyStack;
 };
@@ -104,64 +116,14 @@ unsigned int MergeDocuments::getMemSize (void) const
 std::vector<App::DocumentObject*>
 MergeDocuments::importObjects(std::istream& input)
 {
-    //std::map<std::string, std::string> nameMap;
-    std::vector<App::DocumentObject*> objs;
-    zipios::ZipInputStream zipstream(input);
-    XMLMergeReader reader(nameMap,"<memory>", zipstream);
+    this->nameMap.clear();
+    this->stream = new zipios::ZipInputStream(input);
+    XMLMergeReader reader(this->nameMap,"<memory>", *stream);
+    std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
-    int i,Cnt;
-    reader.readElement("Document");
-    long scheme = reader.getAttributeAsInteger("SchemaVersion");
-    reader.DocumentSchema = scheme;
+    delete this->stream;
+    this->stream = 0;
 
-    // read the object types
-    nameMap.clear();
-    reader.readElement("Objects");
-    Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
-        reader.readElement("Object");
-        std::string type = reader.getAttribute("type");
-        std::string name = reader.getAttribute("name");
-
-        try {
-            // Use name from XML as is and do NOT remove trailing digits because
-            // otherwise we may cause a dependency to itself
-            // Example: Object 'Cut001' references object 'Cut' and removing the
-            // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* o = appdoc->addObject(type.c_str(),name.c_str());
-            objs.push_back(o);
-            // use this name for the later access because an object with
-            // the given name may already exist
-            nameMap[name] = o->getNameInDocument();
-        }
-        catch (Base::Exception&) {
-            Base::Console().Message("Cannot create object '%s'\n", name.c_str());
-        }
-    }
-    reader.readEndElement("Objects");
-
-    // read the features itself
-    reader.readElement("ObjectData");
-    Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
-        reader.readElement("Object");
-        std::string name = nameMap[reader.getAttribute("name")];
-        App::DocumentObject* pObj = appdoc->getObject(name.c_str());
-        if (pObj) { // check if this feature has been registered
-//            pObj->StatusBits.set(4);
-            pObj->Restore(reader);
-//            pObj->StatusBits.reset(4);
-        }
-        reader.readEndElement("Object");
-    }
-    reader.readEndElement("ObjectData");
-
-    reader.readEndElement("Document");
-    appdoc->signalImportObjects(objs, reader);
-    reader.readFiles(zipstream);
-    // reset all touched
-    for (std::vector<App::DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it)
-        (*it)->purgeTouched();
     return objs;
 }
 
@@ -173,6 +135,8 @@ void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Ba
         if (vp) vp->hide();
     }
     Restore(r);
+
+    r.readFiles(*this->stream);
 }
 
 void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer & w)

@@ -25,6 +25,7 @@
 #define PART_FEATURES_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <Mod/Part/App/PartFeature.h>
 
 namespace Part
@@ -104,6 +105,39 @@ protected:
 
 private:
     static const char* TransitionEnums[];
+};
+
+class Offset : public Part::Feature
+{
+    PROPERTY_HEADER(Part::Offset);
+
+public:
+    Offset();
+
+    App::PropertyLink  Source;
+    App::PropertyFloat Value;
+    App::PropertyEnumeration Mode;
+    App::PropertyEnumeration Join;
+    App::PropertyBool Intersection;
+    App::PropertyBool SelfIntersection;
+    App::PropertyBool Fill;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderOffset";
+    }
+    //@}
+
+protected:
+    void onChanged (const App::Property* prop);
+
+private:
+    static const char* ModeEnums[];
+    static const char* JoinEnums[];
 };
 
 } //namespace Part

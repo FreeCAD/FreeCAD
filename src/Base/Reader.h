@@ -159,6 +159,8 @@ public:
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
     bool isRegistered(Base::Persistence *Object) const;
+    virtual void addName(const char*, const char*);
+    virtual const char* getName(const char*) const;
     //@}
 
     /// Schema Version of the document

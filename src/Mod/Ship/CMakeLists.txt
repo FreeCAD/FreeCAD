@@ -135,13 +135,13 @@ INSTALL(
     FILES
         ${ShipIcons_SRCS}
     DESTINATION
-        Mod/Ship/Icons
+        Mod/Ship/resources/icons
 )
 INSTALL(
     FILES
         ${ShipExamples_SRCS}
     DESTINATION
-        Mod/Ship/Examples
+        Mod/Ship/resources/examples
 )
 INSTALL(
     FILES
