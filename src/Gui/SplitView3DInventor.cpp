@@ -41,39 +41,28 @@
 
 using namespace Gui;
 
-SplitView3DInventor::SplitView3DInventor( int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags )
-  : MDIView( pcDocument,parent, wflags)
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
+
+AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+  : MDIView(pcDocument,parent, wflags)
 {
     // important for highlighting 
     setMouseTracking(true);
-  
+}
+
+AbstractSplitView::~AbstractSplitView()
+{
+    hGrp->Detach(this);
+    for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
+        delete *it;
+    }
+}
+
+void AbstractSplitView::setupSettings()
+{
     // attach Parameter Observer
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     hGrp->Attach(this);
-
-    QSplitter* mainSplitter=0;
-
-    if (views <= 3) {
-        mainSplitter = new QSplitter(Qt::Horizontal, this);
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        if (views==3)
-            _viewer.push_back(new View3DInventorViewer(mainSplitter));
-    }
-    else {
-        mainSplitter = new QSplitter(Qt::Vertical, this);
-        QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        _viewer.push_back(new View3DInventorViewer(topSplitter));
-        _viewer.push_back(new View3DInventorViewer(topSplitter));
-        for (int i=2;i<views;i++)
-            _viewer.push_back(new View3DInventorViewer(botSplitter));
-        topSplitter->setOpaqueResize( true );
-        botSplitter->setOpaqueResize( true );
-    }
-
-    mainSplitter->show();
-    setCentralWidget(mainSplitter);
 
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
@@ -98,21 +87,13 @@ SplitView3DInventor::SplitView3DInventor( int views, Gui::Document* pcDocument, 
     OnChange(*hGrp,"NavigationStyle");
 }
 
-SplitView3DInventor::~SplitView3DInventor()
-{
-    hGrp->Detach(this);
-    for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-        delete *it;
-    }
-}
-
-View3DInventorViewer* SplitView3DInventor::getViewer(unsigned int n) const
+View3DInventorViewer* AbstractSplitView::getViewer(unsigned int n) const
 {
     return (_viewer.size() > n ? _viewer[n] : 0);
 }
 
 /// Observer message from the ParameterGrp
-void SplitView3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
+void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
     if (strcmp(Reason,"HeadlightColor") == 0) {
@@ -264,17 +245,17 @@ void SplitView3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterG
     }
 }
 
-void SplitView3DInventor::onUpdate(void)
+void AbstractSplitView::onUpdate(void)
 {
     update();  
 }
 
-const char *SplitView3DInventor::getName(void) const
+const char *AbstractSplitView::getName(void) const
 {
     return "SplitView3DInventor";
 }
 
-bool SplitView3DInventor::onMsg(const char* pMsg, const char** ppReturn)
+bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
 {
     if (strcmp("ViewFit",pMsg) == 0 ) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
@@ -344,7 +325,7 @@ bool SplitView3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     return false;
 }
 
-bool SplitView3DInventor::onHasMsg(const char* pMsg) const
+bool AbstractSplitView::onHasMsg(const char* pMsg) const
 {
     if (strcmp("ViewFit",pMsg) == 0) {
         return true;
@@ -373,7 +354,46 @@ bool SplitView3DInventor::onHasMsg(const char* pMsg) const
     return false;
 }
 
-void SplitView3DInventor::setCursor(const QCursor& aCursor)
+void AbstractSplitView::setCursor(const QCursor& aCursor)
 {
     //_viewer->getWidget()->setCursor(aCursor);
+}
+
+// ------------------------------------------------------
+
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
+
+SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+  : AbstractSplitView(pcDocument,parent, wflags)
+{
+    QSplitter* mainSplitter=0;
+
+    if (views <= 3) {
+        mainSplitter = new QSplitter(Qt::Horizontal, this);
+        _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        if (views==3)
+            _viewer.push_back(new View3DInventorViewer(mainSplitter));
+    }
+    else {
+        mainSplitter = new QSplitter(Qt::Vertical, this);
+        QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        _viewer.push_back(new View3DInventorViewer(topSplitter));
+        _viewer.push_back(new View3DInventorViewer(topSplitter));
+        for (int i=2;i<views;i++)
+            _viewer.push_back(new View3DInventorViewer(botSplitter));
+        topSplitter->setOpaqueResize( true );
+        botSplitter->setOpaqueResize( true );
+    }
+
+    mainSplitter->show();
+    setCentralWidget(mainSplitter);
+
+    // apply the user settings
+    setupSettings();
+}
+
+SplitView3DInventor::~SplitView3DInventor()
+{
 }

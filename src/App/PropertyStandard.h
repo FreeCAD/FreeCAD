@@ -395,9 +395,6 @@ protected:
     const Constraints* _ConstStruct;
 };
 
-
-
-
 class AppExport PropertyFloatList: public PropertyLists
 {
     TYPESYSTEM_HEADER();
@@ -471,10 +468,11 @@ public:
      */
     virtual ~PropertyString();
 
-
     void setValue(const char* sString);
     void setValue(const std::string &sString);
     const char* getValue(void) const;
+    const std::string& getStrValue(void) const
+    { return _cValue; }
     bool isEmpty(void){return _cValue.empty();}
     
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyStringItem"; }
@@ -768,7 +766,7 @@ public:
     void setAmbientColor(const Color& col);
     void setDiffuseColor(const Color& col);
     void setSpecularColor(const Color& col);
-    void setEmmisiveColor(const Color& col);
+    void setEmissiveColor(const Color& col);
     void setShininess(float);
     void setTransparency(float);
     

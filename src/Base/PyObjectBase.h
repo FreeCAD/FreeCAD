@@ -35,7 +35,16 @@
 
 // needed header
 #undef slots
-#   include <Python.h>
+#include <Python.h>
+#ifdef FC_OS_MACOSX
+#undef toupper
+#undef tolower
+#undef isupper
+#undef islower
+#undef isspace
+#undef isalpha
+#undef isalnum
+#endif
 #define slots
 #include <iostream>
 #include <bitset>

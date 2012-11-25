@@ -51,7 +51,7 @@ ViewProviderFillet::~ViewProviderFillet()
 void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit pocket"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit fillet"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
@@ -115,7 +115,7 @@ bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(getObject()); 
-    App::DocumentObject    *pcSupport;
+    App::DocumentObject    *pcSupport = 0;
     if (pcFillet->Base.getValue()){
         pcSupport = static_cast<Sketcher::SketchObject*>(pcFillet->Base.getValue()); 
     }

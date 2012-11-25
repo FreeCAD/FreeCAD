@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <stdio.h>
+# include <QApplication>
 # include <QFile>
 # include <QTextStream>
 #endif
@@ -71,6 +72,7 @@ void MacroManager::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     this->recordGui         = this->params->GetBool("RecordGui", true);
     this->guiAsComment      = this->params->GetBool("GuiAsComment", true);
     this->scriptToPyConsole = this->params->GetBool("ScriptToPyConsole", true);
+    this->localEnv          = this->params->GetBool("LocalEnvironment", true);
 }
 
 void MacroManager::open(MacroType eType,const char *sName)
@@ -197,15 +199,19 @@ namespace Gui {
     public:
         PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj)
         {
-            Base::PyGILStateLocker lock;
-            old = PySys_GetObject(const_cast<char*>(std_out));
-            PySys_SetObject(const_cast<char*>(std_out), obj);
+            if (out) {
+                Base::PyGILStateLocker lock;
+                old = PySys_GetObject(const_cast<char*>(std_out));
+                PySys_SetObject(const_cast<char*>(std_out), out);
+            }
         }
         ~PythonRedirector()
         {
-            Base::PyGILStateLocker lock;
-            PySys_SetObject(const_cast<char*>(std_out), old);
-            Py_XDECREF(out);
+            if (out) {
+                Base::PyGILStateLocker lock;
+                PySys_SetObject(const_cast<char*>(std_out), old);
+                Py_DECREF(out);
+            }
         }
     private:
         const char* std_out;
@@ -217,15 +223,21 @@ namespace Gui {
 void MacroManager::run(MacroType eType,const char *sName)
 {
     try {
-        PythonRedirector std_out("stdout",new OutputStdout);
-        PythonRedirector std_err("stderr",new OutputStderr);
+        ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput") ? new OutputStdout : 0;
+        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors") ? new OutputStderr : 0;
+        PythonRedirector std_out("stdout",pyout);
+        PythonRedirector std_err("stderr",pyerr);
         //The given path name is expected to be Utf-8
-        Base::Interpreter().runFile(sName, true);
+        Base::Interpreter().runFile(sName, this->localEnv);
     }
     catch (const Base::SystemExitException&) {
-        Base::PyGILStateLocker lock;
-        PyErr_Clear();
-        Base::Interpreter().systemExit();
+        throw;
+    }
+    catch (const Base::PyException& e) {
+        Base::Console().Error("%s%s: %s\n",
+            e.getStackTrace().c_str(), e.getErrorType().c_str(), e.what());
     }
     catch (const Base::Exception& e) {
         qWarning("%s",e.what());

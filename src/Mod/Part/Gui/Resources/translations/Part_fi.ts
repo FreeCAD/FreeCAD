@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>osa</translation>
     </message>
@@ -126,13 +126,13 @@
     </message>
     <message>
       <source>Create a box solid</source>
-      <translation>Create a box solid</translation>
+      <translation>Luo kiinteä laatikko</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>osa</translation>
     </message>
@@ -168,11 +168,26 @@
     </message>
     <message>
       <source>Shape builder...</source>
-      <translation>Shape builder...</translation>
+      <translation>Rakenna muoto...</translation>
     </message>
     <message>
       <source>Advanced utility to create shapes</source>
-      <translation>Advanced utility to create shapes</translation>
+      <translation>Lisäasetukset muotojen luomisen apuohjelmalle</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>osa</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Viistä...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Viiste valittuihin muotoihin reunoista</translation>
     </message>
   </context>
   <context>
@@ -187,7 +202,7 @@
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
-      <translation>Make an intersection of two shapes</translation>
+      <translation>Tee kahden muodon leikkauspisteet</translation>
     </message>
   </context>
   <context>
@@ -203,13 +218,13 @@
     </message>
     <message>
       <source>Create a cone solid</source>
-      <translation>Create a cone solid</translation>
+      <translation>Luo kiinteä kartio</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>osa</translation>
     </message>
@@ -234,7 +249,7 @@
     </message>
     <message>
       <source>Make a cut of two shapes</source>
-      <translation>Make a cut of two shapes</translation>
+      <translation>Tee leikkaus kahdesta muodosta</translation>
     </message>
   </context>
   <context>
@@ -256,17 +271,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>osa</translation>
     </message>
     <message>
       <source>Export CAD...</source>
-      <translation>Export CAD...</translation>
+      <translation>Vie CAD...</translation>
     </message>
     <message>
       <source>Exports to a CAD file</source>
-      <translation>Exports to a CAD file</translation>
+      <translation>CAD-tiedoston vienti</translation>
     </message>
   </context>
   <context>
@@ -311,7 +326,7 @@
     </message>
     <message>
       <source>Make a union of several shapes</source>
-      <translation>Make a union of several shapes</translation>
+      <translation>Tee liitos useista muodoista</translation>
     </message>
   </context>
   <context>
@@ -352,11 +367,15 @@
     </message>
     <message>
       <source>Loft...</source>
-      <translation>Loft...</translation>
+      <translation>Heitä ilmaan...</translation>
+    </message>
+    <message>
+      <source>Utility to loft</source>
+      <translation>Utility to loft</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
-      <translation>Advanced utility to lofts</translation>
+      <translation>Lisäasetukset ilmaan heiton apuohjelmalle</translation>
     </message>
   </context>
   <context>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>osa</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Refine shape</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Refine the copy of a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>osa</translation>
     </message>
@@ -457,18 +493,18 @@
     </message>
     <message>
       <source>Create ruled surface</source>
-      <translation>Create ruled surface</translation>
+      <translation>Luo suljettu pinta</translation>
     </message>
     <message>
       <source>Create a ruled surface from two curves</source>
-      <translation>Create a ruled surface from two curves</translation>
+      <translation>Luo suojettu pinta kahdesta käyrästä</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSection</name>
     <message>
       <source>Make a section of two shapes</source>
-      <translation>Make a section of two shapes</translation>
+      <translation>Tee osa kahdesta muodosta</translation>
     </message>
     <message>
       <source>Part</source>
@@ -482,7 +518,7 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>osa</translation>
     </message>
@@ -503,11 +539,11 @@
     </message>
     <message>
       <source>Create simple copy</source>
-      <translation>Create simple copy</translation>
+      <translation>Luo yksinkertainen kopio</translation>
     </message>
     <message>
       <source>Create a simple non-parametric copy</source>
-      <translation>Create a simple non-parametric copy</translation>
+      <translation>Luo yksinkertainen ei-parametrinen kopio</translation>
     </message>
   </context>
   <context>
@@ -530,7 +566,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a sphere solid</source>
-      <translation>Create a sphere solid</translation>
+      <translation>Luo kiinteä  pallo</translation>
     </message>
     <message>
       <source>Part</source>
@@ -542,10 +578,27 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>osa</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Utility to sweep</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
-      <translation>Create a torus solid</translation>
+      <translation>Luo kiinteä rinkilä</translation>
     </message>
     <message>
       <source>Part</source>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Viisteen reunat</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -741,11 +802,19 @@
     </message>
     <message>
       <source>3D view</source>
-      <translation>3D view</translation>
+      <translation>3D-näkymä</translation>
     </message>
     <message>
       <source>Note:This option works for planes only</source>
-      <translation>Note:This option works for planes only</translation>
+      <translation>Huomautus: Tämä asetus toimii vain tasoilla</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Luo kiinteä</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Taper outward angle</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -817,7 +886,7 @@
       <translation>Ei valintaa</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>pyöristettävät reunat</translation>
     </message>
@@ -853,7 +922,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <translation>Ei mitään</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Reuna %1</translation>
     </message>
@@ -1053,71 +1122,71 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>X min</source>
-      <translation>X min</translation>
+      <translation>X minimi</translation>
     </message>
     <message>
       <source>x max</source>
-      <translation>x max</translation>
+      <translation>x maksimi</translation>
     </message>
     <message>
       <source>Y min</source>
-      <translation>Y min</translation>
+      <translation>Y minimi</translation>
     </message>
     <message>
       <source>Y max</source>
-      <translation>Y max</translation>
+      <translation>Y maksimi</translation>
     </message>
     <message>
       <source>Z min</source>
-      <translation>Z min</translation>
+      <translation>Z minimi</translation>
     </message>
     <message>
       <source>Z max</source>
-      <translation>Z max</translation>
+      <translation>Z-maksimi</translation>
     </message>
     <message>
       <source>X2 min</source>
-      <translation>X2 min</translation>
+      <translation>X2 minimi</translation>
     </message>
     <message>
       <source>X2 max</source>
-      <translation>X2 max</translation>
+      <translation>X2 maksimi</translation>
     </message>
     <message>
       <source>Z2 min</source>
-      <translation>Z2 min</translation>
+      <translation>Z2 minimi</translation>
     </message>
     <message>
       <source>Z2 max</source>
-      <translation>Z2 max</translation>
+      <translation>Z2 maksimi</translation>
     </message>
     <message>
       <source>Angle - 0 for cyl</source>
-      <translation>Angle - 0 for cyl</translation>
+      <translation>Kulma - 0 sylinterille</translation>
     </message>
     <message>
       <source>Angle0</source>
-      <translation>Angle0</translation>
+      <translation>Kulma0</translation>
     </message>
     <message>
       <source>Angle1</source>
-      <translation>Angle1</translation>
+      <translation>Kulma1</translation>
     </message>
     <message>
       <source>X Axis Value:</source>
-      <translation>X Axis Value:</translation>
+      <translation>X-akselin arvo:</translation>
     </message>
     <message>
       <source>Y Axis Value:</source>
-      <translation>Y Axis Value:</translation>
+      <translation>Y-akselin arvo:</translation>
     </message>
     <message>
       <source>Z Axis Value:</source>
-      <translation>Z Axis Value:</translation>
+      <translation>Z-akselin arvo:</translation>
     </message>
     <message>
       <source>Wedge</source>
-      <translation>Wedge</translation>
+      <translation>Kiila</translation>
     </message>
     <message>
       <source>Circle</source>
@@ -1125,7 +1194,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Vertex</source>
-      <translation>Vertex</translation>
+      <translation>Kärkipiste</translation>
     </message>
     <message>
       <source>Position</source>
@@ -1176,6 +1245,18 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
       <translation>Torus</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Ellipse</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Piste</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Viiva</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Parametri</translation>
     </message>
@@ -1216,6 +1297,67 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
       <translation>V parametrinen:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Coordinate system:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Right-handed</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Left-handed</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Angle 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Angle 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>From three points</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Major radius:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Minor radius:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>End point</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Start point</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
       <translation>&amp;Luo</translation>
     </message>
@@ -1229,10 +1371,9 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation>Alt + O</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Luo %1</translation>
     </message>
@@ -1241,7 +1382,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
       <translation>Ei aktiivista dokumenttia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
       <translation>Kaltevuus:</translation>
     </message>
@@ -1286,7 +1427,11 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
       <translation>Muoto</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Select line in 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Valitse pyöräytysmuoto.</translation>
     </message>
@@ -1300,7 +1445,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>View smoothing</source>
-      <translation>View smoothing</translation>
+      <translation>Näytä tasoitus</translation>
     </message>
     <message>
       <source>Using high-quality normals</source>
@@ -1320,7 +1465,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Tessellation</source>
-      <translation>Mosaiikki</translation>
+      <translation>Geometrian pilkkominen</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1367,7 +1512,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Yleiset</translation>
     </message>
@@ -1391,17 +1536,69 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
       <source>Units for export of STEP/IGES</source>
       <translation>Yksiköt STEP / IGES vientiin</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Model settings</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatically refine model after boolean operation</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatically check model after boolean operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Face colors</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Do you really want to cancel?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Location</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Sijainti</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D-näkymä</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Kärkipiste/Lanka</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Heitä ilmaan</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
-      <translation>Too few elements</translation>
+      <translation>Liian vähän elementtejä</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>At least two vertices, edges or wires are required.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
-      <translation>At least two vertices or wires are required.</translation>
+      <translation>Vaaditaan vähintään kaksi kärkipistettä tai lankaa.</translation>
     </message>
   </context>
   <context>
@@ -1433,7 +1630,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Base point:</source>
-      <translation>Base point:</translation>
+      <translation>Peruspiste:</translation>
     </message>
     <message>
       <source>x</source>
@@ -1454,7 +1651,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
-      <translation>Ei tällaista asiakirjaa ´%1´.</translation>
+      <translation>Ei tällainen asiakirja '%1'.</translation>
     </message>
   </context>
   <context>
@@ -1466,47 +1663,78 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Select two vertices</source>
-      <translation>Select two vertices</translation>
+      <translation>Valitse kaksi kärkipistettä</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
-      <translation>Select three or more edges</translation>
+      <translation>Valitse vähintään kolme reunaa</translation>
+    </message>
+    <message>
+      <source>Select one or more edges</source>
+      <translation>Select one or more edges</translation>
     </message>
     <message>
       <source>Select two or more faces</source>
-      <translation>Select two or more faces</translation>
+      <translation>Valitse vähintään kaksi pintaa</translation>
     </message>
     <message>
       <source>Select only one part object</source>
-      <translation>Select only one part object</translation>
+      <translation>Valitse vain yksi osa-objekti</translation>
     </message>
     <message>
       <source>Select two vertices to create an edge</source>
-      <translation>Select two vertices to create an edge</translation>
+      <translation>Valitse kaksi kärkipistettä luodaksesi reunan</translation>
     </message>
     <message>
       <source>Select a closed set of edges</source>
-      <translation>Select a closed set of edges</translation>
+      <translation>Valitse suljettu joukko reunoista</translation>
     </message>
     <message>
       <source>Select adjacent faces</source>
-      <translation>Select adjacent faces</translation>
+      <translation>Valitse vierekkäiset pinnat</translation>
     </message>
     <message>
       <source>All shape types can be selected</source>
-      <translation>All shape types can be selected</translation>
+      <translation>Kaikki muototyypit voidaan valita</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Kärkipiste/Lanka</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Sweep path</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Select an edge or wire you want to sweep along.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Liian vähän elementtejä</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>At least one edge or wire is required.</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
-      <translation>Hint</translation>
+      <translation>Vihje</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation>Select Control.</translation>
+      <translation>Valitse ohjausobjekti.</translation>
     </message>
     <message>
       <source>Control</source>
@@ -1514,11 +1742,11 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation>Dynamic</translation>
+      <translation>Dynaaminen</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation>Align</translation>
+      <translation>Tasaa</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1526,7 +1754,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Special</source>
-      <translation>Special</translation>
+      <translation>Erityiset</translation>
     </message>
     <message>
       <source>Command</source>
@@ -1534,23 +1762,23 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Stretch</translation>
+      <translation>Venytys</translation>
     </message>
     <message>
       <source>Move</source>
-      <translation>Move</translation>
+      <translation>Siirrä</translation>
     </message>
     <message>
       <source>Rotate</source>
-      <translation>Rotate</translation>
+      <translation>Pyöritä</translation>
     </message>
     <message>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Siirtymä</translation>
     </message>
     <message>
       <source>Orient</source>
-      <translation>Orient</translation>
+      <translation>Suuntaus</translation>
     </message>
     <message>
       <source>Match</source>
@@ -1562,7 +1790,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>dummy</source>
-      <translation>dummy</translation>
+      <translation>malli</translation>
     </message>
     <message>
       <source>X Axis</source>
@@ -1666,19 +1894,19 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="+14"/>
       <source>Set color per face</source>
-      <translation>Set color per face</translation>
+      <translation>Aseta väri pintaa kohden</translation>
     </message>
     <message>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Click on the faces in the 3d view to select them.</translation>
+      <translation>Klikkaa pinnat 3D näkymässä valitaksesi niitä.</translation>
     </message>
     <message>
       <source>Faces:</source>
-      <translation>Faces:</translation>
+      <translation>Pinnat:</translation>
     </message>
     <message>
       <source>Set to default</source>
-      <translation>Set to default</translation>
+      <translation>Aseta oletusarvo</translation>
     </message>
   </context>
   <context>
@@ -1686,11 +1914,11 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="+14"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation>Heitä ilmaan</translation>
     </message>
     <message>
       <source>Vertex/Wire</source>
-      <translation>Vertex/Wire</translation>
+      <translation>Kärkipiste/Lanka</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -1726,11 +1954,11 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>Create solid</source>
-      <translation>Create solid</translation>
+      <translation>Luo kiinteä</translation>
     </message>
     <message>
       <source>Ruled surface</source>
-      <translation>Ruled surface</translation>
+      <translation>Suljettu pinta</translation>
     </message>
   </context>
   <context>
@@ -1738,27 +1966,27 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
       <source>Create shape</source>
-      <translation>Create shape</translation>
+      <translation>Luo muoto</translation>
     </message>
     <message>
       <source>Edge from vertices</source>
-      <translation>Edge from vertices</translation>
+      <translation>Kärkipisteen reuna</translation>
     </message>
     <message>
       <source>Face from edges</source>
-      <translation>Face from edges</translation>
+      <translation>Reunojen pinnat</translation>
     </message>
     <message>
       <source>Planar</source>
-      <translation>Planar</translation>
+      <translation>Tasomainen</translation>
     </message>
     <message>
       <source>Shell from faces</source>
-      <translation>Shell from faces</translation>
+      <translation>Pinnat kuoresta</translation>
     </message>
     <message>
       <source>Solid from shell</source>
-      <translation>Solid from shell</translation>
+      <translation>Kiinteä kuoresta</translation>
     </message>
     <message>
       <source>Create</source>
@@ -1766,13 +1994,35 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     </message>
     <message>
       <source>All faces</source>
-      <translation>All faces</translation>
+      <translation>Kaikki pinnat</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Luo kiinteä</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Väärä valinta</translation>
     </message>
@@ -1810,37 +2060,41 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
       <translation>Anna toleranssi kiinnitys muodolle:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Muokkaa peilaustasoa</translation>
+    </message>
+    <message>
+      <source>Edit chamfer edges</source>
+      <translation>Edit chamfer edges</translation>
     </message>
     <message>
       <source>Transform</source>
       <translation>muunna</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Osa suunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
-      <translation>Select two shapes or more, please.</translation>
+      <translation>Valitse vähintään kaksi muotoa, ole hyvä.</translation>
     </message>
     <message>
       <source>You have to select either two edges or two wires.</source>
-      <translation>You have to select either two edges or two wires.</translation>
+      <translation>Voit valita kaksi reunaa tai kaksi lankaa.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
-      <translation>Edit fillet edges</translation>
+      <translation>Muokkaa pyöristyksen reunoja</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
-      <translation>Set colors...</translation>
+      <translation>Määritä värit ...</translation>
     </message>
   </context>
   <context>

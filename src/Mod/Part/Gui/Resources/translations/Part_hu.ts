@@ -58,7 +58,7 @@
     </message>
     <message>
       <source>Selection:</source>
-      <translation>Kijelölés:</translation>
+      <translation>Kiválasztás:</translation>
     </message>
     <message>
       <source>Reverse</source>
@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -132,7 +132,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -176,6 +176,21 @@
     </message>
   </context>
   <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Alkatrész</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Letörés...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Az alakzat kijelölt éleinek letörése</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartCommon</name>
     <message>
       <source>Part</source>
@@ -209,7 +224,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -256,7 +271,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -326,7 +341,7 @@
     </message>
     <message>
       <source>Import CAD...</source>
-      <translation>CAD import</translation>
+      <translation>CAD import...</translation>
     </message>
   </context>
   <context>
@@ -353,6 +368,10 @@
     <message>
       <source>Loft...</source>
       <translation>Szint ...</translation>
+    </message>
+    <message>
+      <source>Utility to loft</source>
+      <translation>Elágazás segédprogram</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Alkatrész</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Alakzat finomítás</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Alakzat másolatának finomítása</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -442,11 +478,11 @@
     </message>
     <message>
       <source>Revolve...</source>
-      <translation>Forgatás</translation>
+      <translation>Körmetszés...</translation>
     </message>
     <message>
       <source>Revolve a selected shape</source>
-      <translation>Kijelölt alakzat forgatása</translation>
+      <translation>Kijelölt alakzat körmetszése</translation>
     </message>
   </context>
   <context>
@@ -482,7 +518,7 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -542,8 +578,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Alkatrész</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Húzás...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Segédprogram a húzáshoz</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
       <translation>Hozzon létre egy tórusz testet</translation>
     </message>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Élek letörése</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -746,6 +807,14 @@
     <message>
       <source>Note:This option works for planes only</source>
       <translation>Megjegyzés: Ez a beállítás csak a tervezés módban használható</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Szilárd test létrehozása</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Kúpos passzív szög</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -817,7 +886,7 @@
       <translation>Nincs kijelölés</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Lekerekítendő élek</translation>
     </message>
@@ -841,7 +910,7 @@
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Egyetlen élet sem választott ki.
-Kérem, válasszon ki legalább egyet!</translation>
+Kérem, válasszon ki legalább egyet.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="+30"/>
@@ -853,7 +922,7 @@ Kérem, válasszon ki legalább egyet!</translation>
       <translation>Nincs</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Él%1</translation>
     </message>
@@ -1175,6 +1244,18 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Tórusz</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Ellipszis</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Pont</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Vonal</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Paraméter</translation>
     </message>
@@ -1215,8 +1296,69 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>V paraméter:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X 2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Koordináta-rendszer:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Jobbkezes</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Balkezes</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>1. Szöge:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>2. Szöge:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>A három pontból</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Fő sugár:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Mellék sugár:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>Végpont</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Kezdőpont</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
-      <translation>Létrehozás</translation>
+      <translation>&amp;Létrehozás</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1231,7 +1373,6 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Létrehozás %1</translation>
     </message>
@@ -1240,7 +1381,7 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
       <translation>Döntés:</translation>
     </message>
@@ -1285,7 +1426,11 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Alakzat</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Jelölje ki 3D nézethez a sort</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Select a shape for revolution, first.</translation>
     </message>
@@ -1319,7 +1464,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Tessellation</source>
-      <translation>Csempézés</translation>
+      <translation>Mozaik</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1367,7 +1512,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Általános</translation>
     </message>
@@ -1391,13 +1536,65 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
       <source>Units for export of STEP/IGES</source>
       <translation>Az STEP/IGES exportban használt egységek</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Folyamatmodell-beállításai</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatikus modell finomítás a logikai művelet után</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatikus modell ellenőrzés a logikai művelet után</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Felület színek</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Biztosan megszakítja?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Hely</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Pozíció</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D-nézet</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertex / Vonal</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Szint</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
       <translation>Túl kevés elem</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>Legalább két vonal, szegély vagy háló szükséges.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
@@ -1462,7 +1659,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
       <source>Wrong selection</source>
-      <translation>Hibás kijelölés</translation>
+      <translation>Rossz kijelölés</translation>
     </message>
     <message>
       <source>Select two vertices</source>
@@ -1471,6 +1668,10 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <source>Select three or more edges</source>
       <translation>Válasszon ki a három vagy több élet</translation>
+    </message>
+    <message>
+      <source>Select one or more edges</source>
+      <translation>Jelöljön ki egy vagy több élt</translation>
     </message>
     <message>
       <source>Select two or more faces</source>
@@ -1498,27 +1699,54 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertex / Vonal</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Húzás</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Húzás elérési útja</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Jelöljön élet vagy hálót amely mentén húzni szeretne.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Túl kevés elem</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>Szükséges legalább egy él vagy háló.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
-      <translation>Hint</translation>
+      <translation>Tipp</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation>Select Control.</translation>
+      <translation>Jelölje ki a vezérlőt.</translation>
     </message>
     <message>
       <source>Control</source>
-      <translation>Control</translation>
+      <translation>Ellenőrzés</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation>Dynamic</translation>
+      <translation>Dinamikus</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation>Align</translation>
+      <translation>Igazítás</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1526,7 +1754,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Special</source>
-      <translation>Special</translation>
+      <translation>Különleges</translation>
     </message>
     <message>
       <source>Command</source>
@@ -1534,7 +1762,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Stretch</translation>
+      <translation>Kinyújt</translation>
     </message>
     <message>
       <source>Move</source>
@@ -1550,35 +1778,35 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Orient</source>
-      <translation>Orient</translation>
+      <translation>Irányult</translation>
     </message>
     <message>
       <source>Match</source>
-      <translation>Match</translation>
+      <translation>Összehasónlít</translation>
     </message>
     <message>
       <source>Surround</source>
-      <translation>Surround</translation>
+      <translation>Környezet</translation>
     </message>
     <message>
       <source>dummy</source>
-      <translation>dummy</translation>
+      <translation>próba</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation>X Axis</translation>
+      <translation>X tengely</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation>Y Axis</translation>
+      <translation>Y tengely</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation>Z Axis</translation>
+      <translation>Z-tengely</translation>
     </message>
     <message>
       <source>Increment</source>
-      <translation>Increment</translation>
+      <translation>Növekmény</translation>
     </message>
     <message>
       <source>.125</source>
@@ -1602,35 +1830,35 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
-      <translation>Drag arrows to stretch box by increment</translation>
+      <translation>Húzza a nyilakat a keretek növekménnyel való nyújtásához</translation>
     </message>
     <message>
       <source>Drag arrows to move box by increment</source>
-      <translation>Drag arrows to move box by increment</translation>
+      <translation>Húzza a nyílakat a keretek növekménnyel való mozgatásához</translation>
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation>Not implemented yet</translation>
+      <translation>Még nem végrehejtható</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
-      <translation>Drag arrows to offset checked axes by increment</translation>
+      <translation>Húzza a nyilakat az eltoláshoz kijelölt tengely(ek) növeléséhez</translation>
     </message>
     <message>
       <source>Select dragger for stretch by align</source>
-      <translation>Select dragger for stretch by align</translation>
+      <translation>Vállassza ki a fogási pontot a nyújtással való igazításhoz</translation>
     </message>
     <message>
       <source>Select dragger for move by align</source>
-      <translation>Select dragger for move by align</translation>
+      <translation>Vállassza ki a fogási pontot az igazítással való mozgatáshoz</translation>
     </message>
     <message>
       <source>Select dragger for stretch by value</source>
-      <translation>Select dragger for stretch by value</translation>
+      <translation>Válassza ki a fogási pontot az értékkel való nyújtáshoz</translation>
     </message>
     <message>
       <source>Select dragger for move by value</source>
-      <translation>Select dragger for move by value</translation>
+      <translation>Jelölje ki a fogási pontot az értékkel való áthelyezéshez</translation>
     </message>
     <message>
       <source>1.0</source>
@@ -1638,15 +1866,15 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Enter Value</source>
-      <translation>Enter Value</translation>
+      <translation>Adjon meg értéket</translation>
     </message>
     <message>
       <source>Select box to match</source>
-      <translation>Select box to match</translation>
+      <translation>Jelölje be a mezőben</translation>
     </message>
     <message>
       <source>Select a point</source>
-      <translation>Select a point</translation>
+      <translation>Válassza ki a pontot</translation>
     </message>
     <message>
       <source>0.0</source>
@@ -1654,11 +1882,11 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Select dragger to align</source>
-      <translation>Select dragger to align</translation>
+      <translation>Jelölje ki a fogási pontot az igazításhoz</translation>
     </message>
     <message>
       <source>Select dragger to modify</source>
-      <translation>Select dragger to modify</translation>
+      <translation>Jelölje ki a fogási pontot a módosításhoz</translation>
     </message>
   </context>
   <context>
@@ -1770,11 +1998,32 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Húzás</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Szilárd test létrehozása</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Válassz egy vagy több profilt és válassza ki a szegélyt vagy hálót 3D nézetben a húzás irányához.</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
-      <translation>Hibás kijelölés</translation>
+      <translation>Rossz kijelölés</translation>
     </message>
     <message>
       <source>Select two shapes please.</source>
@@ -1810,21 +2059,25 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
       <translation>Adja meg a  varrás alakja toleranciáját:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Tükrözési sík szerkesztése</translation>
+    </message>
+    <message>
+      <source>Edit chamfer edges</source>
+      <translation>Letörés szegélyek szerkesztése</translation>
     </message>
     <message>
       <source>Transform</source>
       <translation>Átalakítás</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Alkatrész tervezés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Kérem válasszon ki a két alakzatot vagy többet.</translation>
     </message>
@@ -1833,12 +2086,12 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
       <translation>Választani kell két élet, vagy két hálót.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>Kijelölt élek szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
       <translation>Színek beállítása...</translation>
     </message>
@@ -1848,15 +2101,15 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Part</source>
-      <translation>Rész</translation>
+      <translation>Rész &amp;P</translation>
     </message>
     <message>
       <source>&amp;Simple</source>
-      <translation>Egyszerű</translation>
+      <translation>Egy&amp;szerű</translation>
     </message>
     <message>
       <source>&amp;Parametric</source>
-      <translation>Változós</translation>
+      <translation>Változós &amp;Parametric</translation>
     </message>
     <message>
       <source>Part tools</source>

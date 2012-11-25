@@ -4,77 +4,100 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
       <translation>osa</translation>
     </message>
     <message>
       <source>Chamfer...</source>
-      <translation>Chamfer...</translation>
+      <translation>Viistä...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="+561"/>
+      <source>PartDesign</source>
+      <translation>OsanSuunnittelu</translation>
+    </message>
+    <message>
+      <source>Chamfer</source>
+      <translation>Viiste</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Chamfer the selected edges of a shape</translation>
+      <translation>Viiste valittuihin muotoihin reunoista</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>OsanSuunnittelu</translation>
     </message>
     <message>
       <source>Fillet</source>
-      <translation>Fillet</translation>
+      <translation>Pyöristä</translation>
     </message>
     <message>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Make a fillet on an edge, face or body</translation>
+      <translation>Tee pyöristys reunaan, pintaan tai runkoon</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignGroove</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>OsanSuunnittelu</translation>
+    </message>
+    <message>
+      <source>Groove</source>
+      <translation>Ura</translation>
+    </message>
+    <message>
+      <source>Groove a selected sketch</source>
+      <translation>Groove a selected sketch</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>OsanSuunnittelu</translation>
     </message>
     <message>
       <source>Pad</source>
-      <translation>Pad</translation>
+      <translation>Pursota</translation>
     </message>
     <message>
       <source>Pad a selected sketch</source>
-      <translation>Pad a selected sketch</translation>
+      <translation>Pursota valittu luonnos</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>OsanSuunnittelu</translation>
     </message>
     <message>
       <source>Pocket</source>
-      <translation>Pocket</translation>
+      <translation>Tasku</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
-      <translation>create a pocket with the selected sketch</translation>
+      <translation>Luo tasku valitun sketsin kanssa</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>OsanSuunnittelu</translation>
     </message>
     <message>
       <source>Revolution</source>
-      <translation>Revolution</translation>
+      <translation>Kiertoliike</translation>
     </message>
     <message>
       <source>Revolve a selected sketch</source>
-      <translation>Revolve a selected sketch</translation>
+      <translation>Valitun sketsin pyöräytys</translation>
     </message>
   </context>
   <context>
@@ -82,31 +105,30 @@
     <message>
       <location filename="../../Workbench.cpp" line="+39"/>
       <source>Face tools</source>
-      <translation>Face tools</translation>
+      <translation>Pinta työkalut</translation>
     </message>
     <message>
       <source>Sketch tools</source>
-      <translation>Sketch tools</translation>
+      <translation>Sketsi työkalut</translation>
     </message>
     <message>
       <source>Create Geometry</source>
-      <translation>Create Geometry</translation>
+      <translation>Luo geometria</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
-      <translation>Edges to chamfer</translation>
+      <translation>Viisteen reunat</translation>
     </message>
     <message>
       <source>Start distance</source>
-      <translation>Start distance</translation>
+      <translation>Aloitus etäisyys</translation>
     </message>
     <message>
       <source>End distance</source>
-      <translation>End distance</translation>
+      <translation>Lopetus etäisyys</translation>
     </message>
     <message>
       <source>Edge%1</source>
@@ -114,7 +136,7 @@
     </message>
     <message>
       <source>Distance</source>
-      <translation>Distance</translation>
+      <translation>Etäisyys</translation>
     </message>
     <message>
       <source>No shape selected</source>
@@ -133,16 +155,14 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
       <source>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</source>
-      <translation>No edge entity is checked to chamfer.
-Please check one or more edge entities first.</translation>
+      <translation>Reunan yksikköä ei ole valittu viisteelle. Tarkista ensin reunan yksiköt.</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
-      <translation>Chamfer Edges</translation>
+      <translation>Viisteen reunat</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -154,15 +174,15 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>No selection</source>
-      <translation>No selection</translation>
+      <translation>Ei valintaa</translation>
     </message>
     <message>
       <source>Chamfer Parameter</source>
-      <translation>Chamfer Parameter</translation>
+      <translation>Viisteen parametri</translation>
     </message>
     <message>
       <source>All</source>
-      <translation>All</translation>
+      <translation>Kaikki</translation>
     </message>
     <message>
       <source>None</source>
@@ -170,15 +190,15 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Chamfer type:</source>
-      <translation>Chamfer type:</translation>
+      <translation>Viisteen tyyppi:</translation>
     </message>
     <message>
       <source>Constant Distance</source>
-      <translation>Constant Distance</translation>
+      <translation>Rajoita Etäisyys</translation>
     </message>
     <message>
       <source>Variable Distance</source>
-      <translation>Variable Distance</translation>
+      <translation>Muuttujan etäisyys</translation>
     </message>
     <message>
       <source>Distance:</source>
@@ -186,11 +206,28 @@ Please check one or more edge entities first.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskChamferParameters</name>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Lomake</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Koko:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>Viisteen parametrit</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <location filename="../../TaskPadParameters.cpp" line="+313"/>
       <source>Input error</source>
-      <translation>Input error</translation>
+      <translation>Syötteen virhe</translation>
     </message>
   </context>
   <context>
@@ -202,12 +239,49 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Radius:</translation>
+      <translation>Säde:</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
       <source>Fillet parameters</source>
-      <translation>Fillet parameters</translation>
+      <translation>Pyöristyksen parametrit</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskGrooveParameters</name>
+    <message>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Lomake</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Axis:</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertical sketch axis</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontal sketch axis</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Kulma:</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetrinen tasoon nähden</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Käänteinen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>Groove parameters</translation>
     </message>
   </context>
   <context>
@@ -231,7 +305,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Up to first</source>
-      <translation>Up to first</translation>
+      <translation>Ensimmäiseen saakka</translation>
     </message>
     <message>
       <source>Size:</source>
@@ -240,7 +314,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+47"/>
       <source>TaskHoleParameters</source>
-      <translation>TaskHoleParameters</translation>
+      <translation>TehtäväReikäParametrit</translation>
     </message>
   </context>
   <context>
@@ -249,6 +323,26 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Lomake</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Tyyppi</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Pituus</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetrinen tasoon nähden</translation>
+    </message>
+    <message>
+      <source>2nd length</source>
+      <translation>2nd length</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Face</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -260,15 +354,15 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>Pituus:</translation>
     </message>
     <message>
       <source>Mirrored extent</source>
-      <translation>Mirrored extent</translation>
+      <translation>Peilattu laajennus</translation>
     </message>
     <message>
       <source>Reversed</source>
-      <translation>Reversed</translation>
+      <translation>Käänteinen</translation>
     </message>
     <message>
       <source>Display mode:</source>
@@ -295,9 +389,29 @@ Please check one or more edge entities first.</translation>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <location filename="../../TaskPadParameters.cpp" line="-45"/>
       <source>Pad parameters</source>
-      <translation>Pad parameters</translation>
+      <translation>Pursota parametrit</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>No face selected</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>To last</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>To first</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Ylös pintaan</translation>
+    </message>
+    <message>
+      <source>Two dimensions</source>
+      <translation>Two dimensions</translation>
     </message>
   </context>
   <context>
@@ -309,34 +423,34 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Spacing1:</source>
-      <translation>Spacing1:</translation>
+      <translation>Välit1:</translation>
     </message>
     <message>
       <source>Number1:</source>
-      <translation>Number1:</translation>
+      <translation>Luku1:</translation>
     </message>
     <message>
       <source>Second extend</source>
-      <translation>Second extend</translation>
+      <translation>Toinen laajennus</translation>
     </message>
     <message>
       <source>Spacing2:</source>
-      <translation>Spacing2:</translation>
+      <translation>Välit2:</translation>
     </message>
     <message>
       <source>Number2:</source>
-      <translation>Number2:</translation>
+      <translation>Luku2:</translation>
     </message>
     <message>
       <location filename="../../TaskPatternRectangularParameters.cpp" line="+47"/>
       <source>TaskPatternRectangularParameters</source>
-      <translation>TaskPatternRectangularParameters</translation>
+      <translation>TehtäväRakenneSuorakulmaParametrit</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
       <source>Form</source>
       <translation>Lomake</translation>
     </message>
@@ -345,17 +459,45 @@ Please check one or more edge entities first.</translation>
       <translation>Tyyppi:</translation>
     </message>
     <message>
+      <source>Type</source>
+      <translation>Tyyppi</translation>
+    </message>
+    <message>
       <source>Dimension</source>
       <translation>Mitta</translation>
     </message>
     <message>
-      <source>Length</source>
-      <translation>Length</translation>
+      <source>Face</source>
+      <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <source>Length</source>
+      <translation>Pituus</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPocketParameters.cpp" line="-113"/>
       <source>Pocket parameters</source>
-      <translation>Pocket parameters</translation>
+      <translation>Taskun parametrit</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>To last</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>To first</translation>
+    </message>
+    <message>
+      <source>Through all</source>
+      <translation>Läpi</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Ylös pintaan</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>No face selected</translation>
     </message>
   </context>
   <context>
@@ -370,12 +512,28 @@ Please check one or more edge entities first.</translation>
       <translation>Axis:</translation>
     </message>
     <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertical sketch axis</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontal sketch axis</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetrinen tasoon nähden</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Käänteinen</translation>
+    </message>
+    <message>
       <source>Vertical</source>
-      <translation>Vertical</translation>
+      <translation>Pystysuora</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontal</translation>
+      <translation>Vaakasuora</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -384,7 +542,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
       <source>Revolution parameters</source>
-      <translation>Revolution parameters</translation>
+      <translation>Kiertoliikkeen parametrit</translation>
     </message>
   </context>
   <context>
@@ -396,60 +554,84 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Select a sketch or 2D object.</source>
-      <translation>Select a sketch or 2D object.</translation>
+      <translation>Valitse sketsi tai 2D-objekti.</translation>
     </message>
     <message>
       <source>The shape of the selected object is empty.</source>
-      <translation>The shape of the selected object is empty.</translation>
+      <translation>Valitun objektin muoto on tyhjä.</translation>
     </message>
     <message>
       <source>The shape of the selected object is not a wire.</source>
-      <translation>The shape of the selected object is not a wire.</translation>
+      <translation>Valitun objektin muoto ei ole langoitettu.</translation>
     </message>
     <message>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation>Select an edge, face or body. Only one body is allowed.</translation>
+      <translation>Valitse reuna, pinta tai runko. Vain yksi runko on sallittu.</translation>
     </message>
     <message>
       <source>Wrong object type</source>
-      <translation>Wrong object type</translation>
+      <translation>Väärä objektityyppi</translation>
     </message>
     <message>
       <source>Fillet works only on parts</source>
-      <translation>Fillet works only on parts</translation>
+      <translation>Pyöristys toimii vain osille</translation>
+    </message>
+    <message>
+      <source>Shape of selected Part is empty</source>
+      <translation>Shape of selected Part is empty</translation>
+    </message>
+    <message>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>Pyöristys ei ole mahdollinen valituille pinnoille/reunoille</translation>
+    </message>
+    <message>
+      <source>Chamfer works only on parts</source>
+      <translation>Viisteen tekeminen onnistuu vain osille</translation>
+    </message>
+    <message>
+      <source>Shape of selected part is empty</source>
+      <translation>Shape of selected part is empty</translation>
+    </message>
+    <message>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>Viiste mahdoton valituilla pinnoilla/reunoilla</translation>
     </message>
     <message>
       <source>No Support</source>
-      <translation>No Support</translation>
+      <translation>Ei tukea</translation>
     </message>
     <message>
       <source>The sketch has to have a support for the pocket feature.
 Create the sketch on a face.</source>
-      <translation>The sketch has to have a support for the pocket feature.
-Create the sketch on a face.</translation>
+      <translation>Sketsillä on oltava tuki tasku-ominaisuudelle. Luo sketsi pinnalle.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="+60"/>
       <source>Edit pad</source>
-      <translation>Edit pad</translation>
+      <translation>Muokkaa Pursotusta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
       <source>Edit pocket</source>
-      <translation>Edit pocket</translation>
+      <translation>Muokkaa taskua</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>A dialog is already open in the task panel</translation>
+      <translation>Valintaikkuna on jo avoinna tehtäväpaneelissa</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation>Do you want to close this dialog?</translation>
+      <translation>Haluatko sulkea tämän valintaikkunan?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
       <source>Edit revolution</source>
-      <translation>Edit revolution</translation>
+      <translation>Muokkaa kiertoliikettä</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>Muokkaa uraa</translation>
     </message>
   </context>
   <context>
@@ -457,7 +639,7 @@ Create the sketch on a face.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="-3"/>
       <source>Part Design</source>
-      <translation>Part Design</translation>
+      <translation>Osan Suunnittelu</translation>
     </message>
   </context>
 </TS>

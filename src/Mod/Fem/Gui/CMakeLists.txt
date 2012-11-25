@@ -29,13 +29,31 @@ if(SMESH_FOUND)
     list( APPEND FemGui_LIBS ${SMESH_LIBRARIES} )
 endif(SMESH_FOUND)
 
+set(FemGui_MOC_HDRS
+    Hypothesis.h
+)
+fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
+SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
+
+set(FemGui_UIC_SRCS
+    Hypothesis.ui
+)
+qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
+SET(FemGui_DLG_SRCS
+    ${FemGui_UIC_HDRS}
+    Hypothesis.ui
+    Hypothesis.cpp
+    Hypothesis.h
+)
+SOURCE_GROUP("Dialogs" FILES ${FemGui_DLG_SRCS})
+
 qt4_add_resources(FemResource_SRCS Resources/Fem.qrc)
 
 SOURCE_GROUP("Resources" FILES ${FemResource_SRCS})
 
 
 SET(FemGui_SRCS
-    #${FemGui_UIC_HDRS}
+    ${FemGui_DLG_SRCS}
     ${FemResource_SRCS}
     AppFemGui.cpp
     AppFemGuiPy.cpp
@@ -51,7 +69,12 @@ SET(FemGui_SRCS
 
 add_library(FemGui SHARED ${FemGui_SRCS})
 target_link_libraries(FemGui ${FemGui_LIBS})
-fc_copy_script("Mod/Fem" "FemGui" InitGui.py)
+
+
+fc_target_copy_resource(FemGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Fem
+    ${CMAKE_BINARY_DIR}/Mod/Fem
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(FemGui PROPERTIES SUFFIX ".pyd")

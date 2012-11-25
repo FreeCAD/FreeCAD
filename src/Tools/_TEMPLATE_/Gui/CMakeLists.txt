@@ -1,3 +1,4 @@
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -30,7 +31,11 @@ SET(_TEMPLATE_Gui_SRCS
 
 add_library(_TEMPLATE_Gui SHARED ${_TEMPLATE_Gui_SRCS})
 target_link_libraries(_TEMPLATE_Gui ${_TEMPLATE_Gui_LIBS})
-fc_copy_script("Mod/_TEMPLATE_" "_TEMPLATE_Gui" InitGui.py)
+
+fc_target_copy_resource(_TEMPLATE_Gui 
+    ${CMAKE_SOURCE_DIR}/src/Tools/_TEMPLATE_
+    ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(_TEMPLATE_Gui PROPERTIES SUFFIX ".pyd")
@@ -45,6 +50,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(_TEMPLATE_Gui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
     set_target_properties(_TEMPLATE_Gui PROPERTIES PREFIX "")
+    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 endif(MSVC)
 
 install(TARGETS _TEMPLATE_Gui DESTINATION lib)

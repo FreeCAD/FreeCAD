@@ -32,6 +32,7 @@
 #include <App/Document.h>
 
 #include "Document.h"
+#include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
 
 // inclusion of the generated files (generated out of DocumentPy.xml)
@@ -198,6 +199,55 @@ PyObject*  DocumentPy::activeView(PyObject *args)
         } else {
             Py_Return;
         }
+    } PY_CATCH;
+}
+
+PyObject*  DocumentPy::mdiViewsOfType(PyObject *args)
+{
+    char* sType;
+    if (!PyArg_ParseTuple(args, "s", &sType))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+
+    Base::Type type = Base::Type::fromName(sType);
+    if (type == Base::Type::badType()) {
+        PyErr_Format(PyExc_Exception, "'%s' is not a valid type", sType);
+        return NULL;
+    }
+
+    PY_TRY {
+        std::list<Gui::MDIView*> views = getDocumentPtr()->getMDIViewsOfType(type);
+        Py::List list;
+        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it)
+            list.append(Py::asObject((*it)->getPyObject()));
+        return Py::new_reference_to(list);
+    } PY_CATCH;
+}
+
+PyObject*  DocumentPy::sendMsgToViews(PyObject *args)
+{
+    char* msg;
+    if (!PyArg_ParseTuple(args, "s", &msg))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        getDocumentPtr()->sendMsgToViews(msg);
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject* DocumentPy::mergeProject(PyObject *args)
+{
+    char* filename;
+    if (!PyArg_ParseTuple(args, "s", &filename))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        Base::FileInfo fi(filename);
+        Base::ifstream str(fi, std::ios::in | std::ios::binary);
+        App::Document* doc = getDocumentPtr()->getDocument();
+        MergeDocuments md(doc);
+        md.importObjects(str);
+        Py_Return;
     } PY_CATCH;
 }
 

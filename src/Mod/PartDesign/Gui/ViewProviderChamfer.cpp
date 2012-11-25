@@ -51,7 +51,7 @@ ViewProviderChamfer::~ViewProviderChamfer()
 void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit pocket"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit chamfer"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
@@ -115,7 +115,7 @@ bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(getObject());
-    App::DocumentObject    *pcSupport;
+    App::DocumentObject    *pcSupport = 0;
     if (pcChamfer->Base.getValue()){
         pcSupport = static_cast<Sketcher::SketchObject*>(pcChamfer->Base.getValue());
     }

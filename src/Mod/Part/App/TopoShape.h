@@ -73,6 +73,8 @@ public:
     Base::Matrix4D getTransform(void) const;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
+    static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
+    static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
     //@}
 
     /** @name Subelement management */
@@ -124,6 +126,7 @@ public:
     void exportIges(const char *FileName) const;
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;
+    void exportBrep(std::ostream&);
     void exportStl (const char *FileName) const;
     void exportFaceSet(double, double, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
@@ -155,18 +158,21 @@ public:
         const Standard_Boolean isFrenet = Standard_False) const;
     TopoDS_Shape makePrism(const gp_Vec&) const;
     TopoDS_Shape revolve(const gp_Ax1&, double d) const;
-    TopoDS_Shape makeThickSolid(const TopTools_ListOfShape& remFace,
-        Standard_Real offset, Standard_Real tolerance) const;
     TopoDS_Shape makeSweep(const TopoDS_Shape& profile, double, int) const;
-    TopoDS_Shape makeTube(double radius, double tol) const;
-    TopoDS_Shape makeTube() const;
+    TopoDS_Shape makeTube(double radius, double tol, int cont, int maxdeg, int maxsegm) const;
     TopoDS_Shape makeHelix(Standard_Real pitch, Standard_Real height,
-        Standard_Real radius, Standard_Real angle=0) const;
+        Standard_Real radius, Standard_Real angle=0, Standard_Boolean left=Standard_False) const;
+    TopoDS_Shape makeThread(Standard_Real pitch, Standard_Real depth,
+        Standard_Real height, Standard_Real radius) const;
     TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles, Standard_Boolean isSolid,
         Standard_Boolean isRuled) const;
-    TopoDS_Shape makeOffset(double offset, double tol,
+    TopoDS_Shape makeOffsetShape(double offset, double tol,
         bool intersection = false, bool selfInter = false,
-        short offsetMode = 0, short join = 0);
+        short offsetMode = 0, short join = 0, bool fill = false) const;
+    TopoDS_Shape makeThickSolid(const TopTools_ListOfShape& remFace,
+        double offset, double tol,
+        bool intersection = false, bool selfInter = false,
+        short offsetMode = 0, short join = 0) const;
     //@}
 
     /** @name Manipulation*/

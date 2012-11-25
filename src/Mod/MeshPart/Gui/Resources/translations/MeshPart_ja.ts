@@ -10,7 +10,7 @@
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Create mesh from shape...</translation>
+      <translation>図形からメッシュを作成する...</translation>
     </message>
     <message>
       <source>Tessellate shape</source>
@@ -26,11 +26,11 @@
     </message>
     <message>
       <source>Shapes</source>
-      <translation>Shapes</translation>
+      <translation>図形</translation>
     </message>
     <message>
       <source>Settings</source>
-      <translation>Settings</translation>
+      <translation>設定</translation>
     </message>
     <message>
       <source>Surface deviation:</source>
@@ -38,12 +38,12 @@
     </message>
     <message>
       <source>Max. edge length:</source>
-      <translation>Max. edge length:</translation>
+      <translation>最大のエッジの長さ:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Select a shape for meshing, first.</translation>
+      <translation>最初にメッシングする図形を選択します。</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>

@@ -61,14 +61,15 @@ def ApplyingBC_IC(Casedir,YoungModulus,PoissonCoeff,OUTER_GRID_No1,OUTER_GRID_No
     #
     AC_file.close() 
     os.chdir(str(Casedir))
+    fnull = open(os.devnull, 'w')
     if os.name != "posix":
         process = subprocess.Popen("type geometry_fe_input.inp Applied_Conditions.txt> final_fe_input.inp",shell=True)
         process.wait()
         process = subprocess.Popen("del /Q geometry_fe_input.inp",shell=True)
         process.wait()
     else:
-        CommandLine = "cat Applied_Conditions.txt >> geometry_fe_input.inp"
-
-
+        commandline = "cat Applied_Conditions.txt >> geometry_fe_input.inp"
+        result = subprocess.call(commandline, shell = True, stdout = fnull, stderr = fnull)
     #
+    fnull.close()
     return

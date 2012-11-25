@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
@@ -132,7 +132,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
@@ -168,11 +168,26 @@
     </message>
     <message>
       <source>Shape builder...</source>
-      <translation>Shape builder...</translation>
+      <translation>Figur bygger...</translation>
     </message>
     <message>
       <source>Advanced utility to create shapes</source>
-      <translation>Advanced utility to create shapes</translation>
+      <translation>Avansert verktøy for å lage former</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Komponent</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Fas...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Faser valgte kanter på en figur</translation>
     </message>
   </context>
   <context>
@@ -183,7 +198,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Krysningspunkt</translation>
+      <translation>Kryssningspunkt</translation>
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
@@ -203,13 +218,13 @@
     </message>
     <message>
       <source>Create a cone solid</source>
-      <translation>Create a cone solid</translation>
+      <translation>Lag en kon solid</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
@@ -234,7 +249,7 @@
     </message>
     <message>
       <source>Make a cut of two shapes</source>
-      <translation>Make a cut of two shapes</translation>
+      <translation>Lag et kutt fra to figurer</translation>
     </message>
   </context>
   <context>
@@ -256,17 +271,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
     <message>
       <source>Export CAD...</source>
-      <translation>Export CAD...</translation>
+      <translation>Eksporter til CAD...</translation>
     </message>
     <message>
       <source>Exports to a CAD file</source>
-      <translation>Exports to a CAD file</translation>
+      <translation>Eksporterer til CAD fil</translation>
     </message>
   </context>
   <context>
@@ -355,6 +370,10 @@
       <translation>Loft...</translation>
     </message>
     <message>
+      <source>Utility to loft</source>
+      <translation>Utility to loft</translation>
+    </message>
+    <message>
       <source>Advanced utility to lofts</source>
       <translation>Advanced utility to lofts</translation>
     </message>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Komponent</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Refine shape</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Refine the copy of a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
@@ -482,7 +518,7 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
@@ -503,7 +539,7 @@
     </message>
     <message>
       <source>Create simple copy</source>
-      <translation>Create simple copy</translation>
+      <translation>Lag en enkel kopi</translation>
     </message>
     <message>
       <source>Create a simple non-parametric copy</source>
@@ -530,7 +566,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a sphere solid</source>
-      <translation>Create a sphere solid</translation>
+      <translation>Lag en kule solid</translation>
     </message>
     <message>
       <source>Part</source>
@@ -542,10 +578,27 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Komponent</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Utility to sweep</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
-      <translation>Create a torus solid</translation>
+      <translation>Lag en torus solid</translation>
     </message>
     <message>
       <source>Part</source>
@@ -662,7 +715,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Krysningspunkt</translation>
+      <translation>Kryssningspunkt</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="+317"/>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Fas kanter</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -741,11 +802,19 @@
     </message>
     <message>
       <source>3D view</source>
-      <translation>3D view</translation>
+      <translation>3D-Visning</translation>
     </message>
     <message>
       <source>Note:This option works for planes only</source>
-      <translation>Note:This option works for planes only</translation>
+      <translation>Merk: Dette alternativet fungerer kun for flater</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Lag solid</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Taper outward angle</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -817,7 +886,7 @@
       <translation>Ingen valg</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Kanter å avrunde</translation>
     </message>
@@ -852,7 +921,7 @@ Please check one or more edge entities first.</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Kant%1</translation>
     </message>
@@ -1174,6 +1243,18 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Torus</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Ellipse</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Point</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Linje</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -1214,6 +1295,67 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>V parametrisk:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Coordinate system:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Right-handed</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Left-handed</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Angle 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Angle 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>From three points</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Major radius:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Minor radius:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>End point</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Start point</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
       <translation>&amp;Lag</translation>
     </message>
@@ -1227,10 +1369,9 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation>Alt+O</translation>
+      <translation>Alt + O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Lag %1</translation>
     </message>
@@ -1239,9 +1380,9 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Ingen aktive dokumenter</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
-      <translation>Pitch:</translation>
+      <translation>Tipp:</translation>
     </message>
     <message>
       <source>Helix</source>
@@ -1284,7 +1425,11 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Figur</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Select line in 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Merke en figur for revolusjon først.</translation>
     </message>
@@ -1298,7 +1443,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>View smoothing</source>
-      <translation>View smoothing</translation>
+      <translation>Vis utglatting</translation>
     </message>
     <message>
       <source>Using high-quality normals</source>
@@ -1338,7 +1483,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint &lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Å definere normaler per node blir og kalt &lt;span style=" font-style:italic;"&gt;Phongskyggelegging (kompleks) &lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;mens å definere normalene per flate blir kalt &lt;/span&gt;Flateskyggelegging (enkel)&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Å definere normaler per node kalles &lt;span style=" font-style:italic;"&gt;Phong skyggelegging &lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;mens å definere normaler per flate kalles &lt;/span&gt;flateskyggelegging&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1365,7 +1510,7 @@ Please select a valid shape in the drop-down box first.</source>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Generelle</translation>
     </message>
@@ -1389,13 +1534,65 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Units for export of STEP/IGES</source>
       <translation>Enheter for eksport av STEP/ IGES</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Model settings</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatically refine model after boolean operation</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatically check model after boolean operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Face colors</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Do you really want to cancel?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Location</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Posisjon</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D-visning</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertex/Wire</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Loft</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
-      <translation>Too few elements</translation>
+      <translation>For få elementer</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>At least two vertices, edges or wires are required.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
@@ -1464,15 +1661,19 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Select two vertices</source>
-      <translation>Select two vertices</translation>
+      <translation>Velg to punkt</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
       <translation>Select three or more edges</translation>
     </message>
     <message>
+      <source>Select one or more edges</source>
+      <translation>Select one or more edges</translation>
+    </message>
+    <message>
       <source>Select two or more faces</source>
-      <translation>Select two or more faces</translation>
+      <translation>Velg to eller flere flater</translation>
     </message>
     <message>
       <source>Select only one part object</source>
@@ -1480,25 +1681,52 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Select two vertices to create an edge</source>
-      <translation>Select two vertices to create an edge</translation>
+      <translation>Velg to punkt for a lage en kant</translation>
     </message>
     <message>
       <source>Select a closed set of edges</source>
-      <translation>Select a closed set of edges</translation>
+      <translation>Velg et lukket sett med kanter</translation>
     </message>
     <message>
       <source>Select adjacent faces</source>
-      <translation>Select adjacent faces</translation>
+      <translation>Velg tilstøtende overflater</translation>
     </message>
     <message>
       <source>All shape types can be selected</source>
-      <translation>All shape types can be selected</translation>
+      <translation>Alle figurtyper kan velges</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertex/Wire</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Sweep path</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Select an edge or wire you want to sweep along.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>For få elementer</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>At least one edge or wire is required.</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
       <translation>Hint</translation>
     </message>
@@ -1668,15 +1896,15 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Click on the faces in the 3d view to select them.</translation>
+      <translation>Klikk på flatene i 3D-visningen for å velge dem.</translation>
     </message>
     <message>
       <source>Faces:</source>
-      <translation>Faces:</translation>
+      <translation>Flater:</translation>
     </message>
     <message>
       <source>Set to default</source>
-      <translation>Set to default</translation>
+      <translation>Angi som standard</translation>
     </message>
   </context>
   <context>
@@ -1724,7 +1952,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Create solid</source>
-      <translation>Create solid</translation>
+      <translation>Lag solid</translation>
     </message>
     <message>
       <source>Ruled surface</source>
@@ -1736,15 +1964,15 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
       <source>Create shape</source>
-      <translation>Create shape</translation>
+      <translation>Lag figur</translation>
     </message>
     <message>
       <source>Edge from vertices</source>
-      <translation>Edge from vertices</translation>
+      <translation>Kant fra punkter</translation>
     </message>
     <message>
       <source>Face from edges</source>
-      <translation>Face from edges</translation>
+      <translation>Flater fra kanter</translation>
     </message>
     <message>
       <source>Planar</source>
@@ -1752,11 +1980,11 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Shell from faces</source>
-      <translation>Shell from faces</translation>
+      <translation>Skall fra flater</translation>
     </message>
     <message>
       <source>Solid from shell</source>
-      <translation>Solid from shell</translation>
+      <translation>Solid fra skall</translation>
     </message>
     <message>
       <source>Create</source>
@@ -1764,13 +1992,35 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>All faces</source>
-      <translation>All faces</translation>
+      <translation>Alle flater</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Lag solid</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Feil valg</translation>
     </message>
@@ -1808,21 +2058,25 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Angi toleranse for sømform:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Rediger speilplan</translation>
+    </message>
+    <message>
+      <source>Edit chamfer edges</source>
+      <translation>Edit chamfer edges</translation>
     </message>
     <message>
       <source>Transform</source>
       <translation>Transformer</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Komponentdesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Velg to figurer eller mer, takk.</translation>
     </message>
@@ -1831,14 +2085,14 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Du må velge to kanter eller to tråder.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>Rediger avrundingskanter</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
-      <translation>Set colors...</translation>
+      <translation>Angi farger...</translation>
     </message>
   </context>
   <context>

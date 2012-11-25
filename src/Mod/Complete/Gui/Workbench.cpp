@@ -45,12 +45,12 @@
 using namespace CompleteGui;
 
 #if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "Ske&tch");
-    qApp->translate("Workbench", "&Drawing");
+    qApp->translate("Workbench", "S&ketch");
+    qApp->translate("Workbench", "Dr&awing");
     qApp->translate("Workbench", "&Raytracing");
     qApp->translate("Workbench", "&Drafting");
     qApp->translate("Workbench", "Sketch based");
-    qApp->translate("Workbench", "Parametric");
+    qApp->translate("Workbench", "Primitives");
     qApp->translate("Workbench", "Object appearence");
     qApp->translate("Workbench", "Wire Tools");
     // taken from TestGui.py
@@ -89,25 +89,25 @@ void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) cons
 
             *DraftContext << "Draft_ApplyStyle" << "Draft_ToggleDisplayMode"
                           << "Draft_AddToGroup";
-            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_TreeSelection"
+            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
+                  << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Separator" << "Std_Delete" << DraftContext;
             }
     }
     else if (strcmp(recipient,"Tree") == 0)
     {
-        if ( Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
-            {
+        if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 ) {
             Gui::MenuItem* DraftContext = new Gui::MenuItem();
             DraftContext->setCommand("Display options");
 
             *DraftContext << "Draft_ApplyStyle" << "Draft_ToggleDisplayMode"
                           << "Draft_AddToGroup";
 
-            *item << "Std_SetAppearance" << "Std_ToggleVisibility"
-                  << "Std_RandomColor" << "Separator" << "Std_Delete"
+            *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
+                  << "Std_ToggleSelectability" << "Separator" << "Std_SetAppearance"
+                  << "Std_ToggleVisibility" << "Std_RandomColor" << "Separator" << "Std_Delete"
                   << DraftContext;
-            }
-
+        }
     }
 }
 
@@ -132,7 +132,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_SelectAll" << "Std_Delete" << "Std_Placement"
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Placement" << "Std_Alignment"
           << "Separator" << "Std_DlgPreferences";
 
     // Standard views
@@ -182,7 +183,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Std_DlgMacroRecord" << "Std_MacroStopRecord"
           << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect"
           << "Separator" << "Std_ViewScreenShot" << "Std_SceneInspector"
-          << "Std_ProjectUtil" << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
+          << "Std_ExportGraphviz" << "Std_ProjectUtil"
+          << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
 
     // Mesh ****************************************************************************************************
     Gui::MenuItem* mesh = new Gui::MenuItem( menuBar );
@@ -228,6 +230,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_PolySplit"
           << "Mesh_PolySegm"
           << "Mesh_ToolMesh"
+          << "Mesh_Segmentation"
           << "Mesh_VertexCurvature";
 
     // Part ****************************************************************************************************
@@ -237,7 +240,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // submenu boolean
     Gui::MenuItem* para = new Gui::MenuItem();
-    para->setCommand("Parametric");
+    para->setCommand("Primitives");
     *para << "Part_Box"
           << "Part_Cylinder"
           << "Part_Sphere"
@@ -253,6 +256,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
                   << "Sketcher_ViewSketch"
                   << "Sketcher_MapSketch"
                   << "Separator"
+                  << "Sketcher_CreatePoint"
                   << "Sketcher_CreateArc"
                   << "Sketcher_CreateCircle"
                   << "Sketcher_CreateLine"
@@ -298,14 +302,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Revolve"
           << "Part_Mirror"
           << "Part_Fillet"
-          << "PartDesign_Chamfer";
+          << "Part_Chamfer";
 
 
     // Drawing ****************************************************************************************************
 
     Gui::MenuItem* drawing = new Gui::MenuItem(menuBar);
 
-    drawing->setCommand("&Drawing");
+    drawing->setCommand("Dr&awing");
     *drawing
         << "Drawing_Open"
         << "Separator"
@@ -448,7 +452,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
           << "Std_ViewRight" << "Std_ViewTop" << "Separator" << "Std_ViewRear" << "Std_ViewLeft"
-          << "Std_ViewBottom";
+          << "Std_ViewBottom" << "Separator" << "Std_MeasureDistance";
 
     // Part Design
     Gui::ToolBarItem* part_design = new Gui::ToolBarItem( root );
@@ -471,7 +475,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "Part_Revolve"
         << "Part_Mirror"
         << "Part_Fillet"
-        << "PartDesign_Chamfer"
+        << "Part_Chamfer"
     ;
 
     // Sketch based
@@ -481,6 +485,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "Sketcher_NewSketch"
               << "Sketcher_LeaveSketch"
               << "Separator"
+              << "Sketcher_CreatePoint"
               << "Sketcher_CreateArc"
               << "Sketcher_CreateCircle"
               << "Sketcher_CreateLine"
@@ -528,7 +533,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     raytracing->setCommand("Raytracing");
     *raytracing << "Raytracing_WriteView"
                 << "Raytracing_WriteCamera"
-                << "Raytracing_WritePart";
+                << "Raytracing_WritePart"
+                << "Separator"
+                << "Raytracing_NewPovrayProject" 
+                << "Raytracing_NewPartSegment" 
+                << "Raytracing_ExportProject"; 
 
     // Drafting ****************************************************************************************************
 #   ifdef COMPLETE_USE_DRAFTING

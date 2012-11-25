@@ -419,7 +419,7 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)M_PI/2);
+      SbRotation nrot(vdir,float( M_PI/2));
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -445,7 +445,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)-M_PI/2);
+      SbRotation nrot(vdir, float(-M_PI/2));
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -464,7 +464,8 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
 Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyTuple_Type, &o))
+    PyObject* m=0;
+    if (!PyArg_ParseTuple(args.ptr(), "O!|O!", &PyTuple_Type, &o, &PyBool_Type, &m))
         throw Py::Exception();
 
     try {
@@ -473,7 +474,7 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
         float q1 = (float)Py::Float(tuple[1]);
         float q2 = (float)Py::Float(tuple[2]);
         float q3 = (float)Py::Float(tuple[3]);
-        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3));
+        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), m==Py_True);
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());

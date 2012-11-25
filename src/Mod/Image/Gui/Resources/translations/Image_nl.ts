@@ -39,7 +39,7 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+308"/>
+      <location filename="../../GLImageBox.cpp" line="+318"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Ongedefinieerd type kleurruimte om beelden te bekijken</translation>
     </message>
@@ -121,11 +121,11 @@
     </message>
     <message>
       <source>Images</source>
-      <translation>Images</translation>
+      <translation>Afbeeldingen</translation>
     </message>
     <message>
       <source>All files</source>
-      <translation>All files</translation>
+      <translation>Alle bestanden</translation>
     </message>
     <message>
       <source>Error open image</source>

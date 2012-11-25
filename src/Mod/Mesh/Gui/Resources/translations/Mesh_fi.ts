@@ -65,7 +65,7 @@
     </message>
     <message>
       <source>Difference</source>
-      <translation>Difference</translation>
+      <translation>Erotus</translation>
     </message>
   </context>
   <context>
@@ -259,7 +259,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Intersection</translation>
+      <translation>Risteys</translation>
     </message>
   </context>
   <context>
@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Trim mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Trims a mesh with a picked polygon</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -350,6 +365,21 @@
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Remove topologic independent components from the mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Create mesh segments...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Create mesh segments</translation>
     </message>
   </context>
   <context>
@@ -405,7 +435,7 @@
     </message>
     <message>
       <source>Union</source>
-      <translation>Union</translation>
+      <translation>Yhdiste</translation>
     </message>
   </context>
   <context>
@@ -450,7 +480,7 @@
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Close</translation>
+      <translation>&amp;Sulje</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -565,7 +595,7 @@
     </message>
     <message>
       <source>No selection</source>
-      <translation>No selection</translation>
+      <translation>Ei valintaa</translation>
     </message>
     <message>
       <source>No flipped normals</source>
@@ -670,7 +700,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>&amp;Create</source>
-      <translation>&amp;Create</translation>
+      <translation>&amp;Luo</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -694,19 +724,19 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Sylinteri</translation>
     </message>
     <message>
       <source>Cone</source>
-      <translation>Cone</translation>
+      <translation>Kartio</translation>
     </message>
     <message>
       <source>Sphere</source>
-      <translation>Sphere</translation>
+      <translation>Pallo(kuori)</translation>
     </message>
     <message>
       <source>Ellipsoid</source>
-      <translation>Ellipsoid</translation>
+      <translation>Ellipsoidi</translation>
     </message>
     <message>
       <source>Torus</source>
@@ -714,23 +744,23 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Height:</translation>
+      <translation>Korkeus:</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>Pituus:</translation>
     </message>
     <message>
       <source>Width:</source>
-      <translation>Width:</translation>
+      <translation>Leveys:</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Radius:</translation>
+      <translation>Säde:</translation>
     </message>
     <message>
       <source>Closed</source>
-      <translation>Closed</translation>
+      <translation>Suljettu</translation>
     </message>
     <message>
       <source>Sampling:</source>
@@ -742,22 +772,22 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Radius 1:</source>
-      <translation>Radius 1:</translation>
+      <translation>Säde 1:</translation>
     </message>
     <message>
       <source>Radius 2:</source>
-      <translation>Radius 2:</translation>
+      <translation>Säde 2:</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
       <source>Create %1</source>
-      <translation>Create %1</translation>
+      <translation>Luo %1</translation>
     </message>
     <message>
       <source>No active document</source>
-      <translation>No active document</translation>
+      <translation>Ei aktiivista dokumenttia</translation>
     </message>
   </context>
   <context>
@@ -800,7 +830,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style=" font-weight:600;"&gt;Vihje&lt;/span&gt; &lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Määrittely normaalit per piste kutsutaan myös &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt; &lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt; &lt;span style=" font-style:normal;"&gt;samalla kun määritellään normaalien kohti edessä on nimeltään&lt;/span&gt; Flat &lt;span style=" font-style:normal;"&gt;shading.&lt;/span&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Default appearance for new meshes</source>
@@ -847,7 +877,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Parameter</source>
-      <translation>Parameter</translation>
+      <translation>Parametri</translation>
     </message>
     <message>
       <source>Iterations:</source>
@@ -905,7 +935,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Region</source>
-      <translation>Region</translation>
+      <translation>Alue</translation>
     </message>
     <message>
       <source>Components</source>
@@ -913,7 +943,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>All</source>
-      <translation>All</translation>
+      <translation>Kaikki</translation>
     </message>
     <message>
       <source>Deselect</source>
@@ -938,6 +968,53 @@ Please run the command to repair folds first</translation>
     <message>
       <source>Respect only visible triangles</source>
       <translation>Respect only visible triangles</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Smooth mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Taso</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleranssi</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minumum number of faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Sylinteri</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Säde</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerance (Flat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerance (Curved)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Pallo(kuori)</translation>
     </message>
   </context>
   <context>
@@ -1099,6 +1176,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Annotation</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

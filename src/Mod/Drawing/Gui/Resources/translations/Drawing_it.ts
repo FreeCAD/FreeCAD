@@ -2,9 +2,39 @@
 <!DOCTYPE TS>
 <TS>
   <context>
+    <name>CmdDrawingAnnotation</name>
+    <message>
+      <location filename="../../Command.cpp" line="+365"/>
+      <source>Drawing</source>
+      <translation>Disegno</translation>
+    </message>
+    <message>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Annotazione</translation>
+    </message>
+    <message>
+      <source>Inserts an Annotation view in the active drawing</source>
+      <translation>Inserisce un'annotazione nel disegno attivo</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingClip</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Disegno</translation>
+    </message>
+    <message>
+      <source>&amp;Clip</source>
+      <translation>&amp;Clip</translation>
+    </message>
+    <message>
+      <source>Inserts a clip group in the active drawing</source>
+      <translation>Iserisce un gruppo clip nel disegno attivo</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="+285"/>
       <source>File</source>
       <translation>File</translation>
     </message>
@@ -70,6 +100,36 @@
     </message>
   </context>
   <context>
+    <name>CmdDrawingOpenBrowserView</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Disegno</translation>
+    </message>
+    <message>
+      <source>Open &amp;browser view</source>
+      <translation>Apri finestra &amp;browser</translation>
+    </message>
+    <message>
+      <source>Opens the selected page in a browser view</source>
+      <translation>Visualizza la pagina selezionata in una nuova vista browser</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingOrthoViews</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Disegno</translation>
+    </message>
+    <message>
+      <source>Insert orthographic views</source>
+      <translation>Inserisci viste ortogonali</translation>
+    </message>
+    <message>
+      <source>Insert an orthographic projection of a part in the active drawing</source>
+      <translation>Inserisce una proiezione ortogonale di una parte del disegno attivo</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingProjectShape</name>
     <message>
       <source>Drawing</source>
@@ -87,7 +147,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+206"/>
+      <location filename="../../DrawingView.cpp" line="+207"/>
       <source>&amp;Background</source>
       <translation>&amp;Sfondo</translation>
     </message>
@@ -161,6 +221,114 @@
     </message>
   </context>
   <context>
+    <name>DrawingGui::TaskOrthoViews</name>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="+26"/>
+      <source>Orthographic Projection</source>
+      <translation>Proiezione ortogonale</translation>
+    </message>
+    <message>
+      <source>Projection</source>
+      <translation>Proiezione</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Terzo angolo</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Primo angolo</translation>
+    </message>
+    <message>
+      <source>Primary View</source>
+      <translation>Vista primaria</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Di fronte</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Destra</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Indietro</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Da sinistra</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Dall'alto</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Dal basso</translation>
+    </message>
+    <message>
+      <source>- Rotate</source>
+      <translation>-Ruotare</translation>
+    </message>
+    <message>
+      <source>0</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>90</source>
+      <translation>90</translation>
+    </message>
+    <message>
+      <source>180</source>
+      <translation>180</translation>
+    </message>
+    <message>
+      <source>270</source>
+      <translation>270</translation>
+    </message>
+    <message>
+      <source>Primary view</source>
+      <translation>Vista primaria</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Vista secondaria</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Generale</translation>
+    </message>
+    <message>
+      <source>Auto scale / position</source>
+      <translation>Scala/posiziona automaticamente</translation>
+    </message>
+    <message>
+      <source>Scale</source>
+      <translation>Scala</translation>
+    </message>
+    <message>
+      <source>Primary x / y</source>
+      <translation>Primario x / y</translation>
+    </message>
+    <message>
+      <source>Secondary dx / dy</source>
+      <translation>Secondario dx / dy</translation>
+    </message>
+    <message>
+      <source>Show hidden</source>
+      <translation>Visualizza linee nascoste</translation>
+    </message>
+    <message>
+      <source>Show smooth</source>
+      <translation>Visualizzazione lisciata</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Assonometrica</translation>
+    </message>
+  </context>
+  <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
       <location filename="../../TaskDialog.cpp" line="+49"/>
@@ -211,7 +379,6 @@
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="-196"/>
       <source>A0 landscape</source>
       <translation>A0 orizzontale</translation>
     </message>
@@ -251,6 +418,15 @@
       <source>Insert new A4 landscape drawing</source>
       <translation>Inserisce nuovo disegno A4 orizzontale</translation>
     </message>
+    <message>
+      <location filename="../../Command.cpp" line="-327"/>
+      <source>Insert new A%1 landscape drawing</source>
+      <translation>Inserisce nuovo disegno A%1 orizzontale</translation>
+    </message>
+    <message>
+      <source>A%1 landscape</source>
+      <translation>A%1 orizzontale</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -285,6 +461,10 @@
       <translation>Crea una pagina da inserire.</translation>
     </message>
     <message>
+      <source>Create a page to insert views into.</source>
+      <translation>Crea una pagina per inserirvi delle viste.</translation>
+    </message>
+    <message>
       <source>Select one Page object.</source>
       <translation>Seleziona un oggetto Pagina.</translation>
     </message>
@@ -301,9 +481,34 @@
       <translation>Esporta pagina</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="-25"/>
+      <location filename="../../ViewProviderPage.cpp" line="-27"/>
       <source>Show drawing</source>
       <translation>Mostra disegno</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.cpp" line="+49"/>
+      <source>Front</source>
+      <translation>Di fronte</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Indietro</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Destra</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Da sinistra</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Dall'alto</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Dal basso</translation>
     </message>
   </context>
   <context>

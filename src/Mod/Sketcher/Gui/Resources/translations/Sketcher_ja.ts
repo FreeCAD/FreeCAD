@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -58,6 +58,10 @@
       <translation>水平変位を拘束</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Fix the horizontal distance between two points or line ends</translation>
     </message>
@@ -67,6 +71,10 @@
     <message>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Constrain horizontal distance</source>
@@ -205,11 +213,11 @@
     </message>
     <message>
       <source>Constrain tangent</source>
-      <translation>Constrain tangent</translation>
+      <translation>正接を拘束</translation>
     </message>
     <message>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Create a tangent constraint between two entities</translation>
+      <translation>2 つのエンティティ間の正接拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -230,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -281,11 +289,15 @@
     </message>
     <message>
       <source>Create fillet</source>
-      <translation>Create fillet</translation>
+      <translation>フィレットを作成します。</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Create a fillet between to lines or at a coincident point</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Create a fillet between two lines or at a coincidental point</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,9 +376,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Sketcher</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>External geometry</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Create an edge linked to an external geometry</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -406,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Create a new or edit the selected sketch</translation>
+      <translation>新しいスケッチを作成または選択されたスケッチを編集する</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -437,7 +464,7 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Toggle construction line</translation>
+      <translation>補助線の切り替え</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
@@ -447,13 +474,17 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
     <message>
       <source>Trim edge</source>
       <translation>Trim edge</translation>
+    </message>
+    <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Trim an edge with respect to the picked position</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
@@ -463,13 +494,13 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
     <message>
       <source>View sketch</source>
-      <translation>View sketch</translation>
+      <translation>スケッチを表示</translation>
     </message>
     <message>
       <source>View sketch perpendicular to sketch plane</source>
@@ -496,7 +527,7 @@
       <translation>Select edge(s) from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
       <translation>スケッチからエッジを選択します</translation>
     </message>
@@ -513,8 +544,12 @@
       <translation>不可能な拘束</translation>
     </message>
     <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Cannot add a constraint between two external geometries!</translation>
+    </message>
+    <message>
       <source>Only sketch and its support is allowed to select</source>
-      <translation>Only sketch and its support is allowed to select</translation>
+      <translation>スケッチとそのサポートのみが選択可能です</translation>
     </message>
     <message>
       <source>One of the selected has to be on the sketch</source>
@@ -522,11 +557,19 @@
     </message>
     <message>
       <source>The selected edge is not a line segment</source>
-      <translation>The selected edge is not a line segment</translation>
+      <translation>選択したエッジは線分ではありません</translation>
     </message>
     <message>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>The selected edge has already a vertical constraint!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>The selected item(s) can't accept a horizontal constraint!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>The selected item(s) can't accept a vertical constraint!</translation>
     </message>
     <message>
       <source>Select entities from the sketch.</source>
@@ -549,12 +592,24 @@
       <translation>Select exactly one line or one point and one line or two points from the sketch.</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Cannot add a length constraint on an external geometry!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Select exactly one point and one object from the sketch.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Select exactly one line or up to two points from the sketch.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Cannot add a horizontal length constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Cannot add a vertical length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -573,8 +628,32 @@
       <translation>The selected edge is not a valid line</translation>
     </message>
     <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>The selected points should be end points of arcs and lines.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>The selected point should be an end point of an arc or line.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>The selected edge should be an arc, line or circle.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>One of the selected edges should be a line.</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Select exactly one arc or circle from the sketch.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Select one or two lines from the sketch.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -587,6 +666,22 @@
     <message>
       <source>Select atleast two lines from the sketch.</source>
       <translation>Select atleast two lines from the sketch.</translation>
+    </message>
+    <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Select two or more compatible edges</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Sketch axes cannot be used in equality constraints</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Select two or more edges of similar type</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Cannot add a constraint between external geometries!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -625,7 +720,7 @@
       <translation>Select exactly two entities from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>スケッチを編集</translation>
     </message>
@@ -638,29 +733,29 @@
       <translation>Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
       <translation>いくつかのサブ要素を選択</translation>
     </message>
     <message>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation>You have to select a single face as support for a sketch!</translation>
+      <translation>スケッチサポートとして単一の面を選択する必要があります。</translation>
     </message>
     <message>
       <source>No support face selected</source>
-      <translation>No support face selected</translation>
+      <translation>サポート面が選択されていません</translation>
     </message>
     <message>
       <source>You have to select a face as support for a sketch!</source>
-      <translation>You have to select a face as support for a sketch!</translation>
+      <translation>スケッチサポートとして面を選択する必要があります。</translation>
     </message>
     <message>
       <source>No planar support</source>
-      <translation>No planar support</translation>
+      <translation>平面のサポートがありません</translation>
     </message>
     <message>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>You need a planar face as support for a sketch!</translation>
+      <translation>スケッチサポートとして平面が必要です。</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="+72"/>
@@ -673,13 +768,12 @@
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Dimensional constraint</translation>
+      <translation>寸法拘束</translation>
     </message>
   </context>
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
       <translation>方向を選択</translation>
     </message>
@@ -718,6 +812,38 @@
     <message>
       <source>datum:</source>
       <translation>datum:</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>方向を選択</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>スケッチの向き</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>xy平面</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>XZ 平面</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>YZ 平面</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>逆方向</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>オフセット：</translation>
     </message>
   </context>
   <context>
@@ -762,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Grid size:</translation>
+      <translation>グリッドサイズ:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Grid snap</translation>
+      <translation>グリッドにスナップ</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -846,7 +972,7 @@
     </message>
     <message>
       <source>Auto constraints</source>
-      <translation>Auto constraints</translation>
+      <translation>自動拘束</translation>
     </message>
     <message>
       <source>auto constraints</source>

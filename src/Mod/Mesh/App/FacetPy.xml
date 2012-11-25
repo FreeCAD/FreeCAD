@@ -63,5 +63,17 @@ Get a list of intersection points with another triangle.
 		  </Documentation>
 		  <Parameter Name="Points" Type="List"/>
 	  </Attribute>
-  </PythonExport>
+	  <Attribute Name="PointIndices" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>The index tuple of point vertices of the mesh this facet is built of</UserDocu>
+		  </Documentation>
+		  <Parameter Name="PointIndices" Type="Tuple"/>
+	  </Attribute>
+		<Attribute Name="NeighbourIndices" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The index tuple of neighbour facets of the mesh this facet is adjacent with</UserDocu>
+			</Documentation>
+			<Parameter Name="NeighbourIndices" Type="Tuple"/>
+		</Attribute>
+	</PythonExport>
 </GenerateModel>

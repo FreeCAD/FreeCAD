@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="+111"/>
       <source>Reverse Engineering</source>
-      <translation>Reverse Engineering</translation>
+      <translation>Inżynieria odwrotna</translation>
     </message>
     <message>
       <source>Approximate plane...</source>
@@ -21,7 +21,7 @@
     <name>CmdApproxSurface</name>
     <message>
       <source>Reverse Engineering</source>
-      <translation>Reverse Engineering</translation>
+      <translation>Inżynieria odwrotna</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
-      <translation>Reverse Engineering</translation>
+      <translation>Inżynieria odwrotna</translation>
     </message>
   </context>
 </TS>

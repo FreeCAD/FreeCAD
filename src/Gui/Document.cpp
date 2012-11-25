@@ -55,7 +55,6 @@
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 #include "Selection.h"
-#include "SoFCSelection.h"
 #include "WaitCursor.h"
 #include "Thumbnail.h"
 
@@ -90,7 +89,8 @@ struct DocumentP
     Connection connectActObject;
     Connection connectSaveDocument;
     Connection connectRestDocument;
-    Connection connectLoadDocument;
+    Connection connectStartLoadDocument;
+    Connection connectFinishLoadDocument;
 };
 
 } // namespace Gui
@@ -128,8 +128,10 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::Save, this, _1));
     d->connectRestDocument = pcDocument->signalRestoreDocument.connect
         (boost::bind(&Gui::Document::Restore, this, _1));
-    d->connectLoadDocument = App::GetApplication().signalRestoreDocument.connect
-        (boost::bind(&Gui::Document::slotRestoredDocument, this, _1));
+    d->connectStartLoadDocument = App::GetApplication().signalStartRestoreDocument.connect
+        (boost::bind(&Gui::Document::slotStartRestoreDocument, this, _1));
+    d->connectFinishLoadDocument = App::GetApplication().signalFinishRestoreDocument.connect
+        (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
@@ -155,7 +157,8 @@ Document::~Document()
     d->connectActObject.disconnect();
     d->connectSaveDocument.disconnect();
     d->connectRestDocument.disconnect();
-    d->connectLoadDocument.disconnect();
+    d->connectStartLoadDocument.disconnect();
+    d->connectFinishLoadDocument.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -188,6 +191,9 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
         d->_pcInEdit = p;
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        if (dlg)
+            dlg->setDocumentName(this->getDocument()->getName());
         if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
             signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
     }
@@ -407,17 +413,21 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
   
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-        View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-        if (activeView && viewProvider) {
-            if (d->_pcInEdit == viewProvider)
-                resetEdit();
-            activeView->getViewer()->removeViewProvider(viewProvider);
+#if 0 // With this we can show child objects again if this method was called by undo
+    viewProvider->onDelete(std::vector<std::string>());
+#endif
+    if (viewProvider && viewProvider->getTypeId().isDerivedFrom
+        (ViewProviderDocumentObject::getClassTypeId())) {
+        // go through the views
+        for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+            if (activeView) {
+                if (d->_pcInEdit == viewProvider)
+                    resetEdit();
+                activeView->getViewer()->removeViewProvider(viewProvider);
+            }
         }
-    }
 
-    if (viewProvider && viewProvider->getTypeId().isDerivedFrom(
-        ViewProviderDocumentObject::getClassTypeId())) {
         // removing from tree
         signalDeletedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
 
@@ -553,9 +563,9 @@ bool Document::save(void)
 /// Save the document under a new file name
 bool Document::saveAs(void)
 {
-    getMainWindow()->statusBar()->showMessage(QObject::tr("Save document under new filename..."));
+    getMainWindow()->showMessage(QObject::tr("Save document under new filename..."));
 
-    QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
+    QString exe = qApp->applicationName();
     QString fn = QFileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
                  FileDialog::getWorkingDirectory(), QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
@@ -599,7 +609,7 @@ bool Document::saveAs(void)
         return true;
     }
     else {
-        getMainWindow()->statusBar()->showMessage(QObject::tr("Saving aborted"), 2000);
+        getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
         return false;
     }
 }
@@ -693,8 +703,13 @@ void Document::RestoreDocFile(Base::Reader &reader)
         std::string sMsg = "SetCamera ";
         sMsg += ppReturn;
         if (strcmp(ppReturn, "") != 0) { // non-empty attribute
-            if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
-                d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            try {
+                if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
+                    d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+            }
         }
     }
 
@@ -704,17 +719,38 @@ void Document::RestoreDocFile(Base::Reader &reader)
     if (!xmlReader.getFilenames().empty())
         xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader));
 
-    // reset modifeid flag
+    // reset modified flag
     setModified(false);
 }
 
-void Document::slotRestoredDocument(const App::Document&)
+void Document::slotStartRestoreDocument(const App::Document& doc)
 {
+    if (d->_pcDocument != &doc)
+        return;
+    // disable this signal while loading a document
+    d->connectActObject.block();
+}
+
+void Document::slotFinishRestoreDocument(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    d->connectActObject.unblock();
+    App::DocumentObject* act = doc.getActiveObject();
+    if (act) {
+        ViewProvider* viewProvider = getViewProvider(act);
+        if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        }
+    }
     // some post-processing of view providers
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         it->second->finishRestoring();
     }
+
+    // reset modified flag
+    setModified(false);
 }
 
 /**
@@ -794,7 +830,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
                     << views.size() <<"\">" << std::endl;
 
     bool xml = writer.isForceXML();
-    writer.setForceXML(true);
+    //writer.setForceXML(true);
     writer.incInd(); // indention for 'ViewProvider name'
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
     for (jt = views.begin(); jt != views.end(); ++jt) {
@@ -877,6 +913,7 @@ void Document::createView(const char* sType)
         .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
 
     view3D->setWindowTitle(title);
+    view3D->setWindowModified(this->isModified());
     view3D->setWindowIcon(QApplication::windowIcon());
     view3D->resize(400, 300);
     getMainWindow()->addWindow(view3D);
@@ -972,13 +1009,16 @@ bool Document::canClose ()
         return false;
     }
     else if (!Gui::Control().isAllowedAlterDocument()) {
-        QMessageBox::warning(getActiveView(),
-            QObject::tr("Document not closable"),
-            QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
-                        "You either have to finish or cancel the editing in the task panel."));
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        if (dlg) Gui::Control().showDialog(dlg);
-        return false;
+        std::string name = Gui::Control().activeDialog()->getDocumentName();
+        if (name == this->getDocument()->getName()) {
+            QMessageBox::warning(getActiveView(),
+                QObject::tr("Document not closable"),
+                QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
+                            "You either have to finish or cancel the editing in the task panel."));
+            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+            if (dlg) Gui::Control().showDialog(dlg);
+            return false;
+        }
     }
 
     if (!isModified())
@@ -1012,6 +1052,19 @@ std::list<MDIView*> Document::getMDIViews() const
          it != d->baseViews.end(); ++it) {
         MDIView* view = dynamic_cast<MDIView*>(*it);
         if (view)
+            views.push_back(view);
+    }
+
+    return views;
+}
+
+std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId) const
+{
+    std::list<MDIView*> views;
+    for (std::list<BaseView*>::const_iterator it = d->baseViews.begin();
+         it != d->baseViews.end(); ++it) {
+        MDIView* view = dynamic_cast<MDIView*>(*it);
+        if (view && view->isDerivedFrom(typeId))
             views.push_back(view);
     }
 
@@ -1057,9 +1110,9 @@ MDIView* Document::getActiveView(void) const
         }
     }
 
-    // the active view is not part of this document, just use the first view
+    // the active view is not part of this document, just use the last view
     if (!ok && !mdis.empty())
-        active = mdis.front();
+        active = mdis.back();
 
     return active;
 }

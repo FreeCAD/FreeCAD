@@ -86,7 +86,7 @@
     </message>
     <message>
       <source>Apply</source>
-      <translation>Anwenden</translation>
+      <translation>Übernehmen</translation>
     </message>
     <message>
       <source>Cancel</source>
@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -132,7 +132,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -168,11 +168,26 @@
     </message>
     <message>
       <source>Shape builder...</source>
-      <translation>Shape builder...</translation>
+      <translation>Form-Generator...</translation>
     </message>
     <message>
       <source>Advanced utility to create shapes</source>
-      <translation>Advanced utility to create shapes</translation>
+      <translation>Erweitertes Dienstprogramm um Formen zu erstellen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Formteil</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Abschrägung ...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Die gewählten Kanten einer Form abschrägen</translation>
     </message>
   </context>
   <context>
@@ -183,7 +198,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Überschneidung</translation>
+      <translation>Schnitt</translation>
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
@@ -209,7 +224,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -256,17 +271,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
     <message>
       <source>Export CAD...</source>
-      <translation>Export CAD...</translation>
+      <translation>CAD Export...</translation>
     </message>
     <message>
       <source>Exports to a CAD file</source>
-      <translation>Exports to a CAD file</translation>
+      <translation>In CAD-Datei exportieren</translation>
     </message>
   </context>
   <context>
@@ -352,11 +367,15 @@
     </message>
     <message>
       <source>Loft...</source>
-      <translation>Loft...</translation>
+      <translation>Freiformfläche...</translation>
+    </message>
+    <message>
+      <source>Utility to loft</source>
+      <translation>Loft-Werkzeug</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
-      <translation>Advanced utility to lofts</translation>
+      <translation>Erweitertes Freiformwerkzeug</translation>
     </message>
   </context>
   <context>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Formteil</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Form verfeinern</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Kopie einer Form verfeinern</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -482,7 +518,7 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Formteil</translation>
     </message>
@@ -507,7 +543,7 @@
     </message>
     <message>
       <source>Create a simple non-parametric copy</source>
-      <translation>Create a simple non-parametric copy</translation>
+      <translation>Erstelle eine einfache, nicht-parametrische Kopie</translation>
     </message>
   </context>
   <context>
@@ -542,8 +578,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Formteil</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweepen...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Sweep-Werkzeug</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
       <translation>Erstellt einen Torus</translation>
     </message>
@@ -662,7 +715,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Überschneidung</translation>
+      <translation>Schnitt</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="+317"/>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Kanten abschrägen</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -748,12 +809,20 @@
       <translation>Achtung: Diese Option wird nur für Ebenen verwendet</translation>
     </message>
     <message>
+      <source>Create solid</source>
+      <translation>Erzeuge Volumenkörper</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Konus-Außenwinkel</translation>
+    </message>
+    <message>
       <source>Shape</source>
       <translation>Form</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Text source</translation>
     </message>
     <message>
       <source>X:</source>
@@ -817,7 +886,7 @@
       <translation>Keine Auswahl</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Kanten zum Abrunden</translation>
     </message>
@@ -853,7 +922,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantengebilde.</translation>
       <translation>Keine</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Kante%1</translation>
     </message>
@@ -993,7 +1062,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Text source</translation>
     </message>
   </context>
   <context>
@@ -1001,7 +1070,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
       <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-      <translation>IGES (*.igs *.iges);;Alle Dateien (*.*)</translation>
+      <translation>IGES (*.igs *.IGES); Alle Dateien (*.*)</translation>
     </message>
   </context>
   <context>
@@ -1029,7 +1098,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Text source</translation>
     </message>
   </context>
   <context>
@@ -1057,7 +1126,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>x max</source>
-      <translation>x max</translation>
+      <translation>X max</translation>
     </message>
     <message>
       <source>Y min</source>
@@ -1093,31 +1162,31 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Angle - 0 for cyl</source>
-      <translation>Angle - 0 for cyl</translation>
+      <translation>Drehwinkel - 0 für Zylinder</translation>
     </message>
     <message>
       <source>Angle0</source>
-      <translation>Angle0</translation>
+      <translation>Drehwinkel0</translation>
     </message>
     <message>
       <source>Angle1</source>
-      <translation>Angle1</translation>
+      <translation>DrehWinkel1</translation>
     </message>
     <message>
       <source>X Axis Value:</source>
-      <translation>X Axis Value:</translation>
+      <translation>X-Wert:</translation>
     </message>
     <message>
       <source>Y Axis Value:</source>
-      <translation>Y Axis Value:</translation>
+      <translation>Y-Wert:</translation>
     </message>
     <message>
       <source>Z Axis Value:</source>
-      <translation>Z Axis Value:</translation>
+      <translation>Z-Achsen-Wert:</translation>
     </message>
     <message>
       <source>Wedge</source>
-      <translation>Wedge</translation>
+      <translation>Keil</translation>
     </message>
     <message>
       <source>Circle</source>
@@ -1125,7 +1194,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Vertex</source>
-      <translation>Vertex</translation>
+      <translation>Knoten</translation>
     </message>
     <message>
       <source>Position</source>
@@ -1176,6 +1245,18 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>Torus</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Ellipse</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Punkt</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Linie</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -1216,6 +1297,67 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>V Parameter:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Koordinatensystem:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Rechtsdrehened</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Linksdrehend</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Winkel 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Winkel 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>Aus drei Punkten</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Hauptradius:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Nebenradius:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>Endpunkt</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Startpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
       <translation>&amp;Erstellen</translation>
     </message>
@@ -1229,21 +1371,20 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation>Alt+O</translation>
+      <translation>Alt+I</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
-      <translation>%1 erstellen</translation>
+      <translation>Erstelle %1</translation>
     </message>
     <message>
       <source>No active document</source>
       <translation>Kein aktives Dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
-      <translation>Pitch:</translation>
+      <translation>Steigung:</translation>
     </message>
     <message>
       <source>Helix</source>
@@ -1286,7 +1427,11 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>Form</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Selektieren Sie eine Gerade in der 3D Ansicht</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Select a shape for revolution, first.</translation>
     </message>
@@ -1367,7 +1512,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Allgemein</translation>
     </message>
@@ -1391,17 +1536,69 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <source>Units for export of STEP/IGES</source>
       <translation>Einheiten für den Export von STEP/IGES</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Modelleinstellungen</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Modell automatisch nach Boolescher Operation verfeinern</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Modell automatisch nach Boolescher Operation überprüfen</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Flächenfarben</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Möchten Sie wirklich abbrechen?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Lage</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D-Ansicht</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Knoten/Draht</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Freiformfläche</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
       <translation>Zu wenig Elemente</translation>
     </message>
     <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>Mindestens zwei Punkte, Kanten oder Drähte sind erforderlich.</translation>
+    </message>
+    <message>
       <source>At least two vertices or wires are required.</source>
-      <translation>At least two vertices or wires are required.</translation>
+      <translation>Mindestens zwei Knotenpunkte oder Drähte sind erforderlich.</translation>
     </message>
   </context>
   <context>
@@ -1454,7 +1651,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
-      <translation>Kein derartiges Dokument "%1".</translation>
+      <translation>Es gibt kein Dokument "%1".</translation>
     </message>
   </context>
   <context>
@@ -1466,59 +1663,90 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Select two vertices</source>
-      <translation>Select two vertices</translation>
+      <translation>Wähle zwei Knotenpunkte</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
-      <translation>Select three or more edges</translation>
+      <translation>Wähle drei oder mehr Kanten</translation>
+    </message>
+    <message>
+      <source>Select one or more edges</source>
+      <translation>Eine oder mehrere Kanten auswählen</translation>
     </message>
     <message>
       <source>Select two or more faces</source>
-      <translation>Select two or more faces</translation>
+      <translation>Wähle zwei oder mehr Oberflächen aus</translation>
     </message>
     <message>
       <source>Select only one part object</source>
-      <translation>Select only one part object</translation>
+      <translation>Wählen Sie nur ein Teileobjekt</translation>
     </message>
     <message>
       <source>Select two vertices to create an edge</source>
-      <translation>Select two vertices to create an edge</translation>
+      <translation>Wählen Sie zwei Knoten zum Erzeugen einer Kante aus</translation>
     </message>
     <message>
       <source>Select a closed set of edges</source>
-      <translation>Select a closed set of edges</translation>
+      <translation>Wählen Sie eine geschlossene Gruppe von Kanten</translation>
     </message>
     <message>
       <source>Select adjacent faces</source>
-      <translation>Select adjacent faces</translation>
+      <translation>Wähle angrenzende Oberflächen aus</translation>
     </message>
     <message>
       <source>All shape types can be selected</source>
-      <translation>All shape types can be selected</translation>
+      <translation>Alle Form-Typen können ausgewählt werden</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Knoten/Draht</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Sweep-Pfad</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Wählen Sie eine Kante oder Draht entlang sweepen möchten.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Zu wenig Elemente</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>Mindestens eine Kante oder Draht ist erforderlich.</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
-      <translation>Hint</translation>
+      <translation>Hinweis</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation>Select Control.</translation>
+      <translation>Wähle Steuerelement.</translation>
     </message>
     <message>
       <source>Control</source>
-      <translation>Control</translation>
+      <translation>Steuerelement</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation>Dynamic</translation>
+      <translation>Dynamische</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation>Align</translation>
+      <translation>Ausrichtung</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1526,7 +1754,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Special</source>
-      <translation>Special</translation>
+      <translation>Spezial</translation>
     </message>
     <message>
       <source>Command</source>
@@ -1534,7 +1762,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Stretch</translation>
+      <translation>Dehnen</translation>
     </message>
     <message>
       <source>Move</source>
@@ -1550,15 +1778,15 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Orient</source>
-      <translation>Orient</translation>
+      <translation>Orientieren</translation>
     </message>
     <message>
       <source>Match</source>
-      <translation>Match</translation>
+      <translation>Passend</translation>
     </message>
     <message>
       <source>Surround</source>
-      <translation>Surround</translation>
+      <translation>Umgebend</translation>
     </message>
     <message>
       <source>dummy</source>
@@ -1566,19 +1794,19 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation>X Axis</translation>
+      <translation>X-Achse</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation>Y Axis</translation>
+      <translation>Y-Achse</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation>Z Axis</translation>
+      <translation>Z-Achse</translation>
     </message>
     <message>
       <source>Increment</source>
-      <translation>Increment</translation>
+      <translation>Inkrement</translation>
     </message>
     <message>
       <source>.125</source>
@@ -1602,35 +1830,35 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
-      <translation>Drag arrows to stretch box by increment</translation>
+      <translation>Ziehe die Pfeileum die Box um ein Inkrement zu dehnen</translation>
     </message>
     <message>
       <source>Drag arrows to move box by increment</source>
-      <translation>Drag arrows to move box by increment</translation>
+      <translation>Ziehe Pfeile um die Box um ein Inkrement zu bewegen</translation>
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation>Not implemented yet</translation>
+      <translation>Noch nicht implementiert</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
-      <translation>Drag arrows to offset checked axes by increment</translation>
+      <translation>Ziehe Pfeile um aktivierte Achsen um ein Inkrement zu verschieben</translation>
     </message>
     <message>
       <source>Select dragger for stretch by align</source>
-      <translation>Select dragger for stretch by align</translation>
+      <translation>Wähle Regler um beim Ausrichten zu Dehnen</translation>
     </message>
     <message>
       <source>Select dragger for move by align</source>
-      <translation>Select dragger for move by align</translation>
+      <translation>Wähle Regler um beim Ausrichten zu verschieben</translation>
     </message>
     <message>
       <source>Select dragger for stretch by value</source>
-      <translation>Select dragger for stretch by value</translation>
+      <translation>Benutze Regler für eine Dehnung um einen Wert</translation>
     </message>
     <message>
       <source>Select dragger for move by value</source>
-      <translation>Select dragger for move by value</translation>
+      <translation>Benutze Regler für einen Bewegung um einen Wert</translation>
     </message>
     <message>
       <source>1.0</source>
@@ -1638,15 +1866,15 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Enter Value</source>
-      <translation>Enter Value</translation>
+      <translation>Gib einen Wert ein</translation>
     </message>
     <message>
       <source>Select box to match</source>
-      <translation>Select box to match</translation>
+      <translation>Wähle eine Box zum Abgleichen</translation>
     </message>
     <message>
       <source>Select a point</source>
-      <translation>Select a point</translation>
+      <translation>Wähle einen Punkt</translation>
     </message>
     <message>
       <source>0.0</source>
@@ -1654,11 +1882,11 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Select dragger to align</source>
-      <translation>Select dragger to align</translation>
+      <translation>Wähle Regler um auszurichten</translation>
     </message>
     <message>
       <source>Select dragger to modify</source>
-      <translation>Select dragger to modify</translation>
+      <translation>Wähle Regler um zu modifizieren</translation>
     </message>
   </context>
   <context>
@@ -1666,19 +1894,19 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="+14"/>
       <source>Set color per face</source>
-      <translation>Set color per face</translation>
+      <translation>Festlegen der Farbe pro Fläche</translation>
     </message>
     <message>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Click on the faces in the 3d view to select them.</translation>
+      <translation>Klicken Sie auf die Oberflächen in der 3D-Ansicht um sie auszuwählen.</translation>
     </message>
     <message>
       <source>Faces:</source>
-      <translation>Faces:</translation>
+      <translation>Oberflächen:</translation>
     </message>
     <message>
       <source>Set to default</source>
-      <translation>Set to default</translation>
+      <translation>Auf Standard setzen</translation>
     </message>
   </context>
   <context>
@@ -1686,11 +1914,11 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="+14"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation>Freiformfläche</translation>
     </message>
     <message>
       <source>Vertex/Wire</source>
-      <translation>Vertex/Wire</translation>
+      <translation>Knoten/Draht</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -1726,11 +1954,11 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Create solid</source>
-      <translation>Create solid</translation>
+      <translation>Erzeuge Volumenkörper</translation>
     </message>
     <message>
       <source>Ruled surface</source>
-      <translation>Ruled surface</translation>
+      <translation>schraffierte Oberfläche</translation>
     </message>
   </context>
   <context>
@@ -1738,15 +1966,15 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
       <source>Create shape</source>
-      <translation>Create shape</translation>
+      <translation>Erzeuge Form</translation>
     </message>
     <message>
       <source>Edge from vertices</source>
-      <translation>Edge from vertices</translation>
+      <translation>Kanten aus Knoten</translation>
     </message>
     <message>
       <source>Face from edges</source>
-      <translation>Face from edges</translation>
+      <translation>Oberflächen aus Kanten</translation>
     </message>
     <message>
       <source>Planar</source>
@@ -1754,11 +1982,11 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Shell from faces</source>
-      <translation>Shell from faces</translation>
+      <translation>Hülle aus Oberflächen</translation>
     </message>
     <message>
       <source>Solid from shell</source>
-      <translation>Solid from shell</translation>
+      <translation>Volumenkörper aus Hüllkörper</translation>
     </message>
     <message>
       <source>Create</source>
@@ -1766,13 +1994,34 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>All faces</source>
-      <translation>All faces</translation>
+      <translation>Alle Oberflächen</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Erzeuge Volumenkörper</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Wählen Sie ein oder mehrere Profile und wählen Sie eine Kante oder Draht in der 3D Ansicht als Sweep-Pfad.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
@@ -1782,7 +2031,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-      <translation>Alle CAD-Dateien (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+      <translation>Alle CAD-Dateien (*.stp *.step *IGS .IGES *.brp *.brep)</translation>
     </message>
     <message>
       <source>STEP (*.stp *.step)</source>
@@ -1790,7 +2039,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>IGES (*.igs *.iges)</source>
-      <translation>IGES (*.igs *.iges)</translation>
+      <translation>IGES (*.igs *.IGES)</translation>
     </message>
     <message>
       <source>BREP (*.brp *.brep)</source>
@@ -1810,21 +2059,25 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>Geben Sie die Toleranz zum Vernähen ein:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Spiegelebene bearbeiten</translation>
     </message>
     <message>
-      <source>Transform</source>
-      <translation>Umwandeln</translation>
+      <source>Edit chamfer edges</source>
+      <translation>Gefaste Kanten bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <source>Transform</source>
+      <translation>Transformieren</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Part design</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Wählen Sie bitte zwei oder mehrere Formen aus.</translation>
     </message>
@@ -1833,14 +2086,14 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
       <translation>Wählen Sie entweder zwei Kanten oder zwei Drahtgitter aus.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>Abgerundete Kanten bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
-      <translation>Set colors...</translation>
+      <translation>Legen sie Farben fest...</translation>
     </message>
   </context>
   <context>
@@ -1868,7 +2121,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
       <source>Boolean</source>
-      <translation>Boolsche Operation</translation>
+      <translation>Bool'sche Operationen</translation>
     </message>
   </context>
 </TS>

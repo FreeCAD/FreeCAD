@@ -17,20 +17,32 @@ libPartDesign_la_SOURCES=\
 		FeatureChamfer.h \
 		FeatureDressUp.cpp \
 		FeatureDressUp.h \
+		FeatureGroove.cpp \
+		FeatureGroove.h \
 		Body.cpp \
 		Body.h \
+		FeatureLinearPattern.cpp \
+		FeatureLinearPattern.h \
+		FeatureMirrored.cpp \
+		FeatureMirrored.h \
+		FeatureMultiTransform.cpp \
+		FeatureMultiTransform.h \
+		FeaturePolarPattern.cpp \
+		FeaturePolarPattern.h \
+		FeatureScaled.cpp \
+		FeatureScaled.h \
 		FeatureSketchBased.cpp \
 		FeatureSketchBased.h \
 		FeatureRevolution.cpp \
 		FeatureRevolution.h \
 		FeatureAdditive.cpp \
 		FeatureAdditive.h \
-		FeaturePatternRectangular.cpp \
-		FeaturePatternRectangular.h \
 		FeatureSubtractive.cpp \
 		FeatureSubtractive.h \
 		FeatureHole.cpp \
 		FeatureHole.h \
+		FeatureTransformed.cpp \
+		FeatureTransformed.h \
 		PreCompiled.cpp \
 		PreCompiled.h
 
@@ -57,6 +69,7 @@ libPartDesign_la_LIBADD   = \
 		-lTKGeomBase \
 		-lTKOffset \
 		-lTKPrim \
+		-lTKFeat \
 		-lTKFillet \
 		-lTKShHealing \
 		-lTKBool \

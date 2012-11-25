@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Skisse</translation>
     </message>
@@ -58,6 +58,10 @@
       <translation>Constrain horizontal distance</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Fix the horizontal distance between two points or line ends</translation>
     </message>
@@ -67,6 +71,10 @@
     <message>
       <source>Sketcher</source>
       <translation>Skisse</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Constrain horizontal distance</source>
@@ -230,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Skisse</translation>
     </message>
@@ -284,8 +292,12 @@
       <translation>Create fillet</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Create a fillet between to lines or at a coincident point</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Create a fillet between two lines or at a coincidental point</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,9 +376,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Skisse</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>External geometry</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Create an edge linked to an external geometry</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Skisse</translation>
     </message>
@@ -447,13 +474,17 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Skisse</translation>
     </message>
     <message>
       <source>Trim edge</source>
       <translation>Trim edge</translation>
+    </message>
+    <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Trim an edge with respect to the picked position</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
@@ -463,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Skisse</translation>
     </message>
@@ -496,7 +527,7 @@
       <translation>Select edge(s) from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
       <translation>Velg en kant i skissen.</translation>
     </message>
@@ -513,6 +544,10 @@
       <translation>Umulig lås</translation>
     </message>
     <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Cannot add a constraint between two external geometries!</translation>
+    </message>
+    <message>
       <source>Only sketch and its support is allowed to select</source>
       <translation>Only sketch and its support is allowed to select</translation>
     </message>
@@ -527,6 +562,14 @@
     <message>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>Den valgte kanten har allerede en vertikal lås!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>The selected item(s) can't accept a horizontal constraint!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>The selected item(s) can't accept a vertical constraint!</translation>
     </message>
     <message>
       <source>Select entities from the sketch.</source>
@@ -549,12 +592,24 @@
       <translation>Select exactly one line or one point and one line or two points from the sketch.</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Cannot add a length constraint on an external geometry!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Select exactly one point and one object from the sketch.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Select exactly one line or up to two points from the sketch.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Cannot add a horizontal length constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Cannot add a vertical length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -573,8 +628,32 @@
       <translation>The selected edge is not a valid line</translation>
     </message>
     <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>The selected points should be end points of arcs and lines.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>The selected point should be an end point of an arc or line.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>The selected edge should be an arc, line or circle.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>One of the selected edges should be a line.</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Select exactly one arc or circle from the sketch.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Select one or two lines from the sketch.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -587,6 +666,22 @@
     <message>
       <source>Select atleast two lines from the sketch.</source>
       <translation>Select atleast two lines from the sketch.</translation>
+    </message>
+    <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Select two or more compatible edges</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Sketch axes cannot be used in equality constraints</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Select two or more edges of similar type</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Cannot add a constraint between external geometries!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -625,7 +720,7 @@
       <translation>Select exactly two entities from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>Rediger skisse</translation>
     </message>
@@ -638,7 +733,7 @@
       <translation>Ønsker du å lukke denne dialogen?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
       <translation>Flere delelementer er valgt</translation>
     </message>
@@ -679,7 +774,6 @@
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
       <translation>Choose orientation</translation>
     </message>
@@ -718,6 +812,38 @@
     <message>
       <source>datum:</source>
       <translation>Faktum:</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>Choose orientation</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>Sketch orientation</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>XY-Plane</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>XZ-Plane</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>YZ-Plane</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>Reverse direction</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>Offset:</translation>
     </message>
   </context>
   <context>

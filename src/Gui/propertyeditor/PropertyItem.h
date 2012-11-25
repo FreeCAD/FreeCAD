@@ -31,6 +31,7 @@
 
 #include <Base/Type.h>
 #include <Base/Vector3D.h>
+#include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/UnitsApi.h>
 #include <App/PropertyStandard.h>
@@ -38,6 +39,7 @@
 
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
+Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
 
 namespace Gui {
@@ -69,6 +71,8 @@ public:
 
     void setReadOnly(bool);
     bool isReadOnly() const;
+    void setDecimals(int);
+    int decimals() const;
 
     PropertyItem *child(int row);
     int childCount() const;
@@ -99,6 +103,7 @@ private:
     PropertyItem *parentItem;
     QList<PropertyItem*> childItems;
     bool readonly;
+    int precision;
 };
 
 /**
@@ -361,6 +366,92 @@ private:
     PropertyFloatItem* m_x;
     PropertyFloatItem* m_y;
     PropertyFloatItem* m_z;
+};
+
+class GuiExport PropertyMatrixItem: public PropertyItem
+{
+    Q_OBJECT
+    Q_PROPERTY(double A11 READ getA11 WRITE setA11 DESIGNABLE true USER true)
+    Q_PROPERTY(double A12 READ getA12 WRITE setA12 DESIGNABLE true USER true)
+    Q_PROPERTY(double A13 READ getA13 WRITE setA13 DESIGNABLE true USER true)
+    Q_PROPERTY(double A14 READ getA14 WRITE setA14 DESIGNABLE true USER true)
+    Q_PROPERTY(double A21 READ getA21 WRITE setA21 DESIGNABLE true USER true)
+    Q_PROPERTY(double A22 READ getA22 WRITE setA22 DESIGNABLE true USER true)
+    Q_PROPERTY(double A23 READ getA23 WRITE setA23 DESIGNABLE true USER true)
+    Q_PROPERTY(double A24 READ getA24 WRITE setA24 DESIGNABLE true USER true)
+    Q_PROPERTY(double A31 READ getA31 WRITE setA31 DESIGNABLE true USER true)
+    Q_PROPERTY(double A32 READ getA32 WRITE setA32 DESIGNABLE true USER true)
+    Q_PROPERTY(double A33 READ getA33 WRITE setA33 DESIGNABLE true USER true)
+    Q_PROPERTY(double A34 READ getA34 WRITE setA34 DESIGNABLE true USER true)
+    Q_PROPERTY(double A41 READ getA41 WRITE setA41 DESIGNABLE true USER true)
+    Q_PROPERTY(double A42 READ getA42 WRITE setA42 DESIGNABLE true USER true)
+    Q_PROPERTY(double A43 READ getA43 WRITE setA43 DESIGNABLE true USER true)
+    Q_PROPERTY(double A44 READ getA44 WRITE setA44 DESIGNABLE true USER true)
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+    double getA11() const;
+    void setA11(double A11);
+    double getA12() const;
+    void setA12(double A12);
+    double getA13() const;
+    void setA13(double A13);
+    double getA14() const;
+    void setA14(double A14);
+    double getA21() const;
+    void setA21(double A21);
+    double getA22() const;
+    void setA22(double A22);
+    double getA23() const;
+    void setA23(double A23);
+    double getA24() const;
+    void setA24(double A24);
+    double getA31() const;
+    void setA31(double A31);
+    double getA32() const;
+    void setA32(double A32);
+    double getA33() const;
+    void setA33(double A33);
+    double getA34() const;
+    void setA34(double A34);
+    double getA41() const;
+    void setA41(double A41);
+    double getA42() const;
+    void setA42(double A42);
+    double getA43() const;
+    void setA43(double A43);
+    double getA44() const;
+    void setA44(double A44);
+    
+protected:
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyMatrixItem();
+    virtual QVariant toolTip(const App::Property*) const;
+
+private:
+    PropertyFloatItem* m_a11;
+    PropertyFloatItem* m_a12;
+    PropertyFloatItem* m_a13;
+    PropertyFloatItem* m_a14;
+    PropertyFloatItem* m_a21;
+    PropertyFloatItem* m_a22;
+    PropertyFloatItem* m_a23;
+    PropertyFloatItem* m_a24;
+    PropertyFloatItem* m_a31;
+    PropertyFloatItem* m_a32;
+    PropertyFloatItem* m_a33;
+    PropertyFloatItem* m_a34;
+    PropertyFloatItem* m_a41;
+    PropertyFloatItem* m_a42;
+    PropertyFloatItem* m_a43;
+    PropertyFloatItem* m_a44; 
 };
 
 class PlacementEditor : public Gui::LabelButton

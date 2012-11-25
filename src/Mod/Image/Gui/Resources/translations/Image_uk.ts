@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Create a planar image in the 3D space</source>
-      <translation>Create a planar image in the 3D space</translation>
+      <translation>Створити плоске зображення у 3D-просторі</translation>
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
@@ -39,7 +39,7 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+308"/>
+      <location filename="../../GLImageBox.cpp" line="+318"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Невизначений тип кольору простору для перегляду зображень</translation>
     </message>
@@ -57,7 +57,7 @@
     </message>
     <message>
       <source>Stretch the image to fit the view</source>
-      <translation>Розтягнути зображення до розмірів подання</translation>
+      <translation>Розтягнути зображення до розмірів виду</translation>
     </message>
     <message>
       <source>&amp;1:1 scale</source>
@@ -101,7 +101,7 @@
     </message>
     <message>
       <source>outside image</source>
-      <translation>за межами зображення</translation>
+      <translation>зовнішнє зображення</translation>
     </message>
   </context>
   <context>
@@ -121,11 +121,11 @@
     </message>
     <message>
       <source>Images</source>
-      <translation>Images</translation>
+      <translation>Зображення</translation>
     </message>
     <message>
       <source>All files</source>
-      <translation>All files</translation>
+      <translation>Всі файли</translation>
     </message>
     <message>
       <source>Error open image</source>

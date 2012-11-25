@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class DressUp : public PartDesign::Feature
+class PartDesignExport DressUp : public PartDesign::Feature
 {
     PROPERTY_HEADER(PartDesign::DressUp);
 
@@ -39,9 +39,13 @@ public:
 
     App::PropertyLinkSub Base;
 
+    short mustExecute() const;
     /// updates the Placement property from the Placement of Base
     void positionByBase(void);
- };
+
+protected:
+    void onChanged(const App::Property* prop);
+};
 
 } //namespace PartDesign
 

@@ -22,22 +22,22 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>Самотестування...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>Запускає самотестування для перевірки того, що програма працює належним чином</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Малювання</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Креслення</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Ес&amp;кіз</translation>
+      <source>S&amp;ketch</source>
+      <translation>Ескіз</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -52,16 +52,20 @@
       <translation>Базуючись на ескізі</translation>
     </message>
     <message>
+      <source>Primitives</source>
+      <translation>Примітиви</translation>
+    </message>
+    <message>
       <source>Parametric</source>
       <translation>Параметричний</translation>
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Object appearence</translation>
+      <translation>Поведінка об'єкту</translation>
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Wire Tools</translation>
+      <translation>Інструмент Струна</translation>
     </message>
   </context>
 </TS>

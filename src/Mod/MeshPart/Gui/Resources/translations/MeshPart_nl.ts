@@ -10,7 +10,7 @@
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Create mesh from shape...</translation>
+      <translation>Maak mesh van vorm...</translation>
     </message>
     <message>
       <source>Tessellate shape</source>
@@ -22,7 +22,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Tessellation</translation>
+      <translation>Mozaïekwerk</translation>
     </message>
     <message>
       <source>Shapes</source>

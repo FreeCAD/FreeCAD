@@ -6,30 +6,30 @@
     <message>
       <location filename="../../Command.cpp" line="+111"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотній інженеринг</translation>
+      <translation>Зворотнє проектування</translation>
     </message>
     <message>
       <source>Approximate plane...</source>
-      <translation>Approximate plane...</translation>
+      <translation>Приблизна площина...</translation>
     </message>
     <message>
       <source>Approximate a plane</source>
-      <translation>Approximate a plane</translation>
+      <translation>Приблизна площина</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
       <source>Reverse Engineering</source>
-      <translation>Зворотній інженеринг</translation>
+      <translation>Зворотнє проектування</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
-      <translation>Орієнтація поверхні ...</translation>
+      <translation>Приблизна поверхня...</translation>
     </message>
     <message>
       <source>Approximate a B-Spline surface</source>
-      <translation>Орієнтувати поверхню B-Spline</translation>
+      <translation>Приблизна B-Spline-поверхня</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотній інженеринг</translation>
+      <translation>Зворотнє проектування</translation>
     </message>
   </context>
 </TS>

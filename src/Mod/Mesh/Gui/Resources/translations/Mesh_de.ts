@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Netz</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Netz trimmen</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Ein Netz mit einem gewählten Polygon trimmen</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -350,6 +365,21 @@
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Entfernt topologisch unabhängige Komponenten aus dem Netz</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Netz</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Netz-Segmente erstellen...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Netz-Segmente erstellen</translation>
     </message>
   </context>
   <context>
@@ -941,6 +971,53 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Netz Segmentierung</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Netz glätten</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Ebene</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleranz</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minimale Anzahl von Dreiecken</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Zylinder</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radius</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Toleranz (Flach)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Toleranz (gekrümmt)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimale Anzahl von Dreiecken</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Kugel</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -1099,6 +1176,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Anmerkung</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>Alle Netz-Dateien (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

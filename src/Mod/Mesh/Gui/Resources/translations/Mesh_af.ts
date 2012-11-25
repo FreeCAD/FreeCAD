@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Maas</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Trim mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Trims a mesh with a picked polygon</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -349,7 +364,22 @@
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Remove topologic independent components from the mesh</translation>
+      <translation>Verwyder topologiese onafhanklike komponente van die maas</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Maas</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Create mesh segments...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Create mesh segments</translation>
     </message>
   </context>
   <context>
@@ -941,6 +971,53 @@ Gee eers die opdrag om die voue te herstel</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Smooth mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Tekenvlak</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleransie</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minumum number of faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Silinder</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radius</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerance (Flat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerance (Curved)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfeer</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -1099,6 +1176,10 @@ Maks=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Aantekening</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

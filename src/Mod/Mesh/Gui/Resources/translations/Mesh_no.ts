@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Nett</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Trim mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Trims a mesh with a picked polygon</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -350,6 +365,21 @@
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Remove topologic independent components from the mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Nett</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Create mesh segments...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Create mesh segments</translation>
     </message>
   </context>
   <context>
@@ -940,6 +970,53 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Smooth mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleranse</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minumum number of faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Sylinder</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radius</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerance (Flat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerance (Curved)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfære</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -1001,7 +1078,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Inventor V2.1 ascii (*.iv)</source>
-      <translation>Inventor V2.1 ascii (*. iv)</translation>
+      <translation>Inventor V2.1 ascii (*.iv)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
@@ -1098,6 +1175,10 @@ Maks=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Merknad</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

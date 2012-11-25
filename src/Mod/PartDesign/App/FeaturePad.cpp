@@ -23,20 +23,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-//# include <Bnd_Box.hxx>
-//# include <gp_Pln.hxx>
-# include <cmath>
 # include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepOffsetAPI_MakeOffset.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
-//# include <Geom_Plane.hxx>
 # include <Handle_Geom_Surface.hxx>
-# include <ShapeAnalysis.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Face.hxx>
@@ -44,196 +36,159 @@
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Precision.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
+# include <BRepAlgoAPI_Common.hxx>
 #endif
 
 #include <Base/Placement.h>
-#include <Base/Tools.h>
-#include <Mod/Part/App/Part2DObject.h>
+#include <App/Document.h>
 
 #include "FeaturePad.h"
 
 
 using namespace PartDesign;
 
+const char* Pad::TypeEnums[]= {"Length","UpToLast","UpToFirst","UpToFace","TwoLengths",NULL};
+
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::Additive)
 
 Pad::Pad()
 {
+    ADD_PROPERTY(Type,((long)0));
+    Type.setEnums(TypeEnums);
     ADD_PROPERTY(Length,(100.0));
-    ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY(MirroredExtent,(0));
-    ADD_PROPERTY(TaperAngle,(0.0f));
+    ADD_PROPERTY(Length2,(100.0));
+    ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",(App::PropertyType)(App::Prop_None),"Face where feature will end");
 }
 
 short Pad::mustExecute() const
 {
     if (Placement.isTouched() ||
-        Sketch.isTouched() ||
+        Type.isTouched() ||
         Length.isTouched() ||
-        MirroredExtent.isTouched() ||
-        Reversed.isTouched()||
-        TaperAngle.isTouched())
+        Length2.isTouched() ||
+        UpToFace.isTouched())
         return 1;
-    return 0;
+    return Additive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pad::execute(void)
 {
+    // Validate parameters
     double L = Length.getValue();
-    if (L < Precision::Confusion())
+    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Length of pad too small");
-    App::DocumentObject* link = Sketch.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No sketch linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-    TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape()._Shape;
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
+    double L2 = Length2.getValue();
+    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
+        return new App::DocumentObjectExecReturn("Second length of pad too small");
 
-    // this is a workaround for an obscure OCC bug which leads to empty tessellations
-    // for some faces. Making an explicit copy of the linked shape seems to fix it.
-    // The error almost happens when re-computing the shape but sometimes also for the
-    // first time
-    BRepBuilderAPI_Copy copy(shape);
-    shape = copy.Shape();
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
-
-    TopExp_Explorer ex;
+    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
-    for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-        wires.push_back(TopoDS::Wire(ex.Current()));
+    try {
+        sketch = getVerifiedSketch();
+        wires = getSketchWires();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-    if (/*shape.ShapeType() != TopAbs_WIRE*/wires.empty()) // there can be several wires
-        return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
+
+    TopoDS_Shape support;
+    try {
+        support = getSupportShape();
+    } catch (const Base::Exception&) {
+        // ignore, because support isn't mandatory
+        support = TopoDS_Shape();
+    }
 
     // get the Sketch plane
-    Base::Placement SketchPos = static_cast<Part::Part2DObject*>(link)->Placement.getValue();
+    Base::Placement SketchPos = sketch->Placement.getValue();
     Base::Rotation SketchOrientation = SketchPos.getRotation();
-    Base::Vector3d SketchOrientationVector(0,0,1);
-    if (Reversed.getValue()) // negative direction
-        SketchOrientationVector *= -1;
-    SketchOrientation.multVec(SketchOrientationVector,SketchOrientationVector);
-
-    // get the support of the Sketch if any
-    App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(link)->Support.getValue();
-    Part::Feature *SupportObject = 0;
-    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        SupportObject = static_cast<Part::Feature*>(SupportLink);
-
-    TopoDS_Shape aFace = makeFace(wires);
-    if (aFace.IsNull())
-        return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
-
-    // lengthen the vector
-    SketchOrientationVector *= L;
+    Base::Vector3d SketchVector(0,0,1);
+    SketchOrientation.multVec(SketchVector,SketchVector);
 
     this->positionBySketch();
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
-    gp_Vec vec(SketchOrientationVector.x,SketchOrientationVector.y,SketchOrientationVector.z);
-    vec.Transform(invObjLoc.Transformation());
-
-    float taperAngle = TaperAngle.getValue();
-
-    TopoDS_Shape result;
-
     try {
+        support.Move(invObjLoc);
 
-        if (std::fabs(taperAngle) >= Precision::Confusion()) {
+        gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
+        dir.Transform(invObjLoc.Transformation());
 
-            //get outer Wire
-            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(aFace));
+        TopoDS_Shape sketchshape = makeFace(wires);
+        if (sketchshape.IsNull())
+            return new App::DocumentObjectExecReturn("Pad: Creating a face from sketch failed");
+        sketchshape.Move(invObjLoc);
 
-            double distance = std::tan(Base::toRadians(taperAngle)) * vec.Magnitude();
+        TopoDS_Shape prism;
+        std::string method(Type.getValueAsString());
+        if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
+            TopoDS_Face supportface = getSupportFace();
+            supportface.Move(invObjLoc);
 
-            std::list<TopoDS_Wire> wire_list;
+            if (Reversed.getValue())
+                dir.Reverse();
 
-            wire_list.push_back(outerWire);
-
-            BRepOffsetAPI_MakeOffset mkOffset;
-
-            mkOffset.AddWire(outerWire);
-
-            mkOffset.Perform(distance);
-
-            gp_Trsf mat;
-            mat.SetTranslation(vec);
-            BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
-
-            wire_list.push_back(TopoDS::Wire(mkTransform.Shape()));
-
-            BRepOffsetAPI_ThruSections mkGenerator(Standard_True);
-
-            for (std::list<TopoDS_Wire>::const_iterator it = wire_list.begin(); it != wire_list.end(); ++it) {
-                const TopoDS_Wire &wire = *it;
-                mkGenerator.AddWire(wire);
+            // Find a valid face to extrude up to
+            TopoDS_Face upToFace;
+            if (method == "UpToFace") {
+                getUpToFaceFromLinkSub(upToFace, UpToFace);
+                upToFace.Move(invObjLoc);
             }
-            mkGenerator.Build();
+            getUpToFace(upToFace, support, supportface, sketchshape, method, dir);
 
-            result = mkGenerator.Shape();
+            // A support object is always required and we need to use BRepFeat_MakePrism
+            // Problem: For Pocket/UpToFirst (or an equivalent Pocket/UpToFace) the resulting shape is invalid
+            // because the feature does not add any material. This only happens with the "2" option, though
+            // Note: It might be possible to pass a shell or a compound containing multiple faces
+            // as the Until parameter of Perform()
+            BRepFeat_MakePrism PrismMaker;
+            PrismMaker.Init(support, sketchshape, supportface, dir, 2, 1);
+            PrismMaker.Perform(upToFace);
 
-
-        }
-        //no taperAngle same as before
-        else{
-
-            // extrude the face to a solid
-            BRepPrimAPI_MakePrism PrismMaker(aFace.Moved(invObjLoc),vec,0,1);
-            if (PrismMaker.IsDone()) {
-
-                result = PrismMaker.Shape();
-            }
-            else
-                return new App::DocumentObjectExecReturn("Could not extrude the sketch!");
+            if (!PrismMaker.IsDone())
+                return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
+            prism = PrismMaker.Shape();
+        } else {
+            generatePrism(prism, sketchshape, method, dir, L, L2,
+                          Midplane.getValue(), Reversed.getValue());
         }
 
-        // if the sketch has a support fuse them to get one result object (PAD!)
-        if (SupportObject) {
-            // set the additive shape property for later usage in e.g. pattern
-            this->AddShape.setValue(result);
-            const TopoDS_Shape& support = SupportObject->Shape.getValue();
-            bool isSolid = false;
-            if (!support.IsNull()) {
-                TopExp_Explorer xp;
-                xp.Init(support,TopAbs_SOLID);
-                for (;xp.More(); xp.Next()) {
-                    isSolid = true;
-                    break;
-                }
-            }
-            if (isSolid) {
-                // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support.Moved(invObjLoc), result);
-                // Let's check if the fusion has been successful
-                if (!mkFuse.IsDone())
-                    return new App::DocumentObjectExecReturn("Fusion with support failed");
-                result = mkFuse.Shape();
-                // we have to get the solids (fuse create seldomly compounds)
-                TopoDS_Shape solRes = this->getSolid(result);
-                // lets check if the result is a solid
-                if (solRes.IsNull())
-                    return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-                this->Shape.setValue(solRes);
-            }
-            else
-                return new App::DocumentObjectExecReturn("Support is not a solid");
-        }
-        else {
-            // set the additive shape property for later usage in e.g. pattern
-            this->AddShape.setValue(result);
-            this->Shape.setValue(result);
+        if (prism.IsNull())
+            return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
+
+        // set the additive shape property for later usage in e.g. pattern
+        this->AddShape.setValue(prism);
+
+        // if the sketch has a support fuse them to get one result object
+        if (!support.IsNull()) {
+            // Let's call algorithm computing a fuse operation:
+            BRepAlgoAPI_Fuse mkFuse(support, prism);
+            // Let's check if the fusion has been successful
+            if (!mkFuse.IsDone())
+                return new App::DocumentObjectExecReturn("Pad: Fusion with support failed");
+            TopoDS_Shape result = mkFuse.Shape();
+            // we have to get the solids (fuse sometimes creates compounds)
+            TopoDS_Shape solRes = this->getSolid(result);
+            // lets check if the result is a solid
+            if (solRes.IsNull())
+                return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
+            this->Shape.setValue(solRes);
+        } else {
+            this->Shape.setValue(prism);
         }
 
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+        if (std::string(e->GetMessageString()) == "TopoDS::Face")
+            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
+                "Intersecting sketch entities or multiple faces in a sketch are not allowed.");
+        else
+            return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
 }
-
-
-
 

@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Number separator:</source>
-      <translation>Number separator:</translation>
+      <translation>Номер роздільника:</translation>
     </message>
     <message>
       <source>Points format:</source>

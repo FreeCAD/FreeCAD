@@ -78,7 +78,7 @@
     </message>
     <message>
       <source>Perpendicular to sketch</source>
-      <translation>Perpendicular to sketch</translation>
+      <translation>Loodrecht op schets</translation>
     </message>
     <message>
       <source>Reference</source>
@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Component</translation>
     </message>
@@ -132,7 +132,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Component</translation>
     </message>
@@ -176,6 +176,21 @@
     </message>
   </context>
   <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Component</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Afschuining ...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Afschuining van de geselecteerde randen van een vorm</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartCommon</name>
     <message>
       <source>Part</source>
@@ -203,13 +218,13 @@
     </message>
     <message>
       <source>Create a cone solid</source>
-      <translation>Create a cone solid</translation>
+      <translation>Een kegel volumemodel maken</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Component</translation>
     </message>
@@ -234,7 +249,7 @@
     </message>
     <message>
       <source>Make a cut of two shapes</source>
-      <translation>Make a cut of two shapes</translation>
+      <translation>Maak een doorsnede van twee vormen</translation>
     </message>
   </context>
   <context>
@@ -256,7 +271,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Component</translation>
     </message>
@@ -266,7 +281,7 @@
     </message>
     <message>
       <source>Exports to a CAD file</source>
-      <translation>Exports to a CAD file</translation>
+      <translation>Uitvoer naar een CAD-bestand</translation>
     </message>
   </context>
   <context>
@@ -311,7 +326,7 @@
     </message>
     <message>
       <source>Make a union of several shapes</source>
-      <translation>Make a union of several shapes</translation>
+      <translation>Verenig verschillende vormen</translation>
     </message>
   </context>
   <context>
@@ -355,6 +370,10 @@
       <translation>Loft...</translation>
     </message>
     <message>
+      <source>Utility to loft</source>
+      <translation>Utility to loft</translation>
+    </message>
+    <message>
       <source>Advanced utility to lofts</source>
       <translation>Advanced utility to lofts</translation>
     </message>
@@ -371,7 +390,7 @@
     </message>
     <message>
       <source>Create solid from a shell or compound</source>
-      <translation>Create solid from a shell or compound</translation>
+      <translation>Volumemodel vanuit een schil of samengestelde deel maken</translation>
     </message>
   </context>
   <context>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Component</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Refine shape</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Refine the copy of a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Component</translation>
     </message>
@@ -442,11 +478,11 @@
     </message>
     <message>
       <source>Revolve...</source>
-      <translation>Revolve...</translation>
+      <translation>Draaien...</translation>
     </message>
     <message>
       <source>Revolve a selected shape</source>
-      <translation>Revolve a selected shape</translation>
+      <translation>Een geselecteerde vorm draaien</translation>
     </message>
   </context>
   <context>
@@ -468,7 +504,7 @@
     <name>CmdPartSection</name>
     <message>
       <source>Make a section of two shapes</source>
-      <translation>Make a section of two shapes</translation>
+      <translation>Een doorsnede van twee vormen maken</translation>
     </message>
     <message>
       <source>Part</source>
@@ -482,17 +518,17 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Component</translation>
     </message>
     <message>
       <source>Create shape from mesh...</source>
-      <translation>Create shape from mesh...</translation>
+      <translation>Maak vorm van mesh...</translation>
     </message>
     <message>
       <source>Create shape from selected mesh object</source>
-      <translation>Create shape from selected mesh object</translation>
+      <translation>Vorm van geselecteerde mesh maken</translation>
     </message>
   </context>
   <context>
@@ -503,7 +539,7 @@
     </message>
     <message>
       <source>Create simple copy</source>
-      <translation>Create simple copy</translation>
+      <translation>Eenvoudige kopie maken</translation>
     </message>
     <message>
       <source>Create a simple non-parametric copy</source>
@@ -530,7 +566,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a sphere solid</source>
-      <translation>Create a sphere solid</translation>
+      <translation>Maak een bol volumemodel</translation>
     </message>
     <message>
       <source>Part</source>
@@ -542,10 +578,27 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Component</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Utility to sweep</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
-      <translation>Create a torus solid</translation>
+      <translation>Een torus volumemodel maken</translation>
     </message>
     <message>
       <source>Part</source>
@@ -590,7 +643,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="+14"/>
       <source>Cross sections</source>
-      <translation>Cross sections</translation>
+      <translation>Doorsnedes</translation>
     </message>
     <message>
       <source>Guiding plane</source>
@@ -614,7 +667,7 @@
     </message>
     <message>
       <source>Sections</source>
-      <translation>Sections</translation>
+      <translation>Delen</translation>
     </message>
     <message>
       <source>On both sides</source>
@@ -654,7 +707,7 @@
     </message>
     <message>
       <source>Difference</source>
-      <translation>verschil</translation>
+      <translation>Verschil</translation>
     </message>
     <message>
       <source>Union</source>
@@ -676,7 +729,7 @@
     </message>
     <message>
       <source>Shells</source>
-      <translation>Shells</translation>
+      <translation>Schillen</translation>
     </message>
     <message>
       <source>Compounds</source>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Afschuinen Randen</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -741,11 +802,19 @@
     </message>
     <message>
       <source>3D view</source>
-      <translation>3D view</translation>
+      <translation>3D-weergave</translation>
     </message>
     <message>
       <source>Note:This option works for planes only</source>
-      <translation>Note:This option works for planes only</translation>
+      <translation>Opmerking: deze optie werkt allen voor vlakken</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Maak een volumemodel</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Taper outward angle</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -817,7 +886,7 @@
       <translation>Geen selectie</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Af te ronden kanten</translation>
     </message>
@@ -853,7 +922,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <translation>Geen</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Rand %1</translation>
     </message>
@@ -1175,6 +1244,18 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Torus</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Ellipse</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Punt</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Lijn</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -1215,6 +1296,67 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>V-parameter:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Coordinate system:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Right-handed</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Left-handed</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Angle 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Angle 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>From three points</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Major radius:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Minor radius:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>End point</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Start point</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
       <translation>&amp;Maken</translation>
     </message>
@@ -1231,7 +1373,6 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Maak %1</translation>
     </message>
@@ -1240,7 +1381,7 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Geen actief document</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
       <translation>Steiging:</translation>
     </message>
@@ -1285,7 +1426,11 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Vorm</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Select line in 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Selecteer eerst een vorm om te roteren.</translation>
     </message>
@@ -1366,7 +1511,7 @@ Please select a valid shape in the drop-down box first.</source>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Algemeen</translation>
     </message>
@@ -1390,13 +1535,65 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Units for export of STEP/IGES</source>
       <translation>Eenheden voor de export naar STEP/IGES</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Model settings</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatically refine model after boolean operation</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatically check model after boolean operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Face colors</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Do you really want to cancel?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Location</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Positie</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D-aanzicht</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertex/Wire</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Loft</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
       <translation>Te weinig elementen</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>At least two vertices, edges or wires are required.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
@@ -1472,6 +1669,10 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Selecteer drie of meer randen</translation>
     </message>
     <message>
+      <source>Select one or more edges</source>
+      <translation>Select one or more edges</translation>
+    </message>
+    <message>
       <source>Select two or more faces</source>
       <translation>Selecteer twee of meer vlakken</translation>
     </message>
@@ -1497,9 +1698,36 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertex/Wire</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Sweep path</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Select an edge or wire you want to sweep along.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Te weinig elementen</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>At least one edge or wire is required.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
       <translation>Hint</translation>
     </message>
@@ -1545,7 +1773,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Offset</source>
-      <translation>Verplaatsing</translation>
+      <translation>Verschuiving</translation>
     </message>
     <message>
       <source>Orient</source>
@@ -1769,9 +1997,31 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Maak een volumemodel</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Verkeerde selectie</translation>
     </message>
@@ -1809,21 +2059,25 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Enter tolerance for sewing shape:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Bewerk spiegelvlak</translation>
+    </message>
+    <message>
+      <source>Edit chamfer edges</source>
+      <translation>Edit chamfer edges</translation>
     </message>
     <message>
       <source>Transform</source>
       <translation>Transformeren</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Selecteer twee of meer vormen, alstublieft.</translation>
     </message>
@@ -1832,12 +2086,12 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Je moet of twee randen of twee draden selecteren.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>Afgeronde randen bewerken</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
       <translation>Set colors...</translation>
     </message>

@@ -27,6 +27,11 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+namespace Gui {
+    class Document;
+    class ViewProvider;
+}
+
 namespace PartGui { 
 
 class ViewProviderPartExt;
@@ -49,6 +54,8 @@ private Q_SLOTS:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void changeEvent(QEvent *e);
+    void slotDeleteDocument(const Gui::Document&);
+    void slotDeleteObject(const Gui::ViewProvider&);
 
 private:
     class Private;

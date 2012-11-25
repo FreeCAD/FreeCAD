@@ -22,10 +22,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(ImportGui_LIBS
     FreeCADGui
     PartGui
-    TKXCAF
-    TKLCAF
-    TKXDESTEP
-    TKXDEIGES
+    ${OCC_OCAF_LIBRARIES}
 )
 
 SET(ImportGui_SRCS
@@ -40,8 +37,12 @@ SET(ImportGui_SRCS
 
 add_library(ImportGui SHARED ${ImportGui_SRCS})
 target_link_libraries(ImportGui ${ImportGui_LIBS})
-fc_copy_script("Mod/Import" "ImportGui" Init.py)
-fc_copy_script("Mod/Import" "ImportGui" InitGui.py)
+
+
+fc_target_copy_resource(ImportGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Import
+    ${CMAKE_BINARY_DIR}/Mod/Import
+    Init.py InitGui.py)
 
 if(MSVC)
     set_target_properties(ImportGui PROPERTIES SUFFIX ".pyd")

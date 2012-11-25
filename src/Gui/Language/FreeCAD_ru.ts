@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Доступны:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Выбранные:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Добавить</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Удалить</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Переместить вверх</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Переместить вниз </translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Перемещаемый объект</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Фиксированный объект</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -116,7 +154,7 @@
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Cancel</translation>
+      <translation>О&amp;тмена</translation>
     </message>
   </context>
   <context>
@@ -134,7 +172,7 @@
     </message>
     <message>
       <source>Revision number</source>
-      <translation>Версия</translation>
+      <translation>Редакция</translation>
     </message>
     <message>
       <source>Version</source>
@@ -159,6 +197,10 @@
     <message>
       <source>License...</source>
       <translation>Лицензия ...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Скопировать в буфер обмена</translation>
     </message>
   </context>
   <context>
@@ -250,7 +292,7 @@
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Cancel</translation>
+      <translation>О&amp;тмена</translation>
     </message>
     <message>
       <source></source>
@@ -276,7 +318,7 @@
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Cancel</translation>
+      <translation>О&amp;тмена</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -303,7 +345,7 @@
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Отменить</translation>
+      <translation>Отмена</translation>
     </message>
     <message>
       <source>Add icons...</source>
@@ -586,7 +628,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>New...</source>
-      <translation>Новый...</translation>
+      <translation>Создать...</translation>
     </message>
     <message>
       <source>Rename...</source>
@@ -606,7 +648,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;Separator&gt;</source>
-      <translation>&lt;Separator&gt;</translation>
+      <translation>&lt;Разделитель&gt;</translation>
     </message>
     <message>
       <source>New toolbar</source>
@@ -710,10 +752,6 @@ Please define another shortcut.</source>
       <translation>Режим просмотра</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Режим отображения:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Режим вывода  на печать:</translation>
     </message>
@@ -736,6 +774,10 @@ Please define another shortcut.</source>
     <message>
       <source>Color plot:</source>
       <translation>Цветной рисунок:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Окно документа:</translation>
     </message>
   </context>
   <context>
@@ -875,7 +917,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Отменить</translation>
+      <translation>Отмена</translation>
     </message>
     <message>
       <source></source>
@@ -921,7 +963,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
   </context>
   <context>
@@ -980,7 +1022,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Отменить</translation>
+      <translation>Отмена</translation>
     </message>
     <message>
       <source>Macro path:</source>
@@ -1077,7 +1119,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Help viewer</source>
-      <translation>программа просмотра справки</translation>
+      <translation>Программа просмотра справки</translation>
     </message>
     <message>
       <source>Location of start page</source>
@@ -1184,7 +1226,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Cancel</translation>
+      <translation>О&amp;тмена</translation>
     </message>
     <message>
       <source></source>
@@ -1246,7 +1288,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Cancel</translation>
+      <translation>О&amp;тмена</translation>
     </message>
     <message>
       <source></source>
@@ -1454,7 +1496,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>3D Navigation</source>
-      <translation>3D Навигация</translation>
+      <translation>3D-навигация</translation>
     </message>
     <message>
       <source>Mouse...</source>
@@ -1484,12 +1526,20 @@ Specify another directory, please.</source>
       <source>Invert zoom</source>
       <translation>Инвертировать зум</translation>
     </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Масштабирование курсора</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Шаг масштабирования</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 навигация</translation>
+      <translation>Навигация в стиле %1</translation>
     </message>
   </context>
   <context>
@@ -1564,7 +1614,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;Cancel</translation>
+      <translation>О&amp;тмена</translation>
     </message>
     <message>
       <source>Parameter range</source>
@@ -1724,6 +1774,10 @@ Specify another directory, please.</source>
     <message>
       <source>Items</source>
       <translation>Элементы</translation>
+    </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Выделение текущей строки</translation>
     </message>
   </context>
   <context>
@@ -1921,7 +1975,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Macro recording settings</source>
@@ -1949,7 +2003,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Recording GUI commands</source>
-      <translation>Запись GUI команды</translation>
+      <translation>Запись команд GUI</translation>
     </message>
     <message>
       <source>Record as comment</source>
@@ -1958,6 +2012,14 @@ Specify another directory, please.</source>
     <message>
       <source>Macro path</source>
       <translation>Путь к Макросу</translation>
+    </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>Параметры общих макросов</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Запуск макросов в локальном окружении</translation>
     </message>
   </context>
   <context>
@@ -2050,20 +2112,48 @@ Specify another directory, please.</source>
       <translation>Полностью связанная геометрия</translation>
     </message>
     <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>Цвет вспомогательной геометрии в режиме редактирования</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>Цвет полностью связанной геометрии в режиме редактирования</translation>
-    </message>
-    <message>
       <source>The color of vertices being edited</source>
       <translation>Цвет редактируемых вершин</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
       <translation>цвет редактируемых граней</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>Цвет вспомогательной геометрии в режиме редактирования</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>Цвет полностью связанной геометрии в режиме редактирования</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Цвет текста курсора</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Цвет формы по умолчанию</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>Цвет новых фигур по умолчанию</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Ширина и цвет линии по умолчанию</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>Цвет линии по умолчанию для новых фигур</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>Толщина линии для новых фигур по умолчанию</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>пиксел</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2204,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-      <translation>Если вы хотите узнать больше о FreeCAD вам необходимо обратиться в %1 или нажмите пункт Справка в меню Справка.</translation>
+      <translation>Если вы хотите узнать больше о FreeCAD, вам необходимо посетить %1 или выбрать пункт «Содержание» в меню «Справка».</translation>
     </message>
   </context>
   <context>
@@ -2127,8 +2217,40 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Отменен.</translation>
+      <source>Download</source>
+      <translation>Скачать</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Отмена</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Закрыть</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>Файл с именем %1 уже существует в текущем каталоге. Перезаписать?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Не удается сохранить файл %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Загрузка %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Загрузка отменена.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Ошибка загрузки: %1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Загружено %1 в текущий каталог.</translation>
     </message>
   </context>
   <context>
@@ -2163,6 +2285,13 @@ Specify another directory, please.</source>
     <message>
       <source>OK</source>
       <translation>OK</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Авторское право</translation>
     </message>
   </context>
   <context>
@@ -2358,7 +2487,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Rotation axis with angle</translation>
+      <translation>Ось вращения с углом</translation>
     </message>
     <message>
       <source>Euler angles</source>
@@ -2370,7 +2499,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Apply incremental changes to object placement</source>
-      <translation>Применить дополнительные изменения к объекту размещения</translation>
+      <translation>Наращивать изменения в позиции объекта</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -2430,7 +2559,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Текстуры</translation>
+      <translation>Проекция текстуры</translation>
     </message>
     <message>
       <source>Global</source>
@@ -2465,7 +2594,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::Transform</name>
     <message>
       <source>Cancel</source>
-      <translation>Отменить</translation>
+      <translation>Отмена</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -2488,7 +2617,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Отменить</translation>
+      <translation>Отмена</translation>
     </message>
     <message>
       <source></source>
@@ -2534,7 +2663,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>All HTML files (*.html *.htm)</source>
-      <translation>Все HTML-файлы (*.html *.htm)</translation>
+      <translation>Все файлы HTML (*.html *.htm)</translation>
     </message>
     <message>
       <source>External browser</source>
@@ -2553,7 +2682,7 @@ Specify another directory, please.</source>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
       <source>Property View</source>
-      <translation>Вид собственности</translation>
+      <translation>Просмотр свойств</translation>
     </message>
   </context>
   <context>
@@ -2618,7 +2747,7 @@ Specify another directory, please.</source>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
       <source>Property View</source>
-      <translation>Вид собственности</translation>
+      <translation>Просмотр свойств</translation>
     </message>
   </context>
   <context>
@@ -2719,7 +2848,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-      <translation>FreeCAD macro (*.FCMacro);;Python (*.ру)</translation>
+      <translation>Макрос FreeCAD (*.FCMacro);;Python (*.ру)</translation>
     </message>
     <message>
       <source>Export PDF</source>
@@ -2739,7 +2868,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>%1 chars removed</source>
-      <translation>%1 символов удалено</translation>
+      <translation>Удалено символов: %1</translation>
     </message>
     <message>
       <source>%1 chars added</source>
@@ -2853,6 +2982,25 @@ Do you want to save your changes?</source>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Направление:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2883,6 +3031,88 @@ Do you want to save your changes?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Ручное выравнивание</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>Выравнивание выполняется.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Выравнивание[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Пожалуйста, выберите хотя одну точку на левом и правом виде</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Пожалуйста, выберите хотя бы %1 точек на левом и правом виде</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Пожалуйста, выберите точки на левом и правом виде</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>Выравнивание завершено</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>Выравнивание было отменено</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Слишком мало точек на левом виде По крайней мере %1 точек необходимо.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Слишком мало точек на правом виде. По крайней мере %1 точек необходимо.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Выбрано различное количество точек на виде слева и справа. На левом виде выбрано %1 точек, а на виде справа %2.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Попытайтесь выровнять группу видов</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>Выравнивание не удалось. Как вы хотите продолжить?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Повторить</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Игнорировать</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Прервать</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Выбрано различное количество точек на виде слева и справа. На левом виде выбрано %1 точек, а на виде справа %2.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Выбрана точка (%1, %2, %3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>Ни одна точка не выбрана</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...
@@ -2895,7 +3125,7 @@ Do you want to save your changes?</source>
     <name>Gui::ProgressBar</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Осталось:%1</translation>
+      <translation>Осталось: %1</translation>
     </message>
     <message>
       <source>Aborting</source>
@@ -2910,7 +3140,7 @@ Do you want to save your changes?</source>
     <name>Gui::ProgressDialog</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Осталось:%1</translation>
+      <translation>Осталось: %1</translation>
     </message>
     <message>
       <source>Aborting</source>
@@ -2964,7 +3194,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Unhandled FreeCAD exception.</source>
-      <translation>Необработанное исключение FreeCAD.</translation>
+      <translation>Необработанное прерывание FreeCAD.</translation>
     </message>
     <message>
       <source>Unhandled unknown C++ exception.</source>
@@ -2992,7 +3222,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Macro Files (*.FCMacro *.py)</source>
-      <translation>Макрос файлы (*.FCMacro *.py)</translation>
+      <translation>Файлы макросов (*.FCMacro *.py)</translation>
     </message>
     <message>
       <source>Insert file name</source>
@@ -3016,7 +3246,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>&amp;Copy</source>
-      <translation>Копировать</translation>
+      <translation>&amp;Копировать</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -3025,6 +3255,10 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Select All</source>
       <translation>Выбрать всё</translation>
+    </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Очистить консоль</translation>
     </message>
   </context>
   <context>
@@ -3166,10 +3400,6 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-      <source>Display mode:</source>
-      <translation>Режим отображения:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Режим вывода  на печать:</translation>
     </message>
@@ -3189,12 +3419,16 @@ Do you want to specify another directory?</source>
       <source>Appearance</source>
       <translation>Представление</translation>
     </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Окно документа:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
   </context>
   <context>
@@ -3213,10 +3447,22 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>Английский</translation>
+      <source>Press left mouse button</source>
+      <translation>Нажмите левую кнопку мыши</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Нажмите клавишу SHIFT</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Нажмите кнопку ALT</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Нажмите PgUp/PgDown</translation>
     </message>
   </context>
   <context>
@@ -3378,11 +3624,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Вид собственности</translation>
+      <translation>Просмотр свойств</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Выбор зрения</translation>
+      <translation>Просмотр выделения</translation>
     </message>
     <message>
       <source>Report view</source>
@@ -3470,14 +3716,6 @@ Do you want to specify another directory?</source>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>Общая ошибка при загрузке инструментария</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>Файл не найден</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Не удается открыть файл %1</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -3635,7 +3873,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Отменить</translation>
+      <translation>Отмена</translation>
     </message>
     <message>
       <source>Inner</source>
@@ -3731,7 +3969,7 @@ In order to load it Qt 4.4 or higher is required.</source>
     </message>
     <message>
       <source>%1 Help</source>
-      <translation>%1 Справка</translation>
+      <translation>Справка по %1</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
@@ -3761,7 +3999,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 навигация</translation>
+      <translation>Навигация в стиле %1</translation>
     </message>
     <message>
       <source>Move annotation</source>
@@ -3775,6 +4013,17 @@ Be aware the point where you click matters.</source>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Документ находится в режиме редактирования, и поэтому не может быть закрыт на данный момент. Вы либо должны закончить или отменить редактирование в панели задач.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Объемное выделение</translation>
     </message>
   </context>
   <context>
@@ -3815,7 +4064,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>Сл&amp;едующий</translation>
+      <translation>Сл&amp;едующее</translation>
     </message>
     <message>
       <source>Activate next window</source>
@@ -3830,11 +4079,26 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>Пре&amp;дыдущий</translation>
+      <translation>Пре&amp;дыдущее</translation>
     </message>
     <message>
       <source>Activate previous window</source>
       <translation>Активировать предыдущее окно</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Правка</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Выравнивание...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Выравнять выбранные объекты</translation>
     </message>
   </context>
   <context>
@@ -3860,7 +4124,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>включить/выключить оси координат</translation>
+      <translation>Индикатор начала координат</translation>
     </message>
   </context>
   <context>
@@ -3871,7 +4135,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp; Каскад</translation>
+      <translation>&amp;Каскад</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
@@ -3927,7 +4191,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdCopy</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
@@ -3942,7 +4206,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdCut</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>&amp;Cut</source>
@@ -3954,29 +4218,14 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Редактировать</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Двойное выделение</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Вложить дубликаты выбранных объектов в активный документ</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdDelete</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>&amp;Delete</source>
-      <translation>&amp; Удалить</translation>
+      <translation>&amp;Удалить</translation>
     </message>
     <message>
       <source>Deletes the selected objects</source>
@@ -4025,14 +4274,14 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Execute macro</source>
@@ -4055,7 +4304,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
   </context>
   <context>
@@ -4081,7 +4330,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Настройки ...</translation>
+      <translation>&amp;Параметры...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
@@ -4111,7 +4360,41 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Draw style</translation>
+      <translation>Стиль представления</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Правка</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Двойное выделение</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Вложить дубликаты выбранных объектов в активный документ</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Правка</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Переключение в режим редактирования</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Переключить выбранные объекты в режим редактирования</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Добавьте или уберите выбранные объекты из режима редактирования</translation>
     </message>
   </context>
   <context>
@@ -4122,15 +4405,34 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp; Экспорт...</translation>
+      <translation>&amp;Экспортировать...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
       <translation>Экспорт объекта в активный документ</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Поддерживаемые форматы</translation>
+      <source>No selection</source>
+      <translation>Нет выбора</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Пожалуйста, сначала выберите объекты, которые вы хотите экспортировать.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Инструменты</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Граф зависимостей...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Показать граф зависимостей объектов в активном документе</translation>
     </message>
   </context>
   <context>
@@ -4160,7 +4462,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>The FreeCAD website</source>
-      <translation>Web-сайт FreeCAD</translation>
+      <translation>Сайт FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -4216,7 +4518,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Import...</source>
-      <translation>&amp; Импорт...</translation>
+      <translation>&amp;Импортировать...</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
@@ -4235,7 +4537,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Debug macro</source>
@@ -4250,7 +4552,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdMacroStepOver</name>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Step over</source>
@@ -4261,7 +4563,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdMacroStopDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Stop debugging</source>
@@ -4276,7 +4578,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdMacroStopRecord</name>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
@@ -4305,12 +4607,12 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Инструменты</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Измерить дистанцию</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Измерить дистанцию между двумя выбранными обьектами</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Измерить расстояние</translation>
     </message>
   </context>
   <context>
@@ -4344,7 +4646,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;New</source>
-      <translation>&amp;Новый</translation>
+      <translation>&amp;Создать</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
@@ -4360,21 +4662,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Show help to the application</source>
       <translation>Показать справку для приложения</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Справка</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Руководство Python</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Показать документацию Python</translation>
     </message>
   </context>
   <context>
@@ -4419,7 +4706,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdPaste</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -4434,7 +4721,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdPlacement</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>Placement...</source>
@@ -4468,7 +4755,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>&amp; Экспорт PDF...</translation>
+      <translation>Э&amp;кспортировать PDF...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
@@ -4584,7 +4871,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>&amp;Redo</source>
@@ -4599,7 +4886,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdRefresh</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>&amp;Refresh</source>
@@ -4659,7 +4946,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>Select &amp;All</source>
@@ -4742,7 +5029,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Текстуры</translation>
+      <translation>Проекция текстуры</translation>
     </message>
   </context>
   <context>
@@ -4764,7 +5051,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdToggleBreakpoint</name>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>Toggle breakpoint</source>
@@ -4865,7 +5152,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdTransform</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>Transform...</source>
@@ -4895,7 +5182,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdUndo</name>
     <message>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <source>&amp;Undo</source>
@@ -4929,11 +5216,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Axometric</source>
-      <translation>Axometric</translation>
+      <translation>Аксонометрический</translation>
     </message>
     <message>
       <source>Set to axometric view</source>
-      <translation>Установить вид в axometric</translation>
+      <translation>Переключиться на аксонометрический вид</translation>
     </message>
   </context>
   <context>
@@ -5184,11 +5471,41 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Right</source>
-      <translation>Право</translation>
+      <translation>Вправо</translation>
     </message>
     <message>
       <source>Set to right view</source>
       <translation>Установить вид справа</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Повернуть влево</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Повернуть вид на 90° против часовой стрелки</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Повернуть вправо</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Повернуть вид на 90° по часовой стрелке</translation>
     </message>
   </context>
   <context>
@@ -5310,8 +5627,8 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Стандартный вид</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Режим отображения</translation>
+      <source>Document window</source>
+      <translation>Окно документа</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5359,19 +5676,47 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>As is</translation>
+      <translation>Как есть</translation>
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normal mode</translation>
+      <translation>Обычный режим</translation>
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Wireframe</translation>
+      <translation>Каркас</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Wireframe mode</translation>
+      <translation>Каркасный режим</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>GraphViz не найден</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>GraphViz не найден. Хотите указать путь установки, если он уже установлен?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Путь установки GraphViz</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Граф зависимостей</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Ошибка GraphViz</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>GraphViz не удалось создать файл образа</translation>
     </message>
   </context>
   <context>
@@ -5418,7 +5763,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;On-line help</source>
-      <translation>Помощь онлайн</translation>
+      <translation>Справка в Сети</translation>
     </message>
     <message>
       <source>&amp;Help</source>
@@ -5430,7 +5775,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Макро</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <source>View</source>

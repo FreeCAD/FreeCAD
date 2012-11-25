@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -58,6 +58,10 @@
       <translation>Ograniči horizontalnu udaljenost</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Ograniči horizontalnu udaljenost između dvije točke ili krajeva linije</translation>
     </message>
@@ -67,6 +71,10 @@
     <message>
       <source>Sketcher</source>
       <translation>Skica</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Constrain horizontal distance</source>
@@ -230,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -284,8 +292,12 @@
       <translation>Napravi obrub</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Napravi obrub između linija ili u podudarnoj točki</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Napravi zaobljenje između dvije linija ili u podudarnoj točki</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,9 +376,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Skica</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>Vanjska geometrija</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Kreiraj rub povezan sa vanjskom geometrijom</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -406,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Create a new or edit the selected sketch</translation>
+      <translation>Stvaranje novog ili izmjenu odabrane skice</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -447,13 +474,17 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
       <source>Trim edge</source>
       <translation>Skrati rub</translation>
+    </message>
+    <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Odreži dio ruba s obzirom na odabranu poziciju</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
@@ -463,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -496,7 +527,7 @@
       <translation>Odaberite rub(ove) iz skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
       <translation>Odaberite rub skice.</translation>
     </message>
@@ -513,6 +544,10 @@
       <translation>Nemoguće ograničenje</translation>
     </message>
     <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Nemoguće dodavanje ograničenja među vanjskim geometrijama!</translation>
+    </message>
+    <message>
       <source>Only sketch and its support is allowed to select</source>
       <translation>Dopušteno je odabrati samo skicu i njenu podršku</translation>
     </message>
@@ -527,6 +562,14 @@
     <message>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>Odabrani rub već ima okomito ograničenje!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>Odabrani objekt(i) ne mogu prihvatiti horizontalno ograničenje!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>Odabrani objekt(i) ne mogu prihvatiti vertikalno ograničenje!</translation>
     </message>
     <message>
       <source>Select entities from the sketch.</source>
@@ -549,12 +592,24 @@
       <translation>Odaberite točno jednu liniju ili jednu točku i jednu liniju ili dvije točke iz skice.</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Nemoguće dodavanje ograničenja duljine na vanjsku geometriju!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Odaberite točno jednu točku i jedan objekt iz skice.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Odaberite točno jednu liniju ili do dvije točke iz skice.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Nemoguće dodavanje vodoravnog ograničenja na vanjsku geometriju!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Nemoguće dodavanje ograničenja duljine na vanjsku geometriju!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -573,8 +628,32 @@
       <translation>Odabrani rub nije valjana linija</translation>
     </message>
     <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>Odabrane točke bi trebale biti vrhovi lukova i/ili linija.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>Odabrana točka bi trebala biti vrh luka ili linije.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>Odabrani rub bi trebao biti luk, linija ili kružnica.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>Jedan od doabranih rubova bi trebala biti linija.</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Odaberite točno jedan luk ili krug iz skica.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Odeaberite jednu ili dvije linije iz skice.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Nemoguće dodavanje ograničenja kuta vanjskoj geometriji!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -587,6 +666,22 @@
     <message>
       <source>Select atleast two lines from the sketch.</source>
       <translation>Odaberite barem dvije linije iz skice.</translation>
+    </message>
+    <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Odaberite dva kompatibilna ruba</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Koordinatne osi skice se ne mogu koristiti sa ograničenjem izjednačenja duljine</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Odaberite dva ili više ruba sličnog tipa</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Nemoguće dodavanje ograničenja među vanjskim geometrijama!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -625,7 +720,7 @@
       <translation>Odaberite točno dva entiteta iz skice.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>Uredi skicu</translation>
     </message>
@@ -638,7 +733,7 @@
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
       <translation>Nekoliko pod-elemenata odabrano</translation>
     </message>
@@ -673,13 +768,12 @@
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Dimensional constraint</translation>
+      <translation>Dimenzijonalno ograničenje</translation>
     </message>
   </context>
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
       <translation>Odaberite orijentaciju</translation>
     </message>
@@ -718,6 +812,38 @@
     <message>
       <source>datum:</source>
       <translation>datum:</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>Odaberite orijentaciju</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>Orijentacija skice</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>XY ravnina</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>XZ-Ravnina</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>YZ-Ravnina</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>Obrnutim smjerom</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>Odmak:</translation>
     </message>
   </context>
   <context>
@@ -762,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Grid size:</translation>
+      <translation>Veličina rešetke:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Grid snap</translation>
+      <translation>Skok na rešetku</translation>
     </message>
     <message>
       <source>Unsolved</source>

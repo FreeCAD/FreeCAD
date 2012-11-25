@@ -22,7 +22,7 @@
     </message>
     <message>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>長さ:</translation>
     </message>
     <message>
       <source>Dimension</source>
@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
@@ -132,7 +132,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
@@ -176,6 +176,21 @@
     </message>
   </context>
   <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>部品</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>面取り...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Chamfer the selected edges of a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartCommon</name>
     <message>
       <source>Part</source>
@@ -199,17 +214,17 @@
     </message>
     <message>
       <source>Cone</source>
-      <translation>Cone</translation>
+      <translation>三角錐</translation>
     </message>
     <message>
       <source>Create a cone solid</source>
-      <translation>Create a cone solid</translation>
+      <translation>円錐のソリッドを作成</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
@@ -250,13 +265,13 @@
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>円柱</translation>
     </message>
   </context>
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
@@ -281,7 +296,7 @@
     </message>
     <message>
       <source>Extrude a selected sketch</source>
-      <translation>Extrude a selected sketch</translation>
+      <translation>選択したスケッチを押し出し</translation>
     </message>
   </context>
   <context>
@@ -296,7 +311,7 @@
     </message>
     <message>
       <source>Fillet the selected edges of a shape</source>
-      <translation>Fillet the selected edges of a shape</translation>
+      <translation>選択した図形のエッジをフィレットにします。</translation>
     </message>
   </context>
   <context>
@@ -353,6 +368,10 @@
     <message>
       <source>Loft...</source>
       <translation>Loft...</translation>
+    </message>
+    <message>
+      <source>Utility to loft</source>
+      <translation>Utility to loft</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>部品</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Refine shape</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Refine the copy of a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
@@ -431,7 +467,7 @@
     </message>
     <message>
       <source>Reverse orientation of shapes</source>
-      <translation>Reverse orientation of shapes</translation>
+      <translation>図形の方向を反転します。</translation>
     </message>
   </context>
   <context>
@@ -482,7 +518,7 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
@@ -503,7 +539,7 @@
     </message>
     <message>
       <source>Create simple copy</source>
-      <translation>Create simple copy</translation>
+      <translation>コピーを作成</translation>
     </message>
     <message>
       <source>Create a simple non-parametric copy</source>
@@ -530,7 +566,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a sphere solid</source>
-      <translation>Create a sphere solid</translation>
+      <translation>球ソリッドを作成する</translation>
     </message>
     <message>
       <source>Part</source>
@@ -538,14 +574,31 @@
     </message>
     <message>
       <source>Sphere</source>
-      <translation>Sphere</translation>
+      <translation>球</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>部品</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Utility to sweep</translation>
     </message>
   </context>
   <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
-      <translation>Create a torus solid</translation>
+      <translation>トーラスソリッドを作成する</translation>
     </message>
     <message>
       <source>Part</source>
@@ -553,7 +606,7 @@
     </message>
     <message>
       <source>Torus</source>
-      <translation>Torus</translation>
+      <translation>トーラス</translation>
     </message>
   </context>
   <context>
@@ -618,7 +671,7 @@
     </message>
     <message>
       <source>On both sides</source>
-      <translation>On both sides</translation>
+      <translation>両側</translation>
     </message>
     <message>
       <source>Count</source>
@@ -688,7 +741,7 @@
     </message>
     <message>
       <source>Swap selection</source>
-      <translation>Swap selection</translation>
+      <translation>選択を入れ替え</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="-10"/>
@@ -721,11 +774,19 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Chamfer Edges</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
       <source>Extrude</source>
-      <translation>Extrude</translation>
+      <translation>押し出し</translation>
     </message>
     <message>
       <source>Direction</source>
@@ -737,7 +798,7 @@
     </message>
     <message>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>長さ:</translation>
     </message>
     <message>
       <source>3D view</source>
@@ -746,6 +807,14 @@
     <message>
       <source>Note:This option works for planes only</source>
       <translation>Note:This option works for planes only</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>ソリッド作成</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Taper outward angle</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -786,7 +855,7 @@
     </message>
     <message>
       <source>Fillet Parameter</source>
-      <translation>Fillet Parameter</translation>
+      <translation>フィレット パラメーター</translation>
     </message>
     <message>
       <source>Radius:</source>
@@ -798,11 +867,11 @@
     </message>
     <message>
       <source>Constant Radius</source>
-      <translation>Constant Radius</translation>
+      <translation>一定半径</translation>
     </message>
     <message>
       <source>Variable Radius</source>
-      <translation>Variable Radius</translation>
+      <translation>可変半径</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -810,24 +879,24 @@
     </message>
     <message>
       <source>Selected shape:</source>
-      <translation>Selected shape:</translation>
+      <translation>選択した図形:</translation>
     </message>
     <message>
       <source>No selection</source>
       <translation>No selection</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Edges to fillet</translation>
     </message>
     <message>
       <source>Start radius</source>
-      <translation>Start radius</translation>
+      <translation>半径を開始</translation>
     </message>
     <message>
       <source>End radius</source>
-      <translation>End radius</translation>
+      <translation>半径の終点</translation>
     </message>
     <message>
       <source>Radius</source>
@@ -853,7 +922,7 @@ Please check one or more edge entities first.</translation>
       <translation>なし</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Edge%1</translation>
     </message>
@@ -901,7 +970,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Height:</translation>
+      <translation>高さ:</translation>
     </message>
     <message>
       <source>Width:</source>
@@ -909,7 +978,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>長さ:</translation>
     </message>
     <message>
       <source>Position:</source>
@@ -933,7 +1002,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Height:</translation>
+      <translation>高さ:</translation>
     </message>
     <message>
       <source>Radius:</source>
@@ -973,7 +1042,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="+16"/>
       <source>IGES input file</source>
-      <translation>IGES input file</translation>
+      <translation>IGES入力ファイル</translation>
     </message>
     <message>
       <source>...</source>
@@ -989,7 +1058,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>File Name</source>
-      <translation>File Name</translation>
+      <translation>ファイル名</translation>
     </message>
     <message>
       <source></source>
@@ -1021,11 +1090,11 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Step input file</source>
-      <translation>Step input file</translation>
+      <translation>ステップ入力ファイル</translation>
     </message>
     <message>
       <source>File Name</source>
-      <translation>File Name</translation>
+      <translation>ファイル名</translation>
     </message>
     <message>
       <source></source>
@@ -1037,7 +1106,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="+68"/>
       <source>STEP (*.stp *.step);;All Files (*.*)</source>
-      <translation>STEP (*.stp *.step);;All Files (*.*)</translation>
+      <translation>STEPファイル(*.stp *.step);すべてのファイル (*.*)</translation>
     </message>
   </context>
   <context>
@@ -1157,23 +1226,35 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>円柱</translation>
     </message>
     <message>
       <source>Cone</source>
-      <translation>Cone</translation>
+      <translation>三角錐</translation>
     </message>
     <message>
       <source>Sphere</source>
-      <translation>Sphere</translation>
+      <translation>球</translation>
     </message>
     <message>
       <source>Ellipsoid</source>
-      <translation>Ellipsoid</translation>
+      <translation>楕円</translation>
     </message>
     <message>
       <source>Torus</source>
-      <translation>Torus</translation>
+      <translation>トーラス</translation>
+    </message>
+    <message>
+      <source>Ellipse</source>
+      <translation>Ellipse</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>点</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>直線</translation>
     </message>
     <message>
       <source>Parameter</source>
@@ -1185,11 +1266,11 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>長さ:</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Height:</translation>
+      <translation>高さ:</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -1216,8 +1297,69 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>V parametric:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Coordinate system:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Right-handed</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Left-handed</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Angle 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Angle 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>From three points</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Major radius:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Minor radius:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>End point</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Start point</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
-      <translation>&amp;Create</translation>
+      <translation>作成(&amp;C)</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1232,18 +1374,17 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
-      <translation>Create %1</translation>
+      <translation>%1を作成します。</translation>
     </message>
     <message>
       <source>No active document</source>
       <translation>No active document</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
-      <translation>Pitch:</translation>
+      <translation>ピッチ:</translation>
     </message>
     <message>
       <source>Helix</source>
@@ -1286,7 +1427,11 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>図形</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Select line in 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Select a shape for revolution, first.</translation>
     </message>
@@ -1367,7 +1512,7 @@ Please select a valid shape in the drop-down box first.</translation>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>標準</translation>
     </message>
@@ -1389,15 +1534,67 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Units for export of STEP/IGES</source>
-      <translation>Units for export of STEP/IGES</translation>
+      <translation>STEP/IGESをエキスポート時の単位</translation>
+    </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Model settings</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatically refine model after boolean operation</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatically check model after boolean operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Face colors</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Do you really want to cancel?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Location</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D 表示</translation>
     </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>頂点/連線</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Loft</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
-      <translation>Too few elements</translation>
+      <translation>要素が少なすぎます</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>At least two vertices, edges or wires are required.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
@@ -1413,7 +1610,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Shapes</source>
-      <translation>Shapes</translation>
+      <translation>図形</translation>
     </message>
     <message>
       <source>Mirror plane:</source>
@@ -1433,7 +1630,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Base point:</source>
-      <translation>Base point:</translation>
+      <translation>基準点:</translation>
     </message>
     <message>
       <source>x</source>
@@ -1473,6 +1670,10 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>三つ以上のエッジを選択</translation>
     </message>
     <message>
+      <source>Select one or more edges</source>
+      <translation>Select one or more edges</translation>
+    </message>
+    <message>
       <source>Select two or more faces</source>
       <translation>二つ以上の面を選択</translation>
     </message>
@@ -1498,9 +1699,36 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>頂点/連線</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Sweep path</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Select an edge or wire you want to sweep along.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>要素が少なすぎます</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>At least one edge or wire is required.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
       <translation>Hint</translation>
     </message>
@@ -1566,15 +1794,15 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation>X Axis</translation>
+      <translation>X軸</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation>Y Axis</translation>
+      <translation>Y軸</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation>Z Axis</translation>
+      <translation>Z軸</translation>
     </message>
     <message>
       <source>Increment</source>
@@ -1770,9 +1998,31 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>ソリッド作成</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
@@ -1810,21 +2060,25 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>Enter tolerance for sewing shape:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Edit mirror plane</translation>
+    </message>
+    <message>
+      <source>Edit chamfer edges</source>
+      <translation>Edit chamfer edges</translation>
     </message>
     <message>
       <source>Transform</source>
       <translation>変換</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
-      <translation>Part design</translation>
+      <translation>部品設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>二つ以上の図形を選択してください．</translation>
     </message>
@@ -1833,12 +2087,12 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>You have to select either two edges or two wires.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>フィレットエッジを編集</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
       <translation>色を設定...</translation>
     </message>

@@ -32,12 +32,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Рисование</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Рисование</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Эс&amp;киз</translation>
+      <source>S&amp;ketch</source>
+      <translation>Наборосок</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -52,6 +52,10 @@
       <translation>Основанный на эскизе</translation>
     </message>
     <message>
+      <source>Primitives</source>
+      <translation>Примитивы</translation>
+    </message>
+    <message>
       <source>Parametric</source>
       <translation>Параметрический</translation>
     </message>
@@ -61,7 +65,7 @@
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Wire Tools</translation>
+      <translation>Проволочные инструменты</translation>
     </message>
   </context>
 </TS>

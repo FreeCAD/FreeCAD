@@ -45,6 +45,11 @@ public:
     PythonEditor(QWidget *parent = 0);
     ~PythonEditor();
 
+    void startDebug();
+    void toggleBreakpoint();
+    void showDebugMarker(int line);
+    void hideDebugMarker();
+
 public Q_SLOTS:
     /** Inserts a '#' at the beginning of each selected line or the current line if 
      * nothing is selected
@@ -56,6 +61,7 @@ public Q_SLOTS:
      * this line is skipped.
      */
     void onUncomment();
+    void setFileName(const QString&);
 
 protected:
     /** Pops up the context menu with some extensions */

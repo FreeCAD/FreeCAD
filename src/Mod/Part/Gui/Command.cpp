@@ -61,6 +61,9 @@
 #include "ViewProvider.h"
 #include "TaskShapeBuilder.h"
 #include "TaskLoft.h"
+#include "TaskSweep.h"
+#include "TaskOffset.h"
+#include "TaskCheckGeometry.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -441,27 +444,24 @@ CmdPartImport::CmdPartImport()
     sPixmap       = "Part_Import";
 }
 
-
 void CmdPartImport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)");
-    filter << QObject::tr("STEP (*.stp *.step)");
-    filter << QObject::tr("IGES (*.igs *.iges)");
-    filter << QObject::tr("BREP (*.brp *.brep)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromAscii("STEP (*.stp *.step)");
+    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
+    filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
+    filter << QString::fromAscii("BREP (*.brp *.brep)");
 
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
+    QString select;
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
     if (!fn.isEmpty()) {
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
         openCommand("Import Part");
-        QString ext = QFileInfo(fn).suffix().toLower();
-        if (ext == QLatin1String("step") || 
-            ext == QLatin1String("stp")  ||
-            ext == QLatin1String("iges") ||
-            ext == QLatin1String("igs")) {
+        if (select == filter[1] ||
+            select == filter[3]) {
             doCommand(Doc, "import ImportGui");
             doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
@@ -470,6 +470,11 @@ void CmdPartImport::activated(int iMsg)
             doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
         commitCommand();
+
+        std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+            (*it)->viewAll();
+        }
     }
 }
 
@@ -501,28 +506,24 @@ CmdPartExport::CmdPartExport()
 void CmdPartExport::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)");
-    filter << QObject::tr("STEP (*.stp *.step)");
-    filter << QObject::tr("IGES (*.igs *.iges)");
-    filter << QObject::tr("BREP (*.brp *.brep)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromAscii("STEP (*.stp *.step)");
+    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
+    filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
+    filter << QString::fromAscii("BREP (*.brp *.brep)");
 
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
+    QString select;
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
-        openCommand("Import Part");
-        QString ext = QFileInfo(fn).suffix().toLower();
-        if (ext == QLatin1String("step") || 
-            ext == QLatin1String("stp")  ||
-            ext == QLatin1String("iges") ||
-            ext == QLatin1String("igs")) {
+        if (select == filter[1] ||
+            select == filter[3]) {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"ImportGui");
         }
         else {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"Part");
         }
-        commitCommand();
     }
 }
 
@@ -661,6 +662,7 @@ DEF_STD_CMD_A(CmdPartReverseShape);
 CmdPartReverseShape::CmdPartReverseShape()
   :Command("Part_ReverseShape")
 {
+
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Reverse shapes");
@@ -818,6 +820,33 @@ bool CmdPartFillet::isActive(void)
 }
 
 //===========================================================================
+// Part_Chamfer
+//===========================================================================
+DEF_STD_CMD_A(CmdPartChamfer);
+
+CmdPartChamfer::CmdPartChamfer()
+  :Command("Part_Chamfer")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Chamfer...");
+    sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Chamfer";
+}
+
+void CmdPartChamfer::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskChamferEdges(0));
+}
+
+bool CmdPartChamfer::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//===========================================================================
 // Part_Mirror
 //===========================================================================
 DEF_STD_CMD_A(CmdPartMirror);
@@ -918,9 +947,10 @@ CmdPartLoft::CmdPartLoft()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Loft...");
-    sToolTipText  = QT_TR_NOOP("Advanced utility to lofts");
+    sToolTipText  = QT_TR_NOOP("Utility to loft");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Loft";
 }
 
 void CmdPartLoft::activated(int iMsg)
@@ -931,6 +961,60 @@ void CmdPartLoft::activated(int iMsg)
 bool CmdPartLoft::isActive(void)
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdPartSweep);
+
+CmdPartSweep::CmdPartSweep()
+  : Command("Part_Sweep")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Sweep...");
+    sToolTipText  = QT_TR_NOOP("Utility to sweep");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Sweep";
+}
+
+void CmdPartSweep::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskSweep());
+}
+
+bool CmdPartSweep::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdPartOffset);
+
+CmdPartOffset::CmdPartOffset()
+  : Command("Part_Offset")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Offset...");
+    sToolTipText  = QT_TR_NOOP("Utility to offset");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Offset";
+}
+
+void CmdPartOffset::activated(int iMsg)
+{
+    Gui::Control().showDialog(new PartGui::TaskOffset());
+}
+
+bool CmdPartOffset::isActive(void)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid) == 1;
+    return (objectsSelected && !Gui::Control().activeDialog());
 }
 
 //--------------------------------------------------------------------------------------
@@ -951,6 +1035,7 @@ CmdShapeInfo::CmdShapeInfo()
 
 void CmdShapeInfo::activated(int iMsg)
 {
+#if 0
     static const char * const part_pipette[]={
         "32 32 17 1",
         "# c #000000",
@@ -1005,6 +1090,7 @@ void CmdShapeInfo::activated(int iMsg)
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+#endif
     //if (view) {
     //    Gui::View3DInventorViewer* viewer = view->getViewer();
     //    viewer->setEditing(true);
@@ -1139,6 +1225,39 @@ bool CmdPartRuledSurface::isActive(void)
     return getActiveGuiDocument();
 }
 
+//===========================================================================
+// Part_CheckGeometry
+//===========================================================================
+
+DEF_STD_CMD_A(CmdCheckGeometry);
+
+CmdCheckGeometry::CmdCheckGeometry()
+  : Command("Part_CheckGeometry")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Check Geometry");
+    sToolTipText  = QT_TR_NOOP("Analyzes Geometry For Errors");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_CheckGeometry";
+}
+
+void CmdCheckGeometry::activated(int iMsg)
+{
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg)
+        dlg = new PartGui::TaskCheckGeometryDialog();
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdCheckGeometry::isActive(void)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid) > 0;
+    return (hasActiveDocument() && !Gui::Control().activeDialog() && objectsSelected);
+}
+
 
 void CreatePartCommands(void)
 {
@@ -1152,6 +1271,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRevolve());
     rcCmdMgr.addCommand(new CmdPartCrossSections());
     rcCmdMgr.addCommand(new CmdPartFillet());
+    rcCmdMgr.addCommand(new CmdPartChamfer());
     rcCmdMgr.addCommand(new CmdPartCommon());
     rcCmdMgr.addCommand(new CmdPartCut());
     rcCmdMgr.addCommand(new CmdPartFuse());
@@ -1168,5 +1288,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartRuledSurface());
     rcCmdMgr.addCommand(new CmdPartBuilder());
     rcCmdMgr.addCommand(new CmdPartLoft());
+    rcCmdMgr.addCommand(new CmdPartSweep());
+    rcCmdMgr.addCommand(new CmdPartOffset());
+    rcCmdMgr.addCommand(new CmdCheckGeometry());
 } 
-

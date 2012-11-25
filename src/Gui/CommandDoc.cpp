@@ -24,12 +24,21 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QClipboard>
+# include <QEventLoop>
+# include <QFileDialog>
+# include <QGraphicsScene>
+# include <QGraphicsView>
+# include <QLabel>
 # include <QStatusBar>
 # include <QPointer>
+# include <QProcess>
+# include <sstream>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 #include <algorithm>
 
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <App/Document.h>
@@ -50,9 +59,13 @@
 #include "DlgProjectUtility.h"
 #include "Transform.h"
 #include "Placement.h"
+#include "ManualAlignment.h"
 #include "WaitCursor.h"
 #include "ViewProvider.h"
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include "MergeDocuments.h"
+#include "NavigationStyle.h"
 
 using namespace Gui;
 
@@ -188,6 +201,11 @@ void StdCmdImport::activated(int iMsg)
             getActiveGuiDocument()->getDocument()->getName(),
             it.value().toAscii());
     }
+
+    std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+    for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+        (*it)->viewAll();
+    }
 }
 
 bool StdCmdImport::isActive(void)
@@ -218,24 +236,15 @@ StdCmdExport::StdCmdExport()
 
 void StdCmdExport::activated(int iMsg)
 {
-    // fill the list of registered endings
-    QString formatList;
-    const char* supported = QT_TR_NOOP("Supported formats");
-    formatList = QObject::tr(supported);
-    formatList += QLatin1String(" (");
-
-    std::vector<std::string> filetypes = App::GetApplication().getExportTypes();
-    std::vector<std::string>::const_iterator it;
-    for (it=filetypes.begin();it != filetypes.end();++it) {
-        if (*it != "FCStd") {
-            // ignore the project file format
-            formatList += QLatin1String(" *.");
-            formatList += QLatin1String(it->c_str());
-        }
+    if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) == 0) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QString::fromUtf8(QT_TR_NOOP("No selection")),
+            QString::fromUtf8(QT_TR_NOOP("Please select first the objects you want to export.")));
+        return;
     }
 
-    formatList += QLatin1String(");;");
-
+    // fill the list of registered endings
+    QString formatList;
     std::map<std::string, std::string> FilterList = App::GetApplication().getExportFilters();
     std::map<std::string, std::string>::const_iterator jt;
     for (jt=FilterList.begin();jt != FilterList.end();++jt) {
@@ -262,9 +271,7 @@ void StdCmdExport::activated(int iMsg)
 
 bool StdCmdExport::isActive(void)
 {
-    // at least one object should be selected otherwise it might be confusing to the user
-    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0;
-    //return (getActiveGuiDocument() ? true : false);
+    return (getActiveGuiDocument() ? true : false);
 }
 
 //===========================================================================
@@ -286,11 +293,12 @@ StdCmdMergeProjects::StdCmdMergeProjects()
 
 void StdCmdMergeProjects::activated(int iMsg)
 {
-    QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
+    QString exe = qApp->applicationName();
     QString project = QFileDialog::getOpenFileName(Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge project")), QString(),
+        QString::fromUtf8(QT_TR_NOOP("Merge project")), FileDialog::getWorkingDirectory(),
         QString::fromUtf8(QT_TR_NOOP("%1 document (*.fcstd)")).arg(exe));
     if (!project.isEmpty()) {
+        FileDialog::setWorkingDirectory(project);
         App::Document* doc = App::GetApplication().getActiveDocument();
         QFileInfo info(QString::fromUtf8(doc->FileName.getValue()));
         QFileInfo proj(project);
@@ -300,9 +308,6 @@ void StdCmdMergeProjects::activated(int iMsg)
                 QString::fromUtf8(QT_TR_NOOP("Cannot merge project with itself.")));
             return;
         }
-
-        QString dir1 = proj.absoluteDir().filePath(proj.baseName());
-        QString dir2 = info.absoluteDir().filePath(info.baseName());
 
         Base::FileInfo fi((const char*)project.toUtf8());
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
@@ -314,6 +319,120 @@ void StdCmdMergeProjects::activated(int iMsg)
 bool StdCmdMergeProjects::isActive(void)
 {
     return this->hasActiveDocument();
+}
+
+//===========================================================================
+// Std_ExportGraphviz
+//===========================================================================
+
+namespace Gui {
+class ImageView : public MDIView
+{
+public:
+    ImageView(const QPixmap& p, QWidget* parent=0) : MDIView(0, parent)
+    {
+        scene = new QGraphicsScene();
+        scene->addPixmap(p);
+        view = new QGraphicsView(scene, this);
+        view->show();
+        setCentralWidget(view);
+    }
+    ~ImageView()
+    {
+        delete scene;
+        delete view;
+    }
+    QGraphicsScene* scene;
+    QGraphicsView* view;
+};
+}
+
+DEF_STD_CMD_A(StdCmdExportGraphviz);
+
+StdCmdExportGraphviz::StdCmdExportGraphviz()
+  : Command("Std_ExportGraphviz")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("Dependency graph...");
+    sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
+    sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
+    sWhatsThis    = "Std_ExportGraphviz";
+    eType         = 0;
+}
+
+void StdCmdExportGraphviz::activated(int iMsg)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    std::stringstream str;
+    doc->exportGraphviz(str);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Paths");
+    QProcess proc;
+    QStringList args;
+    args << QLatin1String("-Tpng");
+#ifdef FC_OS_LINUX
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
+#else
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+#endif
+    bool pathChanged = false;
+#ifdef FC_OS_WIN32
+    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+    QString exe = QString::fromAscii("%1/dot").arg(path);
+#endif
+    proc.setEnvironment(QProcess::systemEnvironment());
+    do {
+        proc.start(exe, args);
+        if (!proc.waitForStarted()) {
+            int ret = QMessageBox::warning(getMainWindow(),
+                qApp->translate("Std_ExportGraphviz","Graphviz not found"),
+                qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system.\n"
+                                "Do you want to specify its installation path if it's already installed?"),
+                                QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No)
+                return;
+            path = QFileDialog::getExistingDirectory(Gui::getMainWindow(),
+                qApp->translate("Std_ExportGraphviz","Graphviz installation path"));
+            if (path.isEmpty())
+                return;
+            pathChanged = true;
+#ifdef FC_OS_WIN32
+            exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+            exe = QString::fromAscii("%1/dot").arg(path);
+#endif
+        }
+        else {
+            if (pathChanged)
+                hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
+            break;
+        }
+    }
+    while(true);
+
+    proc.write(str.str().c_str(), str.str().size());
+    proc.closeWriteChannel();
+    if (!proc.waitForFinished())
+        return;
+
+    QPixmap px;
+    if (px.loadFromData(proc.readAll(), "PNG")) {
+        Gui::ImageView* view = new Gui::ImageView(px);
+        view->setWindowTitle(qApp->translate("Std_ExportGraphviz","Dependency graph"));
+        getMainWindow()->addWindow(view);
+    }
+    else {
+        QMessageBox::warning(getMainWindow(),
+        qApp->translate("Std_ExportGraphviz","Graphviz failed"),
+        qApp->translate("Std_ExportGraphviz","Graphviz failed to create an image file"));
+    }
+}
+
+bool StdCmdExportGraphviz::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
 }
 
 //===========================================================================
@@ -497,7 +616,7 @@ StdCmdPrint::StdCmdPrint()
 void StdCmdPrint::activated(int iMsg)
 {
     if (getMainWindow()->activeWindow()) {
-        getMainWindow()->statusBar()->showMessage(QObject::tr("Printing..."));
+        getMainWindow()->showMessage(QObject::tr("Printing..."));
         getMainWindow()->activeWindow()->print();
     }
 }
@@ -552,7 +671,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
 void StdCmdPrintPdf::activated(int iMsg)
 {
     if (getMainWindow()->activeWindow()) {
-        getMainWindow()->statusBar()->showMessage(QObject::tr("Exporting PDF..."));
+        getMainWindow()->showMessage(QObject::tr("Exporting PDF..."));
         getMainWindow()->activeWindow()->printPdf();
     }
 }
@@ -776,9 +895,9 @@ bool StdCmdPaste::isActive(void)
     return getMainWindow()->canInsertFromMimeData(mime);
 }
 
-DEF_STD_CMD_A(StdCmdDDuplicateSelection);
+DEF_STD_CMD_A(StdCmdDuplicateSelection);
 
-StdCmdDDuplicateSelection::StdCmdDDuplicateSelection()
+StdCmdDuplicateSelection::StdCmdDuplicateSelection()
   :Command("Std_DuplicateSelection")
 {
     sAppModule    = "Edit";
@@ -789,7 +908,7 @@ StdCmdDDuplicateSelection::StdCmdDDuplicateSelection()
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
 }
 
-void StdCmdDDuplicateSelection::activated(int iMsg)
+void StdCmdDuplicateSelection::activated(int iMsg)
 {
     App::Document* act = App::GetApplication().getActiveDocument();
     if (!act)
@@ -846,7 +965,7 @@ void StdCmdDDuplicateSelection::activated(int iMsg)
     }
 }
 
-bool StdCmdDDuplicateSelection::isActive(void)
+bool StdCmdDuplicateSelection::isActive(void)
 {
     return Gui::Selection().hasSelection();
 }
@@ -939,30 +1058,31 @@ bool StdCmdDelete::isActive(void)
 DEF_STD_CMD_A(StdCmdRefresh);
 
 StdCmdRefresh::StdCmdRefresh()
-  :Command("Std_Refresh")
+  : Command("Std_Refresh")
 {
-  sGroup        = QT_TR_NOOP("Edit");
-  sMenuText     = QT_TR_NOOP("&Refresh");
-  sToolTipText  = QT_TR_NOOP("Recomputes the current active document");
-  sWhatsThis    = "Std_Refresh";
-  sStatusTip    = QT_TR_NOOP("Recomputes the current active document");
-  sPixmap       = "view-refresh";
-  sAccel        = keySequenceToAccel(QKeySequence::Refresh);
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("&Refresh");
+    sToolTipText  = QT_TR_NOOP("Recomputes the current active document");
+    sWhatsThis    = "Std_Refresh";
+    sStatusTip    = QT_TR_NOOP("Recomputes the current active document");
+    sPixmap       = "view-refresh";
+    sAccel        = keySequenceToAccel(QKeySequence::Refresh);
 }
 
 void StdCmdRefresh::activated(int iMsg)
 {
-  if ( getActiveGuiDocument() )
-  {
-    openCommand("Refresh active document");
-    doCommand(Doc,"App.activeDocument().recompute()");
-    commitCommand(); 
-  }
+    if (getActiveGuiDocument()) {
+        //Note: Don't add the recompute to undo/redo because it complicates
+        //testing the changes of properties.
+        //openCommand("Refresh active document");
+        doCommand(Doc,"App.activeDocument().recompute()");
+        //commitCommand(); 
+    }
 }
 
 bool StdCmdRefresh::isActive(void)
 {
-  return this->getDocument() && this->getDocument()->isTouched();
+    return this->getDocument() && this->getDocument()->isTouched();
 }
 
 //===========================================================================
@@ -1022,6 +1142,114 @@ bool StdCmdPlacement::isActive(void)
     return (Gui::Control().activeDialog()==0);
 }
 
+//===========================================================================
+// Std_Alignment
+//===========================================================================
+DEF_STD_CMD_A(StdCmdAlignment);
+
+StdCmdAlignment::StdCmdAlignment()
+  : Command("Std_Alignment")
+{
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("Alignment...");
+    sToolTipText  = QT_TR_NOOP("Align the selected objects");
+    sStatusTip    = QT_TR_NOOP("Align the selected objects");
+    sWhatsThis    = "Std_Alignment";
+}
+
+void StdCmdAlignment::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
+        (App::GeoFeature::getClassTypeId());
+    ManualAlignment* align = ManualAlignment::instance();
+    QObject::connect(align, SIGNAL(emitCanceled()), align, SLOT(deleteLater()));
+    QObject::connect(align, SIGNAL(emitFinished()), align, SLOT(deleteLater()));
+
+    // Get the fixed and moving meshes
+    FixedGroup fixedGroup;
+    std::map<int, MovableGroup> groupMap;
+    fixedGroup.addView(sel[0]);
+    groupMap[0].addView(sel[1]);
+
+    // add the fixed group
+    align->setFixedGroup(fixedGroup);
+
+    // create the model of movable groups
+    MovableGroupModel model;
+    model.addGroups(groupMap);
+    align->setModel(model);
+    Base::Type style = Base::Type::fromName("Gui::CADNavigationStyle");
+    Base::Vector3d upDir(0,1,0), viewDir(0,0,-1);
+    Gui::Document* doc = Application::Instance->activeDocument();
+    if (doc) {
+        View3DInventor* mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
+        if (mdi) {
+            View3DInventorViewer* viewer = mdi->getViewer();
+            SoCamera* camera = viewer->getCamera();
+            if (camera) {
+                SbVec3f up(0,1,0), dir(0,0,-1);
+                camera->orientation.getValue().multVec(dir, dir);
+                viewDir.Set(dir[0],dir[1],dir[2]);
+                camera->orientation.getValue().multVec(up, up);
+                upDir.Set(up[0],up[1],up[2]);
+            }
+            style = viewer->navigationStyle()->getTypeId();
+        }
+    }
+
+    align->setMinPoints(1);
+    align->startAlignment(style);
+    align->setViewingDirections(viewDir,upDir, viewDir,upDir);
+    Gui::Selection().clearSelection();
+}
+
+bool StdCmdAlignment::isActive(void)
+{
+    if (ManualAlignment::hasInstance())
+        return false;
+    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 2;
+}
+
+//===========================================================================
+// Std_Edit
+//===========================================================================
+DEF_STD_CMD_A(StdCmdEdit);
+
+StdCmdEdit::StdCmdEdit()
+  : Command("Std_Edit")
+{
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
+    sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
+    sWhatsThis    = "Std_Edit";
+    sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
+#if QT_VERSION >= 0x040200
+    sPixmap       = "edit-edit";
+#endif
+    eType         = ForEdit;
+}
+
+void StdCmdEdit::activated(int iMsg)
+{
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        if (viewer->isEditingViewProvider()) {
+            doCommand(Command::Gui,"Gui.activeDocument().resetEdit()");
+        } else {
+            if (Selection().getCompleteSelection().size() > 0) {
+                SelectionSingleton::SelObj obj = Selection().getCompleteSelection()[0];
+                doCommand(Command::Gui,"Gui.activeDocument().setEdit(\"%s\",0)",obj.FeatName);
+            }
+        }
+    }
+}
+
+bool StdCmdEdit::isActive(void)
+{
+    return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != 0);
+}
+
 
 namespace Gui {
 
@@ -1034,6 +1262,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
+    rcCmdMgr.addCommand(new StdCmdExportGraphviz());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
@@ -1048,12 +1277,14 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdCut());
     rcCmdMgr.addCommand(new StdCmdCopy());
     rcCmdMgr.addCommand(new StdCmdPaste());
-    rcCmdMgr.addCommand(new StdCmdDDuplicateSelection());
+    rcCmdMgr.addCommand(new StdCmdDuplicateSelection());
     rcCmdMgr.addCommand(new StdCmdSelectAll());
     rcCmdMgr.addCommand(new StdCmdDelete());
     rcCmdMgr.addCommand(new StdCmdRefresh());
     rcCmdMgr.addCommand(new StdCmdTransform());
     rcCmdMgr.addCommand(new StdCmdPlacement());
+    rcCmdMgr.addCommand(new StdCmdAlignment());
+    rcCmdMgr.addCommand(new StdCmdEdit());
 }
 
 } // namespace Gui

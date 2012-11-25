@@ -58,7 +58,7 @@
     </message>
     <message>
       <source>Selection:</source>
-      <translation>Selection:</translation>
+      <translation>Wybór:</translation>
     </message>
     <message>
       <source>Reverse</source>
@@ -78,11 +78,11 @@
     </message>
     <message>
       <source>Perpendicular to sketch</source>
-      <translation>Perpendicular to sketch</translation>
+      <translation>Prostopadle do szkicu</translation>
     </message>
     <message>
       <source>Reference</source>
-      <translation>Reference</translation>
+      <translation>Odniesienie</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
@@ -110,7 +110,7 @@
     </message>
     <message>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Wykonaj operację boolean na 2 zaznaczonych obwiedniach</translation>
+      <translation>Wykonaj operację logiczną na dwóch zaznaczonych obiektach</translation>
     </message>
   </context>
   <context>
@@ -122,17 +122,17 @@
     </message>
     <message>
       <source>Box</source>
-      <translation>Box</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <source>Create a box solid</source>
-      <translation>Create a box solid</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
@@ -142,7 +142,7 @@
     </message>
     <message>
       <source>Create a box solid without dialog</source>
-      <translation>Create a box solid without dialog</translation>
+      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -157,7 +157,7 @@
     </message>
     <message>
       <source>Create a box solid without dialog</source>
-      <translation>Create a box solid without dialog</translation>
+      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -168,11 +168,26 @@
     </message>
     <message>
       <source>Shape builder...</source>
-      <translation>Shape builder...</translation>
+      <translation>Konstruktor kształtu...</translation>
     </message>
     <message>
       <source>Advanced utility to create shapes</source>
-      <translation>Advanced utility to create shapes</translation>
+      <translation>Zaawansowane narzędzie do tworzenia kształtów</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Część</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Fazowanie ...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Sfazuj wybrane krawędzie obiektu</translation>
     </message>
   </context>
   <context>
@@ -187,7 +202,7 @@
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
-      <translation>Utwórz przecięcie 2 obwiedni</translation>
+      <translation>Utwórz iloczyn dwóch obiektów</translation>
     </message>
   </context>
   <context>
@@ -209,17 +224,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
       <source>Cross-sections...</source>
-      <translation>Cross-sections...</translation>
+      <translation>Przekrój poprzeczny...</translation>
     </message>
     <message>
       <source>Cross-sections</source>
-      <translation>Cross-sections</translation>
+      <translation>Przekrój poprzeczny</translation>
     </message>
   </context>
   <context>
@@ -234,7 +249,7 @@
     </message>
     <message>
       <source>Make a cut of two shapes</source>
-      <translation>Make a cut of two shapes</translation>
+      <translation>Utwórz różnicę dwóch obiektów</translation>
     </message>
   </context>
   <context>
@@ -246,7 +261,7 @@
     </message>
     <message>
       <source>Create a Cylinder</source>
-      <translation>Utwórz Cylinder</translation>
+      <translation>Utwórz walec</translation>
     </message>
     <message>
       <source>Cylinder</source>
@@ -256,13 +271,13 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
       <source>Export CAD...</source>
-      <translation>Export CAD...</translation>
+      <translation>Eksport CAD...</translation>
     </message>
     <message>
       <source>Exports to a CAD file</source>
@@ -292,11 +307,11 @@
     </message>
     <message>
       <source>Fillet...</source>
-      <translation>Fillet...</translation>
+      <translation>Zaokrąglenie...</translation>
     </message>
     <message>
       <source>Fillet the selected edges of a shape</source>
-      <translation>Fillet the selected edges of a shape</translation>
+      <translation>Zaokrąglij wybrane krawędzie obiektu</translation>
     </message>
   </context>
   <context>
@@ -307,11 +322,11 @@
     </message>
     <message>
       <source>Union</source>
-      <translation>Połączenie</translation>
+      <translation>Suma</translation>
     </message>
     <message>
       <source>Make a union of several shapes</source>
-      <translation>Utwórz sumę kilku obwiedni</translation>
+      <translation>Utwórz sumę kilku obiektów</translation>
     </message>
   </context>
   <context>
@@ -337,11 +352,11 @@
     </message>
     <message>
       <source>Import a curve network</source>
-      <translation>Import a curve network</translation>
+      <translation>Importuj sieci krzywej</translation>
     </message>
     <message>
       <source>Import curve network...</source>
-      <translation>Import curve network...</translation>
+      <translation>Importuj sieci krzywej...</translation>
     </message>
   </context>
   <context>
@@ -352,11 +367,15 @@
     </message>
     <message>
       <source>Loft...</source>
-      <translation>Wyciągnij...</translation>
+      <translation>Przeciągnięcie...</translation>
+    </message>
+    <message>
+      <source>Utility to loft</source>
+      <translation>Utility to loft</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
-      <translation>Advanced utility to lofts</translation>
+      <translation>Zaawansowane narzędzia Loft</translation>
     </message>
   </context>
   <context>
@@ -367,11 +386,11 @@
     </message>
     <message>
       <source>Convert to solid</source>
-      <translation>Convert to solid</translation>
+      <translation>Przekształć na bryłę</translation>
     </message>
     <message>
       <source>Create solid from a shell or compound</source>
-      <translation>Create solid from a shell or compound</translation>
+      <translation>Tworzenie  brył z powłoki shell lub z elementów</translation>
     </message>
   </context>
   <context>
@@ -382,11 +401,11 @@
     </message>
     <message>
       <source>Mirroring...</source>
-      <translation>Mirroring...</translation>
+      <translation>Powielanie przez lustrzane odbicie...</translation>
     </message>
     <message>
       <source>Mirroring a selected shape</source>
-      <translation>Mirroring a selected shape</translation>
+      <translation>Utwórz odbicie lustrzane wybranego obiektu</translation>
     </message>
   </context>
   <context>
@@ -397,11 +416,11 @@
     </message>
     <message>
       <source>Pick curve network</source>
-      <translation>Pick curve network</translation>
+      <translation>Wybierz krzywą sieci</translation>
     </message>
     <message>
       <source>Pick a curve network</source>
-      <translation>Pick a curve network</translation>
+      <translation>Wybierz krzywą sieci</translation>
     </message>
   </context>
   <context>
@@ -412,26 +431,43 @@
     </message>
     <message>
       <source>Create primitives...</source>
-      <translation>Create primitives...</translation>
+      <translation>Utwórz bryły...</translation>
     </message>
     <message>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Creation of parametrized geometric primitives</translation>
+      <translation>Tworzenie brył parametrycznych</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Część</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Udoskonal kształt</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Popraw kopię kształtu</translation>
     </message>
   </context>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
       <source>Reverse shapes</source>
-      <translation>Reverse shapes</translation>
+      <translation>Odwróć kształty</translation>
     </message>
     <message>
       <source>Reverse orientation of shapes</source>
-      <translation>Reverse orientation of shapes</translation>
+      <translation>Odwróć orientację kształtów</translation>
     </message>
   </context>
   <context>
@@ -442,11 +478,11 @@
     </message>
     <message>
       <source>Revolve...</source>
-      <translation>Revolve...</translation>
+      <translation>Obracać...</translation>
     </message>
     <message>
       <source>Revolve a selected shape</source>
-      <translation>Revolve a selected shape</translation>
+      <translation>Wyciągnij przez obrót zaznaczony obiekt</translation>
     </message>
   </context>
   <context>
@@ -457,18 +493,18 @@
     </message>
     <message>
       <source>Create ruled surface</source>
-      <translation>Create ruled surface</translation>
+      <translation>Utwórz powierzchnię prostokreślną</translation>
     </message>
     <message>
       <source>Create a ruled surface from two curves</source>
-      <translation>Create a ruled surface from two curves</translation>
+      <translation>Utwórz powierzchnię prostokreślną z dwóch krzywych</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSection</name>
     <message>
       <source>Make a section of two shapes</source>
-      <translation>Utwórz przekrój 2 obwiedni</translation>
+      <translation>Utwórz iloraz dwóch obiektów</translation>
     </message>
     <message>
       <source>Part</source>
@@ -476,23 +512,23 @@
     </message>
     <message>
       <source>Section</source>
-      <translation>Sekcja</translation>
+      <translation>Iloraz</translation>
     </message>
   </context>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
       <source>Create shape from mesh...</source>
-      <translation>Create shape from mesh...</translation>
+      <translation>Utwórz kształt z siatki...</translation>
     </message>
     <message>
       <source>Create shape from selected mesh object</source>
-      <translation>Create shape from selected mesh object</translation>
+      <translation>Utwórz kształt z siatki wybranego obiektu</translation>
     </message>
   </context>
   <context>
@@ -518,11 +554,11 @@
     </message>
     <message>
       <source>Create Cylinder...</source>
-      <translation>Utwórz Cylinder ...</translation>
+      <translation>Utwórz walec...</translation>
     </message>
     <message>
       <source>Create a Cylinder</source>
-      <translation>Utwórz Cylinder</translation>
+      <translation>Utwórz walec</translation>
     </message>
   </context>
   <context>
@@ -530,7 +566,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a sphere solid</source>
-      <translation>Utwórz sferę</translation>
+      <translation>Utwórz kulę</translation>
     </message>
     <message>
       <source>Part</source>
@@ -542,8 +578,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Część</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Zamitanie...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Narzędzie do wycierania</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
       <translation>Utwórz torus</translation>
     </message>
@@ -590,11 +643,11 @@
     <message>
       <location filename="../../CrossSections.ui" line="+14"/>
       <source>Cross sections</source>
-      <translation>Cross sections</translation>
+      <translation>Przekroje</translation>
     </message>
     <message>
       <source>Guiding plane</source>
-      <translation>Guiding plane</translation>
+      <translation>Prowadzenie płaszczyzny</translation>
     </message>
     <message>
       <source>XY</source>
@@ -614,19 +667,19 @@
     </message>
     <message>
       <source>Sections</source>
-      <translation>Sections</translation>
+      <translation>Sekcje</translation>
     </message>
     <message>
       <source>On both sides</source>
-      <translation>On both sides</translation>
+      <translation>Po obu stronach</translation>
     </message>
     <message>
       <source>Count</source>
-      <translation>Count</translation>
+      <translation>Przelicz</translation>
     </message>
     <message>
       <source>Distance:</source>
-      <translation>Distance:</translation>
+      <translation>Odległość:</translation>
     </message>
   </context>
   <context>
@@ -634,7 +687,7 @@
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="+14"/>
       <source>Boolean Operation</source>
-      <translation>Operacja Logiczna</translation>
+      <translation>Operacja logiczna</translation>
     </message>
     <message>
       <source>Second shape</source>
@@ -650,7 +703,7 @@
     </message>
     <message>
       <source>Section</source>
-      <translation>Sekcja</translation>
+      <translation>Iloraz</translation>
     </message>
     <message>
       <source>Difference</source>
@@ -658,7 +711,7 @@
     </message>
     <message>
       <source>Union</source>
-      <translation>Połączenie</translation>
+      <translation>Suma</translation>
     </message>
     <message>
       <source>Intersection</source>
@@ -672,52 +725,60 @@
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="+25"/>
       <source>Solids</source>
-      <translation>Solids</translation>
+      <translation>Bryły</translation>
     </message>
     <message>
       <source>Shells</source>
-      <translation>Shells</translation>
+      <translation>Skorupy</translation>
     </message>
     <message>
       <source>Compounds</source>
-      <translation>Compounds</translation>
+      <translation>Elementy</translation>
     </message>
     <message>
       <source>Faces</source>
-      <translation>Faces</translation>
+      <translation>Ściany</translation>
     </message>
     <message>
       <source>Swap selection</source>
-      <translation>Swap selection</translation>
+      <translation>Odwróć zaznaczenie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="-10"/>
       <source>Select a shape on the left side, first</source>
-      <translation>Select a shape on the left side, first</translation>
+      <translation>Najpierw zaznacz kształt po lewej stronie</translation>
     </message>
     <message>
       <source>Select a shape on the right side, first</source>
-      <translation>Select a shape on the right side, first</translation>
+      <translation>Najpierw zaznacz kształt po prawej stronie,</translation>
     </message>
     <message>
       <source>No active document available</source>
-      <translation>No active document available</translation>
+      <translation>Żaden aktywny dokument nie jest dostępny</translation>
     </message>
     <message>
       <source>One of the selected objects doesn't exist anymore</source>
-      <translation>One of the selected objects doesn't exist anymore</translation>
+      <translation>Jeden z zaznaczonych obiektów nie istnieje</translation>
     </message>
     <message>
       <source>Performing union on non-solids is not possible</source>
-      <translation>Performing union on non-solids is not possible</translation>
+      <translation>Utworzenie sumy na obiektach nie będących bryłami nie jest możliwe</translation>
     </message>
     <message>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation>Performing intersection on non-solids is not possible</translation>
+      <translation>Utworzenie iloczynu obiektów nie będących bryłami nie jest możliwe</translation>
     </message>
     <message>
       <source>Performing difference on non-solids is not possible</source>
-      <translation>Performing difference on non-solids is not possible</translation>
+      <translation>Utworzenie różnicy obiektów nie będących bryłami nie jest możliwe</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Fazowanie krawędzi</translation>
     </message>
   </context>
   <context>
@@ -748,12 +809,20 @@
       <translation>Uwaga: opcja działa wyłącznie dla płaszczyzn</translation>
     </message>
     <message>
+      <source>Create solid</source>
+      <translation>Utwórz bryłę</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Bierny kąt stożka</translation>
+    </message>
+    <message>
       <source>Shape</source>
       <translation>Kształt</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
     <message>
       <source>X:</source>
@@ -782,11 +851,11 @@
     <message>
       <location filename="../../DlgFilletEdges.ui" line="+14"/>
       <source>Fillet Edges</source>
-      <translation>Fillet Edges</translation>
+      <translation>Zaokrągl Krawędzie</translation>
     </message>
     <message>
       <source>Fillet Parameter</source>
-      <translation>Fillet Parameter</translation>
+      <translation>Parametr Zaokrąglenia</translation>
     </message>
     <message>
       <source>Radius:</source>
@@ -794,7 +863,7 @@
     </message>
     <message>
       <source>Fillet type:</source>
-      <translation>Fillet type:</translation>
+      <translation>Typ Zaokrąglenia:</translation>
     </message>
     <message>
       <source>Constant Radius</source>
@@ -817,9 +886,9 @@
       <translation>Brak wyboru</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
-      <translation>Edges to fillet</translation>
+      <translation>Krawędzie do zaokrąglenia</translation>
     </message>
     <message>
       <source>Start radius</source>
@@ -840,8 +909,7 @@
     <message>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation>No edge entity is checked to fillet.
-Please check one or more edge entities first.</translation>
+      <translation>Nie zaznaczono krawędzi do sfazowania Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="+30"/>
@@ -853,9 +921,9 @@ Please check one or more edge entities first.</translation>
       <translation>Brak</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
-      <translation>Edge%1</translation>
+      <translation>Krawędź%1</translation>
     </message>
     <message>
       <source>No shape selected</source>
@@ -864,8 +932,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>No valid shape is selected.
-Please select a valid shape in the drop-down box first.</translation>
+      <translation>Wybrany kształt nie jest prawidłowy. Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     </message>
   </context>
   <context>
@@ -873,7 +940,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="+16"/>
       <source>Box definition</source>
-      <translation>Box definition</translation>
+      <translation>Bryła</translation>
     </message>
     <message>
       <source>X:</source>
@@ -925,11 +992,11 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="+16"/>
       <source>Cylinder definition</source>
-      <translation>Cylinder definition</translation>
+      <translation>Definicja cylindra</translation>
     </message>
     <message>
       <source>Parameter</source>
-      <translation>Parametr</translation>
+      <translation>parametr</translation>
     </message>
     <message>
       <source>Height:</source>
@@ -973,7 +1040,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="+16"/>
       <source>IGES input file</source>
-      <translation>IGES input file</translation>
+      <translation>Plik wejściowy IGES</translation>
     </message>
     <message>
       <source>...</source>
@@ -993,7 +1060,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -1001,7 +1068,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
       <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-      <translation>IGES (*.igs *.iges);;All Files (*.*)</translation>
+      <translation>IGES (*.igs *.iges);;Wszystkie pliki (*.*)</translation>
     </message>
   </context>
   <context>
@@ -1021,7 +1088,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Step input file</source>
-      <translation>Step input file</translation>
+      <translation>Plik wejściowy Step</translation>
     </message>
     <message>
       <source>File Name</source>
@@ -1029,7 +1096,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -1037,7 +1104,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="+68"/>
       <source>STEP (*.stp *.step);;All Files (*.*)</source>
-      <translation>STEP (*.stp *.step);;All Files (*.*)</translation>
+      <translation>STEP (*.stp *.step);;Wszystkie pliki (*.*)</translation>
     </message>
   </context>
   <context>
@@ -1045,11 +1112,11 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="+14"/>
       <source>Geometric Primitives</source>
-      <translation>Geometric Primitives</translation>
+      <translation>Bryły geometryczne</translation>
     </message>
     <message>
       <source>Primitive</source>
-      <translation>Primitive</translation>
+      <translation>Bryła</translation>
     </message>
     <message>
       <source>X min</source>
@@ -1093,31 +1160,31 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Angle - 0 for cyl</source>
-      <translation>Angle - 0 for cyl</translation>
+      <translation>Kąt - 0 dla cyl</translation>
     </message>
     <message>
       <source>Angle0</source>
-      <translation>Angle0</translation>
+      <translation>Kąt 0</translation>
     </message>
     <message>
       <source>Angle1</source>
-      <translation>Angle1</translation>
+      <translation>Kąt 1</translation>
     </message>
     <message>
       <source>X Axis Value:</source>
-      <translation>X Axis Value:</translation>
+      <translation>Wartość osi X:</translation>
     </message>
     <message>
       <source>Y Axis Value:</source>
-      <translation>Y Axis Value:</translation>
+      <translation>Wartości osi Y:</translation>
     </message>
     <message>
       <source>Z Axis Value:</source>
-      <translation>Z Axis Value:</translation>
+      <translation>Wartość osi Z:</translation>
     </message>
     <message>
       <source>Wedge</source>
-      <translation>Wedge</translation>
+      <translation>Klin</translation>
     </message>
     <message>
       <source>Circle</source>
@@ -1129,7 +1196,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Position</source>
-      <translation>Position</translation>
+      <translation>Pozycja</translation>
     </message>
     <message>
       <source>Z:</source>
@@ -1153,7 +1220,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Box</source>
-      <translation>Box</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <source>Cylinder</source>
@@ -1176,8 +1243,20 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>torus</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Elipsa</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Punkt</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Linia</translation>
+    </message>
+    <message>
       <source>Parameter</source>
-      <translation>Parametr</translation>
+      <translation>parametr</translation>
     </message>
     <message>
       <source>Width:</source>
@@ -1209,13 +1288,74 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>U parametric:</source>
-      <translation>U parametric:</translation>
+      <translation>U parametryczne:</translation>
     </message>
     <message>
       <source>V parametric:</source>
-      <translation>V parametric:</translation>
+      <translation>V parametryczne:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Układ współrzędnych:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Praworęczny</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Leworęczny</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Kąt 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Kąt 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>Z trzech punktów</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Promień główny:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Promień pomocniczy:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>Punkt końcowy</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Punkt początkowy</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
       <translation>&amp;Utwórz</translation>
     </message>
@@ -1232,7 +1372,6 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>Alt + O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Utwórz %1</translation>
     </message>
@@ -1241,13 +1380,13 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
-      <translation>Pitch:</translation>
+      <translation>Odstęp:</translation>
     </message>
     <message>
       <source>Helix</source>
-      <translation>Helix</translation>
+      <translation>Helisa</translation>
     </message>
     <message>
       <source>3D View</source>
@@ -1259,7 +1398,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="+14"/>
       <source>Revolve</source>
-      <translation>Revolve</translation>
+      <translation>Obracać</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -1286,7 +1425,11 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>Kształt</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Wybierz linię w widoku 3D</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Select a shape for revolution, first.</translation>
     </message>
@@ -1296,27 +1439,27 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="+171"/>
       <source>View accuracy / Performance</source>
-      <translation>View accuracy / Performance</translation>
+      <translation>Dokładność wyświetlania / Wydajność</translation>
     </message>
     <message>
       <source>View smoothing</source>
-      <translation>View smoothing</translation>
+      <translation>Widok wygładzenia</translation>
     </message>
     <message>
       <source>Using high-quality normals</source>
-      <translation>Using high-quality normals</translation>
+      <translation>Użyj normalnych wysokiej jakości</translation>
     </message>
     <message>
       <source>This will slow down render speed but will lead to nicer results</source>
-      <translation>This will slow down render speed but will lead to nicer results</translation>
+      <translation>To spowolni prędkość renderowania, lecz poprawi jego wyniki</translation>
     </message>
     <message>
       <source>Defines the appearance of surfaces</source>
-      <translation>Defines the appearance of surfaces</translation>
+      <translation>Określa wygląd powierzchni</translation>
     </message>
     <message>
       <source>Shape view</source>
-      <translation>Shape view</translation>
+      <translation>Widok obwiedni</translation>
     </message>
     <message>
       <source>Tessellation</source>
@@ -1324,19 +1467,19 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Cieniowanie płaskie/Cieniowanie Phong&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Przy cieniowaniu płaskim powierzchnie nie są definiowane wektoro co może prowadzić do nierzeczywistego wyświetlania zakrzywionych powierzchni. Podczas gdy cieniowanie Phong prowadzi do łagodniejszego wyglądu krzywych.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Jeżeli ta opcja jest zaznaczona to użyte zostanie cieniowanie płaskie w przeciwnym wypadku zostanie użyte cieniowanie Phong.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Do not define normal per vertex</source>
-      <translation>Do not define normal per vertex</translation>
+      <translation>Nie definiuj normalne per wierzchołek</translation>
     </message>
     <message>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Defines the deviation of tessellation to the actual surface</translation>
+      <translation>Definiuje odchylenie teselacji rzeczywistej powierzchni</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt; &lt;span style="font-weight:600;"&gt; Tesselacja&lt;/span&gt;&lt;/p&gt; &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-weight:600;"&gt; &lt;span style="font-weight:400;"&gt; Określa maksymalne odchylenie mozaikowych oczek siatki  na powierzchni. Im jest mniejsza wartość tym mniejsza szybkość renderowania i ladniejszy wygląd.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1344,11 +1487,11 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt; &lt;span style="font-weight:600;"&gt; Wysokiej jakości &lt;/span&gt;&lt;/p&gt; &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt; To spowolni szybkość renderowania, ale nie będzie prowadziło do ładnego wyniku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>Maximum deviation depending on the model bounding box</translation>
+      <translation>Maksymalne dopuszczalne odchylenie w zależności od obwiedni modelu</translation>
     </message>
     <message>
       <source> %</source>
@@ -1367,7 +1510,7 @@ Please select a valid shape in the drop-down box first.</translation>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Ogólne</translation>
     </message>
@@ -1389,19 +1532,71 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Units for export of STEP/IGES</source>
-      <translation>Units for export of STEP/IGES</translation>
+      <translation>Jednostki do eksportu STEP/IGES</translation>
+    </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Ustawienia modelu</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatycznie dostosuj model po operacji logicznej</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatycznie sprawdź model po operacji logicznej</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Kolory powierzchni</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Czy na pewno chcesz anulować?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Lokalizacja</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Pozycja</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>Widok 3D</translation>
     </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Utwórz obwiednię</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Poszycie</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
       <translation>Zbyt mało elementów</translation>
     </message>
     <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>Wymagane są co najmniej dwa wierzchołki, krawędzie lub przewody.</translation>
+    </message>
+    <message>
       <source>At least two vertices or wires are required.</source>
-      <translation>At least two vertices or wires are required.</translation>
+      <translation>Wymagane są co najmniej dwa wierzchołki lub linie.</translation>
     </message>
   </context>
   <context>
@@ -1409,7 +1604,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../Mirroring.ui" line="+14"/>
       <source>Mirroring</source>
-      <translation>Mirroring</translation>
+      <translation>Powielanie przez lustrzane odbicie</translation>
     </message>
     <message>
       <source>Shapes</source>
@@ -1417,7 +1612,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Mirror plane:</source>
-      <translation>Mirror plane:</translation>
+      <translation>Płaszczyzna odbicia lustrzanego:</translation>
     </message>
     <message>
       <source>XY plane</source>
@@ -1433,7 +1628,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Base point:</source>
-      <translation>Base point:</translation>
+      <translation>Punkt zaczepienia:</translation>
     </message>
     <message>
       <source>x</source>
@@ -1450,7 +1645,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../Mirroring.cpp" line="+117"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation>Select a shape for mirroring, first.</translation>
+      <translation>Najpierw zaznacz kształt do lustrzanego odbicia.</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
@@ -1473,6 +1668,10 @@ Please select a valid shape in the drop-down box first.</translation>
       <translation>Zaznacz 3 lub więcej Krawędzi</translation>
     </message>
     <message>
+      <source>Select one or more edges</source>
+      <translation>Zaznacz jedną lub więcej krawędzi</translation>
+    </message>
+    <message>
       <source>Select two or more faces</source>
       <translation>Zaznacz 2 lub więcej fasetek</translation>
     </message>
@@ -1486,7 +1685,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Select a closed set of edges</source>
-      <translation>Select a closed set of edges</translation>
+      <translation>Wybierz zamknięty zbiór krawędzi</translation>
     </message>
     <message>
       <source>Select adjacent faces</source>
@@ -1498,27 +1697,54 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Utwórz obwiednię</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Wycieranie</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Ścieżka wycierania</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Wybierz krawędź lub drut, wzdłuż którego chcesz wycierać.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Zbyt mało elementów</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>Wymagana jest co najmniej jedna krawędź lub drut.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
-      <translation>Hint</translation>
+      <translation>Wskazówka</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation>Select Control.</translation>
+      <translation>Zaznacz kontrolę.</translation>
     </message>
     <message>
       <source>Control</source>
-      <translation>Control</translation>
+      <translation>Kontrola</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation>Dynamic</translation>
+      <translation>Dynamiczne</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation>Align</translation>
+      <translation>Wyrównaj</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1526,7 +1752,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Special</source>
-      <translation>Special</translation>
+      <translation>Specjalne</translation>
     </message>
     <message>
       <source>Command</source>
@@ -1534,7 +1760,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Stretch</translation>
+      <translation>Rozciągnij</translation>
     </message>
     <message>
       <source>Move</source>
@@ -1550,15 +1776,15 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Orient</source>
-      <translation>Orient</translation>
+      <translation>Ustaw</translation>
     </message>
     <message>
       <source>Match</source>
-      <translation>Match</translation>
+      <translation>Dopasuj</translation>
     </message>
     <message>
       <source>Surround</source>
-      <translation>Surround</translation>
+      <translation>Otocz</translation>
     </message>
     <message>
       <source>dummy</source>
@@ -1566,19 +1792,19 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation>X Axis</translation>
+      <translation>Oś x</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation>Y Axis</translation>
+      <translation>Oś Y</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation>Z Axis</translation>
+      <translation>Oś Z</translation>
     </message>
     <message>
       <source>Increment</source>
-      <translation>Increment</translation>
+      <translation>Zwiększ</translation>
     </message>
     <message>
       <source>.125</source>
@@ -1590,27 +1816,27 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>1.000</source>
-      <translation>1.000</translation>
+      <translation>1,000</translation>
     </message>
     <message>
       <source>5.000</source>
-      <translation>5.000</translation>
+      <translation>5000</translation>
     </message>
     <message>
       <source>10.000</source>
-      <translation>10.000</translation>
+      <translation>10 000</translation>
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
-      <translation>Drag arrows to stretch box by increment</translation>
+      <translation>Przeciągnij strzałki do rozciągnięcia pola przez przyrost</translation>
     </message>
     <message>
       <source>Drag arrows to move box by increment</source>
-      <translation>Drag arrows to move box by increment</translation>
+      <translation>Przeciągnij strzałki, aby przenieść pole do zwiększenia</translation>
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation>Not implemented yet</translation>
+      <translation>Nie zostało jeszcze zaimplementowane</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
@@ -1638,7 +1864,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Enter Value</source>
-      <translation>Enter Value</translation>
+      <translation>Wprowadź wartość</translation>
     </message>
     <message>
       <source>Select box to match</source>
@@ -1646,7 +1872,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Select a point</source>
-      <translation>Select a point</translation>
+      <translation>Zaznacz punkt</translation>
     </message>
     <message>
       <source>0.0</source>
@@ -1686,7 +1912,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="+14"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation>Poszycie</translation>
     </message>
     <message>
       <source>Vertex/Wire</source>
@@ -1730,7 +1956,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Ruled surface</source>
-      <translation>Ruled surface</translation>
+      <translation>Wykluczona powierzchnia</translation>
     </message>
   </context>
   <context>
@@ -1750,7 +1976,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Planar</source>
-      <translation>Planar</translation>
+      <translation>Płaski</translation>
     </message>
     <message>
       <source>Shell from faces</source>
@@ -1766,23 +1992,44 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>All faces</source>
-      <translation>All faces</translation>
+      <translation>Wszystkie powierzchnie</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Wycieranie</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Utwórz bryłę</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Wektor Freneta</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Wybierz jeden lub więcej profili i zaznacz krawędź lub drut w widoku 3D dla utworzenia ścieżki.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
       <source>Select two shapes please.</source>
-      <translation>Select two shapes please.</translation>
+      <translation>Proszę wybrać dwa kształty.</translation>
     </message>
     <message>
       <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-      <translation>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+      <translation>Wszystkie pliki CAD (STP *.step *.igs *.iges *.brp *.brep)</translation>
     </message>
     <message>
       <source>STEP (*.stp *.step)</source>
@@ -1803,42 +2050,46 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="+58"/>
       <source>Sewing Tolerance</source>
-      <translation>Sewing Tolerance</translation>
+      <translation>Tolerancja szycia</translation>
     </message>
     <message>
       <source>Enter tolerance for sewing shape:</source>
-      <translation>Enter tolerance for sewing shape:</translation>
+      <translation>Wprowadź tolerancję szycia dla kształtu:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
-      <translation>Edit mirror plane</translation>
+      <translation>Edycja płaszczyzny lustra</translation>
+    </message>
+    <message>
+      <source>Edit chamfer edges</source>
+      <translation>Edytuj fazę krawędzi</translation>
     </message>
     <message>
       <source>Transform</source>
       <translation>Przekształć</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Projektowanie części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Wybierz dwa lub więcej kszałtów, proszę.</translation>
     </message>
     <message>
       <source>You have to select either two edges or two wires.</source>
-      <translation>You have to select either two edges or two wires.</translation>
+      <translation>Należy wybrać dwie krawędzie lub dwie linie szkieletu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
-      <translation>Edit fillet edges</translation>
+      <translation>Edytuj wygładzenie krawędzi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
       <translation>Ustaw kolory...</translation>
     </message>
@@ -1848,23 +2099,23 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Part</source>
-      <translation>&amp;Part</translation>
+      <translation>&amp;Część</translation>
     </message>
     <message>
       <source>&amp;Simple</source>
-      <translation>&amp;Simple</translation>
+      <translation>&amp; Prosta</translation>
     </message>
     <message>
       <source>&amp;Parametric</source>
-      <translation>&amp;Parametric</translation>
+      <translation>Parametryczny</translation>
     </message>
     <message>
       <source>Part tools</source>
-      <translation>Part tools</translation>
+      <translation>Narzędzia trybu Część</translation>
     </message>
     <message>
       <source>Solids</source>
-      <translation>Solids</translation>
+      <translation>Bryły</translation>
     </message>
     <message>
       <source>Boolean</source>

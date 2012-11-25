@@ -17,7 +17,7 @@
     </message>
     <message>
       <source>&amp;Start</source>
-      <translation>&amp;Kezdés</translation>
+      <translation>Kezdé&amp;s</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -33,7 +33,7 @@
     </message>
     <message>
       <source>&amp;About</source>
-      <translation>Névjegy</translation>
+      <translation>Névjegy &amp;A</translation>
     </message>
     <message>
       <source>Alt+A</source>

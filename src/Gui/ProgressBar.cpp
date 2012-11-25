@@ -252,7 +252,7 @@ void Sequencer::showRemainingTime()
                     Q_ARG(QString,status));
             }
             else {
-                getMainWindow()->statusBar()->showMessage(status);
+                getMainWindow()->showMessage(status);
             }
         }
     }
@@ -285,7 +285,7 @@ void Sequencer::resetData()
         d->waitCursor = 0;
         d->bar->leaveControlEvents();
         getMainWindow()->setPaneText(1, QString());
-        getMainWindow()->statusBar()->showMessage(QString());
+        getMainWindow()->showMessage(QString());
     }
 
     SequencerBase::resetData();
@@ -313,7 +313,7 @@ void Sequencer::setText (const char* pszTxt)
             Q_ARG(QString,d->text));
     }
     else {
-        getMainWindow()->statusBar()->showMessage(d->text);
+        getMainWindow()->showMessage(d->text);
     }
 }
 

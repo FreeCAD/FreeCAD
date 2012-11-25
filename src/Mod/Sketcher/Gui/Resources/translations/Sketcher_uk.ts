@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Створювач ескізів</translation>
     </message>
@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Fix the angle of a line or the angle between two lines</translation>
+      <translation>Зафіксувати кут лінії або кут між двома лініями</translation>
     </message>
   </context>
   <context>
@@ -58,6 +58,10 @@
       <translation>Constrain horizontal distance</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Fix the horizontal distance between two points or line ends</translation>
     </message>
@@ -67,6 +71,10 @@
     <message>
       <source>Sketcher</source>
       <translation>Створювач ескізів</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Constrain horizontal distance</source>
@@ -89,7 +97,7 @@
     </message>
     <message>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Create an equality constraint between two lines or between circles and arcs</translation>
+      <translation>Створити обмеження еквівалентності між двома лініями, або між колами і дугами</translation>
     </message>
   </context>
   <context>
@@ -160,7 +168,7 @@
     </message>
     <message>
       <source>Constrain point onto object</source>
-      <translation>Constrain point onto object</translation>
+      <translation>Обмежити точки об'єктом</translation>
     </message>
     <message>
       <source>Fix a point onto an object</source>
@@ -209,7 +217,7 @@
     </message>
     <message>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Create a tangent constraint between two entities</translation>
+      <translation>Створити дотичне обмеження між двома об'ектами</translation>
     </message>
   </context>
   <context>
@@ -230,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Створювач ескізів</translation>
     </message>
@@ -284,8 +292,12 @@
       <translation>Create fillet</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Create a fillet between to lines or at a coincident point</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Create a fillet between two lines or at a coincidental point</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,9 +376,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Створювач ескізів</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>External geometry</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Create an edge linked to an external geometry</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Створювач ескізів</translation>
     </message>
@@ -406,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Create a new or edit the selected sketch</translation>
+      <translation>Створити новий або редагувати обраний ескіз</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -437,7 +464,7 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Toggle construction line</translation>
+      <translation>Переключити лінії побудови</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
@@ -447,13 +474,17 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Створювач ескізів</translation>
     </message>
     <message>
       <source>Trim edge</source>
-      <translation>Trim edge</translation>
+      <translation>Обрізати грань</translation>
+    </message>
+    <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Trim an edge with respect to the picked position</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
@@ -463,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Створювач ескізів</translation>
     </message>
@@ -496,7 +527,7 @@
       <translation>Select edge(s) from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
       <translation>Виберіть ребро в ескізі.</translation>
     </message>
@@ -511,6 +542,10 @@
     <message>
       <source>Impossible constraint</source>
       <translation>Обмеження неможливе</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Cannot add a constraint between two external geometries!</translation>
     </message>
     <message>
       <source>Only sketch and its support is allowed to select</source>
@@ -529,12 +564,20 @@
       <translation>Вибраний край вже обмежено по вертикалі!</translation>
     </message>
     <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>The selected item(s) can't accept a horizontal constraint!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>The selected item(s) can't accept a vertical constraint!</translation>
+    </message>
+    <message>
       <source>Select entities from the sketch.</source>
       <translation>Select entities from the sketch.</translation>
     </message>
     <message>
       <source>Select exactly one entity from the sketch.</source>
-      <translation>Select exactly one entity from the sketch.</translation>
+      <translation>Оберіть на ескізі лише один об'єкт.</translation>
     </message>
     <message>
       <source>Select vertexes from the sketch.</source>
@@ -546,35 +589,71 @@
     </message>
     <message>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Select exactly one line or one point and one line or two points from the sketch.</translation>
+      <translation>Оберіть на ескізі лише одну лінію, або одну точку та одну лінію, або дві точки.</translation>
+    </message>
+    <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Cannot add a length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one point and one object from the sketch.</source>
-      <translation>Select exactly one point and one object from the sketch.</translation>
+      <translation>Оберіть на ескізі лише одну точку та один об'єкт.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Select exactly one line or up to two points from the sketch.</translation>
+      <translation>Оберіть на ескізі лише одну лінію або до двох точок.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Cannot add a horizontal length constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Cannot add a vertical length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
-      <translation>Select two or more lines from the sketch.</translation>
+      <translation>Оберіть на ескізі дві або більше ліній.</translation>
     </message>
     <message>
       <source>Select at least two lines from the sketch.</source>
-      <translation>Select at least two lines from the sketch.</translation>
+      <translation>Оберіть на ескізі принаймні дві лінії.</translation>
     </message>
     <message>
       <source>Select a valid line</source>
-      <translation>Select a valid line</translation>
+      <translation>Оберіть припустиму лінію</translation>
     </message>
     <message>
       <source>The selected edge is not a valid line</source>
       <translation>The selected edge is not a valid line</translation>
     </message>
     <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>The selected points should be end points of arcs and lines.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>The selected point should be an end point of an arc or line.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>The selected edge should be an arc, line or circle.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>One of the selected edges should be a line.</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Select exactly one arc or circle from the sketch.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Select one or two lines from the sketch.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -589,20 +668,36 @@
       <translation>Select atleast two lines from the sketch.</translation>
     </message>
     <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Select two or more compatible edges</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Sketch axes cannot be used in equality constraints</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Select two or more edges of similar type</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Cannot add a constraint between external geometries!</translation>
+    </message>
+    <message>
       <source>Select exactly two same geometries</source>
-      <translation>Select exactly two same geometries</translation>
+      <translation>Оберіть рівно дві однакових геометрії</translation>
     </message>
     <message>
       <source>Select valid geometries</source>
-      <translation>Select valid geometries</translation>
+      <translation>Оберіть припустиму геометрію</translation>
     </message>
     <message>
       <source>Select geometry of similar type</source>
-      <translation>Select geometry of similar type</translation>
+      <translation>Обрати геометрію схожого типу</translation>
     </message>
     <message>
       <source>Select two points and one line from the sketch.</source>
-      <translation>Select two points and one line from the sketch.</translation>
+      <translation>Оберіть на ескізі дві точки та одну лінію.</translation>
     </message>
     <message>
       <source>Select exactly one line from the sketch.</source>
@@ -622,23 +717,23 @@
     </message>
     <message>
       <source>Select exactly two entities from the sketch.</source>
-      <translation>Select exactly two entities from the sketch.</translation>
+      <translation>Оберіть на ескізі лише два об'єкти.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>Редагувати ескіз</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>Діалог вже відкритий в панелі завдань</translation>
+      <translation>Діалогове вікно вже відкрито в панелі задач</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation>Бажаєте закрити цей діалог?</translation>
+      <translation>Ви бажаєте закрити це діалогове вікно?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
       <translation>Обрано декілька вкладених елементів</translation>
     </message>
@@ -679,7 +774,6 @@
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
       <translation>Choose orientation</translation>
     </message>
@@ -689,7 +783,7 @@
     </message>
     <message>
       <source>XY-Plane</source>
-      <translation>XY-Plane</translation>
+      <translation>Площина XY</translation>
     </message>
     <message>
       <source>XZ-Plane</source>
@@ -705,7 +799,7 @@
     </message>
     <message>
       <source>Offset:</source>
-      <translation>Offset:</translation>
+      <translation>Зміщення:</translation>
     </message>
   </context>
   <context>
@@ -718,6 +812,38 @@
     <message>
       <source>datum:</source>
       <translation>datum:</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>Choose orientation</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>Sketch orientation</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>Площина XY</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>XZ-Plane</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>YZ-Plane</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>Reverse direction</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>Зміщення:</translation>
     </message>
   </context>
   <context>
@@ -762,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Grid size:</translation>
+      <translation>Розмір сітки:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Grid snap</translation>
+      <translation>Прив'язка до сітки</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -846,7 +972,7 @@
     </message>
     <message>
       <source>Auto constraints</source>
-      <translation>Auto constraints</translation>
+      <translation>Автоматичні обмеження</translation>
     </message>
     <message>
       <source>auto constraints</source>
@@ -896,11 +1022,11 @@
     </message>
     <message>
       <source>Undefined degrees of freedom</source>
-      <translation>Undefined degrees of freedom</translation>
+      <translation>Невизначені ступені свободи</translation>
     </message>
     <message>
       <source>Not solved yet</source>
-      <translation>Not solved yet</translation>
+      <translation>Ще не вирішене</translation>
     </message>
   </context>
   <context>

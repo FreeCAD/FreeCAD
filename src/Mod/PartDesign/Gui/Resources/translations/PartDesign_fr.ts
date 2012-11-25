@@ -4,13 +4,21 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
       <source>Chamfer...</source>
       <translation>Chanfrein...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="+561"/>
+      <source>PartDesign</source>
+      <translation>ConceptionPièce</translation>
+    </message>
+    <message>
+      <source>Chamfer</source>
+      <translation>Chanfrein</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
@@ -30,6 +38,21 @@
     <message>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Faire un congé sur une arête, une face ou un corps</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignGroove</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>ConceptionPièce</translation>
+    </message>
+    <message>
+      <source>Groove</source>
+      <translation>Enlèvement de matière par révolution.</translation>
+    </message>
+    <message>
+      <source>Groove a selected sketch</source>
+      <translation>Enlèvement de matière par révolution à partir de l'esquisse sélectionnée.</translation>
     </message>
   </context>
   <context>
@@ -96,7 +119,6 @@
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
       <translation>Arêtes à chanfreiner</translation>
     </message>
@@ -138,7 +160,6 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
       <translation>Chanfreiner des arêtes</translation>
     </message>
@@ -184,9 +205,26 @@ Please check one or more edge entities first.</source>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskChamferParameters</name>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Forme</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Taille :</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>Paramètres du chanfrein</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <location filename="../../TaskPadParameters.cpp" line="+313"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -205,7 +243,44 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
       <source>Fillet parameters</source>
-      <translation>Paramètres de l'arrondi</translation>
+      <translation>Paramètres du congé</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskGrooveParameters</name>
+    <message>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Forme</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Axe :</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Axe d'esquisse vertical</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Axe d'esquisse horizontal</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Angle :</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symétrique au plan</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Inversé</translation>
+    </message>
+    <message>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>Paramètres de la gorge</translation>
     </message>
   </context>
   <context>
@@ -247,6 +322,26 @@ Please check one or more edge entities first.</source>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Forme</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Type</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Longueur</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symétrique au plan</translation>
+    </message>
+    <message>
+      <source>2nd length</source>
+      <translation>2ème longueur</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Face</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -293,9 +388,29 @@ Please check one or more edge entities first.</source>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <location filename="../../TaskPadParameters.cpp" line="-45"/>
       <source>Pad parameters</source>
       <translation>Paramètres de protrusion</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Aucune face sélectionnée</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>Au dernier</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>Au premier</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Jusqu'à la face</translation>
+    </message>
+    <message>
+      <source>Two dimensions</source>
+      <translation>Deux dimensions</translation>
     </message>
   </context>
   <context>
@@ -334,7 +449,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
       <source>Form</source>
       <translation>Forme</translation>
     </message>
@@ -343,17 +458,45 @@ Please check one or more edge entities first.</source>
       <translation>Type :</translation>
     </message>
     <message>
+      <source>Type</source>
+      <translation>Type</translation>
+    </message>
+    <message>
       <source>Dimension</source>
       <translation>Dimension</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Face</translation>
     </message>
     <message>
       <source>Length</source>
       <translation>Longueur</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <location filename="../../TaskPocketParameters.cpp" line="-113"/>
       <source>Pocket parameters</source>
-      <translation>Paramètres de la poche</translation>
+      <translation>Paramètres de la cavité</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>Au dernier</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>Au premier</translation>
+    </message>
+    <message>
+      <source>Through all</source>
+      <translation>Débouchant</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Jusqu'à la face</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Aucune face sélectionnée</translation>
     </message>
   </context>
   <context>
@@ -366,6 +509,22 @@ Please check one or more edge entities first.</source>
     <message>
       <source>Axis:</source>
       <translation>Axe :</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Axe d'esquisse vertical</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Axe d'esquisse horizontal</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symétrique au plan</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Inversé</translation>
     </message>
     <message>
       <source>Vertical</source>
@@ -417,6 +576,26 @@ Please check one or more edge entities first.</source>
       <translation>Le congé s'applique uniquement sur les pièces</translation>
     </message>
     <message>
+      <source>Shape of selected Part is empty</source>
+      <translation>La forme de la pièce sélectionnée est vide.</translation>
+    </message>
+    <message>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>Aucun congé possible sur les faces / sommets sélectionnés.</translation>
+    </message>
+    <message>
+      <source>Chamfer works only on parts</source>
+      <translation>La fonction chanfrein ne fonctionne que sur les pièces.</translation>
+    </message>
+    <message>
+      <source>Shape of selected part is empty</source>
+      <translation>La forme de la pièce sélectionnée est vide.</translation>
+    </message>
+    <message>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>Aucun chanfrein possible sur les faces / sommets sélectionnés.</translation>
+    </message>
+    <message>
       <source>No Support</source>
       <translation>Aucune prise en charge</translation>
     </message>
@@ -431,9 +610,9 @@ Create the sketch on a face.</source>
       <translation>Modifier la protrusion</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
       <source>Edit pocket</source>
-      <translation>Modifier la poche</translation>
+      <translation>Modifier la cavité</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
@@ -447,6 +626,11 @@ Create the sketch on a face.</source>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
       <source>Edit revolution</source>
       <translation>Modifier la révolution</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>Éditer l'enlèvement de matière par révolution</translation>
     </message>
   </context>
   <context>

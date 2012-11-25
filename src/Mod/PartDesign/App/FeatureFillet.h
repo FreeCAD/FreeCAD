@@ -31,7 +31,7 @@
 namespace PartDesign
 {
 
-class Fillet : public DressUp
+class PartDesignExport Fillet : public DressUp
 {
     PROPERTY_HEADER(PartDesign::Fillet);
 

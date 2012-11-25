@@ -37,6 +37,7 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
 
 //#define FC_USE_EIGEN
+//#define FC_USE_BOOST
 #if defined(FC_USE_BOOST)
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/numeric/bindings/traits/ublas_matrix.hpp>
@@ -54,25 +55,26 @@ extern "C" void LAPACK_DGESV (int const* n, int const* nrhs,
 #elif defined(FC_USE_EIGEN)
 # include <Eigen/LeastSquares>
 #endif
+# include <Eigen/LeastSquares>
 
 using namespace MeshCore;
 
 
-void Approximation::Convert( const Wm4::Vector3<float>& Wm4, Base::Vector3f& pt)
+void Approximation::Convert( const Wm4::Vector3<double>& Wm4, Base::Vector3f& pt)
 {
-    pt.Set( Wm4.X(), Wm4.Y(), Wm4.Z() );
+    pt.Set( (float)Wm4.X(), (float)Wm4.Y(), (float)Wm4.Z() );
 }
 
-void Approximation::Convert( const Base::Vector3f& pt, Wm4::Vector3<float>& Wm4)
+void Approximation::Convert( const Base::Vector3f& pt, Wm4::Vector3<double>& Wm4)
 {
     Wm4.X() = pt.x; Wm4.Y() = pt.y; Wm4.Z() = pt.z;
 }
 
-void Approximation::GetMgcVectorArray(std::vector< Wm4::Vector3<float> >& rcPts) const
+void Approximation::GetMgcVectorArray(std::vector< Wm4::Vector3<double> >& rcPts) const
 {
     std::list< Base::Vector3f >::const_iterator It;
     for (It = _vPoints.begin(); It != _vPoints.end(); ++It) {
-        Wm4::Vector3<float> pt( (*It).x, (*It).y, (*It).z );
+        Wm4::Vector3<double> pt( (*It).x, (*It).y, (*It).z );
         rcPts.push_back( pt );
     }
 }
@@ -176,7 +178,7 @@ float PlaneFit::Fit()
     int r = lapack::syev('V','U',A,eigenval,lapack::optimal_workspace());
     if (r) {
     }
-    float sigma;
+    float sigma = 0;
 #elif defined(FC_USE_EIGEN)
     Eigen::Matrix3d covMat = Eigen::Matrix3d::Zero();
     covMat(0,0) = sxx;
@@ -360,17 +362,15 @@ void PlaneFit::ProjectToPlane ()
 
 // -------------------------------------------------------------------------------
 
-float FunctionContainer::dKoeff[]; // Koeffizienten der Quadrik
-
-bool QuadraticFit::GetCurvatureInfo(float x, float y, float z,
-                                    float &rfCurv0, float &rfCurv1,
-                                    Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, float &dDistance)
+bool QuadraticFit::GetCurvatureInfo(double x, double y, double z,
+                                    double &rfCurv0, double &rfCurv1,
+                                    Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance)
 {
     assert( _bIsFitted );
     bool bResult = false;
 
     if (_bIsFitted) {
-        Wm4::Vector3<float> Dir0, Dir1;
+        Wm4::Vector3<double> Dir0, Dir1;
         FunctionContainer  clFuncCont( _fCoeff );
         bResult = clFuncCont.CurvatureInfo( x, y, z, rfCurv0, rfCurv1, Dir0, Dir1, dDistance );
 
@@ -382,7 +382,7 @@ bool QuadraticFit::GetCurvatureInfo(float x, float y, float z,
     return bResult;
 }
 
-bool QuadraticFit::GetCurvatureInfo(float x, float y, float z, float &rfCurv0, float &rfCurv1)
+bool QuadraticFit::GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1)
 {
     bool bResult = false;
 
@@ -394,12 +394,12 @@ bool QuadraticFit::GetCurvatureInfo(float x, float y, float z, float &rfCurv0, f
     return bResult;
 }
 
-const float& QuadraticFit::GetCoeffArray() const
+const double& QuadraticFit::GetCoeffArray() const
 {
     return _fCoeff[0];
 }
 
-float QuadraticFit::GetCoeff(unsigned long ulIndex) const
+double QuadraticFit::GetCoeff(unsigned long ulIndex) const
 {
     assert( ulIndex >= 0 && ulIndex < 10 );
 
@@ -414,9 +414,9 @@ float QuadraticFit::Fit()
     float fResult = FLOAT_MAX;
 
     if (CountPoints() > 0) {
-        std::vector< Wm4::Vector3<float> > cPts;
+        std::vector< Wm4::Vector3<double> > cPts;
         GetMgcVectorArray( cPts );
-        fResult = Wm4::QuadraticFit3<float>( CountPoints(), &(cPts[0]), _fCoeff );
+        fResult = Wm4::QuadraticFit3<double>( CountPoints(), &(cPts[0]), _fCoeff );
         _fLastResult = fResult;
 
         _bIsFitted = true;
@@ -425,7 +425,7 @@ float QuadraticFit::Fit()
     return fResult;
 }
 
-void QuadraticFit::CalcEigenValues(float &dLambda1, float &dLambda2, float &dLambda3,
+void QuadraticFit::CalcEigenValues(double &dLambda1, double &dLambda2, double &dLambda3,
                                    Base::Vector3f &clEV1, Base::Vector3f &clEV2, Base::Vector3f &clEV3) const
 {
     assert( _bIsFitted );
@@ -451,16 +451,16 @@ void QuadraticFit::CalcEigenValues(float &dLambda1, float &dLambda2, float &dLam
      *
      */
 
-    Wm4::Matrix3<float>  akMat(_fCoeff[4],       _fCoeff[7]/2.0f, _fCoeff[8]/2.0f,
+    Wm4::Matrix3<double>  akMat(_fCoeff[4],       _fCoeff[7]/2.0f, _fCoeff[8]/2.0f,
                                _fCoeff[7]/2.0f,  _fCoeff[5],      _fCoeff[9]/2.0f,
                                _fCoeff[8]/2.0f,  _fCoeff[9]/2.0f, _fCoeff[6]       );
 
-    Wm4::Matrix3<float> rkRot, rkDiag;
+    Wm4::Matrix3<double> rkRot, rkDiag;
     akMat.EigenDecomposition( rkRot, rkDiag );
 
-    Wm4::Vector3<float> vEigenU = rkRot.GetColumn(0);
-    Wm4::Vector3<float> vEigenV = rkRot.GetColumn(1);
-    Wm4::Vector3<float> vEigenW = rkRot.GetColumn(2);
+    Wm4::Vector3<double> vEigenU = rkRot.GetColumn(0);
+    Wm4::Vector3<double> vEigenV = rkRot.GetColumn(1);
+    Wm4::Vector3<double> vEigenW = rkRot.GetColumn(2);
 
     Convert( vEigenU, clEV1 );
     Convert( vEigenV, clEV2 );
@@ -471,11 +471,11 @@ void QuadraticFit::CalcEigenValues(float &dLambda1, float &dLambda2, float &dLam
     dLambda3 = rkDiag[2][2];
 }
 
-void QuadraticFit::CalcZValues( float x, float y, float &dZ1, float &dZ2 ) const
+void QuadraticFit::CalcZValues( double x, double y, double &dZ1, double &dZ2 ) const
 {
     assert( _bIsFitted );
 
-    float dDisk = _fCoeff[3]*_fCoeff[3]+2*_fCoeff[3]*_fCoeff[8]*x+2*_fCoeff[3]*_fCoeff[9]*y+
+    double dDisk = _fCoeff[3]*_fCoeff[3]+2*_fCoeff[3]*_fCoeff[8]*x+2*_fCoeff[3]*_fCoeff[9]*y+
                   _fCoeff[8]*_fCoeff[8]*x*x+2*_fCoeff[8]*x*_fCoeff[9]*y+_fCoeff[9]*_fCoeff[9]*y*y-
                   4*_fCoeff[6]*_fCoeff[0]-4*_fCoeff[6]*_fCoeff[1]*x-4*_fCoeff[6]*_fCoeff[2]*y-
                   4*_fCoeff[6]*_fCoeff[7]*x*y-4*_fCoeff[6]*_fCoeff[4]*x*x-4*_fCoeff[6]*_fCoeff[5]*y*y;
@@ -494,8 +494,8 @@ void QuadraticFit::CalcZValues( float x, float y, float &dZ1, float &dZ2 ) const
     else
         dDisk = sqrt( dDisk );
 
-    dZ1 = 0.5f * ( ( -_fCoeff[3] - _fCoeff[8]*x - _fCoeff[9]*y + dDisk ) / _fCoeff[6] );
-    dZ2 = 0.5f * ( ( -_fCoeff[3] - _fCoeff[8]*x - _fCoeff[9]*y - dDisk ) / _fCoeff[6] );
+    dZ1 = 0.5 * ( ( -_fCoeff[3] - _fCoeff[8]*x - _fCoeff[9]*y + dDisk ) / _fCoeff[6] );
+    dZ2 = 0.5 * ( ( -_fCoeff[3] - _fCoeff[8]*x - _fCoeff[9]*y - dDisk ) / _fCoeff[6] );
 }
 
 // -------------------------------------------------------------------------------
@@ -529,13 +529,13 @@ float SurfaceFit::Fit()
     return fResult;
 }
 
-bool SurfaceFit::GetCurvatureInfo(float x, float y, float z, float &rfCurv0, float &rfCurv1,
-                                  Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, float &dDistance )
+bool SurfaceFit::GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1,
+                                  Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance )
 {
     bool bResult = false;
 
     if (_bIsFitted) {
-        Wm4::Vector3<float> Dir0, Dir1;
+        Wm4::Vector3<double> Dir0, Dir1;
         FunctionContainer  clFuncCont( _fCoeff );
         bResult = clFuncCont.CurvatureInfo( x, y, z, rfCurv0, rfCurv1, Dir0, Dir1, dDistance );
 
@@ -547,7 +547,7 @@ bool SurfaceFit::GetCurvatureInfo(float x, float y, float z, float &rfCurv0, flo
     return bResult;
 }
 
-bool SurfaceFit::GetCurvatureInfo(float x, float y, float z, float &rfCurv0, float &rfCurv1)
+bool SurfaceFit::GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1)
 {
     assert( _bIsFitted );
     bool bResult = false;
@@ -560,18 +560,17 @@ bool SurfaceFit::GetCurvatureInfo(float x, float y, float z, float &rfCurv0, flo
     return bResult;
 }
 
-float SurfaceFit::PolynomFit()
+double SurfaceFit::PolynomFit()
 {
     if (PlaneFit::Fit() == FLOAT_MAX)
         return FLOAT_MAX;
 
-#if 0
-#if defined(FC_USE_BOOST)
     Base::Vector3d bs(this->_vBase.x,this->_vBase.y,this->_vBase.z);
     Base::Vector3d ex(this->_vDirU.x,this->_vDirU.y,this->_vDirU.z);
     Base::Vector3d ey(this->_vDirV.x,this->_vDirV.y,this->_vDirV.z);
     Base::Vector3d ez(this->_vDirW.x,this->_vDirW.y,this->_vDirW.z);
 
+#if defined(FC_USE_BOOST)
     ublas::matrix<double> A(6,6);
     ublas::vector<double> b(6);
     for (int i=0; i<6; i++) {
@@ -580,6 +579,11 @@ float SurfaceFit::PolynomFit()
         }
         b(i) = 0.0;
     }
+#else
+    Eigen::Matrix<double,6,6> A = Eigen::Matrix<double,6,6>::Zero();
+    Eigen::Matrix<double,6,1> b = Eigen::Matrix<double,6,1>::Zero();
+    Eigen::Matrix<double,6,1> x = Eigen::Matrix<double,6,1>::Zero();
+#endif
 
     for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it != _vPoints.end(); it++) {
         Base::Vector3d clPoint(it->x,it->y,it->z);
@@ -648,29 +652,34 @@ float SurfaceFit::PolynomFit()
 
     A(5,4) = A(4,5);
 
-
+#if defined(FC_USE_BOOST)
     namespace lapack= boost::numeric::bindings::lapack;
     //std::clog << A << std::endl;
     //std::clog << b << std::endl;
-    lapack::gesv(A,b);
+    //lapack::gesv(A,b);
+    ublas::vector<double> x(6);
+    x = b;
     //std::clog << b << std::endl;
+#else
+    // A.llt().solve(b,&x); // not sure if always positive definite
+    A.qr().solve(b,&x);
+#endif
 
-    _fCoeff[0] = (float)(-b(5));
-    _fCoeff[1] = (float)(-b(3));
-    _fCoeff[2] = (float)(-b(4));
+    _fCoeff[0] = (float)(-x(5));
+    _fCoeff[1] = (float)(-x(3));
+    _fCoeff[2] = (float)(-x(4));
     _fCoeff[3] = 1.0f;
-    _fCoeff[4] = (float)(-b(0));
-    _fCoeff[5] = (float)(-b(1));
+    _fCoeff[4] = (float)(-x(0));
+    _fCoeff[5] = (float)(-x(1));
     _fCoeff[6] = 0.0f;
-    _fCoeff[7] = (float)(-b(2));
+    _fCoeff[7] = (float)(-x(2));
     _fCoeff[8] = 0.0f;
     _fCoeff[9] = 0.0f;
-#endif
-#endif
+
     return 0.0f;
 }
 
-float SurfaceFit::Value(float x, float y) const
+double SurfaceFit::Value(double x, double y) const
 {
     float z = 0.0f;
     if (_bIsFitted) {

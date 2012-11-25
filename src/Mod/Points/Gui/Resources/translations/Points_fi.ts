@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Exports a point cloud</source>
-      <translation>Exports a point cloud</translation>
+      <translation>Vie pistepilven</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     </message>
     <message>
       <source>Imports a point cloud</source>
-      <translation>Imports a point cloud</translation>
+      <translation>Tuo pistepilven</translation>
     </message>
   </context>
   <context>
@@ -40,11 +40,11 @@
     </message>
     <message>
       <source>Cut point cloud</source>
-      <translation>Cut point cloud</translation>
+      <translation>Leikkaa pistepilvi</translation>
     </message>
     <message>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Cuts a point cloud with a picked polygon</translation>
+      <translation>Leikkaa pistepilven valitun monikulmion kanssa</translation>
     </message>
   </context>
   <context>
@@ -87,23 +87,23 @@
     </message>
     <message>
       <source>Cluster by lines starting with:</source>
-      <translation>Cluster by lines starting with:</translation>
+      <translation>Klusteroi viivat, jotka alkavat:</translation>
     </message>
     <message>
       <source>Ignore lines starting with:</source>
-      <translation>Ignore lines starting with:</translation>
+      <translation>Ohita viivat, jotka alkavat:</translation>
     </message>
     <message>
       <source>Point format</source>
-      <translation>Point format</translation>
+      <translation>Piste-muodossa</translation>
     </message>
     <message>
       <source>Number separator:</source>
-      <translation>Number separator:</translation>
+      <translation>Numero erotin:</translation>
     </message>
     <message>
       <source>Points format:</source>
-      <translation>Points format:</translation>
+      <translation>Pisteiden muodossa:</translation>
     </message>
     <message>
       <source>Next block:</source>
@@ -167,7 +167,7 @@
     </message>
     <message>
       <source>Number of previewed lines:</source>
-      <translation>Esikatseltavien rivien määrä:</translation>
+      <translation>Esikatseltavien viivojen määrä:</translation>
     </message>
   </context>
   <context>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Command.cpp" line="-84"/>
       <source>Ascii Points (*.asc);;All Files (*.*)</source>
-      <translation>Ascii Points (*.asc);;All Files (*.*)</translation>
+      <translation>Ascii Pisteet (*.asc);;Kaikki tiedostot (*.*)</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Points tools</source>
-      <translation>Points tools</translation>
+      <translation>Pisteiden työkalut</translation>
     </message>
     <message>
       <source>&amp;Points</source>

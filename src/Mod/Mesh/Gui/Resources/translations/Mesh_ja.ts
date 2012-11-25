@@ -285,11 +285,11 @@
     </message>
     <message>
       <source>Make segment</source>
-      <translation>Make segment</translation>
+      <translation>セグメントを作成する</translation>
     </message>
     <message>
       <source>Creates a mesh segment</source>
-      <translation>Creates a mesh segment</translation>
+      <translation>メッシュのセグメントを作成</translation>
     </message>
   </context>
   <context>
@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Trim mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Trims a mesh with a picked polygon</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -353,6 +368,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Create mesh segments...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Create mesh segments</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -375,11 +405,11 @@
     </message>
     <message>
       <source>Segment by tool mesh</source>
-      <translation>Segment by tool mesh</translation>
+      <translation>ツールメッシュによるセグメント</translation>
     </message>
     <message>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Creates a segment from a given tool mesh</translation>
+      <translation>指定されたツールメッシュからセグメントを作成</translation>
     </message>
   </context>
   <context>
@@ -553,7 +583,7 @@
     </message>
     <message>
       <source>Multiple point indices</source>
-      <translation>Multiple point indices</translation>
+      <translation>複数点のインデックス</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
@@ -637,11 +667,11 @@
     </message>
     <message>
       <source>Mesh repair</source>
-      <translation>Mesh repair</translation>
+      <translation>メッシュの修復</translation>
     </message>
     <message>
       <source>Flipped normals found</source>
-      <translation>Flipped normals found</translation>
+      <translation>逆向きの法線が見つかりました</translation>
     </message>
     <message>
       <source>Check failed due to folds on the surface.
@@ -670,7 +700,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>&amp;Create</source>
-      <translation>&amp;Create</translation>
+      <translation>作成(&amp;C)</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -686,39 +716,39 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Solid:</source>
-      <translation>Solid:</translation>
+      <translation>ソリッド:</translation>
     </message>
     <message>
       <source>Cube</source>
-      <translation>Cube</translation>
+      <translation>立方体</translation>
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>円柱</translation>
     </message>
     <message>
       <source>Cone</source>
-      <translation>Cone</translation>
+      <translation>三角錐</translation>
     </message>
     <message>
       <source>Sphere</source>
-      <translation>Sphere</translation>
+      <translation>球</translation>
     </message>
     <message>
       <source>Ellipsoid</source>
-      <translation>Ellipsoid</translation>
+      <translation>楕円</translation>
     </message>
     <message>
       <source>Torus</source>
-      <translation>Torus</translation>
+      <translation>トーラス</translation>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Height:</translation>
+      <translation>高さ:</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation>Length:</translation>
+      <translation>長さ:</translation>
     </message>
     <message>
       <source>Width:</source>
@@ -753,7 +783,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
       <source>Create %1</source>
-      <translation>Create %1</translation>
+      <translation>%1を作成します。</translation>
     </message>
     <message>
       <source>No active document</source>
@@ -764,7 +794,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
       <source>Mesh view</source>
-      <translation>Mesh view</translation>
+      <translation>メッシュ表示</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
@@ -816,7 +846,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Default mesh color</source>
-      <translation>Default mesh color</translation>
+      <translation>デフォルトのメッシュ色</translation>
     </message>
     <message>
       <source>Show bounding-box for highlighted or selected meshes</source>
@@ -885,7 +915,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
-      <translation>Remove components</translation>
+      <translation>コンポーネントを削除します。</translation>
     </message>
     <message>
       <source>Select</source>
@@ -897,7 +927,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Pick triangle</source>
-      <translation>Pick triangle</translation>
+      <translation>三角要素を選択</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
@@ -917,11 +947,11 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Deselect</source>
-      <translation>Deselect</translation>
+      <translation>選択を解除</translation>
     </message>
     <message>
       <source>Deselect whole component</source>
-      <translation>Deselect whole component</translation>
+      <translation>すべての選択を解除</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
@@ -938,6 +968,53 @@ Please run the command to repair folds first</translation>
     <message>
       <source>Respect only visible triangles</source>
       <translation>Respect only visible triangles</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Smooth mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plane</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>公差</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minumum number of faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>円柱</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>半径</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerance (Flat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerance (Curved)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>球</translation>
     </message>
   </context>
   <context>
@@ -1097,7 +1174,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Annotation</source>
-      <translation>Annotation</translation>
+      <translation>注釈</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

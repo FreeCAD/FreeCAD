@@ -42,7 +42,6 @@
 #endif
 
 #include <Base/Placement.h>
-#include <Mod/Part/App/Part2DObject.h>
 
 #include "FeatureFace.h"
 
@@ -62,7 +61,7 @@ short Face::mustExecute() const
 {
     if (Sources.isTouched())
         return 1;
-    return 0;
+    return Part::Part2DObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Face::execute(void)

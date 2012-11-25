@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Disponibile:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Selezionato:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Aggiungi</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Rimuovi</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Spostare verso l'alto</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Sposta verso il basso</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Oggetto mobile</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Oggetto fisso</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -159,6 +197,10 @@
     <message>
       <source>License...</source>
       <translation>Licenza...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Copia negli appunti</translation>
     </message>
   </context>
   <context>
@@ -318,7 +360,7 @@
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Configurare le Macro personali</translation>
+      <translation>Configurare Macro Personali</translation>
     </message>
     <message>
       <source>Macro:</source>
@@ -583,7 +625,7 @@ Definire un'altra scorciatoia.</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Sposta l'elemento selezionato in basso&lt;/b&gt;&lt;p&gt;L'elemento verrà spostato all'interno del livello di gerarchia.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Sposta l'elemento selezionato in alto.&lt;/b&gt;&lt;p&gt;L'elemento verrà spostato all'interno del livello di gerarchia.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>New...</source>
@@ -711,10 +753,6 @@ Definire un'altra scorciatoia.</translation>
       <translation>Modalità di visualizzazione</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Modo di visualizzazione:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Modo di stampa:</translation>
     </message>
@@ -737,6 +775,10 @@ Definire un'altra scorciatoia.</translation>
     <message>
       <source>Color plot:</source>
       <translation>Colore trama:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Finestra del documento:</translation>
     </message>
   </context>
   <context>
@@ -1487,6 +1529,14 @@ Specificare un'altra cartella.</translation>
       <source>Invert zoom</source>
       <translation>Inverti zoom</translation>
     </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zoom al cursore</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Passo di zoom</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -1728,6 +1778,10 @@ Specificare un'altra cartella.</translation>
       <source>Items</source>
       <translation>Elementi</translation>
     </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Evidenziazione di linea corrente</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
@@ -1962,6 +2016,14 @@ Specificare un'altra cartella.</translation>
       <source>Macro path</source>
       <translation>Percorso macro</translation>
     </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>Impostazioni generali macro</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Esegui macro in ambiente locale</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -2053,20 +2115,48 @@ Specificare un'altra cartella.</translation>
       <translation>Geometria interamente vincolata</translation>
     </message>
     <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>Il colore della geometria di costruzione in modalità modifica</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>Il colore della geometria completamente vincolata in modalità modifica</translation>
-    </message>
-    <message>
       <source>The color of vertices being edited</source>
       <translation>Il colore dei vertici in fase di modifica</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
       <translation>Il colore degli spigoli in fase di modifica</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>Il colore della geometria di costruzione in modalità modifica</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>Il colore della geometria completamente vincolata in modalità modifica</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Colore del cursore testo</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Colore predefinito della forma</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>Il colore predefinito per le nuove forme</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Lo spessore e il colore predefiniti della linea</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>Il colore predefinito della linea per le nuove forme</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>Lo spessore predefinito della linea per le nuove forme</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2131,8 +2221,40 @@ Specificare un'altra cartella.</translation>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Annullato</translation>
+      <source>Download</source>
+      <translation>Download</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Annulla</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Chiudi</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>Esiste già un file chiamato %1 nella directory corrente. Si desidera sovrascrivere?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Impossibile salvare il file %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Download %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Download annullato.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Download non riuscito: %1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Scaricato %1 nella directory corrente.</translation>
     </message>
   </context>
   <context>
@@ -2167,6 +2289,13 @@ Specificare un'altra cartella.</translation>
     <message>
       <source>OK</source>
       <translation>OK</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Copyright</translation>
     </message>
   </context>
   <context>
@@ -2362,7 +2491,7 @@ Specificare un'altra cartella.</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Rotation axis with angle</translation>
+      <translation>Asse di rotazione con angolo</translation>
     </message>
     <message>
       <source>Euler angles</source>
@@ -2858,6 +2987,25 @@ Si desidera salvare le modifiche?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Direzione:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2885,6 +3033,90 @@ Si desidera salvare le modifiche?</translation>
     <message>
       <source>Close All</source>
       <translation>Chiudi tutto</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Allineamento manuale</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>L'allineamento è già in corso.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Allineamento[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Seleziona almeno un punt0 nelle viste di sinistra e destra</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Seleziona almeno %1 punti nelle viste di sinistra e destra</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Specificare i punti nelle viste di destra e sinistra</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>L'allineamento è terminato</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>L'allineamento è stato annullato</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>I punti raccolti nella vista sinistra sono troppo pochi. Sono necessari almeno %1 punti.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>I punti raccolti nella vista destra sono troppo pochi. Sono necessari almeno %1 punti.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Diverso numero di punti specificati nella vista di destra e sinistra.
+Nella vista sinistra sono stati specificati %1 punti, 
+nella vista destra sono stati specificati %2 punti.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Prova ad allineare un gruppo di viste</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>L'allineamento non è riuscito. Come si desidera procedere?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Riprova</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Ignora</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Annulla</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Diverso numero di punti specificati nella vista di destra e sinistra. Nella vista sinistra sono stati specificati %1 punti, nella vista destra sono stati specificati %2 punti.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Punto selezianato a (%1,%2,%3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>Nessun punto è stato selezionato</translation>
     </message>
   </context>
   <context>
@@ -3032,6 +3264,10 @@ Vuoi uscire senza salvare i tuoi dati?</translation>
       <source>Select All</source>
       <translation>Seleziona tutto</translation>
     </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Pulisci la console</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -3175,10 +3411,6 @@ Vuoi specificare un'altra cartella?</translation>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-      <source>Display mode:</source>
-      <translation>Modo di visualizzazione:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Modo di stampa:</translation>
     </message>
@@ -3197,6 +3429,10 @@ Vuoi specificare un'altra cartella?</translation>
     <message>
       <source>Appearance</source>
       <translation>Aspetto</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Finestra del documento:</translation>
     </message>
   </context>
   <context>
@@ -3222,10 +3458,22 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>Inglese</translation>
+      <source>Press left mouse button</source>
+      <translation>Premi il tasto sinistro del mouse</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Premere il tasto MAIUSC</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Premere il tasto ALT</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Premere il tasto PGSU/PGGIÙ</translation>
     </message>
   </context>
   <context>
@@ -3479,14 +3727,6 @@ Vuoi specificare un'altra cartella?</translation>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>Un errore generico è accaduto durante il caricamento dell'ambiente</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>File non trovato</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Impossibile aprire il file %1</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -3793,6 +4033,17 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista standard</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Box di selezione</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
@@ -3850,6 +4101,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Activate previous window</source>
       <translation>Attiva la precedente finestra</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Modifica</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Allineamento...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Allinea gli oggetti selezionati</translation>
     </message>
   </context>
   <context>
@@ -3916,7 +4182,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>Chiudi tut&amp;to</translation>
+      <translation>Chiudi &amp;tutto</translation>
     </message>
     <message>
       <source>Close all windows</source>
@@ -3931,7 +4197,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>Inizia linea &amp;di comando...</translation>
+      <translation>Inizia &amp;linea di comando...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
@@ -3966,21 +4232,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Cut out</source>
       <translation>Taglia</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Modifica</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Duplica la selezione</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Inserisce i duplicati degli oggetti selezionati nel documento attivo</translation>
     </message>
   </context>
   <context>
@@ -4126,7 +4377,41 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Draw style</translation>
+      <translation>Stile di disegno</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Modifica</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Duplica la selezione</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Inserisce i duplicati degli oggetti selezionati nel documento attivo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Modifica</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Attiva/disattiva modalità &amp;modifica</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Attiva/disattiva la modalità modifica per l'oggetto selezionato</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Entra o esce dalla modalità di modifica dell'oggetto selezionato</translation>
     </message>
   </context>
   <context>
@@ -4144,8 +4429,27 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Esporta un oggetto nel documento attivo</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Formati supportati</translation>
+      <source>No selection</source>
+      <translation>Nessuna selezione</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Si prega di selezionare prima gli oggetti che si desidera esportare.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Strumenti</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Grafico delle dipendenze...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Visualizza il grafico delle dipendenze degli oggetti nel documento attivo</translation>
     </message>
   </context>
   <context>
@@ -4320,12 +4624,12 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Strumenti</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Misura la distanza</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Misura la distanza tra due oggetti selezionati</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Misura la distanza</translation>
     </message>
   </context>
   <context>
@@ -4375,21 +4679,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Show help to the application</source>
       <translation>Mostra l'aiuto dell'applicazione</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Aiuto</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Manuali Python </translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Mostra la documentazione Python</translation>
     </message>
   </context>
   <context>
@@ -4648,7 +4937,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>Sa&amp;lva con nome...</translation>
+      <translation>S&amp;alva con nome...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
@@ -4794,7 +5083,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Piano di sezione</translation>
+      <translation>Piano di taglio</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
@@ -5207,6 +5496,36 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista standard</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Ruota verso sinistra</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Ruota la vista di 90° in senso antiorario</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista standard</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Ruota verso destra</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Ruota la vista di 90° in senso orario</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -5325,8 +5644,8 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Vista standard</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Modalità di visualizzazione</translation>
+      <source>Document window</source>
+      <translation>Finestra del documento</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5374,11 +5693,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>As is</translation>
+      <translation>Come è</translation>
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normal mode</translation>
+      <translation>Modalità normale</translation>
     </message>
     <message>
       <source>Wireframe</source>
@@ -5386,7 +5705,36 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Wireframe mode</translation>
+      <translation>Modalità wireframe</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Graphviz non trovato</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Graphviz non può essere trovato sul vostro sistema.
+Si vuole specificare il percorso di installazione se è già installato?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Percorso di installazione di Graphviz</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Grafico delle dipendenze</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Graphviz ha fallito</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Graphviz non è riuscito a creare un file immagine</translation>
     </message>
   </context>
   <context>

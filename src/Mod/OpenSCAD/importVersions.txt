@@ -1,0 +1,61 @@
+Version History
+===============
+
+0.01a - First Version
+
+0.01b - Fixed
+
+	Reset Global Variables
+	Fix Multmatrix use of Shape
+
+        Added import Function (Untested)
+
+0.02b - Rewrite to use Bojects rather than shapes.
+        Objects now editible in FreeCad 
+		
+0.02c - disable debug output on Yacc to avoid permissions problem with Linux
+
+0.03a - Added support for
+
+        Linear Extrusion
+        Rotational Extrusion
+        circle
+        square
+        polygon
+        polyhedron
+
+0.04a - Change to use parser stack rather than own stack
+	        to fix a parsing problem
+        	makes code cleaner and less global variables
+        parsers out SCAD comments ( Not sure if the are allowed in CSG file anyway
+        other minor fixes
+		
+0.04b - Fixes where Multmatrix has more than one object neeed to fuse first
+        Correct import function call
+		
+0.04c - Support for cylinders made with regular polygon ( Needs FreeCAD with fixes to Draft )
+        Attempt at transformGeometry for non orthoganal Multmatrix
+
+0.04d - Fix to multmatrix transformGeometry to avoid crash
+
+0.04e - If problems with Draft or Draft's makePolygon because not on latest FreeCAD falls back
+        to non editable polygon
+		 
+0.04f - Fix bug with multiple intersections
+
+0.05a - Attempt to add shogens's import dxf function code.
+
+0.05b - Fix introduced bug with centre=true/false, ViewObject Proxy
+
+0.05c - Fix for polygon with path - Changes to Polygon and polyhdron - parse projection
+
+0.05d - Fix for implicit fuse for groups
+        global max_polygon parameter to control cylinder or prism
+
+There appear to be problems with some files and these maybe as a result of bugs in FreeCAD that corrupt
+the model. If you find problem files please email them to keith@sloan-home.co.uk 				
+
+Thanks to shoogen and Peter Li for their advice, support and expertise.
+
+Keith Sloan
+keith@sloan-home.co.uk		       

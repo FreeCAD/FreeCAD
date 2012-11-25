@@ -32,12 +32,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>ドローイング (&amp;D)</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Dr&amp;awing</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>スケッチ(&amp;T)</translation>
+      <source>S&amp;ketch</source>
+      <translation>S&amp;ketch</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -50,6 +50,10 @@
     <message>
       <source>Sketch based</source>
       <translation>スケッチベース</translation>
+    </message>
+    <message>
+      <source>Primitives</source>
+      <translation>Primitives</translation>
     </message>
     <message>
       <source>Parametric</source>

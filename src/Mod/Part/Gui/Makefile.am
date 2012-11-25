@@ -19,6 +19,7 @@ BUILT_SOURCES=\
 		ui_TaskFaceColors.h \
 		ui_TaskShapeBuilder.h \
 		ui_TaskLoft.h \
+		ui_TaskSweep.h \
 		moc_CrossSections.cpp \
 		moc_DlgBooleanOperation.cpp \
 		moc_DlgExtrusion.cpp \
@@ -32,9 +33,11 @@ BUILT_SOURCES=\
 		moc_DlgSettings3DViewPartImp.cpp \
 		moc_DlgSettingsGeneral.cpp \
 		moc_Mirroring.cpp \
+		moc_TaskCheckGeometry.cpp \
 		moc_TaskFaceColors.cpp \
 		moc_TaskShapeBuilder.cpp \
 		moc_TaskLoft.cpp \
+		moc_TaskSweep.cpp \
 		qrc_Part.cpp 
 
 libPartGui_la_SOURCES=\
@@ -67,12 +70,16 @@ libPartGui_la_SOURCES=\
 		DlgSettingsGeneral.h \
 		Mirroring.cpp \
 		Mirroring.h \
+		TaskCheckGeometry.cpp \
+		TaskCheckGeometry.h \
 		TaskFaceColors.cpp \
 		TaskFaceColors.h \
 		TaskShapeBuilder.cpp \
 		TaskShapeBuilder.h \
 		TaskLoft.cpp \
 		TaskLoft.h \
+		TaskSweep.cpp \
+		TaskSweep.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		SoBrepShape.cpp \
@@ -190,6 +197,7 @@ EXTRA_DIST = \
 		Resources/icons/Part_Sphere.svg \
 		Resources/icons/Part_Booleans.svg \
 		Resources/icons/Part_Chamfer.svg \
+		Resources/icons/Part_CheckGeometry.svg \
 		Resources/icons/Part_Cut.svg \
 		Resources/icons/Part_Common.svg \
 		Resources/icons/Part_CreatePrimitives.png \
@@ -200,12 +208,14 @@ EXTRA_DIST = \
 		Resources/icons/Part_Fillet.svg \
 		Resources/icons/Part_Revolve.svg \
 		Resources/icons/Part_Import.svg \
+		Resources/icons/Part_Loft.svg \
 		Resources/icons/Part_Mirror.svg \
 		Resources/icons/Part_MirrorPNG.png \
 		Resources/icons/Part_RuledSurface.svg \
 		Resources/icons/Part_Shapebuilder.png \
 		Resources/icons/Part_Shapebuilder.svg \
 		Resources/icons/Part_ShapeInfo.svg \
+		Resources/icons/Part_Sweep.svg \
 		Resources/icons/Tree_Part.svg \
 		Resources/icons/preferences-part_design.svg \
 		Resources/icons/PartFeature.svg \
@@ -228,13 +238,14 @@ EXTRA_DIST = \
 		TaskFaceColors.ui \
 		TaskShapeBuilder.ui \
 		TaskLoft.ui \
+		TaskSweep.ui \
 		Resources/Part.qrc \
 		Resources/translations/Part_af.qm \
 		Resources/translations/Part_af.ts \
 		Resources/translations/Part_de.qm \
 		Resources/translations/Part_de.ts \
-		Resources/translations/Part_es.qm \
-		Resources/translations/Part_es.ts \
+		Resources/translations/Part_es-ES.qm \
+		Resources/translations/Part_es-ES.ts \
 		Resources/translations/Part_fi.qm \
 		Resources/translations/Part_fi.ts \
 		Resources/translations/Part_fr.qm \
@@ -247,14 +258,30 @@ EXTRA_DIST = \
 		Resources/translations/Part_nl.ts \
 		Resources/translations/Part_no.qm \
 		Resources/translations/Part_no.ts \
-		Resources/translations/Part_pt.qm \
-		Resources/translations/Part_pt.ts \
+		Resources/translations/Part_pl.qm \
+		Resources/translations/Part_pl.ts \
+		Resources/translations/Part_pt-BR.qm \
+		Resources/translations/Part_pt-BR.ts \
 		Resources/translations/Part_ru.qm \
 		Resources/translations/Part_ru.ts \
-		Resources/translations/Part_se.qm \
-		Resources/translations/Part_se.ts \
+		Resources/translations/Part_sv-SE.qm \
+		Resources/translations/Part_sv-SE.ts \
 		Resources/translations/Part_uk.qm \
 		Resources/translations/Part_uk.ts \
-		Resources/translations/Part_zh.qm \
-		Resources/translations/Part_zh.ts \
+		Resources/translations/Part_zh-CN.qm \
+		Resources/translations/Part_zh-CN.ts \
+		Resources/translations/Part_zh-TW.qm \
+		Resources/translations/Part_zh-TW.ts \
+		Resources/translations/Part_ro.qm \
+		Resources/translations/Part_ro.ts \
+		Resources/translations/Part_ja.qm \
+		Resources/translations/Part_ja.ts \
+		Resources/translations/Part_hu.qm \
+		Resources/translations/Part_hu.ts \
+		Resources/translations/Part_cs.qm \
+		Resources/translations/Part_cs.ts \
+		Resources/translations/Part_sk.qm \
+		Resources/translations/Part_sk.ts \
+		Resources/translations/Part_tr.qm \
+		Resources/translations/Part_tr.ts \
 		CMakeLists.txt

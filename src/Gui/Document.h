@@ -72,7 +72,8 @@ protected:
     void slotChangedObject(const App::DocumentObject&, const App::Property&);
     void slotRenamedObject(const App::DocumentObject&);
     void slotActivatedObject(const App::DocumentObject&);
-    void slotRestoredDocument(const App::Document&);
+    void slotStartRestoreDocument(const App::Document&);
+    void slotFinishRestoreDocument(const App::Document&);
     //@}
 
 public:
@@ -90,9 +91,9 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalRenamedObject;
     /// signal on activated Object
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
-    /// signal on goes in edti mode
+    /// signal on entering in edit mode
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
-   /// signal on leave edit mode
+    /// signal on leaving edit mode
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
@@ -151,6 +152,8 @@ public:
     void onRelabel(void);
     /// returns a list of all attached MDI views
     std::list<MDIView*> getMDIViews() const;
+    /// returns a list of all MDI views of a certain type
+    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
     //@}
 
     /** @name View provider handling  */

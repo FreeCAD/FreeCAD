@@ -173,7 +173,7 @@
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Close holes interactively</translation>
+      <translation>Закрити отвори в діалоговому режимі</translation>
     </message>
   </context>
   <context>
@@ -184,11 +184,11 @@
     </message>
     <message>
       <source>Fill holes...</source>
-      <translation>Fill holes...</translation>
+      <translation>Заповнити отвори...</translation>
     </message>
     <message>
       <source>Fill holes of the mesh</source>
-      <translation>Fill holes of the mesh</translation>
+      <translation>Заповнити отвори сітки</translation>
     </message>
   </context>
   <context>
@@ -199,11 +199,11 @@
     </message>
     <message>
       <source>Flip normals</source>
-      <translation>Flip normals</translation>
+      <translation>Змінити напрямок нормалей на протилежний</translation>
     </message>
     <message>
       <source>Flips the normals of the mesh</source>
-      <translation>Flips the normals of the mesh</translation>
+      <translation>Змінити напрямок нормалей сітки на протилежний</translation>
     </message>
   </context>
   <context>
@@ -289,7 +289,7 @@
     </message>
     <message>
       <source>Creates a mesh segment</source>
-      <translation>Creates a mesh segment</translation>
+      <translation>Створити сегмент сітки</translation>
     </message>
   </context>
   <context>
@@ -319,7 +319,22 @@
     </message>
     <message>
       <source>Splits a mesh into two meshes</source>
-      <translation>Splits a mesh into two meshes</translation>
+      <translation>Розділити сітку на дві сітки</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Сітка(Меш)</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Trim mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Trims a mesh with a picked polygon</translation>
     </message>
   </context>
   <context>
@@ -330,11 +345,11 @@
     </message>
     <message>
       <source>Remove components by hand...</source>
-      <translation>Remove components by hand...</translation>
+      <translation>Видалити компоненти вручну...</translation>
     </message>
     <message>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Mark a component to remove it from the mesh</translation>
+      <translation>Позначити компонент для видалення його із сітки</translation>
     </message>
   </context>
   <context>
@@ -345,11 +360,26 @@
     </message>
     <message>
       <source>Remove components...</source>
-      <translation>Remove components...</translation>
+      <translation>Видалити компоненти...</translation>
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Remove topologic independent components from the mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Сітка(Меш)</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Create mesh segments...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Create mesh segments</translation>
     </message>
   </context>
   <context>
@@ -360,11 +390,11 @@
     </message>
     <message>
       <source>Smooth...</source>
-      <translation>Smooth...</translation>
+      <translation>Згладжувати...</translation>
     </message>
     <message>
       <source>Smooth the selected meshes</source>
-      <translation>Smooth the selected meshes</translation>
+      <translation>Згладжувати вибрані сітки</translation>
     </message>
   </context>
   <context>
@@ -486,47 +516,47 @@
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Orientation</translation>
+      <translation>Орієнтація</translation>
     </message>
     <message>
       <source>Degenerated faces</source>
-      <translation>Degenerated faces</translation>
+      <translation>Вироджені грані</translation>
     </message>
     <message>
       <source>Face indices</source>
-      <translation>Face indices</translation>
+      <translation>Індекси граней</translation>
     </message>
     <message>
       <source>Number of faces:</source>
-      <translation>Number of faces:</translation>
+      <translation>Кількість граней:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Duplicated faces</translation>
+      <translation>Дубльовані грані</translation>
     </message>
     <message>
       <source>Duplicated points</source>
-      <translation>Duplicated points</translation>
+      <translation>Дубльовані точки</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-manifolds</translation>
+      <translation>Небагатовидний</translation>
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Self-intersections</translation>
+      <translation>Самоперетинання</translation>
     </message>
     <message>
       <source>All above tests together</source>
-      <translation>All above tests together</translation>
+      <translation>Всі перераховані тести разом</translation>
     </message>
     <message>
       <source>Repetitive repair</source>
-      <translation>Repetitive repair</translation>
+      <translation>Повторне відновлення</translation>
     </message>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
+      <translation>Оцінити та відновити сітку</translation>
     </message>
     <message>
       <source>Folds on surface</source>
@@ -557,7 +587,7 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-manifolds</translation>
+      <translation>Небагатовидний</translation>
     </message>
     <message>
       <source>Cannot remove non-manifolds</source>
@@ -609,11 +639,11 @@
     </message>
     <message>
       <source>Duplicated points</source>
-      <translation>Duplicated points</translation>
+      <translation>Дубльовані точки</translation>
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Orientation</translation>
+      <translation>Орієнтація</translation>
     </message>
     <message>
       <source>Indices</source>
@@ -625,7 +655,7 @@
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Duplicated faces</translation>
+      <translation>Дубльовані грані</translation>
     </message>
     <message>
       <source>No self-intersections</source>
@@ -633,7 +663,7 @@
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Self-intersections</translation>
+      <translation>Самоперетинання</translation>
     </message>
     <message>
       <source>Mesh repair</source>
@@ -651,11 +681,11 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>No folds on surface</source>
-      <translation>No folds on surface</translation>
+      <translation>Згинів на поверхні немає</translation>
     </message>
     <message>
       <source>%1 folds on surface</source>
-      <translation>%1 folds on surface</translation>
+      <translation>%1 згинів на поверхні</translation>
     </message>
     <message>
       <source>Folds</source>
@@ -901,7 +931,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
-      <translation>&lt; faces than</translation>
+      <translation>&gt; граней, ніж</translation>
     </message>
     <message>
       <source>Region</source>
@@ -925,7 +955,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
-      <translation>&gt; faces than</translation>
+      <translation>&gt; граней, ніж</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -938,6 +968,53 @@ Please run the command to repair folds first</translation>
     <message>
       <source>Respect only visible triangles</source>
       <translation>Поважати лише видимі трикутники</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Smooth mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Площини</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Точність</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minumum number of faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Циліндр</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Радіус</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerance (Flat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerance (Curved)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Сфера</translation>
     </message>
   </context>
   <context>
@@ -955,7 +1032,7 @@ Please run the command to repair folds first</translation>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
+      <translation>Оцінити та відновити сітку</translation>
     </message>
   </context>
   <context>
@@ -974,7 +1051,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Boundings</source>
-      <translation>Boundings</translation>
+      <translation>Прив'язки</translation>
     </message>
     <message>
       <source>Fill holes</source>
@@ -1058,7 +1135,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Leave info mode</source>
-      <translation>Leave info mode</translation>
+      <translation>Вийти з інформаційного режиму</translation>
     </message>
     <message>
       <source>Index: %1</source>
@@ -1066,11 +1143,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Leave hole-filling mode</source>
-      <translation>Leave hole-filling mode</translation>
+      <translation>Вийти з режиму заповнення отворів</translation>
     </message>
     <message>
       <source>Leave removal mode</source>
-      <translation>Leave removal mode</translation>
+      <translation>Вийти з режиму видалення</translation>
     </message>
     <message>
       <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>
@@ -1099,6 +1176,10 @@ Max=&lt;%4,%5,%6&gt;</source>
     <message>
       <source>Annotation</source>
       <translation>Анотація</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

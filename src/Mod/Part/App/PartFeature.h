@@ -29,6 +29,15 @@
 #include <App/GeoFeature.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyGeo.h>
+// includes for findAllFacesCutBy()
+#include <TopoDS_Face.hxx>
+class gp_Dir;
+
+class BRepBuilderAPI_MakeShape;
+
+// includes for findAllFacesCutBy()
+#include <TopoDS_Face.hxx>
+class gp_Dir;
 
 namespace Part
 {
@@ -51,6 +60,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
+    /// recompute only this object
+    virtual App::DocumentObjectExecReturn *recompute(void);
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual short mustExecute(void) const;
     //@}
@@ -61,11 +72,38 @@ public:
     virtual PyObject* getPyObject(void);
     virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 
-protected:
-    void onChanged(const App::Property* prop);
+    /**
+     * Find the origin of a reference, e.g. the vertex or edge in a sketch that
+     * produced a face
+     */
+    const TopoDS_Shape findOriginOf(const TopoDS_Shape& reference);
 
 protected:
+    void onChanged(const App::Property* prop);
     TopLoc_Location getLocation() const;
+    /**
+     * Build a history of changes
+     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+     * type: The type of object we are interested in, e.g. TopAbs_FACE
+     * newS: The new shape that was created by the operation
+     * oldS: The original shape prior to the operation
+     */
+    ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
+        const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
+};
+
+class FilletBase : public Part::Feature
+{
+    PROPERTY_HEADER(Part::FilletBase);
+
+public:
+    FilletBase();
+
+    App::PropertyLink   Base;
+    PropertyFilletEdges Edges;
+
+    short mustExecute() const;
 };
 
 typedef App::FeaturePythonT<Feature> FeaturePython;
@@ -83,7 +121,32 @@ public:
     }
 };
 
+// Utility methods
+/**
+ * Find all faces cut by a line through the centre of gravity of a given face
+ * Useful for the "up to face" options to pocket or pad
+ */
+struct cutFaces {
+    TopoDS_Face face;
+    double distsq;
+};
+
+PartExport
+std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
+                                        const TopoDS_Shape& face, const gp_Dir& dir);
+
+/**
+  * Check for intersection between the two shapes. Only solids are guaranteed to work properly
+  * There are two modes:
+  * 1. Bounding box check only - quick but inaccurate
+  * 2. Bounding box check plus (if necessary) boolean operation - costly but accurate
+  * Return true if the shapes intersect, false if they don't
+  */
+PartExport
+const bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second, const bool quick = true);
+
 } //namespace Part
 
 
 #endif // PART_FEATURE_H
+

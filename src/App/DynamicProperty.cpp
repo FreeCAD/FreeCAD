@@ -245,6 +245,18 @@ Property* DynamicProperty::addDynamicProperty(const char* type, const char* name
     return pcProperty;
 }
 
+bool DynamicProperty::removeDynamicProperty(const char* name)
+{
+    std::map<std::string,PropData>::iterator it = props.find(name);
+    if (it != props.end()) {
+        delete it->second.property;
+        props.erase(it);
+        return true;
+    }
+
+    return false;
+}
+
 std::string DynamicProperty::getUniquePropertyName(const char *Name) const
 {
     std::string CleanName = Base::Tools::getIdentifier(Name);

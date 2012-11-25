@@ -165,20 +165,17 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
           <property name="toolTip">
-           <string>if this is checked, the internal Arch IFC parser will be use to build Arch objects from known IFC types.</string>
+           <string>If this is checked, the IFCOpenShell importer will be used, allowing to import more IFC types</string>
           </property>
           <property name="text">
-           <string>use internal IFC parser</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>Use IFCOpenShell if available</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>useIfcParser</cstring>
+           <cstring>useIfcOpenShell</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -188,17 +185,103 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
           <property name="toolTip">
-           <string>If this is checked, the IFCOpenShell importer will be used for objects not handled by the internal parser</string>
+           <string>Creates groups for each Arch object type</string>
           </property>
           <property name="text">
-           <string>Use IFCOpenShell</string>
+           <string>Group components by types</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>useIfcOpenShell</cstring>
+           <cstring>createIfcGroups</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
+          <property name="text">
+           <string>Import furniture (can make the model heavy)</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>importIfcFurniture</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>2D rendering</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_4">
+          <property name="toolTip">
+           <string>Show debug information during 2D rendering</string>
+          </property>
+          <property name="text">
+           <string>Show renderer debug messages</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowVRMDebug</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Cut areas line thickness ratio</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox">
+          <property name="toolTip">
+           <string>Specifies how many times the viewed line thickness must be applied to cut lines</string>
+          </property>
+          <property name="value">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CutLineThickness</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -241,6 +324,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

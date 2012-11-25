@@ -4,17 +4,17 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Lunnostelija</translation>
     </message>
     <message>
       <source>Constrain angle</source>
-      <translation>Constrain angle</translation>
+      <translation>Rajoita kulma</translation>
     </message>
     <message>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Fix the angle of a line or the angle between two lines</translation>
+      <translation>Korjaa viivan kulmaa tai kahden viivan välistä kulma</translation>
     </message>
   </context>
   <context>
@@ -55,11 +55,15 @@
     </message>
     <message>
       <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <translation>Vaakasuoran etäisyyden rajoite</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Fix the horizontal distance between two points or line ends</translation>
+      <translation>Korjaa kahden pisteen tai viivanpään vaakasuoraa etäisyyttä</translation>
     </message>
   </context>
   <context>
@@ -69,12 +73,16 @@
       <translation>Lunnostelija</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <translation>Vaakasuoran etäisyyden rajoite</translation>
     </message>
     <message>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Fix the vertical distance between two points or line ends</translation>
+      <translation>Korjaa kahden pisteen tai viivanpään pystysuoraa etäisyyttä</translation>
     </message>
   </context>
   <context>
@@ -85,11 +93,11 @@
     </message>
     <message>
       <source>Constrain equal</source>
-      <translation>Constrain equal</translation>
+      <translation>Yhtäsuuruus rajoite</translation>
     </message>
     <message>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Create an equality constraint between two lines or between circles and arcs</translation>
+      <translation>Luo yhtäsuuruus rajoite kahdelle viivalle tai ympyröille ja kaarille</translation>
     </message>
   </context>
   <context>
@@ -119,7 +127,7 @@
     </message>
     <message>
       <source>Create a lock constraint on the selected item</source>
-      <translation>Create a lock constraint on the selected item</translation>
+      <translation>Luo lukittu rajoite valituille kohteille</translation>
     </message>
   </context>
   <context>
@@ -145,11 +153,11 @@
     </message>
     <message>
       <source>Constrain perpendicular</source>
-      <translation>Constrain perpendicular</translation>
+      <translation>Rajoita kohtisuorasti</translation>
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
-      <translation>Create a Perpendicular constraint between two lines</translation>
+      <translation>Luo kohtisuora rajoite kahden viivan välillä</translation>
     </message>
   </context>
   <context>
@@ -160,11 +168,11 @@
     </message>
     <message>
       <source>Constrain point onto object</source>
-      <translation>Constrain point onto object</translation>
+      <translation>Rajoita piste objektiin</translation>
     </message>
     <message>
       <source>Fix a point onto an object</source>
-      <translation>Fix a point onto an object</translation>
+      <translation>Korjaa piste objektin paalle</translation>
     </message>
   </context>
   <context>
@@ -175,11 +183,11 @@
     </message>
     <message>
       <source>Constrain radius</source>
-      <translation>Constrain radius</translation>
+      <translation>Rajoita säde</translation>
     </message>
     <message>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Fix the radius of a circle or an arc</translation>
+      <translation>Korjaa ympyrän tai kaaren sädettä</translation>
     </message>
   </context>
   <context>
@@ -190,11 +198,11 @@
     </message>
     <message>
       <source>Constrain symmetrical</source>
-      <translation>Constrain symmetrical</translation>
+      <translation>Rajoita symmetrisesti</translation>
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
-      <translation>Create an symmetry constraint between two points with respect to a line</translation>
+      <translation>Luo symmetrisyys rajoite kahdelle pisteelle suhteessa viivaan</translation>
     </message>
   </context>
   <context>
@@ -205,11 +213,11 @@
     </message>
     <message>
       <source>Constrain tangent</source>
-      <translation>Constrain tangent</translation>
+      <translation>Rajoita tangentti</translation>
     </message>
     <message>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Create a tangent constraint between two entities</translation>
+      <translation>Luo tangenttirajoite kahden yksikön välillä</translation>
     </message>
   </context>
   <context>
@@ -230,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Lunnostelija</translation>
     </message>
@@ -281,11 +289,15 @@
     </message>
     <message>
       <source>Create fillet</source>
-      <translation>Create fillet</translation>
+      <translation>Luo pyöristys</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Create a fillet between to lines or at a coincident point</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Create a fillet between two lines or at a coincidental point</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,9 +376,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Lunnostelija</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>External geometry</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Create an edge linked to an external geometry</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Lunnostelija</translation>
     </message>
@@ -387,11 +414,11 @@
     </message>
     <message>
       <source>Map sketch to face...</source>
-      <translation>Map sketch to face...</translation>
+      <translation>Kartoita sketsi pinnalle...</translation>
     </message>
     <message>
       <source>Map a sketch to a face</source>
-      <translation>Map a sketch to a face</translation>
+      <translation>Kartoita sketsi pinnalle</translation>
     </message>
   </context>
   <context>
@@ -406,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Create a new or edit the selected sketch</translation>
+      <translation>Luo uusi tai muokkaa valittua sketsiä</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -437,43 +464,47 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Toggle construction line</translation>
+      <translation>Kytke rajoiteviiva</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
-      <translation>Toggles the currently selected lines to/from construction mode</translation>
+      <translation>Näyttää tai piilottaa valitut viivat rajoitetilassa</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Lunnostelija</translation>
     </message>
     <message>
       <source>Trim edge</source>
-      <translation>Trim edge</translation>
+      <translation>Trimmaa reuna</translation>
+    </message>
+    <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Trim an edge with respect to the picked position</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
-      <translation>Trims an edge with respect to the picked position</translation>
+      <translation>Trimmaa reuna suhteessa poimittuun sijaintiin</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Lunnostelija</translation>
     </message>
     <message>
       <source>View sketch</source>
-      <translation>View sketch</translation>
+      <translation>Näytä sketsi</translation>
     </message>
     <message>
       <source>View sketch perpendicular to sketch plane</source>
-      <translation>View sketch perpendicular to sketch plane</translation>
+      <translation>Näytä sketsi kohtisuorassa sketsin tasossa</translation>
     </message>
   </context>
   <context>
@@ -493,10 +524,10 @@
     </message>
     <message>
       <source>Select edge(s) from the sketch.</source>
-      <translation>Select edge(s) from the sketch.</translation>
+      <translation>Valitse reuna(t) sketsistä.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
       <translation>Valitse luonnoksen reuna.</translation>
     </message>
@@ -513,28 +544,40 @@
       <translation>Mahdoton rajoite</translation>
     </message>
     <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Cannot add a constraint between two external geometries!</translation>
+    </message>
+    <message>
       <source>Only sketch and its support is allowed to select</source>
-      <translation>Only sketch and its support is allowed to select</translation>
+      <translation>Vain sketsi ja sen tuki on sallittu valinta</translation>
     </message>
     <message>
       <source>One of the selected has to be on the sketch</source>
-      <translation>One of the selected has to be on the sketch</translation>
+      <translation>Yksi valituista on oltava sketsi</translation>
     </message>
     <message>
       <source>The selected edge is not a line segment</source>
-      <translation>The selected edge is not a line segment</translation>
+      <translation>Valittu reuna ei ole viivasegmentillä</translation>
     </message>
     <message>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>Valitulla reunalla on jo pystysuora rajoite!</translation>
     </message>
     <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>The selected item(s) can't accept a horizontal constraint!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>The selected item(s) can't accept a vertical constraint!</translation>
+    </message>
+    <message>
       <source>Select entities from the sketch.</source>
-      <translation>Select entities from the sketch.</translation>
+      <translation>Valitse yksiköt sketsistä.</translation>
     </message>
     <message>
       <source>Select exactly one entity from the sketch.</source>
-      <translation>Select exactly one entity from the sketch.</translation>
+      <translation>Valitse täsmälleen yksi yksikkö sketsistä.</translation>
     </message>
     <message>
       <source>Select vertexes from the sketch.</source>
@@ -546,63 +589,115 @@
     </message>
     <message>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Select exactly one line or one point and one line or two points from the sketch.</translation>
+      <translation>Valitse täsmälleen yksi viiva tai yksi piste ja yksi viiva tai kaksi pistettä sketsistä.</translation>
+    </message>
+    <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Cannot add a length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one point and one object from the sketch.</source>
-      <translation>Select exactly one point and one object from the sketch.</translation>
+      <translation>Valitse täsmälleen yksi piste ja yksi objekti sketsistä.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Select exactly one line or up to two points from the sketch.</translation>
+      <translation>Valitse täsmälleen yksi viiva tai enintään kaksi pistettä sketsistä.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Cannot add a horizontal length constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Cannot add a vertical length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
-      <translation>Select two or more lines from the sketch.</translation>
+      <translation>Valitse kaksi tai useampi viiva sketsistä.</translation>
     </message>
     <message>
       <source>Select at least two lines from the sketch.</source>
-      <translation>Select at least two lines from the sketch.</translation>
+      <translation>Valitse vähintään kaksi viivaa sketsistä.</translation>
     </message>
     <message>
       <source>Select a valid line</source>
-      <translation>Select a valid line</translation>
+      <translation>Valitse kelvollinen viiva</translation>
     </message>
     <message>
       <source>The selected edge is not a valid line</source>
-      <translation>The selected edge is not a valid line</translation>
+      <translation>Valittu reuna ei ole kelvollinen viiva</translation>
+    </message>
+    <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>The selected points should be end points of arcs and lines.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>The selected point should be an end point of an arc or line.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>The selected edge should be an arc, line or circle.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>One of the selected edges should be a line.</translation>
     </message>
     <message>
       <source>Select exactly one arc or circle from the sketch.</source>
-      <translation>Select exactly one arc or circle from the sketch.</translation>
+      <translation>Valitse täsmälleen yksi kaari tai ympyrä sketsistä.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Select one or two lines from the sketch.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
-      <translation>Select exactly one or two lines from the sketch.</translation>
+      <translation>Valitse sketsistä täsmälleen yksi tai kaksi viivaa.</translation>
     </message>
     <message>
       <source>Select two edges from the sketch.</source>
-      <translation>Select two edges from the sketch.</translation>
+      <translation>Valitse kaksi reunaa sketsistä.</translation>
     </message>
     <message>
       <source>Select atleast two lines from the sketch.</source>
-      <translation>Select atleast two lines from the sketch.</translation>
+      <translation>Valitse vähintään kaksi viivaa sketsistä.</translation>
+    </message>
+    <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Select two or more compatible edges</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Sketch axes cannot be used in equality constraints</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Select two or more edges of similar type</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Cannot add a constraint between external geometries!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
-      <translation>Select exactly two same geometries</translation>
+      <translation>Valitse täsmälleen kaksi samanlaista geometriaa</translation>
     </message>
     <message>
       <source>Select valid geometries</source>
-      <translation>Select valid geometries</translation>
+      <translation>Valitse kelvollinen geometria</translation>
     </message>
     <message>
       <source>Select geometry of similar type</source>
-      <translation>Select geometry of similar type</translation>
+      <translation>Valitse samantyyppinen geometria</translation>
     </message>
     <message>
       <source>Select two points and one line from the sketch.</source>
-      <translation>Select two points and one line from the sketch.</translation>
+      <translation>Valitse kaksi pistettä ja yksi viiva sketsistä.</translation>
     </message>
     <message>
       <source>Select exactly one line from the sketch.</source>
@@ -618,94 +713,93 @@
     </message>
     <message>
       <source>Select two entities from the sketch.</source>
-      <translation>Select two entities from the sketch.</translation>
+      <translation>Valitse kaksi yksikköä sketsistä.</translation>
     </message>
     <message>
       <source>Select exactly two entities from the sketch.</source>
-      <translation>Select exactly two entities from the sketch.</translation>
+      <translation>Valitse täsmälleen kaksi yksikköä sketsistä.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>Muokkaa luonnosta</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>Dialogi on jo avoinna tehtäväpaneelissa</translation>
+      <translation>Valintaikkuna on jo avoinna tehtäväpaneelissa</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation>Haluatko sulkea tämän ikkunan?</translation>
+      <translation>Haluatko sulkea tämän valintaikkunan?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
-      <translation>Several sub-elements selected</translation>
+      <translation>Valittu useita alielementtejä</translation>
     </message>
     <message>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation>You have to select a single face as support for a sketch!</translation>
+      <translation>Sinun on valittava yksittäinen pinta sketsille!</translation>
     </message>
     <message>
       <source>No support face selected</source>
-      <translation>No support face selected</translation>
+      <translation>Pintaa ei ole valittu</translation>
     </message>
     <message>
       <source>You have to select a face as support for a sketch!</source>
-      <translation>You have to select a face as support for a sketch!</translation>
+      <translation>Sinun on valittava pinta sketsille!</translation>
     </message>
     <message>
       <source>No planar support</source>
-      <translation>No planar support</translation>
+      <translation>Ei tukea tasoille</translation>
     </message>
     <message>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>You need a planar face as support for a sketch!</translation>
+      <translation>Tarvitset tasopinnan tuen sketsille!</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="+72"/>
       <source>Distance constraint</source>
-      <translation>Distance constraint</translation>
+      <translation>Etäisyys rajoite</translation>
     </message>
     <message>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Not allowed to edit the datum because the sketch contains conflicting constraints</translation>
+      <translation>Tietoja ei voi muokata, koska sketsi sisältää ristiriitaisia rajoitteita</translation>
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Dimensional constraint</translation>
+      <translation>Mittarajoite</translation>
     </message>
   </context>
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
-      <translation>Choose orientation</translation>
+      <translation>Valitse suunta</translation>
     </message>
     <message>
       <source>Sketch orientation</source>
-      <translation>Sketch orientation</translation>
+      <translation>Sketsin suunta</translation>
     </message>
     <message>
       <source>XY-Plane</source>
-      <translation>XY-Plane</translation>
+      <translation>XY-taso</translation>
     </message>
     <message>
       <source>XZ-Plane</source>
-      <translation>XZ-Plane</translation>
+      <translation>XZ-taso</translation>
     </message>
     <message>
       <source>YZ-Plane</source>
-      <translation>YZ-Plane</translation>
+      <translation>YZ-taso</translation>
     </message>
     <message>
       <source>Reverse direction</source>
-      <translation>Reverse direction</translation>
+      <translation>Vastakkainen suunta</translation>
     </message>
     <message>
       <source>Offset:</source>
-      <translation>Offset:</translation>
+      <translation>Siirtymä:</translation>
     </message>
   </context>
   <context>
@@ -718,6 +812,38 @@
     <message>
       <source>datum:</source>
       <translation>päiväys:</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>Valitse suunta</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>Sketsin suunta</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>XY-taso</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>XZ-taso</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>YZ-taso</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>Vastakkainen suunta</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>Siirtymä:</translation>
     </message>
   </context>
   <context>
@@ -762,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Grid size:</translation>
+      <translation>Ruudukon koko:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Grid snap</translation>
+      <translation>Kohdista ruudukkoon</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -778,7 +904,7 @@
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation>0.1 mm</translation>
+      <translation>0,1 mm</translation>
     </message>
     <message>
       <source>0.2 mm</source>
@@ -786,7 +912,7 @@
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation>0.5 mm</translation>
+      <translation>0,5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
@@ -846,7 +972,7 @@
     </message>
     <message>
       <source>Auto constraints</source>
-      <translation>Auto constraints</translation>
+      <translation>Automaattiset rajoitteet</translation>
     </message>
     <message>
       <source>auto constraints</source>
@@ -863,7 +989,7 @@
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
-      <translation>Solver messages</translation>
+      <translation>Ratkaisimen viestit</translation>
     </message>
   </context>
   <context>
@@ -896,11 +1022,11 @@
     </message>
     <message>
       <source>Undefined degrees of freedom</source>
-      <translation>Undefined degrees of freedom</translation>
+      <translation>Vapausasteet määtittelemättä</translation>
     </message>
     <message>
       <source>Not solved yet</source>
-      <translation>Not solved yet</translation>
+      <translation>Ei ole vielä ratkaistu</translation>
     </message>
   </context>
   <context>
@@ -912,7 +1038,7 @@
     </message>
     <message>
       <source>Sketcher geometries</source>
-      <translation>Sketcher geometries</translation>
+      <translation>Sketsin geometriat</translation>
     </message>
     <message>
       <source>Sketcher geoms</source>
@@ -920,7 +1046,7 @@
     </message>
     <message>
       <source>Sketcher constraints</source>
-      <translation>Sketcher constraints</translation>
+      <translation>Sketsin rajoitteet</translation>
     </message>
   </context>
 </TS>

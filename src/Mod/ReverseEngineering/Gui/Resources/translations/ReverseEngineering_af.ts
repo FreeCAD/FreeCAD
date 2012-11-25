@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>Approximate plane...</source>
-      <translation>Approximate plane...</translation>
+      <translation>Benader vlak...</translation>
     </message>
     <message>
       <source>Approximate a plane</source>
-      <translation>Approximate a plane</translation>
+      <translation>Benader 'n vlak</translation>
     </message>
   </context>
   <context>

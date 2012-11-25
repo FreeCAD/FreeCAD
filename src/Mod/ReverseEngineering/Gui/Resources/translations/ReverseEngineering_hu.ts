@@ -25,11 +25,11 @@
     </message>
     <message>
       <source>Approximate surface...</source>
-      <translation>Felület közelítés...</translation>
+      <translation>Hozzávetőleges felület...</translation>
     </message>
     <message>
       <source>Approximate a B-Spline surface</source>
-      <translation>B-Spline felület közelítése</translation>
+      <translation>Hozzávetőleges B-Spline felület</translation>
     </message>
   </context>
   <context>

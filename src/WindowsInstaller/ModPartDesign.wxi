@@ -28,6 +28,8 @@
             <File Id="PartDesignInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="PartDesignpyd" Name="PartDesign.pyd" DiskId="1" />
             <File Id="PartDesignGuipyd" Name="PartDesignGui.pyd" DiskId="1" />
+            <File Id="TestPartDesignAppPy" Name="TestPartDesignApp.py" DiskId="1" />
+            <File Id="TestPartDesignGuiPy" Name="TestPartDesignGui.py" DiskId="1" />
             <File Id="PartDesign__init__py" Name="__init__.py"  />
         </Component>
         <Directory Id="ModPartDesignScripts" Name="Scripts" FileSource="../../Mod/PartDesign/Scripts">

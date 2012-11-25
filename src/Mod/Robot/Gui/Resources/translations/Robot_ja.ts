@@ -30,7 +30,7 @@
     </message>
     <message>
       <source>Place a robot (experimental!)</source>
-      <translation>Place a robot (experimental!)</translation>
+      <translation>ロボットを配置（experimental!）</translation>
     </message>
   </context>
   <context>
@@ -223,7 +223,7 @@
     </message>
     <message>
       <source>Set default values</source>
-      <translation>Set default values</translation>
+      <translation>デフォルト値を設定する</translation>
     </message>
     <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
@@ -339,7 +339,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="+1"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation>Select one robot and one shape or VRML object.</translation>
+      <translation>ロボット１台と１つの図形かVRMLオブジェクトを選択してください.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="+79"/>
@@ -357,12 +357,12 @@
     </message>
     <message>
       <source>Select one Robot</source>
-      <translation>Select one Robot</translation>
+      <translation>一台のロボットを選択する</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="-24"/>
       <source>Select one Trajectory object.</source>
-      <translation>Select one Trajectory object.</translation>
+      <translation>1 つの軌道のオブジェクトを選択します。</translation>
     </message>
     <message>
       <source>set default speed</source>
@@ -370,7 +370,7 @@
     </message>
     <message>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-      <translation>speed: (e.g. 1 m/s or 3 cm/s)</translation>
+      <translation>速度:(例 1m/s 3cm/s)</translation>
     </message>
     <message>
       <source>set default continuity</source>
@@ -378,7 +378,7 @@
     </message>
     <message>
       <source>continuous ?</source>
-      <translation>continuous ?</translation>
+      <translation>続けかすか？</translation>
     </message>
     <message>
       <source>set default acceleration</source>
@@ -807,7 +807,7 @@
     </message>
     <message>
       <source>Accel:</source>
-      <translation>Accel:</translation>
+      <translation>加速度:</translation>
     </message>
     <message>
       <source>Don't change Cont</source>
@@ -815,15 +815,15 @@
     </message>
     <message>
       <source>Continues</source>
-      <translation>Continues</translation>
+      <translation>続ける</translation>
     </message>
     <message>
       <source>Discontinues</source>
-      <translation>Discontinues</translation>
+      <translation>中止</translation>
     </message>
     <message>
       <source>Position and Orientation:</source>
-      <translation>Position and Orientation:</translation>
+      <translation>位置と向き：</translation>
     </message>
     <message>
       <source>(0,0,0),(0,0,0)</source>
@@ -843,11 +843,11 @@
     </message>
     <message>
       <source>Add Position</source>
-      <translation>Add Position</translation>
+      <translation>位置を追加します。</translation>
     </message>
     <message>
       <source>Add Orientation</source>
-      <translation>Add Orientation</translation>
+      <translation>向きを追加します。</translation>
     </message>
     <message>
       <source>Dress Up Parameter</source>
@@ -863,7 +863,7 @@
     </message>
     <message>
       <source>Insert Robots</source>
-      <translation>Insert Robots</translation>
+      <translation>ロボットを追加</translation>
     </message>
     <message>
       <source>&amp;Robot</source>

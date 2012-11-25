@@ -60,6 +60,7 @@ namespace Gui {
 
 namespace MeshCore {
   class MeshKernel;
+  struct Material;
 }
 
 
@@ -122,6 +123,7 @@ public:
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
+    bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary=false) const;
 
     /** @name Editing */
     //@{
@@ -141,6 +143,7 @@ public:
     std::vector<unsigned long> getFacetsOfRegion(const SbViewportRegion&, const SbViewportRegion&, SoCamera*) const;
     std::vector<unsigned long> getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
     std::vector<unsigned long> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
+    virtual void removeFacets(const std::vector<unsigned long>&);
     //@}
 
 protected:
@@ -153,6 +156,7 @@ protected:
     virtual void showOpenEdges(bool);
     void setOpenEdgeColorFrom(const App::Color& col);
     virtual void cutMesh(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer, SbBool inner);
+    virtual void trimMesh(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer, SbBool inner);
     virtual void splitMesh(const MeshCore::MeshKernel& toolMesh, const Base::Vector3f& normal, SbBool inner);
     virtual void segmentMesh(const MeshCore::MeshKernel& toolMesh, const Base::Vector3f& normal, SbBool inner);
     virtual void faceInfo(unsigned long facet);
@@ -169,6 +173,7 @@ public:
     static void fillHoleCallback(void * ud, SoEventCallback * n);
     static void markPartCallback(void * ud, SoEventCallback * n);
     static void clipMeshCallback(void * ud, SoEventCallback * n);
+    static void trimMeshCallback(void * ud, SoEventCallback * n);
     static void partMeshCallback(void * ud, SoEventCallback * n);
     static void segmMeshCallback(void * ud, SoEventCallback * n);
     static void selectGLCallback(void * ud, SoEventCallback * n);

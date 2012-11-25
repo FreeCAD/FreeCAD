@@ -293,15 +293,15 @@
     <message>
       <location filename="../../Workbench.cpp" line="+52"/>
       <source>Trajectory tools</source>
-      <translation>Trajectory tools</translation>
+      <translation>Baneverktøy</translation>
     </message>
     <message>
       <source>Robot tools</source>
-      <translation>Robot tools</translation>
+      <translation>Robotverktøy</translation>
     </message>
     <message>
       <source>Insert Robot</source>
-      <translation>Insert Robot</translation>
+      <translation>Sett inn Robot</translation>
     </message>
   </context>
   <context>
@@ -649,7 +649,7 @@
     </message>
     <message>
       <source>Use orientation of edge</source>
-      <translation>Use orientation of edge</translation>
+      <translation>Bruk retningen på kanten</translation>
     </message>
     <message>
       <source>TaskEdge2TracParameter</source>

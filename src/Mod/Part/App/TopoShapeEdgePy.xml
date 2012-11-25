@@ -24,7 +24,12 @@
 			  <UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [0|Length] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
-	  <Methode Name="normalAt">
+		<Methode Name="parameterAt">
+			<Documentation>
+				<UserDocu>Float = parameterAt(Vertex) - Get the parameter at the given vertex if lying on the edge</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="normalAt">
 		  <Documentation>
 			  <UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [0|Length] if defined</UserDocu>
 		  </Documentation>
@@ -64,6 +69,11 @@
 				<UserDocu>Discretizes the edge using a given deflection or number of points and returns a list of points</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="split">
+			<Documentation>
+				<UserDocu>Splits the edge at the given parameter values and builds a wire out of it</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Tolerance">
 			<Documentation>
 				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
@@ -78,11 +88,23 @@
 	  </Attribute>
 	  <Attribute Name="ParameterRange" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>Returns a 4 tuple with the parameter range</UserDocu>
+			  <UserDocu>Returns a 2 tuple with the parameter range</UserDocu>
 		  </Documentation>
 		  <Parameter Name="ParameterRange" Type="Tuple"/>
 	  </Attribute>
-	  <Attribute Name="Curve" ReadOnly="true">
+		<Attribute Name="FirstParameter" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the start value of the parameter range</UserDocu>
+			</Documentation>
+			<Parameter Name="FirstParameter" Type="Float"/>
+		</Attribute>
+		<Attribute Name="LastParameter" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Returns the end value of the parameter range</UserDocu>
+			</Documentation>
+			<Parameter Name="LastParameter" Type="Float"/>
+		</Attribute>
+		<Attribute Name="Curve" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Returns the 3D curve of the edge</UserDocu>
 		  </Documentation>

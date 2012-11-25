@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Elérhető:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Kiválasztott:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Hozzáad</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Törlés</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Mozgatás felfelé</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Mozgatás lefelé</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Mozgatható tárgy</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Fix tárgy</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -112,11 +150,11 @@
     <name>Gui::ContainerDialog</name>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Mégse</translation>
+      <translation>Mégse &amp;C</translation>
     </message>
   </context>
   <context>
@@ -160,12 +198,16 @@
       <source>License...</source>
       <translation>Licenc...</translation>
     </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Vágólapra másolás</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
-      <translation>Gomb % 1</translation>
+      <translation>Billentyű %1</translation>
     </message>
     <message>
       <source>Out Of Range</source>
@@ -250,7 +292,7 @@
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Mégse</translation>
+      <translation>Mégse &amp;C</translation>
     </message>
     <message>
       <source></source>
@@ -272,11 +314,11 @@
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Mégse</translation>
+      <translation>Mégse &amp;C</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -466,7 +508,7 @@
     </message>
     <message>
       <source>Press &amp;new shortcut:</source>
-      <translation>Nyomja le új elérési úthoz:</translation>
+      <translation>&amp;Nyomja le új elérési úthoz:</translation>
     </message>
     <message>
       <source>Currently assigned to:</source>
@@ -474,7 +516,7 @@
     </message>
     <message>
       <source>&amp;Assign</source>
-      <translation>Hozzárendelés</translation>
+      <translation>Hozzárendelés &amp;A</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -482,7 +524,7 @@
     </message>
     <message>
       <source>&amp;Reset</source>
-      <translation>Visszaállít</translation>
+      <translation>Új&amp;raállít</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -490,7 +532,7 @@
     </message>
     <message>
       <source>Re&amp;set All</source>
-      <translation>Mind visszaállít</translation>
+      <translation>Mind vis&amp;sszaállít</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -642,11 +684,11 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Súgó</translation>
+      <translation>Súgó &amp;H</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>Be&amp;zárás</translation>
+      <translation>$Bezárás</translation>
     </message>
   </context>
   <context>
@@ -657,7 +699,7 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
-      <translation>No Spaceball Present</translation>
+      <translation>Spaceball nincs jelen</translation>
     </message>
     <message>
       <source>Buttons</source>
@@ -711,10 +753,6 @@ Kérem másik elérési utat definiálni.</translation>
       <translation>Nézet</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Megjelenítési mód:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Nyomtatási mód:</translation>
     </message>
@@ -737,6 +775,10 @@ Kérem másik elérési utat definiálni.</translation>
     <message>
       <source>Color plot:</source>
       <translation>Színes nyomtatás:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Dokument ablak:</translation>
     </message>
   </context>
   <context>
@@ -849,15 +891,15 @@ Kérem másik elérési utat definiálni.</translation>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>Default (%1 x %1)</source>
-      <translation>Alapértelmezett (% 1 x% 1)</translation>
+      <translation>Alapértelmezett (%1 x %1)</translation>
     </message>
     <message>
       <source>Small (%1 x %1)</source>
-      <translation>Kicsi (% 1 x% 1)</translation>
+      <translation>Kicsi (%1 x %1)</translation>
     </message>
     <message>
       <source>Large (%1 x %1)</source>
-      <translation>Nagy (% 1 x% 1)</translation>
+      <translation>Nagy (%1 x %1)</translation>
     </message>
     <message>
       <source>Extra large (%1 x %1)</source>
@@ -922,7 +964,7 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
   </context>
   <context>
@@ -1031,7 +1073,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>Be&amp;zárás</translation>
+      <translation>$Bezárás</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1120,7 +1162,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>Be&amp;zárás</translation>
+      <translation>$Bezárás</translation>
     </message>
   </context>
   <context>
@@ -1166,7 +1208,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Súgó</translation>
+      <translation>Súgó &amp;H</translation>
     </message>
     <message>
       <source>Alt+H</source>
@@ -1174,11 +1216,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Apply</source>
-      <translation>Alkalmaz</translation>
+      <translation>&amp;Alkalmaz</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -1186,7 +1228,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Mégse</translation>
+      <translation>Mégse &amp;C</translation>
     </message>
     <message>
       <source></source>
@@ -1216,7 +1258,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>Megjegyzés:</translation>
+      <translation>Megjegyzés&amp;t:</translation>
     </message>
     <message>
       <source>Path:</source>
@@ -1224,15 +1266,15 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>&amp;Utoljára módosította:</translation>
+      <translation>Uto&amp;ljára módosította:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>Létrehozta:</translation>
+      <translation>Létrehozta &amp;b:</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>Szervezet:</translation>
+      <translation>Szervezet &amp;p:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
@@ -1244,11 +1286,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Mégse</translation>
+      <translation>Mégse &amp;C</translation>
     </message>
     <message>
       <source></source>
@@ -1307,7 +1349,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Empty destination</source>
-      <translation>Üres célállomás.</translation>
+      <translation>Üres célállomás</translation>
     </message>
     <message>
       <source>No destination is defined.</source>
@@ -1486,6 +1528,14 @@ Kérem válasszon másik könyvtárat.</translation>
       <source>Invert zoom</source>
       <translation>Kicsinyítés</translation>
     </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Kurzorra nyagyítás</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Lépésenkénti nagyítás</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -1502,7 +1552,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Gradient:</source>
-      <translation>&amp;Színátmenet</translation>
+      <translation>&amp;Színátmenet:</translation>
     </message>
     <message>
       <source>red-yellow-green-cyan-blue</source>
@@ -1526,7 +1576,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>Kiszűrkít</translation>
+      <translation>Kiszű&amp;rkít</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -1534,7 +1584,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>Kívül esik&amp;láthatatlan:</translation>
+      <translation>Kívül es&amp;ik láthatatlan</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -1546,7 +1596,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Zero</source>
-      <translation>$Zéró</translation>
+      <translation>&amp;Zéró</translation>
     </message>
     <message>
       <source>Alt+Z</source>
@@ -1562,11 +1612,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Mégse</translation>
+      <translation>Mégse &amp;C</translation>
     </message>
     <message>
       <source>Parameter range</source>
@@ -1582,7 +1632,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Labels:</source>
-      <translation>&amp;Cimke:</translation>
+      <translation>Cimke &amp;L:</translation>
     </message>
     <message>
       <source>&amp;Decimals:</source>
@@ -1727,6 +1777,10 @@ Kérem válasszon másik könyvtárat.</translation>
       <source>Items</source>
       <translation>Elemek</translation>
     </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Kiválasztott vonal kiemelése</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
@@ -1740,7 +1794,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Back&amp;ground:</source>
-      <translation>Háttér:</translation>
+      <translation>Háttér &amp;g:</translation>
     </message>
     <message>
       <source>Current</source>
@@ -1768,7 +1822,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Width:</source>
-      <translation>Szélesség:</translation>
+      <translation>Szélesség&amp;W:</translation>
     </message>
     <message>
       <source>Current screen</source>
@@ -1868,7 +1922,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
-      <translation>Magasság:</translation>
+      <translation>Magasság &amp;H:</translation>
     </message>
     <message>
       <source>Aspect ratio:</source>
@@ -1876,7 +1930,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Screen</source>
-      <translation>Képernyő</translation>
+      <translation>Képernyő &amp;S</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -1960,6 +2014,14 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>Macro path</source>
       <translation>Makró elérési út</translation>
+    </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>Általános makró beállítások</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Makró futtatása a helyi környezetben</translation>
     </message>
   </context>
   <context>
@@ -2052,20 +2114,48 @@ Kérem válasszon másik könyvtárat.</translation>
       <translation>Teljesen korlátozott geometria</translation>
     </message>
     <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>Az építési geometria színei szerkesztő módban</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>A teljesen korlátozott geometriai színei szerkesztő módban</translation>
-    </message>
-    <message>
       <source>The color of vertices being edited</source>
       <translation>A csúcsok színei szerkesztés alatt</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
       <translation>Az élek színe szerkesztés alatt</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>Az építési geometria színei szerkesztő módban</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>A teljesen korlátozott geometriai színei szerkesztő módban</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Kurzor betű színe</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>A forma alap színe</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>Az új forma alap színe</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Alap állapotban a vonal vastagsága és színe</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>Az új alakzat alap értelmezett vonal színe</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>Az új alakzat alap értelmezett vonal vastagsága</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2080,7 +2170,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Show tips at start up</source>
-      <translation>&amp;Tanácsok megjelenítése induláskor</translation>
+      <translation>Tanácsok megjeleníté&amp;se induláskor</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -2088,7 +2178,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Next Tip</source>
-      <translation>&amp;Következő tanács</translation>
+      <translation>Következő ta&amp;nács</translation>
     </message>
     <message>
       <source>Alt+N</source>
@@ -2096,7 +2186,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>Be&amp;zárás</translation>
+      <translation>$Bezárás</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -2129,8 +2219,40 @@ Kérem válasszon másik könyvtárat.</translation>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Törlődik.</translation>
+      <source>Download</source>
+      <translation>Letöltés</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Mégse</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Bezárás</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>Az %1 nevű fájl már létezik a könyvtárban. Felülírja?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Nem tudja menteni a fájlt %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Letölti %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Letöltés megszakítva.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Letöltés meghiusult: %1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Letöltve %1 a megnyitott könyvtárba.</translation>
     </message>
   </context>
   <context>
@@ -2165,6 +2287,13 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>OK</source>
       <translation>OK</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Szerzői joggal védve</translation>
     </message>
   </context>
   <context>
@@ -2254,7 +2383,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Reading from '%1' failed.</source>
-      <translation>Olvasási hiba: %1</translation>
+      <translation>Olvasási hiba: '%1' .</translation>
     </message>
   </context>
   <context>
@@ -2360,7 +2489,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Rotation axis with angle</translation>
+      <translation>Tengely körüli elforgatás szöggel</translation>
     </message>
     <message>
       <source>Euler angles</source>
@@ -2856,6 +2985,25 @@ El akarja menteni a változásokat?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Irány:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2883,6 +3031,93 @@ El akarja menteni a változásokat?</translation>
     <message>
       <source>Close All</source>
       <translation>Minden bezárása</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Kézi igazítás</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>Az igazítás már folyamatban.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Igazítás[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Kérem válasszon minimum egy pontot a bal- ill. jobboldali nézetben</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Kérem válasszon minimum %1 pontot a bal- ill. jobboldali nézetben</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Kérem válasszon ki pontokat a bal és a jobboldali nézetben</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>Az igazítás végrehajtva</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>Az igazítás megszakítva</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Túl kevés pont lett kiválasztva a baloldali nézetben. Legkevesebb %1 pont kell.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Túl kevés pont lett kiválasztva a jobboldali nézetben. Legkevesebb %1 pont kell.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Különböző számú pont lett kijelölve a bal és jobboldali nézetben
+A baloldali nézetben %1 pont lett jelölve,
+a jobboldali nézetben %2 pont lett jelölve.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Próbálja a nézet csoportokat igazítani</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>Az igazítás sikertelen.
+Mit szeretne tenni?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Újrapróbál</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Kihagy</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Elvet</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Különböző számú pont lett kijelölve a bal és jobboldali nézetben
+A baloldali nézetben %1 pont lett jelölve,
+a jobboldali nézetben %2 pont lett jelölve.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Pont kiválasztva itt (%1,%2,%3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>Nem lett pont kiválasztva</translation>
     </message>
   </context>
   <context>
@@ -3023,11 +3258,15 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
-      <translation>&amp;Beillesztés</translation>
+      <translation>Beillesztés &amp;P</translation>
     </message>
     <message>
       <source>Select All</source>
       <translation>Mindent kijelöl</translation>
+    </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Konzol törlése</translation>
     </message>
   </context>
   <context>
@@ -3090,7 +3329,7 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
       <source>Des&amp;cription</source>
-      <translation>Leírás</translation>
+      <translation>Leírás &amp;c</translation>
     </message>
     <message>
       <source>Long description of commands</source>
@@ -3170,10 +3409,6 @@ Meg szeretne adni egy másik könyvtárat?</translation>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-      <source>Display mode:</source>
-      <translation>Megjelenítési mód:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Nyomtatási mód:</translation>
     </message>
@@ -3193,12 +3428,16 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <source>Appearance</source>
       <translation>Megjelenés</translation>
     </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Dokument ablak:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
   </context>
   <context>
@@ -3217,10 +3456,22 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>Angol</translation>
+      <source>Press left mouse button</source>
+      <translation>Nyomja meg a bal egérgombot</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Nyomjon SHIFT billentyűt</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Nyomjon ALT billentyűt</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Nyomjon PgUp/PgDown billentyűt</translation>
     </message>
   </context>
   <context>
@@ -3476,14 +3727,6 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <translation>A munkamenet betöltése közben hiba lépett fel</translation>
     </message>
     <message>
-      <source>File not found</source>
-      <translation>A fájl nem található</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Nem sikerült megnyitni a(z) %1 fájlt</translation>
-    </message>
-    <message>
       <source>Save views...</source>
       <translation>Nézet mentése...</translation>
     </message>
@@ -3501,7 +3744,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
-      <translation>Nézet visszaállítás %1</translation>
+      <translation>Nézet visszaállítás &amp;%1</translation>
     </message>
     <message>
       <source>Save frozen views</source>
@@ -3666,7 +3909,7 @@ Nyisson meg egy böngészőt, és írja be: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Unable to start the server to port %1: %2.</source>
-      <translation>Nem sikerült elindítani a szervert a %1:%2 porton</translation>
+      <translation>Nem sikerült elindítani a szervert a %1: %2 porton.</translation>
     </message>
     <message>
       <source>Unable to open your system browser.</source>
@@ -3690,7 +3933,7 @@ Nyisson meg egy böngészőt, és írja be: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Cannot find file %1 neither in %2 nor in %3</source>
-      <translation>Nem talál fájlt %1 -nek %2 -ben, sem  %3 -ban.</translation>
+      <translation>Nem talál fájlt %1 -ben %2 -ben, sem  %3 -ban</translation>
     </message>
     <message>
       <source>Save %1 Document</source>
@@ -3786,6 +4029,17 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Box kiválasztás</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
@@ -3793,7 +4047,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;About %1</source>
-      <translation>&amp;Névjegy %1</translation>
+      <translation>Ról&amp;a %1</translation>
     </message>
     <message>
       <source>About %1</source>
@@ -3808,7 +4062,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>About &amp;Qt</source>
-      <translation>Qt névjegye</translation>
+      <translation>&amp;Qt névjegye</translation>
     </message>
     <message>
       <source>About Qt</source>
@@ -3823,7 +4077,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>Ismét</translation>
+      <translation>Következő &amp;x</translation>
     </message>
     <message>
       <source>Activate next window</source>
@@ -3838,11 +4092,26 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>Visszavonás</translation>
+      <translation>&amp;Vissza</translation>
     </message>
     <message>
       <source>Activate previous window</source>
       <translation>Előző ablak aktiválása</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Igazítás...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Kiválasztott tárgyak igazítása</translation>
     </message>
   </context>
   <context>
@@ -3879,7 +4148,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Lépcsőzetes</translation>
+      <translation>Lép&amp;csőzetes</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
@@ -3894,7 +4163,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>Be&amp;zárás</translation>
+      <translation>Bezárás &amp;o</translation>
     </message>
     <message>
       <source>Close active window</source>
@@ -3909,7 +4178,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>Öss&amp;zes bezárása</translation>
+      <translation>Összes bezárása &amp;l</translation>
     </message>
     <message>
       <source>Close all windows</source>
@@ -3924,7 +4193,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>Parancs &amp;sor indítása...</translation>
+      <translation>Parancs sor indítása &amp;l...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
@@ -3935,11 +4204,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdCopy</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>&amp;Másolás</translation>
+      <translation>Más&amp;olás</translation>
     </message>
     <message>
       <source>Copy operation</source>
@@ -3950,11 +4219,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdCut</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>&amp;Cut</source>
-      <translation>&amp;Kivágás</translation>
+      <translation>Kivágás &amp;C</translation>
     </message>
     <message>
       <source>Cut out</source>
@@ -3962,29 +4231,14 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Módosítás</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Másolat létrehozása a kijelölésről</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>A kijelölt objektumokat másolja az aktuális dokumentumba</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdDelete</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>&amp;Delete</source>
-      <translation>Törlés</translation>
+      <translation>Törlés &amp;D</translation>
     </message>
     <message>
       <source>Deletes the selected objects</source>
@@ -4014,7 +4268,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
-      <translation>&amp;Testreszabás...</translation>
+      <translation>Testreszabá&amp;s...</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
@@ -4074,7 +4328,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>Paraméterek &amp;szerkesztése</translation>
+      <translation>Paraméterek szerkesztése &amp;d...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
@@ -4089,7 +4343,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Beállítások...</translation>
+      <translation>Beállítások &amp;P...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
@@ -4104,7 +4358,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Vie&amp;ws</source>
-      <translation>Nézetek</translation>
+      <translation>Nézetek &amp;w</translation>
     </message>
     <message>
       <source>Toggles this window</source>
@@ -4119,7 +4373,41 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Draw style</translation>
+      <translation>Rajzolási stílus</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Másolat létrehozása a kijelölésről</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>A kijelölt objektumokat másolja az aktuális dokumentumba</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Kiválasztás &amp; szerkesztés mód</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>A kiválasztott tárgy szerkesztés módjának kapcsolása</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>A kiválasztott tárgy szerkesztés módjába belépés vagy kilépés</translation>
     </message>
   </context>
   <context>
@@ -4130,15 +4418,34 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Exportálás</translation>
+      <translation>&amp;Exportálás...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
       <translation>Egy objektum exportálása az aktív munkalapból</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Támogatott formátumok</translation>
+      <source>No selection</source>
+      <translation>Nincs kijelölés</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Az exportáláshoz előszőr vállasszon ki tárgyat.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Eszközök</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Függőségi grafikon...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Mutassa a tárgy függőségi grafikonját az aktív dokumentumban</translation>
     </message>
   </context>
   <context>
@@ -4288,7 +4595,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
-      <translation>Makró rögzítés leállítása</translation>
+      <translation>Makró rögzítés leállí&amp;tása</translation>
     </message>
     <message>
       <source>Stop the macro recording session</source>
@@ -4313,12 +4620,12 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Eszközök</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Távolságmérés</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Távolságmérés két kijelölt objektum között</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Távolság mérés</translation>
     </message>
   </context>
   <context>
@@ -4371,21 +4678,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Súgó</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Python kézikönyvek</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>A Python-dokumentáció megjelenítése</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
@@ -4408,7 +4700,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Open...</source>
-      <translation>&amp;Megnyitás ...</translation>
+      <translation>Megnyitás &amp;O...</translation>
     </message>
     <message>
       <source>Open a document or import files</source>
@@ -4427,11 +4719,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdPaste</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
-      <translation>&amp;Beillesztés</translation>
+      <translation>Beillesztés &amp;P</translation>
     </message>
     <message>
       <source>Paste operation</source>
@@ -4442,7 +4734,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdPlacement</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>Placement...</source>
@@ -4461,7 +4753,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Print...</source>
-      <translation>&amp;Nyomtatás ...</translation>
+      <translation>Nyomtatás &amp;P...</translation>
     </message>
     <message>
       <source>Print the document</source>
@@ -4491,7 +4783,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>Nyomtatási kép...</translation>
+      <translation>Nyomtatási ké&amp;P...</translation>
     </message>
     <message>
       <source>Print the document</source>
@@ -4555,7 +4847,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>&amp;Kilépés</translation>
+      <translation>Kilépés E&amp;xit</translation>
     </message>
     <message>
       <source>Quits the application</source>
@@ -4592,11 +4884,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>&amp;Redo</source>
-      <translation>&amp;Ismét:</translation>
+      <translation>Új&amp;ra,ismét</translation>
     </message>
     <message>
       <source>Redoes a previously undone action</source>
@@ -4607,11 +4899,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdRefresh</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>&amp;Refresh</source>
-      <translation>&amp;Frissítés</translation>
+      <translation>F&amp;rissítés</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
@@ -4626,7 +4918,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Save</source>
-      <translation>&amp;Mentés</translation>
+      <translation>Menté&amp;s</translation>
     </message>
     <message>
       <source>Save the active document</source>
@@ -4641,7 +4933,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>Mentés másként ...</translation>
+      <translation>Mentés másként &amp;A...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
@@ -4667,7 +4959,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>Select &amp;All</source>
@@ -4761,11 +5053,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>Mozaik elrendezés</translation>
+      <translation>Cím &amp;T</translation>
     </message>
     <message>
       <source>Tile the windows</source>
-      <translation>Mozaikszerű elrendezés</translation>
+      <translation>Név szerinti elrendezés</translation>
     </message>
   </context>
   <context>
@@ -4862,7 +5154,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Tool&amp;bars</source>
-      <translation>Eszköztárak</translation>
+      <translation>Eszköztárak &amp;b</translation>
     </message>
     <message>
       <source>Toggles this window</source>
@@ -4873,7 +5165,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdTransform</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>Transform...</source>
@@ -4903,11 +5195,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdUndo</name>
     <message>
       <source>Edit</source>
-      <translation>Módosítás</translation>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <source>&amp;Undo</source>
-      <translation>&amp;Visszavonás</translation>
+      <translation>$Visszavonás</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
@@ -5200,6 +5492,36 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Fordítsa balra</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>A nézetet forgassa 90Â° óramutató járásával ellenkezőleg</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Fordítsa jobbra</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>A nézetet forgassa 90Â° óramutató járásával egyezően</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -5222,7 +5544,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;What's This?</source>
-      <translation>&amp;Mi ez?</translation>
+      <translation>Mi ez &amp;W?</translation>
     </message>
     <message>
       <source>What's This</source>
@@ -5237,7 +5559,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Windows...</source>
-      <translation>Ablakok</translation>
+      <translation>Ablakok &amp;W...</translation>
     </message>
     <message>
       <source>Windows list</source>
@@ -5318,8 +5640,8 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Standard-nézet</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Megjelenítési mód</translation>
+      <source>Document window</source>
+      <translation>Dokumentum ablak</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5367,19 +5689,47 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>As is</translation>
+      <translation>Úgy mint</translation>
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normal mode</translation>
+      <translation>Normál mód</translation>
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Wireframe</translation>
+      <translation>Drótváz</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Wireframe mode</translation>
+      <translation>Drótváz mód</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Nem található grafikonszerk</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Grafikonszerk nem található a rendszeren. Megadja a telepítési elérési utat, ha már telepítve van?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Grafikusszerk telepítési hely elérési útja</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Függőségi grafikon</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Nem sikerült Graphviz</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Nem sikerült létrehozni egy kép fájl Grafikonszerkesztőhöz</translation>
     </message>
   </context>
   <context>
@@ -5390,7 +5740,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>S&amp;zerkesztés</translation>
+      <translation>Sz&amp;erkesztés</translation>
     </message>
     <message>
       <source>Standard views</source>
@@ -5402,7 +5752,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>&amp;Nagyítás</translation>
+      <translation>Nagyítás &amp;Z</translation>
     </message>
     <message>
       <source>Visibility</source>
@@ -5410,11 +5760,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;View</source>
-      <translation>&amp;Nézet</translation>
+      <translation>Nézet &amp;V</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp;Eszköztárak</translation>
+      <translation>Eszköz&amp;tárak</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
@@ -5422,7 +5772,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Windows</source>
-      <translation>&amp;Ablakok</translation>
+      <translation>Ablakok &amp;W</translation>
     </message>
     <message>
       <source>&amp;On-line help</source>
@@ -5430,7 +5780,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Súgó</translation>
+      <translation>Súgó &amp;H</translation>
     </message>
     <message>
       <source>File</source>

@@ -34,14 +34,20 @@
 #include "FeatureFillet.h"
 #include "FeatureSketchBased.h"
 #include "FeatureRevolution.h"
+#include "FeatureGroove.h"
 #include "Body.h"
 #include "FeatureDressUp.h"
 #include "FeatureChamfer.h"
 #include "FeatureFace.h"
 #include "FeatureSubtractive.h"
 #include "FeatureAdditive.h"
+#include "FeatureTransformed.h"
+#include "FeatureMirrored.h"
+#include "FeatureLinearPattern.h"
+#include "FeaturePolarPattern.h"
+#include "FeatureScaled.h"
+#include "FeatureMultiTransform.h"
 #include "FeatureHole.h"
-#include "FeaturePatternRectangular.h"
 
 extern struct PyMethodDef PartDesign_methods[];
 
@@ -75,13 +81,19 @@ void PartDesignExport initPartDesign()
     PartDesign::SketchBased        ::init();
     PartDesign::Subtractive        ::init();
     PartDesign::Additive           ::init();
-    PartDesign::PatternRectangular ::init();
+    PartDesign::Transformed        ::init();
+    PartDesign::Mirrored           ::init();
+    PartDesign::LinearPattern      ::init();
+    PartDesign::PolarPattern       ::init();
+    PartDesign::Scaled             ::init();
+    PartDesign::MultiTransform     ::init();
     PartDesign::Hole               ::init();
     PartDesign::Body               ::init();
     PartDesign::Pad                ::init();
     PartDesign::Pocket             ::init();
     PartDesign::Fillet             ::init();
     PartDesign::Revolution         ::init();
+    PartDesign::Groove             ::init();
     PartDesign::Chamfer            ::init();
     PartDesign::Face               ::init();
 }

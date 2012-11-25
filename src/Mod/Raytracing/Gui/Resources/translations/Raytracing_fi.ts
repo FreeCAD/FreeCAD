@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+452"/>
+      <location filename="../../Command.cpp" line="+425"/>
       <source>File</source>
       <translation>Tiedosto</translation>
     </message>
@@ -21,7 +21,7 @@
     <name>CmdRaytracingNewPartSegment</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Säteenseuranta</translation>
     </message>
     <message>
       <source>Insert part</source>
@@ -29,14 +29,14 @@
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
-      <translation>Insert a new part object into a Povray project</translation>
+      <translation>Lisää uusi osa-objekti Povray-projektiin</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Säteenseuranta</translation>
     </message>
     <message>
       <source>New Povray project</source>
@@ -44,29 +44,29 @@
     </message>
     <message>
       <source>Insert new Povray project into the document</source>
-      <translation>Insert new Povray project into the document</translation>
+      <translation>Lisää uusi povray projekti asiakirjaan</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Säteenseuranta</translation>
     </message>
     <message>
       <source>Export camera to povray...</source>
-      <translation>Export camera to povray...</translation>
+      <translation>Vie kamera povray:lle...</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation>Export the camera positon of the active 3D view in PovRay format to a file</translation>
+      <translation>Vie kameran suunta aktiivisesta 3D-näkymästä PovRay muotoiseen tiedostoon</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWritePart</name>
     <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Säteenseuranta</translation>
     </message>
     <message>
       <source>Export part to povray...</source>
@@ -74,14 +74,24 @@
     </message>
     <message>
       <source>Write the selected Part (object) as a povray file</source>
-      <translation>Write the selected Part (object) as a povray file</translation>
+      <translation>Kirjoita Valittu osa (objekti) kuin povray-tiedosto</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteView</name>
     <message>
+      <source>No perspective camera</source>
+      <translation>No perspective camera</translation>
+    </message>
+    <message>
+      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</source>
+      <translation>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</translation>
+    </message>
+    <message>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Säteenseuranta</translation>
     </message>
     <message>
       <source>Export view to povray...</source>
@@ -89,7 +99,7 @@
     </message>
     <message>
       <source>Write the active 3D view with camera and all its content to a povray file</source>
-      <translation>Write the active 3D view with camera and all its content to a povray file</translation>
+      <translation>Kirjoita aktiivinen 3D näkymä kameran ja kaikkien sen sisällön kanssa povray-tiedostoon</translation>
     </message>
   </context>
   <context>
@@ -116,11 +126,15 @@
     </message>
     <message>
       <source>No Povray project to insert</source>
-      <translation>No Povray project to insert</translation>
+      <translation>Ei ole Povray-projektia lisäystä varten</translation>
     </message>
     <message>
       <source>Create a Povray project to insert a view.</source>
-      <translation>Create a Povray project to insert a view.</translation>
+      <translation>Luo Povray-projekti lisätylle näkymälle.</translation>
+    </message>
+    <message>
+      <source>Select a Povray project to insert the view.</source>
+      <translation>Select a Povray project to insert the view.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>
@@ -132,7 +146,7 @@
     <message>
       <location filename="../../DlgSettingsRay.ui" line="+16"/>
       <source>Raytracing</source>
-      <translation>Raytracing</translation>
+      <translation>Säteenseuranta</translation>
     </message>
     <message>
       <source>Directories</source>
@@ -144,27 +158,27 @@
     </message>
     <message>
       <source>Camera file name:</source>
-      <translation>Camera file name:</translation>
+      <translation>Kameran tiedostonimi:</translation>
     </message>
     <message>
       <source>Part file name:</source>
-      <translation>Part file name:</translation>
+      <translation>Osan tiedostonimi:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
-      <translation>TempCamera.inc</translation>
+      <translation>TempKamera.inc</translation>
     </message>
     <message>
       <source>TempPart.inc</source>
-      <translation>TempPart.inc</translation>
+      <translation>TempOsa.inc</translation>
     </message>
     <message>
       <source>Mesh export settings</source>
-      <translation>Mesh export settings</translation>
+      <translation>Verkon vientiasetukset</translation>
     </message>
     <message>
       <source>max mesh deviation:</source>
-      <translation>max mesh deviation:</translation>
+      <translation>maksimi verkon poikkeama:</translation>
     </message>
     <message>
       <source>Do not calculate vertex normals</source>
@@ -180,7 +194,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+      <translation>&amp;Säteenseuranta</translation>
     </message>
   </context>
 </TS>

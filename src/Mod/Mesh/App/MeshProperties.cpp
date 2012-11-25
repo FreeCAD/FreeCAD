@@ -390,119 +390,12 @@ void PropertyMeshKernel::transformGeometry(const Base::Matrix4D &rclMat)
     hasSetValue();
 }
 
-void PropertyMeshKernel::deletePointIndices( const std::vector<unsigned long>& inds )
-{
-    aboutToSetValue();
-    _meshObject->deletePoints(inds);
-    hasSetValue();
-}
-
-void PropertyMeshKernel::deleteFacetIndices( const std::vector<unsigned long>& inds )
-{
-    aboutToSetValue();
-    _meshObject->deleteFacets(inds);
-    hasSetValue();
-}
-
 void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<unsigned long, Base::Vector3f> >& inds)
 {
     aboutToSetValue();
     MeshCore::MeshKernel& kernel = _meshObject->getKernel();
     for (std::vector<std::pair<unsigned long, Base::Vector3f> >::const_iterator it = inds.begin(); it != inds.end(); ++it)
         kernel.SetPoint(it->first, it->second);
-    hasSetValue();
-}
-
-void PropertyMeshKernel::append(const std::vector<MeshCore::MeshFacet>& rFaces,
-                                const std::vector<Base::Vector3f>& rPoints)
-{
-    aboutToSetValue();
-    _meshObject->addFacets(rFaces, rPoints);
-    hasSetValue();
-}
-
-void PropertyMeshKernel::createSegment(const std::vector<unsigned long>& segm)
-{
-    aboutToSetValue();
-    _meshObject->addSegment(segm);
-    hasSetValue();
-}
-
-void PropertyMeshKernel::smooth(int iter, float d_max)
-{
-    aboutToSetValue();
-    _meshObject->smooth(iter, d_max);
-    hasSetValue();
-}
-
-void PropertyMeshKernel::clear()
-{
-    // clear the underlying mesh kernel and free any allocated memory
-    aboutToSetValue();
-    _meshObject->clear();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::harmonizeNormals()
-{
-    aboutToSetValue();
-    _meshObject->harmonizeNormals();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::removeNonManifolds()
-{
-    aboutToSetValue();
-    _meshObject->removeNonManifolds();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::validateIndices()
-{
-    aboutToSetValue();
-    _meshObject->validateIndices();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::validateDegenerations()
-{
-    aboutToSetValue();
-    _meshObject->validateDegenerations();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::validateDeformations(float fMaxAngle)
-{
-    aboutToSetValue();
-    _meshObject->validateDeformations(fMaxAngle);
-    hasSetValue();
-}
-
-void PropertyMeshKernel::removeDuplicatedFacets()
-{
-    aboutToSetValue();
-    _meshObject->removeDuplicatedFacets();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::removeDuplicatedPoints()
-{
-    aboutToSetValue();
-    _meshObject->removeDuplicatedPoints();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::removeSelfIntersections()
-{
-    aboutToSetValue();
-    _meshObject->removeSelfIntersections();
-    hasSetValue();
-}
-
-void PropertyMeshKernel::removeFoldsOnSurface()
-{
-    aboutToSetValue();
-    _meshObject->removeFoldsOnSurface();
     hasSetValue();
 }
 

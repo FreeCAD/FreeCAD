@@ -41,11 +41,29 @@ DressUp::DressUp()
     ADD_PROPERTY(Base,(0));
 }
 
+short DressUp::mustExecute() const
+{
+    if (Base.getValue() && Base.getValue()->isTouched())
+        return 1;
+    return PartDesign::Feature::mustExecute();
+}
+
+
 void DressUp::positionByBase(void)
 {
     Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
     if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         this->Placement.setValue(base->Placement.getValue());
+}
+
+void DressUp::onChanged(const App::Property* prop)
+{
+    if (prop == &Base) {
+        // if attached to a sketch then mark it as read-only
+        this->Placement.StatusBits.set(2, Base.getValue() != 0);
+    }
+
+    Feature::onChanged(prop);
 }
 
 }

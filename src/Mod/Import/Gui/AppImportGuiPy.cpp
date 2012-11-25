@@ -26,8 +26,8 @@
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <climits>
 # include <Python.h>
+# include <climits>
 # include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
 # include <Handle_TDocStd_Document.hxx>
@@ -45,6 +45,7 @@
 # include <Quantity_Color.hxx>
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPCAFControl_Writer.hxx>
+# include <STEPControl_Writer.hxx>
 # include <IGESCAFControl_Reader.hxx>
 # include <IGESCAFControl_Writer.hxx>
 # include <IGESControl_Controller.hxx>
@@ -55,6 +56,7 @@
 # include <TopTools_MapOfShape.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Iterator.hxx>
+# include <APIHeaderSection_MakeHeader.hxx>
 #if OCC_VERSION_HEX >= 0x060500
 # include <TDataXtd_Shape.hxx>
 # else
@@ -480,20 +482,24 @@ private:
 };
 
 /* module functions */
+
 static PyObject * importer(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    const char* DocName;
-    if (!PyArg_ParseTuple(args, "ss",&Name,&DocName))
+    char* Name;
+    char* DocName=0;
+    if (!PyArg_ParseTuple(args, "s|s",&Name,&DocName))
         return 0;
 
     PY_TRY {
         //Base::Console().Log("Insert in Part with %s",Name);
         Base::FileInfo file(Name);
 
-        App::Document *pcDoc = App::GetApplication().getDocument(DocName);
+        App::Document *pcDoc = 0;
+        if (DocName) {
+            pcDoc = App::GetApplication().getDocument(DocName);
+        }
         if (!pcDoc) {
-            pcDoc = App::GetApplication().newDocument(DocName);
+            pcDoc = App::GetApplication().newDocument("Unnamed");
         }
 
         Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
@@ -559,6 +565,11 @@ static PyObject * importer(PyObject *self, PyObject *args)
     PY_CATCH
 
     Py_Return;
+}
+
+static PyObject * open(PyObject *self, PyObject *args)
+{
+    return importer(self, args);
 }
 
 static PyObject * exporter(PyObject *self, PyObject *args)
@@ -655,8 +666,21 @@ static PyObject * exporter(PyObject *self, PyObject *args)
 
         Base::FileInfo file(filename);
         if (file.hasExtension("stp") || file.hasExtension("step")) {
+            //Interface_Static::SetCVal("write.step.schema", "AP214IS");
             STEPCAFControl_Writer writer;
             writer.Transfer(hDoc, STEPControl_AsIs);
+
+            // edit STEP header
+#if OCC_VERSION_HEX >= 0x060500
+            APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
+#else
+            APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
+#endif
+            makeHeader.SetName(new TCollection_HAsciiString((const Standard_CString)filename));
+            makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
+            makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
+            makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
+            makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
             writer.Write(filename);
         }
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
@@ -946,6 +970,8 @@ static PyObject * ocaf(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef ImportGui_Import_methods[] = {
+    {"open"     ,open  ,METH_VARARGS,
+     "open(string) -- Open the file and create a new document."},
     {"insert"     ,importer  ,METH_VARARGS,
      "insert(string,string) -- Insert the file into the given document."},
     {"export"     ,exporter  ,METH_VARARGS,

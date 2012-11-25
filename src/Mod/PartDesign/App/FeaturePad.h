@@ -31,22 +31,33 @@
 namespace PartDesign
 {
 
-class Pad : public Additive
+class PartDesignExport Pad : public Additive
 {
     PROPERTY_HEADER(PartDesign::Pad);
 
 public:
     Pad();
 
-    App::PropertyLength Length;
-    //App::PropertyEnumeration Side;
-    App::PropertyBool Reversed;
-    App::PropertyBool MirroredExtent;
-    App::PropertyAngle TaperAngle;
+    App::PropertyEnumeration    Type;
+    App::PropertyLength         Length;
+    App::PropertyLength         Length2;
+    App::PropertyLinkSub        UpToFace;
 
     /** @name methods override feature */
     //@{
-    /// recalculate the feature
+    /** Recalculate the feature
+      * Extrudes the Sketch in the direction of the sketch face normal
+      * If Type is "Length" then Length gives the extrusion length, the direction will be away from the support
+      * If Type is "UpToLast" then the extrusion will stop at the last face of the support
+      *  that is cut by a line through the centre of gravite of the sketch
+      * If Type is "UpToFirst" then extrusion will stop at the first face of the support
+      * If Type is "UpToFace" then the extrusion will stop at FaceName in the support
+      * If Type is "TwoLengths" then the extrusion will extend Length in the direction away from the support
+      *  and Length2 in the opposite direction
+      * If Midplane is true, then the extrusion will extend for half of the length on both sides of the sketch plane
+      * If Reversed is true then the direction of revolution will be reversed.
+      * The created material will be fused with the sketch support (if there is one)
+      */
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     /// returns the type name of the view provider
@@ -55,7 +66,8 @@ public:
     }
     //@}
 private:
-    static const char* SideEnums[];
+    static const char* TypeEnums[];
+    //static const char* SideEnums[];
 };
 
 } //namespace PartDesign

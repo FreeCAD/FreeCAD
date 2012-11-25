@@ -52,6 +52,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <sstream>
 # include <climits>
 #endif
@@ -62,6 +63,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/visitors.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/bind.hpp>
+#include <boost/regex.hpp>
 
 
 #include "Document.h"
@@ -580,34 +582,7 @@ void Document::Save (Base::Writer &writer) const
     PropertyContainer::Save(writer);
 
     // writing the features types
-    writer.incInd(); // indention for 'Objects count'
-    writer.Stream() << writer.ind() << "<Objects Count=\"" << d->objectArray.size() <<"\">" << endl;
-
-    writer.incInd(); // indention for 'Object type'
-    std::vector<DocumentObject*>::const_iterator it;
-    for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object "
-        << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument()       << "\" "
-        << "/>" << endl;
-    }
-
-    writer.decInd();  // indention for 'Object type'
-    writer.Stream() << writer.ind() << "</Objects>" << endl;
-
-    // writing the features itself
-    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << d->objectArray.size() <<"\">" << endl;
-
-    writer.incInd(); // indention for 'Object name'
-    for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\">" << endl;
-        (*it)->Save(writer);
-        writer.Stream() << writer.ind() << "</Object>" << endl;
-    }
-
-    writer.decInd(); // indention for 'Object name'
-    writer.Stream() << writer.ind() << "</ObjectData>" << endl;
-    writer.decInd();  // indention for 'Objects count'
+    writeObjects(d->objectArray, writer);
     writer.Stream() << "</Document>" << endl;
 }
 
@@ -686,37 +661,7 @@ void Document::Restore(Base::XMLReader &reader)
     } // SchemeVersion "3" or higher
     else if ( scheme >= 3 ) {
         // read the feature types
-        reader.readElement("Objects");
-        Cnt = reader.getAttributeAsInteger("Count");
-        for (i=0 ;i<Cnt ;i++) {
-            reader.readElement("Object");
-            string type = reader.getAttribute("type");
-            string name = reader.getAttribute("name");
-
-            try {
-                addObject(type.c_str(),name.c_str());
-            }
-            catch ( Base::Exception& ) {
-                Base::Console().Message("Cannot create object '%s'\n", name.c_str());
-            }
-        }
-        reader.readEndElement("Objects");
-
-        // read the features itself
-        reader.readElement("ObjectData");
-        Cnt = reader.getAttributeAsInteger("Count");
-        for (i=0 ;i<Cnt ;i++) {
-            reader.readElement("Object");
-            string name = reader.getAttribute("name");
-            DocumentObject* pObj = getObject(name.c_str());
-            if (pObj) { // check if this feature has been registered
-                pObj->StatusBits.set(4);
-                pObj->Restore(reader);
-                pObj->StatusBits.reset(4);
-            }
-            reader.readEndElement("Object");
-        }
-        reader.readEndElement("ObjectData");
+        readObjects(reader);
     }
 
     reader.readEndElement("Document");
@@ -733,6 +678,20 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     writer.Stream() << "<Properties Count=\"0\">" << endl;
     writer.Stream() << "</Properties>" << endl;
 
+    // writing the object types
+    writeObjects(obj, writer);
+    writer.Stream() << "</Document>" << endl;
+
+    // Hook for others to add further data.
+    signalExportObjects(obj, writer);
+
+    // write additional files
+    writer.writeFiles();
+}
+
+void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
+                            Base::Writer &writer) const
+{
     // writing the features types
     writer.incInd(); // indention for 'Objects count'
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size() <<"\">" << endl;
@@ -742,7 +701,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName() << "\" "
-        << "name=\"" << (*it)->getNameInDocument() << "\" "
+        << "name=\"" << (*it)->getNameInDocument()       << "\" "
         << "/>" << endl;
     }
 
@@ -762,42 +721,31 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     writer.decInd(); // indention for 'Object name'
     writer.Stream() << writer.ind() << "</ObjectData>" << endl;
     writer.decInd();  // indention for 'Objects count'
-    writer.Stream() << "</Document>" << endl;
-
-    // Hook for others to add further data.
-    signalExportObjects(obj, writer);
-
-    // write additional files
-    writer.writeFiles();
 }
 
 std::vector<App::DocumentObject*>
-Document::importObjects(std::istream& input)
+Document::readObjects(Base::XMLReader& reader)
 {
     std::vector<App::DocumentObject*> objs;
-    zipios::ZipInputStream zipstream(input);
-    Base::XMLReader reader("<memory>", zipstream);
-
-    int i,Cnt;
-    reader.readElement("Document");
-    long scheme = reader.getAttributeAsInteger("SchemaVersion");
-    reader.DocumentSchema = scheme;
 
     // read the object types
-    std::map<std::string, std::string> nameMap;
     reader.readElement("Objects");
-    Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
+    int Cnt = reader.getAttributeAsInteger("Count");
+    for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
-        string type = reader.getAttribute("type");
-        string name = reader.getAttribute("name");
+        std::string type = reader.getAttribute("type");
+        std::string name = reader.getAttribute("name");
 
         try {
+            // Use name from XML as is and do NOT remove trailing digits because
+            // otherwise we may cause a dependency to itself
+            // Example: Object 'Cut001' references object 'Cut' and removing the
+            // digits we make an object 'Cut' referencing itself.
             App::DocumentObject* o = addObject(type.c_str(),name.c_str());
             objs.push_back(o);
             // use this name for the later access because an object with
             // the given name may already exist
-            nameMap[name] = o->getNameInDocument();
+            reader.addName(name.c_str(), o->getNameInDocument());
         }
         catch (Base::Exception&) {
             Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -808,9 +756,9 @@ Document::importObjects(std::istream& input)
     // read the features itself
     reader.readElement("ObjectData");
     Cnt = reader.getAttributeAsInteger("Count");
-    for (i=0 ;i<Cnt ;i++) {
+    for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
-        std::string name = nameMap[reader.getAttribute("name")];
+        std::string name = reader.getName(reader.getAttribute("name"));
         DocumentObject* pObj = getObject(name.c_str());
         if (pObj) { // check if this feature has been registered
             pObj->StatusBits.set(4);
@@ -821,12 +769,26 @@ Document::importObjects(std::istream& input)
     }
     reader.readEndElement("ObjectData");
 
+    return objs;
+}
+
+std::vector<App::DocumentObject*>
+Document::importObjects(Base::XMLReader& reader)
+{
+    reader.readElement("Document");
+    long scheme = reader.getAttributeAsInteger("SchemaVersion");
+    reader.DocumentSchema = scheme;
+
+    std::vector<App::DocumentObject*> objs = readObjects(reader);
+
     reader.readEndElement("Document");
     signalImportObjects(objs, reader);
-    reader.readFiles(zipstream);
+
     // reset all touched
-    for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it)
+    for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it) {
+        (*it)->onDocumentRestored();
         (*it)->purgeTouched();
+    }
     return objs;
 }
 
@@ -846,6 +808,31 @@ unsigned int Document::getMemSize (void) const
     size += getUndoMemSize();
 
     return size;
+}
+
+void Document::exportGraphviz(std::ostream& out)
+{
+    std::vector<std::string> names;
+    names.reserve(d->objectMap.size());
+    DependencyList DepList;
+    std::map<DocumentObject*,Vertex> VertexObjectList;
+
+    // Filling up the adjacency List
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        // add the object as Vertex and remember the index
+        VertexObjectList[It->second] = add_vertex(DepList);
+        names.push_back(It->second->Label.getValue());
+    }
+    // add the edges
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+            if (*It2)
+                add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
+        }
+    }
+
+    boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
 }
 
 // Save the document under the name it has been opened
@@ -975,6 +962,8 @@ void Document::restore (void)
     if (!reader.isValid())
         throw Base::FileException("Error reading compression file",FileName.getValue());
 
+    GetApplication().signalStartRestoreDocument(*this);
+
     try {
         Document::Restore(reader);
     }
@@ -995,7 +984,7 @@ void Document::restore (void)
         It->second->purgeTouched();
     }
 
-    GetApplication().signalRestoreDocument(*this);
+    GetApplication().signalFinishRestoreDocument(*this);
 }
 
 bool Document::isSaved() const
@@ -1476,20 +1465,48 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
                     }
                 }
             }
+            else if (pt->second->getTypeId().isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
+                PropertyLinkSubList* link = static_cast<PropertyLinkSubList*>(pt->second);
+                if (link->getContainer() == pcObject && clear) {
+                    link->setValues(std::vector<DocumentObject*>(), std::vector<std::string>());
+                }
+                else {
+                    const std::vector<DocumentObject*>& links = link->getValues();
+                    const std::vector<std::string>& sub = link->getSubValues();
+                    std::vector<DocumentObject*> newLinks;
+                    std::vector<std::string> newSub;
+
+                    if (std::find(links.begin(), links.end(), pcObject) != links.end()) {
+                        std::vector<DocumentObject*>::const_iterator jt;
+                        std::vector<std::string>::const_iterator kt;
+                        for (jt = links.begin(),kt = sub.begin(); jt != links.end() && kt != sub.end(); ++jt, ++kt) {
+                            if (*jt != pcObject) {
+                                newLinks.push_back(*jt);
+                                newSub.push_back(*kt);
+                            }
+                        }
+
+                        link->setValues(newLinks, newSub);
+                    }
+                }
+            }
         }
     }
 }
 
 DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-                                      DocumentObject*>& copy_map, bool recursive)
+                                      DocumentObject*>& copy_map, bool recursive,
+                                      bool keepdigitsatend)
 {
     if (!obj) return 0;
     // remove number from end to avoid lengthy names
     std::string objname = obj->getNameInDocument();
-    size_t lastpos = objname.length()-1;
-    while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
-        lastpos--;
-    objname = objname.substr(0, lastpos+1);
+    if (!keepdigitsatend) {
+        size_t lastpos = objname.length()-1;
+        while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
+            lastpos--;
+        objname = objname.substr(0, lastpos+1);
+    }
     DocumentObject* copy = addObject(obj->getTypeId().getName(),objname.c_str());
     if (!copy) return 0;
     copy->addDynamicProperties(obj);
@@ -1509,7 +1526,7 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
                     static_cast<PropertyLink*>(it->second)->setValue(pt->second);
                 }
                 else if (recursive) {
-                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive);
+                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive, keepdigitsatend);
                     copy_map[link] = link_copy;
                     static_cast<PropertyLink*>(it->second)->setValue(link_copy);
                 }
@@ -1528,7 +1545,7 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
                             links_copy.push_back(pt->second);
                         }
                         else {
-                            links_copy.push_back(_copyObject(*jt, copy_map, recursive));
+                            links_copy.push_back(_copyObject(*jt, copy_map, recursive, keepdigitsatend));
                             copy_map[*jt] = links_copy.back();
                         }
                     }
@@ -1558,10 +1575,10 @@ DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObje
     return copy;
 }
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
+DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool keepdigitsatend)
 {
     std::map<DocumentObject*, DocumentObject*> copy_map;
-    DocumentObject* copy = _copyObject(obj, copy_map, recursive);
+    DocumentObject* copy = _copyObject(obj, copy_map, recursive, keepdigitsatend);
     return copy;
 }
 
@@ -1683,6 +1700,20 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(typeId))
             Objects.push_back(*it);
+    }
+    return Objects;
+}
+
+std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
+{
+    boost::regex rx(objname);
+    boost::cmatch what;
+    std::vector<DocumentObject*> Objects;
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(typeId)) {
+            if (boost::regex_match((*it)->getNameInDocument(), what, rx))
+                Objects.push_back(*it);
+        }
     }
     return Objects;
 }

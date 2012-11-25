@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Add a tool shape to the robot</source>
-      <translation>Add a tool shape to the robot</translation>
+      <translation>Dodaj kształt narzędzia do robota</translation>
     </message>
   </context>
   <context>
@@ -26,11 +26,11 @@
     </message>
     <message>
       <source>Place robot...</source>
-      <translation>Place robot...</translation>
+      <translation>Miejsce robota...</translation>
     </message>
     <message>
       <source>Place a robot (experimental!)</source>
-      <translation>Place a robot (experimental!)</translation>
+      <translation>Miejsce robota (eksperymentalne!)</translation>
     </message>
   </context>
   <context>
@@ -73,7 +73,7 @@
     </message>
     <message>
       <source>Kuka compact subroutine...</source>
-      <translation>Kuka compact subroutine...</translation>
+      <translation>Kuka kompaktowa funkcja...</translation>
     </message>
     <message>
       <source>Export the trajectory as a compact KRL subroutine.</source>
@@ -88,7 +88,7 @@
     </message>
     <message>
       <source>Kuka full subroutine...</source>
-      <translation>Kuka full subroutine...</translation>
+      <translation>Kuka pełna funkcja...</translation>
     </message>
     <message>
       <source>Export the trajectory as a full KRL subroutine.</source>
@@ -108,7 +108,7 @@
     </message>
     <message>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Insert a Kuka IR125 into the document.</translation>
+      <translation>Wstaw Kuka IR125 do dokumentu.</translation>
     </message>
   </context>
   <context>
@@ -123,7 +123,7 @@
     </message>
     <message>
       <source>Insert a Kuka IR16 into the document.</source>
-      <translation>Insert a Kuka IR16 into the document.</translation>
+      <translation>Wstaw Kuka IR16 do dokumentu.</translation>
     </message>
   </context>
   <context>
@@ -138,7 +138,7 @@
     </message>
     <message>
       <source>Insert a Kuka IR210 into the document.</source>
-      <translation>Insert a Kuka IR210 into the document.</translation>
+      <translation>Wstaw Kuka IR210 do dokumentu.</translation>
     </message>
   </context>
   <context>
@@ -153,7 +153,7 @@
     </message>
     <message>
       <source>Insert a Kuka IR500 into the document.</source>
-      <translation>Insert a Kuka IR500 into the document.</translation>
+      <translation>Wstaw Kuka IR500 do dokumentu.</translation>
     </message>
   </context>
   <context>
@@ -169,7 +169,7 @@
     </message>
     <message>
       <source>Insert robot Tool location into trajectory</source>
-      <translation>Insert robot Tool location into trajectory</translation>
+      <translation>Wstaw lokację narzędzia robota na trajektorię</translation>
     </message>
   </context>
   <context>
@@ -184,7 +184,7 @@
     </message>
     <message>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation>Insert preselection position into trajectory (W)</translation>
+      <translation>Wstaw pozycję preselekcji do trajektorii (W)</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     </message>
     <message>
       <source>Move to home</source>
-      <translation>Move to home</translation>
+      <translation>Przenieś do pozycji startowej</translation>
     </message>
   </context>
   <context>
@@ -223,7 +223,7 @@
     </message>
     <message>
       <source>Set default values</source>
-      <translation>Set default values</translation>
+      <translation>Ustaw domyślne wartości</translation>
     </message>
     <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
@@ -239,7 +239,7 @@
     </message>
     <message>
       <source>Set the home position</source>
-      <translation>Set the home position</translation>
+      <translation>Ustaw pozycję startową</translation>
     </message>
   </context>
   <context>
@@ -254,7 +254,7 @@
     </message>
     <message>
       <source>Run a simulation on a trajectory</source>
-      <translation>Run a simulation on a trajectory</translation>
+      <translation>Uruchom symulację na trajektorii</translation>
     </message>
   </context>
   <context>
@@ -313,7 +313,7 @@
     </message>
     <message>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>Select one Robot and one Trajectory object.</translation>
+      <translation>Wybierz jednego robota i jedną trajektorię.</translation>
     </message>
     <message>
       <source>Trajectory not valid</source>
@@ -339,12 +339,12 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="+1"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation>Select one robot and one shape or VRML object.</translation>
+      <translation>Wybierz jednego robota i jeden kształt lub obiekt VRML.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="+79"/>
       <source>No preselection</source>
-      <translation>No preselection</translation>
+      <translation>Bez preselekcji</translation>
     </message>
     <message>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
@@ -357,7 +357,7 @@
     </message>
     <message>
       <source>Select one Robot</source>
-      <translation>Select one Robot</translation>
+      <translation>Zaznacz jednego Robota</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="-24"/>
@@ -366,19 +366,19 @@
     </message>
     <message>
       <source>set default speed</source>
-      <translation>set default speed</translation>
+      <translation>Ustaw domyślną szybkość</translation>
     </message>
     <message>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-      <translation>speed: (e.g. 1 m/s or 3 cm/s)</translation>
+      <translation>prędkość: (np. 1 m/s lub 3 cm/s)</translation>
     </message>
     <message>
       <source>set default continuity</source>
-      <translation>set default continuity</translation>
+      <translation>Ustaw domyślną ciągłość</translation>
     </message>
     <message>
       <source>continuous ?</source>
-      <translation>continuous ?</translation>
+      <translation>ciągłe?</translation>
     </message>
     <message>
       <source>set default acceleration</source>
@@ -386,20 +386,20 @@
     </message>
     <message>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-      <translation>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
+      <translation>przyspieszenie: (przykład 1 m/s ^ 2 lub 3 cm/s ^ 2)</translation>
     </message>
     <message>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Select the Trajectory which you want to dress up.</translation>
+      <translation>Wybierz trajektorię, które chcesz wykonać.</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="+26"/>
       <source>No robot files installed</source>
-      <translation>No robot files installed</translation>
+      <translation>Nie zainstalowane pliki robota</translation>
     </message>
     <message>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation>Please visit %1 and copy the files to %2</translation>
+      <translation>Odwiedź %1 i kopiować pliki do %2</translation>
     </message>
   </context>
   <context>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>A1</source>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="+20"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>|&lt;</source>
@@ -588,7 +588,7 @@
     </message>
     <message>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
-      <translation>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
+      <translation>Pos: (200.23, 300.23, 400.23, 234, 343, 343)</translation>
     </message>
     <message>
       <source>Type</source>
@@ -629,7 +629,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>Hide / Show</source>
@@ -637,15 +637,15 @@
     </message>
     <message>
       <source>Edges: 0</source>
-      <translation>Edges: 0</translation>
+      <translation>Krawędzie: 0</translation>
     </message>
     <message>
       <source>Cluster: 0</source>
-      <translation>Cluster: 0</translation>
+      <translation>Klaster: 0</translation>
     </message>
     <message>
       <source>Sizing Value:</source>
-      <translation>Sizing Value:</translation>
+      <translation>Wartość zmiany rozmiaru:</translation>
     </message>
     <message>
       <source>Use orientation of edge</source>
@@ -668,7 +668,7 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>X+</source>
@@ -720,7 +720,7 @@
     </message>
     <message>
       <source>Tool 0</source>
-      <translation>Tool 0</translation>
+      <translation>Narzędzie 0</translation>
     </message>
     <message>
       <source>Tool</source>
@@ -728,15 +728,15 @@
     </message>
     <message>
       <source>Base 0</source>
-      <translation>Base 0</translation>
+      <translation>Baza 0</translation>
     </message>
     <message>
       <source>Base</source>
-      <translation>Base</translation>
+      <translation>Baza</translation>
     </message>
     <message>
       <source>World</source>
-      <translation>World</translation>
+      <translation>Świat</translation>
     </message>
     <message>
       <source>50mm / 5°</source>
@@ -768,7 +768,7 @@
     <message>
       <location filename="../../TaskRobotMessages.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>clear</source>
@@ -791,7 +791,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="+14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>Speed &amp; Acceleration:</source>
@@ -811,15 +811,15 @@
     </message>
     <message>
       <source>Don't change Cont</source>
-      <translation>Don't change Cont</translation>
+      <translation>Nie zmieniaj</translation>
     </message>
     <message>
       <source>Continues</source>
-      <translation>Continues</translation>
+      <translation>Kontynuuj</translation>
     </message>
     <message>
       <source>Discontinues</source>
-      <translation>Discontinues</translation>
+      <translation>Przerwij</translation>
     </message>
     <message>
       <source>Position and Orientation:</source>
@@ -863,11 +863,11 @@
     </message>
     <message>
       <source>Insert Robots</source>
-      <translation>Insert Robots</translation>
+      <translation>Wstaw Roboty</translation>
     </message>
     <message>
       <source>&amp;Robot</source>
-      <translation>&amp;Robot</translation>
+      <translation>&amp; Robot</translation>
     </message>
     <message>
       <source>Export trajectory</source>

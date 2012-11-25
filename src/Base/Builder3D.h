@@ -164,6 +164,8 @@ public:
     void addPoint(const Vector3f &vec);
     /// ends the points set operation
     void endPoints(void);
+    /// add an SoPointSet node
+    void addPointSet(void);
     //@}
 
     /** @name Line/Direction handling */

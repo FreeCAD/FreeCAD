@@ -38,6 +38,7 @@
 #include "PyTools.h"
 #include "Exception.h"
 #include "PyObjectBase.h"
+#include <CXX/Extensions.hxx>
 
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!
@@ -89,6 +90,36 @@ SystemExitException::SystemExitException(const SystemExitException &inst)
 
 // ---------------------------------------------------------
 
+// Fixes #0000831: python print causes File descriptor error on windows
+class PythonStdOutput : public Py::PythonExtension<PythonStdOutput>
+{
+public:
+    static void init_type(void)
+    {
+        behaviors().name("PythonStdOutput");
+        behaviors().doc("Python standard output");
+        add_varargs_method("write",&PythonStdOutput::write,"write()");
+        add_varargs_method("flush",&PythonStdOutput::flush,"flush()");
+    }
+
+    PythonStdOutput()
+    {
+    }
+    ~PythonStdOutput()
+    {
+    }
+
+    Py::Object write(const Py::Tuple&)
+    {
+        return Py::None();
+    }
+    Py::Object flush(const Py::Tuple&)
+    {
+        return Py::None();
+    }
+};
+
+// ---------------------------------------------------------
 
 InterpreterSingleton::InterpreterSingleton()
 {
@@ -190,7 +221,6 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
     presult = PyRun_String(sCmd, Py_single_input, dict, dict); /* eval direct */
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
-            //systemExit();
             throw SystemExitException();
         }
         /* get latest python exception information */
@@ -312,10 +342,19 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         PyEval_InitThreads();
         Py_Initialize();
         PySys_SetArgv(argc, argv);
+        PythonStdOutput::init_type();
         this->_global = PyEval_SaveThread();
     }
 
     return Py_GetPath();
+}
+
+void InterpreterSingleton::replaceStdOutput()
+{
+    PyGILStateLocker locker;
+    PythonStdOutput* out = new PythonStdOutput();
+    PySys_SetObject("stdout", out);
+    PySys_SetObject("stderr", out);
 }
 
 int InterpreterSingleton::cleanup(void (*func)(void))
@@ -508,7 +547,7 @@ int getSWIGVersionFromModule(const std::string& module)
             // file can have the extension .py or .pyc
             filename = filename.substr(0, filename.rfind("."));
             filename += ".py";
-            boost::regex rx("^# Version ([1-9])\\.([1-9])\\.([1-9][0-9])");
+            boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
             boost::cmatch what;
 
             std::string line;
@@ -552,21 +591,21 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
     PyObject* proxy=0;
     PyGILStateLocker locker;
     int version = getSWIGVersionFromModule(Module);
-    switch (version&0xff)
+    switch (version)
     {
-    case 25:
+    case 66329:
         result = Swig_1_3_25::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 33:
+    case 66337:
         result = Swig_1_3_33::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 36:
+    case 66340:
         result = Swig_1_3_36::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 38:
+    case 66342:
         result = Swig_1_3_38::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
-    case 40:
+    case 66344:
         result = Swig_1_3_40::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
         break;
     default:
@@ -598,21 +637,21 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     int result = 0;
     PyGILStateLocker locker;
     int version = getSWIGVersionFromModule(Module);
-    switch (version&0xff)
+    switch (version)
     {
-    case 25:
+    case 66329:
         result = Swig_1_3_25::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 33:
+    case 66337:
         result = Swig_1_3_33::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 36:
+    case 66340:
         result = Swig_1_3_36::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 38:
+    case 66342:
         result = Swig_1_3_38::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
-    case 40:
+    case 66344:
         result = Swig_1_3_40::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
         break;
     default:

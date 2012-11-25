@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>206</width>
-    <height>138</height>
+    <width>272</width>
+    <height>271</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="textLabel1">
        <property name="text">
-        <string>Type:</string>
+        <string>Type</string>
        </property>
       </widget>
      </item>
@@ -39,14 +39,14 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Length:</string>
+        <string>Length</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QDoubleSpinBox" name="doubleSpinBox">
        <property name="minimum">
-        <double>-999999999.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
        <property name="maximum">
         <double>999999999.000000000000000</double>
@@ -55,7 +55,51 @@
         <double>5.000000000000000</double>
        </property>
        <property name="value">
-        <double>20.000000000000000</double>
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxMidplane">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Symmetric to plane</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxReversed">
+     <property name="text">
+      <string>Reversed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>2nd length</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox2">
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>999999999.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -64,41 +108,31 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QPushButton" name="buttonFace">
        <property name="text">
-        <string>Taper Angle:</string>
+        <string>Face</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="taperAngle">
-       <property name="minimum">
-        <double>-180.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>180.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="lineFaceName"/>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxMirrored">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Mirrored extent</string>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxReversed">
+    <widget class="QCheckBox" name="checkBoxUpdateView">
      <property name="text">
-      <string>Reversed</string>
+      <string>Update view</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

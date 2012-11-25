@@ -4,13 +4,21 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
       <translation>Onderdeel</translation>
     </message>
     <message>
       <source>Chamfer...</source>
       <translation>Groef ...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="+561"/>
+      <source>PartDesign</source>
+      <translation>OnderdeelOntwerp</translation>
+    </message>
+    <message>
+      <source>Chamfer</source>
+      <translation>Chamfer</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
@@ -30,6 +38,21 @@
     <message>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Skep 'n ronding op 'n rand, vlak of liggaam</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignGroove</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>OnderdeelOntwerp</translation>
+    </message>
+    <message>
+      <source>Groove</source>
+      <translation>Groove</translation>
+    </message>
+    <message>
+      <source>Groove a selected sketch</source>
+      <translation>Groove a selected sketch</translation>
     </message>
   </context>
   <context>
@@ -70,11 +93,11 @@
     </message>
     <message>
       <source>Revolution</source>
-      <translation>Revolution</translation>
+      <translation>Rewolusie</translation>
     </message>
     <message>
       <source>Revolve a selected sketch</source>
-      <translation>Revolve a selected sketch</translation>
+      <translation>Draai 'n gekose skets</translation>
     </message>
   </context>
   <context>
@@ -82,21 +105,20 @@
     <message>
       <location filename="../../Workbench.cpp" line="+39"/>
       <source>Face tools</source>
-      <translation>Face tools</translation>
+      <translation>Oppervlakwerktuie</translation>
     </message>
     <message>
       <source>Sketch tools</source>
-      <translation>Sketch tools</translation>
+      <translation>Sketswerktuie</translation>
     </message>
     <message>
       <source>Create Geometry</source>
-      <translation>Create Geometry</translation>
+      <translation>Skep geometrie</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
       <translation>Kante om te groef</translation>
     </message>
@@ -140,7 +162,6 @@ Kies ten minste een kant.</translation>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
       <translation>Groef kante</translation>
     </message>
@@ -186,11 +207,28 @@ Kies ten minste een kant.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskChamferParameters</name>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Grootte:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>Chamfer parameters</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <location filename="../../TaskPadParameters.cpp" line="+313"/>
       <source>Input error</source>
-      <translation>Input error</translation>
+      <translation>Invoerfout</translation>
     </message>
   </context>
   <context>
@@ -207,7 +245,44 @@ Kies ten minste een kant.</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
       <source>Fillet parameters</source>
-      <translation>Fillet parameters</translation>
+      <translation>Ronding parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskGrooveParameters</name>
+    <message>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>As:</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertical sketch axis</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontal sketch axis</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Hoek:</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Omgekeerde</translation>
+    </message>
+    <message>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>Groove parameters</translation>
     </message>
   </context>
   <context>
@@ -231,7 +306,7 @@ Kies ten minste een kant.</translation>
     </message>
     <message>
       <source>Up to first</source>
-      <translation>Up to first</translation>
+      <translation>Op tot die eerste</translation>
     </message>
     <message>
       <source>Size:</source>
@@ -240,7 +315,7 @@ Kies ten minste een kant.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+47"/>
       <source>TaskHoleParameters</source>
-      <translation>TaskHoleParameters</translation>
+      <translation>TaakGatParameters</translation>
     </message>
   </context>
   <context>
@@ -249,6 +324,26 @@ Kies ten minste een kant.</translation>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Vorm</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Soort</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Lengte</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>2nd length</source>
+      <translation>2nd length</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Face</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -264,11 +359,11 @@ Kies ten minste een kant.</translation>
     </message>
     <message>
       <source>Mirrored extent</source>
-      <translation>Mirrored extent</translation>
+      <translation>Gespieëlde omvang</translation>
     </message>
     <message>
       <source>Reversed</source>
-      <translation>Reversed</translation>
+      <translation>Omgekeerde</translation>
     </message>
     <message>
       <source>Display mode:</source>
@@ -295,9 +390,29 @@ Kies ten minste een kant.</translation>
       <translation>TaakBlokParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <location filename="../../TaskPadParameters.cpp" line="-45"/>
       <source>Pad parameters</source>
       <translation>Pad parameters</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>No face selected</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>To last</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>To first</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Op na die voorwerpvlak</translation>
+    </message>
+    <message>
+      <source>Two dimensions</source>
+      <translation>Two dimensions</translation>
     </message>
   </context>
   <context>
@@ -309,34 +424,34 @@ Kies ten minste een kant.</translation>
     </message>
     <message>
       <source>Spacing1:</source>
-      <translation>Spacing1:</translation>
+      <translation>Spasiëring1:</translation>
     </message>
     <message>
       <source>Number1:</source>
-      <translation>Number1:</translation>
+      <translation>Nommer1:</translation>
     </message>
     <message>
       <source>Second extend</source>
-      <translation>Second extend</translation>
+      <translation>Tweede uitbreiding</translation>
     </message>
     <message>
       <source>Spacing2:</source>
-      <translation>Spacing2:</translation>
+      <translation>Spasiëring2:</translation>
     </message>
     <message>
       <source>Number2:</source>
-      <translation>Number2:</translation>
+      <translation>Nommer2:</translation>
     </message>
     <message>
       <location filename="../../TaskPatternRectangularParameters.cpp" line="+47"/>
       <source>TaskPatternRectangularParameters</source>
-      <translation>TaskPatternRectangularParameters</translation>
+      <translation>TaakPatroonReghoekigeParameters</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
       <source>Form</source>
       <translation>Vorm</translation>
     </message>
@@ -345,17 +460,45 @@ Kies ten minste een kant.</translation>
       <translation>Soort:</translation>
     </message>
     <message>
+      <source>Type</source>
+      <translation>Soort</translation>
+    </message>
+    <message>
       <source>Dimension</source>
       <translation>Dimensioneer</translation>
     </message>
     <message>
-      <source>Length</source>
-      <translation>Length</translation>
+      <source>Face</source>
+      <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <source>Length</source>
+      <translation>Lengte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPocketParameters.cpp" line="-113"/>
       <source>Pocket parameters</source>
-      <translation>Pocket parameters</translation>
+      <translation>Sak parameters</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>To last</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>To first</translation>
+    </message>
+    <message>
+      <source>Through all</source>
+      <translation>Through all</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Op na die voorwerpvlak</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>No face selected</translation>
     </message>
   </context>
   <context>
@@ -370,12 +513,28 @@ Kies ten minste een kant.</translation>
       <translation>As:</translation>
     </message>
     <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertical sketch axis</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontal sketch axis</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Omgekeerde</translation>
+    </message>
+    <message>
       <source>Vertical</source>
-      <translation>Vertical</translation>
+      <translation>Vertikaal</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontal</translation>
+      <translation>Horisontaal</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -384,7 +543,7 @@ Kies ten minste een kant.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
       <source>Revolution parameters</source>
-      <translation>Revolution parameters</translation>
+      <translation>Rewolusie parameters</translation>
     </message>
   </context>
   <context>
@@ -419,6 +578,26 @@ Kies ten minste een kant.</translation>
       <translation>Ronding werk slegs op onderdele</translation>
     </message>
     <message>
+      <source>Shape of selected Part is empty</source>
+      <translation>Shape of selected Part is empty</translation>
+    </message>
+    <message>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>No fillet possible on selected faces/edges</translation>
+    </message>
+    <message>
+      <source>Chamfer works only on parts</source>
+      <translation>Chamfer works only on parts</translation>
+    </message>
+    <message>
+      <source>Shape of selected part is empty</source>
+      <translation>Shape of selected part is empty</translation>
+    </message>
+    <message>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>No chamfer possible on selected faces/edges</translation>
+    </message>
+    <message>
       <source>No Support</source>
       <translation>Geen stut</translation>
     </message>
@@ -430,25 +609,30 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="+60"/>
       <source>Edit pad</source>
-      <translation>Edit pad</translation>
+      <translation>Wysigingswerktuig</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
       <source>Edit pocket</source>
-      <translation>Edit pocket</translation>
+      <translation>Wysig sak</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>A dialog is already open in the task panel</translation>
+      <translation>'n Dialoog is reeds oop in die taakpaneel</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation>Do you want to close this dialog?</translation>
+      <translation>Wil jy hierdie dialoog toe maak?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
       <source>Edit revolution</source>
-      <translation>Edit revolution</translation>
+      <translation>Wysig rewolusie</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>Edit Groove</translation>
     </message>
   </context>
   <context>

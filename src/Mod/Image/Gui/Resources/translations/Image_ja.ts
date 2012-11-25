@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>Create image plane...</source>
-      <translation>Create image plane...</translation>
+      <translation>イメージプレーンを作成します...</translation>
     </message>
     <message>
       <source>Create a planar image in the 3D space</source>
-      <translation>Create a planar image in the 3D space</translation>
+      <translation>3D空間に平面画像を作成します。</translation>
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
@@ -39,7 +39,7 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+308"/>
+      <location filename="../../GLImageBox.cpp" line="+318"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>表示中の画像の色空間は未定義です</translation>
     </message>
@@ -113,27 +113,27 @@
     <message>
       <location filename="../../Command.cpp" line="+106"/>
       <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation>Images (*.png *.xpm *.jpg *.bmp)</translation>
+      <translation>画像（*.png, *.xpm, *.JPG, *.BMP）</translation>
     </message>
     <message>
       <source>Choose an image file to open</source>
-      <translation>Choose an image file to open</translation>
+      <translation>開く画像ファイルを選択します。</translation>
     </message>
     <message>
       <source>Images</source>
-      <translation>Images</translation>
+      <translation>画像</translation>
     </message>
     <message>
       <source>All files</source>
-      <translation>All files</translation>
+      <translation>すべてのファイル</translation>
     </message>
     <message>
       <source>Error open image</source>
-      <translation>Error open image</translation>
+      <translation>画像が開けません</translation>
     </message>
     <message>
       <source>Could not load the choosen image</source>
-      <translation>Could not load the choosen image</translation>
+      <translation>選択されたイメージが読み込めませんでした</translation>
     </message>
   </context>
   <context>

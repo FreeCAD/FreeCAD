@@ -22,22 +22,22 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>Selftoets...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>Loop 'n selftoets om na te gaan dat die toepassing ordentlik werk</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Teken</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Dr&amp;awing</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>&amp;Skets</translation>
+      <source>S&amp;ketch</source>
+      <translation>S&amp;ketch</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -52,16 +52,20 @@
       <translation>Sketsgebaseerd</translation>
     </message>
     <message>
+      <source>Primitives</source>
+      <translation>Primitives</translation>
+    </message>
+    <message>
       <source>Parametric</source>
       <translation>Parametries</translation>
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Object appearence</translation>
+      <translation>Voorwerpvoorkoms</translation>
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Wire Tools</translation>
+      <translation>Draadwerktuie</translation>
     </message>
   </context>
 </TS>

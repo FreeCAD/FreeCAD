@@ -960,6 +960,11 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, 1,
      "isSelected(object) -- Check if a given object is selected"},
+    {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, 1,
+     "countObjectsOfType(string, [string]) -- Get the number of selected objects\n"
+     "The first argument defines the object type e.g. \"Part::Feature\" and the\n"
+     "second argumeht defines the document name. If no document name is given the\n"
+     "currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, 1,
      "getSelection([string]) -- Return a list of selected objets\n"
      "Return a list of selected objects for a given document name. If no\n"
@@ -974,13 +979,13 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "addObserver(Object) -- Install an observer\n"},
     {"removeObserver",      (PyCFunction) SelectionSingleton::sRemSelObserver, 1,
      "removeObserver(Object) -- Uninstall an observer\n"},
-    {"addSelectionGate",      (PyCFunction) SelectionSingleton::saddSelectionGate, 1,
+    {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, 1,
     "addSelectionGate(String) -- activate the selection gate.\n"
     "The selection gate will prohibit all selections which do not match the\n"
     "the given selection filter string. Examples strings are:\n"
     "'SELECT Part::Feature SUB Edge',\n"
     "'SELECT Robot::RobotObject'\n"},
-    {"removeSelectionGate",      (PyCFunction) SelectionSingleton::sremoveSelectionGate, 1,
+    {"removeSelectionGate",      (PyCFunction) SelectionSingleton::sRemoveSelectionGate, 1,
      "removeSelectionGate() -- remove the active slection gate\n"},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
@@ -1047,6 +1052,17 @@ PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args, P
     App::DocumentObjectPy* docObj = static_cast<App::DocumentObjectPy*>(object);
     bool ok = Selection().isSelected(docObj->getDocumentObjectPtr(), subname);
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    char* objecttype;
+    char* document=0;
+    if (!PyArg_ParseTuple(args, "s|s", &objecttype, &document))
+        return NULL;
+
+    unsigned int count = Selection().countObjectsOfType(objecttype, document);
+    return PyInt_FromLong(count);
 }
 
 PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
@@ -1116,7 +1132,7 @@ PyObject *SelectionSingleton::sRemSelObserver(PyObject * /*self*/, PyObject *arg
     } PY_CATCH;
 }
 
-PyObject *SelectionSingleton::saddSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sAddSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
     char* filter;
     if (!PyArg_ParseTuple(args, "s",&filter))
@@ -1129,7 +1145,7 @@ PyObject *SelectionSingleton::saddSelectionGate(PyObject * /*self*/, PyObject *a
     Py_Return;
 }
 
-PyObject *SelectionSingleton::sremoveSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *SelectionSingleton::sRemoveSelectionGate(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;                             // NULL triggers exception 

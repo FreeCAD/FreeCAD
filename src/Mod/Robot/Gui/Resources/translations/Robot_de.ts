@@ -293,7 +293,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+52"/>
       <source>Trajectory tools</source>
-      <translation>Bwewgung Werkzeuge</translation>
+      <translation>Bahnverlaufswerkzeuge</translation>
     </message>
     <message>
       <source>Robot tools</source>

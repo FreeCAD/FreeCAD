@@ -27,6 +27,8 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
 
+class gp_Pnt;
+
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign
@@ -47,7 +49,11 @@ protected:
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    TopoDS_Shape getSolid(const TopoDS_Shape&) const;
+    static TopoDS_Shape getSolid(const TopoDS_Shape&);
+
+    /// Grab any point from the given face
+    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
+
 };
 
 } //namespace PartDesign

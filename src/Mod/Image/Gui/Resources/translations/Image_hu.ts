@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Create a planar image in the 3D space</source>
-      <translation>Create a planar image in the 3D space</translation>
+      <translation>hozzon létre egy síkbeli képet a 3D-s térben</translation>
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
@@ -39,7 +39,7 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+308"/>
+      <location filename="../../GLImageBox.cpp" line="+318"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>A képnéző által meghatározhatatlan típusú színtér</translation>
     </message>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="+77"/>
       <source>&amp;Fit image</source>
-      <translation>Kép kitöltse a képernyőt</translation>
+      <translation>Kép kitöltse a képernyőt &amp;F</translation>
     </message>
     <message>
       <source>Stretch the image to fit the view</source>
@@ -121,11 +121,11 @@
     </message>
     <message>
       <source>Images</source>
-      <translation>Images</translation>
+      <translation>Képek</translation>
     </message>
     <message>
       <source>All files</source>
-      <translation>All files</translation>
+      <translation>Összes fájl</translation>
     </message>
     <message>
       <source>Error open image</source>

@@ -4,13 +4,21 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
     <message>
       <source>Chamfer...</source>
       <translation>Fas...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="+561"/>
+      <source>PartDesign</source>
+      <translation>Komponentdesign</translation>
+    </message>
+    <message>
+      <source>Chamfer</source>
+      <translation>Chamfer</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
@@ -30,6 +38,21 @@
     <message>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Lag avrunding på en kant, flate eller komponent</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignGroove</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>Komponentdesign</translation>
+    </message>
+    <message>
+      <source>Groove</source>
+      <translation>Groove</translation>
+    </message>
+    <message>
+      <source>Groove a selected sketch</source>
+      <translation>Groove a selected sketch</translation>
     </message>
   </context>
   <context>
@@ -96,7 +119,6 @@
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
       <translation>Kanter som skal fases</translation>
     </message>
@@ -140,7 +162,6 @@ Merk en eller flere kanter først.</translation>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
       <translation>Fas kanter</translation>
     </message>
@@ -186,9 +207,26 @@ Merk en eller flere kanter først.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskChamferParameters</name>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Skjema</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Størrelse:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>Chamfer parameters</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <location filename="../../TaskPadParameters.cpp" line="+313"/>
       <source>Input error</source>
       <translation>Input error</translation>
     </message>
@@ -208,6 +246,43 @@ Merk en eller flere kanter først.</translation>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
       <source>Fillet parameters</source>
       <translation>Fillet parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskGrooveParameters</name>
+    <message>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Skjema</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Akse:</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertical sketch axis</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontal sketch axis</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Vinkel:</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Reversed</translation>
+    </message>
+    <message>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>Groove parameters</translation>
     </message>
   </context>
   <context>
@@ -249,6 +324,26 @@ Merk en eller flere kanter først.</translation>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Skjema</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Type</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Lengde</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>2nd length</source>
+      <translation>Andre lengde</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Flate</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -295,9 +390,29 @@ Merk en eller flere kanter først.</translation>
       <translation>Oppgavepadparametere</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <location filename="../../TaskPadParameters.cpp" line="-45"/>
       <source>Pad parameters</source>
       <translation>Pad parameters</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Ingen flater valgt</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>To last</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>To first</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Opp til flate</translation>
+    </message>
+    <message>
+      <source>Two dimensions</source>
+      <translation>To dimensjoner</translation>
     </message>
   </context>
   <context>
@@ -336,7 +451,7 @@ Merk en eller flere kanter først.</translation>
   <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
       <source>Form</source>
       <translation>Skjema</translation>
     </message>
@@ -345,17 +460,45 @@ Merk en eller flere kanter først.</translation>
       <translation>Type:</translation>
     </message>
     <message>
+      <source>Type</source>
+      <translation>Type</translation>
+    </message>
+    <message>
       <source>Dimension</source>
       <translation>Dimensjon</translation>
     </message>
     <message>
-      <source>Length</source>
-      <translation>Length</translation>
+      <source>Face</source>
+      <translation>Flate</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <source>Length</source>
+      <translation>Lengde</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPocketParameters.cpp" line="-113"/>
       <source>Pocket parameters</source>
       <translation>Pocket parameters</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>To last</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>To first</translation>
+    </message>
+    <message>
+      <source>Through all</source>
+      <translation>Gjennom alle</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Opp til flate</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Ingen flater valgt</translation>
     </message>
   </context>
   <context>
@@ -368,6 +511,22 @@ Merk en eller flere kanter først.</translation>
     <message>
       <source>Axis:</source>
       <translation>Akse:</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertical sketch axis</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontal sketch axis</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Reversed</translation>
     </message>
     <message>
       <source>Vertical</source>
@@ -419,6 +578,26 @@ Merk en eller flere kanter først.</translation>
       <translation>Avrunding fungerer bare på komponenter</translation>
     </message>
     <message>
+      <source>Shape of selected Part is empty</source>
+      <translation>Formen på den valgte delen er tom</translation>
+    </message>
+    <message>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>No fillet possible on selected faces/edges</translation>
+    </message>
+    <message>
+      <source>Chamfer works only on parts</source>
+      <translation>Chamfer works only on parts</translation>
+    </message>
+    <message>
+      <source>Shape of selected part is empty</source>
+      <translation>Formen på den valgte delen er tom</translation>
+    </message>
+    <message>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>No chamfer possible on selected faces/edges</translation>
+    </message>
+    <message>
       <source>No Support</source>
       <translation>Ingen støtte</translation>
     </message>
@@ -434,22 +613,27 @@ Opprett skisse på en flate.</translation>
       <translation>Edit pad</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
       <source>Edit pocket</source>
       <translation>Edit pocket</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>A dialog is already open in the task panel</translation>
+      <translation>En dialog er allerede åpent i oppgavepanelet</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation>Do you want to close this dialog?</translation>
+      <translation>Ønsker du å lukke denne dialogen?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
       <source>Edit revolution</source>
       <translation>Edit revolution</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>Edit Groove</translation>
     </message>
   </context>
   <context>

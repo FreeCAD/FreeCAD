@@ -32,12 +32,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Zeichnung</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Zeic&amp;hnen</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Ski&amp;zze</translation>
+      <source>S&amp;ketch</source>
+      <translation>S&amp;kizze</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -50,6 +50,10 @@
     <message>
       <source>Sketch based</source>
       <translation>skizzenbasiert</translation>
+    </message>
+    <message>
+      <source>Primitives</source>
+      <translation>Grundkörper</translation>
     </message>
     <message>
       <source>Parametric</source>

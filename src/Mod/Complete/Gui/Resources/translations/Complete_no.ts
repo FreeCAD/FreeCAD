@@ -22,22 +22,22 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>Selvtest...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>Kjører en selvtest for å kontrollere om programmet fungerer riktig</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Tegning</translation>
+      <source>Dr&amp;awing</source>
+      <translation>T&amp;egning</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Sk&amp;isser</translation>
+      <source>S&amp;ketch</source>
+      <translation>K&amp;ladd</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -52,12 +52,16 @@
       <translation>Skissebasert</translation>
     </message>
     <message>
+      <source>Primitives</source>
+      <translation>Primitiver</translation>
+    </message>
+    <message>
       <source>Parametric</source>
       <translation>Parametrisk</translation>
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Object appearence</translation>
+      <translation>Objektetutseende</translation>
     </message>
     <message>
       <source>Wire Tools</source>

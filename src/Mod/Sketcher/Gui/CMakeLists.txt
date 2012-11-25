@@ -98,7 +98,12 @@ SET(SketcherGui_Scripts
 
 add_library(SketcherGui SHARED ${SketcherGui_SRCS})
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-fc_copy_script("Mod/Sketcher" "SketcherGui" ${SketcherGui_Scripts})
+
+
+fc_target_copy_resource(SketcherGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher
+    ${CMAKE_BINARY_DIR}/Mod/Sketcher
+    ${SketcherGui_Scripts})
 
 if(MSVC)
     set_target_properties(SketcherGui PROPERTIES SUFFIX ".pyd")

@@ -112,8 +112,10 @@ public:
     boost::signal<void (const Document&)> signalActiveDocument;
     /// signal on saving Document
     boost::signal<void (const Document&)> signalSaveDocument;
+    /// signal on starting to restore Document
+    boost::signal<void (const Document&)> signalStartRestoreDocument;
     /// signal on restoring Document
-    boost::signal<void (const Document&)> signalRestoreDocument;
+    boost::signal<void (const Document&)> signalFinishRestoreDocument;
     //@}
 
 

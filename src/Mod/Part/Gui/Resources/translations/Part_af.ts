@@ -58,7 +58,7 @@
     </message>
     <message>
       <source>Selection:</source>
-      <translation>Keuse:</translation>
+      <translation>Seleksie:</translation>
     </message>
     <message>
       <source>Reverse</source>
@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Onderdeel</translation>
     </message>
@@ -126,13 +126,13 @@
     </message>
     <message>
       <source>Create a box solid</source>
-      <translation>Create a box solid</translation>
+      <translation>Skep 'n soliede boks</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Onderdeel</translation>
     </message>
@@ -142,7 +142,7 @@
     </message>
     <message>
       <source>Create a box solid without dialog</source>
-      <translation>Create a box solid without dialog</translation>
+      <translation>Skep 'n boks soliede sonder dialoog</translation>
     </message>
   </context>
   <context>
@@ -157,7 +157,7 @@
     </message>
     <message>
       <source>Create a box solid without dialog</source>
-      <translation>Create a box solid without dialog</translation>
+      <translation>Skep 'n boks soliede sonder dialoog</translation>
     </message>
   </context>
   <context>
@@ -168,11 +168,26 @@
     </message>
     <message>
       <source>Shape builder...</source>
-      <translation>Shape builder...</translation>
+      <translation>Vormbouer...</translation>
     </message>
     <message>
       <source>Advanced utility to create shapes</source>
-      <translation>Advanced utility to create shapes</translation>
+      <translation>Gevorderde werktuig om vorms te skep</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Onderdeel</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Groef ...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Groef die gekose kante van 'n vorm</translation>
     </message>
   </context>
   <context>
@@ -187,7 +202,7 @@
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
-      <translation>Make an intersection of two shapes</translation>
+      <translation>Maak 'n interseksie van twee vorms</translation>
     </message>
   </context>
   <context>
@@ -203,13 +218,13 @@
     </message>
     <message>
       <source>Create a cone solid</source>
-      <translation>Create a cone solid</translation>
+      <translation>Skep 'n soliede koniese vorm</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Onderdeel</translation>
     </message>
@@ -234,7 +249,7 @@
     </message>
     <message>
       <source>Make a cut of two shapes</source>
-      <translation>Make a cut of two shapes</translation>
+      <translation>Maak 'n snit van twee vorms</translation>
     </message>
   </context>
   <context>
@@ -256,17 +271,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Onderdeel</translation>
     </message>
     <message>
       <source>Export CAD...</source>
-      <translation>Export CAD...</translation>
+      <translation>Voer CAD uit...</translation>
     </message>
     <message>
       <source>Exports to a CAD file</source>
-      <translation>Exports to a CAD file</translation>
+      <translation>Voer uit na 'n CAD-lêer</translation>
     </message>
   </context>
   <context>
@@ -311,7 +326,7 @@
     </message>
     <message>
       <source>Make a union of several shapes</source>
-      <translation>Make a union of several shapes</translation>
+      <translation>Verenig verskeie vorms</translation>
     </message>
   </context>
   <context>
@@ -352,11 +367,15 @@
     </message>
     <message>
       <source>Loft...</source>
-      <translation>Loft...</translation>
+      <translation>Solder...</translation>
+    </message>
+    <message>
+      <source>Utility to loft</source>
+      <translation>Utility to loft</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
-      <translation>Advanced utility to lofts</translation>
+      <translation>Gevorderde werktuig vir solders</translation>
     </message>
   </context>
   <context>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Onderdeel</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Refine shape</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Refine the copy of a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Onderdeel</translation>
     </message>
@@ -468,7 +504,7 @@
     <name>CmdPartSection</name>
     <message>
       <source>Make a section of two shapes</source>
-      <translation>Make a section of two shapes</translation>
+      <translation>Maak 'n seksie uit twee vorms</translation>
     </message>
     <message>
       <source>Part</source>
@@ -476,13 +512,13 @@
     </message>
     <message>
       <source>Section</source>
-      <translation>Snyding</translation>
+      <translation>Interseksie</translation>
     </message>
   </context>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Onderdeel</translation>
     </message>
@@ -503,11 +539,11 @@
     </message>
     <message>
       <source>Create simple copy</source>
-      <translation>Create simple copy</translation>
+      <translation>Skep 'n eenvoudige kopie</translation>
     </message>
     <message>
       <source>Create a simple non-parametric copy</source>
-      <translation>Create a simple non-parametric copy</translation>
+      <translation>Skep 'n eenvoudige nie-parametriese kopie</translation>
     </message>
   </context>
   <context>
@@ -530,7 +566,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a sphere solid</source>
-      <translation>Create a sphere solid</translation>
+      <translation>Skep 'n soliede sfeer</translation>
     </message>
     <message>
       <source>Part</source>
@@ -542,10 +578,27 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Onderdeel</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Utility to sweep</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
-      <translation>Create a torus solid</translation>
+      <translation>Skep 'n soliede torus</translation>
     </message>
     <message>
       <source>Part</source>
@@ -614,7 +667,7 @@
     </message>
     <message>
       <source>Sections</source>
-      <translation>Snitte</translation>
+      <translation>Interseksies</translation>
     </message>
     <message>
       <source>On both sides</source>
@@ -650,7 +703,7 @@
     </message>
     <message>
       <source>Section</source>
-      <translation>Snyding</translation>
+      <translation>Interseksie</translation>
     </message>
     <message>
       <source>Difference</source>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Groef kante</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -741,11 +802,19 @@
     </message>
     <message>
       <source>3D view</source>
-      <translation>3D view</translation>
+      <translation>3D-aansig</translation>
     </message>
     <message>
       <source>Note:This option works for planes only</source>
-      <translation>Note:This option works for planes only</translation>
+      <translation>Neem kennis: Hierdie opsie werk slegs vir vlakke</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Skep soliede</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Taper outward angle</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -817,7 +886,7 @@
       <translation>Geen keuse</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Kante om te rond</translation>
     </message>
@@ -853,7 +922,7 @@ Kies ten minste een kant.</translation>
       <translation>Geen</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Kant %1</translation>
     </message>
@@ -1057,7 +1126,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>x max</source>
-      <translation>x max</translation>
+      <translation>x maks</translation>
     </message>
     <message>
       <source>Y min</source>
@@ -1065,7 +1134,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Y max</source>
-      <translation>Y max</translation>
+      <translation>Y maks</translation>
     </message>
     <message>
       <source>Z min</source>
@@ -1073,7 +1142,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Z max</source>
-      <translation>Z max</translation>
+      <translation>Z maks</translation>
     </message>
     <message>
       <source>X2 min</source>
@@ -1081,43 +1150,43 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>X2 max</source>
-      <translation>X2 max</translation>
+      <translation>X2 maksimum</translation>
     </message>
     <message>
       <source>Z2 min</source>
-      <translation>Z2 min</translation>
+      <translation>Z2 minimum</translation>
     </message>
     <message>
       <source>Z2 max</source>
-      <translation>Z2 max</translation>
+      <translation>Z2 maksimum</translation>
     </message>
     <message>
       <source>Angle - 0 for cyl</source>
-      <translation>Angle - 0 for cyl</translation>
+      <translation>Hoek - 0 vir silinder</translation>
     </message>
     <message>
       <source>Angle0</source>
-      <translation>Angle0</translation>
+      <translation>Hoek0</translation>
     </message>
     <message>
       <source>Angle1</source>
-      <translation>Angle1</translation>
+      <translation>Hoek1</translation>
     </message>
     <message>
       <source>X Axis Value:</source>
-      <translation>X Axis Value:</translation>
+      <translation>X-as Waarde:</translation>
     </message>
     <message>
       <source>Y Axis Value:</source>
-      <translation>Y Axis Value:</translation>
+      <translation>Y-as Waarde:</translation>
     </message>
     <message>
       <source>Z Axis Value:</source>
-      <translation>Z Axis Value:</translation>
+      <translation>Z-as Waarde:</translation>
     </message>
     <message>
       <source>Wedge</source>
-      <translation>Wedge</translation>
+      <translation>Wig</translation>
     </message>
     <message>
       <source>Circle</source>
@@ -1125,7 +1194,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Vertex</source>
-      <translation>Vertex</translation>
+      <translation>Hoekpunt</translation>
     </message>
     <message>
       <source>Position</source>
@@ -1176,6 +1245,18 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <translation>Torus</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Ellipse</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Punt</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Lyn</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -1216,6 +1297,67 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <translation>V parametriese:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Coordinate system:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Right-handed</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Left-handed</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Angle 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Angle 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>From three points</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Major radius:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Minor radius:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>End point</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Start point</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
       <translation>&amp;Skep</translation>
     </message>
@@ -1232,7 +1374,6 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Skep %1</translation>
     </message>
@@ -1241,7 +1382,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <translation>Geen aktiewe dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
       <translation>Styghoek:</translation>
     </message>
@@ -1286,7 +1427,11 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <translation>Vorm</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Select line in 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Kies eers 'n vorm om te roteer.</translation>
     </message>
@@ -1300,7 +1445,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>View smoothing</source>
-      <translation>View smoothing</translation>
+      <translation>Wys gladstryking</translation>
     </message>
     <message>
       <source>Using high-quality normals</source>
@@ -1320,7 +1465,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Tessellation</source>
-      <translation>Mosaïekwerk</translation>
+      <translation>Tessellasie</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1340,7 +1485,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definiëring van die normaallyne per hoekpunt word ook genoem &lt;span style=" font-style:italic;"&gt;Phong-skaduïng&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;en definiëring van die normaallyne per vlak noem ons &lt;/span&gt;Platskaduïng&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Om die normaallyne per hoekpunt te definieer word ook genoem&lt;span style=" font-style:italic;"&gt;Phong-skaduïng&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;terwyl die definiëring van die normale per vlak beskryf word as&lt;/span&gt;platskaduïng&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1367,7 +1512,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Algemeen</translation>
     </message>
@@ -1391,17 +1536,69 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <source>Units for export of STEP/IGES</source>
       <translation>Eenhede vir uitvoer van STEP/IGES</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Model settings</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatically refine model after boolean operation</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatically check model after boolean operation</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Face colors</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Do you really want to cancel?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Location</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Posisie</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D-aansig</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Hoekpunt/Draad</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Solder</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
-      <translation>Too few elements</translation>
+      <translation>Te min elemente</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>At least two vertices, edges or wires are required.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
-      <translation>At least two vertices or wires are required.</translation>
+      <translation>Ten minste twee hoekpunte of drade word benodig.</translation>
     </message>
   </context>
   <context>
@@ -1433,7 +1630,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Base point:</source>
-      <translation>Base point:</translation>
+      <translation>Basispunt:</translation>
     </message>
     <message>
       <source>x</source>
@@ -1454,7 +1651,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
-      <translation>Geen so 'n dokument '%1' nie.</translation>
+      <translation>Dokument bestaan nie '%1'.</translation>
     </message>
   </context>
   <context>
@@ -1466,59 +1663,90 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Select two vertices</source>
-      <translation>Select two vertices</translation>
+      <translation>Kies twee hoekpunte</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
-      <translation>Select three or more edges</translation>
+      <translation>Kies drie of meer kante</translation>
+    </message>
+    <message>
+      <source>Select one or more edges</source>
+      <translation>Select one or more edges</translation>
     </message>
     <message>
       <source>Select two or more faces</source>
-      <translation>Select two or more faces</translation>
+      <translation>Kies twee of meer vlakke</translation>
     </message>
     <message>
       <source>Select only one part object</source>
-      <translation>Select only one part object</translation>
+      <translation>Kies slegs een onderdeel</translation>
     </message>
     <message>
       <source>Select two vertices to create an edge</source>
-      <translation>Select two vertices to create an edge</translation>
+      <translation>Kies twee hoekpunte om 'n kant te skep</translation>
     </message>
     <message>
       <source>Select a closed set of edges</source>
-      <translation>Select a closed set of edges</translation>
+      <translation>Kies 'n geslote stel kante</translation>
     </message>
     <message>
       <source>Select adjacent faces</source>
-      <translation>Select adjacent faces</translation>
+      <translation>Kies aangrensende vlakke</translation>
     </message>
     <message>
       <source>All shape types can be selected</source>
-      <translation>All shape types can be selected</translation>
+      <translation>Alle vormtipes kan gekies word</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Hoekpunt/Draad</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Sweep path</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Select an edge or wire you want to sweep along.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Te min elemente</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>At least one edge or wire is required.</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
-      <translation>Hint</translation>
+      <translation>Wenk</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation>Select Control.</translation>
+      <translation>Kies kontrole.</translation>
     </message>
     <message>
       <source>Control</source>
-      <translation>Control</translation>
+      <translation>Beheer</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation>Dynamic</translation>
+      <translation>Dinamies</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation>Align</translation>
+      <translation>Belyn</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1526,7 +1754,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Special</source>
-      <translation>Special</translation>
+      <translation>Spesiaal</translation>
     </message>
     <message>
       <source>Command</source>
@@ -1534,7 +1762,7 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Stretch</translation>
+      <translation>Strek</translation>
     </message>
     <message>
       <source>Move</source>
@@ -1550,35 +1778,35 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Orient</source>
-      <translation>Orient</translation>
+      <translation>Oriënteer</translation>
     </message>
     <message>
       <source>Match</source>
-      <translation>Match</translation>
+      <translation>Pas</translation>
     </message>
     <message>
       <source>Surround</source>
-      <translation>Surround</translation>
+      <translation>Omring</translation>
     </message>
     <message>
       <source>dummy</source>
-      <translation>dummy</translation>
+      <translation>Kopie</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation>X Axis</translation>
+      <translation>X-as</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation>Y Axis</translation>
+      <translation>Y-as</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation>Z Axis</translation>
+      <translation>Z-as</translation>
     </message>
     <message>
       <source>Increment</source>
-      <translation>Increment</translation>
+      <translation>Inkrement</translation>
     </message>
     <message>
       <source>.125</source>
@@ -1602,35 +1830,35 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
-      <translation>Drag arrows to stretch box by increment</translation>
+      <translation>Trek pyle om boks te strek met inkrement</translation>
     </message>
     <message>
       <source>Drag arrows to move box by increment</source>
-      <translation>Drag arrows to move box by increment</translation>
+      <translation>Trek pyle om boks te skuif met inkrement</translation>
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation>Not implemented yet</translation>
+      <translation>Nog nie toegepas nie</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
-      <translation>Drag arrows to offset checked axes by increment</translation>
+      <translation>Trek pyle om gekose asse te skuif met inkrement</translation>
     </message>
     <message>
       <source>Select dragger for stretch by align</source>
-      <translation>Select dragger for stretch by align</translation>
+      <translation>Kies trekker vir strek met belyning</translation>
     </message>
     <message>
       <source>Select dragger for move by align</source>
-      <translation>Select dragger for move by align</translation>
+      <translation>Kies trekker vir skuif met belyning</translation>
     </message>
     <message>
       <source>Select dragger for stretch by value</source>
-      <translation>Select dragger for stretch by value</translation>
+      <translation>Kies trekker vir strek met waarde</translation>
     </message>
     <message>
       <source>Select dragger for move by value</source>
-      <translation>Select dragger for move by value</translation>
+      <translation>Kies trekker vir skuif met waarde</translation>
     </message>
     <message>
       <source>1.0</source>
@@ -1638,15 +1866,15 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Enter Value</source>
-      <translation>Enter Value</translation>
+      <translation>Voer waarde in</translation>
     </message>
     <message>
       <source>Select box to match</source>
-      <translation>Select box to match</translation>
+      <translation>Kies 'n passende boks</translation>
     </message>
     <message>
       <source>Select a point</source>
-      <translation>Select a point</translation>
+      <translation>Kies 'n punt</translation>
     </message>
     <message>
       <source>0.0</source>
@@ -1654,11 +1882,11 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Select dragger to align</source>
-      <translation>Select dragger to align</translation>
+      <translation>Kies trekker om te belyn</translation>
     </message>
     <message>
       <source>Select dragger to modify</source>
-      <translation>Select dragger to modify</translation>
+      <translation>Kies trekker om te wysig</translation>
     </message>
   </context>
   <context>
@@ -1666,19 +1894,19 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="+14"/>
       <source>Set color per face</source>
-      <translation>Set color per face</translation>
+      <translation>Stel die kleur per vlak</translation>
     </message>
     <message>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Click on the faces in the 3d view to select them.</translation>
+      <translation>Klik op die vlakke in die 3D-vertoning om hulle te kies.</translation>
     </message>
     <message>
       <source>Faces:</source>
-      <translation>Faces:</translation>
+      <translation>Vlakke:</translation>
     </message>
     <message>
       <source>Set to default</source>
-      <translation>Set to default</translation>
+      <translation>Stel na versuimeienskap</translation>
     </message>
   </context>
   <context>
@@ -1686,11 +1914,11 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="+14"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation>Solder</translation>
     </message>
     <message>
       <source>Vertex/Wire</source>
-      <translation>Vertex/Wire</translation>
+      <translation>Hoekpunt/Draad</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -1726,11 +1954,11 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>Create solid</source>
-      <translation>Create solid</translation>
+      <translation>Skep soliede</translation>
     </message>
     <message>
       <source>Ruled surface</source>
-      <translation>Ruled surface</translation>
+      <translation>Reëloppervlak</translation>
     </message>
   </context>
   <context>
@@ -1738,27 +1966,27 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
       <source>Create shape</source>
-      <translation>Create shape</translation>
+      <translation>Skep vorm</translation>
     </message>
     <message>
       <source>Edge from vertices</source>
-      <translation>Edge from vertices</translation>
+      <translation>Kant van hoekpunte</translation>
     </message>
     <message>
       <source>Face from edges</source>
-      <translation>Face from edges</translation>
+      <translation>Vlak van kante</translation>
     </message>
     <message>
       <source>Planar</source>
-      <translation>Planar</translation>
+      <translation>Vlakgebaseerd</translation>
     </message>
     <message>
       <source>Shell from faces</source>
-      <translation>Shell from faces</translation>
+      <translation>Soliede van vlakke</translation>
     </message>
     <message>
       <source>Solid from shell</source>
-      <translation>Solid from shell</translation>
+      <translation>Soliede van 'n skil</translation>
     </message>
     <message>
       <source>Create</source>
@@ -1766,13 +1994,35 @@ Kies eers 'n geldige vorm in die vallys.</translation>
     </message>
     <message>
       <source>All faces</source>
-      <translation>All faces</translation>
+      <translation>Alle vlakke</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Skep soliede</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Verkeerde keuse</translation>
     </message>
@@ -1810,21 +2060,25 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <translation>Gee toleransvlak vir naaivorm:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Wysig spieëlvlak</translation>
     </message>
     <message>
-      <source>Transform</source>
-      <translation>Transformeer</translation>
+      <source>Edit chamfer edges</source>
+      <translation>Edit chamfer edges</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <source>Transform</source>
+      <translation>Omskep</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Onderdeelontwerp</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Kies twee of meer vorms, asseblief.</translation>
     </message>
@@ -1833,14 +2087,14 @@ Kies eers 'n geldige vorm in die vallys.</translation>
       <translation>Jy moet óf twee kante óf twee drade te kies.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>Wysig snitkante</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
-      <translation>Set colors...</translation>
+      <translation>Kies kleure...</translation>
     </message>
   </context>
   <context>

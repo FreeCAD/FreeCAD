@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Available:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Selected:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Legg til</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Fjern</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Flytt opp</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Flytt ned</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Movable object</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Fixed object</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -159,6 +197,10 @@
     <message>
       <source>License...</source>
       <translation>License...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Copy to clipboard</translation>
     </message>
   </context>
   <context>
@@ -709,10 +751,6 @@ Please define another shortcut.</source>
       <translation>Visningsmodus</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Visningsmodus:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Plottmodus:</translation>
     </message>
@@ -735,6 +773,10 @@ Please define another shortcut.</source>
     <message>
       <source>Color plot:</source>
       <translation>Color plot:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -1484,6 +1526,14 @@ Vennligst angi en annen mappe.</translation>
       <source>Invert zoom</source>
       <translation>Invert zoom</translation>
     </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zoom at cursor</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Zoom step</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -1725,6 +1775,10 @@ Vennligst angi en annen mappe.</translation>
       <source>Items</source>
       <translation>Elementer</translation>
     </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Current line highlight</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
@@ -1959,6 +2013,14 @@ Vennligst angi en annen mappe.</translation>
       <source>Macro path</source>
       <translation>Makrobane</translation>
     </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>General macro settings</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Run macros in local environment</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -2050,20 +2112,48 @@ Vennligst angi en annen mappe.</translation>
       <translation>Fully constrained geometry</translation>
     </message>
     <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>The color of construction geometry in editmode</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>The color of fully constrained geometry in editmode</translation>
-    </message>
-    <message>
       <source>The color of vertices being edited</source>
       <translation>The color of vertices being edited</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
       <translation>The color of edges being edited</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>The color of construction geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>The color of fully constrained geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Cursor text color</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Default shape color</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>The default color for new shapes</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Default line width and color</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>The default line color for new shapes</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>The default line thickness for new shapes</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2127,8 +2217,40 @@ Vennligst angi en annen mappe.</translation>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Canceled.</translation>
+      <source>Download</source>
+      <translation>Download</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Avbryt</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Lukk</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>There already exists a file called %1 in the current directory. Overwrite?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Unable to save the file %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Downloading %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Download canceled.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Nedlasting mislyktes: %1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Downloaded %1 to current directory.</translation>
     </message>
   </context>
   <context>
@@ -2163,6 +2285,13 @@ Vennligst angi en annen mappe.</translation>
     <message>
       <source>OK</source>
       <translation>OK</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Copyright</translation>
     </message>
   </context>
   <context>
@@ -2853,6 +2982,25 @@ Vil du lagre endringene?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Retning:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2880,6 +3028,91 @@ Vil du lagre endringene?</translation>
     <message>
       <source>Close All</source>
       <translation>Lukk alle</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Manual alignment</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>The alignment is already in progress.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Alignment[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Please, select at least one point in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Please, select at least %1 points in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Please pick points in the left and right view</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>The alignment has finished</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>The alignment has been canceled</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the left view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the right view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Try to align group of views</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>The alignment failed.
+How do you want to proceed?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Retry</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Ignorer</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Abort</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Point picked at (%1,%2,%3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>No point was picked</translation>
     </message>
   </context>
   <context>
@@ -3026,6 +3259,10 @@ Do you want to exit without saving your data?</source>
       <source>Select All</source>
       <translation>Merk alle</translation>
     </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Clear console</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -3169,10 +3406,6 @@ Vil du angi en annen mappe?</translation>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-      <source>Display mode:</source>
-      <translation>Visningsmodus:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Plottmodus:</translation>
     </message>
@@ -3191,6 +3424,10 @@ Vil du angi en annen mappe?</translation>
     <message>
       <source>Appearance</source>
       <translation>Utseende</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -3216,10 +3453,22 @@ Vil du angi en annen mappe?</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>Engelsk</translation>
+      <source>Press left mouse button</source>
+      <translation>Trykk venstre museknapp</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Press SHIFT button</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Press ALT button</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Press PgUp/PgDown button</translation>
     </message>
   </context>
   <context>
@@ -3473,14 +3722,6 @@ Vil du angi en annen mappe?</translation>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>En generell feil oppstod under lasting arbeidsbordet</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>Fant ikke filen</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Kan ikke åpne filen %1</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -3783,6 +4024,17 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvisning</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Box selection</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
@@ -3840,6 +4092,21 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Activate previous window</source>
       <translation>Aktiver forrige vindu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Rediger</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Alignment...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Align the selected objects</translation>
     </message>
   </context>
   <context>
@@ -3956,21 +4223,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Cut out</source>
       <translation>Klipp ut</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Rediger</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Dupliser valg</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Flytt duplikater av de valgte objektene til aktivt dokument</translation>
     </message>
   </context>
   <context>
@@ -4120,6 +4372,40 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Rediger</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Dupliser valg</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Flytt duplikater av de valgte objektene til aktivt dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Rediger</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Toggle &amp;Edit mode</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Toggles the selected object's edit mode</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Enters or leaves the selected object's edit mode</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdExport</name>
     <message>
       <source>File</source>
@@ -4134,8 +4420,27 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Eksporter et objekt i aktivt dokumentet</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Støttede formater</translation>
+      <source>No selection</source>
+      <translation>Ingen valg</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Please select first the objects you want to export.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Verktøy</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Dependency graph...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Show the dependency graph of the objects in the active document</translation>
     </message>
   </context>
   <context>
@@ -4310,12 +4615,12 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Verktøy</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Mål avstand</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Måler avstanden mellom to merkede objekter</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mål avstand</translation>
     </message>
   </context>
   <context>
@@ -4365,21 +4670,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Show help to the application</source>
       <translation>Vis hjelp for programmet</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Hjelp</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Python-manualer</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Vis Python-dokumentasjon</translation>
     </message>
   </context>
   <context>
@@ -5197,6 +5487,36 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvisning</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Rotate Left</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvisning</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Rotate Right</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Rotate the view by 90Â° clockwise</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -5315,8 +5635,8 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Standardvisning</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Visningsmodus</translation>
+      <source>Document window</source>
+      <translation>Document window</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5377,6 +5697,35 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Wireframe mode</source>
       <translation>Wireframe mode</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Graphviz not found</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Graphviz installation path</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Dependency graph</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Graphviz failed</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Graphviz failed to create an image file</translation>
     </message>
   </context>
   <context>

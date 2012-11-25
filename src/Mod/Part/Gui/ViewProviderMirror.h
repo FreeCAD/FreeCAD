@@ -64,6 +64,7 @@ public:
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
     std::vector<App::DocumentObject*> claimChildren() const;
+    bool onDelete(const std::vector<std::string> &);
 
 protected:
     bool setEdit(int ModNum);
@@ -80,6 +81,61 @@ public:
     ViewProviderChamfer();
     /// destructor
     virtual ~ViewProviderChamfer();
+    /** @name Edit methods */
+    //@{
+    void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren() const;
+    bool onDelete(const std::vector<std::string> &);
+
+protected:
+    bool setEdit(int ModNum);
+    void unsetEdit(int ModNum);
+    //@}
+};
+
+class ViewProviderRevolution : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderRevolution);
+
+public:
+    /// constructor
+    ViewProviderRevolution();
+    /// destructor
+    virtual ~ViewProviderRevolution();
+
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+    bool onDelete(const std::vector<std::string> &);
+};
+
+class ViewProviderLoft : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderLoft);
+
+public:
+    /// constructor
+    ViewProviderLoft();
+    /// destructor
+    virtual ~ViewProviderLoft();
+
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+    bool onDelete(const std::vector<std::string> &);
+};
+
+class ViewProviderSweep : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderSweep);
+
+public:
+    /// constructor
+    ViewProviderSweep();
+    /// destructor
+    virtual ~ViewProviderSweep();
+
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+    bool onDelete(const std::vector<std::string> &);
 };
 
 } // namespace PartGui

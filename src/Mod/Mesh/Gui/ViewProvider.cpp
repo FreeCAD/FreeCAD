@@ -27,6 +27,8 @@
 # include <QMenu>
 # include <Inventor/SbBox2s.h>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoToVRML2Action.h>
+# include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoBaseColor.h>
@@ -44,6 +46,7 @@
 # include <Inventor/nodes/SoPolygonOffset.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -63,6 +66,7 @@
 #include <Gui/SoFCOffscreenRenderer.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <Gui/SoFCDB.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/Utilities.h>
@@ -77,9 +81,12 @@
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/Core/MeshIO.h>
 #include <Mod/Mesh/App/Core/Triangulation.h>
+#include <Mod/Mesh/App/Core/Trim.h>
+#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 #include <Mod/Mesh/App/Core/Visitor.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <zipios++/gzipoutputstream.h>
 
 #include "ViewProvider.h"
 #include "SoFCIndexedFaceSet.h"
@@ -482,6 +489,69 @@ std::vector<std::string> ViewProviderMesh::getDisplayModes(void) const
     return StrList;
 }
 
+bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Material& mat, bool binary) const
+{
+    SoCoordinate3* coords = new SoCoordinate3();
+    SoIndexedFaceSet* faces = new SoIndexedFaceSet();
+    ViewProviderMeshBuilder builder;
+    builder.createMesh(&static_cast<Mesh::Feature*>(pcObject)->Mesh, coords, faces);
+
+    SoMaterialBinding* binding = new SoMaterialBinding;
+    SoMaterial* material = new SoMaterial;
+
+    if (mat.diffuseColor.size() == coords->point.getNum()) {
+        binding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+    }
+    else if (mat.diffuseColor.size() == faces->coordIndex.getNum()/4) {
+        binding->value = SoMaterialBinding::PER_FACE_INDEXED;
+    }
+
+    if (mat.diffuseColor.size() > 1) {
+        material->diffuseColor.setNum(mat.diffuseColor.size());
+        SbColor* colors = material->diffuseColor.startEditing();
+        for (unsigned int i=0; i<mat.diffuseColor.size(); i++)
+            colors[i].setValue(mat.diffuseColor[i].r,mat.diffuseColor[i].g,mat.diffuseColor[i].b);
+        material->diffuseColor.finishEditing();
+    }
+
+    SoGroup* group = new SoGroup();
+    group->addChild(material);
+    group->addChild(binding);
+    group->addChild(new SoTransform());
+    group->addChild(coords);
+    group->addChild(faces);
+
+    SoToVRML2Action tovrml2;
+    group->ref();
+    tovrml2.apply(group);
+    group->unref();
+    SoVRMLGroup *vrmlRoot = tovrml2.getVRML2SceneGraph();
+    vrmlRoot->ref();
+    std::string buffer = Gui::SoFCDB::writeNodesToString(vrmlRoot);
+    vrmlRoot->unref(); // release the memory as soon as possible
+
+    Base::FileInfo fi(filename);
+    if (binary) {
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
+        zipios::GZIPOutputStream gzip(str);
+        if (gzip) {
+            gzip << buffer;
+            gzip.close();
+            return true;
+        }
+    }
+    else {
+        Base::ofstream str(fi, std::ios::out);
+        if (str) {
+            str << buffer;
+            str.close();
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool ViewProviderMesh::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
@@ -607,6 +677,41 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
             if (that->getEditingMode() > -1) {
                 that->finishEditing();
                 that->cutMesh(clPoly, *view, clip_inner);
+            }
+        }
+
+        Gui::Application::Instance->activeDocument()->commitCommand();
+
+        view->render();
+    }
+}
+
+void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
+{
+    // show the wait cursor because this could take quite some time
+    Gui::WaitCursor wc;
+
+    // When this callback function is invoked we must in either case leave the edit mode
+    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    view->setEditing(false);
+    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), trimMeshCallback,ud);
+    n->setHandled();
+
+    SbBool clip_inner;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    if (clPoly.size() < 3)
+        return;
+    if (clPoly.front() != clPoly.back())
+        clPoly.push_back(clPoly.front());
+
+    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    if (!views.empty()) {
+        Gui::Application::Instance->activeDocument()->openCommand("Cut");
+        for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
+            ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
+            if (that->getEditingMode() > -1) {
+                that->finishEditing();
+                that->trimMesh(clPoly, *view, clip_inner);
             }
         }
 
@@ -1008,12 +1113,65 @@ void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked,
     // Get the facet indices inside the tool mesh
     std::vector<unsigned long> indices;
     getFacetsFromPolygon(picked, Viewer, inner, indices);
+    removeFacets(indices);
+}
 
-    // Get the attached mesh property
-    Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon, 
+                               Gui::View3DInventorViewer& viewer, SbBool inner)
+{
+    // get the drawing plane
+    SbViewVolume vol = viewer.getCamera()->getViewVolume();
+    SbPlane drawPlane = vol.getPlane(viewer.getCamera()->focalDistance.getValue());
 
+    std::vector<unsigned long> indices;
+    Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.startEditing();
+    MeshCore::MeshFacetGrid meshGrid(mesh->getKernel());
+    MeshCore::MeshAlgorithm meshAlg(mesh->getKernel());
+
+#if 0
+    for (std::vector<SbVec2f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it) {
+        // the following element
+        std::vector<SbVec2f>::const_iterator nt = it + 1;
+        if (nt == polygon.end())
+            break;
+        else if (*it == *nt)
+            continue; // two adjacent vertices are equal
+
+        SbVec3f p1,p2;
+        SbLine l1, l2;
+        vol.projectPointToLine(*it, l1);
+        drawPlane.intersect(l1, p1);
+        vol.projectPointToLine(*nt, l2);
+        drawPlane.intersect(l2, p2);
+
+        SbPlane plane(l1.getPosition(), l2.getPosition(),
+                      l1.getPosition()+l1.getDirection());
+        const SbVec3f& n = plane.getNormal();
+        float d = plane.getDistanceFromOrigin();
+        meshAlg.GetFacetsFromPlane(meshGrid,
+            Base::Vector3f(n[0],n[1],n[2]), d, 
+            Base::Vector3f(p1[0],p1[1],p1[2]),
+            Base::Vector3f(p2[0],p2[1],p2[2]), indices);
+    }
+#endif
+
+    Gui::ViewVolumeProjection proj(vol);
+    Base::Polygon2D polygon2d;
+    for (std::vector<SbVec2f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
+        polygon2d.Add(Base::Vector2D((*it)[0],(*it)[1]));
+    MeshCore::MeshTrimming trim(mesh->getKernel(), &proj, polygon2d);
+    std::vector<unsigned long> check;
+    std::vector<MeshCore::MeshGeomFacet> triangle;
+    trim.SetInnerOrOuter(inner ? MeshCore::MeshTrimming::INNER : MeshCore::MeshTrimming::OUTER);
+    trim.CheckFacets(meshGrid, check);
+    trim.TrimFacets(check, triangle);
+    mesh->deleteFacets(check);
+    if (!triangle.empty()) {
+        mesh->getKernel().AddFacets(triangle);
+    }
     //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
-    meshProp.deleteFacetIndices(indices);
+    //mesh->deleteFacets(indices);
+    static_cast<Mesh::Feature*>(pcObject)->Mesh.finishEditing();
     pcObject->purgeTouched();
 }
 
@@ -1041,7 +1199,7 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh, const Bas
 
     // Remove the facets from the mesh and create a new one
     Mesh::MeshObject* kernel = meshProp.getValue().meshFromSegment(indices);
-    meshProp.deleteFacetIndices(indices);
+    removeFacets(indices);
     Mesh::Feature* splitMesh = static_cast<Mesh::Feature*>(App::GetApplication().getActiveDocument()
         ->addObject("Mesh::Feature",pcObject->getNameInDocument()));
     // Note: deletes also kernel
@@ -1071,7 +1229,9 @@ void ViewProviderMesh::segmentMesh(const MeshCore::MeshKernel& toolMesh, const B
         indices = complementary;
     }
 
-    meshProp.createSegment(indices);
+    Mesh::MeshObject* kernel = meshProp.startEditing();
+    kernel->addSegment(indices);
+    meshProp.finishEditing();
     static_cast<Mesh::Feature*>(pcObject)->purgeTouched();
 }
 
@@ -1305,8 +1465,21 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
  
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
-    fea->Mesh.append(newFacets, newPoints);
+    Mesh::MeshObject* kernel = fea->Mesh.startEditing();
+    kernel->addFacets(newFacets, newPoints);
+    fea->Mesh.finishEditing();
     Gui::Application::Instance->activeDocument()->commitCommand();
+}
+
+void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
+{
+    // Get the attached mesh property
+    Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+    Mesh::MeshObject* kernel = meshProp.startEditing();
+    //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
+    kernel->deleteFacets(facets);
+    meshProp.finishEditing();
+    pcObject->purgeTouched();
 }
 
 void ViewProviderMesh::selectFacet(unsigned long facet)
@@ -1389,7 +1562,10 @@ void ViewProviderMesh::setSelection(const std::vector<unsigned long>& indices)
     rMesh.addFacetsToSelection(indices);
 
     // Colorize the selection
-    highlightSelection();
+    if (indices.empty())
+        unhighlightSelection();
+    else
+        highlightSelection();
 }
 
 void ViewProviderMesh::addSelection(const std::vector<unsigned long>& indices)
@@ -1454,7 +1630,7 @@ void ViewProviderMesh::highlightSelection()
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     rMesh.getFacetsFromSelection(selection);
     if (selection.empty()) {
-        // If no faces are selected then simply return even without
+        // If no faces are selected then simply return even
         // without calling unhighlightSelection()
         return;
     }

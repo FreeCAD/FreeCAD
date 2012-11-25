@@ -4,13 +4,13 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Szkicownik</translation>
     </message>
     <message>
       <source>Constrain angle</source>
-      <translation>Constrain angle</translation>
+      <translation>Ustal więz kąta</translation>
     </message>
     <message>
       <source>Fix the angle of a line or the angle between two lines</source>
@@ -25,11 +25,11 @@
     </message>
     <message>
       <source>Constrain coincident</source>
-      <translation>Ograniczenie przez pokrywanie</translation>
+      <translation>Więz nachodzenia</translation>
     </message>
     <message>
       <source>Create a coincident constraint on the selected item</source>
-      <translation>Utwórz ograniczenie przez pokrywanie na wybranym elemencie</translation>
+      <translation>Utwórz więz przez nachodzenie na wybranym elemencie</translation>
     </message>
   </context>
   <context>
@@ -40,7 +40,7 @@
     </message>
     <message>
       <source>Constrain distance</source>
-      <translation>Ograniczenie odległości</translation>
+      <translation>Więz odległości</translation>
     </message>
     <message>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
@@ -55,11 +55,15 @@
     </message>
     <message>
       <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <translation>Powiąż odległość poziomą</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Fix the horizontal distance between two points or line ends</translation>
+      <translation>Ustal poziomą odległość między dwoma punktami lub końcami linii</translation>
     </message>
   </context>
   <context>
@@ -69,12 +73,16 @@
       <translation>Szkicownik</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <translation>Powiąż odległość poziomą</translation>
     </message>
     <message>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Fix the vertical distance between two points or line ends</translation>
+      <translation>Ustal pionową odległość między dwoma punktami lub końcami linii</translation>
     </message>
   </context>
   <context>
@@ -85,11 +93,11 @@
     </message>
     <message>
       <source>Constrain equal</source>
-      <translation>Constrain equal</translation>
+      <translation>Ustal więz równości</translation>
     </message>
     <message>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Create an equality constraint between two lines or between circles and arcs</translation>
+      <translation>Utworzyć ograniczenie równości między dwie linie, okręgi lub łuki</translation>
     </message>
   </context>
   <context>
@@ -100,11 +108,11 @@
     </message>
     <message>
       <source>Constrain horizontally</source>
-      <translation>Ograniczenie poziome</translation>
+      <translation>Ustal więz poziomy</translation>
     </message>
     <message>
       <source>Create a horizontal constraint on the selected item</source>
-      <translation>Tworzenie poziomego ograniczenia dla wybranego elementu</translation>
+      <translation>Utwórz więz poziomy na wybranym elemencie</translation>
     </message>
   </context>
   <context>
@@ -115,11 +123,11 @@
     </message>
     <message>
       <source>Constrain lock</source>
-      <translation>Blokada przemieszczenia</translation>
+      <translation>utwierdzenie</translation>
     </message>
     <message>
       <source>Create a lock constraint on the selected item</source>
-      <translation>Create a lock constraint on the selected item</translation>
+      <translation>Utwórz więz położenia wybranego elementu</translation>
     </message>
   </context>
   <context>
@@ -130,11 +138,11 @@
     </message>
     <message>
       <source>Constrain parallel</source>
-      <translation>Ograniczenie równolegle</translation>
+      <translation>Ustal więz równoległości</translation>
     </message>
     <message>
       <source>Create a parallel constraint between two lines</source>
-      <translation>Utwórz ograniczenie równoległe dwóch linii</translation>
+      <translation>Utwórz więz równoległości pomiędzy dwoma liniami</translation>
     </message>
   </context>
   <context>
@@ -145,11 +153,11 @@
     </message>
     <message>
       <source>Constrain perpendicular</source>
-      <translation>Constrain perpendicular</translation>
+      <translation>Ustal więz prostopadłości</translation>
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
-      <translation>Create a Perpendicular constraint between two lines</translation>
+      <translation>Utwórz więz prostopadłości między dwiema liniami</translation>
     </message>
   </context>
   <context>
@@ -160,7 +168,7 @@
     </message>
     <message>
       <source>Constrain point onto object</source>
-      <translation>Constrain point onto object</translation>
+      <translation>Ustal więz punkt na obiekcie</translation>
     </message>
     <message>
       <source>Fix a point onto an object</source>
@@ -175,11 +183,11 @@
     </message>
     <message>
       <source>Constrain radius</source>
-      <translation>Constrain radius</translation>
+      <translation>Ustal więz wymiaru promienia</translation>
     </message>
     <message>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Fix the radius of a circle or an arc</translation>
+      <translation>Ustalenie promienia okręgu lub łuku</translation>
     </message>
   </context>
   <context>
@@ -190,11 +198,11 @@
     </message>
     <message>
       <source>Constrain symmetrical</source>
-      <translation>Constrain symmetrical</translation>
+      <translation>Wiązanie symetryczności</translation>
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
-      <translation>Create an symmetry constraint between two points with respect to a line</translation>
+      <translation>Utwórz wiązanie symetrii między dwoma punktami względem linii</translation>
     </message>
   </context>
   <context>
@@ -205,7 +213,7 @@
     </message>
     <message>
       <source>Constrain tangent</source>
-      <translation>Constrain tangent</translation>
+      <translation>Wiązanie styczności</translation>
     </message>
     <message>
       <source>Create a tangent constraint between two entities</source>
@@ -220,17 +228,17 @@
     </message>
     <message>
       <source>Constrain vertically</source>
-      <translation>Ograniczenie pionowe</translation>
+      <translation>Ustal więz pionowy</translation>
     </message>
     <message>
       <source>Create a vertical constraint on the selected item</source>
-      <translation>Utwórz ograniczenie pionowe na wybranym elemencie</translation>
+      <translation>Utwórz więz pionowy na wybranym elemencie</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Szkicownik</translation>
     </message>
@@ -266,11 +274,11 @@
     </message>
     <message>
       <source>Create draft line</source>
-      <translation>Create draft line</translation>
+      <translation>Utwórz linię projektu</translation>
     </message>
     <message>
       <source>Create a draft line in the sketch</source>
-      <translation>Create a draft line in the sketch</translation>
+      <translation>Utworzyć linię projektu w szkicu</translation>
     </message>
   </context>
   <context>
@@ -284,8 +292,12 @@
       <translation>Utwórz zaokrąglenie</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Create a fillet between to lines or at a coincident point</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Stwórz zaokrąglenie między liniami albo wokół punktu</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,15 +376,30 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Szkicownik</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>Geometria zewnętrzna</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Utwórz krawędź związaną z zewnętrzną geometrią</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Szkicownik</translation>
     </message>
     <message>
       <source>Leave sketch</source>
-      <translation>Porzuć szkic</translation>
+      <translation>Opuść szkic</translation>
     </message>
     <message>
       <source>Close the editing of the sketch</source>
@@ -387,7 +414,7 @@
     </message>
     <message>
       <source>Map sketch to face...</source>
-      <translation>Map sketch to face...</translation>
+      <translation>Zmapuj szkic na ścianę...</translation>
     </message>
     <message>
       <source>Map a sketch to a face</source>
@@ -406,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Create a new or edit the selected sketch</translation>
+      <translation>Utwórz nowy lub edytuj wybrany szkic</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -437,7 +464,7 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Toggle construction line</translation>
+      <translation>Przełącz linię konstrukcyjną</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
@@ -447,7 +474,7 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Szkicownik</translation>
     </message>
@@ -456,14 +483,18 @@
       <translation>Przytnij krawędź</translation>
     </message>
     <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Przytnij krawędź w odniesieniu do wybranej pozycji</translation>
+    </message>
+    <message>
       <source>Trims an edge with respect to the picked position</source>
-      <translation>Trims an edge with respect to the picked position</translation>
+      <translation>Przytnij krawędź wodniesioniu do wybranej pozycji</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Szkicownik</translation>
     </message>
@@ -496,13 +527,13 @@
       <translation>Wybierz krawędź(ie) na szkicu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
       <translation>Wybierz krawędź ze szkicu.</translation>
     </message>
     <message>
       <source>Double constraint</source>
-      <translation>Podwójne ograniczenie</translation>
+      <translation>Zdublowany więz</translation>
     </message>
     <message>
       <source>The selected edge has already a horizontal constraint!</source>
@@ -513,8 +544,12 @@
       <translation>Niemożliwe ograniczenie</translation>
     </message>
     <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Nie można dodać ograniczenia pomiędzy zewnętrznymi geometriami!</translation>
+    </message>
+    <message>
       <source>Only sketch and its support is allowed to select</source>
-      <translation>Only sketch and its support is allowed to select</translation>
+      <translation>Tylko szkic i jego baza są dozwolone do zaznaczenia</translation>
     </message>
     <message>
       <source>One of the selected has to be on the sketch</source>
@@ -529,12 +564,20 @@
       <translation>Wybrana krawędź jest już pionowa!</translation>
     </message>
     <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>Wybrane detale nie mogą zaakceptować ograniczenia poziomego!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>Wybrane detale nie mogą zaakceptować ograniczenia pionowego!</translation>
+    </message>
+    <message>
       <source>Select entities from the sketch.</source>
       <translation>Zaznacz obiekty na szkicu</translation>
     </message>
     <message>
       <source>Select exactly one entity from the sketch.</source>
-      <translation>Select exactly one entity from the sketch.</translation>
+      <translation>Wybierz dokładnie jeden podmiot ze szkicu.</translation>
     </message>
     <message>
       <source>Select vertexes from the sketch.</source>
@@ -546,7 +589,11 @@
     </message>
     <message>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Select exactly one line or one point and one line or two points from the sketch.</translation>
+      <translation>Wybierz dokładnie jedną linię lub jeden punkt i jedną linię lub dwa punkty ze szkicu.</translation>
+    </message>
+    <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Nie można dodać ograniczenia długości dla zewnętrznych geometrii!</translation>
     </message>
     <message>
       <source>Select exactly one point and one object from the sketch.</source>
@@ -554,39 +601,87 @@
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Select exactly one line or up to two points from the sketch.</translation>
+      <translation>Wybierz dokładnie jedną linię lub do dwa punkty ze szkicu.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Nie można dodać poziomego ograniczenia długości dla zewnętrznych geometrii!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Nie można dodać pionowego ograniczenia długości dla zewnętrznych geometrii!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
-      <translation>Select two or more lines from the sketch.</translation>
+      <translation>Wybierz dwie lub więcej linii ze szkicu.</translation>
     </message>
     <message>
       <source>Select at least two lines from the sketch.</source>
-      <translation>Select at least two lines from the sketch.</translation>
+      <translation>Wybierz co najmniej dwie linie ze szkicu.</translation>
     </message>
     <message>
       <source>Select a valid line</source>
-      <translation>Select a valid line</translation>
+      <translation>Wybierz prawidłową linię</translation>
     </message>
     <message>
       <source>The selected edge is not a valid line</source>
-      <translation>The selected edge is not a valid line</translation>
+      <translation>Wybrana krawędź nie jest prawidłową linią</translation>
+    </message>
+    <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>Zaznaczone punkty powinny być końcem łuku i linii.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>Zaznaczone punkty powinny być końcem łuku lub linii.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>Zaznaczona krawędź powinna być łukiem, linią lub okręgiem.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>Jedna z zaznaczonych krawędzi powinna być linią.</translation>
     </message>
     <message>
       <source>Select exactly one arc or circle from the sketch.</source>
-      <translation>Select exactly one arc or circle from the sketch.</translation>
+      <translation>Wybierz dokładnie jeden łuk lub okrąg ze szkicu.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Wybierz jeden lub dwa wiersze ze szkicu.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Nie można dodać ograniczenia kąta dla zewnętrznych geometrii!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
-      <translation>Select exactly one or two lines from the sketch.</translation>
+      <translation>Wybierz dokładnie jedną lub dwie linie ze szkicu.</translation>
     </message>
     <message>
       <source>Select two edges from the sketch.</source>
-      <translation>Select two edges from the sketch.</translation>
+      <translation>Zaznacz dwie krawędzie ze szkicu.</translation>
     </message>
     <message>
       <source>Select atleast two lines from the sketch.</source>
-      <translation>Select atleast two lines from the sketch.</translation>
+      <translation>Zaznacz przynajmniej dwie linie ze szkicu.</translation>
+    </message>
+    <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Zaznacz dwa lub więcej zgodnych brzegów</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Szkic osi nie możne być użyty w warunku równości</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Zaznacz dwi lub więcej krawędzi podobnego typu</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Nie można dodać ograniczenia pomiędzy zewnętrznymi geometriami!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -618,14 +713,14 @@
     </message>
     <message>
       <source>Select two entities from the sketch.</source>
-      <translation>Select two entities from the sketch.</translation>
+      <translation>Wybierz dwa podmioty ze szkicu.</translation>
     </message>
     <message>
       <source>Select exactly two entities from the sketch.</source>
       <translation>Zaznacz dokładnie dwa elementy na szkicu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>Edycja szkicu</translation>
     </message>
@@ -638,7 +733,7 @@
       <translation>Czy chcesz zamknąć to okno dialogowe?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
       <translation>Wybrano kilka podelementów</translation>
     </message>
@@ -656,30 +751,29 @@
     </message>
     <message>
       <source>No planar support</source>
-      <translation>No planar support</translation>
+      <translation>Brak płaskiej powierzchni</translation>
     </message>
     <message>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>You need a planar face as support for a sketch!</translation>
+      <translation>Musisz wybrać ścianę planarną jako płaszczyznę szkicu!</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="+72"/>
       <source>Distance constraint</source>
-      <translation>Distance constraint</translation>
+      <translation>Wiązanie odległości</translation>
     </message>
     <message>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Not allowed to edit the datum because the sketch contains conflicting constraints</translation>
+      <translation>Nie można edytować odniesienia, ponieważ schemat zawiera ograniczenia powodujące konflikt</translation>
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Dimensional constraint</translation>
+      <translation>Wiązanie wymiaru</translation>
     </message>
   </context>
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
       <translation>Wybierz orientację</translation>
     </message>
@@ -693,19 +787,19 @@
     </message>
     <message>
       <source>XZ-Plane</source>
-      <translation>XZ-Plane</translation>
+      <translation>Płaszczyzna XZ</translation>
     </message>
     <message>
       <source>YZ-Plane</source>
-      <translation>YZ-Plane</translation>
+      <translation>Płaszczyzna YZ</translation>
     </message>
     <message>
       <source>Reverse direction</source>
-      <translation>Reverse direction</translation>
+      <translation>Odwróć kierunek</translation>
     </message>
     <message>
       <source>Offset:</source>
-      <translation>Offset:</translation>
+      <translation>Odsunięcie:</translation>
     </message>
   </context>
   <context>
@@ -721,6 +815,38 @@
     </message>
   </context>
   <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>Wybierz orientację</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>Orientacja szkicu</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>Płaszczyzna X-Y</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>Płaszczyzna XZ</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>Płaszczyzna YZ</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>Odwróć kierunek</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>Odsunięcie:</translation>
+    </message>
+  </context>
+  <context>
     <name>SketcherGui::TaskSketcherConstrains</name>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="+14"/>
@@ -733,7 +859,7 @@
     </message>
     <message>
       <source>All</source>
-      <translation>Wszystko</translation>
+      <translation>Wszystkie</translation>
     </message>
     <message>
       <source>Normal</source>
@@ -762,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Grid size:</translation>
+      <translation>Rozmiar siatki:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Grid snap</translation>
+      <translation>Przyciąganie do siatki</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -846,7 +972,7 @@
     </message>
     <message>
       <source>Auto constraints</source>
-      <translation>Auto constraints</translation>
+      <translation>Automatyczne wiązania</translation>
     </message>
     <message>
       <source>auto constraints</source>
@@ -863,7 +989,7 @@
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
-      <translation>Solver messages</translation>
+      <translation>Komunikaty solwera</translation>
     </message>
   </context>
   <context>
@@ -896,7 +1022,7 @@
     </message>
     <message>
       <source>Undefined degrees of freedom</source>
-      <translation>Undefined degrees of freedom</translation>
+      <translation>Niezdefiniowane stopnie swobody</translation>
     </message>
     <message>
       <source>Not solved yet</source>
@@ -912,7 +1038,7 @@
     </message>
     <message>
       <source>Sketcher geometries</source>
-      <translation>Sketcher geometries</translation>
+      <translation>Elementy geometryczne szkicownika</translation>
     </message>
     <message>
       <source>Sketcher geoms</source>

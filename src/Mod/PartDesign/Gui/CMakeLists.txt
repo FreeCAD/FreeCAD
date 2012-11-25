@@ -26,13 +26,22 @@ set(PartDesignGui_LIBS
 )
 
 set(PartDesignGui_MOC_HDRS
+    FeaturePickDialog.h
+    ReferenceSelection.h
     TaskPadParameters.h
-    TaskPatternRectangularParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h
     TaskFilletParameters.h
     TaskHoleParameters.h
     TaskRevolutionParameters.h
+    TaskGrooveParameters.h
+    TaskTransformedMessages.h
+    TaskTransformedParameters.h
+    TaskMirroredParameters.h
+    TaskLinearPatternParameters.h
+    TaskPolarPatternParameters.h
+    TaskScaledParameters.h
+    TaskMultiTransformParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
@@ -40,13 +49,20 @@ SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
 qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
 
 set(PartDesignGui_UIC_SRCS
+    FeaturePickDialog.ui
     TaskPadParameters.ui
-    TaskPatternRectangularParameters.ui
     TaskPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
+    TaskGrooveParameters.ui
+    TaskTransformedMessages.ui
+    TaskMirroredParameters.ui
+    TaskLinearPatternParameters.ui
+    TaskPolarPatternParameters.ui
+    TaskScaledParameters.ui
+    TaskMultiTransformParameters.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
@@ -67,18 +83,32 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderFillet.h
     ViewProviderRevolution.cpp
     ViewProviderRevolution.h
-    ViewProviderPatternRectangular.cpp
-    ViewProviderPatternRectangular.h
+    ViewProviderGroove.cpp
+    ViewProviderGroove.h
+    ViewProviderTransformed.cpp
+    ViewProviderTransformed.h
+    ViewProviderMirrored.cpp
+    ViewProviderMirrored.h
+    ViewProviderLinearPattern.cpp
+    ViewProviderLinearPattern.h
+    ViewProviderPolarPattern.cpp
+    ViewProviderPolarPattern.h
+    ViewProviderScaled.cpp
+    ViewProviderScaled.h
+    ViewProviderMultiTransform.cpp
+    ViewProviderMultiTransform.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
 SET(PartDesignGuiTaskDlgs_SRCS
+    FeaturePickDialog.ui
+    FeaturePickDialog.cpp
+    FeaturePickDialog.h
+    ReferenceSelection.cpp
+    ReferenceSelection.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
-    TaskPatternRectangularParameters.ui
-    TaskPatternRectangularParameters.cpp
-    TaskPatternRectangularParameters.h
     TaskPocketParameters.ui
     TaskPocketParameters.cpp
     TaskPocketParameters.h
@@ -91,6 +121,29 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskRevolutionParameters.ui
     TaskRevolutionParameters.cpp
     TaskRevolutionParameters.h
+    TaskGrooveParameters.ui
+    TaskGrooveParameters.cpp
+    TaskGrooveParameters.h
+    TaskTransformedMessages.ui
+    TaskTransformedMessages.cpp
+    TaskTransformedMessages.h
+    TaskTransformedParameters.cpp
+    TaskTransformedParameters.h
+    TaskMirroredParameters.ui
+    TaskMirroredParameters.cpp
+    TaskMirroredParameters.h
+    TaskLinearPatternParameters.ui
+    TaskLinearPatternParameters.cpp
+    TaskLinearPatternParameters.h
+    TaskPolarPatternParameters.ui
+    TaskPolarPatternParameters.cpp
+    TaskPolarPatternParameters.h
+    TaskScaledParameters.ui
+    TaskScaledParameters.cpp
+    TaskScaledParameters.h
+    TaskMultiTransformParameters.ui
+    TaskMultiTransformParameters.cpp
+    TaskMultiTransformParameters.h
     TaskHoleParameters.ui
     TaskHoleParameters.cpp
     TaskHoleParameters.h
@@ -124,7 +177,12 @@ SET(PartDesignGui_SRCS
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS})
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
-fc_copy_script("Mod/PartDesign" "PartDesignGui" ${PartDesignGui_Scripts})
+
+
+fc_target_copy_resource(PartDesignGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/PartDesign
+    ${CMAKE_BINARY_DIR}/Mod/PartDesign
+    ${PartDesignGui_Scripts})
 
 if(MSVC)
     set_target_properties(PartDesignGui PROPERTIES SUFFIX ".pyd")
@@ -139,7 +197,9 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(PartDesignGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
     set_target_properties(PartDesignGui PROPERTIES PREFIX "")
-    set_target_properties(PartDesignGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(PartDesignGui PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/Mod/PartDesign)
 endif(MSVC)
 
-INSTALL(TARGETS PartDesignGui DESTINATION lib)
+# The PartDesign module must go to where the __init__.py file is
+INSTALL(TARGETS PartDesignGui DESTINATION Mod/PartDesign)
+

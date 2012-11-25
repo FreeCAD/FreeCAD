@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Háló levágása</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>A háló levágása kiválaszott sokszöggel</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -353,6 +368,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Háló szegmensek létrehozása...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Háló szegmensek létrehozása</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -360,7 +390,7 @@
     </message>
     <message>
       <source>Smooth...</source>
-      <translation>Simítás</translation>
+      <translation>Simítás...</translation>
     </message>
     <message>
       <source>Smooth the selected meshes</source>
@@ -670,7 +700,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
       <source>&amp;Create</source>
-      <translation>&amp;Létrehozás</translation>
+      <translation>Létrehozás &amp;C</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -941,6 +971,53 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Háló szegmentálás</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Sima háló</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Sík</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tűrés</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Felületek minimum száma</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Henger</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Sugár</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tűréshatár (lapos)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tűréshatár (görbe)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Felületek minimum száma</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Gömb</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -1100,6 +1177,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
       <source>Annotation</source>
       <translation>Jegyzet</translation>
     </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>Minden háló fájl (*.stl *.ast *.bms *.obj *.off * .ply)</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1113,7 +1194,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>&amp;Behálóz</translation>
+      <translation>Behálóz &amp;M</translation>
     </message>
     <message>
       <source>Mesh tools</source>

@@ -32,24 +32,28 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>Rajzolás</translation>
+      <source>Dr&amp;awing</source>
+      <translation>R&amp;ajzolás</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Vázlat</translation>
+      <source>S&amp;ketch</source>
+      <translation>S&amp;kicc</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>Sugáriánynyomvonal</translation>
+      <translation>Sugá&amp;riánynyomvonal</translation>
     </message>
     <message>
       <source>&amp;Drafting</source>
-      <translation>Vázlatkészítés</translation>
+      <translation>Vázlatkészítés &amp;D</translation>
     </message>
     <message>
       <source>Sketch based</source>
       <translation>Vázlat alap</translation>
+    </message>
+    <message>
+      <source>Primitives</source>
+      <translation>Primitívek</translation>
     </message>
     <message>
       <source>Parametric</source>

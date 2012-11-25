@@ -66,6 +66,17 @@ void Workbench::activated()
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
  
+    const char* Edge[] = {
+        "PartDesign_Fillet",
+        "PartDesign_Chamfer",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
+        Edge,
+        "Edge tools",
+        "Part_Box"
+    ));
+
     const char* Face[] = {
         "PartDesign_NewSketch",
         "PartDesign_Fillet",
@@ -87,17 +98,43 @@ void Workbench::activated()
         "Part_Box"
     ));
 
+    const char* Faces[] = {
+        "PartDesign_Fillet",
+        "PartDesign_Chamfer",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
+        Faces,
+        "Face tools",
+        "Part_Box"
+    ));
+
     const char* Sketch[] = {
         "PartDesign_NewSketch",
         "PartDesign_Pad",
         "PartDesign_Pocket",
         "PartDesign_Revolution",
+        "PartDesign_Groove",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
         Sketch,
         "Sketch tools",
         "Part_Box"
+    ));
+
+    const char* Transformed[] = {
+        "PartDesign_Mirrored",
+        "PartDesign_LinearPattern",
+        "PartDesign_PolarPattern",
+//        "PartDesign_Scaled",
+        "PartDesign_MultiTransform",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::SketchBased",
+        Transformed,
+        "Transformation tools",
+        "PartDesign_MultiTransform"
     ));
 
     const char* Empty[] = {
@@ -144,7 +181,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
-    *geom /*<< "Sketcher_CreatePoint"*/
+    *geom << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
@@ -189,8 +226,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
-          << "PartDesign_Chamfer";
+          << "PartDesign_Chamfer"
+          << "PartDesign_Mirrored"
+          << "PartDesign_LinearPattern"
+          << "PartDesign_PolarPattern"
+//          << "PartDesign_Scaled"
+          << "PartDesign_MultiTransform";
 
     return root;
 }
@@ -206,12 +249,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
-          << "PartDesign_Chamfer";
+          << "PartDesign_Chamfer"
+          << "PartDesign_Mirrored"
+          << "PartDesign_LinearPattern"
+          << "PartDesign_PolarPattern"
+//          << "PartDesign_Scaled"
+          << "PartDesign_MultiTransform";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Sketcher geometries");
-    *part /*<< "Sketcher_CreatePoint" */
+    *part << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"

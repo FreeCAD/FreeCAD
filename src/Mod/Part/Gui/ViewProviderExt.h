@@ -77,6 +77,7 @@ public:
     App::PropertyMaterial PointMaterial;
     App::PropertyBool ControlPoints;
     App::PropertyEnumeration Lighting;
+    App::PropertyEnumeration DrawStyle;
 
     App::PropertyColorList DiffuseColor;
 
@@ -144,6 +145,7 @@ private:
     static App::PropertyFloatConstraint::Constraints sizeRange;
     static App::PropertyFloatConstraint::Constraints tessRange;
     static const char* LightingEnums[];
+    static const char* DrawStyleEnums[];
 };
 
 }

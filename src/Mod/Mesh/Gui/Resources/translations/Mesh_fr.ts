@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Maillage</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Découper</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Découper un maillage avec une succession de points</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -350,6 +365,21 @@
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Supprimer les composants de topologie indépendants du maillage</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Maillage</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Diviser le maillage...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Diviser un maillage</translation>
     </message>
   </context>
   <context>
@@ -940,6 +970,53 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentation du maillage</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Lissage du maillage</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolérance</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Nombre minimum de faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cylindre</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Rayon</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolérance (plat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolérance (courbé)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Nombre minimum de faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sphère</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -1098,6 +1175,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Annotation</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>Tous les fichiers de maillage (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

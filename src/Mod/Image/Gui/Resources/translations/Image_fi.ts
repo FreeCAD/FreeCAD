@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>Create image plane...</source>
-      <translation>Create image plane...</translation>
+      <translation>Luo kuvan taso...</translation>
     </message>
     <message>
       <source>Create a planar image in the 3D space</source>
-      <translation>Create a planar image in the 3D space</translation>
+      <translation>Luo tasomainen kuva 3D-avaruudessa</translation>
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
@@ -39,13 +39,13 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="+308"/>
+      <location filename="../../GLImageBox.cpp" line="+318"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Määrittämätön tyyppi väriavaruudesta kuvien katseluun</translation>
     </message>
     <message>
       <source>Image pixel format</source>
-      <translation>Image pixel format</translation>
+      <translation>Kuvan kuvapistemuotoilu</translation>
     </message>
   </context>
   <context>
@@ -97,7 +97,7 @@
     </message>
     <message>
       <source>zoom</source>
-      <translation>zoom</translation>
+      <translation>Zoomaus</translation>
     </message>
     <message>
       <source>outside image</source>
@@ -117,23 +117,23 @@
     </message>
     <message>
       <source>Choose an image file to open</source>
-      <translation>Choose an image file to open</translation>
+      <translation>Valitse avattava kuvatiedosto</translation>
     </message>
     <message>
       <source>Images</source>
-      <translation>Images</translation>
+      <translation>Kuvat</translation>
     </message>
     <message>
       <source>All files</source>
-      <translation>All files</translation>
+      <translation>Kaikki tiedostot</translation>
     </message>
     <message>
       <source>Error open image</source>
-      <translation>Error open image</translation>
+      <translation>Virhe avattaessa kuvaa</translation>
     </message>
     <message>
       <source>Could not load the choosen image</source>
-      <translation>Could not load the choosen image</translation>
+      <translation>Valitun kuvan lataaminen ei onnistunut</translation>
     </message>
   </context>
   <context>

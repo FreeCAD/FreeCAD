@@ -293,15 +293,15 @@
     <message>
       <location filename="../../Workbench.cpp" line="+52"/>
       <source>Trajectory tools</source>
-      <translation>Trajectory tools</translation>
+      <translation>Trajekgereedskap</translation>
     </message>
     <message>
       <source>Robot tools</source>
-      <translation>Robot tools</translation>
+      <translation>Robotgereedskap</translation>
     </message>
     <message>
       <source>Insert Robot</source>
-      <translation>Insert Robot</translation>
+      <translation>Voeg robot in</translation>
     </message>
   </context>
   <context>
@@ -390,7 +390,7 @@
     </message>
     <message>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Select the Trajectory which you want to dress up.</translation>
+      <translation>Kies die trajek waarmee jy wil werk.</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="+26"/>
@@ -649,7 +649,7 @@
     </message>
     <message>
       <source>Use orientation of edge</source>
-      <translation>Use orientation of edge</translation>
+      <translation>Gebruik die oriëntasie van die kant</translation>
     </message>
     <message>
       <source>TaskEdge2TracParameter</source>

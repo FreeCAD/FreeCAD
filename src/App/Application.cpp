@@ -104,6 +104,7 @@
 #include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
+#include <QDir>
 
 using namespace App;
 using namespace std;
@@ -483,8 +484,14 @@ std::string Application::getUserAppDataDir()
 
 std::string Application::getResourceDir()
 {
-# ifdef RESOURCEDIR
-    return std::string(RESOURCEDIR) + "/";
+#ifdef RESOURCEDIR
+    std::string path(RESOURCEDIR);
+    path.append("/");
+    QDir dir(QString::fromUtf8(RESOURCEDIR));
+    if (dir.isAbsolute())
+        return path;
+    else
+        return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"];
 #endif
@@ -492,8 +499,14 @@ std::string Application::getResourceDir()
 
 std::string Application::getHelpDir()
 {
-# ifdef DOCDIR
-    return std::string(DOCDIR) + "/";
+#ifdef DOCDIR
+    std::string path(DOCDIR);
+    path.append("/");
+    QDir dir(QString::fromUtf8(DOCDIR));
+    if (dir.isAbsolute())
+        return path;
+    else
+        return mConfig["AppHomePath"] + path;
 #else
     return mConfig["DocPath"];
 #endif
@@ -930,10 +943,12 @@ void Application::init(int argc, char ** argv)
 #endif
         // if an unexpected crash occurs we can install a handler function to
         // write some additional information
+#ifdef _MSC_VER // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
         std::set_terminate(unhandled_exception_handler);
         std::set_unexpected(unexpection_error_handler);
+#endif
 
         initTypes();
 
@@ -1086,7 +1101,7 @@ void Application::initConfig(int argc, char ** argv)
                           mConfig["BuildVersionMajor"].c_str(),
                           mConfig["BuildVersionMinor"].c_str(),
                           mConfig["BuildRevision"].c_str(),
-                          mConfig["ConsoleBanner"].c_str());
+                          mConfig["CopyrightInfo"].c_str());
     else
         Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
                           mConfig["ExeVersion"].c_str(),
@@ -1179,7 +1194,7 @@ void Application::processCmdLineFiles(void)
                 Application::_pcSingleton->openDocument(File.filePath().c_str());
             }
             else if (File.hasExtension("fcscript")||File.hasExtension("fcmacro")) {
-                Base::Interpreter().runFile(File.filePath().c_str(), false);
+                Base::Interpreter().runFile(File.filePath().c_str(), true);
             }
             else if (File.hasExtension("py")) {
                 try{
@@ -1203,14 +1218,39 @@ void Application::processCmdLineFiles(void)
             }
         }
         catch (const Base::SystemExitException&) {
-            Base::PyGILStateLocker locker;
-            Base::Interpreter().systemExit();
+            throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
             Console().Error("Exception while processing file: %s [%s]\n", File.filePath().c_str(), e.what());
         }
         catch (...) {
             Console().Error("Unknown exception while processing file: %s \n", File.filePath().c_str());
+        }
+    }
+
+    const std::map<std::string,std::string>& cfg = Application::Config();
+    std::map<std::string,std::string>::const_iterator it = cfg.find("SaveFile");
+    if (it != cfg.end()) {
+        std::string output = it->second;
+        Base::FileInfo fi(output);
+        std::string ext = fi.extension();
+        try {
+            std::vector<std::string> mods = App::GetApplication().getExportModules(ext.c_str());
+            if (!mods.empty()) {
+                Base::Interpreter().loadModule(mods.front().c_str());
+                Base::Interpreter().runStringArg("import %s",mods.front().c_str());
+                Base::Interpreter().runStringArg("%s.export(App.ActiveDocument.Objects, '%s')"
+                    ,mods.front().c_str(),output.c_str());
+            }
+            else {
+                Console().Warning("File format not supported: %s \n", output.c_str());
+            }
+        }
+        catch (const Base::Exception& e) {
+            Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+        }
+        catch (...) {
+            Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
         }
     }
 }
@@ -1412,9 +1452,14 @@ void Application::ParseOptions(int ac, char ** av)
     // in config file, but will not be shown to the user.
     boost::program_options::options_description hidden("Hidden options");
     hidden.add_options()
-    ("input-file",  boost::program_options::value< vector<string> >(), "input file")
+    ("input-file", boost::program_options::value< vector<string> >(), "input file")
+    ("output",     boost::program_options::value<string>(),"output file")
+    ("hidden",                                             "don't show the main window")
     // this are to ignore for the window system (QApplication)
     ("style",      boost::program_options::value< string >(), "set the application GUI style")
+    ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
+    ("session",    boost::program_options::value< string >(), "restore the application from an earlier session")
+    ("reverse",                                               "set the application's layout direction from right to left")
     ("display",    boost::program_options::value< string >(), "set the X-Server")
     ("geometry ",  boost::program_options::value< string >(), "set the X-Window geometry")
     ("font",       boost::program_options::value< string >(), "set the X-Window font")
@@ -1437,11 +1482,35 @@ void Application::ParseOptions(int ac, char ** av)
     //x11.add_options()
     //    ("display",  boost::program_options::value< string >(), "set the X-Server")
     //    ;
+    //0000723: improper handling of qt specific comand line arguments
+    std::vector<std::string> args;
+    bool merge=false;
+    for (int i=1; i<ac; i++) {
+        if (merge) {
+            merge = false;
+            args.back() += "=";
+            args.back() += av[i];
+        }
+        else {
+            args.push_back(av[i]);
+        }
+        if (strcmp(av[i],"-style") == 0) {
+            merge = true;
+        }
+        else if (strcmp(av[i],"-stylesheet") == 0) {
+            merge = true;
+        }
+        else if (strcmp(av[i],"-session") == 0) {
+            merge = true;
+        }
+    }
 
-    options_description cmdline_options;
+    // 0000659: SIGABRT on startup in boost::program_options (Boost 1.49)
+    // Add some text to the constructor
+    options_description cmdline_options("Command-line options");
     cmdline_options.add(generic).add(config).add(hidden);
 
-    boost::program_options::options_description config_file_options;
+    boost::program_options::options_description config_file_options("Config");
     config_file_options.add(config).add(hidden);
 
     boost::program_options::options_description visible("Allowed options");
@@ -1452,28 +1521,32 @@ void Application::ParseOptions(int ac, char ** av)
 
     variables_map vm;
     try {
-        store( boost::program_options::command_line_parser(ac, av).
+        store( boost::program_options::command_line_parser(args).
                options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
 
         std::ifstream ifs("FreeCAD.cfg");
-        store(parse_config_file(ifs, config_file_options), vm);
+        if (ifs)
+            store(parse_config_file(ifs, config_file_options), vm);
         notify(vm);
     }
     catch (const std::exception& e) {
-        cerr << e.what() << endl << endl << visible << endl;
-        exit(1);
+        std::stringstream str;
+        str << e.what() << endl << endl << visible << endl;
+        throw UnknownProgramOption(str.str());
     }
     catch (...) {
-        cerr << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
-        exit(1);
+        std::stringstream str;
+        str << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
+        throw UnknownProgramOption(str.str());
     }
 
     if (vm.count("help")) {
-        cout << mConfig["ExeName"] << endl << endl;
-        cout << "For detailed descripton see http://free-cad.sf.net" << endl<<endl;
-        cout << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
-        cout << visible << endl;
-        exit(0);
+        std::stringstream str;
+        str << mConfig["ExeName"] << endl << endl;
+        str << "For detailed descripton see http://free-cad.sf.net" << endl<<endl;
+        str << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
+        str << visible << endl;
+        throw Base::ProgramInformation(str.str());
     }
 
     if (vm.count("response-file")) {
@@ -1481,9 +1554,10 @@ void Application::ParseOptions(int ac, char ** av)
         std::ifstream ifs(vm["response-file"].as<string>().c_str());
         if (!ifs) {
             Base::Console().Error("Could no open the response file\n");
-            cerr << "Could no open the response file: '"
-                 << vm["response-file"].as<string>() << "'" << endl;
-            exit(1);
+            std::stringstream str;
+            str << "Could no open the response file: '"
+                << vm["response-file"].as<string>() << "'" << endl;
+            throw Base::UnknownProgramOption(str.str());
         }
         // Read the whole file into a string
         stringstream ss;
@@ -1494,14 +1568,15 @@ void Application::ParseOptions(int ac, char ** av)
         vector<string> args;
         copy(tok.begin(), tok.end(), back_inserter(args));
         // Parse the file and store the options
-        store( boost::program_options::command_line_parser(ac, av).
+        store( boost::program_options::command_line_parser(args).
                options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
     }
 
     if (vm.count("version")) {
-        std::cout << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
-                  << " Revision: " << mConfig["BuildRevision"] << std::endl;
-        exit(0);
+        std::stringstream str;
+        str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
+            << " Revision: " << mConfig["BuildRevision"] << std::endl;
+        throw Base::ProgramInformation(str.str());
     }
 
     if (vm.count("console")) {
@@ -1539,6 +1614,15 @@ void Application::ParseOptions(int ac, char ** av)
         std::ostringstream buffer;
         buffer << OpenFileCount;
         mConfig["OpenFileCount"] = buffer.str();
+    }
+
+    if (vm.count("output")) {
+        string file = vm["output"].as<string>();
+        mConfig["SaveFile"] = file;
+    }
+
+    if (vm.count("hidden")) {
+        mConfig["StartHidden"] = "1";
     }
 
     if (vm.count("write-log")) {

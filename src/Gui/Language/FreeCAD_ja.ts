@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Available:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Selected:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>追加</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>削除</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>上へ移動</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>下へ移動</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Movable object</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Fixed object</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -112,11 +150,11 @@
     <name>Gui::ContainerDialog</name>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>キャンセル</translation>
+      <translation>キャンセル(&amp;C)</translation>
     </message>
   </context>
   <context>
@@ -150,7 +188,7 @@
     </message>
     <message>
       <source>Release date</source>
-      <translation>公開日</translation>
+      <translation>リリース日</translation>
     </message>
     <message>
       <source>Platform</source>
@@ -159,6 +197,10 @@
     <message>
       <source>License...</source>
       <translation>ライセンス...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Copy to clipboard</translation>
     </message>
   </context>
   <context>
@@ -211,7 +253,7 @@
     </message>
     <message>
       <source>Angle</source>
-      <translation>Angle</translation>
+      <translation>角度</translation>
     </message>
     <message>
       <source>90°</source>
@@ -242,15 +284,15 @@
     </message>
     <message>
       <source>&amp;Activate</source>
-      <translation>有効にする</translation>
+      <translation>有効にする(&amp;A)</translation>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>[Alt] + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>キャンセル</translation>
+      <translation>キャンセル(&amp;C)</translation>
     </message>
     <message>
       <source></source>
@@ -272,11 +314,11 @@
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>キャンセル</translation>
+      <translation>キャンセル(&amp;C)</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -478,7 +520,7 @@
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>[Alt] + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <source>&amp;Reset</source>
@@ -646,7 +688,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>閉じる(&amp;C)</translation>
+      <translation>閉じる (&amp;C)</translation>
     </message>
   </context>
   <context>
@@ -711,10 +753,6 @@ Please define another shortcut.</source>
       <translation>表示モード</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>ディスプレイモード：</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>プロットモード：</translation>
     </message>
@@ -737,6 +775,10 @@ Please define another shortcut.</source>
     <message>
       <source>Color plot:</source>
       <translation>Color plot:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -1031,7 +1073,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>閉じる(&amp;C)</translation>
+      <translation>閉じる (&amp;C)</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1118,7 +1160,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>閉じる(&amp;C)</translation>
+      <translation>閉じる (&amp;C)</translation>
     </message>
   </context>
   <context>
@@ -1172,7 +1214,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Apply</source>
@@ -1180,11 +1222,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>[Alt] + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>キャンセル</translation>
+      <translation>キャンセル(&amp;C)</translation>
     </message>
     <message>
       <source></source>
@@ -1226,11 +1268,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>Created &amp;by:</translation>
+      <translation>作成者(&amp;B):</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>Com&amp;pany:</translation>
+      <translation>企業(&amp;P):</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
@@ -1242,11 +1284,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>キャンセル</translation>
+      <translation>キャンセル(&amp;C)</translation>
     </message>
     <message>
       <source></source>
@@ -1281,7 +1323,8 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Create project</source>
-      <translation>Create project</translation>
+      <translation>プロジェクトを作成
+</translation>
     </message>
     <message>
       <source>Document.xml</source>
@@ -1478,11 +1521,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>トラックボール</translation>
     </message>
     <message>
       <source>Invert zoom</source>
-      <translation>Invert zoom</translation>
+      <translation>ズームを反転</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zoom at cursor</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Zoom step</translation>
     </message>
   </context>
   <context>
@@ -1544,11 +1595,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Zero</source>
-      <translation>&amp;Zero</translation>
+      <translation>ゼロ(&amp;Z)</translation>
     </message>
     <message>
       <source>Alt+Z</source>
-      <translation>Alt + Zキー</translation>
+      <translation>Alt+Z</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
@@ -1556,15 +1607,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Alt+F</source>
-      <translation>Alt + Fキー</translation>
+      <translation>Alt+F</translation>
     </message>
     <message>
       <source>&amp;OK</source>
-      <translation>OK</translation>
+      <translation>&amp;OK</translation>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>キャンセル</translation>
+      <translation>キャンセル(&amp;C)</translation>
     </message>
     <message>
       <source>Parameter range</source>
@@ -1580,7 +1631,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Labels:</source>
-      <translation>&amp;Labels:</translation>
+      <translation>ラベル(&amp;L):</translation>
     </message>
     <message>
       <source>&amp;Decimals:</source>
@@ -1619,8 +1670,7 @@ Specify another directory, please.</source>
     <message>
       <source>Document save compression level
 (0 = none, 9 = highest, 3 = default)</source>
-      <translation>Document save compression level
-(0 = none, 9 = highest, 3 = default)</translation>
+      <translation>ドキュメントの圧縮レベル(0 = 非圧縮、9 高圧縮 = 3 = デフォルト)</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
@@ -1724,6 +1774,10 @@ Specify another directory, please.</source>
     <message>
       <source>Items</source>
       <translation>項目</translation>
+    </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Current line highlight</translation>
     </message>
   </context>
   <context>
@@ -1886,7 +1940,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Alt+4</source>
-      <translation>Alt + 4</translation>
+      <translation>Alt+4</translation>
     </message>
     <message>
       <source>1&amp;6:9</source>
@@ -1894,7 +1948,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Alt+6</source>
-      <translation>Alt + 6</translation>
+      <translation>Alt+6</translation>
     </message>
     <message>
       <source>&amp;1:1</source>
@@ -1902,7 +1956,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Alt+1</source>
-      <translation>Alt + 1</translation>
+      <translation>Alt+1</translation>
     </message>
     <message>
       <source>Image comment</source>
@@ -1958,6 +2012,14 @@ Specify another directory, please.</source>
     <message>
       <source>Macro path</source>
       <translation>マクロのパス</translation>
+    </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>General macro settings</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Run macros in local environment</translation>
     </message>
   </context>
   <context>
@@ -2019,7 +2081,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Middle color</source>
-      <translation>Middle color</translation>
+      <translation>中間色</translation>
     </message>
     <message>
       <source>Color gradient</source>
@@ -2031,7 +2093,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Default colors</source>
-      <translation>Default colors</translation>
+      <translation>デフォルトの色</translation>
     </message>
     <message>
       <source>Edited edge color</source>
@@ -2047,15 +2109,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Fully constrained geometry</source>
-      <translation>Fully constrained geometry</translation>
-    </message>
-    <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>The color of construction geometry in editmode</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>The color of fully constrained geometry in editmode</translation>
+      <translation>完全幾何拘束</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
@@ -2064,6 +2118,42 @@ Specify another directory, please.</source>
     <message>
       <source>The color of edges being edited</source>
       <translation>The color of edges being edited</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>The color of construction geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>The color of fully constrained geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Cursor text color</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Default shape color</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>The default color for new shapes</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Default line width and color</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>The default line color for new shapes</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>The default line thickness for new shapes</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2090,11 +2180,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Alt+N</source>
-      <translation>Alt + N</translation>
+      <translation>Alt+N</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>閉じる(&amp;C)</translation>
+      <translation>閉じる (&amp;C)</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -2122,14 +2212,46 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
       <source>Placement</source>
-      <translation>Placement</translation>
+      <translation>配置</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Canceled.</translation>
+      <source>Download</source>
+      <translation>Download</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>キャンセル</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>閉じる</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>There already exists a file called %1 in the current directory. Overwrite?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Unable to save the file %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Downloading %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Download canceled.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>ダウンロードに失敗しました: %1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Downloaded %1 to current directory.</translation>
     </message>
   </context>
   <context>
@@ -2164,6 +2286,13 @@ Specify another directory, please.</source>
     <message>
       <source>OK</source>
       <translation>OK</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Copyright</translation>
     </message>
   </context>
   <context>
@@ -2307,7 +2436,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::Placement</name>
     <message>
       <source>Placement</source>
-      <translation>Placement</translation>
+      <translation>配置</translation>
     </message>
     <message>
       <source>OK</source>
@@ -2315,7 +2444,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>Translation:</translation>
+      <translation>翻訳:</translation>
     </message>
     <message>
       <source>Z:</source>
@@ -2347,15 +2476,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Pitch:</source>
-      <translation>Pitch:</translation>
+      <translation>ピッチ:</translation>
     </message>
     <message>
       <source>Roll:</source>
-      <translation>Roll:</translation>
+      <translation>ロール:</translation>
     </message>
     <message>
       <source>Yaw:</source>
-      <translation>Yaw:</translation>
+      <translation>ヨー:</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
@@ -2363,7 +2492,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Euler angles</source>
-      <translation>Euler angles</translation>
+      <translation>オイラー角</translation>
     </message>
     <message>
       <source>Apply placement changes immediately</source>
@@ -2390,7 +2519,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::PrintModel</name>
     <message>
       <source>Button</source>
-      <translation>Button</translation>
+      <translation>ボタン</translation>
     </message>
     <message>
       <source>Command</source>
@@ -2439,11 +2568,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Environment</source>
-      <translation>Environment</translation>
+      <translation>環境</translation>
     </message>
     <message>
       <source>Image files (%1)</source>
-      <translation>Image files (%1)</translation>
+      <translation>画像ファイル（%1）</translation>
     </message>
     <message>
       <source>No image</source>
@@ -2547,7 +2676,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Starting of %1 failed</source>
-      <translation>Starting of %1 failed</translation>
+      <translation>%1 の開始に失敗しました</translation>
     </message>
   </context>
   <context>
@@ -2645,11 +2774,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sending to %1</source>
-      <translation>Sending to %1</translation>
+      <translation>%1へ送信</translation>
     </message>
     <message>
       <source>Reading from %1</source>
-      <translation>Reading from %1</translation>
+      <translation>%1から読み取り</translation>
     </message>
     <message>
       <source>Download failed: %1.</source>
@@ -2681,7 +2810,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>No description for</source>
-      <translation>No description for</translation>
+      <translation>説明がありません:</translation>
     </message>
   </context>
   <context>
@@ -2706,8 +2835,7 @@ Specify another directory, please.</source>
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
       <translation>%1.
-
-This has been modified outside of the source editor. Do you want to reload it?</translation>
+これはソースエディター以外で改変されています。再読み込みしますか？</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -2737,19 +2865,19 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source> - Editor</source>
-      <translation> - Editor</translation>
+      <translation> - エディター</translation>
     </message>
     <message>
       <source>%1 chars removed</source>
-      <translation>%1 chars removed</translation>
+      <translation>%1文字を削除</translation>
     </message>
     <message>
       <source>%1 chars added</source>
-      <translation>%1 chars added</translation>
+      <translation>%1文字を追加</translation>
     </message>
     <message>
       <source>Formatted</source>
-      <translation>Formatted</translation>
+      <translation>フォーマット済み</translation>
     </message>
   </context>
   <context>
@@ -2855,6 +2983,25 @@ Do you want to save your changes?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Direction:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2882,6 +3029,91 @@ Do you want to save your changes?</translation>
     <message>
       <source>Close All</source>
       <translation>すべてを閉じる</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Manual alignment</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>The alignment is already in progress.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Alignment[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Please, select at least one point in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Please, select at least %1 points in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Please pick points in the left and right view</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>The alignment has finished</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>The alignment has been canceled</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the left view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the right view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Try to align group of views</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>The alignment failed.
+How do you want to proceed?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Retry</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>無視</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Abort</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Point picked at (%1,%2,%3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>No point was picked</translation>
     </message>
   </context>
   <context>
@@ -3018,7 +3250,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>&amp;Copy</source>
-      <translation>＆コピー</translation>
+      <translation>コピー (&amp;C)</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -3027,6 +3259,10 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Select All</source>
       <translation>全て選択</translation>
+    </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Clear console</translation>
     </message>
   </context>
   <context>
@@ -3104,15 +3340,15 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Download online help</source>
-      <translation>Download online help</translation>
+      <translation>オンライン ヘルプをダウンロードします。</translation>
     </message>
     <message>
       <source>Download %1's online help</source>
-      <translation>Download %1's online help</translation>
+      <translation>%1 のオンライン ・ ヘルプをダウンロードします。</translation>
     </message>
     <message>
       <source>Non-existing directory</source>
-      <translation>Non-existing directory</translation>
+      <translation>存在しないディレクトリ</translation>
     </message>
     <message>
       <source>The directory '%1' does not exist.
@@ -3124,7 +3360,7 @@ Do you want to specify an existing directory?</translation>
     </message>
     <message>
       <source>Missing permission</source>
-      <translation>Missing permission</translation>
+      <translation>アクセス許可がありません</translation>
     </message>
     <message>
       <source>You don't have write permission to '%1'
@@ -3136,7 +3372,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
-      <translation>Stop downloading</translation>
+      <translation>ダウンロードを中止します。</translation>
     </message>
   </context>
   <context>
@@ -3158,7 +3394,7 @@ Do you want to specify another directory?</translation>
     <name>Gui::TaskBoxAngle</name>
     <message>
       <source>Angle</source>
-      <translation>Angle</translation>
+      <translation>角度</translation>
     </message>
   </context>
   <context>
@@ -3170,10 +3406,6 @@ Do you want to specify another directory?</translation>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
-    <message>
-      <source>Display mode:</source>
-      <translation>ディスプレイモード：</translation>
-    </message>
     <message>
       <source>Plot mode:</source>
       <translation>プロットモード：</translation>
@@ -3193,6 +3425,10 @@ Do you want to specify another directory?</translation>
     <message>
       <source>Appearance</source>
       <translation>外観</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -3218,10 +3454,22 @@ Do you want to specify another directory?</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>英語</translation>
+      <source>Press left mouse button</source>
+      <translation>マウスの左ボタンを押す</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Press SHIFT button</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Press ALT button</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Press PgUp/PgDown button</translation>
     </message>
   </context>
   <context>
@@ -3475,14 +3723,6 @@ Do you want to specify another directory?</translation>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>ワークベンチを読み込み中に一般的なエラーが発生しました</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>ファイルが見つかりませんでした</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>ファイル %1 を開けません</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -3765,7 +4005,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Navigation styles</source>
-      <translation>Navigation styles</translation>
+      <translation>ナビゲーションスタイル</translation>
     </message>
     <message>
       <source>%1 navigation</source>
@@ -3773,7 +4013,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Move annotation</source>
-      <translation>Move annotation</translation>
+      <translation>注釈を移動</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -3784,6 +4024,17 @@ Be aware the point where you click matters.</translation>
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Box selection</translation>
     </message>
   </context>
   <context>
@@ -3844,6 +4095,21 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Activate previous window</source>
       <translation>前のウィンドウをアクティブにする</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>編集</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Alignment...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Align the selected objects</translation>
     </message>
   </context>
   <context>
@@ -3925,11 +4191,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>Start command &amp;line...</translation>
+      <translation>コマンドラインを開始...(&amp;L)</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
-      <translation>Opens the command line in the console</translation>
+      <translation>コンソールでコマンドラインを開きます</translation>
     </message>
   </context>
   <context>
@@ -3960,21 +4226,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Cut out</source>
       <translation>Cut out</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>編集</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Duplicate selection</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Put duplicates of the selected objects to the active document</translation>
     </message>
   </context>
   <context>
@@ -4060,7 +4311,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
-      <translation>Opens a dialog to record a macro</translation>
+      <translation>マクロを記録するためのダイアログを開きます。</translation>
     </message>
     <message>
       <source>Macro</source>
@@ -4075,7 +4326,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>E&amp;dit parameters ...</translation>
+      <translation>パラメーターを変更...(&amp;D)</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
@@ -4105,11 +4356,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Vie&amp;ws</source>
-      <translation>Vie&amp;ws</translation>
+      <translation>ビュー(&amp;w)</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Toggles this window</translation>
+      <translation>ウィンドウを切り替える</translation>
     </message>
   </context>
   <context>
@@ -4124,6 +4375,40 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>編集</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>選択を複製する</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Put duplicates of the selected objects to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>編集</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Toggle &amp;Edit mode</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Toggles the selected object's edit mode</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Enters or leaves the selected object's edit mode</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdExport</name>
     <message>
       <source>File</source>
@@ -4131,15 +4416,34 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Export...</translation>
+      <translation>エクスポート（&amp;E）...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Export an object in the active document</translation>
+      <translation>アクティブなドキュメント内のオブジェクトをエクスポートする</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Supported formats</translation>
+      <source>No selection</source>
+      <translation>No selection</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Please select first the objects you want to export.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>ツール</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Dependency graph...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Show the dependency graph of the objects in the active document</translation>
     </message>
   </context>
   <context>
@@ -4150,11 +4454,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Recompute</source>
-      <translation>&amp;Recompute</translation>
+      <translation>再計算(&amp;R)</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Recompute feature or document</translation>
+      <translation>フィーチャーまたはドキュメントを再計算</translation>
     </message>
   </context>
   <context>
@@ -4165,7 +4469,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>FreeCAD Website</source>
-      <translation>FreeCAD Website</translation>
+      <translation>FreeCADウェブサイト</translation>
     </message>
     <message>
       <source>The FreeCAD website</source>
@@ -4210,7 +4514,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Hide selection</source>
-      <translation>Hide selection</translation>
+      <translation>選択オブジェクトを隠す</translation>
     </message>
     <message>
       <source>Hide all selected objects</source>
@@ -4233,7 +4537,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Supported formats</translation>
+      <translation>サポートされている形式</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
@@ -4314,12 +4618,12 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>ツール</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Mesure distance</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Measures distance between two selected objects</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>距離を測定</translation>
     </message>
   </context>
   <context>
@@ -4372,21 +4676,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>ヘルプ</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Python のマニュアル</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Python のドキュメントを表示します。</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
@@ -4417,7 +4706,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Supported formats</translation>
+      <translation>サポートされている形式</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
@@ -4867,7 +5156,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Toggles this window</translation>
+      <translation>ウィンドウを切り替える</translation>
     </message>
   </context>
   <context>
@@ -5058,7 +5347,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Front</source>
-      <translation>Front</translation>
+      <translation>前面</translation>
     </message>
     <message>
       <source>Set to front view</source>
@@ -5163,7 +5452,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>Left</translation>
+      <translation>左面</translation>
     </message>
     <message>
       <source>Set to left view</source>
@@ -5178,7 +5467,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Rear</source>
-      <translation>Rear</translation>
+      <translation>背面</translation>
     </message>
     <message>
       <source>Set to rear view</source>
@@ -5201,6 +5490,36 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Rotate Left</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Rotate Right</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Rotate the view by 90Â° clockwise</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -5208,7 +5527,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Top</source>
-      <translation>Top</translation>
+      <translation>上面</translation>
     </message>
     <message>
       <source>Set to top view</source>
@@ -5253,7 +5572,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Activates this window</source>
-      <translation>Activates this window</translation>
+      <translation>このウィンドウをアクティブにします。</translation>
     </message>
   </context>
   <context>
@@ -5264,11 +5583,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Workbench</source>
-      <translation>Workbench</translation>
+      <translation>ワークベンチ</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Switch between workbenches</translation>
+      <translation>ワークベンチを切り替える</translation>
     </message>
   </context>
   <context>
@@ -5279,7 +5598,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Orthographic view</source>
-      <translation>Orthographic view</translation>
+      <translation>正射投影表示</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
@@ -5294,11 +5613,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>Perspective view</translation>
+      <translation>パースペクティブ表示</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Switches to perspective view mode</translation>
+      <translation>パースペクティブモードに切り替えます</translation>
     </message>
   </context>
   <context>
@@ -5319,8 +5638,8 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>標準ビュー</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>表示モード</translation>
+      <source>Document window</source>
+      <translation>Document window</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5339,7 +5658,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
-      <translation>Creates a screenshot of the active view</translation>
+      <translation>アクティブなビューのスクリーン ショットを作成します。</translation>
     </message>
   </context>
   <context>
@@ -5350,7 +5669,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Zoom In</source>
-      <translation>Zoom In</translation>
+      <translation>ズームイン</translation>
     </message>
   </context>
   <context>
@@ -5361,7 +5680,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Zoom Out</source>
-      <translation>Zoom Out</translation>
+      <translation>ズームアウト</translation>
     </message>
   </context>
   <context>
@@ -5381,6 +5700,35 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Wireframe mode</source>
       <translation>Wireframe mode</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Graphviz not found</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Graphviz installation path</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Dependency graph</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Graphviz failed</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Graphviz failed to create an image file</translation>
     </message>
   </context>
   <context>

@@ -4,32 +4,20 @@ datadir = $(prefix)/Mod/Ship
 data_DATA = \
 	InitGui.py \
 	ShipGui.py \
-	Instance.py
+	Instance.py \
+	SimInstance.py \
+	TankInstance.py \
+	Ship_rc.py
 
 nobase_data_DATA = \
-	Icons/AreaCurveIco.png \
-	Icons/AreaCurveIco.xcf \
-	Icons/AreaCurveIco.xpm \
-	Icons/DataIco.png \
-	Icons/DataIco.xcf \
-	Icons/DataIco.xpm \
-	Icons/DiscretizeIco.png \
-	Icons/DiscretizeIco.xcf \
-	Icons/DiscretizeIco.xpm \
-	Icons/HydrostaticsIco.png \
-	Icons/HydrostaticsIco.xcf \
-	Icons/HydrostaticsIco.xpm \
-	Icons/Ico.png \
-	Icons/Ico.xcf \
-	Icons/Ico.xpm \
-	Icons/OutlineDrawIco.png \
-	Icons/OutlineDrawIco.xcf \
-	Icons/OutlineDrawIco.xpm \
-	Icons/ReparametrizeIco.png \
-	Icons/ReparametrizeIco.xcf \
-	Icons/ReparametrizeIco.xpm \
-	Icons/Ship.xcf \
-	Icons/Ship.xpm \
+	resources/examples/s60.fcstd \
+	resources/examples/s60_katamaran.fcstd \
+	resources/examples/wigley.fcstd \
+	resources/examples/wigley_katamaran.fcstd \
+	resources/icons/Ico.xpm \
+	shipLoadExample/__init__.py \
+	shipLoadExample/TaskPanel.py \
+	shipLoadExample/TaskPanel.ui \
 	shipCreateShip/__init__.py \
 	shipCreateShip/Preview.py \
 	shipCreateShip/TaskPanel.py \
@@ -40,15 +28,47 @@ nobase_data_DATA = \
 	shipOutlineDraw/TaskPanel.py \
 	shipOutlineDraw/TaskPanel.ui \
 	shipAreasCurve/__init__.py \
+	shipAreasCurve/PlotAux.py \
 	shipAreasCurve/Preview.py \
 	shipAreasCurve/TaskPanel.py \
 	shipAreasCurve/TaskPanel.ui \
 	shipHydrostatics/__init__.py \
+	shipHydrostatics/PlotAux.py \
+	shipHydrostatics/TaskPanel.py \
+	shipHydrostatics/TaskPanel.ui \
 	shipHydrostatics/Tools.py \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
 	shipUtils/Paths.py \
-	shipUtils/Translator.py
+	tankWeights/__init__.py \
+	tankWeights/Preview.py \
+	tankWeights/TaskPanel.py \
+	tankWeights/TaskPanel.ui \
+	tankCreateTank/__init__.py \
+	tankCreateTank/TaskPanel.py \
+	tankCreateTank/TaskPanel.ui \
+	tankGZ/__init__.py \
+	tankGZ/PlotAux.py \
+	tankGZ/TaskPanel.py \
+	tankGZ/TaskPanel.ui \
+	simCreate/__init__.py \
+	simCreate/TaskPanel.py \
+	simCreate/TaskPanel.ui \
+	simRun/__init__.py \
+	simRun/Simulation.py \
+	simRun/TaskPanel.py \
+	simRun/TaskPanel.ui \
+	simRun/clSim/__init__.py \
+	simRun/clSim/initialization.py \
+	simRun/clSim/Utils.py \
+	simRun/Sim/__init__.py \
+	simRun/Sim/initialization.py \
+	simRun/Sim/matrixGen.py \
+	simRun/Sim/computeSources.py \
+	simRun/Sim/fsEvolution.py \
+	simPost/__init__.py \
+	simPost/TaskPanel.py \
+	simPost/TaskPanel.ui
 
 CLEANFILES = $(BUILT_SOURCES)
 

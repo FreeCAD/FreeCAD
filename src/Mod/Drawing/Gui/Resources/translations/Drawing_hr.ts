@@ -2,9 +2,39 @@
 <!DOCTYPE TS>
 <TS>
   <context>
+    <name>CmdDrawingAnnotation</name>
+    <message>
+      <location filename="../../Command.cpp" line="+365"/>
+      <source>Drawing</source>
+      <translation>Crtež</translation>
+    </message>
+    <message>
+      <source>&amp;Annotation</source>
+      <translation>Anotacija</translation>
+    </message>
+    <message>
+      <source>Inserts an Annotation view in the active drawing</source>
+      <translation>Dodaje anotacijski pogled aktivnom crtežu</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingClip</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Crtež</translation>
+    </message>
+    <message>
+      <source>&amp;Clip</source>
+      <translation>&amp;Izrez</translation>
+    </message>
+    <message>
+      <source>Inserts a clip group in the active drawing</source>
+      <translation>Dodaje izrezanu grupu aktivnom pogledu</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="+285"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
@@ -21,7 +51,7 @@
     <name>CmdDrawingNewA3Landscape</name>
     <message>
       <source>Drawing</source>
-      <translation>Crtanje</translation>
+      <translation>Crtež</translation>
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
@@ -32,7 +62,7 @@
     <name>CmdDrawingNewPage</name>
     <message>
       <source>Drawing</source>
-      <translation>Crtanje</translation>
+      <translation>Crtež</translation>
     </message>
     <message>
       <source>Insert new drawing</source>
@@ -43,7 +73,7 @@
     <name>CmdDrawingNewView</name>
     <message>
       <source>Drawing</source>
-      <translation>Crtanje</translation>
+      <translation>Crtež</translation>
     </message>
     <message>
       <source>Insert view in drawing</source>
@@ -58,7 +88,7 @@
     <name>CmdDrawingOpen</name>
     <message>
       <source>Drawing</source>
-      <translation>Crtanje</translation>
+      <translation>Crtež</translation>
     </message>
     <message>
       <source>Open SVG...</source>
@@ -70,10 +100,40 @@
     </message>
   </context>
   <context>
+    <name>CmdDrawingOpenBrowserView</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Crtež</translation>
+    </message>
+    <message>
+      <source>Open &amp;browser view</source>
+      <translation>Otvori za pregledavanje</translation>
+    </message>
+    <message>
+      <source>Opens the selected page in a browser view</source>
+      <translation>Otvara odabrani crtež u modu pregledavanja</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingOrthoViews</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Crtež</translation>
+    </message>
+    <message>
+      <source>Insert orthographic views</source>
+      <translation>Umetni ortografske poglede</translation>
+    </message>
+    <message>
+      <source>Insert an orthographic projection of a part in the active drawing</source>
+      <translation>Postavi ortografsku projekciju parta u aktivnom crtežu</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingProjectShape</name>
     <message>
       <source>Drawing</source>
-      <translation>Crtanje</translation>
+      <translation>Crtež</translation>
     </message>
     <message>
       <source>Project shape...</source>
@@ -87,7 +147,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+206"/>
+      <location filename="../../DrawingView.cpp" line="+207"/>
       <source>&amp;Background</source>
       <translation>I pozadina</translation>
     </message>
@@ -161,6 +221,114 @@
     </message>
   </context>
   <context>
+    <name>DrawingGui::TaskOrthoViews</name>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="+26"/>
+      <source>Orthographic Projection</source>
+      <translation>Ortografska projekcija</translation>
+    </message>
+    <message>
+      <source>Projection</source>
+      <translation>Projekcija</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Treći kut</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Prvi kut</translation>
+    </message>
+    <message>
+      <source>Primary View</source>
+      <translation>Primarni pogled</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Ispred</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Desno</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Natrag</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Lijevo</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Gore</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Ispod</translation>
+    </message>
+    <message>
+      <source>- Rotate</source>
+      <translation>- Rotiraj</translation>
+    </message>
+    <message>
+      <source>0</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>90</source>
+      <translation>90</translation>
+    </message>
+    <message>
+      <source>180</source>
+      <translation>180</translation>
+    </message>
+    <message>
+      <source>270</source>
+      <translation>270</translation>
+    </message>
+    <message>
+      <source>Primary view</source>
+      <translation>Primarni pogled</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Sekundarni pogledi</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Općenito</translation>
+    </message>
+    <message>
+      <source>Auto scale / position</source>
+      <translation>automatski skaliraj/pozicioniraj</translation>
+    </message>
+    <message>
+      <source>Scale</source>
+      <translation>Skaliraj</translation>
+    </message>
+    <message>
+      <source>Primary x / y</source>
+      <translation>Primarni x / y</translation>
+    </message>
+    <message>
+      <source>Secondary dx / dy</source>
+      <translation>Sekundarni dx / dy</translation>
+    </message>
+    <message>
+      <source>Show hidden</source>
+      <translation>Prikaži skriveno</translation>
+    </message>
+    <message>
+      <source>Show smooth</source>
+      <translation>Prikaži izglađeno</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Aksonometrijski</translation>
+    </message>
+  </context>
+  <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
       <location filename="../../TaskDialog.cpp" line="+49"/>
@@ -211,7 +379,6 @@
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="-196"/>
       <source>A0 landscape</source>
       <translation>A0 pejzaž</translation>
     </message>
@@ -251,6 +418,15 @@
       <source>Insert new A4 landscape drawing</source>
       <translation>Umetnite novi A4 pejzažni crtež</translation>
     </message>
+    <message>
+      <location filename="../../Command.cpp" line="-327"/>
+      <source>Insert new A%1 landscape drawing</source>
+      <translation>Umetni novi A%1 pejzažni crtež</translation>
+    </message>
+    <message>
+      <source>A%1 landscape</source>
+      <translation>A%1 pejzaž</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -285,6 +461,10 @@
       <translation>Stvaranje stranica za umetanje.</translation>
     </message>
     <message>
+      <source>Create a page to insert views into.</source>
+      <translation>Stvori stranicu na koju će se dodati pogled.</translation>
+    </message>
+    <message>
       <source>Select one Page object.</source>
       <translation>Odaberite jednu stranicu objekta</translation>
     </message>
@@ -301,9 +481,34 @@
       <translation>Izvedi stranicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="-25"/>
+      <location filename="../../ViewProviderPage.cpp" line="-27"/>
       <source>Show drawing</source>
       <translation>Prikaži crtež</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.cpp" line="+49"/>
+      <source>Front</source>
+      <translation>Ispred</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Natrag</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Desno</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Lijevo</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Gore</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Ispod</translation>
     </message>
   </context>
   <context>
@@ -311,7 +516,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Drawing</source>
-      <translation>Crtanje</translation>
+      <translation>Crtež</translation>
     </message>
   </context>
 </TS>

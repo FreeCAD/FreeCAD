@@ -5,7 +5,7 @@
     <name>Angle</name>
     <message>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>A:</source>
@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Dostępne:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Wybrane:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Dodaj</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Usuń</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Przesuń w górę</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Przenieś w dół</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Ruchomy obiekt</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Stały obiekt</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -71,7 +109,7 @@
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Press SHIFT and middle mouse button</translation>
+      <translation>Naciśnij klawisz SHIFT i środkowy przycisk myszy</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -79,7 +117,7 @@
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Scroll middle mouse button</translation>
+      <translation>Przewiń środkowy przycisk myszy</translation>
     </message>
   </context>
   <context>
@@ -98,7 +136,7 @@
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Scroll middle mouse button</translation>
+      <translation>Przewiń środkowy przycisk myszy</translation>
     </message>
   </context>
   <context>
@@ -146,7 +184,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
     <message>
       <source>Release date</source>
@@ -154,22 +192,26 @@
     </message>
     <message>
       <source>Platform</source>
-      <translation>Platform</translation>
+      <translation>Platforma</translation>
     </message>
     <message>
       <source>License...</source>
-      <translation>License...</translation>
+      <translation>Licencja...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Kopiuj do schowka</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
-      <translation>Button %1</translation>
+      <translation>Przycisk %1</translation>
     </message>
     <message>
       <source>Out Of Range</source>
-      <translation>Out Of Range</translation>
+      <translation>Poza zakresem</translation>
     </message>
   </context>
   <context>
@@ -183,7 +225,7 @@
     <name>Gui::Dialog::DemoMode</name>
     <message>
       <source>View Turntable</source>
-      <translation>View Turntable</translation>
+      <translation>Widok Obrotowy</translation>
     </message>
     <message>
       <source>Speed</source>
@@ -254,7 +296,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -288,7 +330,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -307,7 +349,7 @@
     </message>
     <message>
       <source>Add icons...</source>
-      <translation>Add icons...</translation>
+      <translation>Dodaj ikony...</translation>
     </message>
   </context>
   <context>
@@ -330,7 +372,7 @@
     </message>
     <message>
       <source>Pixmap</source>
-      <translation>Obrazek rastrowy</translation>
+      <translation>Obrazek</translation>
     </message>
     <message>
       <source>Accelerator:</source>
@@ -424,7 +466,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -498,7 +540,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -629,7 +671,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -644,22 +686,22 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Zamknij</translation>
+      <translation>Zamknij</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <translation>Manipulator przestrzenny</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
-      <translation>No Spaceball Present</translation>
+      <translation>Brak manipulatora przestrzennego</translation>
     </message>
     <message>
       <source>Buttons</source>
-      <translation>Buttons</translation>
+      <translation>Przyciski</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -667,7 +709,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Print Reference</source>
-      <translation>Print Reference</translation>
+      <translation>Wydrukuj Odnośniki</translation>
     </message>
   </context>
   <context>
@@ -709,20 +751,16 @@ Please define another shortcut.</source>
       <translation>Tryb widoku</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Tryb wyświetlania:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Tryb kreślenia:</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
     <message>
       <source>Line transparency:</source>
-      <translation>Line transparency:</translation>
+      <translation>Przezroczystość linii:</translation>
     </message>
     <message>
       <source>Line color:</source>
@@ -734,7 +772,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Color plot:</translation>
+      <translation>Kolor wykresu:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Okno dokumentu:</translation>
     </message>
   </context>
   <context>
@@ -793,7 +835,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -840,26 +882,26 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
-      <translation>Size of toolbar icons:</translation>
+      <translation>Rozmiar ikon paska narzędzi:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>Default (%1 x %1)</source>
-      <translation>Default (%1 x %1)</translation>
+      <translation>Domyślne (%1 x %1)</translation>
     </message>
     <message>
       <source>Small (%1 x %1)</source>
-      <translation>Small (%1 x %1)</translation>
+      <translation>Małe (%1 x %1)</translation>
     </message>
     <message>
       <source>Large (%1 x %1)</source>
-      <translation>Large (%1 x %1)</translation>
+      <translation>Duże (%1 x %1)</translation>
     </message>
     <message>
       <source>Extra large (%1 x %1)</source>
-      <translation>Extra large (%1 x %1)</translation>
+      <translation>B. duże (%1 x %1)</translation>
     </message>
   </context>
   <context>
@@ -878,7 +920,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -1014,7 +1056,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>The macro directory doesn't exist. Please, choose another one.</translation>
+      <translation>Folder z makrami nie istnieje. Proszę wybrać inny.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
@@ -1029,7 +1071,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Zamknij</translation>
+      <translation>Zamknij</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1041,11 +1083,12 @@ This file already exists.</source>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>Diffuse color:</translation>
+      <translation>Color przenikania:
+</translation>
     </message>
     <message>
       <source>Specular color:</source>
-      <translation>Specular color:</translation>
+      <translation>Kolor wziernika:</translation>
     </message>
     <message>
       <source>Shininess:</source>
@@ -1061,11 +1104,11 @@ This file already exists.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
     <message>
       <source>Emissive color:</source>
-      <translation>Emissive color:</translation>
+      <translation>Emissive kolor:</translation>
     </message>
   </context>
   <context>
@@ -1116,7 +1159,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Zamknij</translation>
+      <translation>Zamknij</translation>
     </message>
   </context>
   <context>
@@ -1186,7 +1229,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -1248,42 +1291,42 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <source>Project utility</source>
-      <translation>Project utility</translation>
+      <translation>Narzędzia projektu</translation>
     </message>
     <message>
       <source>Extract project</source>
-      <translation>Extract project</translation>
+      <translation>Wyodrębnij projekt</translation>
     </message>
     <message>
       <source>Source</source>
-      <translation>Source</translation>
+      <translation>Źródło</translation>
     </message>
     <message>
       <source>Project file (*.fcstd)</source>
-      <translation>Project file (*.fcstd)</translation>
+      <translation>Plik projektu (*.fcstd)</translation>
     </message>
     <message>
       <source>Destination</source>
-      <translation>Destination</translation>
+      <translation>Miejsce przeznaczenia</translation>
     </message>
     <message>
       <source>Extract</source>
-      <translation>Extract</translation>
+      <translation>Rozpakuj</translation>
     </message>
     <message>
       <source>Create project</source>
-      <translation>Create project</translation>
+      <translation>Utwórz projekt</translation>
     </message>
     <message>
       <source>Document.xml</source>
-      <translation>Document.xml</translation>
+      <translation>Dokument.XML</translation>
     </message>
     <message>
       <source>Create</source>
@@ -1291,23 +1334,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Load project file after creation</source>
-      <translation>Load project file after creation</translation>
+      <translation>Wczytaj plik projektu po utworzeniu</translation>
     </message>
     <message>
       <source>Empty source</source>
-      <translation>Empty source</translation>
+      <translation>Puste żródło</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>No source is defined.</translation>
+      <translation>Nie zdefiniowano żadnego źródła</translation>
     </message>
     <message>
       <source>Empty destination</source>
-      <translation>Empty destination</translation>
+      <translation>Puste miejsca przeznaczenia</translation>
     </message>
     <message>
       <source>No destination is defined.</source>
-      <translation>No destination is defined.</translation>
+      <translation>Miejsce docelowe nie jest zdefiniowane.</translation>
     </message>
   </context>
   <context>
@@ -1354,15 +1397,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Redirect internal Python errors to report view</translation>
+      <translation>Przekieruj błędy wewnętrzne Python do widoku raportu</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Redirect internal Python output to report view</translation>
+      <translation>Przekieruj wewnętrzne wiadomości Pythona do widoku raportu</translation>
     </message>
   </context>
   <context>
@@ -1448,7 +1491,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
     <message>
       <source>3D Navigation</source>
@@ -1468,11 +1511,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Orbit style</source>
-      <translation>Orbit style</translation>
+      <translation>Styl orbity</translation>
     </message>
     <message>
       <source>Turntable</source>
-      <translation>Turntable</translation>
+      <translation>Obrotnica</translation>
     </message>
     <message>
       <source>Trackball</source>
@@ -1480,14 +1523,22 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Invert zoom</source>
-      <translation>Invert zoom</translation>
+      <translation>Odwróć powiększenie</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Powiększ przy kursorze</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Krok powiększenia</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigation</translation>
+      <translation>%1 nawigacji</translation>
     </message>
   </context>
   <context>
@@ -1522,7 +1573,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>Out g&amp;rayed</translation>
+      <translation>Deaktywuj</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -1530,7 +1581,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>Out &amp;invisible</translation>
+      <translation>Uczyń niewidzialnym</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -1550,7 +1601,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Flow</source>
-      <translation>&amp;Flow</translation>
+      <translation>Uwolnij</translation>
     </message>
     <message>
       <source>Alt+F</source>
@@ -1582,11 +1633,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Decimals:</source>
-      <translation>&amp;Miejsca dziesiętne:</translation>
+      <translation>Miejsca &amp;Dziesiętne:</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
     <message>
       <source>Color-gradient settings</source>
@@ -1625,7 +1676,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Storage</source>
-      <translation>Storage</translation>
+      <translation>Magazyn</translation>
     </message>
     <message>
       <source>Saving transactions (Auto-save)</source>
@@ -1633,7 +1684,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Discard saved transaction after saving document</source>
-      <translation>Discard saved transaction after saving document</translation>
+      <translation>Odrzucić zapisane transakcji po zapisaniu dokumentu</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
@@ -1641,7 +1692,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Create up to backup files when resaving document</source>
-      <translation>Create up to backup files when resaving document</translation>
+      <translation>Utworzyć maksymalnie pliki kopii zapasowej, gdy ponowne zapisanie dokumentu</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -1649,15 +1700,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Allow duplicate object labels in one document</translation>
+      <translation>Zezwalaj na dublowanie etykiet obiektów w jednym dokumencie</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Maximum Undo/Redo steps</translation>
+      <translation>Maksymalna ilość kroków Cofnij / Powtórz</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Using Undo/Redo on documents</translation>
+      <translation>Użyj Cofnij/Ponów w dokumentach</translation>
     </message>
   </context>
   <context>
@@ -1672,7 +1723,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Breakpoint</source>
-      <translation>Pułapka/Breakpoint</translation>
+      <translation>Przerwa</translation>
     </message>
     <message>
       <source>Keyword</source>
@@ -1721,6 +1772,10 @@ Specify another directory, please.</source>
     <message>
       <source>Items</source>
       <translation>Elementy</translation>
+    </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Podświetlenie bieżącego wiersza</translation>
     </message>
   </context>
   <context>
@@ -1934,7 +1989,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
-      <translation>Log all commands issued by menus to file:</translation>
+      <translation>Rejestruj wszystkie polecenia wydawane przez menu Plik:</translation>
     </message>
     <message>
       <source>FullScript.FCScript</source>
@@ -1956,6 +2011,14 @@ Specify another directory, please.</source>
       <source>Macro path</source>
       <translation>Ścieżka makra</translation>
     </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>Ustawienia ogólne makr</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Uruchom makro w środowisku lokalnym</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -1973,11 +2036,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>MKS (m/kg/s/degree)</source>
-      <translation>MKS (m/kg/s/degree)</translation>
+      <translation>MKS (m/kg/s/stopień)</translation>
     </message>
     <message>
       <source>Magnitude</source>
-      <translation>Magnitude</translation>
+      <translation>Wielkość</translation>
     </message>
     <message>
       <source>Unit</source>
@@ -1985,11 +2048,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>User system:</source>
-      <translation>User system:</translation>
+      <translation>Użytkownik systemu:</translation>
     </message>
     <message>
       <source>Imperial (in/lb)</source>
-      <translation>Imperial (in/lb)</translation>
+      <translation>angielski system miar (cal / funt)</translation>
     </message>
   </context>
   <context>
@@ -2008,7 +2071,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
-      <translation>Enable preselection highlighting</translation>
+      <translation>Włącz podświetlanie preselekcji</translation>
     </message>
     <message>
       <source>Background color</source>
@@ -2028,39 +2091,67 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Default colors</source>
-      <translation>Default colors</translation>
+      <translation>Domyślne kolory</translation>
     </message>
     <message>
       <source>Edited edge color</source>
-      <translation>Edited edge color</translation>
+      <translation>Kolor edytowanej krawędzi</translation>
     </message>
     <message>
       <source>Edited vertex color</source>
-      <translation>Edited vertex color</translation>
+      <translation>Kolor edytowanego wierzchołka</translation>
     </message>
     <message>
       <source>Construction geometry</source>
-      <translation>Construction geometry</translation>
+      <translation>Geometria konstrukcji</translation>
     </message>
     <message>
       <source>Fully constrained geometry</source>
-      <translation>Fully constrained geometry</translation>
-    </message>
-    <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>The color of construction geometry in editmode</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>The color of fully constrained geometry in editmode</translation>
+      <translation>Geometria w pełni zwymiarowana, odebrano wszystkie stopnie swobody</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
-      <translation>The color of vertices being edited</translation>
+      <translation>Kolor edytowanych wierzchołków</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
-      <translation>The color of edges being edited</translation>
+      <translation>Kolor krawędzi edytowany</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>Kolor geometrii budowy w trybie edycji</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>Kolor w pełni zdefiniowanej geometrii w trybie edycji</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Kolor tekstu kursora</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Domyślny kolor kształtu</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>Domyślny kolor dla nowych kształtów</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Domyślna szerokość i kolor linii</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>Domyślny kolor linii dla nowych kształtów</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>Domyślna grubość linii dla nowych kształtów</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2071,7 +2162,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-      <translation>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;&lt;font face="Times New Roman"&gt; &lt;font size="+3"&gt; Czy wiesz...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
       <source>&amp;Show tips at start up</source>
@@ -2091,7 +2182,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Zamknij</translation>
+      <translation>Zamknij</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -2099,7 +2190,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -2125,22 +2216,54 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Canceled.</translation>
+      <source>Download</source>
+      <translation>Pobierz</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Anuluj</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Zamknij</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>Istnieje już plik o nazwie %1 w bieżącym katalogu. Czy zastąpić?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Nie można zapisać pliku %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Pobieranie %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Pobieranie anulowane.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Pobieranie nie powiodło się:%1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Pobrano %1 do bieżącego katalogu.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
       <source>Add icon</source>
-      <translation>Add icon</translation>
+      <translation>Dodaj ikonę</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
       <source>Input vector</source>
-      <translation>Input vector</translation>
+      <translation>Wprowadź wektor</translation>
     </message>
     <message>
       <source>Vector</source>
@@ -2164,6 +2287,13 @@ Specify another directory, please.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Prawa autorskie</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::MouseButtons</name>
     <message>
       <source>Mouse buttons</source>
@@ -2171,15 +2301,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Configuration</source>
-      <translation>Configuration</translation>
+      <translation>Konfiguracja</translation>
     </message>
     <message>
       <source>Selection:</source>
-      <translation>Selection:</translation>
+      <translation>Wybór:</translation>
     </message>
     <message>
       <source>Panning</source>
-      <translation>Panning</translation>
+      <translation>Panoramowanie</translation>
     </message>
     <message>
       <source>Rotation:</source>
@@ -2285,7 +2415,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>New unsigned item</translation>
+      <translation>Nowy nieoznaczony element</translation>
     </message>
     <message>
       <source>New Boolean item</source>
@@ -2340,11 +2470,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Center:</source>
-      <translation>Center:</translation>
+      <translation>Środek:</translation>
     </message>
     <message>
       <source>Pitch:</source>
-      <translation>Pitch:</translation>
+      <translation>Odstęp:</translation>
     </message>
     <message>
       <source>Roll:</source>
@@ -2352,23 +2482,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Yaw:</source>
-      <translation>Yaw:</translation>
+      <translation>Odchylenia:</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Rotation axis with angle</translation>
+      <translation>Oś obrotu z kątem</translation>
     </message>
     <message>
       <source>Euler angles</source>
-      <translation>Euler angles</translation>
+      <translation>Kąty Eulera</translation>
     </message>
     <message>
       <source>Apply placement changes immediately</source>
-      <translation>Apply placement changes immediately</translation>
+      <translation>Niezwłocznie zastosój zmiany położenia</translation>
     </message>
     <message>
       <source>Apply incremental changes to object placement</source>
-      <translation>Apply incremental changes to object placement</translation>
+      <translation>Zastosuj przyrostowe zmiany położenia obiektu</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -2387,7 +2517,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::PrintModel</name>
     <message>
       <source>Button</source>
-      <translation>Button</translation>
+      <translation>Przycisk</translation>
     </message>
     <message>
       <source>Command</source>
@@ -2413,7 +2543,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation>Inventor Tree</translation>
+      <translation>Drzewo konstruktora</translation>
     </message>
     <message>
       <source>Nodes</source>
@@ -2428,23 +2558,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Texture mapping</translation>
+      <translation>Mapowanie tekstury</translation>
     </message>
     <message>
       <source>Global</source>
-      <translation>Global</translation>
+      <translation>Globalne</translation>
     </message>
     <message>
       <source>Environment</source>
-      <translation>Environment</translation>
+      <translation>Środowisko</translation>
     </message>
     <message>
       <source>Image files (%1)</source>
-      <translation>Image files (%1)</translation>
+      <translation>Pliki obrazów (%1)</translation>
     </message>
     <message>
       <source>No image</source>
-      <translation>No image</translation>
+      <translation>Nie ma obrazu</translation>
     </message>
     <message>
       <source>The specified file is not a valid image file.</source>
@@ -2456,7 +2586,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>No active 3d view found.</source>
-      <translation>No active 3d view found.</translation>
+      <translation>Brak aktywnego widoku 3d.</translation>
     </message>
   </context>
   <context>
@@ -2490,7 +2620,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation> </translation>
     </message>
   </context>
   <context>
@@ -2590,11 +2720,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Go to end</source>
-      <translation>Go to end</translation>
+      <translation>Przejdź do końca</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
-      <translation>Redirect Python output</translation>
+      <translation>Przekieruj wyjście z Pythona</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
@@ -2818,7 +2948,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Scroll middle mouse button</translation>
+      <translation>Przewiń środkowy przycisk myszy</translation>
     </message>
   </context>
   <context>
@@ -2849,6 +2979,25 @@ Do you want to save your changes?</source>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Kierunek:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2875,7 +3024,91 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Close All</source>
-      <translation>Close All</translation>
+      <translation>Zamknij wszystkie</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Ręczne wyrównanie</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>Wyrównanie jest już w toku.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Wyrównanie[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Proszę wybierz co najmniej jeden punkt w lewym i prawym widoku</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Proszę, wybierz co najmniej %1 punktów w lewym i prawym widoku</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Proszę wybierz punkty w lewym oraz prawym widoku</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>Wyrównanie zakończone.</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>Wyrównanie zostało anulowane</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Za mało punktów wybranych w prawym widoku. Co najmniej %1 punkt(ów) jest potrzebny(ch).</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Za mało punktów wybranych w prawym widoku. Co najmniej %1 punkt(ów) jest potrzebny(ch).</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Różne liczby punktów wybrane w lewym i w prawym widoku.
+Na lewym widoku wybrano %1 punkt(ów),
+a na prawym widoku wybrano %2 punkt(ów).</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Spróbuj wyrównać grupy widoków</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>Wyrównanie nie powiodło się. Jak chcesz kontynuować?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Ponów</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Ignoruj</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Anuluj</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Różne liczby punktów wybrane w lewym i w prawym widoku. Na lewym widoku wybrano %1 punkt(ów) a na prawym widoku wybrano %2 punkt(ów).</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Wybrano punkt o współrzędnych (%1,%2,%3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>Nie wybrano żadnego punktu</translation>
     </message>
   </context>
   <context>
@@ -3004,11 +3237,11 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Unhandled std C++ exception.</source>
-      <translation>Unhandled std C++ exception.</translation>
+      <translation>Nieobsługiwany wyjątek std C++.</translation>
     </message>
     <message>
       <source>Word wrap</source>
-      <translation>Word wrap</translation>
+      <translation>Zawijanie wyrazów</translation>
     </message>
     <message>
       <source>&amp;Copy</source>
@@ -3021,6 +3254,10 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Select All</source>
       <translation>Zaznacz wszystko</translation>
+    </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Wyczyść konsolę</translation>
     </message>
   </context>
   <context>
@@ -3155,15 +3392,11 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskBoxPosition</name>
     <message>
       <source>Position</source>
-      <translation>Position</translation>
+      <translation>Pozycja</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
-    <message>
-      <source>Display mode:</source>
-      <translation>Tryb wyświetlania:</translation>
-    </message>
     <message>
       <source>Plot mode:</source>
       <translation>Tryb kreślenia:</translation>
@@ -3183,6 +3416,10 @@ Do you want to specify another directory?</source>
     <message>
       <source>Appearance</source>
       <translation>Wygląd</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Okno dokumentu:</translation>
     </message>
   </context>
   <context>
@@ -3204,14 +3441,26 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>edit selection</source>
-      <translation>edit selection</translation>
+      <translation>Edytuj zaznaczenia</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>Angielski</translation>
+      <source>Press left mouse button</source>
+      <translation>Naciśnij lewy przycisk myszy</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Naciśnij przycisk SHIFT</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Naciśnij przycisk ALT</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Naciśnij klawisz PgUp/PgDown</translation>
     </message>
   </context>
   <context>
@@ -3253,19 +3502,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Finish editing</source>
-      <translation>Finish editing</translation>
+      <translation>Zakończ edycję</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Finish editing object</translation>
+      <translation>Zakończ edycję obiektu</translation>
     </message>
     <message>
       <source>Activate document</source>
-      <translation>Activate document</translation>
+      <translation>Uaktywnij dokument</translation>
     </message>
     <message>
       <source>Activate document %1</source>
-      <translation>Activate document %1</translation>
+      <translation>Uaktywnij dokument %1</translation>
     </message>
   </context>
   <context>
@@ -3290,7 +3539,7 @@ Do you want to specify another directory?</source>
     <name>Position</name>
     <message>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formularz</translation>
     </message>
     <message>
       <source>X:</source>
@@ -3362,7 +3611,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Grid Snap in</source>
-      <translation>Grid Snap in</translation>
+      <translation>Przyciąganie do siatki</translation>
     </message>
   </context>
   <context>
@@ -3467,14 +3716,6 @@ Do you want to specify another directory?</source>
       <translation>Wystąpił błąd ogólny podczas ładowania warsztatu</translation>
     </message>
     <message>
-      <source>File not found</source>
-      <translation>Nie znaleziono pliku</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Nie można otworzyć pliku %1</translation>
-    </message>
-    <message>
       <source>Save views...</source>
       <translation>Zapisz widoki...</translation>
     </message>
@@ -3565,7 +3806,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>New unsigned item</source>
-      <translation>New unsigned item</translation>
+      <translation>Nowy nieoznaczony element</translation>
     </message>
     <message>
       <source>New float item</source>
@@ -3708,7 +3949,7 @@ Do you want to replace it?</source>
     </message>
     <message>
       <source>No OpenGL</source>
-      <translation>No OpenGL</translation>
+      <translation>Nie ma OpenGL</translation>
     </message>
     <message>
       <source>This system does not support OpenGL</source>
@@ -3729,7 +3970,7 @@ In order to load it Qt 4.4 or higher is required.</source>
     </message>
     <message>
       <source>Exporting PDF...</source>
-      <translation>Exporting PDF...</translation>
+      <translation>Eksportowanie PDF'a...</translation>
     </message>
     <message>
       <source>Wrong selection</source>
@@ -3747,7 +3988,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>New boolean item</source>
-      <translation>New boolean item</translation>
+      <translation>Nowy obiekt Boolean</translation>
     </message>
     <message>
       <source>Navigation styles</source>
@@ -3755,7 +3996,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigation</translation>
+      <translation>%1 nawigacji</translation>
     </message>
     <message>
       <source>Move annotation</source>
@@ -3768,8 +4009,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-      <translation>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</translation>
+      <translation>Dokument jest w trybie edycji, a zatem nie może być zamknięty w tej chwili. Musisz zakończyć albo anulować tryb edycji w panelu zadań.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Normalny widok</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Pole wyboru</translation>
     </message>
   </context>
   <context>
@@ -3833,6 +4084,21 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Edytuj</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Wyrównanie...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Wyrównaj zaznaczone obiekty</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdArrangeIcons</name>
     <message>
       <source>Window</source>
@@ -3840,7 +4106,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
-      <translation>Arrange &amp;Icons</translation>
+      <translation>Rozmieszczanie &amp;Ikon</translation>
     </message>
     <message>
       <source>Arrange Icons</source>
@@ -3855,7 +4121,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>Toggle axis cross</translation>
+      <translation>Przełącz oś przekroju</translation>
     </message>
   </context>
   <context>
@@ -3866,11 +4132,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Cascade</translation>
+      <translation>&amp; Kaskadowo</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Tile pragmatic</translation>
+      <translation>Płytka pragmatyczne</translation>
     </message>
   </context>
   <context>
@@ -3896,7 +4162,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>Close Al&amp;l</translation>
+      <translation>Zamknij wszystkie</translation>
     </message>
     <message>
       <source>Close all windows</source>
@@ -3926,7 +4192,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>C&amp;opy</translation>
+      <translation>K&amp;opiuj</translation>
     </message>
     <message>
       <source>Copy operation</source>
@@ -3946,21 +4212,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Cut out</source>
       <translation>Wytnij</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Edytuj</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Powiel zaznaczone</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Umieść kopie wybranych obiektów do aktywnego dokumentu</translation>
     </message>
   </context>
   <context>
@@ -3986,11 +4237,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>View turntable...</source>
-      <translation>View turntable...</translation>
+      <translation>Widok obrotowy...</translation>
     </message>
     <message>
       <source>View turntable</source>
-      <translation>View turntable</translation>
+      <translation>Widok obrotowy</translation>
     </message>
   </context>
   <context>
@@ -4016,7 +4267,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Pozwala wykonać zarejestrowane makro</translation>
+      <translation>Otwiera okno dialogowe umożliwiające uruchomienie nagranego makra</translation>
     </message>
     <message>
       <source>Macro</source>
@@ -4042,7 +4293,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>&amp;Macro recording ...</translation>
+      <translation>Rejestrowanie &amp;Makr...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
@@ -4095,7 +4346,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Toggles this window</translation>
+      <translation>Włącz/wyłącz to okno</translation>
     </message>
   </context>
   <context>
@@ -4106,7 +4357,41 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Draw style</translation>
+      <translation>Styl Draw</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Edytuj</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Powiel zaznaczone</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Umieść kopie wybranych obiektów do aktywnego dokumentu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Edytuj</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Przełącz tryb &amp;Edycji</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Przełącza tryb edycji zaznaczonego obiektu</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Wejście lub wyjście do trybu edycji zaznaczonego obiektu</translation>
     </message>
   </context>
   <context>
@@ -4124,8 +4409,27 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Eksport obiektu w aktywnym dokumencie</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Obsługiwane formaty</translation>
+      <source>No selection</source>
+      <translation>Brak wyboru</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Najpierw wybierz obiekty, które chcesz wyeksportować.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Narzędzia</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Wykres zależności...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Pokaż wykres zależności obiektów w aktywnym dokumencie</translation>
     </message>
   </context>
   <context>
@@ -4140,7 +4444,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Recompute feature or document</translation>
+      <translation>Ponowne obliczenie funkcji lub dokumentu</translation>
     </message>
   </context>
   <context>
@@ -4166,7 +4470,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Freeze display</source>
-      <translation>Freeze display</translation>
+      <translation>Zamroź obraz</translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
@@ -4185,7 +4489,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Hide all objects in the document</source>
-      <translation>Hide all objects in the document</translation>
+      <translation>Ukryj wszystkie obiekty w dokumencie</translation>
     </message>
   </context>
   <context>
@@ -4211,7 +4515,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Import...</source>
-      <translation>&amp;Import...</translation>
+      <translation>&amp;Importuj...</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
@@ -4234,11 +4538,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Debug macro</source>
-      <translation>Debug macro</translation>
+      <translation>Debugowanie makra</translation>
     </message>
     <message>
       <source>Start debugging of macro</source>
-      <translation>Start debugging of macro</translation>
+      <translation>Uruchom debugowanie makra</translation>
     </message>
   </context>
   <context>
@@ -4249,7 +4553,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Step over</source>
-      <translation>Step over</translation>
+      <translation>Przejdź</translation>
     </message>
   </context>
   <context>
@@ -4260,11 +4564,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Stop debugging</source>
-      <translation>Stop debugging</translation>
+      <translation>Zatrzymaj debugowanie</translation>
     </message>
     <message>
       <source>Stop debugging of macro</source>
-      <translation>Stop debugging of macro</translation>
+      <translation>Zatrzymaj debugowanie makra</translation>
     </message>
   </context>
   <context>
@@ -4279,7 +4583,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Stop the macro recording session</source>
-      <translation>Stop the macro recording session</translation>
+      <translation>Zakończ sesję nagrywania makra</translation>
     </message>
   </context>
   <context>
@@ -4300,12 +4604,12 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Narzędzia</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Zmierz odległość</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Zmierz odległość między dwoma wybranymi obiektami</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Pomiar odległości</translation>
     </message>
   </context>
   <context>
@@ -4316,19 +4620,19 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Merge project...</source>
-      <translation>Merge project...</translation>
+      <translation>Scal projekt...</translation>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Merge project</translation>
+      <translation>Scal projekt</translation>
     </message>
     <message>
       <source>%1 document (*.fcstd)</source>
-      <translation>%1 document (*.fcstd)</translation>
+      <translation>%1 dokument (*.fcstd)</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
-      <translation>Cannot merge project with itself.</translation>
+      <translation>Nie można scalić projektu z samym sobą.</translation>
     </message>
   </context>
   <context>
@@ -4355,21 +4659,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Show help to the application</source>
       <translation>Pomoc</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Pomoc</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Podręczniki Python</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Pokaż dokumentację Pythona</translation>
     </message>
   </context>
   <context>
@@ -4433,7 +4722,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Placement...</source>
-      <translation>Placement...</translation>
+      <translation>Położenie...</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
@@ -4478,7 +4767,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>&amp;Print preview...</translation>
+      <translation>&amp;Podgląd wydruku...</translation>
     </message>
     <message>
       <source>Print the document</source>
@@ -4486,7 +4775,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Print preview</source>
-      <translation>Print preview</translation>
+      <translation>Podgląd wydruku</translation>
     </message>
   </context>
   <context>
@@ -4512,11 +4801,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Project utility...</source>
-      <translation>Project utility...</translation>
+      <translation>Narzędzia projektu...</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation>Utility to extract or create project files</translation>
+      <translation>Narzędzie do wyodrębnienia lub tworzenia plików projektu w programie</translation>
     </message>
   </context>
   <context>
@@ -4598,11 +4887,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Refresh</source>
-      <translation>&amp;Refresh</translation>
+      <translation>&amp;Odśwież</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation>Recomputes the current active document</translation>
+      <translation>Ponownie obliczenie bieżącego aktywnego dokumentu</translation>
     </message>
   </context>
   <context>
@@ -4647,7 +4936,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Scene inspector</source>
-      <translation>Scene inspector</translation>
+      <translation>Inspektor sceny</translation>
     </message>
   </context>
   <context>
@@ -4722,7 +5011,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Toggles the status bar</translation>
+      <translation>Włącz/Wyłącz pasek stanu</translation>
     </message>
   </context>
   <context>
@@ -4733,11 +5022,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Texture mapping...</source>
-      <translation>Texture mapping...</translation>
+      <translation>Mapowanie tekstury...</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Texture mapping</translation>
+      <translation>Mapowanie tekstury</translation>
     </message>
   </context>
   <context>
@@ -4748,7 +5037,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>&amp;Tile</translation>
+      <translation>&amp; Sąsiadująco</translation>
     </message>
     <message>
       <source>Tile the windows</source>
@@ -4763,7 +5052,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle breakpoint</source>
-      <translation>Toggle breakpoint</translation>
+      <translation>Przełącz punkt przerwania</translation>
     </message>
   </context>
   <context>
@@ -4778,7 +5067,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Toggles clipping plane for active view</translation>
+      <translation>Przełącza przycinania płaszczyzny dla aktywnego widoku</translation>
     </message>
   </context>
   <context>
@@ -4789,11 +5078,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Toggle navigation/Edit mode</translation>
+      <translation>Przełącz tryb nawigacji/edycji</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Toggle between navigation and edit mode</translation>
+      <translation>Przełączanie między trybem nawigacji i edycji</translation>
     </message>
   </context>
   <context>
@@ -4804,11 +5093,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle all objects</source>
-      <translation>Toggle all objects</translation>
+      <translation>Odwróć widoczność wszystkich obiektów</translation>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Włącza widoczność wszystkich obiektów w aktywnym dokumencie</translation>
+      <translation>Odwraca widoczność wszystkich obiektów w aktywnym dokumencie</translation>
     </message>
   </context>
   <context>
@@ -4819,11 +5108,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle selectability</source>
-      <translation>Toggle selectability</translation>
+      <translation>Przełącznik wyboru</translation>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Toggles the property of the objects to get selected in the 3D-View</translation>
+      <translation>Przełącza własność obiektów, aby uzyskać wybrany obiekt w widoku 3D</translation>
     </message>
   </context>
   <context>
@@ -4834,11 +5123,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Toggle visibility</translation>
+      <translation>Pokaż / Ukryj</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
-      <translation>Toggles visibility</translation>
+      <translation>Przełącza widoczność</translation>
     </message>
   </context>
   <context>
@@ -4853,7 +5142,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Toggles this window</translation>
+      <translation>Włącz/wyłącz to okno</translation>
     </message>
   </context>
   <context>
@@ -4864,7 +5153,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Transform...</source>
-      <translation>Transform...</translation>
+      <translation>Przekształcanie...</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
@@ -4879,7 +5168,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Go to selection</source>
-      <translation>Go to selection</translation>
+      <translation>Przejdź do wyboru</translation>
     </message>
     <message>
       <source>Scroll to first selected item</source>
@@ -4898,7 +5187,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Undo exactly one action</translation>
+      <translation>Cofnij dokładnie jedną czynność</translation>
     </message>
   </context>
   <context>
@@ -4909,11 +5198,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Dock views</source>
-      <translation>Dock views</translation>
+      <translation>Widoki stacji dokującej</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
-      <translation>Dock all top-level views</translation>
+      <translation>Zadokuj wszystkie widoki najwyższego poziomu</translation>
     </message>
   </context>
   <context>
@@ -4928,7 +5217,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Set to axometric view</source>
-      <translation>Set to axometric view</translation>
+      <translation>Ustaw widok aksonometryczny</translation>
     </message>
   </context>
   <context>
@@ -4939,11 +5228,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Bottom</translation>
+      <translation>U dołu</translation>
     </message>
     <message>
       <source>Set to bottom view</source>
-      <translation>Set to bottom view</translation>
+      <translation>Ustaw widok z dołu</translation>
     </message>
   </context>
   <context>
@@ -4958,7 +5247,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Creates a new  view window for the active document</source>
-      <translation>Creates a new  view window for the active document</translation>
+      <translation>Tworzy nowe okno widoku aktywnego dokumentu</translation>
     </message>
   </context>
   <context>
@@ -4969,11 +5258,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Inventor example #1</translation>
+      <translation>Inventor Przykład #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
-      <translation>Shows a 3D texture with manipulator</translation>
+      <translation>Pokazuje trójwymiarową teksturę z manipulatorem</translation>
     </message>
   </context>
   <context>
@@ -4984,11 +5273,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>Inventor example #2</translation>
+      <translation>Inventor Przykład #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
-      <translation>Shows spheres and drag-lights</translation>
+      <translation>Pokazuje sfery oraz przeciągane oświetlenie</translation>
     </message>
   </context>
   <context>
@@ -4999,7 +5288,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>Inventor example #3</translation>
+      <translation>Inventor Przykład #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
@@ -5018,7 +5307,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Dopasuj zawartość ekranu do Widoku</translation>
+      <translation>Dopasuj rozmiar do okna</translation>
     </message>
   </context>
   <context>
@@ -5048,7 +5337,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Ustaw Widok z przodu</translation>
+      <translation>Ustaw widok z przodu</translation>
     </message>
   </context>
   <context>
@@ -5059,11 +5348,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Issue camera position</source>
-      <translation>Issue camera position</translation>
+      <translation>Problem z położeniem kamery</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Issue the camera position to the console and to a macro, to easily recall this position</translation>
+      <translation>Wydanie położenia kamery do konsoli i makra, aby łatwo przypominają to stanowisko</translation>
     </message>
   </context>
   <context>
@@ -5074,11 +5363,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Stereo Interleaved Columns</source>
-      <translation>Stereo Interleaved Columns</translation>
+      <translation>Widok z przeplotem kolumn</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Switch stereo viewing to Interleaved Columns</translation>
+      <translation>Przełączyć wyświetlany widok z przeplotem kolumn</translation>
     </message>
   </context>
   <context>
@@ -5089,11 +5378,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Stereo Interleaved Rows</source>
-      <translation>Stereo Interleaved Rows</translation>
+      <translation>Widok z przeplotem wierszy</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Switch stereo viewing to Interleaved Rows</translation>
+      <translation>Przełączyć wyświetlanie widok z przeplotem wierszy</translation>
     </message>
   </context>
   <context>
@@ -5108,7 +5397,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Switch stereo viewing off</translation>
+      <translation>Przełącznik widoku wyświetlanie wyłączone</translation>
     </message>
   </context>
   <context>
@@ -5119,11 +5408,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Stereo quad buffer</translation>
+      <translation>Widok buforu czterordzeniowy</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Switch stereo viewing to quad buffer</translation>
+      <translation>Przełączyć wyświetlanie widoku do buforu czterordzeniowy</translation>
     </message>
   </context>
   <context>
@@ -5138,7 +5427,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/green</source>
-      <translation>Switch stereo viewing to red/green</translation>
+      <translation>Przełączyć wyświetlanie widoku czerwony/zielony</translation>
     </message>
   </context>
   <context>
@@ -5179,11 +5468,41 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Right</source>
-      <translation>Prawa</translation>
+      <translation>Prawo</translation>
     </message>
     <message>
       <source>Set to right view</source>
       <translation>Ustaw widok z prawej</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Normalny widok</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Obrócić w lewo</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Obrócić widok o 90 ° w lewo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Normalny widok</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Obróć w prawo</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Obróć o 90Â° zgodnie z ruchem wskazówek</translation>
     </message>
   </context>
   <context>
@@ -5224,7 +5543,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Windows...</source>
-      <translation>&amp;Windows...</translation>
+      <translation>Okna...</translation>
     </message>
     <message>
       <source>Windows list</source>
@@ -5295,7 +5614,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Box zoom</source>
-      <translation>Box zoom</translation>
+      <translation>Powiększ pole</translation>
     </message>
   </context>
   <context>
@@ -5305,12 +5624,12 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Normalny widok</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Tryb wyświetlania</translation>
+      <source>Document window</source>
+      <translation>Okno dokumentu</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Display the active view either in fullscreen, in undocked or docked mode</translation>
+      <translation>Wyświetlanie aktywnego widoku zarówno na pełnym ekranie, w trybie oddokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -5354,19 +5673,47 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>As is</translation>
+      <translation>Jest to</translation>
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normal mode</translation>
+      <translation>Tryb normalny</translation>
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Wireframe</translation>
+      <translation>Szkielet</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Wireframe mode</translation>
+      <translation>Tryb Szkielet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Graphviz nie znaleziono</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Graphviz nie został odnaleziony w systemie. Czy chcesz określić jego ścieżkę instalacji, jeśli jest już zainstalowany?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Ścieżka instalacji Graphviz</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Wykres zależności</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Graphviz nie powiodło się</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Graphviz nie można utworzyć pliku obrazu</translation>
     </message>
   </context>
   <context>
@@ -5405,7 +5752,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
-      <translation>&amp;Macro</translation>
+      <translation>&amp; Makra</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
@@ -5458,7 +5805,8 @@ p, li { white-space: pre-wrap; }
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</translation>
     </message>
     <message>
       <source>Choose the style of the Task Panel</source>

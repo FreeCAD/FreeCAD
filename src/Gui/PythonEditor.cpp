@@ -25,13 +25,16 @@
 #ifndef _PreComp_
 # include <QContextMenuEvent>
 # include <QMenu>
+# include <QPainter>
 # include <QShortcut>
 # include <QTextCursor>
 #endif
 
 #include "PythonEditor.h"
+#include "PythonDebugger.h"
 #include "Application.h"
 #include "BitmapFactory.h"
+#include "Macro.h"
 #include "FileDialog.h"
 #include "DlgEditorImp.h"
 
@@ -45,8 +48,19 @@ namespace Gui {
 struct PythonEditorP
 {
     QMap<QString, QColor> colormap; // Color map
+    int   debugLine;
+    QRect debugRect;
+    QPixmap breakpoint;
+    QPixmap debugMarker;
+    QString filename;
+    PythonDebugger* debugger;
     PythonEditorP()
+        : debugLine(-1),
+          breakpoint(QLatin1String(":/icons/breakpoint.png")),
+          debugMarker(QLatin1String(":/icons/debug-marker.png"))
     {
+        debugger = Application::Instance->macroManager()->debugger();
+
         colormap[QLatin1String("Text")] = Qt::black;
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
@@ -61,7 +75,7 @@ struct PythonEditorP
         colormap[QLatin1String("Operator")] = QColor(160, 160, 164);
         colormap[QLatin1String("Python output")] = QColor(170, 170, 127);
         colormap[QLatin1String("Python error")] = Qt::red;
-        colormap[QLatin1String("Line")] = QColor(224,224,224);
+        colormap[QLatin1String("Current line highlight")] = QColor(224,224,224);
     }
 };
 } // namespace Gui
@@ -98,18 +112,61 @@ PythonEditor::~PythonEditor()
     delete d;
 }
 
+void PythonEditor::setFileName(const QString& fn)
+{
+    d->filename = fn;
+}
+
+void PythonEditor::startDebug()
+{
+    if (d->debugger->start()) {
+        d->debugger->runFile(d->filename);
+        d->debugger->stop();
+    }
+}
+
+void PythonEditor::toggleBreakpoint()
+{
+    QTextCursor cursor = textCursor();
+    int line = cursor.blockNumber() + 1;
+    d->debugger->toggleBreakpoint(line, d->filename);
+    getMarker()->update();
+}
+
+void PythonEditor::showDebugMarker(int line)
+{
+    d->debugLine = line;
+    getMarker()->update();
+    QTextCursor cursor = textCursor();
+    cursor.movePosition(QTextCursor::StartOfBlock);
+    int cur = cursor.blockNumber() + 1;
+    if (cur > line) {
+        for (int i=line; i<cur; i++)
+            cursor.movePosition(QTextCursor::Up);
+    }
+    else if (cur < line) {
+        for (int i=cur; i<line; i++)
+            cursor.movePosition(QTextCursor::Down);
+    }
+    setTextCursor(cursor);
+}
+
+void PythonEditor::hideDebugMarker()
+{
+    d->debugLine = -1;
+    getMarker()->update();
+}
+
 void PythonEditor::drawMarker(int line, int x, int y, QPainter* p)
 {
-#if 0
-    Breakpoint bp = _dbg->getBreakpoint(fileName());
+    Breakpoint bp = d->debugger->getBreakpoint(d->filename);
     if (bp.checkLine(line)) {
-        p->drawPixmap(x, y, breakpoint);
+        p->drawPixmap(x, y, d->breakpoint);
     }
-    if (m_debugLine == line) {
-        p->drawPixmap(x, y+2, debugMarker);
-        debugRect = QRect(x, y+2, debugMarker.width(), debugMarker.height());
+    if (d->debugLine == line) {
+        p->drawPixmap(x, y+2, d->debugMarker);
+        d->debugRect = QRect(x, y+2, d->debugMarker.width(), d->debugMarker.height());
     }
-#endif
 }
 
 void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
@@ -180,21 +237,21 @@ public:
     PythonSyntaxHighlighterP()
     {
         keywords << QLatin1String("and") << QLatin1String("as")
-                 << QLatin1String("assert")
-                 << QLatin1String("break") << QLatin1String("class")
-                 << QLatin1String("continue") << QLatin1String("def")
-                 << QLatin1String("del") << QLatin1String("elif")
-                 << QLatin1String("else") << QLatin1String("except")
-                 << QLatin1String("exec") << QLatin1String("finally")
-                 << QLatin1String("for") << QLatin1String("from")
-                 << QLatin1String("global") << QLatin1String("if")
-                 << QLatin1String("import") << QLatin1String("in")
-                 << QLatin1String("is") << QLatin1String("lambda")
-                 << QLatin1String("None") << QLatin1String("not")
-                 << QLatin1String("or") << QLatin1String("pass")
-                 << QLatin1String("print") << QLatin1String("raise")
-                 << QLatin1String("return") << QLatin1String("try")
-                 << QLatin1String("while") << QLatin1String("yield");
+                 << QLatin1String("assert") << QLatin1String("break")
+                 << QLatin1String("class") << QLatin1String("continue")
+                 << QLatin1String("def") << QLatin1String("del")
+                 << QLatin1String("elif") << QLatin1String("else")
+                 << QLatin1String("except") << QLatin1String("exec")
+                 << QLatin1String("finally") << QLatin1String("for")
+                 << QLatin1String("from") << QLatin1String("global")
+                 << QLatin1String("if") << QLatin1String("import")
+                 << QLatin1String("in") << QLatin1String("is")
+                 << QLatin1String("lambda") << QLatin1String("None")
+                 << QLatin1String("not") << QLatin1String("or")
+                 << QLatin1String("pass") << QLatin1String("print")
+                 << QLatin1String("raise") << QLatin1String("return")
+                 << QLatin1String("try") << QLatin1String("while")
+                 << QLatin1String("with") << QLatin1String("yield");
     }
 
     QStringList keywords;

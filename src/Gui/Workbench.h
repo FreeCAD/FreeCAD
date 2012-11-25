@@ -144,6 +144,8 @@ protected:
     virtual ToolBarItem* setupCommandBars() const;
     /** Returns a DockWindowItems structure of dock windows this workbench. */
     virtual DockWindowItems* setupDockWindows() const;
+
+    friend class PythonWorkbench;
 };
 
 /**
@@ -217,17 +219,17 @@ protected:
 };
 
 /**
- * The PythonWorkbench class allows the manipulation of the workbench from Python.
+ * The PythonBaseWorkbench class allows the manipulation of the workbench from Python.
  * Therefore PythonWorkbenchPy provides the required Python interface.
  * @author Werner Mayer
  */
-class GuiExport PythonWorkbench : public StdWorkbench
+class GuiExport PythonBaseWorkbench : public Workbench
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PythonWorkbench();
-    ~PythonWorkbench();
+    PythonBaseWorkbench();
+    ~PythonBaseWorkbench();
     /**
      * Creates and returns immediately the corresponding Python workbench object.
      */
@@ -268,13 +270,47 @@ protected:
     MenuItem* setupMenuBar() const;
     ToolBarItem* setupToolBars() const;
     ToolBarItem* setupCommandBars() const;
+    DockWindowItems* setupDockWindows() const;
 
-private:
+protected:
     MenuItem* _menuBar;
     MenuItem* _contextMenu;
     ToolBarItem* _toolBar;
     ToolBarItem* _commandBar;
     Base::PyObjectBase* _workbenchPy;
+};
+
+class GuiExport PythonBlankWorkbench : public PythonBaseWorkbench
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PythonBlankWorkbench();
+    ~PythonBlankWorkbench();
+};
+
+/**
+ * The PythonWorkbench class allows the manipulation of the workbench from Python.
+ * Therefore PythonWorkbenchPy provides the required Python interface.
+ * @author Werner Mayer
+ */
+class GuiExport PythonWorkbench : public PythonBaseWorkbench
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PythonWorkbench();
+    ~PythonWorkbench();
+
+    /** Defines the standard context menu. */
+    virtual void setupContextMenu(const char* recipient, MenuItem*) const;
+    virtual void createMainWindowPopupMenu(MenuItem*) const;
+
+protected:
+    MenuItem* setupMenuBar() const;
+    ToolBarItem* setupToolBars() const;
+    ToolBarItem* setupCommandBars() const;
+    DockWindowItems* setupDockWindows() const;
 };
 
 } // namespace Gui

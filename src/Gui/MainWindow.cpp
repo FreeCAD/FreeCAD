@@ -36,6 +36,7 @@
 # include <QLabel>
 # include <QMdiSubWindow>
 # include <QMessageBox>
+# include <QPainter>
 # include <QSettings>
 # include <QSignalMapper>
 # include <QStatusBar>
@@ -51,6 +52,7 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 #include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Reader.h>
@@ -271,9 +273,12 @@ MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
     d->mdiArea->setTabPosition(QTabWidget::South);
     d->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = d->mdiArea->findChild<QTabBar*>();
-    if (tab) { 
+    if (tab) {
+        // 0000636: Two documents close
+#if QT_VERSION < 0x040800
         connect(tab, SIGNAL(tabCloseRequested(int)),
                 this, SLOT(tabCloseRequested(int)));
+#endif
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
@@ -729,7 +734,7 @@ void MainWindow::addWindow(MDIView* view)
 #endif
 #endif
     connect(view, SIGNAL(message(const QString&, int)),
-            statusBar(), SLOT(showMessage(const QString&, int)));
+            this, SLOT(showMessage(const QString&, int)));
     connect(this, SIGNAL(windowStateChanged(MDIView*)),
             view, SLOT(windowStateChanged(MDIView*)));
 
@@ -794,7 +799,7 @@ void MainWindow::removeWindow(Gui::MDIView* view)
 {
     // free all connections
     disconnect(view, SIGNAL(message(const QString&, int)),
-               statusBar(), SLOT(message(const QString&, int )));
+               this, SLOT(showMessage(const QString&, int )));
     disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
                view, SLOT(windowStateChanged(MDIView*)));
     view->removeEventFilter(this);
@@ -1148,7 +1153,19 @@ void MainWindow::showMainWindow()
 void MainWindow::delayedStartup()
 {
     // processing all command line files
-    App::Application::processCmdLineFiles();
+    try {
+        App::Application::processCmdLineFiles();
+    }
+    catch (const Base::SystemExitException&) {
+        throw;
+    }
+
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    std::map<std::string,std::string>::const_iterator it = cfg.find("StartHidden");
+    if (it != cfg.end()) {
+        QApplication::quit();
+        return;
+    }
 
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
@@ -1302,7 +1319,42 @@ QPixmap MainWindow::splashImage() const
     if (fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
     if (splash_image.isNull())
-        splash_image = Gui::BitmapFactory().pixmap(App::Application::Config()["SplashPicture"].c_str());
+        splash_image = Gui::BitmapFactory().pixmap(App::Application::Config()["SplashScreen"].c_str());
+
+    // include application name and version number
+    std::map<std::string,std::string>::const_iterator tc = App::Application::Config().find("SplashInfoColor");
+    if (tc != App::Application::Config().end()) {
+        QString title = qApp->applicationName();
+        QString major   = QString::fromAscii(App::Application::Config()["BuildVersionMajor"].c_str());
+        QString minor   = QString::fromAscii(App::Application::Config()["BuildVersionMinor"].c_str());
+        QString version = QString::fromAscii("%1.%2").arg(major).arg(minor);
+
+        QPainter painter;
+        painter.begin(&splash_image);
+        QFont fontExe = painter.font();
+        fontExe.setPointSize(20);
+        QFontMetrics metricExe(fontExe);
+        int l = metricExe.width(title);
+        int w = splash_image.width();
+        int h = splash_image.height();
+
+        QFont fontVer = painter.font();
+        fontVer.setPointSize(12);
+        QFontMetrics metricVer(fontVer);
+        int v = metricVer.width(version);
+
+        QColor color;
+        color.setNamedColor(QString::fromAscii(tc->second.c_str()));
+        if (color.isValid()) {
+            painter.setPen(color);
+            painter.setFont(fontExe);
+            painter.drawText(w-(l+v+10),h-20, title);
+            painter.setFont(fontVer);
+            painter.drawText(w-(v+5),h-20, version);
+            painter.end();
+        }
+    }
+
     return splash_image;
 }
 
@@ -1500,7 +1552,16 @@ void MainWindow::showMessage (const QString& message, int timeout)
 {
     QFontMetrics fm(statusBar()->font());
     QString msg = fm.elidedText(message, Qt::ElideMiddle, this->width()/2);
+#if QT_VERSION != 0x040801
     this->statusBar()->showMessage(msg, timeout);
+#else
+    //#0000665: There is a crash under Ubuntu 12.04 (Qt 4.8.1)
+    QMetaObject::invokeMethod(statusBar(), "showMessage",
+        Qt::QueuedConnection,
+        QGenericReturnArgument(),
+        Q_ARG(QString,msg),
+        Q_ARG(int, timeout));
+#endif
 }
 
 // -------------------------------------------------------------

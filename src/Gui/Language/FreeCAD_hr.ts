@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Dostupne:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Odabrane:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Dodaj</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Ukloniti</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Pomakni gore</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Pomakni dolje</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Objekt koji se pomiće</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>ksirani objekt</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -159,6 +197,10 @@
     <message>
       <source>License...</source>
       <translation>Licenca ...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Kopiraj u međuspremnik</translation>
     </message>
   </context>
   <context>
@@ -709,10 +751,6 @@ Please define another shortcut.</source>
       <translation>Pregled</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Prikaz:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>nacrt:</translation>
     </message>
@@ -735,6 +773,10 @@ Please define another shortcut.</source>
     <message>
       <source>Color plot:</source>
       <translation>Boja grafa:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Prozor dokumenta:</translation>
     </message>
   </context>
   <context>
@@ -1483,6 +1525,14 @@ Specify another directory, please.</source>
       <source>Invert zoom</source>
       <translation>Invertiraj zumiranje</translation>
     </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Približavaj na kursor</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Korak prilikom približavanja</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -1723,6 +1773,10 @@ Specify another directory, please.</source>
       <source>Items</source>
       <translation>Jedinice</translation>
     </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Osvjetljenje trenutne linije</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
@@ -1957,6 +2011,14 @@ Specify another directory, please.</source>
       <source>Macro path</source>
       <translation>Makro put</translation>
     </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>Generalne Macro opcije</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Izvrti Macro u lokalnom okruženju</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -2048,20 +2110,48 @@ Specify another directory, please.</source>
       <translation>Potpuno ograničena geometrija</translation>
     </message>
     <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>Boja geometrije za konstrukciju prilikom rada</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>Boja potpuno ograničene geometrije prilikom rada</translation>
-    </message>
-    <message>
       <source>The color of vertices being edited</source>
       <translation>Boja vrhova prilikom uređivanja</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
       <translation>Boja rubova prilikom uređivanja</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>Boja geometrije za konstrukciju prilikom rada</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>Boja potpuno ograničene geometrije u načinu rada</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Boja teksta na kursoru</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Zadana boja oblika</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>Zadana boja za nove oblike</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Zadana debljina i bija linije</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>Zadana boja linije za nove objekte</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>Zadana debljina linije za nove objekte</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2125,8 +2215,40 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Otkazano.</translation>
+      <source>Download</source>
+      <translation>Preuzmi</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Otkazati</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Zatvori</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>Več postoji datoteka pod imenom %1 u trenutnom direktoriju. Prepiši?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Nemoguće spremiti dokument %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Preuzimam %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Preuzimanje otkazano.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Preuzimanje nije uspjelo: %1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Preuzet %1 u trenutni direktorij.</translation>
     </message>
   </context>
   <context>
@@ -2161,6 +2283,13 @@ Specify another directory, please.</source>
     <message>
       <source>OK</source>
       <translation>U redu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Autorsko pravo</translation>
     </message>
   </context>
   <context>
@@ -2356,7 +2485,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Rotation axis with angle</translation>
+      <translation>Os rotacije sa kutom</translation>
     </message>
     <message>
       <source>Euler angles</source>
@@ -2850,6 +2979,25 @@ Do you want to save your changes?</source>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Smjer:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2877,6 +3025,91 @@ Do you want to save your changes?</source>
     <message>
       <source>Close All</source>
       <translation>Zatvori sve</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>učno poravnavanje</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>Poravnavanje se trenutno izvršava.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Poravnavanje[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Molimo odaberite barem jedan vrh sa lijeve i desne strane</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Molimo odaberite barem jedan %1 vrh sa lijeve i desne strane</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Molimo odaberite točke sa lijeve i desne strane</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>Poravnavanje dovršeno</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>Poravnavanje otkazano</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Premalo točaka je odabrano sa lijeve strane. Barem %1 je potrebno.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Premalo točaka je odabrano sa desne strane. Barem %1 je potrebno.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Različit broj vrhova je odabran sa lijeve strane.
+Lijevo je odabrano %1 vrhova,
+Desno je odabrano %2 vrhova.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Pokušaj poravnati grupe pogleda</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>Poravnavanje nije uspjelo.
+Kako želite nastaviti?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Ponovi</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Zanemari</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Prekini</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Različit broj vrhova je odabran sa lijeve strane. Lijevo je odabrano %1 vrhova, a desno je odabrano %2 vrhova.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Odabran vrh (%1, %2, %3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>Ni jedan vrh nije odabran</translation>
     </message>
   </context>
   <context>
@@ -3022,6 +3255,10 @@ Do you want to exit without saving your data?</source>
       <source>Select All</source>
       <translation>Označi sve</translation>
     </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Makni konsolu</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -3165,10 +3402,6 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-      <source>Display mode:</source>
-      <translation>Prikaz:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>nacrt:</translation>
     </message>
@@ -3187,6 +3420,10 @@ Do you want to specify another directory?</source>
     <message>
       <source>Appearance</source>
       <translation>Izgled</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Prozor dokumenta:</translation>
     </message>
   </context>
   <context>
@@ -3212,10 +3449,22 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>Engleski</translation>
+      <source>Press left mouse button</source>
+      <translation>Pritisnite lijevu tipku miša</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Pritisni SHIFT</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Pritisni ALT</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Pritisni PgUp/PgDown</translation>
     </message>
   </context>
   <context>
@@ -3469,14 +3718,6 @@ Do you want to specify another directory?</source>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>Došlo je do pogreške tijekom učitavanja radnog stola</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>Datoteka nije pronađena</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Ne mogu otvoriti datoteku %1</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -3779,6 +4020,17 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardni pogled</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Pravokutno odabiranje</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
@@ -3836,6 +4088,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Activate previous window</source>
       <translation>Aktiviraj prethodni prozor</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Uredi</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Poravnavanje...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Poravnaj odabrane objekte</translation>
     </message>
   </context>
   <context>
@@ -3952,21 +4219,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Cut out</source>
       <translation>Izrezati</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Uredi</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Udvostruči odabir</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Stavilja kopije odabranih objekata na aktivni dokument</translation>
     </message>
   </context>
   <context>
@@ -4112,7 +4364,41 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Draw style</translation>
+      <translation>Stil crtanja</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Uredi</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Udvostruči odabir</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Stavilja kopije odabranih objekata na aktivni dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Uredi</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Uključi/isključi mod rada</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Uključuje ili isključuje mod rada na odabranom objektu</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Započinje ili završava mod rada na odabranom objektu</translation>
     </message>
   </context>
   <context>
@@ -4130,8 +4416,27 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Izvoz objekta u aktivni dokument</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Podržani formati</translation>
+      <source>No selection</source>
+      <translation>Nema odabira</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Molimo prvo odaberite objekte koje želite izvesti.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Alati</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Graf ovisnosti...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Prikazuje graf ovisnosti objekata u aktivnom dokumentu</translation>
     </message>
   </context>
   <context>
@@ -4306,12 +4611,12 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Alati</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Izmjeri udaljenost</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Mjeri udaljenost između dvaju odabranih objekata</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mjerenje udaljenosti</translation>
     </message>
   </context>
   <context>
@@ -4361,21 +4666,6 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Show help to the application</source>
       <translation>Pokaži pomoć za primjenu</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Pomoć</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Python priručnici</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Pokaži Python dokumentaciju</translation>
     </message>
   </context>
   <context>
@@ -4900,7 +5190,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Undo</source>
-      <translation>Poni&amp;šti</translation>
+      <translation>&amp;Poništi</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
@@ -5193,6 +5483,36 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardni pogled</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Zaokreni lijevo</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Zaokreni pogled za 90° u smjeru obrnutom od kazaljke na satu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardni pogled</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Zaokreni desno</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Zaokreni pogled za 90° u smjeru kazaljke na satu</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -5311,8 +5631,8 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>Standardni pogled</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Način prikaza</translation>
+      <source>Document window</source>
+      <translation>Prozor dokumenta</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5360,19 +5680,48 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>As is</translation>
+      <translation>Kao što je</translation>
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normal mode</translation>
+      <translation>Normalni mod</translation>
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Wireframe</translation>
+      <translation>Linijski okvir</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Wireframe mode</translation>
+      <translation>Linijski okvir mod</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Graphviz nije pronađen</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Graphviz nije pronađen na vašem sustavu.
+Da li želite unijeti putanju instalacije ako ona postoji?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Grpahviz instalacijska putanja</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Graf ovisnosti</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Graphviz nije uspio</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Graphviz nije uspio pronaći datoteku slike</translation>
     </message>
   </context>
   <context>

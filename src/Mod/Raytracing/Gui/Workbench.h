@@ -36,13 +36,12 @@ class Workbench : public Gui::StdWorkbench
     TYPESYSTEM_HEADER();
 
 public:
-  Workbench();
-  virtual ~Workbench();
+    Workbench();
+    virtual ~Workbench();
 
 protected:
-  Gui::MenuItem* setupMenuBar() const;
-  //Gui::ToolBarItem* setupToolBars() const;
-  //Gui::ToolBarItem* setupCommandBars() const;
+    Gui::MenuItem* setupMenuBar() const;
+    Gui::ToolBarItem* setupToolBars() const;
 };
 
 } // namespace RaytracingGui

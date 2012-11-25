@@ -40,11 +40,11 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui { 
 
 
 
-class TaskPadParameters : public Gui::TaskView::TaskBox
+class TaskPadParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -52,21 +52,30 @@ public:
     TaskPadParameters(ViewProviderPad *PadView,QWidget *parent = 0);
     ~TaskPadParameters();
 
+    int getMode(void) const;
     double getLength(void) const;
+    double getLength2(void) const;
     bool   getReversed(void) const;
-    bool   getMirroredExtent(void) const;
-    float   getTaperAngle(void) const;
+    bool   getMidplane(void) const;
+    QByteArray getFaceName(void) const;
+    const bool updateView() const;
 
 private Q_SLOTS:
     void onLengthChanged(double);
-    void onMirrored(bool);
+    void onMidplane(bool);
     void onReversed(bool);
-    void onTaperAngleChanged(double);
+    void onLength2Changed(double);
+    void onModeChanged(int);
+    void onButtonFace(const bool pressed = true);
+    void onFaceName(const QString& text);
+    void onUpdateView(bool);
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void updateUI(int index);
 
 private:
     QWidget* proxy;
@@ -96,11 +105,11 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button
+    /// is called by the framework if the user presses the help button 
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 
-    /// returns for Close and Help button
+    /// returns for Close and Help button 
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 

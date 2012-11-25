@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+452"/>
+      <location filename="../../Command.cpp" line="+425"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
@@ -80,6 +80,15 @@
   <context>
     <name>CmdRaytracingWriteView</name>
     <message>
+      <source>No perspective camera</source>
+      <translation>Nincs perspektivikus kamera</translation>
+    </message>
+    <message>
+      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</source>
+      <translation>Az aktuális nézet kamera nem perspektívikus és így povray kép nézet eredménye különbözni fog az elvárttól. Folytatni kívánja?</translation>
+    </message>
+    <message>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -121,6 +130,10 @@
     <message>
       <source>Create a Povray project to insert a view.</source>
       <translation>Hozzon létre egy Povray kivetítést a nézet beszúrás érdekében.</translation>
+    </message>
+    <message>
+      <source>Select a Povray project to insert the view.</source>
+      <translation>Jelöljön ki Povray-projektet a nézet beszúrásához.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>

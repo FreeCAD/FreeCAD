@@ -57,11 +57,11 @@
     </message>
     <message>
       <source>Edge to Trajectory...</source>
-      <translation>Edge to Trajectory...</translation>
+      <translation>Reuna liikeradalle...</translation>
     </message>
     <message>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Generate a Trajectory from a set of edges</translation>
+      <translation>Luo liikeradan asetetuista reunoista</translation>
     </message>
   </context>
   <context>
@@ -169,7 +169,7 @@
     </message>
     <message>
       <source>Insert robot Tool location into trajectory</source>
-      <translation>Insert robot Tool location into trajectory</translation>
+      <translation>Lisää robotti työkalun sijainti liikerataan</translation>
     </message>
   </context>
   <context>
@@ -184,7 +184,7 @@
     </message>
     <message>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation>Insert preselection position into trajectory (W)</translation>
+      <translation>Aseta esivalinnan asema liikerataan (W)</translation>
     </message>
   </context>
   <context>
@@ -208,11 +208,11 @@
     </message>
     <message>
       <source>Set default orientation</source>
-      <translation>Set default orientation</translation>
+      <translation>Aseta oletussuunta</translation>
     </message>
     <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>määrittää seuraavien komentojen reittipisteiden luomista varten oletussuunnan</translation>
     </message>
   </context>
   <context>
@@ -223,11 +223,11 @@
     </message>
     <message>
       <source>Set default values</source>
-      <translation>Set default values</translation>
+      <translation>Aseta oletusarvot</translation>
     </message>
     <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>asettaa oletusarvot nopeudelle, kiihtyvyydelle ja jatkuvuudelle myöhempien käskyjen reittipisteiden luomiselle</translation>
     </message>
   </context>
   <context>
@@ -266,11 +266,11 @@
     </message>
     <message>
       <source>Trajectory compound...</source>
-      <translation>Trajectory compound...</translation>
+      <translation>Liitä liikerata...</translation>
     </message>
     <message>
       <source>Group and connect some trajectories to one</source>
-      <translation>Group and connect some trajectories to one</translation>
+      <translation>Ryhmitä ja yhdistä joku liikerata yhdelle</translation>
     </message>
   </context>
   <context>
@@ -281,11 +281,11 @@
     </message>
     <message>
       <source>Dress up trajectory...</source>
-      <translation>Dress up trajectory...</translation>
+      <translation>Pue liikerata...</translation>
     </message>
     <message>
       <source>Create a dress up object which overide som aspects of a trajectory</source>
-      <translation>Create a dress up object which overide som aspects of a trajectory</translation>
+      <translation>Luo puetun objektin, joka syrjäyttää joitakin muotoja liikeradasta</translation>
     </message>
   </context>
   <context>
@@ -293,15 +293,15 @@
     <message>
       <location filename="../../Workbench.cpp" line="+52"/>
       <source>Trajectory tools</source>
-      <translation>Trajectory tools</translation>
+      <translation>Liikeradan työkalut</translation>
     </message>
     <message>
       <source>Robot tools</source>
-      <translation>Robot tools</translation>
+      <translation>Robotti työkalut</translation>
     </message>
     <message>
       <source>Insert Robot</source>
-      <translation>Insert Robot</translation>
+      <translation>Lisää Robotti</translation>
     </message>
   </context>
   <context>
@@ -313,7 +313,7 @@
     </message>
     <message>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>Select one Robot and one Trajectory object.</translation>
+      <translation>Valitse yksi robotti ja yksi liikeradan objekti.</translation>
     </message>
     <message>
       <source>Trajectory not valid</source>
@@ -321,7 +321,7 @@
     </message>
     <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
-      <translation>You need at least two way points in a trajectory to simulate.</translation>
+      <translation>Tarvitset ainakin kaksi reittiä pisteille simuloidaksesi liikerataa.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="-43"/>
@@ -339,7 +339,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="+1"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation>Select one robot and one shape or VRML object.</translation>
+      <translation>Valitse yksi robotti ja yksi muoto tai VRML objekti.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="+79"/>
@@ -348,58 +348,58 @@
     </message>
     <message>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
+      <translation>Kohdista hiiren kursori lähelle geometriaa (esivalinta), kun haluat käyttää tätä komentoa. Katso lisätietoja ohjeista.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-155"/>
       <source>Select one Robot to set home postion</source>
-      <translation>Select one Robot to set home postion</translation>
+      <translation>Valitse yksi robotti kotisijainniksi</translation>
     </message>
     <message>
       <source>Select one Robot</source>
-      <translation>Select one Robot</translation>
+      <translation>Valitse yksi Robotti</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="-24"/>
       <source>Select one Trajectory object.</source>
-      <translation>Select one Trajectory object.</translation>
+      <translation>Valitse yksi liikeradan objekti.</translation>
     </message>
     <message>
       <source>set default speed</source>
-      <translation>set default speed</translation>
+      <translation>Aseta oletusarvoinen nopeus</translation>
     </message>
     <message>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-      <translation>speed: (e.g. 1 m/s or 3 cm/s)</translation>
+      <translation>nopeus: (esim. 1 m/s tai 3 cm/s)</translation>
     </message>
     <message>
       <source>set default continuity</source>
-      <translation>set default continuity</translation>
+      <translation>Aseta oletusarvoinen jatkuvuus</translation>
     </message>
     <message>
       <source>continuous ?</source>
-      <translation>continuous ?</translation>
+      <translation>jatkuva ?</translation>
     </message>
     <message>
       <source>set default acceleration</source>
-      <translation>set default acceleration</translation>
+      <translation>aseta oletus kiihtyvyys</translation>
     </message>
     <message>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-      <translation>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
+      <translation>kiihtyvyys: (esimerkiksi 1 m/s ^ 2 tai 3 cm/s ^ 2)</translation>
     </message>
     <message>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Select the Trajectory which you want to dress up.</translation>
+      <translation>Valitse liikerata, jonka haluat luoda.</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="+26"/>
       <source>No robot files installed</source>
-      <translation>No robot files installed</translation>
+      <translation>Robotti-tiedostoja ei ole asennettu</translation>
     </message>
     <message>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation>Please visit %1 and copy the files to %2</translation>
+      <translation>Siirry %1 ja kopioi tiedost %2:oon</translation>
     </message>
   </context>
   <context>
@@ -633,23 +633,23 @@
     </message>
     <message>
       <source>Hide / Show</source>
-      <translation>Hide / Show</translation>
+      <translation>Piilota/Näytä</translation>
     </message>
     <message>
       <source>Edges: 0</source>
-      <translation>Edges: 0</translation>
+      <translation>Reunat: 0</translation>
     </message>
     <message>
       <source>Cluster: 0</source>
-      <translation>Cluster: 0</translation>
+      <translation>Klusteri: 0</translation>
     </message>
     <message>
       <source>Sizing Value:</source>
-      <translation>Sizing Value:</translation>
+      <translation>Mitoitus Arvo:</translation>
     </message>
     <message>
       <source>Use orientation of edge</source>
-      <translation>Use orientation of edge</translation>
+      <translation>Käytä reunan suuntaa</translation>
     </message>
     <message>
       <source>TaskEdge2TracParameter</source>
@@ -795,35 +795,35 @@
     </message>
     <message>
       <source>Speed &amp; Acceleration:</source>
-      <translation>Speed &amp; Acceleration:</translation>
+      <translation>Nopeus &amp; Kiihtyvyys:</translation>
     </message>
     <message>
       <source>Speed:</source>
-      <translation>Speed:</translation>
+      <translation>Nopeus:</translation>
     </message>
     <message>
       <source>Use</source>
-      <translation>Use</translation>
+      <translation>Käytä</translation>
     </message>
     <message>
       <source>Accel:</source>
-      <translation>Accel:</translation>
+      <translation>Kiihdytys:</translation>
     </message>
     <message>
       <source>Don't change Cont</source>
-      <translation>Don't change Cont</translation>
+      <translation>Älä muuta Jatkuvuutta</translation>
     </message>
     <message>
       <source>Continues</source>
-      <translation>Continues</translation>
+      <translation>Jatkuu</translation>
     </message>
     <message>
       <source>Discontinues</source>
-      <translation>Discontinues</translation>
+      <translation>Pysäyttää</translation>
     </message>
     <message>
       <source>Position and Orientation:</source>
-      <translation>Position and Orientation:</translation>
+      <translation>Sijainti ja suunta:</translation>
     </message>
     <message>
       <source>(0,0,0),(0,0,0)</source>
@@ -835,19 +835,19 @@
     </message>
     <message>
       <source>Don't change Position &amp; Orientation</source>
-      <translation>Don't change Position &amp; Orientation</translation>
+      <translation>Älä muuta sijaintia &amp; suuntaa</translation>
     </message>
     <message>
       <source>Use Orientation</source>
-      <translation>Use Orientation</translation>
+      <translation>Käytä suuntaa</translation>
     </message>
     <message>
       <source>Add Position</source>
-      <translation>Add Position</translation>
+      <translation>Lisää sijainti</translation>
     </message>
     <message>
       <source>Add Orientation</source>
-      <translation>Add Orientation</translation>
+      <translation>Lisää suunta</translation>
     </message>
     <message>
       <source>Dress Up Parameter</source>

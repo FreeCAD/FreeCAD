@@ -22,34 +22,38 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>Itsetestaus...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>Suoritetaan itsetestauksen tarkistaminen, jos sovellus toimii oikein</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Piirustus</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Dr&amp;awing</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Ske&amp;tch</translation>
+      <source>S&amp;ketch</source>
+      <translation>S&amp;ketch</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+      <translation>&amp;Säteenseuranta</translation>
     </message>
     <message>
       <source>&amp;Drafting</source>
-      <translation>&amp;Drafting</translation>
+      <translation>&amp;Hahmottelu</translation>
     </message>
     <message>
       <source>Sketch based</source>
-      <translation>Sketch based</translation>
+      <translation>Sketsin perusta</translation>
+    </message>
+    <message>
+      <source>Primitives</source>
+      <translation>Primitives</translation>
     </message>
     <message>
       <source>Parametric</source>
@@ -57,11 +61,11 @@
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Object appearence</translation>
+      <translation>Objektin ulkoasu</translation>
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Wire Tools</translation>
+      <translation>Lanka työkalut</translation>
     </message>
   </context>
 </TS>

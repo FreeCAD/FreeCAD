@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>Approximate plane...</source>
-      <translation>Approximate plane...</translation>
+      <translation>Lähennä tasoa...</translation>
     </message>
     <message>
       <source>Approximate a plane</source>
-      <translation>Approximate a plane</translation>
+      <translation>Lähentää tasoa</translation>
     </message>
   </context>
   <context>

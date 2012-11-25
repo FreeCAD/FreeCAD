@@ -27,6 +27,7 @@ __url__ = "http://free-cad.sourceforge.net"
 
 import FreeCAD,FreeCADGui
 from PyQt4 import QtGui,QtCore
+from DraftTools import translate
 
 def addToComponent(compobject,addobject,mod=None):
     '''addToComponent(compobject,addobject,mod): adds addobject
@@ -62,7 +63,8 @@ def addToComponent(compobject,addobject,mod=None):
                     l = getattr(compobject,mod)
                     l.append(addobject)
                     setattr(compobject,mod,l)
-                    addobject.ViewObject.hide()
+                    if mod != "Objects":
+                        addobject.ViewObject.hide()
         else:
             for a in attribs[:3]:
                 if hasattr(compobject,a):
@@ -79,7 +81,7 @@ def removeFromComponent(compobject,subobject):
     it is added as a subtraction.'''
     if compobject == subobject: return
     found = False
-    attribs = ["Additions","Subtractions","Objects","Components","Base"]
+    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":
@@ -140,6 +142,7 @@ class ComponentTaskPanel:
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
+        QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *,int)"), self.editObject)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -221,10 +224,23 @@ class ComponentTaskPanel:
 
     def accept(self):
         FreeCAD.ActiveDocument.recompute()
-        if self.obj:
-            self.obj.ViewObject.finishEditing()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
-                    
+
+    def editObject(self,wid,col):
+        if wid.parent():
+            obj = FreeCAD.ActiveDocument.getObject(str(wid.text(0)))
+            if obj:
+                self.obj.ViewObject.Transparency = 80
+                self.obj.ViewObject.Selectable = False
+                obj.ViewObject.show()
+                self.accept()
+                if obj.isDerivedFrom("Sketcher::SketchObject"):
+                    FreeCADGui.activateWorkbench("SketcherWorkbench")
+                FreeCAD.ArchObserver = ArchSelectionObserver(self.obj,obj)
+                FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+                FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
+
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
@@ -243,16 +259,20 @@ class Component:
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object this component is built upon")
         obj.addProperty("App::PropertyLinkList","Additions","Base",
-                        "Other shapes that are appended to this wall")
+                        "Other shapes that are appended to this object")
         obj.addProperty("App::PropertyLinkList","Subtractions","Base",
-                        "Other shapes that are subtracted from this wall")
-        obj.addProperty("App::PropertyVector","Normal","Base",
-                        "The normal extrusion direction of this wall (keep (0,0,0) for automatic normal)")
+                        "Other shapes that are subtracted from this object")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
-        
-        
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+              
 class ViewProviderComponent:
     "A default View Provider for Component objects"
     def __init__(self,vobj):
@@ -294,5 +314,26 @@ class ViewProviderComponent:
     
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
-        return
-    
+        return False
+
+class ArchSelectionObserver:
+    def __init__(self,origin,watched,hide=True,nextCommand=None):
+        self.origin = origin
+        self.watched = watched
+        self.hide = hide
+        self.nextCommand = nextCommand
+    def addSelection(self,document, object, element, position):
+        if object == self.watched.Name:
+            if not element:
+                FreeCAD.Console.PrintMessage(str(translate("Arch","closing Sketch edit")))
+                if self.hide:
+                    self.origin.ViewObject.Transparency = 0
+                    self.origin.ViewObject.Selectable = True
+                    self.watched.ViewObject.hide()
+                FreeCADGui.activateWorkbench("ArchWorkbench")
+                FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                if self.nextCommand:
+                    FreeCADGui.Selection.clearSelection()
+                    FreeCADGui.Selection.addSelection(self.watched)
+                    FreeCADGui.runCommand(self.nextCommand)
+                del FreeCAD.ArchObserver

@@ -8,6 +8,9 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        MakeBottle.py
+        TestPartApp.py
+        TestPartGui.py
     DESTINATION
         Mod/Part
 )

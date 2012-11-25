@@ -62,7 +62,7 @@ int Query3Filtered<Real>::ToPlane (const Vector3<Real>& rkP, int iV0, int iV1,
     Real fLen2 = Math<Real>::Sqrt(fX2*fX2 + fY2*fY2 + fZ2*fZ2);
     Real fScaledUncertainty = m_fUncertainty*fLen0*fLen1*fLen2;
 
-    Real fDet3 = Det3(fX0,fY0,fZ0,fX1,fY1,fZ1,fX2,fY2,fZ2);
+    Real fDet3 = this->Det3(fX0,fY0,fZ0,fX1,fY1,fZ1,fX2,fY2,fZ2);
     if (Math<Real>::FAbs(fDet3) >= fScaledUncertainty)
     {
         return (fDet3 > (Real)0.0 ? +1 : (fDet3 < (Real)0.0 ? -1 : 0));
@@ -115,7 +115,7 @@ int Query3Filtered<Real>::ToCircumsphere (const Vector3<Real>& rkP, int iV0,
     Real fLen3 = Math<Real>::Sqrt(fD3x*fD3x+fD3y*fD3y+fD3z*fD3z+fW3*fW3);
     Real fScaledUncertainty = m_fUncertainty*fLen0*fLen1*fLen2*fLen3;
 
-    Real fDet4 = Det4(fD0x,fD0y,fD0z,fW0,fD1x,fD1y,fD1z,fW1,fD2x,
+    Real fDet4 = this->Det4(fD0x,fD0y,fD0z,fW0,fD1x,fD1y,fD1z,fW1,fD2x,
         fD2y,fD2z,fW2,fD3x,fD3y,fD3z,fW3);
 
     if (Math<Real>::FAbs(fDet4) >= fScaledUncertainty)

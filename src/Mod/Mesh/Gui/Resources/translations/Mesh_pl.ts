@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Shows the boundings of the selected mesh</translation>
+      <translation>Pokazuje bryły brzegowe wybranej siatki</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     <name>CmdMeshDemolding</name>
     <message>
       <source>Interactive demolding direction</source>
-      <translation>Interactive demolding direction</translation>
+      <translation>Interaktywny kierunek deformowania</translation>
     </message>
     <message>
       <source>Mesh</source>
@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>siatka</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Przytnij siatkę</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Przycina siatkę wybranym wielokątem</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -353,6 +368,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>siatka</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Tworzenie segmentów siatki...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Tworzenie segmentów siatki</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -375,11 +405,11 @@
     </message>
     <message>
       <source>Segment by tool mesh</source>
-      <translation>Segment by tool mesh</translation>
+      <translation>Segment z narzędzia siatki</translation>
     </message>
     <message>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Creates a segment from a given tool mesh</translation>
+      <translation>Tworzy segment z siatki danego narzędzia</translation>
     </message>
   </context>
   <context>
@@ -405,7 +435,7 @@
     </message>
     <message>
       <source>Union</source>
-      <translation>Połączenie</translation>
+      <translation>Suma</translation>
     </message>
   </context>
   <context>
@@ -420,7 +450,7 @@
     </message>
     <message>
       <source>Curvature plot</source>
-      <translation>Curvature plot</translation>
+      <translation>Wykres krzywizny</translation>
     </message>
   </context>
   <context>
@@ -435,7 +465,7 @@
     </message>
     <message>
       <source>Information about curvature</source>
-      <translation>Information about curvature</translation>
+      <translation>Informacje o krzywiźnie</translation>
     </message>
   </context>
   <context>
@@ -494,7 +524,7 @@
     </message>
     <message>
       <source>Face indices</source>
-      <translation>Face indices</translation>
+      <translation>Wskaźniki powierzchni</translation>
     </message>
     <message>
       <source>Number of faces:</source>
@@ -510,7 +540,7 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-manifolds</translation>
+      <translation>Nierozgałęźne</translation>
     </message>
     <message>
       <source>Self-intersections</source>
@@ -518,7 +548,7 @@
     </message>
     <message>
       <source>All above tests together</source>
-      <translation>All above tests together</translation>
+      <translation>Wszystkie powyższe testy razem</translation>
     </message>
     <message>
       <source>Repetitive repair</source>
@@ -541,27 +571,27 @@
     </message>
     <message>
       <source>Invalid neighbour indices</source>
-      <translation>Invalid neighbour indices</translation>
+      <translation>Nieprawidłowe wskaźniki sąsiadów</translation>
     </message>
     <message>
       <source>Invalid face indices</source>
-      <translation>Invalid face indices</translation>
+      <translation>Nieprawidłowe wskaźniki powierzchni</translation>
     </message>
     <message>
       <source>Invalid point indices</source>
-      <translation>Invalid point indices</translation>
+      <translation>Nieprawidłowe wskaźniki punktu</translation>
     </message>
     <message>
       <source>Multiple point indices</source>
-      <translation>Multiple point indices</translation>
+      <translation>Wielokrotne wskaźniki punktu</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-manifolds</translation>
+      <translation>Nierozgałęźne</translation>
     </message>
     <message>
       <source>Cannot remove non-manifolds</source>
-      <translation>Cannot remove non-manifolds</translation>
+      <translation>Nie można usunąć nierozgałęźnych</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -577,15 +607,15 @@
     </message>
     <message>
       <source>No non-manifolds</source>
-      <translation>No non-manifolds</translation>
+      <translation>Bez nierozgałęźnych</translation>
     </message>
     <message>
       <source>%1 non-manifolds</source>
-      <translation>%1 non-manifolds</translation>
+      <translation>%1 nierozgałęźnych</translation>
     </message>
     <message>
       <source>No invalid indices</source>
-      <translation>No invalid indices</translation>
+      <translation>Nie ma nieprawidłowych wskaźników</translation>
     </message>
     <message>
       <source>No degenerations</source>
@@ -593,15 +623,15 @@
     </message>
     <message>
       <source>%1 degenerated faces</source>
-      <translation>%1 degenerated faces</translation>
+      <translation>%1 zdegenerowanych powierzchni</translation>
     </message>
     <message>
       <source>No duplicated faces</source>
-      <translation>No duplicated faces</translation>
+      <translation>Nie zduplikowane ściany</translation>
     </message>
     <message>
       <source>%1 duplicated faces</source>
-      <translation>%1 duplicated faces</translation>
+      <translation>%1 Zduplikowane ściany</translation>
     </message>
     <message>
       <source>No duplicated points</source>
@@ -617,7 +647,7 @@
     </message>
     <message>
       <source>Indices</source>
-      <translation>Indices</translation>
+      <translation>Wskaźniki</translation>
     </message>
     <message>
       <source>Degenerations</source>
@@ -654,7 +684,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>%1 folds on surface</source>
-      <translation>%1 folds on surface</translation>
+      <translation>%1 zagięć na powierzchni</translation>
     </message>
     <message>
       <source>Folds</source>
@@ -771,7 +801,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Backface color</source>
-      <translation>Backface color</translation>
+      <translation>Kolor tła</translation>
     </message>
     <message>
       <source>Smoothing</source>
@@ -779,15 +809,15 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;To najmniejszy kąt pomiędzy powierzchniami dla cieniowania płaskiego.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jeżeli kąt pomiędzy dwoma sąsiadującymi powierzchniami jest mniejszy niż kąt zmienny wówczas powierzchnie będą łagodniejsze przy wspólnej krawędzi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Crease angle</source>
-      <translation>Crease angle</translation>
+      <translation>Kąt zmienny</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Cieniowanie płaskie/Cieniowanie Phong&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definiuje wygląd powierzchni.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Przy cieniowaniu płaskim normalizowana powierzchnia nie jest definiowana przez wierzchołek co prowadzi do nierzeczywistego wyglądu krzywej. Cieniowanie Phong prowadzi do łagodniejszego wyglądu. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jeżeli ta opcja jest zaznaczona użyte zostanie cieniowanie Phong w przywinym razie zostanie użyte cieniowanie płaskie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
@@ -940,6 +970,53 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentacja siatki</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Wygładzenie siatki</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerancja</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minimalna liczba powierzchni</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Promień</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Płaszczyzna tolerancji</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Krzywa tolerancji</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimalna liczba powierzchni</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Kula</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -973,7 +1050,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Boundings</source>
-      <translation>Boundings</translation>
+      <translation>Bryły brzegowe</translation>
     </message>
     <message>
       <source>Fill holes</source>
@@ -1037,23 +1114,21 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>The mesh '%1' is a solid.</source>
-      <translation>The mesh '%1' is a solid.</translation>
+      <translation>Sieć '%1' jest ciągła.</translation>
     </message>
     <message>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>The mesh '%1' is not a solid.</translation>
+      <translation>Sieć '%1' nie jest ciągła.</translation>
     </message>
     <message>
       <source>Min=&lt;%1,%2,%3&gt;
 
 Max=&lt;%4,%5,%6&gt;</source>
-      <translation>Min=&lt;%1,%2,%3&gt;
-
-Max=&lt;%4,%5,%6&gt;</translation>
+      <translation>Min = &lt;%1,%2,%3&gt; Max = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>[Points: %1, Edges: %2 Faces: %3]</source>
-      <translation>[Points: %1, Edges: %2 Faces: %3]</translation>
+      <translation>[Punkty: %1, Krawędzie: %2 Powierzchnie: %3]</translation>
     </message>
     <message>
       <source>Leave info mode</source>
@@ -1098,6 +1173,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Adnotacja</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>Wszystkie pliki siatek (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

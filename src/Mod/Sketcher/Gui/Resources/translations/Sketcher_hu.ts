@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -58,6 +58,10 @@
       <translation>Vízszintes távolság zárolása</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Két pont közötti vagy vonal végek közötti vízszintes távolság zárolása</translation>
     </message>
@@ -67,6 +71,10 @@
     <message>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Constrain horizontal distance</source>
@@ -230,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -284,8 +292,12 @@
       <translation>Lekerekítés létrehozása</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Hozzon létre egy kitöltést vonalak közt, vagy egy egybeeső ponttal</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Hozzon létre egy lekerekítést a vonalak közt vagy egybeeső ponttok közt</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,9 +376,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>Külső geometria</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Hozzon létre egy szegélyt, csatolva a külső geometriához</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -406,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Create a new or edit the selected sketch</translation>
+      <translation>Hozzon létre egy új, vagy szerkesztheti a kijelölt vázlatot</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -447,13 +474,17 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
     <message>
       <source>Trim edge</source>
       <translation>Él vágása</translation>
+    </message>
+    <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Él levágása, tekintettel a kiválasztott helyzetre</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
@@ -463,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -496,9 +527,9 @@
       <translation>A kiválasztott él(ek) a vázlatból való.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
-      <translation>Egy él kiválasztása a vázlaton</translation>
+      <translation>Egy él kiválasztása a vázlaton.</translation>
     </message>
     <message>
       <source>Double constraint</source>
@@ -511,6 +542,10 @@
     <message>
       <source>Impossible constraint</source>
       <translation>Lehetetlen korlátozás</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Nem lehet hozzáadni egy letörést két külső geometriához!</translation>
     </message>
     <message>
       <source>Only sketch and its support is allowed to select</source>
@@ -527,6 +562,14 @@
     <message>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>A kiválasztott él már rendelkezik egy függőleges kényszerrel!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>A kiválasztott elem(ek) nem fogadják el a vízszintes letörést!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>A kiválasztott elem(ek) nem fogadják el a függőleges letörést!</translation>
     </message>
     <message>
       <source>Select entities from the sketch.</source>
@@ -549,12 +592,24 @@
       <translation>Válasszon ki pontosan egy sort vagy egy pontot és egy sort és két pontot a vázlatból.</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Nem lehet hozzáadni egy külső geometriához a letörés hosszát!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Válasszon ki pontosan egy pontot és egy objektumot a vázlatból.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Válasszon ki pontosan egy vonalat, vagy legfeljebb két pontot a vázlatból.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Nem lehet hozzáadni egy külső geometriához a vízszintes hossz letörést!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Nem lehet hozzáadni egy külső geometriához a függőleges hossz letörést!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -573,8 +628,32 @@
       <translation>A kiválasztott él nem érvényes vonal</translation>
     </message>
     <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>A kiválasztott pontoknak ív és vonal végpontoknak kell lennie.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>A kijelölt pontonak egy ív vagy vonal végpontnak kell lennie.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>A kijelölt élnek egy ívnek, vonalnak vagy körnek kell lennie.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>Az egyik kijelölt élnek egy vonalnak kell lennie.</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Válasszon ki pontosan egy ívet vagy kört a vázlatból.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Válasszon egy vagy két vonalat a vázlatból.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Nem lehet hozzáadni egy külső geometriához a letörés szöget!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -587,6 +666,22 @@
     <message>
       <source>Select atleast two lines from the sketch.</source>
       <translation>Válasszon ki legalább két  vonalat a vázlatból.</translation>
+    </message>
+    <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Két vagy több kompatibilis élt válasszon</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Vázlat tengelyek nem használhatók egyenlőségi letöréshez</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Jelöljön ki két vagy több hasonló élt</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Nem lehet hozzáadni egy letörést a külső geometriákhoz!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -625,7 +720,7 @@
       <translation>Válassza ki pontosan két egységet a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>Vázlat szerkesztése</translation>
     </message>
@@ -638,7 +733,7 @@
       <translation>Biztos be szeretné zárni a párbeszédpanelt?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
       <translation>Több elemet jelölt ki</translation>
     </message>
@@ -673,13 +768,12 @@
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Dimensional constraint</translation>
+      <translation>Háromdimenziós megkötés</translation>
     </message>
   </context>
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
       <translation>Válasszon orientáció</translation>
     </message>
@@ -718,6 +812,38 @@
     <message>
       <source>datum:</source>
       <translation>adat:</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>Válasszon orientáció</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>Vázlat orientáció</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>XY-sík</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>XZ-sík</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>YZ-sík</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>Fordított irányban</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>Eltolás:</translation>
     </message>
   </context>
   <context>
@@ -762,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Grid size:</translation>
+      <translation>Rács méret:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Grid snap</translation>
+      <translation>Rácshoz igazítás</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -778,7 +904,7 @@
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation>0,1 mm</translation>
+      <translation>0.1 mm</translation>
     </message>
     <message>
       <source>0.2 mm</source>

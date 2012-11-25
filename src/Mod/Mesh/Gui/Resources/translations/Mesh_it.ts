@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Taglia mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Taglia una mesh con un poligono selezionato</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -350,6 +365,21 @@
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Rimuove i componenti topologici indipendenti dalla mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Creare segmenti di mesh...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Crea segmenti di mesh</translation>
     </message>
   </context>
   <context>
@@ -510,7 +540,7 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non molteplici</translation>
+      <translation>Non-manifold</translation>
     </message>
     <message>
       <source>Self-intersections</source>
@@ -557,11 +587,11 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non molteplici</translation>
+      <translation>Non-manifold</translation>
     </message>
     <message>
       <source>Cannot remove non-manifolds</source>
-      <translation>non è possibile rimuovere i non molteplici</translation>
+      <translation>non è possibile rimuovere i non-manifold</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -577,11 +607,11 @@
     </message>
     <message>
       <source>No non-manifolds</source>
-      <translation>Nessun non molteplici</translation>
+      <translation>Nessun non-manifold</translation>
     </message>
     <message>
       <source>%1 non-manifolds</source>
-      <translation>%1 non molteplici</translation>
+      <translation>%1 non-manifold</translation>
     </message>
     <message>
       <source>No invalid indices</source>
@@ -940,6 +970,53 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentazione della mesh</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Liscia la mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Piano</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolleranza</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Numero minimo di facce</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cilindro</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Raggio</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolleranza (piano)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolleranza (curva)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Numero minimo di facce</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfera</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -1098,6 +1175,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Annotazione</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>Tutti i file Mesh (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

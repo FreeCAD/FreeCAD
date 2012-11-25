@@ -6,6 +6,7 @@ SET(Idf_SRCS
 SOURCE_GROUP("" FILES ${Idf_SRCS})
 
 SET(IdfLibs_SRCS
+    lib/License.txt
     lib/0603_SMD.stp
     lib/0805_SMD.stp
     lib/1206_SMD.stp
@@ -36,6 +37,9 @@ SET(IdfLibs_SRCS
     lib/TSM_104_01_L_DV_A.stp
     lib/TSS0P_8.stp
     lib/VC0603_SMD.stp
+    lib/RLF_12545.igs
+    lib/SOT23.igs
+    lib/SOT404.igs
 )
 SOURCE_GROUP("Idflibs" FILES ${IdfLibs_SRCS})
 
@@ -46,7 +50,7 @@ ADD_CUSTOM_TARGET(Idf ALL
     SOURCES ${all_files}
 )
 
-fc_copy_sources("Mod/Idf" "Idf" ${all_files})
+fc_copy_sources(Idf "${CMAKE_BINARY_DIR}/Mod/Idf" ${all_files})
 
 INSTALL(
     FILES

@@ -285,7 +285,7 @@
     </message>
     <message>
       <source>Create a dress up object which overide som aspects of a trajectory</source>
-      <translation>Create a dress up object which overide som aspects of a trajectory</translation>
+      <translation>Створити об'єкт зовнішнього покрову, який змінює деякі аспекти траєкторії</translation>
     </message>
   </context>
   <context>
@@ -293,15 +293,15 @@
     <message>
       <location filename="../../Workbench.cpp" line="+52"/>
       <source>Trajectory tools</source>
-      <translation>Trajectory tools</translation>
+      <translation>Інструменти траєкторії</translation>
     </message>
     <message>
       <source>Robot tools</source>
-      <translation>Robot tools</translation>
+      <translation>Інструменти Робота</translation>
     </message>
     <message>
       <source>Insert Robot</source>
-      <translation>Insert Robot</translation>
+      <translation>Вставити Робота</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     </message>
     <message>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
+      <translation>Щоб використовувати цю команду, курсор миші повинен знаходитися над попередньо обраною геометричною побудовою. Подробиці дивіться у документації.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-155"/>
@@ -390,7 +390,7 @@
     </message>
     <message>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Select the Trajectory which you want to dress up.</translation>
+      <translation>Оберіть траєкторію, за якою буде відбуватися побудова зовнішнього покрову.</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="+26"/>
@@ -649,7 +649,7 @@
     </message>
     <message>
       <source>Use orientation of edge</source>
-      <translation>Use orientation of edge</translation>
+      <translation>Використовувати орієнтацію грані</translation>
     </message>
     <message>
       <source>TaskEdge2TracParameter</source>
@@ -811,7 +811,7 @@
     </message>
     <message>
       <source>Don't change Cont</source>
-      <translation>Don't change Cont</translation>
+      <translation>Не змінюйте Cont</translation>
     </message>
     <message>
       <source>Continues</source>

@@ -22,26 +22,26 @@
     <message>
       <location filename="../../Workbench.cpp" line="+57"/>
       <source>Self-test...</source>
-      <translation>Self-test...</translation>
+      <translation>Zelf-test...</translation>
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Runs a self-test to check if the application works properly</translation>
+      <translation>Voert een zelf-test uit, om te controleren of de toepassing correct werkt</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Tekenen</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Dr&amp;awing</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Sche&amp;ts</translation>
+      <source>S&amp;ketch</source>
+      <translation>S&amp;ketch</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+      <translation>&amp;Realistische Weergave</translation>
     </message>
     <message>
       <source>&amp;Drafting</source>
@@ -50,6 +50,10 @@
     <message>
       <source>Sketch based</source>
       <translation>Schets gebaseerd</translation>
+    </message>
+    <message>
+      <source>Primitives</source>
+      <translation>Primitives</translation>
     </message>
     <message>
       <source>Parametric</source>
@@ -61,7 +65,7 @@
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Draad Gereedschap</translation>
+      <translation>Lijn Gereedschap</translation>
     </message>
   </context>
 </TS>

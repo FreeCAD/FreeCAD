@@ -3,6 +3,9 @@
 if(WIN32)
 add_definitions(-DFCGui -DQIIS_MAKEDLL)
 endif(WIN32)
+if (FREECAD_USE_3DCONNEXION)
+add_definitions(-D_USE_3DCONNEXION_SDK)
+endif(FREECAD_USE_3DCONNEXION)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -78,6 +81,17 @@ SET(FreeCADGui_XML_SRCS
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
+# The 3D Connexion SDK files
+if(FREECAD_USE_3DCONNEXION)
+SET(FreeCADGui_SDK_SRCS
+    3Dconnexion/I3dMouseParams.h
+    3Dconnexion/MouseParameters.cpp
+    3Dconnexion/MouseParameters.h
+    3Dconnexion/GuiApplicationNativeEventAwareWin32.cpp
+)
+SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+endif(FREECAD_USE_3DCONNEXION)
+
 set(Gui_MOC_HDRS
     Action.h
     CallTips.h
@@ -90,6 +104,7 @@ set(Gui_MOC_HDRS
     DlgCommandsImp.h
     DlgCustomizeImp.h
     DlgCustomizeSpaceball.h
+    DlgCustomizeSpNavSettings.h
     DlgDisplayPropertiesImp.h
     DlgEditorImp.h
     DlgGeneralImp.h
@@ -125,6 +140,7 @@ set(Gui_MOC_HDRS
     HelpView.h
     InputVector.h
     MainWindow.h
+    ManualAlignment.h
     MDIView.h
     NetworkRetriever.h
     OnlineDocumentation.h
@@ -176,6 +192,7 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCommands.ui
+    DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
     DlgEditor.ui
     DlgGeneral.ui
@@ -324,6 +341,7 @@ SET(Dialog_Customize_CPP_SRCS
     DlgCommandsImp.cpp
     DlgCustomizeImp.cpp
     DlgCustomizeSpaceball.cpp
+    DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
 )
@@ -332,6 +350,7 @@ SET(Dialog_Customize_HPP_SRCS
     DlgCommandsImp.h
     DlgCustomizeImp.h
     DlgCustomizeSpaceball.h
+    DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
 )
@@ -341,6 +360,7 @@ SET(Dialog_Customize_SRCS
     DlgActions.ui
     DlgChooseIcon.ui
     DlgCommands.ui
+    DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
 )
@@ -635,7 +655,7 @@ SET(Inventor_CPP_SRCS
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
     SoFCSelection.cpp
-	SoFCUnifiedSelection.cpp
+    SoFCUnifiedSelection.cpp
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
@@ -656,7 +676,7 @@ SET(Inventor_SRCS
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
     SoFCSelection.h
-	SoFCUnifiedSelection.h
+    SoFCUnifiedSelection.h
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
@@ -752,6 +772,7 @@ SET(FreeCADGui_CPP_SRCS
     Thumbnail.cpp
     Utilities.cpp
     WaitCursor.cpp
+    ManualAlignment.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -772,9 +793,11 @@ SET(FreeCADGui_SRCS
     Thumbnail.h
     Utilities.h
     WaitCursor.h
+    ManualAlignment.h
 )
 
 SET(FreeCADGui_SRCS
+    ${FreeCADGui_SDK_SRCS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${iis_MOC_SRCS}
@@ -857,4 +880,8 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION lib
     )
+    INSTALL(FILES Icons/freecad.xpm Icons/freecad-doc.png
+        DESTINATION ${CMAKE_INSTALL_DATADIR}
+    )
 endif(WIN32)
+

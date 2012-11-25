@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+452"/>
+      <location filename="../../Command.cpp" line="+425"/>
       <source>File</source>
       <translation>ファイル</translation>
     </message>
@@ -29,7 +29,7 @@
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
-      <translation>Insert a new part object into a Povray project</translation>
+      <translation>新しい部品オブジェクトをPovrayプロジェクトに挿入</translation>
     </message>
   </context>
   <context>
@@ -80,6 +80,16 @@
   <context>
     <name>CmdRaytracingWriteView</name>
     <message>
+      <source>No perspective camera</source>
+      <translation>No perspective camera</translation>
+    </message>
+    <message>
+      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</source>
+      <translation>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</translation>
+    </message>
+    <message>
       <source>Raytracing</source>
       <translation>レイトレーシング</translation>
     </message>
@@ -121,6 +131,10 @@
     <message>
       <source>Create a Povray project to insert a view.</source>
       <translation>Create a Povray project to insert a view.</translation>
+    </message>
+    <message>
+      <source>Select a Povray project to insert the view.</source>
+      <translation>Select a Povray project to insert the view.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>

@@ -72,7 +72,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sandbox_MeshLoaderFuture"
           << "Sandbox_MeshTestJob"
           << "Sandbox_MeshTestRef"
-          << "Sandbox_CryptographicHash";
+          << "Sandbox_CryptographicHash"
+          << "Sandbox_MengerSponge";
 
     Gui::MenuItem* widg = new Gui::MenuItem;
     root->insertItem(item, widg);

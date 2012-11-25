@@ -41,7 +41,6 @@ public:
 
     /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void)const;
-
 };
 
 } // namespace PartGui

@@ -131,6 +131,8 @@ public:
     void readEndElement(const char* ElementName=0);
     /// read until characters are found
     void readCharacters(void);
+    /// read binary file
+    void readBinFile(const char*);
     //@}
 
     /** @name Attribute handling */
@@ -157,6 +159,8 @@ public:
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
     bool isRegistered(Base::Persistence *Object) const;
+    virtual void addName(const char*, const char*);
+    virtual const char* getName(const char*) const;
     //@}
 
     /// Schema Version of the document
@@ -171,8 +175,15 @@ protected:
     // -----------------------------------------------------------------------
     virtual void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs);
     virtual void endElement  (const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname);
-    virtual void characters  (const XMLCh* const chars, const unsigned int length);
+    virtual void startCDATA  ();
+    virtual void endCDATA    ();
+#if (XERCES_VERSION_MAJOR == 2)
+    virtual void characters         (const XMLCh* const chars, const unsigned int length);
     virtual void ignorableWhitespace(const XMLCh* const chars, const unsigned int length);
+#else
+    virtual void characters         (const XMLCh* const chars, const XMLSize_t length);
+    virtual void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length);
+#endif
     virtual void resetDocument();
 
 
@@ -198,7 +209,9 @@ protected:
         Chars,
         StartElement,
         StartEndElement,
-        EndElement
+        EndElement,
+        StartCDATA,
+        EndCDATA
     }   ReadType;
 
 

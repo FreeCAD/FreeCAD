@@ -2,9 +2,39 @@
 <!DOCTYPE TS>
 <TS>
   <context>
+    <name>CmdDrawingAnnotation</name>
+    <message>
+      <location filename="../../Command.cpp" line="+365"/>
+      <source>Drawing</source>
+      <translation>図面</translation>
+    </message>
+    <message>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Annotation</translation>
+    </message>
+    <message>
+      <source>Inserts an Annotation view in the active drawing</source>
+      <translation>Inserts an Annotation view in the active drawing</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingClip</name>
+    <message>
+      <source>Drawing</source>
+      <translation>図面</translation>
+    </message>
+    <message>
+      <source>&amp;Clip</source>
+      <translation>&amp;Clip</translation>
+    </message>
+    <message>
+      <source>Inserts a clip group in the active drawing</source>
+      <translation>Inserts a clip group in the active drawing</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="+285"/>
       <source>File</source>
       <translation>ファイル</translation>
     </message>
@@ -70,6 +100,36 @@
     </message>
   </context>
   <context>
+    <name>CmdDrawingOpenBrowserView</name>
+    <message>
+      <source>Drawing</source>
+      <translation>図面</translation>
+    </message>
+    <message>
+      <source>Open &amp;browser view</source>
+      <translation>Open &amp;browser view</translation>
+    </message>
+    <message>
+      <source>Opens the selected page in a browser view</source>
+      <translation>Opens the selected page in a browser view</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingOrthoViews</name>
+    <message>
+      <source>Drawing</source>
+      <translation>図面</translation>
+    </message>
+    <message>
+      <source>Insert orthographic views</source>
+      <translation>Insert orthographic views</translation>
+    </message>
+    <message>
+      <source>Insert an orthographic projection of a part in the active drawing</source>
+      <translation>Insert an orthographic projection of a part in the active drawing</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingProjectShape</name>
     <message>
       <source>Drawing</source>
@@ -87,7 +147,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+206"/>
+      <location filename="../../DrawingView.cpp" line="+207"/>
       <source>&amp;Background</source>
       <translation>&amp;Background</translation>
     </message>
@@ -117,7 +177,7 @@
     </message>
     <message>
       <source>Could not open file '%1'.</source>
-      <translation>Could not open file '%1'.</translation>
+      <translation>ファイル '%1' を開けませんでした。</translation>
     </message>
     <message>
       <source>&amp;Renderer</source>
@@ -158,6 +218,114 @@
     <message>
       <source>A5</source>
       <translation>A5</translation>
+    </message>
+  </context>
+  <context>
+    <name>DrawingGui::TaskOrthoViews</name>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="+26"/>
+      <source>Orthographic Projection</source>
+      <translation>Orthographic Projection</translation>
+    </message>
+    <message>
+      <source>Projection</source>
+      <translation>Projection</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Third Angle</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>First Angle</translation>
+    </message>
+    <message>
+      <source>Primary View</source>
+      <translation>Primary View</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>前面</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Right</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Back</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>左面</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>上面</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Bottom</translation>
+    </message>
+    <message>
+      <source>- Rotate</source>
+      <translation>- Rotate</translation>
+    </message>
+    <message>
+      <source>0</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>90</source>
+      <translation>90</translation>
+    </message>
+    <message>
+      <source>180</source>
+      <translation>180</translation>
+    </message>
+    <message>
+      <source>270</source>
+      <translation>270</translation>
+    </message>
+    <message>
+      <source>Primary view</source>
+      <translation>Primary view</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Secondary Views</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>標準</translation>
+    </message>
+    <message>
+      <source>Auto scale / position</source>
+      <translation>Auto scale / position</translation>
+    </message>
+    <message>
+      <source>Scale</source>
+      <translation>拡大縮小</translation>
+    </message>
+    <message>
+      <source>Primary x / y</source>
+      <translation>Primary x / y</translation>
+    </message>
+    <message>
+      <source>Secondary dx / dy</source>
+      <translation>Secondary dx / dy</translation>
+    </message>
+    <message>
+      <source>Show hidden</source>
+      <translation>Show hidden</translation>
+    </message>
+    <message>
+      <source>Show smooth</source>
+      <translation>Show smooth</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonometric</translation>
     </message>
   </context>
   <context>
@@ -211,7 +379,6 @@
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="-196"/>
       <source>A0 landscape</source>
       <translation>A0 横</translation>
     </message>
@@ -251,6 +418,15 @@
       <source>Insert new A4 landscape drawing</source>
       <translation>Insert new A4 landscape drawing</translation>
     </message>
+    <message>
+      <location filename="../../Command.cpp" line="-327"/>
+      <source>Insert new A%1 landscape drawing</source>
+      <translation>Insert new A%1 landscape drawing</translation>
+    </message>
+    <message>
+      <source>A%1 landscape</source>
+      <translation>A%1 landscape</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -282,7 +458,11 @@
     </message>
     <message>
       <source>Create a page to insert.</source>
-      <translation>Create a page to insert.</translation>
+      <translation>挿入するページを作成</translation>
+    </message>
+    <message>
+      <source>Create a page to insert views into.</source>
+      <translation>Create a page to insert views into.</translation>
     </message>
     <message>
       <source>Select one Page object.</source>
@@ -301,9 +481,34 @@
       <translation>Export page</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="-25"/>
+      <location filename="../../ViewProviderPage.cpp" line="-27"/>
       <source>Show drawing</source>
       <translation>Show drawing</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.cpp" line="+49"/>
+      <source>Front</source>
+      <translation>前面</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Back</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Right</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>左面</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>上面</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Bottom</translation>
     </message>
   </context>
   <context>

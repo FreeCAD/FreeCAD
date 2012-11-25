@@ -13,6 +13,7 @@ SET(StartPage_DATA
     LoadMRU0.py
     LoadMRU1.py
     LoadMRU2.py
+    LoadArchExample.py
     Mesh.py
     PartDesign.py
     Background.jpg
@@ -24,9 +25,18 @@ SET(StartPage_DATA
     PartDesignExample.png
     ArchExample.png
     web.png
+    blank.png
+    complete.jpg
+    Ship.py
+    Ship.png
+    ShipExample.png
 )
 
-INSTALL(FILES ${StartPage_SRCS} ${StartPage_DATA}
+INSTALL(FILES ${StartPage_SRCS}
     DESTINATION Mod/Start/StartPage
+)
+
+INSTALL(FILES ${StartPage_DATA}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Start/StartPage
 )
 

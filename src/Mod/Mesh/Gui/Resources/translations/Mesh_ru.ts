@@ -39,7 +39,7 @@
     </message>
     <message>
       <source>Regular solid...</source>
-      <translation>Правлю твердое ...</translation>
+      <translation>Правильное геометрическое тело...</translation>
     </message>
     <message>
       <source>Builds a regular solid</source>
@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Сеть</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Trim mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Trims a mesh with a picked polygon</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -350,6 +365,21 @@
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Удалить топологически-независимые компоненты из сетки</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Сеть</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Create mesh segments...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Create mesh segments</translation>
     </message>
   </context>
   <context>
@@ -478,7 +508,7 @@
     </message>
     <message>
       <source>Analyze</source>
-      <translation>Анализировать</translation>
+      <translation>Анализ</translation>
     </message>
     <message>
       <source>Repair</source>
@@ -490,19 +520,19 @@
     </message>
     <message>
       <source>Degenerated faces</source>
-      <translation>Ухудшившийся лица</translation>
+      <translation>Ухудшившиеся грани</translation>
     </message>
     <message>
       <source>Face indices</source>
-      <translation>Индексы лица</translation>
+      <translation>Индексы граней</translation>
     </message>
     <message>
       <source>Number of faces:</source>
-      <translation>Количество лиц:</translation>
+      <translation>Количество граней:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Повторяющиеся лица</translation>
+      <translation>Повторяющиеся грани</translation>
     </message>
     <message>
       <source>Duplicated points</source>
@@ -514,7 +544,7 @@
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Самопересеченые</translation>
+      <translation>Самопересечения</translation>
     </message>
     <message>
       <source>All above tests together</source>
@@ -526,7 +556,7 @@
     </message>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Оценить и ремонтировать сетку</translation>
+      <translation>Оценить и отремонтировать сетку</translation>
     </message>
     <message>
       <source>Folds on surface</source>
@@ -597,15 +627,15 @@
     </message>
     <message>
       <source>No duplicated faces</source>
-      <translation>Нет дублировать грани</translation>
+      <translation>Нет повторяющихся граней</translation>
     </message>
     <message>
       <source>%1 duplicated faces</source>
-      <translation>%1 дублирующиеся грани</translation>
+      <translation>повторяющихся граней: %1</translation>
     </message>
     <message>
       <source>No duplicated points</source>
-      <translation>Нет дублировать точки</translation>
+      <translation>Нет повторяющихся точек</translation>
     </message>
     <message>
       <source>Duplicated points</source>
@@ -625,7 +655,7 @@
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Повторяющиеся лица</translation>
+      <translation>Повторяющиеся грани</translation>
     </message>
     <message>
       <source>No self-intersections</source>
@@ -633,7 +663,7 @@
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Самопересеченые</translation>
+      <translation>Самопересечения</translation>
     </message>
     <message>
       <source>Mesh repair</source>
@@ -669,7 +699,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>&amp;Create</source>
-      <translation>&amp; Создать</translation>
+      <translation>&amp;Создать</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -904,7 +934,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Region</source>
-      <translation>Регион</translation>
+      <translation>Область</translation>
     </message>
     <message>
       <source>Components</source>
@@ -928,7 +958,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Region options</source>
-      <translation>Параметры региона</translation>
+      <translation>Параметры области</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
@@ -937,6 +967,53 @@ Please run the command to repair folds first</source>
     <message>
       <source>Respect only visible triangles</source>
       <translation>Уважать только видимые треугольники</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Smooth mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Плоскость</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Точность</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minumum number of faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Цилиндр</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Радиус</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerance (Flat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerance (Curved)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Сфера</translation>
     </message>
   </context>
   <context>
@@ -954,7 +1031,7 @@ Please run the command to repair folds first</source>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Оценить и ремонтировать сетку</translation>
+      <translation>Оценить и отремонтировать сетку</translation>
     </message>
   </context>
   <context>
@@ -1089,7 +1166,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Delete selected faces</source>
-      <translation>Удалить выбранные лица</translation>
+      <translation>Удалить выбранные грани</translation>
     </message>
     <message>
       <source>Clear selected faces</source>
@@ -1099,20 +1176,24 @@ Max=&lt;%4,%5,%6&gt;</translation>
       <source>Annotation</source>
       <translation>Аннотация</translation>
     </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Analyze</source>
-      <translation>Анализировать</translation>
+      <translation>Анализ</translation>
     </message>
     <message>
       <source>Boolean</source>
-      <translation>Булевый</translation>
+      <translation>Булевы операции</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>&amp; Сетки</translation>
+      <translation>&amp;Сетки</translation>
     </message>
     <message>
       <source>Mesh tools</source>

@@ -42,7 +42,12 @@ SET(SandboxGui_SRCS
 
 add_library(SandboxGui SHARED ${SandboxGui_SRCS})
 target_link_libraries(SandboxGui ${SandboxGui_LIBS})
-fc_copy_script("Mod/Sandbox" "SandboxGui" InitGui.py)
+
+
+fc_target_copy_resource(SandboxGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Sandbox
+    ${CMAKE_BINARY_DIR}/Mod/Sandbox
+    InitGui.py)
 
 if(MSVC)
     set_target_properties(SandboxGui PROPERTIES SUFFIX ".pyd")

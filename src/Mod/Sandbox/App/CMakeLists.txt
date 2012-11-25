@@ -31,7 +31,12 @@ SET(Sandbox_SRCS
 
 add_library(Sandbox SHARED ${Sandbox_SRCS})
 target_link_libraries(Sandbox ${Sandbox_LIBS})
-fc_copy_script("Mod/Sandbox" "Sandbox" Init.py)
+
+
+fc_target_copy_resource(Sandbox 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Sandbox
+    ${CMAKE_BINARY_DIR}/Mod/Sandbox
+    Init.py)
 
 if(MSVC)
     set_target_properties(Sandbox PROPERTIES SUFFIX ".pyd")

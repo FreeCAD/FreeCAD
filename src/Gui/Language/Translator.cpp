@@ -129,23 +129,30 @@ Translator::Translator()
 {
     // This is needed for Qt's lupdate
     d = new TranslatorP;
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"   )] = "en";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"    )] = "de";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"   )] = "es";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"    )] = "fr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian"   )] = "it";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"  )] = "jp";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese"   )] = "zh";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"    )] = "kr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"   )] = "ru";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"   )] = "se";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans" )] = "af";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian" )] = "no";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese")] = "pt";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"     )] = "nl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian" )] = "uk";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"   )] = "fi";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"  )] = "hr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"              )] = "en";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"               )] = "de";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"               )] = "fr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian"              )] = "it";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"             )] = "ja";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Simplified"   )] = "zh-CN";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional"  )] = "zh-TW";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "kr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"              )] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian"            )] = "no";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-BR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"             )] = "hr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish"               )] = "pl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech"                )] = "cs";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"            )] = "hu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"              )] = "tr";
     d->activatedLanguage = "English";
 
     d->paths = directories();
@@ -168,6 +175,22 @@ TStringList Translator::supportedLanguages() const
         QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
         if (!fileNames.isEmpty())
             languages.push_back(it->first);
+    }
+
+    return languages;
+}
+
+TStringMap Translator::supportedLocales() const
+{
+    // List all .qm files
+    TStringMap languages;
+    QDir dir(QLatin1String(":/translations"));
+    for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
+        it != d->mapLanguageTopLevelDomain.end(); ++it) {
+        QString filter = QString::fromAscii("*_%1.qm").arg(QLatin1String(it->second.c_str()));
+        QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+        if (!fileNames.isEmpty())
+            languages[it->first] = it->second;
     }
 
     return languages;

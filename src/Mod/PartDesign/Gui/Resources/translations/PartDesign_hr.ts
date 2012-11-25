@@ -4,13 +4,21 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
       <translation>Tijelo</translation>
     </message>
     <message>
       <source>Chamfer...</source>
       <translation>Zarubi...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="+561"/>
+      <source>PartDesign</source>
+      <translation>Oblikovanje tijela</translation>
+    </message>
+    <message>
+      <source>Chamfer</source>
+      <translation>Zarubljenje</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
@@ -25,11 +33,26 @@
     </message>
     <message>
       <source>Fillet</source>
-      <translation>Utisni</translation>
+      <translation>obrubi</translation>
     </message>
     <message>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Zaobli rub, površinu ili tijelo</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignGroove</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>Oblikovanje tijela</translation>
+    </message>
+    <message>
+      <source>Groove</source>
+      <translation>Rotacijski žlijeb</translation>
+    </message>
+    <message>
+      <source>Groove a selected sketch</source>
+      <translation>Napravi rotacijski žlijeb sa odabranom skicom</translation>
     </message>
   </context>
   <context>
@@ -55,7 +78,7 @@
     </message>
     <message>
       <source>Pocket</source>
-      <translation>Džep</translation>
+      <translation>Utor</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
@@ -96,7 +119,6 @@
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
       <translation>Rubove za zarubljivanje</translation>
     </message>
@@ -138,7 +160,6 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
       <translation>Zarubi stranice</translation>
     </message>
@@ -184,11 +205,28 @@ Please check one or more edge entities first.</source>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskChamferParameters</name>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Obrazac</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Veličina:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>Parametri zarubljenja</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <location filename="../../TaskPadParameters.cpp" line="+313"/>
       <source>Input error</source>
-      <translation>Input error</translation>
+      <translation>Pogreška na ulazu</translation>
     </message>
   </context>
   <context>
@@ -205,7 +243,44 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
       <source>Fillet parameters</source>
-      <translation>Fillet parameters</translation>
+      <translation>Parametri obruba</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskGrooveParameters</name>
+    <message>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Obrazac</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Os:</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertikalna os skice</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontalna os skice</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Kut:</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Simetrično sa plohom</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Obrnuti</translation>
+    </message>
+    <message>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>Parametri rotacijskog žlijeba</translation>
     </message>
   </context>
   <context>
@@ -247,6 +322,26 @@ Please check one or more edge entities first.</source>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Obrazac</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Tip</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Dužina</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Simetrično sa plohom</translation>
+    </message>
+    <message>
+      <source>2nd length</source>
+      <translation>druga duljina</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Površina</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -293,9 +388,29 @@ Please check one or more edge entities first.</source>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <location filename="../../TaskPadParameters.cpp" line="-45"/>
       <source>Pad parameters</source>
       <translation>Parametri izvučenog oblika</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Nije odabrana niti jedna površina</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>Do zadnjeg</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>Do prvog</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Do stranice</translation>
+    </message>
+    <message>
+      <source>Two dimensions</source>
+      <translation>Dvije dimenzije</translation>
     </message>
   </context>
   <context>
@@ -334,7 +449,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
       <source>Form</source>
       <translation>Obrazac</translation>
     </message>
@@ -343,17 +458,45 @@ Please check one or more edge entities first.</source>
       <translation>Vrsta:</translation>
     </message>
     <message>
+      <source>Type</source>
+      <translation>Tip</translation>
+    </message>
+    <message>
       <source>Dimension</source>
       <translation>Dimenzija</translation>
     </message>
     <message>
-      <source>Length</source>
-      <translation>Length</translation>
+      <source>Face</source>
+      <translation>Površina</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <source>Length</source>
+      <translation>Dužina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPocketParameters.cpp" line="-113"/>
       <source>Pocket parameters</source>
-      <translation>Pocket parameters</translation>
+      <translation>Parametri udubljenja</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>Do zadnjeg</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>Do prvog</translation>
+    </message>
+    <message>
+      <source>Through all</source>
+      <translation>Kroz sve</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Do stranice</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Nije odabrana niti jedna površina</translation>
     </message>
   </context>
   <context>
@@ -368,12 +511,28 @@ Please check one or more edge entities first.</source>
       <translation>Os:</translation>
     </message>
     <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertikalna os skice</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizontalna os skice</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Simetrično sa plohom</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Obrnuti</translation>
+    </message>
+    <message>
       <source>Vertical</source>
-      <translation>Vertical</translation>
+      <translation>Okomito</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontal</translation>
+      <translation>Vodoravno</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -382,7 +541,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
       <source>Revolution parameters</source>
-      <translation>Revolution parameters</translation>
+      <translation>Parametri obrtaja</translation>
     </message>
   </context>
   <context>
@@ -417,6 +576,26 @@ Please check one or more edge entities first.</source>
       <translation>Rubove možete zaobliti samo na tijelima</translation>
     </message>
     <message>
+      <source>Shape of selected Part is empty</source>
+      <translation>Odabrano tijelo nema oblik</translation>
+    </message>
+    <message>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>Zaobljenje nije moguće na odabranim površinama/rubovima</translation>
+    </message>
+    <message>
+      <source>Chamfer works only on parts</source>
+      <translation>Zarubiti možete samo tijela</translation>
+    </message>
+    <message>
+      <source>Shape of selected part is empty</source>
+      <translation>Oblik odabranog tijela je prazan</translation>
+    </message>
+    <message>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>Zarubljenje nije moguće na odabranim površinama/rubovima</translation>
+    </message>
+    <message>
       <source>No Support</source>
       <translation>Bez podrške</translation>
     </message>
@@ -431,9 +610,9 @@ Create the sketch on a face.</source>
       <translation>Uredi izvučeni oblik</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
       <source>Edit pocket</source>
-      <translation>Edit pocket</translation>
+      <translation>Uredi udubljenje</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
@@ -446,7 +625,12 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
       <source>Edit revolution</source>
-      <translation>Edit revolution</translation>
+      <translation>Uredi obrtaj</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>Podesi rotacijski žlijeb</translation>
     </message>
   </context>
   <context>

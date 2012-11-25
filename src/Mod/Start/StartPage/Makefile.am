@@ -18,6 +18,7 @@ data_DATA = \
 		LoadMRU0.py \
 		LoadMRU1.py \
 		LoadMRU2.py \
+		LoadArchExample.py \
 		Mesh.py \
 		PartDesign.py \
 		Background.jpg \
@@ -28,7 +29,12 @@ data_DATA = \
 		Complete.png \
 		PartDesignExample.png \
 		ArchExample.png \
-		web.png
+		web.png \
+		blank.png \
+        complete.jpg \
+        Ship.py \
+        Ship.png \
+        ShipExample.png
 
 EXTRA_DIST = \
 		$(data_DATA) $(python_DATA)

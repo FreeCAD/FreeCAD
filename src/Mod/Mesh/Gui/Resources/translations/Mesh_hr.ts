@@ -323,6 +323,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mreža</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Izreži mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Presjeca mrežu sa odabranim poligonom</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -350,6 +365,21 @@
     <message>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Izvadite komponente neovisne o topologiji iz MESH-a</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mreža</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Kreiraj segmente mesh-a...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Kreiraj segmente mesh-a</translation>
     </message>
   </context>
   <context>
@@ -941,6 +971,53 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentiranje mesh-a</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Izgladi mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerancija</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minimalan broj ploha</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Valjak</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radijus</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerancija (Ravno)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerancija (Zakrivljeno)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimalan broj ploha</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Kugla</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -1099,6 +1176,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Annotation</source>
       <translation>Anotacija</translation>
+    </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>Sve MESH datoteke (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
   </context>
   <context>

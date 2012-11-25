@@ -108,6 +108,9 @@ public:
     void setAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled(void) const;
 
+    void setPopupMenuEnabled(const SbBool on);
+    SbBool isPopupMenuEnabled(void) const;
+
     void startAnimating(const SbVec3f& axis, float velocity);
     void stopAnimating(void);
     SbBool isAnimating(void) const;
@@ -230,7 +233,7 @@ public:
      * \a TRUE the reorientation is animated, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& rot);
+    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
     void setCameraType(SoType t);
     void moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms);
     /** 

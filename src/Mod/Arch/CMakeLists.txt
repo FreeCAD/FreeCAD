@@ -19,6 +19,8 @@ SET(Arch_SRCS
     importOBJ.py
     ArchWindow.py
     ArchAxis.py
+    ArchVRM.py
+    ArchRoof.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
@@ -28,7 +30,7 @@ ADD_CUSTOM_TARGET(Arch ALL
     SOURCES ${all_files}
 )
 
-fc_copy_sources("Mod/Arch" "Arch" ${all_files})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${all_files})
 
 INSTALL(
     FILES ${Arch_SRCS}

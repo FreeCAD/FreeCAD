@@ -2,15 +2,45 @@
 <!DOCTYPE TS>
 <TS>
   <context>
+    <name>CmdDrawingAnnotation</name>
+    <message>
+      <location filename="../../Command.cpp" line="+365"/>
+      <source>Drawing</source>
+      <translation>Чертеж</translation>
+    </message>
+    <message>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Аннотация</translation>
+    </message>
+    <message>
+      <source>Inserts an Annotation view in the active drawing</source>
+      <translation>Вставляет представление аннотации в активном документе</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingClip</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Чертеж</translation>
+    </message>
+    <message>
+      <source>&amp;Clip</source>
+      <translation>&amp;Clip</translation>
+    </message>
+    <message>
+      <source>Inserts a clip group in the active drawing</source>
+      <translation>Inserts a clip group in the active drawing</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="+285"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
     <message>
       <source>&amp;Export page...</source>
-      <translation>Экспортировать страницу...</translation>
+      <translation>&amp;Экспортировать страницу...</translation>
     </message>
     <message>
       <source>Export a page to an SVG file</source>
@@ -70,6 +100,36 @@
     </message>
   </context>
   <context>
+    <name>CmdDrawingOpenBrowserView</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Чертеж</translation>
+    </message>
+    <message>
+      <source>Open &amp;browser view</source>
+      <translation>Open &amp;browser view</translation>
+    </message>
+    <message>
+      <source>Opens the selected page in a browser view</source>
+      <translation>Opens the selected page in a browser view</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingOrthoViews</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Чертеж</translation>
+    </message>
+    <message>
+      <source>Insert orthographic views</source>
+      <translation>Вставить ортографические виды</translation>
+    </message>
+    <message>
+      <source>Insert an orthographic projection of a part in the active drawing</source>
+      <translation>Insert an orthographic projection of a part in the active drawing</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingProjectShape</name>
     <message>
       <source>Drawing</source>
@@ -77,17 +137,17 @@
     </message>
     <message>
       <source>Project shape...</source>
-      <translation>Project shape...</translation>
+      <translation>Проекция фигуры...</translation>
     </message>
     <message>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Project shape onto a user-defined plane</translation>
+      <translation>Проекция фигуры на выбранную плоскость</translation>
     </message>
   </context>
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+206"/>
+      <location filename="../../DrawingView.cpp" line="+207"/>
       <source>&amp;Background</source>
       <translation>&amp;Фон</translation>
     </message>
@@ -161,57 +221,164 @@
     </message>
   </context>
   <context>
+    <name>DrawingGui::TaskOrthoViews</name>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="+26"/>
+      <source>Orthographic Projection</source>
+      <translation>Ортографическая проекция</translation>
+    </message>
+    <message>
+      <source>Projection</source>
+      <translation>Проекция</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Третий угол</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Первый угол</translation>
+    </message>
+    <message>
+      <source>Primary View</source>
+      <translation>Главный вид</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Спереди</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Вправо</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Назад</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Слева</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Вверх</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Дно</translation>
+    </message>
+    <message>
+      <source>- Rotate</source>
+      <translation>Вращение</translation>
+    </message>
+    <message>
+      <source>0</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>90</source>
+      <translation>90</translation>
+    </message>
+    <message>
+      <source>180</source>
+      <translation>180</translation>
+    </message>
+    <message>
+      <source>270</source>
+      <translation>270</translation>
+    </message>
+    <message>
+      <source>Primary view</source>
+      <translation>Главный вид</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Дополнительные виды</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Основные</translation>
+    </message>
+    <message>
+      <source>Auto scale / position</source>
+      <translation>Auto scale / position</translation>
+    </message>
+    <message>
+      <source>Scale</source>
+      <translation>Масштаб</translation>
+    </message>
+    <message>
+      <source>Primary x / y</source>
+      <translation>Primary x / y</translation>
+    </message>
+    <message>
+      <source>Secondary dx / dy</source>
+      <translation>Secondary dx / dy</translation>
+    </message>
+    <message>
+      <source>Show hidden</source>
+      <translation>Показать скрытое</translation>
+    </message>
+    <message>
+      <source>Show smooth</source>
+      <translation>Show smooth</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Аксонометрия</translation>
+    </message>
+  </context>
+  <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
       <location filename="../../TaskDialog.cpp" line="+49"/>
       <source>Visible sharp edges</source>
-      <translation>Visible sharp edges</translation>
+      <translation>Видимые резкие края</translation>
     </message>
     <message>
       <source>Visible smooth edges</source>
-      <translation>Visible smooth edges</translation>
+      <translation>Видимые плавные края</translation>
     </message>
     <message>
       <source>Visible sewn edges</source>
-      <translation>Visible sewn edges</translation>
+      <translation>Показать пришитые края</translation>
     </message>
     <message>
       <source>Visible outline edges</source>
-      <translation>Visible outline edges</translation>
+      <translation>Видимые края контура</translation>
     </message>
     <message>
       <source>Visible isoparameters</source>
-      <translation>Visible isoparameters</translation>
+      <translation>Видимые изопараметры</translation>
     </message>
     <message>
       <source>Hidden sharp edges</source>
-      <translation>Hidden sharp edges</translation>
+      <translation>Скрытые резкие края</translation>
     </message>
     <message>
       <source>Hidden smooth edges</source>
-      <translation>Hidden smooth edges</translation>
+      <translation>Скрытые плавные края</translation>
     </message>
     <message>
       <source>Hidden sewn edges</source>
-      <translation>Hidden sewn edges</translation>
+      <translation>Скрыть пришитые края</translation>
     </message>
     <message>
       <source>Hidden outline edges</source>
-      <translation>Hidden outline edges</translation>
+      <translation>Скрытые края контура</translation>
     </message>
     <message>
       <source>Hidden isoparameters</source>
-      <translation>Hidden isoparameters</translation>
+      <translation>Скрытые изопараметры</translation>
     </message>
     <message>
       <source>Project shapes</source>
-      <translation>Project shapes</translation>
+      <translation>Проекция фигуры</translation>
     </message>
   </context>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="-196"/>
       <source>A0 landscape</source>
       <translation>А0 альбомный</translation>
     </message>
@@ -251,6 +418,15 @@
       <source>Insert new A4 landscape drawing</source>
       <translation>Вставить новый альбомный чертеж А4</translation>
     </message>
+    <message>
+      <location filename="../../Command.cpp" line="-327"/>
+      <source>Insert new A%1 landscape drawing</source>
+      <translation>Insert new A%1 landscape drawing</translation>
+    </message>
+    <message>
+      <source>A%1 landscape</source>
+      <translation>A%1 landscape</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -285,6 +461,10 @@
       <translation>Создать страницу для вставки.</translation>
     </message>
     <message>
+      <source>Create a page to insert views into.</source>
+      <translation>Создайте страницу для вставки видов</translation>
+    </message>
+    <message>
       <source>Select one Page object.</source>
       <translation>Выберите одну страницу объекта.</translation>
     </message>
@@ -301,9 +481,34 @@
       <translation>Экспортировать страницу</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="-25"/>
+      <location filename="../../ViewProviderPage.cpp" line="-27"/>
       <source>Show drawing</source>
       <translation>Показать чертеж</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.cpp" line="+49"/>
+      <source>Front</source>
+      <translation>Спереди</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Назад</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Вправо</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Слева</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Вверх</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Дно</translation>
     </message>
   </context>
   <context>

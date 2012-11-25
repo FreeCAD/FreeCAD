@@ -4,13 +4,13 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+452"/>
+      <location filename="../../Command.cpp" line="+425"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
     <message>
       <source>&amp;Export project...</source>
-      <translation>&amp;Експорт проекту...</translation>
+      <translation>&amp;Експортувати проект...</translation>
     </message>
     <message>
       <source>Export the Povray project file</source>
@@ -25,11 +25,11 @@
     </message>
     <message>
       <source>Insert part</source>
-      <translation>Вставити частину</translation>
+      <translation>Вставити деталь</translation>
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
-      <translation>Вставити нову частину об'єкта у Povray проект</translation>
+      <translation>Вставити нову деталь у Povray проект</translation>
     </message>
   </context>
   <context>
@@ -55,11 +55,11 @@
     </message>
     <message>
       <source>Export camera to povray...</source>
-      <translation>Export camera to povray...</translation>
+      <translation>Експортувати камеру до Povray...</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation>Експортувати положення камери активного 3D вигляду до файлу у PovRay форматі</translation>
+      <translation>Експортувати положення камери активного 3D-виду до файлу у PovRay форматі</translation>
     </message>
   </context>
   <context>
@@ -70,22 +70,32 @@
     </message>
     <message>
       <source>Export part to povray...</source>
-      <translation>Експортування частини до povray...</translation>
+      <translation>Експортувати деталь у Povray...</translation>
     </message>
     <message>
       <source>Write the selected Part (object) as a povray file</source>
-      <translation>Записати виділену частину (об'єкт) як Povray файл</translation>
+      <translation>Записати виділену деталь(об'єкт) як Povray файл</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteView</name>
+    <message>
+      <source>No perspective camera</source>
+      <translation>No perspective camera</translation>
+    </message>
+    <message>
+      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</source>
+      <translation>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</translation>
+    </message>
     <message>
       <source>Raytracing</source>
       <translation>Трасування променів</translation>
     </message>
     <message>
       <source>Export view to povray...</source>
-      <translation>Експорт вигляду в Povray ...</translation>
+      <translation>Експортувати вид у Povray...</translation>
     </message>
     <message>
       <source>Write the active 3D view with camera and all its content to a povray file</source>
@@ -116,15 +126,19 @@
     </message>
     <message>
       <source>No Povray project to insert</source>
-      <translation>Немає Povray проекту для вставки</translation>
+      <translation>Немає проекту Povray для вставки</translation>
     </message>
     <message>
       <source>Create a Povray project to insert a view.</source>
-      <translation>Створення Povray проекту для вставки у вигляд.</translation>
+      <translation>Створити проект Povray для вставки у вид.</translation>
+    </message>
+    <message>
+      <source>Select a Povray project to insert the view.</source>
+      <translation>Select a Povray project to insert the view.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>
-      <translation>Виберіть один Povray проект для об'єкта.</translation>
+      <translation>Виберіть один об'єкт проекту Povray.</translation>
     </message>
   </context>
   <context>
@@ -148,7 +162,7 @@
     </message>
     <message>
       <source>Part file name:</source>
-      <translation>Ім'я файлу деталі(частини):</translation>
+      <translation>Ім'я файлу деталі:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>

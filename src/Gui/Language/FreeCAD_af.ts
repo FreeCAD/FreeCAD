@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Available:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Selected:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Voeg by</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Verwyder</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Skuif op</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Skuif neer</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Movable object</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Fixed object</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -71,7 +109,7 @@
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Press SHIFT and middle mouse button</translation>
+      <translation>Druk SHIFT en die middelste muisknoppie</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -158,18 +196,22 @@
     </message>
     <message>
       <source>License...</source>
-      <translation>License...</translation>
+      <translation>Lisensie...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Copy to clipboard</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
-      <translation>Button %1</translation>
+      <translation>Knoppie %1</translation>
     </message>
     <message>
       <source>Out Of Range</source>
-      <translation>Out Of Range</translation>
+      <translation>Buite interval</translation>
     </message>
   </context>
   <context>
@@ -307,7 +349,7 @@
     </message>
     <message>
       <source>Add icons...</source>
-      <translation>Add icons...</translation>
+      <translation>Voeg ikone by...</translation>
     </message>
   </context>
   <context>
@@ -645,22 +687,22 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>&amp;MaakToe</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <translation>Ruimtebal</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
-      <translation>No Spaceball Present</translation>
+      <translation>Geen ruimtebal aanwesig</translation>
     </message>
     <message>
       <source>Buttons</source>
-      <translation>Buttons</translation>
+      <translation>Knoppies</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -668,7 +710,7 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>Print Reference</source>
-      <translation>Print Reference</translation>
+      <translation>Druk Verwysing</translation>
     </message>
   </context>
   <context>
@@ -710,10 +752,6 @@ Definieer asseblief 'n ander kortpad.</translation>
       <translation>Besigtingsmodus</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Vertoningsmodus:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Plotmodus:</translation>
     </message>
@@ -735,7 +773,11 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Color plot:</translation>
+      <translation>Kleurplot:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -841,26 +883,26 @@ Definieer asseblief 'n ander kortpad.</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
-      <translation>Size of toolbar icons:</translation>
+      <translation>Grote van die nutsbalkikone:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>Default (%1 x %1)</source>
-      <translation>Default (%1 x %1)</translation>
+      <translation>Verstek (%1 x %1)</translation>
     </message>
     <message>
       <source>Small (%1 x %1)</source>
-      <translation>Small (%1 x %1)</translation>
+      <translation>Klein (%1 x %1)</translation>
     </message>
     <message>
       <source>Large (%1 x %1)</source>
-      <translation>Large (%1 x %1)</translation>
+      <translation>Groot (%1 x %1)</translation>
     </message>
     <message>
       <source>Extra large (%1 x %1)</source>
-      <translation>Extra large (%1 x %1)</translation>
+      <translation>Baie groot (%1 x %1)</translation>
     </message>
   </context>
   <context>
@@ -1031,7 +1073,7 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>&amp;MaakToe</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1119,7 +1161,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>&amp;MaakToe</translation>
     </message>
   </context>
   <context>
@@ -1258,35 +1300,35 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <source>Project utility</source>
-      <translation>Project utility</translation>
+      <translation>Projekwerktuig</translation>
     </message>
     <message>
       <source>Extract project</source>
-      <translation>Extract project</translation>
+      <translation>Ekstraheer projek</translation>
     </message>
     <message>
       <source>Source</source>
-      <translation>Source</translation>
+      <translation>Bron</translation>
     </message>
     <message>
       <source>Project file (*.fcstd)</source>
-      <translation>Project file (*.fcstd)</translation>
+      <translation>Projeklêer (*.fcstd)</translation>
     </message>
     <message>
       <source>Destination</source>
-      <translation>Destination</translation>
+      <translation>Bestemming</translation>
     </message>
     <message>
       <source>Extract</source>
-      <translation>Extract</translation>
+      <translation>Ekstraheer</translation>
     </message>
     <message>
       <source>Create project</source>
-      <translation>Create project</translation>
+      <translation>Skep projek</translation>
     </message>
     <message>
       <source>Document.xml</source>
-      <translation>Document.xml</translation>
+      <translation>Dokument.xml</translation>
     </message>
     <message>
       <source>Create</source>
@@ -1294,23 +1336,23 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
-      <translation>Load project file after creation</translation>
+      <translation>Laai projeklêer na skepping</translation>
     </message>
     <message>
       <source>Empty source</source>
-      <translation>Empty source</translation>
+      <translation>Leë bron</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>No source is defined.</translation>
+      <translation>Geen bron is gedefinieer nie.</translation>
     </message>
     <message>
       <source>Empty destination</source>
-      <translation>Empty destination</translation>
+      <translation>Leë bestemming</translation>
     </message>
     <message>
       <source>No destination is defined.</source>
-      <translation>No destination is defined.</translation>
+      <translation>Geen bestemming is gedefinieer nie.</translation>
     </message>
   </context>
   <context>
@@ -1365,7 +1407,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Redirect internal Python output to report view</translation>
+      <translation>Kanaliseer die interne Python uitset na rapportaansig</translation>
     </message>
   </context>
   <context>
@@ -1471,19 +1513,27 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Orbit style</source>
-      <translation>Orbit style</translation>
+      <translation>Wentelbaanstyl</translation>
     </message>
     <message>
       <source>Turntable</source>
-      <translation>Turntable</translation>
+      <translation>Draaitafel</translation>
     </message>
     <message>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>Spoorbal</translation>
     </message>
     <message>
       <source>Invert zoom</source>
-      <translation>Invert zoom</translation>
+      <translation>Omgekeerde vergroting</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zoom at cursor</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Zoom step</translation>
     </message>
   </context>
   <context>
@@ -1657,11 +1707,11 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Maximum Undo/Redo steps</translation>
+      <translation>Maksimum ontdoen/herdoen stappe</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Using Undo/Redo on documents</translation>
+      <translation>Gebruik van ontdoen/herdoen in dokumente</translation>
     </message>
   </context>
   <context>
@@ -1725,6 +1775,10 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <message>
       <source>Items</source>
       <translation>Items</translation>
+    </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Current line highlight</translation>
     </message>
   </context>
   <context>
@@ -1960,6 +2014,14 @@ Spesifiseer asseblief 'n ander gids.</translation>
       <source>Macro path</source>
       <translation>Makropad</translation>
     </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>General macro settings</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Run macros in local environment</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -2032,39 +2094,67 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Default colors</source>
-      <translation>Default colors</translation>
+      <translation>Verstekkleure</translation>
     </message>
     <message>
       <source>Edited edge color</source>
-      <translation>Edited edge color</translation>
+      <translation>Gewysigde kantkleur</translation>
     </message>
     <message>
       <source>Edited vertex color</source>
-      <translation>Edited vertex color</translation>
+      <translation>Gewysigde hoekpuntkleur</translation>
     </message>
     <message>
       <source>Construction geometry</source>
-      <translation>Construction geometry</translation>
+      <translation>Konstruksiegeometrie</translation>
     </message>
     <message>
       <source>Fully constrained geometry</source>
-      <translation>Fully constrained geometry</translation>
-    </message>
-    <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>The color of construction geometry in editmode</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>The color of fully constrained geometry in editmode</translation>
+      <translation>Ten volle beperkte geometrie</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
-      <translation>The color of vertices being edited</translation>
+      <translation>Die kleur van hoekpunte wat gewysig word</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
-      <translation>The color of edges being edited</translation>
+      <translation>Die kleur van kante wat gewysig word</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>The color of construction geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>The color of fully constrained geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Cursor text color</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Default shape color</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>The default color for new shapes</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Default line width and color</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>The default line color for new shapes</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>The default line thickness for new shapes</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2095,7 +2185,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Maak toe</translation>
+      <translation>&amp;MaakToe</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -2129,15 +2219,47 @@ Spesifiseer asseblief 'n ander gids.</translation>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Canceled.</translation>
+      <source>Download</source>
+      <translation>Download</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Kanselleer</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Maak toe</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>There already exists a file called %1 in the current directory. Overwrite?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Unable to save the file %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Downloading %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Download canceled.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Aflaai het misluk: '%1'.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Downloaded %1 to current directory.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
       <source>Add icon</source>
-      <translation>Add icon</translation>
+      <translation>Voeg ikoon by</translation>
     </message>
   </context>
   <context>
@@ -2165,6 +2287,13 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <message>
       <source>OK</source>
       <translation>Goed</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Copyright</translation>
     </message>
   </context>
   <context>
@@ -2360,7 +2489,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Rotation axis with angle</translation>
+      <translation>Roteer as met hoek</translation>
     </message>
     <message>
       <source>Euler angles</source>
@@ -2391,7 +2520,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     <name>Gui::Dialog::PrintModel</name>
     <message>
       <source>Button</source>
-      <translation>Button</translation>
+      <translation>Knoppie</translation>
     </message>
     <message>
       <source>Command</source>
@@ -2598,7 +2727,7 @@ Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
-      <translation>Redirect Python output</translation>
+      <translation>Kanaliseer Python uitset</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
@@ -2855,6 +2984,25 @@ Wil jy jou veranderinge stoor?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Rigting:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2882,6 +3030,91 @@ Wil jy jou veranderinge stoor?</translation>
     <message>
       <source>Close All</source>
       <translation>Maak alles toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Manual alignment</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>The alignment is already in progress.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Alignment[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Please, select at least one point in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Please, select at least %1 points in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Please pick points in the left and right view</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>The alignment has finished</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>The alignment has been canceled</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the left view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the right view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Try to align group of views</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>The alignment failed.
+How do you want to proceed?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Retry</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Ignoreer</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Abort</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Point picked at (%1,%2,%3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>No point was picked</translation>
     </message>
   </context>
   <context>
@@ -3028,6 +3261,10 @@ Wil jy afsluit sonder om jou data te stoor?</translation>
       <source>Select All</source>
       <translation>Kies alles</translation>
     </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Clear console</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -3169,10 +3406,6 @@ Wil jy 'n ander gids aangee?</translation>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-      <source>Display mode:</source>
-      <translation>Vertoningsmodus:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Plotmodus:</translation>
     </message>
@@ -3191,6 +3424,10 @@ Wil jy 'n ander gids aangee?</translation>
     <message>
       <source>Appearance</source>
       <translation>Voorkoms</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -3216,10 +3453,22 @@ Wil jy 'n ander gids aangee?</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>Engels</translation>
+      <source>Press left mouse button</source>
+      <translation>Druk linker muisknoppie</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Press SHIFT button</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Press ALT button</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Press PgUp/PgDown button</translation>
     </message>
   </context>
   <context>
@@ -3473,14 +3722,6 @@ Wil jy 'n ander gids aangee?</translation>
     <message>
       <source>A general error occurred while loading the workbench</source>
       <translation>'n Algemene fout het voorgekom tydens die laai van die werkbank</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>Lêer nie gevind nie</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Kan nie lêer '%1' oop maak nie</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -3780,8 +4021,18 @@ Wees bewus dat die punt waar jy kliek belangrik is.</translation>
     <message>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-      <translation>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</translation>
+      <translation>Die dokument is in wysigingsmodus en kan dus nie op die oomblik gesluit word nie. Jy moet wysiging afsluit of kanselleer in die taakpaneel.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardaansig</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Box selection</translation>
     </message>
   </context>
   <context>
@@ -3845,6 +4096,21 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Wysig</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Alignment...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Align the selected objects</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdArrangeIcons</name>
     <message>
       <source>Window</source>
@@ -3867,7 +4133,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>Toggle axis cross</translation>
+      <translation>Wissel askruising</translation>
     </message>
   </context>
   <context>
@@ -3958,21 +4224,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Cut out</source>
       <translation>Knip uit</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Wysig</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Duplikaatseleksie</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Plaas duplikate van die geselekteerde voorwerpe in die aktiewe dokument</translation>
     </message>
   </context>
   <context>
@@ -4118,7 +4369,41 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Draw style</translation>
+      <translation>Tekenstyl</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Wysig</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Duplikaatseleksie</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Plaas duplikate van die geselekteerde voorwerpe in die aktiewe dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Wysig</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Toggle &amp;Edit mode</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Toggles the selected object's edit mode</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Enters or leaves the selected object's edit mode</translation>
     </message>
   </context>
   <context>
@@ -4136,8 +4421,27 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Voer 'n voorwerp in die aktiewe dokument uit</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Ondersteunde formate</translation>
+      <source>No selection</source>
+      <translation>Geen keuse</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Please select first the objects you want to export.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Gereedskap</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Dependency graph...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Show the dependency graph of the objects in the active document</translation>
     </message>
   </context>
   <context>
@@ -4312,12 +4616,12 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Gereedskap</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Meet afstand</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Meet afstand tussen twee geselekteerde voorwerpe</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Meet afstand</translation>
     </message>
   </context>
   <context>
@@ -4367,21 +4671,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Show help to the application</source>
       <translation>Wys hulp vir die toepassing</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Hulp</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Python Handleidings</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Wys die Python dokumentasie</translation>
     </message>
   </context>
   <context>
@@ -4490,7 +4779,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>&amp;Print preview...</translation>
+      <translation>&amp;Druk voorskou...</translation>
     </message>
     <message>
       <source>Print the document</source>
@@ -4498,7 +4787,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Print preview</source>
-      <translation>Print preview</translation>
+      <translation>Druk voorskou</translation>
     </message>
   </context>
   <context>
@@ -4524,11 +4813,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Project utility...</source>
-      <translation>Project utility...</translation>
+      <translation>Projekwerktuig...</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation>Utility to extract or create project files</translation>
+      <translation>Werktuig om projeklêers te ekstraheer of skep</translation>
     </message>
   </context>
   <context>
@@ -5199,6 +5488,36 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardaansig</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Rotate Left</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardaansig</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Rotate Right</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Rotate the view by 90Â° clockwise</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -5317,8 +5636,8 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Standaardaansig</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Vertoningsmodus</translation>
+      <source>Document window</source>
+      <translation>Document window</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5366,19 +5685,48 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>As is</translation>
+      <translation>Soos dit is</translation>
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normal mode</translation>
+      <translation>Normale modus</translation>
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Wireframe</translation>
+      <translation>Draadwerk</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Wireframe mode</translation>
+      <translation>Draadwerkmodus</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Graphviz not found</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Graphviz installation path</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Dependency graph</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Graphviz failed</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Graphviz failed to create an image file</translation>
     </message>
   </context>
   <context>

@@ -4,17 +4,17 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+452"/>
+      <location filename="../../Command.cpp" line="+425"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
     <message>
       <source>&amp;Export project...</source>
-      <translation>&amp; Экспортировать проект...</translation>
+      <translation>&amp;Экспортировать проект...</translation>
     </message>
     <message>
       <source>Export the Povray project file</source>
-      <translation>Экспорт файлов Povray проекта</translation>
+      <translation>Экспорт файлов проекта POV-Ray</translation>
     </message>
   </context>
   <context>
@@ -25,11 +25,11 @@
     </message>
     <message>
       <source>Insert part</source>
-      <translation>Вставить часть</translation>
+      <translation>Вставить деталь</translation>
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
-      <translation>Вставить новый объект в проекте Povray</translation>
+      <translation>Вставить новый объект в проект POV-Ray</translation>
     </message>
   </context>
   <context>
@@ -40,11 +40,11 @@
     </message>
     <message>
       <source>New Povray project</source>
-      <translation>Новый проект Povray</translation>
+      <translation>Новый проект POV-Ray</translation>
     </message>
     <message>
       <source>Insert new Povray project into the document</source>
-      <translation>Вставка нового проекта Povray в документ</translation>
+      <translation>Вставка нового проекта POV-Ray в документ</translation>
     </message>
   </context>
   <context>
@@ -59,7 +59,7 @@
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation>Экспорт положения камеры текущего 3D-вида в файл формата PovRay</translation>
+      <translation>Экспорт положения камеры текущего 3D-вида в файл формата POV-Ray</translation>
     </message>
   </context>
   <context>
@@ -70,33 +70,43 @@
     </message>
     <message>
       <source>Export part to povray...</source>
-      <translation>Экспортировать деталь в Povray ...</translation>
+      <translation>Экспортировать деталь в POV-Ray...</translation>
     </message>
     <message>
       <source>Write the selected Part (object) as a povray file</source>
-      <translation>Записать выбранную деталь (объект) в Povray файл</translation>
+      <translation>Записать выбранную деталь (объект) в файл POV-Ray</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteView</name>
+    <message>
+      <source>No perspective camera</source>
+      <translation>No perspective camera</translation>
+    </message>
+    <message>
+      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</source>
+      <translation>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</translation>
+    </message>
     <message>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
     <message>
       <source>Export view to povray...</source>
-      <translation>Экспортировать вид в Povray ...</translation>
+      <translation>Экспортировать вид в POV-Ray...</translation>
     </message>
     <message>
       <source>Write the active 3D view with camera and all its content to a povray file</source>
-      <translation>Записать текущий 3D-вид камеры и ее содержимого в Povray-файл</translation>
+      <translation>Записать текущий 3D-вид камеры и ее содержимого в файл POV-Ray</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Povray(*.pov)</source>
-      <translation>Povray (*. pov)</translation>
+      <translation>POV-Ray (*.pov)</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
@@ -116,15 +126,19 @@
     </message>
     <message>
       <source>No Povray project to insert</source>
-      <translation>Нет проекта Povray для вставки</translation>
+      <translation>Нет проекта POV-Ray для вставки</translation>
     </message>
     <message>
       <source>Create a Povray project to insert a view.</source>
       <translation>Создайте проект Povray, чтобы вставить вид. </translation>
     </message>
     <message>
+      <source>Select a Povray project to insert the view.</source>
+      <translation>Select a Povray project to insert the view.</translation>
+    </message>
+    <message>
       <source>Select one Povray project object.</source>
-      <translation>Выберите один объект Povray проекта.</translation>
+      <translation>Выберите один объект проекта POV-Ray.</translation>
     </message>
   </context>
   <context>
@@ -148,7 +162,7 @@
     </message>
     <message>
       <source>Part file name:</source>
-      <translation>Часть имени файла:</translation>
+      <translation>Имя файла детали:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
@@ -180,7 +194,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Трасировщик лучей</translation>
+      <translation>&amp;Трассировка лучей</translation>
     </message>
   </context>
 </TS>

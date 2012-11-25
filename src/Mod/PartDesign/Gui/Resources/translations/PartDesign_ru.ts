@@ -4,13 +4,21 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
       <translation>Деталь</translation>
     </message>
     <message>
       <source>Chamfer...</source>
       <translation>Фаска...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="+561"/>
+      <source>PartDesign</source>
+      <translation>Проектирование детали</translation>
+    </message>
+    <message>
+      <source>Chamfer</source>
+      <translation>Фаска</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
@@ -21,7 +29,7 @@
     <name>CmdPartDesignFillet</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Проектирование детали</translation>
     </message>
     <message>
       <source>Fillet</source>
@@ -33,10 +41,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartDesignGroove</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>Проектирование детали</translation>
+    </message>
+    <message>
+      <source>Groove</source>
+      <translation>Паз</translation>
+    </message>
+    <message>
+      <source>Groove a selected sketch</source>
+      <translation>Groove a selected sketch</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartDesignPad</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Проектирование детали</translation>
     </message>
     <message>
       <source>Pad</source>
@@ -51,22 +74,22 @@
     <name>CmdPartDesignPocket</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Проектирование детали</translation>
     </message>
     <message>
       <source>Pocket</source>
-      <translation>Документ</translation>
+      <translation>Карман</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
-      <translation>создать документ с выбранным эскизом</translation>
+      <translation>создать карман с выбранным эскизом</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Проектирование детали</translation>
     </message>
     <message>
       <source>Revolution</source>
@@ -96,9 +119,8 @@
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
-      <translation>Края среза</translation>
+      <translation>Ребра для выполнения фаски</translation>
     </message>
     <message>
       <source>Start distance</source>
@@ -106,7 +128,7 @@
     </message>
     <message>
       <source>End distance</source>
-      <translation>Конец расстояния</translation>
+      <translation>Конечное расстояние</translation>
     </message>
     <message>
       <source>Edge%1</source>
@@ -139,7 +161,6 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
       <translation>Притупить ребра фаской</translation>
     </message>
@@ -185,11 +206,28 @@ Please check one or more edge entities first.</source>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskChamferParameters</name>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Форма</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Размер:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>Параметры фаски</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <location filename="../../TaskPadParameters.cpp" line="+313"/>
       <source>Input error</source>
-      <translation>Input error</translation>
+      <translation>Ошибка ввода</translation>
     </message>
   </context>
   <context>
@@ -206,7 +244,44 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
       <source>Fillet parameters</source>
-      <translation>Fillet parameters</translation>
+      <translation>Параметры скругления</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskGrooveParameters</name>
+    <message>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Форма</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Оси:</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Вертикальная ось эскиза</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Горизонтальная ось эскиза</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Угол:</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Reversed</translation>
+    </message>
+    <message>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>Groove parameters</translation>
     </message>
   </context>
   <context>
@@ -248,6 +323,26 @@ Please check one or more edge entities first.</source>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Форма</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Тип</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Длина</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>2nd length</source>
+      <translation>Вторая длина</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Поверхность</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -294,9 +389,29 @@ Please check one or more edge entities first.</source>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <location filename="../../TaskPadParameters.cpp" line="-45"/>
       <source>Pad parameters</source>
       <translation>Параметры панели</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Поверхность не выбрана</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>К последнему</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>К первому</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>До грани</translation>
+    </message>
+    <message>
+      <source>Two dimensions</source>
+      <translation>Two dimensions</translation>
     </message>
   </context>
   <context>
@@ -335,7 +450,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
@@ -344,17 +459,45 @@ Please check one or more edge entities first.</source>
       <translation>Тип:</translation>
     </message>
     <message>
+      <source>Type</source>
+      <translation>Тип</translation>
+    </message>
+    <message>
       <source>Dimension</source>
       <translation>Размер</translation>
     </message>
     <message>
-      <source>Length</source>
-      <translation>Length</translation>
+      <source>Face</source>
+      <translation>Поверхность</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <source>Length</source>
+      <translation>Длина</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPocketParameters.cpp" line="-113"/>
       <source>Pocket parameters</source>
-      <translation>Pocket parameters</translation>
+      <translation>Параметры кармана</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>К последнему</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>К первому</translation>
+    </message>
+    <message>
+      <source>Through all</source>
+      <translation>Через все</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>До грани</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Поверхность не выбрана</translation>
     </message>
   </context>
   <context>
@@ -369,12 +512,28 @@ Please check one or more edge entities first.</source>
       <translation>Оси:</translation>
     </message>
     <message>
+      <source>Vertical sketch axis</source>
+      <translation>Вертикальная ось эскиза</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Горизонтальная ось эскиза</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetric to plane</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Reversed</translation>
+    </message>
+    <message>
       <source>Vertical</source>
-      <translation>Vertical</translation>
+      <translation>По вертикали</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontal</translation>
+      <translation>По горизонтали</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -383,7 +542,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
       <source>Revolution parameters</source>
-      <translation>Revolution parameters</translation>
+      <translation>Параметры вращения</translation>
     </message>
   </context>
   <context>
@@ -418,6 +577,26 @@ Please check one or more edge entities first.</source>
       <translation>Скругление работает только для деталей</translation>
     </message>
     <message>
+      <source>Shape of selected Part is empty</source>
+      <translation>Shape of selected Part is empty</translation>
+    </message>
+    <message>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>No fillet possible on selected faces/edges</translation>
+    </message>
+    <message>
+      <source>Chamfer works only on parts</source>
+      <translation>Chamfer works only on parts</translation>
+    </message>
+    <message>
+      <source>Shape of selected part is empty</source>
+      <translation>Shape of selected part is empty</translation>
+    </message>
+    <message>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>No chamfer possible on selected faces/edges</translation>
+    </message>
+    <message>
       <source>No Support</source>
       <translation>Не поддерживается</translation>
     </message>
@@ -433,9 +612,9 @@ Create the sketch on a face.</source>
       <translation>Edit pad</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
       <source>Edit pocket</source>
-      <translation>Edit pocket</translation>
+      <translation>Редактировать карман</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
@@ -448,7 +627,12 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
       <source>Edit revolution</source>
-      <translation>Edit revolution</translation>
+      <translation>Изменить вращение</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>Edit Groove</translation>
     </message>
   </context>
   <context>
@@ -456,7 +640,7 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../Workbench.cpp" line="-3"/>
       <source>Part Design</source>
-      <translation>Дизайн части</translation>
+      <translation>Проектирование детали</translation>
     </message>
   </context>
 </TS>

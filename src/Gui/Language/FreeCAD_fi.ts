@@ -64,6 +64,44 @@
     </message>
   </context>
   <context>
+    <name>Gui::ActionSelector</name>
+    <message>
+      <source>Available:</source>
+      <translation>Available:</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Selected:</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Lisää</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Poista</translation>
+    </message>
+    <message>
+      <source>Move up</source>
+      <translation>Siirrä ylös</translation>
+    </message>
+    <message>
+      <source>Move down</source>
+      <translation>Siirrä alas</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::AlignmentView</name>
+    <message>
+      <source>Movable object</source>
+      <translation>Movable object</translation>
+    </message>
+    <message>
+      <source>Fixed object</source>
+      <translation>Fixed object</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -159,6 +197,10 @@
     <message>
       <source>License...</source>
       <translation>License...</translation>
+    </message>
+    <message>
+      <source>Copy to clipboard</source>
+      <translation>Copy to clipboard</translation>
     </message>
   </context>
   <context>
@@ -621,7 +663,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
-      <translation>The toolbar name '%1' is already used</translation>
+      <translation>Työkalurivin nimi '%1' on jo käytössä</translation>
     </message>
     <message>
       <source>Rename toolbar</source>
@@ -709,10 +751,6 @@ Please define another shortcut.</source>
       <translation>Viewing mode</translation>
     </message>
     <message>
-      <source>Display mode:</source>
-      <translation>Display mode:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Plot mode:</translation>
     </message>
@@ -735,6 +773,10 @@ Please define another shortcut.</source>
     <message>
       <source>Color plot:</source>
       <translation>Color plot:</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -816,7 +858,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Auto load module after start up:</translation>
+      <translation>Lataa lisäosa käynnistyksessä:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1049,7 +1091,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Shininess:</source>
-      <translation>Shininess:</translation>
+      <translation>Kiiltävyys:</translation>
     </message>
     <message>
       <source>%</source>
@@ -1158,7 +1200,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
-      <translation>Preferences</translation>
+      <translation>Asetukset</translation>
     </message>
     <message>
       <source>&amp;Help</source>
@@ -1174,7 +1216,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Apply</source>
-      <translation>&amp;Apply</translation>
+      <translation>&amp;Käytä</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -1193,50 +1235,50 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
       <source>Wrong parameter</source>
-      <translation>Wrong parameter</translation>
+      <translation>Väärä parametri</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
       <source>Project information</source>
-      <translation>Project information</translation>
+      <translation>Projektin tiedot</translation>
     </message>
     <message>
       <source>Information</source>
-      <translation>Information</translation>
+      <translation>Tiedot</translation>
     </message>
     <message>
       <source>&amp;Name:</source>
-      <translation>&amp;Name:</translation>
+      <translation>&amp;Nimi:</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>Commen&amp;t:</translation>
+      <translation>Kommen&amp;tti:</translation>
     </message>
     <message>
       <source>Path:</source>
-      <translation>Path:</translation>
+      <translation>Polku:</translation>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>&amp;Last modified by:</translation>
+      <translation>&amp;Viimeksi muutettu:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>Created &amp;by:</translation>
+      <translation>Luotu&amp;:</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>Com&amp;pany:</translation>
+      <translation>Yh&amp;tiö:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation>Last &amp;modification date:</translation>
+      <translation>Viime&amp;muutosten päivämäärä:</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation>Creation &amp;date:</translation>
+      <translation>Luonti&amp;päivämäärä:</translation>
     </message>
     <message>
       <source>&amp;OK</source>
@@ -1318,35 +1360,35 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Output</source>
-      <translation>Output</translation>
+      <translation>Tuloste</translation>
     </message>
     <message>
       <source>Record log messages</source>
-      <translation>Record log messages</translation>
+      <translation>Tallenna lokiviestit</translation>
     </message>
     <message>
       <source>Record warnings</source>
-      <translation>Record warnings</translation>
+      <translation>Tallenna varoitukset</translation>
     </message>
     <message>
       <source>Record error messages</source>
-      <translation>Record error messages</translation>
+      <translation>Tallenna virheilmoitukset</translation>
     </message>
     <message>
       <source>Colors</source>
-      <translation>Colors</translation>
+      <translation>Värit</translation>
     </message>
     <message>
       <source>Normal messages:</source>
-      <translation>Normal messages:</translation>
+      <translation>Normaaleja sanomia:</translation>
     </message>
     <message>
       <source>Log messages:</source>
-      <translation>Log messages:</translation>
+      <translation>Lokin viestejä:</translation>
     </message>
     <message>
       <source>Warnings:</source>
-      <translation>Warnings:</translation>
+      <translation>Varoitukset:</translation>
     </message>
     <message>
       <source>Errors:</source>
@@ -1408,7 +1450,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
       <source>3D View</source>
-      <translation>3D View</translation>
+      <translation>3D-näkymä</translation>
     </message>
     <message>
       <source>3D View settings</source>
@@ -1416,11 +1458,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show coordinate system in the corner</source>
-      <translation>Show coordinate system in the corner</translation>
+      <translation>Näytä koordinaatisto nurkassa</translation>
     </message>
     <message>
       <source>Show counter of frames per second</source>
-      <translation>Show counter of frames per second</translation>
+      <translation>Näytä näytön päivitysnopeus</translation>
     </message>
     <message>
       <source>Enable animation</source>
@@ -1482,6 +1524,14 @@ Specify another directory, please.</source>
       <source>Invert zoom</source>
       <translation>Invert zoom</translation>
     </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zoom at cursor</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Zoom step</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -1502,11 +1552,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>red-yellow-green-cyan-blue</source>
-      <translation>red-yellow-green-cyan-blue</translation>
+      <translation>Punainen-keltainen-vihreä-syaani-sininen</translation>
     </message>
     <message>
       <source>blue-cyan-green-yellow-red</source>
-      <translation>blue-cyan-green-yellow-red</translation>
+      <translation>sininen-syaani-vihreä-keltainen-punainen</translation>
     </message>
     <message>
       <source>white-black</source>
@@ -1530,7 +1580,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>Out &amp;invisible</translation>
+      <translation>Ulos&amp;näkymätön</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -1566,7 +1616,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Parameter range</source>
-      <translation>Parameter range</translation>
+      <translation>Arvoalue</translation>
     </message>
     <message>
       <source>Mi&amp;nimum:</source>
@@ -1578,7 +1628,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Labels:</source>
-      <translation>&amp;Labels:</translation>
+      <translation>&amp;Otsikot:</translation>
     </message>
     <message>
       <source>&amp;Decimals:</source>
@@ -1597,7 +1647,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettingsColorGradientImp</name>
     <message>
       <source>Wrong parameter</source>
-      <translation>Wrong parameter</translation>
+      <translation>Väärä parametri</translation>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
@@ -1629,7 +1679,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Saving transactions (Auto-save)</source>
-      <translation>Saving transactions (Auto-save)</translation>
+      <translation>Tallentaa tapahtumat (automaattinen tallennus)</translation>
     </message>
     <message>
       <source>Discard saved transaction after saving document</source>
@@ -1721,6 +1771,10 @@ Specify another directory, please.</source>
     <message>
       <source>Items</source>
       <translation>Osat</translation>
+    </message>
+    <message>
+      <source>Current line highlight</source>
+      <translation>Current line highlight</translation>
     </message>
   </context>
   <context>
@@ -1843,31 +1897,31 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>QSXGA   2560 x 2048</source>
-      <translation>QSXGA   2560 x 2048</translation>
+      <translation>QSXGA 2560 x 2048</translation>
     </message>
     <message>
       <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA   3200 × 2400</translation>
+      <translation>QUXGA 3200 × 2400</translation>
     </message>
     <message>
       <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA   6400 × 4800</translation>
+      <translation>HUXGA 6400 × 4800</translation>
     </message>
     <message>
       <source>!!!          10000 x 10000</source>
-      <translation>!!!          10000 x 10000</translation>
+      <translation>!!! 10000 x 10000</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
-      <translation>Standard sizes:</translation>
+      <translation>Vakiokoot:</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
-      <translation>&amp;Height:</translation>
+      <translation>&amp;Korkeus:</translation>
     </message>
     <message>
       <source>Aspect ratio:</source>
-      <translation>Aspect ratio:</translation>
+      <translation>Kuvasuhde:</translation>
     </message>
     <message>
       <source>&amp;Screen</source>
@@ -1911,7 +1965,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Insert comment</source>
-      <translation>Insert comment</translation>
+      <translation>Lisää kommentti</translation>
     </message>
   </context>
   <context>
@@ -1956,6 +2010,14 @@ Specify another directory, please.</source>
       <source>Macro path</source>
       <translation>Makron polku</translation>
     </message>
+    <message>
+      <source>General macro settings</source>
+      <translation>General macro settings</translation>
+    </message>
+    <message>
+      <source>Run macros in local environment</source>
+      <translation>Run macros in local environment</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -1996,7 +2058,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
     <message>
       <source>Colors</source>
-      <translation>Colors</translation>
+      <translation>Värit</translation>
     </message>
     <message>
       <source>Selection</source>
@@ -2004,7 +2066,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Enable selection highlighting</source>
-      <translation>Enable selection highlighting</translation>
+      <translation>Ota käyttöön, korostus</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
@@ -2016,11 +2078,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Middle color</source>
-      <translation>Middle color</translation>
+      <translation>Keskiväri</translation>
     </message>
     <message>
       <source>Color gradient</source>
-      <translation>Color gradient</translation>
+      <translation>Liukuvärjäys</translation>
     </message>
     <message>
       <source>Simple color</source>
@@ -2047,20 +2109,48 @@ Specify another directory, please.</source>
       <translation>Fully constrained geometry</translation>
     </message>
     <message>
-      <source>The color of construction geometry in editmode</source>
-      <translation>The color of construction geometry in editmode</translation>
-    </message>
-    <message>
-      <source>The color of fully constrained geometry in editmode</source>
-      <translation>The color of fully constrained geometry in editmode</translation>
-    </message>
-    <message>
       <source>The color of vertices being edited</source>
       <translation>The color of vertices being edited</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
       <translation>The color of edges being edited</translation>
+    </message>
+    <message>
+      <source>The color of construction geometry in edit mode</source>
+      <translation>The color of construction geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>The color of fully constrained geometry in edit mode</source>
+      <translation>The color of fully constrained geometry in edit mode</translation>
+    </message>
+    <message>
+      <source>Cursor text color</source>
+      <translation>Cursor text color</translation>
+    </message>
+    <message>
+      <source>Default shape color</source>
+      <translation>Default shape color</translation>
+    </message>
+    <message>
+      <source>The default color for new shapes</source>
+      <translation>The default color for new shapes</translation>
+    </message>
+    <message>
+      <source>Default line width and color</source>
+      <translation>Default line width and color</translation>
+    </message>
+    <message>
+      <source>The default line color for new shapes</source>
+      <translation>The default line color for new shapes</translation>
+    </message>
+    <message>
+      <source>The default line thickness for new shapes</source>
+      <translation>The default line thickness for new shapes</translation>
+    </message>
+    <message>
+      <source>px</source>
+      <translation>px</translation>
     </message>
   </context>
   <context>
@@ -2124,8 +2214,40 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
-      <source>Canceled.</source>
-      <translation>Canceled.</translation>
+      <source>Download</source>
+      <translation>Download</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Peruuta</translation>
+    </message>
+    <message>
+      <source>Close</source>
+      <translation>Sulje</translation>
+    </message>
+    <message>
+      <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+      <translation>There already exists a file called %1 in the current directory. Overwrite?</translation>
+    </message>
+    <message>
+      <source>Unable to save the file %1: %2.</source>
+      <translation>Unable to save the file %1: %2.</translation>
+    </message>
+    <message>
+      <source>Downloading %1.</source>
+      <translation>Downloading %1.</translation>
+    </message>
+    <message>
+      <source>Download canceled.</source>
+      <translation>Download canceled.</translation>
+    </message>
+    <message>
+      <source>Download failed: %1.</source>
+      <translation>Lataus epäonnistui: %1.</translation>
+    </message>
+    <message>
+      <source>Downloaded %1 to current directory.</source>
+      <translation>Downloaded %1 to current directory.</translation>
     </message>
   </context>
   <context>
@@ -2160,6 +2282,13 @@ Specify another directory, please.</source>
     <message>
       <source>OK</source>
       <translation>OK</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::LicenseDialog</name>
+    <message>
+      <source>Copyright</source>
+      <translation>Copyright</translation>
     </message>
   </context>
   <context>
@@ -2343,7 +2472,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Pitch:</source>
-      <translation>Pitch:</translation>
+      <translation>Kaltevuus:</translation>
     </message>
     <message>
       <source>Roll:</source>
@@ -2466,7 +2595,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Transform</translation>
+      <translation>muunna</translation>
     </message>
   </context>
   <context>
@@ -2604,7 +2733,7 @@ Specify another directory, please.</source>
     <name>Gui::DockWnd::ReportView</name>
     <message>
       <source>Output</source>
-      <translation>Output</translation>
+      <translation>Tuloste</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -2622,7 +2751,7 @@ Specify another directory, please.</source>
     <name>Gui::DockWnd::TaskPanelView</name>
     <message>
       <source>Task View</source>
-      <translation>Task View</translation>
+      <translation>Tehtävänäkymä</translation>
     </message>
   </context>
   <context>
@@ -2669,7 +2798,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Copy</source>
-      <translation>Kopioi</translation>
+      <translation>Kopio</translation>
     </message>
     <message>
       <source>Select all</source>
@@ -2684,11 +2813,11 @@ Specify another directory, please.</source>
     <name>Gui::DocumentModel</name>
     <message>
       <source>Application</source>
-      <translation>Application</translation>
+      <translation>Sovellus</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Labels &amp; Attributes</translation>
+      <translation>Otsikot &amp; Määritteet</translation>
     </message>
   </context>
   <context>
@@ -2850,6 +2979,25 @@ Do you want to save your changes?</source>
     </message>
   </context>
   <context>
+    <name>Gui::LocationWidget</name>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <source>Direction:</source>
+      <translation>Suunta:</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::MacroCommand</name>
     <message>
       <source>Macros</source>
@@ -2877,6 +3025,91 @@ Do you want to save your changes?</source>
     <message>
       <source>Close All</source>
       <translation>Sulje kaikki</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ManualAlignment</name>
+    <message>
+      <source>Manual alignment</source>
+      <translation>Manual alignment</translation>
+    </message>
+    <message>
+      <source>The alignment is already in progress.</source>
+      <translation>The alignment is already in progress.</translation>
+    </message>
+    <message>
+      <source>Alignment[*]</source>
+      <translation>Alignment[*]</translation>
+    </message>
+    <message>
+      <source>Please, select at least one point in the left and the right view</source>
+      <translation>Please, select at least one point in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please, select at least %1 points in the left and the right view</source>
+      <translation>Please, select at least %1 points in the left and the right view</translation>
+    </message>
+    <message>
+      <source>Please pick points in the left and right view</source>
+      <translation>Please pick points in the left and right view</translation>
+    </message>
+    <message>
+      <source>The alignment has finished</source>
+      <translation>The alignment has finished</translation>
+    </message>
+    <message>
+      <source>The alignment has been canceled</source>
+      <translation>The alignment has been canceled</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the left view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the left view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Too few points picked in the right view. At least %1 points are needed.</source>
+      <translation>Too few points picked in the right view. At least %1 points are needed.</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view.
+On the left view %1 points are picked,
+on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Try to align group of views</source>
+      <translation>Try to align group of views</translation>
+    </message>
+    <message>
+      <source>The alignment failed.
+How do you want to proceed?</source>
+      <translation>The alignment failed.
+How do you want to proceed?</translation>
+    </message>
+    <message>
+      <source>Retry</source>
+      <translation>Retry</translation>
+    </message>
+    <message>
+      <source>Ignore</source>
+      <translation>Ohita</translation>
+    </message>
+    <message>
+      <source>Abort</source>
+      <translation>Abort</translation>
+    </message>
+    <message>
+      <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
+      <translation>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+    </message>
+    <message>
+      <source>Point picked at (%1,%2,%3)</source>
+      <translation>Point picked at (%1,%2,%3)</translation>
+    </message>
+    <message>
+      <source>No point was picked</source>
+      <translation>No point was picked</translation>
     </message>
   </context>
   <context>
@@ -3023,6 +3256,10 @@ Do you want to exit without saving your data?</source>
       <source>Select All</source>
       <translation>Valitse kaikki</translation>
     </message>
+    <message>
+      <source>Clear console</source>
+      <translation>Clear console</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -3131,7 +3368,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
-      <translation>Stop downloading</translation>
+      <translation>Pysäytä lataaminen</translation>
     </message>
   </context>
   <context>
@@ -3166,10 +3403,6 @@ Do you want to specify another directory?</translation>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
-      <source>Display mode:</source>
-      <translation>Display mode:</translation>
-    </message>
-    <message>
       <source>Plot mode:</source>
       <translation>Plot mode:</translation>
     </message>
@@ -3187,7 +3420,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Appearance</source>
-      <translation>Appearance</translation>
+      <translation>Ulkoasu</translation>
+    </message>
+    <message>
+      <source>Document window:</source>
+      <translation>Document window:</translation>
     </message>
   </context>
   <context>
@@ -3201,7 +3438,7 @@ Do you want to specify another directory?</translation>
     <name>Gui::TaskView::TaskSelectLinkProperty</name>
     <message>
       <source>Appearance</source>
-      <translation>Appearance</translation>
+      <translation>Ulkoasu</translation>
     </message>
     <message>
       <source>...</source>
@@ -3213,28 +3450,40 @@ Do you want to specify another directory?</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Translator</name>
+    <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <source>English</source>
-      <translation>English</translation>
+      <source>Press left mouse button</source>
+      <translation>Paina hiiren vasenta painiketta</translation>
+    </message>
+    <message>
+      <source>Press SHIFT button</source>
+      <translation>Press SHIFT button</translation>
+    </message>
+    <message>
+      <source>Press ALT button</source>
+      <translation>Press ALT button</translation>
+    </message>
+    <message>
+      <source>Press PgUp/PgDown button</source>
+      <translation>Press PgUp/PgDown button</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Tree view</translation>
+      <translation>Puunäkymä</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
-      <translation>Create group...</translation>
+      <translation>Luo ryhmä...</translation>
     </message>
     <message>
       <source>Create a group</source>
-      <translation>Create a group</translation>
+      <translation>Ryhmän luominen</translation>
     </message>
     <message>
       <source>Group</source>
@@ -3242,19 +3491,19 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Rename</source>
-      <translation>Rename</translation>
+      <translation>Nimeä uudelleen</translation>
     </message>
     <message>
       <source>Rename object</source>
-      <translation>Rename object</translation>
+      <translation>Nimeä objekti uudelleen</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Labels &amp; Attributes</translation>
+      <translation>Otsikot &amp; Määritteet</translation>
     </message>
     <message>
       <source>Application</source>
-      <translation>Application</translation>
+      <translation>Sovellus</translation>
     </message>
     <message>
       <source>Finish editing</source>
@@ -3288,7 +3537,7 @@ Do you want to specify another directory?</translation>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Select the '%1' workbench</translation>
+      <translation>Valitse '%1' Työpöytä</translation>
     </message>
   </context>
   <context>
@@ -3374,23 +3623,23 @@ Do you want to specify another directory?</translation>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Tree view</translation>
+      <translation>Puunäkymä</translation>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Property view</translation>
+      <translation>Ominaisuudet näkymä</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Selection view</translation>
+      <translation>Valinta Näytä</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Report view</translation>
+      <translation>Raporttinäkymä</translation>
     </message>
     <message>
       <source>Task View</source>
-      <translation>Task View</translation>
+      <translation>Tehtävänäkymä</translation>
     </message>
     <message>
       <source>Combo View</source>
@@ -3421,19 +3670,19 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
-      <translation>Unknown filetype</translation>
+      <translation>Tuntematon tiedostotyyppi</translation>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
-      <translation>Cannot open unknown filetype: %1</translation>
+      <translation>Ei voida avata tuntematonta tiedostotyyppiä:%1</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
-      <translation>Cannot save to unknown filetype: %1</translation>
+      <translation>Ei voi tallentaa tuntematonta tiedostotyyppiä:%1</translation>
     </message>
     <message>
       <source>Workbench failure</source>
-      <translation>Workbench failure</translation>
+      <translation>Työpöytä häiriö</translation>
     </message>
     <message>
       <source>%1</source>
@@ -3441,23 +3690,23 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
-      <translation>Unable to launch Qt Assistant (%1)</translation>
+      <translation>Ei voi käynnistää Qt avustajaa (%1)</translation>
     </message>
     <message>
       <source>Exception</source>
-      <translation>Exception</translation>
+      <translation>Poikkeus</translation>
     </message>
     <message>
       <source>Open document</source>
-      <translation>Open document</translation>
+      <translation>Avaa asiakirja</translation>
     </message>
     <message>
       <source>Import file</source>
-      <translation>Import file</translation>
+      <translation>Tuo tiedosto</translation>
     </message>
     <message>
       <source>Export file</source>
-      <translation>Export file</translation>
+      <translation>Vie tiedosto</translation>
     </message>
     <message>
       <source>Printing...</source>
@@ -3465,19 +3714,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Cannot load workbench</source>
-      <translation>Cannot load workbench</translation>
+      <translation>Ei voi ladata Työpöytää</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
-      <translation>A general error occurred while loading the workbench</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>Tiedostoa ei löydy</translation>
-    </message>
-    <message>
-      <source>Cannot open file %1</source>
-      <translation>Tiedoston %1 avaaminen epäonnistui</translation>
+      <translation>Yleinen virhe ladattaessa työpöytää</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -3772,13 +4013,24 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Transform</translation>
+      <translation>muunna</translation>
     </message>
     <message>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardi-Näkymä</translation>
+    </message>
+    <message>
+      <source>Box selection</source>
+      <translation>Box selection</translation>
     </message>
   </context>
   <context>
@@ -3842,6 +4094,21 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdAlignment</name>
+    <message>
+      <source>Edit</source>
+      <translation>Muokkaa</translation>
+    </message>
+    <message>
+      <source>Alignment...</source>
+      <translation>Alignment...</translation>
+    </message>
+    <message>
+      <source>Align the selected objects</source>
+      <translation>Align the selected objects</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdArrangeIcons</name>
     <message>
       <source>Window</source>
@@ -3875,7 +4142,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Cascade</translation>
+      <translation>&amp;Limittäin</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
@@ -3958,21 +4225,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdDDuplicateSelection</name>
-    <message>
-      <source>Edit</source>
-      <translation>Muokkaa</translation>
-    </message>
-    <message>
-      <source>Duplicate selection</source>
-      <translation>Moninkertainen valinta</translation>
-    </message>
-    <message>
-      <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Put duplicates of the selected objects to the active document</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdDelete</name>
     <message>
       <source>Edit</source>
@@ -4014,7 +4266,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
-      <translation>Customize toolbars and command bars</translation>
+      <translation>Mukauta työkalurivejä ja komentorivejä</translation>
     </message>
   </context>
   <context>
@@ -4025,7 +4277,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Opens a dialog to let you execute a recorded macro</translation>
+      <translation>Näyttöön tulee valintaikkuna, jotta voit suorittaa nauhoitetun makron</translation>
     </message>
     <message>
       <source>Macro</source>
@@ -4119,29 +4371,82 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDuplicateSelection</name>
+    <message>
+      <source>Edit</source>
+      <translation>Muokkaa</translation>
+    </message>
+    <message>
+      <source>Duplicate selection</source>
+      <translation>Moninkertainen valinta</translation>
+    </message>
+    <message>
+      <source>Put duplicates of the selected objects to the active document</source>
+      <translation>Put duplicates of the selected objects to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdEdit</name>
+    <message>
+      <source>Edit</source>
+      <translation>Muokkaa</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Edit mode</source>
+      <translation>Toggle &amp;Edit mode</translation>
+    </message>
+    <message>
+      <source>Toggles the selected object's edit mode</source>
+      <translation>Toggles the selected object's edit mode</translation>
+    </message>
+    <message>
+      <source>Enters or leaves the selected object's edit mode</source>
+      <translation>Enters or leaves the selected object's edit mode</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdExport</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Export...</translation>
+      <translation>&amp;Vie...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
       <translation>Export an object in the active document</translation>
     </message>
     <message>
-      <source>Supported formats</source>
-      <translation>Supported formats</translation>
+      <source>No selection</source>
+      <translation>Ei valintaa</translation>
+    </message>
+    <message>
+      <source>Please select first the objects you want to export.</source>
+      <translation>Please select first the objects you want to export.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdExportGraphviz</name>
+    <message>
+      <source>Tools</source>
+      <translation>Työkalut</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Dependency graph...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Show the dependency graph of the objects in the active document</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Recompute</source>
@@ -4216,7 +4521,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdImport</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Import...</source>
@@ -4309,19 +4614,19 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Työkalut</translation>
     </message>
     <message>
-      <source>Mesure distance</source>
-      <translation>Mittaa etäisyys</translation>
-    </message>
-    <message>
       <source>Measures distance between two selected objects</source>
       <translation>Mittaa etäisyys kahden valitun objektin välillä</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mittaa etäisyys</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>Merge project...</source>
@@ -4344,7 +4649,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdNew</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;New</source>
@@ -4367,21 +4672,6 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdOnlineHelpPython</name>
-    <message>
-      <source>Help</source>
-      <translation>Ohje</translation>
-    </message>
-    <message>
-      <source>Python Manuals</source>
-      <translation>Python Manuaalit</translation>
-    </message>
-    <message>
-      <source>Show the Python documentation</source>
-      <translation>Näytä python-asiakirjat</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
@@ -4400,7 +4690,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdOpen</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Open...</source>
@@ -4453,7 +4743,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdPrint</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Print...</source>
@@ -4468,7 +4758,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdPrintPdf</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
@@ -4483,7 +4773,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdPrintPreview</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
@@ -4502,7 +4792,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdProjectInfo</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>Project i&amp;nformation...</source>
@@ -4547,7 +4837,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdQuit</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>E&amp;xit</source>
@@ -4562,7 +4852,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdRandomColor</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>Random color</source>
@@ -4573,7 +4863,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdRecentFiles</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>Recent files</source>
@@ -4618,7 +4908,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdSave</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>&amp;Save</source>
@@ -4633,7 +4923,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdSaveAs</name>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>Save &amp;As...</source>
@@ -4903,7 +5193,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Undo</source>
-      <translation>&amp;Undo</translation>
+      <translation>&amp;Kumoa</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
@@ -5196,6 +5486,36 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRotateLeft</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardi-Näkymä</translation>
+    </message>
+    <message>
+      <source>Rotate Left</source>
+      <translation>Rotate Left</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRotateRight</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardi-Näkymä</translation>
+    </message>
+    <message>
+      <source>Rotate Right</source>
+      <translation>Rotate Right</translation>
+    </message>
+    <message>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>Rotate the view by 90Â° clockwise</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -5314,8 +5634,8 @@ You either have to finish or cancel the editing in the task panel.</translation>
       <translation>Standardi-Näkymä</translation>
     </message>
     <message>
-      <source>Display mode</source>
-      <translation>Näyttötila</translation>
+      <source>Document window</source>
+      <translation>Document window</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5379,6 +5699,35 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Graphviz not found</source>
+      <translation>Graphviz not found</translation>
+    </message>
+    <message>
+      <source>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</source>
+      <translation>Graphviz couldn't be found on your system.
+Do you want to specify its installation path if it's already installed?</translation>
+    </message>
+    <message>
+      <source>Graphviz installation path</source>
+      <translation>Graphviz installation path</translation>
+    </message>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Dependency graph</translation>
+    </message>
+    <message>
+      <source>Graphviz failed</source>
+      <translation>Graphviz failed</translation>
+    </message>
+    <message>
+      <source>Graphviz failed to create an image file</source>
+      <translation>Graphviz failed to create an image file</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
@@ -5430,7 +5779,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>File</source>
-      <translation>File</translation>
+      <translation>Tiedosto</translation>
     </message>
     <message>
       <source>Macro</source>

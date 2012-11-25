@@ -96,6 +96,7 @@ void Gui::SoFCDB::init()
     TranslateManip                  ::initClass();
     SoShapeScale                    ::initClass();
     SoAxisCrossKit                  ::initClass();
+    SoRegPoint                      ::initClass();
     SoDrawingGrid                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
 
@@ -112,6 +113,7 @@ void Gui::SoFCDB::init()
     PropertyBoolItem                ::init();
     PropertyVectorItem              ::init();
     PropertyDoubleVectorItem        ::init();
+    PropertyMatrixItem              ::init();
     PropertyPlacementItem           ::init();
     PropertyEnumItem                ::init();
     PropertyStringListItem          ::init();

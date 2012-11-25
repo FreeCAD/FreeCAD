@@ -4,13 +4,21 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="+378"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
       <source>Chamfer...</source>
       <translation>Abschrägung ...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="+561"/>
+      <source>PartDesign</source>
+      <translation>Teile-Konstruktion</translation>
+    </message>
+    <message>
+      <source>Chamfer</source>
+      <translation>Fase</translation>
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
@@ -30,6 +38,21 @@
     <message>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Kante, Fläche oder Körper verrunden</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignGroove</name>
+    <message>
+      <source>PartDesign</source>
+      <translation>Teile-Konstruktion</translation>
+    </message>
+    <message>
+      <source>Groove</source>
+      <translation>Nuten</translation>
+    </message>
+    <message>
+      <source>Groove a selected sketch</source>
+      <translation>Erzeuge Nuten mit einer selektierten Zeichnung</translation>
     </message>
   </context>
   <context>
@@ -70,11 +93,11 @@
     </message>
     <message>
       <source>Revolution</source>
-      <translation>Revolution</translation>
+      <translation>Drehen</translation>
     </message>
     <message>
       <source>Revolve a selected sketch</source>
-      <translation>Revolve a selected sketch</translation>
+      <translation>Drehe die ausgewählte Skizze</translation>
     </message>
   </context>
   <context>
@@ -82,21 +105,20 @@
     <message>
       <location filename="../../Workbench.cpp" line="+39"/>
       <source>Face tools</source>
-      <translation>Face tools</translation>
+      <translation>Oberflächenwerkzeuge</translation>
     </message>
     <message>
       <source>Sketch tools</source>
-      <translation>Sketch tools</translation>
+      <translation>Skizzenwerkzeuge</translation>
     </message>
     <message>
       <source>Create Geometry</source>
-      <translation>Create Geometry</translation>
+      <translation>Geometrie erstellen</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-      <location filename="../../TaskChamfer.cpp" line="+182"/>
       <source>Edges to chamfer</source>
       <translation>Kanten zum Abschrägen</translation>
     </message>
@@ -140,7 +162,6 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
   <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-      <location filename="../../TaskChamfer.ui" line="+14"/>
       <source>Chamfer Edges</source>
       <translation>Kanten abschrägen</translation>
     </message>
@@ -186,11 +207,28 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskChamferParameters</name>
+    <message>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Form</translation>
+    </message>
+    <message>
+      <source>Size:</source>
+      <translation>Größe:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>Schrägenparameter</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="+189"/>
+      <location filename="../../TaskPadParameters.cpp" line="+313"/>
       <source>Input error</source>
-      <translation>Input error</translation>
+      <translation>Eingabefehler</translation>
     </message>
   </context>
   <context>
@@ -207,7 +245,44 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+51"/>
       <source>Fillet parameters</source>
-      <translation>Fillet parameters</translation>
+      <translation>Rundungsparameter</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskGrooveParameters</name>
+    <message>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>Form</translation>
+    </message>
+    <message>
+      <source>Axis:</source>
+      <translation>Achse:</translation>
+    </message>
+    <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertikale Zeichnungsachse</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizonthale Zeichnungsachse</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Winkel:</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetrisch zur Ebene</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Umgekehrt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>Nutenparameter</translation>
     </message>
   </context>
   <context>
@@ -240,7 +315,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+47"/>
       <source>TaskHoleParameters</source>
-      <translation>TaskHoleParameters</translation>
+      <translation>Lochparameter</translation>
     </message>
   </context>
   <context>
@@ -249,6 +324,26 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
       <translation>Form</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <source>Length</source>
+      <translation>Länge</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetrisch zur Ebene</translation>
+    </message>
+    <message>
+      <source>2nd length</source>
+      <translation>Zweite Länge</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Fläche</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -264,11 +359,11 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
       <source>Mirrored extent</source>
-      <translation>Mirrored extent</translation>
+      <translation>Gespiegelt erweitern</translation>
     </message>
     <message>
       <source>Reversed</source>
-      <translation>Reversed</translation>
+      <translation>Umgekehrt</translation>
     </message>
     <message>
       <source>Display mode:</source>
@@ -295,9 +390,29 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <translation>TaskPadParameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="-137"/>
+      <location filename="../../TaskPadParameters.cpp" line="-45"/>
       <source>Pad parameters</source>
-      <translation>Pad parameters</translation>
+      <translation>Seitenparameter</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Keine Fläche ausgewählt</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>Zur Letzten</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>Zur Ersten</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Bis zu Oberfläche</translation>
+    </message>
+    <message>
+      <source>Two dimensions</source>
+      <translation>Zwei Maße</translation>
     </message>
   </context>
   <context>
@@ -309,7 +424,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
       <source>Spacing1:</source>
-      <translation>Spacing1:</translation>
+      <translation>Abstand1:</translation>
     </message>
     <message>
       <source>Number1:</source>
@@ -317,11 +432,11 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
       <source>Second extend</source>
-      <translation>Second extend</translation>
+      <translation>Zweites ausdehnen</translation>
     </message>
     <message>
       <source>Spacing2:</source>
-      <translation>Spacing2:</translation>
+      <translation>Abstand2:</translation>
     </message>
     <message>
       <source>Number2:</source>
@@ -330,13 +445,13 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskPatternRectangularParameters.cpp" line="+47"/>
       <source>TaskPatternRectangularParameters</source>
-      <translation>TaskPatternRectangularParameters</translation>
+      <translation>Parameter für Rechtecksmuster</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-      <location filename="../../TaskPocketParameters.ui" line="+14"/>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
@@ -345,17 +460,45 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <translation>Typ:</translation>
     </message>
     <message>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
       <source>Dimension</source>
       <translation>Abmessung</translation>
     </message>
     <message>
-      <source>Length</source>
-      <translation>Length</translation>
+      <source>Face</source>
+      <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="+51"/>
+      <source>Length</source>
+      <translation>Länge</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPocketParameters.cpp" line="-113"/>
       <source>Pocket parameters</source>
-      <translation>Pocket parameters</translation>
+      <translation>Taschenparameter</translation>
+    </message>
+    <message>
+      <source>To last</source>
+      <translation>Zur Letzten</translation>
+    </message>
+    <message>
+      <source>To first</source>
+      <translation>Zur Ersten</translation>
+    </message>
+    <message>
+      <source>Through all</source>
+      <translation>Durch alles</translation>
+    </message>
+    <message>
+      <source>Up to face</source>
+      <translation>Bis zu Oberfläche</translation>
+    </message>
+    <message>
+      <source>No face selected</source>
+      <translation>Keine Fläche ausgewählt</translation>
     </message>
   </context>
   <context>
@@ -370,12 +513,28 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <translation>Achse:</translation>
     </message>
     <message>
+      <source>Vertical sketch axis</source>
+      <translation>Vertikale Zeichnungsachse</translation>
+    </message>
+    <message>
+      <source>Horizontal sketch axis</source>
+      <translation>Horizonthale Zeichnungsachse</translation>
+    </message>
+    <message>
+      <source>Symmetric to plane</source>
+      <translation>Symmetrisch zur Ebene</translation>
+    </message>
+    <message>
+      <source>Reversed</source>
+      <translation>Umgekehrt</translation>
+    </message>
+    <message>
       <source>Vertical</source>
-      <translation>Vertical</translation>
+      <translation>Vertikale</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontal</translation>
+      <translation>Horizontale</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -384,7 +543,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
       <source>Revolution parameters</source>
-      <translation>Revolution parameters</translation>
+      <translation>Drehparameter</translation>
     </message>
   </context>
   <context>
@@ -419,6 +578,26 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <translation>Rundung funktioniert nur bei Teilen</translation>
     </message>
     <message>
+      <source>Shape of selected Part is empty</source>
+      <translation>Selektierter Körper ist leer</translation>
+    </message>
+    <message>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>Rundung auf ausgewählter Fläche/Kante nicht möglich</translation>
+    </message>
+    <message>
+      <source>Chamfer works only on parts</source>
+      <translation>Fase arbeitet nur auf Körpern</translation>
+    </message>
+    <message>
+      <source>Shape of selected part is empty</source>
+      <translation>Ausgewählter Körper ist leer</translation>
+    </message>
+    <message>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>Fase auf ausgewählter Fläche/Kante nicht möglich</translation>
+    </message>
+    <message>
       <source>No Support</source>
       <translation>Keine Auflage</translation>
     </message>
@@ -434,13 +613,13 @@ Erstelle die Skizze auf der Fläche.</translation>
       <translation>Block bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFillet.cpp" line="+54"/>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
       <source>Edit pocket</source>
-      <translation>Edit pocket</translation>
+      <translation>Bearbeite Tasche</translation>
     </message>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>A dialog is already open in the task panel</translation>
+      <translation>Es ist bereits ein Dialog in der Aufgabenleiste geöffnet</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -449,7 +628,12 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
       <source>Edit revolution</source>
-      <translation>Edit revolution</translation>
+      <translation>Drehung bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>Nuten bearbeiten</translation>
     </message>
   </context>
   <context>

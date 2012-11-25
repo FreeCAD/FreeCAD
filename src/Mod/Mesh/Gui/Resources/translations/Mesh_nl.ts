@@ -233,7 +233,7 @@
     </message>
     <message>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Harmonizes the normals of the mesh</translation>
+      <translation>Harmoniseert de loodlijnen van de mesh</translation>
     </message>
   </context>
   <context>
@@ -244,11 +244,11 @@
     </message>
     <message>
       <source>Import mesh...</source>
-      <translation>Import mesh...</translation>
+      <translation>Mesh importeren...</translation>
     </message>
     <message>
       <source>Imports a mesh from file</source>
-      <translation>Imports a mesh from file</translation>
+      <translation>Importeer een mesh uit een bestand</translation>
     </message>
   </context>
   <context>
@@ -270,11 +270,11 @@
     </message>
     <message>
       <source>Cut mesh</source>
-      <translation>Cut mesh</translation>
+      <translation>Snij de msh</translation>
     </message>
     <message>
       <source>Cuts a mesh with a picked polygon</source>
-      <translation>Cuts a mesh with a picked polygon</translation>
+      <translation>Een mesh snijden met een geselecteerde polygoon</translation>
     </message>
   </context>
   <context>
@@ -289,7 +289,7 @@
     </message>
     <message>
       <source>Creates a mesh segment</source>
-      <translation>Creates a mesh segment</translation>
+      <translation>Maakt een mesh segment</translation>
     </message>
   </context>
   <context>
@@ -304,7 +304,7 @@
     </message>
     <message>
       <source>Select an area of the mesh</source>
-      <translation>Select an area of the mesh</translation>
+      <translation>Selecteer een gebied van de mesh</translation>
     </message>
   </context>
   <context>
@@ -315,11 +315,26 @@
     </message>
     <message>
       <source>Split mesh</source>
-      <translation>Split mesh</translation>
+      <translation>Verdeel de mesh</translation>
     </message>
     <message>
       <source>Splits a mesh into two meshes</source>
       <translation>Splits a mesh into two meshes</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshPolyTrim</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Trim mesh</source>
+      <translation>Trim mesh</translation>
+    </message>
+    <message>
+      <source>Trims a mesh with a picked polygon</source>
+      <translation>Trims a mesh with a picked polygon</translation>
     </message>
   </context>
   <context>
@@ -334,7 +349,7 @@
     </message>
     <message>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Mark a component to remove it from the mesh</translation>
+      <translation>Markeer een te verwijderen deel in de mesh</translation>
     </message>
   </context>
   <context>
@@ -353,6 +368,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentation</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments...</source>
+      <translation>Create mesh segments...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Create mesh segments</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -364,7 +394,7 @@
     </message>
     <message>
       <source>Smooth the selected meshes</source>
-      <translation>Smooth the selected meshes</translation>
+      <translation>De geselecteerde meshes glad maken</translation>
     </message>
   </context>
   <context>
@@ -379,7 +409,7 @@
     </message>
     <message>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Creates a segment from a given tool mesh</translation>
+      <translation>Hiermee maakt u een segment van een bepaald mesh gereedschap</translation>
     </message>
   </context>
   <context>
@@ -390,11 +420,11 @@
     </message>
     <message>
       <source>Transform mesh</source>
-      <translation>Transform mesh</translation>
+      <translation>Transformeren mesh</translation>
     </message>
     <message>
       <source>Rotate or move a mesh</source>
-      <translation>Rotate or move a mesh</translation>
+      <translation>Draaien of verplaatsen van een mesh</translation>
     </message>
   </context>
   <context>
@@ -420,7 +450,7 @@
     </message>
     <message>
       <source>Curvature plot</source>
-      <translation>Curvature plot</translation>
+      <translation>Kromming definitie</translation>
     </message>
   </context>
   <context>
@@ -458,7 +488,7 @@
     </message>
     <message>
       <source>Mesh information</source>
-      <translation>Mesh information</translation>
+      <translation>Mesh informatie</translation>
     </message>
     <message>
       <source>No information</source>
@@ -490,7 +520,7 @@
     </message>
     <message>
       <source>Degenerated faces</source>
-      <translation>Degenerated faces</translation>
+      <translation>Gedegenereerd vlakken</translation>
     </message>
     <message>
       <source>Face indices</source>
@@ -522,15 +552,15 @@
     </message>
     <message>
       <source>Repetitive repair</source>
-      <translation>Repetitive repair</translation>
+      <translation>Herhalende reparatie</translation>
     </message>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
+      <translation>Evalueer &amp; herstel de mesh</translation>
     </message>
     <message>
       <source>Folds on surface</source>
-      <translation>Folds on surface</translation>
+      <translation>Plooien op oppervlak</translation>
     </message>
   </context>
   <context>
@@ -541,19 +571,19 @@
     </message>
     <message>
       <source>Invalid neighbour indices</source>
-      <translation>Invalid neighbour indices</translation>
+      <translation>Ongeldige buurindexen</translation>
     </message>
     <message>
       <source>Invalid face indices</source>
-      <translation>Invalid face indices</translation>
+      <translation>Ongeldige vlak indexen</translation>
     </message>
     <message>
       <source>Invalid point indices</source>
-      <translation>Invalid point indices</translation>
+      <translation>Ongeldige punt indexen</translation>
     </message>
     <message>
       <source>Multiple point indices</source>
-      <translation>Multiple point indices</translation>
+      <translation>Meerdere punt indexen</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
@@ -569,11 +599,11 @@
     </message>
     <message>
       <source>No flipped normals</source>
-      <translation>No flipped normals</translation>
+      <translation>Geen gespiegelde loodlijnen</translation>
     </message>
     <message>
       <source>%1 flipped normals</source>
-      <translation>%1 flipped normals</translation>
+      <translation>%1 gespiegelde loodlijnen</translation>
     </message>
     <message>
       <source>No non-manifolds</source>
@@ -589,11 +619,11 @@
     </message>
     <message>
       <source>No degenerations</source>
-      <translation>No degenerations</translation>
+      <translation>Geen degeneraties</translation>
     </message>
     <message>
       <source>%1 degenerated faces</source>
-      <translation>%1 degenerated faces</translation>
+      <translation>%1 gedegenereerde vlakken</translation>
     </message>
     <message>
       <source>No duplicated faces</source>
@@ -622,7 +652,7 @@
     </message>
     <message>
       <source>Degenerations</source>
-      <translation>Degenerations</translation>
+      <translation>Degeneraties</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
@@ -630,7 +660,7 @@
     </message>
     <message>
       <source>No self-intersections</source>
-      <translation>No self-intersections</translation>
+      <translation>Niet zelfsnijdend</translation>
     </message>
     <message>
       <source>Self-intersections</source>
@@ -638,7 +668,7 @@
     </message>
     <message>
       <source>Mesh repair</source>
-      <translation>Mesh repair</translation>
+      <translation>Mesh reparatie</translation>
     </message>
     <message>
       <source>Flipped normals found</source>
@@ -647,8 +677,7 @@
     <message>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation>Check failed due to folds on the surface.
-Please run the command to repair folds first</translation>
+      <translation>Controle gefaald door plooien op het oppervlak. Gebruik eerst het plooi reparatie command</translation>
     </message>
     <message>
       <source>No folds on surface</source>
@@ -667,7 +696,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::DlgRegularSolid</name>
     <message>
       <source>Regular Solid</source>
-      <translation>Regular Solid</translation>
+      <translation>Reguliere volumemodel</translation>
     </message>
     <message>
       <source>&amp;Create</source>
@@ -687,7 +716,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Solid:</source>
-      <translation>Solid:</translation>
+      <translation>Volumemodel:</translation>
     </message>
     <message>
       <source>Cube</source>
@@ -735,7 +764,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Sampling:</source>
-      <translation>Sampling:</translation>
+      <translation>Bemonstering:</translation>
     </message>
     <message>
       <source>Edge length:</source>
@@ -765,7 +794,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
       <source>Mesh view</source>
-      <translation>Mesh view</translation>
+      <translation>Mesh weergave</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
@@ -785,7 +814,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Crease angle</source>
-      <translation>Crease angle</translation>
+      <translation>Vouw hoek</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -942,6 +971,53 @@ Please run the command to repair folds first</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Smooth mesh</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Vlak</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerantie</translation>
+    </message>
+    <message>
+      <source>Minumum number of faces</source>
+      <translation>Minumum number of faces</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cilinder</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Straal</translation>
+    </message>
+    <message>
+      <source>Tolerance (Flat)</source>
+      <translation>Tolerance (Flat)</translation>
+    </message>
+    <message>
+      <source>Tolerance (Curved)</source>
+      <translation>Tolerance (Curved)</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Bol</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <source>Delete</source>
@@ -956,7 +1032,7 @@ Please run the command to repair folds first</translation>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
+      <translation>Evalueer &amp; herstel de mesh</translation>
     </message>
   </context>
   <context>
@@ -1101,6 +1177,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
       <source>Annotation</source>
       <translation>Aantekening</translation>
     </message>
+    <message>
+      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
+      <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1114,11 +1194,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>&amp;Meshes</translation>
+      <translation>@Meshes</translation>
     </message>
     <message>
       <source>Mesh tools</source>
-      <translation>Mesh tools</translation>
+      <translation>Mesh gereedschap</translation>
     </message>
   </context>
 </TS>

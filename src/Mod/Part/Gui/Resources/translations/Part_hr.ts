@@ -50,7 +50,7 @@
     </message>
     <message>
       <source>No selection</source>
-      <translation>Bez izbora</translation>
+      <translation>Nema odabira</translation>
     </message>
     <message>
       <source>Profile</source>
@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -132,7 +132,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -176,6 +176,21 @@
     </message>
   </context>
   <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Geometrijsko tijelo</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Zarubi...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Zarubi odabrane rubove, površine ili tijela</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartCommon</name>
     <message>
       <source>Part</source>
@@ -209,7 +224,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -250,13 +265,13 @@
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
   </context>
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -355,6 +370,10 @@
       <translation>Tuba...</translation>
     </message>
     <message>
+      <source>Utility to loft</source>
+      <translation>Alat za loft</translation>
+    </message>
+    <message>
       <source>Advanced utility to lofts</source>
       <translation>Napredni alati za tube</translation>
     </message>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Geometrijsko tijelo</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Izgladi oblik</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Izgladi kopiju oblika</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -482,7 +518,7 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Geometrijsko tijelo</translation>
     </message>
@@ -542,8 +578,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Geometrijsko tijelo</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Alat za Sweep</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
       <translation>Napravi okruglo ispupčenje na stubu</translation>
     </message>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Zarubi stranice</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -746,6 +807,14 @@
     <message>
       <source>Note:This option works for planes only</source>
       <translation>Napomena: Ova opcija radi samo za ravnine</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Napravi čvrsto tijelo</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Zašilji vanjski kut</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -790,7 +859,7 @@
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Radijus:</translation>
+      <translation>Polumjer:</translation>
     </message>
     <message>
       <source>Fillet type:</source>
@@ -814,10 +883,10 @@
     </message>
     <message>
       <source>No selection</source>
-      <translation>Bez izbora</translation>
+      <translation>Nema odabira</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Zaobli rubove</translation>
     </message>
@@ -852,7 +921,7 @@ Please check one or more edge entities first.</source>
       <translation>Nijedan</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Rub%1</translation>
     </message>
@@ -899,7 +968,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Visina:</translation>
+      <translation>Duljina:</translation>
     </message>
     <message>
       <source>Width:</source>
@@ -931,11 +1000,11 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Visina:</translation>
+      <translation>Duljina:</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Radijus:</translation>
+      <translation>Polumjer:</translation>
     </message>
     <message>
       <source>Position:</source>
@@ -1155,7 +1224,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <source>Cone</source>
@@ -1174,6 +1243,18 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Zavojnica</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Elipsa</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Točka</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Linija</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Parametar</translation>
     </message>
@@ -1187,7 +1268,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Height:</source>
-      <translation>Visina:</translation>
+      <translation>Duljina:</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -1195,7 +1276,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Radius:</source>
-      <translation>Radijus:</translation>
+      <translation>Polumjer:</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1214,8 +1295,69 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>V parametarski:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Koordinatni sustav:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Dešnjak</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Lijevak</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Kut 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Kut 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>Iz tri točke</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Veći radius:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Manji radius:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>Konačna točka</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>očetna točka</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
-      <translation>Napravi</translation>
+      <translation>&amp;Izradi</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -1227,10 +1369,9 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation>Alt + O</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Napravi %1</translation>
     </message>
@@ -1239,7 +1380,7 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
       <translation>Vrh:</translation>
     </message>
@@ -1284,7 +1425,11 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Oblik</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Odaberi liniju u 3D pogledu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Prvo odaberite oblik.</translation>
     </message>
@@ -1338,7 +1483,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style=" font-weight:600;"&gt;Savjet&lt;/span&gt; &lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Definiranje normale na vrh je također pozvao &lt;span style=" font-style:italic;"&gt;Phong sjenčanje&lt;/span&gt; &lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt; &lt;span style=" font-style:normal;"&gt;pri definiranju normale po licu se zove&lt;/span&gt; Stan &lt;span style=" font-style:normal;"&gt;sjenčanje.&lt;/span&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1365,7 +1510,7 @@ Please select a valid shape in the drop-down box first.</source>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Općenito</translation>
     </message>
@@ -1389,13 +1534,65 @@ Please select a valid shape in the drop-down box first.</source>
       <source>Units for export of STEP/IGES</source>
       <translation>Jedinice za izvoz STEP / IGES</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Postavke modela</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Automatski pročisti model nakon boolean operacije</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Automatski provjeri model nakon boolean operacije</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Boje ploha</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Da li stvarno želiš prekinuti operaciju?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Lokacija</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Položaj</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>3D Prikaz</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Vrh/Žica</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Tuba</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
       <translation>Premalo elemenata</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>Potrebne su barem dva vrha, ruba ili linije.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
@@ -1471,6 +1668,10 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Odaberite tri ili više rubova</translation>
     </message>
     <message>
+      <source>Select one or more edges</source>
+      <translation>Odaberi jedan ili više rubova</translation>
+    </message>
+    <message>
       <source>Select two or more faces</source>
       <translation>Odaberite dvije ili više površina</translation>
     </message>
@@ -1496,27 +1697,54 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Vrh/Žica</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>utanja za sweep</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Odaberi putanju po kojoj želiš napraviti sweep.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Premalo elemenata</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>Potreban je barem jedan rub ili žica.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
-      <translation>Hint</translation>
+      <translation>Savjet</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation>Select Control.</translation>
+      <translation>Odaberite kontrolu.</translation>
     </message>
     <message>
       <source>Control</source>
-      <translation>Control</translation>
+      <translation>Kontrola</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation>Dynamic</translation>
+      <translation>Dinamičan</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation>Align</translation>
+      <translation>Poravnati</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1524,7 +1752,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Special</source>
-      <translation>Special</translation>
+      <translation>Poseban</translation>
     </message>
     <message>
       <source>Command</source>
@@ -1532,7 +1760,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Stretch</translation>
+      <translation>Rastegni</translation>
     </message>
     <message>
       <source>Move</source>
@@ -1548,115 +1776,115 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Orient</source>
-      <translation>Orient</translation>
+      <translation>Orijentiraj</translation>
     </message>
     <message>
       <source>Match</source>
-      <translation>Match</translation>
+      <translation>Izjednači</translation>
     </message>
     <message>
       <source>Surround</source>
-      <translation>Surround</translation>
+      <translation>Okruži</translation>
     </message>
     <message>
       <source>dummy</source>
-      <translation>dummy</translation>
+      <translation>lutka</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation>X Axis</translation>
+      <translation>X os</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation>Y Axis</translation>
+      <translation>Y os</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation>Z Axis</translation>
+      <translation>Z os</translation>
     </message>
     <message>
       <source>Increment</source>
-      <translation>Increment</translation>
+      <translation>Povećanje</translation>
     </message>
     <message>
       <source>.125</source>
-      <translation>.125</translation>
+      <translation>0,125</translation>
     </message>
     <message>
       <source>.500</source>
-      <translation>.500</translation>
+      <translation>0,500</translation>
     </message>
     <message>
       <source>1.000</source>
-      <translation>1.000</translation>
+      <translation>1,000</translation>
     </message>
     <message>
       <source>5.000</source>
-      <translation>5.000</translation>
+      <translation>5,000</translation>
     </message>
     <message>
       <source>10.000</source>
-      <translation>10.000</translation>
+      <translation>10,000</translation>
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
-      <translation>Drag arrows to stretch box by increment</translation>
+      <translation>Povucite strelice da bi rastegli kutiju za vrijednost</translation>
     </message>
     <message>
       <source>Drag arrows to move box by increment</source>
-      <translation>Drag arrows to move box by increment</translation>
+      <translation>Povucite strelice da bi pomiakli kutiju za vrijednost</translation>
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation>Not implemented yet</translation>
+      <translation>Nije još implementirano</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
-      <translation>Drag arrows to offset checked axes by increment</translation>
+      <translation>Povucite strelice za pomak osi za vrijednost</translation>
     </message>
     <message>
       <source>Select dragger for stretch by align</source>
-      <translation>Select dragger for stretch by align</translation>
+      <translation>Odaberi točku zbog rastezanja za poravnavanje</translation>
     </message>
     <message>
       <source>Select dragger for move by align</source>
-      <translation>Select dragger for move by align</translation>
+      <translation>Odaberi točku zbog pomicanja za poravnavanje</translation>
     </message>
     <message>
       <source>Select dragger for stretch by value</source>
-      <translation>Select dragger for stretch by value</translation>
+      <translation>Odaberi točku zbog rastezanja za vrijednost</translation>
     </message>
     <message>
       <source>Select dragger for move by value</source>
-      <translation>Select dragger for move by value</translation>
+      <translation>Odaberi točku zbog pomicanja za vrijednost</translation>
     </message>
     <message>
       <source>1.0</source>
-      <translation>1.0</translation>
+      <translation>1,0</translation>
     </message>
     <message>
       <source>Enter Value</source>
-      <translation>Enter Value</translation>
+      <translation>Unesite vrijednost</translation>
     </message>
     <message>
       <source>Select box to match</source>
-      <translation>Select box to match</translation>
+      <translation>Odaberite okvir za poravnavanje</translation>
     </message>
     <message>
       <source>Select a point</source>
-      <translation>Select a point</translation>
+      <translation>Odaberite točku</translation>
     </message>
     <message>
       <source>0.0</source>
-      <translation>0.0</translation>
+      <translation>0,0</translation>
     </message>
     <message>
       <source>Select dragger to align</source>
-      <translation>Select dragger to align</translation>
+      <translation>Odaberi točku za poravnati</translation>
     </message>
     <message>
       <source>Select dragger to modify</source>
-      <translation>Select dragger to modify</translation>
+      <translation>Odaberi točku za modificirati</translation>
     </message>
   </context>
   <context>
@@ -1768,9 +1996,31 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Napravi čvrsto tijelo</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Odaberi jedan ili više profila i odaberi rub ili žicu
+u 3D pogledu kao putanju za Sweep.</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
@@ -1808,21 +2058,25 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Unesite tolerancije za šivanje oblika:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Uredi površinu zrcaljenja</translation>
     </message>
     <message>
-      <source>Transform</source>
-      <translation>Transformirati</translation>
+      <source>Edit chamfer edges</source>
+      <translation>Prilagodi krajeve zaruba</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <source>Transform</source>
+      <translation>Transformiraj</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
       <translation>Dizajn Tijela</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Odaberite dva ili više oblika, molim.</translation>
     </message>
@@ -1831,12 +2085,12 @@ Please select a valid shape in the drop-down box first.</source>
       <translation>Trebate odabrati bilo dvije oštrice ili dvije žice.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>Uredi zaobljene rubove</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
       <translation>Postavljanje boje ...</translation>
     </message>
@@ -1866,7 +2120,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
       <source>Boolean</source>
-      <translation>Booleova</translation>
+      <translation>Boolean</translation>
     </message>
   </context>
 </TS>

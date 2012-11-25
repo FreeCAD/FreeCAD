@@ -100,7 +100,7 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+713"/>
+      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -132,7 +132,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-595"/>
+      <location filename="../../Command.cpp" line="-601"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -176,6 +176,21 @@
     </message>
   </context>
   <context>
+    <name>CmdPartChamfer</name>
+    <message>
+      <source>Part</source>
+      <translation>Parte</translation>
+    </message>
+    <message>
+      <source>Chamfer...</source>
+      <translation>Smusso...</translation>
+    </message>
+    <message>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Smussa gli spigoli selezionati di una forma</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartCommon</name>
     <message>
       <source>Part</source>
@@ -209,7 +224,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+569"/>
+      <location filename="../../Command.cpp" line="+604"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -256,7 +271,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+254"/>
+      <location filename="../../Command.cpp" line="+264"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -281,7 +296,7 @@
     </message>
     <message>
       <source>Extrude a selected sketch</source>
-      <translation>Estrude uno schizzo selezionato</translation>
+      <translation>Estrude uno sketch selezionato</translation>
     </message>
   </context>
   <context>
@@ -355,6 +370,10 @@
       <translation>Loft...</translation>
     </message>
     <message>
+      <source>Utility to loft</source>
+      <translation>Utilità per loft</translation>
+    </message>
+    <message>
       <source>Advanced utility to lofts</source>
       <translation>Utilità avanzate per lofts</translation>
     </message>
@@ -420,8 +439,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartRefineShape</name>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Parte</translation>
+    </message>
+    <message>
+      <source>Refine shape</source>
+      <translation>Affinare una forma</translation>
+    </message>
+    <message>
+      <source>Refine the copy of a shape</source>
+      <translation>Affinare la copia di una forma</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
+      <location filename="../../Command.cpp" line="+463"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -457,7 +493,7 @@
     </message>
     <message>
       <source>Create ruled surface</source>
-      <translation>Creare la superficie rigata</translation>
+      <translation>Crea superficie rigata</translation>
     </message>
     <message>
       <source>Create a ruled surface from two curves</source>
@@ -482,7 +518,7 @@
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="+107"/>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
       <source>Part</source>
       <translation>Parte</translation>
     </message>
@@ -518,7 +554,7 @@
     </message>
     <message>
       <source>Create Cylinder...</source>
-      <translation>Crea cilindro...</translation>
+      <translation>Crea Cilindro...</translation>
     </message>
     <message>
       <source>Create a Cylinder</source>
@@ -542,8 +578,25 @@
     </message>
   </context>
   <context>
+    <name>CmdPartSweep</name>
+    <message>
+      <location filename="../../Command.cpp" line="+586"/>
+      <source>Part</source>
+      <translation>Parte</translation>
+    </message>
+    <message>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
+    </message>
+    <message>
+      <source>Utility to sweep</source>
+      <translation>Utilità per lo sweep</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
       <translation>Crea un toro solido</translation>
     </message>
@@ -721,6 +774,14 @@
     </message>
   </context>
   <context>
+    <name>PartGui::DlgChamferEdges</name>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Smussa spigoli</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
       <location filename="../../DlgExtrusion.ui" line="+14"/>
@@ -746,6 +807,14 @@
     <message>
       <source>Note:This option works for planes only</source>
       <translation>Nota: questa opzione funziona solo per i piani</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Crea solido</translation>
+    </message>
+    <message>
+      <source>Taper outward angle</source>
+      <translation>Angolo di rastremazione verso l'esterno</translation>
     </message>
     <message>
       <source>Shape</source>
@@ -817,7 +886,7 @@
       <translation>Nessuna selezione</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="+185"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
       <source>Edges to fillet</source>
       <translation>Spigoli da raccordare</translation>
     </message>
@@ -853,7 +922,7 @@ Assegnare una o più entità raccordo prima.</translation>
       <translation>Nessuno</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="-188"/>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
       <source>Edge%1</source>
       <translation>Spigoli %1</translation>
     </message>
@@ -1176,6 +1245,18 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <translation>Toro</translation>
     </message>
     <message>
+      <source>Ellipse</source>
+      <translation>Ellisse</translation>
+    </message>
+    <message>
+      <source>Point</source>
+      <translation>Punto</translation>
+    </message>
+    <message>
+      <source>Line</source>
+      <translation>Linea</translation>
+    </message>
+    <message>
       <source>Parameter</source>
       <translation>Parametro</translation>
     </message>
@@ -1216,6 +1297,67 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <translation>Parametro V:</translation>
     </message>
     <message>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
+    </message>
+    <message>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
+    </message>
+    <message>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
+    </message>
+    <message>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
+    </message>
+    <message>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
+    </message>
+    <message>
+      <source>Coordinate system:</source>
+      <translation>Sistema di coordinate:</translation>
+    </message>
+    <message>
+      <source>Right-handed</source>
+      <translation>Destrorso</translation>
+    </message>
+    <message>
+      <source>Left-handed</source>
+      <translation>Sinistrorso</translation>
+    </message>
+    <message>
+      <source>Angle 1:</source>
+      <translation>Angolo 1:</translation>
+    </message>
+    <message>
+      <source>Angle 2:</source>
+      <translation>Angolo 2:</translation>
+    </message>
+    <message>
+      <source>From three points</source>
+      <translation>Da tre punti</translation>
+    </message>
+    <message>
+      <source>Major radius:</source>
+      <translation>Raggio maggiore:</translation>
+    </message>
+    <message>
+      <source>Minor radius:</source>
+      <translation>Raggio minore:</translation>
+    </message>
+    <message>
+      <source>End point</source>
+      <translation>Punto finale</translation>
+    </message>
+    <message>
+      <source>Start point</source>
+      <translation>Punto iniziale</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
       <source>&amp;Create</source>
       <translation>&amp;Crea</translation>
     </message>
@@ -1229,10 +1371,9 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation>Alt+H</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="+182"/>
       <source>Create %1</source>
       <translation>Crea %1</translation>
     </message>
@@ -1241,9 +1382,9 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <translation>Nessun documento attivo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="+1048"/>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
       <source>Pitch:</source>
-      <translation>Passo:</translation>
+      <translation>Beccheggio:</translation>
     </message>
     <message>
       <source>Helix</source>
@@ -1286,7 +1427,11 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="+118"/>
+      <source>Select line in 3D view</source>
+      <translation>Seleziona linea nella vista 3D</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Seleziona prima una forma per la rivoluzione.</translation>
     </message>
@@ -1340,7 +1485,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definire le normali ai vertici è anche chiamato &lt;span style=" font-style:italic;"&gt;Ombreggiatura Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;mentre definire le normali alle facce è chiamato &lt;/span&gt;Ombreggiatura piatta&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Suggerimento&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definire le normali per vertice è chiamato anche &lt;span style=" font-style:italic;"&gt; ombreggiatura di Phong &lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt; mentre definire le normali per faccia è chiamato anche &lt;/span&gt; ombreggiatura Flat&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1367,7 +1512,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
   <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="+16"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
       <source>General</source>
       <translation>Generale</translation>
     </message>
@@ -1391,13 +1536,65 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <source>Units for export of STEP/IGES</source>
       <translation>Unità per l'esportazione STEP/IGES</translation>
     </message>
+    <message>
+      <source>Model settings</source>
+      <translation>Impostazioni del modello</translation>
+    </message>
+    <message>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Affina automaticamente il modello dopo un'operazione booleana</translation>
+    </message>
+    <message>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Controlla automaticamente il modello dopo un'operazione booleana</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::FaceColors</name>
+    <message>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Colore faccia</translation>
+    </message>
+    <message>
+      <source>Do you really want to cancel?</source>
+      <translation>Vuoi davvero annullare?</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::Location</name>
+    <message>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Posizione</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Posizione</translation>
+    </message>
+    <message>
+      <source>3D View</source>
+      <translation>Vista 3D</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="+128"/>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertice/Wire</translation>
+    </message>
+    <message>
+      <source>Loft</source>
+      <translation>Loft</translation>
+    </message>
+    <message>
       <source>Too few elements</source>
       <translation>Troppo pochi elementi</translation>
+    </message>
+    <message>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>Occorrono almeno due vertici, spigoli o wire.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
@@ -1473,6 +1670,10 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <translation>Seleziona tre o più spigoli</translation>
     </message>
     <message>
+      <source>Select one or more edges</source>
+      <translation>Seleziona uno o più spigoli</translation>
+    </message>
+    <message>
       <source>Select two or more faces</source>
       <translation>Seleziona due o più facce</translation>
     </message>
@@ -1498,27 +1699,54 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::SweepWidget</name>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Vertice/Wire</translation>
+    </message>
+    <message>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Sweep path</source>
+      <translation>Percorso di sweep</translation>
+    </message>
+    <message>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Seleziona uno spigolo o wire sul quale si desidera eseguire uno sweep.</translation>
+    </message>
+    <message>
+      <source>Too few elements</source>
+      <translation>Troppo pochi elementi</translation>
+    </message>
+    <message>
+      <source>At least one edge or wire is required.</source>
+      <translation>Selezionare almeno un bordo o filo.</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-      <location filename="../../TaskBoxEditDynamic.cpp" line="+100"/>
       <source>Hint</source>
-      <translation>Hint</translation>
+      <translation>Suggerimento</translation>
     </message>
     <message>
       <source>Select Control.</source>
-      <translation>Select Control.</translation>
+      <translation>Seleziona Controllo.</translation>
     </message>
     <message>
       <source>Control</source>
-      <translation>Control</translation>
+      <translation>Controllo</translation>
     </message>
     <message>
       <source>Dynamic</source>
-      <translation>Dynamic</translation>
+      <translation>Dinamico</translation>
     </message>
     <message>
       <source>Align</source>
-      <translation>Align</translation>
+      <translation>Allinea</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1526,7 +1754,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>Special</source>
-      <translation>Special</translation>
+      <translation>Speciale</translation>
     </message>
     <message>
       <source>Command</source>
@@ -1534,7 +1762,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Stretch</translation>
+      <translation>Stira</translation>
     </message>
     <message>
       <source>Move</source>
@@ -1550,35 +1778,35 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>Orient</source>
-      <translation>Orient</translation>
+      <translation>Orienta</translation>
     </message>
     <message>
       <source>Match</source>
-      <translation>Match</translation>
+      <translation>Combacia</translation>
     </message>
     <message>
       <source>Surround</source>
-      <translation>Surround</translation>
+      <translation>Circonda</translation>
     </message>
     <message>
       <source>dummy</source>
-      <translation>dummy</translation>
+      <translation>fittizio</translation>
     </message>
     <message>
       <source>X Axis</source>
-      <translation>X Axis</translation>
+      <translation>Asse X</translation>
     </message>
     <message>
       <source>Y Axis</source>
-      <translation>Y Axis</translation>
+      <translation>Asse Y</translation>
     </message>
     <message>
       <source>Z Axis</source>
-      <translation>Z Axis</translation>
+      <translation>Asse Z</translation>
     </message>
     <message>
       <source>Increment</source>
-      <translation>Increment</translation>
+      <translation>Incremento</translation>
     </message>
     <message>
       <source>.125</source>
@@ -1602,35 +1830,35 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
-      <translation>Drag arrows to stretch box by increment</translation>
+      <translation>Trascina le frecce per stirare per incremento la box</translation>
     </message>
     <message>
       <source>Drag arrows to move box by increment</source>
-      <translation>Drag arrows to move box by increment</translation>
+      <translation>Trascina le frecce per spostare per incremento la box</translation>
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation>Not implemented yet</translation>
+      <translation>Non ancora implementato</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
-      <translation>Drag arrows to offset checked axes by increment</translation>
+      <translation>Trascina le frecce per effettuare l'offset per incremento degli assi selezionati</translation>
     </message>
     <message>
       <source>Select dragger for stretch by align</source>
-      <translation>Select dragger for stretch by align</translation>
+      <translation>Seleziona il trascinatore per stirare per allineamento</translation>
     </message>
     <message>
       <source>Select dragger for move by align</source>
-      <translation>Select dragger for move by align</translation>
+      <translation>Seleziona il trascinatore per spostare per allineamento</translation>
     </message>
     <message>
       <source>Select dragger for stretch by value</source>
-      <translation>Select dragger for stretch by value</translation>
+      <translation>Selezionare il trascinatore per stirare di un valore</translation>
     </message>
     <message>
       <source>Select dragger for move by value</source>
-      <translation>Select dragger for move by value</translation>
+      <translation>Seleziona il trascinatore per spostare di un valore</translation>
     </message>
     <message>
       <source>1.0</source>
@@ -1638,15 +1866,15 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>Enter Value</source>
-      <translation>Enter Value</translation>
+      <translation>Immettere il valore</translation>
     </message>
     <message>
       <source>Select box to match</source>
-      <translation>Select box to match</translation>
+      <translation>Selezionare la casella in modo che corrisponda</translation>
     </message>
     <message>
       <source>Select a point</source>
-      <translation>Select a point</translation>
+      <translation>Seleziona un punto</translation>
     </message>
     <message>
       <source>0.0</source>
@@ -1654,11 +1882,11 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>Select dragger to align</source>
-      <translation>Select dragger to align</translation>
+      <translation>Seleziona il trascinatore per allineare</translation>
     </message>
     <message>
       <source>Select dragger to modify</source>
-      <translation>Select dragger to modify</translation>
+      <translation>Seleziona il trascinatore per modificare</translation>
     </message>
   </context>
   <context>
@@ -1714,7 +1942,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Sposta l'elemento selezionato in basso&lt;/b&gt;&lt;p&gt;L'elemento verrà spostato all'interno del livello di gerarchia.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Sposta l'elemento selezionato in alto.&lt;/b&gt;&lt;p&gt;L'elemento verrà spostato all'interno del livello di gerarchia.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -1770,9 +1998,30 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskSweep</name>
+    <message>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
+    </message>
+    <message>
+      <source>Create solid</source>
+      <translation>Crea solido</translation>
+    </message>
+    <message>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
+    </message>
+    <message>
+      <source>Select one or more profiles and select an edge or wire
+in the 3D view for the sweep path.</source>
+      <translation>Seleziona uno o più profili e seleziona uno spigolo o wire nella vista 3D per il percorso di sweep.</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-141"/>
+      <location filename="../../Command.cpp" line="-734"/>
       <source>Wrong selection</source>
       <translation>Selezione errata</translation>
     </message>
@@ -1810,21 +2059,25 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <translation>Inserisci la tolleranza per la forma di cucitura:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+67"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
       <source>Edit mirror plane</source>
       <translation>Modifica il piano di specchiatura</translation>
+    </message>
+    <message>
+      <source>Edit chamfer edges</source>
+      <translation>Modifica spigoli smussati</translation>
     </message>
     <message>
       <source>Transform</source>
       <translation>Trasforma</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+121"/>
+      <location filename="../../AppPartGui.cpp" line="+120"/>
       <source>Part design</source>
-      <translation>Progettazione parte</translation>
+      <translation>Part design</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-260"/>
+      <location filename="../../Command.cpp" line="-267"/>
       <source>Select two shapes or more, please.</source>
       <translation>Selezionare due o più forme, per favore.</translation>
     </message>
@@ -1833,12 +2086,12 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
       <translation>È necessario selezionare due spigoli o due wire.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+140"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
       <source>Edit fillet edges</source>
       <translation>Modifica gli spigoli raccordati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+462"/>
+      <location filename="../../ViewProviderExt.cpp" line="+509"/>
       <source>Set colors...</source>
       <translation>Imposta colori...</translation>
     </message>

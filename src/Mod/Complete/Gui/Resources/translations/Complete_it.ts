@@ -32,11 +32,11 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Disegno</translation>
+      <source>Dr&amp;awing</source>
+      <translation>D&amp;isegno</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
+      <source>S&amp;ketch</source>
       <translation>S&amp;ketch</translation>
     </message>
     <message>
@@ -50,6 +50,10 @@
     <message>
       <source>Sketch based</source>
       <translation>Sketch</translation>
+    </message>
+    <message>
+      <source>Primitives</source>
+      <translation>Primitive</translation>
     </message>
     <message>
       <source>Parametric</source>

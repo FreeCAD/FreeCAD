@@ -35,6 +35,7 @@ generate_from_xml(GeometryPy)
 generate_from_xml(GeometryCurvePy)
 generate_from_xml(GeometrySurfacePy)
 generate_from_xml(LinePy)
+generate_from_xml(PointPy)
 generate_from_xml(BezierCurvePy)
 generate_from_xml(BSplineCurvePy)
 generate_from_xml(PlanePy)
@@ -62,6 +63,7 @@ generate_from_xml(TopoShapeShellPy)
 generate_from_xml(TopoShapeSolidPy)
 generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
+generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 
 SET(Features_SRCS
     FeaturePartBoolean.cpp
@@ -158,6 +160,8 @@ SET(Python_SRCS
     GeometrySurfacePyImp.cpp
     LinePy.xml
     LinePyImp.cpp
+    PointPy.xml
+    PointPyImp.cpp
     BezierCurvePy.xml
     BezierCurvePyImp.cpp
     BSplineCurvePy.xml
@@ -208,6 +212,8 @@ SET(Python_SRCS
     TopoShapeVertexPyImp.cpp
     TopoShapeWirePy.xml
     TopoShapeWirePyImp.cpp
+    BRepOffsetAPI_MakePipeShellPy.xml
+    BRepOffsetAPI_MakePipeShellPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -246,7 +252,12 @@ SET(Part_Scripts
 
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})
-fc_copy_script("Mod/Part" "Part" ${Part_Scripts})
+
+
+fc_target_copy_resource(Part 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Part
+    ${CMAKE_BINARY_DIR}/Mod/Part
+    ${Part_Scripts})
 
 if(MSVC)
     set_target_properties(Part PROPERTIES SUFFIX ".pyd")

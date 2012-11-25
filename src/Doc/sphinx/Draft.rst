@@ -1,19 +1,26 @@
 The Draft module
 ================
 
-The Draft module offer several convenient functions to work with simple 2D and 3D objects.
-These functions can be used in scripts and macros or from the python interpreter, once the Draft module has been imported.
-
-Example::
-
-  import FreeCAD
-  from Draft import *
-  myrect = makeRectangle(4,3)
-  mydistance = FreeCAD.Vector(2,2,0)
-  move(myrect,mydistance)
+The Draft module offer several convenient functions to work with simple objects.
 
 .. toctree::
    :maxdepth: 4
 
 .. automodule:: Draft
+   :members:
+
+.. automodule:: DraftSnap
+   :members:
+
+The Draft module also contains two submodules, widely used throughout the Draft and Arch modules: DraftVecUtils, which contains useful methods for dealing with vectors, and DraftGeomUtils, which offers many tools for working with OpenCascade geometry.
+
+.. automodule:: DraftVecUtils
+   :members:
+
+.. automodule:: DraftGeomUtils
+   :members:
+
+The Draft module also features a module that contains trackers, special objects made to display 3D temporary geometry in the 3D scene, that have no real existence in the FreeCAD document.
+
+.. automodule:: DraftTrackers
    :members:

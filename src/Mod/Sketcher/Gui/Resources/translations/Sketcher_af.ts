@@ -4,17 +4,17 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1370"/>
+      <location filename="../../CommandConstraints.cpp" line="+1516"/>
       <source>Sketcher</source>
       <translation>Sketser</translation>
     </message>
     <message>
       <source>Constrain angle</source>
-      <translation>Constrain angle</translation>
+      <translation>Dwinghoek</translation>
     </message>
     <message>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Fix the angle of a line or the angle between two lines</translation>
+      <translation>Vries die hoek van 'n lyn of die hoek tussen twee lyne</translation>
     </message>
   </context>
   <context>
@@ -55,11 +55,15 @@
     </message>
     <message>
       <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <translation>Beperk horisontale afstand</translation>
+    </message>
+    <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Fix the horizontal distance between two points or line ends</translation>
+      <translation>Hou die horisontale afstand tussen twee punte of lyneindpunte konstant</translation>
     </message>
   </context>
   <context>
@@ -69,12 +73,16 @@
       <translation>Sketser</translation>
     </message>
     <message>
+      <source>Constrain vertical distance</source>
+      <translation>Constrain vertical distance</translation>
+    </message>
+    <message>
       <source>Constrain horizontal distance</source>
-      <translation>Constrain horizontal distance</translation>
+      <translation>Beperk horisontale afstand</translation>
     </message>
     <message>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Fix the vertical distance between two points or line ends</translation>
+      <translation>Hou die vertikale afstand tussen twee punte of lyneindpunte konstant</translation>
     </message>
   </context>
   <context>
@@ -85,11 +93,11 @@
     </message>
     <message>
       <source>Constrain equal</source>
-      <translation>Constrain equal</translation>
+      <translation>Dwing ewe veel</translation>
     </message>
     <message>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Create an equality constraint between two lines or between circles and arcs</translation>
+      <translation>Skep 'n gelykheidsbeperking tussen twee lyne of tussen sirkels en boë</translation>
     </message>
   </context>
   <context>
@@ -119,7 +127,7 @@
     </message>
     <message>
       <source>Create a lock constraint on the selected item</source>
-      <translation>Create a lock constraint on the selected item</translation>
+      <translation>Skep 'n slotbeperking op die geselekteerde item</translation>
     </message>
   </context>
   <context>
@@ -145,11 +153,11 @@
     </message>
     <message>
       <source>Constrain perpendicular</source>
-      <translation>Constrain perpendicular</translation>
+      <translation>Dwing loodreg</translation>
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
-      <translation>Create a Perpendicular constraint between two lines</translation>
+      <translation>Skep 'n loodregte beperking tussen twee lyne</translation>
     </message>
   </context>
   <context>
@@ -160,11 +168,11 @@
     </message>
     <message>
       <source>Constrain point onto object</source>
-      <translation>Constrain point onto object</translation>
+      <translation>Beperk die punt tot die voorwerp</translation>
     </message>
     <message>
       <source>Fix a point onto an object</source>
-      <translation>Fix a point onto an object</translation>
+      <translation>Heg 'n punt aan 'n voorwerp</translation>
     </message>
   </context>
   <context>
@@ -175,11 +183,11 @@
     </message>
     <message>
       <source>Constrain radius</source>
-      <translation>Constrain radius</translation>
+      <translation>Dwingradius</translation>
     </message>
     <message>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Fix the radius of a circle or an arc</translation>
+      <translation>Sluit vas die radius van 'n sirkel of 'n boog</translation>
     </message>
   </context>
   <context>
@@ -190,11 +198,11 @@
     </message>
     <message>
       <source>Constrain symmetrical</source>
-      <translation>Constrain symmetrical</translation>
+      <translation>Dwing simmetries</translation>
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
-      <translation>Create an symmetry constraint between two points with respect to a line</translation>
+      <translation>Skep 'n simmetriebeperking tussen twee punte met betrekking tot 'n lyn</translation>
     </message>
   </context>
   <context>
@@ -205,11 +213,11 @@
     </message>
     <message>
       <source>Constrain tangent</source>
-      <translation>Constrain tangent</translation>
+      <translation>Dwingraaklyn</translation>
     </message>
     <message>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Create a tangent constraint between two entities</translation>
+      <translation>Skep 'n tangensiale beperking tussen die twee entiteite</translation>
     </message>
   </context>
   <context>
@@ -230,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
       <source>Sketcher</source>
       <translation>Sketser</translation>
     </message>
@@ -281,11 +289,15 @@
     </message>
     <message>
       <source>Create fillet</source>
-      <translation>Create fillet</translation>
+      <translation>Skep ronding</translation>
     </message>
     <message>
-      <source>Create a fillet between to lines or at a coincident point</source>
-      <translation>Create a fillet between to lines or at a coincident point</translation>
+      <source>Create a fillet between two lines or at a coincidental point</source>
+      <translation>Create a fillet between two lines or at a coincidental point</translation>
+    </message>
+    <message>
+      <source>Create a fillet between two lines or at a coincident point</source>
+      <translation>Create a fillet between two lines or at a coincident point</translation>
     </message>
   </context>
   <context>
@@ -364,9 +376,24 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherExternal</name>
+    <message>
+      <source>Sketcher</source>
+      <translation>Sketser</translation>
+    </message>
+    <message>
+      <source>External geometry</source>
+      <translation>External geometry</translation>
+    </message>
+    <message>
+      <source>Create an edge linked to an external geometry</source>
+      <translation>Create an edge linked to an external geometry</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+270"/>
+      <location filename="../../Command.cpp" line="+273"/>
       <source>Sketcher</source>
       <translation>Sketser</translation>
     </message>
@@ -387,11 +414,11 @@
     </message>
     <message>
       <source>Map sketch to face...</source>
-      <translation>Map sketch to face...</translation>
+      <translation>Kaartlê skets tot oppervlak...</translation>
     </message>
     <message>
       <source>Map a sketch to a face</source>
-      <translation>Map a sketch to a face</translation>
+      <translation>Kaartlê 'n skets tot 'n oppervlak</translation>
     </message>
   </context>
   <context>
@@ -406,7 +433,7 @@
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
-      <translation>Create a new or edit the selected sketch</translation>
+      <translation>Skep 'n nuwe of wysig die gekose skets</translation>
     </message>
     <message>
       <source>Create a new sketch</source>
@@ -437,43 +464,47 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Toggle construction line</translation>
+      <translation>Aktiveer/deaktiveer konstruksielyn</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
-      <translation>Toggles the currently selected lines to/from construction mode</translation>
+      <translation>Skakel die huidige gekose lyne na/van konstruksiemodus</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-165"/>
       <source>Sketcher</source>
       <translation>Sketser</translation>
     </message>
     <message>
       <source>Trim edge</source>
-      <translation>Trim edge</translation>
+      <translation>Knip kant</translation>
+    </message>
+    <message>
+      <source>Trim an edge with respect to the picked position</source>
+      <translation>Trim an edge with respect to the picked position</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
-      <translation>Trims an edge with respect to the picked position</translation>
+      <translation>Knip 'n kant met betrekking tot die gekose posisie</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+244"/>
+      <location filename="../../Command.cpp" line="+247"/>
       <source>Sketcher</source>
       <translation>Sketser</translation>
     </message>
     <message>
       <source>View sketch</source>
-      <translation>View sketch</translation>
+      <translation>Bekyk die skets</translation>
     </message>
     <message>
       <source>View sketch perpendicular to sketch plane</source>
-      <translation>View sketch perpendicular to sketch plane</translation>
+      <translation>Bekyk die skets loodreg tot die sketsvlak</translation>
     </message>
   </context>
   <context>
@@ -493,10 +524,10 @@
     </message>
     <message>
       <source>Select edge(s) from the sketch.</source>
-      <translation>Select edge(s) from the sketch.</translation>
+      <translation>Kies die kant(e) van die skets.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1518"/>
+      <location filename="../../CommandConstraints.cpp" line="-1637"/>
       <source>Select an edge from the sketch.</source>
       <translation>Kies 'n rand in die skets.</translation>
     </message>
@@ -513,28 +544,40 @@
       <translation>Onmoontlike beperking</translation>
     </message>
     <message>
+      <source>Cannot add a constraint between two external geometries!</source>
+      <translation>Cannot add a constraint between two external geometries!</translation>
+    </message>
+    <message>
       <source>Only sketch and its support is allowed to select</source>
-      <translation>Only sketch and its support is allowed to select</translation>
+      <translation>Slegs die skets en sy ondersteuning mag gekies word</translation>
     </message>
     <message>
       <source>One of the selected has to be on the sketch</source>
-      <translation>One of the selected has to be on the sketch</translation>
+      <translation>Een van die keuses moet op die skets wees</translation>
     </message>
     <message>
       <source>The selected edge is not a line segment</source>
-      <translation>The selected edge is not a line segment</translation>
+      <translation>Die gekose rand is nie 'n lynsegment nie</translation>
     </message>
     <message>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>Die gekose rand het reeds 'n vertikale beperking!</translation>
     </message>
     <message>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>The selected item(s) can't accept a horizontal constraint!</translation>
+    </message>
+    <message>
+      <source>The selected item(s) can't accept a vertical constraint!</source>
+      <translation>The selected item(s) can't accept a vertical constraint!</translation>
+    </message>
+    <message>
       <source>Select entities from the sketch.</source>
-      <translation>Select entities from the sketch.</translation>
+      <translation>Kies entiteite van die skets.</translation>
     </message>
     <message>
       <source>Select exactly one entity from the sketch.</source>
-      <translation>Select exactly one entity from the sketch.</translation>
+      <translation>Kies presies een entiteit van die skets.</translation>
     </message>
     <message>
       <source>Select vertexes from the sketch.</source>
@@ -546,63 +589,115 @@
     </message>
     <message>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Select exactly one line or one point and one line or two points from the sketch.</translation>
+      <translation>Kies presies een lyn of een punt en een lyn of twee punte uit die skets.</translation>
+    </message>
+    <message>
+      <source>Cannot add a length constraint on an external geometry!</source>
+      <translation>Cannot add a length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one point and one object from the sketch.</source>
-      <translation>Select exactly one point and one object from the sketch.</translation>
+      <translation>Kies presies een punt en een voorwerp van die skets.</translation>
     </message>
     <message>
       <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Select exactly one line or up to two points from the sketch.</translation>
+      <translation>Kies presies een lyn of tot twee punte uit die skets.</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an external geometry!</source>
+      <translation>Cannot add a horizontal length constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an external geometry!</source>
+      <translation>Cannot add a vertical length constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
-      <translation>Select two or more lines from the sketch.</translation>
+      <translation>Kies twee of meer lyne van die skets.</translation>
     </message>
     <message>
       <source>Select at least two lines from the sketch.</source>
-      <translation>Select at least two lines from the sketch.</translation>
+      <translation>Kies ten minste twee lyne van die skets.</translation>
     </message>
     <message>
       <source>Select a valid line</source>
-      <translation>Select a valid line</translation>
+      <translation>Kies 'n geldige lyn</translation>
     </message>
     <message>
       <source>The selected edge is not a valid line</source>
-      <translation>The selected edge is not a valid line</translation>
+      <translation>Die gekose kant is nie 'n geldige lyn nie</translation>
+    </message>
+    <message>
+      <source>The selected points should be end points of arcs and lines.</source>
+      <translation>The selected points should be end points of arcs and lines.</translation>
+    </message>
+    <message>
+      <source>The selected point should be an end point of an arc or line.</source>
+      <translation>The selected point should be an end point of an arc or line.</translation>
+    </message>
+    <message>
+      <source>The selected edge should be an arc, line or circle.</source>
+      <translation>The selected edge should be an arc, line or circle.</translation>
+    </message>
+    <message>
+      <source>One of the selected edges should be a line.</source>
+      <translation>One of the selected edges should be a line.</translation>
     </message>
     <message>
       <source>Select exactly one arc or circle from the sketch.</source>
-      <translation>Select exactly one arc or circle from the sketch.</translation>
+      <translation>Kies presies een boog of sirkel van die skets.</translation>
+    </message>
+    <message>
+      <source>Select one or two lines from the sketch.</source>
+      <translation>Select one or two lines from the sketch.</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an external geometry!</source>
+      <translation>Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
-      <translation>Select exactly one or two lines from the sketch.</translation>
+      <translation>Kies presies een of twee lyne van die skets.</translation>
     </message>
     <message>
       <source>Select two edges from the sketch.</source>
-      <translation>Select two edges from the sketch.</translation>
+      <translation>Kies twee kante van die skets.</translation>
     </message>
     <message>
       <source>Select atleast two lines from the sketch.</source>
-      <translation>Select atleast two lines from the sketch.</translation>
+      <translation>Kies ten minste twee lyne van die skets.</translation>
+    </message>
+    <message>
+      <source>Select two or more compatible edges</source>
+      <translation>Select two or more compatible edges</translation>
+    </message>
+    <message>
+      <source>Sketch axes cannot be used in equality constraints</source>
+      <translation>Sketch axes cannot be used in equality constraints</translation>
+    </message>
+    <message>
+      <source>Select two or more edges of similar type</source>
+      <translation>Select two or more edges of similar type</translation>
+    </message>
+    <message>
+      <source>Cannot add a constraint between external geometries!</source>
+      <translation>Cannot add a constraint between external geometries!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
-      <translation>Select exactly two same geometries</translation>
+      <translation>Kies presies twee soortgelyke geometrieë</translation>
     </message>
     <message>
       <source>Select valid geometries</source>
-      <translation>Select valid geometries</translation>
+      <translation>Kies geldige geometrieë</translation>
     </message>
     <message>
       <source>Select geometry of similar type</source>
-      <translation>Select geometry of similar type</translation>
+      <translation>Kies 'n soortgelyke geometrie</translation>
     </message>
     <message>
       <source>Select two points and one line from the sketch.</source>
-      <translation>Select two points and one line from the sketch.</translation>
+      <translation>Kies twee punte en een lyn van die skets.</translation>
     </message>
     <message>
       <source>Select exactly one line from the sketch.</source>
@@ -618,14 +713,14 @@
     </message>
     <message>
       <source>Select two entities from the sketch.</source>
-      <translation>Select two entities from the sketch.</translation>
+      <translation>Kies twee entiteite in die skets.</translation>
     </message>
     <message>
       <source>Select exactly two entities from the sketch.</source>
-      <translation>Select exactly two entities from the sketch.</translation>
+      <translation>Kies presies twee entiteite van die skets.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
       <source>Edit sketch</source>
       <translation>Wysig skets</translation>
     </message>
@@ -635,10 +730,10 @@
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation>Wil jy hierdie dialoog afsluit?</translation>
+      <translation>Wil jy hierdie dialoog toe maak?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-223"/>
+      <location filename="../../Command.cpp" line="-226"/>
       <source>Several sub-elements selected</source>
       <translation>Verskeie onderelemente gekies</translation>
     </message>
@@ -665,47 +760,46 @@
     <message>
       <location filename="../../EditDatumDialog.cpp" line="+72"/>
       <source>Distance constraint</source>
-      <translation>Distance constraint</translation>
+      <translation>Afstandsbeperking</translation>
     </message>
     <message>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Not allowed to edit the datum because the sketch contains conflicting constraints</translation>
+      <translation>Nie toegelaat om die datum te wysig want die skets bevat teenstrydige beperkings</translation>
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Dimensional constraint</translation>
+      <translation>Dimensionele beperking</translation>
     </message>
   </context>
   <context>
     <name>SketchOrientationDialog</name>
     <message>
-      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
       <source>Choose orientation</source>
-      <translation>Choose orientation</translation>
+      <translation>Kies oriëntasie</translation>
     </message>
     <message>
       <source>Sketch orientation</source>
-      <translation>Sketch orientation</translation>
+      <translation>Sketsoriëntasie</translation>
     </message>
     <message>
       <source>XY-Plane</source>
-      <translation>XY-Plane</translation>
+      <translation>XY-vlak</translation>
     </message>
     <message>
       <source>XZ-Plane</source>
-      <translation>XZ-Plane</translation>
+      <translation>XZ-Vlak</translation>
     </message>
     <message>
       <source>YZ-Plane</source>
-      <translation>YZ-Plane</translation>
+      <translation>YZ-Vlak</translation>
     </message>
     <message>
       <source>Reverse direction</source>
-      <translation>Reverse direction</translation>
+      <translation>Omgekeerde rigting</translation>
     </message>
     <message>
       <source>Offset:</source>
-      <translation>Offset:</translation>
+      <translation>Verskuiwing:</translation>
     </message>
   </context>
   <context>
@@ -718,6 +812,38 @@
     <message>
       <source>datum:</source>
       <translation>datum:</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::SketchOrientationDialog</name>
+    <message>
+      <location filename="../../SketchOrientationDialog.ui" line="+14"/>
+      <source>Choose orientation</source>
+      <translation>Kies oriëntasie</translation>
+    </message>
+    <message>
+      <source>Sketch orientation</source>
+      <translation>Sketsoriëntasie</translation>
+    </message>
+    <message>
+      <source>XY-Plane</source>
+      <translation>XY-vlak</translation>
+    </message>
+    <message>
+      <source>XZ-Plane</source>
+      <translation>XZ-Vlak</translation>
+    </message>
+    <message>
+      <source>YZ-Plane</source>
+      <translation>YZ-Vlak</translation>
+    </message>
+    <message>
+      <source>Reverse direction</source>
+      <translation>Omgekeerde rigting</translation>
+    </message>
+    <message>
+      <source>Offset:</source>
+      <translation>Verskuiwing:</translation>
     </message>
   </context>
   <context>
@@ -762,11 +888,11 @@
     </message>
     <message>
       <source>Grid size:</source>
-      <translation>Grid size:</translation>
+      <translation>Ruitnetgrootte:</translation>
     </message>
     <message>
       <source>Grid snap</source>
-      <translation>Grid snap</translation>
+      <translation>Ruitnethegting</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -778,7 +904,7 @@
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation>0.1 mm</translation>
+      <translation>0,1 mm</translation>
     </message>
     <message>
       <source>0.2 mm</source>
@@ -786,7 +912,7 @@
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation>0.5 mm</translation>
+      <translation>0,5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
@@ -846,7 +972,7 @@
     </message>
     <message>
       <source>Auto constraints</source>
-      <translation>Auto constraints</translation>
+      <translation>Outomatiese beperkings</translation>
     </message>
     <message>
       <source>auto constraints</source>
@@ -863,7 +989,7 @@
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
-      <translation>Solver messages</translation>
+      <translation>Oplosserboodskappe</translation>
     </message>
   </context>
   <context>
@@ -896,11 +1022,11 @@
     </message>
     <message>
       <source>Undefined degrees of freedom</source>
-      <translation>Undefined degrees of freedom</translation>
+      <translation>Ongedefiniëerde vryheidsgrade</translation>
     </message>
     <message>
       <source>Not solved yet</source>
-      <translation>Not solved yet</translation>
+      <translation>Nog nie opgelos nie</translation>
     </message>
   </context>
   <context>
@@ -912,7 +1038,7 @@
     </message>
     <message>
       <source>Sketcher geometries</source>
-      <translation>Sketcher geometries</translation>
+      <translation>Sketsergeometrieë</translation>
     </message>
     <message>
       <source>Sketcher geoms</source>

@@ -10,7 +10,7 @@
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Hálós test létrehozása alakzatból</translation>
+      <translation>Hálós test létrehozása alakzatból...</translation>
     </message>
     <message>
       <source>Tessellate shape</source>

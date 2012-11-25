@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Create mesh from shape...</translation>
+      <translation>Luo verkko muodosta...</translation>
     </message>
     <message>
       <source>Tessellate shape</source>
-      <translation>Tessellate shape</translation>
+      <translation>Geometrian pilkottu muoto</translation>
     </message>
   </context>
   <context>
@@ -22,32 +22,32 @@
     <message>
       <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Tessellation</translation>
+      <translation>Geometrian pilkkominen</translation>
     </message>
     <message>
       <source>Shapes</source>
-      <translation>Shapes</translation>
+      <translation>Muodot</translation>
     </message>
     <message>
       <source>Settings</source>
-      <translation>Settings</translation>
+      <translation>Asetukset</translation>
     </message>
     <message>
       <source>Surface deviation:</source>
-      <translation>Surface deviation:</translation>
+      <translation>Pinnan poikkeama:</translation>
     </message>
     <message>
       <source>Max. edge length:</source>
-      <translation>Max. edge length:</translation>
+      <translation>Maks. reunan pituus:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="+106"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Select a shape for meshing, first.</translation>
+      <translation>Valitse ensin muoto verkkoihin.</translation>
     </message>
     <message>
       <source>No such document '%1'.</source>
-      <translation>No such document '%1'.</translation>
+      <translation>Ei tällainen asiakirja '%1'.</translation>
     </message>
   </context>
   <context>

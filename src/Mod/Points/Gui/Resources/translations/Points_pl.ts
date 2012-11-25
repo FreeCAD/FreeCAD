@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Exports a point cloud</source>
-      <translation>Exports a point cloud</translation>
+      <translation>Eksportuje chmury punktów</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     </message>
     <message>
       <source>Imports a point cloud</source>
-      <translation>Imports a point cloud</translation>
+      <translation>Importuje chmury punktów</translation>
     </message>
   </context>
   <context>
@@ -40,11 +40,11 @@
     </message>
     <message>
       <source>Cut point cloud</source>
-      <translation>Cut point cloud</translation>
+      <translation>Wytnij punkt chmury</translation>
     </message>
     <message>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Cuts a point cloud with a picked polygon</translation>
+      <translation>Wycina punkt chmury z wybranego wielokąta</translation>
     </message>
   </context>
   <context>
@@ -59,7 +59,7 @@
     </message>
     <message>
       <source>Test to transform a point cloud</source>
-      <translation>Test to transform a point cloud</translation>
+      <translation>Test przekształcenia chmury punktów</translation>
     </message>
   </context>
   <context>
@@ -79,7 +79,7 @@
     </message>
     <message>
       <source>First line:</source>
-      <translation>First line:</translation>
+      <translation>Pierwszy wiersz:</translation>
     </message>
     <message>
       <source>Ignore</source>
@@ -87,7 +87,7 @@
     </message>
     <message>
       <source>Cluster by lines starting with:</source>
-      <translation>Cluster by lines starting with:</translation>
+      <translation>Klaster o wierszach zaczynających się od:</translation>
     </message>
     <message>
       <source>Ignore lines starting with:</source>
@@ -139,11 +139,11 @@
     </message>
     <message>
       <source>I,J,K (normal vector)</source>
-      <translation>I,J,K (normal vector)</translation>
+      <translation>I, J, K (wektor normalny)</translation>
     </message>
     <message>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K (normal vector 2D)</translation>
+      <translation>I,K (wektor normalny 2D)</translation>
     </message>
     <message>
       <source>R,G,B (color)</source>
@@ -151,7 +151,7 @@
     </message>
     <message>
       <source>I (Gray value)</source>
-      <translation>I (Gray value)</translation>
+      <translation>I (wartość szarości)</translation>
     </message>
     <message>
       <source>Preview</source>
@@ -167,7 +167,7 @@
     </message>
     <message>
       <source>Number of previewed lines:</source>
-      <translation>Number of previewed lines:</translation>
+      <translation>Liczba przeglądanych wierszy:</translation>
     </message>
   </context>
   <context>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Command.cpp" line="-84"/>
       <source>Ascii Points (*.asc);;All Files (*.*)</source>
-      <translation>Ascii Points (*.asc);;All Files (*.*)</translation>
+      <translation>Punkty ASCII (*.asc);;Wszystkie Pliki(*. *)</translation>
     </message>
   </context>
   <context>

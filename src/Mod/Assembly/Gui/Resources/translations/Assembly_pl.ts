@@ -18,11 +18,11 @@
     </message>
     <message>
       <source>Constraint Axle...</source>
-      <translation>Ograniczenie osi ...</translation>
+      <translation>Oś wiązania</translation>
     </message>
     <message>
       <source>set a axle constraint between two objects</source>
-      <translation>ustaw oś graniczną między dwoma obiektami</translation>
+      <translation>Ustal wiązanie osiowe pomiędzy dwoma obiektami</translation>
     </message>
   </context>
   <context>

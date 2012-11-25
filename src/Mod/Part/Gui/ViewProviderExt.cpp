@@ -119,14 +119,20 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0f,64.0f,1.0f};
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.0001f,100.0f,0.01f};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
+const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
 
 ViewProviderPartExt::ViewProviderPartExt() 
 {
     VisualTouched = true;
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long lcol = hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL); // dark grey (25,25,25)
+    float r,g,b;
+    r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
+    int lwidth = hGrp->GetInt("DefaultShapeLineWidth",2);
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);
-    mat.diffuseColor.set(0.1f,0.1f,0.1f);
+    mat.diffuseColor.set(r,g,b);
     mat.specularColor.set(0.0f,0.0f,0.0f);
     mat.emissiveColor.set(0.0f,0.0f,0.0f);
     mat.shininess = 1.0f;
@@ -136,15 +142,17 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(LineColor,(mat.diffuseColor));
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
     ADD_PROPERTY(DiffuseColor,(ShapeColor.getValue()));
-    ADD_PROPERTY(LineWidth,(2.0f));
+    ADD_PROPERTY(LineWidth,(lwidth));
     LineWidth.setConstraints(&sizeRange);
     PointSize.setConstraints(&sizeRange);
-    ADD_PROPERTY(PointSize,(2.0f));
+    ADD_PROPERTY(PointSize,(lwidth));
     ADD_PROPERTY(Deviation,(0.5f));
     Deviation.setConstraints(&tessRange);
     ADD_PROPERTY(ControlPoints,(false));
     ADD_PROPERTY(Lighting,(1));
     Lighting.setEnums(LightingEnums);
+    ADD_PROPERTY(DrawStyle,((long int)0));
+    DrawStyle.setEnums(DrawStyleEnums);
 
     coords = new SoCoordinate3();
     coords->ref();
@@ -185,6 +193,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     pShapeHints->ref();
     Lighting.touch();
+    DrawStyle.touch();
 
     sPixmap = "Tree_Part";
     loadParameter();
@@ -272,11 +281,44 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         ViewProviderGeometryObject::onChanged(prop);
         DiffuseColor.setValue(ShapeColor.getValue());
     }
+    else if (prop == &Transparency) {
+        const App::Material& Mat = ShapeMaterial.getValue();
+        long value = (long)(100*Mat.transparency);
+        if (value != Transparency.getValue()) {
+            float trans = Transparency.getValue()/100.0f;
+            if (pcShapeBind->value.getValue() == SoMaterialBinding::PER_PART) {
+                int cnt = pcShapeMaterial->diffuseColor.getNum();
+                pcShapeMaterial->transparency.setNum(cnt);
+                float *t = pcShapeMaterial->transparency.startEditing();
+                for (int i=0; i<cnt; i++)
+                    t[i] = trans;
+                pcShapeMaterial->transparency.finishEditing();
+            }
+            else {
+                pcShapeMaterial->transparency = trans;
+            }
+
+            App::PropertyContainer* parent = ShapeMaterial.getContainer();
+            ShapeMaterial.setContainer(0);
+            ShapeMaterial.setTransparency(trans);
+            ShapeMaterial.setContainer(parent);
+        }
+    }
     else if (prop == &Lighting) {
         if (Lighting.getValue() == 0)
             pShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
         else
             pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    }
+    else if (prop == &DrawStyle) {
+        if (DrawStyle.getValue() == 0)
+        pcLineStyle->linePattern = 0xffff;
+        else if (DrawStyle.getValue() == 1)
+        pcLineStyle->linePattern = 0xf00f;
+        else if (DrawStyle.getValue() == 2)
+        pcLineStyle->linePattern = 0x0f0f;
+        else
+        pcLineStyle->linePattern = 0xff88;
     }
     else {
         // if the object was invisible and has been changed, recreate the visual
@@ -536,6 +578,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         faceset ->coordIndex .setNum(0);
         faceset ->partIndex  .setNum(0);
         lineset ->coordIndex .setNum(0);
+        nodeset ->startIndex .setValue(0);
         VisualTouched = false;
         return;
     }

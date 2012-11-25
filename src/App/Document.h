@@ -116,7 +116,8 @@ public:
     /// Restore the document from the file in Property Path
     void restore (void);
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
-    std::vector<App::DocumentObject*> importObjects(std::istream&);
+    void exportGraphviz(std::ostream&);
+    std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);
     /// Opens the document from its file name
     //void open (void);
     /// Is the document already saved to a file
@@ -142,7 +143,7 @@ public:
      * are copied as well. By default \a recursive is false.
      * Returns the copy of the object or 0 if the creation failed.
      */
-    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false);
+    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false, bool keepdigitsatend=false);
     /** Move an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are moved as well. By default \a recursive is false.
@@ -163,6 +164,7 @@ public:
     /// Returns a list of all Objects
     std::vector<DocumentObject*> getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
+    std::vector<DocumentObject*> findObjects(const Base::Type& typeId, const char* objname) const;
     /// Returns an array with the correct types already.
     template<typename T> inline std::vector<T*> getObjectsOfType() const;
     int countObjectsOfType(const Base::Type& typeId) const;
@@ -262,10 +264,12 @@ protected:
     void _remObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
     DocumentObject* _copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-        DocumentObject*>&, bool recursive=false);
+        DocumentObject*>&, bool recursive=false, bool keepdigitsatend=false);
     /// checks if a valid transaction is open
     void _checkTransaction(void);
     void breakDependency(DocumentObject* pcObject, bool clear);
+    std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
+    void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer &writer) const;
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed

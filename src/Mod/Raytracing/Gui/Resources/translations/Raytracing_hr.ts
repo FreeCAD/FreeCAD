@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+452"/>
+      <location filename="../../Command.cpp" line="+425"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
@@ -80,6 +80,16 @@
   <context>
     <name>CmdRaytracingWriteView</name>
     <message>
+      <source>No perspective camera</source>
+      <translation>Nema perspektivne kamere</translation>
+    </message>
+    <message>
+      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+Do you want to continue?</source>
+      <translation>Trenutni prikaz kamere nije perspektivan, a time i rezultat povray slike kasnije može izgledati drugačije od onoga što očekujete.
+Želite li nastaviti?</translation>
+    </message>
+    <message>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -121,6 +131,10 @@
     <message>
       <source>Create a Povray project to insert a view.</source>
       <translation>Napravite Povray projekt za umetanje pogleda.</translation>
+    </message>
+    <message>
+      <source>Select a Povray project to insert the view.</source>
+      <translation>Odaberi Povray projekt za umetnuti pogled.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>

@@ -32,12 +32,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <source>&amp;Drawing</source>
-      <translation>&amp;Crtež</translation>
+      <source>Dr&amp;awing</source>
+      <translation>Cr&amp;tež</translation>
     </message>
     <message>
-      <source>Ske&amp;tch</source>
-      <translation>Sk&amp;ica</translation>
+      <source>S&amp;ketch</source>
+      <translation>S&amp;kica</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -50,6 +50,10 @@
     <message>
       <source>Sketch based</source>
       <translation>Na temelju skice</translation>
+    </message>
+    <message>
+      <source>Primitives</source>
+      <translation>Primitivi</translation>
     </message>
     <message>
       <source>Parametric</source>

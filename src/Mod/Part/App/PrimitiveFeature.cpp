@@ -100,7 +100,7 @@ void Primitive::onChanged(const App::Property* prop)
         // Do not support sphere, ellipsoid and torus because the creation
         // takes too long and thus is not feasible
         std::string grp = (prop->getGroup() ? prop->getGroup() : "");
-        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone"){
+        if (grp == "Plane" || grp == "Cylinder" || grp == "Cone") {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -333,9 +333,9 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
         return new App::DocumentObjectExecReturn("Radius of sphere too small");
     try {
         BRepPrimAPI_MakeSphere mkSphere(Radius.getValue(),
-                                        Angle1.getValue()/180.0f*Standard_PI,
-                                        Angle2.getValue()/180.0f*Standard_PI,
-                                        Angle3.getValue()/180.0f*Standard_PI);
+                                        Angle1.getValue()/180.0f*M_PI,
+                                        Angle2.getValue()/180.0f*M_PI,
+                                        Angle3.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkSphere.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -391,9 +391,9 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         gp_Ax2 ax2(pnt,dir);
         BRepPrimAPI_MakeSphere mkSphere(ax2,
                                         Radius2.getValue(), 
-                                        Angle1.getValue()/180.0f*Standard_PI,
-                                        Angle2.getValue()/180.0f*Standard_PI,
-                                        Angle3.getValue()/180.0f*Standard_PI);
+                                        Angle1.getValue()/180.0f*M_PI,
+                                        Angle2.getValue()/180.0f*M_PI,
+                                        Angle3.getValue()/180.0f*M_PI);
         Standard_Real scale = Radius1.getValue()/Radius2.getValue();
         gp_Dir xDir = ax2.XDirection();
         gp_Dir yDir = ax2.YDirection();
@@ -450,7 +450,7 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
     try {
         BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
                                         Height.getValue(),
-                                        Angle.getValue()/180.0f*Standard_PI);
+                                        Angle.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkCylr.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -499,7 +499,7 @@ App::DocumentObjectExecReturn *Cone::execute(void)
         BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
                                     Radius2.getValue(),
                                     Height.getValue(),
-                                    Angle.getValue()/180.0f*Standard_PI);
+                                    Angle.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkCone.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -585,6 +585,8 @@ App::DocumentObjectExecReturn *Torus::execute(void)
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 
+const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",NULL};
+
 Helix::Helix(void)
 {
     ADD_PROPERTY_TYPE(Pitch, (1.0),"Helix",App::Prop_None,"The pitch of the helix");
@@ -595,6 +597,24 @@ Helix::Helix(void)
     Radius.setConstraints(&floatRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is > 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
+    ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
+    LocalCoord.setEnums(LocalCSEnums);
+}
+
+void Helix::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &Pitch || prop == &Height || prop == &Radius ||
+            prop == &Angle || prop == &LocalCoord) {
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
 }
 
 short Helix::mustExecute() const
@@ -607,6 +627,8 @@ short Helix::mustExecute() const
         return 1;
     if (Angle.isTouched())
         return 1;
+    if (LocalCoord.isTouched())
+        return 1;
     return Primitive::mustExecute();
 }
 
@@ -617,8 +639,9 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myHeight = Height.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
+        Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
-        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle));
+        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

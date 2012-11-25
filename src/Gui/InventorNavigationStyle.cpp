@@ -251,17 +251,11 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->button3down = press;
             break;
         case SoMouseButtonEvent::BUTTON4:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), -0.05f);
-            else
-                zoom(viewer->getCamera(), 0.05f);
+            doZoom(viewer->getCamera(), TRUE, posn);
             processed = TRUE;
             break;
         case SoMouseButtonEvent::BUTTON5:
-            if (this->invertZoom)
-                zoom(viewer->getCamera(), 0.05f);
-            else
-                zoom(viewer->getCamera(), -0.05f);
+            doZoom(viewer->getCamera(), FALSE, posn);
             processed = TRUE;
             break;
         default:
@@ -285,22 +279,17 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         else if (this->currentmode == NavigationStyle::DRAGGING) {
             this->addToLog(event->getPosition(), event->getTime());
             this->spin(posn);
+            moveCursorPosition();
             processed = TRUE;
         }
     }
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        SoMotion3Event * const event = (SoMotion3Event *) ev;
-        SoCamera * const camera = viewer->getCamera();
-        if (camera) {
-            SbVec3f dir = event->getTranslation();
-            camera->orientation.getValue().multVec(dir,dir);
-            camera->position = camera->position.getValue() + dir;
-            camera->orientation = 
-                event->getRotation() * camera->orientation.getValue();
-            processed = TRUE;
-        }
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        if (event)
+            this->processMotionEvent(event);
+        processed = TRUE;
     }
 
     enum {
@@ -328,6 +317,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         break;
     case BUTTON1DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON3DOWN:

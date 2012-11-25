@@ -2,9 +2,39 @@
 <!DOCTYPE TS>
 <TS>
   <context>
+    <name>CmdDrawingAnnotation</name>
+    <message>
+      <location filename="../../Command.cpp" line="+365"/>
+      <source>Drawing</source>
+      <translation>Mise en plan</translation>
+    </message>
+    <message>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Annotation</translation>
+    </message>
+    <message>
+      <source>Inserts an Annotation view in the active drawing</source>
+      <translation>Insère une annotation sur la feuille active</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingClip</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Mise en plan</translation>
+    </message>
+    <message>
+      <source>&amp;Clip</source>
+      <translation>&amp;Masque</translation>
+    </message>
+    <message>
+      <source>Inserts a clip group in the active drawing</source>
+      <translation>Insère un groupe de masquage sur la feuille active</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="+285"/>
       <source>File</source>
       <translation>Fichier</translation>
     </message>
@@ -25,7 +55,7 @@
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Insérer une nouvelle mise en plan A3 paysage</translation>
+      <translation>Insère une nouvelle feuille A3 paysage</translation>
     </message>
   </context>
   <context>
@@ -36,7 +66,7 @@
     </message>
     <message>
       <source>Insert new drawing</source>
-      <translation>Insérer une nouvelle mise en plan</translation>
+      <translation>Insérer une nouvelle feuille</translation>
     </message>
   </context>
   <context>
@@ -70,6 +100,36 @@
     </message>
   </context>
   <context>
+    <name>CmdDrawingOpenBrowserView</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Mise en plan</translation>
+    </message>
+    <message>
+      <source>Open &amp;browser view</source>
+      <translation>Vue &amp;web</translation>
+    </message>
+    <message>
+      <source>Opens the selected page in a browser view</source>
+      <translation>Ouvre la feuille sélectionnée dans le navigateur web</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdDrawingOrthoViews</name>
+    <message>
+      <source>Drawing</source>
+      <translation>Mise en plan</translation>
+    </message>
+    <message>
+      <source>Insert orthographic views</source>
+      <translation>Insérer des vues orthographiques</translation>
+    </message>
+    <message>
+      <source>Insert an orthographic projection of a part in the active drawing</source>
+      <translation>Insérer une projection orthographique d'une forme sur la feuille active</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdDrawingProjectShape</name>
     <message>
       <source>Drawing</source>
@@ -87,7 +147,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+206"/>
+      <location filename="../../DrawingView.cpp" line="+207"/>
       <source>&amp;Background</source>
       <translation>&amp;Arrière-plan</translation>
     </message>
@@ -161,6 +221,114 @@
     </message>
   </context>
   <context>
+    <name>DrawingGui::TaskOrthoViews</name>
+    <message>
+      <location filename="../../TaskOrthoViews.ui" line="+26"/>
+      <source>Orthographic Projection</source>
+      <translation>Projection orthographique</translation>
+    </message>
+    <message>
+      <source>Projection</source>
+      <translation>Projection</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Troisième angle</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Premier angle</translation>
+    </message>
+    <message>
+      <source>Primary View</source>
+      <translation>Vue principale</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Frontal</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Droit</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Arrière</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Gauche</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Dessus</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Dessous</translation>
+    </message>
+    <message>
+      <source>- Rotate</source>
+      <translation>-Faire pivoter</translation>
+    </message>
+    <message>
+      <source>0</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>90</source>
+      <translation>90</translation>
+    </message>
+    <message>
+      <source>180</source>
+      <translation>180</translation>
+    </message>
+    <message>
+      <source>270</source>
+      <translation>270</translation>
+    </message>
+    <message>
+      <source>Primary view</source>
+      <translation>Vue principale</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Vues secondaires</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Général</translation>
+    </message>
+    <message>
+      <source>Auto scale / position</source>
+      <translation>Échelle / position auto</translation>
+    </message>
+    <message>
+      <source>Scale</source>
+      <translation>Échelle</translation>
+    </message>
+    <message>
+      <source>Primary x / y</source>
+      <translation>x / y principaux</translation>
+    </message>
+    <message>
+      <source>Secondary dx / dy</source>
+      <translation>dx et dy secondaires</translation>
+    </message>
+    <message>
+      <source>Show hidden</source>
+      <translation>Monter les bords cachés</translation>
+    </message>
+    <message>
+      <source>Show smooth</source>
+      <translation>Montrer les bords lissés</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonométrique</translation>
+    </message>
+  </context>
+  <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
       <location filename="../../TaskDialog.cpp" line="+49"/>
@@ -211,13 +379,12 @@
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="-196"/>
       <source>A0 landscape</source>
       <translation>A0 paysage</translation>
     </message>
     <message>
       <source>Insert new A0 landscape drawing</source>
-      <translation>Insérer une mise en plan A0 paysage</translation>
+      <translation>Insérer une feuille A0 paysage</translation>
     </message>
     <message>
       <source>A1 landscape</source>
@@ -225,7 +392,7 @@
     </message>
     <message>
       <source>Insert new A1 landscape drawing</source>
-      <translation>Insérer une mise en plan A1 paysage</translation>
+      <translation>Insérer une feuille A1 paysage</translation>
     </message>
     <message>
       <source>A2 landscape</source>
@@ -233,7 +400,7 @@
     </message>
     <message>
       <source>Insert new A2 landscape drawing</source>
-      <translation>Insérer une mise en plan A2 paysage</translation>
+      <translation>Insérer une feuille A2 paysage</translation>
     </message>
     <message>
       <source>A3 landscape</source>
@@ -241,7 +408,7 @@
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Insérer une nouvelle mise en plan A3 paysage</translation>
+      <translation>Insère une nouvelle feuille A3 paysage</translation>
     </message>
     <message>
       <source>A4 landscape</source>
@@ -249,7 +416,16 @@
     </message>
     <message>
       <source>Insert new A4 landscape drawing</source>
-      <translation>Insérer une mise en plan A4 paysage</translation>
+      <translation>Insérer une feuille A4 paysage</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="-327"/>
+      <source>Insert new A%1 landscape drawing</source>
+      <translation>Insérer une nouvelle feuille A%1 paysage</translation>
+    </message>
+    <message>
+      <source>A%1 landscape</source>
+      <translation>A%1 paysage</translation>
     </message>
   </context>
   <context>
@@ -285,6 +461,10 @@
       <translation>Créer une page à insérer.</translation>
     </message>
     <message>
+      <source>Create a page to insert views into.</source>
+      <translation>Crée une feuille pour y insérer des vues</translation>
+    </message>
+    <message>
       <source>Select one Page object.</source>
       <translation>Sélectionnez un objet Page.</translation>
     </message>
@@ -301,9 +481,34 @@
       <translation>Exporter la page</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="-25"/>
+      <location filename="../../ViewProviderPage.cpp" line="-27"/>
       <source>Show drawing</source>
       <translation>Afficher la mise en plan</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.cpp" line="+49"/>
+      <source>Front</source>
+      <translation>Frontal</translation>
+    </message>
+    <message>
+      <source>Back</source>
+      <translation>Arrière</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Droit</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Gauche</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Dessus</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Dessous</translation>
     </message>
   </context>
   <context>

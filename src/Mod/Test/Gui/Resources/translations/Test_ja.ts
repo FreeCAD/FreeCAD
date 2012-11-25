@@ -37,7 +37,7 @@
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>[Alt] + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <source>&amp;Close</source>

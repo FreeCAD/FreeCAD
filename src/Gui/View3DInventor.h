@@ -85,6 +85,7 @@ public:
     virtual void print();
     virtual void printPdf();
     virtual void printPreview();
+    virtual void print(QPrinter*);
 
     virtual PyObject *getPyObject(void);
     /**
@@ -113,7 +114,6 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void stopAnimating();
-    void print(QPrinter*);
 
 public:
     bool eventFilter(QObject*, QEvent* );

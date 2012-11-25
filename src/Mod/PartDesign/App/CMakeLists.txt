@@ -20,6 +20,7 @@ generate_from_xml(BodyPy)
 
 
 set(PartDesign_LIBS
+    ${OCC_LIBRARIES}
     Part
     FreeCADApp
 )
@@ -27,12 +28,26 @@ set(PartDesign_LIBS
 SET(Features_SRCS
     Feature.cpp
     Feature.h
-    FeaturePatternRectangular.h
-    FeaturePatternRectangular.cpp
     Body.cpp
     Body.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
+
+SET(FeaturesTransformed_SRCS
+    FeatureTransformed.h
+    FeatureTransformed.cpp
+    FeatureMirrored.h
+    FeatureMirrored.cpp
+    FeatureLinearPattern.h
+    FeatureLinearPattern.cpp
+    FeaturePolarPattern.h
+    FeaturePolarPattern.cpp
+    FeatureScaled.h
+    FeatureScaled.cpp
+    FeatureMultiTransform.h
+    FeatureMultiTransform.cpp
+)
+SOURCE_GROUP("FeaturesTransformed" FILES ${FeaturesTransformed_SRCS})
 
 SET(FeaturesDressUp_SRCS
     FeatureDressUp.cpp
@@ -55,6 +70,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePocket.h
     FeatureRevolution.cpp
     FeatureRevolution.h
+    FeatureGroove.cpp
+    FeatureGroove.h
     FeatureAdditive.cpp
     FeatureAdditive.h
     FeatureSubtractive.h
@@ -83,6 +100,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(PartDesign_SRCS
     ${Features_SRCS}
+    ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
@@ -104,7 +122,12 @@ SET(PartDesign_Scripts
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
-fc_copy_script("Mod/PartDesign" "PartDesign" ${PartDesign_Scripts})
+
+
+fc_target_copy_resource(PartDesign 
+    ${CMAKE_SOURCE_DIR}/src/Mod/PartDesign
+    ${CMAKE_BINARY_DIR}/Mod/PartDesign
+    ${PartDesign_Scripts})
 
 if(MSVC)
     set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")
@@ -119,7 +142,9 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(PartDesign PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
     set_target_properties(PartDesign PROPERTIES PREFIX "")
-    set_target_properties(PartDesign PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(PartDesign PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/Mod/PartDesign)
 endif(MSVC)
 
-INSTALL(TARGETS PartDesign DESTINATION lib)
+# The PartDesign module must go to where the __init__.py file is
+INSTALL(TARGETS PartDesign DESTINATION Mod/PartDesign)
+

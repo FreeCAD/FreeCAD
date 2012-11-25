@@ -4,17 +4,41 @@
   <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+50"/>
+      <location filename="../../Command.cpp" line="+52"/>
       <source>Fem</source>
-      <translation>Fem</translation>
+      <translation>Elementtimenetelmä</translation>
     </message>
     <message>
       <source>Create FEM mesh</source>
-      <translation>Create FEM mesh</translation>
+      <translation>Luo ELEMENTTIMENETELMÄN verkko</translation>
     </message>
     <message>
       <source>Create FEM mesh from shape</source>
-      <translation>Create FEM mesh from shape</translation>
+      <translation>Luo ELEMENTTIMENETELMÄN verkko muodosta</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::HypothesisWidget</name>
+    <message>
+      <location filename="../../Hypothesis.ui" line="+14"/>
+      <source>Hypothesis</source>
+      <translation>Hypothesis</translation>
+    </message>
+    <message>
+      <source>Quadrangle</source>
+      <translation>Quadrangle</translation>
+    </message>
+    <message>
+      <source>Maximum length</source>
+      <translation>Maximum length</translation>
+    </message>
+    <message>
+      <source>Local length</source>
+      <translation>Local length</translation>
+    </message>
+    <message>
+      <source>Maximum element area</source>
+      <translation>Maximum element area</translation>
     </message>
   </context>
   <context>
@@ -22,11 +46,11 @@
     <message>
       <location filename="../../Workbench.cpp" line="+38"/>
       <source>FEM</source>
-      <translation>FEM</translation>
+      <translation>ELEMENTTIMENETELMÄ</translation>
     </message>
     <message>
       <source>&amp;FEM</source>
-      <translation>&amp;FEM</translation>
+      <translation>&amp;ELEMENTTIMENETELMÄ</translation>
     </message>
   </context>
 </TS>

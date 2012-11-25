@@ -56,8 +56,10 @@ EXTRA_DIST = \
 		edit-copy.svg \
 		edit-cut.svg \
 		edit-delete.svg \
+		edit-edit.svg \
 		edit-paste.svg \
 		edit-select-all.svg \
+		edit-select-box.svg \
 		edit-redo.svg \
 		edit-undo.svg \
 		preferences-system.svg \
@@ -67,6 +69,12 @@ EXTRA_DIST = \
 		accessories-text-editor.svg \
 		help-browser.svg \
 		spaceball_button.svg \
+		SpNav-PanLR.png \
+		SpNav-PanUD.png \
+		SpNav-Roll.png \
+		SpNav-Spin.png \
+		SpNav-Tilt.png \
+		SpNav-Zoom.png \
 		view-unselectable.svg \
 		view-refresh.svg \
 		view-measurement.svg \

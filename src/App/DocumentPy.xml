@@ -23,6 +23,11 @@
         <UserDocu>Restore the document from disc</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="exportGraphviz">
+      <Documentation>
+        <UserDocu>Export the dependencies of the objects as graph</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="openTransaction">
       <Documentation>
         <UserDocu>Open a new Undo/Redo transaction.</UserDocu>

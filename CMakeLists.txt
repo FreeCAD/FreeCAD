@@ -52,18 +52,35 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-Wno-write-strings)
     add_definitions(-Wno-deprecated)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+    # get linker errors as soon as possible and not at runtime e.g. for modules
+    if(UNIX)
+    #    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+    endif(UNIX)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
 # ================================================================================
-
+# Output directories for install target
 
 if(WIN32)
-    SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+    SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Installation root directory")
 else(WIN32)
-    SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad")
+    SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad" CACHE PATH "Installation root directory")
     SET(INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif(WIN32)
+
+SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
+SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
+SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
+
+# used as compiler defines
+SET(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")
+SET(DOCDIR "${CMAKE_INSTALL_DOCDIR}")
+
+MESSAGE( STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")
+MESSAGE(STATUS "datadir: ${CMAKE_INSTALL_DATADIR}")
+MESSAGE(STATUS "docdir: ${CMAKE_INSTALL_DOCDIR}")
+MESSAGE(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
 
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
@@ -83,8 +100,21 @@ OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3
 OPTION(FREECAD_BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
 OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
 OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
-SET(RESOURCEDIR "${CMAKE_INSTALL_PREFIX}/data" CACHE PATH "Absolute path to the data directory.")
-SET(DOCDIR "" CACHE PATH "Absolute path to the documentation directory.")
+OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
+OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
+OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
+if(MSVC)
+OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+else(MSVC)
+set(FREECAD_USE_3DCONNEXION OFF)
+endif(MSVC)
+
+# if this is set override some options
+if (FREECAD_BUILD_DEBIAN)
+    set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
+    set(FREECAD_USE_EXTERNAL_PIVY ON)
+endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
 
@@ -140,6 +170,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 # -------------------------------- Python --------------------------------
 
 
+    set(Python_ADDITIONAL_VERSIONS "2.3" "2.4" "2.5" "2.6" "2.7" "2.8" "2.9")
     find_package(PythonLibs REQUIRED)
     find_package(PythonInterp REQUIRED)
 
@@ -181,7 +212,8 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 	if( ${OCE_FOUND} )
 		message("-- OpenCASCADE Community Edition has been found.")
 		add_definitions ( -DHAVE_CONFIG_H )
-		set( OCC_LIBRARIES "TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
+		set( OCC_LIBRARIES "TKFeat;TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
+		set( OCC_OCAF_LIBRARIES "TKCAF;TKXCAF;TKLCAF;TKXDESTEP;TKXDEIGES" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
 		set( OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS} )
 		set( OCC_FOUND ${OCE_FOUND} )
 	else() #look for OpenCASCADE
@@ -194,12 +226,6 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 		ENDIF()
 	endif()
 
-# -------------------------------- f2c ----------------------------------
-
-    IF(OCC_FOUND)
-        find_package(F2C REQUIRED)
-    ENDIF(OCC_FOUND)
-	
 # -------------------------------- Salome SMESH --------------------------
 
     # Salome SMESH sources are under src/3rdParty now
@@ -243,22 +269,22 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- ODE ----------------------------------
 
-    find_package(ODE)
-	
+#    find_package(ODE)
+
 # -------------------------------- Qt --------------------------------
 
 # sets ${QT_LIBRARIES}
 
-    SET(QT_MIN_VERSION 4.1.4)
+    SET(QT_MIN_VERSION 4.5.0)
     set(QT_USE_QTNETWORK TRUE)
     set(QT_USE_QTXML TRUE)
-	if(FREECAD_BUILD_GUI)
-		set(QT_USE_QTOPENGL TRUE)
-		set(QT_USE_QTSVG TRUE)
-		set(QT_USE_QTUITOOLS TRUE)
-		set(QT_USE_QTWEBKIT TRUE)
-	endif(FREECAD_BUILD_GUI)
-    find_package(Qt4)
+    if(FREECAD_BUILD_GUI)
+        set(QT_USE_QTOPENGL TRUE)
+        set(QT_USE_QTSVG TRUE)
+        set(QT_USE_QTUITOOLS TRUE)
+        set(QT_USE_QTWEBKIT TRUE)
+    endif(FREECAD_BUILD_GUI)
+    find_package(Qt4 REQUIRED)
 
     include(${QT_USE_FILE})
 
@@ -267,7 +293,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("QT Webkit not found, will not build browser integration!")
+        MESSAGE("Qt Webkit not found, will not build browser integration!")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 
@@ -278,22 +304,24 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     # There is probably a cleaner solution than this
     macro(fc_wrap_cpp outfiles )
         # get include dirs
-        QT4_GET_MOC_FLAGS(moc_includes)
+        QT4_GET_MOC_FLAGS(moc_flags)
         QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+        # fixes bug 0000585: bug with boost 1.48
+        SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
         foreach(it ${moc_files})
             get_filename_component(it ${it} ABSOLUTE)
             QT4_MAKE_OUTPUT_FILE(${it} moc_ cpp outfile)
-            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_includes}" "${moc_options}")
+            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}")
             set(${outfiles} ${${outfiles}} ${outfile})
             add_file_dependencies(${it} ${outfile})
         endforeach(it)
     endmacro(fc_wrap_cpp)
-	
+
     if(FREECAD_BUILD_GUI)	
 # -------------------------------- OpenGL --------------------------------
 
-		find_package(OpenGL)
+        find_package(OpenGL)
                 include(FindPackageMessage)
                 if(OPENGL_GLU_FOUND)
                     find_package_message(OPENGL_GLU
@@ -305,16 +333,25 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- Coin3D --------------------------------
 
-		find_package(Coin3D REQUIRED)
-		find_package(SoQt REQUIRED)
+        find_package(Coin3D REQUIRED)
+        find_package(SoQt REQUIRED)
 
 # ------------------------------ Spaceball -------------------------------
 
-                if (WIN32)
-                    #future
-                else(WIN32)
-                    find_package(Spnav)
-                endif(WIN32)
+        if (WIN32)
+            #future
+        else(WIN32)
+            find_package(Spnav)
+        endif(WIN32)
+
+# ------------------------------ Matplotlib ------------------------------
+
+        find_package(Matplotlib)
+        IF(MATPLOTLIB_FOUND)
+            message("-- matplotlib-${MATPLOTLIB_VERSION} has been found.")
+        ELSE(MATPLOTLIB_FOUND)
+            message("matplotlib not found, Plot module will not available until matplotlib is installed!")
+        ENDIF(MATPLOTLIB_FOUND)
 
 # ------------------------------------------------------------------------
 
@@ -326,7 +363,9 @@ endif(FREECAD_LIBPACK_USE)
 
 # copy build convenient files for M$
 if(WIN32)
-    configure_file(BuildAll.bat ${CMAKE_BINARY_DIR}/BuildAll.bat COPYONLY)
+    if (EXISTS BuildAll.bat)
+        configure_file(BuildAll.bat ${CMAKE_BINARY_DIR}/BuildAll.bat COPYONLY)
+    endif (EXISTS BuildAll.bat)
     #configure_file(BuildAllNice.bat ${CMAKE_BINARY_DIR}/BuildAllNice.bat COPYONLY)
 endif(WIN32)
 
@@ -379,6 +418,10 @@ IF(MINGW)
 	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
 	LINK_LIBRARIES(-lgdi32)
 ENDIF(MINGW)
+# 0000661: cmake build on Mac OS: dealing with dylib versus so
+IF(APPLE)
+	SET(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+ENDIF(APPLE)
 
 add_subdirectory(src)
 add_subdirectory(data)
@@ -406,7 +449,7 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 		set(PKG_ARCH amd64)
 	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 	set(CPACK_DEBIAN_PACKAGE_SECTION "science")
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libode1, libsoqt4-20, libxerces-c3.1, libgts-0.7-5, zlib1g, libboost-dev, libeigen2-dev")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libsoqt4-20, libxerces-c3.1, zlib1g, libboost-dev, libeigen2-dev")
 	set(CPACK_PACKAGE_CONTACT "<root@localhost>")
 	set(CPACK_PACKAGE_FILE_NAME "${PACKAGE_NAME}-${PACKAGE_VERSION}_${PKG_ARCH}")
 	
@@ -451,7 +494,6 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 	  "Makefile$"
 	  "\\\\.sh$"
 	  "_CPack_"
-	  "71"
 	  "config.h$"
 	  "config.log$"
 	  "config.status$"
@@ -475,9 +517,27 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 	#ADD_CUSTOM_TARGET(DIST make package_source)
 
 endif(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
+    #add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
     add_custom_target(dist-git
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
               --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}
               WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
+    add_custom_target(distdfsg-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --dfsg
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+if(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+    add_custom_target(distcheck-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --check
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    add_custom_target(distcheckdfsg-git
+            COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
+              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --dfsg --check
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 

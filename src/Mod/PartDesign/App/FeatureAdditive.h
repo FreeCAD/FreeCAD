@@ -33,7 +33,7 @@
 namespace PartDesign
 {
 
-class Additive : public SketchBased
+class PartDesignExport Additive : public SketchBased
 {
     PROPERTY_HEADER(PartDesign::Additive);
 

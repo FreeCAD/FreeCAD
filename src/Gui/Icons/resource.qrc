@@ -43,8 +43,10 @@
         <file>edit-delete.svg</file>
         <file>edit-paste.svg</file>
         <file>edit-select-all.svg</file>
+        <file>edit-select-box.svg</file>
         <file>edit-redo.svg</file>
         <file>edit-undo.svg</file>
+        <file>edit-edit.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>window-new.svg</file>
@@ -76,5 +78,11 @@
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
         <file>spaceball_button.svg</file>
+        <file>SpNav-PanLR.png</file>
+        <file>SpNav-PanUD.png</file>
+        <file>SpNav-Roll.png</file>
+        <file>SpNav-Spin.png</file>
+        <file>SpNav-Tilt.png</file>
+        <file>SpNav-Zoom.png</file>
     </qresource>
 </RCC>
