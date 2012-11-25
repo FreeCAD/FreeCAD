@@ -31,6 +31,7 @@ set(PartDesignGui_MOC_HDRS
     TaskPocketParameters.h
     TaskChamferParameters.h
     TaskFilletParameters.h
+    TaskDraftParameters.h
     TaskHoleParameters.h
     TaskRevolutionParameters.h
     TaskGrooveParameters.h
@@ -53,6 +54,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
+    TaskDraftParameters.ui
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
     TaskGrooveParameters.ui
@@ -78,6 +80,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderChamfer.h
     ViewProviderFillet.cpp
     ViewProviderFillet.h
+    ViewProviderDraft.cpp
+    ViewProviderDraft.h
     ViewProviderRevolution.cpp
     ViewProviderRevolution.h
     ViewProviderGroove.cpp
@@ -115,6 +119,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskFilletParameters.ui
     TaskFilletParameters.cpp
     TaskFilletParameters.h
+    TaskDraftParameters.ui
+    TaskDraftParameters.cpp
+    TaskDraftParameters.h
     TaskRevolutionParameters.ui
     TaskRevolutionParameters.cpp
     TaskRevolutionParameters.h

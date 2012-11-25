@@ -86,6 +86,7 @@ void Workbench::activated()
         "Sketcher_NewSketch",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
+        "PartDesign_Draft",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
@@ -97,6 +98,7 @@ void Workbench::activated()
     const char* Faces[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
+        "PartDesign_Draft",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
@@ -212,6 +214,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Groove"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer"
+          << "PartDesign_Draft"
           << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
@@ -243,6 +246,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Groove"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer"
+          << "PartDesign_Draft"
           << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"

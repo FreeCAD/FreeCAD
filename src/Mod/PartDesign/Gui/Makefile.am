@@ -8,6 +8,7 @@ BUILT_SOURCES=\
 		moc_TaskPocketParameters.cpp \
 		moc_TaskChamferParameters.cpp \
 		moc_TaskFilletParameters.cpp \
+		moc_TaskDraftParameters.cpp \
 		moc_TaskGrooveParameters.cpp \
 		moc_TaskHoleParameters.cpp \
 		moc_TaskLinearPatternParameters.cpp \
@@ -24,6 +25,7 @@ BUILT_SOURCES=\
 		ui_TaskPocketParameters.h \
 		ui_TaskChamferParameters.h \
 		ui_TaskFilletParameters.h \
+		ui_TaskDraftParameters.h \
 		ui_TaskHoleParameters.h \
 		ui_TaskLinearPatternParameters.h \
 		ui_TaskMirroredParameters.h \
@@ -39,6 +41,7 @@ libPartDesignGui_la_UI=\
 		TaskPadParameters.ui \
 		TaskPocketParameters.ui \
 		TaskChamferParameters.ui \
+		TaskFilletParameters.ui \
 		TaskFilletParameters.ui \
 		TaskHoleParameters.ui \
 		TaskLinearPatternParameters.ui \
@@ -68,6 +71,8 @@ libPartDesignGui_la_SOURCES=\
 		TaskChamferParameters.h \
 		TaskFilletParameters.cpp \
 		TaskFilletParameters.h \
+		TaskDraftParameters.cpp \
+                TaskDraftParameters.h \
 		TaskLinearPatternParameters.cpp \
 		TaskLinearPatternParameters.h \
 		TaskMirroredParameters.cpp \
@@ -106,6 +111,8 @@ libPartDesignGui_la_SOURCES=\
 		ViewProviderChamfer.h \
 		ViewProviderFillet.cpp \
 		ViewProviderFillet.h \
+		ViewProviderDraft.cpp \
+		ViewProviderDraft.h \
 		ViewProviderGroove.cpp \
 		ViewProviderGroove.h \
 		ViewProviderRevolution.cpp \

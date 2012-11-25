@@ -38,6 +38,7 @@
 #include "Body.h"
 #include "FeatureDressUp.h"
 #include "FeatureChamfer.h"
+#include "FeatureDraft.h"
 #include "FeatureFace.h"
 #include "FeatureSubtractive.h"
 #include "FeatureAdditive.h"
@@ -96,6 +97,7 @@ void PartDesignExport initPartDesign()
     PartDesign::Groove             ::init();
     PartDesign::Chamfer            ::init();
     PartDesign::Face               ::init();
+    PartDesign::Draft		   ::init();
 }
 
 } // extern "C"
