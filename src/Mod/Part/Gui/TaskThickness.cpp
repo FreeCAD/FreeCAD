@@ -100,9 +100,9 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->thickness = thickness;
     d->ui.setupUi(this);
-    d->ui.spinOffset->setValue(d->thickness->Value.getValue());
     d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
     d->ui.spinOffset->setSingleStep(0.1);
+    d->ui.spinOffset->setValue(d->thickness->Value.getValue());
     d->ui.labelOffset->setText(tr("Thickness"));
     d->ui.fillOffset->hide();
 }
