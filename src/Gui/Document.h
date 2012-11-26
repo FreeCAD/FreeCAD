@@ -181,6 +181,8 @@ public:
     void commitCommand(void);
     /// Abort the Undo transaction on the document
     void abortCommand(void);
+    /// Check if an Undo transaction is open
+    bool hasPendingCommand(void) const;
     /// Get an Undo string vector with the Undo names
     std::vector<std::string> getUndoVector(void) const;
     /// Get an Redo string vector with the Redo names

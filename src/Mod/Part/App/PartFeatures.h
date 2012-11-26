@@ -132,8 +132,34 @@ public:
     }
     //@}
 
-protected:
-    void onChanged (const App::Property* prop);
+private:
+    static const char* ModeEnums[];
+    static const char* JoinEnums[];
+};
+
+class Thickness : public Part::Feature
+{
+    PROPERTY_HEADER(Part::Thickness);
+
+public:
+    Thickness();
+
+    App::PropertyLinkSub Faces;
+    App::PropertyFloat Value;
+    App::PropertyEnumeration Mode;
+    App::PropertyEnumeration Join;
+    App::PropertyBool Intersection;
+    App::PropertyBool SelfIntersection;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderThickness";
+    }
+    //@}
 
 private:
     static const char* ModeEnums[];
