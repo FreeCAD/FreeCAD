@@ -167,6 +167,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_CreateLine"
           << "Sketcher_CreatePolyline"
           << "Sketcher_CreateRectangle"
+          << "Separator"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
           << "Sketcher_External"
@@ -176,22 +177,22 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* cons = new Gui::MenuItem();
     cons->setCommand("Sketcher constraints");
-    *cons << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainCoincident"
+    *cons << "Sketcher_ConstrainCoincident"
           << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
           << "Sketcher_ConstrainVertical"
           << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
           << "Sketcher_ConstrainParallel"
           << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainAngle"
           << "Sketcher_ConstrainTangent"
           << "Sketcher_ConstrainEqual"
           << "Sketcher_ConstrainSymmetric"
-          ;
+          << "Separator"
+          << "Sketcher_ConstrainLock"
+          << "Sketcher_ConstrainDistanceX"
+          << "Sketcher_ConstrainDistanceY"
+          << "Sketcher_ConstrainDistance"
+          << "Sketcher_ConstrainRadius"
+          << "Sketcher_ConstrainAngle";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
@@ -238,14 +239,15 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //          << "PartDesign_Scaled"
           << "PartDesign_MultiTransform";
 
-    part = new Gui::ToolBarItem(root);
-    part->setCommand("Sketcher geometries");
-    *part << "Sketcher_CreatePoint"
+    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
+    geom->setCommand("Sketcher geometries");
+    *geom << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
           << "Sketcher_CreatePolyline"
           << "Sketcher_CreateRectangle"
+          << "Separator"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
           << "Sketcher_External"
@@ -253,24 +255,24 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           /*<< "Sketcher_CreateText"*/
           /*<< "Sketcher_CreateDraftLine"*/;
 
-    part = new Gui::ToolBarItem(root);
-    part->setCommand("Sketcher constraints");
-    *part << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainCoincident"
+    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
+    cons->setCommand("Sketcher constraints");
+    *cons << "Sketcher_ConstrainCoincident"
           << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
           << "Sketcher_ConstrainVertical"
           << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
           << "Sketcher_ConstrainParallel"
           << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainAngle"
           << "Sketcher_ConstrainTangent"
           << "Sketcher_ConstrainEqual"
           << "Sketcher_ConstrainSymmetric"
-          ;
+          << "Separator"
+          << "Sketcher_ConstrainLock"
+          << "Sketcher_ConstrainDistanceX"
+          << "Sketcher_ConstrainDistanceY"
+          << "Sketcher_ConstrainDistance"
+          << "Sketcher_ConstrainRadius"
+          << "Sketcher_ConstrainAngle";
 
      return root;
 }
