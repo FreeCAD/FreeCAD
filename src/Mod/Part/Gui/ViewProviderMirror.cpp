@@ -47,6 +47,7 @@
 #include "ViewProviderMirror.h"
 #include "DlgFilletEdges.h"
 #include "TaskOffset.h"
+#include "TaskThickness.h"
 
 using namespace PartGui;
 
@@ -471,6 +472,87 @@ bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
     // get the support and Sketch
     Part::Offset* offset = static_cast<Part::Offset*>(getObject()); 
     App::DocumentObject* source = offset->Source.getValue();
+    if (source){
+        Gui::Application::Instance->getViewProvider(source)->show();
+    }
+
+    return true;
+}
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderThickness, PartGui::ViewProviderPart)
+
+ViewProviderThickness::ViewProviderThickness()
+{
+    sPixmap = "Part_Thickness";
+}
+
+ViewProviderThickness::~ViewProviderThickness()
+{
+}
+
+void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit thickness"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderThickness::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default ) {
+        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+        TaskThickness* thicknessDlg = qobject_cast<TaskThickness*>(dlg);
+        if (thicknessDlg && thicknessDlg->getObject() != this->getObject())
+            thicknessDlg = 0; // another pad left open its task panel
+        if (dlg && !thicknessDlg) {
+            if (dlg->canClose())
+                Gui::Control().closeDialog();
+            else
+                return false;
+        }
+
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+
+        // start the edit dialog
+        if (thicknessDlg)
+            Gui::Control().showDialog(thicknessDlg);
+        else
+            Gui::Control().showDialog(new TaskThickness(static_cast<Part::Thickness*>(getObject())));
+
+        return true;
+    }
+    else {
+        return ViewProviderPart::setEdit(ModNum);
+    }
+}
+
+void ViewProviderThickness::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        // when pressing ESC make sure to close the dialog
+        Gui::Control().closeDialog();
+    }
+    else {
+        PartGui::ViewProviderPart::unsetEdit(ModNum);
+    }
+}
+
+std::vector<App::DocumentObject*> ViewProviderThickness::claimChildren() const
+{
+    std::vector<App::DocumentObject*> child;
+    child.push_back(static_cast<Part::Thickness*>(getObject())->Faces.getValue());
+    return child;
+}
+
+bool ViewProviderThickness::onDelete(const std::vector<std::string> &)
+{
+    // get the support and Sketch
+    Part::Thickness* thickness = static_cast<Part::Thickness*>(getObject()); 
+    App::DocumentObject* source = thickness->Faces.getValue();
     if (source){
         Gui::Application::Instance->getViewProvider(source)->show();
     }

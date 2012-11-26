@@ -1035,6 +1035,72 @@ bool CmdPartOffset::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdPartThickness);
+
+CmdPartThickness::CmdPartThickness()
+  : Command("Part_Thickness")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Thickness...");
+    sToolTipText  = QT_TR_NOOP("Utility to apply a thickness");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Thickness";
+}
+
+void CmdPartThickness::activated(int iMsg)
+{
+    Gui::SelectionFilter faceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1..");
+    if (!faceFilter.match()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QApplication::translate("CmdPartThickness", "Wrong selection"),
+            QApplication::translate("CmdPartThickness", "Selected one or more faces of a shape"));
+        return;
+    }
+
+    // get the selected object
+    const std::vector<Gui::SelectionObject>& result = faceFilter.Result[0];
+    std::string selection = result.front().getAsPropertyLinkSubString();
+
+    const Part::Feature* shape = static_cast<const Part::Feature*>(result.front().getObject());
+    if (shape->Shape.getValue().IsNull())
+        return;
+    if (shape->Shape.getValue().ShapeType() != TopAbs_SOLID) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QApplication::translate("CmdPartThickness", "Wrong selection"),
+            QApplication::translate("CmdPartThickness", "Selected shape is not a solid"));
+        return;
+    }
+
+    std::string thick = getUniqueObjectName("Thickness");
+
+    openCommand("Make Thickness");
+    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")",thick.c_str());
+    doCommand(Doc,"App.ActiveDocument.%s.Faces = %s" ,thick.c_str(), selection.c_str());
+    doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",thick.c_str());
+    updateActive();
+    if (isActiveObjectValid())
+        doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
+    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",thick.c_str());
+
+    //commitCommand();
+    adjustCameraPosition();
+
+    copyVisual(thick.c_str(), "ShapeColor", shape->getNameInDocument());
+    copyVisual(thick.c_str(), "LineColor" , shape->getNameInDocument());
+    copyVisual(thick.c_str(), "PointColor", shape->getNameInDocument());
+}
+
+bool CmdPartThickness::isActive(void)
+{
+    Base::Type partid = Base::Type::fromName("Part::Feature");
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid) > 0;
+    return (objectsSelected && !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdShapeInfo);
 
 CmdShapeInfo::CmdShapeInfo()
@@ -1306,5 +1372,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartLoft());
     rcCmdMgr.addCommand(new CmdPartSweep());
     rcCmdMgr.addCommand(new CmdPartOffset());
+    rcCmdMgr.addCommand(new CmdPartThickness());
     rcCmdMgr.addCommand(new CmdCheckGeometry());
 } 

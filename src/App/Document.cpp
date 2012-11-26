@@ -345,6 +345,14 @@ void Document::abortTransaction()
     }
 }
 
+bool Document::hasPendingTransaction() const
+{
+    if (d->activeUndoTransaction)
+        return true;
+    else
+        return false;
+}
+
 void Document::clearUndos()
 {
     if (d->activeUndoTransaction)

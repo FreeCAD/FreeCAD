@@ -209,6 +209,8 @@ public:
     static void commitCommand(void);
     /// Abort the Undo transaction on the active document
     static void abortCommand(void);
+    /// Check if an Undo transaction is open on the active document
+    static bool hasPendingCommand(void);
     /// Updates the (active) document (propagate changes)
     static void updateActive(void);
     /// Updates the (all or listed) documents (propagate changes)
@@ -237,6 +239,8 @@ public:
     static void runCommand(DoCmd_Type eType,const char* sCmd);
     static void copyVisual(const char* to, const char* attr, const char* from);
     static void copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from);
+    /// Get Python tuple from object and sub-elements 
+    static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
     /// import an external module only once 
     //static void addModule(const char* sModuleName);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
