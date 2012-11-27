@@ -814,6 +814,9 @@ void CmdPartDesignDraft::activated(int iMsg)
 
     // We don't create any defaults for neutral plane and pull direction, but Draft::execute()
     // will choose them.
+    // Note: When the body feature is there, the best thing would be to get pull direction and
+    // neutral plane from the preceding feature in the tree. Or even store them as default in
+    // the Body feature itself
     openCommand("Make Draft");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Draft\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
