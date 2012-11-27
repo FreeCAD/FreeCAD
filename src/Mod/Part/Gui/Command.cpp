@@ -31,6 +31,7 @@
 # include <QPointer>
 # include <Standard_math.hxx>
 # include <TopoDS_Shape.hxx>
+# include <TopExp_Explorer.hxx>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
@@ -1066,7 +1067,13 @@ void CmdPartThickness::activated(int iMsg)
     const Part::Feature* shape = static_cast<const Part::Feature*>(result.front().getObject());
     if (shape->Shape.getValue().IsNull())
         return;
-    if (shape->Shape.getValue().ShapeType() != TopAbs_SOLID) {
+    int countSolids = 0;
+    TopExp_Explorer xp;
+    xp.Init(shape->Shape.getValue(),TopAbs_SOLID);
+    for (;xp.More(); xp.Next()) {
+        countSolids++;
+    }
+    if (countSolids != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
             QApplication::translate("CmdPartThickness", "Wrong selection"),
             QApplication::translate("CmdPartThickness", "Selected shape is not a solid"));

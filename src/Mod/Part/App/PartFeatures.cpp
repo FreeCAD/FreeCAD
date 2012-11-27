@@ -30,6 +30,7 @@
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopExp_Explorer.hxx>
 # include <Precision.hxx>
 #endif
 
@@ -439,7 +440,14 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
     if (shape.isNull())
         return new App::DocumentObjectExecReturn("Source shape is empty.");
-    if (shape._Shape.ShapeType() != TopAbs_SOLID)
+
+    int countSolids = 0;
+    TopExp_Explorer xp;
+    xp.Init(shape._Shape,TopAbs_SOLID);
+    for (;xp.More(); xp.Next()) {
+        countSolids++;
+    }
+    if (countSolids != 1)
         return new App::DocumentObjectExecReturn("Source shape is not a solid.");
 
     TopTools_ListOfShape closingFaces;
