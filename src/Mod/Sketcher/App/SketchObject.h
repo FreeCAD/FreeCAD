@@ -124,7 +124,7 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
-    void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId);
+    void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
     int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; }
     int getHighestCurveIndex(void) const { return Geometry.getSize() - 1; }
     void rebuildVertexIndex(void);
