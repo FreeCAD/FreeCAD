@@ -67,8 +67,6 @@ public:
 OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
   : d(new Private())
 {
-    if (!Gui::Command::hasPendingCommand())
-        Gui::Command::openCommand("Edit offset");
     Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
     Gui::Application::Instance->runPythonCode("import Part");
 

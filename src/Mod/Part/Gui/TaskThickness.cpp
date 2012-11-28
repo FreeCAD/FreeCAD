@@ -58,8 +58,7 @@ public:
     QString text;
     std::string selection;
     Part::Thickness* thickness;
-    bool edit;
-    Private() : edit(false)
+    Private()
     {
     }
     ~Private()
@@ -91,10 +90,6 @@ public:
 ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
   : d(new Private())
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        d->edit = true;
-        Gui::Command::openCommand("Edit thickness");
-    }
     Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
     Gui::Application::Instance->runPythonCode("import Part");
 
@@ -244,18 +239,21 @@ bool ThicknessWidget::reject()
 {
     if (d->loop.isRunning())
         return false;
-    // object has been created right before opening this panel
-    if (d->edit == false) {
-        App::DocumentObject* source = d->thickness->Faces.getValue();
-        if (source){
-            Gui::Application::Instance->getViewProvider(source)->show();
-        }
-    }
+
+    // save this and check if the object is still there after the
+    // transaction is aborted
+    std::string objname = d->thickness->getNameInDocument();
+    App::DocumentObject* source = d->thickness->Faces.getValue();
 
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
+
+    // Thickness object was deleted
+    if (source && !source->getDocument()->getObject(objname.c_str())) {
+        Gui::Application::Instance->getViewProvider(source)->show();
+    }
 
     return true;
 }
