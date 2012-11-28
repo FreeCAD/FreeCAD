@@ -101,10 +101,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         return new App::DocumentObjectExecReturn("No faces specified");
 
     // Draft angle
-    float angle = Angle.getValue();
-    if ((angle < 0.0) || (angle >= 90.0))
-        return new App::DocumentObjectExecReturn("Draft angle must be between 0 and 90 degrees");
-    angle = angle / 180.0 * M_PI;
+    float angle = Angle.getValue() / 180.0 * M_PI;
 
     // Pull direction
     gp_Dir pullDirection;
