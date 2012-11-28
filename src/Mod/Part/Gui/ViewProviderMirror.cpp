@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
+# include <QTimer>
 # include <Standard_math.hxx>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoDragger.h>
@@ -534,7 +535,7 @@ void ViewProviderThickness::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
+        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
