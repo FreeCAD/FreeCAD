@@ -1519,7 +1519,7 @@ void SketchObject::onFinishDuplicating()
     onDocumentRestored();
 }
 
-void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId)
+void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const
 {
     if (VertexId < 0 || VertexId >= int(VertexId2GeoId.size())) {
         GeoId = Constraint::GeoUndef;

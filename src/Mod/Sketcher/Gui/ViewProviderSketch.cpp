@@ -1294,6 +1294,9 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
             if (point_detail && point_detail->getTypeId() == SoPointDetail::getClassTypeId()) {
                 // get the index
                 PtIndex = static_cast<const SoPointDetail *>(point_detail)->getCoordinateIndex();
+                PtIndex -= 1; // shift corresponding to RootPoint
+                if (PtIndex == -1)
+                    CrossIndex = 0; // RootPoint was hit
             }
         } else {
             // checking for a hit in the curves
@@ -1382,7 +1385,10 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                                          ,Point->getPoint()[2]);
             edit->blockedPreselection = !accepted;
             if (accepted) {
-                resetPreselectPoint();
+                if (CrossIndex == 0)
+                    setPreselectPoint(-1);
+                else
+                    resetPreselectPoint();
                 edit->PreselectCurve = -1;
                 edit->PreselectCross = CrossIndex;
                 edit->PreselectConstraint = -1;
@@ -1661,16 +1667,21 @@ void ViewProviderSketch::updateColor(void)
     SbColor *crosscolor = edit->RootCrossMaterials->diffuseColor.startEditing();
 
     // colors of the point set
-    for (int  i=0; i < PtNum; i++) {
-        if (edit->SelPointSet.find(i) != edit->SelPointSet.end())
-            pcolor[i] = SelectColor;
-        else if (edit->PreselectPoint == i)
-            pcolor[i] = PreselectColor;
-        else if (edit->FullyConstrained)
+    if (edit->FullyConstrained)
+        for (int  i=0; i < PtNum; i++)
             pcolor[i] = FullyConstrainedColor;
-        else
+    else
+        for (int  i=0; i < PtNum; i++)
             pcolor[i] = VertexColor;
-    }
+
+    if (edit->PreselectCross == 0)
+        pcolor[0] = PreselectColor;
+    else if (edit->PreselectPoint != -1)
+        pcolor[edit->PreselectPoint + 1] = PreselectColor;
+
+    for (std::set<int>::iterator it=edit->SelPointSet.begin();
+         it != edit->SelPointSet.end(); it++)
+        pcolor[*it] = SelectColor;
 
     // colors of the curves
     int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
@@ -1933,6 +1944,10 @@ void ViewProviderSketch::draw(bool temp)
 
     edit->CurvIdToGeoId.clear();
     int GeoId = 0;
+
+    // RootPoint
+    Points.push_back(Base::Vector3d(0.,0.,0.));
+
     for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end()-2; ++it, GeoId++) {
         if (GeoId >= intGeoCount)
             GeoId = -extGeoCount;
@@ -3182,17 +3197,23 @@ void ViewProviderSketch::resetPositionText(void)
 void ViewProviderSketch::setPreselectPoint(int PreselectPoint)
 {
     if (edit) {
+        int oldPtId = -1;
+        if (edit->PreselectPoint != -1)
+            oldPtId = edit->PreselectPoint + 1;
+        else if (edit->PreselectCross == 0)
+            oldPtId = 0;
+        int newPtId = PreselectPoint + 1;
         SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
         float x,y,z;
-        if (edit->PreselectPoint != -1 &&
-            edit->SelPointSet.find(edit->PreselectPoint) == edit->SelPointSet.end()) {
+        if (oldPtId != -1 &&
+            edit->SelPointSet.find(oldPtId) == edit->SelPointSet.end()) {
             // send to background
-            pverts[edit->PreselectPoint].getValue(x,y,z);
-            pverts[edit->PreselectPoint].setValue(x,y,zPoints);
+            pverts[oldPtId].getValue(x,y,z);
+            pverts[oldPtId].setValue(x,y,zPoints);
         }
         // bring to foreground
-        pverts[PreselectPoint].getValue(x,y,z);
-        pverts[PreselectPoint].setValue(x,y,zHighlight);
+        pverts[newPtId].getValue(x,y,z);
+        pverts[newPtId].setValue(x,y,zHighlight);
         edit->PreselectPoint = PreselectPoint;
         edit->PointsCoordinate->point.finishEditing();
     }
@@ -3201,13 +3222,18 @@ void ViewProviderSketch::setPreselectPoint(int PreselectPoint)
 void ViewProviderSketch::resetPreselectPoint(void)
 {
     if (edit) {
-        if (edit->PreselectPoint != -1 &&
-            edit->SelPointSet.find(edit->PreselectPoint) == edit->SelPointSet.end()) {
+        int oldPtId = -1;
+        if (edit->PreselectPoint != -1)
+            oldPtId = edit->PreselectPoint + 1;
+        else if (edit->PreselectCross == 0)
+            oldPtId = 0;
+        if (oldPtId != -1 &&
+            edit->SelPointSet.find(oldPtId) == edit->SelPointSet.end()) {
             // send to background
             SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
             float x,y,z;
-            pverts[edit->PreselectPoint].getValue(x,y,z);
-            pverts[edit->PreselectPoint].setValue(x,y,zPoints);
+            pverts[oldPtId].getValue(x,y,z);
+            pverts[oldPtId].setValue(x,y,zPoints);
             edit->PointsCoordinate->point.finishEditing();
         }
         edit->PreselectPoint = -1;
@@ -3217,12 +3243,13 @@ void ViewProviderSketch::resetPreselectPoint(void)
 void ViewProviderSketch::addSelectPoint(int SelectPoint)
 {
     if (edit) {
+        int PtId = SelectPoint + 1;
         SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
         // bring to foreground
         float x,y,z;
-        pverts[SelectPoint].getValue(x,y,z);
-        pverts[SelectPoint].setValue(x,y,zHighlight);
-        edit->SelPointSet.insert(SelectPoint);
+        pverts[PtId].getValue(x,y,z);
+        pverts[PtId].setValue(x,y,zHighlight);
+        edit->SelPointSet.insert(PtId);
         edit->PointsCoordinate->point.finishEditing();
     }
 }
@@ -3230,12 +3257,13 @@ void ViewProviderSketch::addSelectPoint(int SelectPoint)
 void ViewProviderSketch::removeSelectPoint(int SelectPoint)
 {
     if (edit) {
+        int PtId = SelectPoint + 1;
         SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
         // send to background
         float x,y,z;
-        pverts[SelectPoint].getValue(x,y,z);
-        pverts[SelectPoint].setValue(x,y,zPoints);
-        edit->SelPointSet.erase(SelectPoint);
+        pverts[PtId].getValue(x,y,z);
+        pverts[PtId].setValue(x,y,zPoints);
+        edit->SelPointSet.erase(PtId);
         edit->PointsCoordinate->point.finishEditing();
     }
 }

@@ -79,22 +79,55 @@ bool checkBothExternal(int GeoId1, int GeoId2)
         return false;
 }
 
-void getIdsFromName(const std::string &name, int &GeoId, int &VtId)
+void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
+                    int &GeoId, PointPos &PosId)
 {
     GeoId = Constraint::GeoUndef;
-    VtId = -1;
-    if (name.size() > 4 && name.substr(0,4) == "Edge")
+    PosId = Sketcher::none;
+
+    if (name.size() > 4 && name.substr(0,4) == "Edge") {
         GeoId = std::atoi(name.substr(4,4000).c_str());
+    }
+    else if (name.size() == 9 && name.substr(0,9) == "RootPoint") {
+        GeoId = -1;
+        PosId = Sketcher::start;
+    }
     else if (name.size() == 6 && name.substr(0,6) == "H_Axis")
         GeoId = -1;
     else if (name.size() == 6 && name.substr(0,6) == "V_Axis")
         GeoId = -2;
     else if (name.size() > 12 && name.substr(0,12) == "ExternalEdge")
         GeoId = -3 - std::atoi(name.substr(12,4000).c_str());
-    else if (name.size() > 6 && name.substr(0,6) == "Vertex")
-        VtId = std::atoi(name.substr(6,4000).c_str());
+    else if (name.size() > 6 && name.substr(0,6) == "Vertex") {
+        int VtId = std::atoi(name.substr(6,4000).c_str());
+        Obj->getGeoVertexIndex(VtId,GeoId,PosId);
+    }
 }
 
+bool inline isVertex(int GeoId, PointPos PosId)
+{
+    return (GeoId != Constraint::GeoUndef && PosId != Sketcher::none);
+}
+
+bool inline isEdge(int GeoId, PointPos PosId)
+{
+    return (GeoId != Constraint::GeoUndef && PosId == Sketcher::none);
+}
+
+bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, PointPos PosId)
+{
+    if (PosId == Sketcher::start && (GeoId == -1 || GeoId == -2))
+        return true;
+    const Part::Geometry *geo = Obj->getGeometry(GeoId);
+    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId())
+        return true;
+    else if (PosId == Sketcher::mid &&
+             (geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+              geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()))
+        return true;
+    else
+        return false;
+}
 
 namespace SketcherGui {
 
@@ -405,16 +438,12 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     }
 
     int GeoId;
-    Sketcher::PointPos PosId=Sketcher::none;
-    if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex") {
-        int VtId = std::atoi(SubNames[0].substr(6,4000).c_str());
-        Obj->getGeoVertexIndex(VtId,GeoId,PosId);
-    }
-    else if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge")
-        GeoId = std::atoi(SubNames[0].substr(4,4000).c_str());
-    else {
+    Sketcher::PointPos PosId;
+    getIdsFromName(SubNames[0], Obj, GeoId, PosId);
+
+    if (isEdge(GeoId,PosId) || GeoId < 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one entity from the sketch."));
+            QObject::tr("Select one vertex from the sketch."));
         return;
     }
 
@@ -481,34 +510,22 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         return;
     }
 
-    int index1,index2;
-    // get first vertex index
-    if (SubNames[0].size() > 6 && SubNames[0].substr(0,6) == "Vertex")
-        index1 = std::atoi(SubNames[0].substr(6,4000).c_str());
-    else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly two vertexes from the sketch."));
-        return;
-    }
+    int GeoId1, GeoId2;
+    Sketcher::PointPos PosId1, PosId2;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    // get second vertex index
-    if (SubNames[1].size() > 6 && SubNames[1].substr(0,6) == "Vertex")
-        index2 = std::atoi(SubNames[1].substr(6,4000).c_str());
-    else {
+    if (isEdge(GeoId1,PosId1) || isEdge(GeoId2,PosId2)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly two vertexes from the sketch."));
         return;
     }
-    int GeoId1,GeoId2;
-    Sketcher::PointPos Pt1,Pt2;
-    Obj->getGeoVertexIndex(index1,GeoId1,Pt1);
-    Obj->getGeoVertexIndex(index2,GeoId2,Pt2);
 
     // undo command open
     openCommand("add coincident constraint");
     Gui::Command::doCommand(
         Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-        selection[0].getFeatName(),GeoId1,Pt1,GeoId2,Pt2);
+        selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
 
     // finish the transaction and update
     commitCommand();
@@ -562,44 +579,41 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         return;
     }
 
-    int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
-    if (SubNames.size() >= 1) {
-        getIdsFromName(SubNames[0], GeoId1, VtId1);
-        if (SubNames.size() == 2)
-             getIdsFromName(SubNames[1], GeoId2, VtId2);
-    }
+    int GeoId1, GeoId2=Constraint::GeoUndef;
+    Sketcher::PointPos PosId1, PosId2=Sketcher::none;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    if (SubNames.size() == 2)
+        getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
     if (checkBothExternal(GeoId1, GeoId2))
         return;
-    else if ((GeoId2 == -2 || GeoId2 == -1) && GeoId1 == Constraint::GeoUndef) {
+    else if (isVertex(GeoId1,PosId1) && (GeoId2 == -2 || GeoId2 == -1)) {
         std::swap(GeoId1,GeoId2);
-        std::swap(VtId1,VtId2);
+        std::swap(PosId1,PosId2);
     }
 
-    if ((GeoId1 == -2 || GeoId1 == -1 || VtId1 >= 0) && VtId2 >= 0) { // point to point distance
-        Sketcher::PointPos PosId1,PosId2;
-        if (GeoId1 == -2 || GeoId1 == -1)
-            PosId1 = Sketcher::start;
-        else
-            Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+    if ((isVertex(GeoId1,PosId1) || GeoId1 == -2 || GeoId1 == -1) &&
+        isVertex(GeoId2,PosId2)) { // point to point distance
 
-        Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
-        Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
 
-        if (GeoId1 == -1) {
+        if (GeoId1 == -1 && PosId1 == Sketcher::none) {
+            PosId1 = Sketcher::start;
             openCommand("add distance from horizontal axis constraint");
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,pnt2.y);
         }
-        else if (GeoId1 == -2) {
+        else if (GeoId1 == -2 && PosId1 == Sketcher::none) {
+            PosId1 = Sketcher::start;
             openCommand("add distance from vertical axis constraint");
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,pnt2.x);
         }
         else {
+            Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
+
             openCommand("add point to point distance constraint");
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
@@ -617,14 +631,12 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if ((VtId1 >= 0 && GeoId2 != Constraint::GeoUndef) ||
-             (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef))  { // point to line distance
-        if (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef) {
-            std::swap(VtId1,VtId2);
+    else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
+             (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2)))  { // point to line distance
+        if (isVertex(GeoId2,PosId2)) {
             std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
         }
-        Sketcher::PointPos PosId1;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
         Base::Vector3d pnt = Obj->getPoint(GeoId1,PosId1);
         const Part::Geometry *geom = Obj->getGeometry(GeoId2);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -652,10 +664,11 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             return;
         }
     }
-    else if (GeoId1 != Constraint::GeoUndef) { // line length
+    else if (isEdge(GeoId1,PosId1)) { // line length
         if (GeoId1 < 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Cannot add a length constraint on an external geometry!"));
+                                 GeoId1 < 2 ? QObject::tr("Cannot add a length constraint on an external geometry!")
+                                            : QObject::tr("Cannot add a length constraint on an axis!"));
             return;
         }
 
@@ -732,28 +745,21 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
         return;
     }
 
-    int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
-    if (SubNames.size() >= 1) {
-        getIdsFromName(SubNames[0], GeoId1, VtId1);
-        if (SubNames.size() == 2)
-            getIdsFromName(SubNames[1], GeoId2, VtId2);
-    }
+    int GeoId1, GeoId2=Constraint::GeoUndef;
+    Sketcher::PointPos PosId1, PosId2=Sketcher::none;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    if (SubNames.size() == 2)
+        getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
     if (checkBothExternal(GeoId1, GeoId2))
         return;
 
-    if ((VtId1 >= 0 && GeoId2 != Constraint::GeoUndef) ||
-        (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef)) {
-        if (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef) {
-            std::swap(VtId1,VtId2);
+    if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
+        (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) {
+        if (isVertex(GeoId2,PosId2)) {
             std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
         }
-
-        Sketcher::PointPos PosId1;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
-
-        if (checkBothExternal(GeoId1, GeoId2))
-            return;
 
         const Part::Geometry *geom = Obj->getGeometry(GeoId2);
 
@@ -821,32 +827,28 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         return;
     }
 
-    int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
-    if (SubNames.size() >= 1) {
-        getIdsFromName(SubNames[0], GeoId1, VtId1);
-        if (GeoId1 == -1) // reject horizontal axis from selection
-            GeoId1 = Constraint::GeoUndef;
-        if (SubNames.size() == 2) {
-            getIdsFromName(SubNames[1], GeoId2, VtId2);
-            if (GeoId2 == -1) // reject horizontal axis from selection
-                GeoId2 = Constraint::GeoUndef;
-        }
-    }
+    int GeoId1, GeoId2=Constraint::GeoUndef;
+    Sketcher::PointPos PosId1, PosId2=Sketcher::none;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    if (SubNames.size() == 2)
+        getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
     if (checkBothExternal(GeoId1, GeoId2))
         return;
-    else if (GeoId2 == -2 && GeoId1 == Constraint::GeoUndef) {
+    else if (GeoId2 == -1 || GeoId2 == -2) {
         std::swap(GeoId1,GeoId2);
-        std::swap(VtId1,VtId2);
+        std::swap(PosId1,PosId2);
     }
 
-    if ((GeoId1 == -2 || VtId1 >= 0) && VtId2 >= 0) { // point to point horizontal distance
-        Sketcher::PointPos PosId1,PosId2;
-        if (GeoId1 == -2)
-            PosId1 = Sketcher::start;
-        else
-            Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
-        Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
+    if (GeoId1 == -1 && PosId1 == Sketcher::none) // reject horizontal axis from selection
+        GeoId1 = Constraint::GeoUndef;
+    else if (GeoId1 == -2 && PosId1 == Sketcher::none) {
+        GeoId1 = -1;
+        PosId1 = Sketcher::start;
+    }
+
+    if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // point to point horizontal distance
+
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
         double ActLength = pnt2.x-pnt1.x;
@@ -867,12 +869,12 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if (GeoId1 != Constraint::GeoUndef &&
-             GeoId2 == Constraint::GeoUndef && VtId2 < 0)  { // horizontal length of a line
+    else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
 
         if (GeoId1 < 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Cannot add a horizontal length constraint on an external geometry!"));
+                GeoId1 < -2 ? QObject::tr("Cannot add a horizontal length constraint on an external geometry!")
+                            : QObject::tr("Cannot add a horizontal length constraint on an axis!"));
             return;
         }
 
@@ -899,9 +901,15 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             return;
         }
     }
-    else if (VtId1 >= 0) { // point on fixed x-coordinate
-        Sketcher::PointPos PosId1;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+    else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed x-coordinate
+
+        if (GeoId1 < 0) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                GeoId1 < -2 ? QObject::tr("Cannot add a fixed x-cootdinate constraint on an external geometry!")
+                            : QObject::tr("Cannot add a fixed x-cootdinate constraint on the root point!"));
+            return;
+        }
+
         Base::Vector3d pnt = Obj->getPoint(GeoId1,PosId1);
         double ActX = pnt.x;
 
@@ -971,32 +979,26 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         return;
     }
 
-    int GeoId1=Constraint::GeoUndef, VtId1=-1, GeoId2=Constraint::GeoUndef, VtId2=-1;
-    if (SubNames.size() >= 1) {
-        getIdsFromName(SubNames[0], GeoId1, VtId1);
-        if (GeoId1 == -2) // reject vertical axis from selection
-            GeoId1 = Constraint::GeoUndef;
-        if (SubNames.size() == 2) {
-            getIdsFromName(SubNames[1], GeoId2, VtId2);
-            if (GeoId2 == -2) // reject vertical axis from selection
-                GeoId2 = Constraint::GeoUndef;
-        }
-    }
+    int GeoId1, GeoId2=Constraint::GeoUndef;
+    Sketcher::PointPos PosId1, PosId2=Sketcher::none;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    if (SubNames.size() == 2)
+        getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
     if (checkBothExternal(GeoId1, GeoId2))
         return;
-    else if (GeoId2 == -1 && GeoId1 == Constraint::GeoUndef) {
+    else if (GeoId2 == -1 || GeoId2 == -2) {
         std::swap(GeoId1,GeoId2);
-        std::swap(VtId1,VtId2);
+        std::swap(PosId1,PosId2);
     }
 
-    if ((GeoId1 == -1 || VtId1 >= 0) && VtId2 >= 0) { // point to point horizontal distance
-        Sketcher::PointPos PosId1,PosId2;
-        if (GeoId1 == -1)
-            PosId1 = Sketcher::start;
-        else
-            Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
-        Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
+    if (GeoId1 == -2 && PosId1 == Sketcher::none) // reject vertical axis from selection
+        GeoId1 = Constraint::GeoUndef;
+    else if (GeoId1 == -1 && PosId1 == Sketcher::none)
+        PosId1 = Sketcher::start;
+
+    if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // point to point vertical distance
+
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
         double ActLength = pnt2.y-pnt1.y;
@@ -1017,12 +1019,12 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if (GeoId1 != Constraint::GeoUndef &&
-             GeoId2 == Constraint::GeoUndef && VtId2 < 0)  { // vertical length of a line
+    else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
 
         if (GeoId1 < 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Cannot add a vertical length constraint on an external geometry!"));
+                GeoId1 < -2 ? QObject::tr("Cannot add a vertical length constraint on an external geometry!")
+                            : QObject::tr("Cannot add a vertical length constraint on an axis!"));
             return;
         }
 
@@ -1049,9 +1051,15 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             return;
         }
     }
-    else if (VtId1 >= 0) { // point on fixed y-coordinate
-        Sketcher::PointPos PosId1;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
+    else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed y-coordinate
+
+        if (GeoId1 < 0) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                GeoId1 < -2 ? QObject::tr("Cannot add a fixed y-cootdinate constraint on an external geometry!")
+                            : QObject::tr("Cannot add a fixed y-cootdinate constraint on the root point!"));
+            return;
+        }
+
         Base::Vector3d pnt = Obj->getPoint(GeoId1,PosId1);
         double ActY = pnt.y;
 
@@ -1126,10 +1134,12 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     std::vector<int> ids;
     bool hasAlreadyExternal=false;
     for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
-        int GeoId, VtId;
-        getIdsFromName(*it, GeoId, VtId);
 
-        if (GeoId == Constraint::GeoUndef) {
+        int GeoId;
+        Sketcher::PointPos PosId;
+        getIdsFromName(*it, Obj, GeoId, PosId);
+
+        if (!isEdge(GeoId,PosId)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select a valid line"));
             return;
@@ -1212,17 +1222,22 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         return;
     }
 
-    int GeoId1, VtId1, GeoId2, VtId2;
-    getIdsFromName(SubNames[0], GeoId1, VtId1);
-    getIdsFromName(SubNames[1], GeoId2, VtId2);
+    int GeoId1, GeoId2;
+    Sketcher::PointPos PosId1, PosId2;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    Sketcher::PointPos PosId1,PosId2;
-    if (VtId1 >= 0 && VtId2 >= 0) { // perpendicularity at common point
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
-        Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
+    if (checkBothExternal(GeoId1, GeoId2))
+        return;
 
-        if (checkBothExternal(GeoId1, GeoId2))
+    if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // perpendicularity at common point
+
+        if (isSimpleVertex(Obj, GeoId1, PosId1) ||
+            isSimpleVertex(Obj, GeoId2, PosId2)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add a perpendicularity constraint at an unconnected point!"));
             return;
+        }
 
         const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
@@ -1247,18 +1262,18 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if ((VtId1 >= 0 && GeoId2 != Constraint::GeoUndef) ||
-             (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef)) { // VtId1 is a connecting point
-        if (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef) {
-            VtId1 = VtId2;
-            VtId2 = -1;
-            GeoId2 = GeoId1;
-            GeoId1 = -1;
+    else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
+             (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) { // connecting point
+        if (isVertex(GeoId2,PosId2)) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
         }
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
 
-        if (checkBothExternal(GeoId1, GeoId2))
+        if (isSimpleVertex(Obj, GeoId1, PosId1)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add a perpendicularity constraint at an unconnected point!"));
             return;
+        }
 
         const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
@@ -1286,10 +1301,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if (GeoId1 != Constraint::GeoUndef && GeoId2 != Constraint::GeoUndef) { // simple perpendicularity between GeoId1 and GeoId2
-
-        if (checkBothExternal(GeoId1, GeoId2))
-            return;
+    else if (isEdge(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) { // simple perpendicularity between GeoId1 and GeoId2
 
         const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
@@ -1358,17 +1370,22 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         return;
     }
 
-    int GeoId1, VtId1, GeoId2, VtId2;
-    getIdsFromName(SubNames[0], GeoId1, VtId1);
-    getIdsFromName(SubNames[1], GeoId2, VtId2);
+    int GeoId1, GeoId2;
+    Sketcher::PointPos PosId1, PosId2;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    Sketcher::PointPos PosId1,PosId2;
-    if (VtId1 >= 0 && VtId2 >= 0) { // tangency at common point
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
-        Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
+    if (checkBothExternal(GeoId1, GeoId2))
+        return;
 
-        if (checkBothExternal(GeoId1, GeoId2))
+    if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // tangency at common point
+
+        if (isSimpleVertex(Obj, GeoId1, PosId1) ||
+            isSimpleVertex(Obj, GeoId2, PosId2)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
             return;
+        }
 
         openCommand("add tangent constraint");
         Gui::Command::doCommand(
@@ -1379,18 +1396,18 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if ((VtId1 >= 0 && GeoId2 != Constraint::GeoUndef) ||
-             (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef)) { // VtId1 is a tangency point
-        if (VtId2 >= 0 && GeoId1 != Constraint::GeoUndef) {
-            VtId1 = VtId2;
-            VtId2 = -1;
-            GeoId2 = GeoId1;
-            GeoId1 = -1;
+    else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
+             (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) { // tangency point
+        if (isVertex(GeoId2,PosId2)) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
         }
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
 
-        if (checkBothExternal(GeoId1, GeoId2))
+        if (isSimpleVertex(Obj, GeoId1, PosId1)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
             return;
+        }
 
         openCommand("add tangent constraint");
         Gui::Command::doCommand(
@@ -1401,10 +1418,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         getSelection().clearSelection();
         return;
     }
-    else if (GeoId1 != Constraint::GeoUndef && GeoId2 != Constraint::GeoUndef) { // simple tangency between GeoId1 and GeoId2
-
-        if (checkBothExternal(GeoId1, GeoId2))
-            return;
+    else if (isEdge(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) { // simple tangency between GeoId1 and GeoId2
 
         openCommand("add tangent constraint");
         Gui::Command::doCommand(
@@ -1545,19 +1559,21 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         return;
     }
 
-    int GeoId1, VtId1, GeoId2=Constraint::GeoUndef, VtId2=-1;
-    getIdsFromName(SubNames[0], GeoId1, VtId1);
+
+    int GeoId1, GeoId2=Constraint::GeoUndef;
+    Sketcher::PointPos PosId1, PosId2=Sketcher::none;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     if (SubNames.size() == 2)
-        getIdsFromName(SubNames[1], GeoId2, VtId2);
+        getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
     if (checkBothExternal(GeoId1, GeoId2))
         return;
-    else if (GeoId1 == Constraint::GeoUndef && GeoId2 != Constraint::GeoUndef) {
+    else if (isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) {
         std::swap(GeoId1,GeoId2);
-        std::swap(VtId1,VtId2);
+        std::swap(PosId1,PosId2);
     }
 
-    if (GeoId2 != Constraint::GeoUndef) { // line to line angle
+    if (isEdge(GeoId2,PosId2)) { // line to line angle
 
         const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
@@ -1612,10 +1628,11 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             getSelection().clearSelection();
             return;
         }
-    } else if (GeoId1 != Constraint::GeoUndef) { // line angle
+    } else if (isEdge(GeoId1,PosId1)) { // line angle
         if (GeoId1 < 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Cannot add an angle constraint on an external geometry!"));
+                GeoId1 < -2 ? QObject::tr("Cannot add an angle constraint on an external geometry!")
+                            : QObject::tr("Cannot add an angle constraint on an axis!"));
             return;
         }
 
@@ -1700,10 +1717,11 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
 
-        int GeoId, VtId;
-        getIdsFromName(*it, GeoId, VtId);
+        int GeoId;
+        Sketcher::PointPos PosId;
+        getIdsFromName(*it, Obj, GeoId, PosId);
 
-        if (GeoId == Constraint::GeoUndef) {
+        if (isVertex(GeoId,PosId)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select two or more compatible edges"));
             return;
@@ -1802,33 +1820,39 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         return;
     }
 
-    int GeoId1, VtId1, GeoId2, VtId2, GeoId3, VtId3;
-    getIdsFromName(SubNames[0], GeoId1, VtId1);
-    getIdsFromName(SubNames[1], GeoId2, VtId2);
-    getIdsFromName(SubNames[2], GeoId3, VtId3);
+    int GeoId1, GeoId2, GeoId3;
+    Sketcher::PointPos PosId1, PosId2, PosId3;
+    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
+    getIdsFromName(SubNames[2], Obj, GeoId3, PosId3);
 
-    if (GeoId1 != Constraint::GeoUndef && GeoId3 == Constraint::GeoUndef) {
+    if (isEdge(GeoId1,PosId1) && isVertex(GeoId3,PosId3)) {
         std::swap(GeoId1,GeoId3);
-        std::swap(VtId1,VtId3);
+        std::swap(PosId1,PosId3);
     }
-    else if (GeoId2 != Constraint::GeoUndef && GeoId3 == Constraint::GeoUndef) {
+    else if (isEdge(GeoId2,PosId2) && isVertex(GeoId3,PosId3)) {
         std::swap(GeoId2,GeoId3);
-        std::swap(VtId2,VtId3);
+        std::swap(PosId2,PosId3);
     }
 
-    if (VtId1 >= 0 && VtId2 >= 0 && GeoId3 != Constraint::GeoUndef) {
-        Sketcher::PointPos PosId1,PosId2;
-        Obj->getGeoVertexIndex(VtId1,GeoId1,PosId1);
-        Obj->getGeoVertexIndex(VtId2,GeoId2,PosId2);
+    if (isVertex(GeoId1,PosId1) &&
+        isVertex(GeoId2,PosId2) &&
+        isEdge(GeoId3,PosId3)) {
 
         if ((GeoId1 < 0 && GeoId2 < 0) || (GeoId1 < 0 && GeoId3 < 0) || (GeoId2 < 0 && GeoId3 < 0)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Cannot add a constraint between external geometries!"));
+                QObject::tr("Cannot add a constraint between external geometries!"));
             return;
         }
 
         const Part::Geometry *geom = Obj->getGeometry(GeoId3);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint between a line and its end points!"));
+                return;
+            }
+
             // undo command open
             openCommand("add symmetric constraint");
             Gui::Command::doCommand(
