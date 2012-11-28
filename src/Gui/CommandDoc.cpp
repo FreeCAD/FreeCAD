@@ -1067,6 +1067,7 @@ StdCmdRefresh::StdCmdRefresh()
     sStatusTip    = QT_TR_NOOP("Recomputes the current active document");
     sPixmap       = "view-refresh";
     sAccel        = keySequenceToAccel(QKeySequence::Refresh);
+    eType         = AlterDoc | Alter3DView | AlterSelection | ForEdit;
 }
 
 void StdCmdRefresh::activated(int iMsg)
