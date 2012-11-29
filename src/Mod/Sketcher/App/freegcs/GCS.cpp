@@ -250,6 +250,27 @@ int System::addConstraintPointOnLine(Point &p, Line &l, int tagId)
     return addConstraint(constr);
 }
 
+int System::addConstraintPointOnLine(Point &p, Point &lp1, Point &lp2, int tagId)
+{
+    Constraint *constr = new ConstraintPointOnLine(p, lp1, lp2);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
+int System::addConstraintPointOnPerpBisector(Point &p, Line &l, int tagId)
+{
+    Constraint *constr = new ConstraintPointOnPerpBisector(p, l);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
+int System::addConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2, int tagId)
+{
+    Constraint *constr = new ConstraintPointOnPerpBisector(p, lp1, lp2);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
 int System::addConstraintParallel(Line &l1, Line &l2, int tagId)
 {
     Constraint *constr = new ConstraintParallel(l1, l2);
@@ -550,6 +571,12 @@ int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId)
 {
     addConstraintPerpendicular(p1, p2, l.p1, l.p2, tagId);
     return addConstraintMidpointOnLine(p1, p2, l.p1, l.p2, tagId);
+}
+
+int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Point &p, int tagId)
+{
+    addConstraintPointOnPerpBisector(p, p1, p2, tagId);
+    return addConstraintPointOnLine(p, p1, p2, tagId);
 }
 
 void System::rescaleConstraint(int id, double coeff)
