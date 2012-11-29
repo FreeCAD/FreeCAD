@@ -1835,29 +1835,45 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         std::swap(PosId2,PosId3);
     }
 
+    if ((GeoId1 < 0 && GeoId2 < 0 && GeoId3 < 0)) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Cannot add a constraint between external geometries!"));
+        return;
+    }
+
     if (isVertex(GeoId1,PosId1) &&
-        isVertex(GeoId2,PosId2) &&
-        isEdge(GeoId3,PosId3)) {
+        isVertex(GeoId2,PosId2)) {
 
-        if ((GeoId1 < 0 && GeoId2 < 0) || (GeoId1 < 0 && GeoId3 < 0) || (GeoId2 < 0 && GeoId3 < 0)) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Cannot add a constraint between external geometries!"));
-            return;
-        }
+        if (isEdge(GeoId3,PosId3)) {
+            const Part::Geometry *geom = Obj->getGeometry(GeoId3);
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                        QObject::tr("Cannot add a symmetry constraint between a line and its end points!"));
+                    return;
+                }
 
-        const Part::Geometry *geom = Obj->getGeometry(GeoId3);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Cannot add a symmetry constraint between a line and its end points!"));
+                // undo command open
+                openCommand("add symmetric constraint");
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
+                    selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3);
+
+                // finish the transaction and update
+                commitCommand();
+                updateActive();
+
+                // clear the selection (convenience)
+                getSelection().clearSelection();
                 return;
             }
-
+        }
+        else if (isVertex(GeoId3,PosId3)) {
             // undo command open
             openCommand("add symmetric constraint");
             Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3);
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
+                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,PosId3);
 
             // finish the transaction and update
             commitCommand();
