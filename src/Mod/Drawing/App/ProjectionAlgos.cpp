@@ -149,7 +149,7 @@ void ProjectionAlgos::execute(void)
 
 }
 
-std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale, float tolerance)
+std::string ProjectionAlgos::getSVG(ExtractionType type, float scale, float tolerance)
 {
     std::stringstream result;
     SVGOutput output;
@@ -251,7 +251,7 @@ std::string ProjectionAlgos::getSVG(SvgExtractionType type, float scale, float t
 
 /* dxf output section - Dan Falck 2011/09/25  */
 
-std::string ProjectionAlgos::getDXF(SvgExtractionType type, float scale, float tolerance)
+std::string ProjectionAlgos::getDXF(ExtractionType type, float scale, float tolerance)
 {
     std::stringstream result;
     DXFOutput output;
