@@ -164,6 +164,7 @@ public:
     float getScaleFactor();
     int getPreselectPoint(void) const;
     int getPreselectCurve(void) const;
+    int getPreselectCross(void) const;
     int getPreselectConstraint(void) const;
     //@}
 
