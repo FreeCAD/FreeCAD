@@ -157,27 +157,26 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     else if (preSelCrs == 2) // y axis
         GeoId = -2;
 
-    if (GeoId == Constraint::GeoUndef)
-        return suggestedConstraints.size();
+    if (GeoId != Constraint::GeoUndef) {
+        // Currently only considers objects in current Sketcher
+        AutoConstraint constr;
+        constr.Type = Sketcher::None;
+        constr.GeoId = GeoId;
+        constr.PosId = PosId;
+        if (type == AutoConstraint::VERTEX && PosId != Sketcher::none)
+            constr.Type = Sketcher::Coincident;
+        else if (type == AutoConstraint::CURVE && PosId != Sketcher::none)
+            constr.Type = Sketcher::PointOnObject;
+        else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none)
+            constr.Type = Sketcher::PointOnObject;
+        else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
+            constr.Type = Sketcher::Tangent;
 
-    // Currently only considers objects in current Sketcher
-    AutoConstraint constr;
-    constr.Type = Sketcher::None;
-    constr.GeoId = GeoId;
-    constr.PosId = PosId;
-    if (type == AutoConstraint::VERTEX && PosId != Sketcher::none)
-        constr.Type = Sketcher::Coincident;
-    else if (type == AutoConstraint::CURVE && PosId != Sketcher::none)
-        constr.Type = Sketcher::PointOnObject;
-    else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none)
-        constr.Type = Sketcher::PointOnObject;
-    else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
-        constr.Type = Sketcher::Tangent;
+        if (constr.Type != Sketcher::None)
+            suggestedConstraints.push_back(constr);
+    }
 
-    if (constr.Type != Sketcher::None)
-        suggestedConstraints.push_back(constr);
-
-    if (Dir.Length() < 1)
+    if (Dir.Length() < 1e-8)
         // Direction not set so return;
         return suggestedConstraints.size();
 
@@ -187,6 +186,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     const double angleDev = 2;
     const double angleDevRad = angleDev *  M_PI / 180.;
 
+    AutoConstraint constr;
     constr.Type = Sketcher::None;
     constr.GeoId = Constraint::GeoUndef;
     constr.PosId = Sketcher::none;
