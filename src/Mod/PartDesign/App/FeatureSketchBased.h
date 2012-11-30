@@ -32,6 +32,7 @@ class TopoDS_Shape;
 class TopoDS_Face;
 class TopoDS_Wire;
 class gp_Dir;
+class gp_Lin;
 
 namespace PartDesign
 {
@@ -110,6 +111,10 @@ protected:
     static const bool checkWireInsideFace(const TopoDS_Wire& wire,
                                           const TopoDS_Face& face,
                                           const gp_Dir& dir);
+
+    /// Check whether the line crosses the face (line and face must be on the same plane)
+    static const bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
+
 };
 
 } //namespace PartDesign

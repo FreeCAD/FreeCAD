@@ -33,6 +33,7 @@
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Precision.hxx>
+# include <gp_Lin.hxx>
 #endif
 
 #include <Base/Axis.h>
@@ -40,6 +41,7 @@
 #include <Base/Tools.h>
 
 #include "FeatureRevolution.h"
+#include <Base/Console.h>
 
 
 using namespace PartDesign;
@@ -157,6 +159,10 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         dir.Transform(invObjLoc.Transformation());
         support.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
+
+        // Check distance between sketchshape and axis - to avoid failures and crashes
+        if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(sketchshape)))
+            return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
 
         // revolve the face to a solid
         BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
