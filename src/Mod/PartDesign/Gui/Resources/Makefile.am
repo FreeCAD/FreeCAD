@@ -53,6 +53,7 @@ EXTRA_DIST = \
 		translations/PartDesign_tr.ts \
 		icons/PartDesign_Chamfer.svg \
 		icons/PartDesign_Fillet.svg \
+		icons/PartDesign_Draft.svg \
 		icons/PartDesign_Groove.svg \
 		icons/PartDesign_Pad.svg \
 		icons/PartDesign_Pocket.svg \
