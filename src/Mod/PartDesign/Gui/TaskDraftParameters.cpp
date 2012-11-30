@@ -38,6 +38,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
@@ -366,6 +367,15 @@ void TaskDlgDraftParameters::clicked(int)
 
 bool TaskDlgDraftParameters::accept()
 {
+    parameter->showObject();
+
+    // Force the user to select a neutral plane
+    if (parameter->getPlane().empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
+            QObject::tr("Please select a plane or an edge plus a pull direction"));
+        return false;
+    }
+
     std::string name = DraftView->getObject()->getNameInDocument();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());

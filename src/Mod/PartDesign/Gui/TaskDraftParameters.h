@@ -58,6 +58,9 @@ public:
     const std::string getLine(void) const;
     App::DocumentObject *getBase(void) const;
 
+    void hideObject();
+    void showObject();
+
 private Q_SLOTS:
     void onAngleChanged(double angle);
     void onReversedChanged(bool reversed);
@@ -68,8 +71,6 @@ private Q_SLOTS:
     void onFaceDeleted(void);
 
 protected:
-    void hideObject();
-    void showObject();
     void exitSelectionMode();
 
 protected:
