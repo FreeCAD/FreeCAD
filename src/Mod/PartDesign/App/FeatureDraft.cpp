@@ -161,12 +161,11 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                 // Edge is linear
                 // Find midpoint of edge and create auxiliary plane through midpoint normal to edge
                 gp_Pnt pm = c.Value((c.FirstParameter() + c.LastParameter()) / 2.0);
-                Geom_Plane aux(pm, gp_Dir(p2.X() - p1.X(), p2.Y() - p1.Y(), p2.Z() - p1.Z()));
+                Handle_Geom_Plane aux = new Geom_Plane(pm, gp_Dir(p2.X() - p1.X(), p2.Y() - p1.Y(), p2.Z() - p1.Z()));
                 // Intersect plane with face. Is there no easier way?
                 BRepAdaptor_Surface adapt(TopoDS::Face(face), Standard_False);
                 Handle_Geom_Surface sf = adapt.Surface().Surface();
-                //Handle_Geom_Surface auxsf(&aux);
-                GeomAPI_IntSS intersector(&aux, sf, Precision::Confusion());
+                GeomAPI_IntSS intersector(aux, sf, Precision::Confusion());
                 if (!intersector.IsDone())
                     continue;
                 Handle_Geom_Curve icurve = intersector.Line(1);

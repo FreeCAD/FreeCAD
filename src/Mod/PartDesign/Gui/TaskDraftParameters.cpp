@@ -48,7 +48,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDraftParameters */
 
 TaskDraftParameters::TaskDraftParameters(ViewProviderDraft *DraftView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Part_Draft"),tr("Draft parameters"),true, parent),DraftView(DraftView)
+    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Draft"),tr("Draft parameters"),true, parent),DraftView(DraftView)
 {
     selectionMode = none;
 
