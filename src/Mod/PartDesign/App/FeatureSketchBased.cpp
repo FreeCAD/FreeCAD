@@ -231,6 +231,8 @@ bool SketchBased::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) c
     double prec = Precision::Confusion();
 
     BRepBuilderAPI_MakeFace mkFace(wire1);
+    if (!mkFace.IsDone())
+        Standard_Failure::Raise("Failed to create a face from wire in sketch");
     TopoDS_Face face = validateFace(mkFace.Face());
     BRepAdaptor_Surface adapt(face);
     IntTools_FClass2d class2d(face, prec);
