@@ -49,7 +49,7 @@ class TaskWizardShaft:
         # updateSketch() slot will be activated and it relies on finding a valid document
         if self.doc == None:
             self.Gui.activateWorkbench("PartDesignWorkbench")
-            self.doc = self.App.newDocument()
+            self.doc = self.App.ActiveDocument
             # Grab the newly created feature window
             featureWindow = cw.subWindowList()[-1]
         else:
@@ -80,10 +80,13 @@ class WizardShaftGui:
         FreeCADGui.Control.showDialog(TaskWizardShaft())
 
     def GetResources(self):
-        IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/Gui/Resources/icons/WizardShaftIcon.png"
-        MenuText = 'Start the shaft design wizard'
+        IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
+        MenuText = 'Shaft design wizard...'
         ToolTip  = 'Start the shaft design wizard'
         return {'Pixmap' : IconPath, 'MenuText': MenuText, 'ToolTip': ToolTip}
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument != None
 
 FreeCADGui.addCommand('PartDesign_WizardShaft', WizardShaftGui())
 

@@ -201,7 +201,11 @@ class Shaft:
         self.printEquilibrium(variableNames, coefficientsMbz)
 
         # Build matrix and vector for linear algebra solving algorithm
-        import numpy as np
+        try:
+            import numpy as np
+        except ImportError:
+            FreeCAD.Console.PrintMessage("numpy is not installed on your system\n")
+            raise ImportError("numpy not installed")
         if (len(coefficientsFy) < 3) or (len(coefficientsMbz) < 3):
             return
         A = np.array([coefficientsFy[1:], coefficientsMbz[1:]])
