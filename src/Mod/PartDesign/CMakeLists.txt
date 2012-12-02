@@ -31,12 +31,13 @@ INSTALL(
 
 SET(WizardShaft_SRCS
         WizardShaft/__init__.py
-	WizardShaft/WizardShaft.py
-	WizardShaft/WizardShaftTable.py
-	WizardShaft/Shaft.py
-	WizardShaft/ShaftFeature.py
-	WizardShaft/ShaftDiagram.py
-	WizardShaft/SegmentFunction.py
+        WizardShaft/WizardShaft.svg
+        WizardShaft/WizardShaft.py
+        WizardShaft/WizardShaftTable.py
+        WizardShaft/Shaft.py
+        WizardShaft/ShaftFeature.py
+        WizardShaft/ShaftDiagram.py
+        WizardShaft/SegmentFunction.py
 )
 SOURCE_GROUP("wizardshaft" FILES ${WizardShaft_SRCS})
 

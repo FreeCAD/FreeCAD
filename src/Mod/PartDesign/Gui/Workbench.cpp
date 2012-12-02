@@ -28,6 +28,8 @@
 #endif
 
 #include "Workbench.h"
+#include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
@@ -214,9 +216,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform"
-          << "Separator"
-          << "PartDesign_WizardShaft";
+          << "PartDesign_MultiTransform";
+    // For 0.13 a couple of python packages like numpy, matplotlib and others
+    // are not deployed with the installer on Windows. Thus, the WizardShaft is
+    // not deployed either hence the check for the existence of the command.
+    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
+        *part << "Separator" << "PartDesign_WizardShaft";
+    }
 
     return root;
 }

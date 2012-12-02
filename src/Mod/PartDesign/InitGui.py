@@ -31,7 +31,6 @@
 
 class PartDesignWorkbench ( Workbench ):
         "PartDesign workbench object"
-        from WizardShaft import WizardShaft
         Icon = """
                 /* XPM */
                 static char * partdesign_xpm[] = {
@@ -67,6 +66,10 @@ class PartDesignWorkbench ( Workbench ):
 
         def Initialize(self):
                 # load the module
+                try:
+                    from WizardShaft import WizardShaft
+                except:
+                    print "Wizard shaft not installed"
                 import PartDesignGui
                 import PartDesign
         def GetClassName(self):
