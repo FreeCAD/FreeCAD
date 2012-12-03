@@ -233,6 +233,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design");
     *part << "Sketcher_NewSketch"
+          << "Sketcher_ViewSketch"
+          << "Sketcher_MapSketch"
           << "Sketcher_LeaveSketch"
           << "Separator"
           << "PartDesign_Pad"

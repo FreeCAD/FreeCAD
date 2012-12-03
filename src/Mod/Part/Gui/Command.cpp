@@ -887,7 +887,7 @@ CmdPartCrossSections::CmdPartCrossSections()
     sToolTipText  = QT_TR_NOOP("Cross-sections");
     sWhatsThis    = "Part_CrossSections";
     sStatusTip    = sToolTipText;
-//  sPixmap       = "Part_Booleans";
+    sPixmap       = "Part_CrossSections";
 }
 
 void CmdPartCrossSections::activated(int iMsg)
