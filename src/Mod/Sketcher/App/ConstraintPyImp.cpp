@@ -51,7 +51,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int  SecondIndex= Constraint::GeoUndef;
     int  SecondPos  = none;
     int  ThirdIndex = Constraint::GeoUndef;
-  //int  ThirdPos   = none;
+    int  ThirdPos   = none;
     double Value    = 0;
     // Note: In Python 2.x PyArg_ParseTuple prints a warning if a float is given but an integer is expected.
     // This means we must use a PyObject and check afterwards if it's a float or integer.
@@ -290,6 +290,21 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Value     = Value;
                 return 0;
             }
+        }
+    }
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args, "siiiiii", &ConstraintType, &FirstIndex, &FirstPos, &SecondIndex, &SecondPos, &ThirdIndex, &ThirdPos)) {
+        // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
+        if (strcmp("Symmetric",ConstraintType) == 0 ) {
+            this->getConstraintPtr()->Type = Symmetric;
+            this->getConstraintPtr()->First     = FirstIndex;
+            this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
+            this->getConstraintPtr()->Second    = SecondIndex;
+            this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) SecondPos;
+            this->getConstraintPtr()->Third     = ThirdIndex;
+            this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) ThirdPos;
+            return 0;
         }
     }
 

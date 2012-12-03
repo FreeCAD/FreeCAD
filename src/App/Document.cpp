@@ -345,6 +345,14 @@ void Document::abortTransaction()
     }
 }
 
+bool Document::hasPendingTransaction() const
+{
+    if (d->activeUndoTransaction)
+        return true;
+    else
+        return false;
+}
+
 void Document::clearUndos()
 {
     if (d->activeUndoTransaction)
@@ -738,11 +746,13 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* o = addObject(type.c_str(),name.c_str());
-            objs.push_back(o);
-            // use this name for the later access because an object with
-            // the given name may already exist
-            reader.addName(name.c_str(), o->getNameInDocument());
+            App::DocumentObject* obj = addObject(type.c_str(),name.c_str());
+            if (obj) {
+                objs.push_back(obj);
+                // use this name for the later access because an object with
+                // the given name may already exist
+                reader.addName(name.c_str(), obj->getNameInDocument());
+            }
         }
         catch (Base::Exception&) {
             Base::Console().Message("Cannot create object '%s'\n", name.c_str());

@@ -724,7 +724,10 @@ void NavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prev
 {
     // There is no "geometrically correct" value, 20 just seems to give
     // about the right "feel".
-    zoom(viewer->getCamera(), (thispos[1] - prevpos[1]) * 10.0f/*20.0f*/);
+    float value = (thispos[1] - prevpos[1]) * 10.0f/*20.0f*/;
+    if (this->invertZoom)
+        value = -value;
+    zoom(viewer->getCamera(), value);
 }
 
 void NavigationStyle::zoomIn()

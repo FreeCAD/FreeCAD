@@ -72,9 +72,10 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
 
     d->offset = offset;
     d->ui.setupUi(this);
-    d->ui.spinOffset->setValue(d->offset->Value.getValue());
     d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
     d->ui.spinOffset->setSingleStep(0.1);
+    d->ui.spinOffset->setValue(d->offset->Value.getValue());
+    d->ui.facesButton->hide();
 }
 
 OffsetWidget::~OffsetWidget()
@@ -177,6 +178,7 @@ bool OffsetWidget::reject()
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::updateActive();
 
     return true;
 }
