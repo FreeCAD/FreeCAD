@@ -96,7 +96,8 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         return new App::DocumentObjectExecReturn("Cannot draft invalid shape");
 
     // Faces where draft should be applied
-    const std::vector<std::string>& SubVals = Base.getSubValuesStartsWith("Face");
+    // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug, see below
+    std::vector<std::string> SubVals = Base.getSubValuesStartsWith("Face");
     if (SubVals.size() == 0)
         return new App::DocumentObjectExecReturn("No faces specified");
 
@@ -241,7 +242,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepOffsetAPI_DraftAngle mkDraft(baseShape._Shape);
+        BRepOffsetAPI_DraftAngle mkDraft;
         // Note:
         // LocOpe_SplitDrafts can split a face with a wire and apply draft to both parts
         //       Not clear though whether the face must have free boundaries
@@ -250,16 +251,30 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         // BRepFeat_MakeDPrism requires a support for the operation but will probably support multiple
         //       wires in the sketch
 
-        for (std::vector<std::string>::const_iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
-            TopoDS_Face face = TopoDS::Face(baseShape.getSubShape(it->c_str()));
-            // TODO: What is the flag for?
-            mkDraft.Add(face, pullDirection, angle, neutralPlane);
-            if (!mkDraft.AddDone()) {
-                // Note: the function ProblematicShape returns the face on which the error occurred,
-                mkDraft.Remove(face);
-                Base::Console().Error("Adding face failed: %u\n", mkDraft.Status());
+        bool success;
+
+        do {
+            success = true;
+            mkDraft.Init(baseShape._Shape);
+
+            for (std::vector<std::string>::iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
+                TopoDS_Face face = TopoDS::Face(baseShape.getSubShape(it->c_str()));
+                // TODO: What is the flag for?
+                mkDraft.Add(face, pullDirection, angle, neutralPlane);
+                if (!mkDraft.AddDone()) {
+                    // Note: the function ProblematicShape returns the face on which the error occurred
+                    // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
+                    //       therefore unusable. See https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=10&t=3209&start=10#p25341
+                    //       The only solution is to discard mkDraft and start over without the current face
+                    // mkDraft.Remove(face);
+                    Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());
+                    success = false;
+                    SubVals.erase(it);
+                    break;
+                }
             }
         }
+        while (!success);
 
         mkDraft.Build();
         if (!mkDraft.IsDone())
