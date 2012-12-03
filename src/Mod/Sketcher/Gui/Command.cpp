@@ -177,6 +177,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
     sToolTipText    = QT_TR_NOOP("Map a sketch to a face");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_MapSketch";
 }
 
 void CmdSketcherMapSketch::activated(int iMsg)
@@ -311,6 +312,7 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
     sToolTipText    = QT_TR_NOOP("View sketch perpendicular to sketch plane");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ViewSketch";
     eType           = 0;
 }
 
