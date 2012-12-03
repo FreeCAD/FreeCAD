@@ -30,6 +30,7 @@
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopExp_Explorer.hxx>
 # include <Precision.hxx>
 #endif
 
@@ -375,11 +376,6 @@ short Offset::mustExecute() const
     return 0;
 }
 
-void Offset::onChanged(const App::Property* prop)
-{
-    Part::Feature::onChanged(prop);
-}
-
 App::DocumentObjectExecReturn *Offset::execute(void)
 {
     App::DocumentObject* source = Source.getValue();
@@ -395,6 +391,81 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
     if (fabs(offset) > 2*tol)
         this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
+    else
+        this->Shape.setValue(shape);
+    return App::DocumentObject::StdReturn;
+}
+
+// ----------------------------------------------------------------------------
+
+const char* Part::Thickness::ModeEnums[]= {"Skin","Pipe", "RectoVerso",NULL};
+const char* Part::Thickness::JoinEnums[]= {"Arc","Tangent", "Intersection",NULL};
+
+PROPERTY_SOURCE(Part::Thickness, Part::Feature)
+
+Thickness::Thickness()
+{
+    ADD_PROPERTY_TYPE(Faces,(0),"Thickness",App::Prop_None,"Source shape");
+    ADD_PROPERTY_TYPE(Value,(1.0),"Thickness",App::Prop_None,"Thickness value");
+    ADD_PROPERTY_TYPE(Mode,(long(0)),"Thickness",App::Prop_None,"Mode");
+    Mode.setEnums(ModeEnums);
+    ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
+    Join.setEnums(JoinEnums);
+    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Intersection");
+    ADD_PROPERTY_TYPE(SelfIntersection,(false),"Thickness",App::Prop_None,"Self Intersection");
+}
+
+short Thickness::mustExecute() const
+{
+    if (Faces.isTouched())
+        return 1;
+    if (Value.isTouched())
+        return 1;
+    if (Mode.isTouched())
+        return 1;
+    if (Join.isTouched())
+        return 1;
+    if (Intersection.isTouched())
+        return 1;
+    if (SelfIntersection.isTouched())
+        return 1;
+    return 0;
+}
+
+App::DocumentObjectExecReturn *Thickness::execute(void)
+{
+    App::DocumentObject* source = Faces.getValue();
+    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+        return new App::DocumentObjectExecReturn("No source shape linked.");
+    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+    if (shape.isNull())
+        return new App::DocumentObjectExecReturn("Source shape is empty.");
+
+    int countSolids = 0;
+    TopExp_Explorer xp;
+    xp.Init(shape._Shape,TopAbs_SOLID);
+    for (;xp.More(); xp.Next()) {
+        countSolids++;
+    }
+    if (countSolids != 1)
+        return new App::DocumentObjectExecReturn("Source shape is not a solid.");
+
+    TopTools_ListOfShape closingFaces;
+    const std::vector<std::string>& subStrings = Faces.getSubValues();
+    for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
+        TopoDS_Face face = TopoDS::Face(shape.getSubShape(it->c_str()));
+        closingFaces.Append(face);
+    }
+
+    double thickness = Value.getValue();
+    double tol = Precision::Confusion();
+    bool inter = Intersection.getValue();
+    bool self = SelfIntersection.getValue();
+    short mode = (short)Mode.getValue();
+    short join = (short)Join.getValue();
+
+    if (fabs(thickness) > 2*tol)
+        this->Shape.setValue(shape.makeThickSolid(closingFaces, thickness, tol, inter, self, mode, join));
     else
         this->Shape.setValue(shape);
     return App::DocumentObject::StdReturn;

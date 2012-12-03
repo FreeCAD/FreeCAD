@@ -29,6 +29,9 @@
 
 #include "DrawingView.h"
 #include <Mod/Drawing/App/FeaturePage.h>
+#include <Mod/Drawing/App/FeatureViewPart.h>
+#include <Mod/Drawing/App/ProjectionAlgos.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -115,16 +118,6 @@ exporter(PyObject *self, PyObject *args)
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(Drawing::FeaturePage::getClassTypeId())) {
-                    std::string fn = static_cast<Drawing::FeaturePage*>(obj)->PageResult.getValue();
-                    Base::FileInfo fi_in(fn);
-                    Base::ifstream str_in(fi_in, std::ios::in | std::ios::binary);
-                    if (!str_in) {
-                        std::stringstream str;
-                        str << "Cannot open file '" << fn << "' for reading";
-                        PyErr_SetString(PyExc_IOError, str.str().c_str());
-                        return NULL;
-                    }
-
                     Base::FileInfo fi_out(filename);
                     Base::ofstream str_out(fi_out, std::ios::out | std::ios::binary);
                     if (!str_out) {
@@ -133,14 +126,64 @@ exporter(PyObject *self, PyObject *args)
                         PyErr_SetString(PyExc_IOError, str.str().c_str());
                         return NULL;
                     }
+                    if (fi_out.hasExtension("svg")) {
+                        std::string fn = static_cast<Drawing::FeaturePage*>(obj)->PageResult.getValue();
+                        Base::FileInfo fi_in(fn);
+                        Base::ifstream str_in(fi_in, std::ios::in | std::ios::binary);
+                        if (!str_in) {
+                            std::stringstream str;
+                            str << "Cannot open file '" << fn << "' for reading";
+                            PyErr_SetString(PyExc_IOError, str.str().c_str());
+                            return NULL;
+                        }
 
-                    str_in >> str_out.rdbuf();
-                    str_in.close();
-                    str_out.close();
-                    break;
+                        str_in >> str_out.rdbuf();
+                        str_in.close();
+                        str_out.close();
+                        break;
+                    }
+                    else if (fi_out.hasExtension("dxf")) {
+                        const std::vector<App::DocumentObject*>& views = static_cast<Drawing::FeaturePage*>(obj)->Group.getValues();
+                        for (std::vector<App::DocumentObject*>::const_iterator it = views.begin(); it != views.end(); ++it) {
+                            if ((*it)->getTypeId().isDerivedFrom(Drawing::FeatureViewPart::getClassTypeId())) {
+                                Drawing::FeatureViewPart* view = static_cast<Drawing::FeatureViewPart*>(*it);
+                                std::string viewName = view->Label.getValue();
+                                App::DocumentObject* link = view->Source.getValue();
+                                if (!link) {
+                                    PyErr_SetString(PyExc_Exception, "No object linked");
+                                    return 0;
+                                }
+                                if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                                    PyErr_SetString(PyExc_TypeError, "Linked object is not a Part object");
+                                    return 0;
+                                }
+                                TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
+                                if (!shape.IsNull()) {
+                                    Base::Vector3f dir = view->Direction.getValue();
+                                    bool hidden = view->ShowHiddenLines.getValue();
+                                    bool smooth = view->ShowSmoothLines.getValue();
+                                    Drawing::ProjectionAlgos::ExtractionType type = Drawing::ProjectionAlgos::Plain;
+                                    if (hidden) type = (Drawing::ProjectionAlgos::ExtractionType)(type|Drawing::ProjectionAlgos::WithHidden);
+                                    if (smooth) type = (Drawing::ProjectionAlgos::ExtractionType)(type|Drawing::ProjectionAlgos::WithSmooth);
+                                    float scale = view->Scale.getValue();
+                                    float tol = view->Tolerance.getValue();
+
+                                    Drawing::ProjectionAlgos project(shape, dir);
+                                    str_out << project.getDXF(type, scale, tol);
+                                    break; // TODO: How to add several shapes?
+                                }
+                            }
+                        }
+                        str_out.close();
+                        break;
+                    }
+                    else {
+                        PyErr_SetString(PyExc_TypeError, "Export of page object as this file format is not supported by Drawing module");
+                        return 0;
+                    }
                 }
                 else {
-                    PyErr_SetString(PyExc_TypeError, "Export as SVG of this object type is not supported by Drawing module");
+                    PyErr_SetString(PyExc_TypeError, "Export of this object type is not supported by Drawing module");
                     return 0;
                 }
             }

@@ -199,6 +199,7 @@ void PartExport initPart()
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
     Part::Offset                ::init();
+    Part::Thickness             ::init();
 
     // Geometry types
     Part::Geometry                ::init();

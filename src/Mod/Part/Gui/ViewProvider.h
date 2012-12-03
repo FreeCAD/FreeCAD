@@ -156,6 +156,7 @@ public:
     ViewProviderPart();
     /// destructor
     virtual ~ViewProviderPart();
+    virtual bool doubleClicked(void);
 };
 #else
 class PartGuiExport ViewProviderPart : public ViewProviderPartBase

@@ -208,6 +208,8 @@ public:
     void commitTransaction();
     /// Abort the  actually running transaction. 
     void abortTransaction();
+    /// Check if a transaction is open
+    bool hasPendingTransaction() const;
     /// Set the Undo limit in Byte!
     void setUndoLimit(unsigned int UndoMemSize=0);
     /// Returns the actual memory consumption of the Undo redo stuff.

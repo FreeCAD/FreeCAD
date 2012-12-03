@@ -99,6 +99,9 @@ namespace GCS
         int addConstraintP2PAngle(Point &p1, Point &p2, double *angle, int tagId=0);
         int addConstraintP2LDistance(Point &p, Line &l, double *distance, int tagId=0);
         int addConstraintPointOnLine(Point &p, Line &l, int tagId=0);
+        int addConstraintPointOnLine(Point &p, Point &lp1, Point &lp2, int tagId=0);
+        int addConstraintPointOnPerpBisector(Point &p, Line &l, int tagId=0);
+        int addConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2, int tagId=0);
         int addConstraintParallel(Line &l1, Line &l2, int tagId=0);
         int addConstraintPerpendicular(Line &l1, Line &l2, int tagId=0);
         int addConstraintPerpendicular(Point &l1p1, Point &l1p2,
@@ -151,6 +154,7 @@ namespace GCS
         int addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId=0);
         int addConstraintEqualRadius(Arc &a1, Arc &a2, int tagId=0);
         int addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId=0);
+        int addConstraintP2PSymmetric(Point &p1, Point &p2, Point &p, int tagId=0);
         void rescaleConstraint(int id, double coeff);
 
         void declareUnknowns(VEC_pD &params);

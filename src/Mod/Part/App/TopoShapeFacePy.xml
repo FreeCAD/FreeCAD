@@ -84,9 +84,16 @@
 		</Attribute>
 		<Attribute Name="Wire" ReadOnly="true">
 			<Documentation>
-				<UserDocu>The Wire of this face</UserDocu>
+				<UserDocu>The outer wire of this face
+deprecated -- please use OuterWire</UserDocu>
 			</Documentation>
 			<Parameter Name="Wire" Type="Object"/>
+		</Attribute>
+		<Attribute Name="OuterWire" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The outer wire of this face</UserDocu>
+			</Documentation>
+			<Parameter Name="OuterWire" Type="Object"/>
 		</Attribute>
 		<Attribute Name="CenterOfMass" ReadOnly="true">
 			<Documentation>

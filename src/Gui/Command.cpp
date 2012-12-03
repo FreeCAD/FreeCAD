@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
@@ -389,6 +390,11 @@ void Command::abortCommand(void)
     Gui::Application::Instance->activeDocument()->abortCommand();
 }
 
+bool Command::hasPendingCommand(void)
+{
+    return Gui::Application::Instance->activeDocument()->hasPendingCommand();
+}
+
 bool Command::_blockCmd = false;
 
 void Command::blockCommand(bool block)
@@ -445,6 +451,20 @@ void Command::copyVisual(const char* to, const char* attr, const char* from)
 void Command::copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from)
 {
     doCommand(Gui,"Gui.ActiveDocument.%s.%s=Gui.ActiveDocument.%s.%s", to, attr_to, from, attr_from);
+}
+
+std::string Command::getPythonTuple(const std::string& name, const std::vector<std::string>& subnames)
+{
+    std::stringstream str;
+    std::vector<std::string>::const_iterator last = --subnames.end();
+    str << "(App.ActiveDocument." << name << ",[";
+    for (std::vector<std::string>::const_iterator it = subnames.begin();it!=subnames.end();++it){
+        str << "\"" << *it << "\"";
+        if (it != last)
+            str << ",";
+    }
+    str << "])";
+    return str.str();
 }
 
 const std::string Command::strToPython(const char* Str)

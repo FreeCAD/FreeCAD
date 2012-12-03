@@ -1444,6 +1444,7 @@ public:
         setPositionText(onSketchPos);
         if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2D(0.f,0.f))) {
             renderSuggestConstraintsCursor(sugConstr);
+            return;
         }
         applyCursor();
     }

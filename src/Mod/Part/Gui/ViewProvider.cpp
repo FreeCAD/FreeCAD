@@ -81,6 +81,7 @@
 #include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/Command.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
@@ -107,6 +108,17 @@ ViewProviderPart::ViewProviderPart()
 ViewProviderPart::~ViewProviderPart()
 {
 }
+
+bool ViewProviderPart::doubleClicked(void)
+{
+    std::string Msg("Edit ");
+    Msg += this->pcObject->Label.getValue();
+    Gui::Command::openCommand(Msg.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.setEdit('%s',0)",
+                            this->pcObject->getNameInDocument());
+    return true;
+}
+
 #else
 PROPERTY_SOURCE(PartGui::ViewProviderPart, PartGui::ViewProviderPartBase)
 

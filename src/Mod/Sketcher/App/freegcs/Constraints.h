@@ -41,11 +41,12 @@ namespace GCS
         P2PAngle = 4,
         P2LDistance = 5,
         PointOnLine = 6,
-        Parallel = 7,
-        Perpendicular = 8,
-        L2LAngle = 9,
-        MidpointOnLine = 10,
-        TangentCircumf = 11
+        PointOnPerpBisector = 7,
+        Parallel = 8,
+        Perpendicular = 9,
+        L2LAngle = 10,
+        MidpointOnLine = 11,
+        TangentCircumf = 12
     };
 
     class Constraint
@@ -171,6 +172,26 @@ namespace GCS
         inline double* p2y() { return pvec[5]; }
     public:
         ConstraintPointOnLine(Point &p, Line &l);
+        ConstraintPointOnLine(Point &p, Point &lp1, Point &lp2);
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
+    // PointOnPerpBisector
+    class ConstraintPointOnPerpBisector : public Constraint
+    {
+    private:
+        inline double* p0x() { return pvec[0]; }
+        inline double* p0y() { return pvec[1]; }
+        inline double* p1x() { return pvec[2]; }
+        inline double* p1y() { return pvec[3]; }
+        inline double* p2x() { return pvec[4]; }
+        inline double* p2y() { return pvec[5]; }
+    public:
+        ConstraintPointOnPerpBisector(Point &p, Line &l);
+        ConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
