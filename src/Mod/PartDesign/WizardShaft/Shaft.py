@@ -28,13 +28,15 @@ from ShaftDiagram import Diagram
 class ShaftSegment:
     length = 0.0
     diameter = 0.0
+    innerdiameter = 0.0
     loadType = "None"
     loadSize = 0.0
     loadLocation = 0.0
 
-    def __init__(self, l, d):
+    def __init__(self, l, d, di):
         self.length = l
         self.diameter = d
+        self.innerdiameter = di
 
 class Shaft:
     "The axis of the shaft is always assumed to correspond to the X-axis"
@@ -62,20 +64,23 @@ class Shaft:
             result += self.segments[i].length
         return result
 
-    def addSegment(self, l, d):
+    def addSegment(self, l, d, di):
         #print "Adding segment: ", l, " : ", d
-        self.segments.append(ShaftSegment(l,d))
-        self.sketch.addSegment(l, d)
+        self.segments.append(ShaftSegment(l,d,di))
+        self.sketch.addSegment(l, d, di)
         # We don't call equilibrium() here because the new segment has no loads defined yet
 
-    def updateSegment(self, index, length = None, diameter = None):
+    def updateSegment(self, index, length = None, diameter = None, innerdiameter = None):
         oldLength = self.segments[index].length
         #print "Old length of ", index, ": ", oldLength, ", new Length: ", length, " diameter: ", diameter
         if length is not None:
             self.segments[index].length = length
         if diameter is not None:
             self.segments[index].diameter = diameter
-        self.sketch.updateSegment(index, oldLength, self.segments[index].length, self.segments[index].diameter)
+        if innerdiameter is not None:
+            self.segments[index].innerdiameter = innerdiameter
+        self.sketch.updateSegment(index, oldLength, self.segments[index].length,
+                                  self.segments[index].diameter, self.segments[index].innerdiameter)
         self.equilibrium()
         self.updateDiagrams()
 
