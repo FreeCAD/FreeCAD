@@ -111,7 +111,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Sketcher");
-    *part << "Sketcher_NewSketch"<< "Sketcher_LeaveSketch";
+    *part << "Sketcher_NewSketch"
+          << "Sketcher_ViewSketch"
+          << "Sketcher_MapSketch"
+          << "Sketcher_LeaveSketch";
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
     geom->setCommand("Sketcher geometries");
