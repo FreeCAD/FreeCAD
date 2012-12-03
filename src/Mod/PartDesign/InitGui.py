@@ -31,6 +31,7 @@
 
 class PartDesignWorkbench ( Workbench ):
         "PartDesign workbench object"
+        from FeatureBore import TaskBore
         Icon = """
                 /* XPM */
                 static char * partdesign_xpm[] = {
