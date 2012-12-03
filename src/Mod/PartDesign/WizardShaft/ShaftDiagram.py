@@ -88,4 +88,6 @@ class Diagram:
             del self.thePlot.series[0]
 
         self.thePlot.update()
+        self.xpoints = [p * self.xscale for p in self.xpoints]
+        self.ypoints = [p * self.yscale for p in self.ypoints]
         self.thePlot.plot(self.xpoints, self.ypoints)
