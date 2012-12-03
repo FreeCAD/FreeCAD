@@ -31,7 +31,6 @@ class TaskWizardShaft:
     # GUI
     App = FreeCAD
     Gui = FreeCADGui
-    doc = Gui.ActiveDocument
     # Table and widget
     table = 0
     form = 0
@@ -40,16 +39,17 @@ class TaskWizardShaft:
     # Feature
     featureWindow = 0
 
-    def __init__(self):       
+    def __init__(self, doc):
         mw = QtGui.qApp.activeWindow()
         cw = mw.centralWidget() # This is a qmdiarea widget
+        self.doc = doc
 
         # Get active document or create a new one
         # Important because when setting the default data in WizardShaftTable() the
         # updateSketch() slot will be activated and it relies on finding a valid document
         if self.doc == None:
             self.Gui.activateWorkbench("PartDesignWorkbench")
-            self.doc = self.App.ActiveDocument
+            self.doc = self.App.newDocument()
             # Grab the newly created feature window
             featureWindow = cw.subWindowList()[-1]
         else:
@@ -77,7 +77,7 @@ class TaskWizardShaft:
 
 class WizardShaftGui:
     def Activated(self):
-        FreeCADGui.Control.showDialog(TaskWizardShaft())
+        FreeCADGui.Control.showDialog(TaskWizardShaft(FreeCAD.ActiveDocument))
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
