@@ -47,6 +47,7 @@
 # include <BRepBuilderAPI_MakeEdge.hxx>
 #endif
 
+#include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDraft.h"

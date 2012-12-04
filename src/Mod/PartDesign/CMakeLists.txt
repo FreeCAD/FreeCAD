@@ -44,27 +44,10 @@ SOURCE_GROUP("wizardshaft" FILES ${WizardShaft_SRCS})
 SET(all_wizardshaft_files ${WizardShaft_SRCS})
 
 ADD_CUSTOM_TARGET(WizardShaft ALL
-	SOURCES ${all_wizardshaft_files}
+    SOURCES ${all_wizardshaft_files}
 )
 
-SET(FeatureBore_SRCS
-        FeatureBore/__init__.py
-	FeatureBore/FeatureBore.py
-	FeatureBore/TaskBore.py
-)
-SOURCE_GROUP("featurebore" FILES ${FeatureBore_SRCS})
-
-SET(FeatureBore_UI
-        FeatureBore/TaskBore.ui
-)
-
-SET(all_featurebore_files ${FeatureBore_SRCS} ${FeatureBore_UI})
-
-ADD_CUSTOM_TARGET(FeatureBore ALL
-    SOURCES ${all_featurebore_files}
-)
-
-SET(all_files ${all_featurebore_files} ${all_wizardshaft_files})
+SET(all_files ${all_wizardshaft_files})
 
 fc_copy_sources(Mod/PartDesign "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
 
@@ -73,8 +56,4 @@ INSTALL(
         ${WizardShaft_SRCS}
     DESTINATION
         Mod/PartDesign/WizardShaft
-    FILES
-        ${FeatureBore_SRCS}
-    DESTINATION
-        Mod/PartDesign/FeatureBore
 )
