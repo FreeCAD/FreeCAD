@@ -30,17 +30,19 @@ class WizardShaftTable:
     rowDict = {
         "Length"        : 0,
         "Diameter"      : 1,
-        "LoadType"      : 2,
-        "LoadSize"      : 3,
-        "LoadLocation"  : 4,
-        "StartEdgeType" : 5,
-        "StartEdgeSize" : 6,
-        "EndEdgeType"   : 7,
-        "EndEdgeSize"   : 8
+        "InnerDiameter" : 2,
+        "LoadType"      : 3,
+        "LoadSize"      : 4,
+        "LoadLocation"  : 5,
+        "StartEdgeType" : 6,
+        "StartEdgeSize" : 7,
+        "EndEdgeType"   : 8,
+        "EndEdgeSize"   : 9
     }
     rowDictReverse = {}
     headers = ["Length [mm]",
                "Diameter [mm]",
+               "Inner diameter [mm]",
                "Load type",
                "Load [N]",
                "Location [mm]",
@@ -61,7 +63,7 @@ class WizardShaftTable:
         self.shaft = s
         # Create table widget
         self.widget = QtGui.QTableWidget(len(self.rowDict), 0)
-        self.widget.resize(QtCore.QSize(300,100))
+        self.widget.resize(QtCore.QSize(300,200))
         #self.widget.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         # Label rows and columns
@@ -102,16 +104,18 @@ class WizardShaftTable:
         index = self.widget.columnCount()
         # Make an intelligent guess at the length/dia of the next segment
         if index > 0:
-            length = self.shaft.segments[index-1].length
+            length = self.shaft.segments[index-1].length            
             diameter = self.shaft.segments[index-1].diameter
             if index > 2:
                 diameter -= 5.0
             else:
                 diameter += 5.0
+            innerdiameter = self.shaft.segments[index-1].innerdiameter
         else:
             length = 20.0
             diameter = 10.0
-        self.shaft.addSegment(length, diameter)
+            innerdiameter = 0.0
+        self.shaft.addSegment(length, diameter, innerdiameter)
 
         self.widget.insertColumn(index)
         self.widget.setHorizontalHeaderItem(index + 1, QtGui.QTableWidgetItem("Section %s" % (index + 1)))
@@ -130,6 +134,14 @@ class WizardShaftTable:
         widget.setMaximum(1E9)
         self.widget.setCellWidget(self.rowDict["Diameter"], index, widget)
         widget.setValue(diameter)
+        widget.valueChanged.connect(self.slotValueChanged)
+        widget.editingFinished.connect(self.slotEditingFinished)
+        # inner Diameter
+        widget = QtGui.QDoubleSpinBox(self.widget)
+        widget.setMinimum(0)
+        widget.setMaximum(1E9)
+        self.widget.setCellWidget(self.rowDict["InnerDiameter"], index, widget)
+        widget.setValue(innerdiameter)
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
         # Load type
@@ -203,6 +215,8 @@ class WizardShaftTable:
             self.shaft.updateSegment(self.editedColumn, length = self.getDoubleValue(rowName, self.editedColumn))
         elif rowName == "Diameter":
             self.shaft.updateSegment(self.editedColumn, diameter = self.getDoubleValue(rowName, self.editedColumn))
+        elif rowName == "InnerDiameter":
+            self.shaft.updateSegment(self.editedColumn, innerdiameter = self.getDoubleValue(rowName, self.editedColumn))
         elif rowName == "LoadType":
             self.shaft.updateLoad(self.editedColumn, loadType = self.getListValue(rowName, self.editedColumn))
         elif rowName == "LoadSize":
@@ -231,6 +245,13 @@ class WizardShaftTable:
 
     def getDiameter(self, column):
         return self.getDoubleValue("Diameter", column)
+
+    def setInnerDiameter(self, column, d):
+        self.setDoubleValue("InnerDiameter", column, d)
+        self.shaft.updateSegment(column, innerdiameter = d)
+
+    def getInnerDiameter(self, column):
+        return self.getDoubleValue("InnerDiameter", column)
 
     @QtCore.pyqtSlot('QString')
     def slotLoadType(self, text):

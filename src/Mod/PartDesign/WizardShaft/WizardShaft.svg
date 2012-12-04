@@ -516,6 +516,15 @@
        x2="13.874617"
        y2="43.090275"
        gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3937"
+       id="linearGradient3882"
+       x1="-13.22155"
+       y1="54.813248"
+       x2="-13.508098"
+       y2="40.945572"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -525,8 +534,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9999996"
-     inkscape:cx="36.702399"
-     inkscape:cy="28.247095"
+     inkscape:cx="21.190358"
+     inkscape:cy="23.779747"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -558,7 +567,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <g
-       id="g3081">
+       id="g3884">
       <path
          transform="matrix(1.0895226,-0.72891705,0.72727205,1.091987,23.576251,-35.797469)"
          d="m -1.5700722,48.122238 a 11.543545,16.777716 0 1 1 -23.0870898,0 11.543545,16.777716 0 1 1 23.0870898,0 z"
@@ -610,6 +619,16 @@
          sodipodi:cx="-13.113617"
          id="path3815-2"
          style="fill:#ffc700;fill-opacity:1;fill-rule:evenodd;stroke:#5e3800;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(0.3792391,-0.25314756,0.25314756,0.3792391,8.8844614,24.305486)"
+         d="m -2.2841215,48.122238 a 10.829495,16.777716 0 1 1 -21.6589905,0 10.829495,16.777716 0 1 1 21.6589905,0 z"
+         sodipodi:ry="16.777716"
+         sodipodi:rx="10.829495"
+         sodipodi:cy="48.122238"
+         sodipodi:cx="-13.113617"
+         id="path3815-2-2"
+         style="fill:url(#linearGradient3882);fill-opacity:1;fill-rule:evenodd;stroke:#5e3800;stroke-width:4.38628149;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          sodipodi:type="arc" />
     </g>
   </g>
