@@ -73,7 +73,7 @@ class Diagram:
         if xlength is not None:
             self.xlength = xlength
         # Calculate points
-        (self.xpoints, self.ypoints) = self.function.evaluate(self.xlength, self.numxpoints)
+        (self.xpoints, self.ypoints) = self.function.evaluate(self.xlength, self.numxpoints)       
         # Create plot
         self.plot()
 
@@ -88,4 +88,11 @@ class Diagram:
             del self.thePlot.series[0]
 
         self.thePlot.update()
+        self.xpoints = [p * self.xscale for p in self.xpoints]
+        self.ypoints = [p * self.yscale for p in self.ypoints]
         self.thePlot.plot(self.xpoints, self.ypoints)
+        plots = self.thePlot.series
+        axes = plots[0].axes
+        axes.set_xlim(right = max(self.xpoints) * 1.05)
+        axes.set_ylim(min(self.ypoints) * 1.05, max(self.ypoints) * 1.05)
+        self.thePlot.update()

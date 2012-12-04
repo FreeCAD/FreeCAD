@@ -41,11 +41,13 @@ SET(WizardShaft_SRCS
 )
 SOURCE_GROUP("wizardshaft" FILES ${WizardShaft_SRCS})
 
-SET(all_files ${WizardShaft_SRCS})
+SET(all_wizardshaft_files ${WizardShaft_SRCS})
 
 ADD_CUSTOM_TARGET(WizardShaft ALL
-    SOURCES ${all_files}
+    SOURCES ${all_wizardshaft_files}
 )
+
+SET(all_files ${all_wizardshaft_files})
 
 fc_copy_sources(Mod/PartDesign "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
 

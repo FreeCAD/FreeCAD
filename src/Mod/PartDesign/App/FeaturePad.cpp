@@ -141,6 +141,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             // because the feature does not add any material. This only happens with the "2" option, though
             // Note: It might be possible to pass a shell or a compound containing multiple faces
             // as the Until parameter of Perform()
+            // Note: Multiple independent wires are not supported, we should check for that and
+            // warn the user
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(support, sketchshape, supportface, dir, 2, 1);
             PrismMaker.Perform(upToFace);
