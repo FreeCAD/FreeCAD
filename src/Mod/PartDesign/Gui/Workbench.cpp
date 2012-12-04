@@ -87,7 +87,6 @@ void Workbench::activated()
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Draft",
-        "PartDesign_Bore",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
@@ -220,9 +219,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform"
-          << "Separator"
-          << "PartDesign_Bore"
+          << "PartDesign_MultiTransform";
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
     // not deployed either hence the check for the existence of the command.

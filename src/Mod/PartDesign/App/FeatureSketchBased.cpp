@@ -57,6 +57,7 @@
 # include <Extrema_POnCurv.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 
@@ -562,7 +563,11 @@ const bool SketchBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Fa
             for (int i = 1; i <= intersector.NbExt(); i++) {
 
 
+#if OCC_VERSION_HEX >= 0x060500
                 if (intersector.SquareDistance(i) < Precision::Confusion()) {
+#else
+                if (intersector.Value(i) < Precision::Confusion()) {
+#endif
                     if (intersector.IsParallel()) {
                         // A line that is coincident with the axis produces three intersections
                         // 1 with the line itself and 2 with the adjacent edges
