@@ -40,6 +40,7 @@ libDrawingGui_la_LIBADD   = \
 		-l@PYTHON_LIB@ \
 		-lxerces-c \
 		-lTKernel \
+		-lTKMath \
 		-lFreeCADBase \
 		-lFreeCADApp \
 		-lFreeCADGui \

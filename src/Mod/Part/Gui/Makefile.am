@@ -19,6 +19,7 @@ BUILT_SOURCES=\
 		ui_TaskFaceColors.h \
 		ui_TaskShapeBuilder.h \
 		ui_TaskLoft.h \
+		ui_TaskOffset.h \
 		ui_TaskSweep.h \
 		moc_CrossSections.cpp \
 		moc_DlgBooleanOperation.cpp \
@@ -37,7 +38,9 @@ BUILT_SOURCES=\
 		moc_TaskFaceColors.cpp \
 		moc_TaskShapeBuilder.cpp \
 		moc_TaskLoft.cpp \
+		moc_TaskOffset.cpp \
 		moc_TaskSweep.cpp \
+		moc_TaskThickness.cpp \
 		qrc_Part.cpp 
 
 libPartGui_la_SOURCES=\
@@ -78,8 +81,12 @@ libPartGui_la_SOURCES=\
 		TaskShapeBuilder.h \
 		TaskLoft.cpp \
 		TaskLoft.h \
+		TaskOffset.cpp \
+		TaskOffset.h \
 		TaskSweep.cpp \
 		TaskSweep.h \
+		TaskThickness.cpp \
+		TaskThickness.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		SoBrepShape.cpp \
@@ -238,6 +245,7 @@ EXTRA_DIST = \
 		TaskFaceColors.ui \
 		TaskShapeBuilder.ui \
 		TaskLoft.ui \
+		TaskOffset.ui \
 		TaskSweep.ui \
 		Resources/Part.qrc \
 		Resources/translations/Part_af.qm \

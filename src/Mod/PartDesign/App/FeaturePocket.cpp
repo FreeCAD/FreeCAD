@@ -178,7 +178,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         if (std::string(e->GetMessageString()) == "TopoDS::Face" &&
-            (Type.getValueAsString() == "UpToFirst" || Type.getValueAsString() == "UpToFace"))
+            (std::string(Type.getValueAsString()) == "UpToFirst" || std::string(Type.getValueAsString()) == "UpToFace"))
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed "
                 "for making a pocket up to a face.");
