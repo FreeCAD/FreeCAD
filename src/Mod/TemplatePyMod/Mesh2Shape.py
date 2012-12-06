@@ -6,7 +6,7 @@ import Mesh,Part,MeshPart
 
 faces = []
 mesh = App.ActiveDocument.ActiveObject.Mesh
-segments = mesh.getPlanes(0.00001) # use rather strict tolerance here
+segments = mesh.getPlanarSegments(0.00001) # use rather strict tolerance here
 
 for i in segments:
    if len(i) > 0:
