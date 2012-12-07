@@ -305,17 +305,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="120"/>
+        <location filename="TaskPanel.py" line="139"/>
         <source>Ship instance must be selected (no object selected)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="136"/>
+        <location filename="TaskPanel.py" line="154"/>
         <source>More than one ship selected (extra ships will be neglected)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="144"/>
+        <location filename="TaskPanel.py" line="162"/>
         <source>Ship instance must be selected (no valid ship found at selected objects)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -370,17 +370,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotAux.py" line="60"/>
+        <location filename="TaskPanel.py" line="67"/>
         <source>Can&apos;t detect external faces from ship object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotAux.py" line="67"/>
+        <location filename="TaskPanel.py" line="73"/>
         <source>Computing hydrostatics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PlotAux.py" line="423"/>
+        <location filename="TaskPanel.py" line="306"/>
         <source>Computing external faces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -460,12 +460,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="57"/>
+        <location filename="TaskPanel.py" line="60"/>
         <source>Computing GZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="170"/>
+        <location filename="TaskPanel.py" line="185"/>
         <source>Ship weights has not been set. You need to set weights before use this tool</source>
         <translation type="unfinished"></translation>
     </message>
@@ -556,47 +556,47 @@
 <context>
     <name>ship_hydrostatic</name>
     <message>
-        <location filename="TaskPanel.py" line="185"/>
+        <location filename="TaskPanel.py" line="225"/>
         <source>Plot hydrostatics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="187"/>
+        <location filename="TaskPanel.py" line="227"/>
         <source>Trim</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="189"/>
+        <location filename="TaskPanel.py" line="229"/>
         <source>Minimum draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="191"/>
+        <location filename="TaskPanel.py" line="231"/>
         <source>Maximum draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="193"/>
+        <location filename="TaskPanel.py" line="233"/>
         <source>Number of points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="212"/>
+        <location filename="TaskPanel.py" line="252"/>
         <source>Hydrostatics tool trim selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="219"/>
+        <location filename="TaskPanel.py" line="259"/>
         <source>Hydrostatics tool minimum draft selected [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="226"/>
+        <location filename="TaskPanel.py" line="266"/>
         <source>Hydrostatics tool maximum draft selected [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="233"/>
+        <location filename="TaskPanel.py" line="273"/>
         <source>Hydrostatics tool number of points selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -787,57 +787,57 @@
 <context>
     <name>shiptank_gz</name>
     <message>
-        <location filename="TaskPanel.py" line="246"/>
+        <location filename="TaskPanel.py" line="261"/>
         <source>Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="206"/>
+        <location filename="TaskPanel.py" line="221"/>
         <source>GZ curve computation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="208"/>
+        <location filename="TaskPanel.py" line="223"/>
         <source>Loading condition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="211"/>
+        <location filename="TaskPanel.py" line="226"/>
         <source>Roll angles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="213"/>
+        <location filename="TaskPanel.py" line="228"/>
         <source>Trim</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="215"/>
+        <location filename="TaskPanel.py" line="230"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="217"/>
+        <location filename="TaskPanel.py" line="232"/>
         <source>End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="219"/>
+        <location filename="TaskPanel.py" line="234"/>
         <source>Number of points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="242"/>
+        <location filename="TaskPanel.py" line="257"/>
         <source>Displacement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="225"/>
+        <location filename="TaskPanel.py" line="240"/>
         <source>Press update to compute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="229"/>
+        <location filename="TaskPanel.py" line="244"/>
         <source>Update displacement and draft</source>
         <translation type="unfinished"></translation>
     </message>

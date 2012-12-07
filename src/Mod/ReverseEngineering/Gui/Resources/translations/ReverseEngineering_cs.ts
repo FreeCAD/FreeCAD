@@ -1,43 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="+111"/>
-      <source>Reverse Engineering</source>
-      <translation>Reverzní Inženýrství</translation>
+        <location filename="../../Command.cpp" line="+111"/>
+        <source>Reverse Engineering</source>
+        <translation>Reverzní Inženýrství</translation>
     </message>
     <message>
-      <source>Approximate plane...</source>
-      <translation>Aproximuj rovinu...</translation>
+        <location line="+1"/>
+        <source>Approximate plane...</source>
+        <translation>Aproximuj rovinu...</translation>
     </message>
     <message>
-      <source>Approximate a plane</source>
-      <translation>Aproximuj rovinu</translation>
+        <location line="+1"/>
+        <source>Approximate a plane</source>
+        <translation>Aproximuj rovinu</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdApproxSurface</name>
     <message>
-      <source>Reverse Engineering</source>
-      <translation>Reverzní Inženýrství</translation>
+        <location line="-62"/>
+        <source>Reverse Engineering</source>
+        <translation>Reverzní Inženýrství</translation>
     </message>
     <message>
-      <source>Approximate surface...</source>
-      <translation>Aproximuj plochu...</translation>
+        <location line="+1"/>
+        <source>Approximate surface...</source>
+        <translation>Aproximuj plochu...</translation>
     </message>
     <message>
-      <source>Approximate a B-Spline surface</source>
-      <translation>Aproximuj B-Spline plochu</translation>
+        <location line="+1"/>
+        <source>Approximate a B-Spline surface</source>
+        <translation>Aproximuj B-Spline plochu</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
-      <source>Reverse Engineering</source>
-      <translation>Reverzní Inženýrství</translation>
+        <location filename="../../Workbench.cpp" line="+37"/>
+        <source>Reverse Engineering</source>
+        <translation>Reverzní Inženýrství</translation>
     </message>
-  </context>
+</context>
 </TS>
