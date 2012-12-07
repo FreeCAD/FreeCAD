@@ -75,6 +75,18 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
           << "Part_Offset" << "Part_Thickness";
 
+    // leave this for 0.14 until #0000477 is fixed
+#if 0
+    Gui::MenuItem* view = root->findItem("&View");
+    if (view) {
+        Gui::MenuItem* appr = view->findItem("Std_RandomColor");
+        appr = view->afterItem(appr);
+        Gui::MenuItem* face = new Gui::MenuItem();
+        face->setCommand("Part_ColorPerFace");
+        view->insertItem(appr, face);
+    }
+#endif
+
     return root;
 }
 
