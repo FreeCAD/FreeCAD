@@ -1,71 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="+42"/>
-      <source>Complete</source>
-      <translation>Dokončit</translation>
+        <location filename="../../Command.cpp" line="+42"/>
+        <source>Complete</source>
+        <translation>Dokončit</translation>
     </message>
     <message>
-      <source>Constraint Axle...</source>
-      <translation>Vazba osy...</translation>
+        <location line="+1"/>
+        <source>Constraint Axle...</source>
+        <translation>Vazba osy...</translation>
     </message>
     <message>
-      <source>set a axle constraint between two objects</source>
-      <translation>Vlož osovou vazbu mezi dva objekty</translation>
+        <location line="+1"/>
+        <source>set a axle constraint between two objects</source>
+        <translation>Vlož osovou vazbu mezi dva objekty</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Test_Test</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+57"/>
-      <source>Self-test...</source>
-      <translation>Test sebe sama...</translation>
+        <location filename="../../Workbench.cpp" line="+57"/>
+        <source>Self-test...</source>
+        <translation>Test sebe sama...</translation>
     </message>
     <message>
-      <source>Runs a self-test to check if the application works properly</source>
-      <translation>Spustí test sebe sama pro kontrolu jestli aplikace pracuje správně</translation>
+        <location line="+1"/>
+        <source>Runs a self-test to check if the application works properly</source>
+        <translation>Spustí test sebe sama pro kontrolu jestli aplikace pracuje správně</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <source>Dr&amp;awing</source>
-      <translation>M&amp;alování</translation>
+        <location line="-9"/>
+        <source>Dr&amp;awing</source>
+        <translation>M&amp;alování</translation>
     </message>
     <message>
-      <source>S&amp;ketch</source>
-      <translation>S&amp;kica</translation>
+        <location line="-1"/>
+        <source>S&amp;ketch</source>
+        <translation>S&amp;kica</translation>
     </message>
     <message>
-      <source>&amp;Raytracing</source>
-      <translation>Raytracing</translation>
+        <location line="+2"/>
+        <source>&amp;Raytracing</source>
+        <translation>Raytracing</translation>
     </message>
     <message>
-      <source>&amp;Drafting</source>
-      <translation>Návrh</translation>
+        <location line="+1"/>
+        <source>&amp;Drafting</source>
+        <translation>Návrh</translation>
     </message>
     <message>
-      <source>Sketch based</source>
-      <translation>Náčrtek</translation>
+        <location line="+1"/>
+        <source>Sketch based</source>
+        <translation>Náčrtek</translation>
     </message>
     <message>
-      <source>Primitives</source>
-      <translation>Základní tvary</translation>
+        <location line="+1"/>
+        <source>Primitives</source>
+        <translation>Základní tvary</translation>
     </message>
     <message>
-      <source>Parametric</source>
-      <translation>Parametrické</translation>
+        <source>Parametric</source>
+        <translation type="obsolete">Parametrické</translation>
     </message>
     <message>
-      <source>Object appearence</source>
-      <translation>Vzhled objektu</translation>
+        <location line="+1"/>
+        <source>Object appearence</source>
+        <translation>Vzhled objektu</translation>
     </message>
     <message>
-      <source>Wire Tools</source>
-      <translation>Nástroje drátu</translation>
+        <location line="+1"/>
+        <source>Wire Tools</source>
+        <translation>Nástroje drátu</translation>
     </message>
-  </context>
+</context>
 </TS>

@@ -377,6 +377,7 @@ class arcTracker(Tracker):
         self.recompute()
 
     def recompute(self):
+        import Part
         if self.circle: self.sep.removeChild(self.circle)
         self.circle = None
         if self.endangle < self.startangle:
