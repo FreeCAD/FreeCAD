@@ -610,9 +610,17 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate *gate)
 // remove the active SelectionGate
 void SelectionSingleton::rmvSelectionGate(void)
 {
-    if (ActiveGate)
+    if (ActiveGate) {
         delete ActiveGate;
-    ActiveGate=0;
+        ActiveGate=0;
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            Gui::MDIView* mdi = doc->getActiveView();
+            if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
+                static_cast<View3DInventor*>(mdi)->setCursor(Qt::ArrowCursor);
+            }
+        }
+    }
 }
 
 

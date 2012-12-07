@@ -56,8 +56,7 @@ public:
     TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
-    virtual ~TaskTransformedParameters()
-        {}
+    virtual ~TaskTransformedParameters();
 
     const std::vector<App::DocumentObject*> getOriginals(void) const;
     /// Get the support object either of the object associated with this feature or with the parent feature (MultiTransform mode)

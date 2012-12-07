@@ -315,6 +315,7 @@ App::DocumentObject* TaskDraftParameters::getBase(void) const
 
 TaskDraftParameters::~TaskDraftParameters()
 {
+    Gui::Selection().rmvSelectionGate();
     delete ui;
 }
 
