@@ -1,71 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="+42"/>
-      <source>Complete</source>
-      <translation>Valmis</translation>
+        <location filename="../../Command.cpp" line="+42"/>
+        <source>Complete</source>
+        <translation>Valmis</translation>
     </message>
     <message>
-      <source>Constraint Axle...</source>
-      <translation>Akseli rajoite...</translation>
+        <location line="+1"/>
+        <source>Constraint Axle...</source>
+        <translation>Akseli rajoite...</translation>
     </message>
     <message>
-      <source>set a axle constraint between two objects</source>
-      <translation>Määritä akseli rajoite kahden kohteen välille</translation>
+        <location line="+1"/>
+        <source>set a axle constraint between two objects</source>
+        <translation>Määritä akseli rajoite kahden kohteen välille</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Test_Test</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+57"/>
-      <source>Self-test...</source>
-      <translation>Itsetestaus...</translation>
+        <location filename="../../Workbench.cpp" line="+57"/>
+        <source>Self-test...</source>
+        <translation>Itsetestaus...</translation>
     </message>
     <message>
-      <source>Runs a self-test to check if the application works properly</source>
-      <translation>Suoritetaan itsetestauksen tarkistaminen, jos sovellus toimii oikein</translation>
+        <location line="+1"/>
+        <source>Runs a self-test to check if the application works properly</source>
+        <translation>Suoritetaan itsetestauksen tarkistaminen, jos sovellus toimii oikein</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <source>Dr&amp;awing</source>
-      <translation>Dr&amp;awing</translation>
+        <location line="-9"/>
+        <source>Dr&amp;awing</source>
+        <translation>Dr&amp;awing</translation>
     </message>
     <message>
-      <source>S&amp;ketch</source>
-      <translation>S&amp;ketch</translation>
+        <location line="-1"/>
+        <source>S&amp;ketch</source>
+        <translation>S&amp;ketch</translation>
     </message>
     <message>
-      <source>&amp;Raytracing</source>
-      <translation>&amp;Säteenseuranta</translation>
+        <location line="+2"/>
+        <source>&amp;Raytracing</source>
+        <translation>&amp;Säteenseuranta</translation>
     </message>
     <message>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Hahmottelu</translation>
+        <location line="+1"/>
+        <source>&amp;Drafting</source>
+        <translation>&amp;Hahmottelu</translation>
     </message>
     <message>
-      <source>Sketch based</source>
-      <translation>Sketsin perusta</translation>
+        <location line="+1"/>
+        <source>Sketch based</source>
+        <translation>Sketsin perusta</translation>
     </message>
     <message>
-      <source>Primitives</source>
-      <translation>Primitives</translation>
+        <location line="+1"/>
+        <source>Primitives</source>
+        <translation>Primitives</translation>
     </message>
     <message>
-      <source>Parametric</source>
-      <translation>Parametrinen</translation>
+        <source>Parametric</source>
+        <translation type="obsolete">Parametrinen</translation>
     </message>
     <message>
-      <source>Object appearence</source>
-      <translation>Objektin ulkoasu</translation>
+        <location line="+1"/>
+        <source>Object appearence</source>
+        <translation>Objektin ulkoasu</translation>
     </message>
     <message>
-      <source>Wire Tools</source>
-      <translation>Lanka työkalut</translation>
+        <location line="+1"/>
+        <source>Wire Tools</source>
+        <translation>Lanka työkalut</translation>
     </message>
-  </context>
+</context>
 </TS>
