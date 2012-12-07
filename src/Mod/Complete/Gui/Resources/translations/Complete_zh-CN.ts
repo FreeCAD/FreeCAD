@@ -1,71 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="+42"/>
-      <source>Complete</source>
-      <translation>全部</translation>
+        <location filename="../../Command.cpp" line="+42"/>
+        <source>Complete</source>
+        <translation>全部</translation>
     </message>
     <message>
-      <source>Constraint Axle...</source>
-      <translation>约束轴...</translation>
+        <location line="+1"/>
+        <source>Constraint Axle...</source>
+        <translation>约束轴...</translation>
     </message>
     <message>
-      <source>set a axle constraint between two objects</source>
-      <translation>两对象间设置轴约束</translation>
+        <location line="+1"/>
+        <source>set a axle constraint between two objects</source>
+        <translation>两对象间设置轴约束</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Test_Test</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+57"/>
-      <source>Self-test...</source>
-      <translation>自检...</translation>
+        <location filename="../../Workbench.cpp" line="+57"/>
+        <source>Self-test...</source>
+        <translation>自检...</translation>
     </message>
     <message>
-      <source>Runs a self-test to check if the application works properly</source>
-      <translation>运行自检测试程序是否正常工作</translation>
+        <location line="+1"/>
+        <source>Runs a self-test to check if the application works properly</source>
+        <translation>运行自检测试程序是否正常工作</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <source>Dr&amp;awing</source>
-      <translation>绘图(&amp;a)</translation>
+        <location line="-9"/>
+        <source>Dr&amp;awing</source>
+        <translation>绘图(&amp;a)</translation>
     </message>
     <message>
-      <source>S&amp;ketch</source>
-      <translation>草绘(&amp;k)</translation>
+        <location line="-1"/>
+        <source>S&amp;ketch</source>
+        <translation>草绘(&amp;k)</translation>
     </message>
     <message>
-      <source>&amp;Raytracing</source>
-      <translation>光线追踪(&amp;R)</translation>
+        <location line="+2"/>
+        <source>&amp;Raytracing</source>
+        <translation>光线追踪(&amp;R)</translation>
     </message>
     <message>
-      <source>&amp;Drafting</source>
-      <translation>绘图(&amp;D)</translation>
+        <location line="+1"/>
+        <source>&amp;Drafting</source>
+        <translation>绘图(&amp;D)</translation>
     </message>
     <message>
-      <source>Sketch based</source>
-      <translation>基于草绘</translation>
+        <location line="+1"/>
+        <source>Sketch based</source>
+        <translation>基于草绘</translation>
     </message>
     <message>
-      <source>Primitives</source>
-      <translation>基础图元</translation>
+        <location line="+1"/>
+        <source>Primitives</source>
+        <translation>基础图元</translation>
     </message>
     <message>
-      <source>Parametric</source>
-      <translation>参数化</translation>
+        <source>Parametric</source>
+        <translation type="obsolete">参数化</translation>
     </message>
     <message>
-      <source>Object appearence</source>
-      <translation>对象外观</translation>
+        <location line="+1"/>
+        <source>Object appearence</source>
+        <translation>对象外观</translation>
     </message>
     <message>
-      <source>Wire Tools</source>
-      <translation>线框工具</translation>
+        <location line="+1"/>
+        <source>Wire Tools</source>
+        <translation>线框工具</translation>
     </message>
-  </context>
+</context>
 </TS>
