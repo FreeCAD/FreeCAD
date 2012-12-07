@@ -1144,6 +1144,38 @@ bool StdCmdPlacement::isActive(void)
 }
 
 //===========================================================================
+// Std_TransformManip
+//===========================================================================
+DEF_STD_CMD_A(StdCmdTransformManip);
+
+StdCmdTransformManip::StdCmdTransformManip()
+  : Command("Std_TransformManip")
+{
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("Transform");
+    sToolTipText  = QT_TR_NOOP("Transform the selected object in the 3d view");
+    sStatusTip    = QT_TR_NOOP("Transform the selected object in the 3d view");
+    sWhatsThis    = "Std_TransformManip";
+}
+
+void StdCmdTransformManip::activated(int iMsg)
+{
+    if (getActiveGuiDocument()->getInEdit())
+        getActiveGuiDocument()->resetEdit();
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
+    // FIXME: Need a way to force 'Transform' edit mode
+    // #0000477: Proper interface for edit modes of view provider
+    if (vp)
+        getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Transform);
+}
+
+bool StdCmdTransformManip::isActive(void)
+{
+    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 1;
+}
+
+//===========================================================================
 // Std_Alignment
 //===========================================================================
 DEF_STD_CMD_A(StdCmdAlignment);
@@ -1284,6 +1316,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdRefresh());
     rcCmdMgr.addCommand(new StdCmdTransform());
     rcCmdMgr.addCommand(new StdCmdPlacement());
+    rcCmdMgr.addCommand(new StdCmdTransformManip());
     rcCmdMgr.addCommand(new StdCmdAlignment());
     rcCmdMgr.addCommand(new StdCmdEdit());
 }
