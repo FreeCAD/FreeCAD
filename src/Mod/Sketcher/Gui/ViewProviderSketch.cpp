@@ -3349,6 +3349,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                     delGeometries.insert(GeoId);
                 else
                     delCoincidents.insert(VtId);
+            } else if (*it == "RootPoint") {
+                delCoincidents.insert(-1);
             } else if (it->size() > 10 && it->substr(0,10) == "Constraint") {
                 int ConstrId = std::atoi(it->substr(10,4000).c_str());
                 delConstraints.insert(ConstrId);
