@@ -410,7 +410,11 @@ int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)
 {
     int GeoId;
     PointPos PosId;
-    getGeoVertexIndex(VertexId, GeoId, PosId);
+    if (VertexId == -1) { // RootPoint
+        GeoId = -1;
+        PosId = start;
+    } else
+        getGeoVertexIndex(VertexId, GeoId, PosId);
     return delConstraintOnPoint(GeoId, PosId, onlyCoincident);
 }
 
