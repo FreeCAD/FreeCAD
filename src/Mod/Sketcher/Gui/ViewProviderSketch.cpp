@@ -1653,6 +1653,9 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
         }
     }
 
+    pnt0 = proj(Plm.getPosition());
+    if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y)))
+        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), "RootPoint");
 }
 
 void ViewProviderSketch::updateColor(void)
