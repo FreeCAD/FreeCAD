@@ -1807,16 +1807,18 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two points and one line from the sketch."));
+            QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
+                        "or a line and a symmetry point from the sketch."));
         return;
     }
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
 
-    if (SubNames.size() != 3) {
+    if (SubNames.size() != 3 && SubNames.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two points and one line from the sketch."));
+            QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
+                        "or a line and a symmetry point from the sketch."));
         return;
     }
 
@@ -1824,6 +1826,44 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     Sketcher::PointPos PosId1, PosId2, PosId3;
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
+
+    if (SubNames.size() == 2) {
+        checkBothExternal(GeoId1, GeoId2);
+        if (isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
+        }
+        if (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) {
+            const Part::Geometry *geom = Obj->getGeometry(GeoId1);
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (GeoId1 == GeoId2) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                        QObject::tr("Cannot add a symmetry constraint between a line and its end points!"));
+                    return;
+                }
+
+                // undo command open
+                openCommand("add symmetric constraint");
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
+                    selection[0].getFeatName(),GeoId1,Sketcher::start,GeoId1,Sketcher::end,GeoId2,PosId2);
+
+                // finish the transaction and update
+                commitCommand();
+                updateActive();
+
+                // clear the selection (convenience)
+                getSelection().clearSelection();
+                return;
+            }
+        }
+
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
+                        "or a line and a symmetry point from the sketch."));
+        return;
+    }
+
     getIdsFromName(SubNames[2], Obj, GeoId3, PosId3);
 
     if (isEdge(GeoId1,PosId1) && isVertex(GeoId3,PosId3)) {
@@ -1885,7 +1925,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         }
     }
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select two points and one line from the sketch."));
+        QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
+                    "or a line and a symmetry point from the sketch."));
 }
 
 bool CmdSketcherConstrainSymmetric::isActive(void)
