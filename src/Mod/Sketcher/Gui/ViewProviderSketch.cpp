@@ -2804,7 +2804,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 {
     ViewProvider2DObject::updateData(prop);
 
-    if (edit && (prop == &(getSketchObject()->Geometry) || &(getSketchObject()->Constraints))) {
+    if (edit && (prop == &(getSketchObject()->Geometry) ||
+                 prop == &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
         solveSketch();
         draw(true);
