@@ -210,6 +210,7 @@ EXTRA_DIST = \
 		Resources/icons/Part_CreatePrimitives.png \
 		Resources/icons/Part_CreatePrimitives.svg \
 		Resources/icons/Part_Fuse.svg \
+		Resources/icons/Part_CrossSections.svg \
 		Resources/icons/Part_Section.svg \
 		Resources/icons/Part_Extrude.svg \
 		Resources/icons/Part_Fillet.svg \
@@ -218,11 +219,13 @@ EXTRA_DIST = \
 		Resources/icons/Part_Loft.svg \
 		Resources/icons/Part_Mirror.svg \
 		Resources/icons/Part_MirrorPNG.png \
+		Resources/icons/Part_Offset.svg \
 		Resources/icons/Part_RuledSurface.svg \
 		Resources/icons/Part_Shapebuilder.png \
 		Resources/icons/Part_Shapebuilder.svg \
 		Resources/icons/Part_ShapeInfo.svg \
 		Resources/icons/Part_Sweep.svg \
+		Resources/icons/Part_Thickness.svg \
 		Resources/icons/Tree_Part.svg \
 		Resources/icons/preferences-part_design.svg \
 		Resources/icons/PartFeature.svg \
