@@ -57,6 +57,10 @@ public:
      *  or its support if it has one
       */
     void positionBySketch(void);
+    /** applies a transform on the Placement of the Sketch or its
+     *  support if it has one
+      */
+    virtual void transformPlacement(const Base::Placement &transform);
 
     /// Verifies the linked Sketch object
     Part::Part2DObject* getVerifiedSketch() const;
