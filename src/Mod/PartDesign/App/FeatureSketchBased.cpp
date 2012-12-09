@@ -116,6 +116,19 @@ void SketchBased::positionBySketch(void)
     }
 }
 
+void SketchBased::transformPlacement(const Base::Placement &transform)
+{
+    Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
+    if (sketch && sketch->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        Part::Feature *part = static_cast<Part::Feature*>(sketch->Support.getValue());
+        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+            part->transformPlacement(transform);
+        else
+            sketch->transformPlacement(transform);
+        positionBySketch();
+    }
+}
+
 Part::Part2DObject* SketchBased::getVerifiedSketch() const {
     App::DocumentObject* result = Sketch.getValue();
     if (!result)

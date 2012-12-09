@@ -47,3 +47,10 @@ GeoFeature::GeoFeature(void)
 GeoFeature::~GeoFeature(void)
 {
 }
+
+void GeoFeature::transformPlacement(const Base::Placement &transform)
+{
+    Base::Placement plm = this->Placement.getValue();
+    plm = transform * plm;
+    this->Placement.setValue(plm);
+}
