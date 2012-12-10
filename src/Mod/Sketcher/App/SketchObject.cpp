@@ -165,6 +165,8 @@ int SketchObject::solve()
         for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
             if (*it) delete *it;
     }
+
+    return err;
 }
 
 int SketchObject::setDatum(int ConstrId, double Datum)
