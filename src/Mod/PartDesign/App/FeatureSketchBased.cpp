@@ -561,11 +561,15 @@ const bool SketchBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Fa
     TopoDS_Wire wire = ShapeAnalysis::OuterWire(face);
     BRepExtrema_DistShapeShape distss(wire, mkEdge.Shape(), Precision::Confusion());
     if (distss.IsDone()) {
+        if (distss.Value() > Precision::Confusion())
+            return false;
         // build up map vertex->edge
         TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
         TopExp::MapShapesAndAncestors(wire, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
 
         for (Standard_Integer i=1; i<= distss.NbSolution(); i++) {
+            if (distss.PointOnShape1(i).Distance(distss.PointOnShape2(i)) > Precision::Confusion())
+                continue;
             BRepExtrema_SupportType type = distss.SupportTypeShape1(i);
             if (type == BRepExtrema_IsOnEdge) {
                 //This further check is not really needed
