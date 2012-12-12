@@ -104,6 +104,7 @@
 #include "SoFCVectorizeU3DAction.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCDB.h"
+#include "Application.h"
 #include "MainWindow.h"
 #include "NavigationStyle.h"
 #include "ViewProvider.h"
@@ -1447,6 +1448,7 @@ void View3DInventorViewer::viewAll(float factor)
 
 void View3DInventorViewer::viewSelection()
 {
+#if 0
     // Search for all SoFCSelection nodes
     SoSearchAction searchAction;
     searchAction.setType(SoFCSelection::getClassTypeId());
@@ -1472,6 +1474,18 @@ void View3DInventorViewer::viewSelection()
             root->addChild(select);
         }
     }
+#else
+    SoGroup* root = new SoGroup();
+    root->ref();
+
+    std::vector<App::DocumentObject*> selection = Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::iterator it = selection.begin(); it != selection.end(); ++it) {
+        ViewProvider* vp = Application::Instance->getViewProvider(*it);
+        if (vp) {
+            root->addChild(vp->getRoot());
+        }
+    }
+#endif
 
     SoCamera* cam = this->getCamera();
     if (cam) cam->viewAll(root, this->getViewportRegion());
