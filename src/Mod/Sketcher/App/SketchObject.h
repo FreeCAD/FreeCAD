@@ -104,6 +104,8 @@ public:
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
 
+    /// solves the sketch and updates the Geometry
+    int solve();
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// move this point to a new location and solve

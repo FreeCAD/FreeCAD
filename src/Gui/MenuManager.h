@@ -51,6 +51,7 @@ public:
 
     void appendItem(MenuItem*);
     bool insertItem(MenuItem*, MenuItem*);
+    MenuItem* afterItem(MenuItem*) const;
     void removeItem(MenuItem*);
     void clear();
 

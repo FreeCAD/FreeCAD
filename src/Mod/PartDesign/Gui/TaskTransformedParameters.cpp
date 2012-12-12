@@ -76,6 +76,12 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
     originalSelectionMode = false;
 }
 
+TaskTransformedParameters::~TaskTransformedParameters()
+{
+    // make sure to remove selection gate in all cases
+    Gui::Selection().rmvSelectionGate();
+}
+
 const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && originalSelectionMode) {

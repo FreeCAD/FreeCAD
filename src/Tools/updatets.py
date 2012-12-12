@@ -60,11 +60,11 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/OpenSCAD",
                "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
               ["src/Mod/Start",
-               "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPage.ts"]
+               "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPage.ts"],
               ["src/Mod/Ship",
-               'pylupdate4 `find ./ -name "*.py"` -ts resources/translations/Ship.ts']
+               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Ship.ts'],
               ["src/Mod/Plot",
-               'pylupdate4 -verbose `find ./ -name "*.py"` -ts resources/translations/Plot.ts']]
+               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Plot.ts']]
 
 # add python folders to exclude list
 for c in PyCommands:

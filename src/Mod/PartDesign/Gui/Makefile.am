@@ -41,6 +41,7 @@ libPartDesignGui_la_UI=\
 		TaskPadParameters.ui \
 		TaskPocketParameters.ui \
 		TaskChamferParameters.ui \
+		TaskDraftParameters.ui \
 		TaskFilletParameters.ui \
 		TaskFilletParameters.ui \
 		TaskHoleParameters.ui \
@@ -72,7 +73,7 @@ libPartDesignGui_la_SOURCES=\
 		TaskFilletParameters.cpp \
 		TaskFilletParameters.h \
 		TaskDraftParameters.cpp \
-                TaskDraftParameters.h \
+		TaskDraftParameters.h \
 		TaskLinearPatternParameters.cpp \
 		TaskLinearPatternParameters.h \
 		TaskMirroredParameters.cpp \

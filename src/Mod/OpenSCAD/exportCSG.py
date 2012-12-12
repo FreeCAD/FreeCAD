@@ -90,7 +90,7 @@ def vertexs2polygon(vertex):
 
 def shape2polyhedron(shape):
     import MeshPart
-fa = params.GetFloat('exportFa',12.0)
+    fa = params.GetFloat('exportFa',12.0)
     return mesh2polyhedron(MeshPart.meshFromShape(shape,params.GetFloat(\
         'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
          params.GetFloat('meshlocallen',0.0),\

@@ -125,10 +125,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if ((*o)->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
             PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(*o);
             shape = addFeature->AddShape.getShape()._Shape;
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
             fuse = true;
         } else if ((*o)->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
             PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(*o);
             shape = subFeature->SubShape.getShape()._Shape;
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Shape of subtractive feature is empty");
             fuse = false;
         } else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");

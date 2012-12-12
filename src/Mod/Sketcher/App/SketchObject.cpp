@@ -144,6 +144,31 @@ int SketchObject::hasConflicts(void) const
     return 0;
 }
 
+int SketchObject::solve()
+{
+    // set up a sketch (including dofs counting and diagnosing of conflicts)
+    Sketch sketch;
+    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                                  getExternalGeometryCount());
+    int err=0;
+    if (dofs < 0) // over-constrained sketch
+        err = -3;
+    else if (sketch.hasConflicts()) // conflicting constraints
+        err = -3;
+    else if (sketch.solve() != 0) // solving
+        err = -2;
+
+    if (err == 0) {
+        // set the newly solved geometry
+        std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
+        Geometry.setValues(geomlist);
+        for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
+            if (*it) delete *it;
+    }
+
+    return err;
+}
+
 int SketchObject::setDatum(int ConstrId, double Datum)
 {
     // set the changed value for the constraint
@@ -170,26 +195,8 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     this->Constraints.setValues(newVals);
     delete constNew;
 
-    // set up a sketch (including dofs counting and diagnosing of conflicts)
-    Sketch sketch;
-    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  getExternalGeometryCount());
-    int err=0;
-    if (dofs < 0) // over-constrained sketch
-        err = -3;
-    else if (sketch.hasConflicts()) // conflicting constraints
-        err = -3;
-    else if (sketch.solve() != 0) // solving
-        err = -2;
-
-    if (err == 0) {
-        // set the newly solved geometry
-        std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
-        Geometry.setValues(geomlist);
-        for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
-            if (*it) delete *it;
-    }
-    else
+    int err = solve();
+    if (err)
         this->Constraints.setValues(vals);
 
     return err;
@@ -405,7 +412,11 @@ int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)
 {
     int GeoId;
     PointPos PosId;
-    getGeoVertexIndex(VertexId, GeoId, PosId);
+    if (VertexId == -1) { // RootPoint
+        GeoId = -1;
+        PosId = start;
+    } else
+        getGeoVertexIndex(VertexId, GeoId, PosId);
     return delConstraintOnPoint(GeoId, PosId, onlyCoincident);
 }
 

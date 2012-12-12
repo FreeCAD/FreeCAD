@@ -1992,6 +1992,8 @@ class _ViewProviderDimension(_ViewProviderDraft):
         self.onChanged(obj,"FontName")
             
     def updateData(self, obj, prop):
+        if not prop in ["Start","End","Dimline"]:
+            return
         from pivy import coin
         try:
             dm = obj.ViewObject.DisplayMode
@@ -2017,6 +2019,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 if v1 != obj.Start: obj.Start = v1
                 if v2 != obj.End: obj.End = v2
         p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj)
+        # print p1,p2,p3,p4,tbase,norm,rot
         if 'Override' in obj.ViewObject.PropertiesList:
             text = str(obj.ViewObject.Override)
         dtext = getParam("dimPrecision")

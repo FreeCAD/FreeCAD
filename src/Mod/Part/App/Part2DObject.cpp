@@ -186,6 +186,16 @@ void Part2DObject::positionBySupport(void)
     Placement.setValue(Base::Placement(mtrx));
 }
 
+void Part2DObject::transformPlacement(const Base::Placement &transform)
+{
+    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
+    if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        part->transformPlacement(transform);
+        positionBySupport();
+    } else
+        GeoFeature::transformPlacement(transform);
+}
+
 int Part2DObject::getAxisCount(void) const
 {
     return 0;
