@@ -107,8 +107,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     // get reference axis
     App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
+    bool hasValidAxis=false;
     if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        bool hasValidAxis=false;
         Base::Axis axis;
         if (subReferenceAxis[0] == "V_Axis") {
             hasValidAxis = true;
@@ -132,6 +132,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             Base.setValue(base.x,base.y,base.z);
             Axis.setValue(dir.x,dir.y,dir.z);
         }
+    }
+    if (!hasValidAxis) {
+        return new App::DocumentObjectExecReturn("No valid reference axis defined");
     }
 
     // get revolve axis

@@ -4,25 +4,30 @@
 
 # Get version and revision number
 MAJ=0
-MIN=12
+MIN=13
 REV=0
 
-if svn --xml info >/dev/null 2>&1; then
-	REV=`svn --xml info | tr -d '\r\n' | sed -e 's/.*<commit.*revision="\([0-9]*\)".*<\/commit>.*/\1/'`
-elif svn --version --quiet >/dev/null 2>&1; then
-	REV=`svn info | grep "^Revision:" | cut -d" " -f2`
-fi
+#if svn --xml info >/dev/null 2>&1; then
+#	REV=`svn --xml info | tr -d '\r\n' | sed -e 's/.*<commit.*revision="\([0-9]*\)".*<\/commit>.*/\1/'`
+#elif svn --version --quiet >/dev/null 2>&1; then
+#	REV=`svn info | grep "^Revision:" | cut -d" " -f2`
+#fi
+# count all lines that don't match this string
+REV=`git rev-list HEAD | grep -cv "*"`
 
 # if revision.m4 does not exist, create it
 REV_FILE=revision.m4
-if [ -f $REV_FILE ]; then
-	echo "$REV_FILE found"
-else
-	echo "m4_define([FREECAD_MAJOR], $MAJ)" > $REV_FILE
-	echo "m4_define([FREECAD_MINOR], $MIN)" >> $REV_FILE
-	echo "m4_define([FREECAD_MICRO], $REV)" >> $REV_FILE
-	echo "$REV_FILE created"
-fi
+#if [ -f $REV_FILE ]; then
+#	echo "$REV_FILE found"
+#else
+#	echo "m4_define([FREECAD_MAJOR], $MAJ)" > $REV_FILE
+#	echo "m4_define([FREECAD_MINOR], $MIN)" >> $REV_FILE
+#	echo "m4_define([FREECAD_MICRO], $REV)" >> $REV_FILE
+#	echo "$REV_FILE created"
+#fi
+echo "m4_define([FREECAD_MAJOR], $MAJ)" > $REV_FILE
+echo "m4_define([FREECAD_MINOR], $MIN)" >> $REV_FILE
+echo "m4_define([FREECAD_MICRO], $REV)" >> $REV_FILE
 
 # create m4 subdirectory which fails for some older versions of autotools
 [ -d m4 ] || mkdir m4

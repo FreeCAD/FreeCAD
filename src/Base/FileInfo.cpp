@@ -154,6 +154,7 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 
     // this already creates the file
     GetTempFileNameW(path.c_str(),file.c_str(),0,buf);
+    DeleteFileW(buf);
 
     return std::string(ConvertFromWideString(std::wstring(buf)));
 #else

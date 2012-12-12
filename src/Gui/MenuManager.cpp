@@ -120,6 +120,14 @@ bool MenuItem::insertItem(MenuItem* before, MenuItem* item)
         return false;
 }
 
+MenuItem* MenuItem::afterItem(MenuItem* item) const
+{
+    int pos = _items.indexOf(item);
+    if (pos < 0 || pos+1 == _items.size())
+        return 0;
+    return _items.at(pos+1);
+}
+
 void MenuItem::removeItem(MenuItem* item)
 {
     int pos = _items.indexOf(item);

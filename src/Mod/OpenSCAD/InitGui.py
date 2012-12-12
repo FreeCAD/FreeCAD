@@ -94,8 +94,11 @@ static char * openscadlogo_xpm[] = {
     ToolTip = "OpenSCAD workbench"
     def Initialize(self):
         import OpenSCAD_rc,OpenSCADCommands
-        commands=['ReplaceObject','RemoveSubtree','RefineShapeFeature',"Edgestofaces",'ExpandPlacements']
-        toolbarcommands=['ReplaceObject','RemoveSubtree','RefineShapeFeature']
+        commands=['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',\
+            'OpenSCAD_RefineShapeFeature',"OpenSCAD_Edgestofaces",\
+            'OpenSCAD_ExpandPlacements']
+        toolbarcommands=['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',\
+            'OpenSCAD_RefineShapeFeature']
         import PartGui
         parttoolbarcommands = ['Part_CheckGeometry',"Part_Primitives",\
             "Part_Builder",'Part_Cut','Part_Fuse','Part_Common',\
@@ -105,8 +108,8 @@ static char * openscadlogo_xpm[] = {
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
         openscadfilename = param.GetString('openscadexecutable')
         if openscadfilename:
-            commands.extend(['AddOpenSCADElement'])
-            toolbarcommands.extend(['AddOpenSCADElement'])
+            commands.extend(['OpenSCAD_AddOpenSCADElement'])
+            toolbarcommands.extend(['OpenSCAD_AddOpenSCADElement'])
         self.appendToolbar("OpenSCADTools",toolbarcommands)
         self.appendMenu('OpenSCAD',commands)
         self.appendToolbar('OpenSCAD Part tools',parttoolbarcommands)

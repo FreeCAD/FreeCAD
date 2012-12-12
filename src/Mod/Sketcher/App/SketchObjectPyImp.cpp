@@ -107,7 +107,9 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
 
     if (PyObject_TypeCheck(pcObj, &(Sketcher::ConstraintPy::Type))) {
         Sketcher::Constraint *constr = static_cast<Sketcher::ConstraintPy*>(pcObj)->getConstraintPtr();
-        return Py::new_reference_to(Py::Int(this->getSketchObjectPtr()->addConstraint(constr)));
+        int ret = this->getSketchObjectPtr()->addConstraint(constr);
+        this->getSketchObjectPtr()->solve();
+        return Py::new_reference_to(Py::Int(ret));
     }
     Py_Return;
 }

@@ -1653,6 +1653,9 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
         }
     }
 
+    pnt0 = proj(Plm.getPosition());
+    if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y)))
+        Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), "RootPoint");
 }
 
 void ViewProviderSketch::updateColor(void)
@@ -2801,7 +2804,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 {
     ViewProvider2DObject::updateData(prop);
 
-    if (edit && (prop == &(getSketchObject()->Geometry) || &(getSketchObject()->Constraints))) {
+    if (edit && (prop == &(getSketchObject()->Geometry) ||
+                 prop == &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
         solveSketch();
         draw(true);
@@ -3349,6 +3353,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                     delGeometries.insert(GeoId);
                 else
                     delCoincidents.insert(VtId);
+            } else if (*it == "RootPoint") {
+                delCoincidents.insert(-1);
             } else if (it->size() > 10 && it->substr(0,10) == "Constraint") {
                 int ConstrId = std::atoi(it->substr(10,4000).c_str());
                 delConstraints.insert(ConstrId);

@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="+46"/>
-      <source>Mesh</source>
-      <translation>Mesh</translation>
+        <location filename="../../Command.cpp" line="+46"/>
+        <source>Mesh</source>
+        <translation>Mesh</translation>
     </message>
     <message>
-      <source>Create mesh from shape...</source>
-      <translation>Luo verkko muodosta...</translation>
+        <location line="+1"/>
+        <source>Create mesh from shape...</source>
+        <translation>Luo verkko muodosta...</translation>
     </message>
     <message>
-      <source>Tessellate shape</source>
-      <translation>Geometrian pilkottu muoto</translation>
+        <location line="+1"/>
+        <source>Tessellate shape</source>
+        <translation>Geometrian pilkottu muoto</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location filename="../../Tessellation.ui" line="+14"/>
-      <source>Tessellation</source>
-      <translation>Geometrian pilkkominen</translation>
+        <location filename="../../Tessellation.ui" line="+14"/>
+        <source>Tessellation</source>
+        <translation>Geometrian pilkkominen</translation>
     </message>
     <message>
-      <source>Shapes</source>
-      <translation>Muodot</translation>
+        <location line="+10"/>
+        <source>Shapes</source>
+        <translation>Muodot</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Asetukset</translation>
+        <location line="+8"/>
+        <source>Settings</source>
+        <translation>Asetukset</translation>
     </message>
     <message>
-      <source>Surface deviation:</source>
-      <translation>Pinnan poikkeama:</translation>
+        <location line="+6"/>
+        <source>Surface deviation:</source>
+        <translation>Pinnan poikkeama:</translation>
     </message>
     <message>
-      <source>Max. edge length:</source>
-      <translation>Maks. reunan pituus:</translation>
+        <location line="+26"/>
+        <source>Max. edge length:</source>
+        <translation>Maks. reunan pituus:</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+106"/>
-      <source>Select a shape for meshing, first.</source>
-      <translation>Valitse ensin muoto verkkoihin.</translation>
+        <location filename="../../Tessellation.cpp" line="+106"/>
+        <source>Select a shape for meshing, first.</source>
+        <translation>Valitse ensin muoto verkkoihin.</translation>
     </message>
     <message>
-      <source>No such document '%1'.</source>
-      <translation>Ei tällainen asiakirja '%1'.</translation>
+        <location line="+7"/>
+        <source>No such document &apos;%1&apos;.</source>
+        <translation>Ei tällainen asiakirja &apos;%1&apos;.</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+36"/>
-      <source>MeshPart</source>
-      <translation>VerkotaOsa</translation>
+        <location filename="../../Workbench.cpp" line="+36"/>
+        <source>MeshPart</source>
+        <translation>VerkotaOsa</translation>
     </message>
-  </context>
+</context>
 </TS>

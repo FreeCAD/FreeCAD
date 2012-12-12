@@ -1,199 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+425"/>
-      <source>File</source>
-      <translation>Plik</translation>
+        <location filename="../../Command.cpp" line="+425"/>
+        <source>File</source>
+        <translation>Plik</translation>
     </message>
     <message>
-      <source>&amp;Export project...</source>
-      <translation>&amp;Eksportuj projekt...</translation>
+        <location line="+1"/>
+        <source>&amp;Export project...</source>
+        <translation>&amp;Eksportuj projekt...</translation>
     </message>
     <message>
-      <source>Export the Povray project file</source>
-      <translation>Eksport pliku projektu Povray</translation>
+        <location line="+1"/>
+        <source>Export the Povray project file</source>
+        <translation>Eksport pliku projektu Povray</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
+        <location line="-71"/>
+        <source>Raytracing</source>
+        <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Insert part</source>
-      <translation>Wstaw część</translation>
+        <location line="+1"/>
+        <source>Insert part</source>
+        <translation>Wstaw część</translation>
     </message>
     <message>
-      <source>Insert a new part object into a Povray project</source>
-      <translation>Wstaw nowy obiekt do projektu Povray</translation>
+        <location line="+1"/>
+        <source>Insert a new part object into a Povray project</source>
+        <translation>Wstaw nowy obiekt do projektu Povray</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
+        <location line="-57"/>
+        <source>Raytracing</source>
+        <translation>Raytracing</translation>
     </message>
     <message>
-      <source>New Povray project</source>
-      <translation>Nowy projekt Povray</translation>
+        <location line="+1"/>
+        <source>New Povray project</source>
+        <translation>Nowy projekt Povray</translation>
     </message>
     <message>
-      <source>Insert new Povray project into the document</source>
-      <translation>Wstaw nowy projekt Povray do dokumentu</translation>
+        <location line="+1"/>
+        <source>Insert new Povray project into the document</source>
+        <translation>Wstaw nowy projekt Povray do dokumentu</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
+        <location line="-227"/>
+        <source>Raytracing</source>
+        <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Export camera to povray...</source>
-      <translation>Eksport kamery do Povray...</translation>
+        <location line="+1"/>
+        <source>Export camera to povray...</source>
+        <translation>Eksport kamery do Povray...</translation>
     </message>
     <message>
-      <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation>Eksport kamery aktywnego widoku Povray do pliku</translation>
+        <location line="+1"/>
+        <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
+        <translation>Eksport kamery aktywnego widoku Povray do pliku</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdRaytracingWritePart</name>
     <message>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
+        <location line="+92"/>
+        <source>Raytracing</source>
+        <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Export part to povray...</source>
-      <translation>Eksport obiektu do Povray...</translation>
+        <location line="+1"/>
+        <source>Export part to povray...</source>
+        <translation>Eksport obiektu do Povray...</translation>
     </message>
     <message>
-      <source>Write the selected Part (object) as a povray file</source>
-      <translation>Zapisz wybrany obiekt jako plik Povray</translation>
+        <location line="+1"/>
+        <source>Write the selected Part (object) as a povray file</source>
+        <translation>Zapisz wybrany obiekt jako plik Povray</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CmdRaytracingWriteView</name>
     <message>
-      <source>No perspective camera</source>
-      <translation>Brak podglądu perspektywy</translation>
+        <location line="-80"/>
+        <location line="+140"/>
+        <location line="+85"/>
+        <source>No perspective camera</source>
+        <translation>Brak podglądu perspektywy</translation>
     </message>
     <message>
-      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
+        <location line="-224"/>
+        <location line="+140"/>
+        <location line="+85"/>
+        <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation>Obecny widok to nie perspektywa. Obraz povray może wyglądać inaczej niż się tego spodziewasz. Czy chcesz kontynuować?</translation>
+        <translation>Obecny widok to nie perspektywa. Obraz povray może wyglądać inaczej niż się tego spodziewasz. Czy chcesz kontynuować?</translation>
     </message>
     <message>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
+        <location line="-102"/>
+        <source>Raytracing</source>
+        <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Export view to povray...</source>
-      <translation>Eksport widoku do Povray...</translation>
+        <location line="+1"/>
+        <source>Export view to povray...</source>
+        <translation>Eksport widoku do Povray...</translation>
     </message>
     <message>
-      <source>Write the active 3D view with camera and all its content to a povray file</source>
-      <translation>Zapisz aktywny widok 3D wraz z zawartością do pliku Povray</translation>
+        <location line="+1"/>
+        <source>Write the active 3D view with camera and all its content to a povray file</source>
+        <translation>Zapisz aktywny widok 3D wraz z zawartością do pliku Povray</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>QObject</name>
     <message>
-      <source>Povray(*.pov)</source>
-      <translation>Povray (*. pov)</translation>
+        <location line="-88"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+200"/>
+        <source>Povray(*.pov)</source>
+        <translation>Povray (*. pov)</translation>
     </message>
     <message>
-      <source>All Files (*.*)</source>
-      <translation>Wszystkie pliki (*.*)</translation>
+        <location line="-312"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+200"/>
+        <source>All Files (*.*)</source>
+        <translation>Wszystkie pliki (*.*)</translation>
     </message>
     <message>
-      <source>Export page</source>
-      <translation>Wyślij stronę</translation>
+        <location line="-312"/>
+        <location line="+51"/>
+        <location line="+63"/>
+        <location line="+200"/>
+        <source>Export page</source>
+        <translation>Wyślij stronę</translation>
     </message>
     <message>
-      <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+        <location line="-78"/>
+        <location line="+69"/>
+        <source>Wrong selection</source>
+        <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
-      <source>Select a Part object.</source>
-      <translation>Wybierz stronę.</translation>
+        <location line="-68"/>
+        <source>Select a Part object.</source>
+        <translation>Wybierz stronę.</translation>
     </message>
     <message>
-      <source>No Povray project to insert</source>
-      <translation>Brak obiektu Povray do wstawienia</translation>
+        <location line="+7"/>
+        <location line="+9"/>
+        <source>No Povray project to insert</source>
+        <translation>Brak obiektu Povray do wstawienia</translation>
     </message>
     <message>
-      <source>Create a Povray project to insert a view.</source>
-      <translation>Utwórz projekt Povray aby wstawić widok</translation>
+        <location line="-8"/>
+        <source>Create a Povray project to insert a view.</source>
+        <translation>Utwórz projekt Povray aby wstawić widok</translation>
     </message>
     <message>
-      <source>Select a Povray project to insert the view.</source>
-      <translation>Wybierz projekt Povray aby wstawić widok.</translation>
+        <location line="+9"/>
+        <source>Select a Povray project to insert the view.</source>
+        <translation>Wybierz projekt Povray aby wstawić widok.</translation>
     </message>
     <message>
-      <source>Select one Povray project object.</source>
-      <translation>Wybierz jeden obiekt projektu Povray</translation>
+        <location line="+52"/>
+        <source>Select one Povray project object.</source>
+        <translation>Wybierz jeden obiekt projektu Povray</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>RaytracingGui::DlgSettingsRay</name>
     <message>
-      <location filename="../../DlgSettingsRay.ui" line="+16"/>
-      <source>Raytracing</source>
-      <translation>Raytracing</translation>
+        <location filename="../../DlgSettingsRay.ui" line="+16"/>
+        <source>Raytracing</source>
+        <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Directories</source>
-      <translation>Foldery:</translation>
+        <location line="+99"/>
+        <source>Directories</source>
+        <translation>Foldery:</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Domyślny folder Projektu:</translation>
+        <location line="+50"/>
+        <source>Default Project dir:</source>
+        <translation>Domyślny folder Projektu:</translation>
     </message>
     <message>
-      <source>Camera file name:</source>
-      <translation>Nazwa pliku Kamery:</translation>
+        <location line="-23"/>
+        <source>Camera file name:</source>
+        <translation>Nazwa pliku Kamery:</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Nazwa pliku Obiektu:</translation>
+        <location line="-7"/>
+        <source>Part file name:</source>
+        <translation>Nazwa pliku Obiektu:</translation>
     </message>
     <message>
-      <source>TempCamera.inc</source>
-      <translation>TempCamera.inc</translation>
+        <location line="+37"/>
+        <source>TempCamera.inc</source>
+        <translation>TempCamera.inc</translation>
     </message>
     <message>
-      <source>TempPart.inc</source>
-      <translation>TempPart.inc</translation>
+        <location line="+13"/>
+        <source>TempPart.inc</source>
+        <translation>TempPart.inc</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Ustawienia eksportu siatki</translation>
+        <location line="-157"/>
+        <source>Mesh export settings</source>
+        <translation>Ustawienia eksportu siatki</translation>
     </message>
     <message>
-      <source>max mesh deviation:</source>
-      <translation>Max. odchylenie siatki:</translation>
+        <location line="+28"/>
+        <source>max mesh deviation:</source>
+        <translation>Max. odchylenie siatki:</translation>
     </message>
     <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Nie przeliczaj 'normalnych' wierzchołków</translation>
+        <location line="+30"/>
+        <source>Do not calculate vertex normals</source>
+        <translation>Nie przeliczaj &apos;normalnych&apos; wierzchołków</translation>
     </message>
     <message>
-      <source>Write u,v coordinates</source>
-      <translation>Zapisz współrzędne U,V</translation>
+        <location line="+13"/>
+        <source>Write u,v coordinates</source>
+        <translation>Zapisz współrzędne U,V</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
-      <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+        <location filename="../../Workbench.cpp" line="+37"/>
+        <source>&amp;Raytracing</source>
+        <translation>&amp;Raytracing</translation>
     </message>
-  </context>
+</context>
 </TS>

@@ -104,7 +104,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     }
 
     if (pos < 0 || pos >= ui->axis->count()) {
-        ui->axis->addItem(QString::fromAscii("Undefined"));
+        ui->axis->addItem(tr("Undefined"));
         pos = ui->axis->count()-1;
     }
 
