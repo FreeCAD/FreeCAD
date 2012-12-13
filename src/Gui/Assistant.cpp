@@ -76,7 +76,7 @@ bool Assistant::startAssistant()
     if (proc->state() != QProcess::Running) {
 #ifdef Q_OS_WIN
         QString app;
-        app = QDir::convertSeparators(QString::fromUtf8
+        app = QDir::toNativeSeparators(QString::fromUtf8
             (App::GetApplication().GetHomePath()) + QLatin1String("bin/"));
 #else
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();

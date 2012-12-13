@@ -416,7 +416,7 @@ void Command::doCommand(DoCmd_Type eType,const char* sCmd,...)
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,format);
     else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,format);
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,format);
 
     try {
         Base::Interpreter().runString(format);
@@ -439,7 +439,7 @@ void Command::runCommand(DoCmd_Type eType,const char* sCmd)
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
     else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,sCmd);
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
     Base::Interpreter().runString(sCmd);
 }
 
@@ -476,7 +476,7 @@ const std::string Command::strToPython(const char* Str)
 void Command::updateActive(void)
 {
     WaitCursor wc;
-    doCommand(Gui,"App.ActiveDocument.recompute()");
+    doCommand(App,"App.ActiveDocument.recompute()");
 }
 
 bool Command::isActiveObjectValid(void)

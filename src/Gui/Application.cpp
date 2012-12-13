@@ -727,31 +727,35 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
             return;
     }
     d->activeDocument = pcDocument;
-    std::string name;
+    std::string nameApp, nameGui;
  
     // This adds just a line to the macro file but does not set the active document
+    // Macro recording of this is problematic, thus it's written out as comment.
     if (pcDocument){
-        name += "App.setActiveDocument(\"";
-        name += pcDocument->getDocument()->getName(); 
-        name +=  "\")\n";
-        name += "App.ActiveDocument=App.getDocument(\"";
-        name += pcDocument->getDocument()->getName(); 
-        name +=  "\")\n";
-        name += "Gui.ActiveDocument=Gui.getDocument(\"";
-        name += pcDocument->getDocument()->getName(); 
-        name +=  "\")";
-        macroManager()->addLine(MacroManager::Gui,name.c_str());
+        nameApp += "App.setActiveDocument(\"";
+        nameApp += pcDocument->getDocument()->getName(); 
+        nameApp +=  "\")\n";
+        nameApp += "App.ActiveDocument=App.getDocument(\"";
+        nameApp += pcDocument->getDocument()->getName(); 
+        nameApp +=  "\")";
+        macroManager()->addLine(MacroManager::Cmt,nameApp.c_str());
+        nameGui += "Gui.ActiveDocument=Gui.getDocument(\"";
+        nameGui += pcDocument->getDocument()->getName(); 
+        nameGui +=  "\")";
+        macroManager()->addLine(MacroManager::Cmt,nameGui.c_str());
     }
     else {
-        name += "App.setActiveDocument(\"\")\n";
-        name += "App.ActiveDocument=None\n";
-        name += "Gui.ActiveDocument=None";
-        macroManager()->addLine(MacroManager::Gui,name.c_str());
+        nameApp += "App.setActiveDocument(\"\")\n";
+        nameApp += "App.ActiveDocument=None";
+        macroManager()->addLine(MacroManager::Cmt,nameApp.c_str());
+        nameGui += "Gui.ActiveDocument=None";
+        macroManager()->addLine(MacroManager::Cmt,nameGui.c_str());
     }
 
     // Sets the currently active document
     try {
-        Base::Interpreter().runString(name.c_str());
+        Base::Interpreter().runString(nameApp.c_str());
+        Base::Interpreter().runString(nameGui.c_str());
     }
     catch (const Base::Exception& e) {
         Base::Console().Warning(e.what());
@@ -1267,7 +1271,7 @@ void Application::runCommand(bool bForce, const char* sCmd,...)
     va_end(namelessVars);
 
     if (bForce)
-        d->macroMngr->addLine(MacroManager::Base,format);
+        d->macroMngr->addLine(MacroManager::App,format);
     else
         d->macroMngr->addLine(MacroManager::Gui,format);
 
@@ -1288,7 +1292,7 @@ bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
     if (gui)
         d->macroMngr->addLine(MacroManager::Gui,cmd);
     else
-        d->macroMngr->addLine(MacroManager::Base,cmd);
+        d->macroMngr->addLine(MacroManager::App,cmd);
 
     try {
         Base::Interpreter().runString(cmd);
