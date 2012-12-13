@@ -82,7 +82,13 @@ void Part2DObject::positionBySupport(void)
     const Part::TopoShape &shape = part->Shape.getShape();
     if (shape._Shape.IsNull())
         throw Base::Exception("Support shape is empty!");
-    TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
+    TopoDS_Shape sh;
+    try {
+        sh = shape.getSubShape(sub[0].c_str());
+    }
+    catch (Standard_Failure) {
+        throw Base::Exception("Face in support shape doesn't exist!");
+    }
     const TopoDS_Face &face = TopoDS::Face(sh);
     if (face.IsNull())
         throw Base::Exception("Null face in Part2DObject::positionBySupport()!");

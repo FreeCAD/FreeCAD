@@ -731,7 +731,15 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
                 }
 
                 bool success = false;
-                TopoDS_Shape element = shape.getSubShape(it->c_str());
+                TopoDS_Shape element;
+                try {
+                    element = shape.getSubShape(it->c_str());
+                }
+                catch (Standard_Failure) {
+                    // This shape doesn't even exist, so no chance to do some tests
+                    newSubValues.push_back(*it);
+                    continue;
+                }
                 try {
                     // as very first test check if old face and new face are parallel planes
                     TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(it->c_str());
