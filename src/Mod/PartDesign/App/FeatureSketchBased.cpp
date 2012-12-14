@@ -618,10 +618,14 @@ const bool SketchBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Fa
                         p_eps2 = adapt2.Value(adapt2.LastParameter() - 2*Precision::Confusion());
 
                     // now check if we get a change in the sign of the distances
-                    Standard_Real dist_p_eps1_pnt = gp_Dir(gp_Vec(p_eps1, pnt)).Dot(dir);
-                    Standard_Real dist_p_eps2_pnt = gp_Dir(gp_Vec(p_eps2, pnt)).Dot(dir);
-                    if (dist_p_eps1_pnt * dist_p_eps2_pnt < 0)
-                        return true;
+                    Standard_Real dist_p_eps1_pnt = gp_Vec(p_eps1, pnt).Dot(gp_Vec(dir));
+                    Standard_Real dist_p_eps2_pnt = gp_Vec(p_eps2, pnt).Dot(gp_Vec(dir));
+                    // distance to the plane must be noticable
+                    if (fabs(dist_p_eps1_pnt) > Precision::Confusion() &&
+                        fabs(dist_p_eps2_pnt) > Precision::Confusion()) {
+                        if (dist_p_eps1_pnt * dist_p_eps2_pnt < 0)
+                            return true;
+                    }
                 }
             }
         }
@@ -727,7 +731,15 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
                 }
 
                 bool success = false;
-                TopoDS_Shape element = shape.getSubShape(it->c_str());
+                TopoDS_Shape element;
+                try {
+                    element = shape.getSubShape(it->c_str());
+                }
+                catch (Standard_Failure) {
+                    // This shape doesn't even exist, so no chance to do some tests
+                    newSubValues.push_back(*it);
+                    continue;
+                }
                 try {
                     // as very first test check if old face and new face are parallel planes
                     TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(it->c_str());
