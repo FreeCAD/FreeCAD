@@ -572,15 +572,27 @@ const bool SketchBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Fa
                 continue;
             BRepExtrema_SupportType type = distss.SupportTypeShape1(i);
             if (type == BRepExtrema_IsOnEdge) {
-                //This further check is not really needed
-                return true;
-                //
                 TopoDS_Edge edge = TopoDS::Edge(distss.SupportOnShape1(i));
                 BRepAdaptor_Curve adapt(edge);
+                // create a plane (pnt,dir) that goes through the intersection point and is built of
+                // the vectors of the sketch normal and the rotation axis
+                const gp_Dir& normal = BRepAdaptor_Surface(face).Plane().Axis().Direction();
+                gp_Dir dir = line.Direction().Crossed(normal);
+                gp_Pnt pnt = distss.PointOnShape1(i);
+
                 Standard_Real t;
                 distss.ParOnEdgeS1(i, t);
-                if (t > adapt.FirstParameter() && t < adapt.LastParameter()) {
-                    return true;
+                gp_Pnt p_eps1 = adapt.Value(std::max<double>(adapt.FirstParameter(), t-10*Precision::Confusion()));
+                gp_Pnt p_eps2 = adapt.Value(std::min<double>(adapt.LastParameter(), t+10*Precision::Confusion()));
+
+                // now check if we get a change in the sign of the distances
+                Standard_Real dist_p_eps1_pnt = gp_Vec(p_eps1, pnt).Dot(gp_Vec(dir));
+                Standard_Real dist_p_eps2_pnt = gp_Vec(p_eps2, pnt).Dot(gp_Vec(dir));
+                // distance to the plane must be noticable
+                if (fabs(dist_p_eps1_pnt) > 5*Precision::Confusion() &&
+                    fabs(dist_p_eps2_pnt) > 5*Precision::Confusion()) {
+                    if (dist_p_eps1_pnt * dist_p_eps2_pnt < 0)
+                        return true;
                 }
             }
             else if (type == BRepExtrema_IsVertex) {
