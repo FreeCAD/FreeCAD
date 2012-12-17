@@ -297,7 +297,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setZoomStep(val);
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
-        _viewer->setStereoOffset(rGrp.GetFloat("EyeDistance",65.0));
+        _viewer->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
