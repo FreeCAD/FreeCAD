@@ -3114,12 +3114,17 @@ class Edit(Modifier):
         Modifier.finish(self)
         plane.restore()
         self.running = False
+        FreeCADGui.ActiveDocument.resetEdit()
 
     def action(self,arg):
         "scene event handler"
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+            elif arg["Key"] == "f":
+                self.finish()
+            elif arg["Key"] == "c":
+                self.finish(closed=True)
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             if self.editing != None:
                 self.point,ctrlPoint,info = getPoint(self,arg)
