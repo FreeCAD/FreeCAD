@@ -1,68 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+46"/>
-        <source>Mesh</source>
-        <translation>Сетка</translation>
+      <location filename="../../Command.cpp" line="+46"/>
+      <source>Mesh</source>
+      <translation>Сетка</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create mesh from shape...</source>
-        <translation>Создайте сетку из фигуры...</translation>
+      <source>Create mesh from shape...</source>
+      <translation>Создайте сетку из фигуры...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Tessellate shape</source>
-        <translation>Мозаика из фигуры</translation>
+      <source>Tessellate shape</source>
+      <translation>Мозаика из фигуры</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-        <location filename="../../Tessellation.ui" line="+14"/>
-        <source>Tessellation</source>
-        <translation>Мозаика</translation>
+      <location filename="../../Tessellation.ui" line="+14"/>
+      <source>Tessellation</source>
+      <translation>Мозаика</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Shapes</source>
-        <translation>Фигуры</translation>
+      <source>Shapes</source>
+      <translation>Фигуры</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Settings</source>
-        <translation>Настройки</translation>
+      <source>Settings</source>
+      <translation>Настройки</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Surface deviation:</source>
-        <translation>Отклонение поверхности:</translation>
+      <source>Surface deviation:</source>
+      <translation>Отклонение поверхности:</translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>Max. edge length:</source>
-        <translation>Макс. длина ребра:</translation>
+      <source>Max. edge length:</source>
+      <translation>Макс. длина ребра:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+106"/>
-        <source>Select a shape for meshing, first.</source>
-        <translation>Сначала выберите форму для слияния.</translation>
+      <location filename="../../Tessellation.cpp" line="+106"/>
+      <source>Select a shape for meshing, first.</source>
+      <translation>Сначала выберите форму для слияния.</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>No such document &apos;%1&apos;.</source>
-        <translation>Нет такого документа &apos;%1&apos;.</translation>
+      <source>No such document '%1'.</source>
+      <translation>Нет такого документа '%1'.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+36"/>
-        <source>MeshPart</source>
-        <translation>Деталь Сетки</translation>
+      <location filename="../../Workbench.cpp" line="+36"/>
+      <source>MeshPart</source>
+      <translation>Деталь Сетки</translation>
     </message>
-</context>
+  </context>
 </TS>

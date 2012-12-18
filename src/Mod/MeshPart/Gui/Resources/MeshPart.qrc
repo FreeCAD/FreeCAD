@@ -23,5 +23,6 @@
         <file>translations/MeshPart_ja.qm</file>
         <file>translations/MeshPart_ro.qm</file>
         <file>translations/MeshPart_hu.qm</file>
+        <file>translations/MeshPart_pt-PT.qm</file>
     </qresource>
 </RCC> 

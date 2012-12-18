@@ -6,7 +6,7 @@
     <message>
       <location filename="StartPage.py" line="25"/>
       <source>FreeCAD Start Center</source>
-      <translation>FreeCAD Start Center</translation>
+      <translation>FreeCAD Startcentrum</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="26"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="StartPage.py" line="55"/>
       <source>FreeCAD Complete workbench</source>
-      <translation>FreeCAD Complete workbench</translation>
+      <translation>FreeCAD complete werkbank</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="57"/>
@@ -242,6 +242,41 @@
       <location filename="StartPage.py" line="72"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation>Een blog gewijd aan het leren van FreeCAD, beheerd door leden van de FreeCAD gemeenschap</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="73"/>
+      <source>Getting started</source>
+      <translation>Getting started</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
+      <translation>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="75"/>
+      <source>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</source>
+      <translation>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="76"/>
+      <source>Ship Design</source>
+      <translation>Ship Design</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="77"/>
+      <source>Designing and calculating ships</source>
+      <translation>Designing and calculating ships</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="78"/>
+      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
+      <translation>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="79"/>
+      <source>Load an Architectural example model</source>
+      <translation>Load an Architectural example model</translation>
     </message>
   </context>
 </TS>

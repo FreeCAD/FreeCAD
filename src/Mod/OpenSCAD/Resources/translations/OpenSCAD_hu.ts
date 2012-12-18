@@ -59,107 +59,102 @@
       <translation>A sokszög (fn) maximális felületeinek száma</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="159"/>
-      <source>Debug: Register filetype to prototype importer</source>
-      <translation>Nyomkövetés: fájltípus regisztrálása a prototípus importáláshoz</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="180"/>
+      <location filename="openscadprefs-base.ui" line="160"/>
       <source>OpenSCAD export</source>
       <translation>OpenSCAD export</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="188"/>
+      <location filename="openscadprefs-base.ui" line="168"/>
       <source>maximum fragment size</source>
       <translation>a töredék maximum mérete</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="218"/>
+      <location filename="openscadprefs-base.ui" line="198"/>
       <source>minimum angle for a fragment</source>
       <translation>minimum dőlésszög a töredékhez</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="211"/>
+      <location filename="openscadprefs-base.ui" line="191"/>
       <source>angular (fa)</source>
       <translation>Dőlésszög (fa)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="221"/>
+      <location filename="openscadprefs-base.ui" line="201"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="275"/>
+      <location filename="openscadprefs-base.ui" line="255"/>
       <source>minimum size of a fragment</source>
       <translation>a töredék minimum mérete</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="253"/>
+      <location filename="openscadprefs-base.ui" line="233"/>
       <source>size (fs)</source>
       <translation>méret (fs)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="281"/>
+      <location filename="openscadprefs-base.ui" line="261"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="307"/>
+      <location filename="openscadprefs-base.ui" line="287"/>
       <source>convexity</source>
       <translation>domborúság</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="344"/>
+      <location filename="openscadprefs-base.ui" line="324"/>
       <source>Mesh fallback</source>
       <translation>Háló visszamaradás</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="364"/>
+      <location filename="openscadprefs-base.ui" line="344"/>
       <source>Maxium Length</source>
       <translation>Maximum Hossz</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="367"/>
+      <location filename="openscadprefs-base.ui" line="347"/>
       <source>MaxLength</source>
       <translation>MaxHossz</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="374"/>
+      <location filename="openscadprefs-base.ui" line="354"/>
       <source>Maximum Length</source>
       <translation>Maximális Hosszúság</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="406"/>
+      <location filename="openscadprefs-base.ui" line="386"/>
       <source>Maximum Area</source>
       <translation>Maximum Terület</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="399"/>
+      <location filename="openscadprefs-base.ui" line="379"/>
       <source>maxArea</source>
       <translation>maxTerület</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="450"/>
+      <location filename="openscadprefs-base.ui" line="430"/>
       <source>Local Length</source>
       <translation>Helyi Hosszúság</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="453"/>
+      <location filename="openscadprefs-base.ui" line="433"/>
       <source>localLen</source>
       <translation>HelyiHossz</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="482"/>
+      <location filename="openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
       <translation>Kiöblösödés</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="485"/>
+      <location filename="openscadprefs-base.ui" line="465"/>
       <source>deflection</source>
       <translation>kiöblösödés</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="492"/>
+      <location filename="openscadprefs-base.ui" line="472"/>
       <source>Triangulation settings</source>
       <translation>Háromszögelési beállítások</translation>
     </message>
@@ -167,105 +162,145 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="22"/>
-      <source>Color Shapes</source>
-      <translation>Forma színezés</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="23"/>
-      <source>Color Shapes by validity and type</source>
-      <translation>Érvényesség és típus szerinti forma színezés</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="38"/>
-      <source>Convert Edges To Faces</source>
-      <translation>Élek felületté konvertálása</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="38"/>
+      <location filename="OpenSCADCommands.py" line="47"/>
       <source>Convert Edges to Faces</source>
       <translation>Élek felületté konvertálása</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="54"/>
-      <source>Refine Shape Feature</source>
-      <translation>Forma Tulajdonság létrehozás</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="55"/>
-      <source>Create Refine Shape Feature</source>
-      <translation>Forma Tulajdonság létrehozás finomítás</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="68"/>
-      <source>Expand Placements</source>
-      <translation>Helyzetek kibontása</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="68"/>
-      <source>Expand all placements downwards the FeatureTree</source>
-      <translation>A TulajdonságFa minden alsóbbrendű helyzetének kibontása</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="78"/>
+      <location filename="OpenSCADCommands.py" line="101"/>
       <source>Please select 3 objects first</source>
       <translation>Kérem válasszon ki előszőr 3 tárgyat</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="81"/>
-      <source>Replace Object</source>
-      <translation>Tárgy cseréje</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="82"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Objektum cseréje a tulajdonság fában. Kérem válasszon régi, új és állandó objektumot</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="109"/>
-      <source>Remove Objects and their Children</source>
-      <translation>Az objektum és hozzá tartotzó alegységeinek törlése</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="110"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>A tárgyat törli és valamennyi alegységét, amely nem tertozik más tárgyhoz</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="163"/>
-      <source>Running OpenSCAD failed
-</source>
-      <translation>OpenSCAD futatása sikertelen </translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="171"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>OpenSCAD elem hozzáadása...</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="172"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>OpenSCAD kóddal adjon hozzás penSCAD elemet és hajtsa végre az OpenSCAD utasítást</translation>
-    </message>
-    <message>
-      <location filename="importCSG.py" line="330"/>
+      <location filename="importCSG.py" line="334"/>
       <source>Unsupported Function</source>
       <translation>Nem támogatott funkció</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="330"/>
+      <location filename="importCSG.py" line="334"/>
       <source>Press OK</source>
       <translation>OK-ra kattintson</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="940"/>
+      <location filename="importCSG.py" line="946"/>
       <source>Projection Not yet Coded waiting for Peter Li</source>
       <translation>Vetítés még nincs kódolva, várjuk Pete Li-t</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="940"/>
+      <location filename="importCSG.py" line="946"/>
       <source> Press OK</source>
       <translation> OK-ra kattintson</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="199"/>
+      <source>Running OpenSCAD failed</source>
+      <translation>OpenSCAD futtatás sikertelen</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="162"/>
+      <source>Add</source>
+      <translation>Hozzáad</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="163"/>
+      <source>Clear</source>
+      <translation>Törlés</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="164"/>
+      <source>as Mesh</source>
+      <translation>a háló</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="165"/>
+      <source>Add OpenSCAD Element</source>
+      <translation>OpenSCAD elem hozzáadása</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="207"/>
+      <source>Add OpenSCAD Element...</source>
+      <translation>OpenSCAD elem hozzáadása...</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="209"/>
+      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
+      <translation>Adjunk hozzá egy OpenSCAD elemet egy OpenSCAD kód hozzáadásával és hajtsa végre az OpenSCAD binárist</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ColorCodeShape</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="24"/>
+      <source>Color Shapes</source>
+      <translation>Alakzatok színezése</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="26"/>
+      <source>Color Shapes by validity and type</source>
+      <translation>Alakzatok színezése az érvényesség és típus szerint</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Edgestofaces</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="45"/>
+      <source>Convert Edges To Faces</source>
+      <translation>Élek konvertálása felületekké</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ExpandPlacements</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="86"/>
+      <source>Expand Placements</source>
+      <translation>Bontsa ki az elhelyezések</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="88"/>
+      <source>Expand all placements downwards the FeatureTree</source>
+      <translation>Bontsa ki az összes elhelyezést lefelé a TulajdonságFában</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RefineShapeFeature</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="67"/>
+      <source>Refine Shape Feature</source>
+      <translation>Alakzat tulajdonság finomítása</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="69"/>
+      <source>Create Refine Shape Feature</source>
+      <translation>Alakzat tulajdonság finomítás létrehozása</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RemoveSubtree</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="137"/>
+      <source>Remove Objects and their Children</source>
+      <translation>Objektum és az összes al objektuma eltávolítása</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="139"/>
+      <source>Removes the selected objects and all children that are not referenced from other objects</source>
+      <translation>Eltávolítja a kijelölt objektumokat és minden al objektumár, melyek nem hivatkoznak más objektumokra</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ReplaceObject</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="105"/>
+      <source>Replace Object</source>
+      <translation>Cserélje ki az objektumot</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="107"/>
+      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
+      <translation>Visszahelyez egy objektumot a tulajdonság fában. Kérjük, válasszon régi, új, és a szülő objektumot</translation>
     </message>
   </context>
 </TS>

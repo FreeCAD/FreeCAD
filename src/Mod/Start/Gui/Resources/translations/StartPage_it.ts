@@ -243,5 +243,40 @@
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation>Un blog dedicato all'insegnamento di FreeCAD, mantenuto da membri della comunità FreeCAD</translation>
     </message>
+    <message>
+      <location filename="StartPage.py" line="73"/>
+      <source>Getting started</source>
+      <translation>Guida introduttiva</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
+      <translation>L'interfaccia di FreeCAD è suddivisa in ambienti di lavoro i quali sono insiemi di strumenti adatti per un compito specifico. Puoi iniziare con uno degli ambienti in questa lista, o con l'ambiente di lavoro completo che si presenta con alcuni degli strumenti più usati degli altri ambienti. Clicca qui per saperne di più sugli ambienti di lavoro sul sito FreeCAD.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="75"/>
+      <source>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</source>
+      <translation>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="76"/>
+      <source>Ship Design</source>
+      <translation>Progettazione navale</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="77"/>
+      <source>Designing and calculating ships</source>
+      <translation>Progettazione e calcolo di navi</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="78"/>
+      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
+      <translation>Il modulo &lt;b&gt;Ship Design&lt;/b&gt; offre diversi strumenti per aiutare i progettisti di navi per visualizzare, modellare e calcolare profili e altre proprietà specifiche di scafi di nave.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="79"/>
+      <source>Load an Architectural example model</source>
+      <translation>Caricare un esempio di modello architettonico</translation>
+    </message>
   </context>
 </TS>
