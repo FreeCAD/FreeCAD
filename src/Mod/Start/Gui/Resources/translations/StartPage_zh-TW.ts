@@ -243,5 +243,40 @@
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation>由FreeCAD社群成員維護，專門用於FreeCAD教學之網誌</translation>
     </message>
+    <message>
+      <location filename="StartPage.py" line="73"/>
+      <source>Getting started</source>
+      <translation>開始</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
+      <translation>FreeCAD介面依工作區分隔,其有對應特殊工作之工具組。您可以由所列其中之一工作區,或由收集其他工作區工具之完整工作區開始。點擊FreeCAD網站來獲得更多工作區之訊息。</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="75"/>
+      <source>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</source>
+      <translation>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="76"/>
+      <source>Ship Design</source>
+      <translation>船舶設計</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="77"/>
+      <source>Designing and calculating ships</source>
+      <translation>設計和計算船舶</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="78"/>
+      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
+      <translation>&lt;b&gt;船舶設計&lt;/b&gt;模組提供數個協助船舶設計師去檢視,建模,計算輪廓及其他船身特性之工具</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="79"/>
+      <source>Load an Architectural example model</source>
+      <translation>載入一結構範例模型</translation>
+    </message>
   </context>
 </TS>

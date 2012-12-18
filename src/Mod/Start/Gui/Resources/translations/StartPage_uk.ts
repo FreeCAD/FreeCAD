@@ -101,7 +101,7 @@
     <message>
       <location filename="StartPage.py" line="47"/>
       <source>Designing architectural elements</source>
-      <translation>Проектування архітектурних елементів</translation>
+      <translation>Проектування елементів архітектури</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="48"/>
@@ -242,6 +242,41 @@
       <location filename="StartPage.py" line="72"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation>Блог, присвячений навчанню FreeCAD, підтримується членами спільноти FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="73"/>
+      <source>Getting started</source>
+      <translation>Початок роботи</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
+      <translation>FreeCAD інтерфейс, поділений на робочі столи, які становлять набір інструментів, що підходить для конкретного завдання. Ви можете почати з одним робочим столом в цьому списку, або з повним робочим столом, який представляє вам деякі з найбільш часто використовуваних інструментів, зібрані від інших робочих столів. Натисніть, щоб прочитати більше про робочі столи на веб-сайті FreeCAD.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="75"/>
+      <source>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</source>
+      <translation>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="76"/>
+      <source>Ship Design</source>
+      <translation>Проектування кораблів</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="77"/>
+      <source>Designing and calculating ships</source>
+      <translation>Проектування і розрахунок суден</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="78"/>
+      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
+      <translation>Модуль &lt;b&gt;Проектування кораблів&lt;/b&gt; пропонує кілька інструментів, щоб допомогти корабельним проектувальникам для перегляду, моделювання і обчислення профілів та інші специфічних властивостей корабельних корпусів.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="79"/>
+      <source>Load an Architectural example model</source>
+      <translation>Завантажити приклад архітектурної моделі</translation>
     </message>
   </context>
 </TS>

@@ -1,63 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+52"/>
-        <source>Fem</source>
-        <translation>EEM</translation>
+      <location filename="../../Command.cpp" line="+52"/>
+      <source>Fem</source>
+      <translation>EEM</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh</source>
-        <translation>Creëer een EEM-net</translation>
+      <source>Create FEM mesh</source>
+      <translation>Creëer een EEM-net</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh from shape</source>
-        <translation>Creëer een EEM-net van een vorm</translation>
+      <source>Create FEM mesh from shape</source>
+      <translation>Creëer een EEM-net van een vorm</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::HypothesisWidget</name>
     <message>
-        <location filename="../../Hypothesis.ui" line="+14"/>
-        <source>Hypothesis</source>
-        <translation>Hypothesis</translation>
+      <location filename="../../Hypothesis.ui" line="+14"/>
+      <source>Hypothesis</source>
+      <translation>Hypothesis</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Quadrangle</source>
-        <translation>Quadrangle</translation>
+      <source>Quadrangle</source>
+      <translation>Quadrangle</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Maximum length</source>
-        <translation>Maximum length</translation>
+      <source>Maximum length</source>
+      <translation>Maximale lengte</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Local length</source>
-        <translation>Local length</translation>
+      <source>Local length</source>
+      <translation>Lokale lengte</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Maximum element area</source>
-        <translation>Maximum element area</translation>
+      <source>Maximum element area</source>
+      <translation>Maximale elementgebied</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+38"/>
-        <source>FEM</source>
-        <translation>EEM</translation>
+      <location filename="../../Workbench.cpp" line="+38"/>
+      <source>FEM</source>
+      <translation>EEM</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;FEM</source>
-        <translation>&amp;EEM</translation>
+      <source>&amp;FEM</source>
+      <translation>&amp;EEM</translation>
     </message>
-</context>
+  </context>
 </TS>

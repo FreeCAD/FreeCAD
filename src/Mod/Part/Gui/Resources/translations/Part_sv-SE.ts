@@ -1,2969 +1,2500 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>BlockDefinition</name>
     <message>
-        <location filename="../../DlgBlock.ui" line="+14"/>
-        <source>Block definition</source>
-        <translation>Block definition</translation>
+      <location filename="../../DlgBlock.ui" line="+14"/>
+      <source>Block definition</source>
+      <translation>Block definition</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>First limit</source>
-        <translation>Första begränsningen</translation>
+      <source>First limit</source>
+      <translation>Första begränsningen</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <location line="+181"/>
-        <source>Type:</source>
-        <translation>Typ:</translation>
+      <source>Type:</source>
+      <translation>Typ:</translation>
     </message>
     <message>
-        <location line="-174"/>
-        <location line="+154"/>
-        <source>mm</source>
-        <translation>mm</translation>
+      <source>mm</source>
+      <translation>mm</translation>
     </message>
     <message>
-        <location line="-144"/>
-        <location line="+200"/>
-        <source>Length:</source>
-        <translation>Längd:</translation>
+      <source>Length:</source>
+      <translation>Längd:</translation>
     </message>
     <message>
-        <location line="-192"/>
-        <location line="+164"/>
-        <source>Dimension</source>
-        <translation>Dimension</translation>
+      <source>Dimension</source>
+      <translation>Dimension</translation>
     </message>
     <message>
-        <location line="-159"/>
-        <location line="+164"/>
-        <source>Up to next</source>
-        <translation>Upp till nästa</translation>
+      <source>Up to next</source>
+      <translation>Upp till nästa</translation>
     </message>
     <message>
-        <location line="-159"/>
-        <location line="+164"/>
-        <source>Up to last</source>
-        <translation>Upp till sista</translation>
+      <source>Up to last</source>
+      <translation>Upp till sista</translation>
     </message>
     <message>
-        <location line="-159"/>
-        <location line="+164"/>
-        <source>Up to plane</source>
-        <translation>Upp till plan</translation>
+      <source>Up to plane</source>
+      <translation>Upp till plan</translation>
     </message>
     <message>
-        <location line="-159"/>
-        <location line="+164"/>
-        <source>Up to face</source>
-        <translation>Upp till yta</translation>
+      <source>Up to face</source>
+      <translation>Upp till yta</translation>
     </message>
     <message>
-        <location line="-156"/>
-        <location line="+171"/>
-        <source>Limit:</source>
-        <translation>Begränsning:</translation>
+      <source>Limit:</source>
+      <translation>Begränsning:</translation>
     </message>
     <message>
-        <location line="-161"/>
-        <location line="+39"/>
-        <location line="+72"/>
-        <location line="+95"/>
-        <source>No selection</source>
-        <translation>Inget val</translation>
+      <source>No selection</source>
+      <translation>Inget val</translation>
     </message>
     <message>
-        <location line="-194"/>
-        <source>Profile</source>
-        <translation>Profil</translation>
+      <source>Profile</source>
+      <translation>Profil</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Selection:</source>
-        <translation>Markering:</translation>
+      <source>Selection:</source>
+      <translation>Markering:</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Reverse</source>
-        <translation>Omvänd</translation>
+      <source>Reverse</source>
+      <translation>Omvänd</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Both sides</source>
-        <translation>Båda sidor</translation>
+      <source>Both sides</source>
+      <translation>Båda sidor</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Second limit</source>
-        <translation>Andra begränsningen</translation>
+      <source>Second limit</source>
+      <translation>Andra begränsningen</translation>
     </message>
     <message>
-        <location line="+95"/>
-        <source>Direction</source>
-        <translation>Riktning</translation>
+      <source>Direction</source>
+      <translation>Riktning</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Perpendicular to sketch</source>
-        <translation>Vinkelrätt mot skiss</translation>
+      <source>Perpendicular to sketch</source>
+      <translation>Vinkelrätt mot skiss</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Reference</source>
-        <translation>Referens</translation>
+      <source>Reference</source>
+      <translation>Referens</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Apply</source>
-        <translation>Verkställ</translation>
+      <source>Apply</source>
+      <translation>Verkställ</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
+      <source>Cancel</source>
+      <translation>Avbryt</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>OK</source>
-        <translation>OK</translation>
+      <source>OK</source>
+      <translation>OK</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1327"/>
-        <source>Part</source>
-        <translation type="unfinished">Detalj</translation>
+      <location filename="../../Command.cpp" line="+1327"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Check Geometry</source>
-        <translation type="unfinished"></translation>
+      <source>Check Geometry</source>
+      <translation>Check Geometry</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Analyzes Geometry For Errors</source>
-        <translation type="unfinished"></translation>
+      <source>Analyzes Geometry For Errors</source>
+      <translation>Analyzes Geometry For Errors</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdColorPerFace</name>
     <message>
-        <location line="+31"/>
-        <source>Part</source>
-        <translation type="unfinished">Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Color per face</source>
-        <translation type="unfinished"></translation>
+      <source>Color per face</source>
+      <translation>Color per face</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Set color per face</source>
-        <translation type="unfinished">Sätt färg per yta</translation>
+      <source>Set color per face</source>
+      <translation>Sätt färg per yta</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartBoolean</name>
     <message>
-        <location line="-642"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Boolean...</source>
-        <translation>Boolesk...</translation>
+      <source>Boolean...</source>
+      <translation>Boolesk...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Run a boolean operation with two shapes selected</source>
-        <translation>Kör en boolesk operation med två valda former</translation>
+      <source>Run a boolean operation with two shapes selected</source>
+      <translation>Kör en boolesk operation med två valda former</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartBox</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="+79"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../CommandParametric.cpp" line="+79"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Box</source>
-        <translation>Låda</translation>
+      <source>Box</source>
+      <translation>Låda</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a box solid</source>
-        <translation>Skapa en lådsolid</translation>
+      <source>Create a box solid</source>
+      <translation>Skapa en lådsolid</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-597"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../Command.cpp" line="-597"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Box fix 1</source>
-        <translation>Kub fix 1</translation>
+      <source>Box fix 1</source>
+      <translation>Kub fix 1</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a box solid without dialog</source>
-        <translation>Skapa en lådsolid utan dialogruta</translation>
+      <source>Create a box solid without dialog</source>
+      <translation>Skapa en lådsolid utan dialogruta</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartBox3</name>
     <message>
-        <location line="+39"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Box fix 2</source>
-        <translation>Kub fix 2</translation>
+      <source>Box fix 2</source>
+      <translation>Kub fix 2</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a box solid without dialog</source>
-        <translation>Skapa en lådsolid utan dialogruta</translation>
+      <source>Create a box solid without dialog</source>
+      <translation>Skapa en lådsolid utan dialogruta</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+754"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Shape builder...</source>
-        <translation>form byggare ...</translation>
+      <source>Shape builder...</source>
+      <translation>form byggare ...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Advanced utility to create shapes</source>
-        <translation>Avancerade verktyg för att skapa former</translation>
+      <source>Advanced utility to create shapes</source>
+      <translation>Avancerade verktyg för att skapa former</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartChamfer</name>
     <message>
-        <location line="-93"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Chamfer...</source>
-        <translation>Avfasning...</translation>
+      <source>Chamfer...</source>
+      <translation>Avfasning...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Chamfer the selected edges of a shape</source>
-        <translation>Fasa de markerade kanterna av en form</translation>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>Fasa de markerade kanterna av en form</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-550"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Intersection</source>
-        <translation>Skärning</translation>
+      <source>Intersection</source>
+      <translation>Skärning</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Make an intersection of two shapes</source>
-        <translation>Gör en skärning mellan två former</translation>
+      <source>Make an intersection of two shapes</source>
+      <translation>Gör en skärning mellan två former</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartCone</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="+66"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../CommandParametric.cpp" line="+66"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Cone</source>
-        <translation>Kon</translation>
+      <source>Cone</source>
+      <translation>Kon</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a cone solid</source>
-        <translation>Skapa en kon solid</translation>
+      <source>Create a cone solid</source>
+      <translation>Skapa en kon solid</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartCrossSections</name>
     <message>
-        <location filename="../../Command.cpp" line="+600"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../Command.cpp" line="+600"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Cross-sections...</source>
-        <translation>Tvärsnitt...</translation>
+      <source>Cross-sections...</source>
+      <translation>Tvärsnitt...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Cross-sections</source>
-        <translation>Tvärsnitt</translation>
+      <source>Cross-sections</source>
+      <translation>Tvärsnitt</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-653"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Cut</source>
-        <translation>Klipp</translation>
+      <source>Cut</source>
+      <translation>Klipp</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Make a cut of two shapes</source>
-        <translation>Gör ett klipp med två former</translation>
+      <source>Make a cut of two shapes</source>
+      <translation>Gör ett klipp med två former</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartCylinder</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="-104"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../CommandParametric.cpp" line="-104"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Create a Cylinder</source>
-        <translation>Skapa en Cylinder</translation>
+      <source>Create a Cylinder</source>
+      <translation>Skapa en Cylinder</translation>
     </message>
     <message>
-        <location line="-1"/>
-        <source>Cylinder</source>
-        <translation>Cylinder</translation>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+262"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../Command.cpp" line="+262"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Export CAD...</source>
-        <translation>Exportera CAD ...</translation>
+      <source>Export CAD...</source>
+      <translation>Exportera CAD ...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Exports to a CAD file</source>
-        <translation>Exporterar till en CAD-fil</translation>
+      <source>Exports to a CAD file</source>
+      <translation>Exporterar till en CAD-fil</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartExtrude</name>
     <message>
-        <location line="+250"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Extrude...</source>
-        <translation>Extrudera...</translation>
+      <source>Extrude...</source>
+      <translation>Extrudera...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Extrude a selected sketch</source>
-        <translation>Extrudera en vald skiss</translation>
+      <source>Extrude a selected sketch</source>
+      <translation>Extrudera en vald skiss</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartFillet</name>
     <message>
-        <location line="+52"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Fillet...</source>
-        <translation>Fasning...</translation>
+      <source>Fillet...</source>
+      <translation>Fasning...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Fillet the selected edges of a shape</source>
-        <translation>Fasa av de valda kanterna på en form</translation>
+      <source>Fillet the selected edges of a shape</source>
+      <translation>Fasa av de valda kanterna på en form</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-469"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Union</source>
-        <translation>Förening</translation>
+      <source>Union</source>
+      <translation>Förening</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Make a union of several shapes</source>
-        <translation>Gör en förening av flera former</translation>
+      <source>Make a union of several shapes</source>
+      <translation>Gör en förening av flera former</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+100"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Imports a CAD file</source>
-        <translation>Importerar en CAD-fil</translation>
+      <source>Imports a CAD file</source>
+      <translation>Importerar en CAD-fil</translation>
     </message>
     <message>
-        <location line="-1"/>
-        <source>Import CAD...</source>
-        <translation>Importera CAD...</translation>
+      <source>Import CAD...</source>
+      <translation>Importera CAD...</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-        <location line="+104"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Import a curve network</source>
-        <translation>Importera ett kurvnät</translation>
+      <source>Import a curve network</source>
+      <translation>Importera ett kurvnät</translation>
     </message>
     <message>
-        <location line="-1"/>
-        <source>Import curve network...</source>
-        <translation>Importera kurvnät...</translation>
+      <source>Import curve network...</source>
+      <translation>Importera kurvnät...</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartLoft</name>
     <message>
-        <location line="+403"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Loft...</source>
-        <translation>Loft ...</translation>
+      <source>Loft...</source>
+      <translation>Loft ...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Utility to loft</source>
-        <translation>Utility to loft</translation>
+      <source>Utility to loft</source>
+      <translation>Utility to loft</translation>
     </message>
     <message>
-        <source>Advanced utility to lofts</source>
-        <translation type="obsolete">Avancerade verktyg för loft</translation>
+      <source>Advanced utility to lofts</source>
+      <translation>Avancerade verktyg för loft</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartMakeSolid</name>
     <message>
-        <location line="-361"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Convert to solid</source>
-        <translation>Konvertera till solid</translation>
+      <source>Convert to solid</source>
+      <translation>Konvertera till solid</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create solid from a shell or compound</source>
-        <translation>Skapa en solid från ett skal eller en sammansättning</translation>
+      <source>Create solid from a shell or compound</source>
+      <translation>Skapa en solid från ett skal eller en sammansättning</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartMirror</name>
     <message>
-        <location line="+267"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Mirroring...</source>
-        <translation>Spegling...</translation>
+      <source>Mirroring...</source>
+      <translation>Spegling...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Mirroring a selected shape</source>
-        <translation>Spegling av en markerad form</translation>
+      <source>Mirroring a selected shape</source>
+      <translation>Spegling av en markerad form</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartOffset</name>
     <message>
-        <location line="+140"/>
-        <source>Part</source>
-        <translation type="unfinished">Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Offset...</source>
-        <translation type="unfinished"></translation>
+      <source>Offset...</source>
+      <translation>Offset...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Utility to offset</source>
-        <translation type="unfinished"></translation>
+      <source>Utility to offset</source>
+      <translation>Utility to offset</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-922"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Pick curve network</source>
-        <translation>Välj kurvnät</translation>
+      <source>Pick curve network</source>
+      <translation>Välj kurvnät</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Pick a curve network</source>
-        <translation>Välj ett kurvnät</translation>
+      <source>Pick a curve network</source>
+      <translation>Välj ett kurvnät</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartPrimitives</name>
     <message>
-        <location line="+124"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create primitives...</source>
-        <translation>Skapa primitiver...</translation>
+      <source>Create primitives...</source>
+      <translation>Skapa primitiver...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Creation of parametrized geometric primitives</source>
-        <translation>Skapa parametriserade geometriska primitiver</translation>
+      <source>Creation of parametrized geometric primitives</source>
+      <translation>Skapa parametriserade geometriska primitiver</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartRefineShape</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="+212"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../CommandSimple.cpp" line="+212"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Refine shape</source>
-        <translation>Förfina form</translation>
+      <source>Refine shape</source>
+      <translation>Förfina form</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Refine the copy of a shape</source>
-        <translation>Förfina en formkopia</translation>
+      <source>Refine the copy of a shape</source>
+      <translation>Förfina en formkopia</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+459"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../Command.cpp" line="+459"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Reverse shapes</source>
-        <translation>Omvända former</translation>
+      <source>Reverse shapes</source>
+      <translation>Omvända former</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Reverse orientation of shapes</source>
-        <translation>Omvänd orientering av former</translation>
+      <source>Reverse orientation of shapes</source>
+      <translation>Omvänd orientering av former</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartRevolve</name>
     <message>
-        <location line="+108"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Revolve...</source>
-        <translation>Rotera...</translation>
+      <source>Revolve...</source>
+      <translation>Rotera...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Revolve a selected shape</source>
-        <translation>Rotera en vald form</translation>
+      <source>Revolve a selected shape</source>
+      <translation>Rotera en vald form</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartRuledSurface</name>
     <message>
-        <location line="+433"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create ruled surface</source>
-        <translation>Skapa styrd yta</translation>
+      <source>Create ruled surface</source>
+      <translation>Skapa styrd yta</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a ruled surface from two curves</source>
-        <translation>Skapa en styrd yta från två kurvor</translation>
+      <source>Create a ruled surface from two curves</source>
+      <translation>Skapa en styrd yta från två kurvor</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartSection</name>
     <message>
-        <location line="-821"/>
-        <source>Make a section of two shapes</source>
-        <translation>Gör ett tvärsnitt av två former</translation>
+      <source>Make a section of two shapes</source>
+      <translation>Gör ett tvärsnitt av två former</translation>
     </message>
     <message>
-        <location line="-2"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Section</source>
-        <translation>Sektionering</translation>
+      <source>Section</source>
+      <translation>Sektionering</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="-107"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../CommandSimple.cpp" line="-107"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create shape from mesh...</source>
-        <translation>Skapa form från nät ...</translation>
+      <source>Create shape from mesh...</source>
+      <translation>Skapa form från nät ...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create shape from selected mesh object</source>
-        <translation>Skapa form från valt nätobjekt</translation>
+      <source>Create shape from selected mesh object</source>
+      <translation>Skapa form från valt nätobjekt</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-        <location line="+60"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create simple copy</source>
-        <translation>Skapa en enkel kopia</translation>
+      <source>Create simple copy</source>
+      <translation>Skapa en enkel kopia</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a simple non-parametric copy</source>
-        <translation>Skapa en enkel icke-parametrisk kopia</translation>
+      <source>Create a simple non-parametric copy</source>
+      <translation>Skapa en enkel icke-parametrisk kopia</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-        <location line="-114"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create Cylinder...</source>
-        <translation>Skapa Cylinder...</translation>
+      <source>Create Cylinder...</source>
+      <translation>Skapa Cylinder...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a Cylinder</source>
-        <translation>Skapa en Cylinder</translation>
+      <source>Create a Cylinder</source>
+      <translation>Skapa en Cylinder</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartSphere</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="+69"/>
-        <source>Create a sphere solid</source>
-        <translation>Skapa en sfär solid</translation>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
+      <source>Create a sphere solid</source>
+      <translation>Skapa en sfär solid</translation>
     </message>
     <message>
-        <location line="-2"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Sphere</source>
-        <translation>Sfär</translation>
+      <source>Sphere</source>
+      <translation>Sfär</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartSweep</name>
     <message>
-        <location filename="../../Command.cpp" line="+582"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <location filename="../../Command.cpp" line="+582"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Sweep...</source>
-        <translation>Sweep...</translation>
+      <source>Sweep...</source>
+      <translation>Sweep...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Utility to sweep</source>
-        <translation>Utility to sweep</translation>
+      <source>Utility to sweep</source>
+      <translation>Utility to sweep</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartThickness</name>
     <message>
-        <location line="+69"/>
-        <source>Part</source>
-        <translation type="unfinished">Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Thickness...</source>
-        <translation type="unfinished"></translation>
+      <source>Thickness...</source>
+      <translation>Thickness...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Utility to apply a thickness</source>
-        <translation type="unfinished"></translation>
+      <source>Utility to apply a thickness</source>
+      <translation>Utility to apply a thickness</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location line="+20"/>
-        <source>Wrong selection</source>
-        <translation type="unfinished">Fel val</translation>
+      <source>Wrong selection</source>
+      <translation>Fel val</translation>
     </message>
     <message>
-        <location line="-19"/>
-        <source>Selected one or more faces of a shape</source>
-        <translation type="unfinished"></translation>
+      <source>Selected one or more faces of a shape</source>
+      <translation>Selected one or more faces of a shape</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Selected shape is not a solid</source>
-        <translation type="unfinished"></translation>
+      <source>Selected shape is not a solid</source>
+      <translation>Selected shape is not a solid</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="+69"/>
-        <source>Create a torus solid</source>
-        <translation>Skapa en torus solid</translation>
+      <location filename="../../CommandParametric.cpp" line="+69"/>
+      <source>Create a torus solid</source>
+      <translation>Skapa en torus solid</translation>
     </message>
     <message>
-        <location line="-2"/>
-        <source>Part</source>
-        <translation>Detalj</translation>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Torus</source>
-        <translation>Torus</translation>
+      <source>Torus</source>
+      <translation>Torus</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>DlgExtrusion</name>
     <message>
-        <source>Select a shape for extrusion, first.</source>
-        <translation type="obsolete">Välj en form för extrudering först.</translation>
+      <source>Select a shape for extrusion, first.</source>
+      <translation>Välj en form för extrudering först.</translation>
     </message>
     <message>
-        <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
-        <translation type="obsolete">Dokumentet &quot;%1&quot; finns inte.</translation>
+      <source>The document '%1' doesn't exist.</source>
+      <translation>Dokumentet "%1" finns inte.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>DlgRevolution</name>
     <message>
-        <source>Select a shape for revolution, first.</source>
-        <translation type="obsolete">Välj en form för rotering först.</translation>
+      <source>Select a shape for revolution, first.</source>
+      <translation>Välj en form för rotering först.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>DlgSettings3DViewPart</name>
     <message>
-        <source>Deviation</source>
-        <translation type="obsolete">Avvikelse</translation>
+      <source>Deviation</source>
+      <translation>Avvikelse</translation>
     </message>
     <message>
-        <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-        <translation type="obsolete">Att ställa in en för liten avvikelse orsakar tesselleringen att ta längre tid och därmed fryser eller saktar ner det grafiska gränssnittet.</translation>
+      <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
+      <translation>Att ställa in en för liten avvikelse orsakar tesselleringen att ta längre tid och därmed fryser eller saktar ner det grafiska gränssnittet.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::CrossSections</name>
     <message>
-        <location filename="../../CrossSections.ui" line="+14"/>
-        <source>Cross sections</source>
-        <translation>Tvärsnitt</translation>
+      <location filename="../../CrossSections.ui" line="+14"/>
+      <source>Cross sections</source>
+      <translation>Tvärsnitt</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Guiding plane</source>
-        <translation>Vägledande plan</translation>
+      <source>Guiding plane</source>
+      <translation>Vägledande plan</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>XY</source>
-        <translation>XY</translation>
+      <source>XY</source>
+      <translation>XY</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>XZ</source>
-        <translation>XZ</translation>
+      <source>XZ</source>
+      <translation>XZ</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>YZ</source>
-        <translation>YZ</translation>
+      <source>YZ</source>
+      <translation>YZ</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Position:</source>
-        <translation>Position:</translation>
+      <source>Position:</source>
+      <translation>Position:</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Sections</source>
-        <translation>Sektionering</translation>
+      <source>Sections</source>
+      <translation>Sektionering</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>On both sides</source>
-        <translation>På båda sidor</translation>
+      <source>On both sides</source>
+      <translation>På båda sidor</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Count</source>
-        <translation>Antal</translation>
+      <source>Count</source>
+      <translation>Antal</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Distance:</source>
-        <translation>Avstånd:</translation>
+      <source>Distance:</source>
+      <translation>Avstånd:</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgBooleanOperation</name>
     <message>
-        <location filename="../../DlgBooleanOperation.ui" line="+14"/>
-        <source>Boolean Operation</source>
-        <translation>Boolesk operation</translation>
+      <location filename="../../DlgBooleanOperation.ui" line="+14"/>
+      <source>Boolean Operation</source>
+      <translation>Boolesk operation</translation>
     </message>
     <message>
-        <location line="+100"/>
-        <source>Second shape</source>
-        <translation>Andra formen</translation>
+      <source>Second shape</source>
+      <translation>Andra formen</translation>
     </message>
     <message>
-        <location line="-38"/>
-        <source>First shape</source>
-        <translation>Första formen</translation>
+      <source>First shape</source>
+      <translation>Första formen</translation>
     </message>
     <message>
-        <location line="-56"/>
-        <source>Boolean operation</source>
-        <translation>Boolesk operation</translation>
+      <source>Boolean operation</source>
+      <translation>Boolesk operation</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Section</source>
-        <translation>Sektionering</translation>
+      <source>Section</source>
+      <translation>Sektionering</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Difference</source>
-        <translation>Skillnad</translation>
+      <source>Difference</source>
+      <translation>Skillnad</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Union</source>
-        <translation>Förening</translation>
+      <source>Union</source>
+      <translation>Förening</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Intersection</source>
-        <translation>Skärning</translation>
+      <source>Intersection</source>
+      <translation>Skärning</translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="+317"/>
-        <source>Cannot perform a boolean operation with the same shape</source>
-        <translation>Kan inte utföra en boolesk operation med samma form</translation>
+      <location filename="../../DlgBooleanOperation.cpp" line="+317"/>
+      <source>Cannot perform a boolean operation with the same shape</source>
+      <translation>Kan inte utföra en boolesk operation med samma form</translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.ui" line="+25"/>
-        <location line="+38"/>
-        <source>Solids</source>
-        <translation>Solider</translation>
+      <location filename="../../DlgBooleanOperation.ui" line="+25"/>
+      <source>Solids</source>
+      <translation>Solider</translation>
     </message>
     <message>
-        <location line="-33"/>
-        <location line="+38"/>
-        <source>Shells</source>
-        <translation>Skal</translation>
+      <source>Shells</source>
+      <translation>Skal</translation>
     </message>
     <message>
-        <location line="-33"/>
-        <location line="+38"/>
-        <source>Compounds</source>
-        <translation>Sammansättningar</translation>
+      <source>Compounds</source>
+      <translation>Sammansättningar</translation>
     </message>
     <message>
-        <location line="-33"/>
-        <location line="+38"/>
-        <source>Faces</source>
-        <translation>Ytor</translation>
+      <source>Faces</source>
+      <translation>Ytor</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>Swap selection</source>
-        <translation>Växla urval</translation>
+      <source>Swap selection</source>
+      <translation>Växla urval</translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="-10"/>
-        <source>Select a shape on the left side, first</source>
-        <translation>Välj en form på vänster sida först</translation>
+      <location filename="../../DlgBooleanOperation.cpp" line="-10"/>
+      <source>Select a shape on the left side, first</source>
+      <translation>Välj en form på vänster sida först</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Select a shape on the right side, first</source>
-        <translation>Välj en form till höger först</translation>
+      <source>Select a shape on the right side, first</source>
+      <translation>Välj en form till höger först</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>No active document available</source>
-        <translation>Inget tillgängligt aktivt dokument</translation>
+      <source>No active document available</source>
+      <translation>Inget tillgängligt aktivt dokument</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>One of the selected objects doesn&apos;t exist anymore</source>
-        <translation>Ett av de markerade objekten finns inte längre</translation>
+      <source>One of the selected objects doesn't exist anymore</source>
+      <translation>Ett av de markerade objekten finns inte längre</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Performing union on non-solids is not possible</source>
-        <translation>Att utföra förening på icke-solider är inte möjligt</translation>
+      <source>Performing union on non-solids is not possible</source>
+      <translation>Att utföra förening på icke-solider är inte möjligt</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Performing intersection on non-solids is not possible</source>
-        <translation>Att utföra skärning på icke-solider är inte möjligt</translation>
+      <source>Performing intersection on non-solids is not possible</source>
+      <translation>Att utföra skärning på icke-solider är inte möjligt</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Performing difference on non-solids is not possible</source>
-        <translation>Att utföra skillnad på icke-solider är inte möjligt</translation>
+      <source>Performing difference on non-solids is not possible</source>
+      <translation>Att utföra skillnad på icke-solider är inte möjligt</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+715"/>
-        <source>Chamfer Edges</source>
-        <translation>Fasa Kanter</translation>
+      <location filename="../../DlgFilletEdges.cpp" line="+715"/>
+      <source>Chamfer Edges</source>
+      <translation>Fasa Kanter</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgExtrusion</name>
     <message>
-        <location filename="../../DlgExtrusion.ui" line="+14"/>
-        <source>Extrude</source>
-        <translation>Extrudera</translation>
+      <location filename="../../DlgExtrusion.ui" line="+14"/>
+      <source>Extrude</source>
+      <translation>Extrudera</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Direction</source>
-        <translation>Riktning</translation>
+      <source>Direction</source>
+      <translation>Riktning</translation>
     </message>
     <message>
-        <location line="+123"/>
-        <source>Along normal</source>
-        <translation>Längs normal</translation>
+      <source>Along normal</source>
+      <translation>Längs normal</translation>
     </message>
     <message>
-        <location line="-34"/>
-        <source>Length:</source>
-        <translation>Längd:</translation>
+      <source>Length:</source>
+      <translation>Längd:</translation>
     </message>
     <message>
-        <location line="+41"/>
-        <source>3D view</source>
-        <translation>3D vy</translation>
+      <source>3D view</source>
+      <translation>3D vy</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Note:This option works for planes only</source>
-        <translation>OBS: Detta alternativ fungerar endast för plan </translation>
+      <source>Note:This option works for planes only</source>
+      <translation>OBS: Detta alternativ fungerar endast för plan </translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Create solid</source>
-        <translation>Skapa solid</translation>
+      <source>Create solid</source>
+      <translation>Skapa solid</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Taper outward angle</source>
-        <translation>Taper outward angle</translation>
+      <source>Taper outward angle</source>
+      <translation>Taper outward angle</translation>
     </message>
     <message>
-        <location line="+38"/>
-        <source>Shape</source>
-        <translation>Form</translation>
+      <source>Shape</source>
+      <translation>Form</translation>
     </message>
     <message>
-        <source></source>
-        <translation></translation>
+      <source></source>
+      <translation type="unfinished"/>
     </message>
     <message>
-        <location line="-199"/>
-        <source>X:</source>
-        <translation>X:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
-        <location line="+52"/>
-        <source>Z:</source>
-        <translation>Z:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
-        <location line="-26"/>
-        <source>Y:</source>
-        <translation>Y:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="+142"/>
-        <source>Select a shape for extrusion, first.</source>
-        <translation>Välj en form för extrudering först.</translation>
+      <location filename="../../DlgExtrusion.cpp" line="+142"/>
+      <source>Select a shape for extrusion, first.</source>
+      <translation>Välj en form för extrudering först.</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
-        <translation>Dokumentet &quot;%1&quot; finns inte.</translation>
+      <source>The document '%1' doesn't exist.</source>
+      <translation>Dokumentet "%1" finns inte.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgFilletEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+14"/>
-        <source>Fillet Edges</source>
-        <translation>Runda av kanter</translation>
+      <location filename="../../DlgFilletEdges.ui" line="+14"/>
+      <source>Fillet Edges</source>
+      <translation>Runda av kanter</translation>
     </message>
     <message>
-        <location line="+37"/>
-        <source>Fillet Parameter</source>
-        <translation>Avrundningsparameter</translation>
+      <source>Fillet Parameter</source>
+      <translation>Avrundningsparameter</translation>
     </message>
     <message>
-        <location line="+65"/>
-        <source>Radius:</source>
-        <translation>Radie:</translation>
+      <source>Radius:</source>
+      <translation>Radie:</translation>
     </message>
     <message>
-        <location line="-32"/>
-        <source>Fillet type:</source>
-        <translation>Avrundningstyp:</translation>
+      <source>Fillet type:</source>
+      <translation>Avrundningstyp:</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Constant Radius</source>
-        <translation>Konstant radie</translation>
+      <source>Constant Radius</source>
+      <translation>Konstant radie</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Variable Radius</source>
-        <translation>Variabel radie</translation>
+      <source>Variable Radius</source>
+      <translation>Variabel radie</translation>
     </message>
     <message>
-        <location line="-77"/>
-        <source>Shape</source>
-        <translation>Form</translation>
+      <source>Shape</source>
+      <translation>Form</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Selected shape:</source>
-        <translation>Vald form:</translation>
+      <source>Selected shape:</source>
+      <translation>Vald form:</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>No selection</source>
-        <translation>Inget val</translation>
+      <source>No selection</source>
+      <translation>Inget val</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-527"/>
-        <source>Edges to fillet</source>
-        <translation>Kanter att avrunda</translation>
+      <location filename="../../DlgFilletEdges.cpp" line="-527"/>
+      <source>Edges to fillet</source>
+      <translation>Kanter att avrunda</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+324"/>
-        <source>Start radius</source>
-        <translation>Start radie</translation>
+      <source>Start radius</source>
+      <translation>Start radie</translation>
     </message>
     <message>
-        <location line="-323"/>
-        <source>End radius</source>
-        <translation>Slut radie</translation>
+      <source>End radius</source>
+      <translation>Slut radie</translation>
     </message>
     <message>
-        <location line="+318"/>
-        <source>Radius</source>
-        <translation>Radie</translation>
+      <source>Radius</source>
+      <translation>Radie</translation>
     </message>
     <message>
-        <location line="+103"/>
-        <source>No edge selected</source>
-        <translation>Ingen kant vald</translation>
+      <source>No edge selected</source>
+      <translation>Ingen kant vald</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No edge entity is checked to fillet.
+      <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-        <translation>Ingen kant är vald för avrundning.
+      <translation>Ingen kant är vald för avrundning.
 Välj en eller fler kanter först.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+30"/>
-        <source>All</source>
-        <translation>Alla</translation>
+      <location filename="../../DlgFilletEdges.ui" line="+30"/>
+      <source>All</source>
+      <translation>Alla</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>None</source>
-        <translation>inget</translation>
+      <source>None</source>
+      <translation>inget</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-196"/>
-        <location line="+53"/>
-        <source>Edge%1</source>
-        <translation>Kant%1</translation>
+      <location filename="../../DlgFilletEdges.cpp" line="-196"/>
+      <source>Edge%1</source>
+      <translation>Kant%1</translation>
     </message>
     <message>
-        <location line="+92"/>
-        <source>No shape selected</source>
-        <translation>Ingen form har valts</translation>
+      <source>No shape selected</source>
+      <translation>Ingen form har valts</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No valid shape is selected.
+      <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-        <translation>Ingen giltig form är markerad. Välj en giltig form i listrutan först.</translation>
+      <translation>Ingen giltig form är markerad. Välj en giltig form i listrutan först.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgPartBox</name>
     <message>
-        <location filename="../../DlgPartBox.ui" line="+16"/>
-        <source>Box definition</source>
-        <translation>Låddefinition</translation>
+      <location filename="../../DlgPartBox.ui" line="+16"/>
+      <source>Box definition</source>
+      <translation>Låddefinition</translation>
     </message>
     <message>
-        <location line="+134"/>
-        <source>X:</source>
-        <translation>X:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Z:</source>
-        <translation>Z:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
-        <location line="-7"/>
-        <source>Y:</source>
-        <translation>Y:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-        <location line="+48"/>
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
+      <source>Cancel</source>
+      <translation>Avbryt</translation>
     </message>
     <message>
-        <location line="-7"/>
-        <source>OK</source>
-        <translation>OK</translation>
+      <source>OK</source>
+      <translation>OK</translation>
     </message>
     <message>
-        <location line="-170"/>
-        <source>Size:</source>
-        <translation>Storlek:</translation>
+      <source>Size:</source>
+      <translation>Storlek:</translation>
     </message>
     <message>
-        <location line="+42"/>
-        <source>Height:</source>
-        <translation>Höjd:</translation>
+      <source>Height:</source>
+      <translation>Höjd:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Width:</source>
-        <translation>Bredd:</translation>
+      <source>Width:</source>
+      <translation>Bredd:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Length:</source>
-        <translation>Längd:</translation>
+      <source>Length:</source>
+      <translation>Längd:</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Position:</source>
-        <translation>Position:</translation>
+      <source>Position:</source>
+      <translation>Position:</translation>
     </message>
     <message>
-        <location line="+49"/>
-        <source>Direction:</source>
-        <translation>Riktning:</translation>
+      <source>Direction:</source>
+      <translation>Riktning:</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgPartCylinder</name>
     <message>
-        <location filename="../../DlgPartCylinder.ui" line="+16"/>
-        <source>Cylinder definition</source>
-        <translation>Cylinder definition</translation>
+      <location filename="../../DlgPartCylinder.ui" line="+16"/>
+      <source>Cylinder definition</source>
+      <translation>Cylinder definition</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Parameter</source>
-        <translation>Parameter</translation>
+      <source>Parameter</source>
+      <translation>Parameter</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Height:</source>
-        <translation>Höjd:</translation>
+      <source>Height:</source>
+      <translation>Höjd:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Radius:</source>
-        <translation>Radie:</translation>
+      <source>Radius:</source>
+      <translation>Radie:</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>Position:</source>
-        <translation>Position:</translation>
+      <source>Position:</source>
+      <translation>Position:</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Direction:</source>
-        <translation>Riktning:</translation>
+      <source>Direction:</source>
+      <translation>Riktning:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>X:</source>
-        <translation>X:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Z:</source>
-        <translation>Z:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Y:</source>
-        <translation>Y:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-        <location line="+64"/>
-        <source>OK</source>
-        <translation>OK</translation>
+      <source>OK</source>
+      <translation>OK</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
+      <source>Cancel</source>
+      <translation>Avbryt</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgPartImportIges</name>
     <message>
-        <location filename="../../DlgPartImportIges.ui" line="+16"/>
-        <source>IGES input file</source>
-        <translation>IGES-Inmatningsfil</translation>
+      <location filename="../../DlgPartImportIges.ui" line="+16"/>
+      <source>IGES input file</source>
+      <translation>IGES-Inmatningsfil</translation>
     </message>
     <message>
-        <location line="+91"/>
-        <source>...</source>
-        <translation>...</translation>
+      <source>...</source>
+      <translation>...</translation>
     </message>
     <message>
-        <location line="-48"/>
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
+      <source>Cancel</source>
+      <translation>Avbryt</translation>
     </message>
     <message>
-        <location line="-23"/>
-        <source>OK</source>
-        <translation>OK</translation>
+      <source>OK</source>
+      <translation>OK</translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>File Name</source>
-        <translation>Filnamn</translation>
+      <source>File Name</source>
+      <translation>Filnamn</translation>
     </message>
     <message>
-        <source></source>
-        <translation></translation>
+      <source></source>
+      <translation type="unfinished"/>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgPartImportIgesImp</name>
     <message>
-        <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
-        <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-        <translation>IGES (*.igs *.iges);;Alla filer (*.*)</translation>
+      <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
+      <source>IGES (*.igs *.iges);;All Files (*.*)</source>
+      <translation>IGES (*.igs *.iges);;Alla filer (*.*)</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgPartImportStep</name>
     <message>
-        <location filename="../../DlgPartImportStep.ui" line="+67"/>
-        <source>...</source>
-        <translation>...</translation>
+      <location filename="../../DlgPartImportStep.ui" line="+67"/>
+      <source>...</source>
+      <translation>...</translation>
     </message>
     <message>
-        <location line="+41"/>
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
+      <source>Cancel</source>
+      <translation>Avbryt</translation>
     </message>
     <message>
-        <location line="-23"/>
-        <source>OK</source>
-        <translation>OK</translation>
+      <source>OK</source>
+      <translation>OK</translation>
     </message>
     <message>
-        <location line="-69"/>
-        <source>Step input file</source>
-        <translation>Step inmatningsfil</translation>
+      <source>Step input file</source>
+      <translation>Step inmatningsfil</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>File Name</source>
-        <translation>Filnamn</translation>
+      <source>File Name</source>
+      <translation>Filnamn</translation>
     </message>
     <message>
-        <source></source>
-        <translation></translation>
+      <source></source>
+      <translation type="unfinished"/>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgPartImportStepImp</name>
     <message>
-        <location filename="../../DlgPartImportStepImp.cpp" line="+68"/>
-        <source>STEP (*.stp *.step);;All Files (*.*)</source>
-        <translation>STEP (*.stp *.step);;Alla filer (*.*)</translation>
+      <location filename="../../DlgPartImportStepImp.cpp" line="+68"/>
+      <source>STEP (*.stp *.step);;All Files (*.*)</source>
+      <translation>STEP (*.stp *.step);;Alla filer (*.*)</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgPrimitives</name>
     <message>
-        <location filename="../../DlgPrimitives.ui" line="+14"/>
-        <source>Geometric Primitives</source>
-        <translation>Geometriska primitiver</translation>
+      <location filename="../../DlgPrimitives.ui" line="+14"/>
+      <source>Geometric Primitives</source>
+      <translation>Geometriska primitiver</translation>
     </message>
     <message>
-        <source>Primitive</source>
-        <translation type="obsolete">Primitiv</translation>
+      <source>Primitive</source>
+      <translation>Primitiv</translation>
     </message>
     <message>
-        <source>X min</source>
-        <translation type="obsolete">X min</translation>
+      <source>X min</source>
+      <translation>X min</translation>
     </message>
     <message>
-        <source>x max</source>
-        <translation type="obsolete">x max</translation>
+      <source>x max</source>
+      <translation>x max</translation>
     </message>
     <message>
-        <source>Y min</source>
-        <translation type="obsolete">Y min</translation>
+      <source>Y min</source>
+      <translation>Y min</translation>
     </message>
     <message>
-        <source>Y max</source>
-        <translation type="obsolete">Y max</translation>
+      <source>Y max</source>
+      <translation>Y max</translation>
     </message>
     <message>
-        <source>Z min</source>
-        <translation type="obsolete">Z min</translation>
+      <source>Z min</source>
+      <translation>Z min</translation>
     </message>
     <message>
-        <source>Z max</source>
-        <translation type="obsolete">Z max</translation>
+      <source>Z max</source>
+      <translation>Z max</translation>
     </message>
     <message>
-        <source>X2 min</source>
-        <translation type="obsolete">X2 min</translation>
+      <source>X2 min</source>
+      <translation>X2 min</translation>
     </message>
     <message>
-        <source>X2 max</source>
-        <translation type="obsolete">X2 max</translation>
+      <source>X2 max</source>
+      <translation>X2 max</translation>
     </message>
     <message>
-        <source>Z2 min</source>
-        <translation type="obsolete">Z2 min</translation>
+      <source>Z2 min</source>
+      <translation>Z2 min</translation>
     </message>
     <message>
-        <source>Z2 max</source>
-        <translation type="obsolete">Z2 max</translation>
+      <source>Z2 max</source>
+      <translation>Z2 max</translation>
     </message>
     <message>
-        <source>Angle - 0 for cyl</source>
-        <translation type="obsolete">Vinkel - 0 för cyl</translation>
+      <source>Angle - 0 for cyl</source>
+      <translation>Vinkel - 0 för cyl</translation>
     </message>
     <message>
-        <source>Angle0</source>
-        <translation type="obsolete">Vinkel0</translation>
+      <source>Angle0</source>
+      <translation>Vinkel0</translation>
     </message>
     <message>
-        <source>Angle1</source>
-        <translation type="obsolete">Vinkel1</translation>
+      <source>Angle1</source>
+      <translation>Vinkel1</translation>
     </message>
     <message>
-        <source>X Axis Value:</source>
-        <translation type="obsolete">X-Axel Värde:</translation>
+      <source>X Axis Value:</source>
+      <translation>X-Axel Värde:</translation>
     </message>
     <message>
-        <source>Y Axis Value:</source>
-        <translation type="obsolete">Y-Axel Värde:</translation>
+      <source>Y Axis Value:</source>
+      <translation>Y-Axel Värde:</translation>
     </message>
     <message>
-        <source>Z Axis Value:</source>
-        <translation type="obsolete">Z-Axel Värde:</translation>
+      <source>Z Axis Value:</source>
+      <translation>Z-Axel Värde:</translation>
     </message>
     <message>
-        <location line="+54"/>
-        <source>Wedge</source>
-        <translation>Kil</translation>
+      <source>Wedge</source>
+      <translation>Kil</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Circle</source>
-        <translation>Cirkel</translation>
+      <source>Circle</source>
+      <translation>Cirkel</translation>
     </message>
     <message>
-        <source>Vertex</source>
-        <translation type="obsolete">Hörn</translation>
+      <source>Vertex</source>
+      <translation>Hörn</translation>
     </message>
     <message>
-        <source>Position</source>
-        <translation type="obsolete">Position</translation>
+      <source>Position</source>
+      <translation>Position</translation>
     </message>
     <message>
-        <location line="+1420"/>
-        <location line="+51"/>
-        <location line="+54"/>
-        <source>Z:</source>
-        <translation>Z:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
-        <location line="-125"/>
-        <location line="+51"/>
-        <location line="+54"/>
-        <source>X:</source>
-        <translation>X:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
-        <source>Direction:</source>
-        <translation type="obsolete">Riktning:</translation>
+      <source>Direction:</source>
+      <translation>Riktning:</translation>
     </message>
     <message>
-        <location line="-95"/>
-        <location line="+51"/>
-        <location line="+54"/>
-        <source>Y:</source>
-        <translation>Y:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-        <location line="-1560"/>
-        <source>Plane</source>
-        <translation>Plan</translation>
+      <source>Plane</source>
+      <translation>Plan</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Box</source>
-        <translation>Låda</translation>
+      <source>Box</source>
+      <translation>Låda</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Cylinder</source>
-        <translation>Cylinder</translation>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Cone</source>
-        <translation>Kon</translation>
+      <source>Cone</source>
+      <translation>Kon</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Sphere</source>
-        <translation>Sfär</translation>
+      <source>Sphere</source>
+      <translation>Sfär</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Ellipsoid</source>
-        <translation>Ellipsoid</translation>
+      <source>Ellipsoid</source>
+      <translation>Ellipsoid</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Torus</source>
-        <translation>Torus</translation>
+      <source>Torus</source>
+      <translation>Torus</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Ellipse</source>
-        <translation>Ellips</translation>
+      <source>Ellipse</source>
+      <translation>Ellips</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Point</source>
-        <translation>Punkt</translation>
+      <source>Point</source>
+      <translation>Punkt</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Line</source>
-        <translation>Linje</translation>
+      <source>Line</source>
+      <translation>Linje</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Parameter</source>
-        <translation>Parameter</translation>
+      <source>Parameter</source>
+      <translation>Parameter</translation>
     </message>
     <message>
-        <location line="+46"/>
-        <location line="+120"/>
-        <source>Width:</source>
-        <translation>Bredd:</translation>
+      <source>Width:</source>
+      <translation>Bredd:</translation>
     </message>
     <message>
-        <location line="-113"/>
-        <location line="+96"/>
-        <source>Length:</source>
-        <translation>Längd:</translation>
+      <source>Length:</source>
+      <translation>Längd:</translation>
     </message>
     <message>
-        <location line="-30"/>
-        <location line="+154"/>
-        <location line="+80"/>
-        <location line="+753"/>
-        <source>Height:</source>
-        <translation>Höjd:</translation>
+      <source>Height:</source>
+      <translation>Höjd:</translation>
     </message>
     <message>
-        <location line="-913"/>
-        <location line="+107"/>
-        <location line="+813"/>
-        <source>Angle:</source>
-        <translation>Vinkel:</translation>
+      <source>Angle:</source>
+      <translation>Vinkel:</translation>
     </message>
     <message>
-        <location line="-867"/>
-        <location line="+280"/>
-        <location line="+536"/>
-        <location line="+109"/>
-        <source>Radius:</source>
-        <translation>Radie:</translation>
+      <source>Radius:</source>
+      <translation>Radie:</translation>
     </message>
     <message>
-        <location line="-781"/>
-        <location line="+216"/>
-        <location line="+219"/>
-        <source>Radius 1:</source>
-        <translation>Radie 1:</translation>
+      <source>Radius 1:</source>
+      <translation>Radie 1:</translation>
     </message>
     <message>
-        <location line="-428"/>
-        <location line="+216"/>
-        <location line="+205"/>
-        <source>Radius 2:</source>
-        <translation>Radie 2:</translation>
+      <source>Radius 2:</source>
+      <translation>Radie 2:</translation>
     </message>
     <message>
-        <location line="-384"/>
-        <location line="+196"/>
-        <location line="+96"/>
-        <source>U parametric:</source>
-        <translation>U parametrisk:</translation>
+      <source>U parametric:</source>
+      <translation>U parametrisk:</translation>
     </message>
     <message>
-        <location line="-256"/>
-        <location line="+196"/>
-        <location line="+96"/>
-        <source>V parametric:</source>
-        <translation>V parametrisk:</translation>
+      <source>V parametric:</source>
+      <translation>V parametrisk:</translation>
     </message>
     <message>
-        <location line="+98"/>
-        <source>X min/max:</source>
-        <translation>X min/max:</translation>
+      <source>X min/max:</source>
+      <translation>X min/max:</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>Y min/max:</source>
-        <translation>Y min/max:</translation>
+      <source>Y min/max:</source>
+      <translation>Y min/max:</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>Z min/max:</source>
-        <translation>Z min/max:</translation>
+      <source>Z min/max:</source>
+      <translation>Z min/max:</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>X2 min/max:</source>
-        <translation>X2 min/max:</translation>
+      <source>X2 min/max:</source>
+      <translation>X2 min/max:</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Z2 min/max:</source>
-        <translation>Z2 min/max:</translation>
+      <source>Z2 min/max:</source>
+      <translation>Z2 min/max:</translation>
     </message>
     <message>
-        <location line="+153"/>
-        <source>Coordinate system:</source>
-        <translation>Koordinatsystem:</translation>
+      <source>Coordinate system:</source>
+      <translation>Koordinatsystem:</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Right-handed</source>
-        <translation>Right-handed</translation>
+      <source>Right-handed</source>
+      <translation>Right-handed</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Left-handed</source>
-        <translation>Left-handed</translation>
+      <source>Left-handed</source>
+      <translation>Left-handed</translation>
     </message>
     <message>
-        <location line="+39"/>
-        <location line="+119"/>
-        <source>Angle 1:</source>
-        <translation>Vinkel 1:</translation>
+      <source>Angle 1:</source>
+      <translation>Vinkel 1:</translation>
     </message>
     <message>
-        <location line="-102"/>
-        <location line="+119"/>
-        <source>Angle 2:</source>
-        <translation>Vinkel 2:</translation>
+      <source>Angle 2:</source>
+      <translation>Vinkel 2:</translation>
     </message>
     <message>
-        <location line="-79"/>
-        <source>From three points</source>
-        <translation>Från tre punkter</translation>
+      <source>From three points</source>
+      <translation>Från tre punkter</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Major radius:</source>
-        <translation>Stora radie:</translation>
+      <source>Major radius:</source>
+      <translation>Stora radie:</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Minor radius:</source>
-        <translation>Lilla radie:</translation>
+      <source>Minor radius:</source>
+      <translation>Lilla radie:</translation>
     </message>
     <message>
-        <location line="+175"/>
-        <source>End point</source>
-        <translation>Slutpunkt</translation>
+      <source>End point</source>
+      <translation>Slutpunkt</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Start point</source>
-        <translation>Startpunkt</translation>
+      <source>Start point</source>
+      <translation>Startpunkt</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+755"/>
-        <source>&amp;Create</source>
-        <translation>&amp;Skapa</translation>
+      <location filename="../../DlgPrimitives.cpp" line="+755"/>
+      <source>&amp;Create</source>
+      <translation>&amp;Skapa</translation>
     </message>
     <message>
-        <source>Alt+C</source>
-        <translation type="obsolete">Alt+S</translation>
+      <source>Alt+C</source>
+      <translation>Alt+S</translation>
     </message>
     <message>
-        <source>Cl&amp;ose</source>
-        <translation type="obsolete">&amp;Stäng</translation>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;Stäng</translation>
     </message>
     <message>
-        <source>Alt+O</source>
-        <translation type="obsolete">Alt+O</translation>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
     <message>
-        <location line="-410"/>
-        <location line="+224"/>
-        <location line="+8"/>
-        <source>Create %1</source>
-        <translation>Skapa %1</translation>
+      <source>Create %1</source>
+      <translation>Skapa %1</translation>
     </message>
     <message>
-        <location line="-231"/>
-        <source>No active document</source>
-        <translation>Inget aktivt dokument</translation>
+      <source>No active document</source>
+      <translation>Inget aktivt dokument</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.ui" line="-406"/>
-        <source>Pitch:</source>
-        <translation>Lutning:</translation>
+      <location filename="../../DlgPrimitives.ui" line="-406"/>
+      <source>Pitch:</source>
+      <translation>Lutning:</translation>
     </message>
     <message>
-        <location line="-1097"/>
-        <source>Helix</source>
-        <translation>Helix</translation>
+      <source>Helix</source>
+      <translation>Helix</translation>
     </message>
     <message>
-        <source>3D View</source>
-        <translation type="obsolete">3D-vy</translation>
+      <source>3D View</source>
+      <translation>3D-vy</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgRevolution</name>
     <message>
-        <location filename="../../DlgRevolution.ui" line="+14"/>
-        <source>Revolve</source>
-        <translation>Rotera</translation>
+      <location filename="../../DlgRevolution.ui" line="+14"/>
+      <source>Revolve</source>
+      <translation>Rotera</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Y:</source>
-        <translation>Y:</translation>
+      <source>Y:</source>
+      <translation>Y:</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>X:</source>
-        <translation>X:</translation>
+      <source>X:</source>
+      <translation>X:</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Angle:</source>
-        <translation>Vinkel:</translation>
+      <source>Angle:</source>
+      <translation>Vinkel:</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Z:</source>
-        <translation>Z:</translation>
+      <source>Z:</source>
+      <translation>Z:</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Axis:</source>
-        <translation>Axel:</translation>
+      <source>Axis:</source>
+      <translation>Axel:</translation>
     </message>
     <message>
-        <location line="+51"/>
-        <source>Shape</source>
-        <translation>Form</translation>
+      <source>Shape</source>
+      <translation>Form</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Select line in 3D view</source>
-        <translation>Markera linje i 3D-vy</translation>
+      <source>Select line in 3D view</source>
+      <translation>Markera linje i 3D-vy</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+169"/>
-        <source>Select a shape for revolution, first.</source>
-        <translation>Välj en form för rotering först.</translation>
+      <location filename="../../DlgRevolution.cpp" line="+169"/>
+      <source>Select a shape for revolution, first.</source>
+      <translation>Välj en form för rotering först.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgSettings3DViewPart</name>
     <message>
-        <location filename="../../DlgSettings3DViewPart.ui" line="+171"/>
-        <source>View accuracy / Performance</source>
-        <translation>Vynoggrannhet/Prestanda</translation>
+      <location filename="../../DlgSettings3DViewPart.ui" line="+171"/>
+      <source>View accuracy / Performance</source>
+      <translation>Vynoggrannhet/Prestanda</translation>
     </message>
     <message>
-        <location line="-73"/>
-        <source>View smoothing</source>
-        <translation>Visa utjämning</translation>
+      <source>View smoothing</source>
+      <translation>Visa utjämning</translation>
     </message>
     <message>
-        <location line="+41"/>
-        <source>Using high-quality normals</source>
-        <translation>Använda högkvalitetsnormaler</translation>
+      <source>Using high-quality normals</source>
+      <translation>Använda högkvalitetsnormaler</translation>
     </message>
     <message>
-        <location line="-6"/>
-        <source>This will slow down render speed but will lead to nicer results</source>
-        <translation>Detta kommer att sakta ned hastigheten, men kommer att leda till bättre resultat</translation>
+      <source>This will slow down render speed but will lead to nicer results</source>
+      <translation>Detta kommer att sakta ned hastigheten, men kommer att leda till bättre resultat</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <source>Defines the appearance of surfaces</source>
-        <translation>Definierar ytornas utseende</translation>
+      <source>Defines the appearance of surfaces</source>
+      <translation>Definierar ytornas utseende</translation>
     </message>
     <message>
-        <location line="-45"/>
-        <source>Shape view</source>
-        <translation>Formvy</translation>
+      <source>Shape view</source>
+      <translation>Formvy</translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Tessellation</source>
-        <translation>Tessellering</translation>
+      <source>Tessellation</source>
+      <translation>Tessellering</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;plattskuggning/Phong skuggning&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Med plattskuggning så är ytnormalerna inte definierade för hörn vilket leder till ett orealistiskt utseende för kurvade ytor emedan om Phong skuggning ger ett jämnare utseende. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Om detta laternativ inte är valt så används Phong skuggning, om det är valt så används plattskuggning.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;plattskuggning/Phong skuggning&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Med plattskuggning så är ytnormalerna inte definierade för hörn vilket leder till ett orealistiskt utseende för kurvade ytor emedan om Phong skuggning ger ett jämnare utseende. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Om detta laternativ inte är valt så används Phong skuggning, om det är valt så används plattskuggning.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Do not define normal per vertex</source>
-        <translation>Definiera inte normal för hörn</translation>
+      <source>Do not define normal per vertex</source>
+      <translation>Definiera inte normal för hörn</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Defines the deviation of tessellation to the actual surface</source>
-        <translation>Definierar tesseleringens avvikelse till det egentliga ytan</translation>
+      <source>Defines the deviation of tessellation to the actual surface</source>
+      <translation>Definierar tesseleringens avvikelse till det egentliga ytan</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Mosaik&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Definierar den maximala avvikelsen mellan mosaiknätet och ytan. Ju mindre värde, desto långsammare beräkningshastighet men bättre utseende.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Mosaik&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Definierar den maximala avvikelsen mellan mosaiknätet och ytan. Ju mindre värde, desto långsammare beräkningshastighet men bättre utseende.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defining the normals per vertex is also called &lt;span style=&quot; font-style:italic;&quot;&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tips&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Definiera normaler för hörn kallas också&lt;span style=&quot; font-style:italic;&quot;&gt;Phong skuggning&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;medan definition av normaler för yta kallas&lt;/span&gt;Plattskuggning&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Tips&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definiera normaler för hörn kallas också&lt;span style=" font-style:italic;"&gt;Phong skuggning&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;medan definition av normaler för yta kallas&lt;/span&gt;Plattskuggning&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Högkvalitetsnormaler&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Detta kommer att bromsa beräkningshastigheten men kommer att ge ett snyggare resultat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Högkvalitetsnormaler&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Detta kommer att bromsa beräkningshastigheten men kommer att ge ett snyggare resultat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="-52"/>
-        <source>Maximum deviation depending on the model bounding box</source>
-        <translation>Maximal avvikelse beroende på modellens markeringsram</translation>
+      <source>Maximum deviation depending on the model bounding box</source>
+      <translation>Maximal avvikelse beroende på modellens markeringsram</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source> %</source>
-        <translation> %</translation>
+      <source> %</source>
+      <translation> %</translation>
     </message>
     <message>
-        <location filename="../../DlgSettings3DViewPartImp.cpp" line="+64"/>
-        <source>Deviation</source>
-        <translation>Avvikelse</translation>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="+64"/>
+      <source>Deviation</source>
+      <translation>Avvikelse</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-        <translation>Att ställa in en för liten avvikelse orsakar tesselleringen att ta längre tid och därmed fryser eller saktar ner det grafiska gränssnittet.</translation>
+      <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
+      <translation>Att ställa in en för liten avvikelse orsakar tesselleringen att ta längre tid och därmed fryser eller saktar ner det grafiska gränssnittet.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::DlgSettingsGeneral</name>
     <message>
-        <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
-        <source>General</source>
-        <translation>Allmänt</translation>
+      <location filename="../../DlgSettingsGeneral.ui" line="+14"/>
+      <source>General</source>
+      <translation>Allmänt</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Export</source>
-        <translation>Exportera</translation>
+      <source>Export</source>
+      <translation>Exportera</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Millimeter</source>
-        <translation>Millimeter</translation>
+      <source>Millimeter</source>
+      <translation>Millimeter</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Meter</source>
-        <translation>Meter</translation>
+      <source>Meter</source>
+      <translation>Meter</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Inch</source>
-        <translation>Tum</translation>
+      <source>Inch</source>
+      <translation>Tum</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Units for export of STEP/IGES</source>
-        <translation>Enheter för export av STEP / IGES</translation>
+      <source>Units for export of STEP/IGES</source>
+      <translation>Enheter för export av STEP / IGES</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Model settings</source>
-        <translation>Modellinställningar</translation>
+      <source>Model settings</source>
+      <translation>Modellinställningar</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Automatically refine model after boolean operation</source>
-        <translation>Förfina modell automatiskt efter boolesk operation</translation>
+      <source>Automatically refine model after boolean operation</source>
+      <translation>Förfina modell automatiskt efter boolesk operation</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Automatically check model after boolean operation</source>
-        <translation>Kontrollera modell automatiskt efter boolesk operation</translation>
+      <source>Automatically check model after boolean operation</source>
+      <translation>Kontrollera modell automatiskt efter boolesk operation</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::FaceColors</name>
     <message>
-        <location filename="../../TaskFaceColors.cpp" line="+226"/>
-        <source>Face colors</source>
-        <translation>Ytfärger</translation>
+      <location filename="../../TaskFaceColors.cpp" line="+226"/>
+      <source>Face colors</source>
+      <translation>Ytfärger</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Do you really want to cancel?</source>
-        <translation>Vill du verkligen avbryta?</translation>
+      <source>Do you really want to cancel?</source>
+      <translation>Vill du verkligen avbryta?</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::Location</name>
     <message>
-        <location filename="../../Location.ui" line="+14"/>
-        <source>Location</source>
-        <translation>Placering</translation>
+      <location filename="../../Location.ui" line="+14"/>
+      <source>Location</source>
+      <translation>Placering</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Position</source>
-        <translation>Position</translation>
+      <source>Position</source>
+      <translation>Position</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>3D View</source>
-        <translation>3D-vy</translation>
+      <source>3D View</source>
+      <translation>3D-vy</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::LoftWidget</name>
     <message>
-        <location filename="../../TaskLoft.cpp" line="+72"/>
-        <location line="+118"/>
-        <source>Vertex/Wire</source>
-        <translation>Hörn/Tråd</translation>
+      <location filename="../../TaskLoft.cpp" line="+72"/>
+      <source>Vertex/Wire</source>
+      <translation>Hörn/Tråd</translation>
     </message>
     <message>
-        <location line="-117"/>
-        <location line="+118"/>
-        <source>Loft</source>
-        <translation>Loft</translation>
+      <source>Loft</source>
+      <translation>Loft</translation>
     </message>
     <message>
-        <location line="-56"/>
-        <source>Too few elements</source>
-        <translation>För få element</translation>
+      <source>Too few elements</source>
+      <translation>För få element</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>At least two vertices, edges or wires are required.</source>
-        <translation>Minst två hörn, kanter eller trådar behövs.</translation>
+      <source>At least two vertices, edges or wires are required.</source>
+      <translation>Minst två hörn, kanter eller trådar behövs.</translation>
     </message>
     <message>
-        <source>At least two vertices or wires are required.</source>
-        <translation type="obsolete">Minst två hörn eller trådar krävs.</translation>
+      <source>At least two vertices or wires are required.</source>
+      <translation>Minst två hörn eller trådar krävs.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::Mirroring</name>
     <message>
-        <location filename="../../Mirroring.ui" line="+14"/>
-        <source>Mirroring</source>
-        <translation>Spegling</translation>
+      <location filename="../../Mirroring.ui" line="+14"/>
+      <source>Mirroring</source>
+      <translation>Spegling</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Shapes</source>
-        <translation>Former</translation>
+      <source>Shapes</source>
+      <translation>Former</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Mirror plane:</source>
-        <translation>Speglingsplan:</translation>
+      <source>Mirror plane:</source>
+      <translation>Speglingsplan:</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>XY plane</source>
-        <translation>XY plan</translation>
+      <source>XY plane</source>
+      <translation>XY plan</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>XZ plane</source>
-        <translation>XZ plan</translation>
+      <source>XZ plane</source>
+      <translation>XZ plan</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>YZ plane</source>
-        <translation>YZ plan</translation>
+      <source>YZ plane</source>
+      <translation>YZ plan</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Base point:</source>
-        <translation>Baspunkt:</translation>
+      <source>Base point:</source>
+      <translation>Baspunkt:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>x</source>
-        <translation>x</translation>
+      <source>x</source>
+      <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>y</source>
-        <translation>Y</translation>
+      <source>y</source>
+      <translation>Y</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>z</source>
-        <translation>z</translation>
+      <source>z</source>
+      <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+117"/>
-        <source>Select a shape for mirroring, first.</source>
-        <translation>Välj en form för spegling först.</translation>
+      <location filename="../../Mirroring.cpp" line="+117"/>
+      <source>Select a shape for mirroring, first.</source>
+      <translation>Välj en form för spegling först.</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>No such document &apos;%1&apos;.</source>
-        <translation>Inget sådant dokument &apos;%1&apos;.</translation>
+      <source>No such document '%1'.</source>
+      <translation>Inget sådant dokument '%1'.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+163"/>
-        <source>Input error</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskOffset.cpp" line="+163"/>
+      <source>Input error</source>
+      <translation>Inmatningsfel</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::ResultModel</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="+229"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="+229"/>
+      <source>Name</source>
+      <translation>Namn</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
+      <source>Type</source>
+      <translation>Typ</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
+      <source>Error</source>
+      <translation>Fel</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
-        <location line="+19"/>
-        <location line="+22"/>
-        <location line="+46"/>
-        <location line="+47"/>
-        <source>Wrong selection</source>
-        <translation>Fel val</translation>
+      <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
+      <source>Wrong selection</source>
+      <translation>Fel val</translation>
     </message>
     <message>
-        <location line="-134"/>
-        <location line="+19"/>
-        <source>Select two vertices</source>
-        <translation>Välj två hörn</translation>
+      <source>Select two vertices</source>
+      <translation>Välj två hörn</translation>
     </message>
     <message>
-        <source>Select three or more edges</source>
-        <translation type="obsolete">Välj tre eller flera kanter</translation>
+      <source>Select three or more edges</source>
+      <translation>Välj tre eller flera kanter</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Select one or more edges</source>
-        <translation>Markera en eller flera kanter</translation>
+      <source>Select one or more edges</source>
+      <translation>Markera en eller flera kanter</translation>
     </message>
     <message>
-        <location line="+46"/>
-        <source>Select two or more faces</source>
-        <translation>Markera två eller flera ytor</translation>
+      <source>Select two or more faces</source>
+      <translation>Markera två eller flera ytor</translation>
     </message>
     <message>
-        <location line="+47"/>
-        <source>Select only one part object</source>
-        <translation>Välj bara ett del objekt</translation>
+      <source>Select only one part object</source>
+      <translation>Välj bara ett del objekt</translation>
     </message>
     <message>
-        <location line="+34"/>
-        <source>Select two vertices to create an edge</source>
-        <translation>Välj två hörn för att skapa en kant</translation>
+      <source>Select two vertices to create an edge</source>
+      <translation>Välj två hörn för att skapa en kant</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Select a closed set of edges</source>
-        <translation>Välj en sluten uppsättning av kanter</translation>
+      <source>Select a closed set of edges</source>
+      <translation>Välj en sluten uppsättning av kanter</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Select adjacent faces</source>
-        <translation>Välj intilliggande ytor</translation>
+      <source>Select adjacent faces</source>
+      <translation>Välj intilliggande ytor</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>All shape types can be selected</source>
-        <translation>Alla formtyper kan väljas</translation>
+      <source>All shape types can be selected</source>
+      <translation>Alla formtyper kan väljas</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::SweepWidget</name>
     <message>
-        <location filename="../../TaskSweep.cpp" line="+73"/>
-        <location line="+144"/>
-        <source>Vertex/Wire</source>
-        <translation>Hörn/Tråd</translation>
+      <location filename="../../TaskSweep.cpp" line="+73"/>
+      <source>Vertex/Wire</source>
+      <translation>Hörn/Tråd</translation>
     </message>
     <message>
-        <location line="-143"/>
-        <location line="+144"/>
-        <source>Sweep</source>
-        <translation>Sweep</translation>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
     </message>
     <message>
-        <location line="-92"/>
-        <source>Sweep path</source>
-        <translation>Sweep path</translation>
+      <source>Sweep path</source>
+      <translation>Sweep path</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Select an edge or wire you want to sweep along.</source>
-        <translation>Select an edge or wire you want to sweep along.</translation>
+      <source>Select an edge or wire you want to sweep along.</source>
+      <translation>Select an edge or wire you want to sweep along.</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>Too few elements</source>
-        <translation>För få element</translation>
+      <source>Too few elements</source>
+      <translation>För få element</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>At least one edge or wire is required.</source>
-        <translation>At least one edge or wire is required.</translation>
+      <source>At least one edge or wire is required.</source>
+      <translation>At least one edge or wire is required.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="+37"/>
-        <source>Check Geometry</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="+37"/>
+      <source>Check Geometry</source>
+      <translation>Check Geometry</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::TaskDialogEditDynamic</name>
     <message>
-        <source>Hint</source>
-        <translation type="obsolete">Tips</translation>
+      <source>Hint</source>
+      <translation>Tips</translation>
     </message>
     <message>
-        <source>Select Control.</source>
-        <translation type="obsolete">Markera kontroll.</translation>
+      <source>Select Control.</source>
+      <translation>Markera kontroll.</translation>
     </message>
     <message>
-        <source>Control</source>
-        <translation type="obsolete">Kontroll</translation>
+      <source>Control</source>
+      <translation>Kontroll</translation>
     </message>
     <message>
-        <source>Dynamic</source>
-        <translation type="obsolete">Dynamisk</translation>
+      <source>Dynamic</source>
+      <translation>Dynamisk</translation>
     </message>
     <message>
-        <source>Align</source>
-        <translation type="obsolete">Justera</translation>
+      <source>Align</source>
+      <translation>Justera</translation>
     </message>
     <message>
-        <source>Value</source>
-        <translation type="obsolete">Värde</translation>
+      <source>Value</source>
+      <translation>Värde</translation>
     </message>
     <message>
-        <source>Special</source>
-        <translation type="obsolete">Special</translation>
+      <source>Special</source>
+      <translation>Special</translation>
     </message>
     <message>
-        <source>Command</source>
-        <translation type="obsolete">Kommando</translation>
+      <source>Command</source>
+      <translation>Kommando</translation>
     </message>
     <message>
-        <source>Stretch</source>
-        <translation type="obsolete">Sträck</translation>
+      <source>Stretch</source>
+      <translation>Sträck</translation>
     </message>
     <message>
-        <source>Move</source>
-        <translation type="obsolete">Flytta</translation>
+      <source>Move</source>
+      <translation>Flytta</translation>
     </message>
     <message>
-        <source>Rotate</source>
-        <translation type="obsolete">Rotera</translation>
+      <source>Rotate</source>
+      <translation>Rotera</translation>
     </message>
     <message>
-        <source>Offset</source>
-        <translation type="obsolete">Offset</translation>
+      <source>Offset</source>
+      <translation>Offset</translation>
     </message>
     <message>
-        <source>Orient</source>
-        <translation type="obsolete">Orientera</translation>
+      <source>Orient</source>
+      <translation>Orientera</translation>
     </message>
     <message>
-        <source>Match</source>
-        <translation type="obsolete">Matcha</translation>
+      <source>Match</source>
+      <translation>Matcha</translation>
     </message>
     <message>
-        <source>Surround</source>
-        <translation type="obsolete">Omgivning</translation>
+      <source>Surround</source>
+      <translation>Omgivning</translation>
     </message>
     <message>
-        <source>dummy</source>
-        <translation type="obsolete">Dummy</translation>
+      <source>dummy</source>
+      <translation>Dummy</translation>
     </message>
     <message>
-        <source>X Axis</source>
-        <translation type="obsolete">X-axel</translation>
+      <source>X Axis</source>
+      <translation>X-axel</translation>
     </message>
     <message>
-        <source>Y Axis</source>
-        <translation type="obsolete">Y-axel</translation>
+      <source>Y Axis</source>
+      <translation>Y-axel</translation>
     </message>
     <message>
-        <source>Z Axis</source>
-        <translation type="obsolete">Z-axel</translation>
+      <source>Z Axis</source>
+      <translation>Z-axel</translation>
     </message>
     <message>
-        <source>Increment</source>
-        <translation type="obsolete">Inkrement</translation>
+      <source>Increment</source>
+      <translation>Inkrement</translation>
     </message>
     <message>
-        <source>.125</source>
-        <translation type="obsolete">.125</translation>
+      <source>.125</source>
+      <translation>.125</translation>
     </message>
     <message>
-        <source>.500</source>
-        <translation type="obsolete">.500</translation>
+      <source>.500</source>
+      <translation>.500</translation>
     </message>
     <message>
-        <source>1.000</source>
-        <translation type="obsolete">1,000</translation>
+      <source>1.000</source>
+      <translation>1,000</translation>
     </message>
     <message>
-        <source>5.000</source>
-        <translation type="obsolete">5.000</translation>
+      <source>5.000</source>
+      <translation>5.000</translation>
     </message>
     <message>
-        <source>10.000</source>
-        <translation type="obsolete">10.000</translation>
+      <source>10.000</source>
+      <translation>10.000</translation>
     </message>
     <message>
-        <source>Drag arrows to stretch box by increment</source>
-        <translation type="obsolete">Dra pilarna för att sträcka ut lådan i inkrement</translation>
+      <source>Drag arrows to stretch box by increment</source>
+      <translation>Dra pilarna för att sträcka ut lådan i inkrement</translation>
     </message>
     <message>
-        <source>Drag arrows to move box by increment</source>
-        <translation type="obsolete">Dra pilarna för att flytta lådan i inkrement</translation>
+      <source>Drag arrows to move box by increment</source>
+      <translation>Dra pilarna för att flytta lådan i inkrement</translation>
     </message>
     <message>
-        <source>Not implemented yet</source>
-        <translation type="obsolete">Inte implementerad ännu</translation>
+      <source>Not implemented yet</source>
+      <translation>Inte implementerad ännu</translation>
     </message>
     <message>
-        <source>Drag arrows to offset checked axes by increment</source>
-        <translation type="obsolete">Dra pilarna för att offsetta kontrollerade axlar med inkrement</translation>
+      <source>Drag arrows to offset checked axes by increment</source>
+      <translation>Dra pilarna för att offsetta kontrollerade axlar med inkrement</translation>
     </message>
     <message>
-        <source>Select dragger for stretch by align</source>
-        <translation type="obsolete">Välj dragare för sträckning genom justering</translation>
+      <source>Select dragger for stretch by align</source>
+      <translation>Välj dragare för sträckning genom justering</translation>
     </message>
     <message>
-        <source>Select dragger for move by align</source>
-        <translation type="obsolete">Välj dragare för flyttning genom justering</translation>
+      <source>Select dragger for move by align</source>
+      <translation>Välj dragare för flyttning genom justering</translation>
     </message>
     <message>
-        <source>Select dragger for stretch by value</source>
-        <translation type="obsolete">Välj dragare för sträckning genom värde</translation>
+      <source>Select dragger for stretch by value</source>
+      <translation>Välj dragare för sträckning genom värde</translation>
     </message>
     <message>
-        <source>Select dragger for move by value</source>
-        <translation type="obsolete">Välj dragare för flyttning genom värde</translation>
+      <source>Select dragger for move by value</source>
+      <translation>Välj dragare för flyttning genom värde</translation>
     </message>
     <message>
-        <source>1.0</source>
-        <translation type="obsolete">1.0</translation>
+      <source>1.0</source>
+      <translation>1.0</translation>
     </message>
     <message>
-        <source>Enter Value</source>
-        <translation type="obsolete">Ange värde</translation>
+      <source>Enter Value</source>
+      <translation>Ange värde</translation>
     </message>
     <message>
-        <source>Select box to match</source>
-        <translation type="obsolete">Markera låda som ska matchas</translation>
+      <source>Select box to match</source>
+      <translation>Markera låda som ska matchas</translation>
     </message>
     <message>
-        <source>Select a point</source>
-        <translation type="obsolete">Markera en punkt</translation>
+      <source>Select a point</source>
+      <translation>Markera en punkt</translation>
     </message>
     <message>
-        <source>0.0</source>
-        <translation type="obsolete">0.0</translation>
+      <source>0.0</source>
+      <translation>0.0</translation>
     </message>
     <message>
-        <source>Select dragger to align</source>
-        <translation type="obsolete">Välj dragare för justering</translation>
+      <source>Select dragger to align</source>
+      <translation>Välj dragare för justering</translation>
     </message>
     <message>
-        <source>Select dragger to modify</source>
-        <translation type="obsolete">Välj dragare för modifiering</translation>
+      <source>Select dragger to modify</source>
+      <translation>Välj dragare för modifiering</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::TaskFaceColors</name>
     <message>
-        <location filename="../../TaskFaceColors.ui" line="+14"/>
-        <source>Set color per face</source>
-        <translation>Sätt färg per yta</translation>
+      <location filename="../../TaskFaceColors.ui" line="+14"/>
+      <source>Set color per face</source>
+      <translation>Sätt färg per yta</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Click on the faces in the 3d view to select them.</source>
-        <translation>Klicka på ytor i 3d-vyn för att välja dem.</translation>
+      <source>Click on the faces in the 3d view to select them.</source>
+      <translation>Klicka på ytor i 3d-vyn för att välja dem.</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Faces:</source>
-        <translation>Ytor:</translation>
+      <source>Faces:</source>
+      <translation>Ytor:</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Set to default</source>
-        <translation>Ange som standard</translation>
+      <source>Set to default</source>
+      <translation>Ange som standard</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::TaskLoft</name>
     <message>
-        <location filename="../../TaskLoft.ui" line="+14"/>
-        <source>Loft</source>
-        <translation>Loft</translation>
+      <location filename="../../TaskLoft.ui" line="+14"/>
+      <source>Loft</source>
+      <translation>Loft</translation>
     </message>
     <message>
-        <source>Vertex/Wire</source>
-        <translation type="obsolete">Hörn/Tråd</translation>
+      <source>Vertex/Wire</source>
+      <translation>Hörn/Tråd</translation>
     </message>
     <message>
-        <source>Move right</source>
-        <translation type="obsolete">Flytta åt höger</translation>
+      <source>Move right</source>
+      <translation>Flytta åt höger</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Flytta det markerade objektet en nivå nedåt.&lt;/b&gt; &lt;p&gt; Detta kommer också att ändra nivån för föräldraobjektet. &lt;/p&gt;</translation>
+      <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Flytta det markerade objektet en nivå nedåt.&lt;/b&gt; &lt;p&gt; Detta kommer också att ändra nivån för föräldraobjektet. &lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Move left</source>
-        <translation type="obsolete">Flytta åt vänster</translation>
+      <source>Move left</source>
+      <translation>Flytta åt vänster</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Flytta det markerade objektet en nivå upp.&lt;/b&gt; &lt;p&gt; Detta kommer också att ändra nivån för föräldraobjektet. &lt;/p&gt;</translation>
+      <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Flytta det markerade objektet en nivå upp.&lt;/b&gt; &lt;p&gt; Detta kommer också att ändra nivån för föräldraobjektet. &lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Move up</source>
-        <translation type="obsolete">Flytta upp</translation>
+      <source>Move up</source>
+      <translation>Flytta upp</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Flytta det markerade objektet uppåt.&lt;/b&gt; &lt;p&gt; Objektet kommer att flyttas inom hierarkinivån. &lt;/p&gt;</translation>
+      <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Flytta det markerade objektet uppåt.&lt;/b&gt; &lt;p&gt; Objektet kommer att flyttas inom hierarkinivån. &lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Move down</source>
-        <translation type="obsolete">Flytta ned</translation>
+      <source>Move down</source>
+      <translation>Flytta ned</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Flytta det markerade objektet nedåt.&lt;/b&gt; &lt;p&gt; Objektet kommer att flyttas inom hierarkinivån. &lt;/p&gt;</translation>
+      <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;Flytta det markerade objektet nedåt.&lt;/b&gt; &lt;p&gt; Objektet kommer att flyttas inom hierarkinivån. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Create solid</source>
-        <translation>Skapa solid</translation>
+      <source>Create solid</source>
+      <translation>Skapa solid</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Ruled surface</source>
-        <translation>Enkelkrökt yta</translation>
+      <source>Ruled surface</source>
+      <translation>Enkelkrökt yta</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::TaskOffset</name>
     <message>
-        <location filename="../../TaskOffset.ui" line="+14"/>
-        <location line="+6"/>
-        <source>Offset</source>
-        <translation type="unfinished">Offset</translation>
+      <location filename="../../TaskOffset.ui" line="+14"/>
+      <source>Offset</source>
+      <translation>Offset</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Mode</source>
-        <translation type="unfinished"></translation>
+      <source>Mode</source>
+      <translation>Mode</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Skin</source>
-        <translation type="unfinished"></translation>
+      <source>Skin</source>
+      <translation>Skin</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Pipe</source>
-        <translation type="unfinished"></translation>
+      <source>Pipe</source>
+      <translation>Pipe</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>RectoVerso</source>
-        <translation type="unfinished"></translation>
+      <source>RectoVerso</source>
+      <translation>RectoVerso</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Join type</source>
-        <translation type="unfinished"></translation>
+      <source>Join type</source>
+      <translation>Join type</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Arc</source>
-        <translation type="unfinished"></translation>
+      <source>Arc</source>
+      <translation>Cirkelbåge</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Tangent</source>
-        <translation type="unfinished"></translation>
+      <source>Tangent</source>
+      <translation>Tangent</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location line="+8"/>
-        <source>Intersection</source>
-        <translation type="unfinished">Skärning</translation>
+      <source>Intersection</source>
+      <translation>Skärning</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Self-intersection</source>
-        <translation type="unfinished"></translation>
+      <source>Self-intersection</source>
+      <translation>Self-intersection</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Fill offset</source>
-        <translation type="unfinished"></translation>
+      <source>Fill offset</source>
+      <translation>Fill offset</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Faces</source>
-        <translation type="unfinished">Ytor</translation>
+      <source>Faces</source>
+      <translation>Ytor</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>Update view</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::TaskShapeBuilder</name>
     <message>
-        <location filename="../../TaskShapeBuilder.ui" line="+14"/>
-        <location line="+6"/>
-        <source>Create shape</source>
-        <translation>Skapa form</translation>
+      <location filename="../../TaskShapeBuilder.ui" line="+14"/>
+      <source>Create shape</source>
+      <translation>Skapa form</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Edge from vertices</source>
-        <translation>Kanter från hörn</translation>
+      <source>Edge from vertices</source>
+      <translation>Kanter från hörn</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Face from edges</source>
-        <translation>Ytor från kanter</translation>
+      <source>Face from edges</source>
+      <translation>Ytor från kanter</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Planar</source>
-        <translation>Planär</translation>
+      <source>Planar</source>
+      <translation>Planär</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Shell from faces</source>
-        <translation>Skal från ytor</translation>
+      <source>Shell from faces</source>
+      <translation>Skal från ytor</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Solid from shell</source>
-        <translation>Solid från skal</translation>
+      <source>Solid from shell</source>
+      <translation>Solid från skal</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Create</source>
-        <translation>Skapa</translation>
+      <source>Create</source>
+      <translation>Skapa</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>All faces</source>
-        <translation>Alla ytor</translation>
+      <source>All faces</source>
+      <translation>Alla ytor</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::TaskSweep</name>
     <message>
-        <location filename="../../TaskSweep.ui" line="+14"/>
-        <source>Sweep</source>
-        <translation>Sweep</translation>
+      <location filename="../../TaskSweep.ui" line="+14"/>
+      <source>Sweep</source>
+      <translation>Sweep</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Create solid</source>
-        <translation>Skapa solid</translation>
+      <source>Create solid</source>
+      <translation>Skapa solid</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Frenet</source>
-        <translation>Frenet</translation>
+      <source>Frenet</source>
+      <translation>Frenet</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Select one or more profiles and select an edge or wire
+      <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-        <translation>Select one or more profiles and select an edge or wire
+      <translation>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartGui::ThicknessWidget</name>
     <message>
-        <location filename="../../TaskThickness.cpp" line="+101"/>
-        <location line="+165"/>
-        <location line="+10"/>
-        <source>Thickness</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskThickness.cpp" line="+101"/>
+      <source>Thickness</source>
+      <translation>Thickness</translation>
     </message>
     <message>
-        <location line="-119"/>
-        <source>Select faces of the source object and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+      <source>Select faces of the source object and press 'Done'</source>
+      <translation>Select faces of the source object and press 'Done'</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Done</source>
-        <translation type="unfinished"></translation>
+      <source>Done</source>
+      <translation>Done</translation>
     </message>
     <message>
-        <location line="+71"/>
-        <source>Input error</source>
-        <translation type="unfinished"></translation>
+      <source>Input error</source>
+      <translation>Inmatningsfel</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-833"/>
-        <location line="+49"/>
-        <location line="+54"/>
-        <location line="+55"/>
-        <location line="+893"/>
-        <source>Wrong selection</source>
-        <translation>Fel val</translation>
+      <location filename="../../Command.cpp" line="-833"/>
+      <source>Wrong selection</source>
+      <translation>Fel val</translation>
     </message>
     <message>
-        <location line="-1050"/>
-        <location line="+158"/>
-        <source>Select two shapes please.</source>
-        <translation>Välj två former.</translation>
+      <source>Select two shapes please.</source>
+      <translation>Välj två former.</translation>
     </message>
     <message>
-        <location line="+150"/>
-        <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-        <translation>Alla CAD filer (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+      <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
+      <translation>Alla CAD filer (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>STEP (*.stp *.step)</source>
-        <translation>STEP (*.STP *.step)</translation>
+      <source>STEP (*.stp *.step)</source>
+      <translation>STEP (*.STP *.step)</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>IGES (*.igs *.iges)</source>
-        <translation>IGES (*.IGS *.IGES)</translation>
+      <source>IGES (*.igs *.iges)</source>
+      <translation>IGES (*.IGS *.IGES)</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>BREP (*.brp *.brep)</source>
-        <translation>BREP (*.BRP *.brep)</translation>
+      <source>BREP (*.brp *.brep)</source>
+      <translation>BREP (*.BRP *.brep)</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>All Files (*.*)</source>
-        <translation>Alla filer (*.*)</translation>
+      <source>All Files (*.*)</source>
+      <translation>Alla filer (*.*)</translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="+58"/>
-        <source>Sewing Tolerance</source>
-        <translation>Sömntolerans</translation>
+      <location filename="../../CommandSimple.cpp" line="+58"/>
+      <source>Sewing Tolerance</source>
+      <translation>Sömntolerans</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Enter tolerance for sewing shape:</source>
-        <translation>Ange tolerans för för att sömma ihop formen:</translation>
+      <source>Enter tolerance for sewing shape:</source>
+      <translation>Ange tolerans för för att sömma ihop formen:</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderMirror.cpp" line="+73"/>
-        <source>Edit mirror plane</source>
-        <translation>Redigera speglingsplan</translation>
+      <location filename="../../ViewProviderMirror.cpp" line="+73"/>
+      <source>Edit mirror plane</source>
+      <translation>Redigera speglingsplan</translation>
     </message>
     <message>
-        <location line="+204"/>
-        <source>Edit chamfer edges</source>
-        <translation>Edit chamfer edges</translation>
+      <source>Edit chamfer edges</source>
+      <translation>Edit chamfer edges</translation>
     </message>
     <message>
-        <location line="+141"/>
-        <source>Edit offset</source>
-        <translation type="unfinished"></translation>
+      <source>Edit offset</source>
+      <translation>Edit offset</translation>
     </message>
     <message>
-        <location line="+81"/>
-        <source>Edit thickness</source>
-        <translation type="unfinished"></translation>
+      <source>Edit thickness</source>
+      <translation>Edit thickness</translation>
     </message>
     <message>
-        <source>Transform</source>
-        <translation type="obsolete">Omvandla</translation>
+      <source>Transform</source>
+      <translation>Omvandla</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+124"/>
-        <location line="+1"/>
-        <source>Part design</source>
-        <translation>Del design</translation>
+      <location filename="../../AppPartGui.cpp" line="+124"/>
+      <source>Part design</source>
+      <translation>Del design</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-263"/>
-        <location line="+54"/>
-        <source>Select two shapes or more, please.</source>
-        <translation>Välj två figurer eller mer, tack.</translation>
+      <location filename="../../Command.cpp" line="-263"/>
+      <source>Select two shapes or more, please.</source>
+      <translation>Välj två figurer eller mer, tack.</translation>
     </message>
     <message>
-        <location line="+948"/>
-        <source>You have to select either two edges or two wires.</source>
-        <translation>Du måste antingen välja två kanter eller två trådar.</translation>
+      <source>You have to select either two edges or two wires.</source>
+      <translation>Du måste antingen välja två kanter eller två trådar.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderMirror.cpp" line="-286"/>
-        <source>Edit fillet edges</source>
-        <translation>Redigera avrundade kanter</translation>
+      <location filename="../../ViewProviderMirror.cpp" line="-286"/>
+      <source>Edit fillet edges</source>
+      <translation>Redigera avrundade kanter</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+532"/>
-        <source>Set colors...</source>
-        <translation>Ställ in färgerna ...</translation>
+      <location filename="../../ViewProviderExt.cpp" line="+532"/>
+      <source>Set colors...</source>
+      <translation>Ställ in färgerna ...</translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="-214"/>
-        <source>Compound</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="-214"/>
+      <source>Compound</source>
+      <translation>Compound</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Compound Solid</source>
-        <translation type="unfinished"></translation>
+      <source>Compound Solid</source>
+      <translation>Compound Solid</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Solid</source>
-        <translation type="unfinished"></translation>
+      <source>Solid</source>
+      <translation>Solid</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Shell</source>
-        <translation type="unfinished"></translation>
+      <source>Shell</source>
+      <translation>Shell</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Face</source>
-        <translation type="unfinished"></translation>
+      <source>Face</source>
+      <translation>Yta</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Wire</source>
-        <translation type="unfinished"></translation>
+      <source>Wire</source>
+      <translation>Wire</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Edge</source>
-        <translation type="unfinished"></translation>
+      <source>Edge</source>
+      <translation>Edge</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Vertex</source>
-        <translation type="unfinished">Hörn</translation>
+      <source>Vertex</source>
+      <translation>Hörn</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Shape</source>
-        <translation type="unfinished">Form</translation>
+      <source>Shape</source>
+      <translation>Form</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>No Error</source>
-        <translation type="unfinished"></translation>
+      <source>No Error</source>
+      <translation>No Error</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Point On Curve</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Point On Curve</source>
+      <translation>Invalid Point On Curve</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Point On Curve On Surface</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Invalid Point On Curve On Surface</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Point On Surface</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Point On Surface</source>
+      <translation>Invalid Point On Surface</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No 3D Curve</source>
-        <translation type="unfinished"></translation>
+      <source>No 3D Curve</source>
+      <translation>No 3D Curve</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Multiple 3D Curve</source>
-        <translation type="unfinished"></translation>
+      <source>Multiple 3D Curve</source>
+      <translation>Multiple 3D Curve</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid 3D Curve</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid 3D Curve</source>
+      <translation>Invalid 3D Curve</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No Curve On Surface</source>
-        <translation type="unfinished"></translation>
+      <source>No Curve On Surface</source>
+      <translation>No Curve On Surface</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Curve On Surface</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Curve On Surface</source>
+      <translation>Invalid Curve On Surface</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Curve On Closed Surface</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Invalid Curve On Closed Surface</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Same Range Flag</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Same Range Flag</source>
+      <translation>Invalid Same Range Flag</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Same Parameter Flag</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Invalid Same Parameter Flag</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Degenerated Flag</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Invalid Degenerated Flag</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Free Edge</source>
-        <translation type="unfinished"></translation>
+      <source>Free Edge</source>
+      <translation>Free Edge</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid MultiConnexity</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid MultiConnexity</source>
+      <translation>Invalid MultiConnexity</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Range</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Range</source>
+      <translation>Invalid Range</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Empty Wire</source>
-        <translation type="unfinished"></translation>
+      <source>Empty Wire</source>
+      <translation>Empty Wire</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Redundant Edge</source>
-        <translation type="unfinished"></translation>
+      <source>Redundant Edge</source>
+      <translation>Redundant Edge</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Self Intersecting Wire</source>
-        <translation type="unfinished"></translation>
+      <source>Self Intersecting Wire</source>
+      <translation>Self Intersecting Wire</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>No Surface</source>
-        <translation type="unfinished"></translation>
+      <source>No Surface</source>
+      <translation>No Surface</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Wire</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Wire</source>
+      <translation>Invalid Wire</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Redundant Wire</source>
-        <translation type="unfinished"></translation>
+      <source>Redundant Wire</source>
+      <translation>Redundant Wire</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Intersecting Wires</source>
-        <translation type="unfinished"></translation>
+      <source>Intersecting Wires</source>
+      <translation>Intersecting Wires</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Imbrication Of Wires</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Invalid Imbrication Of Wires</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Empty Shell</source>
-        <translation type="unfinished"></translation>
+      <source>Empty Shell</source>
+      <translation>Empty Shell</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Redundant Face</source>
-        <translation type="unfinished"></translation>
+      <source>Redundant Face</source>
+      <translation>Redundant Face</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Unorientable Shape</source>
-        <translation type="unfinished"></translation>
+      <source>Unorientable Shape</source>
+      <translation>Unorientable Shape</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Not Closed</source>
-        <translation type="unfinished"></translation>
+      <source>Not Closed</source>
+      <translation>Not Closed</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Not Connected</source>
-        <translation type="unfinished"></translation>
+      <source>Not Connected</source>
+      <translation>Not Connected</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Sub Shape Not In Shape</source>
-        <translation type="unfinished"></translation>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Sub Shape Not In Shape</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Bad Orientation</source>
-        <translation type="unfinished"></translation>
+      <source>Bad Orientation</source>
+      <translation>Bad Orientation</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Bad Orientation Of Sub Shape</source>
-        <translation type="unfinished"></translation>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Bad Orientation Of Sub Shape</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Invalid Tolerance Value</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid Tolerance Value</source>
+      <translation>Invalid Tolerance Value</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Check Failed</source>
-        <translation type="unfinished"></translation>
+      <source>Check Failed</source>
+      <translation>Check Failed</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>No Result</source>
-        <translation type="unfinished"></translation>
+      <source>No Result</source>
+      <translation>No Result</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Out Of Enum Range: </source>
-        <translation type="unfinished"></translation>
+      <source>Out Of Enum Range: </source>
+      <translation>Out Of Enum Range: </translation>
     </message>
     <message>
-        <location line="+213"/>
-        <source>Invalid</source>
-        <translation type="unfinished"></translation>
+      <source>Invalid</source>
+      <translation>Invalid</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+37"/>
-        <source>&amp;Part</source>
-        <translation>&amp;Del</translation>
+      <location filename="../../Workbench.cpp" line="+37"/>
+      <source>&amp;Part</source>
+      <translation>&amp;Del</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;Simple</source>
-        <translation>&amp;Enkel</translation>
+      <source>&amp;Simple</source>
+      <translation>&amp;Enkel</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;Parametric</source>
-        <translation>&amp;Parametrisk</translation>
+      <source>&amp;Parametric</source>
+      <translation>&amp;Parametrisk</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Part tools</source>
-        <translation>Del verktyg</translation>
+      <source>Part tools</source>
+      <translation>Del verktyg</translation>
     </message>
     <message>
-        <location line="-1"/>
-        <source>Solids</source>
-        <translation>Solider</translation>
+      <source>Solids</source>
+      <translation>Solider</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Boolean</source>
-        <translation>Boolesk</translation>
+      <source>Boolean</source>
+      <translation>Boolesk</translation>
     </message>
-</context>
+  </context>
 </TS>

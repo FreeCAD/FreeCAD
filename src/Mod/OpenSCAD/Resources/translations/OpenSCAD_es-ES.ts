@@ -11,262 +11,296 @@
     <message>
       <location filename="openscadprefs-base.ui" line="26"/>
       <source>General OpenSCAD Settings</source>
-      <translation>General OpenSCAD Settings</translation>
+      <translation>Configuración general de OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="34"/>
       <source>OpenSCAD executable</source>
-      <translation>OpenSCAD executable</translation>
+      <translation>Ejecutable OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executeable</source>
-      <translation>The path to the OpenSCAD executeable</translation>
+      <translation>La ruta de acceso al ejecutable OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="65"/>
       <source>OpenSCAD import</source>
-      <translation>OpenSCAD import</translation>
+      <translation>Importación OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="73"/>
       <source>If this is checked, Features will claim thier children in the tree view</source>
-      <translation>If this is checked, Features will claim thier children in the tree view</translation>
+      <translation>Si se selecciona, las Funciones serán demandadas a sus hijos en la vista de árbol</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="76"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation>Use ViewProvider in Tree View</translation>
+      <translation>Usar Proveedor de Vista en vista de árbol</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="93"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>If this is checked, Multmatrix Object will be Parametric</translation>
+      <translation>Si se selecciona, el objeto Multmatriz será paramétrico</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="96"/>
       <source>Use Multmatrix Feature</source>
-      <translation>Use Multmatrix Feature</translation>
+      <translation>Usar la función Multmatrix</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="136"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
+      <translation>El máximo número de caras de un polígono, prisma o tronco. Si fn es mayor que este valor el objeto es considerado circular. Establezca 0 para ningún límite</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="116"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Maximum number of faces for polygons (fn)</translation>
+      <translation>Número máximo de caras para polígonos (fn)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="159"/>
-      <source>Debug: Register filetype to prototype importer</source>
-      <translation>Debug: Register filetype to prototype importer</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="180"/>
+      <location filename="openscadprefs-base.ui" line="160"/>
       <source>OpenSCAD export</source>
-      <translation>OpenSCAD export</translation>
+      <translation>Exportación OpenSCAD</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="188"/>
+      <location filename="openscadprefs-base.ui" line="168"/>
       <source>maximum fragment size</source>
-      <translation>maximum fragment size</translation>
+      <translation>tamaño máximo de fragmento</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="218"/>
+      <location filename="openscadprefs-base.ui" line="198"/>
       <source>minimum angle for a fragment</source>
-      <translation>minimum angle for a fragment</translation>
+      <translation>ángulo mínimo de un fragmento</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="211"/>
+      <location filename="openscadprefs-base.ui" line="191"/>
       <source>angular (fa)</source>
       <translation>angular (fa)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="221"/>
+      <location filename="openscadprefs-base.ui" line="201"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="275"/>
+      <location filename="openscadprefs-base.ui" line="255"/>
       <source>minimum size of a fragment</source>
-      <translation>minimum size of a fragment</translation>
+      <translation>tamaño mínimo de un fragmento</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="253"/>
+      <location filename="openscadprefs-base.ui" line="233"/>
       <source>size (fs)</source>
-      <translation>size (fs)</translation>
+      <translation>tamaño (fs)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="281"/>
+      <location filename="openscadprefs-base.ui" line="261"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="307"/>
+      <location filename="openscadprefs-base.ui" line="287"/>
       <source>convexity</source>
-      <translation>convexity</translation>
+      <translation>convexidad</translation>
+    </message>
+    <message>
+      <location filename="openscadprefs-base.ui" line="324"/>
+      <source>Mesh fallback</source>
+      <translation>Respaldo de malla</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="344"/>
-      <source>Mesh fallback</source>
-      <translation>Mesh fallback</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="364"/>
       <source>Maxium Length</source>
-      <translation>Maxium Length</translation>
+      <translation>Longitud Máxima</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="367"/>
+      <location filename="openscadprefs-base.ui" line="347"/>
       <source>MaxLength</source>
-      <translation>MaxLength</translation>
+      <translation>MaxLongitud</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="374"/>
+      <location filename="openscadprefs-base.ui" line="354"/>
       <source>Maximum Length</source>
-      <translation>Maximum Length</translation>
+      <translation>Longitud máxima</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="406"/>
+      <location filename="openscadprefs-base.ui" line="386"/>
       <source>Maximum Area</source>
-      <translation>Maximum Area</translation>
+      <translation>Área máxima</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="399"/>
+      <location filename="openscadprefs-base.ui" line="379"/>
       <source>maxArea</source>
-      <translation>maxArea</translation>
+      <translation>maxÁrea</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="450"/>
+      <location filename="openscadprefs-base.ui" line="430"/>
       <source>Local Length</source>
-      <translation>Local Length</translation>
+      <translation>Longitud local</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="453"/>
+      <location filename="openscadprefs-base.ui" line="433"/>
       <source>localLen</source>
-      <translation>localLen</translation>
+      <translation>Lonlocal</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="482"/>
+      <location filename="openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
-      <translation>Deflection</translation>
+      <translation>Deflexión</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="485"/>
+      <location filename="openscadprefs-base.ui" line="465"/>
       <source>deflection</source>
-      <translation>deflection</translation>
+      <translation>deflexión</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="492"/>
+      <location filename="openscadprefs-base.ui" line="472"/>
       <source>Triangulation settings</source>
-      <translation>Triangulation settings</translation>
+      <translation>Configuración de triangulación</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="22"/>
-      <source>Color Shapes</source>
-      <translation>Color Shapes</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="23"/>
-      <source>Color Shapes by validity and type</source>
-      <translation>Color Shapes by validity and type</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="38"/>
-      <source>Convert Edges To Faces</source>
-      <translation>Convert Edges To Faces</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="38"/>
+      <location filename="OpenSCADCommands.py" line="47"/>
       <source>Convert Edges to Faces</source>
-      <translation>Convert Edges to Faces</translation>
+      <translation>Convertir aristas en caras</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="54"/>
-      <source>Refine Shape Feature</source>
-      <translation>Refine Shape Feature</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="55"/>
-      <source>Create Refine Shape Feature</source>
-      <translation>Create Refine Shape Feature</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="68"/>
-      <source>Expand Placements</source>
-      <translation>Expand Placements</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="68"/>
-      <source>Expand all placements downwards the FeatureTree</source>
-      <translation>Expand all placements downwards the FeatureTree</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="78"/>
+      <location filename="OpenSCADCommands.py" line="101"/>
       <source>Please select 3 objects first</source>
-      <translation>Please select 3 objects first</translation>
+      <translation>Por favor, seleccione tres objetos primero</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="81"/>
-      <source>Replace Object</source>
-      <translation>Replace Object</translation>
+      <location filename="importCSG.py" line="334"/>
+      <source>Unsupported Function</source>
+      <translation>Función no admitida</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="82"/>
-      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Replace an object in the Feature Tree. Please select old, new and parent object</translation>
+      <location filename="importCSG.py" line="334"/>
+      <source>Press OK</source>
+      <translation>Pulse Aceptar</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="109"/>
-      <source>Remove Objects and their Children</source>
-      <translation>Remove Objects and their Children</translation>
+      <location filename="importCSG.py" line="946"/>
+      <source>Projection Not yet Coded waiting for Peter Li</source>
+      <translation>Proyección aún no programada, esperando a Peter Li</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="110"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Removes the selected objects and all children that are not referenced from other objects</translation>
+      <location filename="importCSG.py" line="946"/>
+      <source> Press OK</source>
+      <translation>Pulse Aceptar</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="199"/>
+      <source>Running OpenSCAD failed</source>
+      <translation>Error de ejecución OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="162"/>
+      <source>Add</source>
+      <translation>Añadir</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="163"/>
-      <source>Running OpenSCAD failed
-</source>
-      <translation>Running OpenSCAD failed
-</translation>
+      <source>Clear</source>
+      <translation>Limpiar</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="171"/>
+      <location filename="OpenSCADCommands.py" line="164"/>
+      <source>as Mesh</source>
+      <translation>como malla</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="165"/>
+      <source>Add OpenSCAD Element</source>
+      <translation>Añadir elemento OpenSCAD</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="207"/>
       <source>Add OpenSCAD Element...</source>
-      <translation>Add OpenSCAD Element...</translation>
+      <translation>Añadir elemento OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="172"/>
+      <location filename="OpenSCADCommands.py" line="209"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+      <translation>Agregar un elemento OpenSCAD mediante código OpenSCAD y ejecutar el binario OpenSCAD</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ColorCodeShape</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="24"/>
+      <source>Color Shapes</source>
+      <translation>Color de formas</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="330"/>
-      <source>Unsupported Function</source>
-      <translation>Unsupported Function</translation>
+      <location filename="OpenSCADCommands.py" line="26"/>
+      <source>Color Shapes by validity and type</source>
+      <translation>Color de Forma por validez y tipo</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Edgestofaces</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="45"/>
+      <source>Convert Edges To Faces</source>
+      <translation>Convertir Aristas en Caras</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ExpandPlacements</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="86"/>
+      <source>Expand Placements</source>
+      <translation>Ampliar Colocaciones</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="330"/>
-      <source>Press OK</source>
-      <translation>Press OK</translation>
+      <location filename="OpenSCADCommands.py" line="88"/>
+      <source>Expand all placements downwards the FeatureTree</source>
+      <translation>Expandir todas las colocaciones hacia abajo del Árbol de Funciones</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RefineShapeFeature</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="67"/>
+      <source>Refine Shape Feature</source>
+      <translation>Función Refinar Forma</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="940"/>
-      <source>Projection Not yet Coded waiting for Peter Li</source>
-      <translation>Projection Not yet Coded waiting for Peter Li</translation>
+      <location filename="OpenSCADCommands.py" line="69"/>
+      <source>Create Refine Shape Feature</source>
+      <translation>Función Crear Forma Refinada</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_RemoveSubtree</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="137"/>
+      <source>Remove Objects and their Children</source>
+      <translation>Eliminar objetos y sus hijos</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="940"/>
-      <source> Press OK</source>
-      <translation> Press OK</translation>
+      <location filename="OpenSCADCommands.py" line="139"/>
+      <source>Removes the selected objects and all children that are not referenced from other objects</source>
+      <translation>Elimina los objetos seleccionados y todos los hijos que no hagan referencia a otros objetos</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ReplaceObject</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="105"/>
+      <source>Replace Object</source>
+      <translation>Reemplazar objeto</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="107"/>
+      <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
+      <translation>Reemplazar un objeto en el Árbol de Funciones. Por favor seleccione antiguo, nuevo y objeto primario</translation>
     </message>
   </context>
 </TS>

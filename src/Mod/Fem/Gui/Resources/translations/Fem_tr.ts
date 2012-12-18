@@ -1,63 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+52"/>
-        <source>Fem</source>
-        <translation>Sonlu elemanlar yöntemi</translation>
+      <location filename="../../Command.cpp" line="+52"/>
+      <source>Fem</source>
+      <translation>Sonlu elemanlar yöntemi</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh</source>
-        <translation>Sonlu elemanlar yöntemi ile parçacıklar oluştur</translation>
+      <source>Create FEM mesh</source>
+      <translation>Sonlu elemanlar yöntemi ile parçacıklar oluştur</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh from shape</source>
-        <translation>Sonlu elemanlar yöntemi ile biçimden parçacıklar oluştur</translation>
+      <source>Create FEM mesh from shape</source>
+      <translation>Sonlu elemanlar yöntemi ile biçimden parçacıklar oluştur</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::HypothesisWidget</name>
     <message>
-        <location filename="../../Hypothesis.ui" line="+14"/>
-        <source>Hypothesis</source>
-        <translation>Hypothesis</translation>
+      <location filename="../../Hypothesis.ui" line="+14"/>
+      <source>Hypothesis</source>
+      <translation>Hypothesis</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Quadrangle</source>
-        <translation>Quadrangle</translation>
+      <source>Quadrangle</source>
+      <translation>Quadrangle</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Maximum length</source>
-        <translation>Maximum length</translation>
+      <source>Maximum length</source>
+      <translation>Maximum length</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Local length</source>
-        <translation>Local length</translation>
+      <source>Local length</source>
+      <translation>Local length</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Maximum element area</source>
-        <translation>Maximum element area</translation>
+      <source>Maximum element area</source>
+      <translation>Maximum element area</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+38"/>
-        <source>FEM</source>
-        <translation>Sonlu Elemanlar Yöntemi</translation>
+      <location filename="../../Workbench.cpp" line="+38"/>
+      <source>FEM</source>
+      <translation>Sonlu Elemanlar Yöntemi</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;FEM</source>
-        <translation>&amp;Sonlu Elemanlar Yöntemi</translation>
+      <source>&amp;FEM</source>
+      <translation>&amp;Sonlu Elemanlar Yöntemi</translation>
     </message>
-</context>
+  </context>
 </TS>

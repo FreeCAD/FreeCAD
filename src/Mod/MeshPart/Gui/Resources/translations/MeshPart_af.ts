@@ -1,68 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+46"/>
-        <source>Mesh</source>
-        <translation>Maas</translation>
+      <location filename="../../Command.cpp" line="+46"/>
+      <source>Mesh</source>
+      <translation>Maas</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create mesh from shape...</source>
-        <translation>Skep &apos;n maas van die vorm ...</translation>
+      <source>Create mesh from shape...</source>
+      <translation>Skep 'n maas van die vorm ...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Tessellate shape</source>
-        <translation>Tesselleer die vorm</translation>
+      <source>Tessellate shape</source>
+      <translation>Tesselleer die vorm</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-        <location filename="../../Tessellation.ui" line="+14"/>
-        <source>Tessellation</source>
-        <translation>Tessellasie</translation>
+      <location filename="../../Tessellation.ui" line="+14"/>
+      <source>Tessellation</source>
+      <translation>Tessellasie</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Shapes</source>
-        <translation>Vorms</translation>
+      <source>Shapes</source>
+      <translation>Vorms</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Settings</source>
-        <translation>Instellings</translation>
+      <source>Settings</source>
+      <translation>Instellings</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Surface deviation:</source>
-        <translation>Oppervlakafwyking:</translation>
+      <source>Surface deviation:</source>
+      <translation>Oppervlakafwyking:</translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>Max. edge length:</source>
-        <translation>Maks kantlengte:</translation>
+      <source>Max. edge length:</source>
+      <translation>Maks kantlengte:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+106"/>
-        <source>Select a shape for meshing, first.</source>
-        <translation>Kies eers &apos;n vorm om te omskep in &apos;n maas.</translation>
+      <location filename="../../Tessellation.cpp" line="+106"/>
+      <source>Select a shape for meshing, first.</source>
+      <translation>Kies eers 'n vorm om te omskep in 'n maas.</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>No such document &apos;%1&apos;.</source>
-        <translation>Dokument bestaan nie &apos;%1&apos;.</translation>
+      <source>No such document '%1'.</source>
+      <translation>Dokument bestaan nie '%1'.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+36"/>
-        <source>MeshPart</source>
-        <translation>MaasOnderdeel</translation>
+      <location filename="../../Workbench.cpp" line="+36"/>
+      <source>MeshPart</source>
+      <translation>MaasOnderdeel</translation>
     </message>
-</context>
+  </context>
 </TS>

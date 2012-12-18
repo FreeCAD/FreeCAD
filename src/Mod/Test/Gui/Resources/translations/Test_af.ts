@@ -1,112 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>TestGui::UnitTest</name>
     <message>
-        <source>FreeCAD UnitTest</source>
-        <translation>FreeCAD Eenheidstoets</translation>
+      <source>FreeCAD UnitTest</source>
+      <translation>FreeCAD Eenheidstoets</translation>
     </message>
     <message>
-        <source>Failures and errors</source>
-        <translation>Mislukkings en foute</translation>
+      <source>Failures and errors</source>
+      <translation>Mislukkings en foute</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation>Beskrywing</translation>
+      <source>Description</source>
+      <translation>Beskrywing</translation>
     </message>
     <message>
-        <source>&amp;Start</source>
-        <translation>&amp;Begin</translation>
+      <source>&amp;Start</source>
+      <translation>&amp;Begin</translation>
     </message>
     <message>
-        <source>Alt+S</source>
-        <translation>Alt+S</translation>
+      <source>Alt+S</source>
+      <translation>Alt+S</translation>
     </message>
     <message>
-        <source>&amp;Help</source>
-        <translation>&amp;Hulp</translation>
+      <source>&amp;Help</source>
+      <translation>&amp;Hulp</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
+      <source>F1</source>
+      <translation>F1</translation>
     </message>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;Aangaande</translation>
+      <source>&amp;About</source>
+      <translation>&amp;Aangaande</translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation>Alt+A</translation>
+      <source>Alt+A</source>
+      <translation>Alt+A</translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Maak toe</translation>
+      <source>&amp;Close</source>
+      <translation>&amp;Maak toe</translation>
     </message>
     <message>
-        <source>Alt+C</source>
-        <translation>Alt+C</translation>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
     </message>
     <message>
-        <source>Idle</source>
-        <translation>Ledig</translation>
+      <source>Idle</source>
+      <translation>Ledig</translation>
     </message>
     <message>
-        <source>Progress</source>
-        <translation>Vordering</translation>
+      <source>Progress</source>
+      <translation>Vordering</translation>
     </message>
     <message>
-        <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+      <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
+      <translation>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Remaining:</source>
-        <translation>Oorblywende:</translation>
+      <source>Remaining:</source>
+      <translation>Oorblywende:</translation>
     </message>
     <message>
-        <source>Errors:</source>
-        <translation>Foute:</translation>
+      <source>Errors:</source>
+      <translation>Foute:</translation>
     </message>
     <message>
-        <source>Failures:</source>
-        <translation>Mislukkings:</translation>
+      <source>Failures:</source>
+      <translation>Mislukkings:</translation>
     </message>
     <message>
-        <source>Run:</source>
-        <translation>Loop:</translation>
+      <source>Run:</source>
+      <translation>Loop:</translation>
     </message>
     <message>
-        <source>Test</source>
-        <translation>Toets</translation>
+      <source>Test</source>
+      <translation>Toets</translation>
     </message>
     <message>
-        <source>Select test name:</source>
-        <translation>Kies toetsnaam:</translation>
+      <source>Select test name:</source>
+      <translation>Kies toetsnaam:</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-        <source>Help</source>
-        <translation>Hulp</translation>
+      <source>Help</source>
+      <translation>Hulp</translation>
     </message>
     <message>
-        <source>About FreeCAD UnitTest</source>
-        <translation>Aangaande FreeCAD Eenheidstoets</translation>
+      <source>About FreeCAD UnitTest</source>
+      <translation>Aangaande FreeCAD Eenheidstoets</translation>
     </message>
     <message>
-        <source>Copyright (c) Werner Mayer
+      <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-        <translation>Kopiereg (c) Werner Mayer 
+      <translation>Kopiereg (c) Werner Mayer 
 FreeCAD Eenheidstoets is deel van FreeCAD en ondersteun skrywing van eenheidstoetse vir eie modules.</translation>
     </message>
     <message>
-        <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
+      <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation>Gee die naam van &apos;n roepbare voorwerp wat, wanneer geroep is, &apos;n toetsgeval sal gee. Klik &quot;begin&quot;, en die geskepte toets sal uitgevoer word. 
-Dubbelklik op &apos;n fout in die boomaansig vir meer inligting oor dit, insluitend die stapelspoor.</translation>
+      <translation>Gee die naam van 'n roepbare voorwerp wat, wanneer geroep is, 'n toetsgeval sal gee. Klik "begin", en die geskepte toets sal uitgevoer word. 
+Dubbelklik op 'n fout in die boomaansig vir meer inligting oor dit, insluitend die stapelspoor.</translation>
     </message>
-</context>
+  </context>
 </TS>
