@@ -14,7 +14,7 @@
    height="64px"
    id="svg2726"
    sodipodi:version="0.32"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="Snap_Ortho.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
@@ -196,17 +196,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.75"
-     inkscape:cx="12.13888"
-     inkscape:cy="24.347498"
+     inkscape:zoom="11"
+     inkscape:cx="22.199652"
+     inkscape:cy="28.79221"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:window-width="1280"
-     inkscape:window-height="755"
-     inkscape:window-x="0"
-     inkscape:window-y="22"
+     inkscape:window-height="777"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata2731">
@@ -228,10 +228,11 @@
        id="g4289"
        transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)">
       <path
-         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:24.16598901;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="m 138.09323,476.2983 0,99.86419 -99.86419,0 0,49.08818 99.86419,0 0,99.86418 49.08818,0 0,-99.86418 99.86419,0 0,-49.08818 -99.86419,0 0,-99.86419 -49.08818,0 z"
+         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:24.16598892;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="m 138.09323,476.2983 c 0,0 0.56072,34.97023 0.56072,51.61427 0,16.64403 -0.56072,48.24992 -0.56072,48.24992 0,0 -32.16661,0 -48.810648,0 -16.644032,0 -51.053542,0 -51.053542,0 l 0,49.08818 99.86419,0 c 0,0 0,34.97023 0,51.61426 0,16.64403 0,48.24992 0,48.24992 l 49.08818,0 0,-99.86418 99.86419,0 0,-49.08818 c 0,0 -33.84879,-1.12145 -50.49282,-1.12145 -16.64404,0 -49.37137,1.12145 -49.37137,1.12145 0,0 0.55862,-32.72629 0.56072,-49.37137 0.002,-16.64508 -0.56072,-50.49282 -0.56072,-50.49282 z"
          id="rect6083"
-         inkscape:connector-curvature="0" />
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="czczccczccccczczcc" />
     </g>
   </g>
 </svg>
