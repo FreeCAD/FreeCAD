@@ -372,6 +372,10 @@ public:
     ~AlignmentView()
     {
     }
+    PyObject* getPyObject()
+    {
+        Py_Return;
+    }
     bool canClose()
     {
         return false;
