@@ -908,6 +908,7 @@ class DraftToolBar:
         if self.cancel:
             self.cancel()
             self.cancel = None
+        FreeCADGui.ActiveDocument.resetEdit()
 
     def escape(self):
         "escapes the current command"
@@ -919,6 +920,7 @@ class DraftToolBar:
     def closeLine(self):
         "close button action"
         self.sourceCmd.finish(True)
+        FreeCADGui.ActiveDocument.resetEdit()
 
     def wipeLine(self):
         "wipes existing segments of a line"

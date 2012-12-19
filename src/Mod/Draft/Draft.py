@@ -1796,7 +1796,8 @@ class _ViewProviderDraft:
     def unsetEdit(self,vp,mode):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
-        return
+        FreeCADGui.Control.closeDialog()
+        return False
     
     def getIcon(self):
         return(":/icons/Draft_Draft.svg")
