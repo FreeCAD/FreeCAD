@@ -38,6 +38,7 @@ else: gui = True
 
 #***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
+global fafs
 #fafs = '$fa = 12, $fs = 2'
 #convexity = 'convexity = 10'
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
@@ -106,7 +107,6 @@ def process_object(csg,ob):
     if ob.Type == "Part::Sphere" :
         print "Sphere Radius : "+str(ob.Radius)
         check_multmatrix(csg,ob,0,0,0)
-        global fafs
         csg.write("sphere($fn = 0, "+fafs+", r = "+str(ob.Radius)+");\n")
            
     elif ob.Type == "Part::Box" :
@@ -118,7 +118,6 @@ def process_object(csg,ob):
     elif ob.Type == "Part::Cylinder" :
         print "cylinder : Height "+str(ob.Height)+ " Radius "+str(ob.Radius)        
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
-        global fafs
         csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height)+ ", r1 = "+str(ob.Radius)+\
                   ", r2 = " + str(ob.Radius) + ", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")           
@@ -126,7 +125,6 @@ def process_object(csg,ob):
     elif ob.Type == "Part::Cone" :
         print "cone : Height "+str(ob.Height)+ " Radius1 "+str(ob.Radius1)+" Radius2 "+str(ob.Radius2)
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
-        global fafs
         csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height)+ ", r1 = "+str(ob.Radius1)+\
                   ", r2 = "+str(ob.Radius2)+", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")
@@ -137,7 +135,6 @@ def process_object(csg,ob):
         print ob.Radius2
         if ob.Angle3 == 360.00 :
             mm = check_multmatrix(csg,ob,0,0,0)
-            global fafs
             csg.write("rotate_extrude("+convexity+", $fn = 0, "+fafs+")\n")
             csg.write("multmatrix([[1, 0, 0, "+str(ob.Radius1)+"], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])\n")
             csg.write("circle($fn = 0, "+fafs+", r = "+str(ob.Radius2)+");\n")          
@@ -158,7 +155,6 @@ def process_object(csg,ob):
             print "Radius : " + r
             print "Height : " + h
             mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
-            global fafs
             csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
                       ", r2 = "+r+", center = "+center(mm)+");\n")
             if mm == 1: csg.write("}\n")
@@ -169,7 +165,6 @@ def process_object(csg,ob):
             print "Radius : " + r
             print "Height : " + h
             mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
-            global fafs
             csg.write("cylinder($fn = 0, "+fafs+", h = "+h+", r1 = "+r+\
                       ", r2 = "+r+", center = "+center(mm)+");\n")
             if mm == 1: csg.write("}\n")    
@@ -178,14 +173,12 @@ def process_object(csg,ob):
             print "Wire extrusion"
             print ob.Base
             mm = check_multmatrix(csg,ob,0,0,0)
-            global fafs
             csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = "+center(mm)+", "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
             csg.write(vertexs2polygon(ob.Base.Shape.Vertexes))
             if mm == 1: csg.write("}\n")
 
         elif ob.Base.Name == "square" :
             mm = check_multmatrix(csg,ob,0,0,0)
-            global fafs
             csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = true, "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
             csg.write("square (size = ["+str(ob.Base.Length)+", "+str(ob.Base.Width)+"],center = "+center(mm)+";\n}\n")
             if mm == 1: csg.write("}\n")     
