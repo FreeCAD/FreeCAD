@@ -199,6 +199,8 @@ class AddSCADTask:
             FreeCAD.Console.PrintError(unicode(translate('OpenSCAD','Running OpenSCAD failed'))+u'\n')
 
 class AddOpenSCADElement:
+    def IsActive(self):
+        return not FreeCADGui.Control.activeDialog()
     def Activated(self):
         panel = AddSCADTask()
         FreeCADGui.Control.showDialog(panel)
