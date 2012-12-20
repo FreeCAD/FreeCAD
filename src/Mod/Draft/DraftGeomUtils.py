@@ -33,13 +33,15 @@ from FreeCAD import Vector
 NORM = Vector(0,0,1) # provisory normal direction for all geometry ops.
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-precision = params.GetInt("precision")
 
 # Generic functions *********************************************************
 
+def precision():
+    "precision(): returns the Draft precision setting"
+    return params.GetInt("precision")
 
 def vec(edge):
-    "vec(edge) or vec(line) -- returns a vector from an edge or a Part.line"
+    "vec(edge) or vec(line): returns a vector from an edge or a Part.line"
     # if edge is not straight, you'll get strange results!
     if isinstance(edge,Part.Shape):
         return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
@@ -49,40 +51,40 @@ def vec(edge):
         return None
 
 def edg(p1,p2):
-	"edg(Vector,Vector) -- returns an edge from 2 vectors"
+	"edg(Vector,Vector): returns an edge from 2 vectors"
 	if isinstance(p1,FreeCAD.Vector) and isinstance(p2,FreeCAD.Vector):
 		if DraftVecUtils.equals(p1,p2): return None
 		else: return Part.Line(p1,p2).toShape()
 
 def getVerts(shape):
-        "getVerts(shape) -- returns a list containing vectors of each vertex of the shape"
-        p = []
-        for v in shape.Vertexes:
-                p.append(v.Point)
-        return p
+    "getVerts(shape): returns a list containing vectors of each vertex of the shape"
+    p = []
+    for v in shape.Vertexes:
+            p.append(v.Point)
+    return p
 
 def v1(edge):
-	"v1(edge) -- returns the first point of an edge"
+	"v1(edge): returns the first point of an edge"
 	return edge.Vertexes[0].Point
 
 def isNull(something):
-        '''returns true if the given shape is null or the given placement is 0 or
-        if the given vector is (0,0,0)'''
-        if isinstance(something,Part.Shape):
-                return something.isNull()
-        elif isinstance(something,FreeCAD.Vector):
-                if something == Vector(0,0,0):
-                        return True
-                else:
-                        return False
-        elif isinstance(something,FreeCAD.Placement):
-                if (something.Base == Vector(0,0,0)) and (something.Rotation.Q == (0,0,0,1)):
-                        return True
-                else:
-                        return False
+    '''isNull(object): returns true if the given shape is null or the given placement is null or
+    if the given vector is (0,0,0)'''
+    if isinstance(something,Part.Shape):
+            return something.isNull()
+    elif isinstance(something,FreeCAD.Vector):
+            if something == Vector(0,0,0):
+                    return True
+            else:
+                    return False
+    elif isinstance(something,FreeCAD.Placement):
+            if (something.Base == Vector(0,0,0)) and (something.Rotation.Q == (0,0,0,1)):
+                    return True
+            else:
+                    return False
 
 def isPtOnEdge(pt,edge) :
-	'''isPtOnEdge(Vector,edge) -- Tests if a point is on an edge'''
+	'''isPtOnEdge(Vector,edge): Tests if a point is on an edge'''
 	if isinstance(edge.Curve,Part.Line) :
 		orig = edge.Vertexes[0].Point
 		if DraftVecUtils.isNull(pt.sub(orig).cross(vec(edge))) :
@@ -94,8 +96,8 @@ def isPtOnEdge(pt,edge) :
 		center = edge.Curve.Center
 		axis   = edge.Curve.Axis ; axis.normalize()
 		radius = edge.Curve.Radius
-		if  round(pt.sub(center).dot(axis),precision) == 0 \
-		and round(pt.sub(center).Length - radius,precision) == 0 :
+		if  round(pt.sub(center).dot(axis),precision()) == 0 \
+		and round(pt.sub(center).Length - radius,precision()) == 0 :
 			if len(edge.Vertexes) == 1 :
 				return True # edge is a complete circle
 			else :
@@ -107,7 +109,7 @@ def isPtOnEdge(pt,edge) :
 					# newArc = Part.Arc(begin,pt,end)
 					# return DraftVecUtils.isNull(newArc.Center.sub(center)) \
 					#    and DraftVecUtils.isNull(newArc.Axis-axis) \
-					#    and round(newArc.Radius-radius,precision) == 0
+					#    and round(newArc.Radius-radius,precision()) == 0
 					angle1 = DraftVecUtils.angle(begin.sub(center))
 					angle2 = DraftVecUtils.angle(end.sub(center))
 					anglept = DraftVecUtils.angle(pt.sub(center))
@@ -116,59 +118,59 @@ def isPtOnEdge(pt,edge) :
 	return False
 
 def hasCurves(shape):
-        "checks if the given shape has curves"
-        for e in shape.Edges:
-                if not isinstance(e.Curve,Part.Line):
-                        return True
-        return False
+    "hasCurve(shape): checks if the given shape has curves"
+    for e in shape.Edges:
+            if not isinstance(e.Curve,Part.Line):
+                    return True
+    return False
 
 def isAligned(edge,axis="x"):
-        "checks if the given edge or line is aligned to the given axis (x, y or z)"
-        if axis == "x":
-                if isinstance(edge,Part.Edge):
-                        if len(edge.Vertexes) == 2:
-                                if edge.Vertexes[0].X == edge.Vertexes[-1].X:
-                                        return True
-                elif isinstance(edge,Part.Line):
-                        if edge.StartPoint.x == edge.EndPoint.x:
-                                        return True
-        elif axis == "y":
-                if isinstance(edge,Part.Edge):
-                        if len(edge.Vertexes) == 2:
-                                if edge.Vertexes[0].Y == edge.Vertexes[-1].Y:
-                                        return True
-                elif isinstance(edge,Part.Line):
-                        if edge.StartPoint.y == edge.EndPoint.y:
-                                        return True
-        elif axis == "z":
-                if isinstance(edge,Part.Edge):
-                        if len(edge.Vertexes) == 2:
-                                if edge.Vertexes[0].Z == edge.Vertexes[-1].Z:
-                                        return True
-                elif isinstance(edge,Part.Line):
-                        if edge.StartPoint.z == edge.EndPoint.z:
-                                        return True
-        return False
+    "isAligned(edge,axis): checks if the given edge or line is aligned to the given axis (x, y or z)"
+    if axis == "x":
+        if isinstance(edge,Part.Edge):
+            if len(edge.Vertexes) == 2:
+                if edge.Vertexes[0].X == edge.Vertexes[-1].X:
+                    return True
+        elif isinstance(edge,Part.Line):
+            if edge.StartPoint.x == edge.EndPoint.x:
+                    return True
+    elif axis == "y":
+        if isinstance(edge,Part.Edge):
+            if len(edge.Vertexes) == 2:
+                if edge.Vertexes[0].Y == edge.Vertexes[-1].Y:
+                    return True
+        elif isinstance(edge,Part.Line):
+            if edge.StartPoint.y == edge.EndPoint.y:
+                    return True
+    elif axis == "z":
+        if isinstance(edge,Part.Edge):
+            if len(edge.Vertexes) == 2:
+                if edge.Vertexes[0].Z == edge.Vertexes[-1].Z:
+                    return True
+        elif isinstance(edge,Part.Line):
+            if edge.StartPoint.z == edge.EndPoint.z:
+                    return True
+    return False
 
 def hasOnlyWires(shape):
-        "returns True if all the edges are inside a wire"
-        ne = 0
-        for w in shape.Wires:
-                ne += len(w.Edges)
-        if ne == len(shape.Edges):
-                return True
-        return False
-                        
+    "hasOnlyWires(shape): returns True if all the edges are inside a wire"
+    ne = 0
+    for w in shape.Wires:
+        ne += len(w.Edges)
+    if ne == len(shape.Edges):
+        return True
+    return False
+
 # edge functions *****************************************************************
 
 def findEdge(anEdge,aList):
-        '''findEdge(anEdge,aList): returns True if anEdge is found in aList of edges'''
-        for e in range(len(aList)):
-                if str(anEdge.Curve) == str(aList[e].Curve):
-                        if DraftVecUtils.equals(anEdge.Vertexes[0].Point,aList[e].Vertexes[0].Point):
-                                if DraftVecUtils.equals(anEdge.Vertexes[-1].Point,aList[e].Vertexes[-1].Point):
-                                        return(e)
-        return None
+    '''findEdge(anEdge,aList): returns True if anEdge is found in aList of edges'''
+    for e in range(len(aList)):
+        if str(anEdge.Curve) == str(aList[e].Curve):
+            if DraftVecUtils.equals(anEdge.Vertexes[0].Point,aList[e].Vertexes[0].Point):
+                if DraftVecUtils.equals(anEdge.Vertexes[-1].Point,aList[e].Vertexes[-1].Point):
+                    return(e)
+    return None
 	
 
 def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=False) :
@@ -264,7 +266,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 				int = [center.add(toLine).add(onLine)]
 				onLine  = Vector(dirVec) ; onLine.scale(-dOnLine,-dOnLine,-dOnLine)
 				int += [center.add(toLine).add(onLine)]
-			elif round(toLine.Length-arc.Curve.Radius,precision) == 0 :
+			elif round(toLine.Length-arc.Curve.Radius,precision()) == 0 :
 				int = [center.add(toLine)]
 			else :
 				return []
@@ -277,7 +279,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 				toPlane = Vector(pt1)
 				toPlane.scale(dToPlane/d,dToPlane/d,dToPlane/d)
 				ptOnPlane = toPlane.add(pt1)
-				if round(ptOnPlane.sub(center).Length - arc.Curve.Radius,precision) == 0 :
+				if round(ptOnPlane.sub(center).Length - arc.Curve.Radius,precision()) == 0 :
 					int = [ptOnPlane]
 				else :
 					return []
@@ -304,12 +306,12 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 		c2c          = cent2.sub(cent1)
 		
 		if DraftVecUtils.isNull(axis1.cross(axis2)) :
-			if round(c2c.dot(axis1),precision) == 0 :
+			if round(c2c.dot(axis1),precision()) == 0 :
 				# circles are on same plane
 				dc2c = c2c.Length ;
 				if not DraftVecUtils.isNull(c2c): c2c.normalize()
-				if round(rad1+rad2-dc2c,precision) < 0 \
-				or round(rad1-dc2c-rad2,precision) > 0 or round(rad2-dc2c-rad1,precision) > 0 :
+				if round(rad1+rad2-dc2c,precision()) < 0 \
+				or round(rad1-dc2c-rad2,precision()) > 0 or round(rad2-dc2c-rad1,precision()) > 0 :
 					return []
 				else :
 					norm = c2c.cross(axis1)
@@ -318,7 +320,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 					else: x = (dc2c**2 + rad1**2 - rad2**2)/(2*dc2c)
 					y = abs(rad1**2 - x**2)**(0.5)
 					c2c.scale(x,x,x)
-					if round(y,precision) != 0 :
+					if round(y,precision()) != 0 :
 						norm.scale(y,y,y)
 						int =  [cent1.add(c2c).add(norm)]
 						int += [cent1.add(c2c).sub(norm)]
@@ -339,7 +341,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 			intTemp = findIntersection(planeIntersectionVector,edge1,True,True)
 			int = []
 			for pt in intTemp :
-				if round(pt.sub(cent2).Length-rad2,precision) == 0 :
+				if round(pt.sub(cent2).Length-rad2,precision()) == 0 :
 					int += [pt]
 					
 		if infinite1 == False :
@@ -353,7 +355,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 		
 		return int
 	else :
-		print "fcgeo: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")"
+		print "DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")"
 
 def geom(edge,plac=FreeCAD.Placement()):
     "returns a Line, ArcOfCircle or Circle geom from the given edge, according to the given placement"
@@ -417,7 +419,7 @@ def concatenate(shape):
 		wire=Part.Wire(edges)
 		face=Part.Face(wire)
 	except:
-		print "fcgeo: Couldn't join faces into one"
+		print "DraftGeomUtils: Couldn't join faces into one"
 		return(shape)
 	else:
 		if not wire.isClosed():	return(wire)
@@ -442,13 +444,13 @@ def getBoundary(shape):
 	return bound
 
 def isLine(bsp):
-        "returns True if the given BSpline curve is a straight line"
-        step = bsp.LastParameter/10
-        b = bsp.tangent(0)
-        for i in range(10):
-                if bsp.tangent(i*step) != b:
-                        return False
-        return True
+    "returns True if the given BSpline curve is a straight line"
+    step = bsp.LastParameter/10
+    b = bsp.tangent(0)
+    for i in range(10):
+        if bsp.tangent(i*step) != b:
+            return False
+    return True
 
 def sortEdges(lEdges, aVertex=None):
     "an alternative, more accurate version of Part.__sortEdges__"
@@ -759,12 +761,12 @@ def offset(edge,vector):
 		return Part.Circle(edge.Curve.Center,NORM,newrad).toShape()
 
 def isReallyClosed(wire):
-        "checks if a wire is really closed"
-        if len(wire.Edges) == len(wire.Vertexes): return True
-        v1 = wire.Vertexes[0].Point
-        v2 = wire.Vertexes[-1].Point
-        if DraftVecUtils.equals(v1,v2): return True
-        return False
+    "checks if a wire is really closed"
+    if len(wire.Edges) == len(wire.Vertexes): return True
+    v1 = wire.Vertexes[0].Point
+    v2 = wire.Vertexes[-1].Point
+    if DraftVecUtils.equals(v1,v2): return True
+    return False
 
 def getNormal(shape):
         "finds the normal of a shape, if possible"
@@ -864,7 +866,7 @@ def connect(edges,closed=False):
         nedges = []
         for i in range(len(edges)):
                 curr = edges[i]
-                # print "fcgeo.connect edge ",i," : ",curr.Vertexes[0].Point,curr.Vertexes[-1].Point
+                # print "DraftGeomUtils.connect edge ",i," : ",curr.Vertexes[0].Point,curr.Vertexes[-1].Point
                 if i > 0:
                         prev = edges[i-1]
                 else:
@@ -879,7 +881,7 @@ def connect(edges,closed=False):
                         else:
                                 next = None
                 if prev:
-                        # print "debug: fcgeo.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point
+                        # print "debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point
                         i = findIntersection(curr,prev,True,True)
                         if i:
                                 v1 = i[0]
@@ -888,7 +890,7 @@ def connect(edges,closed=False):
                 else:
                         v1 = curr.Vertexes[0].Point
                 if next:
-                        # print "debug: fcgeo.connect next : ",next.Vertexes[0].Point,next.Vertexes[-1].Point
+                        # print "debug: DraftGeomUtils.connect next : ",next.Vertexes[0].Point,next.Vertexes[-1].Point
                         i = findIntersection(curr,next,True,True)
                         if i:
                                 v2 = i[0]
@@ -961,15 +963,15 @@ def findDistance(point,edge,strict=False):
                                 np = edge.Curve.value(pr)
                                 dist = np.sub(point)
                         except:
-                                print "fcgeo: Unable to get curve parameter for point ",point
+                                print "DraftGeomUtils: Unable to get curve parameter for point ",point
                                 return None
                         else:
                                 return dist
 		else:
-			print "fcgeo: Couldn't project point"
+			print "DraftGeomUtils: Couldn't project point"
 			return None
 	else:
-		print "fcgeo: Couldn't project point"
+		print "DraftGeomUtils: Couldn't project point"
 		return None
 
 
@@ -1008,27 +1010,25 @@ def findClosestCircle(point,circles):
 	return closest
 
 def isCoplanar(faces):
-        "checks if all faces in the given list are coplanar"
-        if len(faces) < 2:
-                return True
-        base =faces[0].normalAt(0,0)
-        for i in range(1,len(faces)):
-            for v in faces[i].Vertexes:
-                chord = v.Point.sub(faces[0].Vertexes[0].Point)
-                dist = DraftVecUtils.project(chord,base)
-                if round(dist.Length,DraftVecUtils.precision()) > 0:
-                    return False
+    "checks if all faces in the given list are coplanar"
+    if len(faces) < 2:
         return True
+    base =faces[0].normalAt(0,0)
+    for i in range(1,len(faces)):
+        for v in faces[i].Vertexes:
+            chord = v.Point.sub(faces[0].Vertexes[0].Point)
+            dist = DraftVecUtils.project(chord,base)
+            if round(dist.Length,precision()) > 0:
+                return False
+    return True
 
 def isPlanar(shape):
 	"checks if the given shape is planar"
 	if len(shape.Vertexes) <= 3:
 		return True
-	pts = [v.Point for v in shape.Vertexes[0:3]]
-	bt = Part.Face(Part.makePolygon(pts+[pts[0]]))
-	n = bt.normalAt(0,0)
-	for p in shape.Vertexes[3:]:
-		pv = p.Point.sub(pts[0])
+	n = getNormal(shape)
+	for p in shape.Vertexes[1:]:
+		pv = p.Point.sub(shape.Vertexes[0].Point)
 		rv = DraftVecUtils.project(pv,n)
 		if not DraftVecUtils.isNull(rv):
 			return False
@@ -1223,8 +1223,8 @@ def isCubic(shape):
             if i < 3:
                 e2 = vec(f.Edges[i+1])
             else: e2 = vec(f.Edges[0])
-            rpi = [0.0,round(math.pi/2,precision)]
-            if not round(e1.getAngle(e2),precision) in rpi:
+            rpi = [0.0,round(math.pi/2,precision())]
+            if not round(e1.getAngle(e2),precision()) in rpi:
                 return False
     return True
 
@@ -1252,14 +1252,14 @@ def getCubicDimensions(shape):
     rotX = DraftVecUtils.angle(vy,FreeCAD.Vector(vy.x,vy.y,0))
     # getting height
     vz = None
-    rpi = round(math.pi/2,precision)
+    rpi = round(math.pi/2,precision())
     for i in range(1,6):
         for e in shape.Faces[i].Edges:
             if basepoint in [e.Vertexes[0].Point,e.Vertexes[1].Point]:
                 vtemp = vec(e)
                 # print vtemp
-                if round(vtemp.getAngle(vx),precision) == rpi:
-                    if round(vtemp.getAngle(vy),precision) == rpi:
+                if round(vtemp.getAngle(vx),precision()) == rpi:
+                    if round(vtemp.getAngle(vy),precision()) == rpi:
                         vz = vtemp
     if not vz: return None
     mat = FreeCAD.Matrix()
@@ -1267,7 +1267,7 @@ def getCubicDimensions(shape):
     mat.rotateX(rotX)
     mat.rotateY(rotY)
     mat.rotateZ(rotZ)
-    return [FreeCAD.Placement(mat),round(vx.Length,precision),round(vy.Length,precision),round(vz.Length,precision)]
+    return [FreeCAD.Placement(mat),round(vx.Length,precision()),round(vy.Length,precision()),round(vz.Length,precision())]
 
 def removeInterVertices(wire):
         '''removeInterVertices(wire) - remove unneeded vertices (those that
@@ -1275,7 +1275,7 @@ def removeInterVertices(wire):
         edges = sortEdges(wire.Edges)
         nverts = []
         def getvec(v1,v2):
-                if not abs(round(v1.getAngle(v2),precision) in [0,round(math.pi,precision)]):
+                if not abs(round(v1.getAngle(v2),precision()) in [0,round(math.pi,precision())]):
                         nverts.append(edges[i].Vertexes[-1].Point)
         for i in range(len(edges)-1):
                 vA = vec(edges[i])
@@ -1350,7 +1350,7 @@ def fillet(lEdges,r):
 		return rndEdges
 	
 	if r <= 0 :
-		print "fcgeo.fillet : Error : radius is negative."
+		print "DraftGeomUtils.fillet : Error : radius is negative."
 		return rndEdges
 		
 	curveType = getCurveType(rndEdges[0])
@@ -1366,8 +1366,8 @@ def fillet(lEdges,r):
 		U2 = lVertexes[2].Point.sub(lVertexes[1].Point) ; U2.normalize()
 		alpha = U1.getAngle(U2)
 		
-		if round(alpha,precision) == 0 or round(alpha - math.pi,precision) == 0: # Edges have same direction
-			print "fcgeo.fillet : Warning : edges have same direction. Did nothing"
+		if round(alpha,precision()) == 0 or round(alpha - math.pi,precision()) == 0: # Edges have same direction
+			print "DraftGeomUtils.fillet : Warning : edges have same direction. Did nothing"
 			return rndEdges
 			
 		dToCenter = r / math.sin(alpha/2.) 
@@ -1383,7 +1383,7 @@ def fillet(lEdges,r):
 		arcPt3 = lVertexes[1].Point.add(dirVect)
 			
 		if (dToTangent>lEdges[0].Length) or (dToTangent>lEdges[1].Length) :
-			print "fcgeo.fillet : Error : radius value ", r," is too high"
+			print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
 			return rndEdges
 		
 		rndEdges[1]   =  Part.Edge(Part.Arc(arcPt1,arcPt2,arcPt3))
@@ -1413,7 +1413,7 @@ def fillet(lEdges,r):
 			T = toCenter.cross(arcAxis)
 			
 		projCenter = toCenter.dot(U1)
-		if round(abs(projCenter),precision) > 0 :
+		if round(abs(projCenter),precision()) > 0 :
 			normToLine = U1.cross(T).cross(U1)
 		else :
 			normToLine = Vector(toCenter) 
@@ -1421,19 +1421,19 @@ def fillet(lEdges,r):
 		
 		dCenterToLine = toCenter.dot(normToLine) - r
 		
-		if  round(projCenter,precision) > 0 :
+		if  round(projCenter,precision()) > 0 :
 			newRadius = arcRadius - r
-		elif round(projCenter,precision) < 0 or (round(projCenter,precision) == 0 and U1.dot(T) > 0):
+		elif round(projCenter,precision()) < 0 or (round(projCenter,precision()) == 0 and U1.dot(T) > 0):
 			newRadius = arcRadius + r
 		else :
-			print "fcgeo.fillet : Warning : edges are already tangent. Did nothing"
+			print "DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing"
 			return rndEdges
 		
 		toNewCent = newRadius**2-dCenterToLine**2
 		if toNewCent > 0 :
 			toNewCent = abs(abs(projCenter) - toNewCent**(0.5))
 		else :
-			print "fcgeo.fillet : Error : radius value ", r," is too high"
+			print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
 			return rndEdges
 			
 		U1.scale(toNewCent,toNewCent,toNewCent)
@@ -1466,7 +1466,7 @@ def fillet(lEdges,r):
 		
 		delLength = arcRadius * V[0].sub(arcCenter).getAngle(toCenter)
 		if delLength > arcLength or toNewCent > curveType['Line'][0].Length: 
-			print "fcgeo.fillet : Error : radius value ", r," is too high"
+			print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
 			return rndEdges
 			
 		arcAsEdge = arcFrom2Pts(V[-arcFirst],V[-myTrick],arcCenter,arcAxis)
@@ -1499,23 +1499,23 @@ def fillet(lEdges,r):
 		sameDirection = (arcAxis[0].dot(arcAxis[1]) > 0)
 		TcrossT = T[0].cross(T[1])
 		if sameDirection :
-			if   round(TcrossT.dot(arcAxis[0]),precision) > 0 :
+			if   round(TcrossT.dot(arcAxis[0]),precision()) > 0 :
 				newRadius += [arcRadius[0]+r]
 				newRadius += [arcRadius[1]+r]
-			elif round(TcrossT.dot(arcAxis[0]),precision) < 0 :
+			elif round(TcrossT.dot(arcAxis[0]),precision()) < 0 :
 				newRadius += [arcRadius[0]-r]
 				newRadius += [arcRadius[1]-r]
 			elif T[0].dot(T[1]) > 0 :
 				newRadius += [arcRadius[0]+r]
 				newRadius += [arcRadius[1]+r]
 			else :
-				print "fcgeo.fillet : Warning : edges are already tangent. Did nothing"
+				print "DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing"
 				return rndEdges
 		elif not sameDirection : 
-			if   round(TcrossT.dot(arcAxis[0]),precision) > 0 :
+			if   round(TcrossT.dot(arcAxis[0]),precision()) > 0 :
 				newRadius += [arcRadius[0]+r]
 				newRadius += [arcRadius[1]-r]
-			elif round(TcrossT.dot(arcAxis[0]),precision) < 0 :
+			elif round(TcrossT.dot(arcAxis[0]),precision()) < 0 :
 				newRadius += [arcRadius[0]-r]
 				newRadius += [arcRadius[1]+r]
 			elif T[0].dot(T[1]) > 0 :
@@ -1526,16 +1526,16 @@ def fillet(lEdges,r):
 					newRadius += [arcRadius[0]+r]
 					newRadius += [arcRadius[1]-r]
 				else :
-					print "fcgeo.fillet : Warning : arcs are coincident. Did nothing"
+					print "DraftGeomUtils.fillet : Warning : arcs are coincident. Did nothing"
 					return rndEdges
 			else :
-				print "fcgeo.fillet : Warning : edges are already tangent. Did nothing"
+				print "DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing"
 				return rndEdges
 				
 		if newRadius[0]+newRadius[1] < dCentToCent or \
 		   newRadius[0]-newRadius[1] > dCentToCent or \
 		   newRadius[1]-newRadius[0] > dCentToCent :
-		   	print "fcgeo.fillet : Error : radius value ", r," is too high"
+		   	print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
 			return rndEdges
 				
 		x = (dCentToCent**2+newRadius[0]**2-newRadius[1]**2)/(2*dCentToCent)
@@ -1568,7 +1568,7 @@ def fillet(lEdges,r):
 			toCenter[i].scale(-1,-1,-1)
 			delLength = arcRadius[i] * arcPt[-i].sub(arcCenter[i]).getAngle(toCenter[i])
 			if delLength > arcLength[i] :
-				print "fcgeo.fillet : Error : radius value ", r," is too high"
+				print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
 				return rndEdges
 			V = [arcPt[-i],lVertexes[-i].Point]
 			arcAsEdge += [arcFrom2Pts(V[i-1],V[-i],arcCenter[i],arcAxis[i])]
